@@ -115,8 +115,9 @@ public class WKTMarkFactory implements MarkFactory {
                 LOGGER.log(Level.FINER, e.getMessage(), e);
                 return;
             }
-            for (Enumeration<String> e = (Enumeration<String>) propLib.propertyNames();
-                    e.hasMoreElements(); ) {
+            @SuppressWarnings("unchecked")
+            Enumeration<String> names = (Enumeration<String>) propLib.propertyNames();
+            for (Enumeration<String> e = names; e.hasMoreElements(); ) {
                 String shpName = (String) (e.nextElement());
                 library.put(shpName, (String) (propLib.get(shpName)));
             }

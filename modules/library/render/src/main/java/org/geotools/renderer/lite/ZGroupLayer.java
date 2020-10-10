@@ -265,8 +265,8 @@ class ZGroupLayer extends Layer {
                                         + sortByToString(style, styleClasses));
                     } else {
                         for (int i = 0; i < styleClasses.length; i++) {
-                            Class currClass = styleClasses[i];
-                            Class referenceClass = referenceClasses[i];
+                            Class<?> currClass = styleClasses[i];
+                            Class<?> referenceClass = referenceClasses[i];
                             if (!currClass.equals(referenceClass)
                                     && !currClass.isAssignableFrom(referenceClass)
                                     && !referenceClass.isAssignableFrom(currClass)) {

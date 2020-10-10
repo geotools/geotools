@@ -74,7 +74,7 @@ public class PointPlacementTest extends TestCase {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        Map rendererParams = new HashMap();
+        Map<Object, Object> rendererParams = new HashMap<>();
         LabelCacheImpl labelCache = new LabelCacheImpl();
         rendererParams.put(StreamingRenderer.LABEL_CACHE_KEY, labelCache);
         renderer.setRendererHints(rendererParams);

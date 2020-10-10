@@ -132,7 +132,7 @@ public class LabelObstacleTest {
     }
 
     Style[] styles(String... names) throws Exception {
-        List<Style> styles = new ArrayList();
+        List<Style> styles = new ArrayList<>();
         for (String name : names) {
             styles.add(name != null ? style(name) : null);
         }
@@ -140,7 +140,7 @@ public class LabelObstacleTest {
     }
 
     FeatureSource[] sources(String... names) throws Exception {
-        List<FeatureSource> sources = new ArrayList();
+        List<FeatureSource> sources = new ArrayList<>();
         for (String name : names) {
             sources.add(mem.getFeatureSource(name));
         }

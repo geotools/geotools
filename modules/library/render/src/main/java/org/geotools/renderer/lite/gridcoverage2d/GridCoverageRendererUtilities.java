@@ -211,9 +211,10 @@ public final class GridCoverageRendererUtilities {
             ROI roi = new ROI(new ROIGeometry(JTS.toGeometry(env)).getAsImage());
             PlanarImage pi = PlanarImage.wrapRenderedImage(input);
             pi.setProperty("ROI", roi);
-            final Map sourceProperties = coverage.getProperties();
-            Map properties =
-                    sourceProperties == null ? new HashMap() : new HashMap(sourceProperties);
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> sourceProperties = coverage.getProperties();
+            Map<String, Object> properties =
+                    sourceProperties == null ? new HashMap<>() : new HashMap<>(sourceProperties);
             properties.put("GC_ROI", roi);
             return gridCoverageFactory.create(
                     coverage.getName(),
@@ -701,7 +702,8 @@ public final class GridCoverageRendererUtilities {
                                     : TypeMap.getColorInterpretation(im.getColorModel(), i).name());
         }
 
-        Map properties = coverage.getProperties();
+        @SuppressWarnings("unchecked")
+        Map<String, Object> properties = coverage.getProperties();
         if (properties == null) {
             properties = new HashMap<>();
         }

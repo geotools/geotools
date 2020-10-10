@@ -147,7 +147,7 @@ public class GeneralizationDistanceTest {
     }
 
     public void assertDistanceWholeWorldRendering(
-            Map<String, Boolean> hints, double expectedDistance) {
+            Map<Object, Object> hints, double expectedDistance) {
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(source, style));
         StreamingRenderer sr = new StreamingRenderer();

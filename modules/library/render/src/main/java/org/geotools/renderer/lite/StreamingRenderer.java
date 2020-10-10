@@ -406,7 +406,7 @@ public class StreamingRenderer implements GTRenderer {
      * the SLD towards the native CRS) assume the geometries are expressed with the axis order
      * suggested by the official EPSG database, regardless of how the CRS system might be configured
      */
-    private Map rendererHints = null;
+    private Map<Object, Object> rendererHints = null;
 
     private AffineTransform worldToScreenTransform = null;
 
@@ -1064,6 +1064,7 @@ public class StreamingRenderer implements GTRenderer {
             AffineTransform worldToScreenTransform,
             boolean hasRenderingTransformation)
             throws IllegalFilterException, IOException, FactoryException {
+        @SuppressWarnings("unchecked")
         FeatureSource<FeatureType, Feature> source =
                 (FeatureSource<FeatureType, Feature>) layer.getFeatureSource();
         FeatureType schema = source.getSchema();
@@ -1115,7 +1116,7 @@ public class StreamingRenderer implements GTRenderer {
             List<ReferencedEnvelope> envelopes = null;
             // enable advanced projection handling with the updated map extent
             if (isAdvancedProjectionHandlingEnabled()) {
-                Map projectionHints = new HashMap();
+                Map<String, Object> projectionHints = new HashMap<>();
                 if (isAdvancedProjectionDensificationEnabled()
                         && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
                     double tolerance = getAdvancedProjectionDensificationTolerance();
@@ -1298,7 +1299,7 @@ public class StreamingRenderer implements GTRenderer {
             CoordinateReferenceSystem featCrs,
             Rectangle screenSize,
             AffineTransform worldToScreenTransform,
-            Map projectionHints,
+            Map<String, Object> projectionHints,
             double tolerance,
             ReferencedEnvelope sourceEnvelope)
             throws NoninvertibleTransformException, FactoryException {
@@ -2271,7 +2272,9 @@ public class StreamingRenderer implements GTRenderer {
             List<LiteFeatureTypeStyle> featureTypeStyles)
             throws IOException, FactoryException, NoninvertibleTransformException, SchemaException,
                     TransformException {
-        final FeatureSource featureSource = layer.getFeatureSource();
+        @SuppressWarnings("unchecked")
+        final FeatureSource<FeatureType, Feature> featureSource =
+                (FeatureSource<FeatureType, Feature>) layer.getFeatureSource();
         Expression transform = featureTypeStyles.get(0).transformation;
 
         // grab the source crs and geometry attribute
@@ -3247,7 +3250,7 @@ public class StreamingRenderer implements GTRenderer {
         return java2dHints;
     }
 
-    public void setRendererHints(Map hints) {
+    public void setRendererHints(Map<Object, Object> hints) {
         if (hints != null && hints.containsKey(LABEL_CACHE_KEY)) {
             LabelCache cache = (LabelCache) hints.get(LABEL_CACHE_KEY);
             if (cache == null)
@@ -3272,7 +3275,7 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @see org.geotools.renderer.GTRenderer#getRendererHints()
      */
-    public Map getRendererHints() {
+    public Map<Object, Object> getRendererHints() {
         return rendererHints;
     }
 
@@ -3329,12 +3332,12 @@ public class StreamingRenderer implements GTRenderer {
         boolean inMemoryGeneralization;
         ProjectionHandler projectionHandler;
         int metaBuffer;
-        private IdentityHashMap symbolizerAssociationHT =
-                new IdentityHashMap(); // associate a value
-        private List geometries = new ArrayList();
-        private List shapes = new ArrayList();
+        private IdentityHashMap<Symbolizer, SymbolizerAssociation> symbolizerAssociationHT =
+                new IdentityHashMap<>(); // associate a value
+        private List<Geometry> geometries = new ArrayList<>();
+        private List<Shape> shapes = new ArrayList<>();
         private boolean clone;
-        private IdentityHashMap decimators = new IdentityHashMap();
+        private IdentityHashMap<MathTransform, Decimator> decimators = new IdentityHashMap<>();
         private ScreenMap screenMap;
         private String layerId;
 

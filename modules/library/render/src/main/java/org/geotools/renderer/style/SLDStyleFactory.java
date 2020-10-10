@@ -92,13 +92,14 @@ public class SLDStyleFactory {
     private static final int MAX_RASTERIZATION_SIZE = 512;
 
     /** Holds a lookup bewteen SLD names and java constants. */
-    private static final java.util.Map JOIN_LOOKUP = new java.util.HashMap();
+    private static final java.util.Map<String, Integer> JOIN_LOOKUP = new java.util.HashMap<>();
 
     /** Holds a lookup bewteen SLD names and java constants. */
-    private static final java.util.Map CAP_LOOKUP = new java.util.HashMap();
+    private static final java.util.Map<String, Integer> CAP_LOOKUP = new java.util.HashMap<>();
 
     /** Holds a lookup bewteen SLD names and java constants. */
-    private static final java.util.Map FONT_STYLE_LOOKUP = new java.util.HashMap();
+    private static final java.util.Map<String, Integer> FONT_STYLE_LOOKUP =
+            new java.util.HashMap<>();
 
     /** Holds a lookup bewteen alpha composite names and AlphaComposite constants. */
     private static final java.util.Map<String, Integer> ALPHA_COMPOSITE_LOOKUP =
@@ -143,10 +144,10 @@ public class SLDStyleFactory {
     }
 
     /** Symbolizers that depend on attributes */
-    Map dynamicSymbolizers = new SoftValueHashMap();
+    Map<SymbolizerKey, Boolean> dynamicSymbolizers = new SoftValueHashMap<>();
 
     /** Symbolizers that do not depend on attributes */
-    Map staticSymbolizers = new SoftValueHashMap();
+    Map<SymbolizerKey, Style2D> staticSymbolizers = new SoftValueHashMap<>();
 
     /** Build a default rendering hint to avoid NPE */
     RenderingHints renderingHints =
@@ -1621,7 +1622,8 @@ public class SLDStyleFactory {
         if (exp == null) {
             return fallback;
         }
-        List l = exp.evaluate(f, List.class);
+        @SuppressWarnings("unchecked")
+        List<T> l = exp.evaluate(f, List.class);
         if (l != null) {
             return l;
         }

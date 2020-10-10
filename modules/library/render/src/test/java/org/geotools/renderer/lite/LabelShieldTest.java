@@ -52,7 +52,7 @@ public class LabelShieldTest {
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         renderer = new StreamingRenderer();
-        Map rendererParams = new HashMap();
+        Map<Object, Object> rendererParams = new HashMap<>();
         LabelCacheImpl labelCache = new LabelCacheImpl();
         rendererParams.put(StreamingRenderer.LABEL_CACHE_KEY, labelCache);
         renderer.setRendererHints(rendererParams);

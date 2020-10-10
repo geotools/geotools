@@ -198,7 +198,7 @@ public class StreamingRendererTest {
         StyleBuilder sb = new StyleBuilder();
         mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
         StreamingRenderer sr = new StreamingRenderer();
-        Map hints = new HashMap();
+        Map<Object, Object> hints = new HashMap<>();
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
         sr.setRendererHints(hints);
@@ -244,7 +244,7 @@ public class StreamingRendererTest {
         StyleBuilder sb = new StyleBuilder();
         mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
         StreamingRenderer sr = new StreamingRenderer();
-        Map hints = new HashMap();
+        Map<Object, Object> hints = new HashMap<>();
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
         sr.setRendererHints(hints);
@@ -414,7 +414,7 @@ public class StreamingRendererTest {
         SimpleFeatureSource fs = createNiceMock(SimpleFeatureSource.class);
         expect(fs.getFeatures((Query) anyObject())).andReturn(fc);
         expect(fs.getSchema()).andReturn(testLineFeatureType).anyTimes();
-        expect(fs.getSupportedHints()).andReturn(new HashSet()).anyTimes();
+        expect(fs.getSupportedHints()).andReturn(new HashSet<>()).anyTimes();
         replay(fs);
 
         // build map context
@@ -848,7 +848,8 @@ public class StreamingRendererTest {
         DelayedBackbufferGraphic graphics =
                 new DelayedBackbufferGraphic(finalGraphics, new Rectangle(100, 100));
         LiteFeatureTypeStyle style1 =
-                new LiteFeatureTypeStyle(layer, graphics, new ArrayList(), new ArrayList(), null);
+                new LiteFeatureTypeStyle(
+                        layer, graphics, new ArrayList<>(), new ArrayList<>(), null);
         style1.composite = AlphaComposite.DstIn;
         lfts.add(style1);
 
@@ -906,7 +907,7 @@ public class StreamingRendererTest {
 
         // render
         StreamingRenderer sr = new StreamingRenderer();
-        Map hints = new HashMap();
+        Map<Object, Object> hints = new HashMap<>();
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
         sr.setRendererHints(hints);

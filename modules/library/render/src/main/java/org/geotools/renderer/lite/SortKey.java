@@ -29,6 +29,7 @@ import org.opengis.filter.sort.SortOrder;
  */
 class SortKey {
 
+    @SuppressWarnings("unchecked")
     private static java.util.Comparator<Comparable> FORWARD_COMPARATOR =
             new java.util.Comparator<Comparable>() {
 
@@ -38,6 +39,7 @@ class SortKey {
                 }
             };
 
+    @SuppressWarnings("unchecked")
     private static java.util.Comparator<Comparable> REVERSE_COMPARATOR =
             new java.util.Comparator<Comparable>() {
 
@@ -141,6 +143,9 @@ class SortKey {
             }
         }
 
-        return new Comparator(comparators.toArray(new java.util.Comparator[comparators.size()]));
+        @SuppressWarnings("unchecked")
+        java.util.Comparator<Object>[] componentComparators =
+                comparators.toArray(new java.util.Comparator[comparators.size()]);
+        return new Comparator(componentComparators);
     }
 }

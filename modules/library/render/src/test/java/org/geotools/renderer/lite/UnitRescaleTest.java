@@ -83,7 +83,7 @@ public class UnitRescaleTest {
             lfts.add(s);
         }
 
-        Map hints = new HashMap();
+        Map<Object, Object> hints = new HashMap<>();
         hints.put("dpi", Double.valueOf(dpi));
 
         StreamingRenderer renderer = new StreamingRenderer();

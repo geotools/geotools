@@ -2025,7 +2025,8 @@ public class LabelCacheImpl implements LabelCache {
         LineMerger lm = new LineMerger();
         lm.add(lines);
         // build merged lines
-        List<LineString> merged = new ArrayList<LineString>(lm.getMergedLineStrings());
+        @SuppressWarnings("unchecked")
+        List<LineString> merged = new ArrayList<>(lm.getMergedLineStrings());
 
         if (merged.size() == 0) {
             return null; // shouldnt happen

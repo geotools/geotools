@@ -96,7 +96,7 @@ public class Rendering2DTest extends TestCase {
 
     static final String COLLECTION = "collfeature";
 
-    protected static final Map rendererHints = new HashMap();
+    protected static final Map<Object, Object> rendererHints = new HashMap<>();
 
     protected static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 

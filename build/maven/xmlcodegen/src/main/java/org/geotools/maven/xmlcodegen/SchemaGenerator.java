@@ -56,6 +56,7 @@ import org.geotools.graph.util.graph.DirectedCycleDetector;
 import org.geotools.util.Utilities;
 import org.geotools.xsd.Schemas;
 import org.geotools.xs.XS;
+import org.opengis.feature.Attribute;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
@@ -457,7 +458,7 @@ public class SchemaGenerator extends AbstractGenerator {
 		DirectedDepthFirstTopologicalIterator iterator = 
 			new DirectedDepthFirstTopologicalIterator();
 		
-		final ArrayList sorted = new ArrayList();
+		final List<AttributeType> sorted = new ArrayList<>();
 		GraphWalker walker = new GraphWalker() {
 			
 			public int visit(Graphable element, GraphTraversal traversal) {
@@ -465,7 +466,7 @@ public class SchemaGenerator extends AbstractGenerator {
 				
 				//only add if in this schema
 				if (type.getName().getNamespaceURI().equals(schema.getTargetNamespace())) {
-					sorted.add(element.getObject());	
+					sorted.add((AttributeType) element.getObject());	
 				}
 				
 				return GraphTraversal.CONTINUE;
@@ -563,7 +564,7 @@ public class SchemaGenerator extends AbstractGenerator {
 		}
 		
 		// now build child types
-		ArrayList properties = new ArrayList();
+		List<PropertyDescriptor> properties = new ArrayList<>();
 		if (followComplexTypes) {
 			List children = Schemas.getChildElementParticles(xsdType, false);
 			for (Iterator itr = children.iterator(); itr.hasNext();) {

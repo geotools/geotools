@@ -40,8 +40,8 @@ import org.geotools.xsd.Schemas;
  */
 public class SchemaLocationResolverGenerator extends AbstractGenerator {
     public void generate(XSDSchema schema)  {
-        ArrayList includes = new ArrayList();
-        ArrayList namespaces = new ArrayList();
+        List<File> includes = new ArrayList<>();
+        List<String> namespaces = new ArrayList<>();
 
         File file = null;
         try {

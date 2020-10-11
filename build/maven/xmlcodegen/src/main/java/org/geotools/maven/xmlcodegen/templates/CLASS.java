@@ -162,7 +162,7 @@ public class CLASS
     stringBuffer.append(TEXT_13);
     
 	if ( constructorArgs != null ) {
-		List fieldNames = new ArrayList();
+		List<String> fieldNames = new ArrayList<>();
 		
 		StringBuffer constructor = new StringBuffer();
 		constructor.append("public " + className + "( ");

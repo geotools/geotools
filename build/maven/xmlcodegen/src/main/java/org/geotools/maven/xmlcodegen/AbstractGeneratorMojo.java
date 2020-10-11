@@ -214,7 +214,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		}
 		
 		//build an "extended" classloader for "well-known
-		List artifacts = new ArrayList();
+		List<Artifact> artifacts = new ArrayList<>();
 		if (includeGML) {
         		artifacts.add( 
         			artifactFactory.createArtifact( 
@@ -239,7 +239,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
         		);
 		}
 	
-		Set urls = new HashSet();
+		Set<URL> urls = new HashSet<>();
 		for ( Iterator a = artifacts.iterator(); a.hasNext(); ) {
 			Artifact artifact = (Artifact) a.next();
 			getLog().debug("Attempting to dynamically resolve: " + artifact);
@@ -271,7 +271,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		
 		//use extended classloader to load up configuration classes to load schema files
 		// with
-		final List xsds = new ArrayList();
+		final List<String> xsds = new ArrayList<>();
                 xsds.add( "org.geotools.xsd.XML" );
                 xsds.add( "org.geotools.xlink.XLINK" );
                 
@@ -285,9 +285,9 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		for ( int i = 0; i < xsds.size(); i++ ) {
 			String className = (String) xsds.get( i );
 			try {
-				Class clazz = ext.loadClass( className );
+				Class<?> clazz = ext.loadClass( className );
 				Method m = clazz.getMethod("getInstance", null);
-				Object xsd = m.invoke(null, null);
+				String xsd = (String) m.invoke(null, null);
 				xsds.set( i, xsd );
 			} 
 			catch (Exception e) {

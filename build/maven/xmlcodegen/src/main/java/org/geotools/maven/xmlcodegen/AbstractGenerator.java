@@ -319,7 +319,7 @@ public abstract class AbstractGenerator {
      */
     protected String execute(String templateName, Object input)
         throws ClassNotFoundException, RuntimeException {
-        Class c = Class.forName("org.geotools.maven.xmlcodegen.templates."
+        Class<?> c = Class.forName("org.geotools.maven.xmlcodegen.templates."
                 + templateName);
 
         try {

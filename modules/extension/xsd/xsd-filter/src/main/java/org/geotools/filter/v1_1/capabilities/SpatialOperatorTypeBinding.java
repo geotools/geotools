@@ -77,7 +77,7 @@ public class SpatialOperatorTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element minOccurs="0" name="GeometryOperands"
         // type="ogc:GeometryOperandsType"/&gt;
-        GeometryOperand[] gos = (GeometryOperand[]) node.getChildValue(GeometryOperand[].class);
+        GeometryOperand[] gos = node.getChildValue(GeometryOperand[].class);
 
         // &lt;xsd:attribute name="name" type="ogc:SpatialOperatorNameType"/&gt;
         return factory.spatialOperator((String) node.getAttributeValue("name"), gos);

@@ -88,9 +88,9 @@ public class FilterTypeBinding extends AbstractComplexBinding {
 
         // no direct child filter, check for ids
         // &lt;xsd:element maxOccurs="unbounded" ref="ogc:_Id"/&gt;
-        List ids = node.getChildValues(Identifier.class);
+        List<Identifier> ids = node.getChildValues(Identifier.class);
         if (!ids.isEmpty()) {
-            return filterFactory.id(new HashSet(ids));
+            return filterFactory.id(new HashSet<>(ids));
         }
 
         // try an extended operator (part of filter/fes 2.0)

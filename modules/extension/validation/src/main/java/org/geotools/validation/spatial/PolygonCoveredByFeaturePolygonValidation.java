@@ -17,6 +17,7 @@
 package org.geotools.validation.spatial;
 
 import java.util.Map;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.DefaultIntegrityValidation;
 import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Envelope;
@@ -45,14 +46,15 @@ public class PolygonCoveredByFeaturePolygonValidation extends DefaultIntegrityVa
      *
      * <p>
      *
-     * @param layers a HashMap of key="TypeName" value="FeatureSource"
+     * @param layers a Map of key="TypeName" value="FeatureSource"
      * @param envelope The bounding box of modified features
      * @param results Storage for the error and warning messages
      * @return True if no features intersect. If they do then the validation failed.
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
         // TODO Fix Me
         return false;

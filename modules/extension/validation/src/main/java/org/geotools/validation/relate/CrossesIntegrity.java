@@ -52,18 +52,21 @@ import org.opengis.filter.Filter;
 public class CrossesIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(CrossesIntegrity.class);
-    private HashSet usedIDs;
+    private HashSet<String> usedIDs;
 
     /** CrossesIntegrity Constructor */
     public CrossesIntegrity() {
         super();
-        usedIDs = new HashSet(); // TODO: remove me later, memory inefficient
+        usedIDs = new HashSet<>(); // TODO: remove me later, memory inefficient
     }
 
     /* (non-Javadoc)
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map, org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, ReferencedEnvelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers,
+            ReferencedEnvelope envelope,
+            ValidationResults results)
             throws Exception {
         LOGGER.finer("Starting test " + getName() + " (" + getClass().getName() + ")");
         String typeRef1 = getGeomTypeRefA();

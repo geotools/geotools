@@ -17,6 +17,7 @@
 package org.geotools.validation;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -41,11 +42,11 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class RoadValidationResults implements ValidationResults {
 
-    public ArrayList validationList;
-    public ArrayList failedFeatures;
-    public ArrayList warningFeatures;
-    public ArrayList failureMessages;
-    public ArrayList warningMessages;
+    public List<Validation> validationList;
+    public List<SimpleFeature> failedFeatures;
+    public List<SimpleFeature> warningFeatures;
+    public List<String> failureMessages;
+    public List<String> warningMessages;
 
     /**
      * RoadValidationResults constructor.
@@ -53,11 +54,11 @@ public class RoadValidationResults implements ValidationResults {
      * <p>Description
      */
     public RoadValidationResults() {
-        validationList = new ArrayList();
-        failedFeatures = new ArrayList();
-        warningFeatures = new ArrayList();
-        failureMessages = new ArrayList();
-        warningMessages = new ArrayList();
+        validationList = new ArrayList<>();
+        failedFeatures = new ArrayList<>();
+        warningFeatures = new ArrayList<>();
+        failureMessages = new ArrayList<>();
+        warningMessages = new ArrayList<>();
     }
 
     /**

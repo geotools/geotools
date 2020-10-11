@@ -17,8 +17,10 @@
 package org.geotools.validation;
 
 import java.util.HashMap;
+import java.util.Map;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.memory.MemoryDataStore;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.attributes.UniqueFIDValidation;
 
 /**
@@ -76,7 +78,7 @@ public class IntegrityValidationTest extends DataTestCase {
         validator.setTypeRef("*");
         validationResults.setValidation(validator);
 
-        HashMap layers = new HashMap();
+        Map<String, SimpleFeatureSource> layers = new HashMap<>();
         layers.put("road", store.getFeatureSource("road"));
         layers.put("river", store.getFeatureSource("river"));
 

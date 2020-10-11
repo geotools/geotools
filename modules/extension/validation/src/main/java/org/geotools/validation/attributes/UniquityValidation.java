@@ -17,6 +17,7 @@
 package org.geotools.validation.attributes;
 
 import java.util.Map;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.DefaultIntegrityValidation;
 import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Envelope;
@@ -54,7 +55,8 @@ public class UniquityValidation extends DefaultIntegrityValidation {
      * @param results Used to coallate results information
      * @return <code>true</code> if all the features pass this test.
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
         return false;
     }

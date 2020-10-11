@@ -37,7 +37,7 @@ public class TestSuiteDTO {
     private String description;
 
     /** the list of tests */
-    private Map tests;
+    private Map<String, TestDTO> tests;
 
     /**
      * TestSuiteConfig constructor.
@@ -56,7 +56,7 @@ public class TestSuiteDTO {
     public TestSuiteDTO(TestSuiteDTO ts) {
         name = ts.getName();
         description = ts.getDescription();
-        tests = new HashMap();
+        tests = new HashMap<>();
 
         Iterator i = ts.getTests().keySet().iterator();
 
@@ -173,7 +173,7 @@ public class TestSuiteDTO {
      *
      * @return Returns the tests.
      */
-    public Map getTests() {
+    public Map<String, TestDTO> getTests() {
         return tests;
     }
 
@@ -182,7 +182,7 @@ public class TestSuiteDTO {
      *
      * @param tests The tests to set.
      */
-    public void setTests(Map tests) {
+    public void setTests(Map<String, TestDTO> tests) {
         this.tests = tests;
     }
 }

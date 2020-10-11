@@ -17,10 +17,12 @@
 package org.geotools.validation;
 
 import java.util.HashMap;
+import java.util.Map;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.spatial.IsValidGeometryValidation;
 import org.opengis.feature.IllegalAttributeException;
@@ -109,7 +111,7 @@ public class ValidationProcessorTest extends DataTestCase {
 
         // run integrity tests
         // make a map of FeatureSources
-        HashMap map = new HashMap();
+        Map<String, SimpleFeatureSource> map = new HashMap<>();
         String[] typeNames = this.store.getTypeNames();
         for (int i = 0; i < typeNames.length; i++)
             map.put(typeNames[i], this.store.getFeatureSource(typeNames[i]));

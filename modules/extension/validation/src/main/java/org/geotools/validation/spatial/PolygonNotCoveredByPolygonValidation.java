@@ -54,11 +54,11 @@ public class PolygonNotCoveredByPolygonValidation extends PolygonPolygonAbstract
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource polySource1 = (SimpleFeatureSource) layers.get(getPolygonTypeRef());
-        SimpleFeatureSource polySource2 =
-                (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+        SimpleFeatureSource polySource1 = layers.get(getPolygonTypeRef());
+        SimpleFeatureSource polySource2 = layers.get(getRestrictedPolygonTypeRef());
 
         Object[] poly1 = polySource1.getFeatures().toArray();
         Object[] poly2 = polySource2.getFeatures().toArray();

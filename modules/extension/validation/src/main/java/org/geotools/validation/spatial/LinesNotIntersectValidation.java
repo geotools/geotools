@@ -18,6 +18,7 @@ package org.geotools.validation.spatial;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -53,9 +54,10 @@ public class LinesNotIntersectValidation extends LineLineAbstractValidation {
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        ArrayList geoms = new ArrayList(); // FIDs used for lookup to see if any match
+        List<Geometry> geoms = new ArrayList<>(); // FIDs used for lookup to see if any match
         boolean result = true;
         Iterator it = layers.values().iterator();
 

@@ -45,8 +45,8 @@ import org.geotools.ows.wms.response.WMSGetCapabilitiesResponse;
  * @author rgould
  */
 public class WMS1_0_0 extends WMSSpecification {
-    static final Map formatMimeTypes = new HashMap();
-    static final Map exceptionMimeTypes = new HashMap();
+    static final Map<String, String> formatMimeTypes = new HashMap<>();
+    static final Map<String, String> exceptionMimeTypes = new HashMap<>();
 
     static {
         exceptionMimeTypes.put("WMS_XML", "application/vnd.ogc.se_xml");

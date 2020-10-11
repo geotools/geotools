@@ -27,30 +27,30 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class WMSUtilsTest extends TestCase {
 
     public void testFindCommonEPSGs() {
-        List layers = new ArrayList();
+        List<Layer> layers = new ArrayList<>();
 
         Layer layer1 = new Layer();
-        TreeSet set1 = new TreeSet();
+        Set<String> set1 = new TreeSet<>();
         set1.add("EPSG:4326");
         set1.add("EPSG:3005");
         set1.add("EPSG:42101");
         layer1.setSrs(set1);
 
         Layer layer2 = new Layer();
-        TreeSet set2 = new TreeSet();
+        Set<String> set2 = new TreeSet<>();
         set2.add("EPSG:3005");
         set2.add("EPSG:42101");
         layer2.setSrs(set2);
 
         Layer layer3 = new Layer();
-        TreeSet set3 = new TreeSet();
+        Set<String> set3 = new TreeSet<>();
         set3.add("EPSG:42111");
         layer3.setSrs(set3);
 
         layers.add(layer1);
         layers.add(layer2);
 
-        Set results1 = WMSUtils.findCommonEPSGs(layers);
+        Set<String> results1 = WMSUtils.findCommonEPSGs(layers);
 
         assertNotNull(results1);
         assertEquals(2, results1.size());
@@ -63,7 +63,7 @@ public class WMSUtilsTest extends TestCase {
         layers.add(layer1);
         layers.add(layer3);
 
-        Set results2 = WMSUtils.findCommonEPSGs(layers);
+        Set<String> results2 = WMSUtils.findCommonEPSGs(layers);
 
         assertNotNull(results2);
         assertEquals(0, results2.size());
@@ -75,7 +75,7 @@ public class WMSUtilsTest extends TestCase {
         CoordinateReferenceSystem crs3005 = CRS.decode("EPSG:3005");
         CoordinateReferenceSystem crs3347 = CRS.decode("EPSG:3347");
 
-        Set codes = new TreeSet();
+        Set<String> codes = new TreeSet<>();
         codes.add("EPSG:4326");
         codes.add("EPSG:42102");
         codes.add("EPSG:bork"); // invalid CRSs allowed

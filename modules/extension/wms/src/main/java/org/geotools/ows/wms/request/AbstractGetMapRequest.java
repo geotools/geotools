@@ -42,8 +42,8 @@ import org.opengis.referencing.operation.TransformException;
 /** @author Richard Gould */
 public abstract class AbstractGetMapRequest extends AbstractWMSRequest implements GetMapRequest {
 
-    Stack layers = new Stack();
-    Stack styles = new Stack();
+    Stack<String> layers = new Stack<>();
+    Stack<String> styles = new Stack<>();
     static final Logger LOGGER = Logging.getLogger(AbstractGetMapRequest.class);
 
     /**
@@ -61,12 +61,12 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
             String layerString = ""; // $NON-NLS-1$
             String styleString = ""; // $NON-NLS-1$
 
-            ListIterator layerIter = layers.listIterator(layers.size());
-            ListIterator styleIter = styles.listIterator(styles.size());
+            ListIterator<String> layerIter = layers.listIterator(layers.size());
+            ListIterator<String> styleIter = styles.listIterator(styles.size());
             while (layerIter.hasPrevious()) {
 
-                String layerName = (String) layerIter.previous();
-                String styleName = (String) styleIter.previous();
+                String layerName = layerIter.previous();
+                String styleName = styleIter.previous();
 
                 try {
                     // spaces are converted to plus signs, but must be %20 for url calls [GEOT-4317]

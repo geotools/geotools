@@ -48,7 +48,7 @@ public class WMSUtils {
             return null;
         }
 
-        List namedLayersList = new ArrayList();
+        List<Layer> namedLayersList = new ArrayList<>();
 
         Layer[] layers =
                 (Layer[])
@@ -71,7 +71,7 @@ public class WMSUtils {
     }
 
     public static Set getQueryableLayers(WMSCapabilities capabilities) {
-        Set layers = new TreeSet();
+        Set<Layer> layers = new TreeSet<>();
 
         Layer[] namedLayers = getNamedLayers(capabilities);
 
@@ -87,7 +87,7 @@ public class WMSUtils {
     }
 
     public static Set getSRSs(WMSCapabilities capabilities) {
-        Set srss = new TreeSet();
+        Set<String> srss = new TreeSet<>();
 
         Layer[] layers =
                 (Layer[])
@@ -111,8 +111,8 @@ public class WMSUtils {
      * @param layers A List of type Layer
      * @return a Set of type String, containin EPSG codes, or empty if none found
      */
-    public static Set findCommonEPSGs(List layers) {
-        TreeSet set = new TreeSet();
+    public static Set<String> findCommonEPSGs(List layers) {
+        TreeSet<String> set = new TreeSet<>();
 
         Layer first = (Layer) layers.get(0);
 
@@ -127,10 +127,10 @@ public class WMSUtils {
     }
 
     // Map<CoordinateReferenceSystem, TreeSet<String>>
-    private static Map crsCache;
+    private static Map<CoordinateReferenceSystem, Set<String>> crsCache;
 
     static {
-        crsCache = new HashMap();
+        crsCache = new HashMap<>();
     }
 
     /**
@@ -170,9 +170,9 @@ public class WMSUtils {
             String epsgCode = ident.toString();
             if (codes.contains(epsgCode)) {
                 if (crsCache.get(crs) == null) {
-                    crsCache.put(crs, new TreeSet());
+                    crsCache.put(crs, new TreeSet<>());
                 }
-                TreeSet set = (TreeSet) crsCache.get(crs);
+                Set<String> set = crsCache.get(crs);
                 set.add(epsgCode);
 
                 return epsgCode;
@@ -203,9 +203,9 @@ public class WMSUtils {
 
             if (transform.isIdentity()) {
                 if (crsCache.get(crs) == null) {
-                    crsCache.put(crs, new TreeSet());
+                    crsCache.put(crs, new TreeSet<>());
                 }
-                TreeSet set = (TreeSet) crsCache.get(crs);
+                Set<String> set = crsCache.get(crs);
                 set.add(epsgCode);
 
                 return epsgCode;

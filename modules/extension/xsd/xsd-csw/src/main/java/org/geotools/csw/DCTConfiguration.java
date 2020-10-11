@@ -21,7 +21,6 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.csw.bindings.SimpleLiteralBinding;
-import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 
 /**
@@ -47,7 +46,7 @@ public class DCTConfiguration extends Configuration {
      *
      * @generated
      */
-    protected void registerBindings(Map<QName, Binding> bindings) {
+    protected void registerBindings(Map<QName, Object> bindings) {
         bindings.put(DCT.recordAbstract, new SimpleLiteralBinding(DC.SimpleLiteral));
         bindings.put(DCT.accessRights, new SimpleLiteralBinding(DC.SimpleLiteral));
         bindings.put(DCT.alternative, new SimpleLiteralBinding(DC.SimpleLiteral));

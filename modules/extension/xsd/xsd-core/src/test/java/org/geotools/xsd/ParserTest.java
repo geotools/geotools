@@ -195,7 +195,7 @@ public class ParserTest extends TestCase {
         Configuration cfg =
                 new Configuration(xsd) {
                     @Override
-                    protected void registerBindings(Map<QName, Binding> bindings) {
+                    protected void registerBindings(Map<QName, Object> bindings) {
                         bindings.put(
                                 new QName("http://geotools.org/test", "MixedType"),
                                 new MixedTypeBinding(sb));
@@ -365,7 +365,7 @@ public class ParserTest extends TestCase {
         Configuration cfg =
                 new Configuration(xsd) {
                     @Override
-                    protected void registerBindings(Map<QName, Binding> bindings) {
+                    protected void registerBindings(Map<QName, Object> bindings) {
                         bindings.put(
                                 new QName("http://geotools.org/test", "MixedType"),
                                 new MixedTypeBinding(sb));
@@ -409,7 +409,7 @@ public class ParserTest extends TestCase {
         Configuration cfg =
                 new Configuration(xsd) {
                     @Override
-                    protected void registerBindings(Map<QName, Binding> bindings) {
+                    protected void registerBindings(Map<QName, Object> bindings) {
                         bindings.put(
                                 new QName("http://geotools.org/test", "MixedType"),
                                 new MixedTypeBinding(sb));

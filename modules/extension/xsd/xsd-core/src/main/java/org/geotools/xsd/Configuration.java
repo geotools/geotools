@@ -389,7 +389,7 @@ public abstract class Configuration {
      * @return A map of Qname,[Class|Object]
      */
     public final Map setupBindings() {
-        Map<QName, Binding> bindings = new HashMap<>();
+        Map<QName, Object> bindings = new HashMap<>();
 
         // wrap the binding map up in a pico container for backwards compatibility
         // with old api which registered bindings in a pico container
@@ -467,7 +467,7 @@ public abstract class Configuration {
      * an instance. In the case of a class, the binding will be instantiated by the parser at
      * runtime. In the instance case the binding will be used as is.
      */
-    protected void registerBindings(Map<QName, Binding> bindings) {}
+    protected void registerBindings(Map<QName, Object> bindings) {}
 
     /**
      * Template method allowing subclass to override any bindings.

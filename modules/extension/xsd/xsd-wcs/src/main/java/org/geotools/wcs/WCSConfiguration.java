@@ -36,7 +36,6 @@ import org.geotools.wcs.bindings.ValueEnumBaseTypeBinding;
 import org.geotools.wcs.bindings.ValueEnumTypeBinding;
 import org.geotools.wcs.bindings.ValueRangeTypeBinding;
 import org.geotools.wcs.bindings._axisDescriptionBinding;
-import org.geotools.xsd.Binding;
 import org.geotools.xsd.ComplexEMFBinding;
 import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
@@ -60,7 +59,7 @@ public class WCSConfiguration extends Configuration {
     }
 
     @Override
-    protected void registerBindings(Map<QName, Binding> bindings) {
+    protected void registerBindings(Map<QName, Object> bindings) {
         super.registerBindings(bindings);
 
         final EFactory wcsFactory = Wcs10Factory.eINSTANCE;
@@ -108,7 +107,7 @@ public class WCSConfiguration extends Configuration {
         bindings.put(WCS.TimeSequenceType, new TimeSequenceTypeBinding());
     }
 
-    private void register(Map<QName, Binding> bindings, EFactory factory, QName qname) {
+    private void register(Map<QName, Object> bindings, EFactory factory, QName qname) {
         bindings.put(qname, new ComplexEMFBinding(factory, qname));
     }
 

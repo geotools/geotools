@@ -84,8 +84,9 @@ public class MemberPropertyTypeBinding
     }
 
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
-        ArrayList list = new ArrayList();
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
+        List<Object[]> list = new ArrayList<>();
         Object member = super.getProperty(object, org.geotools.gml3.GML._Feature);
         if (member != null) {
             // check for joined feature

@@ -48,6 +48,7 @@ public class WFSEncodingTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void encodeUpdate()
             throws IOException, SAXException, TransformerException, XpathException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
@@ -98,6 +99,7 @@ public class WFSEncodingTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void encodeInsert()
             throws IOException, SAXException, TransformerException, XpathException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;

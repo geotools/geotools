@@ -66,6 +66,7 @@ public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
         assertNotNull(caps.getFeatureTypeList());
     }
 
+    @SuppressWarnings("unchecked")
     public void testEncode() throws Exception {
         WFSCapabilitiesType caps = factory.createWFSCapabilitiesType();
         caps.setVersion("1.1.0");

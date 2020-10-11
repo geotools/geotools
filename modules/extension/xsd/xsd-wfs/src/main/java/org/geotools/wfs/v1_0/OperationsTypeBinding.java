@@ -75,6 +75,7 @@ public class OperationsTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         OperationsType om = factory.createOperationsType();
         for (Object ob : OperationType.VALUES) {

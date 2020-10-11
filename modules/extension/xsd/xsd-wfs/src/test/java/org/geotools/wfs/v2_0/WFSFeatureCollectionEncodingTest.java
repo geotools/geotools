@@ -98,6 +98,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         store.addFeature(b.buildFeature("three"));
     }
 
+    @SuppressWarnings("unchecked")
     public void testEncodeFeatureCollection() throws Exception {
         FeatureCollectionType fc = WfsFactory.eINSTANCE.createFeatureCollectionType();
         FeatureCollection features = store.getFeatureSource("feature").getFeatures();
@@ -142,6 +143,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
                         .getAttribute("gml:id"));
     }
 
+    @SuppressWarnings("unchecked")
     public void testEncodeFeatureCollectionCoordinatesFormatting() throws Exception {
         FeatureCollectionType fc = WfsFactory.eINSTANCE.createFeatureCollectionType();
         FeatureCollection features = store.getFeatureSource("feature").getFeatures();
@@ -217,6 +219,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         assertEquals("0", attributes.getNamedItem("numberReturned").getTextContent());
     }
 
+    @SuppressWarnings("unchecked")
     public void testEncodeFeatureCollectionWithoutBBOX() throws Exception {
         FeatureCollectionType fc = WfsFactory.eINSTANCE.createFeatureCollectionType();
         FeatureCollection features = store.getFeatureSource("feature").getFeatures();
@@ -242,6 +245,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
                         .getAttribute("gml:id"));
     }
 
+    @SuppressWarnings("unchecked")
     public void testEncodeMultiFeatureCollection() throws Exception {
         FeatureCollectionType fc = WfsFactory.eINSTANCE.createFeatureCollectionType();
 
@@ -280,7 +284,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     }
 
     List<Element> getChildElementsByTagName(Node e, String name) {
-        List<Element> elements = new ArrayList();
+        List<Element> elements = new ArrayList<>();
         for (int i = 0; i < e.getChildNodes().getLength(); i++) {
             Node n = e.getChildNodes().item(i);
             if (n instanceof Element && n.getNodeName().equals(name)) {

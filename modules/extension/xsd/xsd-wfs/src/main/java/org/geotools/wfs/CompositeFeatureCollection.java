@@ -60,7 +60,7 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
 
     public int getCount() throws IOException {
         int count = 0;
-        Iterator i = iterator();
+        Iterator<SimpleFeature> i = iterator();
 
         try {
             while (i.hasNext()) {
@@ -131,7 +131,9 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
             FeatureIterator it2 = col.features();
             try {
                 while (it2.hasNext()) {
-                    list.add((T) it.next());
+                    @SuppressWarnings("unchecked")
+                    T next = (T) it.next();
+                    list.add(next);
                 }
             } finally {
                 it2.close();

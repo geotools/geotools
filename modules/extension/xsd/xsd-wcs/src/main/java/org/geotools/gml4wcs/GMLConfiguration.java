@@ -39,7 +39,6 @@ import org.geotools.gml4wcs.bindings.TemporalPositionTypeBinding;
 import org.geotools.gml4wcs.bindings.TimeDurationTypeBinding;
 import org.geotools.gml4wcs.bindings.TimePositionTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
-import org.geotools.xsd.Binding;
 import org.geotools.xsd.ComplexEMFBinding;
 import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -66,7 +65,7 @@ public class GMLConfiguration extends Configuration {
     }
 
     @Override
-    protected void registerBindings(Map<QName, Binding> bindings) {
+    protected void registerBindings(Map<QName, Object> bindings) {
         super.registerBindings(bindings);
 
         final EFactory gmlFactory = Gml4wcsFactory.eINSTANCE;
@@ -112,7 +111,7 @@ public class GMLConfiguration extends Configuration {
         // register(bindings, gmlFactory, GML.GridType);
     }
 
-    private void register(Map<QName, Binding> bindings, EFactory factory, QName qname) {
+    private void register(Map<QName, Object> bindings, EFactory factory, QName qname) {
         bindings.put(qname, new ComplexEMFBinding(factory, qname));
     }
 

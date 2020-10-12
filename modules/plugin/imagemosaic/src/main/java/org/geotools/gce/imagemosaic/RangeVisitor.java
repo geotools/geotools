@@ -126,7 +126,7 @@ class RangeVisitor implements FeatureCalc {
     protected Expression expr2;
 
     /** The comparator instance to sort items inside the Tree set */
-    private Comparator comparator;
+    private Comparator<? extends Range> comparator;
 
     /** The set containing the added ranges */
     Set<Range> set = null;
@@ -158,7 +158,12 @@ class RangeVisitor implements FeatureCalc {
                 rangeType == RangeType.NUMBER
                         ? new NumberRangeComparator()
                         : new DateRangeComparator();
-        set = new TreeSet(comparator);
+        set = buildSet();
+    }
+
+    @SuppressWarnings("unchecked")
+    private TreeSet<Range> buildSet() {
+        return new TreeSet<>((Comparator<? super Range>) comparator);
     }
 
     public void init(SimpleFeatureCollection collection) {
@@ -174,27 +179,32 @@ class RangeVisitor implements FeatureCalc {
         final Object firstValue = expr1.evaluate(feature);
         final Object secondValue = expr2.evaluate(feature);
         if (firstValue != null && secondValue != null) {
-            set.add(Utils.createRange(firstValue, secondValue));
+            set.add((Range) Utils.createRange(firstValue, secondValue));
         }
     }
 
     public void setValue(Object newSet) {
 
         if (newSet instanceof Collection) { // convert to set
-            this.set = new HashSet((Collection) newSet);
+            @SuppressWarnings("unchecked")
+            Collection<Range> cast = (Collection<Range>) newSet;
+            this.set = new HashSet<>(cast);
         } else {
-            Collection collection = Converters.convert(newSet, List.class);
+            @SuppressWarnings("unchecked")
+            Collection<Range> collection = Converters.convert(newSet, List.class);
             if (collection != null) {
-                this.set = new HashSet(collection);
+                this.set = new HashSet<>(collection);
             } else {
-                this.set = new HashSet(Collections.singleton(newSet));
+                @SuppressWarnings("unchecked")
+                Set<Range> singleton = Collections.singleton((Range) newSet);
+                this.set = new HashSet<>(singleton);
             }
         }
     }
 
     /** Reset the collected ranges */
     public void reset() {
-        this.set = new TreeSet(comparator);
+        this.set = buildSet();
         this.minimalRanges = null;
     }
 
@@ -224,14 +234,14 @@ class RangeVisitor implements FeatureCalc {
     }
 
     static class RangeResult extends AbstractCalcResult {
-        private Set ranges;
+        private Set<Range> ranges;
 
-        public RangeResult(Set newSet) {
+        public RangeResult(Set<Range> newSet) {
             ranges = newSet;
         }
 
         public Object getValue() {
-            return new HashSet(ranges);
+            return new HashSet<>(ranges);
         }
 
         public boolean isCompatible(CalcResult targetResults) {
@@ -252,8 +262,10 @@ class RangeVisitor implements FeatureCalc {
 
             if (resultsToAdd instanceof RangeResult) {
                 // add one set to the other (to create one big unique list)
-                Set newSet = new HashSet(ranges);
-                newSet.addAll((Set) resultsToAdd.getValue());
+                Set<Range> newSet = new HashSet<>(ranges);
+                @SuppressWarnings("unchecked")
+                Set<Range> other = (Set<Range>) resultsToAdd.getValue();
+                newSet.addAll(other);
                 return new RangeResult(newSet);
             } else {
                 throw new IllegalArgumentException(

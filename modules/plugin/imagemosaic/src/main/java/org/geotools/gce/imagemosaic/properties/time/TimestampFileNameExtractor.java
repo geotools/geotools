@@ -90,7 +90,7 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
                     }
                     dates.add(parsed);
                 } else {
-                    Collection parsed = PARSER.parse(match);
+                    Collection<?> parsed = PARSER.parse(match);
                     parsed.stream()
                             .forEach(
                                     d -> {

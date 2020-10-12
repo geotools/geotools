@@ -21,10 +21,7 @@ import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata.MDI;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
@@ -1342,9 +1339,10 @@ public class Utils {
         for (Param p : paramsInfo) {
             // search for this param and set the value if found
             if (properties.containsKey(p.key)) {
-                params.put(
-                        p.key,
-                        (Serializable) Converters.convert(properties.getProperty(p.key), p.type));
+                @SuppressWarnings("unchecked")
+                Serializable converted =
+                        (Serializable) Converters.convert(properties.getProperty(p.key), p.type);
+                params.put(p.key, converted);
             } else if (p.required && p.sample == null)
                 throw new IOException("Required parameter missing: " + p.toString());
         }
@@ -1360,7 +1358,10 @@ public class Utils {
         for (Param p : paramsInfo) {
             // search for this param and set the value if found
             if (properties.containsKey(p.key)) {
-                params.put(p.key, (Serializable) Converters.convert(properties.get(p.key), p.type));
+                @SuppressWarnings("unchecked")
+                Serializable converted =
+                        (Serializable) Converters.convert(properties.get(p.key), p.type);
+                params.put(p.key, converted);
             } else if (p.required && p.sample == null)
                 throw new IOException("Required parameter missing: " + p.toString());
         }

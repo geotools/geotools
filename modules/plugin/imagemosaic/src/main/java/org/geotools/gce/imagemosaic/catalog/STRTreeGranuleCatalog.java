@@ -390,6 +390,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             if (comparator == null) {
                 index.query(requestedBBox, new JTSIndexVisitorAdapter(visitor, q));
             } else {
+                @SuppressWarnings("unchecked")
                 final List<GranuleDescriptor> unfilteredGranules = index.query(requestedBBox);
                 List<GranuleDescriptor> granules =
                         unfilteredGranules

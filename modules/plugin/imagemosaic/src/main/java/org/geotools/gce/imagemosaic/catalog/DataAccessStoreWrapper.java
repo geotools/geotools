@@ -46,6 +46,7 @@ import org.opengis.filter.Filter;
  *
  * @author Andrea Aime - GeoSolutions
  */
+@SuppressWarnings("unchecked") // don't know how to make it work without raw types...
 class DataAccessStoreWrapper implements DataStore {
 
     DataAccess delegate;

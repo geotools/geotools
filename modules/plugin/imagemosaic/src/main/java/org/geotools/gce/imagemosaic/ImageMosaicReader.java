@@ -228,6 +228,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                     final List<HarvestedSource> result,
                     final ImageMosaicReader reader) {
                 // I have already checked that it is a Collection of File objects
+                @SuppressWarnings("unchecked")
                 Collection<File> files = (Collection<File>) source;
                 harvestCollection(defaultCoverage, result, reader, files);
             }
@@ -261,7 +262,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             if (source instanceof Collection<?>) {
                 Collection<File> files = null;
                 try {
-                    files = (Collection<File>) source;
+                    @SuppressWarnings("unchecked")
+                    Collection<File> cast = (Collection<File>) source;
+                    files = cast;
                 } catch (ClassCastException e) {
                     // Log the exception
                     if (LOGGER.isLoggable(Level.WARNING)) {
@@ -1067,10 +1070,13 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName) {
         coverageName = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(coverageName);
-        return (Set<ParameterDescriptor<List>>)
-                (manager.domainsManager != null
-                        ? manager.domainsManager.getDynamicParameters()
-                        : Collections.emptySet());
+        @SuppressWarnings("unchecked")
+        Set<ParameterDescriptor<List>> params =
+                (Set<ParameterDescriptor<List>>)
+                        (manager.domainsManager != null
+                                ? manager.domainsManager.getDynamicParameters()
+                                : Collections.emptySet());
+        return params;
     }
 
     public boolean isParameterSupported(Identifier name) {

@@ -250,7 +250,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
                                 ((Number) max).doubleValue(),
                                 true));
             } else {
-                metadataMap.put(name, new Range(String.class, (String) min, (String) max));
+                metadataMap.put(name, new Range<>(String.class, (String) min, (String) max));
             }
         }
 

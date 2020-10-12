@@ -28,6 +28,8 @@ import org.geotools.data.Repository;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
+import org.opengis.feature.Feature;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
 /**
@@ -110,7 +112,9 @@ public class RepositoryDataStoreCatalog extends AbstractGTDataStoreGranuleCatalo
         }
         if (dataStore == null) {
             // see if we can fall back on a data access exposing simple feature types
-            DataAccess access = repository.access(storeName);
+            @SuppressWarnings("unchecked")
+            DataAccess<FeatureType, Feature> access =
+                    (DataAccess<FeatureType, Feature>) repository.access(storeName);
             if (access != null) {
                 if (cachedWrapped != null && cachedWrapped.wraps(access)) {
                     return cachedWrapped;

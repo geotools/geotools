@@ -18,21 +18,21 @@ package org.geotools.geopkg;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.TimeZone;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.function.ThrowingRunnable;
 
 public class JSONArrayIOTest {
 
     JSONArrayIO io = new JSONArrayIO();
 
-    @Rule public ExpectedException exceptionRule = ExpectedException.none();
+    //   @Rule public ExpectedException exceptionRule = ExpectedException.none();
     private static TimeZone DEFAULT;
 
     @BeforeClass
@@ -54,9 +54,19 @@ public class JSONArrayIOTest {
 
     @Test
     public void testParseNestedObject() {
-        exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("Unexpected nested object found");
-        String[] parsed = io.parse("[\"a\",\"b\", { \"key\" = \"value\"}]", String.class, null);
+        assertThrows(
+                java.lang.IllegalArgumentException.class,
+                new ThrowingRunnable() {
+
+                    @Override
+                    public void run() throws Throwable {
+                        String[] parsed =
+                                io.parse(
+                                        "[\"a\",\"b\", { \"key\" = \"value\"}]",
+                                        String.class,
+                                        null);
+                    }
+                });
     }
 
     @Test

@@ -18,8 +18,8 @@
 package org.geotools.ysld.parse;
 
 import static org.geotools.ysld.Ysld.transform;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.awt.*;
 import java.io.IOException;

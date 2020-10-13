@@ -19,8 +19,8 @@ package org.geotools.filter.text.ecql;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.commons.CompilerUtil;

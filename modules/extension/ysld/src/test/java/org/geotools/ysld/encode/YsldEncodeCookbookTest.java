@@ -24,9 +24,9 @@ import static org.geotools.ysld.TestUtils.numEqualTo;
 import static org.geotools.ysld.TestUtils.yHasEntry;
 import static org.geotools.ysld.TestUtils.yHasItem;
 import static org.geotools.ysld.TestUtils.yTuple;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.io.StringReader;
 import java.io.StringWriter;

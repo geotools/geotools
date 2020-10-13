@@ -17,7 +17,9 @@
 package org.geotools.xml.filter;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -316,7 +318,7 @@ public class FilterFilterTest {
 
         InputSource requestSource = new InputSource(reader);
 
-        //       instantiante parsers and content handlers
+        //       Instantiate parsers and content handlers
         MyHandler contentHandler = new MyHandler();
         FilterFilter filterParser = new FilterFilter(contentHandler, null);
         GMLFilterGeometry geometryFilter = new GMLFilterGeometry(filterParser);

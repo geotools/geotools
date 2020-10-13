@@ -17,12 +17,12 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.geotools.gce.imagemosaic.Utils.FF;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;

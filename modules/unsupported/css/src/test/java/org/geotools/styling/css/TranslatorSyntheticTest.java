@@ -30,9 +30,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.xml.transform.TransformerException;
-
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.color.DarkenFunction;
 import org.geotools.filter.function.color.SaturateFunction;

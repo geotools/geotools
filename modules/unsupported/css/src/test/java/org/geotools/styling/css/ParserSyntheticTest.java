@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.css.selector.Accept;

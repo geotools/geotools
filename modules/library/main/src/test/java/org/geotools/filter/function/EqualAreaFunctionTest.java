@@ -20,9 +20,9 @@ import static junit.framework.TestCase.assertEquals;
 import static org.geotools.feature.visitor.EqualAreaListVisitorTest.getMinMax;
 import static org.geotools.feature.visitor.EqualAreaListVisitorTest.getSimplifiedStatesCollection;
 import static org.geotools.feature.visitor.EqualAreaListVisitorTest.getTotalArea;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;

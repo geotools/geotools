@@ -17,8 +17,8 @@
 package org.geotools.gml3;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
 
 import java.util.List;
 import org.geotools.geometry.jts.CircularArc;

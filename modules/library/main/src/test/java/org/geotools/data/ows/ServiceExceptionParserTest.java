@@ -17,6 +17,7 @@
 
 package org.geotools.data.ows;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -29,7 +30,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import org.geotools.ows.ServiceException;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class ServiceExceptionParserTest {
@@ -44,11 +44,11 @@ public class ServiceExceptionParserTest {
                                         + "  <ServiceException code=\"42\">test</ServiceException>\n"
                                         + "</ServiceExceptionReport>"));
 
-        Assert.assertThat(
+        assertThat(
                 exception,
                 both(hasProperty("message", equalTo("test")))
                         .and(hasProperty("code", equalTo("42"))));
-        Assert.assertThat(exception.getNext(), nullValue());
+        assertThat(exception.getNext(), nullValue());
     }
 
     @Test
@@ -61,11 +61,11 @@ public class ServiceExceptionParserTest {
                                         + "  <ServiceException code=\"42\"><![CDATA[coalesced]]> message</ServiceException>\n"
                                         + "</ServiceExceptionReport>"));
 
-        Assert.assertThat(
+        assertThat(
                 exception,
                 both(hasProperty("message", equalTo("coalesced message")))
                         .and(hasProperty("code", equalTo("42"))));
-        Assert.assertThat(exception.getNext(), nullValue());
+        assertThat(exception.getNext(), nullValue());
     }
 
     @Test
@@ -80,19 +80,19 @@ public class ServiceExceptionParserTest {
                                         + "  <ServiceException code=\"60\">yet another test</ServiceException>\n"
                                         + "</ServiceExceptionReport>"));
 
-        Assert.assertThat(
+        assertThat(
                 exception,
                 both(hasProperty("message", equalTo("test")))
                         .and(hasProperty("code", equalTo("42"))));
-        Assert.assertThat(
+        assertThat(
                 exception.getNext(),
                 both(hasProperty("message", equalTo("another test")))
                         .and(hasProperty("code", equalTo("20"))));
-        Assert.assertThat(
+        assertThat(
                 exception.getNext().getNext(),
                 both(hasProperty("message", equalTo("yet another test")))
                         .and(hasProperty("code", equalTo("60"))));
-        Assert.assertThat(exception.getNext().getNext().getNext(), nullValue());
+        assertThat(exception.getNext().getNext().getNext(), nullValue());
     }
 
     @Test
@@ -108,23 +108,23 @@ public class ServiceExceptionParserTest {
                                         + "  <ServiceException code=\"20\">still another test</ServiceException>\n"
                                         + "</ServiceExceptionReport>"));
 
-        Assert.assertThat(
+        assertThat(
                 exception,
                 both(hasProperty("message", equalTo("yet another test")))
                         .and(hasProperty("code", equalTo("60"))));
-        Assert.assertThat(
+        assertThat(
                 exception.getNext(),
                 both(hasProperty("message", equalTo("still another test")))
                         .and(hasProperty("code", equalTo("20"))));
-        Assert.assertThat(
+        assertThat(
                 exception.getNext().getNext(),
                 both(hasProperty("message", equalTo("test")))
                         .and(hasProperty("code", nullValue())));
-        Assert.assertThat(
+        assertThat(
                 exception.getNext().getNext().getNext(),
                 both(hasProperty("message", equalTo("another test")))
                         .and(hasProperty("code", equalTo(""))));
-        Assert.assertThat(exception.getNext().getNext().getNext().getNext(), nullValue());
+        assertThat(exception.getNext().getNext().getNext().getNext(), nullValue());
     }
 
     @Test
@@ -141,14 +141,14 @@ public class ServiceExceptionParserTest {
                                         + "  <ServiceException code=\"42\">&xxe;</ServiceException>\n"
                                         + "</ServiceExceptionReport>"));
 
-        Assert.assertThat(
+        assertThat(
                 exception,
                 hasProperty(
                         "message",
                         not(
                                 containsString(
                                         "Top secret information that shouldn't appear in an error message."))));
-        Assert.assertThat(exception.getNext(), nullValue());
+        assertThat(exception.getNext(), nullValue());
     }
 
     protected InputStream mockStream(String string) {

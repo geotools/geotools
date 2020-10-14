@@ -16,8 +16,9 @@
  */
 package org.geotools.image.io;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;

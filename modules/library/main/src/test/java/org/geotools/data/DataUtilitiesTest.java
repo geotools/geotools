@@ -16,9 +16,9 @@
  */
 package org.geotools.data;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.FilenameFilter;

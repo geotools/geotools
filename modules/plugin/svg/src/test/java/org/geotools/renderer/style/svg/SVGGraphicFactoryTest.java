@@ -17,7 +17,7 @@
 package org.geotools.renderer.style.svg;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;

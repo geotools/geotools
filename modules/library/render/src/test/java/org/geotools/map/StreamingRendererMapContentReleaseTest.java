@@ -1,7 +1,7 @@
 package org.geotools.map;
 
 import static org.geotools.map.MapContent.UNDISPOSED_MAPCONTENT_ERROR;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

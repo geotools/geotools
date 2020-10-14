@@ -19,6 +19,7 @@ package org.geotools.mbstyle.parse;
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.categories;
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.equalInt;
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.evaluatesTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;

@@ -22,13 +22,11 @@ import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
 
 import java.awt.Color;
-
+import junit.framework.TestCase;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Converter;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
-
-import junit.framework.TestCase;
 
 public class ColorConverterFactoryTest extends TestCase {
 

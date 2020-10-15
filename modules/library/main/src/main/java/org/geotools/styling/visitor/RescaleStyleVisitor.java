@@ -31,10 +31,8 @@ import static org.geotools.styling.TextSymbolizer.SPACE_AROUND_KEY;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;

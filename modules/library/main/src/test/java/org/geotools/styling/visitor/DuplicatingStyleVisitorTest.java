@@ -24,9 +24,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
-
 import javax.swing.Icon;
-
+import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
@@ -72,8 +71,6 @@ import org.opengis.style.ContrastMethod;
 import org.opengis.style.OverlapBehavior;
 import org.opengis.style.SemanticType;
 import org.opengis.util.Cloneable;
-
-import junit.framework.TestCase;
 
 /**
  * Unit test for DuplicatorStyleVisitor.

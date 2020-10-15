@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.expression.Expression;

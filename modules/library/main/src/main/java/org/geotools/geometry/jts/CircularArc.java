@@ -24,7 +24,6 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import java.util.Arrays;
-
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 

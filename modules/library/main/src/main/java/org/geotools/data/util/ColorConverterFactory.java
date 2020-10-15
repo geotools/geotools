@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.geotools.filter.function.color.HSLColor;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;

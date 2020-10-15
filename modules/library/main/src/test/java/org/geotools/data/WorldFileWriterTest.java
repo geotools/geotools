@@ -7,7 +7,6 @@ import java.awt.geom.AffineTransform;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
 import org.junit.Test;
 
 public class WorldFileWriterTest {

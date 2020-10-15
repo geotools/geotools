@@ -22,7 +22,6 @@ import static org.junit.Assert.assertFalse;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-
 import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;

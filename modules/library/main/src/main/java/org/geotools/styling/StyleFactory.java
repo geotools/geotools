@@ -21,10 +21,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.measure.Unit;
 import javax.swing.Icon;
-
 import org.geotools.util.factory.Factory;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;

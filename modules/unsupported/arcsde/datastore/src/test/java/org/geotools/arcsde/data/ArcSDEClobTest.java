@@ -18,7 +18,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class ArcSDEClobTest {
     private static ClobTestData testData;
 
-    private String[] columnNames = {"IntegerField", "ClobField"};
+    private String[] columnNames = { "IntegerField", "ClobField" };
 
     @BeforeClass
     public static void oneTimeSetUp() throws Exception {
@@ -36,14 +36,16 @@ public class ArcSDEClobTest {
     }
 
     /**
-     * loads {@code test-data/testparams.properties} into a Properties object, wich is used to
-     * obtain test tables names and is used as parameter to find the DataStore
+     * loads {@code test-data/testparams.properties} into a Properties object, wich is used to obtain test tables names and is used as parameter to
+     * find the DataStore
      */
     @Before
-    public void setUp() throws Exception {}
+    public void setUp() throws Exception {
+    }
 
     @After
-    public void tearDown() throws Exception {}
+    public void tearDown() throws Exception {
+    }
 
     @Test
     public void testRead() throws Exception {
@@ -57,23 +59,19 @@ public class ArcSDEClobTest {
             SimpleFeatureType ftype = dstore.getSchema(typeName);
             // The row id column is not returned, but the geometry column is (x+1-1=x)
             assertEquals("Verify attribute count.", columnNames.length, ftype.getAttributeCount());
-            ArcSDEQuery query =
-                    ArcSDEQuery.createQuery(
-                            session,
-                            ftype,
-                            Query.ALL,
-                            FIDReader.NULL_READER,
-                            ArcSdeVersionHandler.NONVERSIONED_HANDLER);
-            query.execute();
-            SdeRow row = query.fetch();
-            assertNotNull("Verify first result is returned.", row);
-            Object longString = row.getObject(0);
-            assertNotNull("Verify the non-nullity of first CLOB.", longString);
-            assertEquals("Verify stringiness.", longString.getClass(), String.class);
-            row = query.fetch();
-            longString = row.getObject(0);
-            assertNotNull("Verify the non-nullity of second CLOB.", longString);
-            query.close();
+            try (ArcSDEQuery query = ArcSDEQuery.createQuery(session, ftype, Query.ALL,
+                    FIDReader.NULL_READER, ArcSdeVersionHandler.NONVERSIONED_HANDLER)) {
+                query.execute();
+                SdeRow row = query.fetch();
+                assertNotNull("Verify first result is returned.", row);
+                Object longString = row.getObject(0);
+                assertNotNull("Verify the non-nullity of first CLOB.", longString);
+                assertEquals("Verify stringiness.", longString.getClass(), String.class);
+                row = query.fetch();
+                longString = row.getObject(0);
+                assertNotNull("Verify the non-nullity of second CLOB.", longString);
+                query.close();
+            }
         } finally {
             if (session != null) {
                 session.dispose();

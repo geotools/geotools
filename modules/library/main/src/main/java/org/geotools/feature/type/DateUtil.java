@@ -42,7 +42,10 @@ package org.geotools.feature.type;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Utility class supplying static methods. Date serialization is based on the algorithms published

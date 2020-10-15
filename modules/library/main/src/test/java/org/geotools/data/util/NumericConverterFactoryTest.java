@@ -161,7 +161,7 @@ public class NumericConverterFactoryTest extends TestCase {
     }
 
     Object convert(Object source, Class target) throws Exception {
-        return factory.createConverter(source.getClass(), target, null).convert(source, target);
+        return factory.createConverter(source.getClass(), target, null).convert(source, target); 
     }
 
     public static void testIntegralHandling() {
@@ -175,7 +175,7 @@ public class NumericConverterFactoryTest extends TestCase {
 
     Object convertSafe(Object source, Class<?> target) throws Exception {
         Hints hints = new Hints();
-        hints.put(ConverterFactory.SAFE_CONVERSION, Boolean.valueOf(true));
+        hints.put(ConverterFactory.SAFE_CONVERSION, Boolean.TRUE);
         return factory.createConverter(source.getClass(), target, hints).convert(source, target);
     }
 
@@ -274,11 +274,11 @@ public class NumericConverterFactoryTest extends TestCase {
                 new BigDecimal(12345678),
                 convertSafe(BigInteger.valueOf(12345678), BigDecimal.class));
         assertEquals(
-                new BigDecimal((Double.valueOf(12.123456)).toString()),
+                new BigDecimal(Double.valueOf(12.123456).toString()),
                 convertSafe(Double.valueOf(12.123456), BigDecimal.class));
         assertEquals(new BigDecimal(128.1), convertSafe(new BigDecimal(128.1), BigDecimal.class));
         assertEquals(
-                new BigDecimal((Float.valueOf(12.12f)).toString()),
+                new BigDecimal(Float.valueOf(12.12f).toString()),
                 convertSafe(Float.valueOf(12.12f), BigDecimal.class));
 
         // test strings

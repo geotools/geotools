@@ -16,9 +16,10 @@
  */
 package org.geotools.data;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
 
 /**

@@ -16,13 +16,25 @@
  */
 package org.geotools.styling.visitor;
 
-import static org.geotools.styling.TextSymbolizer.*;
+import static org.geotools.styling.TextSymbolizer.AUTO_WRAP_KEY;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_AUTO_WRAP;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_LABEL_REPEAT;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_MIN_GROUP_DISTANCE;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_SPACE_AROUND;
+import static org.geotools.styling.TextSymbolizer.GRAPHIC_MARGIN_KEY;
+import static org.geotools.styling.TextSymbolizer.LABEL_REPEAT_KEY;
+import static org.geotools.styling.TextSymbolizer.MAX_DISPLACEMENT_KEY;
+import static org.geotools.styling.TextSymbolizer.MIN_GROUP_DISTANCE_KEY;
+import static org.geotools.styling.TextSymbolizer.SPACE_AROUND_KEY;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;

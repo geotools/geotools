@@ -16,7 +16,7 @@
  */
 package org.geotools.filter;
 
-import java.awt.*;
+import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.AbstractSearchFilterVisitor;
 import org.geotools.filter.visitor.DefaultFilterVisitor;

@@ -17,8 +17,6 @@
  */
 package org.geotools.filter.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.Attribute;

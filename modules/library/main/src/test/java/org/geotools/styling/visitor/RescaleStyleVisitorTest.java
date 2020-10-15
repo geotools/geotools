@@ -19,8 +19,9 @@ package org.geotools.styling.visitor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
@@ -45,6 +46,7 @@ import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.SemanticType;
+
 import si.uom.SI;
 
 /**

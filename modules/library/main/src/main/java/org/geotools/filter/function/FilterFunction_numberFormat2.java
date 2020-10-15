@@ -16,10 +16,11 @@
  */
 package org.geotools.filter.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -39,7 +40,7 @@ public class FilterFunction_numberFormat2 extends FunctionExpressionImpl {
     public static FunctionName NAME =
             new FunctionNameImpl(
                     "numberFormat2",
-                    String.class,
+                    String.class,       
                     parameter("format", String.class),
                     parameter("number", Number.class),
                     parameter("minus", String.class),

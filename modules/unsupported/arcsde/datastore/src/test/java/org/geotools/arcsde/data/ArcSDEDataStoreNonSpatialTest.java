@@ -23,13 +23,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeDBMSInfo;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeRegistration;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;
@@ -60,9 +57,14 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeDBMSInfo;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeRegistration;
+
 /**
- * {@link ArcSDEDataStore} integration test for the case of registered, non spatial tables as
- * required by the new feature <a href="http://jira.codehaus.org/browse/GEOT-2548">GEOT-2548</a>
+ * {@link ArcSDEDataStore} integration test for the case of registered, non spatial tables as required by the new feature
+ * <a href="http://jira.codehaus.org/browse/GEOT-2548">GEOT-2548</a>
  *
  * @author Gabriel Roldan, OpenGeo
  * @since 2.5.6
@@ -72,11 +74,11 @@ public class ArcSDEDataStoreNonSpatialTest {
     /**
      * Flag that indicates whether the underlying database is MS SQL Server.
      *
-     * <p>This is used to decide what's the expected result count in some transaction tests, and its
-     * value is obtained from an {@link SeDBMSInfo} object. Hacky as it seems it is. The problem is
-     * that ArcSDE for SQL Server _explicitly_ sets the transaction isolation level to READ
-     * UNCOMMITTED for all and every transaction, while for other databases it uses READ COMMITTED.
-     * And no, ESRI documentation says there's no way to change nor workaround this behaviour.
+     * <p>
+     * This is used to decide what's the expected result count in some transaction tests, and its value is obtained from an {@link SeDBMSInfo} object.
+     * Hacky as it seems it is. The problem is that ArcSDE for SQL Server _explicitly_ sets the transaction isolation level to READ UNCOMMITTED for
+     * all and every transaction, while for other databases it uses READ COMMITTED. And no, ESRI documentation says there's no way to change nor
+     * workaround this behaviour.
      */
     private static boolean databaseIsMsSqlServer;
 
@@ -100,73 +102,50 @@ public class ArcSDEDataStoreNonSpatialTest {
         seRowidSdeTable = baseTypeName + "_ROWID_SDE";
         seRowidUserTable = baseTypeName + "_ROWID_USER";
 
-        ISessionPool sessionPool = testData.getConnectionPool();
-        ISession session = sessionPool.getSession();
-        try {
+        try (ISessionPool sessionPool = testData.getConnectionPool()) {
+            ISession session = sessionPool.getSession();
+
             SeDBMSInfo dbInfo = session.getDBMSInfo();
             databaseIsMsSqlServer = dbInfo.dbmsId == SeDBMSInfo.SE_DBMS_IS_SQLSERVER;
 
-            session.issue(
-                    new Command<Void>() {
-                        @Override
-                        public Void execute(ISession session, SeConnection connection)
-                                throws SeException, IOException {
+            session.issue(new Command<Void>() {
+                @Override
+                public Void execute(ISession session, SeConnection connection)
+                        throws SeException, IOException {
 
-                            final String rowIdColName = "ROW_ID";
-                            // just register the non spatial table
-                            final boolean createLayer = false;
-                            final int shapeTypeMask = -1; // not relevant
+                    final String rowIdColName = "ROW_ID";
+                    // just register the non spatial table
+                    final boolean createLayer = false;
+                    final int shapeTypeMask = -1; // not relevant
 
-                            int rowIdColumnType =
-                                    SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE;
-                            testData.createTestTable(
-                                    session,
-                                    seRowidNoneTable,
-                                    rowIdColName,
-                                    rowIdColumnType,
-                                    createLayer,
-                                    shapeTypeMask);
+                    int rowIdColumnType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE;
+                    testData.createTestTable(session, seRowidNoneTable, rowIdColName,
+                            rowIdColumnType, createLayer, shapeTypeMask);
 
-                            rowIdColumnType =
-                                    SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_USER;
-                            testData.createTestTable(
-                                    session,
-                                    seRowidUserTable,
-                                    rowIdColName,
-                                    rowIdColumnType,
-                                    createLayer,
-                                    shapeTypeMask);
+                    rowIdColumnType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_USER;
+                    testData.createTestTable(session, seRowidUserTable, rowIdColName,
+                            rowIdColumnType, createLayer, shapeTypeMask);
 
-                            rowIdColumnType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_SDE;
-                            testData.createTestTable(
-                                    session,
-                                    seRowidSdeTable,
-                                    rowIdColName,
-                                    rowIdColumnType,
-                                    createLayer,
-                                    shapeTypeMask);
-                            return null;
-                        }
-                    });
-        } finally {
+                    rowIdColumnType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_SDE;
+                    testData.createTestTable(session, seRowidSdeTable, rowIdColName,
+                            rowIdColumnType, createLayer, shapeTypeMask);
+                    return null;
+                }
+            });
             session.dispose();
         }
     }
 
     @AfterClass
-    public static void oneTimeTearDown() {}
+    public static void oneTimeTearDown() {
+    }
 
     @Before
     public void setUp() throws Exception {
-        ISessionPool sessionPool = testData.newSessionPool();
-        final boolean allowNonSpatialTables = true;
-        ds = new ArcSDEDataStore(sessionPool, null, null, allowNonSpatialTables);
-
-        // List<String> typeNames = new ArrayList<String>(Arrays.asList(ds.getTypeNames()));
-        // Collections.sort(typeNames);
-        // for (String s : typeNames) {
-        // System.out.println(s);
-        // }
+        try (ISessionPool sessionPool = testData.newSessionPool()) {
+            final boolean allowNonSpatialTables = true;
+            ds = new ArcSDEDataStore(sessionPool, null, null, allowNonSpatialTables);
+        }
     }
 
     @After
@@ -257,18 +236,15 @@ public class ArcSDEDataStoreNonSpatialTest {
             throws IOException, UnavailableConnectionException {
         final String tableName = seRowidSdeTable;
         final Transaction transaction = new DefaultTransaction();
-        try {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
-
-            writer = addFeatures(tableName, transaction);
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer = addFeatures(tableName,
+                transaction)) {
             /*
-             * This one works regardless of the database being MSSQL or not because the table IS
-             * being created as versioned by testData.createTestTable.
-             * <http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190>
+             * This one works regardless of the database being MSSQL or not because the table IS being created as versioned by
+             * testData.createTestTable. <http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190>
              */
             assertEquals(0, ds.getFeatureSource(tableName).getCount(Query.ALL));
             transaction.commit();
-            writer.close();
+
             assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
         } finally {
             transaction.close();
@@ -283,31 +259,34 @@ public class ArcSDEDataStoreNonSpatialTest {
 
     private void testFeatureWriterAutoCommit(final String tableName)
             throws IOException, CQLException, UnavailableConnectionException {
-        final Transaction transaction = Transaction.AUTO_COMMIT;
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        try (final Transaction transaction = Transaction.AUTO_COMMIT) {
+            Query query = new Query(tableName, CQL.toFilter("STRING_COL = 'modified'"));
+            Filter f = CQL.toFilter("INT_COL = 1000");
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer = addFeatures(tableName,
+                    transaction)) {
+                writer.close();
+                assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
 
-        writer = addFeatures(tableName, transaction);
-        writer.close();
-        assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
+                assertEquals(0, ds.getFeatureSource(tableName).getCount(query));
 
-        Query query = new Query(tableName, CQL.toFilter("STRING_COL = 'modified'"));
-        assertEquals(0, ds.getFeatureSource(tableName).getCount(query));
+            }
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds
+                    .getFeatureWriter(tableName, f, transaction)) {
+                assertTrue(writer.hasNext());
+                writer.next().setAttribute("STRING_COL", "modified");
+                writer.write();
 
-        Filter f = CQL.toFilter("INT_COL = 1000");
-        writer = ds.getFeatureWriter(tableName, f, transaction);
-        assertTrue(writer.hasNext());
-        writer.next().setAttribute("STRING_COL", "modified");
-        writer.write();
-        writer.close();
+                assertEquals(1, ds.getFeatureSource(tableName).getCount(query));
+            }
 
-        assertEquals(1, ds.getFeatureSource(tableName).getCount(query));
-
-        writer = ds.getFeatureWriter(tableName, f, transaction);
-        assertTrue(writer.hasNext());
-        assertNotNull(writer.next());
-        writer.remove();
-        assertFalse(writer.hasNext());
-        writer.close();
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds
+                    .getFeatureWriter(tableName, f, transaction)) {
+                assertTrue(writer.hasNext());
+                assertNotNull(writer.next());
+                writer.remove();
+                assertFalse(writer.hasNext());
+            }
+        }
     }
 
     @Test
@@ -321,11 +300,8 @@ public class ArcSDEDataStoreNonSpatialTest {
             writer = addFeatures(tableName, transaction);
             if (databaseIsMsSqlServer) {
                 /*
-                 * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not
-                 * versioned. And this one can't be versioned cause it has no sde maintained row id
-                 * <
-                 * http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190
-                 * >
+                 * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not versioned. And this one can't be versioned cause it
+                 * has no sde maintained row id < http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190 >
                  */
                 assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
             } else {
@@ -339,9 +315,8 @@ public class ArcSDEDataStoreNonSpatialTest {
         }
     }
 
-    private FeatureWriter<SimpleFeatureType, SimpleFeature> addFeatures(
-            final String tableName, final Transaction transaction)
-            throws IOException, UnavailableConnectionException {
+    private FeatureWriter<SimpleFeatureType, SimpleFeature> addFeatures(final String tableName,
+            final Transaction transaction) throws IOException, UnavailableConnectionException {
 
         testData.truncateTestTable(tableName);
 
@@ -423,11 +398,8 @@ public class ArcSDEDataStoreNonSpatialTest {
 
             if (databaseIsMsSqlServer) {
                 /*
-                 * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not
-                 * versioned. And this one can't be versioned cause it has no sde maintained row id
-                 * <
-                 * http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190
-                 * >
+                 * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not versioned. And this one can't be versioned cause it
+                 * has no sde maintained row id < http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190 >
                  */
                 assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));
             } else {
@@ -474,23 +446,21 @@ public class ArcSDEDataStoreNonSpatialTest {
     public void testCreateGeometrylessSchema() throws Exception {
         final String typeName = testData.getTempTableName() + "_CREATE_GEOMLESS";
         testData.deleteTable(typeName);
-        try {
-            SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
-            b.setName(typeName);
 
-            b.add("STRING_COL", String.class);
-            b.add("INT_COL", Integer.class);
-            b.add("LONG_COL", Long.class);
+        SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+        b.setName(typeName);
 
-            final SimpleFeatureType type = b.buildFeatureType();
+        b.add("STRING_COL", String.class);
+        b.add("INT_COL", Integer.class);
+        b.add("LONG_COL", Long.class);
 
-            ds.createSchema(type);
+        final SimpleFeatureType type = b.buildFeatureType();
 
-            SimpleFeatureType schema = ds.getSchema(typeName);
-            assertNotNull(schema);
-            assertEquals(3, schema.getAttributeCount());
-        } finally {
-            // testData.deleteTable(typeName);
-        }
+        ds.createSchema(type);
+
+        SimpleFeatureType schema = ds.getSchema(typeName);
+        assertNotNull(schema);
+        assertEquals(3, schema.getAttributeCount());
+
     }
 }

@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
-
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;

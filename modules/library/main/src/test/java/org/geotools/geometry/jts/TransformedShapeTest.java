@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-
 import org.junit.Test;
 
 public class TransformedShapeTest {

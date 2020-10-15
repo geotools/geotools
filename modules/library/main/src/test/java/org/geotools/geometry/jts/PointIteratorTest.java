@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
-
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;

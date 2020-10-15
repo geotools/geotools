@@ -161,7 +161,7 @@ public class NumericConverterFactoryTest extends TestCase {
     }
 
     Object convert(Object source, Class target) throws Exception {
-        return factory.createConverter(source.getClass(), target, null).convert(source, target); 
+        return factory.createConverter(source.getClass(), target, null).convert(source, target);
     }
 
     public static void testIntegralHandling() {

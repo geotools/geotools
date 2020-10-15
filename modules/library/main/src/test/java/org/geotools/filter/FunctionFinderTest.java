@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.InterpolateFunction;
 import org.geotools.util.factory.Hints;

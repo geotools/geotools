@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.FeatureCollection;

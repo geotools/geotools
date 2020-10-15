@@ -21,7 +21,9 @@ package org.geotools.geometry.jts;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -33,10 +35,6 @@ import org.locationtech.jts.geom.TopologyException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /** @author jamesm,iant */
 public class LiteShapeTest extends TestCase {

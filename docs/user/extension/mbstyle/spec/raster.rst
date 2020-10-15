@@ -26,7 +26,7 @@ none
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - visibility
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -57,7 +57,7 @@ The opacity at which the image will be drawn.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - raster-opacity
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -113,7 +113,7 @@ brightness.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - raster-brightness-min
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -141,7 +141,7 @@ brightness.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - raster-brightness-max
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -167,7 +167,7 @@ Increase or reduce the saturation of the image.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - raster-saturation
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -193,7 +193,7 @@ Increase or reduce the contrast of the image.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - raster-contrast
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -222,7 +222,7 @@ Fade duration when a new tile is added.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - raster-fade-duration
      - Mapbox
      - GeoTools
      - OpenLayers

@@ -43,13 +43,52 @@ One of a fixed list of string values. Use quotes around values.
       "text-transform": "uppercase"
     }
 
+.. _types-formatted:
+
+Formatted
+~~~~~~~~~
+
+The formatted type is a string broken into sections annotated with separate formatting options.
+
+::
+
+    {
+        "text-field": ["format",
+            "foo", { "font-scale": 1.2 },
+            "bar", { "font-scale": 0.8 }
+        ]
+    }
+
+.. _types-resolveImage:
+
+ResolveImage
+~~~~~~~~~~~~
+
+The resolvedImage type is an image (e.g., an icon or pattern) which is used in a layer.
+
+An input to the image expression operator is checked against the current map style to see if it is available to be rendered or not, and the result is returned in the resolvedImage type. This approach allows developers to define a series of images which the map can fall back to if previous images are not found, which cannot be achieved by providing, for example, icon-image with a plain string (because multiple strings cannot be supplied to icon-image and multiple images cannot be defined in a string).
+
+::
+
+    {
+        "icon-image": ["coalesce", ["image", "myImage"], ["image", "fallbackImage"]]
+    }
+
+
 .. _types-string:
 
 String
 ~~~~~~
 
-A string is basically just text. In Mapbox styles, you're going to put
-it in quotes. Strings can be anything, though pay attention to the case
+A string is basically just text. In Mapbox styles, strings are in quotes.
+
+::
+
+    {
+        "source": "mySource"
+    }
+
+Strings can be anything, though pay attention to the case
 of ``text-field`` - it actually will refer to features, which you refer
 to by putting them in curly braces, as seen in the example below.
 

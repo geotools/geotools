@@ -31,7 +31,7 @@ square
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-cap
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -71,7 +71,7 @@ miter
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-join
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -98,7 +98,7 @@ angles.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-miter-limit
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -126,7 +126,7 @@ angles.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-round-limit
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -160,7 +160,7 @@ none
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - visibility
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -191,7 +191,7 @@ The opacity at which the line will be drawn.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-opacity
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -218,7 +218,7 @@ The color with which the line will be drawn.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-color
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -247,7 +247,7 @@ and up, respectively.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-translate
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -280,7 +280,7 @@ viewport
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-translate-anchor
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -307,7 +307,7 @@ Stroke thickness.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-width
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -336,7 +336,7 @@ width of the inner gap.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-gap-width
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -365,7 +365,7 @@ inset, and a negative value results in an outset.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-offset
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -391,7 +391,7 @@ Blur applied to the line, in pixels.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-blur
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -405,8 +405,8 @@ Blur applied to the line, in pixels.
      - Not yet supported
 
 
-``line-dasharray``
-""""""""""""""""""
+line-dasharray
+""""""""""""""
 
 *Optional* :ref:`types-array`. *Units in* line widths. *Disabled by* line-pattern.
 
@@ -419,7 +419,7 @@ a dash length to pixels, multiply the length by the current line width.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-dasharray
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -437,8 +437,6 @@ line-pattern
 
 *Optional* :ref:`types-string`.
 
-
-
 Name of image in sprite to use for drawing image lines. For seamless
 patterns, image width must be a factor of two (2, 4, 8, ..., 512).
 
@@ -447,7 +445,7 @@ patterns, image width must be a factor of two (2, 4, 8, ..., 512).
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - line-pattern
      - Mapbox
      - GeoTools
      - OpenLayers

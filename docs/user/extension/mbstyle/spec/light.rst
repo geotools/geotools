@@ -39,7 +39,7 @@ viewport
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - anchor
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -61,7 +61,7 @@ Color tint for lighting extruded geometries.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - color
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -83,7 +83,7 @@ present as more extreme contrast.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - intensity
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -119,7 +119,7 @@ the light (from 0°, directly above, to 180°, directly below).
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - intensity
      - Mapbox
      - GeoTools
      - OpenLayers

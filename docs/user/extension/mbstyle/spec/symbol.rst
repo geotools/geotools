@@ -25,7 +25,7 @@ line
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - symbol-placement
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -51,7 +51,7 @@ Distance between two symbol anchors.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - symbol-spacing
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -83,7 +83,7 @@ placed after a line symbol layer.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - symbol-avoid-edges
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -111,7 +111,7 @@ previously drawn symbols.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-allow-overlap
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -138,7 +138,7 @@ icon.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-ignore-placement
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -167,7 +167,7 @@ icon collides with other symbols and the text does not.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-optional
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -208,7 +208,7 @@ auto
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-rotation-alignment
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -237,7 +237,7 @@ Scale factor for icon. 1 is original size, 3 triples the size.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-size
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -277,7 +277,7 @@ both
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-text-fit
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -304,7 +304,7 @@ Size of the additional area added to dimensions determined by
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-text-fit-padding
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -335,7 +335,7 @@ with {tokens} replaced, referencing the data property to pull from.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-image
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -362,7 +362,7 @@ Rotates the icon clockwise.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-rotate
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -390,7 +390,7 @@ detecting symbol collisions.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-padding
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -418,7 +418,7 @@ upside-down.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-keep-upright
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -446,7 +446,7 @@ and down, while negative values indicate left and up. When combined with
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-offset
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -482,7 +482,7 @@ auto
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-pitch-alignment
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -528,7 +528,7 @@ auto
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-rotation-alignment
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -562,7 +562,7 @@ literal ``text-field`` values--not for property functions.)
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-field
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -587,7 +587,7 @@ Font stack to use for displaying text.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-font
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -616,7 +616,7 @@ Font size.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-size
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -644,7 +644,7 @@ The maximum line width for text wrapping.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-max-width
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -672,7 +672,7 @@ Text leading value for multi-line text.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-line-height
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -701,7 +701,7 @@ Text tracking amount.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-letter-spacing
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -738,7 +738,7 @@ right
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-justify
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -795,7 +795,7 @@ bottom-right
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-anchor
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -823,7 +823,7 @@ Maximum angle change between adjacent characters.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-max-angle
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -851,7 +851,7 @@ Rotates the text clockwise.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-rotate
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -880,7 +880,7 @@ detecting symbol collisions.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-padding
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -910,7 +910,7 @@ rendered upside-down.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-keep-upright
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -947,7 +947,7 @@ lowercase
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-transform
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -974,7 +974,7 @@ and down, while negative values indicate left and up.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-offset
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1003,7 +1003,7 @@ previously drawn symbols.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-allow-overlap
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1032,7 +1032,7 @@ text.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-ignore-placement
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1061,7 +1061,7 @@ text collides with other symbols and the icon does not.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-optional
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1097,7 +1097,7 @@ none
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - visibility
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1127,7 +1127,7 @@ The opacity at which the icon will be drawn.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-opacity
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1156,7 +1156,7 @@ The color of the icon. This can only be used with SDF icons.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-color
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1185,7 +1185,7 @@ icons.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-halo-color
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1213,7 +1213,7 @@ Distance of halo to the icon outline.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-halo-width
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1241,7 +1241,7 @@ Fade out the halo towards the outside.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-halo-blur
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1272,7 +1272,7 @@ left and up.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-translate
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1306,7 +1306,7 @@ viewport
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - icon-translate-anchor
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1335,7 +1335,7 @@ The opacity at which the text will be drawn.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-opacity
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1365,7 +1365,7 @@ The color with which the text will be drawn.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-color
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1395,7 +1395,7 @@ The color of the text's halo, which helps it stand out from backgrounds.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-halo-color
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1425,7 +1425,7 @@ font-size.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-halo-width
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1453,7 +1453,7 @@ The halo's fade out distance towards the outside.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-halo-blur
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1484,7 +1484,7 @@ left and up.
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-translate
      - Mapbox
      - GeoTools
      - OpenLayers
@@ -1518,7 +1518,7 @@ viewport
    :width: 100%
    :header-rows: 1
 
-   * - Support
+   * - text-translate-anchor
      - Mapbox
      - GeoTools
      - OpenLayers

@@ -1,12 +1,15 @@
 package org.geotools.feature;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import org.junit.*;
+
+import org.junit.Test;
 import org.opengis.feature.type.Name;
 
 public class NameImplTest {

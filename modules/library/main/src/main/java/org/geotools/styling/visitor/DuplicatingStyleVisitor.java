@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.stream.Collectors;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.styling.AnchorPoint;

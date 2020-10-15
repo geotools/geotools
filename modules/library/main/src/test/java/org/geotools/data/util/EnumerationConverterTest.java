@@ -1,6 +1,7 @@
 package org.geotools.data.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.geotools.util.Converters;
 import org.junit.Test;

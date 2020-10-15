@@ -16,7 +16,7 @@
  */
 package org.geotools.data.util;
 
-import java.awt.*;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Collections;
@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import org.geotools.filter.function.color.HSLColor;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;

@@ -16,10 +16,12 @@
  */
 package org.geotools.temporal.reference;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Calendar;
 import java.util.Date;
+
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.temporal.object.DefaultTemporalCoordinate;

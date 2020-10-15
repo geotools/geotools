@@ -197,9 +197,9 @@ public class TemporalConverterFactoryTest extends TestCase {
 
         // check safe conversion
         Hints h = new Hints();
-        h.put(ConverterFactory.SAFE_CONVERSION, Boolean.valueOf(true));
+        h.put(ConverterFactory.SAFE_CONVERSION, Boolean.TRUE);
         assertNull(factory.createConverter(Timestamp.class, Calendar.class, h));
-        h.put(ConverterFactory.SAFE_CONVERSION, Boolean.valueOf(false));
+        h.put(ConverterFactory.SAFE_CONVERSION, Boolean.FALSE);
         assertNotNull(factory.createConverter(Timestamp.class, Calendar.class, h));
     }
 

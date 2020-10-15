@@ -16,7 +16,7 @@
  */
 package org.geotools.data.store;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URI;
@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Diff;
 import org.geotools.data.DiffFeatureReader;

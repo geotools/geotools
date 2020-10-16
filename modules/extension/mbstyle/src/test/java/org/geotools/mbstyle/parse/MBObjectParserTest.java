@@ -31,7 +31,7 @@ import org.opengis.filter.expression.Function;
 /** Individual parsing tests. */
 public class MBObjectParserTest {
 
-    private MBObjectParser parser = new MBObjectParser(this.getClass());
+    private final MBObjectParser parser = new MBObjectParser(this.getClass());
 
     @Test
     public void optional() throws ParseException {

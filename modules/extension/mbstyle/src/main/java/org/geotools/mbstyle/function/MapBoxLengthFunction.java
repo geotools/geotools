@@ -28,8 +28,8 @@ import org.opengis.filter.expression.Function;
 
 /** Returns the size of a list or the length of a string */
 public class MapBoxLengthFunction extends FunctionExpressionImpl {
-    public FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-    public static FunctionName NAME =
+    public final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "mbLength",
                     parameter("object", Object.class),

@@ -111,13 +111,8 @@ public class MapBoxStyle {
                 }
             } catch (Exception invalid) {
                 problems.add(
-                        (MBFormatException)
-                                new MBFormatException(
-                                                "Layer "
-                                                        + layer.getId()
-                                                        + ":"
-                                                        + invalid.getMessage())
-                                        .initCause(invalid));
+                        new MBFormatException(
+                                "Layer " + layer.getId() + ":" + invalid.getMessage(), invalid));
                 return problems;
             }
         }
@@ -165,13 +160,8 @@ public class MapBoxStyle {
             } catch (Exception problem) {
                 // we could not parse out sld due to an unexpected problem
                 problems.add(
-                        (MBFormatException)
-                                new MBFormatException(
-                                                "Style "
-                                                        + style.getName()
-                                                        + ":"
-                                                        + problem.getMessage())
-                                        .initCause(problem));
+                        new MBFormatException(
+                                "Style " + style.getName() + ":" + problem.getMessage(), problem));
             }
         }
         return problems;

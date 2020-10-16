@@ -47,8 +47,7 @@ public class MBString extends MBExpression {
         for (int i = 1; i < json.size(); i++) {
             Expression arg = parse.string(json, i);
             if (arg instanceof Literal) {
-                arg = transformLiteral(arg);
-                list.add(arg);
+                list.add(transformLiteral(arg));
             } else {
                 list.add(arg);
             }

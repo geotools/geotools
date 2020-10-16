@@ -25,7 +25,7 @@ import org.opengis.filter.capability.FunctionName;
 /** Returns a font base name */
 public class MapBoxFontBaseNameFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "mbFontBaseName",
                     parameter("baseName", Boolean.class),

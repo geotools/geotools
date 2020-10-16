@@ -61,12 +61,12 @@ import org.opengis.style.SemanticType;
  */
 public class FillMBLayer extends MBLayer {
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "fill";
+    private static final String TYPE = "fill";
 
     /** Controls the translation reference point. */
-    public static enum FillTranslateAnchor {
+    public enum FillTranslateAnchor {
         /** The fill is translated relative to the map. */
         MAP,
         /** The fill is translated relative to the viewport. */

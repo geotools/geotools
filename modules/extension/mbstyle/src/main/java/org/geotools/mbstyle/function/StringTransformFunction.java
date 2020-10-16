@@ -70,6 +70,7 @@ public class StringTransformFunction extends FunctionImpl {
         return evaluate(object, null);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T evaluate(Object object, Class<T> context) {
         List<Expression> parameters = getParameters();

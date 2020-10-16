@@ -35,7 +35,7 @@ class ToStringFunction extends FunctionExpressionImpl {
     private static final String TRUE = "true";
     private static final String FALSE = "false";
 
-    public static FunctionName NAME = new FunctionNameImpl("toString");
+    public static final FunctionName NAME = new FunctionNameImpl("toString");
 
     ToStringFunction() {
         super(NAME);
@@ -74,7 +74,7 @@ class ToStringFunction extends FunctionExpressionImpl {
                     + ","
                     + c.getBlue()
                     + ","
-                    + Double.valueOf(c.getAlpha() / 255)
+                    + (((double) c.getAlpha()) / 255.0)
                     + ")";
         }
         if (arg0 instanceof String) {

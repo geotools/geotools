@@ -54,24 +54,22 @@ public class MBLookup extends MBExpression {
      * @return lookup map property by bame expression
      */
     public Expression lookupGet() {
-        if (json.size() == 2 || json.size() == 3) {
-            if (json.size() == 2) {
-                if (parse.isString(json, 1)) {
-                    // example: ["get", "propertyName"]
-                    String propertyName = parse.get(json, 1);
-                    return ff.property(propertyName);
-                } else {
-                    // example: ["get", key]
-                    Expression property = parse.string(json, 1);
-                    return ff.function("property", property);
-                }
+        if (json.size() == 2) {
+            if (parse.isString(json, 1)) {
+                // example: ["get", "propertyName"]
+                String propertyName = parse.get(json, 1);
+                return ff.property(propertyName);
+            } else {
+                // example: ["get", key]
+                Expression property = parse.string(json, 1);
+                return ff.function("property", property);
             }
-            if (json.size() == 3) {
-                // example: ["get", key, object]
-                Expression value = parse.string(json, 1);
-                Expression object = parse.string(json, 2);
-                return ff.function("get", value, object);
-            }
+        }
+        if (json.size() == 3) {
+            // example: ["get", key, object]
+            Expression value = parse.string(json, 1);
+            Expression object = parse.string(json, 2);
+            return ff.function("get", value, object);
         }
         throw new MBFormatException("Data expression \"get\" requires a maximum of 3 arguments.");
     }
@@ -86,16 +84,14 @@ public class MBLookup extends MBExpression {
      * @return check of properties contains key expression
      */
     public Expression lookupHas() {
-        if (json.size() == 2 || json.size() == 3) {
-            if (json.size() == 2) {
-                Expression value = parse.string(json, 1);
-                return ff.function("PropertyExists", value);
-            }
-            if (json.size() == 3) {
-                Expression value = parse.string(json, 1);
-                Expression object = parse.string(json, 2);
-                return ff.function("has", value, object);
-            }
+        if (json.size() == 2) {
+            Expression value = parse.string(json, 1);
+            return ff.function("PropertyExists", value);
+        }
+        if (json.size() == 3) {
+            Expression value = parse.string(json, 1);
+            Expression object = parse.string(json, 2);
+            return ff.function("has", value, object);
         }
         throw new MBFormatException(
                 "Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");

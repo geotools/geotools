@@ -68,8 +68,8 @@ public class ExponentialFunction extends FunctionImpl {
     }
 
     private static class Stop {
-        Expression stop;
-        Expression value;
+        final Expression stop;
+        final Expression value;
 
         public Stop(Expression stop, Expression value) {
             this.stop = stop;
@@ -90,7 +90,7 @@ public class ExponentialFunction extends FunctionImpl {
     public Object evaluate(Object object) {
         // trying to guess the context from the input values
         List<Stop> stops = getStops(getParameters());
-        Class target = Color.class;
+        Class<?> target = Color.class;
         for (Stop stop : stops) {
             if (stop.value.evaluate(object, Double.class) != null) {
                 target = Double.class;
@@ -207,8 +207,6 @@ public class ExponentialFunction extends FunctionImpl {
      *
      * <p>(Note: a slightly different form for `ratio`, `(base^(x-x0) - 1) / (base^(x1-x0) - 1) `,
      * is equivalent, but requires fewer expensive `Math.pow()` operations.)
-     *
-     * @private
      */
     private double exponentialInterpolationRatio(
             Object object, double inputValue, double base, double stop1, double stop2) {

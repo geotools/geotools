@@ -33,7 +33,7 @@ import org.opengis.filter.expression.Expression;
  */
 class ToNumberFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("toNumber");
+    public static final FunctionName NAME = new FunctionNameImpl("toNumber");
 
     ToNumberFunction() {
         super(NAME);
@@ -65,6 +65,7 @@ class ToNumberFunction extends FunctionExpressionImpl {
                 try {
                     return Double.valueOf((String) evaluation);
                 } catch (Exception e) {
+                    // skip to next
                 }
             }
             if (Number.class.isAssignableFrom(evaluation.getClass())) {

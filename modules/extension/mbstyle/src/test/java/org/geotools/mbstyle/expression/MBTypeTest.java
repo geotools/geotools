@@ -20,6 +20,7 @@ package org.geotools.mbstyle.expression;
 import static org.junit.Assert.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Test;
@@ -323,9 +324,14 @@ public class MBTypeTest extends AbstractMBExpressionTest {
 
         final JSONObject j = getObjectByLayerId("arrayExpression", "paint");
         JSONArray test = new JSONArray();
-        test.add(111l);
-        test.add(222l);
-        test.add(121l);
+
+        @SuppressWarnings("unchecked")
+        ArrayList<Object> array = (ArrayList<Object>) test;
+
+        array.add(111L);
+        array.add(222L);
+        array.add(121L);
+
         Object arr = getExpressionEvaluation(j, "array");
         assertEquals(test, arr);
 

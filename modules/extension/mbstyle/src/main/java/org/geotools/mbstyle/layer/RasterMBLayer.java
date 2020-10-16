@@ -35,9 +35,9 @@ import org.opengis.style.SemanticType;
 
 public class RasterMBLayer extends MBLayer {
 
-    private JSONObject paintJson;
+    private final JSONObject paintJson;
 
-    private static String TYPE = "raster";
+    private static final String TYPE = "raster";
 
     public RasterMBLayer(JSONObject json) {
         super(json, new MBObjectParser(RasterMBLayer.class));

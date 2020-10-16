@@ -53,7 +53,7 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class ZoomLevelFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "zoomLevel",
                     parameter("zoomLevel", Number.class),
@@ -65,7 +65,7 @@ public class ZoomLevelFunction extends FunctionExpressionImpl {
 
     /** Number of pixels in the side of the root tile. Assumes 512 if not otherwise configured. */
     public static final int ROOT_TILE_PIXELS =
-            Integer.valueOf(System.getProperty(MBSTYLE_ROOT_TILE_PIXELS_KEY, "512"));
+            Integer.parseInt(System.getProperty(MBSTYLE_ROOT_TILE_PIXELS_KEY, "512"));
 
     /** Scale denominator of the root tile. Changes based on the ROOT_TILE_PIXELS value. */
     public static final double EPSG_3857_O_SCALE = (559_082_263.9508929 / ROOT_TILE_PIXELS) * 256;

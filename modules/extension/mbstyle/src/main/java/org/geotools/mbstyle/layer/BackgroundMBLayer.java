@@ -45,9 +45,9 @@ import org.opengis.style.SemanticType;
  */
 public class BackgroundMBLayer extends MBLayer {
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "background";
+    private static final String TYPE = "background";
 
     public BackgroundMBLayer(JSONObject json) {
         super(json, new MBObjectParser(BackgroundMBLayer.class));

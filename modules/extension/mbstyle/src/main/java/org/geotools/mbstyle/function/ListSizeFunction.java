@@ -26,7 +26,7 @@ import org.opengis.filter.capability.FunctionName;
 /** Returns the size of a given list */
 public class ListSizeFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "listSize",
                     parameter("list", Collection.class),
@@ -38,7 +38,7 @@ public class ListSizeFunction extends FunctionExpressionImpl {
 
     @Override
     public Object evaluate(Object feature) {
-        Collection arg0;
+        Collection<?> arg0;
 
         try { // attempt to get value and perform conversion
             arg0 = getExpression(0).evaluate(feature, Collection.class);
@@ -47,6 +47,6 @@ public class ListSizeFunction extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function listSize argument #0 - expected type List");
         }
-        return Integer.valueOf(arg0.size());
+        return arg0.size();
     }
 }

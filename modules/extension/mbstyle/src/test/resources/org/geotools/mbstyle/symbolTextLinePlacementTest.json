@@ -37,7 +37,7 @@
                 "text-justify": "left",
                 "visibility": "visible",
                 "text-offset": [
-                    00,
+                    0,
                     10
                 ],
                 "text-anchor": "CENTER",
@@ -52,7 +52,7 @@
                 "text-allow-overlap": true,
                 "text-keep-upright": false,
                 "text-padding": 15.0,
-                "icon-padding": 30.0,
+                "icon-padding": 30.0
             },
             "paint": {
                 "text-color": "#334d77",

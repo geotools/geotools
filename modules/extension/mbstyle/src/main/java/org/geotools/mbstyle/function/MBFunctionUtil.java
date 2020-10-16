@@ -45,7 +45,7 @@ public class MBFunctionUtil {
         final Class arg1Class = arg1.getClass();
         if (Number.class.isAssignableFrom(arg0Class) && Number.class.isAssignableFrom(arg1Class)) {
             // both numeric
-            return Number.class.cast(arg0).doubleValue() == Number.class.cast(arg1).doubleValue();
+            return ((Number) arg0).doubleValue() == ((Number) arg1).doubleValue();
         }
         // at least one of the args is not numeric, just use Object.equals()
         return arg0.equals(arg1);

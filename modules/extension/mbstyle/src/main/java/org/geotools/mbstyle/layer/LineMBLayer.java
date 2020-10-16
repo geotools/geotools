@@ -66,11 +66,11 @@ import org.opengis.style.Symbolizer;
  * @author Reggie Beckwith (Boundless)
  */
 public class LineMBLayer extends MBLayer {
-    private JSONObject layout;
+    private final JSONObject layout;
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "line";
+    private static final String TYPE = "line";
 
     public LineMBLayer(JSONObject json) {
         super(json, new MBObjectParser(LineMBLayer.class));

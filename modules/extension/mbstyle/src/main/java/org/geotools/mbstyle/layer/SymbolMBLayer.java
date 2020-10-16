@@ -94,11 +94,11 @@ import org.opengis.style.Symbolizer;
 public class SymbolMBLayer extends MBLayer {
 
     private static final Color DEFAULT_HALO_COLOR = new Color(0, 0, 0, 0);
-    private JSONObject layout;
+    private final JSONObject layout;
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "symbol";
+    private static final String TYPE = "symbol";
 
     private Integer labelPriority;
 
@@ -1734,7 +1734,7 @@ public class SymbolMBLayer extends MBLayer {
 
         // Functions not yet supported for symbolPlacement, so try to evaluate or use default.
         String symbolPlacementVal =
-                transformer.requireLiteral(
+                MBStyleTransformer.requireLiteral(
                         symbolPlacement(), String.class, "point", "symbol-placement", getId());
         Expression fontSize = textSize();
         if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
@@ -1753,7 +1753,7 @@ public class SymbolMBLayer extends MBLayer {
                 displacement = textTranslate;
             }
             // MapBox test-offset: +y mean down and expressed in ems
-            Displacement textOffset = null;
+            Displacement textOffset;
             if (hasTextOffset()) {
                 textOffset = textOffsetDisplacement();
                 textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
@@ -1861,7 +1861,7 @@ public class SymbolMBLayer extends MBLayer {
         symbolizer.fonts().addAll(fonts);
 
         Number symbolSpacing =
-                transformer.requireLiteral(
+                MBStyleTransformer.requireLiteral(
                         symbolSpacing(), Number.class, 250, "symbol-spacing", getId());
         symbolizer.getOptions().put(LABEL_REPEAT_KEY, String.valueOf(symbolSpacing));
 
@@ -1883,10 +1883,10 @@ public class SymbolMBLayer extends MBLayer {
         // Mapbox allows text overlap and icon overlap separately. GeoTools only has
         // conflictResolution.
         Boolean textAllowOverlap =
-                transformer.requireLiteral(
+                MBStyleTransformer.requireLiteral(
                         textAllowOverlap(), Boolean.class, false, "text-allow-overlap", getId());
         Boolean iconAllowOverlap =
-                transformer.requireLiteral(
+                MBStyleTransformer.requireLiteral(
                         iconAllowOverlap(), Boolean.class, false, "icon-allow-overlap", getId());
 
         symbolizer
@@ -1896,8 +1896,7 @@ public class SymbolMBLayer extends MBLayer {
                         String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
 
         String textFitVal =
-                transformer
-                        .requireLiteral(
+                MBStyleTransformer.requireLiteral(
                                 iconTextFit(), String.class, "none", "icon-text-fit", getId())
                         .trim();
         if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
@@ -1942,10 +1941,10 @@ public class SymbolMBLayer extends MBLayer {
         // options don't take expressions)
         if (hasTextMaxWidth()) {
             double textMaxWidth =
-                    transformer.requireLiteral(
+                    MBStyleTransformer.requireLiteral(
                             textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
             double textSize =
-                    transformer.requireLiteral(
+                    MBStyleTransformer.requireLiteral(
                             fontSize,
                             Double.class,
                             16.0,
@@ -1982,7 +1981,7 @@ public class SymbolMBLayer extends MBLayer {
             symbolizer.setPriority(ff.literal(labelPriority));
         }
 
-        symbolizers.add(symbolizer);
+        boolean add = symbolizers.add(symbolizer);
         MBFilter filter = getFilter();
 
         // List of opengis rules here (needed for constructor)

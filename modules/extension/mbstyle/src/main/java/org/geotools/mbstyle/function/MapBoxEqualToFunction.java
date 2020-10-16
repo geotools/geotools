@@ -60,7 +60,7 @@ import org.opengis.filter.capability.FunctionName;
  */
 class MapBoxEqualToFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbEqualTo");
+    public static final FunctionName NAME = new FunctionNameImpl("mbEqualTo");
 
     MapBoxEqualToFunction() {
         super(NAME);
@@ -73,14 +73,14 @@ class MapBoxEqualToFunction extends FunctionExpressionImpl {
         Object arg1;
 
         try { // attempt to get value and perform conversion
-            arg0 = (Object) getExpression(0).evaluate(feature);
+            arg0 = getExpression(0).evaluate(feature);
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function \"mbEqualTo\" argument #0 - expected type Object");
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = (Object) getExpression(1).evaluate(feature);
+            arg1 = getExpression(1).evaluate(feature);
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function \"mbEqualTo\" argument #1 - expected type Object");

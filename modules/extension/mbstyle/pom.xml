@@ -17,7 +17,6 @@
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
-  <groupId>org.geotools</groupId>
   <artifactId>gt-mbstyle</artifactId>
   <packaging>jar</packaging>
   <name>MBStyle Extension</name>

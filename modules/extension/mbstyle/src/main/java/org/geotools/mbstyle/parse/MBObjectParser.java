@@ -33,7 +33,6 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -73,7 +72,7 @@ import org.opengis.filter.expression.Literal;
  */
 public class MBObjectParser {
     /** Wrapper class (used to provide better error messages). */
-    Class<?> context;
+    final Class<?> context;
 
     final FilterFactory2 ff;
     final StyleFactory2 sf;
@@ -859,7 +858,7 @@ public class MBObjectParser {
                         name,
                         fallback == null
                                 ? null
-                                : Arrays.stream(fallback).mapToObj(i -> i).toArray(Integer[]::new));
+                                : Arrays.stream(fallback).boxed().toArray(Integer[]::new));
         return array == null ? fallback : Arrays.stream(array).mapToInt(i -> i).toArray();
     }
 
@@ -872,7 +871,7 @@ public class MBObjectParser {
                         name,
                         fallback == null
                                 ? null
-                                : Arrays.stream(fallback).mapToObj(i -> i).toArray(Double[]::new));
+                                : Arrays.stream(fallback).boxed().toArray(Double[]::new));
         return array == null ? fallback : Arrays.stream(array).mapToDouble(i -> i).toArray();
     }
 
@@ -1418,20 +1417,13 @@ public class MBObjectParser {
             List<MBFunction> functionForEachDimension;
             try {
                 functionForEachDimension = function.splitArrayFunction();
-            } catch (ParseException pe) {
+            } catch (Exception pe) {
                 throw new MBFormatException(
                         "\""
                                 + name
                                 + "\": Exception parsing displacement from Mapbox function: "
                                 + pe.getMessage(),
                         pe);
-            } catch (Exception e) {
-                throw new MBFormatException(
-                        "\""
-                                + name
-                                + "\": Exception parsing displacement from Mapbox function: "
-                                + e.getMessage(),
-                        e);
             }
 
             if (functionForEachDimension.size() != 2) {

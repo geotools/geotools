@@ -29,3 +29,4 @@ org.geotools.process.vector.LRSMeasureProcess
 org.geotools.process.vector.LRSSegmentProcess 
 org.geotools.process.vector.VectorToRasterProcess
 org.geotools.process.vector.ClassifyByRangeProcess
+org.geotools.process.vector.FilteringVectorProcess

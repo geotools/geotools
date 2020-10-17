@@ -41,7 +41,7 @@ public final class OWS extends XSD {
     /** private constructor */
     private OWS() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(XML.getInstance());
         dependencies.add(XLINK.getInstance());
     }

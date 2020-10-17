@@ -49,7 +49,7 @@ class TypeAggregator {
 
     /** Adds/merges a property and its type */
     public void addType(String name, Class<?> binding) {
-        Class existingBinding = types.get(name);
+        Class<?> existingBinding = types.get(name);
         if (existingBinding == null) {
             types.put(name, binding);
         } else {

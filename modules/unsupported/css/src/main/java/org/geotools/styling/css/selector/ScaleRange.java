@@ -26,9 +26,11 @@ public class ScaleRange extends Selector {
             return selectors.get(0);
         }
 
-        Range<?> range = selectors.get(0).range;
+        Range<Double> range = selectors.get(0).range;
         for (ScaleRange selector : selectors) {
-            range = range.intersect(selector.range);
+            @SuppressWarnings("unchecked")
+            Range<Double> intersect = (Range<Double>) range.intersect(selector.range);
+            range = intersect;
             if (range.isEmpty()) {
                 return REJECT;
             }

@@ -111,7 +111,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     private <T extends Symbolizer> T assertSingleSymbolizer(Rule rule, Class<T> symbolizerType) {
         assertEquals(1, rule.symbolizers().size());
         assertTrue(symbolizerType.isInstance(rule.symbolizers().get(0)));
-        return (T) rule.symbolizers().get(0);
+        return symbolizerType.cast(rule.symbolizers().get(0));
     }
 
     @Test

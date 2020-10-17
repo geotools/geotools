@@ -75,7 +75,7 @@ class DomainCoverage {
 
         public SLDSelector(NumberRange<?> scaleRange, Filter filter) {
             this.scaleRange =
-                    new NumberRange(
+                    new NumberRange<>(
                             Double.class,
                             scaleRange.getMinimum(),
                             scaleRange.isMinIncluded(),
@@ -318,7 +318,7 @@ class DomainCoverage {
             } else if (prev.scaleRange.getMaximum() == ss.scaleRange.getMinimum()
                     && prev.filter.equals(ss.filter)) {
                 NumberRange combinedRange =
-                        new NumberRange(
+                        new NumberRange<>(
                                 Double.class,
                                 prev.scaleRange.getMinimum(),
                                 prev.scaleRange.isMinIncluded(),

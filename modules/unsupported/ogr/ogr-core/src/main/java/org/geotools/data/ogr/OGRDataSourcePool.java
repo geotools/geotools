@@ -36,7 +36,7 @@ class OGRDataSourcePool implements AutoCloseable {
     private long lastClear;
     private final boolean primeDataSources;
 
-    public OGRDataSourcePool(OGR ogr, String ogrSourceName, String ogrDriver, Map params)
+    public OGRDataSourcePool(OGR ogr, String ogrSourceName, String ogrDriver, Map<String, ?> params)
             throws IOException {
         this.ogrSourceName = ogrSourceName;
         this.ogrDriver = ogrDriver;
@@ -57,7 +57,7 @@ class OGRDataSourcePool implements AutoCloseable {
         this.primeDataSources = (boolean) lookup(OGRDataStoreFactory.PRIME_DATASOURCE, params);
     }
 
-    private Object lookup(DataAccessFactory.Param param, Map params) throws IOException {
+    private Object lookup(DataAccessFactory.Param param, Map<String, ?> params) throws IOException {
         return Optional.ofNullable(param.lookUp(params)).orElse(param.getDefaultValue());
     }
 

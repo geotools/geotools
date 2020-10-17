@@ -92,6 +92,7 @@ public class Geopkgtype_featuresBinding extends LayertypeBinding {
         if (overviews instanceof Overview) {
             layer.setOverviews(Arrays.asList((Overview) overviews));
         } else if (overviews instanceof Map) {
+            @SuppressWarnings("unchecked")
             List<Overview> overview = (List<Overview>) ((Map<?, ?>) overviews).get("overview");
             layer.setOverviews(overview);
         }

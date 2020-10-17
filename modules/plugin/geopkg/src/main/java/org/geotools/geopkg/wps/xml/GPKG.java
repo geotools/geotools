@@ -40,7 +40,7 @@ public final class GPKG extends XSD {
     /** private constructor */
     private GPKG() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(FES.getInstance());
     }
 

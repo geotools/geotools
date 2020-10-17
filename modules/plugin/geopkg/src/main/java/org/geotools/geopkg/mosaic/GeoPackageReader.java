@@ -394,7 +394,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         // simple
         RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
         hints.putAll(GeoTools.getDefaultHints());
-        return new OpImage(new Vector(sourceImages), il, hints, false) {
+        return new OpImage(new Vector<>(sourceImages), il, hints, false) {
 
             @Override
             public Raster computeTile(int tileX, int tileY) {
@@ -432,6 +432,12 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             public Rectangle mapDestRect(Rectangle destRect, int sourceIndex) {
                 // should not really be used
                 return destRect;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public Vector<RenderedImage> getSources() {
+                return super.getSources();
             }
         };
     }

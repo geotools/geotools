@@ -192,7 +192,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         return ds;
     }
 
-    static void addConnectionProperties(BasicDataSource dataSource, Map configuration)
+    static void addConnectionProperties(BasicDataSource dataSource, Map<String, ?> configuration)
             throws IOException {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);

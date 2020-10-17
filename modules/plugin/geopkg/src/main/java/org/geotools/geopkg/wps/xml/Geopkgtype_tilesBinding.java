@@ -110,7 +110,9 @@ public class Geopkgtype_tilesBinding extends LayertypeBinding {
         if (gridSet instanceof String) {
             layer.setGridSetName((String) gridSet);
         } else if (gridSet instanceof List<?>) {
-            layer.setGrids((List<TileMatrix>) gridSet);
+            @SuppressWarnings("unchecked")
+            List<TileMatrix> list = (List<TileMatrix>) gridSet;
+            layer.setGrids(list);
         }
         return layer;
     }

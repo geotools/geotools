@@ -92,6 +92,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.identity.Identifier;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.sqlite.SQLiteConfig;
@@ -590,7 +591,8 @@ public class GeoPackageTest {
 
         assertTrue(geopkg.hasSpatialIndex(entry));
 
-        Set ids = geopkg.searchSpatialIndex(entry, 590230.0, 4915038.0, 590234.0, 4915040.0);
+        Set<Identifier> ids =
+                geopkg.searchSpatialIndex(entry, 590230.0, 4915038.0, 590234.0, 4915040.0);
         try (SimpleFeatureReader sfr = geopkg.reader(entry, ff.id(ids), null)) {
             assertTrue(sfr.hasNext());
             assertEquals("bugsites.1", sfr.next().getID().toString());
@@ -658,7 +660,7 @@ public class GeoPackageTest {
         geopkg.create(e);
         assertTileEntry(e);
 
-        List<Tile> tiles = new ArrayList();
+        List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(0, 0, 0, new byte[] {0}));
         tiles.add(new Tile(1, 0, 0, new byte[] {1}));
         tiles.add(new Tile(1, 0, 1, new byte[] {2}));

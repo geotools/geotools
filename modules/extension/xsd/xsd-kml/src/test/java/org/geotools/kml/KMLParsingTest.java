@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.TestCase;
@@ -114,7 +115,7 @@ public class KMLParsingTest extends TestCase {
 
         GeometryFactory gf = new GeometryFactory();
         SimpleFeatureBuilder sb = new SimpleFeatureBuilder(tb.buildFeatureType());
-        ArrayList features = new ArrayList();
+        List<SimpleFeature> features = new ArrayList<>();
 
         sb.add("one");
         sb.add("the first feature");

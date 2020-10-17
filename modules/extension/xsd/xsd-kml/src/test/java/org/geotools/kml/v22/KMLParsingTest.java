@@ -183,7 +183,8 @@ public class KMLParsingTest extends KMLTestSupport {
         buildDocument(xml);
 
         SimpleFeature doc = (SimpleFeature) parse();
-        List<SimpleFeature> features = (List<SimpleFeature>) doc.getAttribute("Feature");
+        @SuppressWarnings("unchecked")
+        List<SimpleFeature> features = (List) doc.getAttribute("Feature");
         assertEquals(2, features.size());
 
         SimpleFeature f = features.get(0);
@@ -199,7 +200,8 @@ public class KMLParsingTest extends KMLTestSupport {
 
     public void testDecodeSchemalessExtendedData() throws Exception {
         SimpleFeature doc = parseSamples("schemalessExtendedData.kml");
-        List<SimpleFeature> features = (List<SimpleFeature>) doc.getAttribute("Feature");
+        @SuppressWarnings("unchecked")
+        List<SimpleFeature> features = (List) doc.getAttribute("Feature");
 
         for (SimpleFeature f : features) {
             Map<Object, Object> ud = f.getUserData();

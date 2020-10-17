@@ -41,7 +41,7 @@ public final class FES extends XSD {
     /** private constructor */
     private FES() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
         dependencies.add(GML.getInstance());
     }

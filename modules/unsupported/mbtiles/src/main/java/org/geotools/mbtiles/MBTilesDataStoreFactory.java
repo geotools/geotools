@@ -81,13 +81,13 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public Param[] getParametersInfo() {
-        LinkedHashMap map = new LinkedHashMap();
+        LinkedHashMap<String, Param> map = new LinkedHashMap<>();
         setupParameters(map);
 
         return (Param[]) map.values().toArray(new Param[map.size()]);
     }
 
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Param> parameters) {
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(DATABASE.key, DATABASE);
         parameters.put(NAMESPACE.key, NAMESPACE);
@@ -146,7 +146,7 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
         return ds;
     }
 
-    private String getJDBCUrl(Map params) throws IOException {
+    private String getJDBCUrl(Map<String, Serializable> params) throws IOException {
         File db = (File) DATABASE.lookUp(params);
         if (db.getPath().startsWith("file:")) {
             db = new File(db.getPath().substring(5));
@@ -154,14 +154,14 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
         return "jdbc:sqlite:" + db;
     }
 
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, Serializable> params) {
         if (!DataUtilities.canProcess(params, getParametersInfo())) {
             return false;
         }
         return checkDBType(params);
     }
 
-    protected final boolean checkDBType(Map params) {
+    protected final boolean checkDBType(Map<String, ?> params) {
         try {
             String type = (String) DBTYPE.lookUp(params);
 

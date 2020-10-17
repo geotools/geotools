@@ -29,6 +29,7 @@ import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -109,9 +110,9 @@ class MBTilesFeatureSource extends ContentFeatureSource {
                             .flatMap(tb -> getReaderSuppliersFor(z, tb).stream())
                             .collect(Collectors.toList());
 
-            FeatureReader reader;
+            SimpleFeatureReader reader;
             if (suppliers.isEmpty()) {
-                reader = new EmptyFeatureReader<>(getSchema());
+                reader = DataUtilities.simple(new EmptyFeatureReader<>(getSchema()));
             } else {
                 reader = new CompositeSimpleFeatureReader(getSchema(), suppliers);
             }

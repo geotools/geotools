@@ -33,7 +33,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @since 8.0
  * @version $Id$
  */
-public class CRSListModel extends AbstractListModel {
+public class CRSListModel extends AbstractListModel<String> {
     private static class Item {
         String code;
         String desc;

@@ -116,7 +116,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
             return false;
         }
         GeneralParameterValue parameter =
-                new Parameter(
+                new Parameter<>(
                         AbstractGridFormat.READ_GRIDGEOMETRY2D,
                         new GridGeometry2D(
                                 new GridEnvelope2D(queryRect),

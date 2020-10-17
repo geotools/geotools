@@ -60,6 +60,7 @@ public abstract class CursorToolTestBase extends GraphicsTestBase {
     protected WaitingMapPaneListener listener;
 
     @Before
+    @SuppressWarnings("unchecked")
     public void setupPaneAndTool() throws Exception {
         mapContent = new MockMapContent();
         mapContent.addLayer(getTestLayer());

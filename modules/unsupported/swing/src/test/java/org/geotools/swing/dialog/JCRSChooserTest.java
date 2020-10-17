@@ -86,7 +86,7 @@ public class JCRSChooserTest extends GraphicsTestBase<DialogFixture, Dialog, Dia
 
     @Before
     public void setup() {
-        listener = new WindowActivatedListener(JCRSChooser.CRSDialog.class);
+        listener = new WindowActivatedListener<>(JCRSChooser.CRSDialog.class);
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
     }
 
@@ -276,6 +276,7 @@ public class JCRSChooserTest extends GraphicsTestBase<DialogFixture, Dialog, Dia
      * @param title custom title (may be {@code null}
      * @return the Future for the dialog task
      */
+    @SuppressWarnings("unchecked")
     private Future<CoordinateReferenceSystem> showDialog(final String title) throws Exception {
         Future<CoordinateReferenceSystem> future =
                 executor.submit(

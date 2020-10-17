@@ -202,7 +202,7 @@ public class JCRSChooser {
         private final String initialCode;
 
         private CRSListModel model;
-        private JList listBox;
+        private JList<String> listBox;
         private JButton okButton;
 
         private CoordinateReferenceSystem crs;
@@ -255,7 +255,7 @@ public class JCRSChooser {
 
             panel.add(filterFld, "wrap");
 
-            listBox = new JList(model);
+            listBox = new JList<>(model);
             listBox.addMouseListener(
                     new MouseAdapter() {
 

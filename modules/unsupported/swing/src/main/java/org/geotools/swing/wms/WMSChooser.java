@@ -32,7 +32,7 @@ public class WMSChooser {
         if (servers == null) {
             servers = defaultServers();
         }
-        JComboBox combo = new JComboBox(servers.toArray());
+        JComboBox<String> combo = new JComboBox<>(servers.toArray(new String[servers.size()]));
         combo.setEditable(true);
 
         Object message[] = new Object[] {"Choose a WMS Server", combo};

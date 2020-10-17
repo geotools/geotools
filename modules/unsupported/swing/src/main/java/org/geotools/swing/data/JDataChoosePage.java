@@ -40,7 +40,7 @@ public class JDataChoosePage extends JPage {
     /** Factory for which we are collection connection parameters */
     protected DataStoreFactorySpi format;
 
-    private JList list;
+    private JList<DataStoreFactorySpi> list;
 
     public JDataChoosePage() {
         this(null);
@@ -67,8 +67,8 @@ public class JDataChoosePage extends JPage {
                 iter.hasNext(); ) {
             factoryList.add(iter.next());
         }
-        list = new JList(factoryList.toArray());
-        ListCellRenderer cellRenderer =
+        list = new JList<>(factoryList.toArray(new DataStoreFactorySpi[factoryList.size()]));
+        ListCellRenderer<Object> cellRenderer =
                 new DefaultListCellRenderer() {
                     @Override
                     public Component getListCellRendererComponent(

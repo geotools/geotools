@@ -33,7 +33,7 @@ import javax.swing.AbstractListModel;
  * @since 2.6
  * @version $Id$
  */
-public class DnDListModel<T> extends AbstractListModel {
+public class DnDListModel<T> extends AbstractListModel<T> {
     private static final long serialVersionUID = -6110074993686576005L;
     List<T> items;
     private boolean notify;

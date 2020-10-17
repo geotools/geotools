@@ -56,9 +56,9 @@ public class WMSLayerChooser extends JDialog implements ActionListener {
 
     WMSCapabilities caps;
 
-    JList list;
+    JList<Layer> list;
 
-    private DefaultListModel model;
+    private DefaultListModel<Layer> model;
 
     public WMSLayerChooser() throws HeadlessException {
         super();
@@ -102,8 +102,8 @@ public class WMSLayerChooser extends JDialog implements ActionListener {
         setButton.addActionListener(this);
         getRootPane().setDefaultButton(setButton);
 
-        model = new DefaultListModel();
-        list = new JList(model);
+        model = new DefaultListModel<>();
+        list = new JList<>(model);
         list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.VERTICAL);
         list.setVisibleRowCount(-1);

@@ -12,7 +12,7 @@ package org.opengis.coverage.grid;
 import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19123;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 

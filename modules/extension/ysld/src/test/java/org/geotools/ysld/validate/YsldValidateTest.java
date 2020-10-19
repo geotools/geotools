@@ -17,15 +17,11 @@
  */
 package org.geotools.ysld.validate;
 
-<<<<<<< HEAD
-import static org.easymock.EasyMock.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-=======
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
->>>>>>> be855a7e34ba6ce71aa606bfc914a2747a3c1103
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;

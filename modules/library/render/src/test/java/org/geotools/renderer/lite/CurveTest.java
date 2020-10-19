@@ -16,7 +16,10 @@
  */
 package org.geotools.renderer.lite;
 
-import static java.awt.RenderingHints.*;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.KEY_STROKE_CONTROL;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.awt.RenderingHints.VALUE_STROKE_PURE;
 
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;

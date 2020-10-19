@@ -18,7 +18,9 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.shadedrelief.*;
+import it.geosolutions.jaiext.shadedrelief.ShadedReliefAlgorithm;
+import it.geosolutions.jaiext.shadedrelief.ShadedReliefDescriptor;
+import it.geosolutions.jaiext.shadedrelief.ShadedReliefRIF;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderedImageFactory;

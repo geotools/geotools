@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
 import org.geotools.filter.AndImpl;
 import org.geotools.filter.NotImpl;
 import org.geotools.filter.text.commons.CompilerUtil;

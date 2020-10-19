@@ -16,9 +16,22 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import static org.geotools.measure.Units.*;
+import static org.geotools.measure.Units.DEGREE_ANGLE;
+import static org.geotools.measure.Units.DEGREE_MINUTE_SECOND;
+import static org.geotools.measure.Units.FOOT;
+import static org.geotools.measure.Units.GRADE;
+import static org.geotools.measure.Units.KILOMETER;
+import static org.geotools.measure.Units.METRE;
+import static org.geotools.measure.Units.MICRORADIAN;
+import static org.geotools.measure.Units.MINUTE_ANGLE;
+import static org.geotools.measure.Units.NAUTICAL_MILE;
+import static org.geotools.measure.Units.ONE;
+import static org.geotools.measure.Units.PPM;
+import static org.geotools.measure.Units.RADIAN;
+import static org.geotools.measure.Units.SECOND_ANGLE;
+import static org.geotools.measure.Units.SEXAGESIMAL_DMS;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectStreamException;

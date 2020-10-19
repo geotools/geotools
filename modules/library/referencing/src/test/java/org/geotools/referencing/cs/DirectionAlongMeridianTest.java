@@ -16,9 +16,11 @@
  */
 package org.geotools.referencing.cs;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.referencing.cs.AxisDirection;
 
 /**

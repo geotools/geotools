@@ -25,7 +25,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.util.factory.Hints;
-import org.opengis.referencing.*;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.Factory;
 
 /**
  * The base class for authority factories that create referencing object directly. This is in

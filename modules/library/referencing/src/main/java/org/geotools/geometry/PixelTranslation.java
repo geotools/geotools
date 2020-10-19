@@ -16,7 +16,12 @@
  */
 package org.geotools.geometry;
 
-import static org.opengis.metadata.spatial.PixelOrientation.*;
+import static org.opengis.metadata.spatial.PixelOrientation.CENTER;
+import static org.opengis.metadata.spatial.PixelOrientation.LOWER_LEFT;
+import static org.opengis.metadata.spatial.PixelOrientation.LOWER_RIGHT;
+import static org.opengis.metadata.spatial.PixelOrientation.UPPER_LEFT;
+import static org.opengis.metadata.spatial.PixelOrientation.UPPER_RIGHT;
+import static org.opengis.metadata.spatial.PixelOrientation.valueOf;
 
 import java.io.Serializable;
 import java.util.HashMap;

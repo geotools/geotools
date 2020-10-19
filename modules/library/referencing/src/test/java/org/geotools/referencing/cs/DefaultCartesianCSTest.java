@@ -16,11 +16,13 @@
  */
 package org.geotools.referencing.cs;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.geotools.referencing.CRS;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.cs.CoordinateSystem;
 import si.uom.SI;
 

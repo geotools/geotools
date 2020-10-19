@@ -16,11 +16,36 @@
  */
 package org.geotools.referencing.cs;
 
-import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.*;
-import static org.junit.Assert.*;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.ALTITUDE;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.COMPASS_DIRECTION_COUNT;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.EASTING;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEOCENTRIC_X;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEOCENTRIC_Y;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEOCENTRIC_Z;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEODETIC_LATITUDE;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.LATITUDE;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.LONGITUDE;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.NORTHING;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.SOUTHING;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.WESTING;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.X;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.Y;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.Z;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.getAngle;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.getDirection;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.getPredefined;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
 
 /**
  * Tests the {@link DefaultCoordinateSystemAxis} class.

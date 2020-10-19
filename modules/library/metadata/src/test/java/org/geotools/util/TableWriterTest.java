@@ -16,11 +16,11 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Minimal testing for TableWriter class.

@@ -16,9 +16,13 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import org.junit.*;
+import org.geotools.util.DefaultObjectCache.ObjectCacheEntry;
+import org.junit.Test;
 
 /**
  * Simple deadlock tests for {@link ObjectCacheEntry}.

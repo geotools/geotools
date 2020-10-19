@@ -16,11 +16,9 @@
  */
 package org.geotools.util.logging;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-
 import java.util.logging.Logger;
-import org.junit.*;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Test the {@link MonolineFormatter} class.

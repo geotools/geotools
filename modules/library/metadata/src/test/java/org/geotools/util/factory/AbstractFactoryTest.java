@@ -16,10 +16,11 @@
  */
 package org.geotools.util.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.awt.RenderingHints;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests {@link org.geotools.util.factory.AbstractFactory}.

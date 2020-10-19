@@ -18,7 +18,9 @@ package org.geotools.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.TimeZone;
 import org.junit.Assert;
 import org.junit.Test;
 

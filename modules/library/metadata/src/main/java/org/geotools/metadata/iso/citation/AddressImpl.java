@@ -19,7 +19,6 @@
  */
 package org.geotools.metadata.iso.citation;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.Collections;
 import net.opengis.ows11.AddressType;

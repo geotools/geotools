@@ -38,11 +38,9 @@ import java.io.ObjectOutputStream;
 import java.util.AbstractList;
 import java.util.List;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
 import javax.measure.MetricPrefix;
 import javax.media.jai.RasterFactory;
-
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.CoverageTestBase;
@@ -54,7 +52,6 @@ import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import si.uom.SI;
 
 /**

@@ -36,7 +36,6 @@ import java.awt.image.SampleModel;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;

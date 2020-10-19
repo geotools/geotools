@@ -26,7 +26,6 @@ import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.util.Random;
-
 import org.geotools.coverage.grid.Viewer;
 import org.junit.Before;
 import org.junit.Test;

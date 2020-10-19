@@ -16,6 +16,11 @@
  */
 package org.geotools.image.util;
 
+import com.sun.media.imageioimpl.common.BogusColorSpace;
+import com.sun.media.jai.operator.ImageReadDescriptor;
+import com.sun.media.jai.util.Rational;
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -49,7 +54,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -66,7 +70,6 @@ import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedImageAdapter;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.WritableRenderedImageAdapter;
-
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -79,13 +82,6 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.extent.GeographicBoundingBox;
-
-import com.sun.media.imageioimpl.common.BogusColorSpace;
-import com.sun.media.jai.operator.ImageReadDescriptor;
-import com.sun.media.jai.util.Rational;
-
-import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 
 /**
  * A set of static methods working on images. Some of those methods are useful, but not really

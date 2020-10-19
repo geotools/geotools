@@ -17,11 +17,13 @@
 package org.geotools.filter.text.ecql;
 
 import static java.util.Calendar.FEBRUARY;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
 import org.geotools.filter.AndImpl;
 import org.geotools.filter.NotImpl;
 import org.geotools.filter.text.commons.CompilerUtil;

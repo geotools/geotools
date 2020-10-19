@@ -21,7 +21,6 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.geotools.image.palette.ColorMap.ColorEntry;
 import org.junit.Test;
 

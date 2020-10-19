@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.awt.Transparency;
 import java.awt.image.IndexColorModel;
-
 import org.geotools.image.util.ColorUtilities;
 import org.junit.Test;
 

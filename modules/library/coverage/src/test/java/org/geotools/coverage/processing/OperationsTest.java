@@ -21,18 +21,15 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import it.geosolutions.jaiext.JAIExt;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
-
 import javax.media.jai.OperationNode;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverage;
-
-import it.geosolutions.jaiext.JAIExt;
 
 /**
  * Tests JAI operation wrapped as {@link OperatorJAI}.

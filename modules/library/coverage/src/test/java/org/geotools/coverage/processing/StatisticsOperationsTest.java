@@ -23,9 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
-
 import javax.media.jai.RasterFactory;
-
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;

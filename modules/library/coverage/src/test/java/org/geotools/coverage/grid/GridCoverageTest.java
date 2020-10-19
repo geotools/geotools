@@ -25,9 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.InetAddress;
-
 import javax.imageio.ImageReadParam;
-
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Before;

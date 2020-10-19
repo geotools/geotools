@@ -20,10 +20,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.awt.image.RenderedImage;
-
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.junit.Before;

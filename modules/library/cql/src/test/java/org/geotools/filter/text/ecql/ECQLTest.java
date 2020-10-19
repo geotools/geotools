@@ -19,8 +19,9 @@ package org.geotools.filter.text.ecql;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;

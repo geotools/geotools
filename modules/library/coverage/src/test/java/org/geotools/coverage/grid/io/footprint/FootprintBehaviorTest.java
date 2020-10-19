@@ -30,9 +30,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.media.jai.ROI;
-
 import org.geotools.image.ImageWorker;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;

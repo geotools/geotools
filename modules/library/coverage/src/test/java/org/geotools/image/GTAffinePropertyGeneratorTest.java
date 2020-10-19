@@ -20,11 +20,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-
 import javax.media.jai.Interpolation;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.AffineDescriptor;
-
 import org.junit.Test;
 
 public class GTAffinePropertyGeneratorTest {

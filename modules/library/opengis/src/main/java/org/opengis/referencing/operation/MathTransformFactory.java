@@ -16,13 +16,13 @@ import java.util.Set;
 
 import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
-// Contains some import for javadoc.
+
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.Factory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchIdentifierException;
-// Contains some import for javadoc.
+
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.cs.CoordinateSystem;

@@ -16,7 +16,7 @@
  */
 package org.geotools.util.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.awt.RenderingHints;
 import java.util.Collections;

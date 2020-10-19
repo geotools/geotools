@@ -16,9 +16,9 @@
  */
 package org.geotools.metadata.math;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link org.geotools.metadata.math.Fraction} class.

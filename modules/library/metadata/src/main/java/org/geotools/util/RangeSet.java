@@ -16,7 +16,15 @@
  */
 package org.geotools.util;
 
-import static org.geotools.util.Classes.*;
+import static org.geotools.util.Classes.BYTE;
+import static org.geotools.util.Classes.CHARACTER;
+import static org.geotools.util.Classes.DOUBLE;
+import static org.geotools.util.Classes.FLOAT;
+import static org.geotools.util.Classes.INTEGER;
+import static org.geotools.util.Classes.LONG;
+import static org.geotools.util.Classes.SHORT;
+import static org.geotools.util.Classes.getEnumConstant;
+import static org.geotools.util.Classes.wrapperToPrimitive;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;

@@ -16,7 +16,12 @@
  */
 package org.geotools.metadata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -24,7 +29,7 @@ import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.metadata.quality.ConformanceResult;
 
 /**

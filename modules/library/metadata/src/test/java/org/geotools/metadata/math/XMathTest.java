@@ -16,12 +16,17 @@
  */
 package org.geotools.metadata.math;
 
-import static org.geotools.metadata.math.XMath.*;
-import static org.junit.Assert.*;
+import static org.geotools.metadata.math.XMath.countDecimalFractionDigits;
+import static org.geotools.metadata.math.XMath.divisors;
+import static org.geotools.metadata.math.XMath.pow10;
+import static org.geotools.metadata.math.XMath.primeNumber;
+import static org.geotools.metadata.math.XMath.trimDecimalFractionDigits;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import org.geotools.util.XArray;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link org.geotools.metadata.math.XMath} static methods.

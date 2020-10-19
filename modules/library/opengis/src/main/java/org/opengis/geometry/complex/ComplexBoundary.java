@@ -9,7 +9,7 @@
  */
 package org.opengis.geometry.complex;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19107;
 
 import org.opengis.annotation.UML;
 import org.opengis.geometry.Boundary;

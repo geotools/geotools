@@ -9,7 +9,7 @@
  */
 package org.opengis.style;
 
-import javax.swing.Icon;
+import javax.swing.*;
 import org.opengis.annotation.Extension;
 import org.opengis.annotation.XmlElement;
 import org.opengis.metadata.citation.OnLineResource;

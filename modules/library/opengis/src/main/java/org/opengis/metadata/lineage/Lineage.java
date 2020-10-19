@@ -9,9 +9,9 @@
  */
 package org.opengis.metadata.lineage;
 
-import static org.opengis.annotation.ComplianceLevel.*;
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.ComplianceLevel.CORE;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.Collection;
 import org.opengis.annotation.Profile;

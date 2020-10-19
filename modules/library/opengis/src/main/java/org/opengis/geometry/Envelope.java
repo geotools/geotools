@@ -9,10 +9,10 @@
  */
 package org.opengis.geometry;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Specification.ISO_19107;
 
-import java.awt.geom.Rectangle2D; // Used in @see javadoc tags
+import java.awt.geom.Rectangle2D;
 import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

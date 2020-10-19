@@ -9,8 +9,9 @@
  */
 package org.opengis.style;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Obligation.OPTIONAL;
+import static org.opengis.annotation.Specification.ISO_19117;
 
 import java.util.List;
 import java.util.Set;

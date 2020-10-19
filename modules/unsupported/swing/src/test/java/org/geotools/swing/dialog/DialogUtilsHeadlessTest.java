@@ -40,6 +40,7 @@ public class DialogUtilsHeadlessTest {
     public void getStringReturnsFallbackWhenInputNull() {
         assertEquals("Bar", DialogUtils.getString(null, "Bar"));
     }
+
     @Test
     public void getStringReturnsFallbackWhenInputEmpty() {
         assertEquals("Bar", DialogUtils.getString("", "Bar"));

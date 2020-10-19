@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 
 import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;

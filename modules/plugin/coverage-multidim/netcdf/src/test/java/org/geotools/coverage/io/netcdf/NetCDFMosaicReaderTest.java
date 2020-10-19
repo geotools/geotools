@@ -25,7 +25,8 @@ import static org.hamcrest.Matchers.emptyArray;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
@@ -51,7 +52,7 @@ import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
-import javax.swing.*;
+import javax.swing.JFrame;
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
 import org.apache.commons.io.FileUtils;

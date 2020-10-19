@@ -19,7 +19,8 @@ package org.geotools.gce.imagemosaic.granulecollector;
 
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;

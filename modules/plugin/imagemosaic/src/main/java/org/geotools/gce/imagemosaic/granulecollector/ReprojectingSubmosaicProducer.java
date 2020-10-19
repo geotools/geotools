@@ -19,7 +19,7 @@ package org.geotools.gce.imagemosaic.granulecollector;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;

@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDFontBinding;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 
 /**

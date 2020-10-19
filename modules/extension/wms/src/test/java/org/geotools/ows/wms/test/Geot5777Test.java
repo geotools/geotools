@@ -16,7 +16,7 @@
  */
 package org.geotools.ows.wms.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

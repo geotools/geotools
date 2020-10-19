@@ -16,7 +16,7 @@
  */
 package org.geotools.gml3;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.xsd.SchemaLocationResolver;
 import org.junit.Test;

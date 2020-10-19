@@ -23,7 +23,10 @@ import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
-import org.geotools.ows.wms.request.*;
+import org.geotools.ows.wms.request.AbstractDescribeLayerRequest;
+import org.geotools.ows.wms.request.AbstractGetLegendGraphicRequest;
+import org.geotools.ows.wms.request.DescribeLayerRequest;
+import org.geotools.ows.wms.request.GetLegendGraphicRequest;
 import org.geotools.ows.wms.response.DescribeLayerResponse;
 import org.geotools.ows.wms.response.GetLegendGraphicResponse;
 

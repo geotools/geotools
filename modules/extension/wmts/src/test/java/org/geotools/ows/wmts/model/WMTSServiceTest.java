@@ -14,7 +14,10 @@
 package org.geotools.ows.wmts.model;
 
 import static org.geotools.ows.wmts.WMTSTestUtils.createCapabilities;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.geotools.util.SimpleInternationalString;
 import org.junit.Test;

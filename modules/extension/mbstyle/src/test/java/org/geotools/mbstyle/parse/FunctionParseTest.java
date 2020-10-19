@@ -26,6 +26,10 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+<<<<<<< HEAD
+=======
+import static org.junit.Assert.assertThat;
+>>>>>>> be855a7e34ba6ce71aa606bfc914a2747a3c1103
 
 import java.awt.Color;
 import java.io.IOException;

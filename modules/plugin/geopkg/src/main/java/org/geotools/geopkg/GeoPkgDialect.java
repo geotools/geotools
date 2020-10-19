@@ -196,7 +196,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public void registerSqlTypeNameToClassMappings(Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
+        // preserve SQLite full precision when dealing with a GeoPackage:
+        mappings.put("FLOAT", Double.class);
         mappings.put("DOUBLE", Double.class);
+        mappings.put("REAL", Double.class);
         mappings.put("BOOLEAN", Boolean.class);
         mappings.put("DATE", java.sql.Date.class);
         mappings.put("TIMESTAMP", java.sql.Timestamp.class);
@@ -216,7 +219,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         mappings.put(Short.class, Types.SMALLINT);
         mappings.put(Long.class, Types.BIGINT);
         mappings.put(Integer.class, Types.INTEGER);
-        mappings.put(Double.class, Types.REAL);
+        mappings.put(Float.class, Types.FLOAT);
+        mappings.put(Double.class, Types.DOUBLE);
         mappings.put(Boolean.class, Types.INTEGER);
     }
 
@@ -235,6 +239,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         overrides.put(Types.SMALLINT, "SMALLINT");
         overrides.put(Types.INTEGER, "MEDIUMINT");
         overrides.put(Types.BIGINT, "INTEGER");
+        overrides.put(Types.FLOAT, "FLOAT");
         overrides.put(Types.DOUBLE, "DOUBLE");
         overrides.put(Types.NUMERIC, "NUMERIC");
 

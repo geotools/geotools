@@ -16,7 +16,12 @@
  */
 package org.geotools.data.postgis;
 
-import static org.geotools.data.postgis.PostgisNGDataStoreFactory.*;
+import static org.geotools.data.postgis.PostgisNGDataStoreFactory.ENCODE_FUNCTIONS;
+import static org.geotools.data.postgis.PostgisNGDataStoreFactory.ESTIMATED_EXTENTS;
+import static org.geotools.data.postgis.PostgisNGDataStoreFactory.LOOSEBBOX;
+import static org.geotools.data.postgis.PostgisNGDataStoreFactory.PREPARED_STATEMENTS;
+import static org.geotools.data.postgis.PostgisNGDataStoreFactory.SIMPLIFICATION_METHOD;
+import static org.geotools.data.postgis.PostgisNGDataStoreFactory.SIMPLIFY;
 
 import java.util.Map;
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;

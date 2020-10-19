@@ -17,7 +17,7 @@
 package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BandedSampleModel;
 import java.awt.image.ColorModel;

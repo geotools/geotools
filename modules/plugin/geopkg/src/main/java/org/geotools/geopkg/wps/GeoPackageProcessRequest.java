@@ -16,7 +16,7 @@
  */
 package org.geotools.geopkg.wps;
 
-import java.awt.*;
+import java.awt.Color;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;

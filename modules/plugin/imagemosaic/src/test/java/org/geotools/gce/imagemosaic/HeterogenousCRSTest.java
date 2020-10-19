@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.sun.media.jai.operator.ImageReadDescriptor;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;

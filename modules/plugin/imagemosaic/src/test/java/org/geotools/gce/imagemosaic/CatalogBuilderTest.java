@@ -16,7 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

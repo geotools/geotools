@@ -9,8 +9,7 @@
  */
 package org.opengis.temporal;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19108;
 
 import javax.measure.Unit;
 import org.opengis.annotation.UML;

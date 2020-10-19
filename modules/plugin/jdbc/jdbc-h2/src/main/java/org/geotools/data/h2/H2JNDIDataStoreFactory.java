@@ -16,7 +16,8 @@
  */
 package org.geotools.data.h2;
 
-import static org.geotools.data.h2.H2DataStoreFactory.*;
+import static org.geotools.data.h2.H2DataStoreFactory.ASSOCIATIONS;
+import static org.geotools.data.h2.H2DataStoreFactory.AUTO_SERVER;
 
 import java.io.File;
 import java.util.Map;

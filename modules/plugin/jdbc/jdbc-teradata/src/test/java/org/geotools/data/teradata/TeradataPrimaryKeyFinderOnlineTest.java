@@ -17,7 +17,10 @@
 package org.geotools.data.teradata;
 
 import org.geotools.feature.FeatureIterator;
-import org.geotools.jdbc.*;
+import org.geotools.jdbc.JDBCFeatureStore;
+import org.geotools.jdbc.JDBCPrimaryKeyFinderOnlineTest;
+import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
+import org.geotools.jdbc.NonIncrementingPrimaryKeyColumn;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class TeradataPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineTest {

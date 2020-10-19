@@ -17,7 +17,7 @@
 
 package org.geotools.gce.imagemosaic.properties;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

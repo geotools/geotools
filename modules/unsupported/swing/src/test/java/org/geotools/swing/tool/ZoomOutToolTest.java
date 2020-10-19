@@ -16,7 +16,9 @@
  */
 package org.geotools.swing.tool;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;

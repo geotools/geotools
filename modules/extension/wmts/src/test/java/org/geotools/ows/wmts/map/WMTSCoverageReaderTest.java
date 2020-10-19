@@ -17,15 +17,9 @@
 package org.geotools.ows.wmts.map;
 
 import static org.hamcrest.CoreMatchers.containsString;
-<<<<<<< HEAD
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-=======
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
->>>>>>> be855a7e34ba6ce71aa606bfc914a2747a3c1103
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 

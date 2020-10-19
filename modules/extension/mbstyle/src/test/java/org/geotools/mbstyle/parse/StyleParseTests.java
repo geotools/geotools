@@ -16,10 +16,7 @@
  */
 package org.geotools.mbstyle.parse;
 
-<<<<<<< HEAD
 import static org.hamcrest.MatcherAssert.assertThat;
-=======
->>>>>>> be855a7e34ba6ce71aa606bfc914a2747a3c1103
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;

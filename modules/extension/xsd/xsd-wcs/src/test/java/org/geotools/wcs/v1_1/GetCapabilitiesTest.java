@@ -1,6 +1,6 @@
 package org.geotools.wcs.v1_1;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.List;

@@ -17,7 +17,11 @@
 
 package org.geotools.data.complex;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,7 +49,11 @@ import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
-import org.opengis.feature.type.*;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.ComplexType;
+import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;

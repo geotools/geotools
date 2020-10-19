@@ -17,7 +17,13 @@
 
 package org.geotools.data.complex;
 
-import static org.geotools.data.complex.SweValuesTest.*;
+import static org.geotools.data.complex.SweValuesTest.GML_NS;
+import static org.geotools.data.complex.SweValuesTest.OBSERVATION_FEATURE;
+import static org.geotools.data.complex.SweValuesTest.OM_NS;
+import static org.geotools.data.complex.SweValuesTest.SWE_NS;
+import static org.geotools.data.complex.SweValuesTest.SWE_VALUES_MAPPING;
+import static org.geotools.data.complex.SweValuesTest.XLINK_NS;
+import static org.geotools.data.complex.SweValuesTest.size;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

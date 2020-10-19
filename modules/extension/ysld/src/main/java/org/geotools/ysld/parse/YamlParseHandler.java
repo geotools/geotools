@@ -18,7 +18,6 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.ysld.YamlObject;
-import org.yaml.snakeyaml.events.*;
 
 /**
  * Abstract base class for Yaml parse handlers. See the {@link RootParser} subclass for the

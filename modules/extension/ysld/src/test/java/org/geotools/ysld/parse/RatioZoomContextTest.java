@@ -19,7 +19,7 @@ package org.geotools.ysld.parse;
 
 import static org.geotools.ysld.TestUtils.rangeContains;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;

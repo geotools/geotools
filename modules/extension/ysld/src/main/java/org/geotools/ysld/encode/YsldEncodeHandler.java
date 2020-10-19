@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;

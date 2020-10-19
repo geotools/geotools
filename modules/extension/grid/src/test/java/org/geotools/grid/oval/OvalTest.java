@@ -17,7 +17,9 @@
 
 package org.geotools.grid.oval;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.grid.PolygonElement;
 import org.geotools.grid.TestBase;

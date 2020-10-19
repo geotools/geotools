@@ -1,8 +1,14 @@
 package org.geotools.xsd.impl;
 
-import static org.easymock.EasyMock.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.anyInt;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.reset;
+import static org.easymock.EasyMock.verify;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.io.InputStream;

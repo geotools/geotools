@@ -18,7 +18,7 @@ package org.geotools.mbstyle.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import java.awt.*;
+import java.awt.Color;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;

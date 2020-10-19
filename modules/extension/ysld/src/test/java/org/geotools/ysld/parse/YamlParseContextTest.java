@@ -22,7 +22,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.geotools.ysld.YamlObject;
 import org.junit.Test;

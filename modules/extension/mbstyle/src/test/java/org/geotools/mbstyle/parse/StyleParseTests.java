@@ -16,15 +16,30 @@
  */
 package org.geotools.mbstyle.parse;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.Arrays;
-import org.geotools.mbstyle.*;
-import org.geotools.mbstyle.layer.*;
-import org.geotools.mbstyle.layer.SymbolMBLayer.*;
+import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.MapboxTestUtils;
+import org.geotools.mbstyle.layer.BackgroundMBLayer;
+import org.geotools.mbstyle.layer.FillMBLayer;
+import org.geotools.mbstyle.layer.LineMBLayer;
+import org.geotools.mbstyle.layer.MBLayer;
+import org.geotools.mbstyle.layer.RasterMBLayer;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
+import org.geotools.mbstyle.layer.SymbolMBLayer.Alignment;
+import org.geotools.mbstyle.layer.SymbolMBLayer.IconTextFit;
+import org.geotools.mbstyle.layer.SymbolMBLayer.Justification;
+import org.geotools.mbstyle.layer.SymbolMBLayer.SymbolPlacement;
+import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
+import org.geotools.mbstyle.layer.SymbolMBLayer.TextTransform;
+import org.geotools.mbstyle.layer.SymbolMBLayer.TranslateAnchor;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;

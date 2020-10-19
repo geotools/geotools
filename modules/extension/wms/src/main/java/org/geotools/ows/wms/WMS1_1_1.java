@@ -23,7 +23,10 @@ import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
-import org.geotools.ows.wms.request.*;
+import org.geotools.ows.wms.request.AbstractGetStylesRequest;
+import org.geotools.ows.wms.request.AbstractPutStylesRequest;
+import org.geotools.ows.wms.request.GetStylesRequest;
+import org.geotools.ows.wms.request.PutStylesRequest;
 import org.geotools.ows.wms.response.GetStylesResponse;
 import org.geotools.ows.wms.response.PutStylesResponse;
 

@@ -23,7 +23,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;

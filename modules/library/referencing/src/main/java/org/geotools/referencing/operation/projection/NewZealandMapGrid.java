@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;

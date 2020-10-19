@@ -16,10 +16,10 @@
  */
 package org.geotools.referencing.operation.matrix;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.geom.AffineTransform;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests {@link XAffineTransform} static methods.

@@ -16,7 +16,13 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.acos;
+import static java.lang.Math.asin;
+import static java.lang.Math.cos;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.tan;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;

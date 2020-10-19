@@ -16,13 +16,14 @@
  */
 package org.geotools.image.palette;
 
-import static org.geotools.image.palette.ColorUtils.*;
+import static org.geotools.image.palette.ColorUtils.color;
 
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
+
 import org.geotools.image.palette.ColorMap.ColorEntry;
 import org.geotools.util.logging.Logging;
 

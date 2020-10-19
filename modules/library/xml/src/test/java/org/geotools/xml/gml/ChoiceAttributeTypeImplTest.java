@@ -16,7 +16,7 @@
  */
 package org.geotools.xml.gml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.feature.NameImpl;
 import org.junit.Test;

@@ -16,7 +16,12 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -30,12 +35,14 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
+
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
+
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GeneralGridEnvelope;

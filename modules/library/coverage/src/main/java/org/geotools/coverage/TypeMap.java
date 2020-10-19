@@ -16,7 +16,17 @@
  */
 package org.geotools.coverage;
 
-import static org.opengis.coverage.SampleDimensionType.*;
+import static org.opengis.coverage.SampleDimensionType.REAL_32BITS;
+import static org.opengis.coverage.SampleDimensionType.REAL_64BITS;
+import static org.opengis.coverage.SampleDimensionType.SIGNED_16BITS;
+import static org.opengis.coverage.SampleDimensionType.SIGNED_32BITS;
+import static org.opengis.coverage.SampleDimensionType.SIGNED_8BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_16BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_1BIT;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_2BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_32BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_4BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_8BITS;
 
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
@@ -26,6 +36,7 @@ import java.awt.image.SampleModel;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;

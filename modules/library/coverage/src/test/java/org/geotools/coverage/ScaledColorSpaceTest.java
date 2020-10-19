@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
@@ -26,8 +26,10 @@ import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.util.Random;
+
 import org.geotools.coverage.grid.Viewer;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests the {@link ScaledColorSpace} implementation. This is a visual test when run from the

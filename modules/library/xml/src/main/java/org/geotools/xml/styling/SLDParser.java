@@ -16,7 +16,8 @@
  */
 package org.geotools.xml.styling;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -31,7 +32,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.Base64;

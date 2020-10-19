@@ -16,12 +16,16 @@
  */
 package org.geotools.coverage.grid;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.round;
 
 import java.awt.image.DataBuffer;
 import java.util.Arrays;
 import java.util.Map;
+
 import javax.media.jai.LookupTableJAI;
+
 import org.geotools.util.WeakValueHashMap;
 import org.opengis.referencing.operation.MathTransform1D;
 import org.opengis.referencing.operation.TransformException;

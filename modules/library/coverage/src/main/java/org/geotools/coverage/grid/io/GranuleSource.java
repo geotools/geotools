@@ -16,10 +16,11 @@
  */
 package org.geotools.coverage.grid.io;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
+
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;

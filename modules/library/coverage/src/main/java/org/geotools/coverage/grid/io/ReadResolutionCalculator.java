@@ -16,10 +16,11 @@
  */
 package org.geotools.coverage.grid.io;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataSourceException;

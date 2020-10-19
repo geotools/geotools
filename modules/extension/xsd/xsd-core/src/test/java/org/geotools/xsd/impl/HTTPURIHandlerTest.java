@@ -8,11 +8,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.hamcrest.CoreMatchers.is;
-<<<<<<< HEAD
 import static org.hamcrest.MatcherAssert.assertThat;
-=======
-import static org.junit.Assert.assertThat;
->>>>>>> be855a7e34ba6ce71aa606bfc914a2747a3c1103
 
 import java.io.IOException;
 import java.io.InputStream;

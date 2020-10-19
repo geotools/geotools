@@ -16,10 +16,9 @@
  */
 package org.geotools.image.palette;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.jaiext.colorindexer.ColorIndexer;
-import it.geosolutions.jaiext.colorindexer.Quantizer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -27,10 +26,15 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+
 import javax.media.jai.PlanarImage;
+
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.junit.Test;
+
+import it.geosolutions.jaiext.colorindexer.ColorIndexer;
+import it.geosolutions.jaiext.colorindexer.Quantizer;
 
 public class QuantizerTest {
 

@@ -16,23 +16,29 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.Map;
+
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
+
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
+
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
 
 /**
  * Tests the scale operation.

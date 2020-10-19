@@ -16,15 +16,22 @@
  */
 package org.geotools.coverage.grid;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.InetAddress;
+
 import javax.imageio.ImageReadParam;
+
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 

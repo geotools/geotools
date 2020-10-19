@@ -16,29 +16,12 @@
  */
 package org.geotools.image;
 
-import com.sun.media.imageioimpl.common.BogusColorSpace;
-import com.sun.media.imageioimpl.common.PackageUtil;
-import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
-import com.sun.media.jai.util.ImageUtil;
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
-import it.geosolutions.jaiext.classifier.ColorMapTransform;
-import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
-import it.geosolutions.jaiext.colorindexer.ColorIndexer;
-import it.geosolutions.jaiext.lookup.LookupTable;
-import it.geosolutions.jaiext.lookup.LookupTableFactory;
-import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.rlookup.RangeLookupTable;
-import it.geosolutions.jaiext.stats.HistogramWrapper;
-import it.geosolutions.jaiext.stats.Statistics;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -66,6 +49,7 @@ import java.util.Locale;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.IIOException;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -101,17 +85,28 @@ import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.WarpGrid;
 import javax.media.jai.operator.AddDescriptor;
+import javax.media.jai.operator.BandCombineDescriptor;
+import javax.media.jai.operator.BandSelectDescriptor;
+import javax.media.jai.operator.BinarizeDescriptor;
+import javax.media.jai.operator.ColorConvertDescriptor;
 import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.operator.ErrorDiffusionDescriptor;
 import javax.media.jai.operator.ExtremaDescriptor;
+import javax.media.jai.operator.FormatDescriptor;
 import javax.media.jai.operator.HistogramDescriptor;
 import javax.media.jai.operator.InvertDescriptor;
+import javax.media.jai.operator.LookupDescriptor;
 import javax.media.jai.operator.MeanDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 import javax.media.jai.operator.MosaicType;
 import javax.media.jai.operator.MultiplyConstDescriptor;
+import javax.media.jai.operator.MultiplyDescriptor;
+import javax.media.jai.operator.OrderedDitherDescriptor;
+import javax.media.jai.operator.RescaleDescriptor;
 import javax.media.jai.operator.SubtractDescriptor;
 import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
+
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.image.io.ImageIOExt;
@@ -130,6 +125,30 @@ import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
+
+import com.sun.media.imageioimpl.common.BogusColorSpace;
+import com.sun.media.imageioimpl.common.PackageUtil;
+import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
+import com.sun.media.jai.util.ImageUtil;
+
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
+import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
+import it.geosolutions.jaiext.classifier.ColorMapTransform;
+import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
+import it.geosolutions.jaiext.colorindexer.ColorIndexer;
+import it.geosolutions.jaiext.lookup.LookupTable;
+import it.geosolutions.jaiext.lookup.LookupTableFactory;
+import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
+import it.geosolutions.jaiext.rlookup.RangeLookupTable;
+import it.geosolutions.jaiext.stats.HistogramWrapper;
+import it.geosolutions.jaiext.stats.Statistics;
+import it.geosolutions.jaiext.stats.Statistics.StatsType;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 
 /**
  * Helper methods for applying JAI operations on an image. The image is specified at {@linkplain

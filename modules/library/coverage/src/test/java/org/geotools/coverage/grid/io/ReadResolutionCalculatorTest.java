@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.grid.io;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;

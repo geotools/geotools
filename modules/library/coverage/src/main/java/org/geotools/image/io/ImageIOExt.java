@@ -16,8 +16,7 @@
  */
 package org.geotools.image.io;
 
-import com.sun.media.imageioimpl.common.PackageUtil;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;
@@ -28,6 +27,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -40,12 +40,15 @@ import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.PlanarImage;
+
 import org.geotools.image.ImageWorker;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.sun.media.imageioimpl.common.PackageUtil;
 
 /**
  * Provides an alternative source of image input and output streams that uses optimized behavior.

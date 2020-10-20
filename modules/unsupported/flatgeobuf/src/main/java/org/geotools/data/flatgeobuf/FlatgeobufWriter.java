@@ -18,7 +18,6 @@ package org.geotools.data.flatgeobuf;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.wololo.flatgeobuf.geotools.FeatureConversions;

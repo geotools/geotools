@@ -24,13 +24,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeVersion;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.geotools.arcsde.data.ArcSDEDataStore;
 import org.geotools.arcsde.data.ArcSDEDataStoreConfig;
 import org.geotools.arcsde.data.ArcSDEDataStoreFactory;
@@ -48,9 +49,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeVersion;
 
 /**
  * Test suite for {@link ArcSDEDataStoreFactory}

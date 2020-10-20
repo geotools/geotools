@@ -18,12 +18,12 @@ package org.geotools.data.flatgeobuf;
 
 import static com.google.flatbuffers.Constants.SIZE_PREFIX_LENGTH;
 
+import com.google.flatbuffers.ByteBufferUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -31,8 +31,6 @@ import org.wololo.flatgeobuf.generated.Feature;
 import org.wololo.flatgeobuf.geotools.FeatureConversions;
 import org.wololo.flatgeobuf.geotools.FeatureTypeConversions;
 import org.wololo.flatgeobuf.geotools.HeaderMeta;
-
-import com.google.flatbuffers.ByteBufferUtil;
 
 public class FlatgeobufReader {
 

@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataAccessFactory;
 import org.geotools.data.DataStore;
 import org.junit.Rule;

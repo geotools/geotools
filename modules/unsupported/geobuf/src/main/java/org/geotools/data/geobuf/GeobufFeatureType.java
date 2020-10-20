@@ -19,7 +19,6 @@ package org.geotools.data.geobuf;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;

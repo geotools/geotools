@@ -24,12 +24,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.esri.sde.sdk.client.SeException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;
 import org.geotools.arcsde.session.UnavailableConnectionException;
@@ -54,8 +54,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.FilterFactory;
 
-import com.esri.sde.sdk.client.SeException;
-
 /**
  * ArcSDEDAtaStore test cases
  *
@@ -63,8 +61,8 @@ import com.esri.sde.sdk.client.SeException;
  */
 public class ArcSDEDataStoreTest {
     /** package logger */
-    private static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(ArcSDEDataStoreTest.class);
+    private static Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(ArcSDEDataStoreTest.class);
 
     private static TestData testData;
 
@@ -90,8 +88,8 @@ public class ArcSDEDataStoreTest {
     }
 
     /**
-     * loads {@code testData/testparams.properties} into a Properties object, wich is used to obtain test tables names and is used as parameter to
-     * find the DataStore
+     * loads {@code testData/testparams.properties} into a Properties object, wich is used to obtain
+     * test tables names and is used as parameter to find the DataStore
      */
     @Before
     public void setUp() throws Exception {
@@ -167,8 +165,9 @@ public class ArcSDEDataStoreTest {
     }
 
     /**
-     * test that a ArcSDEDataStore that connects to de configured test database contains the tables defined by the parameters "point_table",
-     * "line_table" and "polygon_table", wether ot not they're defined as single table names or as full qualified sde table names (i.e.
+     * test that a ArcSDEDataStore that connects to de configured test database contains the tables
+     * defined by the parameters "point_table", "line_table" and "polygon_table", wether ot not
+     * they're defined as single table names or as full qualified sde table names (i.e.
      * SDE.SDE.TEST_POINT)
      */
     @Test
@@ -194,8 +193,8 @@ public class ArcSDEDataStoreTest {
         assertEquals(TEST_TABLE_COLS.length, schema.getAttributeCount());
 
         for (int i = 0; i < TEST_TABLE_COLS.length; i++) {
-            assertEquals("at index" + i, TEST_TABLE_COLS[i],
-                    schema.getDescriptor(i).getLocalName());
+            assertEquals(
+                    "at index" + i, TEST_TABLE_COLS[i], schema.getDescriptor(i).getLocalName());
         }
         assertFalse(schema.getDescriptor(0).isNillable());
         assertTrue(schema.getDescriptor(1).isNillable());
@@ -204,11 +203,12 @@ public class ArcSDEDataStoreTest {
     /**
      * Tests the creation of new feature types, with CRS and all.
      *
-     * <p>
-     * This test also ensures that the arcsde datastore is able of creating schemas where the geometry attribute is not the last one. This is
-     * important since to do so, the ArcSDE datastore must break the usual way of creating schemas with the ArcSDE Java API, in which one first
-     * creates the (non spatially enabled) "table" with all the non spatial attributes and finally creates the "layer", adding the spatial attribute
-     * to the previously created table. So, this test ensures the datastore correctly works arround this limitation.
+     * <p>This test also ensures that the arcsde datastore is able of creating schemas where the
+     * geometry attribute is not the last one. This is important since to do so, the ArcSDE
+     * datastore must break the usual way of creating schemas with the ArcSDE Java API, in which one
+     * first creates the (non spatially enabled) "table" with all the non spatial attributes and
+     * finally creates the "layer", adding the spatial attribute to the previously created table.
+     * So, this test ensures the datastore correctly works arround this limitation.
      */
     @Test
     public void testCreateSchema()
@@ -272,7 +272,8 @@ public class ArcSDEDataStoreTest {
 
     /**
      * checks for the existence of <code>table</code> in <code>featureTypes</code>. <code>table
-     * </code> must be a full qualified sde feature type name. (i.e "TEST_POINT" == "SDE.SDE.TEST_POINT")
+     * </code> must be a full qualified sde feature type name. (i.e "TEST_POINT" ==
+     * "SDE.SDE.TEST_POINT")
      */
     private void testTypeExists(String[] featureTypes, String table) {
         for (int i = 0; i < featureTypes.length; i++) {

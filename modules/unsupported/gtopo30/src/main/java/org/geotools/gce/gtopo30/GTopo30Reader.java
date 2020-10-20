@@ -17,6 +17,9 @@
  */
 package org.geotools.gce.gtopo30;
 
+import com.sun.media.imageio.stream.RawImageInputStream;
+import com.sun.media.imageioimpl.plugins.raw.RawImageReader;
+import com.sun.media.imageioimpl.plugins.raw.RawImageReaderSpi;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -40,7 +43,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageTypeSpecifier;
@@ -50,7 +52,6 @@ import javax.measure.quantity.Length;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
-
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -87,11 +88,6 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.TransformException;
-
-import com.sun.media.imageio.stream.RawImageInputStream;
-import com.sun.media.imageioimpl.plugins.raw.RawImageReader;
-import com.sun.media.imageioimpl.plugins.raw.RawImageReaderSpi;
-
 import si.uom.SI;
 
 /**

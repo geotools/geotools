@@ -351,7 +351,6 @@ public class SLDs extends SLD {
      * Converts the type name of all FeatureTypeStyles to Feature so that the all apply to any
      * feature type. This is admittedly dangerous but is extremely useful because it means that the
      * style can be used with any feature type.
-     *
      */
     private static void genericizeftStyles(List<FeatureTypeStyle> ftStyles) {
         for (FeatureTypeStyle featureTypeStyle : ftStyles) {

@@ -141,7 +141,7 @@ public class ArcSDEDataStoreVersioningTest {
 
     @Test
     public void testMultiVersionSupportTransaction() throws IOException {
-        try(DefaultTransaction transaction = new DefaultTransaction()){
+        try (DefaultTransaction transaction = new DefaultTransaction()) {
             testMultiVersionSupport(transaction);
         }
     }

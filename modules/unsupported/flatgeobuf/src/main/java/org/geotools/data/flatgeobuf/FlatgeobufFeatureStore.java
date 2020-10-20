@@ -17,7 +17,6 @@
 package org.geotools.data.flatgeobuf;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;

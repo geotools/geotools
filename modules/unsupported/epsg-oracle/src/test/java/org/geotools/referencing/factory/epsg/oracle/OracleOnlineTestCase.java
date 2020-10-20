@@ -65,7 +65,6 @@ public class OracleOnlineTestCase extends OnlineTestCase {
      *
      * <p>Subclasses can override to wrap this DataSource, or make use of an alternate
      * Implementation as required.
-     *
      */
     protected DataSource connect(String user, String password, String url, Properties params)
             throws SQLException {

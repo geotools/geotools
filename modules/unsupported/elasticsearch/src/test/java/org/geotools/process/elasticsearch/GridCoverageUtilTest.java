@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 import java.awt.geom.Point2D;
 import java.awt.image.RenderedImage;
 import java.util.stream.IntStream;
-
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;

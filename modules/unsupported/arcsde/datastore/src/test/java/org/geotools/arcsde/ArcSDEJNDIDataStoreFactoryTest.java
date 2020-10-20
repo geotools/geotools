@@ -30,11 +30,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
 import org.geotools.arcsde.data.ArcSDEDataStore;
 import org.geotools.arcsde.data.ArcSDEDataStoreFactory;
 import org.geotools.arcsde.data.ArcSDEJNDIDataStoreFactory;
@@ -160,8 +158,8 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put(ArcSDEJNDIDataStoreFactory.JNDI_REFNAME.key, jndiRef);
 
-        try(ISessionPool pool = testData.getConnectionPool()){
-       
+        try (ISessionPool pool = testData.getConnectionPool()) {
+
             InitialContext initialContext = GeoTools.getInitialContext(GeoTools.getDefaultHints());
             initialContext.bind(jndiRef, pool);
             assertNotNull(initialContext.lookup(jndiRef));

@@ -16,15 +16,10 @@
  */
 package org.geotools.s3.cache;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.geotools.s3.S3Connector;
-import org.geotools.util.logging.Logging;
-
-import com.google.common.annotations.VisibleForTesting;
-
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.config.CacheConfiguration;
@@ -33,6 +28,8 @@ import net.sf.ehcache.config.ConfigurationFactory;
 import net.sf.ehcache.config.DiskStoreConfiguration;
 import net.sf.ehcache.config.PersistenceConfiguration;
 import net.sf.ehcache.constructs.blocking.SelfPopulatingCache;
+import org.geotools.s3.S3Connector;
+import org.geotools.util.logging.Logging;
 
 /** Very basic EhCache handling */
 public enum CacheManagement {

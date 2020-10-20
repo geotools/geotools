@@ -16,14 +16,14 @@
  */
 package org.geotools.data.georest;
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Polygon;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.ExcludeFilter;
@@ -62,7 +62,6 @@ import org.opengis.filter.spatial.Within;
  * This can be handy in unit tests.
  *
  * @author Pieter De Graef
-
  */
 public class GeoRestFilterVisitor implements FilterVisitor {
 

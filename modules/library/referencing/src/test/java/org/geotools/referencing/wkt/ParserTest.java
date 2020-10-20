@@ -25,13 +25,16 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.ScriptRunner;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
+import org.geotools.referencing.operation.projection.CylindricalEqualArea;
 import org.geotools.test.TestData;
 import org.junit.*;
+import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -39,6 +42,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransformFactory;
 
 /**
  * Tests the WKT {@link Parser} implementation.
@@ -319,6 +323,36 @@ public final class ParserTest {
         final Parser parser = new Parser();
         CoordinateReferenceSystem check = parser.parseCoordinateReferenceSystem(wkt);
         assertEquals(wkt, check.toWKT());
+    }
+
+    @Test
+    public void testCylindricalEqualAreaStandardParallel() throws FactoryException {
+        MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
+        CylindricalEqualArea.LambertCylindricalEqualAreaProvider
+                lambertCylindricalEqualAreaProvider =
+                        new CylindricalEqualArea.LambertCylindricalEqualAreaProvider();
+        DefaultMathTransformFactory factory = new DefaultMathTransformFactory();
+
+        ParameterDescriptorGroup parameterDescriptorGroup =
+                lambertCylindricalEqualAreaProvider.getParameters();
+        ParameterValueGroup parameters = parameterDescriptorGroup.createValue();
+        final double majorAxis = 6.3712e+6;
+        final double minorAxis = 6.3712e+6;
+        parameters.parameter("semi_major").setValue(majorAxis);
+        parameters.parameter("semi_minor").setValue(minorAxis);
+        parameters.parameter("longitude_of_origin").setValue(25.0);
+        parameters.parameter("standard_parallel_1").setValue(22.2);
+        parameters.parameter("false_easting").setValue(0.0);
+        parameters.parameter("false_northing").setValue(0.0);
+        GeographicCRS base = DefaultGeographicCRS.WGS84;
+        MathTransform mt = factory.createParameterizedTransform(parameters);
+        CartesianCS cs = DefaultCartesianCS.PROJECTED;
+        CoordinateReferenceSystem crs =
+                new DefaultProjectedCRS("Cylindrical_Equal_Area", base, mt, cs);
+
+        final String wkt = crs.toWKT();
+        assertTrue(wkt.contains("standard_parallel_1"));
+        assertTrue(wkt.contains("22.2"));
     }
 
     /** Tests parsing of math transforms. */

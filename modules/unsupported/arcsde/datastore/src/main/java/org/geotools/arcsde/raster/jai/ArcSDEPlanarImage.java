@@ -17,7 +17,7 @@
 package org.geotools.arcsde.raster.jai;
 
 import com.sun.media.jai.util.ImageUtil;
-import java.awt.*;
+import java.awt.Point;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;

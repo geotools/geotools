@@ -17,8 +17,8 @@
 package org.geotools.gce.gtopo30;
 
 // J2SE dependencies
-
-import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
@@ -30,6 +30,7 @@ import java.awt.image.renderable.ParameterBlock;
 import java.awt.image.renderable.RenderedImageFactory;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+
 import javax.media.jai.CRIFImpl;
 import javax.media.jai.ComponentSampleModelJAI;
 import javax.media.jai.ImageLayout;
@@ -41,6 +42,7 @@ import javax.media.jai.PointOpImage;
 import javax.media.jai.iterator.RectIterFactory;
 import javax.media.jai.iterator.WritableRectIter;
 import javax.media.jai.registry.RenderedRegistryMode;
+
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.AbstractGridCoverage;
 import org.geotools.image.TransfertRectIter;

@@ -17,8 +17,7 @@
  */
 package org.geotools.gce.gtopo30;
 
-import it.geosolutions.jaiext.lookup.LookupTable;
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -37,6 +36,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 import javax.imageio.ImageWriteParam;
 import javax.imageio.stream.ImageOutputStream;
 import javax.media.jai.Histogram;
@@ -46,6 +46,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.LookupTableJAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
+
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
@@ -77,6 +78,8 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.MathTransform1D;
 import org.opengis.referencing.operation.TransformException;
+
+import it.geosolutions.jaiext.lookup.LookupTable;
 
 /**
  * Class used for encoding a {@link GridCoverage2D} into a GTOPO30 file.

@@ -17,13 +17,15 @@
 package org.geotools.data.elasticsearch;
 
 import static org.geotools.geometry.jts.ReferencedEnvelope.EVERYTHING;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableMap;
 
 public class GeohashUtilTest {
 

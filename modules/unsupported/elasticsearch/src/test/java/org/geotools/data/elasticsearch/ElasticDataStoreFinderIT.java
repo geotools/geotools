@@ -16,10 +16,12 @@
  */
 package org.geotools.data.elasticsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -27,10 +29,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.Node;
 import org.geotools.data.DataStore;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 public class ElasticDataStoreFinderIT extends ElasticTestSupport {
 

@@ -16,16 +16,18 @@
  */
 package org.geotools.data.elasticsearch;
 
-import com.github.davidmoten.geo.GeoHash;
-import com.github.davidmoten.geo.LatLong;
 import java.awt.geom.Point2D;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.geotools.referencing.GeodeticCalculator;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.util.logging.Logging;
@@ -38,6 +40,9 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
+
+import com.github.davidmoten.geo.GeoHash;
+import com.github.davidmoten.geo.LatLong;
 
 /**
  * Utilities for parsing Elasticsearch document source and field content to extract values and

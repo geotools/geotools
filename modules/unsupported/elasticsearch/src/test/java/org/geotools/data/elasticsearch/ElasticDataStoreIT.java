@@ -16,17 +16,20 @@
  */
 package org.geotools.data.elasticsearch;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.any;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.StatusLine;
@@ -37,6 +40,8 @@ import org.geotools.data.DataStore;
 import org.geotools.data.store.ContentFeatureSource;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
+
+import com.google.common.collect.ImmutableMap;
 
 public class ElasticDataStoreIT extends ElasticTestSupport {
 

@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.grid.io.imageio;
 
+import it.geosolutions.imageio.core.SourceSPIProvider;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import java.awt.Rectangle;
@@ -46,18 +47,19 @@ import org.geotools.util.URLs;
  */
 public class MaskOverviewProvider {
 
+    private static final boolean DEFAULT_SKIP_EXTERNAL_FILES_LOOKUP =
+            ImageIOUtilities.isSkipExternalFilesLookup();
+
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(MaskOverviewProvider.class);
 
     public static final String OVR_EXTENSION = ".ovr";
 
-    private ImageReaderSpi readerSpi;
-
     private ImageReaderSpi overviewReaderSpi;
 
-    private ImageInputStreamSpi streamSpi;
-
     private ImageInputStreamSpi overviewStreamSpi;
+
+    private SourceSPIProvider sourceSpiProvider;
 
     private DatasetLayout layout;
 
@@ -104,42 +106,49 @@ public class MaskOverviewProvider {
         this(layout, inputFile, new SpiHelper(URLs.fileToUrl(inputFile), suggestedSPI));
     }
 
-    public MaskOverviewProvider(DatasetLayout layout, URL inputFile) throws IOException {
-        this(layout, inputFile, (ImageReaderSpi) null);
+    public MaskOverviewProvider(DatasetLayout layout, URL inputUrl) throws IOException {
+        this(layout, inputUrl, (ImageReaderSpi) null);
     }
 
-    public MaskOverviewProvider(DatasetLayout layout, URL inputFile, ImageReaderSpi suggestedSPI)
+    public MaskOverviewProvider(DatasetLayout layout, URL inputUrl, ImageReaderSpi suggestedSPI)
             throws IOException {
-        this(layout, inputFile, new SpiHelper(inputFile, suggestedSPI));
+        this(
+                layout,
+                inputUrl,
+                new SpiHelper(inputUrl, suggestedSPI),
+                DEFAULT_SKIP_EXTERNAL_FILES_LOOKUP);
     }
 
-    public MaskOverviewProvider(DatasetLayout layout, File inputFile, SpiHelper spiProvider)
+    public MaskOverviewProvider(DatasetLayout layout, File inputFile, SpiHelper spiHelper)
             throws IOException {
-        this(layout, URLs.fileToUrl(inputFile), spiProvider);
+        this(layout, URLs.fileToUrl(inputFile), spiHelper, DEFAULT_SKIP_EXTERNAL_FILES_LOOKUP);
     }
 
-    public MaskOverviewProvider(DatasetLayout layout, URL inputFile, SpiHelper spiProvider)
+    public MaskOverviewProvider(DatasetLayout layout, URL inputUrl, SpiHelper spiHelper)
             throws IOException {
-        ImageReaderSpi suggestedSPI = spiProvider.getSuggestedSpi();
-        ImageInputStreamSpi suggestedStreamSPI = spiProvider.getSuggestedStreamSpi();
-        readerSpi = spiProvider.getReaderSpi();
-        streamSpi = spiProvider.getStreamSpi();
-        this.fileURL = spiProvider.getFileURL();
+        this(layout, inputUrl, spiHelper, DEFAULT_SKIP_EXTERNAL_FILES_LOOKUP);
+    }
+
+    public MaskOverviewProvider(
+            DatasetLayout layout, URL inputFile, SpiHelper spiHelper, boolean skipExternalLookup)
+            throws IOException {
+
+        sourceSpiProvider = spiHelper.getSourceSpiProvider();
+        ImageReaderSpi readerSpi = sourceSpiProvider.getReaderSpi();
+        ImageInputStreamSpi streamSpi = sourceSpiProvider.getStreamSpi();
+        this.fileURL = (URL) sourceSpiProvider.getSource();
         this.layout = layout;
 
         // Handling Overviews
         hasDatasetLayout = layout != null;
         boolean hasExternalOverviews = false;
-        if (!ImageIOUtilities.isSkipExternalFilesLookup()) {
+        if (!skipExternalLookup) {
             ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
             if (hasDatasetLayout && layout.getExternalOverviews() != null) {
                 ovrURL = URLs.fileToUrl(layout.getExternalOverviews());
             }
             // Creating overview file URL
-            overviewStreamSpi =
-                    suggestedStreamSPI == null
-                            ? getInputStreamSPIFromURL(ovrURL)
-                            : suggestedStreamSPI;
+            overviewStreamSpi = streamSpi == null ? getInputStreamSPIFromURL(ovrURL) : streamSpi;
             ImageInputStream ovrStream = null;
             try {
                 ovrStream =
@@ -177,9 +186,9 @@ public class MaskOverviewProvider {
             // layout.getNumExternalOverviews() may return -1 when no external file is present
             numExternalOverviews =
                     layout.getNumExternalOverviews() > 0 ? layout.getNumExternalOverviews() : 0;
-        } else if (!spiProvider.isMultidim()) {
+        } else if (!spiHelper.isMultidim()) {
             // Reading image number
-            numInternalOverviews = getNumOverviews(inputFile, this.streamSpi, this.readerSpi);
+            numInternalOverviews = getNumOverviews(inputFile, streamSpi, readerSpi);
             numExternalOverviews = 0;
             if (hasExternalOverviews) {
                 // adding +1 since the base level of the external overview is an overview in itself
@@ -214,7 +223,7 @@ public class MaskOverviewProvider {
                     maskStream =
                             maskStreamSpi.createInputStreamInstance(
                                     maskURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-                    maskReaderSpi = getReaderSpiFromStream(suggestedSPI, maskStream);
+                    maskReaderSpi = getReaderSpiFromStream(readerSpi, maskStream);
                 } catch (Exception e) {
                     if (LOGGER.isLoggable(Level.WARNING)) {
                         LOGGER.log(
@@ -245,7 +254,7 @@ public class MaskOverviewProvider {
                                         maskOvrURL,
                                         ImageIO.getUseCache(),
                                         ImageIO.getCacheDirectory());
-                        maskOvrReaderSpi = getReaderSpiFromStream(suggestedSPI, maskOvrStream);
+                        maskOvrReaderSpi = getReaderSpiFromStream(readerSpi, maskOvrStream);
                     } catch (Exception e) {
                         if (LOGGER.isLoggable(Level.WARNING)) {
                             LOGGER.log(
@@ -357,8 +366,8 @@ public class MaskOverviewProvider {
                 // Check if the ImageChoice is contained inside internal or external masks
                 if (imageIndex < numInternalMasks) {
                     info.file = URLs.urlToFile(fileURL);
-                    info.readerSpi = readerSpi;
-                    info.streamSpi = streamSpi;
+                    info.readerSpi = sourceSpiProvider.getReaderSpi();
+                    info.streamSpi = sourceSpiProvider.getStreamSpi();
                     info.index = layout.getInternalMaskImageIndex(imageIndex) - 1;
                 } else if (hasExternalMasks) {
                     if (imageIndex < numExternalMasks) {
@@ -390,8 +399,8 @@ public class MaskOverviewProvider {
                 } else {
                     // Reading Internal Mask Overview
                     info.file = URLs.urlToFile(fileURL);
-                    info.readerSpi = readerSpi;
-                    info.streamSpi = streamSpi;
+                    info.readerSpi = sourceSpiProvider.getReaderSpi();
+                    info.streamSpi = sourceSpiProvider.getStreamSpi();
                     info.index = numInternalMasks - 1;
                 }
                 // Checks on the native image data
@@ -407,8 +416,8 @@ public class MaskOverviewProvider {
                 } else if (numInternalMasks > 0) {
                     // Reading Internal Mask Overview
                     info.file = URLs.urlToFile(fileURL);
-                    info.readerSpi = readerSpi;
-                    info.streamSpi = streamSpi;
+                    info.readerSpi = sourceSpiProvider.getReaderSpi();
+                    info.streamSpi = sourceSpiProvider.getStreamSpi();
                     info.index = layout.getInternalMaskImageIndex(0);
                 }
             }
@@ -482,13 +491,8 @@ public class MaskOverviewProvider {
             ImageReader readerOvr = null;
             try {
                 // Instantiating Stream
-                stream =
-                        getInputStreamSpi()
-                                .createInputStreamInstance(
-                                        fileURL,
-                                        ImageIO.getUseCache(),
-                                        ImageIO.getCacheDirectory());
-                reader = getImageReaderSpi().createReaderInstance();
+                stream = sourceSpiProvider.getStream();
+                reader = sourceSpiProvider.getReader();
                 reader.setInput(stream, false, false);
                 if (ovrURL != null) {
                     streamOvr =
@@ -561,7 +565,7 @@ public class MaskOverviewProvider {
     }
 
     public ImageReaderSpi getImageReaderSpi() {
-        return readerSpi;
+        return sourceSpiProvider.getReaderSpi();
     }
 
     public ImageInputStreamSpi getExternalOverviewInputStreamSpi() {
@@ -569,7 +573,7 @@ public class MaskOverviewProvider {
     }
 
     public ImageInputStreamSpi getInputStreamSpi() {
-        return streamSpi;
+        return sourceSpiProvider.getStreamSpi();
     }
 
     public ImageInputStreamSpi getMaskStreamSpi() {
@@ -725,15 +729,9 @@ public class MaskOverviewProvider {
             MULTIDIM_SERVICE_PROVIDERS.add("org.geotools.imageio.netcdf.NetCDFImageReaderSpi");
         }
 
-        private ImageReaderSpi suggestedSpi;
-
-        private ImageReaderSpi readerSpi;
-
-        private ImageInputStreamSpi suggestedStreamSpi;
-
-        private ImageInputStreamSpi streamSpi;
-
         private URL fileURL;
+
+        private SourceSPIProvider sourceSpiProvider;
 
         /**
          * Reporting whether the SPI is for a multidim reader or not. GRIB/NetCDF and other multidim
@@ -741,24 +739,26 @@ public class MaskOverviewProvider {
          */
         private boolean isMultidim;
 
-        public SpiHelper(URL inputFile, ImageReaderSpi suggestedSPI) throws IOException {
-            this(inputFile, suggestedSPI, null);
+        public SpiHelper(URL input, ImageReaderSpi suggestedSPI) throws IOException {
+            this(input, suggestedSPI, null);
         }
 
         public SpiHelper(
-                URL inputFile, ImageReaderSpi suggestedSPI, ImageInputStreamSpi suggestedStreamSpi)
+                URL input, ImageReaderSpi suggestedSPI, ImageInputStreamSpi suggestedStreamSpi)
                 throws IOException {
-            this.suggestedSpi = suggestedSPI;
-            this.fileURL = inputFile; // URLs.fileToUrl(inputFile);
+
+            this.fileURL = input;
 
             // Creating cached SPIs
-            this.suggestedStreamSpi = suggestedStreamSpi;
+            ImageInputStreamSpi streamSpi = null;
+            ImageInputStream stream = null;
+            ImageReaderSpi readerSpi = null;
             if (suggestedStreamSpi == null) {
                 streamSpi = getInputStreamSPIFromURL(fileURL);
             } else {
                 streamSpi = suggestedStreamSpi;
             }
-            ImageInputStream stream = null;
+
             try {
                 stream =
                         streamSpi.createInputStreamInstance(
@@ -768,10 +768,10 @@ public class MaskOverviewProvider {
                         readerSpi != null
                                 && MULTIDIM_SERVICE_PROVIDERS.contains(
                                         readerSpi.getClass().getName());
+                sourceSpiProvider = new SourceSPIProvider(this.fileURL, readerSpi, streamSpi);
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(
-                            Level.WARNING, "Unable to create a Reader for File: " + inputFile, e);
+                    LOGGER.log(Level.WARNING, "Unable to create a Reader for File: " + input, e);
                 }
                 throw new IllegalArgumentException(e);
             } finally {
@@ -787,28 +787,16 @@ public class MaskOverviewProvider {
             }
         }
 
+        public SpiHelper(SourceSPIProvider provider) throws IOException {
+            this.sourceSpiProvider = provider;
+        }
+
         public boolean isMultidim() {
             return isMultidim;
         }
 
-        public ImageReaderSpi getReaderSpi() {
-            return readerSpi;
-        }
-
-        public ImageInputStreamSpi getStreamSpi() {
-            return streamSpi;
-        }
-
-        public URL getFileURL() {
-            return fileURL;
-        }
-
-        public ImageReaderSpi getSuggestedSpi() {
-            return suggestedSpi;
-        }
-
-        public ImageInputStreamSpi getSuggestedStreamSpi() {
-            return suggestedStreamSpi;
+        public SourceSPIProvider getSourceSpiProvider() {
+            return sourceSpiProvider;
         }
     }
 }

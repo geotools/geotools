@@ -122,7 +122,7 @@
   	  <artifactId>imageio-ext-tiff</artifactId>
       <!-- The version number is specified in the parent POM. -->      
     </dependency>
-    
+
     <!--  JAI Tools -->  
     <dependency>
        <groupId>org.jaitools</groupId>

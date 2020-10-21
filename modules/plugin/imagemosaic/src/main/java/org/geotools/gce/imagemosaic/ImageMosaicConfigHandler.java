@@ -64,6 +64,7 @@ import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFactorySPI;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFactorySPIFinder;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
+import org.geotools.gce.imagemosaic.catalog.CogConfiguration;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderMosaicFactory;
@@ -161,6 +162,8 @@ public class ImageMosaicConfigHandler {
 
     private boolean useExistingSchema;
 
+    private boolean cog;
+
     private List<GranuleAcceptor> granuleAcceptors = new ArrayList<>();
 
     private GranuleHandler granuleHandler = new DefaultGranuleHandler();
@@ -216,6 +219,9 @@ public class ImageMosaicConfigHandler {
             }
             if (IndexerUtils.getParameterAsBoolean(Utils.Prop.USE_EXISTING_SCHEMA, indexer)) {
                 this.useExistingSchema = true;
+            }
+            if (IndexerUtils.getParameterAsBoolean(Prop.COG, indexer)) {
+                this.cog = true;
             }
         }
 
@@ -1346,6 +1352,27 @@ public class ImageMosaicConfigHandler {
             properties.setProperty(Prop.SUGGESTED_FORMAT, cachedFormat.getClass().getName());
         }
 
+        if (catalogConfigurationBean.getCogConfiguration() != null) {
+            properties.setProperty(Prop.COG, Boolean.toString(true));
+            CogConfiguration cogBean = catalogConfigurationBean.getCogConfiguration();
+            if (cogBean != null) {
+                String rangeReader = cogBean.getRangeReader();
+                if (rangeReader != null) {
+                    properties.setProperty(Prop.COG_RANGE_READER, rangeReader);
+                }
+                String user = cogBean.getUser();
+                if (user != null) {
+                    properties.setProperty(Prop.COG_USER, user);
+                }
+                String password = cogBean.getPassword();
+                if (password != null) {
+                    properties.setProperty(Prop.COG_PASSWORD, password);
+                }
+                boolean useCache = cogBean.isUseCache();
+                properties.setProperty(Prop.COG_USE_CACHE, Boolean.toString(useCache));
+            }
+        }
+
         // write down imposed bbox
         if (imposedBBox != null) {
             properties.setProperty(
@@ -1462,8 +1489,6 @@ public class ImageMosaicConfigHandler {
                 Boolean.valueOf(IndexerUtils.getParameter(Prop.HETEROGENEOUS_CRS, indexer));
         if (mosaicConfiguration == null) {
             catalogConfig = getRunConfiguration();
-            // We don't have a configuration for this configuration
-
             // Get the type specifier for this image and the check that the
             // image has the correct sample model and color model.
             // If this is the first cycle of the loop we initialize everything.
@@ -1563,7 +1588,7 @@ public class ImageMosaicConfigHandler {
                     IndexerUtils.getParameter(Prop.LOCATION_ATTRIBUTE, indexer));
             catalogConfigurationBean.setWrapStore(
                     IndexerUtils.getParameterAsBoolean(Prop.WRAP_STORE, indexer));
-
+            setCogConfiguration(catalogConfigurationBean, indexer);
             String configuredTypeName = IndexerUtils.getParameter(Prop.TYPENAME, indexer);
             if (configuredTypeName != null) {
                 catalogConfigurationBean.setTypeName(configuredTypeName);
@@ -1655,6 +1680,14 @@ public class ImageMosaicConfigHandler {
                     envelope,
                     transaction,
                     getPropertiesCollectors());
+        }
+    }
+
+    private void setCogConfiguration(
+            CatalogConfigurationBean catalogConfigurationBean, Indexer indexer) {
+        if (IndexerUtils.getParameterAsBoolean(Prop.COG, indexer)) {
+            CogConfiguration cogConfiguration = new CogConfiguration(indexer);
+            catalogConfigurationBean.setCogConfiguration(cogConfiguration);
         }
     }
 
@@ -1785,6 +1818,10 @@ public class ImageMosaicConfigHandler {
 
     public boolean isUseExistingSchema() {
         return useExistingSchema;
+    }
+
+    public boolean isCog() {
+        return cog;
     }
 
     public ImageReaderSpi getCachedReaderSPI() {

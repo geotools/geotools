@@ -9,8 +9,9 @@
  */
 package org.opengis.parameter;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Obligation.OPTIONAL;
+import static org.opengis.annotation.Specification.ISO_19111;
 
 import java.util.Set;
 import javax.measure.Unit;

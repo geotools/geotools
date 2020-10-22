@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
-import java.awt.*;
+import java.awt.Font;
 import java.util.List;
 import org.geotools.renderer.lite.StreamingRendererTest;
 import org.junit.After;

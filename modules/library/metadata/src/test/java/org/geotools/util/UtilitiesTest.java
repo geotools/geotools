@@ -16,14 +16,19 @@
  */
 package org.geotools.util;
 
-import static org.geotools.util.Utilities.*;
-import static org.junit.Assert.*;
+import static org.geotools.util.Utilities.spaces;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link Utilities} static methods.

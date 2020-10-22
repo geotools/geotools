@@ -19,7 +19,7 @@ package org.geotools.styling.visitor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;

@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.text.commons;
 
-import java.awt.*;
+import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

@@ -16,9 +16,11 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link DefaultObjectCache} with simple tests.

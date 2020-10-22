@@ -16,7 +16,9 @@
  */
 package org.geotools.referencing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,17 +28,20 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.geotools.referencing.crs.AbstractCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.cs.DefaultTimeCS;
 import org.geotools.referencing.cs.DefaultVerticalCS;
+import org.geotools.referencing.datum.AbstractDatum;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.datum.DefaultVerticalDatum;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.referencing.datum.VerticalDatumType;
 import si.uom.SI;
 

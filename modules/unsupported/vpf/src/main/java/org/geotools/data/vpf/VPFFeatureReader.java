@@ -16,8 +16,6 @@
  */
 package org.geotools.data.vpf;
 
-import static org.geotools.data.vpf.ifc.FCode.*;
-
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;

@@ -22,7 +22,12 @@ import java.util.List;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineSegment;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Builds a graph representing a line network in which edges in the network are represented by

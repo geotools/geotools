@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.grid.io;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.logging.Level;
 import java.util.logging.Logger;

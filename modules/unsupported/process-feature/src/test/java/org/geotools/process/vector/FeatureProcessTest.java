@@ -17,7 +17,8 @@
  */
 package org.geotools.process.vector;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.referencing.CRS;

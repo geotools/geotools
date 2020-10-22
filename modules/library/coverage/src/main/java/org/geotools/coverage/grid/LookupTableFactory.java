@@ -16,7 +16,9 @@
  */
 package org.geotools.coverage.grid;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.round;
 
 import java.awt.image.DataBuffer;
 import java.util.Arrays;

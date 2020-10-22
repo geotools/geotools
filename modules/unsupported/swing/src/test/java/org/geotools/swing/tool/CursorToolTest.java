@@ -17,7 +17,7 @@
 
 package org.geotools.swing.tool;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import java.awt.Cursor;
 import org.geotools.swing.testutils.GraphicsTestBase;

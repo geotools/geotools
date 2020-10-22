@@ -17,7 +17,7 @@
 package org.geotools.data.mongodb.complex;
 
 import com.mongodb.DBObject;
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;

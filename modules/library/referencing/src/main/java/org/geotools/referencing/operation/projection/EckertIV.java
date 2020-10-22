@@ -20,7 +20,9 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import static java.lang.Math.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 import java.awt.geom.Point2D;
 import org.geotools.metadata.iso.citation.Citations;

@@ -16,8 +16,8 @@
  */
 package org.geotools.data.vpf;
 
-import static org.geotools.data.vpf.ifc.FileConstants.*;
-import static org.geotools.data.vpf.ifc.VPFLibraryIfc.*;
+import static org.geotools.data.vpf.ifc.FileConstants.LIBRARY_ATTTIBUTE_TABLE;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_LIB_NAME;
 
 import java.awt.RenderingHints.Key;
 import java.io.File;

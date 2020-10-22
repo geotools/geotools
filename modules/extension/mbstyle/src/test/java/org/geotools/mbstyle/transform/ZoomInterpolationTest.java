@@ -1,6 +1,6 @@
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.mbstyle.MapboxTestUtils;

@@ -1,7 +1,12 @@
 package org.geotools.referencing.operation.projection;
 
-import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.*;
-import static org.junit.Assert.*;
+import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.CENTRAL_MERIDIAN;
+import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.FALSE_EASTING;
+import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.FALSE_NORTHING;
+import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.LATITUDE_OF_ORIGIN;
+import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.SEMI_MAJOR;
+import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.SEMI_MINOR;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.junit.Test;

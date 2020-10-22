@@ -17,7 +17,8 @@
  */
 package org.geotools.data.mongodb.integration;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.mongodb.BasicDBObject;

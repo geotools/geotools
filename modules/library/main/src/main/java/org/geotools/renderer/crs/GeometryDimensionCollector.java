@@ -18,7 +18,13 @@ package org.geotools.renderer.crs;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 
 /** Collects component of a given geometry that have the desired dimension */
 public class GeometryDimensionCollector implements GeometryComponentFilter {

@@ -1,6 +1,7 @@
 package org.geotools.brewer.styling.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.NamedLayer;

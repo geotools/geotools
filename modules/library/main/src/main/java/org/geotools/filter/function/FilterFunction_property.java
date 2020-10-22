@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpressionImpl;

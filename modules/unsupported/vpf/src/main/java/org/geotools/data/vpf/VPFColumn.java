@@ -16,7 +16,20 @@
  */
 package org.geotools.data.vpf;
 
-import static org.geotools.data.vpf.ifc.DataTypesDefinition.*;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_2_COORD_F;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_2_COORD_R;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_3_COORD_F;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_3_COORD_R;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LEVEL1_TEXT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LEVEL2_TEXT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LEVEL3_TEXT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LONG_FLOAT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_LONG_INTEGER;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_NULL_FIELD;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_SHORT_FLOAT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_SHORT_INTEGER;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_TEXT;
+import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_TRIPLET_ID;
 
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.util.DataUtils;

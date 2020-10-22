@@ -9,9 +9,10 @@
  */
 package org.opengis.metadata.identification;
 
-import static org.opengis.annotation.ComplianceLevel.*;
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.ComplianceLevel.CORE;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Obligation.OPTIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.Collection;
 import org.opengis.annotation.Profile;

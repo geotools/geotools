@@ -16,7 +16,9 @@
  */
 package org.geotools.referencing.factory.gridshift;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import au.com.objectix.jgridshift.GridShiftFile;
 import java.net.URL;

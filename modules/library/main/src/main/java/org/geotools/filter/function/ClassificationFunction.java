@@ -20,7 +20,14 @@ package org.geotools.filter.function;
 
 import java.awt.RenderingHints;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -31,7 +38,11 @@ import org.geotools.filter.FunctionExpression;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.*;
+import org.opengis.filter.expression.Divide;
+import org.opengis.filter.expression.ExpressionVisitor;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.Subtract;
 import org.opengis.util.ProgressListener;
 
 /**

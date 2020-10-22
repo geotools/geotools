@@ -17,7 +17,7 @@
  */
 package org.geotools.gce.image;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.BufferedReader;

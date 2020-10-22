@@ -9,7 +9,7 @@
  */
 package org.opengis.coverage;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.OGC_01004;
 
 import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;

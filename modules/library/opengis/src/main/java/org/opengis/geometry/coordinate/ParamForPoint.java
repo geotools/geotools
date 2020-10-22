@@ -9,8 +9,7 @@
  */
 package org.opengis.geometry.coordinate;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.Set;
 import org.opengis.annotation.Extension;

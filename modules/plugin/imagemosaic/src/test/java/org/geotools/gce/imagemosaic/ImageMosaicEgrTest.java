@@ -18,7 +18,7 @@ package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

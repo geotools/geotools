@@ -27,7 +27,7 @@ import it.geosolutions.imageio.plugins.jp2k.box.XMLBox;
 import it.geosolutions.imageio.plugins.jp2k.box.XMLBoxMetadataNode;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.ByteArrayInputStream;

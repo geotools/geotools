@@ -16,7 +16,9 @@
  */
 package org.geotools.measure;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.text.Format;
 import java.text.ParseException;
@@ -31,7 +33,9 @@ import org.geotools.referencing.crs.DefaultTemporalCRS;
 import org.geotools.referencing.crs.DefaultVerticalCRS;
 import org.geotools.referencing.cs.DefaultTimeCS;
 import org.geotools.referencing.datum.DefaultTemporalDatum;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.geometry.MismatchedDimensionException;
 
 /**

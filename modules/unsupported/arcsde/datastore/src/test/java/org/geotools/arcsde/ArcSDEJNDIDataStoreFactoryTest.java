@@ -16,7 +16,12 @@
  */
 package org.geotools.arcsde;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -153,8 +158,8 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put(ArcSDEJNDIDataStoreFactory.JNDI_REFNAME.key, jndiRef);
 
-        ISessionPool pool = testData.getConnectionPool();
-        try {
+        try (ISessionPool pool = testData.getConnectionPool()) {
+
             InitialContext initialContext = GeoTools.getInitialContext(GeoTools.getDefaultHints());
             initialContext.bind(jndiRef, pool);
             assertNotNull(initialContext.lookup(jndiRef));

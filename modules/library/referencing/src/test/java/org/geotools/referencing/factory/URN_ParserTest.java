@@ -16,9 +16,11 @@
  */
 package org.geotools.referencing.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**

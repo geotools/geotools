@@ -19,7 +19,7 @@ package org.geotools.renderer.style.svg;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.awt.*;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;

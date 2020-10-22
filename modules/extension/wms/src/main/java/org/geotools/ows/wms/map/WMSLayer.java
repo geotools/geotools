@@ -16,7 +16,7 @@
  */
 package org.geotools.ows.wms.map;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;

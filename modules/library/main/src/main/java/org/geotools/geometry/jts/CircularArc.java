@@ -16,7 +16,12 @@
  */
 package org.geotools.geometry.jts;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 
 import java.util.Arrays;
 import org.locationtech.jts.geom.Coordinate;

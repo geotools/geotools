@@ -359,10 +359,7 @@ public class FXMap extends Parent {
         return this.mapContent.layers();
     }
 
-    /**
-     * Scales the map to zoom in/out without reloading the map
-     *
-     */
+    /** Scales the map to zoom in/out without reloading the map */
     private void scaleMap(double zoomDelta) {
         Point2D.Double lower;
         Point2D.Double upper;

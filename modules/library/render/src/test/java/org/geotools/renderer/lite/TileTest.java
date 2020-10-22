@@ -16,7 +16,8 @@
  */
 package org.geotools.renderer.lite;
 
-import static java.awt.RenderingHints.*;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
 import java.awt.Font;
 import java.awt.RenderingHints;

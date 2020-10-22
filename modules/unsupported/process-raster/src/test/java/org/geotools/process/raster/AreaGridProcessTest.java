@@ -17,7 +17,7 @@
  */
 package org.geotools.process.raster;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.logging.Logger;
 import org.geotools.coverage.grid.GridCoordinates2D;

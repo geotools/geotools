@@ -9,8 +9,9 @@
  */
 package org.opengis.metadata.content;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Obligation.OPTIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;

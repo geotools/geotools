@@ -21,7 +21,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 import org.geotools.data.ows.Specification;
-import org.geotools.ows.wms.*;
+import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WMS1_1_0;
+import org.geotools.ows.wms.WMSCapabilities;
+import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.xml.sax.SAXException;
 

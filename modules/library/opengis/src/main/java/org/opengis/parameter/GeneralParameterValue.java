@@ -9,7 +9,7 @@
  */
 package org.opengis.parameter;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19111;
 
 import org.opengis.annotation.UML;
 import org.opengis.util.Cloneable;

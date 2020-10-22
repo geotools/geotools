@@ -17,8 +17,14 @@
 
 package org.geotools.data.vpf;
 
-import static org.geotools.data.vpf.ifc.FileConstants.*;
-import static org.geotools.data.vpf.ifc.VPFLibraryIfc.*;
+import static org.geotools.data.vpf.ifc.FileConstants.COVERAGE_ATTRIBUTE_TABLE;
+import static org.geotools.data.vpf.ifc.FileConstants.GEOGRAPHIC_REFERENCE_TABLE;
+import static org.geotools.data.vpf.ifc.FileConstants.LIBRARY_HEADER_TABLE;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_TILE_NAME;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_XMAX;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_XMIN;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_YMAX;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_YMIN;
 
 import java.io.File;
 import java.io.IOException;

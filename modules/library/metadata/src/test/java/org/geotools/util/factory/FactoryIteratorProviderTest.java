@@ -16,10 +16,13 @@
  */
 package org.geotools.util.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests {@link org.geotools.util.factory.FactoryIteratorProvider} addition in {@link

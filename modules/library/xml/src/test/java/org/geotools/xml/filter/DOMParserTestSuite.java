@@ -16,7 +16,7 @@
  */
 package org.geotools.xml.filter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.FileFilter;

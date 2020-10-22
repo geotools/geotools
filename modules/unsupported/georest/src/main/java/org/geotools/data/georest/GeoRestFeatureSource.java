@@ -16,7 +16,6 @@
  */
 package org.geotools.data.georest;
 
-import org.locationtech.jts.geom.Geometry;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +29,7 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -39,7 +39,6 @@ import org.opengis.filter.Filter;
  * read-only.
  *
  * @author Pieter De Graef, Geosparc
-
  */
 public class GeoRestFeatureSource extends ContentFeatureSource implements SimpleFeatureSource {
 

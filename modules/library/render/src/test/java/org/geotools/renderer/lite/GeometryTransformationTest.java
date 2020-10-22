@@ -1,7 +1,8 @@
 package org.geotools.renderer.lite;
 
-import static java.awt.RenderingHints.*;
-import static org.junit.Assert.*;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

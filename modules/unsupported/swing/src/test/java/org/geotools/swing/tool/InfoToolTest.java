@@ -17,7 +17,9 @@
 
 package org.geotools.swing.tool;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;

@@ -9,8 +9,8 @@
  */
 package org.opengis.referencing.crs;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Specification.ISO_19111;
 
 import org.opengis.annotation.UML;
 import org.opengis.referencing.cs.VerticalCS;

@@ -16,7 +16,11 @@
  */
 package org.geotools.data.elasticsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import com.github.davidmoten.geo.GeoHash;
 import java.io.IOException;

@@ -236,7 +236,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         BasicDBObject expr = (BasicDBObject) filter.getFilter().accept(this, null);
         BasicDBObject dbObject;
         if (pn != null) {
-            String strPn = pn.getPropertyName();
+            String strPn = mapper.getPropertyPath(pn.getPropertyName());
             // get only the operator expression
             Object exprValue = expr.get(strPn);
             dbObject = new BasicDBObject("$not", exprValue);

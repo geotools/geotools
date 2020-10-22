@@ -412,6 +412,24 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         assertTrue(second.before(third));
     }
 
+    public void testNullSortBy() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        SortBy[] sorts = new SortBy[] {SortBy.NATURAL_ORDER};
+
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", Filter.INCLUDE);
+        q.setSortBy(sorts);
+
+        SimpleFeatureCollection features = source.getFeatures(q);
+        SimpleFeatureIterator it = features.features();
+        List<Double> doubleValues = new ArrayList<>(3);
+        while (it.hasNext()) {
+            SimpleFeature feature = it.next();
+            doubleValues.add((Double) feature.getAttribute("properties.doubleProperty"));
+        }
+        assertEquals(doubleValues.size(), 3);
+    }
+
     private void checkBinaryLogicOperatorFilterSplitting(BinaryLogicOperator filter)
             throws Exception {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");

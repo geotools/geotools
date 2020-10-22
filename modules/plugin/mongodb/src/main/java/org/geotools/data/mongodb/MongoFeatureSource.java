@@ -303,9 +303,11 @@ public class MongoFeatureSource extends ContentFeatureSource {
         if (q.getSortBy() != null) {
             BasicDBObject orderBy = new BasicDBObject();
             for (SortBy sortBy : q.getSortBy()) {
-                String propName = sortBy.getPropertyName().getPropertyName();
-                String property = mapper.getPropertyPath(propName);
-                orderBy.append(property, sortBy.getSortOrder() == SortOrder.ASCENDING ? 1 : -1);
+                if (sortBy.getPropertyName() != null) {
+                    String propName = sortBy.getPropertyName().getPropertyName();
+                    String property = mapper.getPropertyPath(propName);
+                    orderBy.append(property, sortBy.getSortOrder() == SortOrder.ASCENDING ? 1 : -1);
+                }
             }
             c = c.sort(orderBy);
         }

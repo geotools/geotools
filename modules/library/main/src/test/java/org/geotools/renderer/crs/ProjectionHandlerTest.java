@@ -1387,8 +1387,7 @@ public class ProjectionHandlerTest {
         assertEquals(-180, qe.getMinX(), 1e-3);
         assertEquals(-90, qe.getMinY(), 1e-3);
         assertEquals(180, qe.getMaxX(), 1e-3);
-        // can't get this one quite right, but it's good enough for the moment I guess
-        assertEquals(89, qe.getMaxY(), 1e-3);
+        assertEquals(90, qe.getMaxY(), 1e-3);
     }
 
     @Test
@@ -1595,6 +1594,27 @@ public class ProjectionHandlerTest {
         assertEquals(1, envelopes.size());
         ReferencedEnvelope qe = envelopes.get(0);
         assertEquals(-180, qe.getMinX(), 1e-3);
+        assertEquals(-90, qe.getMinY(), 1e-3);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+        assertEquals(90, qe.getMaxY(), 1e-3);
+    }
+
+    @Test
+    public void testAzEqPositiveLatOrigin() throws Exception {
+        String wkt =
+                "PROJCS[\"equi7_asia_nofalseXY\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Azimuthal_Equidistant\"],PARAMETER[\"false_easting\",4340913.84808],PARAMETER[\"false_northing\",4812712.92347],PARAMETER[\"central_meridian\",94.0],PARAMETER[\"latitude_of_origin\",47.0],UNIT[\"Meter\",1.0]]";
+        CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+        ReferencedEnvelope re =
+                new ReferencedEnvelope(-12000000, 12000000, -12000000, 12000000, crs);
+        ProjectionHandler ph =
+                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        assertNotNull(ph);
+        List<ReferencedEnvelope> envelopes = ph.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        ReferencedEnvelope qe = envelopes.get(0);
+        System.out.println(qe);
+        assertEquals(-180, qe.getMinX(), 1e-3);
+        // miny used to be a higher number, making the reprojection miss necessary data
         assertEquals(-90, qe.getMinY(), 1e-3);
         assertEquals(180, qe.getMaxX(), 1e-3);
         assertEquals(90, qe.getMaxY(), 1e-3);

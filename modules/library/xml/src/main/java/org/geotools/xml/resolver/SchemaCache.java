@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.util.URLs;
 
 /**
@@ -242,7 +242,7 @@ public class SchemaCache {
                 LOGGER.warning("Unexpected download URL protocol: " + protocol);
                 return null;
             }
-            URLCheckerFactory.evaluate(url);
+            URLCheckers.evaluate(url);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(downloadTimeout);
             connection.setReadTimeout(downloadTimeout);

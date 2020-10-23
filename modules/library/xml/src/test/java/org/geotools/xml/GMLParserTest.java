@@ -27,7 +27,7 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 import org.geotools.TestData;
 import org.geotools.data.ows.MockFileURIChecker;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.xml.gml.GMLFeatureCollection;
@@ -373,11 +373,11 @@ public class GMLParserTest extends TestCase {
         // should throw exception
         MockFileURIChecker urlChecker = new MockFileURIChecker();
         urlChecker.setEnabled(true);
-        URLCheckerFactory.addURLChecker(urlChecker);
+        URLCheckers.addURLChecker(urlChecker);
 
         // since the shema loader handles the error
         // we will assert the security by listening to log
-        Handler exceptionListner =
+        Handler exceptionListener =
                 new Handler() {
 
                     public boolean errorThrown = false;
@@ -385,7 +385,9 @@ public class GMLParserTest extends TestCase {
                     @Override
                     public void publish(LogRecord record) {
                         errorThrown |=
-                                record.getMessage().contains("did not pass securityevaluation");
+                                record.getMessage()
+                                        .contains(
+                                                "org.geotools.xml.schema.Schema: did not pass security evaluation");
                     }
 
                     @Override
@@ -393,19 +395,21 @@ public class GMLParserTest extends TestCase {
 
                     @Override
                     public void close() throws SecurityException {
-                        URLCheckerFactory.removeURLChecker(urlChecker);
-                        if (!errorThrown) fail();
+                        URLCheckers.removeURLChecker(urlChecker);
+                        if (!errorThrown)
+                            fail(
+                                    "Was expecting an exception loading external schemas, but found none");
                     }
                 };
 
-        XSISAXHandler.logger.addHandler(exceptionListner);
+        XSISAXHandler.logger.addHandler(exceptionListener);
 
         try {
             Schema s = SchemaFactory.getInstance(GMLSchema.NAMESPACE);
 
         } finally {
-            XSISAXHandler.logger.removeHandler(exceptionListner);
-            URLCheckerFactory.removeURLChecker(urlChecker);
+            XSISAXHandler.logger.removeHandler(exceptionListener);
+            URLCheckers.removeURLChecker(urlChecker);
         }
     }
 }

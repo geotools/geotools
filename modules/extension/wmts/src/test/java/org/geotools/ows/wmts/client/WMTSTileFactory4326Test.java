@@ -27,7 +27,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import org.geotools.data.ows.MockURLChecker;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
@@ -39,6 +39,7 @@ import org.geotools.tile.Tile;
 import org.geotools.tile.TileService;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -294,7 +295,7 @@ public class WMTSTileFactory4326Test {
         // should throw exception
         MockURLChecker urlChecker = new MockURLChecker();
         urlChecker.setEnabled(true);
-        URLCheckerFactory.addURLChecker(urlChecker);
+        URLCheckers.addURLChecker(urlChecker);
 
         WMTSTileService[] services = new WMTSTileService[1];
         services[0] = createKVPService();
@@ -306,9 +307,12 @@ public class WMTSTileFactory4326Test {
             services[0].getHttpClient().get(mtile.getUrl());
             fail();
         } catch (Exception e) {
-            Assert.assertTrue(e.getMessage().contains("Evaluation Failure:"));
+            Assert.assertThat(
+                    e.getMessage(),
+                    CoreMatchers.is(
+                            "Evaluation Failure: http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilitiesrequest=GetTile&tilematrixset=EPSG%3A4326&TileRow=0&service=WMTS&format=image%2Fpng&TileCol=1&version=1.0.0&layer=unesco%3AUnesco_point&TileMatrix=EPSG%3A4326%3A0&: did not pass security evaluation"));
         } finally {
-            URLCheckerFactory.removeURLChecker(urlChecker);
+            URLCheckers.removeURLChecker(urlChecker);
         }
     }
 

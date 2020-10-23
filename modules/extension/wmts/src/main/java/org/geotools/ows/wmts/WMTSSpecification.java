@@ -35,6 +35,8 @@ import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.AbstractGetTileRequest;
 import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.ows.wmts.response.WMTSGetCapabilitiesResponse;
+import org.geotools.data.ows.ControlledHttpClientFactory;
+
 
 /**
  * @author ian

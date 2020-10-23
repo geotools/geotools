@@ -19,7 +19,7 @@ package org.geotools.tile.impl.osm;
 import static org.junit.Assert.fail;
 
 import org.geotools.data.ows.MockURLChecker;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
@@ -30,6 +30,7 @@ import org.geotools.tile.impl.WebMercatorTileFactory;
 import org.geotools.tile.impl.WebMercatorTileService;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
 import org.geotools.tile.impl.bing.BingService;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -115,7 +116,7 @@ public class OSMTileFactoryTest extends TileFactoryTest {
         // should throw exception
         MockURLChecker urlChecker = new MockURLChecker();
         urlChecker.setEnabled(true);
-        URLCheckerFactory.addURLChecker(urlChecker);
+        URLCheckers.addURLChecker(urlChecker);
 
         try {
             Tile tile =
@@ -129,9 +130,12 @@ public class OSMTileFactoryTest extends TileFactoryTest {
 
             fail();
         } catch (Exception e) {
-            Assert.assertTrue(e.getMessage().contains("Evaluation Failure:"));
+            Assert.assertThat(
+                    e.getMessage(),
+                    CoreMatchers.is(
+                            "Evaluation Failure: http://tile.openstreetmap.org/5/20/15.png: did not pass security evaluation"));
         } finally {
-            URLCheckerFactory.removeURLChecker(urlChecker);
+            URLCheckers.removeURLChecker(urlChecker);
         }
     }
 

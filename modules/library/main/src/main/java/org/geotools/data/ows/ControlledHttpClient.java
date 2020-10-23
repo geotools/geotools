@@ -47,7 +47,7 @@ public class ControlledHttpClient extends DelegateHTTPClient {
         if (evaluate(url)) return super.post(url, postContent, postContentType);
         else {
             throw new IOException(
-                    ">>>Evaluation Failure: "
+                    "Evaluation Failure: "
                             + url.toExternalForm()
                             + ": did not pass security evaluation");
         }
@@ -58,7 +58,7 @@ public class ControlledHttpClient extends DelegateHTTPClient {
         if (evaluate(url)) return super.get(url);
         else {
             throw new IOException(
-                    ">>>Evaluation Failure: "
+                    "Evaluation Failure: "
                             + url.toExternalForm()
                             + ": did not pass security evaluation");
         }
@@ -69,7 +69,7 @@ public class ControlledHttpClient extends DelegateHTTPClient {
         if (evaluate(url)) return super.get(url, headers);
         else {
             throw new IOException(
-                    ">>>Evaluation Failure: "
+                    "Evaluation Failure: "
                             + url.toExternalForm()
                             + ": did not pass security evaluation");
         }
@@ -91,6 +91,6 @@ public class ControlledHttpClient extends DelegateHTTPClient {
         if (urlCheckerList != null) return urlCheckerList;
 
         // else resolve to defaults on each request, since there state might change
-        return URLCheckerFactory.getEnabledUrlCheckerList();
+        return URLCheckers.getEnabledURLCheckerList();
     }
 }

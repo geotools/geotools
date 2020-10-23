@@ -138,9 +138,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
                 config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
                         ? new MultithreadedHttpClient(config)
                         : new SimpleHttpClient();
-        return (config.isSecuredHttpClient())
-                ? ControlledHttpClientFactory.wrap(httpClient)
-                : httpClient;
+        return ControlledHttpClientFactory.wrap(httpClient);
     }
 
     private static boolean isHttp(java.net.URL capabilitiesURL) {

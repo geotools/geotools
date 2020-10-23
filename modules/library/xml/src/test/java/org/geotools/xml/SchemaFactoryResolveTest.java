@@ -25,7 +25,7 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import junit.framework.TestCase;
 import org.geotools.data.ows.MockURLChecker;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.junit.Assert;
 
 /** @author "Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it" */
@@ -104,7 +104,7 @@ public class SchemaFactoryResolveTest extends TestCase {
         // should throw exception
         MockURLChecker urlChecker = new MockURLChecker();
         urlChecker.setEnabled(true);
-        URLCheckerFactory.addURLChecker(urlChecker);
+        URLCheckers.addURLChecker(urlChecker);
         try {
             assertNull(
                     SchemaFactory.getInstance(
@@ -112,7 +112,7 @@ public class SchemaFactoryResolveTest extends TestCase {
         } catch (Exception e) {
             Assert.assertTrue(e.getMessage().contains("Evaluation Failure:"));
         } finally {
-            URLCheckerFactory.removeURLChecker(urlChecker);
+            URLCheckers.removeURLChecker(urlChecker);
         }
     }
 

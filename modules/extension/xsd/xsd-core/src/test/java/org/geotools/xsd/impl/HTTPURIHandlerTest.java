@@ -18,7 +18,8 @@ import java.util.Collections;
 import java.util.logging.Level;
 import org.eclipse.emf.common.util.URI;
 import org.geotools.data.ows.MockURLChecker;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,7 +50,7 @@ public class HTTPURIHandlerTest {
                         String s = uri.toString();
                         LOGGER.log(Level.INFO, s);
                         URL url = new URL(s);
-                        URLCheckerFactory.evaluate(url);
+                        URLCheckers.evaluate(url);
                         return conn;
                     }
                 };
@@ -178,15 +179,18 @@ public class HTTPURIHandlerTest {
         // should throw exception
         MockURLChecker urlChecker = new MockURLChecker();
         urlChecker.setEnabled(true);
-        URLCheckerFactory.addURLChecker(urlChecker);
+        URLCheckers.addURLChecker(urlChecker);
 
         URI uri = URI.createURI("http://example.com");
         try {
             handler.createInputStream(uri, Collections.EMPTY_MAP);
         } catch (Exception e) {
-            Assert.assertTrue(e.getMessage().contains("Evaluation Failure:"));
+            Assert.assertThat(
+                    e.getMessage(),
+                    CoreMatchers.is(
+                            "Evaluation Failure: http://example.com: did not pass security evaluation"));
         } finally {
-            URLCheckerFactory.removeURLChecker(urlChecker);
+            URLCheckers.removeURLChecker(urlChecker);
         }
     }
 }

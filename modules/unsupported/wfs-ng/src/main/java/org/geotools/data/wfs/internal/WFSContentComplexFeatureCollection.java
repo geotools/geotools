@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.data.wfs.internal.parsers.XmlComplexFeatureParser;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -75,7 +75,7 @@ public class WFSContentComplexFeatureCollection
         try {
             @SuppressWarnings("PMD.CloseResource") // wrapped and returned
             URL finalUrl = request.getFinalURL();
-            URLCheckerFactory.evaluate(finalUrl);
+            URLCheckers.evaluate(finalUrl);
             InputStream stream = finalUrl.openStream();
             XmlComplexFeatureParser parser =
                     new XmlComplexFeatureParser(stream, schema, name, filter);

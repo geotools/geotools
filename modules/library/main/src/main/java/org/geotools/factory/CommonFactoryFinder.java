@@ -19,6 +19,7 @@ package org.geotools.factory;
 import java.util.Arrays;
 import java.util.Set;
 import org.geotools.data.FileDataStoreFactorySpi;
+import org.geotools.data.ows.URLChecker;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.LazySet;
@@ -78,6 +79,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
                                         FunctionFactory.class,
                                         FeatureFactory.class,
                                         FeatureTypeFactory.class,
+                                        URLChecker.class,
                                     }));
         }
         return registry;
@@ -327,5 +329,11 @@ public final class CommonFactoryFinder extends FactoryFinder {
         if (copy != null) {
             copy.deregisterAll();
         }
+    }
+
+    public static synchronized Set<URLChecker> getURLCheckers(Hints hints) {
+        hints = mergeSystemHints(hints);
+        return new LazySet<URLChecker>(
+                getServiceRegistry().getFactories(URLChecker.class, null, hints));
     }
 }

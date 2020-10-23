@@ -32,25 +32,23 @@ public class URLCheckerFactoryBackwardTest {
     @Before
     public void setUp() throws Exception {
         // empty the list
-        List<URLChecker> urlCheckerList = URLCheckerFactory.getEnabledUrlCheckerList();
+        List<URLChecker> urlCheckerList = URLCheckers.getEnabledURLCheckerList();
         for (URLChecker urlChecker : urlCheckerList) {
-            URLCheckerFactory.removeURLChecker(urlChecker);
+            URLCheckers.removeURLChecker(urlChecker);
         }
     }
 
     @Test
     public void URLCheckerFactoryBackwardTest() throws IOException, URISyntaxException {
-        assertTrue(URLCheckerFactory.getUrlCheckerList().size() == 0);
+        assertTrue(URLCheckers.getURLCheckerList().size() == 0);
 
         // when no URLCheckers are available, all evaluations should by default pass
-        assertTrue(URLCheckerFactory.evaluate("http://schemas.opengis.net/myschema.xml"));
-        assertTrue(URLCheckerFactory.evaluate(new URL("http://schemas.opengis.net/myschema.xml")));
-        assertTrue(URLCheckerFactory.evaluate(new URI("http://schemas.opengis.net/myschema.xml")));
+        assertTrue(URLCheckers.evaluate("http://schemas.opengis.net/myschema.xml"));
+        assertTrue(URLCheckers.evaluate(new URL("http://schemas.opengis.net/myschema.xml")));
+        assertTrue(URLCheckers.evaluate(new URI("http://schemas.opengis.net/myschema.xml")));
 
-        assertTrue(URLCheckerFactory.evaluate("ftp://user:pass@www.myserver.com/file.zip"));
-        assertTrue(
-                URLCheckerFactory.evaluate(new URL("ftp://user:pass@www.myserver.com/file.zip")));
-        assertTrue(
-                URLCheckerFactory.evaluate(new URI("ftp://user:pass@www.myserver.com/file.zip")));
+        assertTrue(URLCheckers.evaluate("ftp://user:pass@www.myserver.com/file.zip"));
+        assertTrue(URLCheckers.evaluate(new URL("ftp://user:pass@www.myserver.com/file.zip")));
+        assertTrue(URLCheckers.evaluate(new URI("ftp://user:pass@www.myserver.com/file.zip")));
     }
 }

@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.logging.Logger;
 import org.apache.xml.resolver.Catalog;
 import org.apache.xml.resolver.CatalogManager;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 
 /**
  * Support for XML schema resolution in an <a
@@ -62,7 +62,7 @@ public class SchemaCatalog {
         if (resolvedLocation != null) {
             InputStream input = null;
             try {
-                URLCheckerFactory.evaluate(resolvedLocation);
+                URLCheckers.evaluate(resolvedLocation);
                 // verify existence of resource
                 // could be a file, jar resource, or other
                 input = (new URL(resolvedLocation)).openStream();

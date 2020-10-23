@@ -27,7 +27,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -89,7 +89,7 @@ public class HTTPURIHandler extends URIHandlerImpl {
         String s = uri.toString();
         LOGGER.log(Level.INFO, s);
         URL url = new URL(s);
-        URLCheckerFactory.evaluate(url);
+        URLCheckers.evaluate(url);
         return (HttpURLConnection) url.openConnection();
     }
 

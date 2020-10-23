@@ -54,64 +54,58 @@ public class ControlledHttpClientTest {
     public void setUp() throws Exception {
         urlChecker.setEnabled(true);
         fileUriChecker.setEnabled(true);
-        URLCheckerFactory.addURLChecker(urlChecker);
-        URLCheckerFactory.addURLChecker(fileUriChecker);
+        URLCheckers.addURLChecker(urlChecker);
+        URLCheckers.addURLChecker(fileUriChecker);
     }
 
     @After
     public void clean() throws Exception {
-        URLCheckerFactory.removeURLChecker(urlChecker);
-        URLCheckerFactory.removeURLChecker(fileUriChecker);
+        URLCheckers.removeURLChecker(urlChecker);
+        URLCheckers.removeURLChecker(fileUriChecker);
     }
 
     @Test
     public void TestFactoryEvaluation() throws IOException, URISyntaxException {
         // URL evaluation
-        assertTrue(URLCheckerFactory.evaluate("http://schemas.opengis.net/myschema.xml"));
-        assertTrue(URLCheckerFactory.evaluate(new URL("http://schemas.opengis.net/myschema.xml")));
-        assertTrue(URLCheckerFactory.evaluate(new URI("http://schemas.opengis.net/myschema.xml")));
+        assertTrue(URLCheckers.evaluate("http://schemas.opengis.net/myschema.xml"));
+        assertTrue(URLCheckers.evaluate(new URL("http://schemas.opengis.net/myschema.xml")));
+        assertTrue(URLCheckers.evaluate(new URI("http://schemas.opengis.net/myschema.xml")));
 
         try {
-            assertFalse(URLCheckerFactory.evaluate("http://hacked.opengis.net/myschema.xml"));
+            assertFalse(URLCheckers.evaluate("http://hacked.opengis.net/myschema.xml"));
             fail();
         } catch (Exception io) {
         }
         try {
-            assertFalse(
-                    URLCheckerFactory.evaluate(new URL("http://hacked.opengis.net/myschema.xml")));
+            assertFalse(URLCheckers.evaluate(new URL("http://hacked.opengis.net/myschema.xml")));
             fail();
         } catch (Exception io) {
         }
         try {
-            assertFalse(
-                    URLCheckerFactory.evaluate(new URI("http://hacked.opengis.net/myschema.xml")));
+            assertFalse(URLCheckers.evaluate(new URI("http://hacked.opengis.net/myschema.xml")));
             fail();
         } catch (Exception io) {
         }
 
         // FTP evaluation
-        assertTrue(URLCheckerFactory.evaluate("ftp://user:pass@www.myserver.com/file.zip"));
-        assertTrue(
-                URLCheckerFactory.evaluate(new URL("ftp://user:pass@www.myserver.com/file.zip")));
-        assertTrue(
-                URLCheckerFactory.evaluate(new URI("ftp://user:pass@www.myserver.com/file.zip")));
+        assertTrue(URLCheckers.evaluate("ftp://user:pass@www.myserver.com/file.zip"));
+        assertTrue(URLCheckers.evaluate(new URL("ftp://user:pass@www.myserver.com/file.zip")));
+        assertTrue(URLCheckers.evaluate(new URI("ftp://user:pass@www.myserver.com/file.zip")));
 
         try {
-            assertFalse(URLCheckerFactory.evaluate("ftp://user:pass@hacked.myserver.com/file.zip"));
+            assertFalse(URLCheckers.evaluate("ftp://user:pass@hacked.myserver.com/file.zip"));
             fail();
         } catch (Exception io) {
         }
         try {
             assertFalse(
-                    URLCheckerFactory.evaluate(
-                            new URL("ftp://user:pass@hacked.myserver.com/file.zip")));
+                    URLCheckers.evaluate(new URL("ftp://user:pass@hacked.myserver.com/file.zip")));
             fail();
         } catch (Exception io) {
         }
         try {
             assertFalse(
-                    URLCheckerFactory.evaluate(
-                            new URI("ftp://user:pass@hacked.myserver.com/file.zip")));
+                    URLCheckers.evaluate(new URI("ftp://user:pass@hacked.myserver.com/file.zip")));
             fail();
         } catch (Exception io) {
         }

@@ -22,55 +22,50 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.stream.Collectors;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.factory.FactoryRegistry;
 
 /**
  * @author ImranR
- *     <p>URL Checker Factory
+ *     <p>URL Checkers
  *     <p>Scans for implementations of
  *     <p>org.geotools.data.ows.URLChecker
  */
-public class URLCheckerFactory {
+public class URLCheckers {
 
     // list contains all known org.geotools.data.ows.URLChecker implementations
 
     private static List<URLChecker> urlCheckerList;
 
-    static {
-        urlCheckerList = URLCheckerFactory.initEvaluators(URLChecker.class);
-    }
+    private static FactoryRegistry registry;
 
-    private static <T> List<T> initEvaluators(Class<T> type) {
-        // allowing scanning through SDI
-        ServiceLoader<T> loader = ServiceLoader.load(type);
-        loader.reload();
-        List<T> urlCheckerList = new ArrayList<>();
-        for (T aLoader : loader) {
-            urlCheckerList.add(aLoader);
-        }
-        return urlCheckerList;
+    private static void initEmptyUrlCheckList() {
+        urlCheckerList = new ArrayList<URLChecker>(CommonFactoryFinder.getURLCheckers(null));
     }
 
     /** @return unmodifiable Collection of URLChecker implementations */
-    public static List<URLChecker> getUrlCheckerList() {
+    public static List<URLChecker> getURLCheckerList() {
+        if (urlCheckerList == null) initEmptyUrlCheckList();
         return (Collections.unmodifiableList(urlCheckerList));
     }
 
-    public static List<URLChecker> getEnabledUrlCheckerList() {
-        return getUrlCheckerList().stream().filter(u -> u.isEnabled()).collect(Collectors.toList());
+    public static List<URLChecker> getEnabledURLCheckerList() {
+        return getURLCheckerList().stream().filter(u -> u.isEnabled()).collect(Collectors.toList());
     }
 
     public static synchronized void addURLChecker(URLChecker urlChecker) {
+        if (urlCheckerList == null) initEmptyUrlCheckList();
         urlCheckerList.add(urlChecker);
     }
 
     public static synchronized boolean removeURLChecker(URLChecker urlChecker) {
+        if (urlCheckerList == null) initEmptyUrlCheckList();
         return urlCheckerList.remove(urlChecker);
     }
 
     /**
-     * A Utility method
+     * This methods evaluates the passed URL against all enabled URLChecker
      *
      * @param URL to evaluate using all available URLCheckers
      * @return boolean
@@ -81,7 +76,7 @@ public class URLCheckerFactory {
     }
 
     /**
-     * A Utility method
+     * This methods evaluates the passed URI against all enabled URLChecker
      *
      * @param URI to evaluate using all available URLCheckers
      * @return boolean
@@ -92,28 +87,23 @@ public class URLCheckerFactory {
     }
 
     /**
-     * A Utility method
+     * This methods evaluates the passed String (expected to be a URL or URI) against all enabled
+     * URLChecker
      *
      * @param String(URI/URI) to evaluate using all available URLCheckers
      * @return boolean
      * @throws IOException
      */
     public static synchronized boolean evaluate(String url) throws IOException {
-        //        throw new IOException(
-        //                ">>>Evaluation Failure: " + url + ": did not pass security evaluation");
         // get enabled URLChecker only
-        List<URLChecker> enabledURLCheckrList = getEnabledUrlCheckerList();
+        List<URLChecker> enabledURLCheckrList = getEnabledURLCheckerList();
         // no evaluators.. dont do anything
         if (enabledURLCheckrList.isEmpty()) return true;
-        boolean passed = false;
         // evaluate using all available implementations
         for (URLChecker urlChecker : enabledURLCheckrList) {
-            passed |= urlChecker.evaluate(url);
+            if (urlChecker.evaluate(url)) return true;
         }
-        // passed all evaluation
-        if (passed) return passed;
-        else
-            throw new IOException(
-                    ">>>Evaluation Failure: " + url + ": did not pass security evaluation");
+        // no URLChecker evaluated the passed URL/URI
+        throw new IOException("Evaluation Failure: " + url + ": did not pass security evaluation");
     }
 }

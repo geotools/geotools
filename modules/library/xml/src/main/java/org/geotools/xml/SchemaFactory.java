@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaResolver;
@@ -130,7 +130,7 @@ public class SchemaFactory {
 
                 while (e.hasMoreElements()) {
                     URL res = (URL) e.nextElement();
-                    URLCheckerFactory.evaluate(res);
+                    URLCheckers.evaluate(res);
                     try (BufferedReader rd =
                             new BufferedReader(new InputStreamReader(res.openStream(), "UTF-8"))) {
 

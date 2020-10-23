@@ -37,7 +37,7 @@ import javax.swing.ImageIcon;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.Base64;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.ExpressionDOMParser;
@@ -318,7 +318,7 @@ public class SLDParser {
      * @throws java.io.IOException If anything goes wrong opening the url
      */
     public void setInput(java.net.URL url) throws java.io.IOException {
-        URLCheckerFactory.evaluate(url);
+        URLCheckers.evaluate(url);
         source = new InputSource(url.openStream());
         this.disposeInputSource = true;
         setSourceUrl(url);

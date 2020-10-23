@@ -35,7 +35,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.geotools.data.ows.MockURLChecker;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_buffer;
@@ -1057,15 +1057,16 @@ public class SLDStyleTest extends TestCase {
         java.net.URL surl = TestData.getResource(this, "example-sld.xml");
         MockURLChecker urlChecker = new MockURLChecker();
         urlChecker.setEnabled(true);
-        URLCheckerFactory.addURLChecker(urlChecker);
+        URLCheckers.addURLChecker(urlChecker);
 
         try {
             SLDParser stylereader = new SLDParser(sf, surl);
-            fail();
+            fail("An expected Exception was not thrown");
         } catch (Exception e) {
-            assertTrue(e.getMessage().contains("Evaluation Failure:"));
+            assertTrue(
+                    e.getMessage().contains("example-sld.xml: did not pass security evaluation"));
         } finally {
-            URLCheckerFactory.removeURLChecker(urlChecker);
+            URLCheckers.removeURLChecker(urlChecker);
         }
     }
 

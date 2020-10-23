@@ -128,7 +128,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo()  */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[23];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[22];
 
     private static final int GMLComplianceLevel = 2;
 
@@ -571,22 +571,6 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     }
 
     /**
-     * Optional {@code String} Flag to enabled/disable usage of secured http client wrapper that
-     * will only make requests to allowed urls and paths
-     */
-    public static final WFSFactoryParam<Boolean> SECURED_HTTP_CLIENT;
-
-    static {
-        String key = "WFSDataStoreFactory:SECURED_HTTP_CLIENT";
-        String title = "Secure HTTP client";
-        String description = "Use to enable Controlled HTTP Client wrapper";
-        parametersInfo[22] =
-                SECURED_HTTP_CLIENT =
-                        new WFSFactoryParam<Boolean>(
-                                key, Boolean.class, title, description, false, "advanced");
-    }
-
-    /**
      * Checks whether {@code params} contains a valid set of parameters to connect to a WFS.
      *
      * <p>Rules are:
@@ -708,10 +692,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
             }
         }
 
-        final HTTPClient http =
-                (config.isSecuredHttpClient())
-                        ? ControlledHttpClientFactory.wrap(new SimpleHttpClient())
-                        : new SimpleHttpClient(); // new
+        final HTTPClient http = ControlledHttpClientFactory.wrap(new SimpleHttpClient());
         // MultithreadedHttpClient();
 
         // TODO: let HTTPClient be configured for gzip

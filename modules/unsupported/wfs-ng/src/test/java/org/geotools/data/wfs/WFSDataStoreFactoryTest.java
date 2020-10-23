@@ -31,7 +31,9 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.ows.ControlledHttpClient;
 import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.MockURLChecker;
 import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.util.Version;
@@ -211,10 +213,20 @@ public class WFSDataStoreFactoryTest {
     @Test
     public void testSecuredHttpClient() throws IOException {
         params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
-        params.put(WFSDataStoreFactory.SECURED_HTTP_CLIENT.key, true);
-        params.put(
-                WFSDataStoreFactory.URL.key,
-                new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
-        assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof ControlledHttpClient);
+        MockURLChecker urlChecker = new MockURLChecker();
+        urlChecker.setEnabled(true);
+        URLCheckers.addURLChecker(urlChecker);
+        try {
+            // with a URLChecker configured, the httpclient should be wrapped as
+            // ControlledHttpClient
+            params.put(
+                    WFSDataStoreFactory.URL.key,
+                    new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
+            assertTrue(
+                    new WFSDataStoreFactory().getHttpClient(params)
+                            instanceof ControlledHttpClient);
+        } finally {
+            URLCheckers.removeURLChecker(urlChecker);
+        }
     }
 }

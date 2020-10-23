@@ -32,7 +32,7 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.MockURLChecker;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.ows.URLChecker;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -125,7 +125,7 @@ public class MapServerTest {
     public void testSecuredGetFeatures() throws Exception {
         // test asserts the ControlledHttpClient is effective for WFS-NG feature fetch
         URLChecker mockUrlChecker = new MockURLChecker();
-        URLCheckerFactory.addURLChecker(mockUrlChecker);
+        URLCheckers.addURLChecker(mockUrlChecker);
         // should through exception
         try {
             WFSDataStore wfs =
@@ -135,7 +135,7 @@ public class MapServerTest {
             // should be a security evaluation fail exception
             assertTrue(e.getMessage().contains("did not pass security evaluation"));
         } finally {
-            URLCheckerFactory.removeURLChecker(mockUrlChecker);
+            URLCheckers.removeURLChecker(mockUrlChecker);
             //  reader.close();
         }
     }

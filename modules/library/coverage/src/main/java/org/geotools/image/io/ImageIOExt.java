@@ -42,7 +42,7 @@ import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.PlanarImage;
-import org.geotools.data.ows.URLCheckerFactory;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.image.ImageWorker;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
@@ -427,8 +427,8 @@ public class ImageIOExt {
     }
 
     private static void applySecurityChecks(Object input) throws IOException {
-        if (input instanceof URL) URLCheckerFactory.evaluate((URL) input);
-        else if (input instanceof URI) URLCheckerFactory.evaluate((URI) input);
-        else if (input instanceof String) URLCheckerFactory.evaluate((String) input);
+        if (input instanceof URL) URLCheckers.evaluate((URL) input);
+        else if (input instanceof URI) URLCheckers.evaluate((URI) input);
+        else if (input instanceof String) URLCheckers.evaluate((String) input);
     }
 }

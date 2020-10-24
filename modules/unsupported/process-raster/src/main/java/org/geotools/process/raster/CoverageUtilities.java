@@ -201,6 +201,7 @@ public class CoverageUtilities {
                 classificationRanges, outputPixelValues, noDataValue, noDataValue.getClass());
     }
 
+    @SuppressWarnings("unchecked")
     public static RangeLookupTable getRangeLookupTable(
             List<Range> classificationRanges,
             final int[] outputPixelValues,
@@ -234,6 +235,7 @@ public class CoverageUtilities {
         return rltBuilder.build();
     }
 
+    @SuppressWarnings("unchecked")
     public static it.geosolutions.jaiext.rlookup.RangeLookupTable getRangeLookupTableJAIEXT(
             List<Range> classificationRanges,
             final int[] outputPixelValues,

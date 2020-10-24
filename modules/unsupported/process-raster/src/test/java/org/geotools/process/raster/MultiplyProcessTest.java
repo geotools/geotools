@@ -6,6 +6,7 @@ import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.image.Raster;
 import java.util.HashMap;
+import java.util.Map;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -36,7 +37,7 @@ public class MultiplyProcessTest {
                     {14, 15, 16, 17},
                 };
 
-        HashMap properties = new HashMap<>();
+        Map<String, Object> properties = new HashMap<>();
         CoverageUtilities.setNoDataProperty(properties, new NoDataContainer(2));
         GridCoverage2D cov =
                 covFactory.create(

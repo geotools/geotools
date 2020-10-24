@@ -43,13 +43,13 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.FeatureStore;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -176,10 +176,10 @@ public class FootprintExtractionProcessTest {
                 // Write the features to the shapefile
                 Transaction transaction = new DefaultTransaction("create");
 
-                FeatureSource source = ds.getFeatureSource(ds.getTypeNames()[0]);
+                SimpleFeatureSource source = ds.getFeatureSource(ds.getTypeNames()[0]);
 
-                if (source instanceof FeatureStore) {
-                    FeatureStore store = (FeatureStore) source;
+                if (source instanceof SimpleFeatureStore) {
+                    SimpleFeatureStore store = (SimpleFeatureStore) source;
 
                     store.setTransaction(transaction);
                     try {

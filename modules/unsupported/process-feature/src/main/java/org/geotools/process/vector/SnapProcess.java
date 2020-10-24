@@ -20,7 +20,6 @@ package org.geotools.process.vector;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import org.geotools.data.Parameter;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -128,9 +127,7 @@ public class SnapProcess implements VectorProcess {
 
             DefaultFeatureCollection results = new DefaultFeatureCollection();
             FeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
-            Unit fromUnit = SI.METRE;
-            Unit toUnit = USCustomary.MILE;
-            UnitConverter unitConvert = fromUnit.getConverterTo(toUnit);
+            UnitConverter unitConvert = SI.METRE.getConverterTo(USCustomary.MILE);
             Feature nearestFeature = null;
             double nearestDistance = 9e9;
             double nearestBearing = 0;

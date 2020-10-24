@@ -34,6 +34,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.Feature;
+import org.opengis.feature.type.FeatureType;
 
 public class LRSMeasureProcessTest {
     private DataStore featureSource;
@@ -131,10 +132,11 @@ public class LRSMeasureProcessTest {
     @Test
     public void testNoFeaturesGiven() throws Exception {
         LRSMeasureProcess process = new LRSMeasureProcess();
-        FeatureCollection origional = new DefaultFeatureCollection();
+        DefaultFeatureCollection origional = new DefaultFeatureCollection();
         Point point = geometryFactory.createPoint(new Coordinate(1.0, 0.0));
 
-        FeatureCollection result = process.execute(origional, "from_lrs", "to_lrs", point, null);
+        FeatureCollection<? extends FeatureType, ? extends Feature> result =
+                process.execute(origional, "from_lrs", "to_lrs", point, null);
         Assert.assertEquals(0, result.size());
     }
 

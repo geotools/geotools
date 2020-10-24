@@ -209,6 +209,7 @@ public class AggregateProcess implements VectorProcess {
         if (singlePass) {
             AggregateFeatureCalc calc = new AggregateFeatureCalc(visitors);
             features.accepts(calc, new NullProgressListener());
+            @SuppressWarnings("unchecked")
             List<CalcResult> resultList = (List<CalcResult>) calc.getResult().getValue();
             for (int i = 0; i < functionList.size(); i++) {
                 CalcResult result = resultList.get(i);
@@ -276,13 +277,18 @@ public class AggregateProcess implements VectorProcess {
         List<Map<List<Object>, Object>> results =
                 groupByVisitors
                         .stream()
-                        .map(visitor -> (Map<List<Object>, Object>) visitor.getResult().toMap())
+                        .map(visitor -> getListObjectMap(visitor))
                         .collect(Collectors.toList());
         return new Results(
                 aggAttribute,
                 functions,
                 rawGroupByAttributes,
                 mergeResults(results, rawGroupByAttributes.size()));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<List<Object>, Object> getListObjectMap(GroupByVisitor visitor) {
+        return (Map<List<Object>, Object>) visitor.getResult().toMap();
     }
 
     /**

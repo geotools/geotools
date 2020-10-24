@@ -31,6 +31,8 @@ import org.opengis.geometry.aggregate.MultiPoint;
 import org.opengis.geometry.aggregate.MultiSurface;
 import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.primitive.Curve;
+import org.opengis.geometry.primitive.OrientableCurve;
+import org.opengis.geometry.primitive.OrientableSurface;
 import org.opengis.geometry.primitive.Point;
 import org.opengis.geometry.primitive.Surface;
 import org.opengis.geometry.primitive.SurfaceBoundary;
@@ -171,15 +173,14 @@ public class MapToOpenGISGeomUtil {
         assert coords.get(0) instanceof List : "MultiLine should be a two dimensional array";
 
         List collect = coords.stream().collect(ArrayList::new, List::addAll, List::addAll);
-        Set<Curve> curves =
-                (Set<Curve>)
-                        coords.stream()
-                                .map(
-                                        p -> {
-                                            PointArray pointArray = parsePointArray(collect);
-                                            return FACTORY.createCurve(pointArray, false);
-                                        })
-                                .collect(Collectors.toSet());
+        Set<OrientableCurve> curves =
+                coords.stream()
+                        .map(
+                                p -> {
+                                    PointArray pointArray = parsePointArray(collect);
+                                    return FACTORY.createCurve(pointArray, false);
+                                })
+                        .collect(Collectors.toSet());
         return FACTORY.createMultiCurve(curves);
     }
 
@@ -199,17 +200,16 @@ public class MapToOpenGISGeomUtil {
         List collect = coords.stream().collect(ArrayList::new, List::addAll, List::addAll);
         List collect2 =
                 ((List<List>) collect).stream().collect(ArrayList::new, List::addAll, List::addAll);
-        Set<Surface> surfaces =
-                (Set<Surface>)
-                        coords.stream()
-                                .map(
-                                        p -> {
-                                            PointArray pointArray = parsePointArray(collect2);
-                                            SurfaceBoundary ring =
-                                                    FACTORY.createSurfaceBoundary(pointArray);
-                                            return FACTORY.createSurface(ring);
-                                        })
-                                .collect(Collectors.toSet());
+        Set<OrientableSurface> surfaces =
+                coords.stream()
+                        .map(
+                                p -> {
+                                    PointArray pointArray = parsePointArray(collect2);
+                                    SurfaceBoundary ring =
+                                            FACTORY.createSurfaceBoundary(pointArray);
+                                    return FACTORY.createSurface(ring);
+                                })
+                        .collect(Collectors.toSet());
 
         return FACTORY.createMultiSurface(surfaces);
     }

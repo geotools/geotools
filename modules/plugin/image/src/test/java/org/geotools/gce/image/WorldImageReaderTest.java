@@ -311,7 +311,8 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
     private int getChosenOverview(final int size, WorldImageReader wiReader, ParameterValue policy)
             throws IOException {
         // get the coverage and then the rendered image
-        final Parameter readGG = new Parameter(AbstractGridFormat.READ_GRIDGEOMETRY2D);
+        final Parameter<GridGeometry2D> readGG =
+                new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
 
         readGG.setValue(
                 new GridGeometry2D(

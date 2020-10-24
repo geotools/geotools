@@ -246,8 +246,10 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
             Map<String, String> viewParams = null;
             if (query.getRequestHints() != null) {
-                viewParams =
+                @SuppressWarnings("unchecked")
+                Map<String, String> cast =
                         (Map<String, String>) query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+                viewParams = cast;
 
                 config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
@@ -355,8 +357,10 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             StoredQueryConfiguration config = null;
 
             if (query.getRequestHints() != null) {
-                viewParams =
+                @SuppressWarnings("unchecked")
+                Map<String, String> cast =
                         (Map<String, String>) query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+                viewParams = cast;
 
                 config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
@@ -497,22 +501,19 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
         trace("Looking operation URI for ", operation, "/", method);
 
+        @SuppressWarnings("unchecked")
         List<OperationType> operations = capabilities.getOperationsMetadata().getOperation();
         for (OperationType op : operations) {
             if (!operation.getName().equals(op.getName())) {
                 continue;
             }
+            @SuppressWarnings("unchecked")
             List<DCPType> dcpTypes = op.getDCP();
             if (null == dcpTypes) {
                 continue;
             }
             for (DCPType d : dcpTypes) {
-                List<RequestMethodType> methods;
-                if (HttpMethod.GET.equals(method)) {
-                    methods = d.getHTTP().getGet();
-                } else {
-                    methods = d.getHTTP().getPost();
-                }
+                List<RequestMethodType> methods = getMethods(method, d);
                 if (null == methods || methods.isEmpty()) {
                     continue;
                 }
@@ -525,6 +526,17 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
         debug("No operation URI found for ", operation, "/", method);
         return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<RequestMethodType> getMethods(HttpMethod method, DCPType d) {
+        List<RequestMethodType> methods;
+        if (HttpMethod.GET.equals(method)) {
+            methods = d.getHTTP().getGet();
+        } else {
+            methods = d.getHTTP().getPost();
+        }
+        return methods;
     }
 
     @Override

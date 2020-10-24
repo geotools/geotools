@@ -210,7 +210,7 @@ public class EmfAppSchemaParser {
             throws IOException {
         XSDElementDeclaration elementDecl = parseFeatureType(featureName, schemaLocation);
 
-        Map bindings = wfsConfiguration.setupBindings();
+        Map<QName, Object> bindings = wfsConfiguration.setupBindings();
         if (mappedBindings != null) {
             bindings.putAll(mappedBindings);
         }

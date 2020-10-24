@@ -302,6 +302,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         return tx;
     }
 
+    @SuppressWarnings("unchecked")
     protected InsertElementType createInsert(WfsFactory factory, Insert elem) throws Exception {
         InsertElementType insert = factory.createInsertElementType();
 

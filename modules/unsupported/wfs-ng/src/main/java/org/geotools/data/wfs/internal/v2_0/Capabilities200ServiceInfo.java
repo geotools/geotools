@@ -100,7 +100,9 @@ public final class Capabilities200ServiceInfo implements WFSServiceInfo {
             List<KeywordsType> keywords = serviceIdentification.getKeywords();
             if (keywords != null) {
                 for (KeywordsType k : keywords) {
-                    for (LanguageStringType s : (List<LanguageStringType>) k.getKeyword()) {
+                    @SuppressWarnings("unchecked")
+                    List<LanguageStringType> keywordStrings = k.getKeyword();
+                    for (LanguageStringType s : keywordStrings) {
                         kws.add(s.getValue());
                     }
                 }

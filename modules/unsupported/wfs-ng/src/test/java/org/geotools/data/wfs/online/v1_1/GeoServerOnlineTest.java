@@ -215,7 +215,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
     private Id createFidFilter(SimpleFeatureSource fs) throws IOException {
         SimpleFeatureIterator iter = fs.getFeatures().features();
         FilterFactory2 ffac = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
-        Set fids = new HashSet();
+        Set<FeatureId> fids = new HashSet<>();
         try {
             while (iter.hasNext()) {
                 String id = iter.next().getID();

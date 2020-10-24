@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFactory;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
 import org.geotools.data.ows.HTTPClient;
@@ -121,6 +120,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         }
 
         public T lookUp(final Map params) throws IOException {
+            @SuppressWarnings("unchecked")
             T parameter = (T) super.lookUp(params);
             return parameter == null ? defaultValue : parameter;
         }
@@ -572,11 +572,11 @@ public class WFSDataAccessFactory implements DataAccessFactory {
      * </ul>
      */
     @Override
-    public boolean canProcess(@SuppressWarnings("rawtypes") final Map params) {
+    public boolean canProcess(final Map<String, Serializable> params) {
         return canProcess(params, GMLComplianceLevel);
     }
 
-    protected boolean canProcess(final Map params, int maximumGmlComplianceLevel) {
+    protected boolean canProcess(final Map<String, ?> params, int maximumGmlComplianceLevel) {
         /*
          * check required params exist and are of the correct type
          */

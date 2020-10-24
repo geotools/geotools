@@ -117,7 +117,7 @@ public class SortedFeatureReader implements SimpleFeatureReader {
             } else {
                 String name = sb.getPropertyName().getPropertyName();
                 boolean ascending = sb.getSortOrder() == SortOrder.ASCENDING;
-                Comparator comparator;
+                Comparator<SimpleFeature> comparator;
                 if (schema == null) {
                     comparator = new PropertyComparator(name, ascending);
                 } else {

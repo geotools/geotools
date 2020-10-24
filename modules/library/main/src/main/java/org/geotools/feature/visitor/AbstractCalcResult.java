@@ -201,7 +201,6 @@ public class AbstractCalcResult implements CalcResult {
 
         @SuppressWarnings("unchecked")
         String[] strings = (String[]) list.toArray(new String[list.size()]);
-        ;
         return strings;
     }
 

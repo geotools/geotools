@@ -16,7 +16,7 @@
  */
 package org.geotools.data.collection;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -9,8 +9,9 @@
  */
 package org.opengis.referencing.cs;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19111;
+import static org.opengis.annotation.Specification.OGC_01009;
 
 import java.util.ArrayList;
 import java.util.List;

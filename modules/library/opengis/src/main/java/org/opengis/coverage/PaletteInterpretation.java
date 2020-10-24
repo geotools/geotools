@@ -9,8 +9,8 @@
  */
 package org.opengis.coverage;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.OGC_01004;
 
 import java.awt.color.ColorSpace;
 import java.util.ArrayList;

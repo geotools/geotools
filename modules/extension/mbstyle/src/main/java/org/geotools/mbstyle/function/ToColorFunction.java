@@ -16,7 +16,7 @@
  */
 package org.geotools.mbstyle.function;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.filter.FunctionExpressionImpl;

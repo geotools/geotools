@@ -26,7 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.*;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.FilteringFeatureReader;
+import org.geotools.data.Query;
+import org.geotools.data.QueryCapabilities;
+import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.data.store.ContentEntry;
@@ -301,9 +306,11 @@ public class MongoFeatureSource extends ContentFeatureSource {
         if (q.getSortBy() != null) {
             BasicDBObject orderBy = new BasicDBObject();
             for (SortBy sortBy : q.getSortBy()) {
-                String propName = sortBy.getPropertyName().getPropertyName();
-                String property = mapper.getPropertyPath(propName);
-                orderBy.append(property, sortBy.getSortOrder() == SortOrder.ASCENDING ? 1 : -1);
+                if (sortBy.getPropertyName() != null) {
+                    String propName = sortBy.getPropertyName().getPropertyName();
+                    String property = mapper.getPropertyPath(propName);
+                    orderBy.append(property, sortBy.getSortOrder() == SortOrder.ASCENDING ? 1 : -1);
+                }
             }
             c = c.sort(orderBy);
         }

@@ -16,7 +16,7 @@
  */
 package org.geotools.data.store;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URI;

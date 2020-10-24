@@ -19,6 +19,8 @@ package org.geotools.data.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
@@ -43,6 +45,9 @@ import org.geotools.util.factory.Hints;
  * @since 2.4
  */
 public class NumericConverterFactory implements ConverterFactory {
+
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(NumericConverterFactory.class);
 
     public Converter createConverter(Class source, Class target, Hints hints) {
         // convert to non-primitive class
@@ -193,6 +198,8 @@ public class NumericConverterFactory implements ConverterFactory {
 
         public Object convertInternal(Object source, Class<?> target) {
             target = primitiveToWrapperClass(target);
+            source = cleanSource(source, target);
+
             if (source instanceof Number) {
                 Number s = (Number) source;
 
@@ -335,6 +342,44 @@ public class NumericConverterFactory implements ConverterFactory {
         } else {
             return s;
         }
+    }
+
+    /**
+     * Clean the source handling possible edge cases:
+     *
+     * <ol>
+     *   <li>Scientific notation conversions
+     * </ol>
+     *
+     * @return the cleaned source
+     */
+    static Object cleanSource(Object source, Class target) {
+        BigDecimal bigDecimal = getBigDecimalFromScientificNotation(source, target);
+        return bigDecimal != null ? bigDecimal : source;
+    }
+
+    /**
+     * @return a BigDecimal in case the source is a String in scientific notation and the target is
+     *     an integral number, null otherwise
+     */
+    static BigDecimal getBigDecimalFromScientificNotation(Object source, Class target) {
+        if (source instanceof String
+                && (Long.class.equals(target)
+                        || Integer.class.equals(target)
+                        || Short.class.equals(target)
+                        || Byte.class.equals(target)
+                        || BigInteger.class.equals(target))) {
+            try {
+                return ((String) source).toUpperCase().contains("E")
+                        ? new BigDecimal((String) source)
+                        : null;
+            } catch (NumberFormatException ex) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.finest("NumberFormatException for source=" + source);
+                }
+            }
+        }
+        return null;
     }
 
     static HashMap<Class, Class> primitiveToWrapper = new HashMap<>();

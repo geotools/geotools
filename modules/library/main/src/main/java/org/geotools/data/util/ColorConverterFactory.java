@@ -16,7 +16,7 @@
  */
 package org.geotools.data.util;
 
-import java.awt.*;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Collections;

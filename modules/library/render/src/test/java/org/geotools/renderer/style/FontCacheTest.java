@@ -16,14 +16,14 @@
  */
 package org.geotools.renderer.style;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertThat;
 
-import java.awt.*;
+import java.awt.Font;
 import java.util.List;
 import org.geotools.renderer.lite.StreamingRendererTest;
 import org.junit.After;

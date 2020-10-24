@@ -19,12 +19,16 @@ package org.geotools.mbstyle.parse;
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.categories;
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.equalInt;
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.evaluatesTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.EnumSet;

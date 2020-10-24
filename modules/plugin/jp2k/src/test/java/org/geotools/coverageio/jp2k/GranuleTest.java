@@ -17,6 +17,9 @@
  */
 package org.geotools.coverageio.jp2k;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.File;

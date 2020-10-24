@@ -123,6 +123,8 @@ public abstract class GranuleCatalogFactory {
             params.put(Utils.Prop.SUGGESTED_IS_SPI, catalogConfigurationBean.getSuggestedIsSPI());
 
         params.put(Utils.Prop.HETEROGENEOUS, catalogConfigurationBean.isHeterogeneous());
+        params.put(Utils.Prop.COG, catalogConfigurationBean.getCogConfiguration() != null);
+
         params.put(Utils.Prop.WRAP_STORE, catalogConfigurationBean.isWrapStore());
         if (sourceURL != null) {
             File parentDirectory = URLs.urlToFile(sourceURL);

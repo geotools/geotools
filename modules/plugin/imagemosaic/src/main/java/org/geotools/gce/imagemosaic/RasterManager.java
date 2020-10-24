@@ -1274,9 +1274,8 @@ public class RasterManager implements Cloneable {
 
         // check if a policy was provided using hints (check even the
         // deprecated one)
-        if (this.hints != null)
-            if (this.hints.containsKey(Hints.OVERVIEW_POLICY))
-                overviewPolicy = (OverviewPolicy) this.hints.get(Hints.OVERVIEW_POLICY);
+        overviewPolicy =
+                (OverviewPolicy) Utils.getHintIfAvailable(this.hints, Hints.OVERVIEW_POLICY);
 
         // use default if not provided. Default is nearest
         if (overviewPolicy == null) {
@@ -1294,9 +1293,8 @@ public class RasterManager implements Cloneable {
      *     DecimationPolicy#DISALLOW}. Default is {@link DecimationPolicy#ALLOW}.
      */
     private DecimationPolicy extractDecimationPolicy() {
-        if (this.hints != null)
-            if (this.hints.containsKey(Hints.DECIMATION_POLICY))
-                decimationPolicy = (DecimationPolicy) this.hints.get(Hints.DECIMATION_POLICY);
+        decimationPolicy =
+                (DecimationPolicy) Utils.getHintIfAvailable(this.hints, Hints.DECIMATION_POLICY);
 
         // use default if not provided. Default is allow
         if (decimationPolicy == null) {

@@ -16,7 +16,8 @@
  */
 package org.geotools.xml.styling;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -28,7 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.Icon;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

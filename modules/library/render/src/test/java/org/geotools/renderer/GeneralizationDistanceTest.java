@@ -19,7 +19,7 @@ package org.geotools.renderer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;

@@ -16,7 +16,9 @@
  */
 package org.geotools.data.wfs.internal.v1_1;
 
-import static org.geotools.data.wfs.WFSTestData.*;
+import static org.geotools.data.wfs.WFSTestData.CUBEWERX_GOVUNITCE;
+import static org.geotools.data.wfs.WFSTestData.createTestProtocol;
+import static org.geotools.data.wfs.WFSTestData.stream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -34,6 +36,8 @@ import org.geotools.data.Transaction;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
+import org.geotools.data.wfs.WFSTestData.MockHTTPClient;
+import org.geotools.data.wfs.WFSTestData.TestWFSClient;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.ows.ServiceException;

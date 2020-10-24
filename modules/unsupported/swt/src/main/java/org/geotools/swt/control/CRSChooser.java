@@ -268,10 +268,7 @@ public class CRSChooser {
         searchText.setText(""); // $NON-NLS-1$
     }
 
-    /**
-     * Takes in a CRS, finds it in the list and highlights it
-     *
-     */
+    /** Takes in a CRS, finds it in the list and highlights it */
     @SuppressWarnings("unchecked")
     public void gotoCRS(CoordinateReferenceSystem crs) {
         if (crs != null) {
@@ -588,8 +585,7 @@ public class CRSChooser {
         return selectedCRS;
     }
 
-    /**
-     */
+    /** */
     private void saveKeywords(CoordinateReferenceSystem found)
             throws CoreException, IOException, BackingStoreException {
         String[] keywords = keywordsText.getText().split(","); // $NON-NLS-1$
@@ -612,8 +608,7 @@ public class CRSChooser {
         wktText.setText(found.toWKT());
     }
 
-    /**
-     */
+    /** */
     private CoordinateReferenceSystem saveCustomizedCRS(
             String text, boolean processWKT, CoordinateReferenceSystem createdCRS)
             throws CoreException, IOException, BackingStoreException {

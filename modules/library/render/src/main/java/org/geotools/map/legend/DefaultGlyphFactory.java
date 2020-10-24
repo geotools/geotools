@@ -16,8 +16,8 @@
  */
 package org.geotools.map.legend;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import javax.swing.Icon;
 import org.geotools.map.Layer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;

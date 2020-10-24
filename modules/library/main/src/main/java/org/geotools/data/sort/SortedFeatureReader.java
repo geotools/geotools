@@ -96,6 +96,12 @@ public class SortedFeatureReader implements SimpleFeatureReader {
 
     /** Builds a comparator that can be used to sort SimpleFeature instances in memory */
     public static Comparator<SimpleFeature> getComparator(SortBy[] sortBy) {
+        return getComparator(sortBy, null);
+    }
+
+    /** Builds a comparator that can be used to sort SimpleFeature instances in memory */
+    public static Comparator<SimpleFeature> getComparator(
+            SortBy[] sortBy, SimpleFeatureType schema) {
         // handle the easy cases, no sorting or natural sorting
         if (sortBy == SortBy.UNSORTED || sortBy == null) {
             return null;
@@ -111,7 +117,14 @@ public class SortedFeatureReader implements SimpleFeatureReader {
             } else {
                 String name = sb.getPropertyName().getPropertyName();
                 boolean ascending = sb.getSortOrder() == SortOrder.ASCENDING;
-                comparators.add(new PropertyComparator(name, ascending));
+                Comparator comparator;
+                if (schema == null) {
+                    comparator = new PropertyComparator(name, ascending);
+                } else {
+                    int idx = schema.indexOf(name);
+                    comparator = new IndexedPropertyComparator(idx, ascending);
+                }
+                comparators.add(comparator);
             }
         }
 

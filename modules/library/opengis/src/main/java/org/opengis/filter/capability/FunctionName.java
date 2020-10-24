@@ -21,7 +21,7 @@ package org.opengis.filter.capability;
 
 // Annotations
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.UNSPECIFIED;
 
 import java.util.List;
 import org.opengis.annotation.UML;

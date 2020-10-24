@@ -428,18 +428,22 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 // conversion will be needed)
                 if (value != null) {
                     EnumMapper mapper = enumMappers[i];
-                    if (mapper != null)
+                    Object converted = null;
+                    if (mapper != null) {
                         value = mapper.fromInteger(Converters.convert(value, Integer.class));
-                    Class<?> binding = type.getType().getBinding();
-                    Object converted = Converters.convert(value, binding);
+                        converted = value;
+                    } else {
+                        converted = dataStore.dialect.convertValue(value, type);
+                    }
+
                     if (converted != null && converted != value) {
                         value = converted;
                         if (dataStore.getLogger().isLoggable(Level.FINER)) {
                             String msg =
                                     value
                                             + " is not of type "
-                                            + binding.getName()
-                                            + ", attempting conversion";
+                                            + type.getType().getBinding().getName()
+                                            + ", value was converted";
                             dataStore.getLogger().finer(msg);
                         }
                     }

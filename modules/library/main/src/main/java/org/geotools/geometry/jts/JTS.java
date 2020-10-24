@@ -16,7 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
-import java.awt.*;
+import java.awt.Shape;
 import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;

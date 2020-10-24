@@ -9,15 +9,29 @@
  */
 package org.opengis.referencing.crs;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.OGC_01009;
 
 import java.util.Map;
 import org.opengis.annotation.UML;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ObjectFactory;
-import org.opengis.referencing.cs.*;
-import org.opengis.referencing.datum.*;
-import org.opengis.referencing.operation.*;
+import org.opengis.referencing.cs.AffineCS;
+import org.opengis.referencing.cs.CartesianCS;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.EllipsoidalCS;
+import org.opengis.referencing.cs.SphericalCS;
+import org.opengis.referencing.cs.TimeCS;
+import org.opengis.referencing.cs.VerticalCS;
+import org.opengis.referencing.datum.EngineeringDatum;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.datum.ImageDatum;
+import org.opengis.referencing.datum.TemporalDatum;
+import org.opengis.referencing.datum.VerticalDatum;
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.OperationMethod;
 
 /**
  * Builds up complex {@linkplain CoordinateReferenceSystem coordinate reference systems} from

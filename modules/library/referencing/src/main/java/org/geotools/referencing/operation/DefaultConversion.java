@@ -21,7 +21,15 @@ package org.geotools.referencing.operation;
 
 import java.util.Map;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.*; // We use almost all of them.
+import org.opengis.referencing.operation.ConicProjection;
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CylindricalProjection;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Operation;
+import org.opengis.referencing.operation.OperationMethod;
+import org.opengis.referencing.operation.PlanarProjection;
+import org.opengis.referencing.operation.Projection;
 
 /**
  * An operation on coordinates that does not include any change of Datum. The best-known example of

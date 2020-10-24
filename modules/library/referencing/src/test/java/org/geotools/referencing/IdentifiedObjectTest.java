@@ -16,15 +16,20 @@
  */
 package org.geotools.referencing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.util.SimpleInternationalString;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.parameter.InvalidParameterValueException;
+import org.opengis.referencing.IdentifiedObject;
 import org.opengis.util.InternationalString;
 
 /**

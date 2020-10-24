@@ -10,7 +10,7 @@
 package org.opengis.coverage;
 
 import org.opengis.annotation.Extension;
-import org.opengis.geometry.DirectPosition; // For Javadoc
+import org.opengis.geometry.DirectPosition;
 
 /**
  * The base class for exceptions thrown when a quantity can't be evaluated. This exception is

@@ -17,7 +17,7 @@
 
 package org.geotools.data.wfs.internal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;

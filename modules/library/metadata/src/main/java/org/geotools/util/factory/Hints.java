@@ -16,7 +16,7 @@
  */
 package org.geotools.util.factory;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

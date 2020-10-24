@@ -9,14 +9,14 @@
  */
 package org.opengis.geometry.complex;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.Collection;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.Geometry;
-import org.opengis.geometry.primitive.Point; // For javadoc
-import org.opengis.geometry.primitive.Primitive; // For javadoc
+import org.opengis.geometry.primitive.Point;
+import org.opengis.geometry.primitive.Primitive;
 
 /**
  * A collection of geometrically disjoint, simple {@linkplain Primitive primitives}. If a

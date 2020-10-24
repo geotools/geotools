@@ -17,10 +17,10 @@
  */
 package org.geotools.data.mongodb;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -38,6 +38,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -355,6 +356,16 @@ public class FilterToMongoTest extends TestCase {
                         ff.function("jsonSelectAll", ff.literal("geom")), getGeometryParameter());
         BasicDBObject mongoQuery = (BasicDBObject) intersects.accept(filterToMongo, null);
         testIntersectMongoQuery(mongoQuery);
+    }
+
+    public void testNot() {
+        Not not = ff.not(ff.isNull(ff.property("foo")));
+        BasicDBObject obj = (BasicDBObject) not.accept(filterToMongo, null);
+        assertNotNull(obj);
+        assertEquals(1, obj.keySet().size());
+        BasicDBObject operator = (BasicDBObject) obj.get("properties.foo");
+
+        assertEquals(null, operator.get("$eq"));
     }
 
     private Literal getGeometryParameter() {

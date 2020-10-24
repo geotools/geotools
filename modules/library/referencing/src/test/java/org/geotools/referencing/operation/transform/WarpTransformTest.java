@@ -16,7 +16,10 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -28,7 +31,7 @@ import javax.media.jai.WarpAffine;
 import javax.media.jai.WarpPolynomial;
 import javax.media.jai.WarpQuadratic;
 import org.geotools.util.Classes;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.referencing.operation.TransformException;
 
 /**

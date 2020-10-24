@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -50,6 +51,7 @@ import org.geotools.filter.visitor.ExpressionTypeVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
@@ -1357,5 +1359,24 @@ public abstract class SQLDialect {
      */
     public Integer getSQLType(AttributeDescriptor ad) {
         return null;
+    }
+
+    /**
+     * Returns true if the attribute in question is an array. By default comparers the {@link
+     * JDBCDataStore#JDBC_NATIVE_TYPE} stored in the attribute user data with {@link Types#ARRAY},
+     * but subclasses can override to use a different approach.
+     */
+    public boolean isArray(AttributeDescriptor att) {
+        Integer nativeType = (Integer) att.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPE);
+        return Objects.equals(Types.ARRAY, nativeType);
+    }
+
+    /**
+     * Convertes the given value to the target type. The default implementation uses converters to
+     * match the attribute descriptor binding, subclasses can override.
+     */
+    public Object convertValue(Object value, AttributeDescriptor ad) {
+        Class binding = ad.getType().getBinding();
+        return Converters.convert(value, binding);
     }
 }

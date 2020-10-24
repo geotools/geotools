@@ -93,7 +93,6 @@ public abstract class InfoToolHelper<T> {
      *     helper = new VectorLayerHelper(context, layer);
      * }
      * </code></pre>
-     *
      */
     public abstract boolean isValid();
 

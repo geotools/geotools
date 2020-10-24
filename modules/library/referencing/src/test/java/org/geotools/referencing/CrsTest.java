@@ -569,4 +569,24 @@ public final class CrsTest {
         // the projected ordinates are the same, no need to actually run a transformation
         assertFalse(CRS.isTransformationRequired(lonLatWebMercator, latLonWebMercator));
     }
+
+    @Test
+    public void testReprojectAzimuthalEquidistant() throws Exception {
+        String wkt =
+                "PROJCS[\"equi7_europe_nofalseXY\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Azimuthal_Equidistant\"],PARAMETER[\"false_easting\",5837287.81977],PARAMETER[\"false_northing\",2121415.69617],PARAMETER[\"central_meridian\",24.0],PARAMETER[\"latitude_of_origin\",53.0],UNIT[\"Meter\",1.0]]";
+        CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+
+        CoordinateOperation op =
+                CRS.getCoordinateOperationFactory(false).createOperation(WGS84, crs);
+        GeneralEnvelope envelope = new GeneralEnvelope(WGS84);
+        envelope.setEnvelope(-180, -90, 180, 90);
+        GeneralEnvelope transformed = CRS.transform(op, envelope);
+
+        // used to miss large parts of the world, given the fragile math of the azeq
+        // testing only that its not missing significant parts
+        assertEquals(-1.38e7, transformed.getMinimum(0), 1e6);
+        assertEquals(-1.37e7, transformed.getMinimum(1), 1e6);
+        assertEquals(2.57e7, transformed.getMaximum(0), 1e6);
+        assertEquals(1.41e7, transformed.getMaximum(1), 1e6);
+    }
 }

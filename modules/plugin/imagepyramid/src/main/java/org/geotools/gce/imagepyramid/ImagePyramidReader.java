@@ -17,7 +17,7 @@
 package org.geotools.gce.imagepyramid;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;

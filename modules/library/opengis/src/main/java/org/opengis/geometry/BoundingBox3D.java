@@ -10,11 +10,11 @@
 package org.opengis.geometry;
 
 import org.opengis.annotation.Extension;
-import org.opengis.metadata.extent.GeographicBoundingBox; // For javadoc
-import org.opengis.referencing.crs.CRSAuthorityFactory; // For javadoc
+import org.opengis.metadata.extent.GeographicBoundingBox;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS; // For javadoc
-import org.opengis.referencing.cs.AxisDirection; // For javadoc
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.operation.TransformException;
 
 /**

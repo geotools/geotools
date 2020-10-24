@@ -16,7 +16,7 @@
  */
 package org.geotools.data.mysql;
 
-import static org.geotools.data.mysql.MySQLDataStoreFactory.*;
+import static org.geotools.data.mysql.MySQLDataStoreFactory.STORAGE_ENGINE;
 
 import java.util.Map;
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;

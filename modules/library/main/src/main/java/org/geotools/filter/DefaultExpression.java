@@ -16,7 +16,19 @@
  */
 package org.geotools.filter;
 
-import static org.geotools.filter.ExpressionType.*;
+import static org.geotools.filter.ExpressionType.ATTRIBUTE_DOUBLE;
+import static org.geotools.filter.ExpressionType.ATTRIBUTE_GEOMETRY;
+import static org.geotools.filter.ExpressionType.ATTRIBUTE_INTEGER;
+import static org.geotools.filter.ExpressionType.ATTRIBUTE_STRING;
+import static org.geotools.filter.ExpressionType.FUNCTION;
+import static org.geotools.filter.ExpressionType.LITERAL_DOUBLE;
+import static org.geotools.filter.ExpressionType.LITERAL_GEOMETRY;
+import static org.geotools.filter.ExpressionType.LITERAL_INTEGER;
+import static org.geotools.filter.ExpressionType.LITERAL_STRING;
+import static org.geotools.filter.ExpressionType.MATH_ADD;
+import static org.geotools.filter.ExpressionType.MATH_DIVIDE;
+import static org.geotools.filter.ExpressionType.MATH_MULTIPLY;
+import static org.geotools.filter.ExpressionType.MATH_SUBTRACT;
 
 import org.geotools.filter.expression.ExpressionAbstract;
 

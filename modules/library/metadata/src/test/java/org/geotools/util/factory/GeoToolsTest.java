@@ -16,7 +16,12 @@
  */
 package org.geotools.util.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.RenderingHints;
 import java.util.Collections;
@@ -29,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Version;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.xml.sax.EntityResolver;
 

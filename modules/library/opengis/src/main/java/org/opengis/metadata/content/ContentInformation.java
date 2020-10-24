@@ -9,7 +9,7 @@
  */
 package org.opengis.metadata.content;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import org.opengis.annotation.UML;
 

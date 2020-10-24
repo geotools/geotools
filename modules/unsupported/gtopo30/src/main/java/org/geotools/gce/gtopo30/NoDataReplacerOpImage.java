@@ -18,7 +18,8 @@ package org.geotools.gce.gtopo30;
 
 // J2SE dependencies
 
-import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;

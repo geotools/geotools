@@ -16,7 +16,10 @@
  */
 package org.geotools.metadata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.metadata.citation.Citation;
 
 /**

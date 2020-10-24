@@ -17,7 +17,13 @@
 package org.geotools.data.oracle;
 
 import static org.geotools.data.oracle.OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE;
-import static org.geotools.jdbc.JDBCDataStoreFactory.*;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PORT;
+import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
+import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -102,6 +102,13 @@ public class WFSTestData {
                     "tiger_poi",
                     "EPSG:4326");
 
+    public static final TestDataType GEOS_ROADS_20 =
+            new TestDataType(
+                    "GeoServer_2.2.x/2.0.0",
+                    new QName("http://www.openplans.org/spearfish", "roads"),
+                    "sf_roads",
+                    "EPSG:26713");
+
     public static final TestDataType GEOS_ROADS_11 =
             new TestDataType(
                     "GeoServer_2.0/1.1.0",

@@ -16,14 +16,14 @@
  */
 package org.geotools.referencing.operation.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import org.geotools.geometry.DirectPosition2D;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 
 public final class TriangulationFactoryTest {

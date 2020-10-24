@@ -17,7 +17,9 @@
  */
 package org.geotools.ysld.parse;
 
-import static org.geotools.ysld.ProcessUtil.*;
+import static org.geotools.ysld.ProcessUtil.loadProcessFunctionFactory;
+import static org.geotools.ysld.ProcessUtil.loadProcessInfo;
+import static org.geotools.ysld.ProcessUtil.processName;
 
 import java.util.ArrayList;
 import java.util.Collection;

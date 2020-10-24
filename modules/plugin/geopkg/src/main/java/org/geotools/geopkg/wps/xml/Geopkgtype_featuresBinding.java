@@ -30,6 +30,7 @@ import org.geotools.xs.bindings.XSQNameBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.opengis.filter.Filter;
+import org.opengis.filter.sort.SortBy;
 
 /**
  * Binding object for the type http://www.opengis.net/gpkg:geopkgtype_features.
@@ -84,6 +85,7 @@ public class Geopkgtype_featuresBinding extends LayertypeBinding {
             layer.setPropertyNames(qnames);
         }
         layer.setFilter((Filter) node.getChildValue("filter"));
+        layer.setSort((SortBy[]) node.getChildValue("sort"));
         Boolean indexed = (Boolean) node.getChildValue("indexed");
         if (indexed != null) {
             layer.setIndexed(indexed);

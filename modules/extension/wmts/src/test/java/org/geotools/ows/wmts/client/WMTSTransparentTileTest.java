@@ -16,9 +16,6 @@
  */
 package org.geotools.ows.wmts.client;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

@@ -17,7 +17,7 @@
 
 package org.geotools.gce.imagemosaic.jdbc.custom;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.sql.Connection;

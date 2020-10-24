@@ -18,7 +18,7 @@
 package org.geotools.gce.gtopo30;
 
 import it.geosolutions.jaiext.lookup.LookupTable;
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;

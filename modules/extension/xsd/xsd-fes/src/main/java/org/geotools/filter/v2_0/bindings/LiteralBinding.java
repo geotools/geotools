@@ -19,7 +19,6 @@ package org.geotools.filter.v2_0.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGCLiteralTypeBinding;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 
 /**

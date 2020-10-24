@@ -1,6 +1,7 @@
 package org.geotools.filter.function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.CRS;

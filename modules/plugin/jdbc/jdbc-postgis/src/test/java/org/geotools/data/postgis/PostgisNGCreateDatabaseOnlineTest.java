@@ -16,7 +16,7 @@
  */
 package org.geotools.data.postgis;
 
-import static org.geotools.data.postgis.PostgisNGDataStoreFactory.*;
+import static org.geotools.data.postgis.PostgisNGDataStoreFactory.PORT;
 import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;

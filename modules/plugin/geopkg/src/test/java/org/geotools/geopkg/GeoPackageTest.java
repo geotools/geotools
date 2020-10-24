@@ -22,7 +22,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -468,6 +469,63 @@ public class GeoPackageTest {
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    public void testDoubleFloatPrecision() throws Exception {
+        double pi = 3.1415926535897932;
+        SimpleFeatureType featureType =
+                createFeatureTypeWithAttribute("double-pi", "pie", Double.class);
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
+        SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, pi);
+        SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, collection);
+
+        FeatureEntry readFeature = geopkg.features().get(0);
+        try (SimpleFeatureReader reader = geopkg.reader(readFeature, null, null)) {
+            Object attribute = reader.next().getAttribute("pie");
+            assertTrue(attribute instanceof Double);
+            Double readValue = (Double) attribute;
+            assertEquals(pi, readValue, 1e-10);
+        }
+    }
+
+    @Test
+    public void testSingleFloatPrecision() throws Exception {
+        float pi = 3.14159265f;
+        SimpleFeatureType featureType =
+                createFeatureTypeWithAttribute("single-pi", "pie", Float.class);
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
+        SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, pi);
+        SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, collection);
+
+        FeatureEntry readFeature = geopkg.features().get(0);
+        try (SimpleFeatureReader reader = geopkg.reader(readFeature, null, null)) {
+            Object attribute = reader.next().getAttribute("pie");
+            assertTrue(attribute instanceof Double);
+            Double attributeValue = (Double) attribute;
+            assertEquals(pi, attributeValue, 1e-5);
+        }
+    }
+
+    private SimpleFeatureType createFeatureTypeWithAttribute(
+            String featureName, String attributeName, Class<?> attributeClazz) {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(featureName);
+        builder.setCRS(DefaultGeographicCRS.WGS84);
+        builder.add("the_geom", LineString.class);
+        builder.add(attributeName, attributeClazz);
+        return builder.buildFeatureType();
+    }
+
+    private SimpleFeature createSimpleFeatureWithValue(
+            SimpleFeatureBuilder featureBuilder, Object value) {
+        featureBuilder.add(createGeometry());
+        featureBuilder.add(value);
+        return featureBuilder.buildFeature(null);
     }
 
     @Test

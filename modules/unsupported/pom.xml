@@ -233,6 +233,7 @@
     <module>ogcapi-client</module>
     <module>tpk</module>
     <module>imagemosaic-jdbc</module>
+      <module>cql-json</module>
   </modules>
 </project>
 

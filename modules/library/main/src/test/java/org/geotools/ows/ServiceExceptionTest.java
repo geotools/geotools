@@ -16,7 +16,7 @@
  */
 package org.geotools.ows;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 import org.xml.sax.SAXException;

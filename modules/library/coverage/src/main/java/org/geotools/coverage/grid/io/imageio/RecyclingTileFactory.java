@@ -17,7 +17,7 @@
 package org.geotools.coverage.grid.io.imageio;
 
 import com.sun.media.jai.util.DataBufferUtils;
-import java.awt.*;
+import java.awt.Point;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;

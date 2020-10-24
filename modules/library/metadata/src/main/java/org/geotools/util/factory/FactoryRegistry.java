@@ -21,7 +21,18 @@ import static org.geotools.util.Utilities.streamIfSubtype;
 
 import java.awt.RenderingHints;
 import java.lang.ref.Reference;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -34,6 +45,7 @@ import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
+import org.opengis.filter.Filter;
 
 /**
  * A registry for factories, organized by categories (usually by <strong>interface</strong>). For

@@ -54,11 +54,22 @@ import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.metadata.extent.GeographicExtent;
 import org.opengis.metadata.quality.EvaluationMethodType;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.*; // Includes imports used only for javadoc.
+import org.opengis.referencing.crs.CRSFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.DerivedCRS;
+import org.opengis.referencing.crs.EngineeringCRS;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.ImageCRS;
+import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.cs.CartesianCS; // For javadoc only
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.datum.DatumFactory;
-import org.opengis.referencing.operation.*; // Includes imports used only for javadoc.
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.TransformException;
+import org.opengis.referencing.operation.Transformation;
 import org.opengis.util.InternationalString;
 
 /**

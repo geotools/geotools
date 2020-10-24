@@ -19,7 +19,6 @@ package org.geotools.data.solr;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

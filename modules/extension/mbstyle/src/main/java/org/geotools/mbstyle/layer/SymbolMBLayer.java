@@ -34,7 +34,8 @@ import static org.geotools.styling.TextSymbolizer.MAX_ANGLE_DELTA_KEY;
 import static org.geotools.styling.TextSymbolizer.PARTIALS_KEY;
 
 import com.google.common.collect.ImmutableSet;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

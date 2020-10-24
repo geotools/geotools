@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.validate;
 
-import java.awt.*;
+import java.awt.Color;
 import org.geotools.ysld.parse.Util;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;

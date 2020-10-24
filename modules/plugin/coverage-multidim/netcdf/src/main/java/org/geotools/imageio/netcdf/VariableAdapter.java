@@ -16,13 +16,23 @@
  */
 package org.geotools.imageio.netcdf;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BandedSampleModel;
 import java.awt.image.SampleModel;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
@@ -32,7 +42,11 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.DefaultDimensionDescriptor;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
-import org.geotools.coverage.io.CoverageSource.*;
+import org.geotools.coverage.io.CoverageSource.AdditionalDomain;
+import org.geotools.coverage.io.CoverageSource.DomainType;
+import org.geotools.coverage.io.CoverageSource.SpatialDomain;
+import org.geotools.coverage.io.CoverageSource.TemporalDomain;
+import org.geotools.coverage.io.CoverageSource.VerticalDomain;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.RasterLayout;
 import org.geotools.coverage.io.catalog.CoverageSlice;

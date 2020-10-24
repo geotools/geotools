@@ -53,7 +53,6 @@ import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import si.uom.SI;
-import si.uom.SI.*;
 
 /**
  * Base class for grid coverage tests. This base class provides factory methods for sample {@link

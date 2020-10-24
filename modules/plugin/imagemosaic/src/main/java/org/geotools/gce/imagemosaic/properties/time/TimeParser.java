@@ -17,7 +17,9 @@
 package org.geotools.gce.imagemosaic.properties.time;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.geotools.util.DateTimeParser;
 

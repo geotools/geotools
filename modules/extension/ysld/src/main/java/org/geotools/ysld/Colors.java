@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 

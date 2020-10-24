@@ -953,6 +953,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         ExceptionReportType report = response.getExceptionResponse();
         assertNotNull(report);
         ExceptionType exception = (ExceptionType) report.getException().get(0);
+        @SuppressWarnings("unchecked")
         EList<String> errorMessage = exception.getExceptionText();
         assertTrue(errorMessage.get(0).contains(processIdenLocal));
     }

@@ -56,7 +56,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
     protected final URL serverURL;
     protected C capabilities;
     protected ServiceInfo info;
-    protected Map<R, ResourceInfo> resourceInfo = new HashMap<R, ResourceInfo>();
+    protected Map<R, ResourceInfo> resourceInfo = new HashMap<>();
 
     /** Contains the specifications that are to be used with this service */
     protected Specification[] specs;
@@ -212,7 +212,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
      * @throws ServiceException if the server returns a ServiceException
      */
     protected C negotiateVersion() throws IOException, ServiceException {
-        List versions = new ArrayList(specs.length);
+        List<String> versions = new ArrayList<>(specs.length);
         Exception exception = null;
 
         for (int i = 0; i < specs.length; i++) {
@@ -234,7 +234,9 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
             // Grab document
             C tempCapabilities;
             try {
-                tempCapabilities = (C) issueRequest(request).getCapabilities();
+                @SuppressWarnings("unchecked")
+                C caps = (C) issueRequest(request).getCapabilities();
+                tempCapabilities = caps;
             } catch (ServiceException e) {
                 tempCapabilities = null;
                 exception = e;

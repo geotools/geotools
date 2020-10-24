@@ -186,8 +186,9 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
 
         int min = info.primary() ? 0 : 1;
-        Parameter resultParam =
-                new Parameter(
+        @SuppressWarnings("unchecked")
+        Parameter<?> resultParam =
+                new Parameter<>(
                         info.name(),
                         resultType,
                         new SimpleInternationalString(info.name()),

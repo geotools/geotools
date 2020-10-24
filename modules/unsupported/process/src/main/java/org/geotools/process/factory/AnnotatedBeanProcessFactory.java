@@ -227,14 +227,20 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
         }
 
         public Class<T> getBeanClass() {
-            return (Class<T>)
-                    streamCategories().findFirst().orElseThrow(NoSuchElementException::new);
+            @SuppressWarnings("unchecked")
+            Class<T> result =
+                    (Class<T>)
+                            streamCategories().findFirst().orElseThrow(NoSuchElementException::new);
+            return result;
         }
 
         public Class<? extends T>[] lookupBeanClasses() {
-            return getFactories(getBeanClass(), null, null)
-                    .map(Object::getClass)
-                    .toArray(Class[]::new);
+            @SuppressWarnings("unchecked")
+            Class<? extends T>[] classes =
+                    getFactories(getBeanClass(), null, null)
+                            .map(Object::getClass)
+                            .toArray(Class[]::new);
+            return classes;
         }
     }
 }

@@ -186,12 +186,13 @@ public class ProcessFunction implements Function {
                 } else {
                     // handle the key/value
                     Iterator it = map.entrySet().iterator();
+                    @SuppressWarnings("unchecked")
                     Map.Entry<String, Object> entry = (Entry<String, Object>) it.next();
                     final String paramName = entry.getKey();
                     final Object paramValue = entry.getValue();
 
                     // see if we have a parameter with that name
-                    Parameter param = parameters.get(paramName);
+                    Parameter<?> param = parameters.get(paramName);
                     if (param == null) {
                         throw new InvalidParameterException(
                                 "Parameter "
@@ -229,8 +230,8 @@ public class ProcessFunction implements Function {
                                         && Collection.class.isAssignableFrom(
                                                 paramValue.getClass())) {
                                     final Collection collection = (Collection) paramValue;
-                                    Collection convertedCollection =
-                                            new ArrayList(collection.size());
+                                    Collection<Object> convertedCollection =
+                                            new ArrayList<>(collection.size());
                                     for (Object original : collection) {
                                         Object convertedItem =
                                                 Converters.convert(original, param.type);

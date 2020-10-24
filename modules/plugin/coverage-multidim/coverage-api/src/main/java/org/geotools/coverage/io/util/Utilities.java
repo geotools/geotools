@@ -42,6 +42,7 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.measure.Quantity;
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FilenameUtils;
@@ -142,7 +143,7 @@ public class Utilities {
             final String name,
             final double equatorialRadius,
             final double inverseFlattening,
-            Unit unit) {
+            Unit<Length> unit) {
 
         DefaultEllipsoid ellipsoid =
                 DefaultEllipsoid.createFlattenedSphere(

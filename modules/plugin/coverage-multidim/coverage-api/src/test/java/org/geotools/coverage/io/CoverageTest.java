@@ -403,7 +403,9 @@ public class CoverageTest {
                 CoverageUpdateRequest writeRequest, ProgressListener progress) {
             CoverageResponse response = new CoverageResponse();
             response.setRequest(writeRequest);
-            response.addResults((Collection<GridCoverage>) writeRequest.getData());
+            @SuppressWarnings("unchecked")
+            Collection<GridCoverage> coverages = (Collection<GridCoverage>) writeRequest.getData();
+            response.addResults(coverages);
             return response;
         }
 

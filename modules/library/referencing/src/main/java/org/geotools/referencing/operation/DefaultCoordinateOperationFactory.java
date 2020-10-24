@@ -710,7 +710,8 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
          */
         final TimeCS sourceCS = sourceCRS.getCoordinateSystem();
         final TimeCS targetCS = targetCRS.getCoordinateSystem();
-        final Unit targetUnit = targetCS.getAxis(0).getUnit();
+        @SuppressWarnings("unchecked")
+        final Unit<Time> targetUnit = (Unit<Time>) targetCS.getAxis(0).getUnit();
         double epochShift = sourceDatum.getOrigin().getTime() - targetDatum.getOrigin().getTime();
         epochShift = MILLISECOND.getConverterTo(targetUnit).convert(epochShift);
         /*

@@ -113,14 +113,14 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * if you are only planning on working with 50 CoordianteReferenceSystems please keep in mind
      * that you will need larger cache size in order to prevent a bottleneck.
      */
-    ObjectCache cache;
+    ObjectCache<Object, Object> cache;
 
     /**
      * The findCache is used to store search results; often match a "raw" CoordinateReferenceSystem
      * created from WKT (as the key) with a "real" CoordianteReferenceSystem as defined by this
      * authority.
      */
-    ObjectCache findCache;
+    ObjectCache<Object, Object> findCache;
 
     /**
      * Pool to hold workers which will be used to construct referencing objects which are not
@@ -180,7 +180,9 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @param cache The cache to use
      */
     protected AbstractAuthorityMediator(
-            int priority, ObjectCache cache, ReferencingFactoryContainer container) {
+            int priority,
+            ObjectCache<Object, Object> cache,
+            ReferencingFactoryContainer container) {
         super(priority);
         this.factories = container;
         this.cache = cache;
@@ -236,11 +238,14 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     public abstract Citation getAuthority();
 
     public Set<String> getAuthorityCodes(Class type) throws FactoryException {
+        @SuppressWarnings("unchecked")
         Set<String> codes = (Set) cache.get(type);
         if (codes == null) {
             try {
                 cache.writeLock(type);
-                codes = (Set) cache.peek(type);
+                @SuppressWarnings("unchecked")
+                Set<String> peek = (Set) cache.peek(type);
+                codes = peek;
                 if (codes == null) {
                     AbstractCachedAuthorityFactory worker = null;
                     try {

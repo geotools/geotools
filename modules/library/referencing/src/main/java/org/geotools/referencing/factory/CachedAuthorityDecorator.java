@@ -92,7 +92,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
                 BufferedFactory {
 
     /** Cache to be used for referencing objects. */
-    ObjectCache cache;
+    ObjectCache<Object, Object> cache;
 
     /** The delegate authority. */
     private AuthorityFactory authority;
@@ -139,7 +139,8 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
      * @param factory The factory to cache. Can not be {@code null}.
      * @param cache The cache to use
      */
-    protected CachedAuthorityDecorator(AuthorityFactory factory, ObjectCache cache) {
+    protected CachedAuthorityDecorator(
+            AuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
         authority = factory;
@@ -151,7 +152,8 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /** Utility method used to produce cache based on hint */
-    protected static ObjectCache createCache(final Hints hints) throws FactoryRegistryException {
+    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints)
+            throws FactoryRegistryException {
         return ObjectCaches.create(hints);
     }
 

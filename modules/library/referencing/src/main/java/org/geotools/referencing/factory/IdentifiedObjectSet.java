@@ -253,8 +253,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * iteration order on the basis of authority codes.
      */
     public String[] getAuthorityCodes() {
-        final Set codes = objects.keySet();
-        return (String[]) codes.toArray(new String[codes.size()]);
+        final Set<String> codes = objects.keySet();
+        return codes.toArray(new String[codes.size()]);
     }
 
     /**

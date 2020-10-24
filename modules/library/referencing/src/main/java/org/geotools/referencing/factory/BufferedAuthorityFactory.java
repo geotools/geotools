@@ -1011,7 +1011,9 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
         final CodePair key = new CodePair(trimAuthority(sourceCRS), trimAuthority(targetCRS));
         final Object cached = get(key);
         if (cached instanceof Set) {
-            operations = (Set<CoordinateOperation>) cached;
+            @SuppressWarnings("unchecked")
+            Set<CoordinateOperation> cast = (Set<CoordinateOperation>) cached;
+            operations = cast;
         } else {
             operations =
                     Collections.unmodifiableSet(

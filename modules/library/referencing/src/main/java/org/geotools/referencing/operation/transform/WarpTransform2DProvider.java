@@ -196,7 +196,7 @@ public class WarpTransform2DProvider extends MathTransformProvider {
             throws ClassNotFoundException, NoSuchMethodException, SecurityException,
                     InstantiationException, IllegalAccessException, IllegalArgumentException,
                     InvocationTargetException {
-        Class warpClass = Class.forName(warpName);
+        Class<?> warpClass = Class.forName(warpName);
         Class[] params =
                 new Class[] {
                     float[].class,

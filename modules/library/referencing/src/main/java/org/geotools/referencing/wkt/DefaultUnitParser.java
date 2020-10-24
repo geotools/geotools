@@ -69,6 +69,7 @@ public class DefaultUnitParser extends BaseGT2Format {
      * the reference units defined in the JSR 385 implementation in use. If no equivalent reference
      * unit is defined, it returns the provided unit
      */
+    @SuppressWarnings("unchecked")
     public <Q extends Quantity<Q>> Unit<Q> getEquivalentUnit(Unit<Q> unit) {
         return (Unit<Q>) unitWrapperToUnitMap.getOrDefault(new UnitWrapper(unit), unit);
     }

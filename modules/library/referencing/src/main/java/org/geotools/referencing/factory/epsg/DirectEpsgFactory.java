@@ -3078,7 +3078,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     @SuppressWarnings("unchecked")
     @Override
-    public synchronized Set createFromCoordinateReferenceSystemCodes(
+    public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
         ensureNonNull("sourceCode", sourceCode);
         ensureNonNull("targetCode", targetCode);

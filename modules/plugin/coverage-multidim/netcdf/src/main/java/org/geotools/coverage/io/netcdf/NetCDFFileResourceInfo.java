@@ -199,6 +199,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
             return new FileGroup(file, supportFiles, metadataMap);
         }
 
+        @SuppressWarnings("unchecked")
         protected Map<String, Object> computeSlicesMetadata(List<CoverageSlice> slices)
                 throws IOException {
             Map<String, Object> metadataMap = null;
@@ -247,7 +248,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
                                 ((Number) max).doubleValue(),
                                 true));
             } else {
-                metadataMap.put(name, new Range(String.class, (String) min, (String) max));
+                metadataMap.put(name, new Range<>(String.class, (String) min, (String) max));
             }
         }
 

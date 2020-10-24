@@ -354,7 +354,7 @@ public class NetCDFMosaicReaderTest {
     public void testCustomTimeAttributeRepository() throws IOException {
         // setup repository
         ShpFileStoreFactory dialect =
-                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
         File indexDirectory = new File("./target/custom_time_attribute_idx");
         FileUtils.deleteQuietly(indexDirectory);
         indexDirectory.mkdir();
@@ -410,7 +410,7 @@ public class NetCDFMosaicReaderTest {
     public void testSharedRepository() throws IOException {
         // setup repository
         ShpFileStoreFactory dialect =
-                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
         File indexDirectory = new File("./target/repo_idx");
         FileUtils.deleteQuietly(indexDirectory);
         indexDirectory.mkdir();
@@ -526,7 +526,7 @@ public class NetCDFMosaicReaderTest {
     public void testHarvestWithSharedRepository() throws IOException {
         // setup repository
         ShpFileStoreFactory dialect =
-                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
         File indexDirectory = new File("./target/repo2_idx");
         FileUtils.deleteQuietly(indexDirectory);
         indexDirectory.mkdir();
@@ -948,7 +948,7 @@ public class NetCDFMosaicReaderTest {
             ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
             final Date timeD = parseTimeStamp("2013-01-01T00:00:00.000");
             time.setValue(
-                    new ArrayList() {
+                    new ArrayList<Date>() {
                         {
                             add(timeD);
                         }
@@ -960,7 +960,7 @@ public class NetCDFMosaicReaderTest {
             // Specify a new time (Check if two times returns two different coverages)
             final Date timeD2 = parseTimeStamp("2013-01-08T00:00:00.000");
             time.setValue(
-                    new ArrayList() {
+                    new ArrayList<Date>() {
                         {
                             add(timeD2);
                         }
@@ -1467,12 +1467,12 @@ public class NetCDFMosaicReaderTest {
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
         bkg.setValue(new double[] {-9999.0});
 
-        ParameterValue<List<String>> dateValue = null;
-        ParameterValue<List<String>> sigmaValue = null;
+        ParameterValue<List> dateValue = null;
+        ParameterValue<List> sigmaValue = null;
         final String selectedSigma = "1";
         final String selectedRuntime = "20110620020000";
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters(name);
-        for (ParameterDescriptor param : params) {
+        for (ParameterDescriptor<List> param : params) {
             if (param.getName().getCode().equalsIgnoreCase("RUNTIME")) {
                 dateValue = param.createValue();
                 dateValue.setValue(

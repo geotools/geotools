@@ -74,7 +74,7 @@ public class NetCDFUnitFormat {
 
     /** Hard coded replacements for common operations */
     private static Map<String, String> CONTENT_REPLACEMENTS =
-            new LinkedHashMap() {
+            new LinkedHashMap<String, String>() {
                 {
                     put(" ", "*");
                     put("-", "^-");

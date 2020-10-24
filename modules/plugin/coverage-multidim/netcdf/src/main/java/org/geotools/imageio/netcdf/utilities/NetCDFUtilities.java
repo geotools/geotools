@@ -854,7 +854,9 @@ public class NetCDFUtilities {
         } else if (input instanceof AccessibleStream) {
             final AccessibleStream<?> stream = (AccessibleStream<?>) input;
             if (stream.getBinding().isAssignableFrom(File.class)) {
-                final File file = ((AccessibleStream<File>) input).getTarget();
+                @SuppressWarnings("unchecked")
+                AccessibleStream<File> as = (AccessibleStream<File>) input;
+                final File file = as.getTarget();
                 if (!file.isDirectory()) {
                     dataset = acquireDataset(file.toURI());
                 } else {
@@ -862,7 +864,9 @@ public class NetCDFUtilities {
                             "Error occurred during NetCDF file reading: The input file is a Directory.");
                 }
             } else if (stream.getBinding().isAssignableFrom(URI.class)) {
-                final URI uri = ((AccessibleStream<URI>) input).getTarget();
+                @SuppressWarnings("unchecked")
+                AccessibleStream<URI> as = (AccessibleStream<URI>) input;
+                final URI uri = as.getTarget();
                 dataset = acquireDataset(uri);
             }
         }
@@ -895,7 +899,9 @@ public class NetCDFUtilities {
         } else if (input instanceof AccessibleStream) {
             final AccessibleStream<?> stream = (AccessibleStream<?>) input;
             if (stream.getBinding().isAssignableFrom(File.class)) {
-                guessedFile = ((AccessibleStream<File>) input).getTarget();
+                @SuppressWarnings("unchecked")
+                AccessibleStream<File> as = (AccessibleStream<File>) input;
+                guessedFile = as.getTarget();
             }
         }
         // check

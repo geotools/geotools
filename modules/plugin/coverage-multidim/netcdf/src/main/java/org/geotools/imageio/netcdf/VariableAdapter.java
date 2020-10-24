@@ -215,7 +215,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 throw new IllegalArgumentException(
                         "Unable to wrap non temporal CoordinateVariable:" + adaptee.toString());
             }
-            this.adaptee = (CoordinateVariable<Date>) adaptee;
+            @SuppressWarnings("unchecked")
+            CoordinateVariable<Date> cast = (CoordinateVariable) adaptee;
+            this.adaptee = cast;
         }
 
         final CoordinateVariable<Date> adaptee;
@@ -267,7 +269,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 throw new IllegalArgumentException(
                         "Unable to wrap a non Number CoordinateVariable:" + cv.toString());
             }
-            this.adaptee = (CoordinateVariable<? extends Number>) cv;
+            @SuppressWarnings("unchecked")
+            CoordinateVariable<? extends Number> cast = (CoordinateVariable) cv;
+            this.adaptee = cast;
         }
 
         public SortedSet<NumberRange<Double>> getVerticalExtent() {
@@ -859,7 +863,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         Category dataCategory = null;
         Category[] categories = null;
         if (noData != null) {
-            NumberRange noDataRange =
+            NumberRange<Double> noDataRange =
                     NumberRange.create(noData.doubleValue(), true, noData.doubleValue(), true);
             noDataCategory =
                     new Category(

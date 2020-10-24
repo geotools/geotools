@@ -439,9 +439,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     }
 
     private String buildTemporalList(SortedSet<? extends DateRange> temporalElements) {
-        Iterator<DateRange> iterator = (Iterator<DateRange>) temporalElements.iterator();
-        //        LinkedHashSet<String> result = new LinkedHashSet<String>();
-
+        Iterator<? extends DateRange> iterator = temporalElements.iterator();
         final StringBuilder buff = new StringBuilder("");
         while (iterator.hasNext()) {
             DateRange range = iterator.next();
@@ -458,10 +456,8 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     /** Setup a String containing vertical domain by doing a scan of a set of vertical Elements */
     private String buildVerticalList(SortedSet<? extends NumberRange<Double>> verticalElements) {
-        Iterator<NumberRange<Double>> iterator =
-                (Iterator<NumberRange<Double>>) verticalElements.iterator();
+        Iterator<? extends NumberRange<Double>> iterator = verticalElements.iterator();
         LinkedHashSet<String> ranges = new LinkedHashSet<>();
-
         while (iterator.hasNext()) {
             NumberRange<Double> range = iterator.next();
             ranges.add((range.getMinValue() + "/" + range.getMaxValue()));
@@ -590,7 +586,9 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
                                         ((Number) val).doubleValue(),
                                         ((Number) val).doubleValue()));
                     } else if (val instanceof NumberRange) {
-                        verticalSubset.add((NumberRange<Double>) val);
+                        @SuppressWarnings("unchecked")
+                        NumberRange<Double> casted = (NumberRange<Double>) val;
+                        verticalSubset.add(casted);
                     }
                 }
                 // TODO IMPROVE THAT TO DEAL ON RANGES
@@ -620,10 +618,11 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
             if (value == null) {
                 return;
             }
-            final Set values = new HashSet();
+            final Set<Object> values = new HashSet<>();
             if (value instanceof Collection) {
-                values.addAll((Collection) value); // we are assuming it is a list !!!
-
+                @SuppressWarnings("unchecked")
+                Collection<Object> other = (Collection<Object>) value;
+                values.addAll(other);
             } else {
                 values.add(value);
             }

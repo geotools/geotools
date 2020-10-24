@@ -151,7 +151,7 @@ public final class NetCDFBasicTest extends Assert {
     public void testImageReaderPolyphemusSimple2() throws Exception {
         // setup repository
         ShpFileStoreFactory dialect =
-                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
         File indexDirectory = new File("./target/polyphemus_simple_idx");
         FileUtils.deleteQuietly(indexDirectory);
         indexDirectory.mkdir();

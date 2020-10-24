@@ -77,13 +77,13 @@ public class PreGeneralizedDataStoreFactory implements DataStoreFactorySpi {
         URI namespace = (URI) NAMESPACEP.lookUp(params);
 
         try {
-            Class providerClass = Class.forName(providerClassName);
+            Class<?> providerClass = Class.forName(providerClassName);
             GeneralizationInfosProvider provider =
                     (GeneralizationInfosProvider)
                             providerClass.getDeclaredConstructor().newInstance();
             GeneralizationInfos gInfos = provider.getGeneralizationInfos(providerParam);
 
-            Class repositoryClass = Class.forName(repositoryClassName);
+            Class<?> repositoryClass = Class.forName(repositoryClassName);
             Repository repository =
                     (Repository) repositoryClass.getDeclaredConstructor().newInstance();
 

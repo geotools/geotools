@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 import org.geotools.data.Query;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
+import org.geotools.feature.visitor.StandardDeviationVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKBReader;
 import org.geotools.geometry.jts.WKTWriter2;
@@ -57,6 +58,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -1000,5 +1002,12 @@ public class SQLServerDialect extends BasicSQLDialect {
         } finally {
             dataStore.closeSafe(rs);
         }
+    }
+
+    @Override
+    public void registerAggregateFunctions(
+            Map<Class<? extends FeatureVisitor>, String> aggregates) {
+        super.registerAggregateFunctions(aggregates);
+        aggregates.put(StandardDeviationVisitor.class, "STDEVP");
     }
 }

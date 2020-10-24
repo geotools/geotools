@@ -67,6 +67,7 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
     int count = 0;
     double mean = 0;
     double m2 = 0;
+    Result result;
 
     /** Constructs a standard deviation visitor based on the specified expression */
     public StandardDeviationVisitor(Expression expr) {
@@ -75,6 +76,22 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
 
     public void init(SimpleFeatureCollection collection) {
         // do nothing
+    }
+
+    public Expression getExpression() {
+        return expr;
+    }
+
+    public void setValue(Object value) {
+        reset();
+        if (value instanceof Result) {
+            this.result = (Result) value;
+        } else if (value instanceof Number) {
+            this.result = new Result(((Number) value).doubleValue());
+        } else {
+            throw new IllegalArgumentException(
+                    "Result must be a " + Result.class.getName() + " or a Number");
+        }
     }
 
     @Override
@@ -92,6 +109,7 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
     }
 
     public CalcResult getResult() {
+        if (result != null) return result;
         if (count == 0) {
             return CalcResult.NULL_RESULT;
         }

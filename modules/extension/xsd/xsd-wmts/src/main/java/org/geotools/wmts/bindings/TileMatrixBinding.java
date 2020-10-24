@@ -117,7 +117,7 @@ public class TileMatrixBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<?> getType() {
         return TileMatrixType.class;
     }
 
@@ -152,8 +152,9 @@ public class TileMatrixBinding extends DescriptionTypeBinding {
                 .setScaleDenominator((double) node.getChildValue("ScaleDenominator"));
         ((TileMatrixType) value).setTileHeight((BigInteger) node.getChildValue("TileHeight"));
         ((TileMatrixType) value).setTileWidth((BigInteger) node.getChildValue("TileWidth"));
-        ((TileMatrixType) value)
-                .setTopLeftCorner((List<Double>) node.getChildValue("TopLeftCorner"));
+        @SuppressWarnings("unchecked")
+        List<Double> topLeftCorner = (List<Double>) node.getChildValue("TopLeftCorner");
+        ((TileMatrixType) value).setTopLeftCorner(topLeftCorner);
         return value;
     }
 }

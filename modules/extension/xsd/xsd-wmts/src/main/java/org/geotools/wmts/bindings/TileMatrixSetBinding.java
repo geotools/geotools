@@ -126,6 +126,7 @@ public class TileMatrixSetBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         if (node.getChildren().isEmpty()) {

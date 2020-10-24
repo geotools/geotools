@@ -27,9 +27,9 @@ import java.util.Set;
  * @version $Id$
  * @author Cory Horner (Refractions Research)
  */
-final class NullObjectCache implements ObjectCache {
+final class NullObjectCache<K, V> implements ObjectCache<K, V> {
     /** The singleton instance. */
-    public static final NullObjectCache INSTANCE = new NullObjectCache();
+    public static final NullObjectCache<Object, Object> INSTANCE = new NullObjectCache<>();
 
     /** Do not allow instantiation of this class, since a singleton is enough. */
     private NullObjectCache() {}
@@ -38,34 +38,34 @@ final class NullObjectCache implements ObjectCache {
     public void clear() {}
 
     /** Returns {@code null} since this map is empty. */
-    public Object get(Object key) {
+    public V get(K key) {
         return null;
     }
 
     /** Returns {@code null} since this map is empty. */
-    public Object peek(Object key) {
+    public V peek(K key) {
         return null;
     }
 
     /** Do nothing since this map does not cache anything. */
-    public void put(Object key, Object object) {}
+    public void put(K key, V object) {}
 
     /** There is no cache, therefore a cache miss is a safe assumption. */
-    public boolean containsKey(Object key) {
+    public boolean containsKey(K key) {
         return false;
     }
 
     /** Do nothing since there is no write lock. */
-    public void writeLock(Object key) {}
+    public void writeLock(K key) {}
 
     /** Do nothing since there is no write lock. */
-    public void writeUnLock(Object key) {}
+    public void writeUnLock(K key) {}
 
     /** Return an empty set. */
-    public Set<Object> getKeys() {
+    public Set<K> getKeys() {
         return Collections.emptySet();
     }
 
     /** Do nothing since there is nothing to remove. */
-    public void remove(Object key) {}
+    public void remove(K key) {}
 }

@@ -38,7 +38,7 @@ public final class WeakObjectCacheTest {
 
     @Test
     public void testSimple() {
-        ObjectCache cache = new WeakObjectCache();
+        ObjectCache<Integer, String> cache = new WeakObjectCache<>();
         assertNotNull(cache);
 
         assertEquals(null, cache.get(key1));
@@ -57,7 +57,7 @@ public final class WeakObjectCacheTest {
 
     @Test
     public void testRemoveSimple() {
-        ObjectCache cache = new WeakObjectCache();
+        ObjectCache<Integer, String> cache = new WeakObjectCache<>();
         assertNotNull(cache);
 
         assertEquals(null, cache.get(key1));
@@ -80,7 +80,7 @@ public final class WeakObjectCacheTest {
 
     @Test
     public void testConcurrent() throws InterruptedException {
-        ObjectCache cache = new WeakObjectCache();
+        ObjectCache<Integer, String> cache = new WeakObjectCache<>();
 
         // lock the cache as if we were writing
         cache.writeLock(key1);
@@ -126,10 +126,10 @@ public final class WeakObjectCacheTest {
 
     private class WriterThread implements Runnable {
 
-        ObjectCache cache = null;
+        ObjectCache<Integer, String> cache = null;
         Object[] values = null;
 
-        public WriterThread(ObjectCache cache) {
+        public WriterThread(ObjectCache<Integer, String> cache) {
             this.cache = cache;
         }
 

@@ -16,7 +16,6 @@
  */
 package org.geotools.util;
 
-import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,13 +35,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (Geomatys)
  */
-final class WeakObjectCache implements ObjectCache {
+final class WeakObjectCache<K, V> implements ObjectCache<K, V> {
 
     /** The cached values for each key. */
-    private final Map<Object, WeakReference> cache;
+    private final Map<K, WeakReference<V>> cache;
 
     /** The locks for keys under construction. */
-    private final Map<Object, ReentrantLock> locks;
+    private final Map<K, ReentrantLock> locks;
 
     /** Creates a new cache. */
     public WeakObjectCache() {
@@ -68,14 +67,11 @@ final class WeakObjectCache implements ObjectCache {
      *
      * @return boolean
      */
-    public boolean containsKey(final Object key) {
+    public boolean containsKey(final K key) {
         if (cache.containsKey(key)) {
-            Object stored = cache.get(key);
-            if (stored instanceof Reference) {
-                Reference reference = (Reference) stored;
-                return reference.get() != null;
-            }
-            return stored != null;
+            WeakReference<V> reference = cache.get(key);
+            if (reference == null) return false;
+            return reference.get() != null;
         }
         return false;
     }
@@ -85,29 +81,23 @@ final class WeakObjectCache implements ObjectCache {
      *
      * @param key The authority code.
      */
-    public Object get(final Object key) {
-        Object stored = cache.get(key);
-        if (stored instanceof Reference) {
-            Reference reference = (Reference) stored;
-            Object value = reference.get();
-            if (value == null) {
-                cache.remove(key);
-            }
-            return value;
+    public V get(final K key) {
+        WeakReference<V> reference = cache.get(key);
+        if (reference == null) return null;
+        V value = reference.get();
+        if (value == null) {
+            cache.remove(key);
         }
-        return stored;
+        return value;
     }
 
-    public Object peek(final Object key) {
-        Object stored = cache.get(key);
-        if (stored instanceof Reference) {
-            Reference reference = (Reference) stored;
-            return reference.get();
-        }
-        return stored;
+    public V peek(final K key) {
+        WeakReference<V> reference = cache.get(key);
+        if (reference == null) return null;
+        return reference.get();
     }
 
-    public void writeLock(final Object key) {
+    public void writeLock(final K key) {
         ReentrantLock lock;
         synchronized (locks) {
             lock = locks.get(key);
@@ -121,7 +111,7 @@ final class WeakObjectCache implements ObjectCache {
         lock.lock();
     }
 
-    public void writeUnLock(final Object key) {
+    public void writeUnLock(final K key) {
         synchronized (locks) {
             final ReentrantLock lock = locks.get(key);
             if (lock == null) {
@@ -140,7 +130,7 @@ final class WeakObjectCache implements ObjectCache {
         }
     }
 
-    boolean holdsLock(final Object key) {
+    boolean holdsLock(final K key) {
         synchronized (locks) {
             final ReentrantLock lock = (ReentrantLock) locks.get(key);
             if (lock != null) {
@@ -151,24 +141,20 @@ final class WeakObjectCache implements ObjectCache {
     }
 
     /** Stores a value */
-    public void put(final Object key, final Object object) {
+    public void put(final K key, final V object) {
         writeLock(key);
-        WeakReference<Object> reference = new WeakReference<>(object);
+        WeakReference<V> reference = new WeakReference<>(object);
         cache.put(key, reference);
         writeUnLock(key);
     }
 
     /** @return the keys of the object currently in the set */
-    public Set<Object> getKeys() {
-        Set<Object> keys = null;
-
-        keys = new HashSet<>(cache.keySet());
-
-        return keys;
+    public Set<K> getKeys() {
+        return new HashSet<>(cache.keySet());
     }
 
     /** Removes the given key from the cache. */
-    public void remove(Object key) {
+    public void remove(K key) {
         synchronized (locks) {
             locks.remove(key);
             cache.remove(key);

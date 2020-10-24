@@ -236,7 +236,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     public abstract Citation getAuthority();
 
     public Set<String> getAuthorityCodes(Class type) throws FactoryException {
-        Set codes = (Set) cache.get(type);
+        Set<String> codes = (Set) cache.get(type);
         if (codes == null) {
             try {
                 cache.writeLock(type);

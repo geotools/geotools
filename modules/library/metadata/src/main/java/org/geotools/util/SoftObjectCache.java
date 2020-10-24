@@ -17,7 +17,6 @@
 
 package org.geotools.util;
 
-import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,13 +38,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 2.6
  * @author Emily Gouge (Refractions Research)
  */
-final class SoftObjectCache implements ObjectCache {
+final class SoftObjectCache<K, V> implements ObjectCache<K, V> {
 
     /** The cached values for each key. */
-    private final Map<Object, SoftReference<Object>> cache;
+    private final Map<K, SoftReference<V>> cache;
 
     /** The locks for keys under construction. */
-    private final Map<Object, ReentrantLock> locks;
+    private final Map<K, ReentrantLock> locks;
 
     /** Creates a new cache. */
     public SoftObjectCache() {
@@ -71,39 +70,31 @@ final class SoftObjectCache implements ObjectCache {
      *
      * @param key The authority code.
      */
-    public Object get(final Object key) {
-        Object stored = cache.get(key);
-        if (stored instanceof Reference) {
-            Reference reference = (Reference) stored;
-            Object value = reference.get();
-            if (value == null) {
-                cache.remove(key);
-            }
-            return value;
+    public V get(final K key) {
+        SoftReference<V> reference = cache.get(key);
+        if (reference == null) return null;
+        V value = reference.get();
+        if (value == null) {
+            cache.remove(key);
         }
-        return stored;
+        return value;
     }
 
     /** @return a copy of the keys currently in the map */
-    public Set<Object> getKeys() {
-        Set<Object> keys = null;
-        keys = new HashSet<>(cache.keySet());
-        return keys;
+    public Set<K> getKeys() {
+        return new HashSet<>(cache.keySet());
     }
 
-    public Object peek(final Object key) {
-        Object stored = cache.get(key);
-        if (stored instanceof Reference) {
-            Reference reference = (Reference) stored;
-            return reference.get();
-        }
-        return stored;
+    public V peek(final K key) {
+        SoftReference<V> reference = cache.get(key);
+        if (reference == null) return null;
+        return reference.get();
     }
 
     /** Stores a value */
-    public void put(final Object key, final Object object) {
+    public void put(final K key, final V object) {
         writeLock(key);
-        SoftReference<Object> reference = new SoftReference<>(object);
+        SoftReference<V> reference = new SoftReference<>(object);
         cache.put(key, reference);
         writeUnLock(key);
     }
@@ -116,7 +107,7 @@ final class SoftObjectCache implements ObjectCache {
         }
     }
 
-    public void writeLock(final Object key) {
+    public void writeLock(final K key) {
         ReentrantLock lock;
         synchronized (locks) {
             lock = locks.get(key);
@@ -130,7 +121,7 @@ final class SoftObjectCache implements ObjectCache {
         lock.lock();
     }
 
-    public void writeUnLock(final Object key) {
+    public void writeUnLock(final K key) {
         synchronized (locks) {
             final ReentrantLock lock = locks.get(key);
             if (lock == null) {

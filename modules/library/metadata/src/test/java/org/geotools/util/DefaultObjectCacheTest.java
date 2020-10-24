@@ -36,7 +36,7 @@ public final class DefaultObjectCacheTest {
         String value1 = new String("value 1");
         String value2 = new String("value 2");
 
-        ObjectCache cache = new DefaultObjectCache();
+        ObjectCache<Integer, String> cache = new DefaultObjectCache<>();
         assertNotNull(cache);
         assertEquals(null, cache.get(key1));
 
@@ -60,7 +60,7 @@ public final class DefaultObjectCacheTest {
         String value1 = new String("value 1");
         String value2 = new String("value 2");
 
-        ObjectCache cache = new DefaultObjectCache();
+        ObjectCache<Integer, String> cache = new DefaultObjectCache<>();
         assertNotNull(cache);
         assertEquals(null, cache.get(key1));
         assertEquals(1, cache.getKeys().size());

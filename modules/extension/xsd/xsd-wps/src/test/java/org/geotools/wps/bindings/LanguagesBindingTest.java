@@ -13,6 +13,7 @@ import org.w3c.dom.Element;
 
 public class LanguagesBindingTest extends WPSTestSupport {
 
+    @SuppressWarnings("unchecked")
     public void testEncode() throws Exception {
         Wps10Factory f = Wps10Factory.eINSTANCE;
         LanguagesType1 languages = f.createLanguagesType1();

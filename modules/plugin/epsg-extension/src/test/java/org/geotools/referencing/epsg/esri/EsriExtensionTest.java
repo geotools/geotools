@@ -86,8 +86,8 @@ public class EsriExtensionTest extends TestCase {
 
     /** Tests the codes. */
     public void testCodes() throws FactoryException {
-        final Set codes = factory.getAuthorityCodes(IdentifiedObject.class);
-        final Set subset = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
+        final Set<String> codes = factory.getAuthorityCodes(IdentifiedObject.class);
+        final Set<String> subset = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
         assertNotNull(codes);
         assertEquals(codes.size(), subset.size());
         assertTrue(codes.containsAll(subset));

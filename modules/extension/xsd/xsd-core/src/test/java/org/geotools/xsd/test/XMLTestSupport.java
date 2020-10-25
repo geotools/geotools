@@ -328,7 +328,7 @@ public abstract class XMLTestSupport extends TestCase {
         context = configuration.setupContext(context);
 
         // create the binding container
-        Map bindings = configuration.setupBindings();
+        Map<QName, Object> bindings = configuration.setupBindings();
         BindingLoader bindingLoader = new BindingLoader(bindings);
         //        MutablePicoContainer container = bindingLoader.getContainer();
         //        container = configuration.setupBindings(container);

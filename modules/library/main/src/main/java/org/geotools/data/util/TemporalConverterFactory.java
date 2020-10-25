@@ -192,8 +192,8 @@ public class TemporalConverterFactory implements ConverterFactory {
                                         .convert(source, Calendar.class);
                         if (calendar != null) {
                             return target.cast(
-                                    createConverter(Calendar.class, Date.class, null)
-                                            .convert(calendar, Date.class));
+                                    createConverter(Calendar.class, target, null)
+                                            .convert(calendar, target));
                         }
                         return null;
                     }

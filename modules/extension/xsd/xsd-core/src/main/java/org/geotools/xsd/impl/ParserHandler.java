@@ -859,7 +859,7 @@ public class ParserHandler extends DefaultHandler2 {
 
     protected void configure(Configuration config) {
         // configure the bindings
-        Map bindings = config.setupBindings();
+        Map<QName, Object> bindings = config.setupBindings();
 
         handlerFactory = new HandlerFactoryImpl();
         bindingLoader = new BindingLoader(bindings);

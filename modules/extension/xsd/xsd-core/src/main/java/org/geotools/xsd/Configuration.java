@@ -388,7 +388,7 @@ public abstract class Configuration {
      *
      * @return A map of Qname,[Class|Object]
      */
-    public final Map setupBindings() {
+    public final Map<QName, Object> setupBindings() {
         Map<QName, Object> bindings = new HashMap<>();
 
         // wrap the binding map up in a pico container for backwards compatibility

@@ -19,11 +19,12 @@ package org.geotools.filter.text.cqljson;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.geotools.filter.text.commons.CompilerUtil;
+import org.geotools.filter.text.commons.ICompiler;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cqljson.model.Predicates;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 
 public class CQLJson {
     private CQLJson() {}
@@ -65,12 +66,12 @@ public class CQLJson {
      *     is null the method finds the default implementation.
      * @return a {@link Filter} equivalent to the constraint specified in <code>Predicate</code>.
      */
-    public static Filter toFilter(final String cqlPredicate, final FilterFactory filterFactory)
+    public static Filter toFilter(final String cqlPredicate, final FilterFactory2 filterFactory)
             throws CQLException {
 
         CQLJsonCompilerFactory compilerFactory = new CQLJsonCompilerFactory();
-        Filter result = CompilerUtil.parseFilter(cqlPredicate, compilerFactory, filterFactory);
-
-        return result;
+        ICompiler compiler = compilerFactory.createCompiler(cqlPredicate, filterFactory);
+        compiler.compileFilter();
+        return compiler.getFilter();
     }
 }

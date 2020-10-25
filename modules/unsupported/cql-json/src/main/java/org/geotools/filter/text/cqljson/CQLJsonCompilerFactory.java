@@ -17,17 +17,15 @@
 
 package org.geotools.filter.text.cqljson;
 
-import org.geotools.filter.text.commons.AbstractCompilerFactory;
 import org.geotools.filter.text.commons.ICompiler;
-import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 
-final class CQLJsonCompilerFactory extends AbstractCompilerFactory {
+final class CQLJsonCompilerFactory {
 
     /* (non-Javadoc)
      * @see org.geotools.filter.text.commons.AbstractCompilerFactory#createCompiler(java.lang.String, org.opengis.filter.FilterFactory)
      */
-    @Override
-    protected ICompiler createCompiler(final String predicate, final FilterFactory filterFactory) {
+    protected ICompiler createCompiler(final String predicate, final FilterFactory2 filterFactory) {
 
         return new CQLJsonCompiler(predicate, filterFactory);
     }

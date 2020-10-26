@@ -62,7 +62,7 @@ import org.geotools.filter.text.cqljson.model.Toverlaps;
 import org.geotools.filter.text.cqljson.model.Within;
 import org.geotools.filter.text.generated.parsers.ParseException;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 
 public class CQLJsonCompiler implements ICompiler {
@@ -75,7 +75,7 @@ public class CQLJsonCompiler implements ICompiler {
     private Filter filter;
 
     /** new instance of CQL Compiler */
-    public CQLJsonCompiler(final String cqlSource, final FilterFactory filterFactory) {
+    public CQLJsonCompiler(final String cqlSource, final FilterFactory2 filterFactory) {
 
         assert filterFactory != null : "filterFactory cannot be null";
 
@@ -208,7 +208,7 @@ public class CQLJsonCompiler implements ICompiler {
                 case "And":
                     And and = (And) processedNotNull;
                     List<Filter> filters =
-                            (List)
+                            (List<org.opengis.filter.Filter>)
                                     and.stream()
                                             .map(
                                                     a -> {
@@ -217,7 +217,7 @@ public class CQLJsonCompiler implements ICompiler {
                                                         } catch (ParseException e) {
                                                             e.printStackTrace();
                                                         }
-                                                        return a;
+                                                        return (Filter) a;
                                                     })
                                             .collect(Collectors.toList());
                     out = builder.convertAnd(filters);
@@ -225,7 +225,7 @@ public class CQLJsonCompiler implements ICompiler {
                 case "Or":
                     Or or = (Or) processedNotNull;
                     List<Filter> filtersOr =
-                            (List)
+                            (List<org.opengis.filter.Filter>)
                                     or.stream()
                                             .map(
                                                     a -> {
@@ -234,7 +234,7 @@ public class CQLJsonCompiler implements ICompiler {
                                                         } catch (ParseException e) {
                                                             e.printStackTrace();
                                                         }
-                                                        return a;
+                                                        return (Filter) a;
                                                     })
                                             .collect(Collectors.toList());
                     out = builder.convertOr(filtersOr);

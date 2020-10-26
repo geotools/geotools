@@ -16,7 +16,8 @@
  */
 package org.geotools.image.palette;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import it.geosolutions.jaiext.colorindexer.ColorIndexer;
 import it.geosolutions.jaiext.colorindexer.Quantizer;

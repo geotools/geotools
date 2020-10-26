@@ -16,12 +16,16 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link CanonicalSet}. A standard {@link HashSet} object is used for comparaison

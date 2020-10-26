@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDDisplacementBinding;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
 
 /**
  * Binding object for the element http://www.opengis.net/se:Displacement.

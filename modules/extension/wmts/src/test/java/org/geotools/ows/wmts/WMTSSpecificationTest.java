@@ -16,7 +16,7 @@
  */
 package org.geotools.ows.wmts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 

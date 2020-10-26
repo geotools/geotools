@@ -17,7 +17,9 @@
 
 package org.geotools.swing.dndlist;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import java.awt.GraphicsEnvironment;
 import javax.swing.RepaintManager;

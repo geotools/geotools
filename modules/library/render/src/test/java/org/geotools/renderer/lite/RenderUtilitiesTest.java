@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import junit.framework.TestCase;

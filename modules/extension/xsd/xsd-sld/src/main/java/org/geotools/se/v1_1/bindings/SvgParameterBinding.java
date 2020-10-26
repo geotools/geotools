@@ -19,7 +19,6 @@ package org.geotools.se.v1_1.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDCssParameterBinding;
-import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 
 /**

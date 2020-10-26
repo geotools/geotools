@@ -1,6 +1,6 @@
 package org.geotools.geometry.jts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;

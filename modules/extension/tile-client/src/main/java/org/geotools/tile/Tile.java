@@ -22,14 +22,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.logging.Logging;
@@ -176,19 +171,8 @@ public abstract class Tile implements ImageLoader {
         }
     }
 
-    @Override
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("User-Agent", "Geotools Http client");
-        try (InputStream is = setupInputStream(getUrl(), headers)) {
-            return ImageIOExt.readBufferedImage(is);
-        }
-    }
-
-    private InputStream setupInputStream(URL url, Map<String, String> headers) throws IOException {
-        HTTPClient client = new SimpleHttpClient();
-        return client.get(url, headers).getResponseStream();
+        return ImageIOExt.readBufferedImage(getUrl());
     }
 
     /**
@@ -388,7 +372,6 @@ public abstract class Tile implements ImageLoader {
         return getUrl().equals(((Tile) other).getUrl());
     }
 
-    @Override
     public String toString() {
         return this.getId(); // this.getUrl().toString();
     }

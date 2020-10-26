@@ -17,9 +17,11 @@
 
 package org.geotools.ows.wmts.online;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +40,8 @@ import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.map.WMTSCoverageReader;
 import org.geotools.ows.wmts.map.WMTSMapLayer;
-import org.geotools.ows.wmts.model.*;
+import org.geotools.ows.wmts.model.WMTSCapabilities;
+import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;

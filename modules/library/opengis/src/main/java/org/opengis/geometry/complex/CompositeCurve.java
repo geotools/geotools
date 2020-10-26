@@ -9,8 +9,8 @@
  */
 package org.opengis.geometry.complex;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.List;
 import org.opengis.annotation.Association;

@@ -9,7 +9,7 @@
  */
 package org.opengis.annotation;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 /**
  * Obligation of the element or entity. The enum values declared here are an exact copy of the code

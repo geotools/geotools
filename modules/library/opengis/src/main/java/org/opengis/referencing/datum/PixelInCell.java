@@ -9,8 +9,8 @@
  */
 package org.opengis.referencing.datum;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19111;
 
 import java.util.ArrayList;
 import java.util.List;

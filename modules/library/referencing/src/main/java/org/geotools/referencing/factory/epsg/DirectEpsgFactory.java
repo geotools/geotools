@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;

@@ -16,7 +16,7 @@
  */
 package org.geotools.data.flatgeobuf;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;

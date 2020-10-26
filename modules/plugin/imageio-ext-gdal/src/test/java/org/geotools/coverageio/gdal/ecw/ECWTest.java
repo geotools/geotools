@@ -17,7 +17,7 @@
  */
 package org.geotools.coverageio.gdal.ecw;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;

@@ -16,13 +16,15 @@
  */
 package org.geotools.styling.visitor;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
-import javax.swing.*;
+import javax.swing.Icon;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;

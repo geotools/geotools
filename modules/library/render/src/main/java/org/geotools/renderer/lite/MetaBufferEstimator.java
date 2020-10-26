@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.Icon;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;

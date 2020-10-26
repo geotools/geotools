@@ -17,7 +17,7 @@
 package org.geotools.process.raster;
 
 import it.geosolutions.jaiext.range.Range;
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ExtremaDescriptor;

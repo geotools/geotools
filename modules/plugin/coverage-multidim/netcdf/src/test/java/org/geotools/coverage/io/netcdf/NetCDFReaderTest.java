@@ -17,7 +17,8 @@
 package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;

@@ -9,8 +9,7 @@
  */
 package org.opengis.util;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19103;
 
 import org.opengis.annotation.UML;
 

@@ -17,7 +17,7 @@
 
 package org.geotools.swing.dialog;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
 import java.awt.Insets;

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
-import javax.swing.*;
+import javax.swing.Icon;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.type.Name;

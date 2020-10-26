@@ -16,7 +16,10 @@
  */
 package org.geotools.renderer.lite;
 
-import static java.lang.Math.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.min;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

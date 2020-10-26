@@ -17,7 +17,7 @@
 
 package org.geotools.swing.control;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.edt.GuiTask;

@@ -18,7 +18,15 @@ package org.geotools.renderer.label;
 
 import static org.geotools.styling.TextSymbolizer.GraphicPlacement.INDEPENDENT;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
 import java.awt.font.TextAttribute;
@@ -30,7 +38,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+import javax.swing.Icon;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.TransformedShape;

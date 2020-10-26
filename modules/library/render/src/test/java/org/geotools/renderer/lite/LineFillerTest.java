@@ -16,7 +16,9 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.style.ShapeMarkFactory;

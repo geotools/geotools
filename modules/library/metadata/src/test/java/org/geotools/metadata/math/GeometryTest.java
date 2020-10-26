@@ -16,12 +16,13 @@
  */
 package org.geotools.metadata.math;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Random;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link org.geotools.metadata.math.Line} and {@link org.geotools.metadata.math.Plane}

@@ -144,18 +144,12 @@ public class LabelViewer {
 
     private SelectionListener listener;
 
-    /**
-     * Accepts a listener that will be notified when content changes.
-     *
-     */
+    /** Accepts a listener that will be notified when content changes. */
     public void addListener(SelectionListener listener1) {
         this.listener = listener1;
     }
 
-    /**
-     * Remove listener.
-     *
-     */
+    /** Remove listener. */
     public void removeListener(SelectionListener listener1) {
         if (this.listener == listener1) this.listener = null;
     }
@@ -255,10 +249,7 @@ public class LabelViewer {
         return text;
     }
 
-    /**
-     * Start editing the provided symbolizer.
-     *
-     */
+    /** Start editing the provided symbolizer. */
     public void set(SimpleFeatureType schema, TextSymbolizer sym, Mode mode) {
         listen(false);
         try {

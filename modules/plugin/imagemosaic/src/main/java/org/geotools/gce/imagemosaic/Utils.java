@@ -75,8 +75,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
@@ -90,6 +88,7 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
+import org.geotools.gce.imagemosaic.catalog.CogConfiguration;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.catalog.index.ObjectFactory;
@@ -143,6 +142,9 @@ public class Utils {
 
     private static final String MVCC_KEY = "MVCC";
 
+    public static final String DEFAULT_RANGE_READER =
+            "it.geosolutions.imageioimpl.plugins.cog.HttpRangeReader";
+
     private static final double RESOLUTION_TOLERANCE_FACTOR = 1E-2;
 
     public static final Key EXCLUDE_MOSAIC = new Key(Boolean.class);
@@ -151,6 +153,8 @@ public class Utils {
     public static final Hints EXCLUDE_MOSAIC_HINTS = new Hints(Utils.EXCLUDE_MOSAIC, true);
 
     public static final Key CHECK_AUXILIARY_METADATA = new Key(Boolean.class);
+
+    public static final Key COG_SETTINGS = new Hints.Key(Map.class);
 
     public static final Key AUXILIARY_FILES_PATH = new Key(String.class);
 
@@ -171,8 +175,6 @@ public class Utils {
     public static final String DATASTORE_PROPERTIES = "datastore.properties";
 
     public static final String PROPERTIES_SEPARATOR = ";";
-    /** EHCache instance to cache histograms */
-    private static Cache ehcache;
 
     /** RGB to GRAY coefficients (for Luminance computation) */
     public static final double RGB_TO_GRAY_MATRIX[][] = {{0.114, 0.587, 0.299, 0}};
@@ -338,6 +340,16 @@ public class Utils {
         public static final String HETEROGENEOUS_CRS = "HeterogeneousCRS";
 
         public static final String GRANULE_COLLECTOR_FACTORY = "GranuleCollectorFactory";
+
+        public static final String COG = "Cog";
+
+        public static final String COG_RANGE_READER = "CogRangeReader";
+
+        public static final String COG_USE_CACHE = "CogUseCache";
+
+        public static final String COG_USER = "CogUser";
+
+        public static final String COG_PASSWORD = "CogPassword";
 
         /**
          * The NoData value used in case no granule is found, but the request falls inside the image
@@ -658,6 +670,11 @@ public class Utils {
             retValue.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
         }
 
+        // COG Settings
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG)) {
+            setCogConfig(catalogConfigurationBean, properties, ignorePropertiesSet);
+        }
+
         //
         // resolutions levels
         //
@@ -953,6 +970,34 @@ public class Utils {
 
         // return value
         return retValue;
+    }
+
+    private static void setCogConfig(
+            CatalogConfigurationBean catalogConfigurationBean,
+            Properties properties,
+            Set<String> ignorePropertiesSet) {
+        final boolean ignoreSome = ignorePropertiesSet != null && !ignorePropertiesSet.isEmpty();
+        final boolean cog = Boolean.valueOf(properties.getProperty(Prop.COG, "false").trim());
+        if (cog) {
+            CogConfiguration cogBean = new CogConfiguration();
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_RANGE_READER)) {
+                cogBean.setRangeReader(properties.getProperty(Prop.COG_RANGE_READER));
+            } else {
+                cogBean.setRangeReader(DEFAULT_RANGE_READER);
+            }
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_USE_CACHE)) {
+                final boolean cogUseCaching =
+                        Boolean.valueOf(properties.getProperty(Prop.COG_USE_CACHE, "false").trim());
+                cogBean.setUseCache(cogUseCaching);
+            }
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_USER)) {
+                cogBean.setUser(properties.getProperty(Prop.COG_USER));
+            }
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_PASSWORD)) {
+                cogBean.setPassword(properties.getProperty(Prop.COG_PASSWORD));
+            }
+            catalogConfigurationBean.setCogConfiguration(cogBean);
+        }
     }
 
     private static CoordinateReferenceSystem decodeSrs(String property) throws FactoryException {
@@ -1719,13 +1764,6 @@ public class Utils {
     static IOFileFilter MOSAIC_SUPPORT_FILES_FILTER;
 
     /**
-     * Private constructor to initialize the ehCache instance. It can be configured through a Bean.
-     */
-    private Utils(Cache ehcache) {
-        Utils.ehcache = ehcache;
-    }
-
-    /**
      * Setup a {@link Histogram} object by deserializing a file representing a serialized Histogram.
      *
      * @return the deserialized histogram.
@@ -1734,29 +1772,11 @@ public class Utils {
         Utilities.ensureNonNull("file", file);
         Histogram histogram = null;
 
-        // Firstly: check if the histogram have been already
-        // deserialized and it is available in cache
-        if (ehcache != null && ehcache.isKeyInCache(file)) {
-            if (ehcache.isElementInMemory(file)) {
-                final Element element = ehcache.get(file);
-                if (element != null) {
-                    final Object value = element.getObjectValue();
-                    if (value != null && value instanceof Histogram) {
-                        histogram = (Histogram) value;
-                        return histogram;
-                    }
-                }
-            }
-        }
-
         // No histogram in cache. Deserializing...
         if (histogram == null) {
             try (ObjectInputStream objectStream =
                     new ObjectInputStream(new FileInputStream(file))) {
                 histogram = (Histogram) objectStream.readObject();
-                if (ehcache != null) {
-                    ehcache.put(new Element(file, histogram));
-                }
             } catch (FileNotFoundException e) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
@@ -1918,35 +1938,26 @@ public class Utils {
     }
 
     public static ImageLayout getImageLayoutHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-            return null;
-        } else {
-            return (ImageLayout) renderHints.get(JAI.KEY_IMAGE_LAYOUT);
-        }
+        return (ImageLayout) getHintIfAvailable(renderHints, JAI.KEY_IMAGE_LAYOUT);
     }
 
     public static TileCache getTileCacheHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_TILE_CACHE)) {
-            return null;
-        } else {
-            return (TileCache) renderHints.get(JAI.KEY_TILE_CACHE);
-        }
+        return (TileCache) getHintIfAvailable(renderHints, JAI.KEY_TILE_CACHE);
     }
 
     public static BorderExtender getBorderExtenderHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-            return null;
-        } else {
-            return (BorderExtender) renderHints.get(JAI.KEY_BORDER_EXTENDER);
-        }
+        return (BorderExtender) getHintIfAvailable(renderHints, JAI.KEY_BORDER_EXTENDER);
     }
 
     public static TileScheduler getTileSchedulerHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_TILE_SCHEDULER)) {
-            return null;
-        } else {
-            return (TileScheduler) renderHints.get(JAI.KEY_TILE_SCHEDULER);
+        return (TileScheduler) getHintIfAvailable(renderHints, JAI.KEY_TILE_SCHEDULER);
+    }
+
+    public static Object getHintIfAvailable(RenderingHints hints, RenderingHints.Key key) {
+        if (hints != null && hints.containsKey(key)) {
+            return hints.get(key);
         }
+        return null;
     }
 
     public static Hints setupJAIHints(RenderingHints inputHints) {

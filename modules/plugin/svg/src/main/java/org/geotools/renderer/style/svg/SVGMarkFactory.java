@@ -16,8 +16,9 @@
  */
 package org.geotools.renderer.style.svg;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.RenderingHints.Key;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;

@@ -18,7 +18,6 @@ package org.geotools.imageio.netcdf;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.nio.file.Files;

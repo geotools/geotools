@@ -1,6 +1,6 @@
 package org.geotools.csw;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import net.opengis.cat.csw20.GetDomainType;
 import org.geotools.xsd.Parser;

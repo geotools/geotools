@@ -16,7 +16,7 @@
  */
 package org.geotools.process.elasticsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

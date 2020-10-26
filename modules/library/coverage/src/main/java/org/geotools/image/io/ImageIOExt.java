@@ -17,7 +17,7 @@
 package org.geotools.image.io;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;

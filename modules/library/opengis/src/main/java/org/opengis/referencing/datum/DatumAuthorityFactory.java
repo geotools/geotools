@@ -9,7 +9,7 @@
  */
 package org.opengis.referencing.datum;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.OGC_01009;
 
 import org.opengis.annotation.UML;
 import org.opengis.referencing.AuthorityFactory;

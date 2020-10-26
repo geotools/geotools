@@ -16,7 +16,7 @@
  */
 package org.geotools.swing.tool;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.lang.ref.WeakReference;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;

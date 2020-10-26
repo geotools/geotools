@@ -64,7 +64,7 @@ The method ``isAvailable()`` just attempts to read the class, and if it succeeds
       :start-after: // docs start isAvailable
       :end-before: // docs end isAvailable
 
-The ``canProcess(Map<String, Serializable> params)`` method was made more tolerant, now accepting URL and File parameters through the ``fileFromParams(Map<String, Serializable> params)`` method. It will try File first, then URL before giving up.
+The ``canProcess(Map<String, ?> params)`` method was made more tolerant, now accepting URL and File parameters through the ``fileFromParams(Map<String, ?> params)`` method. It will try File first, then URL before giving up.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv3/CSVDataStoreFactory.java
       :language: java

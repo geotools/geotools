@@ -19,7 +19,6 @@ package org.geotools.coverage.io.netcdf;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.List;
@@ -88,7 +87,7 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         try {
             File file = (File) FILE_PARAM.lookUp(params);
             String indexPath = (String) INDEX_PARAM.lookUp(params);
@@ -114,7 +113,7 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         File file = (File) FILE_PARAM.lookUp(params);
         String indexPath = (String) INDEX_PARAM.lookUp(params);
         String dsPath = (String) DS_PARAM.lookUp(params);
@@ -237,7 +236,7 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException();
     }
 }

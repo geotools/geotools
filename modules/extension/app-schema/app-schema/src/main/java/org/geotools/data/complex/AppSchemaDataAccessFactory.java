@@ -17,9 +17,11 @@
 
 package org.geotools.data.complex;
 
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +76,8 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
 
     public AppSchemaDataAccessFactory() {}
 
-    public DataAccess<FeatureType, Feature> createDataStore(Map params) throws IOException {
+    public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params)
+            throws IOException {
         final Set<AppSchemaDataAccess> registeredAppSchemaStores =
                 new HashSet<AppSchemaDataAccess>();
         try {
@@ -89,7 +92,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     }
 
     public DataAccess<FeatureType, Feature> createDataStore(
-            Map params,
+            Map<String, ?> params,
             boolean hidden,
             DataAccessMap sourceDataStoreMap,
             final Set<AppSchemaDataAccess> registeredAppSchemaStores)
@@ -105,15 +108,16 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         // this is when the related types are not feature types, so they don't appear
         // on getCapabilities, and getFeature also shouldn't return anything etc.
         List<String> includes = config.getIncludes();
+        Map<String, Object> extendedParams = new HashMap<>(params);
         for (Iterator<String> it = includes.iterator(); it.hasNext(); ) {
-            params.put("url", buildIncludeUrl(configFileUrl, it.next()));
+            extendedParams.put("url", buildIncludeUrl(configFileUrl, it.next()));
             // this will register the related data access, to enable feature chaining;
             // sourceDataStoreMap is passed on to keep track of the already created source data
             // stores
             // and avoid creating the same data store twice (this enables feature iterators sharing
             // the same transaction to re-use the connection instead of opening a new one for each
             // joined type)
-            createDataStore(params, true, sourceDataStoreMap, registeredAppSchemaStores);
+            createDataStore(extendedParams, true, sourceDataStoreMap, registeredAppSchemaStores);
         }
 
         mappings = AppSchemaDataAccessConfigurator.buildMappings(config, sourceDataStoreMap);
@@ -170,7 +174,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         };
     }
 
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
         try {
             Object dbType = AppSchemaDataAccessFactory.DBTYPE.lookUp(params);
             Object configUrl = AppSchemaDataAccessFactory.URL.lookUp(params);
@@ -185,7 +189,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         return true;
     }
 
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 }

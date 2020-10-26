@@ -17,7 +17,6 @@
 package org.geotools.data.shapefile;
 
 import java.io.File;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.Map;
 import org.geotools.util.URLs;
@@ -40,7 +39,7 @@ public class ShapefileDirectoryFactory extends ShapefileDataStoreFactory {
         return "Takes a directory of shapefiles and exposes it as a data store";
     }
 
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         // we don't try to steal single shapefiles away from the main factory
         if (super.canProcess(params)) {
             try {

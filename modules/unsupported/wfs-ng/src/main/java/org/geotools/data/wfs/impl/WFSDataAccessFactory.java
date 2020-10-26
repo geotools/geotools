@@ -19,7 +19,6 @@ package org.geotools.data.wfs.impl;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.Authenticator;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -632,7 +631,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
 
     @Override
     public DataAccess<? extends FeatureType, ? extends Feature> createDataStore(
-            Map<String, Serializable> params) throws IOException {
+            Map<String, ?> params) throws IOException {
 
         WFSContentDataAccess dataAccess = new WFSContentDataAccess(getWFSClient(params));
 
@@ -678,7 +677,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         return params;
     }
 
-    protected WFSClient getWFSClient(final Map<String, Serializable> params) throws IOException {
+    protected WFSClient getWFSClient(final Map<String, ?> params) throws IOException {
 
         final WFSConfig config = WFSConfig.fromParams(params);
         {

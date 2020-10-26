@@ -141,7 +141,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         return FILE_TYPE.equalsIgnoreCase(extension);
     }
 
-    private File fileFromParams(Map<String, Serializable> params) throws IOException {
+    private File fileFromParams(Map<String, ?> params) throws IOException {
         File file = (File) FILE_PARAM.lookUp(params);
         if (file != null) {
             return file;
@@ -155,7 +155,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 
     // doc start canProcess
     @Override
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         try {
             File file = fileFromParams(params);
             if (file != null) {
@@ -201,7 +201,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
     // docs end createDataStoreFromFile
 
     @Override
-    public FileDataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public FileDataStore createDataStore(Map<String, ?> params) throws IOException {
         File file = fileFromParams(params);
         if (file == null) {
             throw new IllegalArgumentException(
@@ -211,8 +211,8 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         return createDataStoreFromFile(file, namespace, params);
     }
 
-    private FileDataStore createDataStoreFromFile(
-            File file, URI namespace, Map<String, Serializable> params) throws IOException {
+    private FileDataStore createDataStoreFromFile(File file, URI namespace, Map<String, ?> params)
+            throws IOException {
         CSVFileState csvFileState = new CSVFileState(file, namespace);
         Object strategyParam = STRATEGYP.lookUp(params);
         CSVStrategy csvStrategy = null;
@@ -258,7 +258,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         return createDataStore(params);
     }
 

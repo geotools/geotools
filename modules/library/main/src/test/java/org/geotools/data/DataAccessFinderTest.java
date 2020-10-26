@@ -54,7 +54,7 @@ public class DataAccessFinderTest extends TestCase {
     public void testGetDataStore() throws IOException {
         DataStore dataStore;
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(MOCK_DS_PARAM_KEY, MockUnavailableDataStoreFactory.class);
 
         dataStore = DataStoreFinder.getDataStore(params);
@@ -70,7 +70,7 @@ public class DataAccessFinderTest extends TestCase {
     public void testGetDataAccess() throws IOException {
         DataAccess<FeatureType, Feature> dataStore;
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(MOCK_DS_PARAM_KEY, MockUnavailableDataStoreFactory.class);
 
         dataStore = DataAccessFinder.getDataStore(params);
@@ -132,7 +132,7 @@ public class DataAccessFinderTest extends TestCase {
         assertNotNull(dsf2);
         assertNotNull(dsf3);
 
-        Set<Class> classes = new HashSet<Class>();
+        Set<Class> classes = new HashSet<>();
         classes.add(dsf1.getClass());
         classes.add(dsf2.getClass());
         classes.add(dsf3.getClass());
@@ -169,7 +169,7 @@ public class DataAccessFinderTest extends TestCase {
         assertNotNull(availableDataAccess);
         assertTrue(availableDataAccess.hasNext());
 
-        Set<Class> classes = new HashSet<Class>();
+        Set<Class> classes = new HashSet<>();
         DataAccessFactory daf;
 
         daf = availableDataAccess.next();
@@ -201,12 +201,12 @@ public class DataAccessFinderTest extends TestCase {
          * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
          * this class as value
          */
-        public boolean canProcess(Map<String, Serializable> params) {
+        public boolean canProcess(Map<String, ?> params) {
             return MockDataAccessFactory.class.equals(params.get(MOCK_DS_PARAM_KEY));
         }
 
         /** @return {@link DataAccessFinderTest#MOCK_DATAACCESS} */
-        public DataAccess<FeatureType, Feature> createDataStore(Map<String, Serializable> params)
+        public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params)
                 throws IOException {
             return MOCK_DATAACCESS;
         }
@@ -244,16 +244,16 @@ public class DataAccessFinderTest extends TestCase {
          * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
          * this class as value
          */
-        public boolean canProcess(Map<String, Serializable> params) {
+        public boolean canProcess(Map<String, ?> params) {
             return MockDataStoreFactory.class.equals(params.get(MOCK_DS_PARAM_KEY));
         }
 
         /** @return {@link DataAccessFinderTest#MOCK_DATASTORE} */
-        public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+        public DataStore createDataStore(Map<String, ?> params) throws IOException {
             return MOCK_DATASTORE;
         }
 
-        public DataStore createNewDataStore(Map params) throws IOException {
+        public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
             return null;
         }
 

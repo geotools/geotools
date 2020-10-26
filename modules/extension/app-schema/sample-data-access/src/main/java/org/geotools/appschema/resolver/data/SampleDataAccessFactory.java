@@ -66,7 +66,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      *
      * @see org.geotools.data.DataAccessFactory#canProcess(java.util.Map)
      */
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         return DBTYPE_STRING.equals(params.get(SampleDataAccessFactory.DBTYPE.key));
     }
 
@@ -76,7 +76,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      * @see org.geotools.data.DataAccessFactory#createDataStore(java.util.Map)
      */
     public DataAccess<? extends FeatureType, ? extends Feature> createDataStore(
-            Map<String, Serializable> params) throws IOException {
+            Map<String, ?> params) throws IOException {
         return new SampleDataAccess();
     }
 

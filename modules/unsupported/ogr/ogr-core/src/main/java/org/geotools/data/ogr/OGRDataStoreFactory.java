@@ -16,6 +16,7 @@
  */
 package org.geotools.data.ogr;
 
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
@@ -127,7 +128,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
 
     protected abstract OGR createOGR();
 
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
         boolean accept = false;
         String ogrName = null;
         String ogrDriver = null;
@@ -146,12 +147,12 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         return accept;
     }
 
-    public DataStore createDataStore(Map params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         return createNewDataStore(params);
     }
 
     /** Not implemented yet. */
-    public DataStore createNewDataStore(Map params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
 
         DataStore ds;
 
@@ -281,7 +282,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         OGR ogr = createOGR();
 
         int count = ogr.GetDriverCount();
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (int i = 0; i < count; i++) {
             Object driver = ogr.GetDriver(i);
             String name = ogr.DriverGetName(driver);
@@ -291,7 +292,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         return result;
     }
 
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 }

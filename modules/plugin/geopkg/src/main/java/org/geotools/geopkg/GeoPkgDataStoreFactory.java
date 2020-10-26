@@ -117,7 +117,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         File db = (File) DATABASE.lookUp(params);
         if (db.getPath().startsWith("file:")) {
             db = new File(db.getPath().substring(5));
@@ -132,7 +132,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         super.setupParameters(parameters);
 
         // remove unnecessary parameters
@@ -166,7 +166,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
      * @param params Map of connection parameter.
      */
     @Override
-    public BasicDataSource createDataSource(Map params) throws IOException {
+    public BasicDataSource createDataSource(Map<String, ?> params) throws IOException {
         // create a datasource
         BasicDataSource dataSource = new BasicDataSource();
 
@@ -185,7 +185,8 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
+            throws IOException {
         SQLiteConfig config = setupSQLiteConfig(params);
 
         // use native "pool", which is actually not pooling anything (that's fast and
@@ -196,7 +197,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         return ds;
     }
 
-    private static SQLiteConfig setupSQLiteConfig(Map params) throws IOException {
+    private static SQLiteConfig setupSQLiteConfig(Map<String, ?> params) throws IOException {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
         config.enableLoadExtension(true);
@@ -213,17 +214,17 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         return config;
     }
 
-    static void addConnectionProperties(BasicDataSource dataSource, Map configuration)
+    static void addConnectionProperties(BasicDataSource dataSource, Map<String, ?> configuration)
             throws IOException {
         SQLiteConfig config = setupSQLiteConfig(configuration);
 
-        for (Map.Entry e : config.toProperties().entrySet()) {
+        for (Map.Entry<Object, Object> e : config.toProperties().entrySet()) {
             dataSource.addConnectionProperty((String) e.getKey(), (String) e.getValue());
         }
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
         dataStore.setDatabaseSchema(null);
         return dataStore;

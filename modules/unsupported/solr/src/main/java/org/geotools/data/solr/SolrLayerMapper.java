@@ -19,7 +19,6 @@ package org.geotools.data.solr;
 import static java.lang.String.format;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -36,8 +35,7 @@ public interface SolrLayerMapper {
     public static enum Type {
         FIELD {
             @Override
-            public SolrLayerMapper createMapper(Map<String, Serializable> params)
-                    throws IOException {
+            public SolrLayerMapper createMapper(Map<String, ?> params) throws IOException {
                 if (!params.containsKey(SolrDataStoreFactory.FIELD.key)) {
                     throw new IllegalArgumentException(
                             format(
@@ -49,13 +47,12 @@ public interface SolrLayerMapper {
         },
         SINGLE {
             @Override
-            public SolrLayerMapper createMapper(Map<String, Serializable> params) {
+            public SolrLayerMapper createMapper(Map<String, ?> params) {
                 return new SingleLayerMapper();
             }
         };
 
-        public abstract SolrLayerMapper createMapper(Map<String, Serializable> params)
-                throws IOException;
+        public abstract SolrLayerMapper createMapper(Map<String, ?> params) throws IOException;
     }
 
     /** Creates the list of type names provided by the mapping. */

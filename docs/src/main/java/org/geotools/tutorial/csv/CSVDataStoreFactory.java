@@ -13,7 +13,6 @@ package org.geotools.tutorial.csv;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.data.DataStore;
@@ -92,7 +91,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
      * @param params connection parameters
      * @return true for connection parameters indicating a csv file
      */
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         try {
             File file = (File) FILE_PARAM.lookUp(params);
             if (file != null) {
@@ -107,7 +106,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     // canProcess end
 
     // createDataStore start
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         File file = (File) FILE_PARAM.lookUp(params);
         return new CSVDataStore(file);
     }
@@ -115,7 +114,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     // createDataStore end
 
     // createNewDataStore start
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException("CSV Datastore is read only");
     }
     // createNewDataStore end

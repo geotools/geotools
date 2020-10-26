@@ -229,7 +229,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         boolean result = false;
         try {
             final String searchHost = (String) HOSTNAME.lookUp(params);
@@ -256,7 +256,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         final String user = getValue(USER, params);
         final String passwd = getValue(PASSWD, params);
         final String proxyUser = getValue(PROXY_USER, params);
@@ -273,8 +273,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
     }
 
     public DataStore createDataStore(
-            RestClient client, RestClient proxyClient, Map<String, Serializable> params)
-            throws IOException {
+            RestClient client, RestClient proxyClient, Map<String, ?> params) throws IOException {
         final String indexName = (String) INDEX_NAME.lookUp(params);
         final String arrayEncoding = getValue(ARRAY_ENCODING, params);
         final boolean runAsGeoServerUser = getValue(RUNAS_GEOSERVER_USER, params);
@@ -309,8 +308,8 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         return createRestClient(params, null, null);
     }
 
-    private RestClient createRestClient(
-            Map<String, Serializable> params, String user, String password) throws IOException {
+    private RestClient createRestClient(Map<String, ?> params, String user, String password)
+            throws IOException {
         final String hostName = getValue(HOSTNAME, params);
         final String[] hosts = hostName.split(",");
         final Integer defaultPort = getValue(HOSTPORT, params);
@@ -408,7 +407,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params) {
+    public DataStore createNewDataStore(Map<String, ?> params) {
         return null;
     }
 
@@ -421,7 +420,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @SuppressWarnings({"unchecked"})
-    static <T> T getValue(Param param, Map<String, Serializable> params) throws IOException {
+    static <T> T getValue(Param param, Map<String, ?> params) throws IOException {
         final Object value;
         if (param.lookUp(params) != null) {
             value = param.lookUp(params);

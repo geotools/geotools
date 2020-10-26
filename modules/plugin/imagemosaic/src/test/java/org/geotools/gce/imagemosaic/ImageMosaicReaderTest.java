@@ -718,7 +718,9 @@ public class ImageMosaicReaderTest {
             props.load(is);
         }
         props.put("database", new File(workDir, "imagemosaic").getPath());
-        JDBCDataStore store = (JDBCDataStore) DataStoreFinder.getDataStore(props);
+        JDBCDataStore store =
+                (JDBCDataStore)
+                        DataStoreFinder.getDataStore(DataUtilities.toConnectionParameters(props));
         // H2 seems to return the table names in alphabetical order
         store.createSchema(DataUtilities.createType("aaa_noFootprint", "a:String,b:Integer"));
         store.createSchema(DataUtilities.createType("bbb_noLocation", "geom:Polygon,b:String"));
@@ -4524,7 +4526,10 @@ public class ImageMosaicReaderTest {
             h2Connection.load(fr);
         }
         h2Connection.put("database", new File(testMosaic, "imagemosaic").getCanonicalPath());
-        JDBCDataStore store = (JDBCDataStore) DataStoreFinder.getDataStore(h2Connection);
+        JDBCDataStore store =
+                (JDBCDataStore)
+                        DataStoreFinder.getDataStore(
+                                DataUtilities.toConnectionParameters(h2Connection));
         try (Connection c = store.getConnection(Transaction.AUTO_COMMIT);
                 Statement st = c.createStatement()) {
             st.execute("ALTER TABLE \"existingStore\" RENAME TO \"testMosaic\"");

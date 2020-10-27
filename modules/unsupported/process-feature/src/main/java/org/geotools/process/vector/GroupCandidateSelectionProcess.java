@@ -17,8 +17,6 @@
 package org.geotools.process.vector;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -46,8 +44,8 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.feature.Feature;
+import org.opengis.feature.Property;
 import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
@@ -55,11 +53,11 @@ import org.opengis.filter.sort.SortOrder;
 import org.xml.sax.helpers.NamespaceSupport;
 
 @DescribeProcess(
-    title = "Filtering Features",
+    title = "Group candidate selection",
     description =
             "Given a collection of features for each group defined only the feature having the MIN or MAX value for the chosen attribute will be included in the final output"
 )
-public class FilteringVectorProcess implements VectorProcess {
+public class GroupCandidateSelectionProcess implements VectorProcess {
 
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
 
@@ -117,7 +115,7 @@ public class FilteringVectorProcess implements VectorProcess {
                             .collect(Collectors.toList());
             PropertyName opValue =
                     validatePropertyName(ff.property(operationAttribute, ns), schema);
-            return new GroupingFeatureCollection(features, groupingPn, opValue, op);
+            return new GroupCandidateSelectionFeatureCollection(features, groupingPn, opValue, op);
         } catch (IllegalArgumentException e) {
             throw new ProcessException(
                     Errors.format(ErrorKeys.BAD_PARAMETER_$2, "aggregation", aggregation));
@@ -162,15 +160,6 @@ public class FilteringVectorProcess implements VectorProcess {
         List<PropertyName> pns = getNewProperties(propertiesToAdd, properties);
         q.setProperties(pns);
 
-        // features with null values for groupingAttributes and operationAttribute
-        // will not be rendered. Adding not null filters to delegate to the db.
-        List<Filter> filters = new ArrayList<>();
-        for (PropertyName pn : propertiesToAdd) {
-            filters.add(ff.not(ff.isNull(pn)));
-        }
-        Filter original = q.getFilter();
-        if (original != null && !original.equals(Filter.INCLUDE)) filters.add(q.getFilter());
-        q.setFilter(ff.and(filters));
         return q;
     }
 
@@ -243,7 +232,7 @@ public class FilteringVectorProcess implements VectorProcess {
      * A FeatureCollection wrapper to filter out features according to the aggregation parameter and
      * the groups defined by the groupingAttributes
      */
-    static class GroupingFeatureCollection
+    static class GroupCandidateSelectionFeatureCollection
             extends DecoratingFeatureCollection<FeatureType, Feature> {
 
         List<PropertyName> groupingAttributes;
@@ -252,7 +241,7 @@ public class FilteringVectorProcess implements VectorProcess {
 
         Operations aggregation;
 
-        public GroupingFeatureCollection(
+        public GroupCandidateSelectionFeatureCollection(
                 FeatureCollection<FeatureType, Feature> delegate,
                 List<PropertyName> groupingAttributes,
                 PropertyName operationAttribute,
@@ -265,7 +254,7 @@ public class FilteringVectorProcess implements VectorProcess {
 
         @Override
         public FeatureIterator<Feature> features() {
-            return new GroupingFeatureIterator(
+            return new GroupCandidateSelectionIterator(
                     new PushBackFeatureIterator(delegate.features()),
                     groupingAttributes,
                     operationAttribute,
@@ -277,7 +266,7 @@ public class FilteringVectorProcess implements VectorProcess {
      * A FeatureIterator wrapper to filter out features according to the aggregation parameter and
      * the groups defined by the groupingAttributes
      */
-    static class GroupingFeatureIterator extends DecoratingFeatureIterator<Feature> {
+    static class GroupCandidateSelectionIterator extends DecoratingFeatureIterator<Feature> {
 
         private List<PropertyName> groupByAttributes;
 
@@ -292,7 +281,7 @@ public class FilteringVectorProcess implements VectorProcess {
          *
          * @param iterator Iterator to be used as a delegate.
          */
-        public GroupingFeatureIterator(
+        public GroupCandidateSelectionIterator(
                 PushBackFeatureIterator iterator,
                 List<PropertyName> groupByAttributes,
                 PropertyName operationValue,
@@ -306,86 +295,78 @@ public class FilteringVectorProcess implements VectorProcess {
         @Override
         public boolean hasNext() {
             List<Object> groupingValues = new ArrayList<>(groupByAttributes.size());
-            Map<Object, Feature> beingFiltered = new HashMap<>();
-            List<Double> valuesToCompare = new ArrayList<>();
+            Feature bestFeature = null;
             while (super.hasNext()) {
                 Feature f = super.next();
-                if (beingFiltered.size() == 0) {
+                if (bestFeature == null) {
                     // no features in the list this is the first of the group
                     // takes the values to check the following features if belong to the same group
-                    // features with null values are skipped
-                    if (addGroupingValues(groupingValues, f))
-                        addDoubleValueFromFeature(f, valuesToCompare, beingFiltered);
+                    groupingValues = getGroupingValues(groupingValues, f);
+                    bestFeature = f;
                 } else {
                     // is the feature in the group?
                     if (featureComparison(groupingValues, f)) {
-                        addDoubleValueFromFeature(f, valuesToCompare, beingFiltered);
+                        bestFeature = updateBestFeature(f, bestFeature);
                     } else {
                         ((PushBackFeatureIterator) delegate).pushBack();
                         break;
                     }
                 }
             }
-            next = doFiltering(beingFiltered, valuesToCompare);
+            next = bestFeature;
             return next != null;
-        }
-
-        private Feature doFiltering(
-                Map<Object, Feature> beingFiltered, List<Double> beingEvaluated) {
-            Object key;
-            // searches the min or max inside the values list and retrieve the feature
-            // to be returned from the Map.
-            if (beingFiltered.size() > 0 && beingEvaluated.size() > 0) {
-                if (this.aggregation.equals(Operations.MIN)) key = computeMin(beingEvaluated);
-                else key = computeMax(beingEvaluated);
-
-                return beingFiltered.get(key);
-            } else {
-                return null;
-            }
-        }
-
-        private Number computeMin(List<Double> beingEvaluated) {
-            return Collections.min(beingEvaluated);
-        }
-
-        private Number computeMax(List<Double> beingEvaluated) {
-            return Collections.max(beingEvaluated);
         }
 
         private boolean featureComparison(List<Object> groupingValues, Feature f) {
             List<Object> toCompareValues = new ArrayList<>(groupingValues.size());
             for (PropertyName p : groupByAttributes) {
-                toCompareValues.add(p.evaluate(f));
+                Object val = p.evaluate(f);
+                if (val != null) toCompareValues.add(p.evaluate(f));
             }
-            if (groupingValues.size() > 0 && groupingValues.equals(toCompareValues)) return true;
-            return false;
+            if (toCompareValues.size() == 0) toCompareValues = null;
+            if (groupingValues == null && toCompareValues == null) return true;
+            else if (groupingValues != null
+                    && toCompareValues != null
+                    && groupingValues.equals(toCompareValues)) return true;
+            else return false;
         }
 
-        private boolean addGroupingValues(List<Object> groupingValues, Feature f) {
+        private List<Object> getGroupingValues(List<Object> groupingValues, Feature f) {
             for (PropertyName p : groupByAttributes) {
                 Object result = p.evaluate(f);
-                if (result != null) groupingValues.add(p.evaluate(f));
+                groupingValues.add(result);
             }
-            if (groupingValues.isEmpty() || groupingValues.size() < groupByAttributes.size())
-                return false;
-            return true;
+            if (groupingValues.size() == 0) return null;
+            else return groupingValues;
         }
 
-        private void addDoubleValueFromFeature(
-                Feature f, List<Double> valuesToCompare, Map<Object, Feature> beingFiltered) {
-            Object result = this.operationAttribute.evaluate(f, Number.class);
-            if (result instanceof Number) {
-                Double value = ((Number) result).doubleValue();
-                valuesToCompare.add(value);
-                beingFiltered.put(value, f);
-
+        private Feature updateBestFeature(Feature best, Feature f) {
+            if (aggregation.equals(Operations.MAX)) {
+                return findBestMax(best, f);
             } else {
-                if (result != null)
-                    // not a numeric value. Throwing exception
-                    throw new ProcessException(
-                            "Grouping vector process can handle operationAttribute parameter only if pointing to numeric value ");
+                return findBestMin(best, f);
             }
+        }
+
+        private Feature findBestMax(Feature best, Feature f) {
+            Comparable bestValue = getComparableFromEvaluation(best);
+            Comparable value = getComparableFromEvaluation(f);
+            if (bestValue.compareTo(value) < 0) return f;
+            return best;
+        }
+
+        private Feature findBestMin(Feature best, Feature f) {
+            Comparable bestValue = getComparableFromEvaluation(best);
+            Comparable value = getComparableFromEvaluation(f);
+            if (bestValue.compareTo(value) > 0) return f;
+            return best;
+        }
+
+        private Comparable getComparableFromEvaluation(Feature f) {
+            // In case of complex features we got the property instead of the value
+            Object o = operationAttribute.evaluate(f);
+            if (o instanceof Property) o = ((Property) o).getValue();
+            return (Comparable) o;
         }
 
         @Override

@@ -39,7 +39,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
-public class FilteringVectorProcessTest {
+public class GroupCandidateSelectionProcessTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -67,7 +67,8 @@ public class FilteringVectorProcessTest {
         List<String> props = Arrays.asList("group", "group2");
         PropertyName pn = ff.property("numericVal");
         FeatureCollection features =
-                new FilteringVectorProcess().execute(collection, "MIN", "numericVal", props);
+                new GroupCandidateSelectionProcess()
+                        .execute(collection, "MIN", "numericVal", props);
         FeatureIterator it = features.features();
         List<Integer> numericResults = new ArrayList<>(6);
         while (it.hasNext()) {
@@ -98,7 +99,8 @@ public class FilteringVectorProcessTest {
         List<String> props = Arrays.asList("group", "group2");
         PropertyName pn = ff.property("numericVal");
         FeatureCollection features =
-                new FilteringVectorProcess().execute(collection, "MAX", "numericVal", props);
+                new GroupCandidateSelectionProcess()
+                        .execute(collection, "MAX", "numericVal", props);
         FeatureIterator it = features.features();
         List<Integer> numericResults = new ArrayList<>(6);
         while (it.hasNext()) {

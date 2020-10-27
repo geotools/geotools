@@ -62,10 +62,10 @@ This is a very flexible process which can be used to:
 
 
 
-Filtering Features
-^^^^^^^^^^^^^^^^^^
+Group candidate selection
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Filters a FeatureCollection according to the aggregate operation chosen (MIN or MAX) and the groups defined through attribute names: given a collection of features for each group defined only the feature having the MIN or MAX value for the chosen attribute will be included in the final output.
+Filters a FeatureCollection according to the aggregate operation chosen (MIN or MAX) and the groups defined through attribute names. Given a feature collection, groups according to the defined grouping attributes, and returns the feature having the MIN or MAX value for the chosen attribute. One feature will be chosen for each group.
 
 This vector process accepts four parameters:
 

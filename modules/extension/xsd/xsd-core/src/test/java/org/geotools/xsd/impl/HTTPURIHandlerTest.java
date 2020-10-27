@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.URI;
 import org.geotools.data.ows.MockURLChecker;
 import org.geotools.data.ows.URLCheckers;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -185,7 +186,7 @@ public class HTTPURIHandlerTest {
         try {
             handler.createInputStream(uri, Collections.EMPTY_MAP);
         } catch (Exception e) {
-            Assert.assertThat(
+            MatcherAssert.assertThat(
                     e.getMessage(),
                     CoreMatchers.is(
                             "Evaluation Failure: http://example.com: did not pass security evaluation"));

@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class MockURLChecker implements URLChecker {
 
-    List<String> allowedList = Arrays.asList("schemas.opengis.net"); // url calls
+    private List<String> allowedList = Arrays.asList("schemas.opengis.net"); // url calls
 
     private boolean enabled = true;
 

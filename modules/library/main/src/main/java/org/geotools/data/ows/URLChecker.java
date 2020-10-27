@@ -23,9 +23,17 @@ package org.geotools.data.ows;
  */
 public interface URLChecker {
 
+    /** @return URLChecker name that best describes its purpose (e.g GML Schema evaluator etc) */
     String getName();
 
+    /** @return Boolean flag indicating if this URLChecker should be used */
     boolean isEnabled();
 
+    /**
+     * Provide implementation to evaluate URL/URI passed in string form
+     *
+     * @param url to be evaluated
+     * @return boolean response to the
+     */
     boolean evaluate(String url);
 }

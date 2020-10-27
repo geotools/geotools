@@ -31,6 +31,7 @@ import org.geotools.tile.impl.WebMercatorTileService;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
 import org.geotools.tile.impl.bing.BingService;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -130,7 +131,7 @@ public class OSMTileFactoryTest extends TileFactoryTest {
 
             fail();
         } catch (Exception e) {
-            Assert.assertThat(
+            MatcherAssert.assertThat(
                     e.getMessage(),
                     CoreMatchers.is(
                             "Evaluation Failure: http://tile.openstreetmap.org/5/20/15.png: did not pass security evaluation"));

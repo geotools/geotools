@@ -40,6 +40,7 @@ import org.geotools.tile.TileService;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -307,7 +308,7 @@ public class WMTSTileFactory4326Test {
             services[0].getHttpClient().get(mtile.getUrl());
             fail();
         } catch (Exception e) {
-            Assert.assertThat(
+            MatcherAssert.assertThat(
                     e.getMessage(),
                     CoreMatchers.is(
                             "Evaluation Failure: http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilitiesrequest=GetTile&tilematrixset=EPSG%3A4326&TileRow=0&service=WMTS&format=image%2Fpng&TileCol=1&version=1.0.0&layer=unesco%3AUnesco_point&TileMatrix=EPSG%3A4326%3A0&: did not pass security evaluation"));

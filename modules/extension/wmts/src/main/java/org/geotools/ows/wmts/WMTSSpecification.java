@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
+import org.geotools.data.ows.ControlledHttpClientFactory;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
@@ -35,8 +36,6 @@ import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.AbstractGetTileRequest;
 import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.ows.wmts.response.WMTSGetCapabilitiesResponse;
-import org.geotools.data.ows.ControlledHttpClientFactory;
-
 
 /**
  * @author ian

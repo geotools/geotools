@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.factory.FactoryRegistry;
 
 /**
  * @author ImranR
@@ -38,27 +37,36 @@ public class URLCheckers {
 
     private static List<URLChecker> urlCheckerList;
 
-    private static FactoryRegistry registry;
-
     private static void initEmptyUrlCheckList() {
         urlCheckerList = new ArrayList<URLChecker>(CommonFactoryFinder.getURLCheckers(null));
     }
 
-    /** @return unmodifiable Collection of URLChecker implementations */
+    /** @return unmodifiable Collection of org.geotools.data.ows.URLChecker implementations */
     public static List<URLChecker> getURLCheckerList() {
         if (urlCheckerList == null) initEmptyUrlCheckList();
         return (Collections.unmodifiableList(urlCheckerList));
     }
 
+    /** @return enabled list of org.geotools.data.ows.URLChecker implementations */
     public static List<URLChecker> getEnabledURLCheckerList() {
         return getURLCheckerList().stream().filter(u -> u.isEnabled()).collect(Collectors.toList());
     }
 
+    /**
+     * Register an implementation of org.geotools.data.ows.URLChecker
+     *
+     * @param urlChecker
+     */
     public static synchronized void addURLChecker(URLChecker urlChecker) {
         if (urlCheckerList == null) initEmptyUrlCheckList();
         urlCheckerList.add(urlChecker);
     }
 
+    /**
+     * Un-Register an implementation of org.geotools.data.ows.URLChecker
+     *
+     * @param urlChecker
+     */
     public static synchronized boolean removeURLChecker(URLChecker urlChecker) {
         if (urlCheckerList == null) initEmptyUrlCheckList();
         return urlCheckerList.remove(urlChecker);
@@ -67,7 +75,7 @@ public class URLCheckers {
     /**
      * This methods evaluates the passed URL against all enabled URLChecker
      *
-     * @param URL to evaluate using all available URLCheckers
+     * @param url to evaluate using all available URLCheckers
      * @return boolean
      * @throws IOException
      */
@@ -78,7 +86,7 @@ public class URLCheckers {
     /**
      * This methods evaluates the passed URI against all enabled URLChecker
      *
-     * @param URI to evaluate using all available URLCheckers
+     * @param uri to evaluate using all available URLCheckers
      * @return boolean
      * @throws IOException
      */
@@ -90,7 +98,7 @@ public class URLCheckers {
      * This methods evaluates the passed String (expected to be a URL or URI) against all enabled
      * URLChecker
      *
-     * @param String(URI/URI) to evaluate using all available URLCheckers
+     * @param url String(URI/URI) to evaluate using all available URLCheckers
      * @return boolean
      * @throws IOException
      */

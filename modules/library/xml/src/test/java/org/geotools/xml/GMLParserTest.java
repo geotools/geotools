@@ -18,6 +18,7 @@ package org.geotools.xml;
 
 import java.io.File;
 import java.net.URI;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -33,16 +34,12 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.xml.gml.GMLFeatureCollection;
 import org.geotools.xml.gml.GMLSchema;
 import org.geotools.xml.schema.Schema;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.xml.sax.SAXException;
 
 /** @author dzwiers www.refractions.net */
 public class GMLParserTest extends TestCase {
-
-    @Rule public ExpectedException exceptionRule = ExpectedException.none();
 
     public void testSchema() {
         Schema s = SchemaFactory.getInstance(GMLSchema.NAMESPACE);
@@ -368,12 +365,15 @@ public class GMLParserTest extends TestCase {
 
     @Test
     public void testSecured() throws Exception {
+        // with a mock URL checker configured this resource should not be accessible
+        String restrictedResourcePath =
+                Paths.get("target", "/classes/META-INF/services/org.geotools.xml.schema.Schema")
+                        .toUri()
+                        .toURL()
+                        .toString();
 
-        // mock URL checker is not configured for tile.openstreetmap.org
-        // should throw exception
         MockFileURIChecker urlChecker = new MockFileURIChecker();
         urlChecker.setEnabled(true);
-        URLCheckers.addURLChecker(urlChecker);
 
         // since the shema loader handles the error
         // we will assert the security by listening to log
@@ -386,8 +386,9 @@ public class GMLParserTest extends TestCase {
                     public void publish(LogRecord record) {
                         errorThrown |=
                                 record.getMessage()
-                                        .contains(
-                                                "org.geotools.xml.schema.Schema: did not pass security evaluation");
+                                        .equalsIgnoreCase(
+                                                restrictedResourcePath
+                                                        + ": did not pass security evaluation");
                     }
 
                     @Override
@@ -405,8 +406,11 @@ public class GMLParserTest extends TestCase {
         XSISAXHandler.logger.addHandler(exceptionListener);
 
         try {
-            Schema s = SchemaFactory.getInstance(GMLSchema.NAMESPACE);
-
+            // mock URL checker is not configured for tile.openstreetmap.org
+            // should throw exception
+            URLCheckers.addURLChecker(urlChecker);
+            // load schemas
+            SchemaFactory.getInstance(GMLSchema.NAMESPACE);
         } finally {
             XSISAXHandler.logger.removeHandler(exceptionListener);
             URLCheckers.removeURLChecker(urlChecker);

@@ -1277,7 +1277,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 rs = ((PreparedStatement) st).executeQuery();
             } else {
                 String sql = selectBoundsSQL(featureType, query);
-                LOGGER.log(Level.FINE, "Retriving bounding box: {0}", sql);
+                LOGGER.log(Level.FINE, "Retrieving bounding box: {0}", sql);
 
                 st = cx.createStatement();
                 rs = st.executeQuery(sql);

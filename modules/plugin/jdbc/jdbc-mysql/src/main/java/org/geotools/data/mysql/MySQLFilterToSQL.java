@@ -57,7 +57,7 @@ public class MySQLFilterToSQL extends FilterToSQL {
         FilterCapabilities caps = super.createFilterCapabilities();
         caps.addType(BBOX.class);
         caps.addType(Contains.class);
-        // caps.addType(Crosses.class);
+        caps.addType(Crosses.class);
         caps.addType(Disjoint.class);
         caps.addType(Equals.class);
         caps.addType(Intersects.class);
@@ -76,7 +76,11 @@ public class MySQLFilterToSQL extends FilterToSQL {
             // WKT does not support linear rings
             g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
         }
-        out.write("GeomFromText('" + g.toText() + "', " + currentSRID + ")");
+        if (usePreciseSpatialOps) {
+            out.write("ST_GeomFromText('" + g.toText() + "', " + currentSRID + ")");
+        } else {
+            out.write("GeomFromText('" + g.toText() + "', " + currentSRID + ")");
+        }
     }
 
     @Override
@@ -105,7 +109,7 @@ public class MySQLFilterToSQL extends FilterToSQL {
             return visitBinarySpatialOperator(filter, e1, e2, false, extraData);
         }
     }
-
+    /** pre-5.6 spatial functions. */
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter,
             Expression e1,
@@ -213,7 +217,7 @@ public class MySQLFilterToSQL extends FilterToSQL {
                 }
                 out.write(Double.toString(((DistanceBufferOperator) filter).getDistance()));
             } else if (filter instanceof BBOX) {
-                out.write("MbrIntersects(");
+                out.write("MBRIntersects(");
                 e1.accept(this, extraData);
                 out.write(",");
                 e2.accept(this, extraData);

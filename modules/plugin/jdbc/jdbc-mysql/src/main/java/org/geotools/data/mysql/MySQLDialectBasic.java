@@ -67,6 +67,14 @@ public class MySQLDialectBasic extends BasicSQLDialect {
         return delegate.getUsePreciseSpatialOps();
     }
 
+    public boolean isMySqlVersion80OrAbove() {
+        return delegate.isMySqlVersion80OrAbove;
+    }
+
+    public void setMySqlVersion80OrAbove(boolean mySqlVersion80OrAbove) {
+        delegate.isMySqlVersion80OrAbove = mySqlVersion80OrAbove;
+    }
+
     @Override
     public boolean includeTable(String schemaName, String tableName, Connection cx)
             throws SQLException {
@@ -177,6 +185,12 @@ public class MySQLDialectBasic extends BasicSQLDialect {
         if (value != null) {
             if (delegate.usePreciseSpatialOps) {
                 sql.append("ST_GeomFromText('");
+                // HACK; mysql 8 will throw a MysqlDataTruncation exception if srid == -1 which
+                // happens when JDBCDataStore#getDescriptorSRID(AttributeDescriptor) can't find the
+                // srid in the attribute descriptor:
+                // com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: SRID value is
+                // out of range in 'st_geomfromtext'
+                if (srid < 0) srid = 0;
             } else {
                 sql.append("GeomFromText('");
             }
@@ -211,38 +225,13 @@ public class MySQLDialectBasic extends BasicSQLDialect {
 
     @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
-        if (delegate.usePreciseSpatialOps) {
-            sql.append("ST_AsWKB(");
-            sql.append("ST_envelope(");
-        } else {
-            sql.append("asWKB(");
-            sql.append("envelope(");
-        }
-
-        encodeColumnName(null, geometryColumn, sql);
-        sql.append("))");
+        delegate.encodeGeometryEnvelope(tableName, geometryColumn, sql);
     }
 
     @Override
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
             throws SQLException, IOException {
-        byte[] wkb = rs.getBytes(column);
-
-        try {
-            /**
-             * As of MySQL 5.7.6, if the argument is a point or a vertical or horizontal line
-             * segment, ST_Envelope() returns the point or the line segment as its MBR rather than
-             * returning an invalid polygon therefore we must override behavior and check for a
-             * geometry and not a polygon
-             */
-            // TODO: srid
-            Geometry geom = (Geometry) new WKBReader().read(wkb);
-
-            return geom.getEnvelopeInternal();
-        } catch (ParseException e) {
-            String msg = "Error decoding wkb for envelope";
-            throw (IOException) new IOException(msg).initCause(e);
-        }
+        return delegate.decodeGeometryEnvelope(rs, column, cx);
     }
 
     @Override

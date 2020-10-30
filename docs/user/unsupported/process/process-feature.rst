@@ -59,4 +59,22 @@ This is a very flexible process which can be used to:
      description: String   description                    description: String
                            area=area( the_geom)           area: Double
                            text=concatenate(name,'-',id)  text: String
- 
+
+
+
+Group candidate selection
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Filters a FeatureCollection according to the aggregate operation chosen (MIN or MAX) and the groups defined through attribute names. Given a feature collection, groups according to the defined grouping attributes, and returns the feature having the MIN or MAX value for the chosen attribute. One feature will be chosen for each group.
+
+This vector process accepts four parameters:
+
+* ``data``: the data on which perform the computation.
+
+* ``aggregation``: the type of operation required to filter data (MIN or MAX).
+
+* ``operationAttribute``: the xpath to the attribute whose value will be used to perform the MIN or MAX operation.
+
+* ``groupingAttributes``: a lists of xpath pointing to the attirbutes defining the features' groups for which perform the filtering process.
+
+The process ensures a consistent results only if the FeatureCollection has already been sorted by the feature's attributes passed as the ``groupingAttributes``  parameter.

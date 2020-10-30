@@ -169,10 +169,17 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public void setValue(Object newAverage) {
         reset();
 
-        Class type = newAverage.getClass();
-        strategy = createStrategy(type);
-        strategy.add(newAverage);
-        isOptimized = true;
+        if (newAverage instanceof AverageStrategy) {
+            Class type = newAverage.getClass();
+            strategy = createStrategy(type);
+            strategy.add(newAverage);
+            isOptimized = true;
+        } else if (newAverage instanceof Number) {
+            strategy = new FixedResultAverageStrategy((Number) newAverage);
+            isOptimized = true;
+        } else
+            throw new IllegalArgumentException(
+                    "Cannot set the value, should be a Number or an AverageStrategy");
     }
 
     public void setValue(int newCount, Object newSum) {
@@ -310,13 +317,57 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
     }
 
+    /**
+     * Implements the average calculation for fixed values (for optimizing out in memory counts.
+     * This however means the average cannot be merged any with other results (normally not a
+     * problem when the final result has been calculated already by storage)
+     */
+    static class FixedResultAverageStrategy implements AverageStrategy {
+        private static final String NO_MERGE_ERROR =
+                "This strategy does not support merge with other results";
+        Number result;
+
+        public FixedResultAverageStrategy(Number result) {
+            this.result = result;
+        }
+
+        public void add(Object value) {
+            throw new UnsupportedOperationException(NO_MERGE_ERROR);
+        }
+
+        public Object getResult() {
+            return result;
+        }
+
+        public Object getSum() {
+            throw new UnsupportedOperationException(NO_MERGE_ERROR);
+        }
+
+        public int getCount() {
+            throw new UnsupportedOperationException(NO_MERGE_ERROR);
+        }
+
+        public void set(int newCount, Object sum) {
+            throw new UnsupportedOperationException(NO_MERGE_ERROR);
+        }
+    }
+
     /** */
     public static class AverageResult extends AbstractCalcResult {
         private AverageStrategy averageStrategy;
         private boolean isOptimized = false;
 
-        public AverageResult(Object newAverageStrategy) {
-            averageStrategy = (AverageStrategy) newAverageStrategy;
+        public AverageResult(Object value) {
+            if (value instanceof AverageStrategy) {
+                averageStrategy = (AverageStrategy) value;
+            } else if (value instanceof Number) {
+                averageStrategy = new FixedResultAverageStrategy((Number) value);
+            } else {
+                throw new IllegalArgumentException(
+                        "Cannot build an AverageResult using "
+                                + value
+                                + ", must be a Number or an instance of AverageStrategy");
+            }
         }
 
         public AverageResult(Object newAverageStrategy, boolean isOptimized) {

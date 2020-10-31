@@ -3254,7 +3254,7 @@ public class StreamingRenderer implements GTRenderer {
         return java2dHints;
     }
 
-    public void setRendererHints(Map hints) {
+    public void setRendererHints(Map<?, ?> hints) {
         if (hints != null && hints.containsKey(LABEL_CACHE_KEY)) {
             LabelCache cache = (LabelCache) hints.get(LABEL_CACHE_KEY);
             if (cache == null)
@@ -3279,7 +3279,7 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @see org.geotools.renderer.GTRenderer#getRendererHints()
      */
-    public Map getRendererHints() {
+    public Map<Object, Object> getRendererHints() {
         return rendererHints;
     }
 

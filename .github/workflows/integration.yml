@@ -33,10 +33,10 @@ jobs:
         mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
         echo "Checking out GeoWebCache"
         mkdir geowebcache
-        git clone https://github.com/GeoWebCache/geowebcache.git geowebcache
+        git clone --depth 1 --branch master https://github.com/GeoWebCache/geowebcache.git geowebcache
         echo "Checking out GeoServer"
         mkdir geoserver
-        git clone https://github.com/geoserver/geoserver.git geoserver
+        git clone --depth 1 --branch master https://github.com/geoserver/geoserver.git geoserver
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"

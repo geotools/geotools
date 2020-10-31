@@ -104,7 +104,7 @@ public class MockRenderer implements GTRenderer {
     }
 
     @Override
-    public void setRendererHints(Map<Object, Object> hints) {}
+    public void setRendererHints(Map<?, ?> hints) {}
 
     @Override
     public Map<Object, Object> getRendererHints() {

@@ -413,7 +413,7 @@ public class StreamingRenderer implements GTRenderer {
      * the SLD towards the native CRS) assume the geometries are expressed with the axis order
      * suggested by the official EPSG database, regardless of how the CRS system might be configured
      */
-    private Map<Object, Object> rendererHints = null;
+    private Map<?, ?> rendererHints = null;
 
     private AffineTransform worldToScreenTransform = null;
 
@@ -3257,7 +3257,7 @@ public class StreamingRenderer implements GTRenderer {
         return java2dHints;
     }
 
-    public void setRendererHints(Map<Object, Object> hints) {
+    public void setRendererHints(Map<?, ?> hints) {
         if (hints != null && hints.containsKey(LABEL_CACHE_KEY)) {
             LabelCache cache = (LabelCache) hints.get(LABEL_CACHE_KEY);
             if (cache == null)
@@ -3282,8 +3282,9 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @see org.geotools.renderer.GTRenderer#getRendererHints()
      */
+    @SuppressWarnings("unchecked")
     public Map<Object, Object> getRendererHints() {
-        return rendererHints;
+        return (Map<Object, Object>) rendererHints;
     }
 
     public void setMapContent(MapContent mapContent) {

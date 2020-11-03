@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.transform;
 
 import java.io.IOException;
@@ -16,6 +32,10 @@ import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 
+/**
+ * DataStoreFactory which wraps a DataStore's FeatureStore with a Transform consisting of a
+ * collection of projections and new additional columns built from Expressions.
+ */
 public class TransformDataStoreFactory implements DataStoreFactorySpi {
     public static final Param REPOSITORY =
             new Param(
@@ -62,8 +82,6 @@ public class TransformDataStoreFactory implements DataStoreFactorySpi {
 
         DataStore ds = repository.dataStore(new NameImpl(datastoreName));
         SimpleFeatureSource inputFS = ds.getFeatureSource(featureTypeName);
-
-        System.out.println("CREATING DATASTORE! " + ds);
 
         String attributeSubset = (String) ATTRIBUTE_SUBSET.lookUp(params);
 

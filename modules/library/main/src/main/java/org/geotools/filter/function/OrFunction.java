@@ -63,6 +63,6 @@ public class OrFunction extends FunctionExpressionImpl {
                     "Filter Function problem for function Or argument #1 - expected type boolean");
         }
         
-        return Boolean.valueOf(left || right);
+        return left || right;
     }
 }

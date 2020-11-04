@@ -63,6 +63,6 @@ public class AndFunction extends FunctionExpressionImpl {
                     "Filter Function problem for function And argument #1 - expected type boolean");
         }
         
-        return Boolean.valueOf(left && right);
+        return left && right;
     }
 }

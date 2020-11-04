@@ -42,10 +42,27 @@ public class AndFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
-        Object left;
-        Object right;
+        boolean left;
+        boolean right;
 
-        return true;
+        try { // attempt to get the left value and perform conversion
+            left = (getExpression(0).evaluate(feature, Boolean.class));
+        } catch (Exception e) // probably a type error
+        {
+            throw new IllegalArgumentException(
+                    "Filter Function problem for function and argument #0 - expected type boolean");
+        }
+        
+        try { // attempt to get the right value and perform conversion
+            right = (getExpression(1).evaluate(feature, Boolean.class));
+        } catch (Exception e) // probably a type error
+        {
+            throw new IllegalArgumentException(
+                    "Filter Function problem for function and argument #1 - expected type boolean");
+        }
+        
+        return Boolean.valueOf(left && right);
     }
 }

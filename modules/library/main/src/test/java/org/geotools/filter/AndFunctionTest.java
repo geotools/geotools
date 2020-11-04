@@ -17,6 +17,7 @@
 package org.geotools.filter;
 
 import junit.framework.TestCase;
+import static org.junit.Assert.assertThrows;
 import org.junit.Test;
 import org.opengis.filter.expression.Function;
 
@@ -28,10 +29,43 @@ import org.opengis.filter.expression.Function;
 public class AndFunctionTest extends TestCase {
 
     @Test
-    public void testAndFunction() throws IllegalFilterException {
+    public void testAndFunction1() throws IllegalFilterException {
         FilterFactoryImpl ff = new FilterFactoryImpl();
         Function equalsTo = ff.function("equalTo", ff.literal("string1"), ff.literal("string1"));
         Function andFunction = ff.function("and", equalsTo, equalsTo);
+        assertTrue((Boolean) andFunction.evaluate(new Object()));
+    }
+
+    @Test
+    public void testAndFunction2() throws IllegalFilterException {
+        FilterFactoryImpl ff = new FilterFactoryImpl();
+        Function equalsTo_left = ff.function("equalTo", ff.literal("string1"), ff.literal("string1"));
+        Function equalsTo_right = ff.function("equalTo", ff.literal("string1"), ff.literal("string2"));
+        Function andFunction = ff.function("and", equalsTo_left, equalsTo_right);
         assertFalse((Boolean) andFunction.evaluate(new Object()));
+    }
+
+    @Test
+    public void testAndFunction3() throws IllegalFilterException {
+        Throwable exception = assertThrows(
+                IllegalArgumentException.class, () -> {
+                    FilterFactoryImpl ff = new FilterFactoryImpl();
+                    Function abs_left = ff.function("abs", ff.literal(-12));
+                    Function equalsTo_right = ff.function("equalTo", ff.literal("string1"), ff.literal("string2"));
+                    Function andFunction = ff.function("and", abs_left, equalsTo_right);
+                    andFunction.evaluate(new Object());
+                }
+        );
+    }
+    
+    @Test
+    public void testAndFunction4() throws IllegalFilterException {
+        FilterFactoryImpl ff = new FilterFactoryImpl();
+        Function geom = ff.function("geomFromWKT", ff.literal("POLYGON ((150 330, 220 330, 220 230, 150 230, 150 330))"));
+        Function geom_area = ff.function("area",geom);        
+        Function equalsTo_left = ff.function("greaterThan", geom_area, ff.literal(0));
+        Function equalsTo_right = ff.function("equalTo", ff.literal("string1"), ff.literal("string1"));
+        Function andFunction = ff.function("and", equalsTo_left, equalsTo_right);
+        assertTrue((Boolean) andFunction.evaluate(new Object()));
     }
 }

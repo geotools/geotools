@@ -380,4 +380,35 @@ public class ZMHandlersTest {
             fail();
         }
     }
+
+    @Test
+    public void testReadPointsWithZAndNoM() throws IOException {
+        // tests that Point with Z and without optional M are correctly parsed
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/pointZ.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        Query q = new Query(store.getTypeNames()[0]);
+        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        while (reader.hasNext()) {
+            SimpleFeature f = reader.next();
+            assertNotNull(f.getDefaultGeometry());
+        }
+    }
+
+    @Test
+    public void testReadPointsWithZAndNoMFalse2D() throws IOException {
+        // tests that Point with Z and without optional M and with Feature2D false are correctly
+        // parsed
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/pointZ.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        Query q = new Query(store.getTypeNames()[0]);
+        q.getHints().put(Hints.FEATURE_2D, Boolean.FALSE);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        while (reader.hasNext()) {
+            SimpleFeature f = reader.next();
+            assertNotNull(f.getDefaultGeometry());
+        }
+    }
 }

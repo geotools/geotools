@@ -24,21 +24,21 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /**
- * This function is used to evaluate a And operator with a left and right operands
+ * This function is used to evaluate a or operator with a left and right operands
  *
  * @author Erwan Bocher, CNRS, 2020
  */
-public class AndFunction extends FunctionExpressionImpl {
+public class OrFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
             new FunctionNameImpl(
-                    "And",
+                    "Or",
                     Boolean.class,
                     parameter("left", Boolean.class),
                     parameter("right", Boolean.class));
 
     /** Creates a new instance of AndFunction */
-    public AndFunction() {
+    public OrFunction() {
         super(NAME);
     }
 
@@ -52,7 +52,7 @@ public class AndFunction extends FunctionExpressionImpl {
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function And argument #0 - expected type boolean");
+                    "Filter Function problem for function Or argument #0 - expected type boolean");
         }
         
         try { // attempt to get the right value and perform conversion
@@ -60,9 +60,9 @@ public class AndFunction extends FunctionExpressionImpl {
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function And argument #1 - expected type boolean");
+                    "Filter Function problem for function Or argument #1 - expected type boolean");
         }
         
-        return Boolean.valueOf(left && right);
+        return Boolean.valueOf(left || right);
     }
 }

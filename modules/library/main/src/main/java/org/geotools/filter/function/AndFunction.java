@@ -54,7 +54,7 @@ public class AndFunction extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function And argument #0 - expected type boolean");
         }
-        
+
         try { // attempt to get the right value and perform conversion
             right = (getExpression(1).evaluate(feature, Boolean.class));
         } catch (Exception e) // probably a type error
@@ -62,7 +62,7 @@ public class AndFunction extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function And argument #1 - expected type boolean");
         }
-        
+
         return left && right;
     }
 }

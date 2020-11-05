@@ -32,8 +32,8 @@ public class OrFunctionTest extends TestCase {
     public void testOrFunction1() throws IllegalFilterException {
         FilterFactoryImpl ff = new FilterFactoryImpl();
         Function equalsTo = ff.function("equalTo", ff.literal("string1"), ff.literal("string1"));
-        Function andFunction = ff.function("or", equalsTo, equalsTo);
-        assertTrue((Boolean) andFunction.evaluate(new Object()));
+        Function orFunction = ff.function("or", equalsTo, equalsTo);
+        assertTrue((Boolean) orFunction.evaluate(new Object()));
     }
 
     @Test
@@ -41,8 +41,8 @@ public class OrFunctionTest extends TestCase {
         FilterFactoryImpl ff = new FilterFactoryImpl();
         Function equalsTo_left = ff.function("equalTo", ff.literal("string1"), ff.literal("string1"));
         Function equalsTo_right = ff.function("equalTo", ff.literal("string1"), ff.literal("string2"));
-        Function andFunction = ff.function("or", equalsTo_left, equalsTo_right);
-        assertTrue((Boolean) andFunction.evaluate(new Object()));
+        Function orFunction = ff.function("or", equalsTo_left, equalsTo_right);
+        assertTrue((Boolean) orFunction.evaluate(new Object()));
     }
 
     @Test
@@ -52,8 +52,8 @@ public class OrFunctionTest extends TestCase {
                     FilterFactoryImpl ff = new FilterFactoryImpl();
                     Function abs_left = ff.function("abs", ff.literal(-12));
                     Function equalsTo_right = ff.function("equalTo", ff.literal("string1"), ff.literal("string2"));
-                    Function andFunction = ff.function("or", abs_left, equalsTo_right);
-                    andFunction.evaluate(new Object());
+                    Function orFunction = ff.function("or", abs_left, equalsTo_right);
+                    orFunction.evaluate(new Object());
                 }
         );
     }
@@ -65,8 +65,8 @@ public class OrFunctionTest extends TestCase {
         Function geom_area = ff.function("area",geom);        
         Function equalsTo_left = ff.function("greaterThan", geom_area, ff.literal(0));
         Function equalsTo_right = ff.function("equalTo", ff.literal("string1"), ff.literal("string1"));
-        Function andFunction = ff.function("or", equalsTo_left, equalsTo_right);
-        assertTrue((Boolean) andFunction.evaluate(new Object()));
+        Function orFunction = ff.function("or", equalsTo_left, equalsTo_right);
+        assertTrue((Boolean) orFunction.evaluate(new Object()));
     }
     
     @Test
@@ -76,7 +76,19 @@ public class OrFunctionTest extends TestCase {
         Function geom_area = ff.function("area",geom);        
         Function equalsTo_left = ff.function("greaterThan", geom_area, ff.literal(0));
         Function equalsTo_right = ff.function("equalTo", ff.literal("string1"), ff.literal("string2"));
-        Function andFunction = ff.function("or", equalsTo_left, equalsTo_right);
-        assertTrue((Boolean) andFunction.evaluate(new Object()));
+        Function orFunction = ff.function("or", equalsTo_left, equalsTo_right);
+        assertTrue((Boolean) orFunction.evaluate(new Object()));
+    }
+    
+    @Test
+    public void testAndFunction6() throws IllegalFilterException {
+        FilterFactoryImpl ff = new FilterFactoryImpl();
+        Function geom = ff.function("geomFromWKT", ff.literal("POLYGON ((150 330, 220 330, 220 230, 150 230, 150 330))"));
+        Function geom_area = ff.function("area",geom);        
+        Function equalsTo_left = ff.function("greaterThan", geom_area, ff.literal(0));
+        Function equalsTo_right = ff.function("equalTo", ff.literal("string1"), ff.literal("string2"));
+        Function orFunction = ff.function("or", equalsTo_left, equalsTo_right);
+        Function if_then_elseFunction = ff.function("if_then_else", orFunction, ff.literal(10), ff.literal(-1));
+        assertEquals(10, if_then_elseFunction.evaluate(new Object()));
     }
 }

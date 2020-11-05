@@ -68,4 +68,16 @@ public class AndFunctionTest extends TestCase {
         Function andFunction = ff.function("and", equalsTo_left, equalsTo_right);
         assertTrue((Boolean) andFunction.evaluate(new Object()));
     }
+
+    @Test
+    public void testAndFunction5() throws IllegalFilterException {
+        FilterFactoryImpl ff = new FilterFactoryImpl();
+        Function geom = ff.function("geomFromWKT", ff.literal("POLYGON ((150 330, 220 330, 220 230, 150 230, 150 330))"));
+        Function geom_area = ff.function("area",geom);
+        Function equalsTo_left = ff.function("greaterThan", geom_area, ff.literal(0));
+        Function equalsTo_right = ff.function("equalTo", ff.literal("string1"), ff.literal("string1"));
+        Function andFunction = ff.function("and", equalsTo_left, equalsTo_right);
+        Function if_then_elseFunction = ff.function("if_then_else", andFunction, ff.literal(10), ff.literal(-1));
+        assertEquals(10, if_then_elseFunction.evaluate(new Object()));
+    }
 }

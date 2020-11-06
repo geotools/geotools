@@ -72,15 +72,18 @@ public class ZMHandlersTest {
     }
 
     @Test
-    public void testReadZPoints() throws ShapefileException, IOException {
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zpoints.shp");
+    public void testReadZPoints() throws IOException {
+        // tests that Point with Z and without optional M are correctly parsed
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/pointZ.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
-        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
-        Geometry geom = (Geometry) feature.getDefaultGeometry();
-
-        assertEquals("wrong x", 10, geom.getCoordinate().getX(), 0.00001);
-        assertEquals("wrong y", 5, geom.getCoordinate().getY(), 0.00001);
-        assertEquals("wrong z", 1, geom.getCoordinate().getZ(), 0.00001);
+        Query q = new Query(store.getTypeNames()[0]);
+        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        while (reader.hasNext()) {
+            SimpleFeature f = reader.next();
+            assertNotNull(f.getDefaultGeometry());
+        }
     }
 
     @Test
@@ -378,6 +381,22 @@ public class ZMHandlersTest {
         } catch (Exception e) {
             e.printStackTrace();
             fail();
+        }
+    }
+
+    @Test
+    public void testReadZPointsFalse2D() throws IOException {
+        // tests that Point with Z and without optional M and with Feature2D false are correctly
+        // parsed
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/pointZ.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        Query q = new Query(store.getTypeNames()[0]);
+        q.getHints().put(Hints.FEATURE_2D, Boolean.FALSE);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        while (reader.hasNext()) {
+            SimpleFeature f = reader.next();
+            assertNotNull(f.getDefaultGeometry());
         }
     }
 }

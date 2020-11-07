@@ -1666,7 +1666,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
                 if (s == null) {
                     for (Method m : visitor.getClass().getMethods()) {
-                        if ("setValue".equals(m.getName())) {
+                        if ("setValue".equals(m.getName()) && m.getParameterCount() == 1) {
                             s = m;
                             break;
                         }
@@ -1691,7 +1691,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 return true;
             }
         } catch (Exception e) {
-            // ignore for now
+            LOGGER.log(
+                    Level.INFO,
+                    "Failed to set optimized result, will fall back on full collection visit",
+                    e);
         }
         return false;
     }

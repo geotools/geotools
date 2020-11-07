@@ -25,11 +25,13 @@ import java.util.List;
 import java.util.Set;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.visitor.AverageVisitor;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.GroupByVisitorBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.NearestVisitor;
+import org.geotools.feature.visitor.StandardDeviationVisitor;
 import org.geotools.feature.visitor.SumAreaVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
@@ -490,5 +492,119 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
                             + Arrays.asList(validResults),
                     found);
         }
+    }
+
+    class MyAverageVisitor extends AverageVisitor {
+
+        public MyAverageVisitor(Expression expr) throws IllegalFilterException {
+            super(expr);
+        }
+
+        public void visit(Feature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+
+        public void visit(SimpleFeature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+    }
+
+    public void testAverage() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+
+        MyAverageVisitor v = new MyAverageVisitor(p);
+        dataStore.getFeatureSource(tname("ft1")).accepts(Query.ALL, v, null);
+        assertFalse(visited);
+        assertEquals(1.1, v.getResult().toDouble(), 0.01);
+    }
+
+    public void testAverageWithFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+
+        MyAverageVisitor v = new MyAverageVisitor(p);
+
+        Filter f = ff.greater(ff.property(aname("doubleProperty")), ff.literal(1));
+        Query q = new Query(tname("ft1"), f);
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertFalse(visited);
+        assertEquals(1.65, v.getResult().toDouble(), 0.01);
+    }
+
+    public void testAverageWithLimitOffset() throws Exception {
+        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+            return;
+        }
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+
+        MyAverageVisitor v = new MyAverageVisitor(p);
+
+        Query q = new Query(tname("ft1"));
+        q.setStartIndex(0);
+        q.setMaxFeatures(2);
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+
+        assertFalse(visited);
+        assertEquals(0.55, v.getResult().toDouble(), 0.01);
+    }
+
+    class MyStandardDeviationVisitor extends StandardDeviationVisitor {
+
+        public MyStandardDeviationVisitor(Expression expr) throws IllegalFilterException {
+            super(expr);
+        }
+
+        public void visit(Feature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+
+        public void visit(SimpleFeature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+    }
+
+    public void testStandardDeviation() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+
+        MyStandardDeviationVisitor v = new MyStandardDeviationVisitor(p);
+        dataStore.getFeatureSource(tname("ft1")).accepts(Query.ALL, v, null);
+        assertFalse(visited);
+        assertEquals(0.89, v.getResult().toDouble(), 0.01);
+    }
+
+    public void testStandardDeviationWithFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+
+        MyStandardDeviationVisitor v = new MyStandardDeviationVisitor(p);
+        Filter f = ff.greater(ff.property(aname("doubleProperty")), ff.literal(1));
+        Query q = new Query(tname("ft1"), f);
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertFalse(visited);
+        assertEquals(0.55, v.getResult().toDouble(), 0.01);
+    }
+
+    public void testStandardDeviationWithLimitOffset() throws Exception {
+        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+            return;
+        }
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+
+        MyStandardDeviationVisitor v = new MyStandardDeviationVisitor(p);
+        Query q = new Query(tname("ft1"));
+        q.setStartIndex(0);
+        q.setMaxFeatures(2);
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+
+        assertFalse(visited);
+        assertEquals(0.55, v.getResult().toDouble(), 0.01);
     }
 }

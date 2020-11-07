@@ -39,10 +39,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.Join.Type;
 import org.geotools.data.Query;
+import org.geotools.feature.visitor.AverageVisitor;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.StandardDeviationVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
@@ -377,14 +379,12 @@ public abstract class SQLDialect {
      *
      * <ul>
      *   <li>{@link UniqueVisitor} -> "unique"
-     *   <li>
      *   <li>{@link CountVisitor} -> "count"
-     *   <li>
      *   <li>{@link MaxVisitor} -> "max"
-     *   <li>
      *   <li>{@link MinVisitor} -> "min"
-     *   <li>
      *   <li>{@link SumVisitor} -> "sum"
+     *   <li>{@link AverageVisitor} -> "avg"
+     *   <li>{@link StandardDeviationVisitor} -> "stddev_pop"
      *   <li>
      * </ul>
      *
@@ -392,12 +392,14 @@ public abstract class SQLDialect {
      */
     public void registerAggregateFunctions(
             Map<Class<? extends FeatureVisitor>, String> aggregates) {
-        // register the well known
+        // register the well known functions, from the SQL standard
         aggregates.put(UniqueVisitor.class, "distinct");
         aggregates.put(CountVisitor.class, "count");
         aggregates.put(MinVisitor.class, "min");
         aggregates.put(MaxVisitor.class, "max");
         aggregates.put(SumVisitor.class, "sum");
+        aggregates.put(AverageVisitor.class, "avg");
+        aggregates.put(StandardDeviationVisitor.class, "stddev_pop");
     }
 
     /**

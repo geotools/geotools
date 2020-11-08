@@ -33,6 +33,8 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
@@ -61,13 +63,13 @@ public class GroupCandidateSelectionProcessTest {
                     ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
                 };
         query.setSortBy(sorts);
-        FeatureCollection collection = source.getFeatures(query);
+        FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(query);
         int size = collection.size();
         assertEquals(12, size);
         List<String> props = Arrays.asList("group", "group2");
         PropertyName pn = ff.property("numericVal");
-        FeatureCollection features =
-                new GroupCandidateSelectionProcess()
+        FeatureCollection<SimpleFeatureType, SimpleFeature> features =
+                new GroupCandidateSelectionProcess<SimpleFeatureType, SimpleFeature>()
                         .execute(collection, "MIN", "numericVal", props);
         FeatureIterator it = features.features();
         List<Integer> numericResults = new ArrayList<>(6);
@@ -93,13 +95,13 @@ public class GroupCandidateSelectionProcessTest {
                     ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
                 };
         query.setSortBy(sorts);
-        FeatureCollection collection = source.getFeatures(query);
+        FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(query);
         int size = collection.size();
         assertEquals(12, size);
         List<String> props = Arrays.asList("group", "group2");
         PropertyName pn = ff.property("numericVal");
-        FeatureCollection features =
-                new GroupCandidateSelectionProcess()
+        FeatureCollection<SimpleFeatureType, SimpleFeature> features =
+                new GroupCandidateSelectionProcess<SimpleFeatureType, SimpleFeature>()
                         .execute(collection, "MAX", "numericVal", props);
         FeatureIterator it = features.features();
         List<Integer> numericResults = new ArrayList<>(6);

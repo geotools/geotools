@@ -590,9 +590,9 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
      *
      * @author Andrea Aime - OpenGeo
      */
-    public static interface ValueCleaner {
+    public static interface ValueCleaner<K, V> {
         /** Cleans the specified object */
-        public void clean(Object key, Object object);
+        public void clean(K key, V object);
     }
 
     /** Define placeholder to deal with null key values */

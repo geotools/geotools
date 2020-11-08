@@ -206,7 +206,7 @@ public class ParserHandler extends DefaultHandler2 {
         return rootElementType;
     }
 
-    public List getValidationErrors() {
+    public List<Exception> getValidationErrors() {
         return validator.getErrors();
     }
 

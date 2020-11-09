@@ -1,5 +1,5 @@
 {"and":[{"eq":{"property":"swimming_pool","value":true}},{"or":[{"gt":{"property":"floor","value":5}},{"like":{"property":"material","value":"brick%"}},{"like":{"property":"material","value":"%brick"}}]}]}
-{"and":[{"eq":{"property":"beamMode","value":"ScanSAR Narrow"}},{"eq":{"property":"swathDirection","value":"ascending"}},{"eq":{"property":"polarization","value":"HH+VV+HV+VH"}},{"intersects":{"property":"footprint","value":{"type":"Polygon","coordinates":[[[-77.117938,38.93686],[-77.040604,39.995648],[-76.910536,38.892912],[-77.039359,38.791753],[-77.047906,38.841462],[-77.034183,38.840655],[-77.033142,38.85749]]]}}}]}
+{"and":[{"eq":{"property":"beamMode","value":"ScanSAR Narrow"}},{"eq":{"property":"swathDirection","value":"ascending"}},{"eq":{"property":"polarization","value":"HH+VV+HV+VH"}},{"intersects":{"property":"footprint","value":{"type":"Polygon","coordinates":[[[-77.117938,38.93686],[-77.040604,39.995648],[-76.910536,38.892912],[-77.039359,38.791753],[-77.047906,38.841462],[-77.034183,38.840655],[-77.033142,38.85749],[-77.117938,38.93686]]]}}}]}
 {"lte":{"property":"taxes","value":500}}
 {"not":{"lte":{"property":"taxes","value":500}}}
 {"and":[{"not":{"lte":{"property":"taxes","value":500}}},{"lte":{"property":"taxes","value":800}}]}

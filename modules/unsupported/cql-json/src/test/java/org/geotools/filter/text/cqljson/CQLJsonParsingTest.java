@@ -28,12 +28,8 @@ public class CQLJsonParsingTest {
         // Narrow"}},{"eq":{"property":"swathDirection","value":"ascending"}},{"eq":{"property":"polarization","value":"HH+VV+HV+VH"}},{"intersects":{"property":"footprint","value":{"type":"Polygon","coordinates":[[[-77.117938,38.93686],[-77.040604,39.995648],[-76.910536,38.892912],[-77.039359,38.791753],[-77.047906,38.841462],[-77.034183,38.840655],[-77.033142,38.85749]]]}}}]}
         Filter filter = parse("cqlJsonTest.json", 1);
         Assert.assertEquals(
-                true,
-                ECQL.toCQL(filter)
-                        .startsWith(
-                                "beamMode = 'ScanSAR Narrow' AND swathDirection = 'ascending' "
-                                        + "AND polarization = 'HH+VV+HV+VH' AND INTERSECTS(footprint, "
-                                        + "'org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
+                "beamMode = 'ScanSAR Narrow' AND swathDirection = 'ascending' AND polarization = 'HH+VV+HV+VH' AND INTERSECTS(footprint, POLYGON ((-77.117938 38.93686, -77.040604 39.995648, -76.910536 38.892912, -77.039359 38.791753, -77.047906 38.841462, -77.034183 38.840655, -77.033142 38.85749, -77.117938 38.93686)))",
+                ECQL.toCQL(filter));
     }
 
     @Test
@@ -157,10 +153,8 @@ public class CQLJsonParsingTest {
         // {"within":{"property":"location","value":{"bbox":[33.8,-118,34,-117.9]}}}
         Filter filter = parse("cqlJsonTest.json", 17);
         Assert.assertEquals(
-                true,
-                ECQL.toCQL(filter)
-                        .startsWith(
-                                "WITHIN(location, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
+                "WITHIN(location, POLYGON ((33.8 -118, 33.8 -117.9, 34 -117.9, 34 -118, 33.8 -118)))",
+                ECQL.toCQL(filter));
     }
 
     @Test
@@ -168,10 +162,8 @@ public class CQLJsonParsingTest {
         // {"intersects":{"property":"location","value":{"type":"Polygon","coordinates":[[[-10,-10],[10,-10],[10,10],[-10,-10]]]}}}
         Filter filter = parse("cqlJsonTest.json", 18);
         Assert.assertEquals(
-                true,
-                ECQL.toCQL(filter)
-                        .startsWith(
-                                "INTERSECTS(location, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
+                "INTERSECTS(location, POLYGON ((-10 -10, 10 -10, 10 10, -10 -10)))",
+                ECQL.toCQL(filter));
     }
 
     @Test
@@ -179,32 +171,22 @@ public class CQLJsonParsingTest {
         // {"and":[{"gt":{"property":"floors","value":5}},{"within":{"property":"geometry","value":{"bbox":[33.8,-118,34,-117.9]}}}]}
         Filter filter = parse("cqlJsonTest.json", 19);
         Assert.assertEquals(
-                true,
-                ECQL.toCQL(filter)
-                        .startsWith(
-                                "floors > 5 AND WITHIN(geometry, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
+                "floors > 5 AND WITHIN(geometry, POLYGON ((33.8 -118, 33.8 -117.9, 34 -117.9, 34 -118, 33.8 -118)))",
+                ECQL.toCQL(filter));
     }
 
     @Test
     public void convertTouchesLine() throws IOException, CQLException {
         // {"touches":{"property":"location","value":{"type":"LineString","coordinates":[[100,0],[101,1]]}}}
         Filter filter = parse("cqlJsonTest.json", 20);
-        Assert.assertEquals(
-                true,
-                ECQL.toCQL(filter)
-                        .startsWith(
-                                "TOUCHES(location, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.CurveImpl"));
+        Assert.assertEquals("TOUCHES(location, LINESTRING (100 0, 101 1))", ECQL.toCQL(filter));
     }
 
     @Test
     public void convertContainsPoint() throws IOException, CQLException {
         // {"contains":{"property":"location","value":{"type":"Point","coordinates":[100,0]}}}
         Filter filter = parse("cqlJsonTest.json", 21);
-        Assert.assertEquals(
-                true,
-                ECQL.toCQL(filter)
-                        .startsWith(
-                                "CONTAINS(location, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.PointImpl"));
+        Assert.assertEquals("CONTAINS(location, POINT (100 0))", ECQL.toCQL(filter));
     }
 
     @Test
@@ -212,10 +194,7 @@ public class CQLJsonParsingTest {
         // {"overlaps":{"property":"location","value":{"type":"MultiPoint","coordinates":[[100,0],[101,1]]}}}
         Filter filter = parse("cqlJsonTest.json", 22);
         Assert.assertEquals(
-                true,
-                ECQL.toCQL(filter)
-                        .startsWith(
-                                "OVERLAPS(location, 'org.geotools.geometry.jts.spatialschema.geometry.aggregate.MultiPointImpl"));
+                "OVERLAPS(location, MULTIPOINT ((100 0), (101 1)))", ECQL.toCQL(filter));
     }
 
     private Filter parse(String file, Integer lineNumber) throws IOException, CQLException {

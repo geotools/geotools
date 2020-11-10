@@ -125,13 +125,13 @@
        <artifactId>imageio-ext-cog-reader</artifactId>
        <version>${imageio.ext.version}</version>
     </dependency>
-	<dependency>
-       <groupId>it.geosolutions.imageio-ext</groupId>
-       <artifactId>imageio-ext-cog-rangereader-http</artifactId>
-       <version>${imageio.ext.version}</version>
-	   <scope>test</scope>
-    </dependency>
     <!-- Test dependencies -->
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-cog-rangereader-http</artifactId>
+      <version>${imageio.ext.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <!-- We need this to make the referencing module useful. -->
       <groupId>org.geotools</groupId>

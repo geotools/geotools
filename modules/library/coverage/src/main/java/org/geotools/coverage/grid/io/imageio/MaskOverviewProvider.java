@@ -142,43 +142,8 @@ public class MaskOverviewProvider {
         // Handling Overviews
         hasDatasetLayout = layout != null;
         boolean hasExternalOverviews = false;
-        if (!skipExternalLookup) {
-            ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
-            if (hasDatasetLayout && layout.getExternalOverviews() != null) {
-                ovrURL = URLs.fileToUrl(layout.getExternalOverviews());
-            }
-            // Creating overview file URL
-            overviewStreamSpi = streamSpi == null ? getInputStreamSPIFromURL(ovrURL) : streamSpi;
-            ImageInputStream ovrStream = null;
-            try {
-                ovrStream =
-                        overviewStreamSpi.createInputStreamInstance(
-                                ovrURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-                if (ovrStream == null) {
-                    // No Overview file so we fall back to the original file spis
-                    overviewStreamSpi = streamSpi;
-                    overviewReaderSpi = readerSpi;
-                } else {
-                    overviewReaderSpi = getReaderSpiFromStream(null, ovrStream);
-                    hasExternalOverviews = true;
-                }
-            } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, "Unable to create a Reader for File: " + ovrURL, e);
-                }
-                throw new IllegalArgumentException(e);
-            } finally {
-                if (ovrStream != null) {
-                    try {
-                        ovrStream.close();
-                    } catch (Exception e) {
-                        if (LOGGER.isLoggable(Level.SEVERE)) {
-                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                        }
-                    }
-                }
-            }
-        }
+        SourceSPIProvider ovrProvider = null;
+
         // Getting number of Overviews
         int numOverviews = 0;
         if (hasDatasetLayout) {
@@ -186,14 +151,28 @@ public class MaskOverviewProvider {
             // layout.getNumExternalOverviews() may return -1 when no external file is present
             numExternalOverviews =
                     layout.getNumExternalOverviews() > 0 ? layout.getNumExternalOverviews() : 0;
+            hasExternalOverviews = externalOverviewsCheck(inputFile, streamSpi, readerSpi) != null;
         } else if (!spiHelper.isMultidim()) {
             // Reading image number
-            numInternalOverviews = getNumOverviews(inputFile, streamSpi, readerSpi);
+            numInternalOverviews = getNumOverviews(sourceSpiProvider);
+
+            // Let's look for external overviews only if no internal overviews are found
+            if (numInternalOverviews == 0 && !skipExternalLookup) {
+                ovrProvider = externalOverviewsCheck(inputFile, streamSpi, readerSpi);
+                hasExternalOverviews = ovrProvider != null;
+            }
+
             numExternalOverviews = 0;
             if (hasExternalOverviews) {
                 // adding +1 since the base level of the external overview is an overview in itself
                 numExternalOverviews =
-                        getNumOverviews(ovrURL, this.overviewStreamSpi, this.overviewReaderSpi) + 1;
+                        ovrProvider != null
+                                ? getNumOverviews(ovrProvider) + 1
+                                : getNumOverviews(
+                                                ovrURL,
+                                                this.overviewStreamSpi,
+                                                this.overviewReaderSpi)
+                                        + 1;
             }
         }
         numOverviews = numInternalOverviews + numExternalOverviews;
@@ -285,6 +264,87 @@ public class MaskOverviewProvider {
                 maskReaderSpi = readerSpi;
             }
         }
+    }
+
+    private SourceSPIProvider externalOverviewsCheck(
+            URL inputFile, ImageInputStreamSpi streamSpi, ImageReaderSpi readerSpi)
+            throws IOException {
+        SourceSPIProvider ovrProvider;
+        ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
+        if (hasDatasetLayout && layout.getExternalOverviews() != null) {
+            ovrURL = URLs.fileToUrl(layout.getExternalOverviews());
+        }
+        // Creating overview file URL
+        overviewStreamSpi = streamSpi == null ? getInputStreamSPIFromURL(ovrURL) : streamSpi;
+        ImageInputStream ovrStream = null;
+        ovrProvider = sourceSpiProvider.getCompatibleSourceProvider(ovrURL);
+        try {
+            ovrStream = ovrProvider.getStream();
+            if (ovrStream == null) {
+                // No Overview file so we fall back to the original file spis
+                overviewStreamSpi = streamSpi;
+                overviewReaderSpi = readerSpi;
+                ovrProvider = null;
+            } else {
+                overviewReaderSpi = getReaderSpiFromStream(null, ovrStream);
+                ovrProvider.setReaderSpi(overviewReaderSpi);
+            }
+        } catch (Exception e) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(Level.WARNING, "Unable to create a Reader for: " + ovrURL, e);
+            }
+            throw new IllegalArgumentException(e);
+        } finally {
+            if (ovrStream != null) {
+                try {
+                    ovrStream.close();
+                } catch (Exception e) {
+                    if (LOGGER.isLoggable(Level.SEVERE)) {
+                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    }
+                }
+            }
+        }
+        return ovrProvider;
+    }
+
+    public int getNumOverviews(SourceSPIProvider sourceSpiProvider) {
+        ImageInputStream imageStream = null;
+        ImageReader reader = null;
+        int numOverviews;
+        try {
+            // Creating stream
+            imageStream = sourceSpiProvider.getStream();
+            // Creating reader
+            reader = sourceSpiProvider.getReader();
+            // Setting input
+            reader.setInput(imageStream, false, false);
+            // Getting number of images
+            numOverviews = reader.getNumImages(true) - 1;
+        } catch (Exception e) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(
+                        Level.WARNING,
+                        "Unable to create a Reader for: " + sourceSpiProvider.getSource(),
+                        e);
+            }
+            throw new IllegalArgumentException(e);
+        } finally {
+            if (imageStream != null) {
+                try {
+                    imageStream.close();
+                } catch (Exception e) {
+                    if (LOGGER.isLoggable(Level.SEVERE)) {
+                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    }
+                } finally {
+                    if (reader != null) {
+                        reader.dispose();
+                    }
+                }
+            }
+        }
+        return numOverviews;
     }
 
     public int getNumOverviews(
@@ -495,13 +555,10 @@ public class MaskOverviewProvider {
                 reader = sourceSpiProvider.getReader();
                 reader.setInput(stream, false, false);
                 if (ovrURL != null) {
-                    streamOvr =
-                            getExternalOverviewInputStreamSpi()
-                                    .createInputStreamInstance(
-                                            ovrURL,
-                                            ImageIO.getUseCache(),
-                                            ImageIO.getCacheDirectory());
-                    readerOvr = getExternalOverviewReaderSpi().createReaderInstance();
+                    SourceSPIProvider ovrProvider =
+                            sourceSpiProvider.getCompatibleSourceProvider(ovrURL);
+                    streamOvr = ovrProvider.getStream();
+                    readerOvr = overviewReaderSpi.createReaderInstance();
                     readerOvr.setInput(streamOvr, false, false);
                 }
 
@@ -574,6 +631,10 @@ public class MaskOverviewProvider {
 
     public ImageInputStreamSpi getInputStreamSpi() {
         return sourceSpiProvider.getStreamSpi();
+    }
+
+    public SourceSPIProvider getSourceSpiProvider() {
+        return sourceSpiProvider;
     }
 
     public ImageInputStreamSpi getMaskStreamSpi() {

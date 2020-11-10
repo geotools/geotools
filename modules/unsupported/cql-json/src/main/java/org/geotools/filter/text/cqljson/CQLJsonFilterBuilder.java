@@ -18,6 +18,7 @@
 package org.geotools.filter.text.cqljson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.filter.text.cqljson.model.After;
@@ -53,22 +54,22 @@ import org.geotools.filter.text.cqljson.model.Touches;
 import org.geotools.filter.text.cqljson.model.Toverlaps;
 import org.geotools.filter.text.cqljson.model.Within;
 import org.geotools.filter.text.generated.parsers.ParseException;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.geometry.Geometry;
 
 final class CQLJsonFilterBuilder {
 
     /** New instance of CQLJsonFilterBuilder */
-    public CQLJsonFilterBuilder(final FilterFactory filterFactory) {
+    public CQLJsonFilterBuilder(final FilterFactory2 filterFactory) {
         this.filterFactory = filterFactory;
     }
 
-    private final FilterFactory filterFactory;
+    private final FilterFactory2 filterFactory;
 
     /**
      * Convert CQL AND to Geotools Filter
@@ -194,13 +195,27 @@ final class CQLJsonFilterBuilder {
     public Filter convertContains(Contains contains) throws ParseException {
         assert contains.getFunction() == null
                 : "GeoTools Geometry filters do not support functions as arguments";
+
         return filterFactory.contains(
-                contains.getProperty(), toGeometry((Map<String, Object>) contains.getValue()));
+                filterFactory.property(contains.getProperty()),
+                toGeometry(convertToMap(contains.getValue())));
     }
 
-    private Geometry toGeometry(Map<String, Object> value) throws ParseException {
-        return MapToOpenGISGeomUtil.parseMapToGeometry(value);
+    private Map<String, Object> convertToMap(Object value) {
+        assert value instanceof Map
+                : "Object passed to Geometry function must be a Map<String,Object>";
+        Map<?, ?> valueMap = (Map<?, ?>) value;
+        Map<String, Object> myInput = new HashMap<>(valueMap.size());
+        for (Map.Entry<?, ?> entry : valueMap.entrySet()) {
+            myInput.put((String) entry.getKey(), entry.getValue());
+        }
+        return myInput;
     }
+
+    private Literal toGeometry(Map<String, Object> value) throws ParseException {
+        return filterFactory.literal(MapToOpenGISGeomUtil.parseMapToGeometry(value));
+    }
+
     /**
      * Convert CQL DURING to Geotools Filter
      *
@@ -266,7 +281,8 @@ final class CQLJsonFilterBuilder {
         assert equals.getFunction() == null
                 : "GeoTools Geometry filters do not support functions as arguments";
         return filterFactory.equals(
-                equals.getProperty(), (toGeometry((Map<String, Object>) equals.getValue())));
+                filterFactory.property(equals.getProperty()),
+                (toGeometry(convertToMap(equals.getValue()))));
     }
     /**
      * Convert CQL GT to Geotools Filter
@@ -316,8 +332,8 @@ final class CQLJsonFilterBuilder {
         assert intersects.getFunction() == null
                 : "GeoTools Geometry filters do not support functions as arguments";
         return filterFactory.intersects(
-                intersects.getProperty(),
-                (toGeometry((Map<String, Object>) intersects.getValue())));
+                filterFactory.property(intersects.getProperty()),
+                (toGeometry(convertToMap(intersects.getValue()))));
     }
     /**
      * Convert CQL LIKE to Geotools Filter
@@ -410,7 +426,8 @@ final class CQLJsonFilterBuilder {
         assert overlaps.getFunction() == null
                 : "GeoTools Geometry filters do not support functions as arguments";
         return filterFactory.overlaps(
-                overlaps.getProperty(), (toGeometry((Map<String, Object>) overlaps.getValue())));
+                filterFactory.property(overlaps.getProperty()),
+                (toGeometry(convertToMap(overlaps.getValue()))));
     }
     /**
      * Convert CQL TCONTAINS to Geotools Filter
@@ -467,7 +484,8 @@ final class CQLJsonFilterBuilder {
         assert touches.getFunction() == null
                 : "GeoTools Geometry filters do not support functions as arguments";
         return filterFactory.touches(
-                touches.getProperty(), (toGeometry((Map<String, Object>) touches.getValue())));
+                filterFactory.property(touches.getProperty()),
+                (toGeometry(convertToMap(touches.getValue()))));
     }
     /**
      * Convert CQL TOVERLAPS to Geotools Filter
@@ -494,7 +512,8 @@ final class CQLJsonFilterBuilder {
         assert within.getFunction() == null
                 : "GeoTools Geometry filters do not support functions as arguments";
         return filterFactory.within(
-                within.getProperty(), (toGeometry((Map<String, Object>) within.getValue())));
+                filterFactory.property(within.getProperty()),
+                (toGeometry(convertToMap(within.getValue()))));
     }
     /**
      * Convert CQL DISJOINT to Geotools Filter
@@ -506,7 +525,8 @@ final class CQLJsonFilterBuilder {
         assert disjoint.getFunction() == null
                 : "GeoTools Geometry filters do not support functions as arguments";
         return filterFactory.disjoint(
-                disjoint.getProperty(), (toGeometry((Map<String, Object>) disjoint.getValue())));
+                filterFactory.property(disjoint.getProperty()),
+                (toGeometry(convertToMap(disjoint.getValue()))));
     }
     /**
      * Convert CQL CROSSES to Geotools Filter
@@ -518,7 +538,8 @@ final class CQLJsonFilterBuilder {
         assert crosses.getFunction() == null
                 : "GeoTools Geometry filters do not support functions as arguments";
         return filterFactory.disjoint(
-                crosses.getProperty(), (toGeometry((Map<String, Object>) crosses.getValue())));
+                filterFactory.property(crosses.getProperty()),
+                (toGeometry(convertToMap(crosses.getValue()))));
     }
 
     private Expression convertFunction(org.geotools.filter.text.cqljson.model.Function function)
@@ -560,11 +581,13 @@ final class CQLJsonFilterBuilder {
                                 filterFactory.literal(functionObjectArgument.getAdd().getValue())));
             }
             if (functionObjectArgument.getBbox() != null) {
-                Geometry geo = toGeometry((Map<String, Object>) functionObjectArgument.getBbox());
-                double minx = geo.getEnvelope().getLowerCorner().getCoordinate()[0];
-                double miny = geo.getEnvelope().getLowerCorner().getCoordinate()[1];
-                double maxx = geo.getEnvelope().getUpperCorner().getCoordinate()[0];
-                double maxy = geo.getEnvelope().getUpperCorner().getCoordinate()[1];
+                Geometry geo =
+                        MapToOpenGISGeomUtil.parseMapToGeometry(
+                                convertToMap(functionObjectArgument.getBbox()));
+                double minx = geo.getEnvelope().getCoordinates()[0].x;
+                double miny = geo.getEnvelope().getCoordinates()[0].y;
+                double maxx = geo.getEnvelope().getCoordinates()[2].x;
+                double maxy = geo.getEnvelope().getCoordinates()[2].y;
                 expressions.add(
                         filterFactory
                                 .bbox(
@@ -573,15 +596,17 @@ final class CQLJsonFilterBuilder {
                                         miny,
                                         maxx,
                                         maxy,
-                                        geo.getCoordinateReferenceSystem().toString())
+                                        "EPSG:" + geo.getSRID())
                                 .getExpression1());
             }
             if (functionObjectArgument.getGeometry() != null) {
-                Geometry geo = toGeometry((Map<String, Object>) functionObjectArgument.getBbox());
-                double minx = geo.getEnvelope().getLowerCorner().getCoordinate()[0];
-                double miny = geo.getEnvelope().getLowerCorner().getCoordinate()[1];
-                double maxx = geo.getEnvelope().getUpperCorner().getCoordinate()[0];
-                double maxy = geo.getEnvelope().getUpperCorner().getCoordinate()[1];
+                Geometry geo =
+                        MapToOpenGISGeomUtil.parseMapToGeometry(
+                                convertToMap(functionObjectArgument.getGeometry()));
+                double minx = geo.getEnvelope().getCoordinates()[0].x;
+                double miny = geo.getEnvelope().getCoordinates()[0].y;
+                double maxx = geo.getEnvelope().getCoordinates()[2].x;
+                double maxy = geo.getEnvelope().getCoordinates()[2].y;
                 expressions.add(
                         filterFactory
                                 .bbox(
@@ -590,7 +615,7 @@ final class CQLJsonFilterBuilder {
                                         miny,
                                         maxx,
                                         maxy,
-                                        geo.getCoordinateReferenceSystem().toString())
+                                        "EPSG:" + geo.getSRID())
                                 .getExpression1());
             }
 

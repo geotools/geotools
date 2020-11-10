@@ -391,6 +391,15 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                         new MaskOverviewProvider(
                                 dtLayout, new File(path.substring(0, path.length() - 4)));
                 hasMaskOvrProvider = true;
+            } else if (source instanceof CogSourceSPIProvider) {
+                CogSourceSPIProvider cogSourceProvider = (CogSourceSPIProvider) source;
+                maskOvrProvider =
+                        new MaskOverviewProvider(
+                                null,
+                                cogSourceProvider.getSourceUrl(),
+                                new MaskOverviewProvider.SpiHelper(cogSourceProvider),
+                                false);
+                hasMaskOvrProvider = true;
             }
 
             // //
@@ -651,19 +660,11 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             if (maskOvrProvider.isExternalOverview(imageChoice)) {
                 pbjRead.add(
                         maskOvrProvider
-                                .getExternalOverviewInputStreamSpi()
-                                .createInputStreamInstance(
-                                        maskOvrProvider.getOvrURL(),
-                                        ImageIO.getUseCache(),
-                                        ImageIO.getCacheDirectory()));
+                                .getSourceSpiProvider()
+                                .getCompatibleSourceProvider(maskOvrProvider.getOvrURL())
+                                .getStream());
             } else {
-                pbjRead.add(
-                        maskOvrProvider
-                                .getInputStreamSpi()
-                                .createInputStreamInstance(
-                                        maskOvrProvider.getFileURL(),
-                                        ImageIO.getUseCache(),
-                                        ImageIO.getCacheDirectory()));
+                pbjRead.add(maskOvrProvider.getSourceSpiProvider().getStream());
             }
             pbjRead.add(maskOvrProvider.getOverviewIndex(imageChoice));
         } else {

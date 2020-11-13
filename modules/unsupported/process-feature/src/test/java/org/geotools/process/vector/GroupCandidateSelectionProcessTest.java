@@ -114,4 +114,36 @@ public class GroupCandidateSelectionProcessTest {
         assertEquals(57, numericResults.get(4).intValue());
         assertEquals(91, numericResults.get(5).intValue());
     }
+
+    @Test
+    public void testFeatureCollectionFilteringByMinWithNullValues() throws Exception {
+        SimpleFeatureSource source = store.getFeatureSource("featuresToGroupWithNullValues");
+        Query query = new Query();
+        query.setFilter(Filter.INCLUDE);
+        SortBy[] sorts =
+                new SortBy[] {
+                    ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
+                };
+        query.setSortBy(sorts);
+        FeatureCollection collection = source.getFeatures(query);
+        int size = collection.size();
+        assertEquals(12, size);
+        List<String> props = Arrays.asList("group", "group2");
+        PropertyName pn = ff.property("numericVal");
+        FeatureCollection features =
+                new GroupCandidateSelectionProcess()
+                        .execute(collection, "MIN", "numericVal", props);
+        FeatureIterator it = features.features();
+        List<Integer> numericResults = new ArrayList<>(6);
+        while (it.hasNext()) {
+            numericResults.add((Integer) pn.evaluate(it.next()));
+        }
+        it.close();
+        assertEquals(40, numericResults.get(0).intValue());
+        assertEquals(43, numericResults.get(1).intValue());
+        assertEquals(22, numericResults.get(2).intValue());
+        assertEquals(65, numericResults.get(3).intValue());
+        assertEquals(47, numericResults.get(4).intValue());
+        assertEquals(91, numericResults.get(5).intValue());
+    }
 }

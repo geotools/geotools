@@ -154,12 +154,11 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         // produces new PropertyName to add to the query
         List<PropertyName> propertiesToAdd =
                 Stream.of(sortBy).map(s -> s.getPropertyName()).collect(Collectors.toList());
-        propertiesToAdd.add(ff.property(operationAttribute));
-
+        PropertyName operationAttributeProp = ff.property(operationAttribute);
+        propertiesToAdd.add(operationAttributeProp);
         // eventually merge with existing ones
         List<PropertyName> pns = getNewProperties(propertiesToAdd, properties);
         q.setProperties(pns);
-
         return q;
     }
 
@@ -298,14 +297,17 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             Feature bestFeature = null;
             while (super.hasNext()) {
                 Feature f = super.next();
-                if (bestFeature == null) {
+                Comparable operationValue = getComparableFromEvaluation(f);
+                if (bestFeature == null && operationValue != null) {
                     // no features in the list this is the first of the group
-                    // takes the values to check the following features if belong to the same group
+                    // takes the values to check the following features if belong to the same
+                    // group
                     groupingValues = getGroupingValues(groupingValues, f);
                     bestFeature = f;
-                } else {
+                } else if (bestFeature != null && operationValue != null) {
                     // is the feature in the group?
                     if (featureComparison(groupingValues, f)) {
+                        // if operationValue is null skip
                         bestFeature = updateBestFeature(f, bestFeature);
                     } else {
                         ((PushBackFeatureIterator) delegate).pushBack();

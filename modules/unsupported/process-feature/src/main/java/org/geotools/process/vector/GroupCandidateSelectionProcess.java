@@ -298,20 +298,17 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             while (super.hasNext()) {
                 Feature f = super.next();
                 Comparable operationValue = getComparableFromEvaluation(f);
-                if (bestFeature == null) {
-                    // if null skipping
-                    if (operationValue != null) {
-                        // no features in the list this is the first of the group
-                        // takes the values to check the following features if belong to the same
-                        // group
-                        groupingValues = getGroupingValues(groupingValues, f);
-                        bestFeature = f;
-                    }
-                } else {
+                if (bestFeature == null && operationValue != null) {
+                    // no features in the list this is the first of the group
+                    // takes the values to check the following features if belong to the same
+                    // group
+                    groupingValues = getGroupingValues(groupingValues, f);
+                    bestFeature = f;
+                } else if (bestFeature != null && operationValue != null) {
                     // is the feature in the group?
                     if (featureComparison(groupingValues, f)) {
                         // if operationValue is null skip
-                        if (operationValue != null) bestFeature = updateBestFeature(f, bestFeature);
+                        bestFeature = updateBestFeature(f, bestFeature);
                     } else {
                         ((PushBackFeatureIterator) delegate).pushBack();
                         break;

@@ -56,7 +56,7 @@ class WMTSTile extends Tile {
      *
      * <p>You can set the cache size using the property WMTS_TILE_CACHE_SIZE_PROPERTY_NAME.
      */
-    private static final ObjectCache tileImages;
+    private static final ObjectCache<String, BufferedImage> tileImages;
 
     static {
         int cacheSize = 150;

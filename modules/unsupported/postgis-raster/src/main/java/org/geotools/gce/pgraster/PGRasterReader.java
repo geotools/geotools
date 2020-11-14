@@ -217,6 +217,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
 
         if (params != null) {
             for (GeneralParameterValue p : params) {
+                @SuppressWarnings("unchecked")
                 Parameter<Object> param = (Parameter<Object>) p;
 
                 String code = param.getDescriptor().getName().getCode();

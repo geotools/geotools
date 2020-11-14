@@ -312,7 +312,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                         // if operationValue is null skip
                         bestFeature = updateBestFeature(f, bestFeature);
                     } else {
-                        @SuppressWarnings("unchecked")
+                        @SuppressWarnings({"unchecked", "PMD.CloseResource"})
                         PushBackFeatureIterator<F> pb = (PushBackFeatureIterator) delegate;
                         pb.pushBack();
                         break;

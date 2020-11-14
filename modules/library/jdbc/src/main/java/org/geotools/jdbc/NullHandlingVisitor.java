@@ -126,6 +126,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
                     List<Filter> cast = (List<Filter>) child.accept(this, null);
                     grouped.put(child, cast);
                 } else {
+                    @SuppressWarnings("unchecked")
                     List<Filter> filters = (List<Filter>) grouped.get(name);
                     if (filters == null) {
                         filters = new ArrayList<>();
@@ -148,6 +149,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
         for (Map.Entry<Object, Object> entry : grouped.entrySet()) {
             if (entry.getKey() instanceof String) {
                 Not notNull = ff.not(ff.isNull(ff.property((String) entry.getKey())));
+                @SuppressWarnings("unchecked")
                 List<Filter> filters = (List<Filter>) entry.getValue();
                 if (filters.size() == 1) {
                     children.add(ff.and(filters.get(0), notNull));

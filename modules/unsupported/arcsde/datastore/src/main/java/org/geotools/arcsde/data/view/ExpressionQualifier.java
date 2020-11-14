@@ -71,16 +71,16 @@ class ExpressionQualifier implements ExpressionVisitor {
 
     private ISession session;
 
-    private Map<String, Object> tableAliases;
+    private Map<String, ?> tableAliases;
 
     /** Creates a new ExpressionQualifier object. */
-    private ExpressionQualifier(ISession session, Map<String, Object> tableAliases) {
+    private ExpressionQualifier(ISession session, Map<String, ?> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;
     }
 
     public static Expression qualify(
-            ISession session, Map<String, Object> tableAliases, Expression exp) {
+            ISession session, Map<String, ?> tableAliases, Expression exp) {
         if (exp == null) {
             return null;
         }

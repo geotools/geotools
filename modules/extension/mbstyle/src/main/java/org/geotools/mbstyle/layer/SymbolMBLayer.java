@@ -1982,7 +1982,7 @@ public class SymbolMBLayer extends MBLayer {
             symbolizer.setPriority(ff.literal(labelPriority));
         }
 
-        boolean add = symbolizers.add(symbolizer);
+        symbolizers.add(symbolizer);
         MBFilter filter = getFilter();
 
         // List of opengis rules here (needed for constructor)

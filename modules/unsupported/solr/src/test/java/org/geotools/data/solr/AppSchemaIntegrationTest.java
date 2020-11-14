@@ -154,7 +154,7 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     }
 
     protected void setupDataStore() throws Exception {
-        final Map dsParams = new HashMap();
+        final Map<String, Object> dsParams = new HashMap<>();
         dsParams.put("dbtype", "app-schema");
         final URL url = new URL(new URL("file:"), "./" + testDirStr + "/" + xmlFileName);
         dsParams.put("url", url.toExternalForm());

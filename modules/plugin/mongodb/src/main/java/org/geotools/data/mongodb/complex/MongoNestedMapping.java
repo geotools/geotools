@@ -106,7 +106,7 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         for (int i = 0; i < collection.size(); i++) {
             features.add(MongoCollectionFeature.build(feature, collectionPath, i));
         }
-        FeatureSource fSource = buildMappingFeatureSource(feature, features);
+        MappingFeatureSource fSource = buildMappingFeatureSource(feature, features);
         ArrayList<Feature> matchingFeatures = new ArrayList<>();
         // get all the mapped nested features based on the link values
         FeatureCollection<FeatureType, Feature> fCollection = fSource.getFeatures(Query.ALL);
@@ -133,7 +133,8 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         AppSchemaDataAccess dataAccess = (AppSchemaDataAccess) originalFeatureSource.getDataStore();
         MemoryFeatureCollection collection = new MemoryFeatureCollection(null);
         collection.addAll(features);
-        MongoStaticFeatureSource staticSource =
+        @SuppressWarnings("unchecked")
+        MongoStaticFeatureSource<?, ?> staticSource =
                 new MongoStaticFeatureSource(collection, mapping.getSource());
         FeatureTypeMapping staticMapping =
                 new FeatureTypeMapping(
@@ -174,13 +175,14 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         throw new RuntimeException("Could not extract collection from path.");
     }
 
-    private static final class MongoStaticFeatureSource implements FeatureSource {
+    private static final class MongoStaticFeatureSource<T extends FeatureType, F extends Feature>
+            implements FeatureSource<T, F> {
 
-        private final FeatureCollection features;
-        private final FeatureSource originalFeatureSource;
+        private final FeatureCollection<T, F> features;
+        private final FeatureSource<T, F> originalFeatureSource;
 
         public MongoStaticFeatureSource(
-                FeatureCollection features, FeatureSource originalFeatureSource) {
+                FeatureCollection<T, F> features, FeatureSource<T, F> originalFeatureSource) {
             this.features = features;
             this.originalFeatureSource = originalFeatureSource;
         }
@@ -196,7 +198,7 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         }
 
         @Override
-        public DataAccess getDataStore() {
+        public DataAccess<T, F> getDataStore() {
             return originalFeatureSource.getDataStore();
         }
 
@@ -212,22 +214,22 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         public void removeFeatureListener(FeatureListener listener) {}
 
         @Override
-        public FeatureCollection getFeatures(Filter filter) throws IOException {
+        public FeatureCollection<T, F> getFeatures(Filter filter) throws IOException {
             return features;
         }
 
         @Override
-        public FeatureCollection getFeatures(Query query) throws IOException {
+        public FeatureCollection<T, F> getFeatures(Query query) throws IOException {
             return features;
         }
 
         @Override
-        public FeatureCollection getFeatures() throws IOException {
+        public FeatureCollection<T, F> getFeatures() throws IOException {
             return features;
         }
 
         @Override
-        public FeatureType getSchema() {
+        public T getSchema() {
             return originalFeatureSource.getSchema();
         }
 

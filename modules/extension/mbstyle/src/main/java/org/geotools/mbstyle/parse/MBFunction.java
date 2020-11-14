@@ -17,7 +17,11 @@
 package org.geotools.mbstyle.parse;
 
 import java.awt.Color;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Enumeration;
+import java.util.List;
 import org.geotools.coverage.processing.operation.Interpolate;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.filter.function.RecodeFunction;

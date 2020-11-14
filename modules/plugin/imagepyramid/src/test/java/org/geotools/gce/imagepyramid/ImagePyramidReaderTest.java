@@ -723,7 +723,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(
-                new ArrayList() {
+                new ArrayList<DateRange>() {
                     {
                         add(
                                 new DateRange(
@@ -815,7 +815,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(
-                new ArrayList() {
+                new ArrayList<DateRange>() {
                     {
                         add(
                                 new DateRange(

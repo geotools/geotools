@@ -40,16 +40,16 @@ class ItemsListQualifier implements ItemsListVisitor {
 
     private ISession session;
 
-    private Map<String, Object> tableAliases;
+    private Map<String, ?> tableAliases;
 
     /** Creates a new ItemsListQualifier object. */
-    public ItemsListQualifier(ISession session, Map<String, Object> tableAliases) {
+    public ItemsListQualifier(ISession session, Map<String, ?> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;
     }
 
     public static ItemsList qualify(
-            ISession session, Map<String, Object> tableAliases, ItemsList items) {
+            ISession session, Map<String, ?> tableAliases, ItemsList items) {
         if (items == null) {
             return null;
         }

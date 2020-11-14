@@ -198,14 +198,18 @@ public class SolrDataStore extends ContentDataStore {
                     }
                 }
                 // Reorder fields: empty after
-                Comparator sortFields =
-                        new BeanComparator("empty").thenComparing(new BeanComparator("name"));
+                Comparator<SolrAttribute> sortFields = getEmptyComparator();
                 solrAttributes.sort(sortFields);
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
         return solrAttributes;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Comparator<SolrAttribute> getEmptyComparator() {
+        return new BeanComparator("empty").thenComparing(new BeanComparator("name"));
     }
 
     @Override
@@ -448,8 +452,8 @@ public class SolrDataStore extends ContentDataStore {
         String fqViewParamers = null;
         Hints hints = q.getHints();
         if (hints != null) {
-            Map<String, String> parameters =
-                    (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS);
+            @SuppressWarnings("unchecked")
+            Map<String, String> parameters = (Map) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS);
             if (parameters != null) {
                 for (String param : parameters.keySet()) {
                     // Accepts only q and fq query parameters

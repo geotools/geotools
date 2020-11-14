@@ -1378,7 +1378,7 @@ public abstract class SQLDialect {
      * match the attribute descriptor binding, subclasses can override.
      */
     public Object convertValue(Object value, AttributeDescriptor ad) {
-        Class binding = ad.getType().getBinding();
+        Class<?> binding = ad.getType().getBinding();
         return Converters.convert(value, binding);
     }
 }

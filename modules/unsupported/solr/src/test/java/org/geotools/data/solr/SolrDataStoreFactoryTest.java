@@ -20,7 +20,6 @@ import static org.geotools.data.solr.SolrDataStoreFactory.FIELD;
 import static org.geotools.data.solr.SolrDataStoreFactory.LAYER_MAPPER;
 import static org.geotools.data.solr.SolrDataStoreFactory.URL;
 
-import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.data.solr.SolrLayerMapper.Type;
 import org.geotools.util.KVP;
@@ -38,12 +37,11 @@ public class SolrDataStoreFactoryTest extends TestCase {
         SolrDataStore dataStore =
                 (SolrDataStore)
                         dataStoreFactory.createDataStore(
-                                (Map)
-                                        new KVP(
-                                                URL.key,
-                                                "http://localhost:8080/solr/geotools",
-                                                FIELD.key,
-                                                "foo"));
+                                new KVP(
+                                        URL.key,
+                                        "http://localhost:8080/solr/geotools",
+                                        FIELD.key,
+                                        "foo"));
         assertTrue(dataStore.getLayerMapper() instanceof FieldLayerMapper);
     }
 
@@ -51,12 +49,11 @@ public class SolrDataStoreFactoryTest extends TestCase {
         SolrDataStore dataStore =
                 (SolrDataStore)
                         dataStoreFactory.createDataStore(
-                                (Map)
-                                        new KVP(
-                                                URL.key,
-                                                "http://localhost:8080/solr/geotools",
-                                                LAYER_MAPPER.key,
-                                                Type.SINGLE.name()));
+                                new KVP(
+                                        URL.key,
+                                        "http://localhost:8080/solr/geotools",
+                                        LAYER_MAPPER.key,
+                                        Type.SINGLE.name()));
         assertTrue(dataStore.getLayerMapper() instanceof SingleLayerMapper);
     }
 }

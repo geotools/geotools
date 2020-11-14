@@ -468,14 +468,14 @@ For most purposes this class is an internal detail, however if you want to look 
       System.out.println( factory.getDisplayName() );
   }
 
-* ``DataAccessFactory.createDataStore(Map<String, Serializable>)``
-* ``DataStoreFactorySpi.createDataStore(Map<String, Serializable>)``
+* ``DataAccessFactory.createDataStore(Map<String, ?>)``
+* ``DataStoreFactorySpi.createDataStore(Map<String, ?>)``
   
   Used to create a ``DataStore`` using the provided map of connection parameters.
   Please note this is used to connect to an existing source of information
   such as an existing shapefile or an existing web feature server.
 
-* ``DataStoreFactorySpi.createNewDataStore(Map<String, Serializable>)``
+* ``DataStoreFactorySpi.createNewDataStore(Map<String, ?>)``
   
   Used to create a new storage location (example a new shapefile).
 
@@ -488,7 +488,7 @@ For most purposes this class is an internal detail, however if you want to look 
   
   Description of connection parameters.
 
-* ``DataAccessFactory.canProcess(Map<String, Serializable>)``
+* ``DataAccessFactory.canProcess(Map<String, ?>)``
   
   Used to check the required connection parameters and confirm
   they can be processed into a DataStore. Note the DataStore may

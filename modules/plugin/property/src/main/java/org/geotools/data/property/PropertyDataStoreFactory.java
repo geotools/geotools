@@ -20,7 +20,6 @@ import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.data.DataStore;
@@ -48,7 +47,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      */
     public PropertyDataStoreFactory() {}
 
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         File dir = directoryLookup(params);
         String namespaceURI = (String) NAMESPACE.lookUp(params);
         if (dir.exists() && dir.isDirectory()) {
@@ -59,7 +58,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     }
 
     // createNewDataStore start
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         File dir = (File) DIRECTORY.lookUp(params);
 
         String namespaceURI = (String) NAMESPACE.lookUp(params);
@@ -101,7 +100,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      * @param params Connection parameters
      * @return true for connection parameters indicating a directory or property file
      */
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         try {
             directoryLookup(params);
             return true;
@@ -129,7 +128,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      * @throws IOException if {@linkplain #DIRECTORY} doesn't find parameter in <code>params</code>
      *     file does not exists.
      */
-    private File directoryLookup(Map<String, Serializable> params)
+    private File directoryLookup(Map<String, ?> params)
             throws IOException, FileNotFoundException, IllegalArgumentException {
         File directory = (File) DIRECTORY.lookUp(params);
         if (!directory.exists()) {

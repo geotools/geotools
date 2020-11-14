@@ -77,12 +77,13 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
      * identified by the JNDI name.
      */
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         return null;
     }
 
     /** Override to create the datasource from the external JNDI conection. */
-    protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
+            throws IOException {
         String jndiName = (String) JNDI_REFNAME.lookUp(params);
         if (jndiName == null) throw new IOException("Missing " + JNDI_REFNAME.description);
 
@@ -139,7 +140,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     /** Override to omit all those parameters which define the creation of the connection. */
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         parameters.put(
                 DBTYPE.key,
                 new Param(
@@ -175,16 +176,16 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
         return delegate.createDataStoreInternal(dataStore, params);
     }
 
-    public DataStore createNewDataStore(Map params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         return delegate.createNewDataStore(params);
     }
 
-    public Map getImplementationHints() {
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return delegate.getImplementationHints();
     }
 
@@ -194,7 +195,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected boolean checkDBType(Map params) {
+    protected boolean checkDBType(Map<String, ?> params) {
         return delegate.checkDBType(params);
     }
 }

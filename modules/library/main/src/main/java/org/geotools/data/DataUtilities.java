@@ -41,11 +41,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -3008,5 +3010,17 @@ public class DataUtilities {
 
         return ff.createFeature(
                 value, (FeatureType) schema, SimpleFeatureBuilder.createDefaultFeatureId());
+    }
+
+    /**
+     * Converts a {@link java.util.Properties} object into a Map suitable for usage for {@link
+     * DataAccess} or {@link DataStore} creation. The code assumes the properties do contain {@link
+     * String} keys, and may contain any kind of object as values.
+     */
+    public static Map<String, Object> toConnectionParameters(Properties properties) {
+        return properties
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> (String) e.getKey(), e -> e.getValue()));
     }
 }

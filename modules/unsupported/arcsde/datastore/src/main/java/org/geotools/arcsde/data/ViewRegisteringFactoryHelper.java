@@ -18,7 +18,6 @@ package org.geotools.arcsde.data;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.Serializable;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,10 +79,10 @@ public class ViewRegisteringFactoryHelper {
      * Registers the sql views provided in <code>params</code> on the SqlDataStore <code>dataStore
      * </code>
      */
-    public static void registerSqlViews(ArcSDEDataStore dataStore, Map<String, Serializable> params)
+    public static void registerSqlViews(ArcSDEDataStore dataStore, Map<String, ?> params)
             throws IOException {
-        Map<String, Serializable> cleanedUp = cleanUpViewDefinitions(params);
-        for (Map.Entry<String, Serializable> entry : cleanedUp.entrySet()) {
+        Map<String, ?> cleanedUp = cleanUpViewDefinitions(params);
+        for (Map.Entry<String, ?> entry : cleanedUp.entrySet()) {
             String typeName = (String) entry.getKey();
             String sqlQuery = (String) entry.getValue();
 
@@ -99,10 +98,9 @@ public class ViewRegisteringFactoryHelper {
      * Looks up the set of "sqlView.N.typeName" and "sqlView.N.sqlQuery" keys in <code>params</code>
      * and returns a cleaned up map of typeName/query.
      */
-    public static Map<String, Serializable> cleanUpViewDefinitions(
-            Map<String, Serializable> params) {
-        Map<String, Serializable> cleanedUpViews = new HashMap<String, Serializable>();
-        for (Map.Entry<String, Serializable> entry : params.entrySet()) {
+    public static Map<String, ?> cleanUpViewDefinitions(Map<String, ?> params) {
+        Map<String, Object> cleanedUpViews = new HashMap<>();
+        for (Map.Entry<String, ?> entry : params.entrySet()) {
             String key = entry.getKey();
             if (!key.startsWith("sqlView.")) {
                 continue;

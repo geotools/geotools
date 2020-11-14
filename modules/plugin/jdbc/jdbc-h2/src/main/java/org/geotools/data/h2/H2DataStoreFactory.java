@@ -108,7 +108,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         return baseDirectory;
     }
 
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         super.setupParameters(parameters);
 
         // remove host and port temporarily in order to make username optional
@@ -153,7 +153,8 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         // return new H2DialectPrepared(dataStore);
     }
 
-    protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
+            throws IOException {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl(getJDBCUrl(params));
 
@@ -173,7 +174,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String database = (String) DATABASE.lookUp(params);
         String host = (String) HOST.lookUp(params);
         Boolean mvcc = (Boolean) MVCC.lookUp(params);
@@ -206,7 +207,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         }
     }
 
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
         // check the foreign keys parameter
         Boolean foreignKeys = (Boolean) ASSOCIATIONS.lookUp(params);

@@ -63,7 +63,7 @@ public final class DataStoreFinder {
      * @throws IOException If a suitable loader can be found, but it can not be attached to the
      *     specified resource without errors.
      */
-    public static synchronized DataStore getDataStore(Map params) throws IOException {
+    public static synchronized DataStore getDataStore(Map<String, ?> params) throws IOException {
         Iterator<DataStoreFactorySpi> ps = getAvailableDataStores();
         DataAccess<? extends FeatureType, ? extends Feature> dataStore;
         dataStore = DataAccessFinder.getDataStore(params, ps);

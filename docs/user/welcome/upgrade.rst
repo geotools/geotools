@@ -28,6 +28,18 @@ But first to upgrade - change your dependency geotools.version to |release| (or 
         ....
     </dependencies>
 
+GeoTools 25.x
+-------------
+
+The DataAccess and DataStore creation parameters have been switched from ``Map<String, Serializable>``
+to ``Map<String, ?>``, to match actual usage (some stores require non serializable parameters).
+This should not affect end users of the API, but ``DataAccessFactory`` and ``DataStoreFactory``
+implementations will have to be updated to match.
+
+For those feeding ``Properties`` object to ``DataAccess.getDataStore()`` a new utility method,
+``DataUtilities.toConnectionParameters`` has been made available, which converts a ``Properties``
+to a ``Map<String, ?>``.
+
 GeoTools 24.x
 -------------
 

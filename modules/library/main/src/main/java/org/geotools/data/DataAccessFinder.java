@@ -19,7 +19,6 @@ package org.geotools.data;
 import static java.util.stream.Collectors.toSet;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -69,15 +68,14 @@ public final class DataAccessFinder {
      *     specified resource without errors.
      */
     @SuppressWarnings("unchecked")
-    public static synchronized DataAccess<FeatureType, Feature> getDataStore(
-            Map<String, Serializable> params) throws IOException {
+    public static synchronized DataAccess<FeatureType, Feature> getDataStore(Map<String, ?> params)
+            throws IOException {
         Iterator<DataAccessFactory> ps = getAvailableDataStores();
         return (DataAccess<FeatureType, Feature>) getDataStore(params, ps);
     }
 
     static DataAccess<? extends FeatureType, ? extends Feature> getDataStore(
-            Map<String, Serializable> params, Iterator<? extends DataAccessFactory> ps)
-            throws IOException {
+            Map<String, ?> params, Iterator<? extends DataAccessFactory> ps) throws IOException {
         DataAccessFactory fac;
 
         IOException canProcessButNotAvailable = null;

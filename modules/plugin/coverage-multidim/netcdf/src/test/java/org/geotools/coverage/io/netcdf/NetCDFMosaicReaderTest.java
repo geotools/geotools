@@ -71,6 +71,7 @@ import org.geotools.coverage.grid.io.GranuleRemovalPolicy;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.HarvestedSource;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.Query;
 import org.geotools.data.directory.DirectoryDataStore;
@@ -1706,11 +1707,13 @@ public class NetCDFMosaicReaderTest {
         }
 
         // check that the NetCDF database has been cleaned too
-        Properties connectionParams = new Properties();
+        Properties props = new Properties();
         try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
-            connectionParams.load(fr);
+            props.load(fr);
         }
-        JDBCDataStore store = new H2DataStoreFactory().createDataStore(connectionParams);
+        JDBCDataStore store =
+                new H2DataStoreFactory()
+                        .createDataStore(DataUtilities.toConnectionParameters(props));
         assertEquals(0, store.getFeatureSource("NO2").getFeatures(locationFilter).size());
         assertEquals(0, store.getFeatureSource("O3").getFeatures(locationFilter).size());
     }
@@ -1766,11 +1769,13 @@ public class NetCDFMosaicReaderTest {
         }
 
         // check that the NetCDF database has been cleaned too
-        Properties connectionParams = new Properties();
+        Properties props = new Properties();
         try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
-            connectionParams.load(fr);
+            props.load(fr);
         }
-        JDBCDataStore store = new H2DataStoreFactory().createDataStore(connectionParams);
+        JDBCDataStore store =
+                new H2DataStoreFactory()
+                        .createDataStore(DataUtilities.toConnectionParameters(props));
         assertEquals(0, store.getFeatureSource("NO2").getFeatures(locationFilter).size());
         assertEquals(0, store.getFeatureSource("O3").getFeatures(locationFilter).size());
     }

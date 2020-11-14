@@ -18,7 +18,6 @@
 package org.geotools.data.mongodb;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -104,7 +103,7 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public MongoDataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public MongoDataStore createDataStore(Map<String, ?> params) throws IOException {
         // retrieve schema generation parameters
         final List<String> ids = getIds(params);
         final Integer maxObjects = (Integer) MAX_OBJECTS_FOR_SCHEMA.lookUp(params);
@@ -128,7 +127,7 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
         return dataStore;
     }
 
-    private List<String> getIds(Map<String, Serializable> params) throws IOException {
+    private List<String> getIds(Map<String, ?> params) throws IOException {
         List<String> ids = new ArrayList<>();
         Object ofs = OBJECTS_IDS_FOR_SCHEMA.lookUp(params);
         // if null, there are not ids to parse
@@ -146,7 +145,7 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
         return ids;
     }
 
-    private HTTPClient getHTTPClient(Map<String, Serializable> params) throws IOException {
+    private HTTPClient getHTTPClient(Map<String, ?> params) throws IOException {
         String uri = (String) SCHEMASTORE_URI.lookUp(params);
         // check if the URI is a URL
         if (!uri.startsWith(MongoSchemaFileStore.PRE_FIX_HTTP)) return null;
@@ -163,7 +162,7 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException();
     }
 }

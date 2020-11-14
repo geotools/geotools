@@ -19,7 +19,6 @@ package org.geotools.data.wfs;
 import static org.geotools.data.wfs.internal.URIs.buildURL;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,7 +77,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
     @Override
-    public WFSDataStore createDataStore(final Map<String, Serializable> params) throws IOException {
+    public WFSDataStore createDataStore(final Map<String, ?> params) throws IOException {
 
         final WFSConfig config = WFSConfig.fromParams(params);
 
@@ -130,7 +129,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      * @param params wfs service connection parameters
      * @return the HttpClient instance
      */
-    public HTTPClient getHttpClient(final Map<String, Serializable> params) throws IOException {
+    public HTTPClient getHttpClient(final Map<String, ?> params) throws IOException {
         final URL capabilitiesURL = (URL) URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);
         return config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
@@ -143,7 +142,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
     }
 
     @Override
-    public DataStore createNewDataStore(final Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(final Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException("Operation not applicable to a WFS service");
     }
 

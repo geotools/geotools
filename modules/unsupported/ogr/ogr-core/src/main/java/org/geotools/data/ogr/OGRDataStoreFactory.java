@@ -16,8 +16,8 @@
  */
 package org.geotools.data.ogr;
 
+import java.awt.RenderingHints;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
@@ -128,7 +128,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
 
     protected abstract OGR createOGR();
 
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         boolean accept = false;
         String ogrName = null;
         String ogrDriver = null;
@@ -147,12 +147,12 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         return accept;
     }
 
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         return createNewDataStore(params);
     }
 
     /** Not implemented yet. */
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
 
         DataStore ds;
 
@@ -292,7 +292,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         return result;
     }
 
-    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+    public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 }

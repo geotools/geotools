@@ -18,7 +18,6 @@
 package org.geotools.data.solr;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Map;
@@ -67,7 +66,7 @@ public class SolrDataStoreFactory implements DataStoreFactorySpi {
             new Param("namespace", String.class, "Namespace prefix", false, "solr");
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         URL url = (URL) URL.lookUp(params);
         String namespace = (String) NAMESPACE.lookUp(params);
         String mapperName = (String) LAYER_MAPPER.lookUp(params);
@@ -93,7 +92,7 @@ public class SolrDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         return createDataStore(params);
     }
 

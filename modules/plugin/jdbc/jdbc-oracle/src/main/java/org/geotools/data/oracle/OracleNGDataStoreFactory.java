@@ -119,7 +119,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected boolean checkDBType(Map params) {
+    protected boolean checkDBType(Map<String, ?> params) {
         if (super.checkDBType(params)) {
             try {
                 // check for old factory
@@ -137,8 +137,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         }
     }
 
-    @SuppressWarnings("unchecked") // temporary workaround
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
 
         // make the schema uppercase if it's not already
@@ -184,8 +183,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    @SuppressWarnings("unchecked") // temporary workaround
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String db = (String) DATABASE.lookUp(params);
         String host = (String) HOST.lookUp(params);
         Integer port = (Integer) PORT.lookUp(params);
@@ -206,8 +204,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    @SuppressWarnings("unchecked") // temporary workaround
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         // NOTE: when adding parameters here remember to add them to OracleNGOCIDataStoreFactory and
         // OracleNGJNDIDataStoreFactory
 

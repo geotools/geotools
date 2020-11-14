@@ -93,7 +93,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(PORT.key, PORT);
@@ -103,7 +103,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
         String storageEngine = (String) STORAGE_ENGINE.lookUp(params);
         if (storageEngine == null) {

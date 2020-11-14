@@ -27,6 +27,7 @@ import java.util.Properties;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
+import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.Converters;
 
@@ -43,7 +44,8 @@ public class H2MigrateConfiguration {
             throws IOException, ClassNotFoundException, IllegalAccessException,
                     InstantiationException, NoSuchMethodException, InvocationTargetException {
         // first try out the default GeoTools approach
-        final DataStore dataStore = DataStoreFinder.getDataStore(configuration);
+        final DataStore dataStore =
+                DataStoreFinder.getDataStore(DataUtilities.toConnectionParameters(configuration));
         if (dataStore == null) {
             // use ImageMosaic bizarre own way
             final String spiClass = (String) configuration.get("SPI");

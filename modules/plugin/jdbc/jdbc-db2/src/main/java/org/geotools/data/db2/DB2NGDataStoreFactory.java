@@ -105,7 +105,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected boolean checkDBType(Map params) {
+    protected boolean checkDBType(Map<String, ?> params) {
         if (super.checkDBType(params)) {
             return true;
         }
@@ -127,7 +127,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         // jdbc url
         String host = null;
         Integer port = null;
@@ -145,7 +145,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
         return super.getJDBCUrl(params);
     }
 
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
@@ -154,7 +154,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     @SuppressWarnings("PMD.CheckResultSet")
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
         Connection con = null;
         try {

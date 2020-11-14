@@ -26,7 +26,6 @@ import static org.geotools.arcsde.session.ArcSDEConnectionConfig.PORT_NUMBER_PAR
 import static org.geotools.arcsde.session.ArcSDEConnectionConfig.SERVER_NAME_PARAM_NAME;
 import static org.geotools.arcsde.session.ArcSDEConnectionConfig.USER_NAME_PARAM_NAME;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
@@ -100,7 +99,7 @@ public class ArcSDEDataStoreConfig {
      * @throws IllegalArgumentException if at least one mandatory parameter is present but does not
      *     have a "valid" value.
      */
-    public ArcSDEDataStoreConfig(Map<String, Serializable> params) throws IllegalArgumentException {
+    public ArcSDEDataStoreConfig(Map<String, ?> params) throws IllegalArgumentException {
         init(params);
     }
 
@@ -123,7 +122,7 @@ public class ArcSDEDataStoreConfig {
      * @throws NumberFormatException If port could not be parsed into a number
      * @throws IllegalArgumentException If any of the parameters are invalid
      */
-    private void init(Map<String, Serializable> params)
+    private void init(Map<String, ?> params)
             throws NumberFormatException, IllegalArgumentException {
         String dbtype = (String) params.get(DBTYPE_PARAM_NAME);
         String server = (String) params.get(SERVER_NAME_PARAM_NAME);
@@ -141,8 +140,8 @@ public class ArcSDEDataStoreConfig {
         setUpOptionalParams(params);
     }
 
-    public Map<String, Serializable> toMap() {
-        Map<String, Serializable> params = sessionConfig.toMap();
+    public Map<String, ?> toMap() {
+        Map<String, Object> params = sessionConfig.toMap();
         params.put(DBTYPE_PARAM_NAME, DBTYPE_PARAM_VALUE);
         params.put(VERSION_PARAM_NAME, getVersion());
         params.put(NAMESPACE_PARAM_NAME, getNamespaceUri());
@@ -156,8 +155,7 @@ public class ArcSDEDataStoreConfig {
      * @param params Connection parameters
      * @throws IllegalArgumentException If any of the optional prameters are invlaid.
      */
-    private void setUpOptionalParams(Map<String, Serializable> params)
-            throws IllegalArgumentException {
+    private void setUpOptionalParams(Map<String, ?> params) throws IllegalArgumentException {
         String exceptionMsg = "";
         Object ns = params.get(NAMESPACE_PARAM_NAME);
 

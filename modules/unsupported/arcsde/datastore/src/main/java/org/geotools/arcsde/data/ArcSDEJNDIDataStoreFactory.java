@@ -22,7 +22,6 @@ import static org.geotools.arcsde.data.ArcSDEDataStoreFactory.VERSION_PARAM;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -91,7 +90,7 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
      *
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         final String jndiName = (String) JNDI_REFNAME.lookUp(params);
 
         final Object lookup = lookupJndiResource(jndiName);
@@ -130,7 +129,7 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
             sessionPool = (ISessionPool) lookup;
 
         } else if (lookup instanceof Map) {
-            Map<String, Serializable> map = new HashMap<String, Serializable>();
+            Map<String, Object> map = new HashMap<>();
             {
                 Map<Object, Object> props = (Map<Object, Object>) lookup;
                 String key;
@@ -220,7 +219,7 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
      *
      * @see org.geotools.data.DataAccessFactory#canProcess(java.util.Map)
      */
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         if (params == null) {
             return false;
         }
@@ -293,7 +292,7 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /** @see org.geotools.data.DataStoreFactorySpi#createNewDataStore(java.util.Map) */
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException(
                 "ArcSDE PlugIn does not support createNewDataStore");
     }

@@ -153,7 +153,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     new KVP(Param.OPTIONS, Arrays.asList(SslMode.values())));
 
     @Override
-    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map params) {
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map<String, ?> params) {
         PostGISDialect dialect = new PostGISDialect(dataStore);
         try {
             if (Boolean.TRUE.equals(PREPARED_STATEMENTS.lookUp(params))) {
@@ -195,7 +195,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected boolean checkDBType(Map params) {
+    protected boolean checkDBType(Map<String, ?> params) {
         if (super.checkDBType(params)) {
             // check for old factory
             try {
@@ -213,7 +213,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         }
     }
 
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
 
         // setup loose bbox
@@ -263,7 +263,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         // NOTE: when adding parameters here remember to add them to PostgisNGJNDIDataStoreFactory
 
         super.setupParameters(parameters);
@@ -288,7 +288,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String host = (String) HOST.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         int port = (Integer) PORT.lookUp(params);
@@ -301,7 +301,8 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         return url;
     }
 
-    protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
+            throws IOException {
         DataSource ds = super.createDataSource(params, dialect);
         JDBCDataStore store = new JDBCDataStore();
 

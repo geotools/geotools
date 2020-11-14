@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
@@ -56,7 +55,7 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         URL url = (URL) URL_PARAM.lookUp(params);
         File file = (File) FILE_PARAM.lookUp(params);
         if (url == null && file == null) {
@@ -70,7 +69,7 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         URL url = (URL) URL_PARAM.lookUp(params);
         File file = (File) FILE_PARAM.lookUp(params);
         if (url == null && file == null) {
@@ -128,7 +127,7 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
     }
 
     @Override
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
 
         try {
             URL url = (URL) URL_PARAM.lookUp(params);

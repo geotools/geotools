@@ -57,14 +57,13 @@ import org.xml.sax.helpers.NamespaceSupport;
     description =
             "Given a collection of features for each group defined only the feature having the MIN or MAX value for the chosen attribute will be included in the final output"
 )
-public class GroupCandidateSelectionProcess<T extends FeatureType, F extends Feature>
-        implements VectorProcess {
+public class GroupCandidateSelectionProcess implements VectorProcess {
 
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
 
-    public FeatureCollection<T, F> execute(
+    public FeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input feature collection")
-                    FeatureCollection<T, F> features,
+                    FeatureCollection<? extends FeatureType, ? extends Feature> features,
             @DescribeParameter(
                         name = "aggregation",
                         description =
@@ -156,12 +155,11 @@ public class GroupCandidateSelectionProcess<T extends FeatureType, F extends Fea
         // produces new PropertyName to add to the query
         List<PropertyName> propertiesToAdd =
                 Stream.of(sortBy).map(s -> s.getPropertyName()).collect(Collectors.toList());
-        propertiesToAdd.add(ff.property(operationAttribute));
-
+        PropertyName operationAttributeProp = ff.property(operationAttribute);
+        propertiesToAdd.add(operationAttributeProp);
         // eventually merge with existing ones
         List<PropertyName> pns = getNewProperties(propertiesToAdd, properties);
         q.setProperties(pns);
-
         return q;
     }
 
@@ -301,17 +299,22 @@ public class GroupCandidateSelectionProcess<T extends FeatureType, F extends Fea
             F bestFeature = null;
             while (super.hasNext()) {
                 F f = super.next();
-                if (bestFeature == null) {
+                Comparable operationValue = getComparableFromEvaluation(f);
+                if (bestFeature == null && operationValue != null) {
                     // no features in the list this is the first of the group
-                    // takes the values to check the following features if belong to the same group
+                    // takes the values to check the following features if belong to the same
+                    // group
                     groupingValues = getGroupingValues(groupingValues, f);
                     bestFeature = f;
-                } else {
+                } else if (bestFeature != null && operationValue != null) {
                     // is the feature in the group?
                     if (featureComparison(groupingValues, f)) {
+                        // if operationValue is null skip
                         bestFeature = updateBestFeature(f, bestFeature);
                     } else {
-                        ((PushBackFeatureIterator) delegate).pushBack();
+                        @SuppressWarnings("unchecked")
+                        PushBackFeatureIterator<F> pb = (PushBackFeatureIterator) delegate;
+                        pb.pushBack();
                         break;
                     }
                 }
@@ -334,7 +337,7 @@ public class GroupCandidateSelectionProcess<T extends FeatureType, F extends Fea
             else return false;
         }
 
-        private List<Object> getGroupingValues(List<Object> groupingValues, F f) {
+        private List<Object> getGroupingValues(List<Object> groupingValues, Feature f) {
             for (PropertyName p : groupByAttributes) {
                 Object result = p.evaluate(f);
                 groupingValues.add(result);
@@ -367,7 +370,7 @@ public class GroupCandidateSelectionProcess<T extends FeatureType, F extends Fea
             return best;
         }
 
-        private Comparable getComparableFromEvaluation(F f) {
+        private Comparable getComparableFromEvaluation(Feature f) {
             // In case of complex features we got the property instead of the value
             Object o = operationAttribute.evaluate(f);
             if (o instanceof Property) o = ((Property) o).getValue();

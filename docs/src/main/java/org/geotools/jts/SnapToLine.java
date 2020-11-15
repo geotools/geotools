@@ -140,6 +140,7 @@ public class SnapToLine {
              * so it is possible that the point is actually more distant than
              * MAX_SEARCH_DISTANCE from a line.
              */
+            @SuppressWarnings("unchecked")
             List<LocationIndexedLine> lines = index.query(search);
 
             // Initialize the minimum distance found to our maximum acceptable

@@ -16,6 +16,10 @@
  */
 package org.geotools.data.mongodb.complex;
 
+import static org.geotools.data.mongodb.complex.MongoComplexUtilities.extractFeature;
+import static org.geotools.data.mongodb.complex.MongoComplexUtilities.getTransformer;
+import static org.geotools.data.mongodb.complex.MongoComplexUtilities.invalidFeature;
+
 import com.mongodb.DBObject;
 import java.awt.RenderingHints;
 import java.io.IOException;
@@ -24,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
@@ -40,6 +45,7 @@ import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.data.mongodb.MongoFeature;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -147,24 +153,46 @@ public class MongoNestedMapping extends NestedAttributeMapping {
     }
 
     private List getSubCollection(Object feature, String collectionPath) {
-        feature = MongoComplexUtilities.extractFeature(feature, collectionPath);
-        if (feature instanceof MongoFeature) {
-            DBObject mongoObject = ((MongoFeature) feature).getMongoObject();
-            return getSubCollection(mongoObject, collectionPath, Collections.emptyMap());
-        } else if (feature instanceof MongoCollectionFeature) {
-            MongoCollectionFeature collectionFeature = (MongoCollectionFeature) feature;
+        // let's make sure we have a feature
+        // we should have a feature
+        if (!(feature instanceof Feature)) {
+            // not a feature so nothing to do
+            throw invalidFeature(feature, collectionPath);
+        }
+        Feature f = (Feature) feature;
+        Feature extracted = extractFeature(feature, collectionPath);
+
+        if (extracted instanceof MongoFeature) {
+            MongoFeature mongoFeature = (MongoFeature) extracted;
+            DBObject mongoObject = mongoFeature.getMongoObject();
+            Supplier<GeometryCoordinateSequenceTransformer> transformer =
+                    getTransformer(f, mongoFeature);
+
             return getSubCollection(
-                    collectionFeature.getMongoFeature().getMongoObject(),
+                    mongoObject, collectionPath, Collections.emptyMap(), transformer);
+        } else if (extracted instanceof MongoCollectionFeature) {
+            MongoCollectionFeature collectionFeature = (MongoCollectionFeature) extracted;
+            MongoFeature mongoFeature = collectionFeature.getMongoFeature();
+            Supplier<GeometryCoordinateSequenceTransformer> transformer =
+                    getTransformer(f, mongoFeature);
+
+            return getSubCollection(
+                    mongoFeature.getMongoObject(),
                     collectionPath,
-                    collectionFeature.getCollectionsIndexes());
+                    collectionFeature.getCollectionsIndexes(),
+                    transformer);
         }
         throw new RuntimeException("MongoDB nesting only works with MongoDB features.");
     }
 
     private List getSubCollection(
-            DBObject mongoObject, String collectionPath, Map<String, Integer> collectionsIndexes) {
+            DBObject mongoObject,
+            String collectionPath,
+            Map<String, Integer> collectionsIndexes,
+            Supplier<GeometryCoordinateSequenceTransformer> transformer) {
         Object value =
-                MongoComplexUtilities.getValue(mongoObject, collectionsIndexes, collectionPath);
+                MongoComplexUtilities.getValue(
+                        mongoObject, collectionsIndexes, collectionPath, transformer);
         if (value == null) {
             return Collections.emptyList();
         }

@@ -21,11 +21,13 @@ import com.mongodb.DBObject;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MongoFeature extends SimpleFeatureImpl {
 
     private final DBObject mongoObject;
     private final Object[] values;
+    private CoordinateReferenceSystem originalCRS;
 
     public MongoFeature(Object[] values, SimpleFeatureType featureType, String id) {
         this(null, values, featureType, id);
@@ -36,6 +38,7 @@ public class MongoFeature extends SimpleFeatureImpl {
         super(values, featureType, new FeatureIdImpl(id), false);
         this.values = values;
         this.mongoObject = mongoObject;
+        this.originalCRS = this.featureType.getGeometryDescriptor().getCoordinateReferenceSystem();
     }
 
     public DBObject getMongoObject() {
@@ -44,5 +47,9 @@ public class MongoFeature extends SimpleFeatureImpl {
 
     public Object[] getValues() {
         return values;
+    }
+
+    public CoordinateReferenceSystem getOriginalCRS() {
+        return originalCRS;
     }
 }

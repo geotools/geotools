@@ -26,6 +26,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * NamespaceSupport implementation that allows additional NamespaceSupport objects to be part of the
  * look up process.
  */
+// Java 8/11 difference, in Java 11 it returns Enumeration<String> but not in Java 8
+@SuppressWarnings("unchecked")
 public class ParserNamespaceSupport extends NamespaceSupport {
 
     List<NamespaceSupport> others = new ArrayList<>();

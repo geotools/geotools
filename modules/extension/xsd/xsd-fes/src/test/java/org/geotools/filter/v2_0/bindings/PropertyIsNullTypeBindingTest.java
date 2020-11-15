@@ -36,6 +36,7 @@ public class PropertyIsNullTypeBindingTest {
         assertEquals(PROP, prop);
     }
 
+    @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
     private void defaultNamespaceContext(XPath xpath) {
         xpath.setNamespaceContext(
                 new NamespaceContext() {

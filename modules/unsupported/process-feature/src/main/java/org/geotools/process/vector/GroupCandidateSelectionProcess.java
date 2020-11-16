@@ -297,14 +297,13 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             Feature bestFeature = null;
             while (super.hasNext()) {
                 Feature f = super.next();
-                Comparable operationValue = getComparableFromEvaluation(f);
-                if (bestFeature == null && operationValue != null) {
+                if (bestFeature == null) {
                     // no features in the list this is the first of the group
                     // takes the values to check the following features if belong to the same
                     // group
                     groupingValues = getGroupingValues(groupingValues, f);
                     bestFeature = f;
-                } else if (bestFeature != null && operationValue != null) {
+                } else {
                     // is the feature in the group?
                     if (featureComparison(groupingValues, f)) {
                         // if operationValue is null skip
@@ -343,23 +342,25 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         }
 
         private Feature updateBestFeature(Feature best, Feature f) {
+            Comparable bestValue = getComparableFromEvaluation(best);
+            Comparable value = getComparableFromEvaluation(f);
+            if (value == null) return best;
+            else if (bestValue == null) return f;
             if (aggregation.equals(Operations.MAX)) {
-                return findBestMax(best, f);
+                return findBestMax(best, f, bestValue, value);
             } else {
-                return findBestMin(best, f);
+                return findBestMin(best, f, bestValue, value);
             }
         }
 
-        private Feature findBestMax(Feature best, Feature f) {
-            Comparable bestValue = getComparableFromEvaluation(best);
-            Comparable value = getComparableFromEvaluation(f);
+        private Feature findBestMax(
+                Feature best, Feature f, Comparable bestValue, Comparable value) {
             if (bestValue.compareTo(value) < 0) return f;
             return best;
         }
 
-        private Feature findBestMin(Feature best, Feature f) {
-            Comparable bestValue = getComparableFromEvaluation(best);
-            Comparable value = getComparableFromEvaluation(f);
+        private Feature findBestMin(
+                Feature best, Feature f, Comparable bestValue, Comparable value) {
             if (bestValue.compareTo(value) > 0) return f;
             return best;
         }

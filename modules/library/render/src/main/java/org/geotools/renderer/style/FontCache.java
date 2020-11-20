@@ -46,7 +46,7 @@ public class FontCache {
     static volatile FontCache defaultInstance;
 
     /** Set containing the font families known of this machine */
-    Set<String> systemFonts = new HashSet<String>();
+    volatile Set<String> systemFonts = new HashSet<>();
 
     /** Fonts already loaded */
     Map<String, Font> loadedFonts = new ConcurrentHashMap<>();
@@ -65,7 +65,7 @@ public class FontCache {
         return defaultInstance;
     }
 
-    public synchronized Font getFont(String requestedFont) {
+    public Font getFont(String requestedFont) {
         // see if the font has already been loaded
         java.awt.Font javaFont = null;
         if (LOGGER.isLoggable(Level.FINEST)) {

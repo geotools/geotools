@@ -63,7 +63,8 @@ public class DbaseFileHeader {
 
     private int largestFieldSize = 0;
 
-    private Logger logger = org.geotools.util.logging.Logging.getLogger(DbaseFileHeader.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(DbaseFileHeader.class);
 
     /**
      * Returns the number of millis at January 1st 4713 BC
@@ -235,8 +236,8 @@ public class DbaseFileHeader {
         String fitFieldName = fitStringRegardingCharset(tempFieldName, 10);
         if (!tempFieldName.equals(fitFieldName)) {
             tempFieldName = fitFieldName;
-            if (logger.isLoggable(Level.WARNING)) {
-                logger.warning(
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.warning(
                         "FieldName "
                                 + inFieldName
                                 + " is longer than 10 bytes in given charset, truncating to "
@@ -249,8 +250,8 @@ public class DbaseFileHeader {
         if ((inFieldType == 'C') || (inFieldType == 'c')) {
             tempFieldDescriptors[fields.length].fieldType = 'C';
             if (inFieldLength > 254) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
                             "Field Length for "
                                     + inFieldName
                                     + " set to "
@@ -260,15 +261,15 @@ public class DbaseFileHeader {
             }
         } else if ((inFieldType == 'S') || (inFieldType == 's')) {
             tempFieldDescriptors[fields.length].fieldType = 'C';
-            if (logger.isLoggable(Level.WARNING)) {
-                logger.warning(
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.warning(
                         "Field type for "
                                 + inFieldName
                                 + " set to S which is flat out wrong people!, I am setting this to C, in the hopes you meant character.");
             }
             if (inFieldLength > 254) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
                             "Field Length for "
                                     + inFieldName
                                     + " set to "
@@ -280,8 +281,8 @@ public class DbaseFileHeader {
         } else if ((inFieldType == 'D') || (inFieldType == 'd')) {
             tempFieldDescriptors[fields.length].fieldType = 'D';
             if (inFieldLength != 8) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
                             "Field Length for "
                                     + inFieldName
                                     + " set to "
@@ -293,8 +294,8 @@ public class DbaseFileHeader {
         } else if (inFieldType == '@') {
             tempFieldDescriptors[fields.length].fieldType = '@';
             if (inFieldLength != 8) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
                             "Field Length for "
                                     + inFieldName
                                     + " set to "
@@ -307,8 +308,8 @@ public class DbaseFileHeader {
         } else if ((inFieldType == 'F') || (inFieldType == 'f')) {
             tempFieldDescriptors[fields.length].fieldType = 'F';
             if (inFieldLength > 20) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
                             "Field Length for "
                                     + inFieldName
                                     + " set to "
@@ -319,8 +320,8 @@ public class DbaseFileHeader {
         } else if ((inFieldType == 'N') || (inFieldType == 'n')) {
             tempFieldDescriptors[fields.length].fieldType = 'N';
             if (inFieldLength > 18) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
                             "Field Length for "
                                     + inFieldName
                                     + " set to "
@@ -329,8 +330,8 @@ public class DbaseFileHeader {
                 }
             }
             if (inDecimalCount < 0) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
                             "Field Decimal Position for "
                                     + inFieldName
                                     + " set to "
@@ -340,8 +341,8 @@ public class DbaseFileHeader {
                 tempFieldDescriptors[fields.length].decimalCount = 0;
             }
             if (inDecimalCount > inFieldLength - 1) {
-                if (logger.isLoggable(Level.WARNING)) {
-                    logger.warning(
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.warning(
                             "Field Decimal Position for "
                                     + inFieldName
                                     + " set to "
@@ -355,8 +356,8 @@ public class DbaseFileHeader {
         } else if ((inFieldType == 'L') || (inFieldType == 'l')) {
             tempFieldDescriptors[fields.length].fieldType = 'L';
             if (inFieldLength != 1) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
                             "Field Length for "
                                     + inFieldName
                                     + " set to "
@@ -405,7 +406,7 @@ public class DbaseFileHeader {
                 // if this is the last field and we still haven't found the
                 // named field
                 if (i == j && i == fields.length - 1) {
-                    logger.warning(
+                    LOGGER.warning(
                             "Could not find a field named '" + inFieldName + "' for removal");
                     return retCol;
                 }

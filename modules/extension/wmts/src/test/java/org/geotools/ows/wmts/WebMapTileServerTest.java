@@ -21,6 +21,7 @@ import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.geotools.ows.wmts.WMTSTestUtils.createCapabilities;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Set;
 import org.geotools.geometry.GeneralEnvelope;
@@ -164,6 +165,21 @@ public class WebMapTileServerTest {
 
             assertEquals("EPSG:3857", recvdTileCRS);
         }
+    }
+
+    @Test
+    /** 
+     * Check that servers that don't support KVP work
+     * @throws Exception
+     */
+    public void testGEOT6741() throws Exception {
+        WebMapTileServer server = createServer("linz.xml");
+
+        GetTileRequest tileRequest = server.createGetTileRequest();
+        WMTSLayer layer = server.getCapabilities().getLayer("layer-50767");
+        tileRequest.setLayer(layer);
+        String url = tileRequest.getFinalURL().toString();
+        assertFalse(url.contains("REQUEST=GetTile"));
     }
 
     private WebMapTileServer createServer(String resourceName) throws Exception {

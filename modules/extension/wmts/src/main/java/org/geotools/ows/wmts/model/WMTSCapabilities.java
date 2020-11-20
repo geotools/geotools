@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -534,5 +535,10 @@ public class WMTSCapabilities extends Capabilities {
                 (Double) bbox.getLowerCorner().get(1),
                 (Double) bbox.getUpperCorner().get(0),
                 (Double) bbox.getUpperCorner().get(1));
+    }
+
+    public Hashtable<Object, Object> getTemplates(WMTSLayer layer) {
+        layer = layerMap.get(layer.getName());
+        return null;
     }
 }

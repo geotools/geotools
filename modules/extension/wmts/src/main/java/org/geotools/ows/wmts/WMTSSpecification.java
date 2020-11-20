@@ -1,18 +1,15 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+ * GeoTools - The Open Source Java GIS Toolkit http://geotools.org
  *
- *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  */
 package org.geotools.ows.wmts;
 
@@ -47,9 +44,7 @@ public class WMTSSpecification extends Specification {
     private WMTSServiceType type;
 
     /** */
-    public WMTSSpecification() {
-        // TODO Auto-generated constructor stub
-    }
+    public WMTSSpecification() {}
 
     @Override
     public String getVersion() {
@@ -59,7 +54,6 @@ public class WMTSSpecification extends Specification {
 
     @Override
     public GetCapabilitiesRequest createGetCapabilitiesRequest(URL server) {
-        // TODO Auto-generated method stub
         return new GetCapsRequest(server);
     }
 
@@ -87,13 +81,21 @@ public class WMTSSpecification extends Specification {
                 WMTSCapabilities capabilities,
                 HTTPClient client) {
             super(onlineResource, properties, client);
-            this.type = capabilities.getType();
+            if (properties.containsKey("type")) {
+                String t = (String) properties.get("type");
+                if ("REST".equalsIgnoreCase(t)) {
+                    this.type = WMTSServiceType.REST;
+                } else if ("KVP".equalsIgnoreCase(t)) {
+                    this.type = WMTSServiceType.KVP;
+                }
+            } else {
+                this.type = capabilities.getType();
+            }
             this.capabilities = capabilities;
         }
 
         @Override
         public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
-            // TODO Auto-generated method stub
             return new GetTileResponse(response, getType());
         }
 

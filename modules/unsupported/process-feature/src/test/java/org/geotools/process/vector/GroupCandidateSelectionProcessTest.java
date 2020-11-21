@@ -161,7 +161,7 @@ public class GroupCandidateSelectionProcessTest {
                     ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
                 };
         query.setSortBy(sorts);
-        FeatureCollection collection = source.getFeatures(query);
+        SimpleFeatureCollection collection = source.getFeatures(query);
         int size = collection.size();
         assertEquals(12, size);
         List<String> props = Arrays.asList("group", "group2");

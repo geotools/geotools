@@ -79,7 +79,7 @@ public class CommonsConverterFactoryTest extends TestCase {
                         .convert("2011-08-02", Date.class));
     }
 
-    Object convert(Object source, Class target) throws Exception {
+    Object convert(Object source, Class<?> target) throws Exception {
         return factory.createConverter(source.getClass(), target, null).convert(source, target);
     }
 

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
@@ -195,7 +196,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
             final CoordinateReferenceSystem sourceCRS,
             final CoordinateReferenceSystem targetCRS,
             final MathTransform transform) {
-        this(properties, new HashMap<String, Object>(), sourceCRS, targetCRS, transform);
+        this(properties, new HashMap<>(), sourceCRS, targetCRS, transform);
     }
 
     /**
@@ -370,7 +371,8 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
                             final QuantitativeResult quantity = (QuantitativeResult) result;
                             final Collection<? extends Record> records = quantity.getValues();
                             if (records != null) {
-                                final Unit unit = quantity.getValueUnit();
+                                @SuppressWarnings("unchecked")
+                                final Unit<Length> unit = (Unit<Length>) quantity.getValueUnit();
                                 if (unit != null && SI.METRE.isCompatible(unit)) {
                                     for (final Record record : records) {
                                         for (final Object value : record.getAttributes().values()) {
@@ -558,7 +560,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
     static void append(
             final Formatter formatter, final IdentifiedObject object, final String type) {
         if (object != null) {
-            final Map<String, Object> properties = new HashMap<String, Object>(4);
+            final Map<String, Object> properties = new HashMap<>(4);
             properties.put(IdentifiedObject.NAME_KEY, formatter.getName(object));
             properties.put(IdentifiedObject.IDENTIFIERS_KEY, formatter.getIdentifier(object));
             formatter.append(

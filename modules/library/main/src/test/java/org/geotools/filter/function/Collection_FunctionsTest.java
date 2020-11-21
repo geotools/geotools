@@ -65,7 +65,7 @@ public class Collection_FunctionsTest extends FunctionTestSupport {
     }
 
     public void testUnique() throws Exception {
-        HashSet result = new HashSet(8);
+        HashSet<Integer> result = new HashSet<>(8);
         result.add(Integer.valueOf(90));
         result.add(Integer.valueOf(4));
         result.add(Integer.valueOf(8));

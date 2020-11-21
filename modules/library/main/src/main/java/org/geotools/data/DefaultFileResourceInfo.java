@@ -37,6 +37,6 @@ public class DefaultFileResourceInfo extends DefaultResourceInfo implements File
      */
     @Override
     public CloseableIterator<FileGroup> getFiles(Query query) {
-        return new DefaultCloseableIterator<FileGroup>(files.iterator());
+        return new DefaultCloseableIterator<>(files.iterator());
     }
 }

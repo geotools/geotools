@@ -94,6 +94,7 @@ public class ConcatenateBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // &lt;xsd:element maxOccurs="unbounded" ref="se:StringValue"/&gt;
+        @SuppressWarnings("unchecked")
         List<Expression> values = node.getChildValues("StringValue");
         Expression e = values.get(0);
         for (int i = 1; i < values.size(); i++) {

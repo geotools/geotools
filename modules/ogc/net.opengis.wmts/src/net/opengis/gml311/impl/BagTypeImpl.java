@@ -83,7 +83,7 @@ public class BagTypeImpl extends AbstractGMLTypeImpl implements BagType {
      */
     public EList<AssociationType> getMember() {
         if (member == null) {
-            member = new EObjectContainmentEList<AssociationType>(AssociationType.class, this, Gml311Package.BAG_TYPE__MEMBER);
+            member = new EObjectContainmentEList<>(AssociationType.class, this, Gml311Package.BAG_TYPE__MEMBER);
         }
         return member;
     }

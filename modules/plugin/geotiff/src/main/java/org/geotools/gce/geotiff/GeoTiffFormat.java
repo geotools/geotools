@@ -94,7 +94,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
      * force the writer to write a tfw file.
      */
     public static final DefaultParameterDescriptor<Boolean> WRITE_TFW =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "WRITE_TFW",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -122,7 +122,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
      * force the writer to retain the axes order.
      */
     public static final DefaultParameterDescriptor<Boolean> RETAIN_AXES_ORDER =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "RETAIN_AXES_ORDER",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -139,7 +139,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
     /** Creates a new instance of GeoTiffFormat */
     public GeoTiffFormat() {
         writeParameters = null;
-        mInfo = new HashMap<String, String>();
+        mInfo = new HashMap<>();
         mInfo.put("name", "GeoTIFF");
         mInfo.put("description", "Tagged Image File Format with Geographic information");
         mInfo.put("vendor", "Geotools");

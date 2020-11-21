@@ -40,7 +40,7 @@
                 "text-allow-overlap": true
             },
             "paint": {
-                "icon-color": "crimson",            
+                "icon-color": "crimson"
             }
         }
     ],

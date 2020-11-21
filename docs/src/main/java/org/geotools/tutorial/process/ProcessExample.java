@@ -124,7 +124,7 @@ public class ProcessExample {
             features.add(b.buildFeature(i + ""));
         }
 
-        Map<String, Object> input = new HashMap();
+        Map<String, Object> input = new HashMap<>();
         input.put(BufferFeatureCollectionFactory.FEATURES.key, features);
         input.put(BufferFeatureCollectionFactory.BUFFER.key, 10d);
 

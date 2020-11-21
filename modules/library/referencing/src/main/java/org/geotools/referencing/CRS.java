@@ -314,7 +314,7 @@ public final class CRS {
      */
     public static Version getVersion(final String authority) throws FactoryRegistryException {
         Object candidate = ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null);
-        final Set<Factory> guard = new HashSet<Factory>();
+        final Set<Factory> guard = new HashSet<>();
         while (candidate instanceof Factory) {
             final Factory factory = (Factory) candidate;
             if (!guard.add(factory)) {

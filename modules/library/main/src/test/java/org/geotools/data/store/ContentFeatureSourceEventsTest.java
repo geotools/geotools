@@ -56,7 +56,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
     private static class Listener implements FeatureListener {
         String name;
 
-        List<FeatureEvent> events = new ArrayList<FeatureEvent>();
+        List<FeatureEvent> events = new ArrayList<>();
 
         public Listener(String name) {
             this.name = name;

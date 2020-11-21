@@ -108,8 +108,8 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
 
     public void reset() {
         baseFeatureSource = null;
-        featureSourceCache = new HashMap<Generalization, SimpleFeatureSource>();
-        indexMapping = new HashMap<Double, int[]>();
+        featureSourceCache = new HashMap<>();
+        indexMapping = new HashMap<>();
         supportedHints = null;
         queryCapabilities = null;
         featureTyp = null;
@@ -274,7 +274,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
             ri.setTitle(getBaseFeatureSource().getInfo().getTitle());
 
             ri.setName(getName().getLocalPart());
-            Set<String> keyWords = new TreeSet<String>();
+            Set<String> keyWords = new TreeSet<>();
             keyWords.addAll(getBaseFeatureSource().getInfo().getKeywords());
             keyWords.add("pregeneralized)");
             ri.setKeywords(keyWords);
@@ -364,7 +364,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         if (featureTyp != null) return featureTyp;
         try {
             SimpleFeatureType baseType = getBaseFeatureSource().getSchema();
-            List<AttributeDescriptor> attrDescrs = new ArrayList<AttributeDescriptor>();
+            List<AttributeDescriptor> attrDescrs = new ArrayList<>();
             outer:
             for (AttributeDescriptor descr : baseType.getAttributeDescriptors()) {
                 for (Generalization di : info.getGeneralizations()) {
@@ -413,7 +413,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
      */
     public Set<Key> getSupportedHints() {
         if (supportedHints != null) return supportedHints;
-        Set<Key> hints = new HashSet<Key>();
+        Set<Key> hints = new HashSet<>();
 
         // calculate the supported hints, which is the intersection of supported Hints for all
         // feature sources

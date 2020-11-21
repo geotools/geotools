@@ -38,7 +38,7 @@ public final class WeakCollectionCleaner extends Thread {
      * List of reference collected by the garbage collector. Those elements must be removed from
      * {@link #table}.
      */
-    ReferenceQueue<Object> referenceQueue = new ReferenceQueue<Object>();
+    ReferenceQueue<Object> referenceQueue = new ReferenceQueue<>();
 
     /**
      * Constructs and starts a new thread as a daemon. This thread will be sleeping most of the

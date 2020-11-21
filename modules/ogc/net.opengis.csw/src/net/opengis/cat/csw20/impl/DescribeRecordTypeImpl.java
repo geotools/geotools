@@ -132,7 +132,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      */
     public EList<QName> getTypeName() {
         if (typeName == null) {
-            typeName = new EDataTypeUniqueEList<QName>(QName.class, this, Csw20Package.DESCRIBE_RECORD_TYPE__TYPE_NAME);
+            typeName = new EDataTypeUniqueEList<>(QName.class, this, Csw20Package.DESCRIBE_RECORD_TYPE__TYPE_NAME);
         }
         return typeName;
     }

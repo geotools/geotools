@@ -149,14 +149,14 @@ public abstract class XMLTestSupport extends TestCase {
     protected Document document;
 
     /** additional namespace mappings */
-    protected HashMap namespaceMappings;
+    protected Map<String, String> namespaceMappings;
     /** Creates an empty xml document. */
     protected void setUp() throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 
         document = docFactory.newDocumentBuilder().newDocument();
-        namespaceMappings = new HashMap();
+        namespaceMappings = new HashMap<>();
     }
 
     /**
@@ -328,7 +328,7 @@ public abstract class XMLTestSupport extends TestCase {
         context = configuration.setupContext(context);
 
         // create the binding container
-        Map bindings = configuration.setupBindings();
+        Map<QName, Object> bindings = configuration.setupBindings();
         BindingLoader bindingLoader = new BindingLoader(bindings);
         //        MutablePicoContainer container = bindingLoader.getContainer();
         //        container = configuration.setupBindings(container);
@@ -345,7 +345,7 @@ public abstract class XMLTestSupport extends TestCase {
 
         // setup the namespace support
         NamespaceSupport namespaces = new NamespaceSupport();
-        HashMap mappings = new HashMap();
+        Map<String, String> mappings = new HashMap<>();
 
         try {
             for (Iterator d = configuration.getXSD().getDependencies().iterator(); d.hasNext(); ) {

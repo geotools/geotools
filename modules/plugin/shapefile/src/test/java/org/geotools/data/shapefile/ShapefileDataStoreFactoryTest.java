@@ -160,7 +160,7 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         if ((pairs.length & 1) != 0) {
             throw new IllegalArgumentException("Pairs was not an even number");
         }
-        Map<String, Serializable> result = new HashMap<String, Serializable>();
+        Map<String, Serializable> result = new HashMap<>();
         for (int i = 0; i < pairs.length; i += 2) {
             String key = (String) pairs[i];
             Serializable value = (Serializable) pairs[i + 1];

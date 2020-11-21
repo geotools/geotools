@@ -162,6 +162,7 @@ public class AStarIteratorTest extends TestCase {
      * parent of the tree. 3. G = depth. H = infinity if the target is not in any subtree of this
      * node or depth difference between target node and current node otherwise.
      */
+    @SuppressWarnings("unchecked") // refusing to clean up this unholy mess
     public void test_3() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);

@@ -503,7 +503,7 @@ public class Utils {
         }
 
         // this is going to help us with catching exceptions and logging them
-        final Queue<Throwable> exceptions = new LinkedList<Throwable>();
+        final Queue<Throwable> exceptions = new LinkedList<>();
         try {
 
             final ImageMosaicEventHandlers.ProcessingEventListener listener =
@@ -1382,14 +1382,15 @@ public class Utils {
     public static Map<String, Serializable> createDataStoreParamsFromPropertiesFile(
             Properties properties, DataStoreFactorySpi spi) throws IOException {
         // get the params
-        final Map<String, Serializable> params = new HashMap<String, Serializable>();
+        final Map<String, Serializable> params = new HashMap<>();
         final Param[] paramsInfo = spi.getParametersInfo();
         for (Param p : paramsInfo) {
             // search for this param and set the value if found
             if (properties.containsKey(p.key)) {
-                params.put(
-                        p.key,
-                        (Serializable) Converters.convert(properties.getProperty(p.key), p.type));
+                @SuppressWarnings("unchecked")
+                Serializable converted =
+                        (Serializable) Converters.convert(properties.getProperty(p.key), p.type);
+                params.put(p.key, converted);
             } else if (p.required && p.sample == null)
                 throw new IOException("Required parameter missing: " + p.toString());
         }
@@ -1400,12 +1401,15 @@ public class Utils {
     public static Map<String, Serializable> filterDataStoreParams(
             Properties properties, DataStoreFactorySpi spi) throws IOException {
         // get the params
-        final Map<String, Serializable> params = new HashMap<String, Serializable>();
+        final Map<String, Serializable> params = new HashMap<>();
         final Param[] paramsInfo = spi.getParametersInfo();
         for (Param p : paramsInfo) {
             // search for this param and set the value if found
             if (properties.containsKey(p.key)) {
-                params.put(p.key, (Serializable) Converters.convert(properties.get(p.key), p.type));
+                @SuppressWarnings("unchecked")
+                Serializable converted =
+                        (Serializable) Converters.convert(properties.get(p.key), p.type);
+                params.put(p.key, converted);
             } else if (p.required && p.sample == null)
                 throw new IOException("Required parameter missing: " + p.toString());
         }
@@ -1992,17 +1996,17 @@ public class Utils {
                             + targetClass.toString());
         }
         if (targetClass == Byte.class) {
-            return new Range<Byte>(Byte.class, (Byte) firstValue, (Byte) secondValue);
+            return new Range<>(Byte.class, (Byte) firstValue, (Byte) secondValue);
         } else if (targetClass == Short.class) {
-            return new Range<Short>(Short.class, (Short) firstValue, (Short) secondValue);
+            return new Range<>(Short.class, (Short) firstValue, (Short) secondValue);
         } else if (targetClass == Integer.class) {
-            return new Range<Integer>(Integer.class, (Integer) firstValue, (Integer) secondValue);
+            return new Range<>(Integer.class, (Integer) firstValue, (Integer) secondValue);
         } else if (targetClass == Long.class) {
-            return new Range<Long>(Long.class, (Long) firstValue, (Long) secondValue);
+            return new Range<>(Long.class, (Long) firstValue, (Long) secondValue);
         } else if (targetClass == Float.class) {
-            return new Range<Float>(Float.class, (Float) firstValue, (Float) secondValue);
+            return new Range<>(Float.class, (Float) firstValue, (Float) secondValue);
         } else if (targetClass == Double.class) {
-            return new Range<Double>(Double.class, (Double) firstValue, (Double) secondValue);
+            return new Range<>(Double.class, (Double) firstValue, (Double) secondValue);
         } else return null;
     }
 

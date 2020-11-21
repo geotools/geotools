@@ -45,7 +45,7 @@ public class FilterFunction_list extends FunctionExpressionImpl {
 
     public Object evaluate(Object feature) {
 
-        List result = new ArrayList();
+        List<Object> result = new ArrayList<>();
 
         for (Expression expr : getParameters()) {
             try {

@@ -51,7 +51,7 @@ public class GrowableInternationalString extends AbstractInternationalString
      * The set of locales created in this virtual machine through methods of this class. Used in
      * order to get a {@linkplain #unique unique} instance of {@link Locale} objects.
      */
-    private static final Map<Locale, Locale> LOCALES = new HashMap<Locale, Locale>();
+    private static final Map<Locale, Locale> LOCALES = new HashMap<>();
 
     /**
      * The string values in different locales (never {@code null}). Keys are {@link Locale} objects
@@ -109,7 +109,7 @@ public class GrowableInternationalString extends AbstractInternationalString
                     }
                 case 1:
                     {
-                        localMap = new HashMap<Locale, String>(localMap);
+                        localMap = new HashMap<>(localMap);
                         break;
                     }
             }

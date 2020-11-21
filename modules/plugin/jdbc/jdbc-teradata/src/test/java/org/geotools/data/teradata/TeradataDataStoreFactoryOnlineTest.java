@@ -47,7 +47,7 @@ public class TeradataDataStoreFactoryOnlineTest extends JDBCTestSupport {
             throws IOException {
         Properties db = fixture;
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(PORT.key, db.getProperty(PORT.key));

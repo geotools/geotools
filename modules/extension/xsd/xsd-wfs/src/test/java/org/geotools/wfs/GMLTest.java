@@ -244,7 +244,7 @@ public class GMLTest {
         assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
 
         List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
-        List<String> names = new ArrayList<String>(attributes.size());
+        List<String> names = new ArrayList<>(attributes.size());
         for (AttributeDescriptor desc : attributes) {
             names.add(desc.getLocalName());
         }
@@ -266,7 +266,7 @@ public class GMLTest {
         assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
 
         List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
-        List<String> names = new ArrayList<String>(attributes.size());
+        List<String> names = new ArrayList<>(attributes.size());
         for (AttributeDescriptor desc : attributes) {
             names.add(desc.getLocalName());
         }

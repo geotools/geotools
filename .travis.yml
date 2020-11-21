@@ -38,7 +38,7 @@ matrix:
     - jdk: openjdk8
       env: ARGS="-Dfmt.skip=true"
     - jdk: openjdk11
-      env: ARGS="-Dfmt.skip=true"
+      env: ARGS="-Dfmt.skip=true -Pjdk11tests"
     - jdk: openjdk11
       env: ARGS="-Dfmt.action=check -Dqa=true -DskipTests=true"
     - jdk: openjdk8

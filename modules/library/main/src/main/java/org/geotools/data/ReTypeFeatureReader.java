@@ -99,7 +99,7 @@ public class ReTypeFeatureReader
         builder = new SimpleFeatureBuilder(featureType);
     }
 
-    public FeatureReader getDelegate() {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getDelegate() {
         return reader;
     }
 

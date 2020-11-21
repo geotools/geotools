@@ -106,7 +106,7 @@ public class TinTypeImpl extends TriangulatedSurfaceTypeImpl implements TinType 
      */
     public EList<LineStringSegmentArrayPropertyType> getStopLines() {
         if (stopLines == null) {
-            stopLines = new EObjectContainmentEList<LineStringSegmentArrayPropertyType>(LineStringSegmentArrayPropertyType.class, this, Gml311Package.TIN_TYPE__STOP_LINES);
+            stopLines = new EObjectContainmentEList<>(LineStringSegmentArrayPropertyType.class, this, Gml311Package.TIN_TYPE__STOP_LINES);
         }
         return stopLines;
     }
@@ -118,7 +118,7 @@ public class TinTypeImpl extends TriangulatedSurfaceTypeImpl implements TinType 
      */
     public EList<LineStringSegmentArrayPropertyType> getBreakLines() {
         if (breakLines == null) {
-            breakLines = new EObjectContainmentEList<LineStringSegmentArrayPropertyType>(LineStringSegmentArrayPropertyType.class, this, Gml311Package.TIN_TYPE__BREAK_LINES);
+            breakLines = new EObjectContainmentEList<>(LineStringSegmentArrayPropertyType.class, this, Gml311Package.TIN_TYPE__BREAK_LINES);
         }
         return breakLines;
     }

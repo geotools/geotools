@@ -24,6 +24,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -61,17 +62,17 @@ public class LineIntersectsLineWithNodeValidation extends LineLineAbstractValida
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
         boolean r = true;
 
-        SimpleFeatureSource fsLine = (SimpleFeatureSource) layers.get(getLineTypeRef());
+        SimpleFeatureSource fsLine = layers.get(getLineTypeRef());
 
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
         try (SimpleFeatureIterator fLine = fcLine.features()) {
 
-            SimpleFeatureSource fsRLine =
-                    (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
+            SimpleFeatureSource fsRLine = layers.get(getRestrictedLineTypeRef());
 
             ListFeatureCollection fcRLine = new ListFeatureCollection(fsRLine.getFeatures());
 
@@ -133,7 +134,7 @@ public class LineIntersectsLineWithNodeValidation extends LineLineAbstractValida
         int i = 0;
         CoordinateSequence c;
         c = a1;
-        Set m = new HashSet();
+        Set<Coordinate> m = new HashSet<>();
         while (i < c.size()) {
             m.add(c.getCoordinate(i));
             i++;

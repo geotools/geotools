@@ -35,7 +35,7 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
 
     SimpleFeature feature;
     CoordinateReferenceSystem crs;
-    List stack;
+    protected List<Integer> stack;
 
     public FeatureCollectionHandler() {
         this(null, null);
@@ -81,7 +81,7 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
                 ((FeatureHandler) delegate).setCRS(crs);
             }
             // maintain a stack to track when the "features" array ends
-            stack = new ArrayList();
+            stack = new ArrayList<>();
 
             return true;
         }

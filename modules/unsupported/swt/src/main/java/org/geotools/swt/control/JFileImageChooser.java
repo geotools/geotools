@@ -77,8 +77,8 @@ public class JFileImageChooser {
         }
     };
 
-    private static final Set<FormatSpecifier> supportedReaders = new TreeSet<FormatSpecifier>();
-    private static final Set<FormatSpecifier> supportedWriters = new TreeSet<FormatSpecifier>();
+    private static final Set<FormatSpecifier> supportedReaders = new TreeSet<>();
+    private static final Set<FormatSpecifier> supportedWriters = new TreeSet<>();
 
     static {
         for (FormatSpecifier format : FormatSpecifier.values()) {
@@ -94,7 +94,7 @@ public class JFileImageChooser {
 
     private FileDialog fileDialog;
 
-    private List<String> extentionsList = new ArrayList<String>();
+    private List<String> extentionsList = new ArrayList<>();
 
     /*
      * Create a new image file chooser

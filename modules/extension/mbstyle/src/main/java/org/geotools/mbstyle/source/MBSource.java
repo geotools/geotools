@@ -51,8 +51,8 @@ import org.json.simple.JSONObject;
  */
 public abstract class MBSource {
 
-    protected JSONObject json;
-    protected MBObjectParser parser;
+    protected final JSONObject json;
+    protected final MBObjectParser parser;
 
     public MBSource(JSONObject json) {
         this(json, null);

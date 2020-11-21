@@ -73,7 +73,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
             Coordinate[] coordinates = ls.getCoordinates();
             List<Coordinate> coordinateList = Arrays.asList(coordinates);
             // list from asList does not support add(index,object), must make an arraylist
-            List<Coordinate> nCoordinateList = new ArrayList<Coordinate>(coordinateList);
+            List<Coordinate> nCoordinateList = new ArrayList<>(coordinateList);
             if (!ls.getCoordinateN(0).equals(lineSegment.p0)) {
                 nCoordinateList.add(0, lineSegment.p0);
             } else if (!ls.getCoordinateN(ls.getNumPoints() - 1).equals(lineSegment.p1)) {

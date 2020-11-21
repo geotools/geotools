@@ -48,8 +48,7 @@ public class ParameterCQLExpressionFilterFactoryImpl extends FilterFactoryImpl {
     private Map<String, PropertyName> properties;
 
     public ParameterCQLExpressionFilterFactoryImpl() {
-        List<ParameterCQLExpressionPropertyName> tmp =
-                new ArrayList<ParameterCQLExpressionPropertyName>();
+        List<ParameterCQLExpressionPropertyName> tmp = new ArrayList<>();
 
         tmp.add(
                 new ParameterCQLExpressionPropertyName("bboxMinX") {
@@ -87,7 +86,7 @@ public class ParameterCQLExpressionFilterFactoryImpl extends FilterFactoryImpl {
                     }
                 });
 
-        properties = new HashMap<String, PropertyName>();
+        properties = new HashMap<>();
         for (ParameterCQLExpressionPropertyName p : tmp) {
             properties.put(p.getPropertyName(), p);
         }

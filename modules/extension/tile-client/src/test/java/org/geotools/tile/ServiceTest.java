@@ -64,7 +64,7 @@ public abstract class ServiceTest {
             Assert.fail(e.getLocalizedMessage());
         }
 
-        extentNameToExtent = new HashMap<String, ReferencedEnvelope>();
+        extentNameToExtent = new HashMap<>();
 
         DE_EXTENT = new ReferencedEnvelope(new Envelope(6, 15, 47, 55), DefaultGeographicCRS.WGS84);
 

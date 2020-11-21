@@ -274,7 +274,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
     }
 
     static SimpleType[] getSimpleTypes(UnionHandler union, SchemaHandler parent) {
-        List l = new LinkedList();
+        List<SimpleType> l = new LinkedList<>();
 
         if (union.getMemberTypes() != null) {
             String[] qNames = union.getMemberTypes().split("\\s");
@@ -283,10 +283,8 @@ public class SimpleTypeHandler extends XSIElementHandler {
         }
 
         if (union.getSimpleTypes() != null) {
-            Iterator i = union.getSimpleTypes().iterator();
-
-            while (i.hasNext()) {
-                l.add(((SimpleTypeHandler) i.next()).compress(parent));
+            for (SimpleTypeHandler sth : union.getSimpleTypes()) {
+                l.add(sth.compress(parent));
             }
         }
 

@@ -39,7 +39,8 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
     protected void setupJNDIEnvironment(JDBCDataStoreFactory jdbcDataStoreFactory)
             throws IOException {
 
-        Map params = new HashMap(fixture);
+        @SuppressWarnings("unchecked") // Properties is a Map<Object, Object>
+        Map<String, Object> params = new HashMap(fixture);
         params.put("passwd", params.get("password"));
         dataSource = jdbcDataStoreFactory.createDataSource(params);
         MockInitialDirContextFactory.setDataSource(dataSource);

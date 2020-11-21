@@ -120,7 +120,7 @@ public class MBTilesFormat extends AbstractGridFormat {
 
     /** Sets the metadata information. */
     private void setInfo() {
-        final HashMap<String, String> info = new HashMap<String, String>();
+        final HashMap<String, String> info = new HashMap<>();
         info.put("name", "MBTiles");
         info.put("description", "MBTiles plugin");
         info.put("vendor", "Geotools");

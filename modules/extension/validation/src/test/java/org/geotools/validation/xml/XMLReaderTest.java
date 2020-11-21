@@ -97,7 +97,7 @@ public class XMLReaderTest extends TestCase {
             FileReader fr = features();
             if (fr == null) return;
 
-            Map m = new HashMap();
+            Map<String, PlugInDTO> m = new HashMap<>();
             PlugInDTO dto = XMLReader.readPlugIn(fr);
             m.put(dto.getName(), dto);
             fr = new FileReader("C:/Java/workspace/geoserver/conf/plugins/NameInList.xml");

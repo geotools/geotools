@@ -31,6 +31,7 @@ public class OracleNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked") // temporary workaround
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
 

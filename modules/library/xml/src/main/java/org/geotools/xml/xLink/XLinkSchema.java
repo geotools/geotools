@@ -218,7 +218,7 @@ public class XLinkSchema implements Schema {
      */
     private static class ActuateSimpleType implements SimpleType {
         // list of allowable enumeration values
-        private static List lookUpTable = loadTable();
+        private static List<String> lookUpTable = loadTable();
 
         /** @see org.geotools.xml.schema.Type#findChildElement(java.lang.String) */
         public Element findChildElement(String name) {
@@ -229,7 +229,7 @@ public class XLinkSchema implements Schema {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             //            return (lookUpTable.contains(value));
             return false; // it's an attribute
         }
@@ -238,7 +238,8 @@ public class XLinkSchema implements Schema {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints) {
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints) {
             // it's an attribute ... do nothing
         }
 
@@ -270,8 +271,8 @@ public class XLinkSchema implements Schema {
             return null;
         }
 
-        private static List loadTable() {
-            lookUpTable = new LinkedList();
+        private static List<String> loadTable() {
+            lookUpTable = new LinkedList<>();
             lookUpTable.add("onLoad");
             lookUpTable.add("onRequest");
             lookUpTable.add("other");
@@ -281,7 +282,8 @@ public class XLinkSchema implements Schema {
         }
 
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1) || (value[0] == null)) {
                 return null;
@@ -302,7 +304,8 @@ public class XLinkSchema implements Schema {
          * @see org.geotools.xml.schema.SimpleType#toAttributes(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
-        public AttributeValue toAttribute(Attribute attribute, Object value, Map hints) {
+        public AttributeValue toAttribute(
+                Attribute attribute, Object value, Map<String, Object> hints) {
             if (canCreateAttributes(attribute, value, hints)) {
                 return new AttributeValueGT(attribute, (String) value);
             }
@@ -315,7 +318,8 @@ public class XLinkSchema implements Schema {
          *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canCreateAttributes(Attribute attribute, Object value, Map hints) {
+        public boolean canCreateAttributes(
+                Attribute attribute, Object value, Map<String, Object> hints) {
             return (attribute.getName() != null)
                     && attribute.getName().equals(Actuate.getInstance().getName())
                     && lookUpTable.contains(value);
@@ -355,13 +359,14 @@ public class XLinkSchema implements Schema {
      */
     private static class ShowSimpleType implements SimpleType {
         // static enumeration list
-        private static List lookUpTable = loadTable();
+        private static List<String> lookUpTable = loadTable();
 
         /**
          * @see org.geotools.xml.schema.SimpleType#toAttributes(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
-        public AttributeValue toAttribute(Attribute attribute, Object value, Map hints) {
+        public AttributeValue toAttribute(
+                Attribute attribute, Object value, Map<String, Object> hints) {
             if (canCreateAttributes(attribute, value, hints)) {
                 return new AttributeValueGT(attribute, (String) value);
             }
@@ -379,7 +384,8 @@ public class XLinkSchema implements Schema {
          *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canCreateAttributes(Attribute attribute, Object value, Map hints) {
+        public boolean canCreateAttributes(
+                Attribute attribute, Object value, Map<String, Object> hints) {
             return (attribute.getName() != null)
                     && attribute.getName().equals(Actuate.getInstance().getName())
                     && lookUpTable.contains(value);
@@ -413,8 +419,8 @@ public class XLinkSchema implements Schema {
             return null;
         }
 
-        private static List loadTable() {
-            lookUpTable = new LinkedList();
+        private static List<String> loadTable() {
+            lookUpTable = new LinkedList<>();
             lookUpTable.add("new");
             lookUpTable.add("replace");
             lookUpTable.add("embed");
@@ -425,7 +431,8 @@ public class XLinkSchema implements Schema {
         }
 
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1) || (value[0] == null)) {
                 return null;
@@ -446,7 +453,7 @@ public class XLinkSchema implements Schema {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             //            return (lookUpTable.contains(value));
             return false; // it's an attribute
         }
@@ -455,7 +462,8 @@ public class XLinkSchema implements Schema {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints) {
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints) {
             // it's an attribute ... do nothing
         }
 
@@ -1205,7 +1213,7 @@ public class XLinkSchema implements Schema {
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 }

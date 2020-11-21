@@ -42,7 +42,7 @@ public class AllHandler extends ElementGroupingHandler {
     private String id;
     private int minOccurs;
     private int maxOccurs;
-    private List elements;
+    private List<ElementTypeHandler> elements;
     private DefaultAll cache = null;
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -54,7 +54,7 @@ public class AllHandler extends ElementGroupingHandler {
             // element
             if (ElementTypeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (elements == null) {
-                    elements = new LinkedList();
+                    elements = new LinkedList<>();
                 }
 
                 ElementTypeHandler eh = new ElementTypeHandler();

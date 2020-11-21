@@ -129,7 +129,7 @@ public class WFSParsingUtils {
             }
 
             // create new feature collections
-            List<FeatureCollectionType> members = new ArrayList(features.size());
+            List<FeatureCollectionType> members = new ArrayList<>(features.size());
             for (Iterator<FeatureCollection> it = features.iterator(); it.hasNext(); ) {
                 FeatureCollection featureCollection = it.next();
 
@@ -162,6 +162,7 @@ public class WFSParsingUtils {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     public static List<FeatureCollection> features(EObject obj) {
         return (List)
                 (EMFUtils.has(obj, "feature")

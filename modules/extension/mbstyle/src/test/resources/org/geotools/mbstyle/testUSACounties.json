@@ -97,8 +97,7 @@
                 "text-anchor": "CENTER",
                 "text-field": "{NAME}",
                 "text-font": ["Bitstream Vera Sans", "Other Test Font"],
-                "text-allow-overlap": true,
-
+                "text-allow-overlap": true
             },
             "paint": {
                 "icon-opacity": 0.5,

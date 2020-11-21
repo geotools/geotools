@@ -246,14 +246,14 @@ public class PolygonExtractionProcessTest {
         GridCoverage2D cov = covFactory.create("coverage", img, env);
 
         final int OUTSIDE = -1;
-        List<Number> noDataValues = new ArrayList<Number>();
+        List<Number> noDataValues = new ArrayList<>();
         noDataValues.add(OUTSIDE);
         SimpleFeatureCollection fc =
                 process.execute(cov, 0, Boolean.TRUE, null, noDataValues, null, null);
 
         // validate geometries and sum areas
         SimpleFeatureIterator iter = fc.features();
-        Map<Integer, Double> areas = new HashMap<Integer, Double>();
+        Map<Integer, Double> areas = new HashMap<>();
         try {
             while (iter.hasNext()) {
                 SimpleFeature feature = iter.next();
@@ -275,7 +275,7 @@ public class PolygonExtractionProcessTest {
         }
 
         // compare summed areas to image data
-        Map<Integer, Double> imgAreas = new HashMap<Integer, Double>();
+        Map<Integer, Double> imgAreas = new HashMap<>();
         Raster tile = img.getTile(0, 0);
         for (int y = img.getMinY(), ny = 0; ny < img.getHeight(); y++, ny++) {
             for (int x = img.getMinX(), nx = 0; nx < img.getWidth(); x++, nx++) {
@@ -320,7 +320,7 @@ public class PolygonExtractionProcessTest {
                 covFactory.create(
                         "coverage", DATA, new ReferencedEnvelope(0, width, 0, height, null));
 
-        List<Range> classificationRanges = new ArrayList<Range>();
+        List<Range> classificationRanges = new ArrayList<>();
         Range<Integer> r1 = Range.create(1, true, 4, true);
         Range<Integer> r2 = Range.create(5, true, 8, true);
         classificationRanges.add(r1);
@@ -333,7 +333,7 @@ public class PolygonExtractionProcessTest {
 
         // Expected result is 2 polygons, each with area == 16.0
         SimpleFeatureIterator iter = fc.features();
-        List<Integer> expectedValues = new ArrayList<Integer>();
+        List<Integer> expectedValues = new ArrayList<>();
         expectedValues.add(1);
         expectedValues.add(2);
         try {
@@ -446,7 +446,7 @@ public class PolygonExtractionProcessTest {
 
         final double cellArea = cellSize * cellSize;
         final double[] areas = {5 * cellArea, 20 * cellArea, 5 * cellArea};
-        List<Integer> expectedValues = new ArrayList<Integer>();
+        List<Integer> expectedValues = new ArrayList<>();
         expectedValues.addAll(Arrays.asList(1, 2, 3));
 
         SimpleFeatureIterator iter = fc.features();
@@ -471,13 +471,11 @@ public class PolygonExtractionProcessTest {
         Process process = Processors.createProcess(new NameImpl("ras", "PolygonExtraction"));
         assertNotNull(process);
 
-        Map<String, Object> inputs = new HashMap<String, Object>();
+        Map<String, Object> inputs = new HashMap<>();
         inputs.put("data", buildSmallCoverage());
         inputs.put(
                 "ranges",
-                Arrays.asList(
-                        new Range<Integer>(0, true, 1, true),
-                        new Range<Integer>(2, true, 3, true)));
+                Arrays.asList(new Range<>(0, true, 1, true), new Range<>(2, true, 3, true)));
         Map<String, Object> results = process.execute(inputs, null);
         Object result = results.get("result");
         assertTrue(result instanceof SimpleFeatureCollection);

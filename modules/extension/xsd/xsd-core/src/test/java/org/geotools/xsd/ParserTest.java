@@ -195,7 +195,7 @@ public class ParserTest extends TestCase {
         Configuration cfg =
                 new Configuration(xsd) {
                     @Override
-                    protected void registerBindings(Map bindings) {
+                    protected void registerBindings(Map<QName, Object> bindings) {
                         bindings.put(
                                 new QName("http://geotools.org/test", "MixedType"),
                                 new MixedTypeBinding(sb));
@@ -234,7 +234,7 @@ public class ParserTest extends TestCase {
 
         @Override
         public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-            for (Node n : ((List<Node>) node.getChildren())) {
+            for (Node n : node.getChildren()) {
                 if (n.getValue() instanceof Text) {
                     sb.append(((Text) n.getValue()).getValue());
                 } else {
@@ -365,7 +365,7 @@ public class ParserTest extends TestCase {
         Configuration cfg =
                 new Configuration(xsd) {
                     @Override
-                    protected void registerBindings(Map bindings) {
+                    protected void registerBindings(Map<QName, Object> bindings) {
                         bindings.put(
                                 new QName("http://geotools.org/test", "MixedType"),
                                 new MixedTypeBinding(sb));
@@ -409,7 +409,7 @@ public class ParserTest extends TestCase {
         Configuration cfg =
                 new Configuration(xsd) {
                     @Override
-                    protected void registerBindings(Map bindings) {
+                    protected void registerBindings(Map<QName, Object> bindings) {
                         bindings.put(
                                 new QName("http://geotools.org/test", "MixedType"),
                                 new MixedTypeBinding(sb));

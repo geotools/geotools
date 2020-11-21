@@ -18,6 +18,7 @@ package org.geotools.graph.path;
 
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
+import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.GraphWalker;
 import org.geotools.graph.traverse.basic.BasicGraphTraversal;
@@ -97,10 +98,10 @@ public class DijkstraShortestPathFinder implements GraphWalker {
      */
     public Path getPath(Graphable g) {
         Path p = new Path();
-        p.add(g);
+        p.add((Node) g);
 
         Graphable parent = g;
-        while ((parent = m_iterator.getParent(parent)) != null) p.add(parent);
+        while ((parent = m_iterator.getParent(parent)) != null) p.add((Node) parent);
 
         if (!p.getLast().equals(m_iterator.getSource())) return (null);
 

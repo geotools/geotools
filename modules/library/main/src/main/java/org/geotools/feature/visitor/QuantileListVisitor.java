@@ -35,13 +35,14 @@ public class QuantileListVisitor implements FeatureCalc {
     private Expression expr;
     private int count = 0;
     private int bins;
-    private List items = new ArrayList();
-    private List[] bin;
+    private List<Comparable> items = new ArrayList<>();
+    private List<Comparable>[] bin;
 
     boolean visited = false;
     int countNull = 0;
     int countNaN = 0;
 
+    @SuppressWarnings("unchecked")
     public QuantileListVisitor(Expression expr, int bins) {
         this.expr = expr;
         this.bins = bins;
@@ -52,6 +53,7 @@ public class QuantileListVisitor implements FeatureCalc {
         // do nothing
     }
 
+    @SuppressWarnings("unchecked")
     public CalcResult getResult() {
         if (bins == 0 || count == 0) {
             return CalcResult.NULL_RESULT;
@@ -75,7 +77,7 @@ public class QuantileListVisitor implements FeatureCalc {
         // put the items into their respective bins
         int item = 0;
         for (int binIndex = 0; binIndex < bins; binIndex++) {
-            bin[binIndex] = new ArrayList();
+            bin[binIndex] = new ArrayList<>();
             for (int binMember = 0; binMember < binPop; binMember++) {
                 bin[binIndex].add(items.get(item++));
             }
@@ -110,14 +112,17 @@ public class QuantileListVisitor implements FeatureCalc {
         }
 
         count++;
-        items.add(value);
+        @SuppressWarnings("unchecked")
+        Comparable cast = (Comparable) value;
+        items.add(cast);
     }
 
+    @SuppressWarnings("unchecked")
     public void reset(int bins) {
         this.bins = bins;
         this.count = 0;
-        this.items = new ArrayList();
-        this.bin = new ArrayList[bins];
+        this.items = new ArrayList<>();
+        this.bin = new List[bins];
         this.countNull = 0;
         this.countNaN = 0;
     }

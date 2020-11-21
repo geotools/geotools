@@ -80,7 +80,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         if (types == null) {
             synchronized (this) {
                 if (types == null) {
-                    ArrayList<AttributeType> temp = new ArrayList<AttributeType>();
+                    ArrayList<AttributeType> temp = new ArrayList<>();
                     for (AttributeDescriptor ad : getAttributeDescriptors()) {
                         temp.add(ad.getType());
                     }
@@ -158,7 +158,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
     /** Builds the name -> position index used by simple features for fast attribute lookup */
     static Map<String, Integer> buildIndex(SimpleFeatureType featureType) {
         // build an index of attribute name to index
-        Map<String, Integer> index = new HashMap<String, Integer>();
+        Map<String, Integer> index = new HashMap<>();
         int i = 0;
         for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {
             index.put(ad.getLocalName(), i++);

@@ -262,8 +262,7 @@ public class AdvancedReaderTest extends TestCase {
     private GridCoverage2D read(File file, JGrassRegion r, CoordinateReferenceSystem crs)
             throws IOException {
         GeneralParameterValue[] readParams = new GeneralParameterValue[1];
-        Parameter<GridGeometry2D> readGG =
-                new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
+        Parameter<GridGeometry2D> readGG = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
         GridEnvelope2D gridEnvelope = new GridEnvelope2D(0, 0, r.getCols(), r.getRows());
         ReferencedEnvelope env =
                 new ReferencedEnvelope(r.getWest(), r.getEast(), r.getSouth(), r.getNorth(), crs);
@@ -297,8 +296,7 @@ public class AdvancedReaderTest extends TestCase {
          */
         // prepare the parameters
         GeneralParameterValue[] readParams = new GeneralParameterValue[1];
-        Parameter<GridGeometry2D> readGG =
-                new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
+        Parameter<GridGeometry2D> readGG = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
         GridEnvelope2D gridEnvelope = new GridEnvelope2D(0, 0, cols, rows);
         ReferencedEnvelope env = new ReferencedEnvelope(w, e, s, n, crs);
         readGG.setValue(new GridGeometry2D(gridEnvelope, env));

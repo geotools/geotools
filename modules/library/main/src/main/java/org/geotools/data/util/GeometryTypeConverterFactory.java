@@ -132,7 +132,9 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                     if (result != null) {
                         copyUserProperties(sourceGeometry, result);
                     }
-                    return (T) result;
+                    @SuppressWarnings("unchecked")
+                    T converted = (T) result;
+                    return converted;
                 }
             };
         } else if (Geometry.class.isAssignableFrom(source)
@@ -145,9 +147,10 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                  *
                  * @param <T>
                  */
+                @SuppressWarnings("unchecked")
                 public <T> List<T> convertAll(GeometryCollection gc, Class<T> target)
                         throws Exception {
-                    List<T> result = new ArrayList<T>();
+                    List<T> result = new ArrayList<>();
                     for (int count = 0; count < gc.getNumGeometries(); count++) {
                         T geo = (T) convert(gc.getGeometryN(count), target);
                         if (geo != null) result.add(geo);
@@ -155,9 +158,10 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                     return result;
                 }
 
-                public Object convert(Object source, Class target) throws Exception {
+                @SuppressWarnings("unchecked")
+                public <T> T convert(Object source, Class<T> target) throws Exception {
                     // hierarchy compatible geometries -> nothing to do
-                    if (target.isAssignableFrom(source.getClass())) return source;
+                    if (target.isAssignableFrom(source.getClass())) return (T) source;
                     if (source instanceof Geometry) {
                         Geometry sourceGeometry = (Geometry) source;
 
@@ -300,7 +304,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                             destGeometry.setSRID(sourceGeometry.getSRID());
                         }
 
-                        return destGeometry;
+                        return (T) destGeometry;
                     }
 
                     return null;
@@ -364,10 +368,11 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     protected void copyUserProperties(Geometry sourceGeometry, Geometry destGeometry) {
         // NC-added, copy userdata
         if (destGeometry != null) {
-            Map<Object, Object> newUserData = new HashMap<Object, Object>();
+            Map<Object, Object> newUserData = new HashMap<>();
 
             // copy if anything is already in destination data
             if (destGeometry.getUserData() instanceof Map) {

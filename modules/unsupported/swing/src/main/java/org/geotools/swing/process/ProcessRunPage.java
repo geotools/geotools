@@ -92,7 +92,7 @@ public class ProcessRunPage extends JPage {
         page.add(description);
         for (Entry<String, Object> entry : resultMap.entrySet()) {
             Parameter<?> parameter =
-                    new Parameter(
+                    new Parameter<>(
                             entry.getKey(),
                             entry.getValue().getClass(),
                             Text.text("Result"),

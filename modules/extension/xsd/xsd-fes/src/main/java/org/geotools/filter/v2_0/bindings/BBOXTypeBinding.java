@@ -90,10 +90,11 @@ public class BBOXTypeBinding extends OGCBBOXTypeBinding {
     }
 
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         BBOX box = (BBOX) object;
 
-        List properties = new ArrayList();
+        List<Object[]> properties = new ArrayList<>();
         ReferencedEnvelope env = ReferencedEnvelope.reference(box.getBounds());
 
         properties.add(new Object[] {ENVELOPE_PARTICLE, env});

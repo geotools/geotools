@@ -225,7 +225,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
      * @exception IOException if an error occurs
      */
     public List readAllRows() throws IOException {
-        LinkedList list = new LinkedList();
+        LinkedList<VPFRow> list = new LinkedList<>();
         try {
             setPosition(1);
         } catch (IOException exc) {

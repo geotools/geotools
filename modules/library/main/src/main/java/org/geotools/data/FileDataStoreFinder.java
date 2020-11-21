@@ -137,19 +137,10 @@ public class FileDataStoreFinder {
      * @see FileDataStore
      */
     public static Iterator<FileDataStoreFactorySpi> getAvailableDataStores() {
-        Set availableDS = new HashSet();
-
-        Set all = CommonFactoryFinder.getFileDataStoreFactories(null);
-
-        for (Iterator it = all.iterator(); it.hasNext(); ) {
-            FileDataStoreFactorySpi dsFactory = (FileDataStoreFactorySpi) it.next();
-
-            if (dsFactory.isAvailable()) {
-                availableDS.add(dsFactory);
-            }
-        }
-
-        return availableDS.iterator();
+        return CommonFactoryFinder.getFileDataStoreFactories(null)
+                .stream()
+                .filter(dsf -> dsf.isAvailable())
+                .iterator();
     }
 
     /**
@@ -158,7 +149,7 @@ public class FileDataStoreFinder {
      * @return Set of supported file extensions
      */
     public static Set<String> getAvailableFileExtentions() {
-        Set<String> extentions = new HashSet<String>();
+        Set<String> extentions = new HashSet<>();
 
         Iterator<FileDataStoreFactorySpi> ps = getAvailableDataStores();
         while (ps.hasNext()) {

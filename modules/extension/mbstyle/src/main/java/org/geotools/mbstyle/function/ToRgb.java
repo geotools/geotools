@@ -26,7 +26,7 @@ import org.opengis.filter.capability.FunctionName;
 /** Generate a rgb color from integer values between 0-255. */
 public class ToRgb extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "torgb",
                     parameter("r", Integer.class),

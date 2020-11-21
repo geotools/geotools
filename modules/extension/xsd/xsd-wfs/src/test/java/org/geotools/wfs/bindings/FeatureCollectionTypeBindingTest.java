@@ -44,6 +44,7 @@ public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void testEncode() throws Exception {
 
         namespaceMappings.put("geotools", "http://geotools.org");

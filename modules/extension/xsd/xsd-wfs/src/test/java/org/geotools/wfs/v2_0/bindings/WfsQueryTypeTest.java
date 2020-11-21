@@ -55,7 +55,7 @@ public class WfsQueryTypeTest extends WFSTestSupport {
         assertTrue(attr.indexOf(tmp) != -1);
         assertEquals(attr.length(), attr.indexOf(tmp) + tmp.length()); // 8 == ":theType".length
 
-        HashMap<String, String> m = new HashMap<String, String>();
+        HashMap<String, String> m = new HashMap<>();
         m.put("wfs", WFS.NAMESPACE);
         m.put("fes", FES.NAMESPACE);
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(m));

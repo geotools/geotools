@@ -54,7 +54,7 @@ public class SpatialFilterTest {
 
     int errorCount = 0;
 
-    Set<String> renderedIds = new HashSet<String>();
+    Set<String> renderedIds = new HashSet<>();
 
     RenderListener listener;
 

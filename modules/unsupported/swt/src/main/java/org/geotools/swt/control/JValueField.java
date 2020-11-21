@@ -34,7 +34,7 @@ public abstract class JValueField extends Text {
 
     public JValueField(Composite parent, int style) {
         super(parent, style);
-        listeners = new HashSet<ValueChangedListener>();
+        listeners = new HashSet<>();
     }
 
     /**

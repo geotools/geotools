@@ -330,8 +330,12 @@ public class MBFunctionFactoryTest {
 
         // check alternatives
         Function alternatives = ff.function("fontAlternatives", ff.literal("Droid"));
+
+        @SuppressWarnings("unchecked")
+        List<String> listAlternatives = (List<String>) alternatives.evaluate(null, List.class);
+
         assertThat(
-                (List<String>) alternatives.evaluate(null, List.class),
+                listAlternatives,
                 hasItems("Droid Arabic Naskh", "Droid Sans Armenian", "Droid Sans Fallback"));
 
         Literal regularFont = ff.literal("Droid Sans Regular");

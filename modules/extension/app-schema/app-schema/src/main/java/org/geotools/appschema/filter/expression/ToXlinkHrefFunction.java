@@ -48,7 +48,7 @@ public class ToXlinkHrefFunction implements Function {
     private final Literal fallback;
 
     public ToXlinkHrefFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public ToXlinkHrefFunction(List<Expression> parameters, Literal fallback) {

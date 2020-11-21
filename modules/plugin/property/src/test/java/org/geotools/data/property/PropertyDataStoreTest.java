@@ -231,7 +231,7 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals(5, count(reader));
 
         reader = store.getFeatureReader(roadQuery, transaction);
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         try {
             while (reader.hasNext()) {
                 list.add(reader.next().getID());
@@ -465,7 +465,7 @@ public class PropertyDataStoreTest extends TestCase {
         SimpleFeatureSource road = store.getFeatureSource("road");
         SimpleFeatureCollection features = road.getFeatures();
         SimpleFeatureIterator reader = features.features();
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         try {
             while (reader.hasNext()) {
                 SimpleFeature next = reader.next();

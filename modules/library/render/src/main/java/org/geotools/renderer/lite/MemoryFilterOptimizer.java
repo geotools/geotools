@@ -133,7 +133,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
     private InFunction replaceWithInFilter(Or filter) {
         List<Filter> children = filter.getChildren();
         Expression expression = null;
-        List<Literal> literals = new ArrayList<Literal>(children.size());
+        List<Literal> literals = new ArrayList<>(children.size());
         for (Filter childFilter : children) {
             if (!(childFilter instanceof PropertyIsEqualTo)) return null;
             PropertyIsEqualTo eqto = (PropertyIsEqualTo) childFilter;
@@ -271,11 +271,15 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         if (!memoizeCandidates.contains(filter)) {
             // drill down, this clones and at the same time visits sub-filters
             // (the small parts inside a complex filter are the ones likely to repeat)
-            return (T) duplicator.apply(filter, extraData);
+            @SuppressWarnings("unchecked")
+            T result = (T) duplicator.apply(filter, extraData);
+            return result;
         }
         // see if we already built a memoized replacement for it
+        @SuppressWarnings("unchecked")
         T replacement = (T) filterReplacements.get(filter);
         if (replacement == null) {
+            @SuppressWarnings("unchecked")
             T duplicated = (T) duplicator.apply(filter, extraData);
             replacement = FilterMemoizer.memoize(duplicated);
             filterReplacements.put(filter, replacement);
@@ -355,7 +359,9 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
                     try {
                         Object value = sf.getAttribute(index);
                         if (context == null || context.isInstance(value)) {
-                            return (T) value;
+                            @SuppressWarnings("unchecked")
+                            T result = (T) value;
+                            return result;
                         } else {
                             return Converters.convert(value, context);
                         }
@@ -421,6 +427,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
 
         @Override
         @Extension
+        @SuppressWarnings("unchecked")
         public <T> T evaluate(Object object, Class<T> context) {
             if (object != lastFeature || !Objects.equals(lastContext, context)) {
                 lastResult = delegate.evaluate(object, context);

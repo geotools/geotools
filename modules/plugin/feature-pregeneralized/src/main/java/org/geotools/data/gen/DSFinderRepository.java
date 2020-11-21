@@ -48,12 +48,12 @@ import org.opengis.feature.type.Name;
  */
 public class DSFinderRepository implements Repository {
 
-    Map<String, DataStore> map = new HashMap<String, DataStore>();
+    Map<String, DataStore> map = new HashMap<>();
 
     Logger log = Logging.getLogger(this.getClass());
 
     public void clear() {
-        map = new HashMap<String, DataStore>();
+        map = new HashMap<>();
     }
 
     protected URL getURLForLocation(String location) throws IOException {
@@ -70,7 +70,7 @@ public class DSFinderRepository implements Repository {
     }
 
     private Map<String, Serializable> getMapForShapeFile(URL shapeFileURL) throws IOException {
-        Map<String, Serializable> result = new HashMap<String, Serializable>();
+        Map<String, Serializable> result = new HashMap<>();
         result.put(ShapefileDataStoreFactory.URLP.key, shapeFileURL);
         return result;
     }
@@ -83,7 +83,7 @@ public class DSFinderRepository implements Repository {
         // for convenience, handle shape files in a short way
         if (location.endsWith(".shp") || location.endsWith(".SHP")) return getMapForShapeFile(url);
 
-        Map<String, Serializable> result = new HashMap<String, Serializable>();
+        Map<String, Serializable> result = new HashMap<>();
 
         Properties properties = new Properties();
         try (InputStream in = url.openStream()) {

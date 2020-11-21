@@ -100,7 +100,7 @@ public class LetterConflictTest extends TestCase {
 
     private StreamingRenderer getNewRenderer(MapContent context) {
         StreamingRenderer renderer = new StreamingRenderer();
-        Map<String, Object> rendererParams = new HashMap<String, Object>();
+        Map<Object, Object> rendererParams = new HashMap<>();
         LabelCacheImpl labelCache = new LabelCacheImpl();
         rendererParams.put(StreamingRenderer.LABEL_CACHE_KEY, labelCache);
         renderer.setRendererHints(rendererParams);

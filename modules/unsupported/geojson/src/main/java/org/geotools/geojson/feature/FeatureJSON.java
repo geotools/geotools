@@ -272,7 +272,7 @@ public class FeatureJSON {
      */
     public void writeFeatureCollection(FeatureCollection features, Object output)
             throws IOException {
-        LinkedHashMap obj = new LinkedHashMap();
+        LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
         obj.put("type", "FeatureCollection");
 
         if (features.getSchema().getGeometryDescriptor() != null) {
@@ -441,10 +441,10 @@ public class FeatureJSON {
      * @return properties map naming crs identifier
      */
     Map<String, Object> createCRS(CoordinateReferenceSystem crs) throws IOException {
-        Map<String, Object> obj = new LinkedHashMap<String, Object>();
+        Map<String, Object> obj = new LinkedHashMap<>();
         obj.put("type", "name");
 
-        Map<String, Object> props = new LinkedHashMap<String, Object>();
+        Map<String, Object> props = new LinkedHashMap<>();
         if (crs == null) {
             props.put("name", "EPSG:4326");
         } else {

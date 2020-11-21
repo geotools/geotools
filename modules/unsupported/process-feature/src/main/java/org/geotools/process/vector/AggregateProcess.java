@@ -176,8 +176,8 @@ public class AggregateProcess implements VectorProcess {
         if (functions == null) {
             throw new NullPointerException("Aggregate function to call is required");
         }
-        List<AggregationFunction> functionList = new ArrayList<AggregationFunction>(functions);
-        List<FeatureCalc> visitors = new ArrayList<FeatureCalc>();
+        List<AggregationFunction> functionList = new ArrayList<>(functions);
+        List<FeatureCalc> visitors = new ArrayList<>();
 
         for (AggregationFunction function : functionList) {
             FeatureCalc calc;
@@ -205,11 +205,11 @@ public class AggregateProcess implements VectorProcess {
             visitors.add(calc);
         }
 
-        EnumMap<AggregationFunction, Number> results =
-                new EnumMap<AggregationFunction, Number>(AggregationFunction.class);
+        EnumMap<AggregationFunction, Number> results = new EnumMap<>(AggregationFunction.class);
         if (singlePass) {
             AggregateFeatureCalc calc = new AggregateFeatureCalc(visitors);
             features.accepts(calc, new NullProgressListener());
+            @SuppressWarnings("unchecked")
             List<CalcResult> resultList = (List<CalcResult>) calc.getResult().getValue();
             for (int i = 0; i < functionList.size(); i++) {
                 CalcResult result = resultList.get(i);
@@ -277,13 +277,18 @@ public class AggregateProcess implements VectorProcess {
         List<Map<List<Object>, Object>> results =
                 groupByVisitors
                         .stream()
-                        .map(visitor -> (Map<List<Object>, Object>) visitor.getResult().toMap())
+                        .map(visitor -> getListObjectMap(visitor))
                         .collect(Collectors.toList());
         return new Results(
                 aggAttribute,
                 functions,
                 rawGroupByAttributes,
                 mergeResults(results, rawGroupByAttributes.size()));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<List<Object>, Object> getListObjectMap(GroupByVisitor visitor) {
+        return (Map<List<Object>, Object>) visitor.getResult().toMap();
     }
 
     /**
@@ -317,7 +322,7 @@ public class AggregateProcess implements VectorProcess {
     }
 
     private List<String> attNames(List<AttributeDescriptor> atts) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (AttributeDescriptor ad : atts) {
             result.add(ad.getLocalName());
         }
@@ -338,7 +343,7 @@ public class AggregateProcess implements VectorProcess {
         }
 
         public CalcResult getResult() {
-            final List<CalcResult> results = new ArrayList<CalcResult>();
+            final List<CalcResult> results = new ArrayList<>();
             for (FeatureCalc delegate : delegates) {
                 results.add(delegate.getResult());
             }

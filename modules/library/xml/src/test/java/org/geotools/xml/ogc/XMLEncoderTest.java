@@ -105,7 +105,7 @@ public class XMLEncoderTest extends TestCase {
         // System.out.println( output );
         InputStream stream = new ByteArrayInputStream(output.toString().getBytes("UTF-8"));
 
-        Object o = DocumentFactory.getInstance(stream, new HashMap<String, Object>(), Level.FINEST);
+        Object o = DocumentFactory.getInstance(stream, new HashMap<>(), Level.FINEST);
         assertNotNull(o);
         assertEquals(test, o);
         // LOGGER.fine("parsed filter is: " + test);
@@ -234,7 +234,7 @@ public class XMLEncoderTest extends TestCase {
         PropertyIsNull null1 = ff.isNull(ff.property("name"));
         PropertyIsNull null2 = ff.isNull(ff.property("geom"));
 
-        HashSet<FeatureId> set = new HashSet<FeatureId>();
+        HashSet<FeatureId> set = new HashSet<>();
         set.add(ff.featureId("FID.1"));
         Filter filter = ff.or(null2, ff.and(null1, ff.id(set)));
 
@@ -258,7 +258,7 @@ public class XMLEncoderTest extends TestCase {
 
     public void testStrictHintOR() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-        HashSet<FeatureId> set = new HashSet<FeatureId>();
+        HashSet<FeatureId> set = new HashSet<>();
         set.add(ff.featureId("FID.1"));
         set.add(ff.featureId("FID.2"));
         Filter filter = ff.id(set);

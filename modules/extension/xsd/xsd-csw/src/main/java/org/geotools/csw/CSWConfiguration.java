@@ -59,7 +59,7 @@ public class CSWConfiguration extends Configuration {
      *
      * @generated
      */
-    protected void registerBindings(Map bindings) {
+    protected void registerBindings(Map<QName, Object> bindings) {
         // generated code, see the main method
         bindings.put(
                 CSW.AbstractQueryType,

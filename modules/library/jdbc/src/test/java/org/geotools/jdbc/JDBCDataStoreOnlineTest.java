@@ -23,9 +23,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import org.geotools.data.*;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -49,7 +49,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
     public void testGetNames() throws IOException {
         String[] typeNames = dataStore.getTypeNames();
-        assertTrue(new HashSet(Arrays.asList(typeNames)).contains(tname("ft1")));
+        assertTrue(new HashSet<>(Arrays.asList(typeNames)).contains(tname("ft1")));
     }
 
     public void testGetSchema() throws Exception {
@@ -481,8 +481,8 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
     }
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
-        HashMap params = super.createDataStoreFactoryParams();
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         // This test expects the write to happen right away. Disable buffering.
         params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 1);
         return params;

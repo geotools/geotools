@@ -66,7 +66,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
     /** The final lists for granules to be computed, splitted per dimension value. */
     protected final List<Future<GranuleDescriptor.GranuleLoadingResult>> granulesFutures =
-            new ArrayList<Future<GranuleDescriptor.GranuleLoadingResult>>();
+            new ArrayList<>();
 
     protected final boolean dryRun;
 

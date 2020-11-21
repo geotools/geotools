@@ -196,7 +196,7 @@ public class RasterZonalStatistics implements RasterProcess {
 
         RenderedImage classificationRaster;
 
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> features = new ArrayList<>();
 
         public RasterZonalStatisticsIterator(
                 SimpleFeatureIterator zones,
@@ -346,9 +346,8 @@ public class RasterZonalStatistics implements RasterProcess {
                             double max = category.getRange().getMaximum();
                             if (!Double.isNaN(min) && !Double.isNaN(max)) {
                                 // we have to filter those out
-                                Range<Double> novalueRange =
-                                        new Range<Double>(min, true, max, true);
-                                novalueRangeList = new ArrayList<Range<Double>>();
+                                Range<Double> novalueRange = new Range<>(min, true, max, true);
+                                novalueRangeList = new ArrayList<>();
                                 novalueRangeList.add(novalueRange);
                             }
                             break;

@@ -124,7 +124,7 @@ public class GridCoverageBuilder {
     /** Creates a builder initialized to default values. */
     public GridCoverageBuilder(final GridCoverageFactory factory) {
         this.factory = factory;
-        variables = new ArrayList<Variable>();
+        variables = new ArrayList<>();
         width = 256;
         height = 256;
     }
@@ -431,7 +431,7 @@ public class GridCoverageBuilder {
         protected Variable(final CharSequence name, final Unit<?> units) {
             this.name = name;
             this.units = units;
-            this.nodata = new TreeMap<Integer, CharSequence>();
+            this.nodata = new TreeMap<>();
         }
 
         /**

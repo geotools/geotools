@@ -1696,7 +1696,7 @@ empty Hints object.
      * Returns an empty Hints set
      */
     public Hints getHints() {
-        return new Hints(Collections.EMPTY_MAP);
+        return new Hints(Collections.emptyMap());
     }
 
 Filter

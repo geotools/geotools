@@ -63,7 +63,7 @@ public class SpatialOperatorsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<?> getType() {
         return SpatialOperators.class;
     }
 
@@ -75,7 +75,7 @@ public class SpatialOperatorsTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List sops = node.getChildValues(SpatialOperator.class);
+        List<SpatialOperator> sops = node.getChildValues(SpatialOperator.class);
 
         return factory.spatialOperators(
                 (SpatialOperator[]) sops.toArray(new SpatialOperator[sops.size()]));

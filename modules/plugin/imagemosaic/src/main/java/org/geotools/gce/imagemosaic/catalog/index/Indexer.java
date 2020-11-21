@@ -327,7 +327,7 @@ public class Indexer {
          */
         public List<Indexer.Collectors.Collector> getCollector() {
             if (collector == null) {
-                collector = new ArrayList<Indexer.Collectors.Collector>();
+                collector = new ArrayList<>();
             }
             return this.collector;
         }
@@ -529,7 +529,7 @@ public class Indexer {
          */
         public List<Indexer.Coverages.Coverage> getCoverage() {
             if (coverage == null) {
-                coverage = new ArrayList<Indexer.Coverages.Coverage>();
+                coverage = new ArrayList<>();
             }
             return this.coverage;
         }
@@ -803,8 +803,7 @@ public class Indexer {
         public List<Indexer.MultipleBandsDimensions.MultipleBandsDimension>
                 getMultipleBandsDimension() {
             if (multipleBandsDimension == null) {
-                multipleBandsDimension =
-                        new ArrayList<Indexer.MultipleBandsDimensions.MultipleBandsDimension>();
+                multipleBandsDimension = new ArrayList<>();
             }
             return this.multipleBandsDimension;
         }

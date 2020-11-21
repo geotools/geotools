@@ -119,7 +119,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      * @return <tt>true</tt> if this collection contains the specified element.
      */
     public boolean contains(Object o) {
-        Iterator e = null;
+        Iterator<SimpleFeature> e = null;
         try {
             e = iterator();
             if (o == null) {
@@ -140,7 +140,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      */
     public Object[] toArray() {
         Object[] result = new Object[size()];
-        Iterator e = null;
+        Iterator<SimpleFeature> e = null;
         try {
             e = iterator();
             for (int i = 0; e.hasNext(); i++) result[i] = e.next();
@@ -150,15 +150,13 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
         }
     }
 
-    public Object[] toArray(Object[] a) {
+    @SuppressWarnings("unchecked") // reflective instantiation below
+    public <O> O[] toArray(O[] a) {
         int size = size();
         if (a.length < size)
-            a =
-                    (Object[])
-                            java.lang.reflect.Array.newInstance(
-                                    a.getClass().getComponentType(), size);
+            a = (O[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
 
-        Iterator it = iterator();
+        Iterator<SimpleFeature> it = iterator();
         try {
 
             Object[] result = a;
@@ -184,6 +182,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      * @throws NullPointerException if the specified collection is null.
      * @see #contains(Object)
      */
+    @SuppressWarnings("unchecked") // let it try to close the iterator, if it's closeable
     public boolean containsAll(Collection c) {
         Iterator e = c.iterator();
         try {
@@ -203,7 +202,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append("[");
-        Iterator i = iterator();
+        Iterator<SimpleFeature> i = iterator();
         try {
             boolean hasNext = i.hasNext();
             while (hasNext) {
@@ -263,7 +262,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      * }
      * </code></pre>
      */
-    public final void close(Iterator close) {
+    public final void close(Iterator<SimpleFeature> close) {
         if (close == null) return;
         try {
             closeIterator(close);

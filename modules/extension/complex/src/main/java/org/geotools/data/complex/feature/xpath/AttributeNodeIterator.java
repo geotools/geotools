@@ -51,7 +51,7 @@ public class AttributeNodeIterator implements NodeIterator {
     public AttributeNodeIterator(AttributeNodePointer pointer) {
         this.pointer = pointer;
         feature = (ComplexAttribute) pointer.getImmediateAttribute();
-        children = new ArrayList<Property>(feature.getValue());
+        children = new ArrayList<>(feature.getValue());
         position = 1;
     }
 
@@ -64,7 +64,7 @@ public class AttributeNodeIterator implements NodeIterator {
         if (attName.equals(name)) {
             children = Collections.<Property>singletonList(feature);
         } else {
-            children = new ArrayList<Property>(feature.getProperties(name));
+            children = new ArrayList<>(feature.getProperties(name));
         }
 
         position = children.size() > 0 ? 1 : 0;

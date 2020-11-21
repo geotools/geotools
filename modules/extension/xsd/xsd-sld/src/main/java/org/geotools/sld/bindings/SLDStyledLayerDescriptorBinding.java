@@ -138,10 +138,10 @@ public class SLDStyledLayerDescriptorBinding extends AbstractComplexBinding {
         StyledLayer[] layers = null;
 
         if (node.hasChild(NamedLayer.class)) {
-            List namedLayers = node.getChildValues(NamedLayer.class);
+            List<NamedLayer> namedLayers = node.getChildValues(NamedLayer.class);
             layers = (StyledLayer[]) namedLayers.toArray(new StyledLayer[namedLayers.size()]);
         } else if (node.hasChild(UserLayer.class)) {
-            List userLayers = node.getChildValues(UserLayer.class);
+            List<UserLayer> userLayers = node.getChildValues(UserLayer.class);
             layers = (StyledLayer[]) userLayers.toArray(new StyledLayer[userLayers.size()]);
         }
 

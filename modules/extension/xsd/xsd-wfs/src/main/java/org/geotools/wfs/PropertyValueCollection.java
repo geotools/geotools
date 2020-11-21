@@ -74,7 +74,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
 
     AttributeDescriptor descriptor;
 
-    List<Schema> typeMappingProfiles = new ArrayList();
+    List<Schema> typeMappingProfiles = new ArrayList<>();
 
     PropertyName propertyName;
 
@@ -99,16 +99,16 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<Attribute> iterator() {
         return new PropertyValueIterator(delegate.features());
     }
 
-    class PropertyValueIterator implements Iterator {
+    class PropertyValueIterator implements Iterator<Attribute> {
         FeatureIterator it;
 
         Feature next;
 
-        Queue values = new LinkedList();
+        Queue<Object> values = new LinkedList<>();
 
         PropertyValueIterator(FeatureIterator it) {
             this.it = it;
@@ -132,7 +132,9 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
                 }
                 if (value != null) {
                     if (value instanceof Collection) {
-                        values.addAll((Collection) value);
+                        @SuppressWarnings("unchecked")
+                        Collection<Object> values = (Collection) value;
+                        this.values.addAll(values);
                     } else {
                         values.add(value);
                     }
@@ -150,7 +152,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
         }
 
         @Override
-        public Object next() {
+        public Attribute next() {
             Object value = values.remove();
 
             // create a new descriptor based on teh xml type
@@ -180,7 +182,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
                             descriptor.isNillable(),
                             descriptor.getDefaultValue());
 
-            Object result;
+            Attribute result;
             if (value instanceof ComplexAttribute) {
                 result =
                         factory.createComplexAttribute(
@@ -199,7 +201,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
             throw new UnsupportedOperationException();
         }
 
-        AttributeType findType(Class binding) {
+        AttributeType findType(Class<?> binding) {
             for (Schema schema : typeMappingProfiles) {
                 for (Map.Entry<Name, AttributeType> e : schema.entrySet()) {
                     AttributeType at = e.getValue();

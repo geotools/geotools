@@ -119,8 +119,8 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
 
     /** No implementation hints are provided at this time. */
     @Override
-    public Map getImplementationHints() {
-        return java.util.Collections.EMPTY_MAP;
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return java.util.Collections.emptyMap();
     }
 
     /**

@@ -17,6 +17,7 @@
 package org.geotools.gml;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
@@ -38,7 +39,7 @@ public class SubHandlerLinearRing extends SubHandler {
     static final Logger LOGGER = Logging.getLogger(SubHandlerLinearRing.class);
 
     /** Internal coordinate list. */
-    private ArrayList coordinateList = new ArrayList();
+    private List<Coordinate> coordinateList = new ArrayList<>();
 
     /** Creates a new instance of GMLLinearRingHandler. */
     public SubHandlerLinearRing() {}

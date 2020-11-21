@@ -74,6 +74,7 @@ public class BasicFactories {
      *
      * @param hints The hints to be used for all factory creation, or {@code null} if none.
      */
+    @SuppressWarnings("unchecked")
     public BasicFactories(final Map hints) {
         this.hints = (hints != null) ? new Hints(hints) : null;
     }

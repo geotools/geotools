@@ -97,7 +97,7 @@ public abstract class AbstractMapPane extends JPanel
     protected final Lock drawingLock;
     protected final ReadWriteLock paramsLock;
 
-    protected final Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
+    protected final Set<MapPaneListener> listeners = new HashSet<>();
     protected final MouseDragBox dragBox;
 
     /*

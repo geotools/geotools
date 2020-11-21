@@ -51,11 +51,11 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
     }
 
     public FeatureReader<T, F> reader() throws IOException {
-        return new DelegateFeatureReader<T, F>(getSchema(), features());
+        return new DelegateFeatureReader<>(getSchema(), features());
     }
 
     public FeatureIterator<F> features() {
-        return new MaxFeaturesIterator<F>(delegate.features(), max);
+        return new MaxFeaturesIterator<>(delegate.features(), max);
     }
 
     public FeatureCollection<T, F> subCollection(Filter filter) {
@@ -79,7 +79,7 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
     }
 
     public <O> O[] toArray(O[] a) {
-        List<F> list = new ArrayList<F>();
+        List<F> list = new ArrayList<>();
         FeatureIterator<F> i = features();
         try {
             while (i.hasNext()) {

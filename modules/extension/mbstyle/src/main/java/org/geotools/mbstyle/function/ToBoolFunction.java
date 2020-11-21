@@ -30,7 +30,7 @@ import org.opengis.filter.capability.FunctionName;
  */
 class ToBoolFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("toBool");
+    public static final FunctionName NAME = new FunctionNameImpl("toBool");
 
     ToBoolFunction() {
         super(NAME);
@@ -55,7 +55,7 @@ class ToBoolFunction extends FunctionExpressionImpl {
         if (Number.class.isAssignableFrom(arg0.getClass()) && ((Number) arg0).doubleValue() == 0d) {
             return Boolean.FALSE;
         }
-        if (arg0 instanceof Boolean && (Boolean) arg0 == false) {
+        if (arg0 instanceof Boolean && !((Boolean) arg0)) {
             return Boolean.FALSE;
         }
         if (arg0 instanceof String && ((String) arg0).isEmpty()) {

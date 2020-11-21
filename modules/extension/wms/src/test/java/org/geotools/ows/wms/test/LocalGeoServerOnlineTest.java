@@ -450,7 +450,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
         wmsRequest.setLayers(layers);
         // Test URL
         String queryParamters = wmsRequest.getFinalURL().getQuery();
-        Map parameters = new HashMap();
+        Map<String, String> parameters = new HashMap<>();
         String[] rawParameters = queryParamters.split("&");
         for (String param : rawParameters) {
             String[] keyValue = param.split("=");

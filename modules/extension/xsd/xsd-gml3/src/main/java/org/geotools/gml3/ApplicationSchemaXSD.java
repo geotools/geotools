@@ -42,7 +42,7 @@ public class ApplicationSchemaXSD extends XSD {
         this.schemaLocation = schemaLocation;
     }
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(GML.getInstance());
     }
 

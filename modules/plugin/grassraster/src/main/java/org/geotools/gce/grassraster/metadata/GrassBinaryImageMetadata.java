@@ -369,7 +369,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
      * @return the metadata hashtable.
      */
     public HashMap<String, String> toHashMap() {
-        HashMap<String, String> tmp = new HashMap<String, String>();
+        HashMap<String, String> tmp = new HashMap<>();
         tmp.put(WEST, String.valueOf(west));
         tmp.put(SOUTH, String.valueOf(south));
         tmp.put(EAST, String.valueOf(east));

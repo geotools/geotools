@@ -55,7 +55,7 @@ public class FidQueryTest extends FIDTestCase {
 
     private static final FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
 
-    Map<String, SimpleFeature> fids = new HashMap<String, SimpleFeature>();
+    Map<String, SimpleFeature> fids = new HashMap<>();
 
     SimpleFeatureStore featureStore;
 

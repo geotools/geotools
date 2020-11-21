@@ -17,6 +17,7 @@
 package org.geotools.gml;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -31,7 +32,7 @@ import org.locationtech.jts.geom.LineString;
  */
 public class SubHandlerLineString extends SubHandler {
     /** List of coordinates for LineString. */
-    private ArrayList coordinateList = new ArrayList();
+    private List<Coordinate> coordinateList = new ArrayList<>();
 
     /** Empty constructor. */
     public SubHandlerLineString() {}

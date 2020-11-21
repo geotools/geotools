@@ -30,6 +30,7 @@ import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.Schema;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -117,7 +118,7 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
             Name name,
             AttributeType relatedType,
             boolean isAbstract,
-            List restrictions,
+            List<Filter> restrictions,
             AssociationType superType,
             InternationalString description) {
 
@@ -127,10 +128,10 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
 
     public AttributeType createAttributeType(
             Name name,
-            Class binding,
+            Class<?> binding,
             boolean isIdentifiable,
             boolean isAbstract,
-            List restrictions,
+            List<Filter> restrictions,
             AttributeType superType,
             InternationalString description) {
 
@@ -140,10 +141,10 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
 
     public ComplexType createComplexType(
             Name name,
-            Collection schema,
+            Collection<PropertyDescriptor> schema,
             boolean isIdentifiable,
             boolean isAbstract,
-            List restrictions,
+            List<Filter> restrictions,
             AttributeType superType,
             InternationalString description) {
         return new ComplexTypeImpl(
@@ -152,11 +153,11 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
 
     public GeometryType createGeometryType(
             Name name,
-            Class binding,
+            Class<?> binding,
             CoordinateReferenceSystem crs,
             boolean isIdentifiable,
             boolean isAbstract,
-            List restrictions,
+            List<Filter> restrictions,
             AttributeType superType,
             InternationalString description) {
 
@@ -173,10 +174,10 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
 
     public FeatureType createFeatureType(
             Name name,
-            Collection schema,
+            Collection<PropertyDescriptor> schema,
             GeometryDescriptor defaultGeometry,
             boolean isAbstract,
-            List restrictions,
+            List<Filter> restrictions,
             AttributeType superType,
             InternationalString description) {
 

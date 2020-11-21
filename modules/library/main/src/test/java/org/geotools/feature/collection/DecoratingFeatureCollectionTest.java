@@ -18,9 +18,9 @@ package org.geotools.feature.collection;
 
 import java.io.IOException;
 import org.easymock.EasyMock;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -35,7 +35,8 @@ public class DecoratingFeatureCollectionTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         UniqueVisitor visitor = new UniqueVisitor(ff.property("test"));
 
-        FeatureCollection mock = EasyMock.createMock(FeatureCollection.class);
+        @SuppressWarnings("unchecked")
+        FeatureCollection<FeatureType, Feature> mock = EasyMock.createMock(FeatureCollection.class);
         mock.accepts(visitor, null);
         EasyMock.expectLastCall();
         EasyMock.replay(mock);
@@ -56,8 +57,10 @@ public class DecoratingFeatureCollectionTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         UniqueVisitor visitor = new UniqueVisitor(ff.property("test"));
 
-        FeatureCollection mock = EasyMock.createMock(FeatureCollection.class);
-        SimpleFeatureIterator iterator = EasyMock.createNiceMock(SimpleFeatureIterator.class);
+        @SuppressWarnings("unchecked")
+        FeatureCollection<FeatureType, Feature> mock = EasyMock.createMock(FeatureCollection.class);
+        @SuppressWarnings("unchecked")
+        FeatureIterator<Feature> iterator = EasyMock.createNiceMock(FeatureIterator.class);
         EasyMock.expect(mock.features()).andReturn(iterator);
         EasyMock.replay(mock, iterator);
 

@@ -20,6 +20,7 @@
 package org.geotools.metadata.iso.content;
 
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import org.opengis.metadata.content.Band;
 
 /**
@@ -44,7 +45,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Units in which sensor wavelengths are expressed. Should be non-null if {@linkplain
      * #getMinValue min value} or {@linkplain #getMaxValue max value} are provided.
      */
-    private Unit units;
+    private Unit<Length> units;
 
     /** Wavelength at which the response is the highest. {@code null} if unspecified. */
     private Double peakResponse;
@@ -114,7 +115,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Returns the units in which sensor wavelengths are expressed. Should be non-null if
      * {@linkplain #getMinValue min value} or {@linkplain #getMaxValue max value} are provided.
      */
-    public Unit getUnits() {
+    public Unit<Length> getUnits() {
         return units;
     }
 
@@ -122,7 +123,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Set the units in which sensor wavelengths are expressed. Should be non-null if {@linkplain
      * #getMinValue min value} or {@linkplain #getMaxValue max value} are provided.
      */
-    public void setUnits(final Unit newValue) {
+    public void setUnits(final Unit<Length> newValue) {
         checkWritePermission();
         units = newValue;
     }

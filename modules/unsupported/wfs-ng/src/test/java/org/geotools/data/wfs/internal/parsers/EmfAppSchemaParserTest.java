@@ -129,7 +129,7 @@ public class EmfAppSchemaParserTest {
         assertSame(crs, featureType.getCoordinateReferenceSystem());
 
         List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
-        List<String> names = new ArrayList<String>(attributes.size());
+        List<String> names = new ArrayList<>(attributes.size());
         for (AttributeDescriptor desc : attributes) {
             names.add(desc.getLocalName());
         }

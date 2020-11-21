@@ -27,6 +27,7 @@ import java.util.List;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.property.PropertyDataStore;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -34,6 +35,8 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
@@ -62,7 +65,7 @@ public class GroupCandidateSelectionProcessTest {
                     ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
                 };
         query.setSortBy(sorts);
-        FeatureCollection collection = source.getFeatures(query);
+        FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(query);
         int size = collection.size();
         assertEquals(12, size);
         List<String> props = Arrays.asList("group", "group2");
@@ -94,7 +97,7 @@ public class GroupCandidateSelectionProcessTest {
                     ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
                 };
         query.setSortBy(sorts);
-        FeatureCollection collection = source.getFeatures(query);
+        FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(query);
         int size = collection.size();
         assertEquals(12, size);
         List<String> props = Arrays.asList("group", "group2");
@@ -126,7 +129,7 @@ public class GroupCandidateSelectionProcessTest {
                     ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
                 };
         query.setSortBy(sorts);
-        FeatureCollection collection = source.getFeatures(query);
+        SimpleFeatureCollection collection = source.getFeatures(query);
         int size = collection.size();
         assertEquals(12, size);
         List<String> props = Arrays.asList("group", "group2");
@@ -158,7 +161,7 @@ public class GroupCandidateSelectionProcessTest {
                     ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
                 };
         query.setSortBy(sorts);
-        FeatureCollection collection = source.getFeatures(query);
+        SimpleFeatureCollection collection = source.getFeatures(query);
         int size = collection.size();
         assertEquals(12, size);
         List<String> props = Arrays.asList("group", "group2");

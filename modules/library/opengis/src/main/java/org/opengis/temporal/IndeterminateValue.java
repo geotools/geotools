@@ -30,7 +30,7 @@ public final class IndeterminateValue extends CodeList<IndeterminateValue> {
     private static final long serialVersionUID = 1399031922917754577L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<IndeterminateValue> VALUES = new ArrayList<IndeterminateValue>(4);
+    private static final List<IndeterminateValue> VALUES = new ArrayList<>(4);
 
     public static final IndeterminateValue UNKNOWN = new IndeterminateValue("UNKNOWN");
     public static final IndeterminateValue NOW = new IndeterminateValue("NOW");

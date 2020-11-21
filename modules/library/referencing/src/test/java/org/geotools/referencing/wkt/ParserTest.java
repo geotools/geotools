@@ -382,7 +382,7 @@ public final class ParserTest {
         if (reader == null) {
             throw new FileNotFoundException(filename);
         }
-        final Collection<Object> pool = new HashSet<Object>();
+        final Collection<Object> pool = new HashSet<>();
         String line;
         while ((line = reader.readLine()) != null) {
             line = line.trim();

@@ -190,7 +190,7 @@ public final class PropertyAccessorTest {
         hashCode = accessor.hashCode(citation);
         assertEquals("Metadata with a single String value.", ISBN.hashCode(), hashCode);
 
-        final Set<Object> set = new HashSet<Object>();
+        final Set<Object> set = new HashSet<>();
         assertEquals("By Set.hashCode() contract.", 0, set.hashCode());
         assertTrue(set.add(ISBN));
         assertEquals("Expected Metadata.hashCode() == Set.hashCode().", set.hashCode(), hashCode);
@@ -204,7 +204,7 @@ public final class PropertyAccessorTest {
         assertEquals("CitationsImpl.hashCode() should delegate.", hashCode, citation.hashCode());
 
         final Collection<Object> values = citation.asMap().values();
-        assertEquals(hashCode, new HashSet<Object>(values).hashCode());
+        assertEquals(hashCode, new HashSet<>(values).hashCode());
         assertTrue(values.containsAll(set));
         assertTrue(set.containsAll(values));
     }

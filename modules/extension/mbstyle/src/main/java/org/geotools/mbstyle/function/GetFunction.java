@@ -26,7 +26,7 @@ import org.opengis.filter.capability.FunctionName;
 
 /** Returns the value of a given object key in a JSONObject. */
 public class GetFunction extends FunctionExpressionImpl {
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "get",
                     parameter("value", String.class),

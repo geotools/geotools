@@ -56,7 +56,7 @@ public class KVP extends LinkedHashMap<String, Object> {
                 List<Object> list = (List<Object>) existing;
                 list.add(value);
             } else {
-                List<Object> list = new ArrayList<Object>();
+                List<Object> list = new ArrayList<>();
                 list.add(existing);
                 list.add(value);
                 put(key, list);

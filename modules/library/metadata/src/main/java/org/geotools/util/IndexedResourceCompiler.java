@@ -102,13 +102,13 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * Integer IDs allocated to resource keys. This map will be shared for all languages of a given
      * resource bundle.
      */
-    private final Map<Integer, String> allocatedIDs = new HashMap<Integer, String>();
+    private final Map<Integer, String> allocatedIDs = new HashMap<>();
 
     /**
      * Resource keys and their localized values. This map will be cleared for each language in a
      * resource bundle.
      */
-    private final Map<Object, Object> resources = new HashMap<Object, Object>();
+    private final Map<Object, Object> resources = new HashMap<>();
 
     /** The output stream for printing message. */
     private final PrintWriter out;

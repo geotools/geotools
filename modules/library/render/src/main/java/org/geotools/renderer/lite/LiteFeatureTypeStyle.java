@@ -93,8 +93,8 @@ final class LiteFeatureTypeStyle {
     public LiteFeatureTypeStyle(
             Layer layer,
             Graphics2D graphics,
-            List ruleList,
-            List elseRuleList,
+            List<Rule> ruleList,
+            List<Rule> elseRuleList,
             Expression transformation) {
         this.layer = layer;
         this.graphics = graphics;

@@ -18,8 +18,8 @@ package org.geotools.referencing.operation.builder;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.opengis.geometry.DirectPosition;
@@ -52,7 +52,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      * The HashMap where the keys are the original {@link Polygon} and values are {@link
      * #org.opengis.referencing.operation.MathTransform}.
      */
-    private HashMap trianglesToKeysMap;
+    private Map<TINTriangle, Object> trianglesToKeysMap;
 
     /**
      * Constructs the RubberSheetTransform.
@@ -61,7 +61,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      *     org.geotools.referencing.operation.builder.algorithm.TINTriangle} and values are
      *     {@linkplain org.opengis.referencing.operation.MathTransform}.
      */
-    public RubberSheetTransform(HashMap trianglesToAffineTransform) {
+    public RubberSheetTransform(Map<TINTriangle, Object> trianglesToAffineTransform) {
         this.trianglesToKeysMap = trianglesToAffineTransform;
     }
 

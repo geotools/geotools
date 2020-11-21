@@ -31,7 +31,7 @@ import org.junit.Test;
  */
 public final class ObjectCacheEntryTest {
 
-    DefaultObjectCache.ObjectCacheEntry entry;
+    DefaultObjectCache.ObjectCacheEntry<Integer> entry;
 
     private class EntryReaderThread implements Runnable {
 
@@ -77,7 +77,7 @@ public final class ObjectCacheEntryTest {
     @Test
     public void testWriteReadDeadlock() throws InterruptedException {
         // lock the entry as if we were writing
-        entry = new DefaultObjectCache.ObjectCacheEntry();
+        entry = new DefaultObjectCache.ObjectCacheEntry<>();
         entry.writeLock();
 
         // create another thread which starts reading
@@ -106,7 +106,7 @@ public final class ObjectCacheEntryTest {
     @Test
     public void testWriteWriteDeadlock() throws InterruptedException {
         // lock the entry as if we were writing
-        entry = new DefaultObjectCache.ObjectCacheEntry();
+        entry = new DefaultObjectCache.ObjectCacheEntry<>();
         entry.writeLock();
 
         // write the value 2
@@ -121,7 +121,7 @@ public final class ObjectCacheEntryTest {
         // check that the write thread was blocked
         Object[] values = ((EntryWriterThread) thread1).getValue();
         assertNull(values);
-        assertEquals(2, entry.getValue());
+        assertEquals(2, (int) entry.getValue());
 
         // unlock
         entry.writeUnLock();

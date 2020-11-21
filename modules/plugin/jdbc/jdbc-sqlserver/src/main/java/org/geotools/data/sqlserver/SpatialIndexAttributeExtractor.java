@@ -42,7 +42,7 @@ import org.opengis.filter.spatial.Within;
  */
 class SpatialIndexAttributeExtractor extends DefaultFilterVisitor {
 
-    Map<String, Integer> spatialProperties = new HashMap<String, Integer>();
+    Map<String, Integer> spatialProperties = new HashMap<>();
 
     Map<String, Integer> getSpatialProperties() {
         return spatialProperties;

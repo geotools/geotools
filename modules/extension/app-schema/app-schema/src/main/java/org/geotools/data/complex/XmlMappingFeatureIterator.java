@@ -286,11 +286,13 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         }
 
         // NC - first calculate target attributes
-        final Map<Name, Object> targetAttributes = new HashMap<Name, Object>();
+        final Map<Name, Object> targetAttributes = new HashMap<>();
         if (target.getUserData().containsValue(Attributes.class)) {
-            targetAttributes.putAll(
+            @SuppressWarnings("unchecked")
+            Map<? extends Name, ?> map =
                     (Map<? extends Name, ? extends Object>)
-                            target.getUserData().get(Attributes.class));
+                            target.getUserData().get(Attributes.class);
+            targetAttributes.putAll(map);
         }
         for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
             Name propName = entry.getKey();

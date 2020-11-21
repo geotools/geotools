@@ -102,7 +102,7 @@ public class LogicSAXParser {
     private short logicType = -1;
 
     /** The array of filters to be logically joined. */
-    private List<Filter> subFilters = new ArrayList<Filter>();
+    private List<Filter> subFilters = new ArrayList<>();
 
     /** An instance of this class for nested logic filter structures. */
     private LogicSAXParser logicFactory = null;
@@ -218,7 +218,7 @@ public class LogicSAXParser {
             }
 
             // reset the variables so it works right if called again.
-            subFilters = new ArrayList<Filter>();
+            subFilters = new ArrayList<>();
             this.logicType = -1;
             isComplete = false;
 

@@ -172,7 +172,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         property.setValueReference(ref);
         property.setValue("myvalue");
         update.getProperty().add(property);
-        Set<Identifier> ids = new HashSet<Identifier>();
+        Set<Identifier> ids = new HashSet<>();
         ids.add(ff.featureId("myid"));
         update.setFilter(ff.id(ids));
 
@@ -180,7 +180,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
 
         DeleteType delete = factory.createDeleteType();
         delete.setTypeName(new QName("http://blabla", "MyFeature", "bla"));
-        Set<Identifier> ids2 = new HashSet<Identifier>();
+        Set<Identifier> ids2 = new HashSet<>();
         ids2.add(ff.featureId("myid2"));
         delete.setFilter(ff.id(ids2));
         abstractTransactionAction.add(delete);
@@ -202,7 +202,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         Document doc = encode(t, WFS.Transaction);
         // print(doc);
 
-        HashMap<String, String> m = new HashMap<String, String>();
+        HashMap<String, String> m = new HashMap<>();
         m.put("bla", "http://blabla");
         m.put("wfs", WFS.NAMESPACE);
         m.put("gml", GML.NAMESPACE);

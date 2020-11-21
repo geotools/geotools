@@ -148,7 +148,7 @@ public class ArcSDEDataStoreFactoryTest {
     @Test
     public void testCreateNewDataStore() {
         try {
-            dsFactory.createNewDataStore((Map<String, Serializable>) Collections.EMPTY_MAP);
+            dsFactory.createNewDataStore(Collections.emptyMap());
             fail("Expected UOE as we can't create new datastores");
         } catch (UnsupportedOperationException e) {
             assertTrue(true);

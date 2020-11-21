@@ -38,16 +38,16 @@ public class DefaultTransaction implements Transaction {
             org.geotools.util.logging.Logging.getLogger(DefaultTransaction.class);
 
     /** Records State by key */
-    Map stateLookup = new HashMap();
+    Map<Object, Object> stateLookup = new HashMap<>();
 
     /** Records properties by key */
-    Map propertyLookup = new HashMap();
+    Map<Object, Object> propertyLookup = new HashMap<>();
 
     /** Handle used to identify Transaction for the user */
     String handle;
 
     /** Records current Authorizations */
-    Set authorizations = new HashSet();
+    Set<String> authorizations = new HashSet<>();
 
     public DefaultTransaction() {
         Throwable t = new Throwable("who called me?");
@@ -241,7 +241,7 @@ public class DefaultTransaction implements Transaction {
      *
      * @return Set of Authorization IDs
      */
-    public Set getAuthorizations() {
+    public Set<String> getAuthorizations() {
         if (authorizations == null) {
             throw new IllegalStateException("Transaction has been closed");
         }

@@ -40,7 +40,7 @@ public abstract class PropertyImpl implements Property {
     protected PropertyImpl(Object value, PropertyDescriptor descriptor) {
         this.value = value;
         this.descriptor = descriptor;
-        userData = new HashMap<Object, Object>();
+        userData = new HashMap<>();
 
         if (descriptor == null) {
             throw new NullPointerException("descriptor");

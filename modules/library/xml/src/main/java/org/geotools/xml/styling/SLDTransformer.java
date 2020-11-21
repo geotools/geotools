@@ -121,7 +121,7 @@ public class SLDTransformer extends TransformerBase {
      * Additional namespace mappings to emit in the start element of the generated. Each entry has a
      * URI key and an associated prefix string value.
      */
-    private final Map uri2prefix;
+    private final Map<URI, String> uri2prefix;
 
     /** don't suppress the export of default values */
     private boolean exportDefaultValues = false;
@@ -144,9 +144,9 @@ public class SLDTransformer extends TransformerBase {
     public SLDTransformer(Map nsBindings) {
         super();
         if (nsBindings == null || nsBindings.isEmpty()) {
-            uri2prefix = new HashMap();
+            uri2prefix = new HashMap<>();
         } else {
-            uri2prefix = new HashMap(nsBindings.size());
+            uri2prefix = new HashMap<>(nsBindings.size());
             int count = 0;
             for (Iterator it = nsBindings.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry e = (Entry) it.next();
@@ -1201,7 +1201,7 @@ public class SLDTransformer extends TransformerBase {
                 element("Transformation", fts.getTransformation());
             }
 
-            List<SemanticType> sti = new ArrayList(fts.semanticTypeIdentifiers());
+            List<SemanticType> sti = new ArrayList<>(fts.semanticTypeIdentifiers());
 
             if (sti.size() != 1 || !sti.get(0).equals(SemanticType.ANY)) {
                 for (SemanticType semanticType : sti) {
@@ -1360,7 +1360,7 @@ public class SLDTransformer extends TransformerBase {
             } else if (o instanceof Style[]) {
                 encode((Style[]) o);
             } else {
-                Class c = o.getClass();
+                Class<?> c = o.getClass();
 
                 try {
                     java.lang.reflect.Method m =

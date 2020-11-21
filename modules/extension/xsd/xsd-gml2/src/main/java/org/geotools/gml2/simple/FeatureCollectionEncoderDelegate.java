@@ -71,7 +71,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
     SimpleFeatureCollection features;
 
-    HashMap<Class, GeometryEncoder> geometryEncoders;
+    HashMap<Class, GeometryEncoder<? extends Geometry>> geometryEncoders;
 
     NamespaceSupport namespaces;
 
@@ -88,7 +88,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         this.encoder = encoder;
         this.namespaces = encoder.getNamespaces();
         this.encoder = encoder;
-        this.geometryEncoders = new HashMap<Class, GeometryEncoder>();
+        this.geometryEncoders = new HashMap<>();
         this.boundedBy = gml.getSchema().qName("boundedBy");
         this.name = gml.getSchema().qName("name");
         gml.registerGeometryEncoders(geometryEncoders, encoder);
@@ -112,8 +112,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                 return;
             }
 
-            ObjectEncoder ee = gml.createEnvelopeEncoder(encoder);
-            ee = gml.createEnvelopeEncoder(encoder);
+            @SuppressWarnings("unchecked")
+            ObjectEncoder<Object> ee = gml.createEnvelopeEncoder(encoder);
 
             gml.startFeatures(output);
 
@@ -152,7 +152,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
     private void encodeFeature(
             GMLWriter output,
             boolean featureBounds,
-            ObjectEncoder ee,
+            ObjectEncoder<Object> ee,
             AttributesImpl idatts,
             SimpleFeature f,
             FeatureTypeContextCache ftCache)
@@ -190,7 +190,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
     private void encodeValue(
             GMLWriter output,
-            ObjectEncoder ee,
+            ObjectEncoder<Object> ee,
             Object value,
             AttributeContext attribute,
             String featureId)
@@ -209,7 +209,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                             ((GeometryDescriptor) attribute.descriptor)
                                     .getCoordinateReferenceSystem(),
                             dimension);
-            GeometryEncoder geometryEncoder = getGeometryEncoder(value, attribute);
+            GeometryEncoder<Geometry> geometryEncoder = getGeometryEncoder(value, attribute);
             geometryEncoder.encode(g, atts, output, featureId);
         } else if (value instanceof Envelope) {
             ReferencedEnvelope e = (ReferencedEnvelope) value;
@@ -243,7 +243,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         return null;
     }
 
-    private GeometryEncoder getGeometryEncoder(Object value, AttributeContext attribute) {
+    @SuppressWarnings("unchecked")
+    private GeometryEncoder<Geometry> getGeometryEncoder(Object value, AttributeContext attribute) {
         Class<? extends Object> clazz = value.getClass();
         if (MultiLineString.class.equals(clazz)) {
             // we have a wrinkle with curve support, were we supposed to encode the
@@ -252,10 +253,10 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                 clazz = MultiCurve.class;
             }
         }
-        GeometryEncoder encoder = geometryEncoders.get(clazz);
+        GeometryEncoder<Geometry> encoder = (GeometryEncoder<Geometry>) geometryEncoders.get(clazz);
         while (encoder == null && clazz.getSuperclass() != null) {
             clazz = clazz.getSuperclass();
-            encoder = geometryEncoders.get(clazz);
+            encoder = (GeometryEncoder<Geometry>) geometryEncoders.get(clazz);
         }
 
         if (encoder == null) {
@@ -361,8 +362,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         /** Builds the list of {@link AttributeContext} for each attribute to be encoded */
         private List<AttributeContext> setupAttributeContexts(
                 List properties, SimpleFeatureType schema, BindingLoader bindingLoader) {
-            ArrayList<AttributeContext> attributes =
-                    new ArrayList<AttributeContext>(properties.size());
+            ArrayList<AttributeContext> attributes = new ArrayList<>(properties.size());
             List<AttributeDescriptor> attributeDescriptors = schema.getAttributeDescriptors();
             for (Iterator p = properties.iterator(); p.hasNext(); ) {
                 Object[] o = (Object[]) p.next();

@@ -62,7 +62,7 @@ public class TableRowTest extends TestCase implements DataTypesDefinition {
      * tested class and it can perform some more actions which are necessary for performs tests.
      */
     protected void setUp() {
-        HashMap<String, RowField> map = new HashMap<String, RowField>();
+        HashMap<String, RowField> map = new HashMap<>();
         map.put("first", TEST_FIELDS[0]);
         map.put("second", TEST_FIELDS[1]);
         map.put("third", TEST_FIELDS[2]);

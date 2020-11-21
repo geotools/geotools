@@ -80,13 +80,13 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public Param[] getParametersInfo() {
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        LinkedHashMap<String, Param> map = new LinkedHashMap<>();
         setupParameters(map);
 
         return (Param[]) map.values().toArray(new Param[map.size()]);
     }
 
-    protected void setupParameters(Map<String, Object> parameters) {
+    protected void setupParameters(Map<String, Param> parameters) {
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(DATABASE.key, DATABASE);
         parameters.put(NAMESPACE.key, NAMESPACE);

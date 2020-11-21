@@ -418,7 +418,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         GeometryDescriptor gd = featureType.getGeometryDescriptor();
         if (gd != null) {
             fe.setGeometryColumn(gd.getLocalName());
-            fe.setGeometryType(Geometries.getForBinding((Class) gd.getType().getBinding()));
+            @SuppressWarnings("unchecked")
+            Class<? extends Geometry> binding =
+                    (Class<? extends Geometry>) gd.getType().getBinding();
+            fe.setGeometryType(Geometries.getForBinding(binding));
         }
 
         CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
@@ -451,8 +454,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                         FeatureEntry fe1 = new FeatureEntry();
                         fe1.init(fe);
                         fe1.setGeometryColumn(gd1.getLocalName());
-                        fe1.setGeometryType(
-                                Geometries.getForBinding((Class) gd1.getType().getBinding()));
+                        @SuppressWarnings("unchecked")
+                        Class<? extends Geometry> binding =
+                                (Class<? extends Geometry>) gd1.getType().getBinding();
+                        fe1.setGeometryType(Geometries.getForBinding(binding));
                         geopkg.addGeometryColumnsEntry(fe1, cx);
                     }
                 }
@@ -876,7 +881,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     protected <T> T convert(Object value, Class<T> binding) {
         if (Integer.class.equals(binding) && value instanceof Boolean) {
-            return (T) Integer.valueOf(Boolean.TRUE.equals(value) ? 1 : 0);
+            return binding.cast(Integer.valueOf(Boolean.TRUE.equals(value) ? 1 : 0));
         }
         return super.convert(value, binding);
     }
@@ -912,7 +917,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         if (maybeResultTypes.isPresent()) {
             List<Class> resultTypes = maybeResultTypes.get();
             if (resultTypes.size() == 1) {
-                Class targetType = resultTypes.get(0);
+                Class<?> targetType = resultTypes.get(0);
                 if (java.util.Date.class.isAssignableFrom(targetType)) {
                     return v -> {
                         Object converted = Converters.convert(v, targetType);

@@ -155,12 +155,11 @@
 
     <profiles>
         <profile>
-            <id>errorprone</id>
+            <id>lint-off</id>
             <activation>
                 <property>
                     <name>qa</name>
                 </property>
-                <jdk>(1.8,)</jdk>
             </activation>
             <properties>
                 <!-- 

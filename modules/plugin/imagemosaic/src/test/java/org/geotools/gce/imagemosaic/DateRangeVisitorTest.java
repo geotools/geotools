@@ -79,7 +79,7 @@ public class DateRangeVisitorTest {
         visitor.visit(buildRangeFeature("2008-10-31T00:00:00.000Z", "2008-11-01T00:00:00.000Z"));
         visitor.visit(buildRangeFeature("2008-11-05T00:00:00.000Z", "2008-11-07T00:00:00.000Z"));
 
-        List<String> range = new ArrayList<String>(visitor.getRange());
+        List<String> range = new ArrayList<>(visitor.getRange());
         assertEquals(2, range.size());
         assertEquals("2008-10-31T00:00:00.000Z/2008-11-01T00:00:00.000Z/PT1S", range.get(0));
         assertEquals("2008-11-05T00:00:00.000Z/2008-11-07T00:00:00.000Z/PT1S", range.get(1));
@@ -92,7 +92,7 @@ public class DateRangeVisitorTest {
         visitor.visit(buildRangeFeature("2008-10-31T00:00:00.000Z", "2008-11-01T00:00:00.000Z"));
         visitor.visit(buildRangeFeature("2008-11-05T00:00:00.000Z", "2008-11-07T00:00:00.000Z"));
 
-        List<String> range = new ArrayList<String>(visitor.getRange());
+        List<String> range = new ArrayList<>(visitor.getRange());
         assertEquals(2, range.size());
         assertEquals("2008-10-28T00:00:00.000Z/2008-11-01T00:00:00.000Z/PT1S", range.get(0));
         assertEquals("2008-11-05T00:00:00.000Z/2008-11-07T00:00:00.000Z/PT1S", range.get(1));
@@ -105,7 +105,7 @@ public class DateRangeVisitorTest {
         visitor.visit(buildRangeFeature("2008-11-05T00:00:00.000Z", "2008-11-07T00:00:00.000Z"));
         visitor.visit(buildRangeFeature("2008-11-06T00:00:00.000Z", "2008-11-09T12:00:00.000Z"));
 
-        List<String> range = new ArrayList<String>(visitor.getRange());
+        List<String> range = new ArrayList<>(visitor.getRange());
         assertEquals(2, range.size());
         assertEquals("2008-10-31T00:00:00.000Z/2008-11-01T00:00:00.000Z/PT1S", range.get(0));
         assertEquals("2008-11-05T00:00:00.000Z/2008-11-09T12:00:00.000Z/PT1S", range.get(1));
@@ -119,7 +119,7 @@ public class DateRangeVisitorTest {
         visitor.visit(buildRangeFeature("2008-11-05T00:00:00.000Z", "2008-11-07T00:00:00.000Z"));
         visitor.visit(buildRangeFeature("2008-11-06T00:00:00.000Z", "2008-11-09T12:00:00.000Z"));
 
-        List<String> range = new ArrayList<String>(visitor.getRange());
+        List<String> range = new ArrayList<>(visitor.getRange());
         assertEquals(2, range.size());
         assertEquals("2008-10-28T00:00:00.000Z/2008-11-01T00:00:00.000Z/PT1S", range.get(0));
         assertEquals("2008-11-05T00:00:00.000Z/2008-11-09T12:00:00.000Z/PT1S", range.get(1));

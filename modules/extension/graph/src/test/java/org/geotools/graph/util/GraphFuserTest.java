@@ -245,8 +245,8 @@ public class GraphFuserTest extends TestCase {
 
     protected GraphFuser.EdgeMerger createEdgeMerger() {
         return (new GraphFuser.EdgeMerger() {
-            public Object merge(List edges) {
-                ArrayList ends = new ArrayList();
+            public Object merge(List<Edge> edges) {
+                List<Edge> ends = new ArrayList<>();
                 for (Iterator itr = edges.iterator(); itr.hasNext(); ) {
                     Edge edge = (Edge) itr.next();
                     if (edge.getNodeA().getDegree() != 2 || edge.getNodeB().getDegree() != 2)

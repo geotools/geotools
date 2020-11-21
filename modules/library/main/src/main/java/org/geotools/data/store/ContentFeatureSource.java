@@ -147,7 +147,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         this.query = query;
 
         // set up hints
-        hints = new HashSet<Hints.Key>();
+        hints = new HashSet<>();
         hints.add(Hints.JTS_GEOMETRY_FACTORY);
         hints.add(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
 
@@ -219,7 +219,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      */
     public ResourceInfo getInfo() {
         return new ResourceInfo() {
-            final Set<String> words = new HashSet<String>();
+            final Set<String> words = new HashSet<>();
 
             {
                 words.add("features");
@@ -375,7 +375,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             Iterator<String> i = diff.getModified().keySet().iterator();
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
-            Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
+            Set<FeatureId> modifiedFids = new HashSet<>();
             while (i.hasNext()) {
                 String featureId = i.next();
                 modifiedFids.add(ff.featureId(featureId));
@@ -495,7 +495,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 // consider removed features that satisfy the filter
                 it = diff.getModified().values().iterator();
                 FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-                Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
+                Set<FeatureId> modifiedFids = new HashSet<>();
                 int modifiedPostCount = 0;
                 while (it.hasNext()) {
                     SimpleFeature feature = it.next();
@@ -626,17 +626,13 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         if (!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
             DiffTransactionState state =
                     (DiffTransactionState) getTransaction().getState(getEntry());
-            reader =
-                    new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, state.getDiff(), query.getFilter());
+            reader = new DiffFeatureReader<>(reader, state.getDiff(), query.getFilter());
         }
 
         // filtering
         if (!canFilter()) {
             if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {
-                reader =
-                        new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                reader, query.getFilter());
+                reader = new FilteringFeatureReader<>(reader, query.getFilter());
             }
         }
 
@@ -675,9 +671,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         // max feature limit
         if (!canLimit()) {
             if (query.getMaxFeatures() != -1 && query.getMaxFeatures() < Integer.MAX_VALUE) {
-                reader =
-                        new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                reader, query.getMaxFeatures());
+                reader = new MaxFeatureReader<>(reader, query.getMaxFeatures());
             }
         }
 

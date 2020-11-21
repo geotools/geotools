@@ -97,7 +97,7 @@ public final class ParametersTest {
     @Test
     public void testRangeIntegers() {
         Parameter<Integer> param;
-        param = new Parameter(DefaultParameterDescriptor.create("Range", 15, -30, +40));
+        param = new Parameter<>(DefaultParameterDescriptor.create("Range", 15, -30, +40));
         assertEquals("intValue", 15, param.intValue());
         assertEquals("doubleValue", 15, param.doubleValue(), 0.0);
         param.setValue(12);
@@ -134,7 +134,9 @@ public final class ParametersTest {
     @Test
     public void testRangeDoubles() {
         Parameter<Double> param;
-        param = new Parameter(DefaultParameterDescriptor.create("Range", 15.0, -30.0, +40.0, null));
+        param =
+                new Parameter<>(
+                        DefaultParameterDescriptor.create("Range", 15.0, -30.0, +40.0, null));
         assertEquals("intValue", 15, param.intValue());
         assertEquals("doubleValue", 15, param.doubleValue(), 0.0);
         param.setValue(12.0);
@@ -175,7 +177,7 @@ public final class ParametersTest {
         ParameterDescriptor op = param.getDescriptor();
         assertEquals(
                 "Set<AxisDirection>",
-                new HashSet<AxisDirection>(Arrays.asList(AxisDirection.values())),
+                new HashSet<>(Arrays.asList(AxisDirection.values())),
                 op.getValidValues());
         assertNull("defaultValue", op.getDefaultValue());
         param.setValue(AxisDirection.DOWN);
@@ -325,9 +327,7 @@ public final class ParametersTest {
         assertTrue("validValues", validValues.contains(AxisDirection.DISPLAY_LEFT));
         assertTrue("validValues", validValues.contains(AxisDirection.PAST));
         assertEquals(
-                "validValues",
-                new HashSet<AxisDirection>(Arrays.asList(AxisDirection.values())),
-                validValues);
+                "validValues", new HashSet<>(Arrays.asList(AxisDirection.values())), validValues);
         try {
             parameter.doubleValue();
             fail("doubleValue should not be allowed on AxisDirection");
@@ -340,13 +340,13 @@ public final class ParametersTest {
 
     /** Test parameter values group. */
     @Test
-    @SuppressWarnings("serial")
+    @SuppressWarnings({"serial", "unchecked"})
     public void testGroup() throws IOException {
         final ParameterWriter writer = new ParameterWriter(new StringWriter());
         final Integer ONE = 1;
         final ParameterDescriptor<Integer> p1, p2, p3, p4;
         p1 =
-                new DefaultParameterDescriptor<Integer>(
+                new DefaultParameterDescriptor<>(
                         Collections.singletonMap("name", "1"),
                         Integer.class,
                         null,
@@ -356,7 +356,7 @@ public final class ParametersTest {
                         null,
                         true);
         p2 =
-                new DefaultParameterDescriptor<Integer>(
+                new DefaultParameterDescriptor<>(
                         Collections.singletonMap("name", "2"),
                         Integer.class,
                         null,
@@ -366,7 +366,7 @@ public final class ParametersTest {
                         null,
                         true);
         p3 =
-                new DefaultParameterDescriptor<Integer>(
+                new DefaultParameterDescriptor<>(
                         Collections.singletonMap("name", "3"),
                         Integer.class,
                         null,
@@ -397,21 +397,21 @@ public final class ParametersTest {
                 };
 
         final Parameter v1, v2, v3, v4, v1b, v2b, v3b, v4b;
-        v1 = new Parameter<Integer>(p1);
+        v1 = new Parameter<>(p1);
         v1.setValue(10);
-        v2 = new Parameter<Integer>(p2);
+        v2 = new Parameter<>(p2);
         v2.setValue(20);
-        v3 = new Parameter<Integer>(p3);
+        v3 = new Parameter<>(p3);
         v3.setValue(30);
-        v4 = new Parameter<Integer>(p4);
+        v4 = new Parameter<>(p4);
         v4.setValue(40);
-        v1b = new Parameter<Integer>(p1);
+        v1b = new Parameter<>(p1);
         v1b.setValue(-10);
-        v2b = new Parameter<Integer>(p2);
+        v2b = new Parameter<>(p2);
         v2b.setValue(-20);
-        v3b = new Parameter<Integer>(p3);
+        v3b = new Parameter<>(p3);
         v3b.setValue(-30);
-        v4b = new Parameter<Integer>(p4);
+        v4b = new Parameter<>(p4);
         v4b.setValue(-40);
 
         ParameterDescriptorGroup descriptor;

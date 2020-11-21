@@ -75,7 +75,7 @@ public class JDataStoreWizard extends JWizard {
         super(format == null ? "Connect" : format.getDisplayName());
 
         if (params == null) {
-            connectionParameters = new HashMap<String, Object>();
+            connectionParameters = new HashMap<>();
         } else {
             connectionParameters = params;
         }

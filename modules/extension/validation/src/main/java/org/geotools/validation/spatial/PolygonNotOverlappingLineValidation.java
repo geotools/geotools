@@ -50,11 +50,11 @@ public class PolygonNotOverlappingLineValidation extends PolygonLineAbstractVali
      * @param results Used to coallate results information
      * @return <code>true</code> if all the features pass this test.
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource polySource1 = (SimpleFeatureSource) layers.get(getPolygonTypeRef());
-        SimpleFeatureSource polySource2 =
-                (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
+        SimpleFeatureSource polySource1 = layers.get(getPolygonTypeRef());
+        SimpleFeatureSource polySource2 = layers.get(getRestrictedLineTypeRef());
 
         Object[] poly1 = polySource1.getFeatures().toArray();
         Object[] poly2 = polySource2.getFeatures().toArray();

@@ -74,7 +74,7 @@ public class IdCapabilitiesTypeImpl extends EObjectImpl implements IdCapabilitie
      */
     public EList<ResourceIdentifierType> getResourceIdentifier() {
         if (resourceIdentifier == null) {
-            resourceIdentifier = new EObjectContainmentEList<ResourceIdentifierType>(ResourceIdentifierType.class, this, Fes20Package.ID_CAPABILITIES_TYPE__RESOURCE_IDENTIFIER);
+            resourceIdentifier = new EObjectContainmentEList<>(ResourceIdentifierType.class, this, Fes20Package.ID_CAPABILITIES_TYPE__RESOURCE_IDENTIFIER);
         }
         return resourceIdentifier;
     }

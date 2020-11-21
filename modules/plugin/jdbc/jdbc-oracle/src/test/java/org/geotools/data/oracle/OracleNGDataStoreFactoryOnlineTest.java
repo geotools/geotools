@@ -54,7 +54,7 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
     public void testGeometryMetadata() throws IOException {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         Properties db = FixtureUtilities.loadFixture("oracle");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(SCHEMA.key, db.getProperty(SCHEMA.key));
@@ -81,7 +81,7 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
     private void checkCreateConnection(OracleNGDataStoreFactory factory, String dbtype)
             throws IOException {
         Properties db = FixtureUtilities.loadFixture("oracle");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(SCHEMA.key, db.getProperty(SCHEMA.key));

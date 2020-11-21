@@ -90,7 +90,8 @@ public class Invert extends BaseMathOperationJAI {
     }
 
     /** Returns the expected range of values for the resulting image. */
-    protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
+    protected NumberRange<? extends Number> deriveRange(
+            final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         final NumberRange range = ranges[0];
         final double min = -range.getMaximum();
         final double max = -range.getMinimum();
@@ -101,6 +102,7 @@ public class Invert extends BaseMathOperationJAI {
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
             parameters.set(Operator.INVERT, 0);
+            @SuppressWarnings("unchecked")
             Collection<GridCoverage2D> sources =
                     (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
             for (GridCoverage2D source : sources) {

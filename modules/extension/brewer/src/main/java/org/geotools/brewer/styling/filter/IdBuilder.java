@@ -35,7 +35,7 @@ public class IdBuilder<P> implements Builder<Id> {
     protected P parent;
 
     protected boolean unset = false;
-    private List<Identifier> ids = new ArrayList<Identifier>();
+    private List<Identifier> ids = new ArrayList<>();
 
     public IdBuilder() {
         reset();
@@ -51,7 +51,7 @@ public class IdBuilder<P> implements Builder<Id> {
         if (unset) {
             return null;
         }
-        return ff.id(new HashSet<Identifier>(ids));
+        return ff.id(new HashSet<>(ids));
     }
 
     public IdBuilder<P> fid(String fid) {

@@ -178,7 +178,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     public List<Object> getAttributes() {
-        return new ArrayList(Arrays.asList(values));
+        return new ArrayList<>(Arrays.asList(values));
     }
 
     public Object getDefaultGeometry() {
@@ -293,7 +293,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         final Integer idx = index.get(name);
         if (idx != null) {
             // cast temporarily to a plain collection to avoid type problems with generics
-            Collection c = Collections.singleton(new Attribute(idx));
+            Collection<Property> c = Collections.singleton(new Attribute(idx));
             return c;
         } else {
             return Collections.emptyList();
@@ -332,7 +332,9 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     public void setValue(Object newValue) {
-        setValue((Collection<Property>) newValue);
+        @SuppressWarnings("unchecked")
+        Collection<Property> converted = (Collection<Property>) newValue;
+        setValue(converted);
     }
 
     /** @see org.opengis.feature.Attribute#getDescriptor() */
@@ -354,7 +356,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     public Map<Object, Object> getUserData() {
-        if (userData == null) userData = new HashMap<Object, Object>();
+        if (userData == null) userData = new HashMap<>();
         return userData;
     }
 
@@ -494,12 +496,13 @@ public class SimpleFeatureImpl implements SimpleFeature {
             return getDescriptor().getName();
         }
 
+        @SuppressWarnings("unchecked")
         public Map<Object, Object> getUserData() {
             // lazily create the user data holder
+
             if (attributeUserData == null) attributeUserData = new HashMap[values.length];
             // lazily create the attribute user data
-            if (attributeUserData[index] == null)
-                attributeUserData[index] = new HashMap<Object, Object>();
+            if (attributeUserData[index] == null) attributeUserData[index] = new HashMap<>();
             return attributeUserData[index];
         }
 

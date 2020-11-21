@@ -92,12 +92,14 @@ public class BasicGraph implements Graph, Serializable {
 
     /** @see Graph#queryNodes(GraphVisitor) */
     @Override
+    @SuppressWarnings("unchecked")
     public List<Node> queryNodes(GraphVisitor visitor) {
         return (List<Node>) (query(getNodes(), visitor));
     }
 
     /** @see Graph#queryEdges(GraphVisitor) */
     @Override
+    @SuppressWarnings("unchecked")
     public List<Edge> queryEdges(GraphVisitor visitor) {
         return (List<Edge>) (query(getEdges(), visitor));
     }

@@ -339,7 +339,7 @@ public class GraphFuser {
          * @param edges A collection of edges.
          * @return A single object.
          */
-        public Object merge(List<?> edges);
+        public Object merge(List<Edge> edges);
 
         /**
          * Sets the object for the edge created to represented the merged object.

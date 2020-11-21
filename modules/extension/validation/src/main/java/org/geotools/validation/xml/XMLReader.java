@@ -100,7 +100,7 @@ public class XMLReader {
             NodeList nl = elem.getElementsByTagName("argument");
 
             if (nl != null) {
-                Map m = new HashMap();
+                Map<String, Object> m = new HashMap<>();
                 dto.setArgs(m);
 
                 for (int i = 0; i < nl.getLength(); i++) {
@@ -166,7 +166,7 @@ public class XMLReader {
                 throw new ValidationException("Error loading test suite description", e);
             }
 
-            Map l = new HashMap();
+            Map<String, TestDTO> l = new HashMap<>();
             dto.setTests(l);
 
             NodeList nl = elem.getElementsByTagName("test");
@@ -239,7 +239,7 @@ public class XMLReader {
         NodeList nl = elem.getElementsByTagName("argument");
 
         if (nl != null) {
-            Map m = new HashMap();
+            Map<String, ArgumentDTO> m = new HashMap<>();
             dto.setArgs(m);
 
             for (int i = 0; i < nl.getLength(); i++) {
@@ -323,14 +323,14 @@ public class XMLReader {
      *
      * <p>Loads all the plugins in the directory
      */
-    public static Map loadPlugIns(File plugInDir) throws ValidationException {
-        Map r = null;
+    public static Map<String, PlugInDTO> loadPlugIns(File plugInDir) throws ValidationException {
+        Map<String, PlugInDTO> r = null;
 
         try {
             plugInDir = ReaderUtils.initFile(plugInDir, true);
 
             File[] fileList = plugInDir.listFiles();
-            r = new HashMap();
+            r = new HashMap<>();
 
             if (fileList != null) {
                 for (int i = 0; i < fileList.length; i++) {
@@ -354,9 +354,9 @@ public class XMLReader {
      *
      * @param plugInDTOs Already loaded list of plug-ins to link.
      */
-    public static Map loadValidations(File validationDir, Map plugInDTOs)
+    public static Map<String, TestSuiteDTO> loadValidations(File validationDir, Map plugInDTOs)
             throws ValidationException {
-        Map r = null;
+        Map<String, TestSuiteDTO> r = null;
 
         try {
             validationDir = ReaderUtils.initFile(validationDir, true);
@@ -365,7 +365,7 @@ public class XMLReader {
                     "Problem opening " + validationDir.getName(), dirException);
         }
         File[] fileList = validationDir.listFiles();
-        r = new HashMap();
+        r = new HashMap<>();
 
         if (fileList != null) {
             for (int i = 0; i < fileList.length; i++) {

@@ -128,7 +128,7 @@ public class CycleSchemaClassTemplate
 
     stringBuffer.append(TEXT_2);
     
-        Map<String, String> ns2import = new HashMap<String, String>();
+        Map<String, String> ns2import = new HashMap<>();
         for (Schema imported : sg.getImports()) {
             String fullClassName = imported.getClass().getName();
             String className = fullClassName.substring(fullClassName.lastIndexOf(".")+1);

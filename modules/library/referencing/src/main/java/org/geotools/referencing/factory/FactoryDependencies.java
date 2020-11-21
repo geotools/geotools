@@ -160,7 +160,7 @@ public class FactoryDependencies {
 
     /** Returns the dependencies as a tree. */
     public TreeNode asTree() {
-        return createTree(factory, new HashSet<Factory>());
+        return createTree(factory, new HashSet<>());
     }
 
     /** Returns the dependencies for the specified factory. */

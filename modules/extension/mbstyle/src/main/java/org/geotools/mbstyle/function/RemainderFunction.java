@@ -51,7 +51,7 @@ import org.opengis.filter.capability.FunctionName;
  */
 class RemainderFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("remainder");
+    public static final FunctionName NAME = new FunctionNameImpl("remainder");
 
     RemainderFunction() {
         super(NAME);
@@ -82,6 +82,6 @@ class RemainderFunction extends FunctionExpressionImpl {
                     "Filter Function problem for function remainder argument #1 - expected non-zero Integer");
         }
         // get the remainder
-        return Integer.valueOf(dividend.intValue() % divisor.intValue());
+        return dividend % divisor;
     }
 }

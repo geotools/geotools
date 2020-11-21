@@ -33,7 +33,8 @@ import org.opengis.geometry.DirectPosition;
  * @source $URL$
  */
 /** @source $URL$ */
-public class EdgeData extends HashMap {
+public class EdgeData extends HashMap<Object, Object> {
+    @Override
     public Object put(Object key, Object value) {
         if (key instanceof String) {
             GeometryFactory geofactory = new GeometryFactory();

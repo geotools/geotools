@@ -29,6 +29,8 @@ import org.geotools.jdbc.SQLDialect;
  *
  * @author Justin Deoliveira, OpenGEO
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE =

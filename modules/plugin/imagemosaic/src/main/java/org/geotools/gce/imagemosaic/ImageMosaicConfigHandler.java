@@ -1773,7 +1773,7 @@ public class ImageMosaicConfigHandler {
      */
     public String getTargetCoverageName(
             GridCoverage2DReader inputCoverageReader, String inputCoverageName) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(Prop.INDEX_NAME, getRunConfiguration().getParameter(Prop.INDEX_NAME));
         map.put(Prop.INPUT_COVERAGE_NAME, inputCoverageName);
         return coverageNameHandler.getTargetCoverageName(inputCoverageReader, map);

@@ -61,8 +61,8 @@ public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {
             localProperties = Collections.emptyList();
             localPropertyMap = Collections.emptyMap();
         } else {
-            localProperties = new ArrayList<PropertyDescriptor>(properties);
-            localPropertyMap = new HashMap<Name, PropertyDescriptor>();
+            localProperties = new ArrayList<>(properties);
+            localPropertyMap = new HashMap<>();
             for (PropertyDescriptor pd : properties) {
                 if (pd == null) {
                     // descriptor entry may be null if a request was made for a property that does
@@ -77,6 +77,7 @@ public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {
         this.propertyMap = Collections.unmodifiableMap(localPropertyMap);
     }
 
+    @SuppressWarnings("unchecked")
     public Class<Collection<Property>> getBinding() {
         return (Class<Collection<Property>>) super.getBinding();
     }

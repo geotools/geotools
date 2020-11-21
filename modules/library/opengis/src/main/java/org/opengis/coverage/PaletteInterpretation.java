@@ -33,8 +33,7 @@ public final class PaletteInterpretation extends CodeList<PaletteInterpretation>
     private static final long serialVersionUID = -7387623392932592485L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<PaletteInterpretation> VALUES =
-            new ArrayList<PaletteInterpretation>(4);
+    private static final List<PaletteInterpretation> VALUES = new ArrayList<>(4);
 
     /**
      * Gray Scale color palette.

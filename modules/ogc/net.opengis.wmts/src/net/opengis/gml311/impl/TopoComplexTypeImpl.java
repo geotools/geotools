@@ -190,7 +190,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      */
     public EList<TopoComplexMemberType> getSuperComplex() {
         if (superComplex == null) {
-            superComplex = new EObjectContainmentEList<TopoComplexMemberType>(TopoComplexMemberType.class, this, Gml311Package.TOPO_COMPLEX_TYPE__SUPER_COMPLEX);
+            superComplex = new EObjectContainmentEList<>(TopoComplexMemberType.class, this, Gml311Package.TOPO_COMPLEX_TYPE__SUPER_COMPLEX);
         }
         return superComplex;
     }
@@ -202,7 +202,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      */
     public EList<TopoComplexMemberType> getSubComplex() {
         if (subComplex == null) {
-            subComplex = new EObjectContainmentEList<TopoComplexMemberType>(TopoComplexMemberType.class, this, Gml311Package.TOPO_COMPLEX_TYPE__SUB_COMPLEX);
+            subComplex = new EObjectContainmentEList<>(TopoComplexMemberType.class, this, Gml311Package.TOPO_COMPLEX_TYPE__SUB_COMPLEX);
         }
         return subComplex;
     }
@@ -214,7 +214,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      */
     public EList<TopoPrimitiveMemberType> getTopoPrimitiveMember() {
         if (topoPrimitiveMember == null) {
-            topoPrimitiveMember = new EObjectContainmentEList<TopoPrimitiveMemberType>(TopoPrimitiveMemberType.class, this, Gml311Package.TOPO_COMPLEX_TYPE__TOPO_PRIMITIVE_MEMBER);
+            topoPrimitiveMember = new EObjectContainmentEList<>(TopoPrimitiveMemberType.class, this, Gml311Package.TOPO_COMPLEX_TYPE__TOPO_PRIMITIVE_MEMBER);
         }
         return topoPrimitiveMember;
     }

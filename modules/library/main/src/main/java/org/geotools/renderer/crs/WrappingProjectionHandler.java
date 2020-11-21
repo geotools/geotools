@@ -79,8 +79,9 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             sourceHalfCircle = 180;
         } else {
             // assume a simplified earth circumference, which is 40075 km
-            Unit<?> sourceUnit = axis.getUnit();
-            UnitConverter converter = SI.METRE.getConverterTo((Unit<Length>) sourceUnit);
+            @SuppressWarnings("unchecked")
+            Unit<Length> sourceUnit = (Unit<Length>) axis.getUnit();
+            UnitConverter converter = SI.METRE.getConverterTo(sourceUnit);
             this.sourceHalfCircle = converter.convert(40075000 / 2);
         }
     }
@@ -90,7 +91,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
      * false disables the heuristic for dateline wrapping check (true by default)
      */
     @Override
-    public void setProjectionParameters(Map projectionParameters) {
+    public void setProjectionParameters(Map<String, Object> projectionParameters) {
         super.setProjectionParameters(projectionParameters);
         if (projectionParameters.containsKey(DATELINE_WRAPPING_CHECK_ENABLED)) {
             datelineWrappingCheckEnabled =
@@ -164,7 +165,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // viewing
         // area might be large enough to contain the same continent multiple
         // times (a-la Google Maps)
-        List<Geometry> geoms = new ArrayList<Geometry>();
+        List<Geometry> geoms = new ArrayList<>();
         Class geomType = null;
 
         // search the west-most location inside the current rendering envelope

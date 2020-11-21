@@ -733,7 +733,7 @@ public class HeterogenousCRSTest {
         CoordinateReferenceSystem wgs84 = DefaultGeographicCRS.WGS84;
         assertTrue(CRS.equalsIgnoreMetadata(wgs84, gc.getCoordinateReferenceSystem()));
         RenderedImage ri = gc.getRenderedImage();
-        Map<String, Set<RenderedOp>> operationsGroups = new HashMap<String, Set<RenderedOp>>();
+        Map<String, Set<RenderedOp>> operationsGroups = new HashMap<>();
         groupOperations(ri, operationsGroups);
 
         Set<RenderedOp> imageReads = operationsGroups.get("ImageRead");

@@ -197,7 +197,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
 
         int maxFeatures = query.getMaxFeatures();
         if (maxFeatures != Integer.MAX_VALUE) {
-            reader = new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(reader, maxFeatures);
+            reader = new MaxFeatureReader<>(reader, maxFeatures);
         }
         if (transform != null) {
             reader = new ReprojectFeatureReader(reader, getSchema(), transform);
@@ -210,7 +210,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * designed for bounds computation
      */
     protected FeatureReader<SimpleFeatureType, SimpleFeature> boundsReader() throws IOException {
-        List attributes = new ArrayList();
+        List<String> attributes = new ArrayList<>();
         SimpleFeatureType schema = featureSource.getSchema();
         for (int i = 0; i < schema.getAttributeCount(); i++) {
             AttributeDescriptor at = schema.getDescriptor(i);
@@ -226,7 +226,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
         if (maxFeatures == Integer.MAX_VALUE) {
             return reader;
         } else {
-            return new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(reader, maxFeatures);
+            return new MaxFeatureReader<>(reader, maxFeatures);
         }
     }
 

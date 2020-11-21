@@ -30,7 +30,7 @@ public final class MediumFormat extends CodeList<MediumFormat> {
     private static final long serialVersionUID = 413822250362716958L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<MediumFormat> VALUES = new ArrayList<MediumFormat>(6);
+    private static final List<MediumFormat> VALUES = new ArrayList<>(6);
 
     /** CoPy In / Out (UNIX file format and command). */
     @UML(identifier = "cpio", obligation = CONDITIONAL, specification = ISO_19115)

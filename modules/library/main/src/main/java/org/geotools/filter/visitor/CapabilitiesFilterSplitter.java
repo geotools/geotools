@@ -632,7 +632,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                 // test if one of its children is supported
                 Iterator<Filter> it = ((And) filter).getChildren().iterator();
                 Filter supportedChild = null;
-                List<Filter> otherChildren = new ArrayList<Filter>();
+                List<Filter> otherChildren = new ArrayList<>();
                 while (it.hasNext()) {
                     Filter child = (Filter) it.next();
                     if (supportedChild == null && fcs.supports(child)) {

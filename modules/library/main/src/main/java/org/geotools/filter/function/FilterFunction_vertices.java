@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
 import org.locationtech.jts.geom.Geometry;
@@ -42,17 +43,17 @@ public class FilterFunction_vertices extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    public Object evaluate(Object feature, Class context) {
+    public <T> T evaluate(Object feature, Class<T> context) {
         Geometry g = getExpression(0).evaluate(feature, Geometry.class);
         if (g == null) return null;
 
         MultiPointExtractor filter = new MultiPointExtractor();
         g.apply(filter);
-        return filter.getMultiPoint();
+        return Converters.convert(filter.getMultiPoint(), context);
     }
 
     static class MultiPointExtractor implements CoordinateFilter {
-        List<Coordinate> coordinates = new ArrayList();
+        List<Coordinate> coordinates = new ArrayList<>();
 
         public void filter(Coordinate c) {
             coordinates.add(c);

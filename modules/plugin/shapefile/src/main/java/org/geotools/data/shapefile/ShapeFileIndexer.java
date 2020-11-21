@@ -351,10 +351,10 @@ class ShapeFileIndexer implements FileWriter {
     }
 
     private void printStats(QuadTree tree) throws StoreException {
-        Map<Integer, Integer> stats = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> stats = new HashMap<>();
         gatherStats(tree.getRoot(), stats);
 
-        List<Integer> nums = new ArrayList<Integer>(stats.keySet());
+        List<Integer> nums = new ArrayList<>(stats.keySet());
         Collections.sort(nums);
         LOGGER.log(Level.FINE, "Index statistics");
         for (Integer num : nums) {

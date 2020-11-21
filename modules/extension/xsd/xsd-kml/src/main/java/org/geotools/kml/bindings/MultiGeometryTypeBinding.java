@@ -83,7 +83,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List geometries = node.getChildValues(Geometry.class);
+        List<Geometry> geometries = node.getChildValues(Geometry.class);
 
         if (geometries.isEmpty()) {
             return geometryFactory.createGeometryCollection(new Geometry[] {});
@@ -91,10 +91,10 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
 
         // try to be smart about which subclass to return
         int i = 0;
-        Class geometryClass = geometries.get(i++).getClass();
+        Class<?> geometryClass = geometries.get(i++).getClass();
 
         for (; i < geometries.size(); i++) {
-            Class clazz = geometries.get(i).getClass();
+            Class<?> clazz = geometries.get(i).getClass();
 
             if (!clazz.isAssignableFrom(geometryClass) && !geometryClass.isAssignableFrom(clazz)) {
                 geometryClass = null;

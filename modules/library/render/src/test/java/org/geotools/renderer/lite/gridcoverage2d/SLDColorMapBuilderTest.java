@@ -49,7 +49,7 @@ public class SLDColorMapBuilderTest {
         entry.setOpacity(ff.literal(1.0));
         entry.setLabel("label");
 
-        envValues = new HashMap<String, Object>();
+        envValues = new HashMap<>();
     }
 
     @Test

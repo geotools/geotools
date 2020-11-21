@@ -86,7 +86,8 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
         LinearRing[] inner = null;
 
         if (node.hasChild("innerBoundaryIs")) {
-            List l = node.getChildValues("innerBoundaryIs");
+            @SuppressWarnings("unchecked")
+            List<LinearRing> l = node.getChildValues("innerBoundaryIs");
             inner = (LinearRing[]) l.toArray(new LinearRing[l.size()]);
         }
 

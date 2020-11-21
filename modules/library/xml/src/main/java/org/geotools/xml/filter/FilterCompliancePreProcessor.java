@@ -136,7 +136,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     private int complianceInt;
 
     /** Data collected during traversal */
-    private Stack<Data> current = new Stack<Data>();
+    private Stack<Data> current = new Stack<>();
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -164,7 +164,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         }
         Data data = (Data) current.peek();
         if (data.fids.size() > 0) {
-            Set<FeatureId> set = new HashSet<FeatureId>();
+            Set<FeatureId> set = new HashSet<>();
             Set<String> fids = data.fids;
             for (String fid : fids) {
                 set.add(ff.featureId(fid));
@@ -426,7 +426,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
             case FilterType.LOGIC_OR:
                 {
-                    Set fids = orFids(startOfFilterStack);
+                    Set<String> fids = orFids(startOfFilterStack);
                     resultingFilter = buildFilter(filterType, startOfFilterStack);
                     resultingFilter.fids.addAll(fids);
                     break;
@@ -445,8 +445,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         return resultingFilter;
     }
 
-    private Set orFids(int startOfFilterStack) {
-        Set set = new HashSet();
+    private Set<String> orFids(int startOfFilterStack) {
+        Set<String> set = new HashSet<>();
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
             Data data = (Data) current.get(i);
@@ -464,8 +464,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             return Collections.emptySet();
         }
 
-        Set<Data> toRemove = new HashSet<Data>();
-        List<Set<String>> fidSet = new ArrayList<Set<String>>();
+        Set<Data> toRemove = new HashSet<>();
+        List<Set<String>> fidSet = new ArrayList<>();
         boolean doRemove = true;
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
@@ -493,7 +493,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             return fidSet.get(0);
         }
 
-        HashSet<String> set = new HashSet<String>();
+        HashSet<String> set = new HashSet<>();
 
         for (int i = 0; i < fidSet.size(); i++) {
             Set<String> tmp = fidSet.get(i);
@@ -534,7 +534,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             return (Data) current.pop();
         }
 
-        List<Filter> filterList = new ArrayList<Filter>();
+        List<Filter> filterList = new ArrayList<>();
 
         while (current.size() > startOfFilterStack) {
             Data data = (Data) current.pop();
@@ -558,7 +558,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     private Filter compressFilter(short filterType, Filter f) throws IllegalFilterException {
         Filter result;
         int added = 0;
-        List<org.opengis.filter.Filter> resultList = new ArrayList<org.opengis.filter.Filter>();
+        List<org.opengis.filter.Filter> resultList = new ArrayList<>();
 
         switch (filterType) {
             case FilterType.LOGIC_AND:
@@ -653,7 +653,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     private Data createHighLevelLogicFilter(short filterType, int startOfFilterStack)
             throws IllegalFilterException {
         if (hasFidFilter(startOfFilterStack)) {
-            Set fids;
+            Set<String> fids;
 
             switch (filterType) {
                 case FilterType.LOGIC_AND:
@@ -825,7 +825,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
         public static final Data ALL = new Data(Filter.INCLUDE);
 
-        final Set<String> fids = new HashSet<String>();
+        final Set<String> fids = new HashSet<>();
 
         org.opengis.filter.Filter filter;
 

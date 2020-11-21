@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.xsd.XSD;
+import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
 
 /**
@@ -197,7 +198,7 @@ public final class XS extends XSD {
 
     @Override
     protected Schema buildTypeMappingProfile(Schema schema) {
-        Set proper = new HashSet();
+        Set<Name> proper = new HashSet<>();
         proper.add(name(BYTE)); // Byte.class
         proper.add(name(HEXBINARY)); // byte[].class
         proper.add(name(SHORT)); // Short.class

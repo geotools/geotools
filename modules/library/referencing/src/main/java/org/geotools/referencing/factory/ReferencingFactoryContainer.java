@@ -340,7 +340,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
                 return single;
             }
             final int i = xyFirst ? hi : vi;
-            components = new ArrayList<SingleCRS>(components);
+            components = new ArrayList<>(components);
             components.remove(i);
             components.set(i, single);
             final SingleCRS[] c = components.toArray(new SingleCRS[components.size()]);

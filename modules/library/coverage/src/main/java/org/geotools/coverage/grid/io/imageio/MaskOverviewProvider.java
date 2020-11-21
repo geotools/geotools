@@ -786,7 +786,7 @@ public class MaskOverviewProvider {
         private static final Set<String> MULTIDIM_SERVICE_PROVIDERS;
 
         static {
-            MULTIDIM_SERVICE_PROVIDERS = new HashSet<String>();
+            MULTIDIM_SERVICE_PROVIDERS = new HashSet<>();
             MULTIDIM_SERVICE_PROVIDERS.add("org.geotools.imageio.netcdf.NetCDFImageReaderSpi");
         }
 

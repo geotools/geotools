@@ -438,7 +438,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                 new ListFeatureCollection(getTileIndexStore().getSchema(typeName));
 
         // add them all
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         for (SimpleFeature f : granules) {
             // Add the feature to the feature collection
             featureCollection.add(f);

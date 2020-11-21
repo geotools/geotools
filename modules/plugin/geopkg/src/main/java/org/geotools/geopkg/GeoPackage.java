@@ -197,7 +197,7 @@ public class GeoPackage implements Closeable {
     public GeoPackage(File file, String user, String passwd, boolean readOnly) throws IOException {
         this.file = file;
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         if (user != null) {
             params.put(GeoPkgDataStoreFactory.USER.key, user);
         }
@@ -210,7 +210,7 @@ public class GeoPackage implements Closeable {
 
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
         params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
-        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE, 1000);
+        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 1000);
 
         this.connPool = new GeoPkgDataStoreFactory(writerConfig).createDataSource(params);
     }
@@ -241,7 +241,7 @@ public class GeoPackage implements Closeable {
 
         // enrich params with the basics
         Map<String, Object> params =
-                new HashMap(storeParams != null ? storeParams : Collections.emptyMap());
+                new HashMap<>(storeParams != null ? storeParams : Collections.emptyMap());
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
         params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
 
@@ -570,7 +570,7 @@ public class GeoPackage implements Closeable {
 
     /** Returns list of contents of the geopackage. */
     public List<Entry> contents() {
-        List<Entry> contents = new ArrayList<Entry>();
+        List<Entry> contents = new ArrayList<>();
         try {
             try (Connection cx = connPool.getConnection()) {
 
@@ -616,7 +616,7 @@ public class GeoPackage implements Closeable {
         try {
 
             try (Connection cx = connPool.getConnection()) {
-                List<FeatureEntry> entries = new ArrayList();
+                List<FeatureEntry> entries = new ArrayList<>();
                 String sql =
                         format(
                                 "SELECT a.*, b.column_name, b.geometry_type_name, b.z, b.m, c.organization_coordsys_id, c.definition"
@@ -714,7 +714,7 @@ public class GeoPackage implements Closeable {
             GeoPkgExtensionFactory factory = factories.next();
             GeoPkgExtension extension = factory.getExtension(extensionClass, this);
             if (extension != null) {
-                return (T) extension;
+                return extensionClass.cast(extension);
             }
         }
 
@@ -926,9 +926,13 @@ public class GeoPackage implements Closeable {
 
     static Geometries findGeometryType(SimpleFeatureType schema) {
         GeometryDescriptor gd = findGeometryDescriptor(schema);
-        return gd != null
-                ? Geometries.getForBinding((Class<? extends Geometry>) gd.getType().getBinding())
-                : null;
+        if (gd != null) {
+            @SuppressWarnings("unchecked")
+            Class<? extends Geometry> binding =
+                    (Class<? extends Geometry>) gd.getType().getBinding();
+            return Geometries.getForBinding(binding);
+        }
+        return null;
     }
 
     static GeometryDescriptor findGeometryDescriptor(SimpleFeatureType schema) {
@@ -1128,7 +1132,7 @@ public class GeoPackage implements Closeable {
      * @param e feature entry to create spatial index for
      */
     public void createSpatialIndex(FeatureEntry e) throws IOException {
-        Map<String, String> properties = new HashMap<String, String>();
+        Map<String, String> properties = new HashMap<>();
 
         PrimaryKey pk =
                 ((JDBCFeatureStore) (dataStore.getFeatureSource(e.getTableName()))).getPrimaryKey();
@@ -1184,7 +1188,7 @@ public class GeoPackage implements Closeable {
         try {
             Connection cx = connPool.getConnection();
             try {
-                List<TileEntry> entries = new ArrayList();
+                List<TileEntry> entries = new ArrayList<>();
                 String sql =
                         format(
                                 "SELECT a.*, c.organization_coordsys_id, c.definition"
@@ -1446,7 +1450,7 @@ public class GeoPackage implements Closeable {
             Integer highRow)
             throws IOException {
 
-        List<String> q = new ArrayList();
+        List<String> q = new ArrayList<>();
         addRange("zoom_level", lowZoom, highZoom, q);
         addRange("tile_column", lowCol, highCol, q);
         addRange("tile_row", lowRow, highRow, q);
@@ -1542,7 +1546,7 @@ public class GeoPackage implements Closeable {
     public Set<Identifier> searchSpatialIndex(
             FeatureEntry entry, Double minX, Double minY, Double maxX, Double maxY)
             throws IOException {
-        List<String> q = new ArrayList();
+        List<String> q = new ArrayList<>();
 
         if (minX != null) {
             q.add("minx >= " + minX);
@@ -1578,7 +1582,7 @@ public class GeoPackage implements Closeable {
                     ResultSet rs = st.executeQuery(sql.toString());
 
                     try {
-                        HashSet<Identifier> ids = new HashSet<Identifier>();
+                        HashSet<Identifier> ids = new HashSet<>();
 
                         while (rs.next()) {
                             ids.add(new FeatureIdImpl(rs.getString(1)));

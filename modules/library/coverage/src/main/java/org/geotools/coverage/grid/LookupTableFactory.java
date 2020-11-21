@@ -38,8 +38,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public final class LookupTableFactory {
     /** The pool of {@link LookupTableJAI} objects already created. */
-    private static final Map<LookupTableFactory, LookupTableJAI> pool =
-            new WeakValueHashMap<LookupTableFactory, LookupTableJAI>();
+    private static final Map<LookupTableFactory, LookupTableJAI> pool = new WeakValueHashMap<>();
 
     /** The source data type. Should be one of {@link DataBuffer} constants. */
     private final int sourceType;

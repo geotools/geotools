@@ -56,6 +56,7 @@ import org.geotools.graph.util.graph.DirectedCycleDetector;
 import org.geotools.util.Utilities;
 import org.geotools.xsd.Schemas;
 import org.geotools.xs.XS;
+import org.opengis.feature.Attribute;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
@@ -143,12 +144,12 @@ public class SchemaGenerator extends AbstractGenerator {
     public SchemaGenerator(XSDSchema schema) {
         this.schema = schema;
         this.factory = new FeatureTypeFactoryImpl();
-        types = new HashMap<XSDTypeDefinition,AttributeType>();
+        types = new HashMap<>();
         simpleTypes = true;
         complexTypes = true;
         followComplexTypes = true;
-        imports = new TreeMap<String,Schema>();
-        includes = new HashSet<String>();
+        imports = new TreeMap<>();
+        includes = new HashSet<>();
     }
 
     /**
@@ -195,7 +196,7 @@ public class SchemaGenerator extends AbstractGenerator {
             this.includes = Collections.emptySet();
         }
         else {
-            this.includes = new HashSet<String>(Arrays.asList(includes));    
+            this.includes = new HashSet<>(Arrays.asList(includes));
         }
         
     }
@@ -253,7 +254,7 @@ public class SchemaGenerator extends AbstractGenerator {
      * 
      */
     public void setTypeBindings(TypeBinding[] typeBindings) {
-        Map<Name, String> bindings = new HashMap<Name, String>();
+        Map<Name, String> bindings = new HashMap<>();
         if (typeBindings != null) {
             for (TypeBinding typeBinding : typeBindings) {
                 String namespace = typeBinding.getNamespace();
@@ -457,7 +458,7 @@ public class SchemaGenerator extends AbstractGenerator {
 		DirectedDepthFirstTopologicalIterator iterator = 
 			new DirectedDepthFirstTopologicalIterator();
 		
-		final ArrayList sorted = new ArrayList();
+		final List<AttributeType> sorted = new ArrayList<>();
 		GraphWalker walker = new GraphWalker() {
 			
 			public int visit(Graphable element, GraphTraversal traversal) {
@@ -465,7 +466,7 @@ public class SchemaGenerator extends AbstractGenerator {
 				
 				//only add if in this schema
 				if (type.getName().getNamespaceURI().equals(schema.getTargetNamespace())) {
-					sorted.add(element.getObject());	
+					sorted.add((AttributeType) element.getObject());	
 				}
 				
 				return GraphTraversal.CONTINUE;
@@ -522,7 +523,7 @@ public class SchemaGenerator extends AbstractGenerator {
 
         //TODO: actually derive valus from type
 		AttributeType gtType = factory.createAttributeType(
-			name(xsdType), Object.class, false, false, Collections.EMPTY_LIST, 
+			name(xsdType), Object.class, false, false, Collections.emptyList(), 
 			superType, null
 		);
         types.put(xsdType, gtType);
@@ -563,7 +564,7 @@ public class SchemaGenerator extends AbstractGenerator {
 		}
 		
 		// now build child types
-		ArrayList properties = new ArrayList();
+		List<PropertyDescriptor> properties = new ArrayList<>();
 		if (followComplexTypes) {
 			List children = Schemas.getChildElementParticles(xsdType, false);
 			for (Iterator itr = children.iterator(); itr.hasNext();) {
@@ -644,7 +645,7 @@ public class SchemaGenerator extends AbstractGenerator {
 		//TODO: description
 		ComplexType gtType = factory.createComplexType(
 			name(xsdType), properties, false, xsdType.isAbstract(), 
-			Collections.EMPTY_LIST, superType, null
+			Collections.emptyList(), superType, null
 		);
 		types.put(xsdType,gtType);
 		return gtType;

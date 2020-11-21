@@ -47,11 +47,11 @@ public class URConverterFactory implements ConverterFactory {
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     String s = (String) source;
                     try {
-                        return (T) new URL(s);
+                        return target.cast(new URL(s));
                     } catch (MalformedURLException e1) {
                         File f = new File(s);
                         try {
-                            return (T) f.toURI().toURL();
+                            return target.cast(f.toURI().toURL());
                         } catch (MalformedURLException e2) {
                         }
                     }
@@ -66,11 +66,11 @@ public class URConverterFactory implements ConverterFactory {
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     String s = (String) source;
                     try {
-                        return (T) new URI(s);
+                        return target.cast(new URI(s));
                     } catch (URISyntaxException e1) {
                         File f = new File(s);
                         try {
-                            return (T) f.toURI();
+                            return target.cast(f.toURI());
                         } catch (Exception e2) {
                         }
                     }
@@ -84,7 +84,7 @@ public class URConverterFactory implements ConverterFactory {
 
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     URL url = (URL) source;
-                    return (T) url.toURI();
+                    return target.cast(url.toURI());
                 }
             };
 
@@ -93,7 +93,7 @@ public class URConverterFactory implements ConverterFactory {
 
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     URI uri = (URI) source;
-                    return (T) uri.toURL();
+                    return target.cast(uri.toURL());
                 }
             };
 

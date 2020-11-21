@@ -130,7 +130,7 @@ public class NetCDFUnitParserTest {
 
         private String input;
 
-        private Unit expected;
+        private Unit<?> expected;
 
         public UnitConversionTest(String input, Unit expected) {
             this.input = input;

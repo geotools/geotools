@@ -22,19 +22,19 @@ import java.util.Set;
 
 class RecursionCheckingHelper {
 
-    private final ThreadLocal<Set> threadLocalSet = new ThreadLocal<Set>();
+    private final ThreadLocal<Set<Object>> threadLocalSet = new ThreadLocal<>();
 
     boolean addAndCheck(Object item) {
-        Set set = threadLocalSet.get();
+        Set<Object> set = threadLocalSet.get();
         if (set == null) {
-            set = new HashSet<Class<?>>();
+            set = new HashSet<>();
             threadLocalSet.set(set);
         }
         return set.add(item);
     }
 
     boolean contains(Object item) {
-        Set<Class<?>> set = threadLocalSet.get();
+        Set<Object> set = threadLocalSet.get();
         if (set == null) {
             return false;
         }
@@ -42,7 +42,7 @@ class RecursionCheckingHelper {
     }
 
     void removeAndCheck(Object item) {
-        Set<Class<?>> set = threadLocalSet.get();
+        Set<Object> set = threadLocalSet.get();
         if (set == null) {
             throw new AssertionError(null); // Should never happen.
         } else if (!set.remove(item)) {

@@ -40,7 +40,7 @@ public final class SLD extends XSD {
     /** private constructor */
     private SLD() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(SE.getInstance());
     }
 

@@ -61,8 +61,9 @@ public class EnvelopePropertyTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
-        List l = new ArrayList();
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
+        List<Object[]> l = new ArrayList<>();
         l.add(new Object[] {GML.Envelope, object});
         return l;
     }

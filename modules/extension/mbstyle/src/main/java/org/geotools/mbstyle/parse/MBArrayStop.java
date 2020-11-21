@@ -16,6 +16,7 @@
  */
 package org.geotools.mbstyle.parse;
 
+import java.util.List;
 import org.json.simple.JSONArray;
 
 /**
@@ -117,9 +118,11 @@ public class MBArrayStop {
                             + ", but stop value array length is "
                             + stopValueArray.size());
         }
-        JSONArray newStopJson = new JSONArray();
+        @SuppressWarnings("unchecked")
+        List<Object> newStopJson = new JSONArray();
+
         newStopJson.add(getStopKey());
         newStopJson.add(getStopValue(idx));
-        return newStopJson;
+        return (JSONArray) newStopJson;
     }
 }

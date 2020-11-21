@@ -88,7 +88,7 @@ public class FillMarginTest {
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
-        Map hints = Collections.singletonMap(StreamingRenderer.DPI_KEY, 300);
+        Map<Object, Object> hints = Collections.singletonMap(StreamingRenderer.DPI_KEY, 300);
         renderer.setRendererHints(hints);
 
         BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null, 480, 480);

@@ -115,7 +115,7 @@ public class WMSComplexTypes {
 
             org.geotools.data.ows.OperationType operationType = null;
 
-            List formatStrings = new ArrayList();
+            List<String> formatStrings = new ArrayList<>();
 
             for (int i = 0; i < value.length; i++) {
                 if (sameName(elems[0], value[i])) {
@@ -130,7 +130,7 @@ public class WMSComplexTypes {
                 }
             }
             if (operationType != null) {
-                operationType.setFormats(new ArrayList(formatStrings));
+                operationType.setFormats(new ArrayList<>(formatStrings));
             }
 
             return operationType;
@@ -483,12 +483,12 @@ public class WMSComplexTypes {
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
-            ArrayList strings = new ArrayList();
+            List<String> strings = new ArrayList<>();
 
             for (int i = 0; i < value.length; i++) {
                 // System.out.println("Strings adding: "+value[i].getValue());
                 if (value[i].getValue() != null && ((String) value[i].getValue()).length() != 0) {
-                    strings.add(value[i].getValue());
+                    strings.add((String) value[i].getValue());
                 }
             }
 
@@ -1094,7 +1094,7 @@ public class WMSComplexTypes {
                 }
 
                 if (sameName(elems[3], value[i])) {
-                    Collection voices = Collections.singleton(value[i].getValue());
+                    Collection<String> voices = Collections.singleton((String) value[i].getValue());
                     if (telephone == null) {
                         telephone = new TelephoneImpl();
                     }
@@ -1102,7 +1102,7 @@ public class WMSComplexTypes {
                 }
 
                 if (sameName(elems[4], value[i])) {
-                    Collection fax = Collections.singleton(value[i].getValue());
+                    Collection<String> fax = Collections.singleton((String) value[i].getValue());
                     if (telephone == null) {
                         telephone = new TelephoneImpl();
                     }
@@ -2705,16 +2705,16 @@ public class WMSComplexTypes {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
-            List childLayers = new ArrayList();
+            List<Layer> childLayers = new ArrayList<>();
 
             Layer layer = new Layer();
 
-            Set crs = new TreeSet();
-            HashMap boundingBoxes = new HashMap();
+            Set<String> crs = new TreeSet<>();
+            Map<String, CRSEnvelope> boundingBoxes = new HashMap<>();
             Map<String, Dimension> dimensions = new HashMap<>();
-            HashMap extents = new HashMap();
-            List styles = new ArrayList();
-            List metadataURLS = new ArrayList();
+            Map<String, Extent> extents = new HashMap<>();
+            List<StyleImpl> styles = new ArrayList<>();
+            List<MetadataURL> metadataURLS = new ArrayList<>();
 
             for (int i = 0; i < value.length; i++) {
                 if (sameName(elems[0], value[i])) {
@@ -2785,7 +2785,7 @@ public class WMSComplexTypes {
                 // }
 
                 if (sameName(elems[15], value[i])) {
-                    styles.add(value[i].getValue());
+                    styles.add((StyleImpl) value[i].getValue());
                 }
                 if (sameName(elems[16], value[i])) {
                     Double min = (Double) value[i].getValue();
@@ -3381,7 +3381,8 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, OperationNotSupportedException {
             String name = attrs.getValue("name");
             if (name == null || name.length() == 0) {
@@ -4457,7 +4458,7 @@ public class WMSComplexTypes {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             StyleImpl style = new StyleImpl();
-            List legendURLS = new ArrayList();
+            List<String> legendURLS = new ArrayList<>();
 
             for (int i = 0; i < value.length; i++) {
 
@@ -5171,8 +5172,8 @@ public class WMSComplexTypes {
             /*
              * ServiceExceptions with codes get bumped to the top of the list.
              */
-            List codes = new ArrayList();
-            List noCodes = new ArrayList();
+            List<ServiceException> codes = new ArrayList<>();
+            List<ServiceException> noCodes = new ArrayList<>();
             for (int i = 0; i < value.length; i++) {
                 ServiceException exception = (ServiceException) value[i].getValue();
                 if (exception.getCode() != null && exception.getCode().length() != 0) {
@@ -5188,7 +5189,7 @@ public class WMSComplexTypes {
             ServiceException firstException = null;
             ServiceException recentException = null;
             for (int i = 0; i < codes.size(); i++) {
-                ServiceException exception = (ServiceException) codes.get(i);
+                ServiceException exception = codes.get(i);
                 if (firstException == null) {
                     firstException = exception;
                     recentException = exception;
@@ -5199,7 +5200,7 @@ public class WMSComplexTypes {
             }
             codes = null;
             for (int i = 0; i < noCodes.size(); i++) {
-                ServiceException exception = (ServiceException) noCodes.get(i);
+                ServiceException exception = noCodes.get(i);
                 if (firstException == null) {
                     firstException = exception;
                     recentException = exception;

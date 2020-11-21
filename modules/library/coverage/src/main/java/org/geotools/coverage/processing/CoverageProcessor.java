@@ -112,7 +112,7 @@ public class CoverageProcessor {
     private static CoverageProcessor DEFAULT;
 
     private static final SoftValueHashMap<Hints, CoverageProcessor> processorsPool =
-            new SoftValueHashMap<Hints, CoverageProcessor>();
+            new SoftValueHashMap<>();
 
     /**
      * Cacheable instance of the {@link CoverageProcessor}. It prevents users to add operations
@@ -179,7 +179,7 @@ public class CoverageProcessor {
      * the sorted map.
      */
     private final Map<String, Operation> operations =
-            Collections.synchronizedMap(new TreeMap<String, Operation>(COMPARATOR));
+            Collections.synchronizedMap(new TreeMap<>(COMPARATOR));
 
     /**
      * The rendering hints for JAI operations (never {@code null}). This field is usually given as
@@ -374,8 +374,7 @@ public class CoverageProcessor {
     public void listOperations(final Writer out) throws IOException {
         final Collection<Operation> operations = getOperations();
         final CoverageParameterWriter writer = new CoverageParameterWriter(out);
-        final List<ParameterDescriptorGroup> descriptors =
-                new ArrayList<ParameterDescriptorGroup>(operations.size());
+        final List<ParameterDescriptorGroup> descriptors = new ArrayList<>(operations.size());
         for (final Iterator<Operation> it = operations.iterator(); it.hasNext(); ) {
             final Operation operation = it.next();
             if (operation instanceof AbstractOperation) {

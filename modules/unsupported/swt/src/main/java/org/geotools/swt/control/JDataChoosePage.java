@@ -55,7 +55,7 @@ public class JDataChoosePage extends WizardPage implements ISelectionChangedList
         GridLayout gridLayout = new GridLayout(1, false);
         mainComposite.setLayout(gridLayout);
 
-        List<DataStoreFactorySpi> factoryList = new ArrayList<DataStoreFactorySpi>();
+        List<DataStoreFactorySpi> factoryList = new ArrayList<>();
         for (Iterator<DataStoreFactorySpi> iter = DataStoreFinder.getAvailableDataStores();
                 iter.hasNext(); ) {
             factoryList.add(iter.next());

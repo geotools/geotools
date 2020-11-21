@@ -32,7 +32,7 @@ import org.geotools.gce.imagemosaic.jdbc.custom.JDBCAccessPGRaster;
  * @author mcr
  */
 class JDBCAccessFactory {
-    static Map<String, JDBCAccess> JDBCAccessMap = new HashMap<String, JDBCAccess>();
+    static Map<String, JDBCAccess> JDBCAccessMap = new HashMap<>();
 
     /**
      * Factory method

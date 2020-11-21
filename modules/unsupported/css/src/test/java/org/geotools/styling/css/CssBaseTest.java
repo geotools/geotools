@@ -56,6 +56,7 @@ public class CssBaseTest {
         assertProperty(r, PseudoClass.ROOT, propertyIdx, propertyName, expectedValue);
     }
 
+    @SuppressWarnings("unchecked")
     protected void printResults(String input, ParsingResult<?> result) {
         Object value = result.parseTreeRoot.getValue();
         if (value != null) {
@@ -67,7 +68,8 @@ public class CssBaseTest {
         if (value instanceof GraphNode) {
             LOGGER.info(
                     "\nAbstract Syntax Tree:\n"
-                            + GraphUtils.printTree((GraphNode) value, new ToStringFormatter(null))
+                            + GraphUtils.printTree(
+                                    (GraphNode) value, new ToStringFormatter<GraphNode>())
                             + '\n');
         } else {
             LOGGER.info("\nParse Tree:\n" + ParseTreeUtils.printNodeTree(result) + '\n');

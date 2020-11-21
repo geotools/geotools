@@ -149,7 +149,7 @@ public final class GridCoverageRendererUtilities {
             GridCoverageFactory gridCoverageFactory,
             final Hints hints)
             throws FactoryException {
-        List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> reprojectedCoverages = new ArrayList<>();
         for (GridCoverage2D coverage : coverages) {
             if (coverage == null) {
                 continue;
@@ -221,9 +221,10 @@ public final class GridCoverageRendererUtilities {
             ROI roi = new ROI(new ROIGeometry(JTS.toGeometry(env)).getAsImage());
             PlanarImage pi = PlanarImage.wrapRenderedImage(input);
             pi.setProperty("ROI", roi);
-            final Map sourceProperties = coverage.getProperties();
-            Map properties =
-                    sourceProperties == null ? new HashMap() : new HashMap(sourceProperties);
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> sourceProperties = coverage.getProperties();
+            Map<String, Object> properties =
+                    sourceProperties == null ? new HashMap<>() : new HashMap<>(sourceProperties);
             properties.put("GC_ROI", roi);
             return gridCoverageFactory.create(
                     coverage.getName(),
@@ -465,7 +466,7 @@ public final class GridCoverageRendererUtilities {
         if (handler == null) {
             return coverages;
         }
-        List<GridCoverage2D> displacedCoverages = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> displacedCoverages = new ArrayList<>();
         Envelope testEnvelope = ReferencedEnvelope.reference(destinationEnvelope);
         MathTransform mt = CRS.findMathTransform(sourceCRS, targetCRS);
         PolygonExtractor polygonExtractor = new PolygonExtractor();
@@ -623,7 +624,7 @@ public final class GridCoverageRendererUtilities {
             mosaicked =
                     mosaic(
                             coverages,
-                            new ArrayList<GridCoverage2D>(),
+                            new ArrayList<>(),
                             destinationEnvelope,
                             mosaicHints,
                             bgValues);
@@ -711,7 +712,8 @@ public final class GridCoverageRendererUtilities {
                                     : TypeMap.getColorInterpretation(im.getColorModel(), i).name());
         }
 
-        Map properties = coverage.getProperties();
+        @SuppressWarnings("unchecked")
+        Map<String, Object> properties = coverage.getProperties();
         if (properties == null) {
             properties = new HashMap<>();
         }

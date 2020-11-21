@@ -136,7 +136,7 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
         }
 
         // &lt;xsd:element ref="sld:FeatureTypeStyle" maxOccurs="unbounded"/&gt;
-        List fts = node.getChildValues(FeatureTypeStyle.class);
+        List<FeatureTypeStyle> fts = node.getChildValues(FeatureTypeStyle.class);
         style.featureTypeStyles().addAll(fts);
 
         return style;

@@ -50,19 +50,21 @@ public class CollectionConverterFactory implements ConverterFactory {
     protected static final Converter CollectionToCollection =
             new Converter() {
 
-                public Object convert(Object source, Class target) throws Exception {
+                public <T> T convert(Object source, Class<T> target) throws Exception {
                     // if source is already an instance nevermind
                     if (target.isInstance(source)) {
-                        return source;
+                        return target.cast(source);
                     }
 
                     // dynamically create and add
-                    Collection converted = newCollection(target);
+                    Collection<Object> converted = newCollection(target);
                     if (converted != null) {
-                        converted.addAll((Collection) source);
+                        @SuppressWarnings("unchecked")
+                        Collection<Object> castSource = (Collection<Object>) source;
+                        converted.addAll(castSource);
                     }
 
-                    return converted;
+                    return target.cast(converted);
                 }
             };
 
@@ -70,7 +72,7 @@ public class CollectionConverterFactory implements ConverterFactory {
     protected static final Converter CollectionToArray =
             new Converter() {
 
-                public Object convert(Object source, Class target) throws Exception {
+                public <T> T convert(Object source, Class<T> target) throws Exception {
                     Collection s = (Collection) source;
                     Object array = Array.newInstance(target.getComponentType(), s.size());
 
@@ -80,7 +82,7 @@ public class CollectionConverterFactory implements ConverterFactory {
                             Array.set(array, x, i.next());
                         }
 
-                        return array;
+                        return target.cast(array);
                     } catch (Exception e) {
                         // Means an incompatable type assignment
 
@@ -94,8 +96,8 @@ public class CollectionConverterFactory implements ConverterFactory {
     protected static final Converter ArrayToCollection =
             new Converter() {
 
-                public Object convert(Object source, Class target) throws Exception {
-                    Collection collection = newCollection(target);
+                public <T> T convert(Object source, Class<T> target) throws Exception {
+                    Collection<Object> collection = newCollection(target);
                     if (collection != null) {
                         int length = Array.getLength(source);
                         for (int i = 0; i < length; i++) {
@@ -103,7 +105,7 @@ public class CollectionConverterFactory implements ConverterFactory {
                         }
                     }
 
-                    return collection;
+                    return target.cast(collection);
                 }
             };
 
@@ -111,10 +113,10 @@ public class CollectionConverterFactory implements ConverterFactory {
     protected static final Converter ArrayToArray =
             new Converter() {
 
-                public Object convert(Object source, Class target) throws Exception {
+                public <T> T convert(Object source, Class<T> target) throws Exception {
                     // get the individual component types
-                    Class s = source.getClass().getComponentType();
-                    Class t = target.getComponentType();
+                    Class<?> s = source.getClass().getComponentType();
+                    Class<?> t = target.getComponentType();
 
                     // make sure the source can be assiigned to the target
                     if (t.isAssignableFrom(s)) {
@@ -125,34 +127,38 @@ public class CollectionConverterFactory implements ConverterFactory {
                             Array.set(converted, i, Array.get(source, i));
                         }
 
-                        return converted;
+                        @SuppressWarnings("unchecked")
+                        T cast = (T) converted;
+                        return cast;
                     }
 
                     return null;
                 }
             };
 
-    protected static Collection newCollection(Class target) throws Exception {
+    protected static Collection<Object> newCollection(Class target) throws Exception {
         if (target.isInterface()) {
             // try the common ones
             if (List.class.isAssignableFrom(target)) {
-                return new ArrayList();
+                return new ArrayList<>();
             }
             if (SortedSet.class.isAssignableFrom(target)) {
-                return new TreeSet();
+                return new TreeSet<>();
             } else if (Set.class.isAssignableFrom(target)) {
-                return new HashSet();
+                return new HashSet<>();
             }
 
             // could not figure out
             return null;
         } else {
             // instantiate directly
-            return (Collection) target.getDeclaredConstructor().newInstance();
+            @SuppressWarnings("unchecked")
+            Collection<Object> result = (Collection) target.getDeclaredConstructor().newInstance();
+            return result;
         }
     }
 
-    public Converter createConverter(Class source, Class target, Hints hints) {
+    public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         if ((Collection.class.isAssignableFrom(source) || source.isArray())
                 && (Collection.class.isAssignableFrom(target) || target.isArray())) {
 

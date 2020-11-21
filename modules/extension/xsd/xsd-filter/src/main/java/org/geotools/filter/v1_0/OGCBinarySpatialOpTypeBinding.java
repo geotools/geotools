@@ -78,7 +78,7 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<?> getType() {
         return BinarySpatialOperator.class;
     }
 
@@ -178,12 +178,13 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         // special hack for Functions, while not mandated by the spec we handle it
         // here
         BinarySpatialOperator operator = (BinarySpatialOperator) object;
         if (operator.getExpression2() instanceof Function) {
-            ArrayList props = new ArrayList();
+            List<Object[]> props = new ArrayList<>();
             props.add(new Object[] {OGC.Function, operator.getExpression2()});
             return props;
         }

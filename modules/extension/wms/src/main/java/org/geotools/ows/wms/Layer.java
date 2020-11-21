@@ -60,7 +60,7 @@ public class Layer implements Comparable<Layer> {
     /**
      * Child Layers (Note we should clear the children cache if any of setter methods are called)
      */
-    private List<Layer> children = new ArrayList<Layer>();
+    private List<Layer> children = new ArrayList<>();
 
     /** The title is for informative display to a human. */
     private String title;
@@ -81,7 +81,7 @@ public class Layer implements Comparable<Layer> {
      * account for either data that moves over time; or compound layers that combine several data
      * sets.
      */
-    private List<CRSEnvelope> boundingBoxes = new ArrayList<CRSEnvelope>();
+    private List<CRSEnvelope> boundingBoxes = new ArrayList<>();
 
     /**
      * A BoundingBox containing the minimum rectangle of the map data in CRS:84 (Prior to WMS 1.3.3
@@ -106,9 +106,9 @@ public class Layer implements Comparable<Layer> {
 
     private double scaleDenominatorMax = Double.NaN;
 
-    private List<Dimension> dimensions = new ArrayList<Dimension>();
+    private List<Dimension> dimensions = new ArrayList<>();
 
-    private List<Extent> extents = new ArrayList<Extent>();
+    private List<Extent> extents = new ArrayList<>();
 
     // Cache
     // These cache data structures are used to store the union of this Layers definition
@@ -145,7 +145,7 @@ public class Layer implements Comparable<Layer> {
      * ReferencedEnvelope with a real CoordinateReferenceSystem.
      */
     private Map<CoordinateReferenceSystem, Envelope> envelopeCache =
-            Collections.synchronizedMap(new WeakHashMap<CoordinateReferenceSystem, Envelope>());
+            Collections.synchronizedMap(new WeakHashMap<>());
 
     private List<MetadataURL> metadataURL;
 
@@ -202,7 +202,7 @@ public class Layer implements Comparable<Layer> {
      */
     public synchronized Map<String, CRSEnvelope> getBoundingBoxes() {
         if (allBoundingBoxesCache == null) {
-            allBoundingBoxesCache = new HashMap<String, CRSEnvelope>();
+            allBoundingBoxesCache = new HashMap<>();
 
             for (CRSEnvelope bbox : getLayerBoundingBoxes()) {
                 allBoundingBoxesCache.put(bbox.getSRSName(), bbox);
@@ -257,7 +257,7 @@ public class Layer implements Comparable<Layer> {
     public synchronized Map<String, Dimension> getDimensions() {
         if (allDimensionsCache == null) {
             Layer layer = this;
-            allDimensionsCache = new HashMap<String, Dimension>();
+            allDimensionsCache = new HashMap<>();
             while (layer != null) {
                 for (Dimension dimension : layer.getLayerDimensions()) {
                     allDimensionsCache.put(dimension.getName(), dimension);
@@ -322,7 +322,7 @@ public class Layer implements Comparable<Layer> {
     public synchronized Map<String, Extent> getExtents() {
         if (allExtentsCache == null) {
             Layer layer = this;
-            allExtentsCache = new HashMap<String, Extent>();
+            allExtentsCache = new HashMap<>();
             while (layer != null) {
                 for (Extent extent : layer.getLayerExtents()) {
                     allExtentsCache.put(extent.getName(), extent);
@@ -403,7 +403,7 @@ public class Layer implements Comparable<Layer> {
     public Set<String> getSrs() {
         synchronized (this) {
             if (allSRSCache == null) {
-                allSRSCache = new HashSet<String>(srs);
+                allSRSCache = new HashSet<>(srs);
                 // Get my ancestor's srs/crs
                 Layer parent = this.getParent();
                 if (parent != null) {
@@ -434,7 +434,7 @@ public class Layer implements Comparable<Layer> {
      * @return List of all styles for this layer and its ancestors
      */
     public List<StyleImpl> getStyles() {
-        ArrayList<StyleImpl> allStyles = new ArrayList<StyleImpl>();
+        ArrayList<StyleImpl> allStyles = new ArrayList<>();
         // Get my ancestor's styles
         Layer parent = this.getParent();
         if (parent != null) {
@@ -783,7 +783,7 @@ public class Layer implements Comparable<Layer> {
 
     /** */
     protected Collection<String> extractCRSNames(CoordinateReferenceSystem crs) {
-        Collection<String> identifiers = new ArrayList<String>();
+        Collection<String> identifiers = new ArrayList<>();
         for (ReferenceIdentifier identifier : crs.getIdentifiers()) {
             String srsName = identifier.toString();
             identifiers.add(srsName);

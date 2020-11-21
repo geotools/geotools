@@ -31,8 +31,7 @@ import org.geotools.arcsde.session.ISession;
  */
 class ColumnQualifier {
 
-    public static Column qualify(
-            ISession session, Map<String, Object> tableAliases, Column column) {
+    public static Column qualify(ISession session, Map<String, ?> tableAliases, Column column) {
         Table table = column.getTable();
 
         String columnName = column.getColumnName();

@@ -62,7 +62,7 @@ public class LazySearchIterator implements CloseableIterator<Data> {
 
     private IndexFile indexfile;
 
-    ArrayList<Node> parents = new ArrayList<Node>();
+    ArrayList<Node> parents = new ArrayList<>();
 
     Indices indices = new Indices();
 

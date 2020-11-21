@@ -1019,20 +1019,26 @@ public final class CRS2GeoTiffMetadataAdapter {
                     unit.toString()); // unitFormat.labelFor(unit)
 
             // Size with respect to base UoM
-            UnitConverter converter = null;
-            if (SI.METRE.isCompatible(unit)) {
-                converter = ((Unit<Length>) unit).getConverterTo(SI.METRE);
-            } else if (SI.SECOND.isCompatible(unit)) {
-                converter = ((Unit<Time>) unit).getConverterTo(SI.SECOND);
-            } else if (SI.RADIAN.isCompatible(unit)) {
-                if (!AbstractUnit.ONE.equals(unit)) {
-                    converter = ((Unit<Angle>) unit).getConverterTo(SI.RADIAN);
-                }
-            }
+            UnitConverter converter = getUnitConverter(unit);
 
             if (converter != null) {
                 metadata.addGeoDoubleParam(key2, converter.convert(1));
             } else metadata.addGeoDoubleParam(key2, 1);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private UnitConverter getUnitConverter(Unit<?> unit) {
+        UnitConverter converter = null;
+        if (SI.METRE.isCompatible(unit)) {
+            converter = ((Unit<Length>) unit).getConverterTo(SI.METRE);
+        } else if (SI.SECOND.isCompatible(unit)) {
+            converter = ((Unit<Time>) unit).getConverterTo(SI.SECOND);
+        } else if (SI.RADIAN.isCompatible(unit)) {
+            if (!AbstractUnit.ONE.equals(unit)) {
+                converter = ((Unit<Angle>) unit).getConverterTo(SI.RADIAN);
+            }
+        }
+        return converter;
     }
 }

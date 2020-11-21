@@ -76,7 +76,7 @@ class Transformer {
         this.source = source;
         this.name = name;
         this.definitions = definitions;
-        this.expressions = new HashMap<String, Expression>();
+        this.expressions = new HashMap<>();
         for (Definition property : definitions) {
             expressions.put(property.getName(), property.getExpression());
         }
@@ -90,7 +90,7 @@ class Transformer {
 
     /** Locates all geometry properties in the transformed type */
     List<String> getGeometryPropertyNames() {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         for (AttributeDescriptor ad : schema.getAttributeDescriptors()) {
             if (ad instanceof GeometryDescriptor) {
@@ -205,7 +205,7 @@ class Transformer {
      */
     public List<String> getOriginalNames(List<String> names) {
 
-        List<String> originalNames = new ArrayList<String>();
+        List<String> originalNames = new ArrayList<>();
         for (String name : names) {
             Expression ex = expressions.get(name);
             if (ex instanceof PropertyName) {
@@ -287,7 +287,7 @@ class Transformer {
             return original;
         }
 
-        List<SortBy> transformed = new ArrayList<SortBy>();
+        List<SortBy> transformed = new ArrayList<>();
         for (SortBy sort : original) {
             if (sort == SortBy.NATURAL_ORDER || sort == SortBy.REVERSE_ORDER) {
                 transformed.add(sort);
@@ -311,7 +311,7 @@ class Transformer {
 
     /** Builds the list of original attributes required to run the specified query */
     String[] getRequiredAttributes(Query query) {
-        Set<String> attributes = new HashSet<String>();
+        Set<String> attributes = new HashSet<>();
 
         FilterAttributeExtractor extractor = new FilterAttributeExtractor();
         if (query.getPropertyNames() == Query.ALL_NAMES) {

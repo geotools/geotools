@@ -487,7 +487,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         final GridSampleDimension band = getSampleDimension(max, min);
 
         // setting metadata
-        final Map<String, Double> metadata = new HashMap<String, Double>();
+        final Map<String, Double> metadata = new HashMap<>();
         metadata.put("maximum", Double.valueOf(stats.getMax()));
         metadata.put("minimum", Double.valueOf(stats.getMin()));
         metadata.put("mean", Double.valueOf(stats.getAverage()));
@@ -574,7 +574,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
                     parameters.parameter("false_northing").setValue(0.0);
                     final ReferencingFactoryContainer factories =
                             ReferencingFactoryContainer.instance(null);
-                    final Map<String, String> properties =
+                    final Map<String, Object> properties =
                             Collections.singletonMap(
                                     "name", "WGS 84 / Antartic Polar Stereographic");
 

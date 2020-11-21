@@ -94,7 +94,7 @@ public abstract class AbstractGridFormat implements Format {
      * best matching resolution level and (soon) the best matching area.
      */
     public static final DefaultParameterDescriptor<GridGeometry2D> READ_GRIDGEOMETRY2D =
-            new DefaultParameterDescriptor<GridGeometry2D>(
+            new DefaultParameterDescriptor<>(
                     "ReadGridGeometry2D", GridGeometry2D.class, null, null);
 
     /**
@@ -103,8 +103,7 @@ public abstract class AbstractGridFormat implements Format {
      * writing process
      */
     public static final DefaultParameterDescriptor<ProgressListener> PROGRESS_LISTENER =
-            new DefaultParameterDescriptor<ProgressListener>(
-                    "Listener", ProgressListener.class, null, null);
+            new DefaultParameterDescriptor<>("Listener", ProgressListener.class, null, null);
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageWriter}s through
@@ -113,7 +112,7 @@ public abstract class AbstractGridFormat implements Format {
      * compression, tiling, etc.GridGeometry2D
      */
     public static final DefaultParameterDescriptor<GeoToolsWriteParams> GEOTOOLS_WRITE_PARAMS =
-            new DefaultParameterDescriptor<GeoToolsWriteParams>(
+            new DefaultParameterDescriptor<>(
                     "WriteParameters", GeoToolsWriteParams.class, null, null);
 
     /**
@@ -124,7 +123,7 @@ public abstract class AbstractGridFormat implements Format {
      * methods.
      */
     public static final DefaultParameterDescriptor<Boolean> USE_JAI_IMAGEREAD =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     Hints.USE_JAI_IMAGEREAD.toString(),
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -136,7 +135,7 @@ public abstract class AbstractGridFormat implements Format {
      * policy a reader should adopt when choosing the right overview during a read operation.
      */
     public static final DefaultParameterDescriptor<OverviewPolicy> OVERVIEW_POLICY =
-            new DefaultParameterDescriptor<OverviewPolicy>(
+            new DefaultParameterDescriptor<>(
                     Hints.OVERVIEW_POLICY.toString(),
                     OverviewPolicy.class,
                     new OverviewPolicy[] {
@@ -154,7 +153,7 @@ public abstract class AbstractGridFormat implements Format {
      * resolution.
      */
     public static final ParameterDescriptor<DecimationPolicy> DECIMATION_POLICY =
-            new DefaultParameterDescriptor<DecimationPolicy>(
+            new DefaultParameterDescriptor<>(
                     Hints.DECIMATION_POLICY.toString(),
                     DecimationPolicy.class,
                     new DecimationPolicy[] {DecimationPolicy.ALLOW, DecimationPolicy.DISALLOW},
@@ -172,8 +171,7 @@ public abstract class AbstractGridFormat implements Format {
      * representing the suggested tileHeight.
      */
     public static final DefaultParameterDescriptor<String> SUGGESTED_TILE_SIZE =
-            new DefaultParameterDescriptor<String>(
-                    SUGGESTED_TILESIZE, String.class, null, "512,512");
+            new DefaultParameterDescriptor<>(SUGGESTED_TILESIZE, String.class, null, "512,512");
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
@@ -184,17 +182,17 @@ public abstract class AbstractGridFormat implements Format {
      * Duplicate or multiple appearances of the same band index are allowed.
      */
     public static final DefaultParameterDescriptor<int[]> BANDS =
-            new DefaultParameterDescriptor<int[]>("Bands", int[].class, null, null);
+            new DefaultParameterDescriptor<>("Bands", int[].class, null, null);
 
     public static final String TILE_SIZE_SEPARATOR = ",";
 
     /** Control the transparency of the input coverages. */
     public static final ParameterDescriptor<Color> INPUT_TRANSPARENT_COLOR =
-            new DefaultParameterDescriptor<Color>("InputTransparentColor", Color.class, null, null);
+            new DefaultParameterDescriptor<>("InputTransparentColor", Color.class, null, null);
 
     /** Control the background color to be used where the input was transparent */
     public static final ParameterDescriptor<Color> BACKGROUND_COLOR =
-            new DefaultParameterDescriptor<Color>("BackgroundColor", Color.class, null, null);
+            new DefaultParameterDescriptor<>("BackgroundColor", Color.class, null, null);
 
     /** Optional Time value for this mosaic. */
     public static final ParameterDescriptor<List> TIME =
@@ -212,12 +210,12 @@ public abstract class AbstractGridFormat implements Format {
      * Control the interpolation to be used in the eventual image processing done while reading data
      */
     public static final ParameterDescriptor<Interpolation> INTERPOLATION =
-            new DefaultParameterDescriptor<Interpolation>(
+            new DefaultParameterDescriptor<>(
                     "Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
 
     /** Control the footprint management. */
     public static final ParameterDescriptor<String> FOOTPRINT_BEHAVIOR =
-            new DefaultParameterDescriptor<String>(
+            new DefaultParameterDescriptor<>(
                     "FootprintBehavior",
                     String.class,
                     FootprintBehavior.valuesAsStrings(),
@@ -233,7 +231,7 @@ public abstract class AbstractGridFormat implements Format {
      * whether eventual value rescaling should be performed, or the original pixel value preserved
      */
     public static final DefaultParameterDescriptor<Boolean> RESCALE_PIXELS =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "RescalePixels",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},

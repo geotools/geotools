@@ -146,7 +146,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
    */
     public EList<TitleType> getTitle() {
     if (title == null) {
-      title = new EObjectContainmentEList<TitleType>(TitleType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__TITLE);
+      title = new EObjectContainmentEList<>(TitleType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__TITLE);
     }
     return title;
   }
@@ -158,7 +158,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
    */
     public EList<AbstractType> getAbstract() {
     if (abstract_ == null) {
-      abstract_ = new EObjectContainmentEList<AbstractType>(AbstractType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__ABSTRACT);
+      abstract_ = new EObjectContainmentEList<>(AbstractType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__ABSTRACT);
     }
     return abstract_;
   }
@@ -170,7 +170,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
    */
     public EList<MetadataType> getMetadata() {
     if (metadata == null) {
-      metadata = new EObjectContainmentEList<MetadataType>(MetadataType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__METADATA);
+      metadata = new EObjectContainmentEList<>(MetadataType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__METADATA);
     }
     return metadata;
   }
@@ -182,7 +182,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
    */
     public EList<ParameterExpressionType> getParameter() {
     if (parameter == null) {
-      parameter = new EObjectContainmentEList<ParameterExpressionType>(ParameterExpressionType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__PARAMETER);
+      parameter = new EObjectContainmentEList<>(ParameterExpressionType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__PARAMETER);
     }
     return parameter;
   }
@@ -194,7 +194,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
    */
     public EList<QueryExpressionTextType> getQueryExpressionText() {
     if (queryExpressionText == null) {
-      queryExpressionText = new EObjectContainmentEList<QueryExpressionTextType>(QueryExpressionTextType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__QUERY_EXPRESSION_TEXT);
+      queryExpressionText = new EObjectContainmentEList<>(QueryExpressionTextType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__QUERY_EXPRESSION_TEXT);
     }
     return queryExpressionText;
   }

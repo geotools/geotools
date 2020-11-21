@@ -58,9 +58,9 @@ public class MBFunction {
 
     protected final JSONObject json;
 
-    private FilterFactory2 ff;
+    private final FilterFactory2 ff;
 
-    JSONParser parser = new JSONParser();
+    final JSONParser parser = new JSONParser();
 
     public MBFunction(JSONObject json) {
         this(new MBObjectParser(MBFunction.class), json);
@@ -256,7 +256,7 @@ public class MBFunction {
      * </pre>
      * </ul>
      */
-    public static enum FunctionCategory {
+    public enum FunctionCategory {
         /**
          * Property functions allow the appearance of a map feature to change with its properties.
          * Property functions can be used to visually differentate types of features within the same
@@ -267,7 +267,7 @@ public class MBFunction {
          * Zoom functions allow the appearance of a map feature to change with map’s zoom level.
          * Zoom functions can be used to create the illusion of depth and control data density.
          */
-        ZOOM;
+        ZOOM
     }
 
     /**
@@ -287,7 +287,7 @@ public class MBFunction {
 
         if (property == null) {
             return EnumSet.of(FunctionCategory.ZOOM); // no property defined, zoom function
-        } else if (property != null && first.get(0) instanceof JSONObject) {
+        } else if (first.get(0) instanceof JSONObject) {
             return EnumSet.of(FunctionCategory.ZOOM, FunctionCategory.PROPERTY);
         } else {
             return EnumSet.of(FunctionCategory.PROPERTY);
@@ -357,9 +357,9 @@ public class MBFunction {
      * @param json Definition of Function
      * @return Function as defined by json
      */
-    public static MBFunction create(JSONObject json) {
-        return null;
-    }
+    //    public static MBFunction create(JSONObject json) {
+    //        return null;
+    //    }
 
     //
     // Color
@@ -613,7 +613,7 @@ public class MBFunction {
             JSONArray entry = parse.jsonArray(obj);
             Object stop = entry.get(0);
             Object value = entry.get(1);
-            if (value == null || !(value instanceof Number)) {
+            if (!(value instanceof Number)) {
                 throw new MBFormatException(
                         "Could not convert stop " + stop + " color " + value + " into a numeric");
             }
@@ -648,7 +648,7 @@ public class MBFunction {
             JSONArray entry = parse.jsonArray(obj);
             Object stop = entry.get(0);
             Object value = entry.get(1);
-            if (value == null || !(value instanceof Number)) {
+            if (!(value instanceof Number)) {
                 throw new MBFormatException(
                         "Could not convert stop " + stop + " color " + value + " into a numeric");
             }
@@ -1007,6 +1007,7 @@ public class MBFunction {
      *
      * @return A list of {@link MBFunction}, one for each dimension in the stop value array.
      */
+    @SuppressWarnings("unchecked")
     public List<MBFunction> splitArrayFunction() throws ParseException {
         JSONArray arr = getStops();
 
@@ -1053,6 +1054,7 @@ public class MBFunction {
         List<MBFunction> functions = new ArrayList<>();
         for (int i = 0; i < dimensionCount; i++) {
             final Integer n = i;
+
             JSONArray newStops = new JSONArray();
             for (MBArrayStop stop : parsedStops) {
                 JSONArray jsonArray = stop.reducedToIndex(n);

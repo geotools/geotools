@@ -64,7 +64,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         }
 
         super.setLayer(layer);
-        sourceRef = new WeakReference<GridCoverage2DReader>(((GridReaderLayer) layer).getReader());
+        sourceRef = new WeakReference<>(((GridReaderLayer) layer).getReader());
     }
 
     @Override
@@ -116,7 +116,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
             return false;
         }
         GeneralParameterValue parameter =
-                new Parameter(
+                new Parameter<>(
                         AbstractGridFormat.READ_GRIDGEOMETRY2D,
                         new GridGeometry2D(
                                 new GridEnvelope2D(queryRect),

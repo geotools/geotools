@@ -63,7 +63,7 @@ public abstract class XMLElementHandler implements Serializable {
      *
      * @see SchemaContentHandler#endElement
      */
-    public abstract void endElement(URI namespaceURI, String localName, Map hints)
+    public abstract void endElement(URI namespaceURI, String localName, Map<String, Object> hints)
             throws SAXException, OperationNotSupportedException;
 
     /**
@@ -84,8 +84,8 @@ public abstract class XMLElementHandler implements Serializable {
      *
      * @return XMLElementHandler, or null
      */
-    public abstract XMLElementHandler getHandler(URI namespaceURI, String localName, Map hints)
-            throws SAXException;
+    public abstract XMLElementHandler getHandler(
+            URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException;
 
     /**
      * This method will get the value of the element depending on it's type.

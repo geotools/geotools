@@ -70,7 +70,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
                 cov = (GridCoverage2D) rasterSource;
             }
 
-            this.covRef = new WeakReference<GridCoverage2D>(cov);
+            this.covRef = new WeakReference<>(cov);
 
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex);
@@ -91,7 +91,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
     @Override
     public List<Number> getInfo(DirectPosition2D pos, Object... params) throws Exception {
 
-        List<Number> list = new ArrayList<Number>();
+        List<Number> list = new ArrayList<>();
 
         if (isValid()) {
             GridCoverage2D cov = covRef.get();

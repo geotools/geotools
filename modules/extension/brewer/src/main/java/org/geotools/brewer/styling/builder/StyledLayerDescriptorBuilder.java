@@ -25,8 +25,7 @@ import org.geotools.styling.UserLayer;
 
 public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayerDescriptor> {
 
-    List<AbstractSLDBuilder<? extends StyledLayer>> layers =
-            new ArrayList<AbstractSLDBuilder<? extends StyledLayer>>();
+    List<AbstractSLDBuilder<? extends StyledLayer>> layers = new ArrayList<>();
 
     String name;
 

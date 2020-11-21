@@ -498,7 +498,7 @@ public class JDBCPGRasterConfigurationBuilder {
         URL url = URLs.fileToUrl(configFile);
         Config config = null;
         Connection connection = null;
-        final List<File> filesToBeDeleted = new ArrayList<File>();
+        final List<File> filesToBeDeleted = new ArrayList<>();
 
         if (!configFile.exists()) {
             // Config file doesn't exist. Need to create it
@@ -769,7 +769,7 @@ public class JDBCPGRasterConfigurationBuilder {
         final String port = (String) datastoreProperties.get(PORT_KEY.substring(1));
         final String host = (String) datastoreProperties.get(HOST_KEY.substring(1));
 
-        final List<String> tileTables = new ArrayList<String>();
+        final List<String> tileTables = new ArrayList<>();
 
         // scan tiles folder created by gdal_retile
         // Note that GDAL put tiles for level 0 straight on the folder.

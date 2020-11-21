@@ -30,7 +30,7 @@ public final class SplineCurveForm extends CodeList<SplineCurveForm> {
     private static final long serialVersionUID = 7692137703533158212L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<SplineCurveForm> VALUES = new ArrayList<SplineCurveForm>(5);
+    private static final List<SplineCurveForm> VALUES = new ArrayList<>(5);
 
     /** A connected sequence of line segments represented by a 1 degree B-spline (a line string). */
     @UML(identifier = "polylineForm", obligation = CONDITIONAL, specification = ISO_19107)

@@ -238,7 +238,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      */
     public EList<CoordType> getCoord() {
         if (coord == null) {
-            coord = new EObjectContainmentEList<CoordType>(CoordType.class, this, Gml311Package.LINEAR_RING_TYPE__COORD);
+            coord = new EObjectContainmentEList<>(CoordType.class, this, Gml311Package.LINEAR_RING_TYPE__COORD);
         }
         return coord;
     }

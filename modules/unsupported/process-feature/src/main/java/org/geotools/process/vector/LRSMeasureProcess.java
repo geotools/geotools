@@ -67,9 +67,9 @@ public class LRSMeasureProcess implements VectorProcess {
      * @throws ProcessException error
      */
     @DescribeResult(name = "result", description = "Output feature collection")
-    public FeatureCollection execute(
+    public FeatureCollection<? extends FeatureType, ? extends Feature> execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
-                    FeatureCollection featureCollection,
+                    FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection,
             @DescribeParameter(
                         name = "from_measure_attb",
                         description = "Attribute providing start measure of feature"
@@ -131,7 +131,7 @@ public class LRSMeasureProcess implements VectorProcess {
             Feature nearestFeature = null;
             double nearestDistance = 9e9;
             Coordinate[] nearestCoords = null;
-            FeatureIterator<Feature> featureIterator = null;
+            FeatureIterator<? extends Feature> featureIterator = null;
             try {
                 featureIterator = featureCollection.features();
                 while (featureIterator.hasNext()) {

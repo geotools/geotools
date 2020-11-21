@@ -479,7 +479,7 @@ public class RasterManager implements Cloneable {
             // === create the filter
             // loop values and AND them
             final int size = values.size();
-            final List<Filter> filters = new ArrayList<Filter>();
+            final List<Filter> filters = new ArrayList<>();
             FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
             for (int i = 0; i < size; i++) {
                 // checks
@@ -553,10 +553,9 @@ public class RasterManager implements Cloneable {
      */
     public class DomainManager {
 
-        private final Map<String, DomainDescriptor> domainsMap =
-                new HashMap<String, DomainDescriptor>();
+        private final Map<String, DomainDescriptor> domainsMap = new HashMap<>();
 
-        private final List<DimensionDescriptor> dimensions = new ArrayList<DimensionDescriptor>();
+        private final List<DimensionDescriptor> dimensions = new ArrayList<>();
         private final SimpleFeatureType simpleFeatureType;
 
         private final boolean attributeHasRange(String attribute) {
@@ -793,7 +792,7 @@ public class RasterManager implements Cloneable {
 
         /** Setup the List of metadataNames for this additional domains manager */
         public List<String> getMetadataNames() {
-            final List<String> metadataNames = new ArrayList<String>();
+            final List<String> metadataNames = new ArrayList<>();
             if (!domainsMap.isEmpty()) {
                 for (DomainDescriptor domain : domainsMap.values()) {
                     String domainName = domain.getIdentifier().toUpperCase();
@@ -879,8 +878,7 @@ public class RasterManager implements Cloneable {
          * reader
          */
         public Set<ParameterDescriptor<List>> getDynamicParameters() {
-            Set<ParameterDescriptor<List>> dynamicParameters =
-                    new HashSet<ParameterDescriptor<List>>();
+            Set<ParameterDescriptor<List>> dynamicParameters = new HashSet<>();
             if (!domainsMap.isEmpty()) {
                 for (DomainDescriptor domain : domainsMap.values()) {
                     dynamicParameters.add(domain.getDomainParameterDescriptor());
@@ -941,7 +939,7 @@ public class RasterManager implements Cloneable {
 
     volatile boolean enableEvents = false; // start disabled
 
-    List<DimensionDescriptor> dimensionDescriptors = new ArrayList<DimensionDescriptor>();
+    List<DimensionDescriptor> dimensionDescriptors = new ArrayList<>();
 
     ImageMosaicReader parentReader;
 
@@ -1659,7 +1657,7 @@ public class RasterManager implements Cloneable {
 
     /** Return the metadataNames for this manager */
     String[] getMetadataNames() {
-        final List<String> metadataNames = new ArrayList<String>();
+        final List<String> metadataNames = new ArrayList<>();
         metadataNames.add(GridCoverage2DReader.TIME_DOMAIN);
         metadataNames.add(GridCoverage2DReader.HAS_TIME_DOMAIN);
         metadataNames.add(GridCoverage2DReader.TIME_DOMAIN_MINIMUM);

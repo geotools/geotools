@@ -81,7 +81,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                     }
                 };
 
-        Set<Hints.Key> jdbcHints = new HashSet<Hints.Key>();
+        Set<Hints.Key> jdbcHints = new HashSet<>();
 
         jdbcHints.addAll((Set<Hints.Key>) (Set<?>) delegate.getSupportedHints());
         getDataStore().getSQLDialect().addSupportedHints(jdbcHints);

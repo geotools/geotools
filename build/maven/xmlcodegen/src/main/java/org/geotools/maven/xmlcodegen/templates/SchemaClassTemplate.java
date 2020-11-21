@@ -129,7 +129,7 @@ public class SchemaClassTemplate
 
     stringBuffer.append(TEXT_2);
     
-    HashMap ns2import = new HashMap();
+    Map<String, String> ns2import = new HashMap<>();
     for (Iterator itr = sg.getImports().iterator(); itr.hasNext();) {
         Schema imported = (Schema)itr.next();
         String fullClassName = imported.getClass().getName();

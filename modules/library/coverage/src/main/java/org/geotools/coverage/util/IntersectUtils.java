@@ -110,7 +110,7 @@ public class IntersectUtils {
      * Helper method for {@link #intersection(Geometry, Geometry) intersection(Geometry, Geometry)}
      */
     private static List<Geometry> intersection(GeometryCollection gc, Geometry g) {
-        List<Geometry> ret = new ArrayList<Geometry>();
+        List<Geometry> ret = new ArrayList<>();
         final int size = gc.getNumGeometries();
         for (int i = 0; i < size; i++) {
             Geometry g1 = gc.getGeometryN(i);
@@ -123,7 +123,7 @@ public class IntersectUtils {
      * Helper method for {@link #intersection(Geometry, Geometry) intersection(Geometry, Geometry)}
      */
     private static GeometryCollection intersection(GeometryCollection gc1, GeometryCollection gc2) {
-        List<Geometry> ret = new ArrayList<Geometry>();
+        List<Geometry> ret = new ArrayList<>();
         final int size = gc1.getNumGeometries();
         for (int i = 0; i < size; i++) {
             Geometry g1 = gc1.getGeometryN(i);
@@ -182,7 +182,7 @@ public class IntersectUtils {
                     .createMultiPolygon(unrollGeometries(mp).toArray(new Polygon[0]));
 
         } else if (geometry instanceof GeometryCollection) {
-            List<org.locationtech.jts.geom.Polygon> ret = new ArrayList<Polygon>();
+            List<org.locationtech.jts.geom.Polygon> ret = new ArrayList<>();
 
             GeometryCollection gc = (GeometryCollection) geometry;
             for (int i = 0; i < gc.getNumGeometries(); i++) {
@@ -202,7 +202,7 @@ public class IntersectUtils {
     }
 
     private static List<org.locationtech.jts.geom.Polygon> unrollGeometries(MultiPolygon mp) {
-        List<org.locationtech.jts.geom.Polygon> ret = new ArrayList<Polygon>();
+        List<org.locationtech.jts.geom.Polygon> ret = new ArrayList<>();
 
         for (int i = 0; i < mp.getNumGeometries(); i++) {
             org.locationtech.jts.geom.Polygon g =

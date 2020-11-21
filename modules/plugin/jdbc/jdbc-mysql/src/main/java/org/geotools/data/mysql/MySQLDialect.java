@@ -487,8 +487,9 @@ public class MySQLDialect extends SQLDialect {
             sql.append("2, ");
             sql.append(srid).append(", ");
 
-            Geometries g =
-                    Geometries.getForBinding((Class<? extends Geometry>) gd.getType().getBinding());
+            @SuppressWarnings("unchecked")
+            Class<? extends Geometry> gc = (Class<? extends Geometry>) gd.getType().getBinding();
+            Geometries g = Geometries.getForBinding(gc);
             sql.append("'").append(g != null ? g.getName().toUpperCase() : "GEOMETRY").append("')");
 
             LOGGER.fine(sql.toString());

@@ -40,7 +40,7 @@ public class BingServiceTest extends ServiceTest {
         String urlPrefix = "http://ak.dynamic.t2.tiles.virtualearth.net/comp/ch/";
         String urlSuffix = "?mkt=de-de&it=G,VE,BX,L,LA&shading=hill&og=78&n=z";
 
-        extentNameToUrlList = new HashMap<String, List<String>>();
+        extentNameToUrlList = new HashMap<>();
         List<String> expectedIds_DE =
                 Arrays.asList(new String[] {"12022", "12021", "12023", "12020"});
 

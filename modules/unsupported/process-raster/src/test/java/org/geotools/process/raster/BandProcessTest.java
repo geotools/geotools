@@ -122,7 +122,7 @@ public class BandProcessTest {
     @Test
     public void testEqualImages() {
         // Creation of a GridCoverage List
-        List<GridCoverage2D> coverages = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> coverages = new ArrayList<>();
         coverages.add(coverage1);
         coverages.add(coverage2);
 
@@ -195,7 +195,7 @@ public class BandProcessTest {
     @Test
     public void testROI() throws IOException, MismatchedDimensionException, TransformException {
         // Creation of a GridCoverage List
-        List<GridCoverage2D> coverages = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> coverages = new ArrayList<>();
         coverages.add(coverage1);
         coverages.add(coverage2);
 
@@ -292,7 +292,7 @@ public class BandProcessTest {
     @Test
     public void testDifferentImages() {
         // Creation of a GridCoverage List
-        List<GridCoverage2D> coverages = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> coverages = new ArrayList<>();
         coverages.add(coverage1);
         coverages.add(coverage3);
 

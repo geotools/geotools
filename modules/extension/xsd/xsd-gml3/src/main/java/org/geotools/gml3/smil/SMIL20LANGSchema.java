@@ -52,10 +52,10 @@ public class SMIL20LANGSchema extends SchemaImpl {
     public static final ComplexType ANIMATETYPE_TYPE =
             new ComplexTypeImpl(
                     new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateType"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     SMIL20Schema.ANIMATEPROTOTYPE_TYPE,
                     null);
 
@@ -88,10 +88,10 @@ public class SMIL20LANGSchema extends SchemaImpl {
     public static final ComplexType ANIMATEMOTIONTYPE_TYPE =
             new ComplexTypeImpl(
                     new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateMotionType"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     SMIL20Schema.ANIMATEMOTIONPROTOTYPE_TYPE,
                     null);
 
@@ -123,10 +123,10 @@ public class SMIL20LANGSchema extends SchemaImpl {
     public static final ComplexType SETTYPE_TYPE =
             new ComplexTypeImpl(
                     new NameImpl("http://www.w3.org/2001/SMIL20/Language", "setType"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     SMIL20Schema.SETPROTOTYPE_TYPE,
                     null);
 
@@ -159,10 +159,10 @@ public class SMIL20LANGSchema extends SchemaImpl {
     public static final ComplexType ANIMATECOLORTYPE_TYPE =
             new ComplexTypeImpl(
                     new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateColorType"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     SMIL20Schema.ANIMATECOLORPROTOTYPE_TYPE,
                     null);
 

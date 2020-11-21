@@ -42,8 +42,10 @@ import org.geotools.gml2.bindings.GMLTestSupport;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -55,7 +57,7 @@ public class GMLWriterTest extends GMLTestSupport {
 
     @Override
     protected void setUp() throws Exception {
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("xs", "http://www.w3.org/2001/XMLSchema");
         namespaces.put("xsd", "http://www.w3.org/2001/XMLSchema");
         namespaces.put("gml", "http://www.opengis.net/gml");
@@ -68,11 +70,12 @@ public class GMLWriterTest extends GMLTestSupport {
 
     public void testGeometryCollectionEncoder() throws Exception {
         GeometryCollectionEncoder gce = new GeometryCollectionEncoder(gtEncoder, "gml");
-        Geometry geometry =
-                new WKTReader2()
-                        .read(
-                                "GEOMETRYCOLLECTION (LINESTRING"
-                                        + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
+        GeometryCollection geometry =
+                (GeometryCollection)
+                        new WKTReader2()
+                                .read(
+                                        "GEOMETRYCOLLECTION (LINESTRING"
+                                                + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
         Document doc = encode(gce, geometry);
         // print(doc);
         assertEquals(1, xpath.getMatchingNodes("//gml:LineString", doc).getLength());
@@ -82,7 +85,7 @@ public class GMLWriterTest extends GMLTestSupport {
 
     public void testEncode3DLine() throws Exception {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml");
-        Geometry geometry = new WKTReader2().read("LINESTRING(0 0 50, 120 0 100)");
+        LineString geometry = (LineString) new WKTReader2().read("LINESTRING(0 0 50, 120 0 100)");
         Document doc = encode(encoder, geometry);
         // print(doc);
         assertEquals("0,0,50 120,0,100", xpath.evaluate("//gml:coordinates", doc));
@@ -100,7 +103,7 @@ public class GMLWriterTest extends GMLTestSupport {
 
     public void testEncode3DPoint() throws Exception {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml");
-        Geometry geometry = new WKTReader2().read("POINT(0 0 50)");
+        Point geometry = (Point) new WKTReader2().read("POINT(0 0 50)");
         Document doc = encode(encoder, geometry);
         // print(doc);
         assertEquals("0,0,50", xpath.evaluate("//gml:coordinates", doc));
@@ -108,7 +111,7 @@ public class GMLWriterTest extends GMLTestSupport {
 
     public void testCoordinatesFormatting() throws Exception {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml");
-        Geometry geometry = new WKTReader2().read("POINT(21396814.969 0 50)");
+        Point geometry = (Point) new WKTReader2().read("POINT(21396814.969 0 50)");
         Document doc = encode(encoder, geometry, 2, true, false);
         assertEquals("21396814.97,0,50", xpath.evaluate("//gml:coordinates", doc));
 
@@ -123,13 +126,14 @@ public class GMLWriterTest extends GMLTestSupport {
         return new GMLConfiguration();
     }
 
-    protected Document encode(GeometryEncoder encoder, Geometry geometry) throws Exception {
+    protected <T extends Geometry> Document encode(GeometryEncoder<T> encoder, T geometry)
+            throws Exception {
         return encode(encoder, geometry, 6, false, false);
     }
 
-    protected Document encode(
-            GeometryEncoder encoder,
-            Geometry geometry,
+    protected <T extends Geometry> Document encode(
+            GeometryEncoder<T> encoder,
+            T geometry,
             int numDecimals,
             boolean forceDecimals,
             boolean padWithZeros)

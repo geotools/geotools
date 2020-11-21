@@ -18,6 +18,7 @@ package org.geotools.filter;
 
 import java.util.List;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
 /**
@@ -31,12 +32,12 @@ import org.opengis.filter.expression.Literal;
  */
 public class FallbackFunction extends FunctionExpressionImpl {
 
-    public FallbackFunction(String name, List params, Literal fallback) {
+    public FallbackFunction(String name, List<Expression> params, Literal fallback) {
         super(name, fallback);
         this.setParameters(params);
     }
 
-    public FallbackFunction(Name name, List params, Literal fallback) {
+    public FallbackFunction(Name name, List<Expression> params, Literal fallback) {
         super(name, fallback);
         this.setParameters(params);
     }
@@ -48,7 +49,7 @@ public class FallbackFunction extends FunctionExpressionImpl {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Object evaluate(Object object, Class context) {
+    public <T> T evaluate(Object object, Class<T> context) {
         return fallback.evaluate(object, context);
     }
 }

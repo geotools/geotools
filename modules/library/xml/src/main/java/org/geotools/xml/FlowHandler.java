@@ -32,5 +32,5 @@ public interface FlowHandler {
      * @param hints the hints that were passed into the XML parser
      * @return true if the XML parser should abort parsing
      */
-    public boolean shouldStop(Map hints);
+    public boolean shouldStop(Map<String, Object> hints);
 }

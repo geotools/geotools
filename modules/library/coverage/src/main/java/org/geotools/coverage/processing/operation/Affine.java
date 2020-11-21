@@ -133,9 +133,10 @@ public class Affine extends BaseScaleOperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Parameters parameters) {
-        Map props = sources[PRIMARY_SOURCE_INDEX].getProperties();
+        @SuppressWarnings("unchecked")
+        Map<String, Object> props = sources[PRIMARY_SOURCE_INDEX].getProperties();
 
-        Map properties = new HashMap<>();
+        Map<String, Object> properties = new HashMap<>();
         if (props != null) {
             properties.putAll(props);
         }

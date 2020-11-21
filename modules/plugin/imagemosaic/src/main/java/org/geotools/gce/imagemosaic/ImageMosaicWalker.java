@@ -60,7 +60,7 @@ abstract class ImageMosaicWalker implements Runnable {
 
     protected DefaultTransaction transaction;
 
-    protected static Set<String> logExcludes = new HashSet<String>();
+    protected static Set<String> logExcludes = new HashSet<>();
 
     static {
         logExcludes.add("xml");

@@ -2801,7 +2801,7 @@ public class ImageWorker {
          * Find the index of the specified color. Most of the time, the color should appears only once, which will leads us to a BITMASK image.
          * However we allows more occurences, which will leads us to a TRANSLUCENT image.
          */
-        final List<Integer> transparentPixelsIndexes = new ArrayList<Integer>();
+        final List<Integer> transparentPixelsIndexes = new ArrayList<>();
         for (int i = 0; i < mapSize; i++) {
             // Gets the color for this pixel removing the alpha information.
             final int color = cm.getRGB(i) & 0xFFFFFF;
@@ -5439,7 +5439,8 @@ public class ImageWorker {
                 } else {
                     if (nodata != null) {
                         // must map nodata to alpha
-                        RangeLookupTable.Builder builder = new RangeLookupTable.Builder();
+                        RangeLookupTable.Builder<Byte, Byte> builder =
+                                new RangeLookupTable.Builder<>();
                         if (nodata.getMin().doubleValue() != Double.NEGATIVE_INFINITY) {
                             builder.add(
                                     RangeFactory.create(

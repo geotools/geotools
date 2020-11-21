@@ -74,8 +74,8 @@ public class FESParseEncodeUtil {
         return getProperty(op.getExpression1(), op.getExpression2(), name);
     }
 
-    static List getProperties(DistanceBufferOperator op) {
-        List l = new ArrayList();
+    static List<Object[]> getProperties(DistanceBufferOperator op) {
+        List<Object[]> l = new ArrayList<>();
         l.add(distanceBufferOpProperty(op.getExpression1()));
         l.add(distanceBufferOpProperty(op.getExpression2()));
 

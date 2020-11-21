@@ -35,7 +35,7 @@ import org.json.simple.parser.ParseException;
 
 public abstract class DelegatingHandler<T> implements IContentHandler<T> {
 
-    protected static HashMap<String, Class<? extends IContentHandler>> handlers = new HashMap();
+    protected static HashMap<String, Class<? extends IContentHandler>> handlers = new HashMap<>();
 
     static {
         handlers.put("Point", PointHandler.class);
@@ -53,7 +53,7 @@ public abstract class DelegatingHandler<T> implements IContentHandler<T> {
     protected static NullHandler NULL = new NullHandler();
     protected static NullHandler UNINITIALIZED = new NullHandler();
 
-    protected static List NULL_LIST = Collections.unmodifiableList(new ArrayList(0));
+    protected static List<String> NULL_LIST = Collections.unmodifiableList(new ArrayList<>(0));
 
     protected ContentHandler delegate = NULL;
 
@@ -61,42 +61,52 @@ public abstract class DelegatingHandler<T> implements IContentHandler<T> {
         return delegate;
     }
 
+    @Override
     public void startJSON() throws ParseException, IOException {
         delegate.startJSON();
     }
 
+    @Override
     public void endJSON() throws ParseException, IOException {
         delegate.endJSON();
     }
 
+    @Override
     public boolean startObject() throws ParseException, IOException {
         return delegate.startObject();
     }
 
+    @Override
     public boolean endObject() throws ParseException, IOException {
         return delegate.endObject();
     }
 
+    @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         return delegate.startObjectEntry(key);
     }
 
+    @Override
     public boolean endObjectEntry() throws ParseException, IOException {
         return delegate.endObjectEntry();
     }
 
+    @Override
     public boolean startArray() throws ParseException, IOException {
         return delegate.startArray();
     }
 
+    @Override
     public boolean endArray() throws ParseException, IOException {
         return delegate.endArray();
     }
 
+    @Override
     public boolean primitive(Object value) throws ParseException, IOException {
         return delegate.primitive(value);
     }
 
+    @SuppressWarnings("unchecked")
     public T getValue() {
         if (delegate instanceof IContentHandler) {
             return (T) ((IContentHandler) delegate).getValue();
@@ -108,6 +118,7 @@ public abstract class DelegatingHandler<T> implements IContentHandler<T> {
         return handlers.get(type);
     }
 
+    @SuppressWarnings("unchecked")
     protected IContentHandler createDelegate(Class clazz, Object[] args) {
         try {
             if (args != null && args.length > 0) {
@@ -128,34 +139,43 @@ public abstract class DelegatingHandler<T> implements IContentHandler<T> {
 
     static class NullHandler implements ContentHandler {
 
+        @Override
         public void startJSON() throws ParseException, IOException {}
 
+        @Override
         public void endJSON() throws ParseException, IOException {}
 
+        @Override
         public boolean endArray() throws ParseException, IOException {
             return true;
         }
 
+        @Override
         public boolean endObject() throws ParseException, IOException {
             return true;
         }
 
+        @Override
         public boolean endObjectEntry() throws ParseException, IOException {
             return true;
         }
 
+        @Override
         public boolean startArray() throws ParseException, IOException {
             return true;
         }
 
+        @Override
         public boolean startObject() throws ParseException, IOException {
             return true;
         }
 
+        @Override
         public boolean startObjectEntry(String key) throws ParseException, IOException {
             return true;
         }
 
+        @Override
         public boolean primitive(Object value) throws ParseException, IOException {
             return true;
         }

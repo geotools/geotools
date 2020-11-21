@@ -28,6 +28,6 @@ import java.util.ArrayList;
 public class NullPrimaryKey extends PrimaryKey {
 
     public NullPrimaryKey(String tableName) {
-        super(tableName, new ArrayList());
+        super(tableName, new ArrayList<>());
     }
 }

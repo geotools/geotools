@@ -41,8 +41,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -128,7 +128,7 @@ public class GeoJSONReader implements AutoCloseable {
         }
     }
 
-    public FeatureCollection getFeatures() throws IOException {
+    public SimpleFeatureCollection getFeatures() throws IOException {
         if (!isConnected()) {
             throw new IOException("not connected to " + url.toExternalForm());
         }

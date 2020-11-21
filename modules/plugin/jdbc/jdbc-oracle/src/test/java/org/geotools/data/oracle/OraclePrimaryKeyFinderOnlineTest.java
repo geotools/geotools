@@ -1,6 +1,6 @@
 package org.geotools.data.oracle;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -24,8 +24,8 @@ public class OraclePrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnline
     }
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
-        HashMap params = super.createDataStoreFactoryParams();
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         params.put(JDBCDataStoreFactory.PK_METADATA_TABLE.key, "GT_PK_METADATA");
         return params;
     }

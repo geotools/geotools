@@ -30,7 +30,7 @@ public final class OnLineFunction extends CodeList<OnLineFunction> {
     private static final long serialVersionUID = 2333803519583053407L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<OnLineFunction> VALUES = new ArrayList<OnLineFunction>(5);
+    private static final List<OnLineFunction> VALUES = new ArrayList<>(5);
 
     /** Online instructions for transferring data from one storage device or system to another. */
     @UML(identifier = "download", obligation = CONDITIONAL, specification = ISO_19115)

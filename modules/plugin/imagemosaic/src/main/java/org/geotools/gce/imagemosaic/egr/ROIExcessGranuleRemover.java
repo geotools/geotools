@@ -52,7 +52,7 @@ public class ROIExcessGranuleRemover {
      * Holds the granule loading results until it becomes evident actual geometric computation is
      * needed
      */
-    List<ROI> roiBuffer = new ArrayList<ROI>();
+    List<ROI> roiBuffer = new ArrayList<>();
 
     public ROIExcessGranuleRemover(
             Rectangle rasterBounds,

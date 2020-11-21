@@ -28,6 +28,7 @@ import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.XSD;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
@@ -121,7 +122,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
                     f,
                     element,
                     e.getSchemaIndex(),
-                    new HashSet<String>(Arrays.asList("name", "description", "boundedBy")),
+                    new HashSet<>(Arrays.asList("name", "description", "boundedBy")),
                     e.getConfiguration());
         }
 
@@ -156,7 +157,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
         @Override
         public void registerGeometryEncoders(
-                Map<Class, GeometryEncoder> encoders, Encoder encoder) {
+                Map<Class, GeometryEncoder<? extends Geometry>> encoders, Encoder encoder) {
             encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix));
             encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix));
             encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix));

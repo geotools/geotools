@@ -43,7 +43,9 @@ class JSONArrayIO {
             while ((token = parser.nextToken()).id() != JsonTokenId.ID_END_ARRAY) {
                 if (token.isScalarValue()) {
                     if (mapper != null) {
-                        result.add((T) mapper.fromInteger(parser.getIntValue()));
+                        @SuppressWarnings("unchecked")
+                        T value = (T) mapper.fromInteger(parser.getIntValue());
+                        result.add(value);
                     } else {
                         result.add(Converters.convert(parser.getText(), type));
                     }
@@ -59,6 +61,8 @@ class JSONArrayIO {
         for (int i = 0; i < result.size(); i++) {
             Array.set(array, i, result.get(i));
         }
-        return (T[]) array;
+        @SuppressWarnings("unchecked")
+        T[] ra = (T[]) array;
+        return ra;
     }
 }

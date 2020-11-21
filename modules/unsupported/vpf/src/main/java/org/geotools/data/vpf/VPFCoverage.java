@@ -44,10 +44,10 @@ public class VPFCoverage {
     private final String description;
 
     /** List of feature classes part of this coverage */
-    private final List featureClasses = new Vector();
+    private final List<VPFFeatureClass> featureClasses = new Vector<>();
 
     /** List of feature types part of this coverage */
-    private final List featureTypes = new Vector(25);
+    private final List<VPFFeatureType> featureTypes = new Vector<>(25);
 
     /** The owning library */
     private final VPFLibrary library;
@@ -185,7 +185,7 @@ public class VPFCoverage {
      *
      * @return the feature classes in the coverage
      */
-    public List getFeatureClasses() {
+    public List<VPFFeatureClass> getFeatureClasses() {
         return featureClasses;
     }
 
@@ -194,7 +194,7 @@ public class VPFCoverage {
      *
      * @return a <code>List</code> of the feature types
      */
-    public List getFeatureTypes() {
+    public List<VPFFeatureType> getFeatureTypes() {
         return featureTypes;
     }
 

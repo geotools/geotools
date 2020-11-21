@@ -170,7 +170,7 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
             int batch,
             String cql)
             throws IOException {
-        List<Expression> params = new ArrayList<Expression>();
+        List<Expression> params = new ArrayList<>();
         params.add(ff.literal(point(x, y)));
         params.add(ff.literal(limit));
 

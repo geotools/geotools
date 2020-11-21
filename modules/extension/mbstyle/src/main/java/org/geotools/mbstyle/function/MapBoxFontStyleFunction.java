@@ -25,7 +25,7 @@ import org.opengis.filter.capability.FunctionName;
 /** Returns "italic" or "normal" based on the font name */
 public class MapBoxFontStyleFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "mbFontStyle",
                     parameter("style", Boolean.class),

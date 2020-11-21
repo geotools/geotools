@@ -62,7 +62,7 @@ public class TypeMapping implements Serializable {
 
     private String defaultGeometryXPath;
 
-    private List attributeMappings = Collections.EMPTY_LIST;
+    private List<AttributeMapping> attributeMappings = Collections.emptyList();
 
     /**
      * Optional unique identifier for a FeatureTypeMapping, useful for multiple mappings of the same
@@ -74,12 +74,12 @@ public class TypeMapping implements Serializable {
         // no-op
     }
 
-    public List getAttributeMappings() {
-        return new ArrayList(attributeMappings);
+    public List<AttributeMapping> getAttributeMappings() {
+        return new ArrayList<>(attributeMappings);
     }
 
-    public void setAttributeMappings(List attributeMappings) {
-        this.attributeMappings = new CheckedArrayList(AttributeMapping.class);
+    public void setAttributeMappings(List<AttributeMapping> attributeMappings) {
+        this.attributeMappings = new CheckedArrayList<>(AttributeMapping.class);
         if (attributeMappings != null) {
             this.attributeMappings.addAll(attributeMappings);
         }

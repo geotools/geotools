@@ -30,7 +30,7 @@ public final class Progress extends CodeList<Progress> {
     private static final long serialVersionUID = 7521085150853319219L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<Progress> VALUES = new ArrayList<Progress>(7);
+    private static final List<Progress> VALUES = new ArrayList<>(7);
 
     /** Production of the data has been completed. */
     @UML(identifier = "completed", obligation = CONDITIONAL, specification = ISO_19115)

@@ -115,7 +115,9 @@ public class FastBBOXTest {
                 public <T> T get(Object object, String xpath, Class<T> target)
                         throws IllegalArgumentException {
                     if ("geometry".equals(xpath)) {
-                        return (T) ((MockDataObject) object).geometry;
+                        @SuppressWarnings("unchecked")
+                        T result = (T) ((MockDataObject) object).geometry;
+                        return result;
                     } else {
                         throw new IllegalArgumentException("Unknown field");
                     }

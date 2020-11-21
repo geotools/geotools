@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.test.TestData;
 import org.junit.Test;
@@ -32,7 +33,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -58,7 +58,7 @@ public class GeoJSONReaderTest {
         URL url = TestData.url(GeoJSONDataStore.class, "locations-changable.json");
 
         try (GeoJSONReader reader = new GeoJSONReader(url)) {
-            FeatureCollection features = reader.getFeatures();
+            SimpleFeatureCollection features = reader.getFeatures();
             assertNotNull(features);
             assertEquals("wrong number of features read", 9, features.size());
 
@@ -70,7 +70,7 @@ public class GeoJSONReaderTest {
             expected.put("NUMBER", null);
             expected.put("YEAR", null);
             expected.put("the_geom", gf.createPoint(new Coordinate(11.117, 46.067)));
-            Feature first = DataUtilities.first(features);
+            SimpleFeature first = DataUtilities.first(features);
             for (Property prop : first.getProperties()) {
                 assertEquals(expected.get(prop.getName().getLocalPart()), prop.getValue());
             }

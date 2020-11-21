@@ -32,10 +32,9 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 
     RemoteOWSBuilder remoteOWS = new RemoteOWSBuilder().unset();
 
-    List<FeatureTypeConstraintBuilder> featureTypeConstraint =
-            new ArrayList<FeatureTypeConstraintBuilder>();
+    List<FeatureTypeConstraintBuilder> featureTypeConstraint = new ArrayList<>();
 
-    List<StyleBuilder> userStyles = new ArrayList<StyleBuilder>();
+    List<StyleBuilder> userStyles = new ArrayList<>();
 
     public UserLayerBuilder() {
         this(null);

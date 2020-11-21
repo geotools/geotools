@@ -156,7 +156,7 @@ final class Command {
 
     /** Lists all CRS authority factories. */
     private static void factories(final PrintWriter out) {
-        final Set<Citation> done = new HashSet<Citation>();
+        final Set<Citation> done = new HashSet<>();
         final TableWriter table = new TableWriter(out, TableWriter.SINGLE_VERTICAL_LINE);
         final TableWriter notes = new TableWriter(out, " ");
         int noteCount = 0;

@@ -37,7 +37,7 @@ interface ChoiceAttributeType extends AttributeDescriptor, AttributeType {
      *
      * @return the potential types
      */
-    public Class[] getChoices();
+    public Class<?>[] getChoices();
 
     /**
      * Yet another hack in order to use our FeatureType. Converts object to the "real" attribute

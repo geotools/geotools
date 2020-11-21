@@ -60,6 +60,8 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class NumberConverter implements Converter {
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -71,17 +73,19 @@ public class CommonsConverterFactory implements ConverterFactory {
             if (parsed == null) { // try double
                 parsed = (Number) new DoubleConverter().convert(string, Double.class);
             }
-            return target.cast(parsed);
+            return (T) parsed;
         }
     }
 
     static class ByteConverter implements Converter {
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
             try {
                 Byte parsed = Byte.valueOf(string);
-                return target.cast(parsed);
+                return (T) parsed;
             } catch (Exception e) {
                 return null;
             }
@@ -89,12 +93,14 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class ShortConverter implements Converter {
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
             try {
                 Short parsed = Short.valueOf(string);
-                return target.cast(parsed);
+                return (T) parsed;
             } catch (Exception e) {
                 return null;
             }
@@ -102,12 +108,14 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class IntegerConverter implements Converter {
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
             try {
                 Integer parsed = Integer.valueOf(string);
-                return target.cast(parsed);
+                return (T) parsed;
             } catch (Exception e) {
                 return null;
             }
@@ -115,12 +123,14 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class LongConverter implements Converter {
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
             try {
                 Long parsed = Long.valueOf(string);
-                return target.cast(parsed);
+                return (T) parsed;
             } catch (Exception e) {
                 return null;
             }
@@ -141,12 +151,14 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class FloatConverter implements Converter {
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
             try {
                 Float parsed = Float.valueOf(string);
-                return target.cast(parsed);
+                return (T) parsed;
             } catch (Exception e) {
                 return null;
             }
@@ -154,12 +166,14 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class DoubleConverter implements Converter {
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
             try {
                 Double parsed = Double.valueOf(string);
-                return target.cast(parsed);
+                return (T) parsed;
             } catch (Exception e) {
                 return null;
             }
@@ -185,6 +199,8 @@ public class CommonsConverterFactory implements ConverterFactory {
         //        static final Set<String> NO = new HashSet<String>(
         //                Arrays.asList(new String[]{"NO","N","FALSE","OFF","0"}) );
 
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -203,13 +219,13 @@ public class CommonsConverterFactory implements ConverterFactory {
                     || string.equalsIgnoreCase("true")
                     || string.equalsIgnoreCase("on")
                     || string.equalsIgnoreCase("1")) {
-                return target.cast(Boolean.TRUE);
+                return (T) Boolean.TRUE;
             } else if (string.equalsIgnoreCase("no")
                     || string.equalsIgnoreCase("n")
                     || string.equalsIgnoreCase("false")
                     || string.equalsIgnoreCase("off")
                     || string.equalsIgnoreCase("0")) {
-                return target.cast(Boolean.FALSE);
+                return (T) Boolean.FALSE;
             } else {
                 return null;
             }
@@ -347,7 +363,7 @@ public class CommonsConverterFactory implements ConverterFactory {
         }
     }
     /** No need for FastHashMap - we are only registering during construction */
-    private static HashMap<Class<?>, Converter> register = new HashMap<Class<?>, Converter>();
+    private static HashMap<Class<?>, Converter> register = new HashMap<>();
 
     static {
         register.put(URI.class, new URIConverter());

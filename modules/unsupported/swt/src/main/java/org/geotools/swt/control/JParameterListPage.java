@@ -40,7 +40,7 @@ public class JParameterListPage extends WizardPage {
     List<Parameter<?>> contents;
 
     /** Map of user interface ParamFields displayed to the user */
-    private Map<Parameter<?>, ParamField> fields = new HashMap<Parameter<?>, ParamField>();
+    private Map<Parameter<?>, ParamField> fields = new HashMap<>();
 
     /** Connection params for datastore */
     protected Map<String, Object> connectionParameters;

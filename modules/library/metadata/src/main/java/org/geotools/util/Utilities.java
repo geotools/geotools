@@ -93,7 +93,7 @@ public final class Utilities {
     private static final int PRIME_NUMBER = 37;
 
     /** The singleton instance to be returned by {@link #emptyQueue}. */
-    private static final Queue<?> EMPTY_QUEUE = new EmptyQueue<Object>();
+    private static final Queue<?> EMPTY_QUEUE = new EmptyQueue<>();
 
     /**
      * The class for the {@link #EMPTY_QUEUE} instance. Defined as a named class rather than

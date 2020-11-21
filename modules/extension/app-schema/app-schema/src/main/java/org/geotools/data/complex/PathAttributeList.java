@@ -29,9 +29,9 @@ import org.opengis.feature.Attribute;
  */
 public class PathAttributeList {
 
-    private Map<String, List<Pair>> elements = new HashMap<String, List<Pair>>();
+    private Map<String, List<Pair>> elements = new HashMap<>();
 
-    private Map<String, String> labelToXpath = new HashMap<String, String>();
+    private Map<String, String> labelToXpath = new HashMap<>();
 
     /**
      * Store information for labelled attributes.
@@ -45,7 +45,7 @@ public class PathAttributeList {
         if (elements.containsKey(key)) {
             ls = elements.get(key);
         } else {
-            ls = new ArrayList<Pair>();
+            ls = new ArrayList<>();
             elements.put(key, ls);
             labelToXpath.put(key, xpath);
         }

@@ -99,7 +99,7 @@ public class InsertResultTypeImpl extends EObjectImpl implements InsertResultTyp
      */
     public EList<BriefRecordType> getBriefRecord() {
         if (briefRecord == null) {
-            briefRecord = new EObjectContainmentEList<BriefRecordType>(BriefRecordType.class, this, Csw20Package.INSERT_RESULT_TYPE__BRIEF_RECORD);
+            briefRecord = new EObjectContainmentEList<>(BriefRecordType.class, this, Csw20Package.INSERT_RESULT_TYPE__BRIEF_RECORD);
         }
         return briefRecord;
     }

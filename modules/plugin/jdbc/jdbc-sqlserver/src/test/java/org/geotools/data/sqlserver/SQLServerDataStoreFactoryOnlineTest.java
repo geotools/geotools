@@ -52,7 +52,7 @@ public class SQLServerDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
         // db.load(getClass().getResourceAsStream("factory.properties"));
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         if (includedb) {
             params.put(DATABASE.key, db.getProperty(DATABASE.key));

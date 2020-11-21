@@ -181,7 +181,9 @@ public class H2Dialect extends SQLDialect {
             for (PropertyDescriptor ad : featureType.getDescriptors()) {
                 if (ad instanceof GeometryDescriptor) {
                     GeometryDescriptor gd = (GeometryDescriptor) ad;
-                    Class binding = ad.getType().getBinding();
+                    @SuppressWarnings("unchecked")
+                    Class<? extends Geometry> binding =
+                            (Class<? extends Geometry>) ad.getType().getBinding();
                     String propertyName = ad.getName().getLocalPart();
 
                     // create a spatial index

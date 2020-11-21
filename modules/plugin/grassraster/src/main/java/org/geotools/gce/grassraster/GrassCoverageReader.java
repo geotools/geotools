@@ -580,7 +580,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
                 COLORNUM = 65500;
             }
 
-            List<Category> catsList = new ArrayList<Category>();
+            List<Category> catsList = new ArrayList<>();
 
             double[][] values = new double[rulesNum][2];
             Color[][] colors = new Color[rulesNum][2];

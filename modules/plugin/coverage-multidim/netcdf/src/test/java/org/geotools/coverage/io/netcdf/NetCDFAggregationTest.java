@@ -50,7 +50,7 @@ public class NetCDFAggregationTest {
         NetCDFImageReader reader = (NetCDFImageReader) readerSpi.createReaderInstance();
         reader.setInput(file);
 
-        Set<String> coverageNames = new HashSet<String>();
+        Set<String> coverageNames = new HashSet<>();
         for (Name name : reader.getCoveragesNames()) {
             coverageNames.add(name.getLocalPart());
         }

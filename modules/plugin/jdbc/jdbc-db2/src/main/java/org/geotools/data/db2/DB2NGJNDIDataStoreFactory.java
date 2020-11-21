@@ -24,6 +24,8 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  *
  * @author Christian Mueller
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class DB2NGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 
     public DB2NGJNDIDataStoreFactory() {

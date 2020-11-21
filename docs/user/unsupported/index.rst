@@ -19,8 +19,6 @@ Research and Development:
    arcgis-rest
    css
    geojson
-   geometry/index
-   jts-wrapper
    process/index
    swing/index
    swt/index

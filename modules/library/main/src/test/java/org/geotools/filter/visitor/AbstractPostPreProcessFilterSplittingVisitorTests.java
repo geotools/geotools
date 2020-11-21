@@ -32,6 +32,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.geometry.Boundary;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Geometry;
@@ -124,7 +125,7 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests extends TestCase 
         if (attToEdit != null && accessor != null) {
             // Test when the an update exists that affects the attribute of a
             // feature
-            HashSet idSet = new HashSet();
+            HashSet<FeatureId> idSet = new HashSet<>();
             idSet.add(ff.featureId("fid"));
             Id updateFilter = ff.id(idSet);
 
@@ -223,7 +224,7 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests extends TestCase 
             return null;
         }
 
-        public Set getMaximalComplex() {
+        public Set<Complex> getMaximalComplex() {
             // TODO Auto-generated method stub
             return null;
         }

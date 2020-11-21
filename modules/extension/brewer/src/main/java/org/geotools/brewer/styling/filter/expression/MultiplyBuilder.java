@@ -41,21 +41,21 @@ public class MultiplyBuilder implements Builder<Multiply> {
 
     public MultiplyBuilder reset() {
         unset = false;
-        expr1 = new ChildExpressionBuilder<MultiplyBuilder>(this);
-        expr2 = new ChildExpressionBuilder<MultiplyBuilder>(this);
+        expr1 = new ChildExpressionBuilder<>(this);
+        expr2 = new ChildExpressionBuilder<>(this);
         return this;
     }
 
     public MultiplyBuilder reset(Multiply original) {
         unset = false;
-        expr1 = new ChildExpressionBuilder<MultiplyBuilder>(this, original.getExpression1());
-        expr2 = new ChildExpressionBuilder<MultiplyBuilder>(this, original.getExpression2());
+        expr1 = new ChildExpressionBuilder<>(this, original.getExpression1());
+        expr2 = new ChildExpressionBuilder<>(this, original.getExpression2());
         return this;
     }
 
     public MultiplyBuilder unset() {
         unset = true;
-        expr1 = new ChildExpressionBuilder<MultiplyBuilder>(this).unset();
+        expr1 = new ChildExpressionBuilder<>(this).unset();
         expr2 = null;
         return this;
     }

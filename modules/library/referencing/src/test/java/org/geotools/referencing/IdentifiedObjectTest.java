@@ -45,7 +45,7 @@ public final class IdentifiedObjectTest {
      */
     @Test
     public void testIdentifier() {
-        final Map<String, Object> properties = new HashMap<String, Object>();
+        final Map<String, Object> properties = new HashMap<>();
         assertNull(properties.put("code", "This is a code"));
         assertNull(properties.put("authority", "This is an authority"));
         assertNull(properties.put("version", "This is a version"));
@@ -105,7 +105,7 @@ public final class IdentifiedObjectTest {
     /** Test {@link IdentifiedObject}. */
     @Test
     public void testIdentifiedObject() {
-        final Map<String, Object> properties = new HashMap<String, Object>();
+        final Map<String, Object> properties = new HashMap<>();
         assertNull(properties.put("name", "This is a name"));
         assertNull(properties.put("remarks", "There is remarks"));
         assertNull(properties.put("remarks_fr", "Voici des remarques"));
@@ -117,7 +117,7 @@ public final class IdentifiedObjectTest {
         assertNull(properties.put("realizationEpoch", "Realization epoch"));
         assertNull(properties.put("validArea", "Valid area"));
 
-        final Map<String, Object> remaining = new HashMap<String, Object>();
+        final Map<String, Object> remaining = new HashMap<>();
         final AbstractIdentifiedObject reference =
                 new AbstractIdentifiedObject(properties, remaining, new String[] {"local"});
         assertEquals("name", "This is a name", reference.getName().getCode());
@@ -150,7 +150,7 @@ public final class IdentifiedObjectTest {
     /** Test {@link AbstractReferenceSystem}. */
     @Test
     public void testReferenceSystem() {
-        final Map<String, Object> properties = new HashMap<String, Object>();
+        final Map<String, Object> properties = new HashMap<>();
         assertNull(properties.put("name", "This is a name"));
         assertNull(properties.put("scope", "This is a scope"));
         assertNull(properties.put("scope_fr", "Valide dans ce domaine"));

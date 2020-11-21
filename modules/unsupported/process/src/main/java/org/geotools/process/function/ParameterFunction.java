@@ -112,7 +112,7 @@ class ParameterFunction implements Function {
             value = parameters.get(1).evaluate(object);
         } else {
             // a collection
-            List<Object> values = new ArrayList<Object>();
+            List<Object> values = new ArrayList<>();
             for (int i = 1; i < parameters.size(); i++) {
                 Object o = parameters.get(i).evaluate(object);
                 values.add(o);

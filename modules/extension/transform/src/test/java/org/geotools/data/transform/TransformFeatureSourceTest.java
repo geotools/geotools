@@ -198,7 +198,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
 
         // and now read for good
         SimpleFeatureIterator fi = null;
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         try {
             fi = fc.features();
             while (fi.hasNext()) {
@@ -304,7 +304,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
 
         // and now read for good
         SimpleFeatureIterator fi = null;
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         try {
             fi = fc.features();
             while (fi.hasNext()) {
@@ -441,7 +441,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
 
         // and now read for good
         SimpleFeatureIterator fi = null;
-        List<Number> totals = new ArrayList<Number>();
+        List<Number> totals = new ArrayList<>();
         try {
             fi = fc.features();
             while (fi.hasNext()) {
@@ -455,7 +455,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         }
 
         // grab the two biggest from the original data set
-        List<Double> sums = new ArrayList<Double>();
+        List<Double> sums = new ArrayList<>();
         try {
             fi = STATES.getFeatures().features();
             while (fi.hasNext()) {

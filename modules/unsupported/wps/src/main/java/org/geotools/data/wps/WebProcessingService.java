@@ -87,10 +87,12 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
      * @return the URL of the given operation from the capabilities doc, or null if not found
      */
     public static URL getOperationURL(String operation, WPSCapabilitiesType cap, boolean getGet) {
+        @SuppressWarnings("unchecked")
         Iterator<OperationType> iterator = cap.getOperationsMetadata().getOperation().iterator();
         while (iterator.hasNext()) {
             OperationType next = (OperationType) iterator.next();
             if (operation.compareToIgnoreCase(next.getName()) == 0) {
+                @SuppressWarnings("unchecked")
                 Iterator<DCPType> iterator2 = next.getDCP().iterator();
                 while (iterator2.hasNext()) {
                     DCPType next2 = (DCPType) iterator2.next();

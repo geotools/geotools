@@ -60,7 +60,7 @@ public abstract class TestSchema extends TestCase {
 
         xsd = schema.getSchemaForSchema();
 
-        Map bindings = new HashMap();
+        Map<QName, Object> bindings = new HashMap<>();
 
         new XSConfiguration().registerBindings(new PicoMap(bindings));
         factory = new BindingLoader(bindings);

@@ -114,7 +114,7 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    */
     public EList<ExceptionType> getException() {
     if (exception == null) {
-      exception = new EObjectContainmentEList<ExceptionType>(ExceptionType.class, this, Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION);
+      exception = new EObjectContainmentEList<>(ExceptionType.class, this, Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION);
     }
     return exception;
   }

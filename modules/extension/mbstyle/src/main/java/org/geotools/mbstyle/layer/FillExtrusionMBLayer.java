@@ -67,9 +67,9 @@ import org.opengis.style.SemanticType;
  */
 public class FillExtrusionMBLayer extends MBLayer {
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "fill-extrusion";
+    private static final String TYPE = "fill-extrusion";
 
     public enum TranslateAnchor {
         /** Translation relative to the map. */

@@ -91,8 +91,8 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
              * authorities like "URN:OGC:...". Search again without such requirement and add
              * any new authorities found.
              */
-            factories = new ArrayList<CRSAuthorityFactory>(factories);
-            final Set<Citation> authorities = new LinkedHashSet<Citation>();
+            factories = new ArrayList<>(factories);
+            final Set<Citation> authorities = new LinkedHashSet<>();
             for (final CRSAuthorityFactory factory : factories) {
                 authorities.add(factory.getAuthority());
             }
@@ -119,7 +119,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
      * of class loading when using {@link CRS} for other purpose than CRS decoding.
      */
     static Set<String> getSupportedCodes(final String authority) {
-        final Set<String> result = new LinkedHashSet<String>(AUTHORITY_LESS);
+        final Set<String> result = new LinkedHashSet<>(AUTHORITY_LESS);
         for (final CRSAuthorityFactory factory :
                 ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
             if (Citations.identifierMatches(factory.getAuthority(), authority)) {
@@ -149,7 +149,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
      * amount of class loading when using {@link CRS} for other purpose than CRS decoding.
      */
     static Set<String> getSupportedAuthorities(final boolean returnAliases) {
-        final Set<String> result = new LinkedHashSet<String>();
+        final Set<String> result = new LinkedHashSet<>();
         for (final CRSAuthorityFactory factory :
                 ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
             for (final Identifier id : factory.getAuthority().getIdentifiers()) {

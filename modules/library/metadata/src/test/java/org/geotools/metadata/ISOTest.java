@@ -186,7 +186,7 @@ public final class ISOTest {
     public void testDependencies() {
         assertNull(getImplementation(Number.class));
         assertSame(MetaDataImpl.class, getImplementation(MetaData.class));
-        final Set<Class<?>> done = new HashSet<Class<?>>();
+        final Set<Class<?>> done = new HashSet<>();
         for (int i = 0; i < TEST.length; i++) {
             final Class<?> type = TEST[i];
             final Class<?> impl = getImplementation(type);

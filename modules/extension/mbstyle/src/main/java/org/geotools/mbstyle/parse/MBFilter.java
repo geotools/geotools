@@ -237,14 +237,12 @@ public class MBFilter {
             Set<SemanticType> types = semanticTypeIdentifiers(alternative);
             if (types.isEmpty()) {
                 continue;
+            }
+            if (semanticTypes.isEmpty()) {
+                // exactly one alternative is okay
+                semanticTypes.addAll(types);
             } else {
-                if (semanticTypes.isEmpty()) {
-                    // exactly one alternative is okay
-                    semanticTypes.addAll(types);
-                } else {
-                    throw new MBFormatException(
-                            "Only one \"all\" alternative may be a $type filter");
-                }
+                throw new MBFormatException("Only one \"all\" alternative may be a $type filter");
             }
         }
         return semanticTypes;

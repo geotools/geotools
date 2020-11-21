@@ -30,10 +30,10 @@ import org.geotools.util.Utilities;
  * @author jamesm
  */
 public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {
-    List<Style> styles = new ArrayList<Style>();
+    List<Style> styles = new ArrayList<>();
 
     // FeatureTypeConstraint[] featureTypeConstraints = new FeatureTypeConstraint[0];
-    List<FeatureTypeConstraint> featureTypeConstraints = new ArrayList<FeatureTypeConstraint>();
+    List<FeatureTypeConstraint> featureTypeConstraints = new ArrayList<>();
 
     public List<FeatureTypeConstraint> layerFeatureConstraints() {
         return featureTypeConstraints;

@@ -210,6 +210,7 @@ public interface DataAccessFactory extends Factory {
                 if (param.metadata != null) {
                     // check metadata
                     if (param.metadata.containsKey(Param.OPTIONS)) {
+                        @SuppressWarnings("unchecked")
                         java.util.List<Object> options =
                                 (List<Object>) param.metadata.get(Param.OPTIONS);
                         if (options != null && !options.contains(value)) {
@@ -514,7 +515,7 @@ public interface DataAccessFactory extends Factory {
             // parsing be tried on each element, then build the array as a result
             if (type.isArray()) {
                 StringTokenizer tokenizer = new StringTokenizer(text, " ");
-                List<Object> result = new ArrayList<Object>();
+                List<Object> result = new ArrayList<>();
 
                 while (tokenizer.hasMoreTokens()) {
                     String token = tokenizer.nextToken();

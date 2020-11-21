@@ -177,8 +177,8 @@ public class IntersectionFeatureCollection implements VectorProcess {
     /**
      * Checks if the specified class is same, or subclass, of any of the specified target classes
      */
-    static boolean isGeometryTypeIn(Class test, Class... targets) {
-        for (Class target : targets) {
+    static boolean isGeometryTypeIn(Class<?> test, Class<?>... targets) {
+        for (Class<?> target : targets) {
             if (target.isAssignableFrom(test)) {
                 return true;
             }
@@ -712,7 +712,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
     static class GeometryFilterImpl implements GeometryFilter {
         GeometryFactory factory = new GeometryFactory();
 
-        ArrayList<Geometry> collection = new ArrayList<Geometry>();
+        ArrayList<Geometry> collection = new ArrayList<>();
 
         Class binding = null;
 

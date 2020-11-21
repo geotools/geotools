@@ -58,8 +58,7 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
     /** The overviews footprints geometries */
     private List<Geometry> multilevelFootprints;
 
-    private SoftValueHashMap<AffineTransform, ROIGeometry> roiCache =
-            new SoftValueHashMap<AffineTransform, ROIGeometry>(10);
+    private SoftValueHashMap<AffineTransform, ROIGeometry> roiCache = new SoftValueHashMap<>(10);
 
     private boolean empty;
 

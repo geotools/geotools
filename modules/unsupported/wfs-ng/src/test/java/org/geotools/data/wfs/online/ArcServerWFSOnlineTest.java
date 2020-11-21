@@ -98,7 +98,7 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
         String getCapabilities =
                 "http://cartowfs.nationalmap.gov/arcgis/services/structures/MapServer/WFSServer?request=GetCapabilities&service=WFS&version="
                         + version;
-        Map<String, Object> connectionParameters = new HashMap<String, Object>();
+        Map<String, Object> connectionParameters = new HashMap<>();
         connectionParameters.put(WFSDataStoreFactory.URL.key, getCapabilities);
         connectionParameters.put(WFSDataStoreFactory.LENIENT.key, Boolean.TRUE);
         // connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, "arcgis");

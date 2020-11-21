@@ -93,7 +93,9 @@ public class GMLAbstractFeatureCollectionTypeBinding extends AbstractComplexBind
 
         // add all feature member children
         if (fc instanceof Collection) {
-            ((Collection) fc).addAll(node.getChildValues(SimpleFeature.class));
+            @SuppressWarnings("unchecked")
+            Collection<SimpleFeature> collection = (Collection) fc;
+            collection.addAll(node.getChildValues(SimpleFeature.class));
         } else {
             throw new IllegalStateException(
                     "Please provide DefaultFeatureCollection or ListFeatureCollection");

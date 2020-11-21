@@ -19,6 +19,7 @@
 package org.geotools.wmts.bindings;
 
 import java.net.URI;
+import java.util.List;
 import javax.xml.namespace.QName;
 import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows11.CodeType;
@@ -92,7 +93,7 @@ public class ThemeBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<?> getType() {
         return ThemeType.class;
     }
 
@@ -116,7 +117,9 @@ public class ThemeBinding extends DescriptionTypeBinding {
         for (Object c : node.getChildValues("LayerRef")) {
             ((ThemeType) value).getLayerRef().add(((URI) c).toString());
         }
-        ((ThemeType) value).getTheme().addAll(node.getChildValues("Theme"));
+        @SuppressWarnings("unchecked")
+        List<ThemeType> themes = node.getChildValues("Theme");
+        ((ThemeType) value).getTheme().addAll(themes);
 
         return value;
     }

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
@@ -38,7 +37,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
 
     @Before
     public void setup() {
-        parameters = new ArrayList<Expression>();
+        parameters = new ArrayList<>();
     }
 
     @Test
@@ -148,7 +147,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
             throw new IllegalArgumentException("should be n thresholds and n+1 categories");
         }
 
-        parameters = new ArrayList<Expression>();
+        parameters = new ArrayList<>();
         parameters.add(ff2.property("value"));
 
         for (int i = 0; i < thresholds.length; i++) {

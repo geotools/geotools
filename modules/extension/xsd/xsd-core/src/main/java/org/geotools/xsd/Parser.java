@@ -332,7 +332,7 @@ public class Parser {
      *
      * @return A list of errors, or an empty list if none.
      */
-    public List getValidationErrors() {
+    public List<Exception> getValidationErrors() {
         return handler.getValidationErrors();
     }
 

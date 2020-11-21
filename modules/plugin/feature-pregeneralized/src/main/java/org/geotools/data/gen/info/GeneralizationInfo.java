@@ -53,7 +53,7 @@ public class GeneralizationInfo {
         this.baseFeatureName = baseFeatureName;
         this.featureName = featureName;
         this.geomPropertyName = geomPropertyName;
-        this.generalizations = new TreeSet<Generalization>();
+        this.generalizations = new TreeSet<>();
         this.parent = parent;
     }
 

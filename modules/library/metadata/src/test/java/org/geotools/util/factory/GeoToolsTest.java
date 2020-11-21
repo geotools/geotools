@@ -62,7 +62,7 @@ public final class GeoToolsTest {
         final Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         assertFalse(hints.isEmpty());
 
-        Map<RenderingHints.Key, Object> map = new HashMap<RenderingHints.Key, Object>();
+        Map<RenderingHints.Key, Object> map = new HashMap<>();
         assertNull(map.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
         map = Collections.unmodifiableMap(map);
         assertFalse(map.isEmpty());

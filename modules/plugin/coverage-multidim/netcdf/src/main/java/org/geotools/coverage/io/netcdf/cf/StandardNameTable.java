@@ -170,7 +170,7 @@ public class StandardNameTable {
      */
     public List<Entry> getEntry() {
         if (entry == null) {
-            entry = new ArrayList<Entry>();
+            entry = new ArrayList<>();
         }
         return this.entry;
     }
@@ -192,7 +192,7 @@ public class StandardNameTable {
      */
     public List<Alias> getAlias() {
         if (alias == null) {
-            alias = new ArrayList<Alias>();
+            alias = new ArrayList<>();
         }
         return this.alias;
     }

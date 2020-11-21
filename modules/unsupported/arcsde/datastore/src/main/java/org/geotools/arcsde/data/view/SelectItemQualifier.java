@@ -44,19 +44,20 @@ import org.geotools.arcsde.session.ISession;
  */
 class SelectItemQualifier implements net.sf.jsqlparser.statement.select.SelectItemVisitor {
 
-    private List /* <SelectExpressionItem> */ qualifiedItems = Collections.EMPTY_LIST;
+    private List<Object> qualifiedItems = Collections.emptyList();
 
     private ISession session;
 
-    private Map tableAliases;
+    private Map<String, ?> tableAliases;
 
     /** Creates a new SelectItemQualifier object. */
-    private SelectItemQualifier(ISession session, Map tableAliases) {
+    private SelectItemQualifier(ISession session, Map<String, ?> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;
     }
 
-    public static List qualify(ISession session, Map tableAliases, SelectItem item) {
+    public static List<Object> qualify(
+            ISession session, Map<String, ?> tableAliases, SelectItem item) {
         if (item == null) {
             return null;
         }
@@ -97,7 +98,7 @@ class SelectItemQualifier implements net.sf.jsqlparser.statement.select.SelectIt
             throw new RuntimeException(e.getMessage());
         }
 
-        qualifiedItems = new ArrayList(cols.length);
+        qualifiedItems = new ArrayList<>(cols.length);
 
         for (int i = 0; i < cols.length; i++) {
             String colName = cols[i].getName();

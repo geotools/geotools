@@ -139,7 +139,7 @@ public abstract class ContentDataStore implements DataStore {
     public ContentDataStore() {
         // get a concurrent map so that we can do reads in parallel with writes (writes vs writes
         // are actually synchronized to prevent double work, see getEntry()).
-        this.entries = new ConcurrentHashMap<Name, ContentEntry>();
+        this.entries = new ConcurrentHashMap<>();
         // grabbing the logger here makes the logger name polymorphic (the name of the actual
         // subclass will be used
         this.LOGGER = org.geotools.util.logging.Logging.getLogger(getClass());
@@ -601,7 +601,7 @@ public abstract class ContentDataStore implements DataStore {
      */
     public List<Name> getNames() throws IOException {
         String[] typeNames = getTypeNames();
-        List<Name> names = new ArrayList<Name>(typeNames.length);
+        List<Name> names = new ArrayList<>(typeNames.length);
         for (String typeName : typeNames) {
             names.add(new NameImpl(typeName));
         }

@@ -197,6 +197,7 @@ public class Category implements Serializable {
     }
 
     /** Constructs a category for sample value {@code sample}. */
+    @SuppressWarnings("unchecked")
     private Category(
             final CharSequence name,
             final int[] ARGB,
@@ -253,7 +254,9 @@ public class Category implements Serializable {
      *     {@code scale} or {@code offset} are not real numbers.
      */
     public Category(
-            final CharSequence name, final Color[] colors, final NumberRange sampleValueRange)
+            final CharSequence name,
+            final Color[] colors,
+            final NumberRange<? extends Number> sampleValueRange)
             throws IllegalArgumentException {
         this(name, colors, sampleValueRange, true);
     }
@@ -274,7 +277,7 @@ public class Category implements Serializable {
     public Category(
             final CharSequence name,
             final Color[] colors,
-            final NumberRange sampleValueRange,
+            final NumberRange<? extends Number> sampleValueRange,
             final boolean isQuantitative)
             throws IllegalArgumentException {
         this(name, toARGB(colors), sampleValueRange, isQuantitative);
@@ -288,7 +291,7 @@ public class Category implements Serializable {
     private Category(
             final CharSequence name,
             final int[] ARGB,
-            final NumberRange range,
+            final NumberRange<? extends Number> range,
             final boolean isQuantitative)
             throws IllegalArgumentException {
         ensureNonNull("name", name);

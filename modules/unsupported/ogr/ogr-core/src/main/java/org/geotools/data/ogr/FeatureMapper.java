@@ -81,7 +81,7 @@ class FeatureMapper {
         this.geomFactory = geomFactory;
         this.ogr = ogr;
 
-        attributeIndexes = new HashMap<String, Integer>();
+        attributeIndexes = new HashMap<>();
         Object layerDefinition = ogr.LayerGetLayerDefn(layer);
         int size = ogr.LayerGetFieldCount(layerDefinition);
         for (int i = 0; i < size; i++) {

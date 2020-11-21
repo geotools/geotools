@@ -60,8 +60,8 @@ public class WFSDiff extends Diff {
 
     public WFSDiff() {
         super();
-        batchModified = new HashSet<String>();
-        batchCommands = new ArrayList<WFSDiff.BatchUpdate>();
+        batchModified = new HashSet<>();
+        batchCommands = new ArrayList<>();
     }
 
     @Override

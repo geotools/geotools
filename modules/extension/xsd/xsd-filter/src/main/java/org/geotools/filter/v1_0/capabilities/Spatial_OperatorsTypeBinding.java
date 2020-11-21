@@ -86,7 +86,7 @@ public class Spatial_OperatorsTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List ops = new ArrayList();
+        List<SpatialOperator> ops = new ArrayList<>();
 
         for (Iterator i = node.getChildren().iterator(); i.hasNext(); ) {
             Node child = (Node) i.next();

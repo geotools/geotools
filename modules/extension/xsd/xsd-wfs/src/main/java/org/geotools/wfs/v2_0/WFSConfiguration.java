@@ -87,7 +87,7 @@ public class WFSConfiguration extends Configuration {
     }
 
     @Override
-    protected void registerBindings(Map bindings) {
+    protected void registerBindings(Map<QName, Object> bindings) {
 
         // Types
         //
@@ -204,7 +204,7 @@ public class WFSConfiguration extends Configuration {
         bindings.put(WFS.FeatureTypeType, FeatureTypeTypeBinding.class);
     }
 
-    void binding(Map bindings, QName name) {
+    void binding(Map<QName, Object> bindings, QName name) {
         bindings.put(name, new ComplexEMFBinding(Wfs20Factory.eINSTANCE, name));
     }
 

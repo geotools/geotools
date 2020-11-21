@@ -102,7 +102,7 @@ class EmfAppSchemaParser {
             CoordinateReferenceSystem crs)
             throws IOException {
 
-        Map<?, ?> bindings = configuration.setupBindings();
+        Map<QName, Object> bindings = configuration.setupBindings();
         BindingLoader bindingLoader = new BindingLoader(bindings);
 
         // create the document handler + root context

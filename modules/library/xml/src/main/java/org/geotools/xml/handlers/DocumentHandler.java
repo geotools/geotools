@@ -54,13 +54,13 @@ public class DocumentHandler extends XMLElementHandler {
     }
 
     /** @see org.geotools.xml.XMLElementHandler#endElement(java.lang.String, java.lang.String) */
-    public void endElement(URI namespaceURI, String localName, Map hints) {
+    public void endElement(URI namespaceURI, String localName, Map<String, Object> hints) {
         // do nothing
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getHandler(java.lang.String, java.lang.String) */
-    public XMLElementHandler getHandler(URI namespaceURI, String localName, Map hints)
-            throws SAXException {
+    public XMLElementHandler getHandler(
+            URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException {
         if (xeh != null) {
             throw new SAXNotRecognizedException(
                     "XML Documents may only have one top-level element");

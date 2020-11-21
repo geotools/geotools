@@ -21,6 +21,7 @@ import java.util.Map;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.XSD;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.SAXException;
@@ -51,7 +52,8 @@ public interface GMLDelegate {
      * (different versions support different types of geometries, e.g., GML3 supports also curved
      * ones)
      */
-    void registerGeometryEncoders(Map<Class, GeometryEncoder> encoders, Encoder encoder);
+    void registerGeometryEncoders(
+            Map<Class, GeometryEncoder<? extends Geometry>> encoders, Encoder encoder);
 
     /** Sets the SRS attribute with the proper syntax for the given GML version */
     void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs);

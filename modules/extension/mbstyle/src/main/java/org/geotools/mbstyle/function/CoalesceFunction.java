@@ -61,7 +61,7 @@ import org.opengis.filter.expression.Expression;
  */
 class CoalesceFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("coalesce");
+    public static final FunctionName NAME = new FunctionNameImpl("coalesce");
 
     CoalesceFunction() {
         super(NAME);

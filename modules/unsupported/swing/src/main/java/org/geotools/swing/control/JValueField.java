@@ -35,7 +35,7 @@ public abstract class JValueField extends JTextField {
 
     /** Default constructor */
     public JValueField() {
-        listeners = new HashSet<ValueChangedListener>();
+        listeners = new HashSet<>();
     }
 
     /**

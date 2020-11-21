@@ -48,9 +48,8 @@ public final class WeakValueHashMapTest {
     public void testStrongReferences() {
         final Random random = new Random();
         for (int pass = 0; pass < 4; pass++) {
-            final WeakValueHashMap<Integer, Integer> weakMap =
-                    new WeakValueHashMap<Integer, Integer>();
-            final HashMap<Integer, Integer> strongMap = new HashMap<Integer, Integer>();
+            final WeakValueHashMap<Integer, Integer> weakMap = new WeakValueHashMap<>();
+            final HashMap<Integer, Integer> strongMap = new HashMap<>();
             for (int i = 0; i < SAMPLE_SIZE; i++) {
                 final Integer key = random.nextInt(SAMPLE_SIZE);
                 final Integer value = random.nextInt(SAMPLE_SIZE);
@@ -137,8 +136,8 @@ public final class WeakValueHashMapTest {
     public void testArrayIndexOutOfBounds() {
         // hard to reproduce bug, the sizes and actions here have been carefully crafted
         // to make it happen
-        WeakValueHashMap<Integer, Integer> map = new WeakValueHashMap<Integer, Integer>(10);
-        List<Integer> values = new ArrayList<Integer>();
+        WeakValueHashMap<Integer, Integer> map = new WeakValueHashMap<>(10);
+        List<Integer> values = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             Integer v = Integer.valueOf(i);
             values.add(v);

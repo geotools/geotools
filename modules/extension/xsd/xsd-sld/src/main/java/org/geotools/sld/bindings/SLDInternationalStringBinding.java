@@ -90,6 +90,7 @@ public abstract class SLDInternationalStringBinding extends AbstractComplexBindi
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        @SuppressWarnings("unchecked")
         Map<String, Object> map = (Map<String, Object>) value;
         GrowableInternationalString intString =
                 new GrowableInternationalString(map.get(null).toString()) {
@@ -103,6 +104,7 @@ public abstract class SLDInternationalStringBinding extends AbstractComplexBindi
             if (key != null && key.equalsIgnoreCase("localized")) {
                 Iterable translations = (Iterable) map.get(key);
                 for (Object obj : translations) {
+                    @SuppressWarnings("unchecked")
                     Map<String, String> translation = (Map<String, String>) obj;
                     intString.add("", "_" + translation.get("lang"), translation.get(null));
                 }

@@ -63,8 +63,7 @@ public class SchemaResolver {
      * import om in a schema, where one is supplied locally and the other must be downloaded and
      * cached. Another example is when the schemas are in different jar files.
      */
-    private Map<String, String> resolvedLocationToOriginalLocationMap =
-            new ConcurrentHashMap<String, String>();
+    private Map<String, String> resolvedLocationToOriginalLocationMap = new ConcurrentHashMap<>();
 
     /**
      * Constructor.

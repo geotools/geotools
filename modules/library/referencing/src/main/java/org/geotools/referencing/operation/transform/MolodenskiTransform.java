@@ -191,7 +191,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
      */
     @Override
     public ParameterValueGroup getParameterValues() {
-        final ParameterValue<Integer> dim = new Parameter<Integer>(Provider.DIM);
+        final ParameterValue<Integer> dim = new Parameter<>(Provider.DIM);
         dim.setValue(getSourceDimensions());
         return new ParameterGroup(
                 getParameterDescriptors(),

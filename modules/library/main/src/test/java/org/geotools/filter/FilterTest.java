@@ -1228,14 +1228,16 @@ public class FilterTest extends TestCase {
                     return object instanceof MockDataObject;
                 }
 
-                public Object get(Object object, String xpath, Class target)
+                public <T> T get(Object object, String xpath, Class<T> target)
                         throws IllegalArgumentException {
                     if (object == null) return null;
 
                     try {
                         Field field = MockDataObject.class.getField(xpath);
                         Object value = field.get(object);
-                        return value;
+                        @SuppressWarnings("unchecked")
+                        T cast = (T) value;
+                        return cast;
                     } catch (Exception e) {
                         throw (IllegalArgumentException)
                                 new IllegalArgumentException("Illegal property name: " + xpath)

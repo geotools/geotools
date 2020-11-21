@@ -115,7 +115,7 @@ public class MockFeatureCollection implements SimpleFeatureCollection {
         return null;
     }
 
-    public Object[] toArray(Object[] a) {
+    public <O> O[] toArray(O[] a) {
         return null;
     }
 

@@ -121,7 +121,7 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 		
 		if (imports != null) {
 		    //build a url classload from dependencies
-		    List urls = new ArrayList();
+		    List<URL> urls = new ArrayList<>();
 	        for ( Iterator d = project.getDependencies().iterator(); d.hasNext(); ) {
 	            Dependency dep = (Dependency) d.next();
 	            
@@ -152,7 +152,7 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 
 		    for ( int i = 0; i < imports.length; i++ ) {
 		        String schemaClassName = imports[i];
-		        Class schemaClass = null;
+		        Class<?> schemaClass = null;
 		        try {
                     schemaClass = ext.loadClass(schemaClassName);
                 } 

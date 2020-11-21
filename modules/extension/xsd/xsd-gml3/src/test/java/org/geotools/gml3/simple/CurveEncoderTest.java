@@ -19,15 +19,16 @@ package org.geotools.gml3.simple;
 
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
-import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
 public class CurveEncoderTest extends GeometryEncoderTestSupport {
 
     public void testEncodeCircle() throws Exception {
         CurveEncoder encoder = new CurveEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        Geometry geometry =
-                new WKTReader2().read("CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)");
+        LineString geometry =
+                (LineString)
+                        new WKTReader2().read("CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)");
         Document doc = encode(encoder, geometry, "circle.abc");
         // MLTestSupport.print(doc);
         assertEquals(
@@ -46,10 +47,11 @@ public class CurveEncoderTest extends GeometryEncoderTestSupport {
 
     public void testEncodeCompound() throws Exception {
         CurveEncoder encoder = new CurveEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        Geometry geometry =
-                new WKTReader2()
-                        .read(
-                                "COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))");
+        LineString geometry =
+                (LineString)
+                        new WKTReader2()
+                                .read(
+                                        "COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))");
         Document doc = encode(encoder, geometry, "compound.3");
         // XMLTestSupport.print(doc);
         assertEquals(2, xpath.getMatchingNodes("//gml:Curve//gml:segments/*", doc).getLength());

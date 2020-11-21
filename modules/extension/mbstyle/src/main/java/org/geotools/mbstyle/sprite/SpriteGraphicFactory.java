@@ -90,12 +90,12 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
      */
     public static final String FORMAT = "mbsprite";
 
-    JSONParser jsonParser = new JSONParser();
+    final JSONParser jsonParser = new JSONParser();
 
-    protected static Map<URL, BufferedImage> imageCache =
+    protected static final Map<URL, BufferedImage> imageCache =
             Collections.synchronizedMap(new SoftValueHashMap<>());
 
-    protected static Map<URL, SpriteIndex> indexCache =
+    protected static final Map<URL, SpriteIndex> indexCache =
             Collections.synchronizedMap(new SoftValueHashMap<>());
 
     private static final Logger LOGGER = Logging.getLogger(SpriteGraphicFactory.class);
@@ -118,7 +118,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
         String sizeStr = paramsMap.get("size");
         sizeStr = sizeStr == null ? "1.0" : sizeStr;
 
-        Double sizeMultiplier = null;
+        Double sizeMultiplier;
         try {
             sizeMultiplier = Double.parseDouble(sizeStr);
             if (sizeMultiplier < 0) {
@@ -156,7 +156,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
         }
 
         // Use the size multiplier, if any, to scale the image
-        if (sizeMultiplier != null && sizeMultiplier != 1.0) {
+        if (sizeMultiplier != 1.0) {
             AffineTransform scaleTx =
                     AffineTransform.getScaleInstance(sizeMultiplier, sizeMultiplier);
             AffineTransformOp ato = new AffineTransformOp(scaleTx, AffineTransformOp.TYPE_BILINEAR);
@@ -194,9 +194,9 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
         String[] nvps = fragment.split("&");
 
         Map<String, String> paramsMap = new HashMap<>();
-        for (int i = 0; i < nvps.length; i++) {
+        for (String s : nvps) {
             try {
-                String[] nvp = nvps[i].split("=");
+                String[] nvp = s.split("=");
                 if (nvp.length == 1 && nvps.length == 1) {
                     // Allow the simple case url#iconName (omitting name=iconName)
                     paramsMap.put("icon", URLDecoder.decode(nvp[0], "utf-8"));
@@ -234,7 +234,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
     protected static String parseIconName(URL url) {
         String urlStr = url.toExternalForm();
 
-        if (urlStr.indexOf(ICON_NAME_DELIMITER) == -1) {
+        if (!urlStr.contains(ICON_NAME_DELIMITER)) {
 
             throw new IllegalArgumentException(
                     "Mapbox-style sprite external graphics must have url#{iconName}. URL was: "

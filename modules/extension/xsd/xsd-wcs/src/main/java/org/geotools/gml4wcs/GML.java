@@ -42,7 +42,7 @@ public final class GML extends XSD {
     /** private constructor */
     private GML() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         super.addDependencies(dependencies);
 
         dependencies.add(XLINK.getInstance());

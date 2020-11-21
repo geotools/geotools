@@ -92,7 +92,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
     @Test
     public void testFindAllFids() throws Exception {
         int expectedCount = 0;
-        Set<String> expectedFids = new LinkedHashSet<String>();
+        Set<String> expectedFids = new LinkedHashSet<>();
         {
             ShapefileDataStore ds = new ShapefileDataStore(backshp.toURI().toURL());
             SimpleFeatureSource featureSource = ds.getFeatureSource();
@@ -118,7 +118,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
     @Test
     public void testFindAllFidsReverseOrder() throws Exception {
         int expectedCount = 0;
-        Set<String> expectedFids = new TreeSet<String>(Collections.reverseOrder());
+        Set<String> expectedFids = new TreeSet<>(Collections.reverseOrder());
         {
             ShapefileDataStore ds = new ShapefileDataStore(backshp.toURI().toURL());
             SimpleFeatureSource featureSource = ds.getFeatureSource();

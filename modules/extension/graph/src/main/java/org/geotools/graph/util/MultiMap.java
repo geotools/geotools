@@ -22,6 +22,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+// Types are problematic here, should be a Map<Object, Collection>> but the signatures would not
+// line up with Map anymore then.
+@SuppressWarnings("unchecked")
 public class MultiMap implements Map, Serializable {
 
     private Map m_map = null;

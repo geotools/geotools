@@ -105,7 +105,7 @@ public class VPFLibrary extends ContentDataStore {
     /** The name of the library */
     private final String libraryName;
     /** The coverages that are in the library */
-    private final List coverages = new Vector();
+    private final List<VPFCoverage> coverages = new Vector<>();
     /** The coordinate reference system used through this library */
     private CoordinateReferenceSystem crs;
     /** Signals if an error has already been logged for a CRS related exception */
@@ -285,7 +285,7 @@ public class VPFLibrary extends ContentDataStore {
      *
      * @return a <code>List</code> value which contains VPFCoverage objects
      */
-    public List getCoverages() {
+    public List<VPFCoverage> getCoverages() {
         return coverages;
     }
 
@@ -328,6 +328,7 @@ public class VPFLibrary extends ContentDataStore {
      *  (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return String.format(
                 "{"
@@ -340,14 +341,14 @@ public class VPFLibrary extends ContentDataStore {
                 libraryName, getXmin(), getXmax(), getYmin(), getYmax());
     }
     /** A map containing the tiles used by this library */
-    private final Map tileMap = new HashMap();
+    private final Map<Short, String> tileMap = new HashMap<>();
     /**
-     * Returns a map containing the tiles used by this library. The map has string keys and and
+     * Returns a map containing the tiles used by this library. The map has Short keys and and
      * string values.
      *
      * @return a <code>Map</code> value
      */
-    public Map getTileMap() {
+    public Map<Short, String> getTileMap() {
         return tileMap;
     }
     /**
@@ -367,7 +368,7 @@ public class VPFLibrary extends ContentDataStore {
 
         while (rowsIter.hasNext()) {
             SimpleFeature row = (SimpleFeature) rowsIter.next();
-            Short rowId = Short.valueOf(Short.parseShort(row.getAttribute("id").toString()));
+            Short rowId = Short.parseShort(row.getAttribute("id").toString());
             String value = row.getAttribute(FIELD_TILE_NAME).toString();
 
             // Mangle tile directory from DOS style directory splits to a system
@@ -418,15 +419,16 @@ public class VPFLibrary extends ContentDataStore {
     /* (non-Javadoc)
      * @see org.geotools.data.ContentDataStore#getNames()
      */
+    @Override
     public List<Name> getNames() {
         // Get the type names for each coverage
-        ArrayList<Name> result = new ArrayList<Name>();
+        ArrayList<Name> result = new ArrayList<>();
         int coveragesCount = coverages.size();
         int featureTypesCount = 0;
         // int index = 0;
         List[] coverageTypes = new List[coveragesCount];
         for (int inx = 0; inx < coveragesCount; inx++) {
-            coverageTypes[inx] = ((VPFCoverage) coverages.get(inx)).getFeatureTypes();
+            coverageTypes[inx] = coverages.get(inx).getFeatureTypes();
             featureTypesCount += coverageTypes[inx].size();
         }
         // result = new String[featureTypesCount];
@@ -537,12 +539,12 @@ public class VPFLibrary extends ContentDataStore {
     public SimpleFeatureType getTypeSchema(String typeName) throws IOException {
         // Look through all of the coverages to find a matching feature type
         SimpleFeatureType result = null;
-        Iterator coverageIter = coverages.iterator();
+        Iterator<VPFCoverage> coverageIter = coverages.iterator();
         Iterator featureTypesIter;
         SimpleFeatureType temp;
         boolean breakOut = false;
         while (coverageIter.hasNext() && !breakOut) {
-            featureTypesIter = ((VPFCoverage) coverageIter.next()).getFeatureTypes().iterator();
+            featureTypesIter = coverageIter.next().getFeatureTypes().iterator();
             while (featureTypesIter.hasNext()) {
                 temp = (SimpleFeatureType) featureTypesIter.next();
                 if (temp.getTypeName().equals(typeName)) {

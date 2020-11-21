@@ -63,13 +63,14 @@ public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstra
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
 
         LOGGER.finer("Starting test " + getName() + " (" + getClass().getName() + ")");
         String typeRef1 = getPolygonTypeRef();
         LOGGER.finer(typeRef1 + ": looking up SimpleFeatureSource ");
-        SimpleFeatureSource polySource1 = (SimpleFeatureSource) layers.get(typeRef1);
+        SimpleFeatureSource polySource1 = layers.get(typeRef1);
         LOGGER.finer(typeRef1 + ": found " + polySource1.getSchema().getTypeName());
 
         SimpleFeatureCollection collection1 = polySource1.getFeatures(); // limit with envelope
@@ -77,7 +78,7 @@ public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstra
 
         String typeRef2 = getRestrictedPolygonTypeRef();
         LOGGER.finer(typeRef2 + ": looking up SimpleFeatureSource ");
-        SimpleFeatureSource polySource2 = (SimpleFeatureSource) layers.get(typeRef2);
+        SimpleFeatureSource polySource2 = layers.get(typeRef2);
         LOGGER.finer(typeRef2 + ": found " + polySource2.getSchema().getTypeName());
 
         SimpleFeatureCollection collection2 = polySource2.getFeatures(); // limit with envelope

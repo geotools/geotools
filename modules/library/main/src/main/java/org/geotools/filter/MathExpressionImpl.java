@@ -113,22 +113,22 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
             throw new RuntimeException("Both Maths expressions cannot be Collections");
         } else if (value1 instanceof Collection) {
             // first is collection, second is scalar
+            @SuppressWarnings("unchecked")
+            Collection<Object> c1 = (Collection<Object>) value1;
             numericList =
-                    (List)
-                            ((Collection) value1)
-                                    .stream()
-                                    .map(v -> Converters.convert(v, Number.class))
-                                    .collect(Collectors.toList());
+                    c1.stream()
+                            .map(v -> Converters.convert(v, Number.class))
+                            .collect(Collectors.toList());
             scalar = Filters.number(value2);
 
         } else {
             // second is collection, first is scalar
+            @SuppressWarnings("unchecked")
+            Collection<Object> unc = (Collection<Object>) value2;
             numericList =
-                    (List)
-                            ((Collection) value2)
-                                    .stream()
-                                    .map(v -> Converters.convert(v, Number.class))
-                                    .collect(Collectors.toList());
+                    unc.stream()
+                            .map(v -> Converters.convert(v, Number.class))
+                            .collect(Collectors.toList());
             scalar = Filters.number(value1);
         }
 

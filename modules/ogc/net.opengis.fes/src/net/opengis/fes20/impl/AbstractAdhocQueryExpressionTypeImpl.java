@@ -143,7 +143,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      */
     public EList<Object> getAbstractProjectionClause() {
         if (abstractProjectionClause == null) {
-            abstractProjectionClause = new EDataTypeUniqueEList<Object>(Object.class, this, Fes20Package.ABSTRACT_ADHOC_QUERY_EXPRESSION_TYPE__ABSTRACT_PROJECTION_CLAUSE);
+            abstractProjectionClause = new EDataTypeUniqueEList<>(Object.class, this, Fes20Package.ABSTRACT_ADHOC_QUERY_EXPRESSION_TYPE__ABSTRACT_PROJECTION_CLAUSE);
         }
         return abstractProjectionClause;
     }
@@ -197,7 +197,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      */
     public EList<String> getAliases() {
         if (aliases == null) {
-            aliases = new EDataTypeUniqueEList<String>(String.class, this, Fes20Package.ABSTRACT_ADHOC_QUERY_EXPRESSION_TYPE__ALIASES);
+            aliases = new EDataTypeUniqueEList<>(String.class, this, Fes20Package.ABSTRACT_ADHOC_QUERY_EXPRESSION_TYPE__ALIASES);
         }
         return aliases;
     }
@@ -209,7 +209,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      */
     public EList<Object> getTypeNames() {
         if (typeNames == null) {
-            typeNames = new EDataTypeEList<Object>(Object.class, this, Fes20Package.ABSTRACT_ADHOC_QUERY_EXPRESSION_TYPE__TYPE_NAMES);
+            typeNames = new EDataTypeEList<>(Object.class, this, Fes20Package.ABSTRACT_ADHOC_QUERY_EXPRESSION_TYPE__TYPE_NAMES);
         }
         return typeNames;
     }

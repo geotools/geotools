@@ -26,13 +26,13 @@ import javax.xml.namespace.QName;
  */
 public class EnumSimpleBinding extends AbstractSimpleBinding {
 
-    Class enumClass;
+    Class<?> enumClass;
     QName target;
 
     Method get;
     Method valueOf;
 
-    public EnumSimpleBinding(Class enumClass, QName target) {
+    public EnumSimpleBinding(Class<?> enumClass, QName target) {
         this.enumClass = enumClass;
         this.target = target;
 
@@ -52,7 +52,7 @@ public class EnumSimpleBinding extends AbstractSimpleBinding {
         return target;
     }
 
-    public Class getType() {
+    public Class<?> getType() {
         return enumClass;
     }
 

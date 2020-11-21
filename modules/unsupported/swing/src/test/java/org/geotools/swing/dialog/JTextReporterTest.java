@@ -88,13 +88,13 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private WindowActivatedListener listener;
+    private WindowActivatedListener<DialogFixture, Dialog, DialogDriver> listener;
     private StreamHandler handler;
     private ByteArrayOutputStream out;
 
     @Before
     public void setup() {
-        listener = new WindowActivatedListener(DIALOG_CLASS);
+        listener = new WindowActivatedListener<>(DIALOG_CLASS);
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
     }
 

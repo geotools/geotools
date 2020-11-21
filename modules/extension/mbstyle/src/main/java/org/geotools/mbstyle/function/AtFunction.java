@@ -25,7 +25,7 @@ import org.opengis.filter.capability.FunctionName;
 
 /** Returns the value in a JSONArray at a given index. */
 public class AtFunction extends FunctionExpressionImpl {
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "at",
                     parameter("array", JSONArray.class),

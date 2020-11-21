@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,15 +77,14 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         /** Load data access */
         final Name EXAMPLE_TYPE = Types.typeName("http://example.com", "FirstParentFeature");
         final String schemaBase = "/test-data/";
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         dsParams.put("dbtype", "app-schema");
         URL url = getClass().getResource(schemaBase + "VocabFunctionsTest.xml");
         assertNotNull(url);
         dsParams.put("url", url.toExternalForm());
         dataAccess = DataAccessFinder.getDataStore(dsParams);
 
-        FeatureSource<FeatureType, Feature> fSource =
-                (FeatureSource) dataAccess.getFeatureSource(EXAMPLE_TYPE);
+        FeatureSource<FeatureType, Feature> fSource = dataAccess.getFeatureSource(EXAMPLE_TYPE);
         exCollection = (FeatureCollection<FeatureType, Feature>) fSource.getFeatures();
 
         assertEquals(3, size(exCollection));

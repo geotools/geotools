@@ -513,7 +513,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      */
     private int[] buildAttributeRsIndex() {
         LinkedHashSet<String> pkColumns = dataStore.getColumnNames(pkey);
-        List<String> pkColumnsList = new ArrayList<String>(pkColumns);
+        List<String> pkColumnsList = new ArrayList<>(pkColumns);
         int[] indexes = new int[featureType.getAttributeCount()];
         int exposedPks = 0;
         for (int i = 0; i < indexes.length; i++) {
@@ -603,7 +603,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         HashMap<String, Integer> index;
 
         /** user data */
-        HashMap<Object, Object> userData = new HashMap<Object, Object>();
+        HashMap<Object, Object> userData = new HashMap<>();
 
         /** true if primary keys are not returned (the default is false) */
         boolean exposePrimaryKeys;
@@ -636,7 +636,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             dirty = new boolean[values.length];
 
             // set up name lookup
-            index = new HashMap<String, Integer>();
+            index = new HashMap<>();
 
             int offset = 0;
 
@@ -924,6 +924,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return true;
         }
 
+        @SuppressWarnings("unchecked")
         public void setValue(Object value) {
             setValue((Collection<Property>) value);
         }

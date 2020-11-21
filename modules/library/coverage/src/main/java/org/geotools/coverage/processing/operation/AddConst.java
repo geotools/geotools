@@ -92,7 +92,8 @@ public class AddConst extends OperationJAI {
     }
 
     /** Returns the expected range of values for the resulting image. */
-    protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
+    protected NumberRange<? extends Number> deriveRange(
+            final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         final double[] constants = (double[]) parameters.parameters.getObjectParameter("constants");
         if (constants.length == 1) {
             final double c = constants[0];

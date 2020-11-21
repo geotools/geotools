@@ -44,7 +44,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
     }
 
     SimpleFeatureSource transformWithPartialTransform() throws Exception {
-        List<Definition> definitions = new ArrayList<Definition>();
+        List<Definition> definitions = new ArrayList<>();
         definitions.add(new Definition("geom", ECQL.toExpression("buffer(the_geom, 1)")));
         definitions.add(new Definition("name", ECQL.toExpression("strToLowercase(state_name)")));
         definitions.add(new Definition("total", ECQL.toExpression("male + female")));

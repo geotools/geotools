@@ -112,9 +112,9 @@ public class Diff {
     /** Create an empty Diff */
     public Diff() {
         // private fields
-        modifiedFeatures = new ConcurrentHashMap<String, SimpleFeature>();
-        addedFeatures = new ConcurrentHashMap<String, SimpleFeature>();
-        addedFidList = new CopyOnWriteArrayList<String>();
+        modifiedFeatures = new ConcurrentHashMap<>();
+        addedFeatures = new ConcurrentHashMap<>();
+        addedFidList = new CopyOnWriteArrayList<>();
 
         // public "views" requiring synchronised( mutex )
         modified2 = Collections.unmodifiableMap(modifiedFeatures);
@@ -127,9 +127,9 @@ public class Diff {
     /** Diff copy. */
     public Diff(Diff other) {
         // copy data
-        modifiedFeatures = new ConcurrentHashMap<String, SimpleFeature>(other.modifiedFeatures);
-        addedFeatures = new ConcurrentHashMap<String, SimpleFeature>(other.addedFeatures);
-        addedFidList = new CopyOnWriteArrayList<String>(other.addedFidList);
+        modifiedFeatures = new ConcurrentHashMap<>(other.modifiedFeatures);
+        addedFeatures = new ConcurrentHashMap<>(other.addedFeatures);
+        addedFidList = new CopyOnWriteArrayList<>(other.addedFidList);
 
         // create public "views"
         modified2 = Collections.unmodifiableMap(modifiedFeatures);

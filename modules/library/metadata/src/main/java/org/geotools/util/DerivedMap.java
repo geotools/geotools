@@ -262,7 +262,7 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
 
         protected Entry<BK, K, V> baseToDerived(final Map.Entry<BK, V> entry) {
             final K derived = DerivedMap.this.baseToDerived(entry.getKey());
-            return derived != null ? new Entry<BK, K, V>(entry, derived) : null;
+            return derived != null ? new Entry<>(entry, derived) : null;
         }
 
         protected Map.Entry<BK, V> derivedToBase(final Entry<BK, K, V> element) {

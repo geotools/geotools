@@ -660,7 +660,7 @@ public abstract class SwtWorker<T, V> implements Future<T>, Runnable {
                             MAX_WORKER_THREADS,
                             5L,
                             TimeUnit.SECONDS,
-                            new LinkedBlockingQueue<Runnable>(),
+                            new LinkedBlockingQueue<>(),
                             threadFactory) {
 
                         private final ReentrantLock pauseLock = new ReentrantLock();

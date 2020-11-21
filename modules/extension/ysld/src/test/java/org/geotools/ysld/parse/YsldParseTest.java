@@ -104,6 +104,7 @@ import org.opengis.style.RasterSymbolizer;
 import org.opengis.style.SelectedChannelType;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
+@SuppressWarnings("unchecked") // unchecked generics array creation due to Hamcrest
 public class YsldParseTest {
     Logger LOG = Logging.getLogger("org.geotools.ysld.Ysld");
 

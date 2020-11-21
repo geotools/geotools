@@ -17,15 +17,16 @@
 package org.geotools.graph.util.delaunay;
 
 import java.util.List;
+import org.geotools.graph.structure.Edge;
 
 /** @author jfc173 */
 public class AutoClustData {
 
     double localMean;
     double localStDev;
-    List shortEdges;
-    List longEdges;
-    List otherEdges;
+    List<Edge> shortEdges;
+    List<Edge> longEdges;
+    List<Edge> otherEdges;
 
     /** Creates a new instance of AutoClustData */
     public AutoClustData() {}
@@ -46,27 +47,27 @@ public class AutoClustData {
         return localStDev;
     }
 
-    public void setShortEdges(List l) {
+    public void setShortEdges(List<Edge> l) {
         shortEdges = l;
     }
 
-    public List getShortEdges() {
+    public List<Edge> getShortEdges() {
         return shortEdges;
     }
 
-    public void setLongEdges(List l) {
+    public void setLongEdges(List<Edge> l) {
         longEdges = l;
     }
 
-    public List getLongEdges() {
+    public List<Edge> getLongEdges() {
         return longEdges;
     }
 
-    public void setOtherEdges(List l) {
+    public void setOtherEdges(List<Edge> l) {
         otherEdges = l;
     }
 
-    public List getOtherEdges() {
+    public List<Edge> getOtherEdges() {
         return otherEdges;
     }
 }

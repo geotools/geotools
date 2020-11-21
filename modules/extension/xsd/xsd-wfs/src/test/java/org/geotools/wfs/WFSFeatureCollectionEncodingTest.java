@@ -35,6 +35,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     FeatureCollectionType fc;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void setUp() throws Exception {
         fc = WfsFactory.eINSTANCE.createFeatureCollectionType();
         DefaultFeatureCollection features = new DefaultFeatureCollection();
@@ -146,6 +147,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
                         .getAttribute("gml:id"));
     }
 
+    @SuppressWarnings("unchecked")
     public void testEncodeFeatureCollectionMultipleFeatureTypes() throws Exception {
         DefaultFeatureCollection features = new DefaultFeatureCollection();
 

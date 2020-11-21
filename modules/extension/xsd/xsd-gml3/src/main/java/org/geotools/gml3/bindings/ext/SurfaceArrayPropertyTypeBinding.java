@@ -55,7 +55,7 @@ public class SurfaceArrayPropertyTypeBinding
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        List<Polygon> polygons = new ArrayList<Polygon>();
+        List<Polygon> polygons = new ArrayList<>();
 
         // This property element contains a list of surfaces.
         // The order of the elements is significant and shall be preserved when processing the

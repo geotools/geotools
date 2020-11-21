@@ -47,7 +47,7 @@ public final class BandMergeTest extends GridProcessingTestBase {
          */
         GridCoverage2D source = EXAMPLES.get(4);
         Envelope originalEnvelope = source.getEnvelope();
-        final List<GridCoverage2D> coverages = new ArrayList<GridCoverage2D>();
+        final List<GridCoverage2D> coverages = new ArrayList<>();
         final RenderedImage byteImage =
                 new ImageWorker(source.getRenderedImage()).rescaleToBytes().getRenderedImage();
         source =

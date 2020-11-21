@@ -48,7 +48,7 @@ public class SubHandlerPolygon extends SubHandler {
     private LinearRing outerBoundary = null;
 
     /** Stores Polygon's inner boundaries (holes). */
-    private ArrayList innerBoundaries = new ArrayList();
+    private ArrayList<LinearRing> innerBoundaries = new ArrayList<>();
 
     /** Remembers the current location in the parsing stream (inner or outer boundary). */
     private int location = 0;

@@ -113,8 +113,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
     volatile AbstractAuthorityFactory backingStore;
 
     /** The pool of cached objects. */
-    private final LinkedHashMap<Object, Object> pool =
-            new LinkedHashMap<Object, Object>(32, 0.75f, true);
+    private final LinkedHashMap<Object, Object> pool = new LinkedHashMap<>(32, 0.75f, true);
 
     /**
      * The maximum number of objects to keep by strong reference. If a greater amount of objects are
@@ -123,8 +122,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
     private final int maxStrongReferences;
 
     /** The pool of objects identified by {@link #find}. */
-    private final Map<IdentifiedObject, IdentifiedObject> findPool =
-            new WeakHashMap<IdentifiedObject, IdentifiedObject>();
+    private final Map<IdentifiedObject, IdentifiedObject> findPool = new WeakHashMap<>();
 
     /**
      * Constructs an instance wrapping the specified factory with a default number of entries to
@@ -332,7 +330,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @param type The spatial reference objects type.
      * @return The set of authority codes for spatial reference objects of the given type. If this
      *     factory doesn't contains any object of the given type, then this method returns an
-     *     {@linkplain java.util.Collections#EMPTY_SET empty set}.
+     *     {@linkplain java.util.Collections.emptySet() empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
@@ -1013,7 +1011,9 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
         final CodePair key = new CodePair(trimAuthority(sourceCRS), trimAuthority(targetCRS));
         final Object cached = get(key);
         if (cached instanceof Set) {
-            operations = (Set<CoordinateOperation>) cached;
+            @SuppressWarnings("unchecked")
+            Set<CoordinateOperation> cast = (Set<CoordinateOperation>) cached;
+            operations = cast;
         } else {
             operations =
                     Collections.unmodifiableSet(
@@ -1190,7 +1190,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
                     }
                     continue;
                 }
-                entry.setValue(new WeakReference<Object>(value));
+                entry.setValue(new WeakReference<>(value));
                 if (--toReplace == 0) {
                     break;
                 }

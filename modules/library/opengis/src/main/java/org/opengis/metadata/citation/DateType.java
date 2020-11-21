@@ -30,7 +30,7 @@ public final class DateType extends CodeList<DateType> {
     private static final long serialVersionUID = 9031571038833329544L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<DateType> VALUES = new ArrayList<DateType>(3);
+    private static final List<DateType> VALUES = new ArrayList<>(3);
 
     /** Date identifies when the resource was brought into existence. */
     @UML(identifier = "creation", obligation = CONDITIONAL, specification = ISO_19115)

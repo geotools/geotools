@@ -307,7 +307,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
             // Create the the output coverage by preserving its gridgeometry and its bands
             //
             ////
-            Map properties = sourceCoverage.getProperties();
+            @SuppressWarnings("unchecked")
+            Map<String, Object> properties = sourceCoverage.getProperties();
             if (properties == null) {
                 properties = new HashMap<>();
             }

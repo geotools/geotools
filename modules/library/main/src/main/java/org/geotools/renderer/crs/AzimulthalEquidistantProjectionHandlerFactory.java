@@ -223,6 +223,7 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
             List<ReferencedEnvelope> results = new ArrayList<>();
             if (simplifiedDateline.intersects(renderingGeometry)) {
                 Geometry difference = renderingGeometry.difference(bufferedDateline);
+                @SuppressWarnings("unchecked")
                 List<Polygon> polygons = PolygonExtracter.getPolygons(difference);
                 for (Polygon p : polygons) {
                     Geometry transformed =

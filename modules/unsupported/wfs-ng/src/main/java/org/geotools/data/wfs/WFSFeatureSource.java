@@ -266,7 +266,7 @@ class WFSFeatureSource extends ContentFeatureSource {
             throws IOException {
 
         if (Filter.EXCLUDE.equals(localQuery.getFilter())) {
-            return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema());
+            return new EmptyFeatureReader<>(getSchema());
         }
 
         GetFeatureRequest request = createGetFeature(localQuery, ResultType.RESULTS);
@@ -286,14 +286,12 @@ class WFSFeatureSource extends ContentFeatureSource {
 
         if (request.getUnsupportedFilter() != null
                 && request.getUnsupportedFilter() != Filter.INCLUDE) {
-            reader =
-                    new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, request.getUnsupportedFilter());
+            reader = new FilteringFeatureReader<>(reader, request.getUnsupportedFilter());
         }
 
         if (!reader.hasNext()) {
             reader.close();
-            return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(contentType);
+            return new EmptyFeatureReader<>(contentType);
         }
 
         final SimpleFeatureType readerType = reader.getFeatureType();
@@ -312,9 +310,7 @@ class WFSFeatureSource extends ContentFeatureSource {
             WFSLocalTransactionState wfsState = (WFSLocalTransactionState) state;
             if (wfsState != null) {
                 WFSDiff diff = wfsState.getDiff();
-                reader =
-                        new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                reader, diff, localQuery.getFilter());
+                reader = new DiffFeatureReader<>(reader, diff, localQuery.getFilter());
             }
         }
         return reader;

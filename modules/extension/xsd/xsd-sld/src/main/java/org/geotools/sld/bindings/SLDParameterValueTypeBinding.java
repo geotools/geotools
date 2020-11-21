@@ -107,7 +107,7 @@ public class SLDParameterValueTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        List<Expression> expressions = new ArrayList();
+        List<Expression> expressions = new ArrayList<>();
         for (Iterator itr = node.getChildren().iterator(); itr.hasNext(); ) {
             Node child = (Node) itr.next();
 

@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
+import org.geotools.coverage.processing.Operations;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -63,7 +64,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
 
     public FeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input feature collection")
-                    FeatureCollection features,
+                    FeatureCollection<? extends FeatureType, ? extends Feature> features,
             @DescribeParameter(
                         name = "aggregation",
                         description =
@@ -115,7 +116,8 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                             .collect(Collectors.toList());
             PropertyName opValue =
                     validatePropertyName(ff.property(operationAttribute, ns), schema);
-            return new GroupCandidateSelectionFeatureCollection(features, groupingPn, opValue, op);
+            return new GroupCandidateSelectionFeatureCollection<>(
+                    features, groupingPn, opValue, op);
         } catch (IllegalArgumentException e) {
             throw new ProcessException(
                     Errors.format(ErrorKeys.BAD_PARAMETER_$2, "aggregation", aggregation));
@@ -231,8 +233,8 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
      * A FeatureCollection wrapper to filter out features according to the aggregation parameter and
      * the groups defined by the groupingAttributes
      */
-    static class GroupCandidateSelectionFeatureCollection
-            extends DecoratingFeatureCollection<FeatureType, Feature> {
+    static class GroupCandidateSelectionFeatureCollection<T extends FeatureType, F extends Feature>
+            extends DecoratingFeatureCollection<T, F> {
 
         List<PropertyName> groupingAttributes;
 
@@ -241,7 +243,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         Operations aggregation;
 
         public GroupCandidateSelectionFeatureCollection(
-                FeatureCollection<FeatureType, Feature> delegate,
+                FeatureCollection<T, F> delegate,
                 List<PropertyName> groupingAttributes,
                 PropertyName operationAttribute,
                 Operations aggregation) {
@@ -252,9 +254,9 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         }
 
         @Override
-        public FeatureIterator<Feature> features() {
-            return new GroupCandidateSelectionIterator(
-                    new PushBackFeatureIterator(delegate.features()),
+        public FeatureIterator<F> features() {
+            return new GroupCandidateSelectionIterator<>(
+                    new PushBackFeatureIterator<>(delegate.features()),
                     groupingAttributes,
                     operationAttribute,
                     aggregation);
@@ -265,7 +267,8 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
      * A FeatureIterator wrapper to filter out features according to the aggregation parameter and
      * the groups defined by the groupingAttributes
      */
-    static class GroupCandidateSelectionIterator extends DecoratingFeatureIterator<Feature> {
+    static class GroupCandidateSelectionIterator<F extends Feature>
+            extends DecoratingFeatureIterator<F> {
 
         private List<PropertyName> groupByAttributes;
 
@@ -273,7 +276,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
 
         private Operations aggregation;
 
-        private Feature next;
+        private F next;
 
         /**
          * Wrap the provided FeatureIterator.
@@ -281,7 +284,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
          * @param iterator Iterator to be used as a delegate.
          */
         public GroupCandidateSelectionIterator(
-                PushBackFeatureIterator iterator,
+                PushBackFeatureIterator<F> iterator,
                 List<PropertyName> groupByAttributes,
                 PropertyName operationValue,
                 Operations aggregation) {
@@ -294,9 +297,9 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         @Override
         public boolean hasNext() {
             List<Object> groupingValues = new ArrayList<>(groupByAttributes.size());
-            Feature bestFeature = null;
+            F bestFeature = null;
             while (super.hasNext()) {
-                Feature f = super.next();
+                F f = super.next();
                 if (bestFeature == null) {
                     // no features in the list this is the first of the group
                     // takes the values to check the following features if belong to the same
@@ -309,7 +312,9 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                         // if operationValue is null skip
                         bestFeature = updateBestFeature(f, bestFeature);
                     } else {
-                        ((PushBackFeatureIterator) delegate).pushBack();
+                        @SuppressWarnings({"unchecked", "PMD.CloseResource"})
+                        PushBackFeatureIterator<F> pb = (PushBackFeatureIterator) delegate;
+                        pb.pushBack();
                         break;
                     }
                 }
@@ -332,7 +337,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             else return false;
         }
 
-        private List<Object> getGroupingValues(List<Object> groupingValues, Feature f) {
+        private List<Object> getGroupingValues(List<Object> groupingValues, F f) {
             for (PropertyName p : groupByAttributes) {
                 Object result = p.evaluate(f);
                 groupingValues.add(result);
@@ -341,7 +346,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             else return groupingValues;
         }
 
-        private Feature updateBestFeature(Feature best, Feature f) {
+        private F updateBestFeature(F best, F f) {
             Comparable bestValue = getComparableFromEvaluation(best);
             Comparable value = getComparableFromEvaluation(f);
             if (value == null) return best;
@@ -353,14 +358,14 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             }
         }
 
-        private Feature findBestMax(
-                Feature best, Feature f, Comparable bestValue, Comparable value) {
+        @SuppressWarnings("unchecked")
+        private F findBestMax(F best, F f, Comparable bestValue, Comparable value) {
             if (bestValue.compareTo(value) < 0) return f;
             return best;
         }
 
-        private Feature findBestMin(
-                Feature best, Feature f, Comparable bestValue, Comparable value) {
+        @SuppressWarnings("unchecked")
+        private F findBestMin(F best, F f, Comparable bestValue, Comparable value) {
             if (bestValue.compareTo(value) > 0) return f;
             return best;
         }
@@ -373,11 +378,11 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         }
 
         @Override
-        public Feature next() throws NoSuchElementException {
+        public F next() throws NoSuchElementException {
             if (next == null && !this.hasNext()) {
                 throw new NoSuchElementException();
             }
-            Feature f = next;
+            F f = next;
             next = null;
             return f;
         }

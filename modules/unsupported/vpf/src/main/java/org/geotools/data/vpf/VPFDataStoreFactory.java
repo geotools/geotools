@@ -27,6 +27,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
@@ -36,7 +37,6 @@ import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.feature.SchemaException;
-import org.geotools.util.KVP;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -65,6 +65,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#getDisplayName()
      */
+    @Override
     public String getDisplayName() {
         return "Vector Product Format Library";
     }
@@ -72,6 +73,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#getDescription()
      */
+    @Override
     public String getDescription() {
         return "Vector Product Format Library data store implementation.";
     }
@@ -104,7 +106,8 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
     }
 
     public DataStore createDataStore(URL url) throws IOException {
-        Map<String, Object> params = new KVP("url", url);
+        Map<String, Object> params = new HashMap<>();
+        params.put("url", url);
         return createDataStore(params);
     }
 
@@ -150,8 +153,8 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         }
 
         VPFFile latTable = VPFFileFactory.getInstance().getFile(latTableName);
-        Iterator iter = latTable.readAllRows().iterator();
-        SimpleFeature feature = iter.hasNext() ? (SimpleFeature) iter.next() : null;
+        Iterator<SimpleFeature> iter = latTable.readAllRows().iterator();
+        SimpleFeature feature = iter.hasNext() ? iter.next() : null;
 
         String directoryName = file.getPath();
         String folderName = directoryName.substring(directoryName.lastIndexOf(File.separator) + 1);
@@ -239,6 +242,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
      */
+    @Override
     public Param[] getParametersInfo() {
         return new Param[] {
             DIR,
@@ -248,14 +252,16 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#isAvailable()
      */
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
-    /*public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    /*public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }*/
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

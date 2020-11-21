@@ -172,8 +172,8 @@ public class TransformProcess implements VectorProcess {
      * @return List of definition
      */
     public static List<Definition> toDefinition(String definition) {
-        List<Definition> list = new ArrayList<Definition>();
-        HashSet<String> check = new HashSet<String>();
+        List<Definition> list = new ArrayList<>();
+        HashSet<String> check = new HashSet<>();
 
         // clean up cross platform differences of line feed
         String[] defs = splitDefinitions(definition);

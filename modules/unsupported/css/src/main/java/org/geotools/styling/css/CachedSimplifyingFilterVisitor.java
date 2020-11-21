@@ -38,7 +38,7 @@ import org.opengis.filter.Or;
  */
 class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
     // filters we know are already simplified
-    Map<Filter, Filter> cache = new WeakHashMap<Filter, Filter>();
+    Map<Filter, Filter> cache = new WeakHashMap<>();
 
     public CachedSimplifyingFilterVisitor(FeatureType ft) {
         setFeatureType(ft);

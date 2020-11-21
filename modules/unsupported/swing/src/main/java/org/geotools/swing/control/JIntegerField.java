@@ -89,7 +89,7 @@ public class JIntegerField extends JValueField {
                     public void insertUpdate(DocumentEvent e) {
                         if (fireEvents) {
                             ValueChangedEvent<Integer> ev =
-                                    new ValueChangedEvent<Integer>(
+                                    new ValueChangedEvent<>(
                                             JIntegerField.this,
                                             Integer.valueOf(document.getValue()));
 
@@ -100,7 +100,7 @@ public class JIntegerField extends JValueField {
                     public void removeUpdate(DocumentEvent e) {
                         if (fireEvents) {
                             ValueChangedEvent<Integer> ev =
-                                    new ValueChangedEvent<Integer>(
+                                    new ValueChangedEvent<>(
                                             JIntegerField.this,
                                             Integer.valueOf(document.getValue()));
 

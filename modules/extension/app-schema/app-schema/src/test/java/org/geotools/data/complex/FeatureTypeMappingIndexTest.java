@@ -19,6 +19,7 @@ package org.geotools.data.complex;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -49,14 +50,14 @@ public class FeatureTypeMappingIndexTest extends AppSchemaTestSupport {
     static final Name mappedTypeName = Types.typeName(null, "stationsIndexed");
 
     private AppSchemaDataAccessFactory factory;
-    private Map params;
+    private Map<String, Serializable> params;
     DataAccess<FeatureType, Feature> dataStore;
     MappingFeatureSource mappedSource;
 
     @Before
     public void setUp() throws Exception {
         factory = new AppSchemaDataAccessFactory();
-        params = new HashMap();
+        params = new HashMap<>();
         params.put("dbtype", "app-schema");
         URL resource = getClass().getResource(schemaBase + "stationsIndexed.xml");
         if (resource == null) {

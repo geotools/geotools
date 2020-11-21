@@ -268,7 +268,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
         if (value instanceof Collection) {
             int count = 0;
 
-            for (Object element : (Collection<Object>) value) {
+            for (Object element : (Collection) value) {
                 Matcher matcher = getMatcher(element.toString());
                 boolean temp = matcher.matches();
                 if (temp) {

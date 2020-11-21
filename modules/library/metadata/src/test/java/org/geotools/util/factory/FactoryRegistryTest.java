@@ -342,6 +342,9 @@ public final class FactoryRegistryTest {
             Class dummy = loader.loadClass("org.geotools.util.factory.DummyInterface");
             FactoryRegistry reg = new FactoryCreator(dummy);
             reg.scanForPlugins();
+            // we are mocking with two class loaders, trying to make it type safe will make
+            // the factory fail to load the factory
+            @SuppressWarnings("unchecked")
             Optional factory = reg.getFactories(dummy, false).findFirst();
             assertTrue(factory.isPresent());
             // factory class should have same class loader as interface

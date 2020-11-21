@@ -178,7 +178,7 @@ public class AncillaryFileManager implements FileSetManager {
     /** Default schema name */
     static final String DEFAULT_SCHEMA_NAME = "def";
 
-    private static final Set<String> CUT_EXTENSIONS = new HashSet<String>();
+    private static final Set<String> CUT_EXTENSIONS = new HashSet<>();
 
     private static final Set<PropertiesCollectorSPI> pcSPIs =
             PropertiesCollectorFinder.getPropertiesCollectorSPI();
@@ -209,13 +209,13 @@ public class AncillaryFileManager implements FileSetManager {
     private static final String DEFAULT_DATASTORE_PROPERTIES = "mddatastore.properties";
 
     /** The list of Slice2D indexes */
-    private final List<Slice2DIndex> slicesIndexList = new ArrayList<Slice2DIndex>();
+    private final List<Slice2DIndex> slicesIndexList = new ArrayList<>();
 
     /** The Slice2D index manager */
     Slice2DIndexManager slicesIndexManager;
 
     /** The map of coverages elements */
-    Map<String, Coverage> coveragesMapping = new HashMap<String, Coverage>();
+    Map<String, Coverage> coveragesMapping = new HashMap<>();
 
     /** coverage Name to variable mapping */
     Map<Name, String> variablesMap = null;
@@ -482,8 +482,8 @@ public class AncillaryFileManager implements FileSetManager {
 
     private Coverage addCoverage(Coverage coverage) {
         if (variablesMap == null) {
-            variablesMap = new HashMap<Name, String>();
-            coveragesMapping = new HashMap<String, Coverage>();
+            variablesMap = new HashMap<>();
+            coveragesMapping = new HashMap<>();
         }
         coveragesMapping.put(coverage.getName(), coverage);
         variablesMap.put(new NameImpl(coverage.getName()), coverage.getOrigName());
@@ -505,7 +505,7 @@ public class AncillaryFileManager implements FileSetManager {
 
     /** Get the list of Names for the underlying coverage list */
     public List<Name> getCoveragesNames() {
-        final List<Name> names = new ArrayList<Name>();
+        final List<Name> names = new ArrayList<>();
         Collection<Coverage> coverages = coveragesMapping.values();
         for (Coverage cov : coverages) {
             names.add(new NameImpl(cov.getName()));
@@ -523,7 +523,7 @@ public class AncillaryFileManager implements FileSetManager {
                 initMultipleBandsDimensionsInfo(indexer);
                 // Parsing schemas
                 final SchemasType schemas = indexer.getSchemas();
-                Map<String, String> schemaMapping = new HashMap<String, String>();
+                Map<String, String> schemaMapping = new HashMap<>();
                 if (schemas != null) {
                     // Map schema names to schema attributes string
                     List<SchemaType> schemaElements = schemas.getSchema();
@@ -624,7 +624,7 @@ public class AncillaryFileManager implements FileSetManager {
     private String getCoverageNameFromCollector(final String nameCollector) {
         String coverageName = null;
         if (collectors != null && collectors.containsKey(nameCollector)) {
-            Map<String, Object> keyValues = new HashMap<String, Object>();
+            Map<String, Object> keyValues = new HashMap<>();
             PropertiesCollector collector = collectors.get(nameCollector);
             collector.collect(ncFile);
             collector.setProperties(keyValues);
@@ -640,7 +640,7 @@ public class AncillaryFileManager implements FileSetManager {
         if (collectors != null) {
             List<Collector> collectorList = collectors.getCollector();
             if (collectorList != null) {
-                this.collectors = new HashMap<String, PropertiesCollector>();
+                this.collectors = new HashMap<>();
 
                 // Scan the collectors list defined inside the indexer
                 for (Collector collector : collectorList) {

@@ -26,9 +26,10 @@ import org.xml.sax.helpers.NamespaceSupport;
  * NamespaceSupport implementation that allows additional NamespaceSupport objects to be part of the
  * look up process.
  */
+// Java 8/11 difference, in Java 11 it returns Enumeration<String> but not in Java 8
 public class ParserNamespaceSupport extends NamespaceSupport {
 
-    List<NamespaceSupport> others = new ArrayList<NamespaceSupport>();
+    List<NamespaceSupport> others = new ArrayList<>();
 
     @Override
     public String getURI(String prefix) {
@@ -55,6 +56,7 @@ public class ParserNamespaceSupport extends NamespaceSupport {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Enumeration getPrefixes() {
         return new CompositeEnumeration(super.getPrefixes()) {
             @Override
@@ -65,6 +67,7 @@ public class ParserNamespaceSupport extends NamespaceSupport {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Enumeration getPrefixes(final String uri) {
         return new CompositeEnumeration(super.getPrefixes(uri)) {
             @Override
@@ -75,6 +78,7 @@ public class ParserNamespaceSupport extends NamespaceSupport {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Enumeration getDeclaredPrefixes() {
         return new CompositeEnumeration(super.getDeclaredPrefixes()) {
             @Override

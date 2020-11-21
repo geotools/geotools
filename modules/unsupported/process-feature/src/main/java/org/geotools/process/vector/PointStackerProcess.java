@@ -308,7 +308,7 @@ public class PointStackerProcess implements VectorProcess {
             throws TransformException {
         SimpleFeatureIterator featureIt = data.features();
 
-        Map<Coordinate, StackedPoint> stackedPts = new HashMap<Coordinate, StackedPoint>();
+        Map<Coordinate, StackedPoint> stackedPts = new HashMap<>();
 
         double[] srcPt = new double[2];
         double[] dstPt = new double[2];
@@ -471,7 +471,7 @@ public class PointStackerProcess implements VectorProcess {
              * location)
              */
             if (uniquePts == null) {
-                uniquePts = new HashSet<Coordinate>();
+                uniquePts = new HashSet<>();
             }
             uniquePts.add(pt);
 

@@ -151,7 +151,7 @@ public class FilterMockData {
     }
 
     static ComparisonOperators comparison(boolean simple) {
-        List o = new ArrayList();
+        List<Operator> o = new ArrayList<>();
 
         if (simple) {
             o.add(ff.operator("LessThan"));
@@ -243,7 +243,7 @@ public class FilterMockData {
     }
 
     static SpatialOperators spatial() {
-        List o = new ArrayList();
+        List<SpatialOperator> o = new ArrayList<>();
 
         o.add(spatialOperator("BBOX"));
         o.add(spatialOperator("Equals"));

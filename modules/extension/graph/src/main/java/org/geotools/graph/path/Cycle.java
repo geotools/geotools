@@ -30,7 +30,7 @@ import org.geotools.graph.structure.Node;
  */
 public class Cycle extends Walk {
 
-    public Cycle(Collection nodes) {
+    public Cycle(Collection<Node> nodes) {
         super(nodes);
     }
 
@@ -47,14 +47,14 @@ public class Cycle extends Walk {
             // ensure first and last nodes are same
             if (isClosed()) {
                 // ensure no node repetitions except for first and last
-                return (new HashSet(this).size() == size() - 1);
+                return (new HashSet<>(this).size() == size() - 1);
             }
         }
         return (false);
     }
 
-    protected List buildEdges() {
-        List edges = super.buildEdges();
+    protected List<Edge> buildEdges() {
+        List<Edge> edges = super.buildEdges();
 
         // get the edge between the first and last nodes
         Node first = (Node) get(0);
@@ -63,9 +63,9 @@ public class Cycle extends Walk {
         Edge e = first.getEdge(last);
         if (e != null) {
             edges.add(e);
-            return (edges);
+            return edges;
         }
 
-        return (null);
+        return null;
     }
 }

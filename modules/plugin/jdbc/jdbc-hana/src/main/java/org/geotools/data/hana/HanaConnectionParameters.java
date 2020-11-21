@@ -44,7 +44,7 @@ public final class HanaConnectionParameters {
 
     public static HanaConnectionParameters forSingleContainer(
             String host, int instance, Map<String, String> additionalOptions) {
-        Map<String, String> options = new HashMap<String, String>();
+        Map<String, String> options = new HashMap<>();
         if (additionalOptions != null) {
             options.putAll(additionalOptions);
         }
@@ -69,7 +69,7 @@ public final class HanaConnectionParameters {
 
     public static HanaConnectionParameters forMultiContainer(
             String host, int instance, String database, Map<String, String> additionalOptions) {
-        Map<String, String> options = new HashMap<String, String>();
+        Map<String, String> options = new HashMap<>();
         if (additionalOptions != null) {
             options.putAll(additionalOptions);
         }

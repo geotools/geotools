@@ -37,7 +37,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Adam Brown (Curtin University of Technology)
  */
 public class ComplexFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
-    Map<Name, ArrayList<Property>> values = new HashMap<Name, ArrayList<Property>>();
+    Map<Name, ArrayList<Property>> values = new HashMap<>();
 
     AttributeDescriptor ad = null;
 
@@ -75,7 +75,7 @@ public class ComplexFeatureBuilder extends FeatureBuilder<FeatureType, Feature> 
             // Create a List of Properties for this name if we don't already
             // have one:
             if (!values.containsKey(name)) {
-                values.put(name, new ArrayList<Property>());
+                values.put(name, new ArrayList<>());
             }
 
             // Get the List of Properties:
@@ -116,7 +116,7 @@ public class ComplexFeatureBuilder extends FeatureBuilder<FeatureType, Feature> 
 
         // Merge the Map<String, ArrayList<Property>> into one collection of
         // properties:
-        Collection<Property> properties = new ArrayList<Property>();
+        Collection<Property> properties = new ArrayList<>();
         for (Name key : values.keySet()) {
             properties.addAll(values.get(key));
         }
@@ -186,7 +186,7 @@ public class ComplexFeatureBuilder extends FeatureBuilder<FeatureType, Feature> 
                                 name, maxOccurs));
             }
         } else {
-            valueList = new ArrayList<Property>();
+            valueList = new ArrayList<>();
             values.put(name, valueList);
         }
 

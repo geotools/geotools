@@ -132,7 +132,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    */
 	public EList<DCPType> getDCP() {
     if (dCP == null) {
-      dCP = new EObjectContainmentEList<DCPType>(DCPType.class, this, Ows10Package.OPERATION_TYPE__DCP);
+      dCP = new EObjectContainmentEList<>(DCPType.class, this, Ows10Package.OPERATION_TYPE__DCP);
     }
     return dCP;
   }
@@ -144,7 +144,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    */
 	public EList<DomainType> getParameter() {
     if (parameter == null) {
-      parameter = new EObjectContainmentEList<DomainType>(DomainType.class, this, Ows10Package.OPERATION_TYPE__PARAMETER);
+      parameter = new EObjectContainmentEList<>(DomainType.class, this, Ows10Package.OPERATION_TYPE__PARAMETER);
     }
     return parameter;
   }
@@ -156,7 +156,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    */
 	public EList<DomainType> getConstraint() {
     if (constraint == null) {
-      constraint = new EObjectContainmentEList<DomainType>(DomainType.class, this, Ows10Package.OPERATION_TYPE__CONSTRAINT);
+      constraint = new EObjectContainmentEList<>(DomainType.class, this, Ows10Package.OPERATION_TYPE__CONSTRAINT);
     }
     return constraint;
   }
@@ -168,7 +168,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    */
 	public EList<MetadataType> getMetadata() {
     if (metadata == null) {
-      metadata = new EObjectContainmentEList<MetadataType>(MetadataType.class, this, Ows10Package.OPERATION_TYPE__METADATA);
+      metadata = new EObjectContainmentEList<>(MetadataType.class, this, Ows10Package.OPERATION_TYPE__METADATA);
     }
     return metadata;
   }

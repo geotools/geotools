@@ -329,7 +329,7 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         }
 
         public List<Expression> getParameters() {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         public Object accept(ExpressionVisitor visitor, Object extraData) {
@@ -341,7 +341,7 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         }
 
         public <T> T evaluate(Object object, Class<T> context) {
-            return (T) ls;
+            return context.cast(ls);
         }
 
         public Literal getFallbackValue() {

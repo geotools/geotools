@@ -412,7 +412,7 @@ class FilterToSqlHelper {
                 if (Math.sqrt(env.getWidth() * env.getWidth() + env.getHeight() * env.getHeight())
                         >= 180) {
                     // slice in 90x90 degrees quadrants, none of them has a diagonal longer than 180
-                    final List<Polygon> polygons = new ArrayList<Polygon>();
+                    final List<Polygon> polygons = new ArrayList<>();
                     for (double lon = Math.floor(env.getMinX()); lon < env.getMaxX(); lon += 90) {
                         for (double lat = Math.floor(env.getMinY());
                                 lat < env.getMaxY();
@@ -451,7 +451,7 @@ class FilterToSqlHelper {
         }
 
         // filter out only polygonal parts
-        final List<Polygon> polygons = new ArrayList<Polygon>();
+        final List<Polygon> polygons = new ArrayList<>();
         geometry.apply(
                 new GeometryComponentFilter() {
 

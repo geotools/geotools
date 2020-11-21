@@ -19,6 +19,7 @@ package org.geotools.graph.io.standard;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
@@ -212,7 +213,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
         final int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
 
-        HashSet toRemove = new HashSet();
+        Set<Edge> toRemove = new HashSet<>();
         toRemove.addAll(ends[0].getEdges());
         toRemove.addAll(ends[1].getEdges());
 

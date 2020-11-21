@@ -84,7 +84,7 @@ public class CoverageTest {
 
     @Test
     public void testDomains() throws IOException, MismatchedDimensionException, TransformException {
-        Map<String, Serializable> connectionParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> connectionParams = new HashMap<>();
         connectionParams.put(DefaultFileDriver.URL.key, new URL(TEST_URL));
 
         CoverageAccess access =
@@ -109,7 +109,7 @@ public class CoverageTest {
     @Test
     public void testAttributes()
             throws IOException, MismatchedDimensionException, TransformException {
-        Map<String, Serializable> connectionParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> connectionParams = new HashMap<>();
         connectionParams.put(DefaultFileDriver.URL.key, new URL(TEST_URL));
 
         CoverageAccess access =
@@ -141,7 +141,7 @@ public class CoverageTest {
     @Test
     public void testRequestAndResponse()
             throws IOException, MismatchedDimensionException, TransformException {
-        Map<String, Serializable> connectionParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> connectionParams = new HashMap<>();
         connectionParams.put(DefaultFileDriver.URL.key, new URL(TEST_URL));
 
         CoverageAccess access =
@@ -167,8 +167,8 @@ public class CoverageTest {
         Filter filter = Filter.INCLUDE;
         MathTransform2D gridToWorldTransform =
                 new AffineTransform2D(AffineTransform.getTranslateInstance(0, 0));
-        Set<NumberRange<Double>> verticalSubset = new HashSet<NumberRange<Double>>();
-        verticalSubset.add(new NumberRange<Double>(Double.class, 0.0d, 10000.0d));
+        Set<NumberRange<Double>> verticalSubset = new HashSet<>();
+        verticalSubset.add(new NumberRange<>(Double.class, 0.0d, 10000.0d));
         // Setting of the request parameters
         request.setName(coverageName);
         request.setHints(hints);
@@ -210,7 +210,7 @@ public class CoverageTest {
     @Test
     public void testUpdateRequestAndResponse()
             throws IOException, MismatchedDimensionException, TransformException {
-        Map<String, Serializable> connectionParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> connectionParams = new HashMap<>();
         connectionParams.put(DefaultFileDriver.URL.key, new URL(TEST_URL));
 
         CoverageAccess access =
@@ -222,9 +222,9 @@ public class CoverageTest {
         CoverageUpdateRequest request = new CoverageUpdateRequest();
 
         // Setting of the parameters
-        Map<String, String> metadata = new HashMap<String, String>();
+        Map<String, String> metadata = new HashMap<>();
         metadata.put("testKey", "testMetadata");
-        List<GridCoverage2D> data = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> data = new ArrayList<>();
         GridCoverage2D cov =
                 new GridCoverageFactory()
                         .create(
@@ -253,10 +253,10 @@ public class CoverageTest {
 
     static class TestVerticalDomain extends VerticalDomain {
 
-        static Set<NumberRange<Double>> verticalSubset = new HashSet<NumberRange<Double>>();
+        static Set<NumberRange<Double>> verticalSubset = new HashSet<>();
 
         static {
-            verticalSubset.add(new NumberRange<Double>(Double.class, 0.0d, 10000.0d));
+            verticalSubset.add(new NumberRange<>(Double.class, 0.0d, 10000.0d));
         }
 
         @Override
@@ -273,7 +273,7 @@ public class CoverageTest {
 
     static class TestAdditionalDomain extends AdditionalDomain {
 
-        static Set<Object> test = new HashSet<Object>();
+        static Set<Object> test = new HashSet<>();
 
         static {
             test.add("test");
@@ -302,7 +302,7 @@ public class CoverageTest {
             super(TEST_NAME.getLocalPart());
             setVerticalDomain(new TestVerticalDomain());
             setHasVerticalDomain(true);
-            ArrayList<AdditionalDomain> additionalDomains = new ArrayList<AdditionalDomain>();
+            ArrayList<AdditionalDomain> additionalDomains = new ArrayList<>();
             additionalDomains.add(new TestAdditionalDomain());
             setAdditionalDomains(additionalDomains);
             setHasAdditionalDomains(true);
@@ -362,7 +362,7 @@ public class CoverageTest {
                 Map<String, Serializable> connectionParameters)
                 throws DataSourceException {
             super(driver, allowedAccessTypes, accessParams, null, connectionParameters);
-            names = new ArrayList<Name>();
+            names = new ArrayList<>();
             names.add(TEST_NAME);
         }
     }
@@ -394,7 +394,7 @@ public class CoverageTest {
 
         @Override
         public Map<String, Parameter<?>> getUpdateParameterInfo() {
-            Map<String, Parameter<?>> parameterInfo = new HashMap<String, Parameter<?>>();
+            Map<String, Parameter<?>> parameterInfo = new HashMap<>();
             return parameterInfo;
         }
 
@@ -403,17 +403,19 @@ public class CoverageTest {
                 CoverageUpdateRequest writeRequest, ProgressListener progress) {
             CoverageResponse response = new CoverageResponse();
             response.setRequest(writeRequest);
-            response.addResults((Collection<GridCoverage>) writeRequest.getData());
+            @SuppressWarnings("unchecked")
+            Collection<GridCoverage> coverages = (Collection<GridCoverage>) writeRequest.getData();
+            response.addResults(coverages);
             return response;
         }
 
         @Override
         public MetadataNode getMetadata(String metadataDomain, ProgressListener listener) {
             MetadataNode metadataNode = new MetadataNode();
-            Map<String, MetadataAttribute> attributes = new HashMap<String, MetadataAttribute>();
+            Map<String, MetadataAttribute> attributes = new HashMap<>();
             attributes.put("testAttribute", new MetadataAttribute());
             metadataNode.setAttributes(attributes);
-            metadataNode.setNodes(new ArrayList<MetadataNode>());
+            metadataNode.setNodes(new ArrayList<>());
             return metadataNode;
         }
     }

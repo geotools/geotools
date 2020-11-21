@@ -30,7 +30,7 @@ public final class AssociationType extends CodeList<AssociationType> {
     private static final long serialVersionUID = 6031427859661710114L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<AssociationType> VALUES = new ArrayList<AssociationType>(5);
+    private static final List<AssociationType> VALUES = new ArrayList<>(5);
 
     /** Reference from one dataset to another. */
     @UML(identifier = "crossReference", obligation = CONDITIONAL, specification = ISO_19115)

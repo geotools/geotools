@@ -167,8 +167,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
     protected Double[] offsets;
 
-    private Map<String, ArrayList<Resolution>> resolutionsLevelsMap =
-            new HashMap<String, ArrayList<Resolution>>();
+    private Map<String, ArrayList<Resolution>> resolutionsLevelsMap = new HashMap<>();
 
     protected ImageInputStreamSpi inStreamSPI;
 
@@ -443,7 +442,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         synchronized (this) {
             resolutionsLevels = resolutionsLevelsMap.get(coverageName);
             if (resolutionsLevels == null) {
-                resolutionsLevels = new ArrayList<Resolution>();
+                resolutionsLevels = new ArrayList<>();
                 resolutionsLevelsMap.put(coverageName, resolutionsLevels);
                 // note that we assume what follows:
                 // -highest resolution image is at level 0.

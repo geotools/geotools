@@ -42,7 +42,7 @@ public final class CSW extends XSD {
     /** private constructor */
     private CSW() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
         dependencies.add(OGC.getInstance());
         dependencies.add(DCT.getInstance());

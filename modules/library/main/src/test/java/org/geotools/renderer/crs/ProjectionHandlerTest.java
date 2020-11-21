@@ -109,7 +109,7 @@ public class ProjectionHandlerTest {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4939", true);
         SingleCRS hcrs = CRS.getHorizontalCRS(crs);
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, hcrs);
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1.0);
         ProjectionHandler handler =
                 ProjectionHandlerFinder.getHandler(wgs84Envelope, crs, true, params);
@@ -134,7 +134,7 @@ public class ProjectionHandlerTest {
         // a geometry that will cross the dateline and sitting in the same area as the
         // rendering envelope
         Geometry g = new WKTReader().read("LINESTRING(-40 20, 190 20)");
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put(WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, false);
 
         MathTransform mt = CRS.findMathTransform(WGS84, MERCATOR, true);
@@ -165,7 +165,7 @@ public class ProjectionHandlerTest {
         LineString notDensified = (LineString) handler.preProcess(line);
         assertEquals(2, notDensified.getCoordinates().length);
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1.0);
         handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true, params);
         LineString densified = (LineString) handler.preProcess(line);

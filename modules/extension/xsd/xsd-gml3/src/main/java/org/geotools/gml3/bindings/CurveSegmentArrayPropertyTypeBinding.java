@@ -70,7 +70,7 @@ public class CurveSegmentArrayPropertyTypeBinding extends AbstractComplexBinding
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List lines = node.getChildValues(LineString.class);
+        List<LineString> lines = node.getChildValues(LineString.class);
 
         return lines.toArray(new LineString[lines.size()]);
     }

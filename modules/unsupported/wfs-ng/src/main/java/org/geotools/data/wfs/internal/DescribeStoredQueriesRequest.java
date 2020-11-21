@@ -30,7 +30,7 @@ public class DescribeStoredQueriesRequest extends WFSRequest {
     public DescribeStoredQueriesRequest(WFSConfig config, WFSStrategy strategy) {
         super(DESCRIBE_STORED_QUERIES, config, strategy);
 
-        storedQueryIds = new ArrayList<URI>();
+        storedQueryIds = new ArrayList<>();
     }
 
     public List<URI> getStoredQueryIds() {

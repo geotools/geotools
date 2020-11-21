@@ -72,7 +72,7 @@ public class CreateStoredQueryTypeImpl extends BaseRequestTypeImpl implements Cr
    */
     public EList<StoredQueryDescriptionType> getStoredQueryDefinition() {
     if (storedQueryDefinition == null) {
-      storedQueryDefinition = new EObjectContainmentEList<StoredQueryDescriptionType>(StoredQueryDescriptionType.class, this, Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION);
+      storedQueryDefinition = new EObjectContainmentEList<>(StoredQueryDescriptionType.class, this, Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION);
     }
     return storedQueryDefinition;
   }

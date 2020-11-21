@@ -117,10 +117,10 @@ public interface Factory {
      * return hints;
      * </code></pre>
      *
-     * @return The map of hints, or an {@linkplain java.util.Collections#EMPTY_MAP empty map} if
+     * @return The map of hints, or an {@linkplain java.util.Collections.emptyMap() empty map} if
      *     none.
      */
     default Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 }

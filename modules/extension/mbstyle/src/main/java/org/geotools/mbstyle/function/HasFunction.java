@@ -26,7 +26,7 @@ import org.opengis.filter.capability.FunctionName;
 
 /** Evaluate to TRUE if a JSONObject contains a given key value or FALSE if it does not. */
 public class HasFunction extends FunctionExpressionImpl {
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "has",
                     parameter("value", String.class),

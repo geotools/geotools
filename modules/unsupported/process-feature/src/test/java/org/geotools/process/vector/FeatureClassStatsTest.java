@@ -86,8 +86,7 @@ public class FeatureClassStatsTest {
                         .execute(
                                 features,
                                 "valu",
-                                new LinkedHashSet<Statistic>(
-                                        Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                                new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
                                 4,
                                 ClassificationMethod.EQUAL_INTERVAL,
                                 null,
@@ -109,8 +108,7 @@ public class FeatureClassStatsTest {
                         .execute(
                                 features,
                                 "valu",
-                                new LinkedHashSet<Statistic>(
-                                        Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                                new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
                                 4,
                                 ClassificationMethod.QUANTILE,
                                 null,
@@ -132,8 +130,7 @@ public class FeatureClassStatsTest {
                         .execute(
                                 features,
                                 "valu",
-                                new LinkedHashSet<Statistic>(
-                                        Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                                new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
                                 4,
                                 ClassificationMethod.NATURAL_BREAKS,
                                 null,

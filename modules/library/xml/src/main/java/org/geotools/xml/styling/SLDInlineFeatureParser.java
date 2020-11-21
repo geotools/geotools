@@ -39,13 +39,12 @@ import org.w3c.dom.NodeList;
 public class SLDInlineFeatureParser {
 
     /** hash table that takes a epsg# to its definition* */
-    private static Hashtable<Integer, CoordinateReferenceSystem> SRSLookup =
-            new Hashtable<Integer, CoordinateReferenceSystem>();
+    private static Hashtable<Integer, CoordinateReferenceSystem> SRSLookup = new Hashtable<>();
 
     public SimpleFeatureType featureType = null;
     public DataStore dataStore = null;
     Node rootNode = null;
-    ArrayList<Feature> features = new ArrayList<Feature>();
+    ArrayList<Feature> features = new ArrayList<>();
     CoordinateReferenceSystem SRS = null; // default EPSG#.
 
     private static int uniqueNumber = 0;

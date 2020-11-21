@@ -65,7 +65,7 @@ public final class DataSourceFinder {
      * @throws IOException If a suitable loader can be found, but it can not be attached to the
      *     specified resource without errors.
      */
-    public static synchronized DataSource getDataSource(Map params) throws IOException {
+    public static synchronized DataSource getDataSource(Map<String, ?> params) throws IOException {
         Iterator ps = getAvailableDataSources();
         DataSourceFactorySpi fac;
         while (ps.hasNext()) {

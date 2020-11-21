@@ -415,7 +415,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                 try {
                     rs = ps.executeQuery();
 
-                    List<ReferencedEnvelope> envs = new ArrayList();
+                    List<ReferencedEnvelope> envs = new ArrayList<>();
                     if (rs.next()) {
                         int srid = rs.getInt(5);
                         ReferencedEnvelope env =
@@ -455,7 +455,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             return null;
         }
 
-        List<ReferencedEnvelope> envs = new ArrayList();
+        List<ReferencedEnvelope> envs = new ArrayList<>();
         for (TessellationInfo tinfo : tinfos) {
             GeometryDescriptor gatt =
                     (GeometryDescriptor) featureType.getDescriptor(tinfo.getColumName());
@@ -690,13 +690,13 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                                 + TESSELLATION
                                 + " does not exist. Unable to "
                                 + " perform spatially index queries.");
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
         } finally {
             dataStore.closeSafe(tables);
         }
 
-        List<TessellationInfo> tinfos = new ArrayList();
+        List<TessellationInfo> tinfos = new ArrayList<>();
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT * FROM ");

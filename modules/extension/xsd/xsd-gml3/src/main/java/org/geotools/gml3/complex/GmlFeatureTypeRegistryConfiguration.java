@@ -65,7 +65,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
     @Override
     public Collection<Schema> getSchemas() {
-        ArrayList<Schema> schemas = new ArrayList<Schema>();
+        ArrayList<Schema> schemas = new ArrayList<>();
         schemas.add(new SMIL20Schema());
         schemas.add(new SMIL20LANGSchema());
         schemas.add(new GMLSchema());
@@ -81,7 +81,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
     @Override
     public Collection<Configuration> getConfigurations() {
-        ArrayList<Configuration> configurations = new ArrayList<Configuration>();
+        ArrayList<Configuration> configurations = new ArrayList<>();
         configurations.add(new GMLConfiguration());
         configurations.add(new org.geotools.gml3.v3_2.GMLConfiguration());
         return configurations;

@@ -61,7 +61,7 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
     }
 
     FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema(), features());
+        return new DelegateFeatureReader<>(getSchema(), features());
     }
 
     public SimpleFeatureIterator features() {
@@ -95,7 +95,7 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
 
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
         SimpleFeatureIterator i = features();
         try {
             while (i.hasNext()) {

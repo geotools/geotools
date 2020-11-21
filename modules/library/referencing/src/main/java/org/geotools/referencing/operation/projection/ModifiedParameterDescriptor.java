@@ -36,12 +36,12 @@ import org.opengis.parameter.ParameterDescriptor;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class ModifiedParameterDescriptor extends DefaultParameterDescriptor {
+final class ModifiedParameterDescriptor extends DefaultParameterDescriptor<Double> {
     /** For compatibility with different versions during deserialization. */
     private static final long serialVersionUID = -616587615222354457L;
 
     /** The original parameter descriptor. Used for comparaisons purpose only. */
-    private final ParameterDescriptor original;
+    private final ParameterDescriptor<Double> original;
 
     /** The new default value. */
     private final Double defaultValue;
@@ -50,15 +50,15 @@ final class ModifiedParameterDescriptor extends DefaultParameterDescriptor {
      * Creates a parameter descriptor wrapping the specified one with the specified default value.
      */
     public ModifiedParameterDescriptor(
-            final ParameterDescriptor original, final double defaultValue) {
+            final ParameterDescriptor<Double> original, final double defaultValue) {
         super(original);
         this.original = original;
-        this.defaultValue = Double.valueOf(defaultValue);
+        this.defaultValue = defaultValue;
     }
 
     /** Returns the default value for the parameter. */
     @Override
-    public Object getDefaultValue() {
+    public Double getDefaultValue() {
         return defaultValue;
     }
 

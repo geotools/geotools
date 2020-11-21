@@ -47,7 +47,7 @@ public class JDataStorePage extends JPage {
     protected DataStoreFactorySpi format;
 
     /** Map of user interface ParamFields displayed to the user */
-    private Map<Param, ParamField> fields = new HashMap<Param, ParamField>();
+    private Map<Param, ParamField> fields = new HashMap<>();
 
     /** Connection params for datastore */
     protected Map<String, Object> connectionParameters;
@@ -65,7 +65,7 @@ public class JDataStorePage extends JPage {
     public JDataStorePage(DataStoreFactorySpi format, Map<String, Object> params) {
         this.format = format;
         if (params == null) {
-            params = new HashMap<String, Object>();
+            params = new HashMap<>();
             if (format != null) {
                 for (Param param : format.getParametersInfo()) {
                     params.put(param.key, (Serializable) param.sample);

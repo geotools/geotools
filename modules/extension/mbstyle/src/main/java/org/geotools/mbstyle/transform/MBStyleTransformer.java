@@ -52,7 +52,7 @@ public class MBStyleTransformer {
 
     private final List<String> defaultFonts;
 
-    protected static Pattern mapboxTokenPattern = Pattern.compile("\\{(.*?)\\}");
+    protected static final Pattern mapboxTokenPattern = Pattern.compile("\\{(.*?)\\}");
 
     private static final Logger LOGGER = Logging.getLogger(MBStyleTransformer.class);
 

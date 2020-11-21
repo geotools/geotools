@@ -37,7 +37,8 @@ public class JDBCJoiningFilteringFeatureReader
     JoinInfo join;
     SimpleFeature next;
 
-    public JDBCJoiningFilteringFeatureReader(FeatureReader delegate, JoinInfo join) {
+    public JDBCJoiningFilteringFeatureReader(
+            FeatureReader<SimpleFeatureType, SimpleFeature> delegate, JoinInfo join) {
         this.delegate = delegate;
         this.join = join;
     }

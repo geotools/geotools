@@ -108,7 +108,7 @@ public class SortedFeatureReader implements SimpleFeatureReader {
         }
 
         // build a list of comparators
-        List<Comparator<SimpleFeature>> comparators = new ArrayList<Comparator<SimpleFeature>>();
+        List<Comparator<SimpleFeature>> comparators = new ArrayList<>();
         for (SortBy sb : sortBy) {
             if (sb == SortBy.NATURAL_ORDER) {
                 comparators.add(new FidComparator(true));
@@ -117,7 +117,7 @@ public class SortedFeatureReader implements SimpleFeatureReader {
             } else {
                 String name = sb.getPropertyName().getPropertyName();
                 boolean ascending = sb.getSortOrder() == SortOrder.ASCENDING;
-                Comparator comparator;
+                Comparator<SimpleFeature> comparator;
                 if (schema == null) {
                     comparator = new PropertyComparator(name, ascending);
                 } else {

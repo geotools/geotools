@@ -1414,7 +1414,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RenderedOp image =
                 JAI.create("ImageRead", new File(TestData.url(this, "test.tif").toURI()));
 
-        Map properties = new HashMap();
+        Map<String, Object> properties = new HashMap<>();
         properties.put(
                 "GC_ROI",
                 new ROIShape(
@@ -1461,7 +1461,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                 JAI.create(
                         "ImageRead",
                         new File(TestData.url(this, "small_4bands_UInt16.tif").toURI()));
-        properties = new HashMap();
+        properties = new HashMap<>();
         properties.put(
                 "GC_ROI",
                 new ROIShape(

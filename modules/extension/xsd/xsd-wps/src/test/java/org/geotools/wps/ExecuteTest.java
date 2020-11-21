@@ -48,6 +48,7 @@ import org.w3c.dom.NodeList;
 
 public class ExecuteTest extends XMLTestSupport {
 
+    @SuppressWarnings("unchecked")
     public void testExecuteEncode() throws Exception {
         Wps10Factory f = Wps10Factory.eINSTANCE;
         ExecuteType ex = f.createExecuteType();
@@ -75,6 +76,7 @@ public class ExecuteTest extends XMLTestSupport {
         e.encode(ex, WPS.Execute, System.out);
     }
 
+    @SuppressWarnings("unchecked")
     public void testExecuteResponse() throws Exception {
         Wps10Factory f = Wps10Factory.eINSTANCE;
         ExecuteResponseType response = f.createExecuteResponseType();

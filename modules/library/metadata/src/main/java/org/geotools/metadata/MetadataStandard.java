@@ -78,8 +78,7 @@ public final class MetadataStandard {
     private final String interfacePackage;
 
     /** Accessors for the specified implementations. */
-    private final Map<Class<?>, PropertyAccessor> accessors =
-            new HashMap<Class<?>, PropertyAccessor>();
+    private final Map<Class<?>, PropertyAccessor> accessors = new HashMap<>();
 
     /**
      * Shared pool of {@link PropertyTree} instances, once for each thread (in order to avoid the

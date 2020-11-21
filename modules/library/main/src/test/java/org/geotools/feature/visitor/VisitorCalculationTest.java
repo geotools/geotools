@@ -210,7 +210,7 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult medianResult3 = medianResult1.merge(medianResult2);
         assertEquals(2, medianResult3.toDouble(), 0);
         // test for destruction during merge
-        List vals = new ArrayList();
+        List<Comparable> vals = new ArrayList<>();
         vals.add(Double.valueOf(2.5));
         vals.add(Double.valueOf(3.5));
         vals.add(Double.valueOf(4.5));
@@ -447,7 +447,7 @@ public class VisitorCalculationTest extends DataTestCase {
         // ensure merge was not destructive
         assertEquals(3, uniqueResult1.toSet().size());
         // test a merge with duplicate elements
-        Set anotherSet = new HashSet();
+        Set<Object> anotherSet = new HashSet<>();
         anotherSet.add(Integer.valueOf(2));
         anotherSet.add(Integer.valueOf(4));
         CalcResult uniqueResult4 = new UniqueResult(anotherSet);
@@ -459,6 +459,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(anotherSet, uniqueResult1.toSet());
         // int + double --> ?
         uniqueResult3 = uniqueResult2.merge(uniqueResult1);
+        @SuppressWarnings("unchecked")
         Set<Object> set = uniqueResult3.toSet();
         assertTrue(set.size() == 4);
         assertTrue(set.contains(3.0));

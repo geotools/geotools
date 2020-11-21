@@ -155,6 +155,7 @@ public class AffineTest extends GridProcessingTestBase {
             assertNotNull(PlanarImage.wrapRenderedImage(scaledImage).getTiles());
         }
         // Ensure a new ROI property has been created
+        @SuppressWarnings("unchecked")
         Map<String, Object> properties = scaled.getProperties();
         if (jaiextAffine && roi != null) {
             assertNotNull(properties);

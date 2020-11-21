@@ -95,18 +95,18 @@ public class JTDSDateConverterFactory implements ConverterFactory {
             if (JTDS_TIMESTAMP.isInstance(source)) {
                 if (java.sql.Date.class.isAssignableFrom(target)) {
                     LOGGER.finest("converting to Date from " + source.toString());
-                    return (T) JTDS_TS_DVALUE.invoke(source);
+                    return target.cast(JTDS_TS_DVALUE.invoke(source));
                 } else {
                     LOGGER.finest("converting to timestamp from " + source.toString());
-                    return (T) JTDS_TS_TSVALUE.invoke(source);
+                    return target.cast(JTDS_TS_TSVALUE.invoke(source));
                 }
             } else {
                 if (java.sql.Date.class.isAssignableFrom(target)) {
                     LOGGER.finest("converting to Date from " + source.toString());
-                    return (T) JTDS_DATE_DVALUE.invoke(source);
+                    return target.cast(JTDS_DATE_DVALUE.invoke(source));
                 } else {
                     LOGGER.finest("converting to timestamp from " + source.toString());
-                    return (T) JTDS_DATE_TSVALUE.invoke(source);
+                    return target.cast(JTDS_DATE_TSVALUE.invoke(source));
                 }
             }
         }

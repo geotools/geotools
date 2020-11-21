@@ -44,11 +44,15 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public Collection<? extends Property> getValue() {
-        return FeatureImplUtils.unmodifiable((Collection) super.getValue());
+        @SuppressWarnings("unchecked")
+        Collection<? extends Property> cast = (Collection<? extends Property>) super.getValue();
+        return FeatureImplUtils.unmodifiable(cast);
     }
 
     public Collection<Property> getProperties() {
-        return FeatureImplUtils.unmodifiable((Collection) super.getValue());
+        @SuppressWarnings("unchecked")
+        Collection<Property> cast = (Collection<Property>) super.getValue();
+        return FeatureImplUtils.unmodifiable(cast);
     }
 
     /**
@@ -60,7 +64,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public Collection<Property> getProperties(Name name) {
-        List<Property> matches = new ArrayList<Property>();
+        List<Property> matches = new ArrayList<>();
         for (Iterator p = getValue().iterator(); p.hasNext(); ) {
             Property property = (Property) p.next();
             if (property.getName().equals(name)) {
@@ -72,7 +76,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public Collection<Property> getProperties(String name) {
-        List<Property> matches = new ArrayList<Property>();
+        List<Property> matches = new ArrayList<>();
         for (Iterator p = properties().iterator(); p.hasNext(); ) {
             Property property = (Property) p.next();
             if (property.getName().getLocalPart().equals(name)) {
@@ -106,7 +110,9 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public void setValue(Object newValue) throws IllegalArgumentException, IllegalStateException {
-        setValue((Collection<Property>) newValue);
+        @SuppressWarnings("unchecked")
+        Collection<Property> cast = (Collection<Property>) newValue;
+        setValue(cast);
     }
 
     public void setValue(Collection<Property> newValue) {
@@ -114,25 +120,32 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     /** helper method to clone the property collection. */
-    private static Collection cloneProperties(Collection original) {
+    private static <T> Collection<T> cloneProperties(Collection<T> original) {
         if (original == null) {
             return null;
         }
 
-        Collection clone = null;
-        try {
-            clone = original.getClass().getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            clone = new ArrayList();
-        }
+        Collection<T> clone = newCollection(original.getClass());
 
         clone.addAll(original);
         return clone;
     }
-    //    public List/* <Property> */get(Name name) {
+
+    @SuppressWarnings("unchecked")
+    private static <T> Collection<T> newCollection(Class<? extends Collection> collectionClass) {
+        Collection<T> clone = null;
+        try {
+            clone = collectionClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            clone = new ArrayList<>();
+        }
+        return clone;
+    }
+
+    //    public List<Property>get(Name name) {
     //        // JD: this is a farily lenient check, should we be stricter about
     //        // matching up the namespace
-    //        List/* <Property> */childs = new LinkedList/* <Property> */();
+    //        List<Property>childs = new LinkedList<Property>();
     //
     //        for (Iterator itr = this.properties.iterator(); itr.hasNext();) {
     //            Property prop = (Property) itr.next();
@@ -158,7 +171,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //     * Represents just enough info to convey the idea of this being a "view"
     //     * into getAttribtues.
     //     */
-    //    protected synchronized List/* <AttributeType> */types() {
+    //    protected synchronized List<AttributeType>types() {
     //        if (types == null) {
     //            types = createTypesView((List) getValue());
     //        }
@@ -166,12 +179,12 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //    }
     //
     //    /** Factory method so subclasses can optimize */
-    //    protected List/* <AttributeType> */createTypesView(
-    //            final List/* <Attribute> */source) {
+    //    protected List<AttributeType>createTypesView(
+    //            final List<Attribute>source) {
     //        if (source == null)
-    //            return Collections.EMPTY_LIST;
+    //            return Collections.emptyList();
     //
-    //        return new AbstractList/* <AttributeType> */() {
+    //        return new AbstractList<AttributeType>() {
     //            // @Override
     //            public Object /* AttributeType */get(int index) {
     //                return ((Attribute) source.get(index)).getType();
@@ -207,7 +220,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //        };
     //    }
     //
-    //    public synchronized List/* <Object> */values() {
+    //    public synchronized List<Object>values() {
     //        if (values == null) {
     //            values = createValuesView((List) getValue());
     //        }
@@ -215,9 +228,9 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //    }
     //
     //    /** Factory method so subclasses can optimize */
-    //    protected List/* <Object> */createValuesView(
-    //            final List/* <Attribute> */source) {
-    //        return new AbstractList/* <Object> */() {
+    //    protected List<Object>createValuesView(
+    //            final List<Attribute>source) {
+    //        return new AbstractList<Object>() {
     //            // @Override
     //            public Object get(int index) {
     //                return ((Attribute) source.get(index)).getValue();
@@ -284,7 +297,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //        // in one case, and collection in the other?
     //        ComplexType ctype = TYPE;
     //        if (Descriptors.multiple(ctype, type)) {
-    //            List/* <Object> */got = new ArrayList/* <Object> */();
+    //            List<Object>got = new ArrayList<Object>();
     //            for (Iterator itr = properties.iterator(); itr.hasNext();) {
     //                Attribute attribute = (Attribute) itr.next();
     //                if (attribute.getType().equals(type)) {
@@ -333,7 +346,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //
     //    public String toString() {
     //        StringBuffer sb = new StringBuffer(getClass().getName());
-    //        List/* <Attribute> */atts = this.properties;
+    //        List<Attribute>atts = this.properties;
     //        sb.append("[id=").append(this.ID).append(", name=").append(
     //                DESCRIPTOR != null ? DESCRIPTOR.getName().toString() : "null")
     //                .append(", type=").append(getType().getName()).append('\n');

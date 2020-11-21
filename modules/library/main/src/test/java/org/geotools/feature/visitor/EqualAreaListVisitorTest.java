@@ -109,6 +109,7 @@ public class EqualAreaListVisitorTest {
             EqualAreaListVisitor visitor =
                     new EqualAreaListVisitor(PERSONS, areaFunction, fc.size() * 2);
             fc.accepts(visitor, null);
+            @SuppressWarnings("unchecked")
             List<Double>[] result = (List<Double>[]) visitor.getResult().getValue();
 
             // check the number of classes has been reduced (43 not 49, not always possible to
@@ -147,6 +148,7 @@ public class EqualAreaListVisitorTest {
             EqualAreaListVisitor visitor =
                     new EqualAreaListVisitor(PERSONS, areaFunction, numClasses);
             fc.accepts(visitor, null);
+            @SuppressWarnings("unchecked")
             List<Double>[] result = (List<Double>[]) visitor.getResult().getValue();
 
             List<Double> firstBin = result[0];

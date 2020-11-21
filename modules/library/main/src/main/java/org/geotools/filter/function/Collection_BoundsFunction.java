@@ -91,7 +91,7 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl {
      * @param args Function parameters
      * @throws IllegalArgumentException If parameters do not match FunctionName
      */
-    public void setParameters(List args) {
+    public void setParameters(List<Expression> args) {
         if (args.size() != 1) {
             throw new IllegalArgumentException("Require a single argument for " + getName());
         }

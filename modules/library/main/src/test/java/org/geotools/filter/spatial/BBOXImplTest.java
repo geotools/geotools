@@ -48,7 +48,7 @@ public class BBOXImplTest {
             // TODO Auto-generated catch block
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
-        ArrayList<Object> attributes = new ArrayList<Object>();
+        ArrayList<Object> attributes = new ArrayList<>();
         attributes.add("testFeature");
         attributes.add(p);
         Feature f = null;

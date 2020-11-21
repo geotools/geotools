@@ -32,7 +32,7 @@ public final class ScopeCode extends CodeList<ScopeCode> {
     private static final long serialVersionUID = -4542429199783894255L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<ScopeCode> VALUES = new ArrayList<ScopeCode>(16);
+    private static final List<ScopeCode> VALUES = new ArrayList<>(16);
 
     /** Information applies to the attribute value. */
     @UML(identifier = "attribute", obligation = CONDITIONAL, specification = ISO_19115)

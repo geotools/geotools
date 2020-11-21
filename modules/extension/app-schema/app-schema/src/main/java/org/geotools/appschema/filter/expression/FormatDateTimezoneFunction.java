@@ -60,7 +60,7 @@ public class FormatDateTimezoneFunction implements Function {
     private final List<Expression> parameters;
 
     public FormatDateTimezoneFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public FormatDateTimezoneFunction(List<Expression> parameters, Literal fallback) {

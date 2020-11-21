@@ -51,7 +51,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        emptyFid = ff.id(new HashSet<Identifier>());
+        emptyFid = ff.id(new HashSet<>());
         property = ff.equal(ff.property("test"), ff.literal("oneTwoThree"), false);
         // visitor assuming simple features
         simpleVisitor =
@@ -143,7 +143,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                     }
                 });
 
-        Set<Identifier> ids = new HashSet<Identifier>();
+        Set<Identifier> ids = new HashSet<>();
         ids.add(ff.featureId("notPass"));
         Id filter = ff.id(ids);
 
@@ -153,7 +153,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         ids.add(ff.featureId("pass2"));
         filter = ff.id(ids);
 
-        Set<Identifier> validIds = new HashSet<Identifier>();
+        Set<Identifier> validIds = new HashSet<>();
         validIds.add(ff.featureId("pass2"));
         validIds.add(ff.featureId("pass1"));
         Filter expected = ff.id(validIds);
@@ -164,7 +164,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         FIDValidator validator = new SimplifyingFilterVisitor.RegExFIDValidator("abc\\.\\d+");
         simpleVisitor.setFIDValidator(validator);
 
-        Set<Identifier> ids = new HashSet<Identifier>();
+        Set<Identifier> ids = new HashSet<>();
         ids.add(ff.featureId("abc.."));
         ids.add(ff.featureId(".abc.1"));
         ids.add(ff.featureId("abc.123"));
@@ -182,7 +182,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         validator = new SimplifyingFilterVisitor.TypeNameDotNumberFidValidator(typeName);
         simpleVisitor.setFIDValidator(validator);
 
-        Set<Identifier> ids = new HashSet<Identifier>();
+        Set<Identifier> ids = new HashSet<>();
         ids.add(ff.featureId("_states"));
         ids.add(ff.featureId("states.abc"));
         ids.add(ff.featureId("states.."));

@@ -70,7 +70,8 @@ public class MLMailTypeBinding extends AbstractComplexBinding {
         String body = (String) node.getChildValue("body");
         BigInteger id = (BigInteger) node.getAttributeValue("id");
 
-        List atts = node.getChildValues("attachment");
+        @SuppressWarnings("unchecked")
+        List<Attachment> atts = node.getChildValues("attachment");
         Attachment[] attachments = (Attachment[]) atts.toArray(new Attachment[atts.size()]);
 
         return new Mail(id, body, envelope, attachments);

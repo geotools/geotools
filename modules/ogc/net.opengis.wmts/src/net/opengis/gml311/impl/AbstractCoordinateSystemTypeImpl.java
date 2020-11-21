@@ -95,7 +95,7 @@ public abstract class AbstractCoordinateSystemTypeImpl extends AbstractCoordinat
      */
     public EList<IdentifierType> getCsID() {
         if (csID == null) {
-            csID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.ABSTRACT_COORDINATE_SYSTEM_TYPE__CS_ID);
+            csID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.ABSTRACT_COORDINATE_SYSTEM_TYPE__CS_ID);
         }
         return csID;
     }
@@ -150,7 +150,7 @@ public abstract class AbstractCoordinateSystemTypeImpl extends AbstractCoordinat
      */
     public EList<CoordinateSystemAxisRefType> getUsesAxis() {
         if (usesAxis == null) {
-            usesAxis = new EObjectContainmentEList<CoordinateSystemAxisRefType>(CoordinateSystemAxisRefType.class, this, Gml311Package.ABSTRACT_COORDINATE_SYSTEM_TYPE__USES_AXIS);
+            usesAxis = new EObjectContainmentEList<>(CoordinateSystemAxisRefType.class, this, Gml311Package.ABSTRACT_COORDINATE_SYSTEM_TYPE__USES_AXIS);
         }
         return usesAxis;
     }

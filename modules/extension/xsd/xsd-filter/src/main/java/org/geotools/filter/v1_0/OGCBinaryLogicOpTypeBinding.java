@@ -140,7 +140,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
         String name = qName.getLocalPart();
 
         if ("comparisonOps".equals(name)) {
-            List comparison = new ArrayList();
+            List<Filter> comparison = new ArrayList<>();
 
             for (Iterator f = operator.getChildren().iterator(); f.hasNext(); ) {
                 Filter filter = (Filter) f.next();
@@ -163,7 +163,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
         }
 
         if ("spatialOps".equals(name)) {
-            List spatial = new ArrayList();
+            List<Filter> spatial = new ArrayList<>();
 
             for (Iterator f = operator.getChildren().iterator(); f.hasNext(); ) {
                 Filter filter = (Filter) f.next();
@@ -179,7 +179,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
         }
 
         if ("temporalOps".equals(name)) {
-            List temporal = new ArrayList();
+            List<Filter> temporal = new ArrayList<>();
 
             for (Iterator f = operator.getChildren().iterator(); f.hasNext(); ) {
                 Filter filter = (Filter) f.next();
@@ -195,7 +195,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
         }
 
         if ("logicOps".equals(name)) {
-            List logic = new ArrayList();
+            List<Filter> logic = new ArrayList<>();
 
             for (Iterator f = operator.getChildren().iterator(); f.hasNext(); ) {
                 Filter filter = (Filter) f.next();
@@ -211,7 +211,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
         }
 
         if ("_Id".equals(name)) {
-            List ids = new ArrayList();
+            List<Filter> ids = new ArrayList<>();
             for (Filter filter : operator.getChildren()) {
                 if (filter instanceof Id) {
                     ids.add(filter);
@@ -223,7 +223,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
         }
 
         if ("Function".equals(name)) {
-            List functions = new ArrayList();
+            List<Filter> functions = new ArrayList<>();
             for (Filter filter : operator.getChildren()) {
                 if (filter instanceof Function) {
                     functions.add(filter);

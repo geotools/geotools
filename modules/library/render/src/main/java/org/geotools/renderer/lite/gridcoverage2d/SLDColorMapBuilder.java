@@ -57,8 +57,7 @@ public class SLDColorMapBuilder {
      * List of {@link LinearColorMapElement} we are putting together to create the final {@link
      * LinearColorMap}*
      */
-    private final List<LinearColorMapElement> colormapElements =
-            new ArrayList<LinearColorMapElement>();
+    private final List<LinearColorMapElement> colormapElements = new ArrayList<>();
 
     /**
      * {@link LinearColorMapType} *
@@ -74,7 +73,7 @@ public class SLDColorMapBuilder {
     private Color preservedValuesColor;
 
     /** List of values that we want to preserve through the color map.* */
-    private final List<Double> preservedValues = new ArrayList<Double>();
+    private final List<Double> preservedValues = new ArrayList<>();
 
     /** Number of colors we can distribute to each {@link ColorMapTransformElement}.* */
     private int colorsPerColorMapElement;

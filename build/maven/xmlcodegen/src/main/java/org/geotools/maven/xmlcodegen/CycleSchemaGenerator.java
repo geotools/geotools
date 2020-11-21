@@ -141,7 +141,7 @@ public class CycleSchemaGenerator extends SchemaGenerator {
                     // might need to generate shallow schema classes while bootstrapping
                     return null;
                 } else {
-                    List<PropertyDescriptor> properties = new ArrayList<PropertyDescriptor>();
+                    List<PropertyDescriptor> properties = new ArrayList<>();
                     for (XSDParticle particle : (List<XSDParticle>) Schemas
                             .getChildElementParticles(xsdType, false)) {
                         XSDElementDeclaration element = (XSDElementDeclaration) particle
@@ -233,7 +233,7 @@ public class CycleSchemaGenerator extends SchemaGenerator {
      */
     @Override
     public List<AttributeType> sort() {
-        List<AttributeType> sorted = new ArrayList<AttributeType>(
+        List<AttributeType> sorted = new ArrayList<>(
                 (Collection<AttributeType>) types.values());
         Collections.sort(sorted, new Comparator<AttributeType>() {
             @Override

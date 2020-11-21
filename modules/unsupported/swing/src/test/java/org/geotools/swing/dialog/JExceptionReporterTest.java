@@ -47,11 +47,11 @@ public class JExceptionReporterTest extends GraphicsTestBase<DialogFixture, Dial
     private static final Class<? extends Dialog> DIALOG_CLASS =
             JExceptionReporter.ReportingDialog.class;
 
-    private WindowActivatedListener listener;
+    private WindowActivatedListener<DialogFixture, Dialog, DialogDriver> listener;
 
     @Before
     public void setup() {
-        listener = new WindowActivatedListener(DIALOG_CLASS);
+        listener = new WindowActivatedListener<>(DIALOG_CLASS);
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
     }
 

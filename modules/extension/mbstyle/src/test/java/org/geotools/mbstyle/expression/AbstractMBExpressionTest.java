@@ -89,9 +89,9 @@ public abstract class AbstractMBExpressionTest {
                     SimpleFeatureBuilder.build(
                             dataType,
                             new Object[] {
-                                Integer.valueOf(i),
-                                Integer.valueOf(intVals[i]),
-                                Double.valueOf(doubleVals[i]),
+                                i,
+                                intVals[i],
+                                doubleVals[i],
                                 geometryFactory.createPoint(new Coordinate(intVals[i], intVals[i])),
                                 "name_" + intVals[i]
                             },
@@ -120,7 +120,7 @@ public abstract class AbstractMBExpressionTest {
      *
      * @return the Class type of the MapBox Expression class for this Test.
      */
-    protected abstract Class getExpressionClassType();
+    protected abstract Class<?> getExpressionClassType();
 
     /**
      * Traverse a nested map using the array of strings, and cast the result to the provided class,

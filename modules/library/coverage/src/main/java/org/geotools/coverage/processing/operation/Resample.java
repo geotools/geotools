@@ -142,7 +142,7 @@ public class Resample extends Operation2D {
 
     /** The parameter descriptor for the interpolation type. */
     public static final ParameterDescriptor<Object> INTERPOLATION_TYPE =
-            new DefaultParameterDescriptor<Object>(
+            new DefaultParameterDescriptor<>(
                     Citations.OGC,
                     "InterpolationType",
                     Object.class, // Value class (mandatory)
@@ -155,7 +155,7 @@ public class Resample extends Operation2D {
 
     /** The parameter descriptor for the coordinate reference system. */
     public static final ParameterDescriptor<CoordinateReferenceSystem> COORDINATE_REFERENCE_SYSTEM =
-            new DefaultParameterDescriptor<CoordinateReferenceSystem>(
+            new DefaultParameterDescriptor<>(
                     Citations.OGC,
                     "CoordinateReferenceSystem",
                     CoordinateReferenceSystem.class, // Value class (mandatory)
@@ -168,7 +168,7 @@ public class Resample extends Operation2D {
 
     /** The parameter descriptor for the grid geometry. */
     public static final ParameterDescriptor<GridGeometry> GRID_GEOMETRY =
-            new DefaultParameterDescriptor<GridGeometry>(
+            new DefaultParameterDescriptor<>(
                     Citations.OGC,
                     "GridGeometry",
                     GridGeometry.class, // Value class (mandatory)
@@ -181,7 +181,7 @@ public class Resample extends Operation2D {
 
     /** The parameter descriptor for the BackgroundValues. */
     public static final ParameterDescriptor<double[]> BACKGROUND_VALUES =
-            new DefaultParameterDescriptor<double[]>(
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     "BackgroundValues",
                     double[].class, // Value class (mandatory)

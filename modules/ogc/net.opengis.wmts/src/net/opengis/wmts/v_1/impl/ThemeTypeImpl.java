@@ -140,7 +140,7 @@ public class ThemeTypeImpl extends DescriptionTypeImpl implements ThemeType {
      */
     public EList<ThemeType> getTheme() {
         if (theme == null) {
-            theme = new EObjectContainmentEList<ThemeType>(ThemeType.class, this, wmtsv_1Package.THEME_TYPE__THEME);
+            theme = new EObjectContainmentEList<>(ThemeType.class, this, wmtsv_1Package.THEME_TYPE__THEME);
         }
         return theme;
     }
@@ -152,7 +152,7 @@ public class ThemeTypeImpl extends DescriptionTypeImpl implements ThemeType {
      */
     public EList<String> getLayerRef() {
         if (layerRef == null) {
-            layerRef = new EDataTypeEList<String>(String.class, this, wmtsv_1Package.THEME_TYPE__LAYER_REF);
+            layerRef = new EDataTypeEList<>(String.class, this, wmtsv_1Package.THEME_TYPE__LAYER_REF);
         }
         return layerRef;
     }

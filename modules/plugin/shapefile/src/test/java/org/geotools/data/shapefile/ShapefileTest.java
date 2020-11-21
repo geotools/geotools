@@ -244,7 +244,7 @@ public class ShapefileTest extends TestCaseSupport {
     @Test
     public void testNullGeometries() throws Exception {
         // Write a point shapefile with one null geometry
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         File tmp = File.createTempFile("test", ".dbf");
         markTempFile(tmp);
         if (!tmp.delete()) {
@@ -319,7 +319,7 @@ public class ShapefileTest extends TestCaseSupport {
                         this,
                         SHP_FILTER_BEFORE_SCREENMAP + "/" + SHP_FILTER_BEFORE_SCREENMAP + ".shp");
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
         params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
 
@@ -438,7 +438,7 @@ public class ShapefileTest extends TestCaseSupport {
             throws Exception {
         URL shpUrl = TestData.url(this, shpName + "/" + shpName + ".shp");
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
 
         ShapefileDataStore ds =

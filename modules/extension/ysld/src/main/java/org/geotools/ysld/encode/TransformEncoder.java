@@ -69,7 +69,7 @@ public class TransformEncoder extends YsldEncodeHandler<Expression> {
 
         put("name", ftx.getName());
 
-        Map<String, Object> simpleParams = new LinkedHashMap<String, Object>();
+        Map<String, Object> simpleParams = new LinkedHashMap<>();
         String input = null;
         for (Expression expr : ftx.getParameters()) {
             if (!(expr instanceof Function)) {
@@ -95,7 +95,7 @@ public class TransformEncoder extends YsldEncodeHandler<Expression> {
             } else if (fexpr.getParameters().size() == 2) {
                 paramValue = intermediateExpression(fexpr.getParameters().get(1));
             } else {
-                List<Object> l = new ArrayList<Object>();
+                List<Object> l = new ArrayList<>();
                 for (int i = 1; i < fexpr.getParameters().size(); i++) {
                     l.add(intermediateExpression(fexpr.getParameters().get(i)));
                 }

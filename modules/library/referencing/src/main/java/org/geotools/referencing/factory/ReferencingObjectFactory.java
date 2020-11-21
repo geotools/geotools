@@ -961,7 +961,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @throws FactoryException if the object creation failed.
      */
     public ProjectedCRS createProjectedCRS(
-            Map<String, ?> properties,
+            Map<String, Object> properties,
             OperationMethod method,
             GeographicCRS base,
             MathTransform baseToDerived,
@@ -1034,7 +1034,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
                 if (!properties.containsKey(DefaultProjectedCRS.CONVERSION_TYPE_KEY)) {
                     method = mtFactory.getLastMethodUsed();
                     if (method instanceof MathTransformProvider) {
-                        final Map<String, Object> copy = new HashMap<String, Object>(properties);
+                        final Map<String, Object> copy = new HashMap<>(properties);
                         copy.put(
                                 DefaultProjectedCRS.CONVERSION_TYPE_KEY,
                                 ((MathTransformProvider) method).getOperationType());

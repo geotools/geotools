@@ -88,7 +88,7 @@ public class DataStoreTest {
         assertNotNull(typeNames);
         List<String> names = Arrays.asList(typeNames);
         assertEquals(expectedTypeNames.size(), names.size());
-        assertEquals(new HashSet<String>(expectedTypeNames), new HashSet<String>(names));
+        assertEquals(new HashSet<>(expectedTypeNames), new HashSet<>(names));
     }
 
     /**

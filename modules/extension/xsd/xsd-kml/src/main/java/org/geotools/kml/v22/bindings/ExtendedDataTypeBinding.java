@@ -79,15 +79,15 @@ public class ExtendedDataTypeBinding extends AbstractComplexBinding {
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        Map<String, Object> extendedData = new HashMap<String, Object>();
+        Map<String, Object> extendedData = new HashMap<>();
 
-        Map<String, Object> unTypedData = new LinkedHashMap<String, Object>();
+        Map<String, Object> unTypedData = new LinkedHashMap<>();
         for (Node n : (List<Node>) node.getChildren("Data")) {
             unTypedData.put((String) n.getAttributeValue("name"), n.getChildValue("value"));
         }
 
-        Map<String, Object> typedData = new LinkedHashMap<String, Object>();
-        List<URI> schemas = new ArrayList<URI>();
+        Map<String, Object> typedData = new LinkedHashMap<>();
+        List<URI> schemas = new ArrayList<>();
         for (Node schemaData : (List<Node>) node.getChildren("SchemaData")) {
             URI schemaUrl = (URI) schemaData.getAttributeValue("schemaUrl");
             if (schemaUrl != null) {

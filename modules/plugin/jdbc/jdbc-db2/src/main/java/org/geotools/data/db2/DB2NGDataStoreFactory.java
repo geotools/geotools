@@ -39,6 +39,8 @@ import org.locationtech.jts.io.WKBConstants;
  *
  * @author Christian Mueller
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
 
     public static String GetCurrentSchema = "select current sqlid from sysibm.sysdummy1";

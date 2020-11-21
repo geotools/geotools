@@ -52,7 +52,7 @@ public class InterpolationMethod extends CodeList<InterpolationMethod> {
     private static final long serialVersionUID = -4289541167757079847L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<InterpolationMethod> VALUES = new ArrayList<InterpolationMethod>(9);
+    private static final List<InterpolationMethod> VALUES = new ArrayList<>(9);
 
     /**
      * Generates a feature attribute value at a direct position by assigning it the feature

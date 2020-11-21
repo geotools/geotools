@@ -37,10 +37,10 @@ public class RedefineHandler extends XSIElementHandler {
     private static int offset = 0;
     private String id;
     private String schemaLocation;
-    private List simpleTypes;
-    private List complexTypes;
-    private List groups;
-    private List attributeGroups;
+    private List<SimpleTypeHandler> simpleTypes;
+    private List<ComplexTypeHandler> complexTypes;
+    private List<GroupHandler> groups;
+    private List<AttributeGroupHandler> attributeGroups;
     private int hashCodeOffset = getOffset();
 
     /*
@@ -67,7 +67,7 @@ public class RedefineHandler extends XSIElementHandler {
             // simpleType
             if (SimpleTypeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (simpleTypes == null) {
-                    simpleTypes = new LinkedList();
+                    simpleTypes = new LinkedList<>();
                 }
 
                 SimpleTypeHandler sth = new SimpleTypeHandler();
@@ -79,7 +79,7 @@ public class RedefineHandler extends XSIElementHandler {
             // complexType
             if (ComplexTypeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (complexTypes == null) {
-                    complexTypes = new LinkedList();
+                    complexTypes = new LinkedList<>();
                 }
 
                 ComplexTypeHandler sth = new ComplexTypeHandler();
@@ -91,7 +91,7 @@ public class RedefineHandler extends XSIElementHandler {
             // group
             if (GroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (groups == null) {
-                    groups = new LinkedList();
+                    groups = new LinkedList<>();
                 }
 
                 GroupHandler sth = new GroupHandler();
@@ -103,7 +103,7 @@ public class RedefineHandler extends XSIElementHandler {
             // attributeGroup
             if (AttributeGroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (attributeGroups == null) {
-                    attributeGroups = new LinkedList();
+                    attributeGroups = new LinkedList<>();
                 }
 
                 AttributeGroupHandler sth = new AttributeGroupHandler();

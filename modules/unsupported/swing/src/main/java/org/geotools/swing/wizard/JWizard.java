@@ -74,7 +74,7 @@ public class JWizard extends JDialog {
 
     Controller controller = new Controller();
 
-    HashMap<String, JPage> model = new HashMap<String, JPage>();
+    HashMap<String, JPage> model = new HashMap<>();
 
     JPage current;
 

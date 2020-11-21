@@ -56,7 +56,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     private Set<String> ids = new LinkedHashSet<>();
 
     /** Constructor which takes {@link org.opengis.filter.identity.Identifier}, not String. */
-    protected FidFilterImpl(Set /* <Identifier> */ fids) {
+    protected FidFilterImpl(Set<? extends Identifier> fids) {
         // check these are really identifiers
         for (Iterator it = fids.iterator(); it.hasNext(); ) {
             Object next = it.next();
@@ -71,9 +71,8 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     }
 
     /** @see org.opengis.filter.Id#getIDs() */
-    @SuppressWarnings("unchecked")
-    public Set getIDs() {
-        return getFidsSet();
+    public Set<Object> getIDs() {
+        return new HashSet<>(getFidsSet());
     }
 
     /** @see org.opengis.filter.Id#getIdentifiers() */
@@ -83,7 +82,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
 
     /** @see org.opengis.filter.identity.FeatureId#setIDs(Set) */
     public void setIDs(Set ids) {
-        fids = new HashSet();
+        fids = new HashSet<>();
         addAllFids(ids);
     }
 
@@ -98,7 +97,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
 
     /** Helper method to pull out strings from featureId set. */
     private Set<String> fids() {
-        return new HashSet<String>(ids);
+        return new HashSet<>(ids);
     }
 
     /**

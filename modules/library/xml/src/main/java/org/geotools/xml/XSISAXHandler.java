@@ -47,7 +47,7 @@ public class XSISAXHandler extends DefaultHandler {
             org.geotools.util.logging.Logging.getLogger(XSISAXHandler.class);
 
     // the stack of handers representing a portion of the parse tree
-    private Stack handlers = new Stack();
+    private Stack<XSIElementHandler> handlers = new Stack<>();
 
     // The schema being used to parse into
     private Schema schema = null;

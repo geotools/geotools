@@ -159,7 +159,7 @@ public class StyleTypeImpl extends DescriptionTypeImpl implements StyleType {
      */
     public EList<LegendURLType> getLegendURL() {
         if (legendURL == null) {
-            legendURL = new EObjectContainmentEList<LegendURLType>(LegendURLType.class, this, wmtsv_1Package.STYLE_TYPE__LEGEND_URL);
+            legendURL = new EObjectContainmentEList<>(LegendURLType.class, this, wmtsv_1Package.STYLE_TYPE__LEGEND_URL);
         }
         return legendURL;
     }

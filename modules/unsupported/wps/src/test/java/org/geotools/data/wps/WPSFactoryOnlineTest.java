@@ -456,6 +456,7 @@ public class WPSFactoryOnlineTest extends OnlineTestCase {
         WPSCapabilitiesType capabilities = wps.getCapabilities();
 
         ProcessOfferingsType processOfferings = capabilities.getProcessOfferings();
+        @SuppressWarnings("unchecked")
         List<ProcessBriefType> processes = processOfferings.getProcess();
 
         // does the server contain the specific process I want
@@ -498,6 +499,7 @@ public class WPSFactoryOnlineTest extends OnlineTestCase {
         WPSCapabilitiesType capabilities = wps.getCapabilities();
 
         ProcessOfferingsType processOfferings = capabilities.getProcessOfferings();
+        @SuppressWarnings("unchecked")
         List<ProcessBriefType> processes = processOfferings.getProcess();
 
         // does the server contain the specific process I want

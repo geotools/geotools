@@ -821,7 +821,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
    */
     public List<Double> createPositionTypeFromString(EDataType eDataType, String initialValue) {
     if (initialValue == null) return null;
-    List<Double> result = new ArrayList<Double>();
+    List<Double> result = new ArrayList<>();
     for (String item : split(initialValue)) {
       result.add((Double)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.DOUBLE, item));
     }

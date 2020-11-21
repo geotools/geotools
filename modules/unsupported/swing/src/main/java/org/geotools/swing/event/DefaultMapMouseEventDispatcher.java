@@ -42,7 +42,7 @@ public class DefaultMapMouseEventDispatcher implements MapMouseEventDispatcher {
      */
     public DefaultMapMouseEventDispatcher(MapPane mapPane) {
         this.mapPane = mapPane;
-        this.listeners = new ArrayList<MapMouseListener>();
+        this.listeners = new ArrayList<>();
     }
 
     /** {@inheritDoc} */

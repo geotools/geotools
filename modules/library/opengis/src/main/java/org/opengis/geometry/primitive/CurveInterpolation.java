@@ -34,7 +34,7 @@ public final class CurveInterpolation extends CodeList<CurveInterpolation> {
     private static final long serialVersionUID = 170309206092641598L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<CurveInterpolation> VALUES = new ArrayList<CurveInterpolation>(10);
+    private static final List<CurveInterpolation> VALUES = new ArrayList<>(10);
 
     /**
      * The interpolation mechanism shall return {@linkplain DirectPosition direct positions} on a

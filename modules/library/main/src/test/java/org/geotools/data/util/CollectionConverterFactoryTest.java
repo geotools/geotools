@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 public class CollectionConverterFactoryTest extends TestCase {
 
     public void testCollectionToCollection() throws Exception {
-        List source = new ArrayList();
+        List<Integer> source = new ArrayList<>();
         source.add(1);
         source.add(2);
 
@@ -38,7 +38,7 @@ public class CollectionConverterFactoryTest extends TestCase {
     }
 
     public void testCollectionToArray() throws Exception {
-        List source = new ArrayList();
+        List<Integer> source = new ArrayList<>();
         source.add(1);
         source.add(2);
 

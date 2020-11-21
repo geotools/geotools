@@ -74,7 +74,7 @@ public class ExtendedDescriptionTypeImpl extends EObjectImpl implements Extended
    */
     public EList<ElementType> getElement() {
     if (element == null) {
-      element = new EObjectContainmentEList<ElementType>(ElementType.class, this, Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT);
+      element = new EObjectContainmentEList<>(ElementType.class, this, Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT);
     }
     return element;
   }

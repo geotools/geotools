@@ -113,8 +113,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     private final OldReferencingObjectCache objectCache;
 
     /** The pool of objects identified by {@link find}. */
-    private final Map<IdentifiedObject, IdentifiedObject> findPool =
-            new WeakHashMap<IdentifiedObject, IdentifiedObject>();
+    private final Map<IdentifiedObject, IdentifiedObject> findPool = new WeakHashMap<>();
 
     /**
      * Constructs an instance wrapping the specified factory with a default number of entries to
@@ -323,10 +322,11 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      * @param type The spatial reference objects type.
      * @return The set of authority codes for spatial reference objects of the given type. If this
      *     factory doesn't contains any object of the given type, then this method returns an
-     *     {@linkplain java.util.Collections#EMPTY_SET empty set}.
+     *     {@linkplain java.util.Collections.emptySet() empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
-    public Set<String> getAuthorityCodes(final Class type) throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return getBackingStore().getAuthorityCodes(type);
     }
 
@@ -855,6 +855,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     }
 
     /** Returns an operation from coordinate reference system codes. */
+    @SuppressWarnings("unchecked")
     @Override
     public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {

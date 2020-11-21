@@ -40,6 +40,7 @@ import org.opengis.geometry.coordinate.BSplineSurface;
 import org.opengis.geometry.coordinate.Geodesic;
 import org.opengis.geometry.coordinate.GeodesicString;
 import org.opengis.geometry.coordinate.GeometryFactory;
+import org.opengis.geometry.coordinate.Knot;
 import org.opengis.geometry.coordinate.KnotType;
 import org.opengis.geometry.coordinate.LineSegment;
 import org.opengis.geometry.coordinate.LineString;
@@ -65,6 +66,7 @@ import org.opengis.geometry.primitive.Solid;
 import org.opengis.geometry.primitive.SolidBoundary;
 import org.opengis.geometry.primitive.Surface;
 import org.opengis.geometry.primitive.SurfaceBoundary;
+import org.opengis.geometry.primitive.SurfacePatch;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -104,24 +106,25 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         return null;
     }
 
-    public ArcString createArcString(List points)
+    public ArcString createArcString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
-    public ArcStringByBulge createArcStringByBulge(List points, double[] bulges, List normals)
+    public ArcStringByBulge createArcStringByBulge(
+            List<Position> points, double[] bulges, List<double[]> normals)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
     public BSplineCurve createBSplineCurve(
-            int degree, PointArray points, List knots, KnotType knotSpec)
+            int degree, PointArray points, List<Knot> knots, KnotType knotSpec)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
     public BSplineSurface createBSplineSurface(
-            List points, int[] degree, List[] knots, KnotType knotSpec)
+            List<PointArray> points, int[] degree, List<Knot>[] knots, KnotType knotSpec)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
@@ -178,7 +181,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         return null;
     }
 
-    public GeodesicString createGeodesicString(List points)
+    public GeodesicString createGeodesicString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
@@ -189,12 +192,12 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
     }
 
     /** Takes a List<Position> ... */
-    public LineString createLineString(List points)
+    public LineString createLineString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return new LineString() {
             PointArray points;
 
-            public List asLineSegments() {
+            public List<LineSegment> asLineSegments() {
                 return null;
             }
 
@@ -302,12 +305,16 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         return null;
     }
 
-    public PolyhedralSurface createPolyhedralSurface(List tiles)
+    public PolyhedralSurface createPolyhedralSurface(List<Polygon> tiles)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
-    public Tin createTin(Set post, Set stopLines, Set breakLines, double maxLength)
+    public Tin createTin(
+            Set<Position> post,
+            Set<LineString> stopLines,
+            Set<LineString> breakLines,
+            double maxLength)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
@@ -316,19 +323,19 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         return null;
     }
 
-    public Curve createCurve(final List segments)
+    public Curve createCurve(final List<CurveSegment> segments)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return new MockCurve(segments);
     }
 
     class MockCurve implements Curve {
-        List segments;
+        List<? extends CurveSegment> segments;
 
-        MockCurve(List segments) {
+        MockCurve(List<? extends CurveSegment> segments) {
             this.segments = segments;
         }
 
-        public List getSegments() {
+        public List<? extends CurveSegment> getSegments() {
             return segments;
         }
 
@@ -348,16 +355,16 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             return this;
         }
 
-        public Set getComplexes() {
+        public Set<Complex> getComplexes() {
             return null;
         }
 
-        public Set getContainedPrimitives() {
+        public Set<Primitive> getContainedPrimitives() {
             // TODO Auto-generated method stub
             return null;
         }
 
-        public Set getContainingPrimitives() {
+        public Set<Primitive> getContainingPrimitives() {
             return null;
         }
 
@@ -409,7 +416,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             return null;
         }
 
-        public Set getMaximalComplex() {
+        public Set<? extends Complex> getMaximalComplex() {
             return null;
         }
 
@@ -568,7 +575,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             this.position = position;
         }
 
-        public Set getComplexes() {
+        public Set<Complex> getComplexes() {
             return null;
         }
 
@@ -576,11 +583,11 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             return null;
         }
 
-        public Set getContainedPrimitives() {
+        public Set<Primitive> getContainedPrimitives() {
             return null;
         }
 
-        public Set getContainingPrimitives() {
+        public Set<Primitive> getContainingPrimitives() {
             return null;
         }
 
@@ -632,7 +639,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             return null;
         }
 
-        public Set getMaximalComplex() {
+        public Set<Complex> getMaximalComplex() {
             return null;
         }
 
@@ -712,7 +719,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         return null;
     }
 
-    public Ring createRing(List curves)
+    public Ring createRing(List<OrientableCurve> curves)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub
         return null;
@@ -724,7 +731,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         return null;
     }
 
-    public Surface createSurface(List surfaces)
+    public Surface createSurface(List<SurfacePatch> surfaces)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub
         return null;
@@ -736,7 +743,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         return null;
     }
 
-    public SurfaceBoundary createSurfaceBoundary(Ring exterior, List interiors)
+    public SurfaceBoundary createSurfaceBoundary(Ring exterior, List<Ring> interiors)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub
         return null;

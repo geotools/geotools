@@ -143,7 +143,7 @@ public abstract class GeoSpatialImageReader extends ImageReader
      */
     public List<Integer> getImageIndex(Query filterQuery) throws IOException {
         List<CoverageSlice> descs = slicesCatalog.getGranules(filterQuery);
-        List<Integer> indexes = new ArrayList<Integer>();
+        List<Integer> indexes = new ArrayList<>();
         for (CoverageSlice desc : descs) {
             Integer index =
                     (Integer) desc.getOriginator().getAttribute(CoverageSlice.Attributes.INDEX);

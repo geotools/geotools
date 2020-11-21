@@ -17,11 +17,13 @@
 package org.geotools.validation;
 
 import java.util.HashMap;
+import java.util.Map;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.spatial.LineNoSelfIntersectValidation;
 import org.geotools.validation.spatial.LineNoSelfOverlappingValidation;
@@ -341,7 +343,7 @@ public class ValidationPlugInTester extends DataTestCase {
         //		store.addFeatures( roadFeatures );
         //		store.addFeatures( riverFeatures );
 
-        HashMap layers = new HashMap();
+        Map<String, SimpleFeatureSource> layers = new HashMap<>();
         try {
             layers.put("dataStoreId:road", DataUtilities.source(new SimpleFeature[] {newRoad}));
             layers.put("dataStoreId:river", DataUtilities.source(riverFeatures));
@@ -379,7 +381,7 @@ public class ValidationPlugInTester extends DataTestCase {
             assertTrue(false);
         }
 
-        HashMap layers = new HashMap();
+        Map<String, SimpleFeatureSource> layers = new HashMap<>();
         try {
             layers.put("dataStoreId:road", store.getFeatureSource("road"));
             layers.put("dataStoreId:river", store.getFeatureSource("river"));

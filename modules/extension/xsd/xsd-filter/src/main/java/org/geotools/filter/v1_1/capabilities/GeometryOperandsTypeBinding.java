@@ -67,7 +67,7 @@ public class GeometryOperandsTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List gops = node.getChildValues(GeometryOperand.class);
+        List<GeometryOperand> gops = node.getChildValues(GeometryOperand.class);
 
         return gops.toArray(new GeometryOperand[gops.size()]);
     }

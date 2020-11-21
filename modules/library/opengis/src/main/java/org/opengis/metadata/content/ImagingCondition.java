@@ -30,7 +30,7 @@ public final class ImagingCondition extends CodeList<ImagingCondition> {
     private static final long serialVersionUID = -1948380148063658761L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<ImagingCondition> VALUES = new ArrayList<ImagingCondition>(11);
+    private static final List<ImagingCondition> VALUES = new ArrayList<>(11);
 
     /** Portion of the image is blurred. */
     @UML(identifier = "blurredImage", obligation = CONDITIONAL, specification = ISO_19115)

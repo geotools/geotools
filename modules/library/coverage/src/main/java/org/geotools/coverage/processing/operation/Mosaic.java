@@ -136,8 +136,8 @@ public class Mosaic extends OperationJAI {
     public static final String ALPHA_NAME = "alphas";
 
     /** The parameter descriptor for the Sources. */
-    public static final ParameterDescriptor SOURCES =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Collection> SOURCES =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     SOURCES_NAME,
                     Collection.class, // Value class (mandatory)
@@ -150,7 +150,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the GridGeometry to use. */
     public static final ParameterDescriptor<GridGeometry> GG =
-            new DefaultParameterDescriptor<GridGeometry>(
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     GEOMETRY,
                     GridGeometry.class, // Value class (mandatory)
@@ -163,7 +163,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the GridGeometry choosing policy. */
     public static final ParameterDescriptor<String> GEOMETRY_POLICY =
-            new DefaultParameterDescriptor<String>(
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     POLICY,
                     String.class, // Value class (mandatory)
@@ -176,7 +176,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the Transformation Choice. */
     public static final ParameterDescriptor<double[]> OUTPUT_NODATA =
-            new DefaultParameterDescriptor<double[]>(
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     OUTNODATA_NAME,
                     double[].class, // Value class (mandatory)
@@ -189,7 +189,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the Alpha band. */
     public static final ParameterDescriptor<Collection> ALPHA =
-            new DefaultParameterDescriptor<Collection>(
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     ALPHA_NAME,
                     Collection.class, // Value class (mandatory)
@@ -205,7 +205,7 @@ public class Mosaic extends OperationJAI {
     // Replace the old parameter descriptor group with a new one with the old parameters and the new
     // ones defined above.
     static {
-        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<ParameterDescriptor>();
+        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<>();
         replacedDescriptors.add(SOURCES);
         replacedDescriptors.add(GG);
         replacedDescriptors.add(GEOMETRY_POLICY);
@@ -594,7 +594,7 @@ public class Mosaic extends OperationJAI {
         /*
          * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockJAI (as RenderedImages) later.
          */
-        final Collection<GridCoverage2D> sourceCollection = new ArrayList<GridCoverage2D>();
+        final Collection<GridCoverage2D> sourceCollection = new ArrayList<>();
         extractSources(parameters, sourceCollection, null);
 
         // Selection of the source number
@@ -658,6 +658,7 @@ public class Mosaic extends OperationJAI {
         Object alphaBandList = parameters.parameter(ALPHA_NAME).getValue();
         GridCoverage2D[] alphaCovs = null;
         if (alphaBandList != null && alphaBandList instanceof Collection) {
+            @SuppressWarnings("unchecked")
             Collection<GridCoverage2D> alphas = (Collection<GridCoverage2D>) alphaBandList;
             alphaCovs = new GridCoverage2D[alphas.size()];
             alphas.toArray(alphaCovs);
@@ -892,7 +893,9 @@ public class Mosaic extends OperationJAI {
 
     private <T> T getParameter(ParameterBlockJAI pb, int index) {
         if (pb.getNumParameters() > index) {
-            return (T) pb.getObjectParameter(index);
+            @SuppressWarnings("unchecked")
+            T result = (T) pb.getObjectParameter(index);
+            return result;
         } else {
             return null;
         }
@@ -950,11 +953,13 @@ public class Mosaic extends OperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Params parameters) {
-        Map properties;
+        Map<String, Object> properties;
         if (sources[0].getProperties() == null) {
             properties = new HashMap<>();
         } else {
-            properties = new HashMap<>(sources[0].getProperties());
+            @SuppressWarnings("unchecked")
+            Map<String, Object> props = sources[0].getProperties();
+            properties = new HashMap<>(props);
         }
 
         // Get the ROI and NoData property from the parameterBlock
@@ -1015,6 +1020,7 @@ public class Mosaic extends OperationJAI {
                     srcCoverages);
         }
         // Collection of the sources to use
+        @SuppressWarnings("unchecked")
         Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
         sources.addAll(sourceCoverages);
     }

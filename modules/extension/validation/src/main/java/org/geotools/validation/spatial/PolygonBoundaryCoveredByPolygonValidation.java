@@ -57,11 +57,11 @@ public class PolygonBoundaryCoveredByPolygonValidation extends PolygonPolygonAbs
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource polySource = (SimpleFeatureSource) layers.get(getPolygonTypeRef());
-        SimpleFeatureSource polyrSource =
-                (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+        SimpleFeatureSource polySource = layers.get(getPolygonTypeRef());
+        SimpleFeatureSource polyrSource = layers.get(getRestrictedPolygonTypeRef());
 
         Object[] polys = polyrSource.getFeatures().toArray();
         Object[] polyRs = polySource.getFeatures().toArray();

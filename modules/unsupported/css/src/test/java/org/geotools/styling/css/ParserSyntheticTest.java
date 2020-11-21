@@ -818,6 +818,6 @@ public class ParserSyntheticTest extends CssBaseTest {
 
     private <T extends Selector> T assertSelector(Selector selector, Class<T> clazz) {
         assertThat(selector, instanceOf(clazz));
-        return (T) selector;
+        return clazz.cast(selector);
     }
 }

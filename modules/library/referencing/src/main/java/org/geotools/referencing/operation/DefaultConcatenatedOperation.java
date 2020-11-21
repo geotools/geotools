@@ -267,14 +267,14 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
                     Collection<PositionalAccuracy> candidates = op.getCoordinateOperationAccuracy();
                     if (candidates != null && !candidates.isEmpty()) {
                         if (accuracy == null) {
-                            accuracy = new LinkedHashSet<PositionalAccuracy>();
+                            accuracy = new LinkedHashSet<>();
                         }
                         accuracy.addAll(candidates);
                     }
                 }
             }
             if (accuracy != null) {
-                final Map<String, Object> merged = new HashMap<String, Object>(properties);
+                final Map<String, Object> merged = new HashMap<>(properties);
                 merged.put(
                         COORDINATE_OPERATION_ACCURACY_KEY,
                         accuracy.toArray(new PositionalAccuracy[accuracy.size()]));

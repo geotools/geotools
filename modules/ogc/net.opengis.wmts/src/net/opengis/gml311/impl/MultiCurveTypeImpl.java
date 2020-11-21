@@ -83,7 +83,7 @@ public class MultiCurveTypeImpl extends AbstractGeometricAggregateTypeImpl imple
      */
     public EList<CurvePropertyType> getCurveMember() {
         if (curveMember == null) {
-            curveMember = new EObjectContainmentEList<CurvePropertyType>(CurvePropertyType.class, this, Gml311Package.MULTI_CURVE_TYPE__CURVE_MEMBER);
+            curveMember = new EObjectContainmentEList<>(CurvePropertyType.class, this, Gml311Package.MULTI_CURVE_TYPE__CURVE_MEMBER);
         }
         return curveMember;
     }

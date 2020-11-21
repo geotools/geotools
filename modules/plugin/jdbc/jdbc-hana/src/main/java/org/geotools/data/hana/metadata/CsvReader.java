@@ -48,7 +48,7 @@ class CsvReader {
         }
 
         Scanner scanner = new Scanner(line);
-        ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<String> ret = new ArrayList<>();
         while (true) {
             String entry = scanner.getNextEntry();
             if (entry == null) {

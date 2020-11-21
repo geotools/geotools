@@ -80,7 +80,7 @@ import org.w3c.dom.Node;
 public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCoverageWriter {
     private static final Logger LOGGER = Logging.getLogger(GeoTiffWriter.class);
 
-    private final Map<String, String> metadataKeyValue = new HashMap<String, String>();
+    private final Map<String, String> metadataKeyValue = new HashMap<>();
 
     /** Constructor for a {@link GeoTiffWriter}. */
     public GeoTiffWriter(Object destination) throws IOException {

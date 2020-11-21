@@ -87,6 +87,7 @@ public class XmlXpathUtilites {
     }
 
     private static void addNamespaces(NamespaceSupport ns, JXPathContext context) {
+        @SuppressWarnings("unchecked")
         Enumeration<String> prefixes = ns.getPrefixes();
         while (prefixes.hasMoreElements()) {
             String prefix = prefixes.nextElement();
@@ -142,9 +143,9 @@ public class XmlXpathUtilites {
 
         List<String> ls = null;
         if (values == null) {
-            ls = new ArrayList<String>();
+            ls = new ArrayList<>();
         } else {
-            ls = new ArrayList<String>(values.size());
+            ls = new ArrayList<>(values.size());
             for (int i = 0; i < values.size(); i++) {
                 Object value = values.get(i);
                 String unwrappedValue = "";

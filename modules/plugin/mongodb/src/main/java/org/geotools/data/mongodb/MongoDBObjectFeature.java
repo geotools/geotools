@@ -172,7 +172,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
     @Override
     public List<Object> getAttributes() {
         int aCount = getAttributeCount();
-        List<Object> values = new ArrayList<Object>(aCount);
+        List<Object> values = new ArrayList<>(aCount);
         for (int aIndex = 0; aIndex < aCount; aIndex++) {
             values.add(getAttribute(aIndex));
         }
@@ -198,7 +198,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
     @Override
     public Map<Object, Object> getUserData() {
         if (userData == null) {
-            userData = new HashMap<Object, Object>();
+            userData = new HashMap<>();
         }
         return userData;
     }

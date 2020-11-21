@@ -53,7 +53,7 @@ class FootprintUtils {
      * A set of properties to be ignored when parsing the properties file. It is used to get only
      * the FootprintManagement property, avoiding by this way to load and compute useless elements.
      */
-    static final Set<String> IGNORE_PROPS = new HashSet<String>();
+    static final Set<String> IGNORE_PROPS = new HashSet<>();
 
     static {
         IGNORE_PROPS.add(Prop.ENVELOPE2D);

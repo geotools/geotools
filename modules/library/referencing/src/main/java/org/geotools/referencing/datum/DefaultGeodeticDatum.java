@@ -66,7 +66,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
             new NamedIdentifier(Citations.ESRI, "D_WGS_1984"),
             new NamedIdentifier(Citations.EPSG, "World Geodetic System 1984")
         };
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         properties.put(NAME_KEY, identifiers[0]);
         properties.put(ALIAS_KEY, identifiers);
         WGS84 =
@@ -162,7 +162,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
                 if (bursaWolf.length == 0) {
                     bursaWolf = null;
                 } else {
-                    final Set<BursaWolfParameters> s = new LinkedHashSet<BursaWolfParameters>();
+                    final Set<BursaWolfParameters> s = new LinkedHashSet<>();
                     for (int i = 0; i < bursaWolf.length; i++) {
                         s.add(bursaWolf[i].clone());
                     }
@@ -294,7 +294,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
                         if (equals(sourceStep, targetStep, false)) {
                             final XMatrix step1, step2;
                             if (exclusion == null) {
-                                exclusion = new HashSet<GeodeticDatum>();
+                                exclusion = new HashSet<>();
                             }
                             if (exclusion.add(source)) {
                                 if (exclusion.add(target)) {

@@ -13,7 +13,7 @@ public class SessionCommandListenerTest {
 
     static class RecordingConnection extends MockConnection {
 
-        List<String> commands = new ArrayList<String>();
+        List<String> commands = new ArrayList<>();
 
         public java.sql.Statement createStatement() throws java.sql.SQLException {
             return new MockStatement(this) {

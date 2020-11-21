@@ -61,7 +61,7 @@ public class HTTPURIHandlerTest {
 
         assertThat(handler.canHandle(uri), is(true));
 
-        handler.createInputStream(uri, Collections.EMPTY_MAP);
+        handler.createInputStream(uri, Collections.emptyMap());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class HTTPURIHandlerTest {
 
         assertThat(handler.canHandle(uri), is(true));
 
-        handler.createInputStream(uri, Collections.EMPTY_MAP);
+        handler.createInputStream(uri, Collections.emptyMap());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class HTTPURIHandlerTest {
 
         URI uri = URI.createURI("http://example.com");
 
-        handler.createInputStream(uri, Collections.EMPTY_MAP);
+        handler.createInputStream(uri, Collections.emptyMap());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class HTTPURIHandlerTest {
 
         URI uri = URI.createURI("http://example.com");
 
-        handler.createInputStream(uri, Collections.EMPTY_MAP);
+        handler.createInputStream(uri, Collections.emptyMap());
     }
 
     @Test
@@ -137,7 +137,7 @@ public class HTTPURIHandlerTest {
 
         URI uri = URI.createURI("http://example.com");
 
-        handler.createInputStream(uri, Collections.EMPTY_MAP);
+        handler.createInputStream(uri, Collections.emptyMap());
     }
 
     @Test

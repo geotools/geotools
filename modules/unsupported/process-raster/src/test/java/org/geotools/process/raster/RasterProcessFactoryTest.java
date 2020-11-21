@@ -52,7 +52,9 @@ public class RasterProcessFactoryTest {
                     @Override
                     public <T> Iterator<T> iterator(Class<T> category) {
                         if (category == RasterProcess.class) {
-                            return (Iterator<T>) Arrays.asList(new CustomProcess()).iterator();
+                            @SuppressWarnings("unchecked")
+                            T customProcess = (T) new CustomProcess();
+                            return Arrays.asList(customProcess).iterator();
                         }
                         return null;
                     }

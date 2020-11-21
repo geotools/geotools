@@ -260,12 +260,14 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
         wmtsService.getDimensions().put(WMTSTileService.DIMENSION_TIME, requestedTime);
 
-        ((Map)
+        @SuppressWarnings("unchecked")
+        Map<String, String> extraHeaders =
+                ((Map<String, String>)
                         (wmtsService
                                 .getExtrainfo()
                                 .computeIfAbsent(
-                                        WMTSTileService.EXTRA_HEADERS, extra -> new HashMap<>())))
-                .putAll(this.headers);
+                                        WMTSTileService.EXTRA_HEADERS, extra -> new HashMap<>())));
+        extraHeaders.putAll(this.headers);
 
         double scale =
                 Math.round(

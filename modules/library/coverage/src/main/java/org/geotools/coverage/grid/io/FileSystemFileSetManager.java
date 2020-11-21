@@ -27,7 +27,7 @@ public class FileSystemFileSetManager implements FileSetManager {
 
     private static Logger LOGGER = Logger.getLogger(FileSystemFileSetManager.class.toString());
 
-    private List<String> fileSet = Collections.synchronizedList(new ArrayList<String>());
+    private List<String> fileSet = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public void addFile(String filePath) {

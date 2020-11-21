@@ -46,6 +46,7 @@ abstract class AbstractPropertyComparator implements Comparator<SimpleFeature> {
     protected abstract int compareAscending(SimpleFeature f1, SimpleFeature f2);
 
     /** Support method to implement {@link #compareAscending(SimpleFeature, SimpleFeature)} */
+    @SuppressWarnings("unchecked")
     protected int compareAscending(Comparable o1, Comparable o2) {
         if (o1 == null) {
             if (o2 == null) {

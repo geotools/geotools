@@ -1418,7 +1418,7 @@ public abstract class MapProjection extends AbstractMathTransform
          *
          * @todo Would like to start range from 0 <u>exclusive</u>.
          */
-        public static final ParameterDescriptor SEMI_MAJOR =
+        public static final ParameterDescriptor<Double> SEMI_MAJOR =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "semi_major"),
@@ -1436,7 +1436,7 @@ public abstract class MapProjection extends AbstractMathTransform
          *
          * @todo Would like to start range from 0 <u>exclusive</u>.
          */
-        public static final ParameterDescriptor SEMI_MINOR =
+        public static final ParameterDescriptor<Double> SEMI_MINOR =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "semi_minor"),
@@ -1452,7 +1452,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the {@linkplain #centralMeridian central meridian}
          * parameter value. Valid values range is from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor CENTRAL_MERIDIAN =
+        public static final ParameterDescriptor<Double> CENTRAL_MERIDIAN =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "central_meridian"),
@@ -1476,7 +1476,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the {@linkplain #latitudeOfOrigin latitude of
          * origin} parameter value. Valid values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor LATITUDE_OF_ORIGIN =
+        public static final ParameterDescriptor<Double> LATITUDE_OF_ORIGIN =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "latitude_of_origin"),
@@ -1498,7 +1498,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the longitude of center parameter value. Valid
          * values range is from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor LONGITUDE_OF_CENTRE =
+        public static final ParameterDescriptor<Double> LONGITUDE_OF_CENTRE =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "longitude_of_center"),
@@ -1517,7 +1517,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the latitude of center parameter value. Valid
          * values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor LATITUDE_OF_CENTRE =
+        public static final ParameterDescriptor<Double> LATITUDE_OF_CENTRE =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "latitude_of_center"),
@@ -1536,7 +1536,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the standard parallel 1 parameter value. Valid
          * values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor STANDARD_PARALLEL_1 =
+        public static final ParameterDescriptor<Double> STANDARD_PARALLEL_1 =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "standard_parallel_1"),
@@ -1555,7 +1555,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the standard parallel 2 parameter value. Valid
          * values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor STANDARD_PARALLEL_2 =
+        public static final ParameterDescriptor<Double> STANDARD_PARALLEL_2 =
                 createOptionalDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "standard_parallel_2"),
@@ -1575,7 +1575,7 @@ public abstract class MapProjection extends AbstractMathTransform
          *
          * @todo Would like to start range from 0 <u>exclusive</u>.
          */
-        public static final ParameterDescriptor SCALE_FACTOR =
+        public static final ParameterDescriptor<Double> SCALE_FACTOR =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "scale_factor"),
@@ -1595,7 +1595,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the {@link #falseEasting falseEasting} parameter
          * value. Valid values range is unrestricted. Default value is 0.
          */
-        public static final ParameterDescriptor FALSE_EASTING =
+        public static final ParameterDescriptor<Double> FALSE_EASTING =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "false_easting"),
@@ -1614,7 +1614,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the {@link #falseNorthing falseNorthing} parameter
          * value. Valid values range is unrestricted. Default value is 0.
          */
-        public static final ParameterDescriptor FALSE_NORTHING =
+        public static final ParameterDescriptor<Double> FALSE_NORTHING =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "false_northing"),

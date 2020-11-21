@@ -361,7 +361,7 @@ public class FilterFilterTest {
 
     static class MyHandler extends XMLFilterImpl implements FilterHandler {
 
-        public List<org.opengis.filter.Filter> filters = new ArrayList<org.opengis.filter.Filter>();
+        public List<org.opengis.filter.Filter> filters = new ArrayList<>();
 
         public void filter(org.opengis.filter.Filter filter) {
             filters.add(filter);

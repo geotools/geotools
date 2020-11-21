@@ -339,7 +339,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
      */
     @Override
     Collection<? super AuthorityFactory> dependencies() {
-        final List<Object> dep = new ArrayList<Object>(4);
+        final List<Object> dep = new ArrayList<>(4);
         Object factory;
         try {
             factory = getAuthorityFactory(null);

@@ -112,21 +112,22 @@ public final class ObjectCaches {
      *
      * @return ObjectCache
      */
-    public static ObjectCache chain(final ObjectCache level1, final ObjectCache level2) {
+    public static <K, V> ObjectCache<K, V> chain(
+            final ObjectCache<K, V> level1, final ObjectCache<K, V> level2) {
         if (level1 == level2) {
             return level1;
         }
         if (level1 == null) return level2;
         if (level2 == null) return level1;
-        return new ObjectCache() {
+        return new ObjectCache<K, V>() {
             public void clear() {
                 level1.clear();
             }
 
-            public Object get(Object key) {
-                Object value = level1.get(key);
+            public V get(K key) {
+                V value = level1.get(key);
                 if (value == null) {
-                    Object check = level2.get(key);
+                    V check = level2.get(key);
                     if (check != null) {
                         try {
                             level1.writeLock(key);
@@ -143,33 +144,33 @@ public final class ObjectCaches {
                 return value;
             }
 
-            public Object peek(Object key) {
+            public V peek(K key) {
                 return level1.peek(key);
             }
 
-            public void put(Object key, Object object) {
+            public void put(K key, V object) {
                 level1.put(key, object);
             }
 
-            public void writeLock(Object key) {
+            public void writeLock(K key) {
                 level1.writeLock(key);
             }
 
-            public void writeUnLock(Object key) {
+            public void writeUnLock(K key) {
                 level1.writeLock(key);
             }
 
-            public Set<Object> getKeys() {
+            public Set<K> getKeys() {
                 return level1.getKeys();
             }
 
-            public void remove(Object key) {
+            public void remove(K key) {
                 level1.remove(key);
             }
         };
     }
     /** Utility method used to produce cache based on provide Hint */
-    public static ObjectCache create(Hints hints) throws FactoryRegistryException {
+    public static <K, V> ObjectCache<K, V> create(Hints hints) throws FactoryRegistryException {
         if (hints == null) hints = GeoTools.getDefaultHints();
         String policy = (String) hints.get(Hints.CACHE_POLICY);
         int limit = Hints.CACHE_LIMIT.toValue(hints);
@@ -183,19 +184,21 @@ public final class ObjectCaches {
      * @return A new ObjectCache
      * @see Hints.BUFFER_POLICY
      */
-    public static ObjectCache create(String policy, int size) {
+    public static <K, V> ObjectCache<K, V> create(String policy, int size) {
         if ("weak".equalsIgnoreCase(policy)) {
-            return new WeakObjectCache(0);
+            return new WeakObjectCache<>(0);
         } else if ("all".equalsIgnoreCase(policy)) {
-            return new DefaultObjectCache(size);
+            return new DefaultObjectCache<>(size);
         } else if ("none".equalsIgnoreCase(policy)) {
-            return NullObjectCache.INSTANCE;
+            @SuppressWarnings("unchecked")
+            ObjectCache<K, V> cast = (ObjectCache<K, V>) NullObjectCache.INSTANCE;
+            return cast;
         } else if ("fixed".equalsIgnoreCase(policy)) {
-            return new FixedSizeObjectCache(size);
+            return new FixedSizeObjectCache<>(size);
         } else if ("soft".equals(policy)) {
-            return new SoftObjectCache(size);
+            return new SoftObjectCache<>(size);
         } else {
-            return new DefaultObjectCache(size);
+            return new DefaultObjectCache<>(size);
         }
     }
 

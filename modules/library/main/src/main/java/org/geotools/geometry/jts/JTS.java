@@ -111,7 +111,7 @@ public final class JTS {
      * {@link GeodeticCalculator} keep a reference to the CRS which is used as the key.
      */
     private static final Map<CoordinateReferenceSystem, GeodeticCalculator> CALCULATORS =
-            new HashMap<CoordinateReferenceSystem, GeodeticCalculator>();
+            new HashMap<>();
 
     /** Do not allow instantiation of this class. */
     private JTS() {}
@@ -741,8 +741,8 @@ public final class JTS {
         final PathIterator iterator =
                 shape.getPathIterator(null, ShapeUtilities.getFlatness(shape));
         final double[] buffer = new double[6];
-        final List<Coordinate> coords = new ArrayList<Coordinate>();
-        final List<LineString> lines = new ArrayList<LineString>();
+        final List<Coordinate> coords = new ArrayList<>();
+        final List<LineString> lines = new ArrayList<>();
 
         while (!iterator.isDone()) {
             switch (iterator.currentSegment(buffer)) {
@@ -1406,7 +1406,7 @@ public final class JTS {
         final int N = ls.getNumPoints();
         final boolean isLinearRing = ls instanceof LinearRing;
 
-        List<Coordinate> retain = new ArrayList<Coordinate>();
+        List<Coordinate> retain = new ArrayList<>();
         retain.add(ls.getCoordinateN(0));
 
         int i0 = 0, i1 = 1, i2 = 2;
@@ -1469,7 +1469,7 @@ public final class JTS {
         }
 
         // work on the holes
-        List<LineString> holes = new ArrayList<LineString>();
+        List<LineString> holes = new ArrayList<>();
         final int size = polygon.getNumInteriorRing();
         for (int i = 0; i < size; i++) {
             LineString hole = polygon.getInteriorRingN(i);
@@ -1585,7 +1585,8 @@ public final class JTS {
                     }
                 });
 
-        List<Polygon> result = new ArrayList<Polygon>(p.getPolygons());
+        @SuppressWarnings("unchecked")
+        List<Polygon> result = new ArrayList<>(p.getPolygons());
 
         // if necessary throw away the holes and return just the shells
         if (removeHoles) {

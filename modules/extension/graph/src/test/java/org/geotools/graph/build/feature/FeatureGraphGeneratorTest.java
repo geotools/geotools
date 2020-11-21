@@ -24,6 +24,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.graph.build.line.LineStringGraphGenerator;
 import org.geotools.graph.structure.Edge;
+import org.geotools.graph.structure.Graphable;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -40,8 +41,8 @@ public class FeatureGraphGeneratorTest extends TestCase {
         LineString[] lines = lines();
         SimpleFeature[] features = features(lines);
 
-        List el1 = new ArrayList();
-        List el2 = new ArrayList();
+        List<Graphable> el1 = new ArrayList<>();
+        List<Graphable> el2 = new ArrayList<>();
         for (int i = 0; i < lines.length; i++) {
             el1.add(lsgg.add(lines[i]));
             el2.add(fgg.add(features[i]));

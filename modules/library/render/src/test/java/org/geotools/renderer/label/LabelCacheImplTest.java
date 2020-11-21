@@ -59,8 +59,7 @@ public class LabelCacheImplTest {
     StyleBuilder sb;
 
     NumberRange<Double> ALL_SCALES =
-            new NumberRange<Double>(
-                    Double.class, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+            new NumberRange<>(Double.class, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
     @Before
     public void setupSchema() {
@@ -175,7 +174,7 @@ public class LabelCacheImplTest {
 
     @Test
     public void testCustomBehaviour() throws TransformException, FactoryException {
-        final List<String> labels = new ArrayList<String>();
+        final List<String> labels = new ArrayList<>();
         Graphics2D graphics = Mockito.mock(Graphics2D.class);
         LabelCacheImpl myCache =
                 new LabelCacheImpl() {
@@ -216,7 +215,7 @@ public class LabelCacheImplTest {
     public void testRendererListener() throws Exception {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
 
-        AtomicReference<Exception> exception = new AtomicReference<Exception>(null);
+        AtomicReference<Exception> exception = new AtomicReference<>(null);
         RenderListener listener =
                 new RenderListener() {
 
@@ -275,7 +274,7 @@ public class LabelCacheImplTest {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
         ts.getOptions().put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
 
-        AtomicReference<Exception> exception = new AtomicReference<Exception>(null);
+        AtomicReference<Exception> exception = new AtomicReference<>(null);
         RenderListener listener =
                 new RenderListener() {
 

@@ -114,7 +114,7 @@ public class FilterOpsComplexTypes {
      *       <p>
      */
     protected static void encodeFilter(
-            org.opengis.filter.Filter filter, PrintHandler output, Map hints)
+            org.opengis.filter.Filter filter, PrintHandler output, Map<String, Object> hints)
             throws OperationNotSupportedException, IOException {
         if (filter instanceof BinaryLogicOperator) {
             FilterType.elems[LOGIC_TYPE]
@@ -157,7 +157,8 @@ public class FilterOpsComplexTypes {
         }
     }
 
-    protected static void encodeExpr(Expression expr, PrintHandler output, Map hints)
+    protected static void encodeExpr(
+            Expression expr, PrintHandler output, Map<String, Object> hints)
             throws OperationNotSupportedException, IOException {
         int i = 0;
 
@@ -286,7 +287,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
 
@@ -337,7 +339,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -359,7 +361,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -535,7 +538,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             return null; // child (BBox, BinarySpatialOpType, etc ... ) will handle this
             //        	FilterFactory factory = FilterSchema.filterFactory( hints );
@@ -569,7 +573,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -587,7 +591,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -714,7 +719,11 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints) {
+        public Object getValue(
+                Element element,
+                ElementValue[] value,
+                Attributes attrs,
+                Map<String, Object> hints) {
             return null; // subclass will do the right thing (tm)
         }
 
@@ -732,7 +741,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -751,7 +760,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -834,15 +844,18 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints) {
+        public Object getValue(
+                Element element,
+                ElementValue[] value,
+                Attributes attrs,
+                Map<String, Object> hints) {
             if (value.length == 1) return value[0].getValue();
             if (value.length == 0) return Filter.EXCLUDE;
             try {
                 FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
                 // LogicFilter filter=fac.createLogicFilter(FilterType.LOGIC_OR);
-                List<org.opengis.filter.Filter> filters =
-                        new ArrayList<org.opengis.filter.Filter>();
-                Set ids = new HashSet();
+                List<org.opengis.filter.Filter> filters = new ArrayList<>();
+                Set<Identifier> ids = new HashSet<>();
                 boolean isOnlyFids = true;
                 for (int i = 0; i < value.length; i++) {
                     org.opengis.filter.Filter value2 =
@@ -885,7 +898,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -910,7 +923,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -953,7 +967,8 @@ public class FilterOpsComplexTypes {
             }
         }
 
-        private FilterEncodingPreProcessor getFilterEncodingPreProcessor(Map hints) {
+        private FilterEncodingPreProcessor getFilterEncodingPreProcessor(
+                Map<String, Object> hints) {
             if (hints != null && hints.containsKey(XMLHandlerHints.FILTER_COMPLIANCE_STRICTNESS))
                 return new FilterEncodingPreProcessor(
                         (Integer) hints.get(XMLHandlerHints.FILTER_COMPLIANCE_STRICTNESS));
@@ -997,7 +1012,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
             if ((element == null) || (value == null) || (element.getType() == null)) {
                 throw new SAXException("Invalid parameters : null found");
@@ -1021,7 +1037,7 @@ public class FilterOpsComplexTypes {
                                 FeatureIdType.attrs[0].getName());
             }
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-            Set<FeatureId> fids = new HashSet<FeatureId>();
+            Set<FeatureId> fids = new HashSet<>();
             fids.add(ff.featureId(fid));
 
             return ff.id(fids);
@@ -1043,7 +1059,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return (element.getType() != null)
                     && getName().equals(element.getType().getName())
                     && value instanceof Id;
@@ -1053,13 +1069,15 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException {
             if (!canEncode(element, value, hints)) {
                 return;
             }
 
             Id ff = (Id) value;
+            @SuppressWarnings("unchecked")
             Set<String> fids = (Set) ff.getIDs();
 
             AttributesImpl att = new AttributesImpl();
@@ -1132,7 +1150,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, OperationNotSupportedException {
 
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
@@ -1186,7 +1205,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -1208,7 +1227,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -1283,7 +1303,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
             //    			<xsd:extension base="ogc:ComparisonOpsType">
@@ -1326,7 +1347,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -1344,7 +1365,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -1416,7 +1438,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
             try {
@@ -1444,7 +1467,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -1463,7 +1486,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -1523,7 +1547,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
             try {
@@ -1554,7 +1579,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -1573,7 +1598,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -1623,7 +1649,11 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints) {
+        public Object getValue(
+                Element element,
+                ElementValue[] value,
+                Attributes attrs,
+                Map<String, Object> hints) {
             return (Expression) value[0].getValue();
         }
 
@@ -1637,7 +1667,7 @@ public class FilterOpsComplexTypes {
             return Expression.class;
         }
 
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -1655,7 +1685,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -1701,7 +1732,11 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints) {
+        public Object getValue(
+                Element element,
+                ElementValue[] value,
+                Attributes attrs,
+                Map<String, Object> hints) {
             return (Expression) value[0].getValue();
         }
 
@@ -1715,7 +1750,7 @@ public class FilterOpsComplexTypes {
             return Expression.class;
         }
 
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -1733,7 +1768,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -1797,7 +1833,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
 
@@ -1853,7 +1890,7 @@ public class FilterOpsComplexTypes {
             return BinarySpatialOperator.class;
         }
 
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
                 FilterCapabilities elementkey = FilterCapabilities.findOperation(element.getName());
@@ -1872,7 +1909,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -1993,7 +2031,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
             if (value == null || value.length != 2) {
@@ -2040,7 +2079,7 @@ public class FilterOpsComplexTypes {
             // Filte
         }
 
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -2059,7 +2098,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -2137,7 +2177,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
@@ -2164,7 +2205,7 @@ public class FilterOpsComplexTypes {
             return DistanceBufferOperator.class;
         }
 
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -2186,7 +2227,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -2267,7 +2309,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
@@ -2294,7 +2337,7 @@ public class FilterOpsComplexTypes {
             return DistanceBufferOperator.class;
         }
 
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -2316,7 +2359,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -2399,7 +2443,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
@@ -2413,9 +2458,8 @@ public class FilterOpsComplexTypes {
                 throw new SAXException("Expected AND or OR logic filter");
             }
             try {
-                ArrayList<org.opengis.filter.Filter> children =
-                        new ArrayList<org.opengis.filter.Filter>(value.length);
-                Set<Identifier> ids = new HashSet<Identifier>(value.length);
+                ArrayList<org.opengis.filter.Filter> children = new ArrayList<>(value.length);
+                Set<Identifier> ids = new HashSet<>(value.length);
                 boolean fidOnly = true;
 
                 // LogicFilter filter = factory.createLogicFilter( type );
@@ -2459,7 +2503,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -2478,7 +2522,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;
@@ -2541,7 +2586,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
             String name = element.getName();
@@ -2579,7 +2625,7 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
@@ -2598,7 +2644,8 @@ public class FilterOpsComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 return;

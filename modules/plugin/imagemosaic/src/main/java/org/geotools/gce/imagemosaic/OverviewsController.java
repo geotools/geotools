@@ -31,7 +31,7 @@ import org.geotools.util.Utilities;
  */
 final class OverviewsController {
 
-    final ArrayList<OverviewLevel> resolutionsLevels = new ArrayList<OverviewLevel>();
+    final ArrayList<OverviewLevel> resolutionsLevels = new ArrayList<>();
 
     private int numberOfOverviews;
 

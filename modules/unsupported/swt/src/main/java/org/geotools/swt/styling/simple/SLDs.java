@@ -208,7 +208,7 @@ public class SLDs extends SLD {
      * @return an array of unique colour names
      */
     public static String[] colors(Rule rule) {
-        Set<String> colorSet = new HashSet<String>();
+        Set<String> colorSet = new HashSet<>();
 
         Color color = null;
         for (Symbolizer sym : rule.symbolizers()) {

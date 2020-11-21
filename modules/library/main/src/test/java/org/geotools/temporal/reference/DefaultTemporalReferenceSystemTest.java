@@ -125,7 +125,7 @@ public class DefaultTemporalReferenceSystemTest {
         Calendar cal = Calendar.getInstance();
         cal.set(0, 0, 0);
         TemporalExtentImpl temporalExt = new TemporalExtentImpl(cal.getTime(), new Date());
-        Collection<TemporalExtent> collection = new ArrayList<TemporalExtent>();
+        Collection<TemporalExtent> collection = new ArrayList<>();
         collection.add(temporalExt);
         domainOfValidity.setTemporalElements(collection);
         ((DefaultTemporalReferenceSystem) temporalReferenceSystem1)

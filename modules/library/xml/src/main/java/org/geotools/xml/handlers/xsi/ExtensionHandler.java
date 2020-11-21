@@ -37,7 +37,7 @@ public class ExtensionHandler extends XSIElementHandler {
     //    private AnyAttributeHandler anyAttribute;
     // TODO USE the anyAttribute !
     private Object child;
-    private List attributeDec;
+    private List<XSIElementHandler> attributeDec;
 
     /** @see java.lang.Object#hashCode() */
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
@@ -72,7 +72,7 @@ public class ExtensionHandler extends XSIElementHandler {
             }
             if (AttributeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (attributeDec == null) {
-                    attributeDec = new LinkedList();
+                    attributeDec = new LinkedList<>();
                 }
 
                 AttributeHandler ah = new AttributeHandler();
@@ -84,7 +84,7 @@ public class ExtensionHandler extends XSIElementHandler {
             // attributeGroup
             if (AttributeGroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (attributeDec == null) {
-                    attributeDec = new LinkedList();
+                    attributeDec = new LinkedList<>();
                 }
 
                 AttributeGroupHandler ah = new AttributeGroupHandler();

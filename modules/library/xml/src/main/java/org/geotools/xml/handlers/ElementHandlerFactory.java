@@ -45,8 +45,8 @@ public class ElementHandlerFactory {
     public static final String KEY = "org.geotools.xml.handlers.ElementHandlerFactory_KEY";
 
     private Logger logger;
-    private Map targSchemas = new HashMap(); // maps prefix -->> Schema
-    private Map prefixURIs = new HashMap(); // maps prefix -->> URI
+    private Map<URI, Schema> targSchemas = new HashMap<>(); // maps URI -->> Schema
+    private Map<String, URI> prefixURIs = new HashMap<>(); // maps prefix -->> URI
     protected URI defaultNS = null;
 
     /**

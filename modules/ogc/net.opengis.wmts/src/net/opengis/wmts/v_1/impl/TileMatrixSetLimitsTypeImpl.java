@@ -70,7 +70,7 @@ public class TileMatrixSetLimitsTypeImpl extends MinimalEObjectImpl.Container im
      */
     public EList<TileMatrixLimitsType> getTileMatrixLimits() {
         if (tileMatrixLimits == null) {
-            tileMatrixLimits = new EObjectContainmentEList<TileMatrixLimitsType>(TileMatrixLimitsType.class, this, wmtsv_1Package.TILE_MATRIX_SET_LIMITS_TYPE__TILE_MATRIX_LIMITS);
+            tileMatrixLimits = new EObjectContainmentEList<>(TileMatrixLimitsType.class, this, wmtsv_1Package.TILE_MATRIX_SET_LIMITS_TYPE__TILE_MATRIX_LIMITS);
         }
         return tileMatrixLimits;
     }

@@ -40,7 +40,7 @@ public class FeatureCollectionTableModel extends AbstractTableModel {
 
     private SimpleFeatureType schema;
 
-    List<Object[]> cache = new ArrayList<Object[]>();
+    List<Object[]> cache = new ArrayList<>();
 
     public IOException exception;
 
@@ -62,7 +62,7 @@ public class FeatureCollectionTableModel extends AbstractTableModel {
 
         /** {@code SwingWorker} method to visit each feature and retrieve its attributes */
         public List<Object[]> doInBackground() {
-            List<Object[]> list = new ArrayList<Object[]>();
+            List<Object[]> list = new ArrayList<>();
 
             final NullProgressListener listener = new NullProgressListener();
             try {
@@ -71,8 +71,7 @@ public class FeatureCollectionTableModel extends AbstractTableModel {
                             public void visit(Feature feature) {
                                 SimpleFeature simple = (SimpleFeature) feature;
                                 Object[] values = simple.getAttributes().toArray();
-                                ArrayList<Object> row =
-                                        new ArrayList<Object>(Arrays.asList(values));
+                                ArrayList<Object> row = new ArrayList<>(Arrays.asList(values));
                                 row.add(0, simple.getID());
                                 publish(row.toArray());
 

@@ -40,7 +40,7 @@ public abstract class ParameterCQLExpressionPropertyName implements PropertyName
     @Override
     public <T> T evaluate(Object object, Class<T> context) {
         ParameterMappingContext contextObj = (ParameterMappingContext) object;
-        return (T) get(contextObj);
+        return context.cast(get(contextObj));
     }
 
     @Override

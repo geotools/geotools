@@ -370,7 +370,7 @@ public final class ExpressionDOMParser {
                 return null;
             }
 
-            ArrayList<Expression> args = new ArrayList<Expression>();
+            ArrayList<Expression> args = new ArrayList<>();
             Node value = child.getFirstChild();
 
             ARGS:
@@ -452,7 +452,7 @@ public final class ExpressionDOMParser {
     private Geometry _gml(Node root) {
         LOGGER.finer("processing gml " + root);
 
-        List coordList;
+        List<Coordinate> coordList;
         Node child = root;
 
         // Jesus I hate DOM.  I have no idea why this was checking for localname
@@ -521,7 +521,7 @@ public final class ExpressionDOMParser {
             LOGGER.finer("polygon");
 
             LinearRing outer = null;
-            List inner = new ArrayList();
+            List<LinearRing> inner = new ArrayList<>();
             NodeList kids = root.getChildNodes();
 
             for (int i = 0; i < kids.getLength(); i++) {
@@ -605,7 +605,7 @@ public final class ExpressionDOMParser {
                 || childName.toLowerCase().startsWith("gml:multilinestring")
                 || childName.toLowerCase().startsWith("gml:multipoint")) {
 
-            List multi = new ArrayList();
+            List<Geometry> multi = new ArrayList<>();
 
             // parse all children thru parseGML
             NodeList kids = child.getChildNodes();
@@ -637,10 +637,10 @@ public final class ExpressionDOMParser {
      * @param root the root node representation of gml:coordinates.
      * @return the coordinates in a list.
      */
-    public java.util.List coords(Node root) {
+    public List<Coordinate> coords(Node root) {
         LOGGER.finer("parsing coordinate(s) " + root);
 
-        List clist = new ArrayList();
+        List<Coordinate> clist = new ArrayList<>();
         NodeList kids = root.getChildNodes();
 
         for (int i = 0; i < kids.getLength(); i++) {

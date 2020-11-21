@@ -19,6 +19,7 @@ package org.geotools.validation.relate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -63,18 +64,21 @@ import org.opengis.filter.spatial.Disjoint;
 public class OverlapsIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(OverlapsIntegrity.class);
-    private HashSet usedIDs;
+    private Set<String> usedIDs;
 
     /** OverlapsIntegrity Constructor */
     public OverlapsIntegrity() {
         super();
-        usedIDs = new HashSet(); // TODO: remove me later, memory inefficient
+        usedIDs = new HashSet<>(); // TODO: remove me later, memory inefficient
     }
 
     /* (non-Javadoc)
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map, org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, ReferencedEnvelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers,
+            ReferencedEnvelope envelope,
+            ValidationResults results)
             throws Exception {
         LOGGER.finer("Starting test " + getName() + " (" + getClass().getName() + ")");
         String typeRef1 = getGeomTypeRefA();

@@ -126,7 +126,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      */
     public EList<VectorType> getOffsetVector() {
         if (offsetVector == null) {
-            offsetVector = new EObjectContainmentEList<VectorType>(VectorType.class, this, Gml311Package.RECTIFIED_GRID_TYPE__OFFSET_VECTOR);
+            offsetVector = new EObjectContainmentEList<>(VectorType.class, this, Gml311Package.RECTIFIED_GRID_TYPE__OFFSET_VECTOR);
         }
         return offsetVector;
     }

@@ -37,6 +37,7 @@ import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.XSD;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
@@ -111,6 +112,7 @@ public class GML3FeatureCollectionEncoderDelegate
 
         String findGMLPrefix(Encoder encoder) {
             NamespaceSupport ns = encoder.getNamespaces();
+            @SuppressWarnings("unchecked")
             Enumeration<String> p = ns.getPrefixes();
             while (p.hasMoreElements()) {
                 String prefix = p.nextElement();
@@ -237,7 +239,7 @@ public class GML3FeatureCollectionEncoderDelegate
 
         @Override
         public void registerGeometryEncoders(
-                Map<Class, GeometryEncoder> encoders, Encoder encoder) {
+                Map<Class, GeometryEncoder<? extends Geometry>> encoders, Encoder encoder) {
             encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix, gmlUri, false));
             encoders.put(
                     MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix, gmlUri, false));

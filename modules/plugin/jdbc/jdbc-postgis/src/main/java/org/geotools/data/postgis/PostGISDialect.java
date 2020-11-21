@@ -303,8 +303,8 @@ public class PostGISDialect extends BasicSQLDialect {
         return true;
     }
 
-    ThreadLocal<WKBAttributeIO> wkbReader = new ThreadLocal<WKBAttributeIO>();
-    ThreadLocal<TWKBAttributeIO> twkbReader = new ThreadLocal<TWKBAttributeIO>();
+    ThreadLocal<WKBAttributeIO> wkbReader = new ThreadLocal<>();
+    ThreadLocal<TWKBAttributeIO> twkbReader = new ThreadLocal<>();
 
     @Override
     public Geometry decodeGeometryValue(
@@ -445,7 +445,7 @@ public class PostGISDialect extends BasicSQLDialect {
         Statement st = null;
         ResultSet rs = null;
 
-        List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+        List<ReferencedEnvelope> result = new ArrayList<>();
         Savepoint savePoint = null;
         try {
             st = cx.createStatement();

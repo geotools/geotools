@@ -74,7 +74,7 @@ public class PreGeneralizedDataStore implements DataStore {
     public PreGeneralizedDataStore(
             GeneralizationInfos infos, Repository repository, URI namespace) {
         this.namespace = namespace;
-        featureSources = new HashMap<String, PreGeneralizedFeatureSource>();
+        featureSources = new HashMap<>();
         for (GeneralizationInfo gi : infos.getGeneralizationInfoCollection()) {
             featureSources.put(
                     gi.getFeatureName(), new PreGeneralizedFeatureSource(gi, repository, this));
@@ -156,7 +156,7 @@ public class PreGeneralizedDataStore implements DataStore {
     }
 
     public List<Name> getNames() throws IOException {
-        List<Name> nameList = new ArrayList<Name>();
+        List<Name> nameList = new ArrayList<>();
         for (PreGeneralizedFeatureSource fs : featureSources.values()) {
             nameList.add(fs.getName());
         }

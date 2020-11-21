@@ -192,7 +192,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      */
     private Collection<Property> buildCollectionIfNull(Collection<Property> value) {
         if (value == null) {
-            return new ArrayList<Property>();
+            return new ArrayList<>();
         } else {
             return value;
         }

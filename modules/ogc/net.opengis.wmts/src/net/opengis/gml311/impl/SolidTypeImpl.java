@@ -125,7 +125,7 @@ public class SolidTypeImpl extends AbstractSolidTypeImpl implements SolidType {
      */
     public EList<SurfacePropertyType> getInterior() {
         if (interior == null) {
-            interior = new EObjectContainmentEList<SurfacePropertyType>(SurfacePropertyType.class, this, Gml311Package.SOLID_TYPE__INTERIOR);
+            interior = new EObjectContainmentEList<>(SurfacePropertyType.class, this, Gml311Package.SOLID_TYPE__INTERIOR);
         }
         return interior;
     }

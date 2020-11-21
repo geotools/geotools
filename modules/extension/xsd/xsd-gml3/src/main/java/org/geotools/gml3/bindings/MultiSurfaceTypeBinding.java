@@ -94,7 +94,7 @@ public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:surfaceMember"/&gt;
-        List surfaces = node.getChildValues(Polygon.class);
+        List<Polygon> surfaces = node.getChildValues(Polygon.class);
 
         // &lt;element minOccurs="0" ref="gml:surfaceMembers"/&gt;
         if (node.hasChild(Polygon[].class)) {

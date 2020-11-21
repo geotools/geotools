@@ -95,7 +95,7 @@ public class EdgeTypeImpl extends AbstractTopoPrimitiveTypeImpl implements EdgeT
      */
     public EList<DirectedNodePropertyType> getDirectedNode() {
         if (directedNode == null) {
-            directedNode = new EObjectContainmentEList<DirectedNodePropertyType>(DirectedNodePropertyType.class, this, Gml311Package.EDGE_TYPE__DIRECTED_NODE);
+            directedNode = new EObjectContainmentEList<>(DirectedNodePropertyType.class, this, Gml311Package.EDGE_TYPE__DIRECTED_NODE);
         }
         return directedNode;
     }
@@ -107,7 +107,7 @@ public class EdgeTypeImpl extends AbstractTopoPrimitiveTypeImpl implements EdgeT
      */
     public EList<DirectedFacePropertyType> getDirectedFace() {
         if (directedFace == null) {
-            directedFace = new EObjectContainmentEList<DirectedFacePropertyType>(DirectedFacePropertyType.class, this, Gml311Package.EDGE_TYPE__DIRECTED_FACE);
+            directedFace = new EObjectContainmentEList<>(DirectedFacePropertyType.class, this, Gml311Package.EDGE_TYPE__DIRECTED_FACE);
         }
         return directedFace;
     }

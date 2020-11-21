@@ -37,16 +37,15 @@ public class FeatureImplUtils {
      *
      * <p>A list will result in an umodifiable list, a set in an unmodifiable set, etc..
      */
-    public static Collection unmodifiable(Collection original) {
-
+    public static <T> Collection<T> unmodifiable(Collection<T> original) {
         if (original instanceof Set) {
             if (original instanceof SortedSet) {
-                return Collections.unmodifiableSortedSet((SortedSet) original);
+                return Collections.unmodifiableSortedSet((SortedSet<T>) original);
             }
 
-            return Collections.unmodifiableSet((Set) original);
+            return Collections.unmodifiableSet((Set<T>) original);
         } else if (original instanceof List) {
-            return Collections.unmodifiableList((List) original);
+            return Collections.unmodifiableList((List<T>) original);
         }
 
         return Collections.unmodifiableCollection(original);

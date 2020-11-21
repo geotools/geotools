@@ -72,8 +72,8 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
      * @return feature source
      */
     @SuppressWarnings("unchecked")
-    public static FeatureSource<FeatureType, Feature> getSimpleFeatureSource(Name featureTypeName)
-            throws IOException {
+    public static FeatureSource<? extends FeatureType, ? extends Feature> getSimpleFeatureSource(
+            Name featureTypeName) throws IOException {
         return getMappingByElement(featureTypeName).getSource();
     }
 

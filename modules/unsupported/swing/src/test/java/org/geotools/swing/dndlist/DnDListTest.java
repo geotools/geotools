@@ -47,7 +47,7 @@ public class DnDListTest {
     public void testDnDList() {
         if (isHeadless()) return;
 
-        DnDList<String> list = new DnDList<String>();
+        DnDList<String> list = new DnDList<>();
         assertNotNull(list);
     }
 
@@ -55,15 +55,15 @@ public class DnDListTest {
     public void testDnDListDnDListModelOfT() {
         if (isHeadless()) return;
 
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
-        DnDList<String> list = new DnDList<String>(model);
+        DnDList<String> list = new DnDList<>(model);
         assertSame(model, list.getModel());
 
         try {
-            list = new DnDList<String>(null);
+            list = new DnDList<>(null);
             fail("Expected illegal argument exception");
         } catch (IllegalArgumentException expected) {
         }
@@ -73,11 +73,11 @@ public class DnDListTest {
     public void testGetModel() {
         if (isHeadless()) return;
 
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
-        DnDList<String> list = new DnDList<String>(model);
+        DnDList<String> list = new DnDList<>(model);
         assertSame(model, list.getModel());
     }
 }

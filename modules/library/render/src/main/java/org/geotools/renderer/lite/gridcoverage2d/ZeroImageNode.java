@@ -62,10 +62,10 @@ public class ZeroImageNode extends BaseCoverageProcessingNode {
                         hints);
 
         final GridCoverageFactory factory = getCoverageFactory();
-        Map properties = null;
+        Map<String, Object> properties = null;
         final NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(sourceCoverage);
         if (noDataProperty != null) {
-            properties = new HashMap();
+            properties = new HashMap<>();
             properties.put(NoDataContainer.GC_NODATA, new NoDataContainer(255));
         }
         return factory.create(

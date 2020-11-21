@@ -232,6 +232,7 @@ public class IndexerUtils {
      * Return the parameter value (as a boolean) of the specified parameter name from the provider
      * indexer
      */
+    @SuppressWarnings("unchecked")
     public static <T extends Enum> T getParameterAsEnum(
             String parameterName, Class<T> enumClass, Indexer indexer) {
         String value = getParameter(parameterName, indexer);

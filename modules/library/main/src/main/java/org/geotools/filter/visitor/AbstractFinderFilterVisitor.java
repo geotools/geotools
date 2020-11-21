@@ -221,7 +221,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
                         return null;
                     }
 
-                    public Object evaluate(Object object, Class context) {
+                    public <T> T evaluate(Object object, Class<T> context) {
                         return null;
                     }
 

@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.PrimitiveIterator;
 import java.util.Random;
 import java.util.logging.Level;
@@ -82,7 +83,7 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
         for (int i = 0; i < featureNumber; i++) {
 
-            ArrayList<Coordinate> points = new ArrayList();
+            List<Coordinate> points = new ArrayList<>();
             for (int j = 0; j < 5; j++) {
                 points.add(new Coordinate(rand.next(), rand.next()));
             }

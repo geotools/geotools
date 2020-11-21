@@ -83,7 +83,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
         Toolkit tk = Toolkit.getDefaultToolkit();
         ImageIcon cursorIcon = new ImageIcon(getClass().getResource(CURSOR_IMAGE));
         cursor = tk.createCustomCursor(cursorIcon.getImage(), CURSOR_HOTSPOT, TOOL_TIP);
-        helperTable = new WeakHashMap<Layer, InfoToolHelper>();
+        helperTable = new WeakHashMap<>();
     }
 
     /**

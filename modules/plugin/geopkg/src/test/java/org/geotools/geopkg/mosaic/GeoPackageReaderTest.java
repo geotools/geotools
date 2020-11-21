@@ -69,7 +69,7 @@ public class GeoPackageReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(1000, 500)),
                         new ReferencedEnvelope(-160, 160.0, -80.0, 80, WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         assertNotNull(gc);
 
@@ -104,7 +104,7 @@ public class GeoPackageReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(1000, 500)),
                         new ReferencedEnvelope(-160, 160.0, -80.0, 80, WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(-180, gc.getEnvelope().getMinimum(0), 0.01);
@@ -136,7 +136,7 @@ public class GeoPackageReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(1000, 500)),
                         new ReferencedEnvelope(0, 160, 0, 80, WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
@@ -158,7 +158,7 @@ public class GeoPackageReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(1000, 500)),
                         new ReferencedEnvelope(0, 80, 0, 40, WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
@@ -180,7 +180,7 @@ public class GeoPackageReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(1000, 500)),
                         new ReferencedEnvelope(0, 40, 0, 20, WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
@@ -202,7 +202,7 @@ public class GeoPackageReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(1000, 500)),
                         new ReferencedEnvelope(0, 20, 0, 10, WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
@@ -257,7 +257,7 @@ public class GeoPackageReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(128, 128)),
                         new ReferencedEnvelope(-180, 180, -90, 90, WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
 
         // should be the same as reading the native resolution, since that one is the only available

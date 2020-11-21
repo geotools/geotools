@@ -81,7 +81,7 @@ public class ScreenMapShapefileTest {
         shpFile.getParentFile().mkdirs();
 
         ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, shpFile.toURI().toURL());
         shapeFileDataStore = dataStoreFactory.createNewDataStore(params);
         shapeFileDataStore.createSchema(feature.getFeatureType());
@@ -162,7 +162,7 @@ public class ScreenMapShapefileTest {
             int height,
             Rectangle2D mapArea,
             Style style,
-            Map renderingHints) {
+            Map<Object, Object> renderingHints) {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) image.getGraphics();
         g.setColor(Color.WHITE);
@@ -204,7 +204,7 @@ public class ScreenMapShapefileTest {
     public void testOffsetLabel() throws IOException {
         SimpleFeatureSource fs = shapeFileDataStore.getFeatureSource(featureType.getTypeName());
         Style style = createLabelOffsetStyle();
-        Map renderingHints = new HashMap<>();
+        Map<Object, Object> renderingHints = new HashMap<>();
         BufferedImage image =
                 renderImage(
                         fs, 200, 200, new Rectangle2D.Double(15, 0, 25, 10), style, renderingHints);

@@ -791,7 +791,7 @@ public abstract class AbstractAuthorityFactory extends ReferencingFactory
 
     /**
      * Creates an operation from coordinate reference system codes. The default implementation
-     * returns an {@linkplain Collections#EMPTY_SET empty set}. We do not delegate to some kind of
+     * returns an {@linkplain Collections.emptySet() empty set}. We do not delegate to some kind of
      * {@linkplain CoordinateOperationFactory#createOperation(CoordinateReferenceSystem,
      * CoordinateReferenceSystem) coordinate operation factory method} because the usual contract
      * for this method is to extract the information from an authority database like <A

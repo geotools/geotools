@@ -19,6 +19,7 @@ package org.geotools.xs.bindings;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -38,15 +39,15 @@ public class XSDateTimeStrategyTest extends TestSchema {
         return null;
     }
 
-    public <E extends java.util.Date> void testParseEncode(
+    public void testParseEncode(
             final QName qname,
             final String toParse,
-            final E toEncode,
+            final Date toEncode,
             final String expectedEncoding)
             throws Exception {
 
         SimpleBinding strategy = (SimpleBinding) stratagy(qname);
-        E parsed = (E) strategy.parse(element(toParse, qname), toParse);
+        Date parsed = (Date) strategy.parse(element(toParse, qname), toParse);
         assertTrue(toEncode.getClass().equals(parsed.getClass()));
 
         assertEquals(parsed.getClass().getName(), toEncode, parsed);

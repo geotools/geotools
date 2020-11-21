@@ -79,7 +79,7 @@ public class NetCDFSource extends DefaultCoverageSource {
 
     public Set<ParameterDescriptor<List>> getDynamicParameters() throws IOException {
         if (dynamicParameters == null) {
-            dynamicParameters = new HashSet<ParameterDescriptor<List>>();
+            dynamicParameters = new HashSet<>();
             List<AdditionalDomain> domains = getAdditionalDomains();
             if (domains != null && !domains.isEmpty()) {
                 for (AdditionalDomain domain : domains) {

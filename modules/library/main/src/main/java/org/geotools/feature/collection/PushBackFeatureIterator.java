@@ -22,18 +22,18 @@ import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
 
 /** A feature iterator allowing to push back one feature */
-public class PushBackFeatureIterator extends DecoratingFeatureIterator<Feature> {
+public class PushBackFeatureIterator<F extends Feature> extends DecoratingFeatureIterator<F> {
 
-    Feature last;
+    F last;
 
-    Feature current;
+    F current;
 
     /**
      * Wrap the provided FeatureIterator.
      *
      * @param iterator Iterator to be used as a delegate.
      */
-    public PushBackFeatureIterator(FeatureIterator<Feature> iterator) {
+    public PushBackFeatureIterator(FeatureIterator<F> iterator) {
         super(iterator);
     }
 
@@ -41,7 +41,7 @@ public class PushBackFeatureIterator extends DecoratingFeatureIterator<Feature> 
         return current != null || delegate.hasNext();
     }
 
-    public Feature next() throws NoSuchElementException {
+    public F next() throws NoSuchElementException {
         if (current != null) {
             last = current;
             current = null;

@@ -17,22 +17,23 @@
 package org.geotools.graph.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public class IndexedStack extends java.util.Stack {
-    private HashMap m_index; // object to index in stack
+public class IndexedStack<E> extends java.util.Stack<E> {
+    private Map<E, Integer> m_index; // object to index in stack
 
     public IndexedStack() {
         super();
-        m_index = new HashMap();
+        m_index = new HashMap<>();
     }
 
-    public Object push(Object item) {
+    public E push(E item) {
         m_index.put(item, Integer.valueOf(size()));
         return super.push(item);
     }
 
-    public Object pop() {
-        Object value = super.pop();
+    public E pop() {
+        E value = super.pop();
         m_index.remove(value);
         return (value);
     }

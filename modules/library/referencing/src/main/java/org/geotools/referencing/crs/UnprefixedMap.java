@@ -47,8 +47,8 @@ final class UnprefixedMap extends DerivedMap<String, String, Object> {
      * @param base The base map.
      * @param prefix The prefix to remove from the keys in the base map.
      */
-    public UnprefixedMap(final Map<String, ?> base, final String prefix) {
-        super((Map) base, String.class);
+    public UnprefixedMap(final Map<String, Object> base, final String prefix) {
+        super(base, String.class);
         this.prefix = prefix.trim();
         final String nameKey = this.prefix + IdentifiedObject.NAME_KEY;
         final String aliasKey = this.prefix + IdentifiedObject.ALIAS_KEY;

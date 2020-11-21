@@ -100,7 +100,7 @@ public class StyleGeneratorTest extends DataTestCase {
 
         // create the classification function
         ClassificationFunction function = new EqualIntervalFunction();
-        List params = new ArrayList();
+        List<Expression> params = new ArrayList<>();
         params.add(0, expr2); // expression
         params.add(1, ff.literal(2)); // classes
         function.setParameters(params);
@@ -152,8 +152,9 @@ public class StyleGeneratorTest extends DataTestCase {
         String paletteName = "YlGn"; // type = Sequential
 
         // TEST classifier with everything in a single bin
+        @SuppressWarnings("unchecked")
         final Set<String>[] binValues2 = new Set[1];
-        binValues2[0] = new HashSet<String>();
+        binValues2[0] = new HashSet<>();
         // assign each of the features to one of the bins
         try {
             fc.accepts(

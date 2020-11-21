@@ -18,6 +18,7 @@ package org.geotools.graph.structure.basic;
 
 import java.util.Iterator;
 import junit.framework.TestCase;
+import org.geotools.graph.structure.Graphable;
 
 public class BasicGraphableTest extends TestCase {
 
@@ -32,7 +33,7 @@ public class BasicGraphableTest extends TestCase {
 
         m_graphable =
                 new BasicGraphable() {
-                    public Iterator getRelated() {
+                    public Iterator<? extends Graphable> getRelated() {
                         return null;
                     }
                 };

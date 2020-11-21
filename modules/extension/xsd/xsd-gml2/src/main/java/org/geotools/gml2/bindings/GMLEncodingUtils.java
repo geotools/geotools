@@ -84,8 +84,8 @@ public class GMLEncodingUtils {
         this.gml = gml;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public List AbstractFeatureType_getProperties(
+    @SuppressWarnings("unchecked")
+    public List<Object[]> AbstractFeatureType_getProperties(
             Object object,
             XSDElementDeclaration element,
             SchemaIndex schemaIndex,
@@ -97,7 +97,7 @@ public class GMLEncodingUtils {
         // check if this was a resolved feature, if so dont return anything
         // TODO: this is just a hack for our lame xlink implementation
         if (feature.getUserData().get("xlink:id") != null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         FeatureType featureType = feature.getType();
@@ -210,7 +210,7 @@ public class GMLEncodingUtils {
                 Object attributeValue = ((SimpleFeature) feature).getAttribute(attribute.getName());
                 if (attributeValue != null && attributeValue instanceof Geometry) {
                     Object obj = ((Geometry) attributeValue).getUserData();
-                    Map<Object, Object> userData = new HashMap<Object, Object>();
+                    Map<Object, Object> userData = new HashMap<>();
                     if (obj != null && obj instanceof Map) {
                         userData.putAll((Map) obj);
                     }
@@ -297,7 +297,7 @@ public class GMLEncodingUtils {
                                     ((GeometryAttribute) property)
                                             .getDescriptor()
                                             .getCoordinateReferenceSystem();
-                            Map<Object, Object> userData = new HashMap<Object, Object>();
+                            Map<Object, Object> userData = new HashMap<>();
                             Object obj = geometry.getUserData();
                             if (obj != null && obj instanceof Map) {
                                 userData.putAll((Map) obj);
@@ -510,6 +510,7 @@ public class GMLEncodingUtils {
         }
 
         if (geometry.getUserData() instanceof Map) {
+            @SuppressWarnings("unchecked")
             Map<Name, Object> clientProperties =
                     (Map<Name, Object>) ((Map) geometry.getUserData()).get(Attributes.class);
 
@@ -538,7 +539,7 @@ public class GMLEncodingUtils {
         }
     }
 
-    public List GeometryPropertyType_getProperties(Geometry geometry) {
+    public List<Object[]> GeometryPropertyType_getProperties(Geometry geometry) {
         return null;
     }
 
@@ -660,12 +661,12 @@ public class GMLEncodingUtils {
     /** Splits a joined feature into its components */
     public static SimpleFeature[] splitJoinedFeature(Object obj) {
         SimpleFeature feature = (SimpleFeature) obj;
-        List features = new ArrayList();
+        List<SimpleFeature> features = new ArrayList<>();
         features.add(feature);
         for (int i = 0; i < feature.getAttributeCount(); i++) {
             Object att = feature.getAttribute(i);
             if (att != null && att instanceof SimpleFeature) {
-                features.add(att);
+                features.add((SimpleFeature) att);
 
                 // TODO: come up with a better approcach user, use user data or something to mark
                 // the attribute as encoded

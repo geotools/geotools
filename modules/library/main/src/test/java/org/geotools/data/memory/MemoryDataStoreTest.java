@@ -1252,7 +1252,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         store1.setTransaction(defaultTransaction);
         class Listener implements FeatureListener {
             String name;
-            List<FeatureEvent> events = new ArrayList<FeatureEvent>();
+            List<FeatureEvent> events = new ArrayList<>();
 
             public Listener(String name) {
                 this.name = name;

@@ -58,7 +58,7 @@ public class CoverageClassStatsTest {
         Results r =
                 p.execute(
                         createCoverage(),
-                        new LinkedHashSet<Statistic>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                        new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
                         null,
                         4,
                         ClassificationMethod.EQUAL_INTERVAL,
@@ -98,7 +98,7 @@ public class CoverageClassStatsTest {
         Results r =
                 p.execute(
                         createCoverage(),
-                        new LinkedHashSet<Statistic>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                        new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
                         null,
                         4,
                         ClassificationMethod.QUANTILE,
@@ -119,7 +119,7 @@ public class CoverageClassStatsTest {
         Results r =
                 p.execute(
                         createCoverage(),
-                        new LinkedHashSet<Statistic>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                        new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
                         null,
                         4,
                         ClassificationMethod.NATURAL_BREAKS,

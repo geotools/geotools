@@ -57,9 +57,9 @@ import org.opengis.style.SemanticType;
  */
 public class CircleMBLayer extends MBLayer {
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "circle";
+    private static final String TYPE = "circle";
 
     public CircleMBLayer(JSONObject json) {
         super(json, new MBObjectParser(CircleMBLayer.class));

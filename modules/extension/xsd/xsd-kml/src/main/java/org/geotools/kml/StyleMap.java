@@ -31,7 +31,7 @@ import org.geotools.styling.FeatureTypeStyle;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class StyleMap {
-    protected Map map = Collections.synchronizedMap(new HashMap());
+    protected Map<URI, FeatureTypeStyle> map = Collections.synchronizedMap(new HashMap<>());
 
     public void put(URI uri, FeatureTypeStyle style) {
         map.put(uri, style);

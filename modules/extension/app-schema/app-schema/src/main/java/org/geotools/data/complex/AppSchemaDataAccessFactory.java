@@ -19,6 +19,7 @@ package org.geotools.data.complex;
 
 import java.awt.RenderingHints;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -156,7 +157,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         return url;
     }
 
-    public DataStore createNewDataStore(Map params) throws IOException {
+    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         throw new UnsupportedOperationException();
     }
 

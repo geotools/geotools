@@ -19,6 +19,7 @@ package org.geotools.wfs.v1_1;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
+import org.geotools.xsd.XSD;
 import org.geotools.xsd.ows.OWS;
 
 /**
@@ -57,7 +58,7 @@ public final class WFS extends org.geotools.wfs.WFS {
     }
 
     @Override
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
         dependencies.add(OGC.getInstance());
     }

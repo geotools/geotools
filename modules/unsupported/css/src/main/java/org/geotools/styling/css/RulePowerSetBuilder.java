@@ -83,6 +83,7 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         this(classifyRules(domain), simplifier, maxCombinations);
     }
 
+    @SuppressWarnings("unchecked")
     protected RulePowerSetBuilder(
             List[] domainMixins, UnboundSimplifyingFilterVisitor simplifier, int maxCombinations) {
         super(domainMixins[0]);

@@ -135,7 +135,7 @@ public final class ImagingParametersTest {
          * The parameter descriptor for the subsampling.
          */
         final ParameterDescriptor SPATIAL_SUBSAMPLING_X =
-                new DefaultParameterDescriptor(
+                new DefaultParameterDescriptor<>(
                         Citations.OGC,
                         "xPeriod",
                         Double.class, // Value class (mandatory)
@@ -153,8 +153,7 @@ public final class ImagingParametersTest {
                         registry.getDescriptor(RenderedRegistryMode.MODE_NAME, "Extrema");
 
         // Gets the ImagingParameterDescriptors to replace xPeriod
-        final List<ParameterDescriptor> replacingDescriptors =
-                new ArrayList<ParameterDescriptor>(1);
+        final List<ParameterDescriptor> replacingDescriptors = new ArrayList<>(1);
         replacingDescriptors.add(SPATIAL_SUBSAMPLING_X);
         final ImagingParameterDescriptors ripd =
                 new ImagingParameterDescriptors(operation, replacingDescriptors);

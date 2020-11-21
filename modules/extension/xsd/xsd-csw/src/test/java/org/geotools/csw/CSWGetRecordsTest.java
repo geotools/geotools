@@ -43,7 +43,7 @@ public class CSWGetRecordsTest {
 
         // the query
         QueryType query = (QueryType) gr.getQuery();
-        List<QName> expected = new ArrayList<QName>();
+        List<QName> expected = new ArrayList<>();
         String rimNamespace = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
         expected.add(new QName(rimNamespace, "Service"));
         expected.add(new QName(rimNamespace, "Classification"));
@@ -83,7 +83,7 @@ public class CSWGetRecordsTest {
 
         // the query
         QueryType query = (QueryType) gr.getQuery();
-        List<QName> expected = new ArrayList<QName>();
+        List<QName> expected = new ArrayList<>();
         expected.add(new QName("http://www.opengis.net/cat/csw/2.0.2", "Record"));
         assertEquals(expected, query.getTypeNames());
 

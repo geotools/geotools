@@ -145,7 +145,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
         if ("OtherSRS".equals(property)) {
             if (value instanceof Collection) {
                 Collection<URI> formatListAsUris = (Collection<URI>) value;
-                List<String> formatListAsString = new ArrayList<String>();
+                List<String> formatListAsString = new ArrayList<>();
                 for (URI uri : formatListAsUris) {
                     formatListAsString.add(uri.toString());
                 }

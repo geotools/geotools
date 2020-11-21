@@ -215,7 +215,7 @@ public class FontCache {
             synchronized (systemFonts) {
                 if (systemFonts.size() == 0) {
                     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                    Set<String> fontset = new HashSet<String>();
+                    Set<String> fontset = new HashSet<>();
 
                     // register both faces and families
                     Font[] fonts = ge.getAllFonts();
@@ -241,7 +241,7 @@ public class FontCache {
      * loaded into the cache
      */
     public Set<String> getAvailableFonts() {
-        Set<String> availableFonts = new HashSet<String>();
+        Set<String> availableFonts = new HashSet<>();
 
         availableFonts.addAll(getSystemFonts());
         availableFonts.addAll(loadedFonts.keySet());

@@ -18,7 +18,9 @@
 
 package org.geotools.wmts.bindings;
 
+import java.util.List;
 import javax.xml.namespace.QName;
+import net.opengis.wmts.v_1.ThemeType;
 import net.opengis.wmts.v_1.ThemesType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
@@ -80,7 +82,7 @@ public class ThemesBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<?> getType() {
         return ThemesType.class;
     }
 
@@ -93,7 +95,9 @@ public class ThemesBinding extends AbstractComplexEMFBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ThemesType themes = factory.createThemesType();
-        themes.getTheme().addAll(node.getChildValues("Theme"));
+        @SuppressWarnings("unchecked")
+        List<ThemeType> children = node.getChildValues("Theme");
+        themes.getTheme().addAll(children);
         return themes;
     }
 }

@@ -281,7 +281,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
      */
     @Override
     public ParameterValueGroup getParameterValues() {
-        final ParameterValue<URI> file = new Parameter<URI>(Provider.FILE);
+        final ParameterValue<URI> file = new Parameter<>(Provider.FILE);
         file.setValue(grid);
 
         return new ParameterGroup(Provider.PARAMETERS, new ParameterValue[] {file});
@@ -355,7 +355,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
          * parameter value. The default value is "".
          */
         public static final DefaultParameterDescriptor<URI> FILE =
-                new DefaultParameterDescriptor<URI>(
+                new DefaultParameterDescriptor<>(
                         toMap(
                                 new NamedIdentifier[] {
                                     new NamedIdentifier(

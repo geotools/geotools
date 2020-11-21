@@ -162,7 +162,7 @@ class Polygon implements Cloneable {
      */
     protected List<DirectPosition> reduce() {
         // Coordinate[] redCoords = new Coordinate[coordinates.length];
-        ArrayList<DirectPosition> redCoords = new ArrayList<DirectPosition>();
+        ArrayList<DirectPosition> redCoords = new ArrayList<>();
 
         for (int i = 0; i < vertices.length; i++) {
             redCoords.add(

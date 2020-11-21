@@ -20,7 +20,6 @@ import static org.geotools.gce.imagemosaic.GranuleDescriptor.EXCLUDE_MOSAIC;
 
 import it.geosolutions.imageio.core.BasicAuthURI;
 import it.geosolutions.imageio.core.SourceSPIProvider;
-import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageioimpl.plugins.cog.CogImageInputStreamSpi;
 import it.geosolutions.imageioimpl.plugins.cog.CogImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.cog.CogSourceSPIProvider;
@@ -29,7 +28,6 @@ import java.net.URL;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.SpiHelper;
@@ -106,10 +104,9 @@ class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
     @Override
     public MaskOverviewProvider getMaskOverviewsProvider() throws IOException {
         if (ovrProvider == null) {
-            AbstractGridCoverage2DReader reader = getGridCoverageReader();
-            DatasetLayout layout = reader.getDatasetLayout();
-            spiHelper = new SpiHelper((SourceSPIProvider) input);
-            ovrProvider = new MaskOverviewProvider(layout, inputUrl, spiHelper, true);
+            SourceSPIProvider inputProvider = (SourceSPIProvider) input;
+            spiHelper = new SpiHelper(inputProvider);
+            ovrProvider = new MaskOverviewProvider(null, inputProvider.getSourceUrl(), spiHelper);
         }
         if (ovrProvider == null) {
             throw new IOException(

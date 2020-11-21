@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic;
 
 import it.geosolutions.imageio.core.CoreCommonImageMetadata;
 import it.geosolutions.imageio.core.InitializingReader;
+import it.geosolutions.imageio.core.SourceSPIProvider;
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMParser;
@@ -1060,15 +1061,13 @@ public class GranuleDescriptor {
                 granuleURLUpdated = ovrProvider.getOvrURL();
                 assert ovrProvider.getExternalOverviewInputStreamSpi() != null
                         : "no cachedStreamSPI available for external overview!";
-                inStream =
+                SourceSPIProvider sourceSpiProvider =
                         ovrProvider
-                                .getExternalOverviewInputStreamSpi()
-                                .createInputStreamInstance(
-                                        granuleURLUpdated,
-                                        ImageIO.getUseCache(),
-                                        ImageIO.getCacheDirectory());
+                                .getSourceSpiProvider()
+                                .getCompatibleSourceProvider(granuleURLUpdated);
+                inStream = sourceSpiProvider.getStream();
                 // get a reader and try to cache the relevant SPI
-                reader = ovrProvider.getExternalOverviewReaderSpi().createReaderInstance();
+                reader = sourceSpiProvider.getReader();
                 if (reader == null) {
                     if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
                         LOGGER.warning(

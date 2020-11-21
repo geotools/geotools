@@ -191,7 +191,8 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
                 // path management
                 String fileCanonicalPath = null;
-                File inputFile = URLs.urlToFile(result.getGranuleUrl());
+                URL url = result.getGranuleUrl();
+                File inputFile = URLs.urlToFile(url);
                 if (inputFile != null) {
                     String canonicalPath = inputFile.getCanonicalPath();
                     // Remove ovr extension if present
@@ -200,6 +201,9 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                         fileCanonicalPath = canonicalPath.substring(0, canonicalPath.length() - 4);
                     }
                     paths.append(canonicalPath).append(",");
+                } else {
+                    // Let's go straight using the granuleUrl
+                    paths.append(url.toString()).append(",");
                 }
                 // take only the first source URL found
                 if (sourceUrl == null) {

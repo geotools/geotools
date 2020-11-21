@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
+import org.geotools.coverage.processing.Operations;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -299,14 +300,13 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             F bestFeature = null;
             while (super.hasNext()) {
                 F f = super.next();
-                Comparable operationValue = getComparableFromEvaluation(f);
-                if (bestFeature == null && operationValue != null) {
+                if (bestFeature == null) {
                     // no features in the list this is the first of the group
                     // takes the values to check the following features if belong to the same
                     // group
                     groupingValues = getGroupingValues(groupingValues, f);
                     bestFeature = f;
-                } else if (bestFeature != null && operationValue != null) {
+                } else {
                     // is the feature in the group?
                     if (featureComparison(groupingValues, f)) {
                         // if operationValue is null skip
@@ -337,7 +337,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             else return false;
         }
 
-        private List<Object> getGroupingValues(List<Object> groupingValues, Feature f) {
+        private List<Object> getGroupingValues(List<Object> groupingValues, F f) {
             for (PropertyName p : groupByAttributes) {
                 Object result = p.evaluate(f);
                 groupingValues.add(result);
@@ -347,25 +347,25 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         }
 
         private F updateBestFeature(F best, F f) {
+            Comparable bestValue = getComparableFromEvaluation(best);
+            Comparable value = getComparableFromEvaluation(f);
+            if (value == null) return best;
+            else if (bestValue == null) return f;
             if (aggregation.equals(Operations.MAX)) {
-                return findBestMax(best, f);
+                return findBestMax(best, f, bestValue, value);
             } else {
-                return findBestMin(best, f);
+                return findBestMin(best, f, bestValue, value);
             }
         }
 
         @SuppressWarnings("unchecked")
-        private F findBestMax(F best, F f) {
-            Comparable bestValue = getComparableFromEvaluation(best);
-            Comparable value = getComparableFromEvaluation(f);
+        private F findBestMax(F best, F f, Comparable bestValue, Comparable value) {
             if (bestValue.compareTo(value) < 0) return f;
             return best;
         }
 
         @SuppressWarnings("unchecked")
-        private F findBestMin(F best, F f) {
-            Comparable bestValue = getComparableFromEvaluation(best);
-            Comparable value = getComparableFromEvaluation(f);
+        private F findBestMin(F best, F f, Comparable bestValue, Comparable value) {
             if (bestValue.compareTo(value) > 0) return f;
             return best;
         }

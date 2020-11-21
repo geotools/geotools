@@ -63,8 +63,9 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
     public void testGetTypeNames() throws Exception {
         String[] typeNames = dataStore.getTypeNames();
-        assertEquals(1, typeNames.length);
+        assertEquals(2, typeNames.length);
         assertEquals("ft1", typeNames[0]);
+        assertEquals("ft3", typeNames[1]);
     }
 
     public void testGetSchema() throws Exception {

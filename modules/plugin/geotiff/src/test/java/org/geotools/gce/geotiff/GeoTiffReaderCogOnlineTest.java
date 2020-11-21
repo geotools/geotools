@@ -20,22 +20,31 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.core.BasicAuthURI;
 import it.geosolutions.imageio.plugins.cog.CogImageReadParam;
 import it.geosolutions.imageioimpl.plugins.cog.CogImageInputStreamSpi;
+import it.geosolutions.imageioimpl.plugins.cog.CogImageReader;
 import it.geosolutions.imageioimpl.plugins.cog.CogImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.cog.CogSourceSPIProvider;
+import it.geosolutions.imageioimpl.plugins.cog.DefaultCogImageInputStream;
 import it.geosolutions.imageioimpl.plugins.cog.HttpRangeReader;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.geometry.GeneralEnvelope;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterValue;
 
 /** Testing {@link GeoTiffReader} with COG data */
 public class GeoTiffReaderCogOnlineTest extends Assert {
 
-    @Test
-    public void testCogRead() throws URISyntaxException, IOException {
+    private CogSourceSPIProvider getInputProvider() {
         String url =
                 "https://s3-us-west-2.amazonaws.com/landsat-pds/c1/L8/153/075/LC08_L1TP_153075_20190515_20190515_01_RT/LC08_L1TP_153075_20190515_20190515_01_RT_B2.TIF";
         BasicAuthURI cogUri = new BasicAuthURI(url, false);
@@ -47,7 +56,12 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
                         new CogImageReaderSpi(),
                         new CogImageInputStreamSpi(),
                         rangeReader.getClass().getName());
-        GeoTiffReader reader = new GeoTiffReader(input);
+        return input;
+    }
+
+    @Test
+    public void testCogRead() throws URISyntaxException, IOException {
+        GeoTiffReader reader = new GeoTiffReader(getInputProvider());
         assertEquals(
                 "LC08_L1TP_153075_20190515_20190515_01_RT_B2", reader.getGridCoverageNames()[0]);
         GridCoverage2D coverage = reader.read(null);
@@ -59,6 +73,51 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
         assertEquals(512, raster.getWidth());
         assertEquals(512, raster.getHeight());
+        assertEquals(1, raster.getNumBands());
+    }
+
+    @Test
+    public void testCogOverview() throws URISyntaxException, IOException {
+        GeoTiffReader reader = new GeoTiffReader(getInputProvider());
+        assertEquals(
+                "LC08_L1TP_153075_20190515_20190515_01_RT_B2", reader.getGridCoverageNames()[0]);
+
+        GeneralParameterValue[] params = new GeneralParameterValue[1];
+        // Define a GridGeometry in order to reduce the output
+        final ParameterValue<GridGeometry2D> gg =
+                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim = new Dimension();
+        dim.setSize(
+                reader.getOriginalGridRange().getSpan(0) / 24,
+                reader.getOriginalGridRange().getSpan(1) / 24);
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range, envelope));
+        params[0] = gg;
+
+        GridCoverage2D coverage = reader.read(params);
+        assertNotNull(coverage);
+        RenderedImage image = coverage.getRenderedImage();
+        int numTileX = image.getNumXTiles();
+        int numTileY = image.getNumYTiles();
+
+        CogImageReader imageReader = (CogImageReader) image.getProperty("JAI.ImageReader");
+        Object input = imageReader.getInput();
+        assertTrue(input instanceof DefaultCogImageInputStream);
+        DefaultCogImageInputStream inputStream = (DefaultCogImageInputStream) input;
+        String url = inputStream.getUrl();
+
+        // The reader is using the .ovr file as input, it's using the overviews
+        assertTrue(url.endsWith(".ovr"));
+
+        // Reading the whole bbox resulted in only 1 tile:
+        // It's using the overview
+        assertEquals(1, numTileX);
+        assertEquals(1, numTileY);
+
+        Raster raster = image.getTile(numTileX / 2, numTileY / 2);
         assertEquals(1, raster.getNumBands());
     }
 }

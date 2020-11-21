@@ -11,8 +11,8 @@ before_install:
        sh ".travis/start-oracle-xe.sh";
        sh ".travis/setup-oracle.sh";
     fi
-  - if [ "$TRAVIS_JOB_NAME" == "MySQL" ]; then
-       sh ".travis/start-mysql.sh";
+  - if [[ "$TRAVIS_JOB_NAME" == MySQL* ]]; then
+       sh ".travis/start-mysql.sh" $MYSQL;
        sh ".travis/setup-mysql.sh";
     fi
 
@@ -56,9 +56,19 @@ matrix:
           packages:
             - docker-ce
     - jdk: openjdk8
-      env: ARGS="-pl :gt-jdbc-mysql -Ponline -Dfmt.skip=true -am"
+      env: ARGS="-pl :gt-jdbc-mysql -Ponline -Dfmt.skip=true -am" MYSQL="5"
       dist: bionic
-      name: "MySQL"
+      name: "MySQL 5"
+      services:
+        - docker
+      addons:
+        apt:
+          packages:
+            - docker-ce
+    - jdk: openjdk11
+      env: ARGS="-pl :gt-jdbc-mysql -Ponline -Dfmt.skip=true -am" MYSQL="8"
+      dist: bionic
+      name: "MySQL 8"
       services:
         - docker
       addons:

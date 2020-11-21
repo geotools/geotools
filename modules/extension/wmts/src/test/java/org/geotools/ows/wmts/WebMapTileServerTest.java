@@ -165,8 +165,9 @@ public class WebMapTileServerTest {
     }
 
     @Test
-    /** 
+    /**
      * Check that servers that don't support KVP work
+     *
      * @throws Exception
      */
     public void testGEOT6741() throws Exception {

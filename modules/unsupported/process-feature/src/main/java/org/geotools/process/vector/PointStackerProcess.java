@@ -17,29 +17,33 @@
  */
 package org.geotools.process.vector;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
+import org.json.simple.JSONArray;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
@@ -55,31 +59,64 @@ import org.opengis.util.ProgressListener;
  *
  * <p>This is sometimes called "point clustering". The term stacking is used instead, since
  * clustering has multiple meanings in geospatial processing - it is also used to mean identifying
- * groups defined by point proximity.
+ * groups defined by point proximity.</p>
  *
  * <p>The stacking is defined by specifying a grid to aggregate to. The grid cell size is specified
  * in pixels relative to the requested output image size. This makes it more intuitive to pick an
- * appropriate grid size, and ensures that the aggregation works at all zoom levels.
+ * appropriate grid size, and ensures that the aggregation works at all zoom levels.</p>
  *
  * <p>The output is a FeatureCollection containing the following attributes:
  *
  * <ul>
  *   <li><code>geom</code> - the point representing the cluster
  *   <li><code>count</code> - the total number of points in the cluster
- *   <li><code>countunique</code> - the number of unique point locations in the cluster
+ *   <li><code>countUnique</code> - the number of unique point locations in the cluster
+ *   <li><code>computedArea</code> - Area of the point locations in the cluster
+ *   <li><code>computedBBox</code> - Bounding box of the point location in the cluster (see computeBBox)
+ *   <li><code>clusteredAttributes</code> - Attributes IDs of the point location part of the cluster (see collectClusterAttributeName)
  * </ul>
+ * </p>
  *
+ * <p> Parameters
+ * <ul>
+ *   <li><code>cellSize</code> - Maximum distance (in pixels) between points
+ *   <li><code>collectClusterAttributeName</code> - Name of the attribute which will be part of clusteredAttributes list.
+ *   <li><code>clusterType</code> - Type of cluster, possibile values
+ * 		<ul>
+ * 		  <li><code>GridCenter</code> - Grid X/Y, center point is centered
+ * 		  <li><code>GridWeight</code> - Grid X/Y, center point weighted
+ * 		  <li><code>GridWeightHalf</code> - Grid X/Y, center point is weighted at maximum (cellSize/2)
+ * 		  <li><code>GridNearest</code> - Grid X/Y, center point is Nearest to the center
+ * 		  <li><code>Natural</code> - Centers is computed naturally, similar with OpenLayers clustering strategy. Internally it is using a greedy approach in order to be fast. 
+ * 		</ul>
+ *   <li><code>weightClusterPosition</code> - Equivalent with clusterType=GridWeight
+ *   <li><code>normalize</code> - Indicates whether to add fields normalized to the range 0-1.
+ *   <li><code>preserveLocation</code> - Indicates wheter to preserve the original location of points for single/superimposed points
+ *   <li><code>computeBBox</code> - Compute a BBox of the points contained in the cluster, default value is 'false'
+ *   <li><code>computeBBoxType</code> - Type of he BBox
+ * 		<ul>
+ * 		  <li><code>Original</code> - The BBox will be using the original crs
+ * 		  <li><code>Map</code> - The BBox will be using the map crs
+ * 		</ul>
+ *   <li><code>clusterType</code> - type of cluster, possibile values
+ *	 </li>
+ *
+ * </ul>
+ * </p>
  * Note that as required by the Rendering Transformation API, the output has the CRS of the input
  * data.
  *
  * @author mdavis
- * @author Cosmin Cioranu (CozC)
+ * @author Cosmin Cioranu (cncioranu)
  */
 @DescribeProcess(
     title = "Point Stacker",
     description = "Aggregates a collection of points over a grid into one point per grid cell."
 )
 public class PointStackerProcess implements VectorProcess {
+    /** The logger for the rendering module. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.process.vector");
 
     public enum PreserveLocation {
         /** Preserves the original point location in case there is a single point in the cell */
@@ -96,21 +133,43 @@ public class PointStackerProcess implements VectorProcess {
         Never
     };
 
+    public enum ClusterType {
+        /** Grid X/Y, center point is centered */
+        GridCenter,
+        /** Grid X/Y, center point weighted */
+        GridWeight,
+        /** Grid X/Y, center point is weighted at maximum (cellSize/2) */
+        GridWeightHalf,
+        /** Grid X/Y, center point is Nearest to the center */
+        GridNearest,
+        /**
+         * Natural Clustering, center point is weighted Natural clustering. It is using a greedy
+         * approach in order to be fast. Due to it's implementation, cluster might be broken down in
+         * pieced and regrouped.
+         */
+        Natural
+    };
+
+    public enum ComputeBBoxType {
+        /** Compute output BBox and and area as original source */
+        Original,
+        /** compute output BBox and area as map */
+        Map,
+    };
+
     public static final String ATTR_GEOM = "geom";
-
     public static final String ATTR_COUNT = "count";
-
-    public static final String ATTR_COUNT_UNIQUE = "countunique";
-
-    /** bounding box of the clustered points as Poligon Geometry */
-    public static final String ATTR_BOUNDING_BOX_GEOM = "geomBBOX";
-
-    /** bounding box of the clustered points as String */
-    public static final String ATTR_BOUNDING_BOX = "envBBOX";
-
+    public static final String ATTR_COUNT_UNIQUE = "countUnique";
     public static final String ATTR_NORM_COUNT = "normCount";
-
     public static final String ATTR_NORM_COUNT_UNIQUE = "normCountUnique";
+
+    /** area, internally it is a Polygon */
+    public static final String ATTR_BOUNDING_AREA = "computedArea";
+
+    /** bounding box */
+    public static final String ATTR_BOUNDING_BOX = "computedBBox";
+
+    public static final String ATTR_CLUSTERED_VALUES = "clusteredAttributes";
 
     // TODO: add ability to pick index point selection strategy
     // TODO: add ability to set attribute name containing value to be aggregated
@@ -134,12 +193,14 @@ public class PointStackerProcess implements VectorProcess {
             // process parameters
             @DescribeParameter(
                         name = "cellSize",
-                        description = "Grid cell size to aggregate to, in pixels"
+                        description =
+                                "In grid systetems, this is the size of grid (in pixesls) in natural clustering this is the diameter of cell (in pixels)"
                     )
                     Integer cellSize,
             @DescribeParameter(
                         name = "weightClusterPosition",
-                        description = "Weight cluster position based on points added",
+                        description =
+                                "(deprecated, see clusterType) Weight cluster position based on points added. This flag is deprecated. The equivalent is clusterType=GridWeight",
                         defaultValue = "false"
                     )
                     Boolean argWeightClusterPosition,
@@ -158,6 +219,32 @@ public class PointStackerProcess implements VectorProcess {
                         min = 0
                     )
                     PreserveLocation preserveLocation,
+            @DescribeParameter(
+                        name = "collectClusterAttributeName",
+                        description =
+                                "Return the specfied attribute for each feature in the cluster",
+                        defaultValue = ""
+                    )
+                    String returnClusteredAttribute,
+            @DescribeParameter(
+                        name = "clusterType",
+                        description = "Specify the clusterization method",
+                        defaultValue = "GridCenter"
+                    )
+                    ClusterType clusterType,
+            @DescribeParameter(
+                        name = "computeBBox",
+                        description =
+                                "Compute BBox of the cluster and return it in data set as geom structure",
+                        defaultValue = "false"
+                    )
+                    Boolean argComputeBBox,
+            @DescribeParameter(
+                        name = "computeBBoxType",
+                        description = "Compute BBox Type.",
+                        defaultValue = "Original"
+                    )
+                    ComputeBBoxType argComputeBBoxType,
 
             // output image parameters
             @DescribeParameter(
@@ -201,30 +288,36 @@ public class PointStackerProcess implements VectorProcess {
             weightClusterPosition = argWeightClusterPosition;
         }
 
+        if (weightClusterPosition) {
+            clusterType = ClusterType.GridWeight;
+        }
+
+        boolean computeBBox = false;
+        if (argComputeBBox != null) {
+            computeBBox = argComputeBBox;
+        }
+
         // TODO: allow output CRS to be different to data CRS
         // assume same CRS for now...
         double cellSizeSrc = cellSize * outputEnv.getWidth() / outputWidth;
 
-        // create cluster points, based on cellSize and width and height of the viewd area.
         Collection<StackedPoint> stackedPts =
                 stackPoints(
                         data,
                         crsTransform,
                         cellSizeSrc,
-                        weightClusterPosition,
                         outputEnv.getMinX(),
-                        outputEnv.getMinY());
+                        outputEnv.getMinY(),
+                        clusterType,
+                        returnClusteredAttribute);
 
         SimpleFeatureType schema = createType(srcCRS, normalize);
         ListFeatureCollection result = new ListFeatureCollection(schema);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
 
-        GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
-
+        GeometryFactory factory = new GeometryFactory();
         double[] srcPt = new double[2];
-        double[] srcPt2 = new double[2];
         double[] dstPt = new double[2];
-        double[] dstPt2 = new double[2];
 
         // Find maxima of the point stacks if needed.
         int maxCount = 0;
@@ -235,7 +328,7 @@ public class PointStackerProcess implements VectorProcess {
                 if (maxCountUnique < sp.getCount()) maxCountUnique = sp.getCountUnique();
             }
         }
-
+        // get all stecked points and create features.
         for (StackedPoint sp : stackedPts) {
             // create feature for stacked point
             Coordinate pt = getStackedPointLocation(preserveLocation, sp);
@@ -251,32 +344,54 @@ public class PointStackerProcess implements VectorProcess {
             fb.add(point);
             fb.add(sp.getCount());
             fb.add(sp.getCountUnique());
-            // adding bounding box of the points staked, as geometry
-            // envelope transformation
-            Envelope boundingBox = sp.getBoundingBox();
-            srcPt[0] = boundingBox.getMinX();
-            srcPt[1] = boundingBox.getMinY();
-            srcPt2[0] = boundingBox.getMaxX();
-            srcPt2[1] = boundingBox.getMaxY();
+            if (computeBBox) {
+                // adding bounding box of the points staked, as geometry
+                // envelope transformation
+                // Envelope boundingBox = sp.getBoundingBox(invTransform);
+                /*
+                srcPt[0] = boundingBox.getMinX();
+                srcPt[1] = boundingBox.getMinY();
+                srcPt2[0] = boundingBox.getMaxX();
+                srcPt2[1] = boundingBox.getMaxY();
 
-            invTransform.transform(srcPt, 0, dstPt, 0, 1);
-            invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
-            Envelope boundingBoxTransformed =
-                    new Envelope(dstPt[0], dstPt[1], dstPt2[0], dstPt2[1]);
-            fb.add(boundingBoxTransformed);
-            // adding bounding box of the points staked, as string
-            fb.add(boundingBoxTransformed.toString());
+                invTransform.transform(srcPt, 0, dstPt, 0, 1);
+                invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
+                Envelope boundingBoxTransformed = new Envelope(dstPt[0], dstPt[1], dstPt2[0], dstPt2[1]);
+                */
+                if (argComputeBBoxType == ComputeBBoxType.Original) {
+                    fb.add(sp.getPoligon(invTransform));
+                    fb.add(sp.getBoundingBoxList(invTransform));
+                } else if (argComputeBBoxType == ComputeBBoxType.Map) {
+                    fb.add(sp.getPoligon());
+                    fb.add(sp.getBoundingBoxList(null));
+                } else {
+                    fb.add(null);
+                    fb.add(null);
+                }
+                // adding bounding box of the points staked, as string
+                // fb.add(boundingBoxTransformed.toString()); //not used
+            } else {
+                // we need to maintain the order of the fields.
+                fb.add(null);
+                fb.add(null);
+            }
             if (normalize) {
                 fb.add(((double) sp.getCount()) / maxCount);
                 fb.add(((double) sp.getCountUnique()) / maxCountUnique);
             }
-
+            fb.add(sp.getClusteredAttributeValues());
             result.add(fb.buildFeature(null));
         }
         return result;
     }
 
-    /** Extract the geometry depending on the location preservation flag */
+    /**
+     * Extract the geometry depending on the location preservation flag
+     *
+     * @param preserveLocation
+     * @param sp
+     * @return
+     */
     private Coordinate getStackedPointLocation(PreserveLocation preserveLocation, StackedPoint sp) {
         Coordinate pt = null;
         if (PreserveLocation.Single == preserveLocation) {
@@ -297,18 +412,26 @@ public class PointStackerProcess implements VectorProcess {
     /**
      * Computes the stacked points for the given data collection. All geometry types are handled -
      * for non-point geometries, the centroid is used.
+     *
+     * @param data
+     * @param cellSize
+     * @param minX
+     * @param minY
+     * @return
+     * @throws TransformException
      */
     private Collection<StackedPoint> stackPoints(
             SimpleFeatureCollection data,
             MathTransform crsTransform,
             double cellSize,
-            boolean weightClusterPosition,
             double minX,
-            double minY)
+            double minY,
+            ClusterType clusterType,
+            String returnClusteredAttribute)
             throws TransformException {
         SimpleFeatureIterator featureIt = data.features();
 
-        Map<Coordinate, StackedPoint> stackedPts = new HashMap<>();
+        Map<Coordinate, StackedPoint> stackedPts = new HashMap<Coordinate, StackedPoint>();
 
         double[] srcPt = new double[2];
         double[] dstPt = new double[2];
@@ -329,19 +452,69 @@ public class PointStackerProcess implements VectorProcess {
 
                 indexPt.x = pout.x;
                 indexPt.y = pout.y;
-                gridIndex(indexPt, cellSize);
 
-                StackedPoint stkPt = stackedPts.get(indexPt);
-                if (stkPt == null) {
+                StackedPoint stkPt = null;
+                if (clusterType == ClusterType.Natural) {
+                    // clustering is natural
+                    // searching for best cluster using center point
+                    // in case of Natural Clustering the cellSize is the
+                    // diameter
+                    double r = cellSize / 2;
+                    StackedPoint sTemp = null;
+                    double distanceTemp = Double.MAX_VALUE;
+                    boolean found = false;
+                    for (Map.Entry<Coordinate, StackedPoint> entry : stackedPts.entrySet()) {
+                        Coordinate lc = entry.getKey();
+                        // Coordinate lc=entry.getValue().getLocation(); is
+                        // correct but it needs a second pas?!
+                        double d = lc.distance(pout);
+                        if (d <= r) {
+                            // an already staked point exists so return it.
+                            // foound best match.
+                            // due to it's greedy fashion iterate though all
+                            // clusters.
+                            if (d < distanceTemp) {
+                                sTemp = entry.getValue();
+                                distanceTemp = d;
+                                found = true;
+                            }
+                            // break;
+                        }
+                    }
+                    if (found) {
+                        stkPt = sTemp;
+                    }
+                    if (stkPt == null) {
+                        // no staked point found, so create new cluster
+                        double centreX = indexPt.x * cellSize;
+                        double centreY = indexPt.y * cellSize;
+                        stkPt =
+                                new StackedPoint(
+                                        indexPt, new Coordinate(centreX, centreY), clusterType, r);
+                        stackedPts.put(stkPt.getKey(), stkPt);
+                    }
 
-                    /** Note that we compute the cluster position in the middle of the grid */
-                    double centreX = indexPt.x * cellSize + cellSize / 2;
-                    double centreY = indexPt.y * cellSize + cellSize / 2;
+                } else {
+                    // if clustering is grid based
+                    gridIndex(indexPt, cellSize);
+                    stkPt = stackedPts.get(indexPt);
+                    if (stkPt == null) {
+                        double centreX = indexPt.x * cellSize + cellSize / 2;
+                        double centreY = indexPt.y * cellSize + cellSize / 2;
 
-                    stkPt = new StackedPoint(indexPt, new Coordinate(centreX, centreY));
-                    stackedPts.put(stkPt.getKey(), stkPt);
+                        stkPt =
+                                new StackedPoint(
+                                        indexPt,
+                                        new Coordinate(centreX, centreY),
+                                        clusterType,
+                                        cellSize);
+                        stackedPts.put(stkPt.getKey(), stkPt);
+                    }
                 }
-                stkPt.add(pout, weightClusterPosition);
+                stkPt.add(pout);
+                if (returnClusteredAttribute != "") {
+                    stkPt.addClusteredAttribute(feature.getAttribute(returnClusteredAttribute));
+                }
             }
 
         } finally {
@@ -395,19 +568,34 @@ public class PointStackerProcess implements VectorProcess {
         tb.add(ATTR_GEOM, Point.class, crs);
         tb.add(ATTR_COUNT, Integer.class);
         tb.add(ATTR_COUNT_UNIQUE, Integer.class);
-        tb.add(ATTR_BOUNDING_BOX_GEOM, Polygon.class);
-        tb.add(ATTR_BOUNDING_BOX, String.class);
+        tb.add(ATTR_BOUNDING_AREA, Geometry.class);
+        tb.add(ATTR_BOUNDING_BOX, List.class);
+
         if (stretch) {
             tb.add(ATTR_NORM_COUNT, Double.class);
             tb.add(ATTR_NORM_COUNT_UNIQUE, Double.class);
         }
+        tb.add(ATTR_CLUSTERED_VALUES, JSONArray.class);
         tb.setName("stackedPoint");
         SimpleFeatureType sfType = tb.buildFeatureType();
         return sfType;
     }
 
     private static class StackedPoint {
+        /** First Element */
+        private Coordinate first = null;
+        /** Differential Coordinate X */
+        private double dx = 0;
+        /** Differential Coordinate Y */
+        private double dy = 0;
+
+        /** Cell Size */
+        private double cellSize = 0;
+
+        /** Internal Key */
         private Coordinate key;
+        /** Default Value, but it will be overridden at initialization (constructor) */
+        ClusterType clusterType = ClusterType.Natural;
 
         private Coordinate centerPt;
 
@@ -416,8 +604,13 @@ public class PointStackerProcess implements VectorProcess {
         private int count = 0;
 
         private Set<Coordinate> uniquePts;
+        private ArrayList<Coordinate> allPts;
 
+        /** Bounding box of the clustered points */
         private Envelope boundingBox = null;
+
+        private JSONArray idsClustered = null;
+
         /**
          * Creates a new stacked point grid cell. The center point of the cell is supplied so that
          * it may be used as or influence the location of the final display point
@@ -425,13 +618,111 @@ public class PointStackerProcess implements VectorProcess {
          * @param key a key for the grid cell (using integer ordinates to avoid precision issues)
          * @param centerPt the center point of the grid cell
          */
-        public StackedPoint(Coordinate key, Coordinate centerPt) {
+        public StackedPoint(
+                Coordinate key, Coordinate centerPt, ClusterType clusterType, double cellSize) {
             this.key = new Coordinate(key);
             this.centerPt = centerPt;
+            this.cellSize = cellSize;
+            this.clusterType = clusterType;
         }
 
         public Coordinate getKey() {
             return key;
+        }
+
+        public Coordinate[] getClusterCoordinates() {
+            return uniquePts.toArray(new Coordinate[uniquePts.size()]);
+        }
+
+        /**
+         * Return Polygon from the data, original
+         *
+         * @return
+         */
+        public Geometry getPoligon() {
+            GeometryFactory factory = new GeometryFactory();
+            allPts.add(allPts.get(0));
+            Coordinate[] list = allPts.toArray(new Coordinate[] {});
+            if (list.length < 4) {
+                // cannot build a valid polygon so return the bounding box
+                return JTS.toGeometry(this.getBoundingBox());
+            }
+            Polygon polygon = factory.createPolygon(list);
+            return polygon.convexHull();
+        }
+
+        public Geometry getPoligon(MathTransform invTransform) {
+            GeometryFactory factory = new GeometryFactory();
+            allPts.add(allPts.get(0));
+            Coordinate[] list = allPts.toArray(new Coordinate[] {});
+            if (list.length < 4) {
+                // the polygon is not valid, so return the bounding box
+                return JTS.toGeometry(this.getBoundingBox(invTransform));
+            }
+            double[] srcPt = new double[2];
+            double[] dstPt = new double[2];
+            try {
+                for (int i = 0; i < list.length; i++) {
+                    srcPt[0] = list[i].x;
+                    srcPt[1] = list[i].y;
+                    invTransform.transform(srcPt, 0, dstPt, 0, 1);
+                    list[i] = new Coordinate(dstPt[0], dstPt[1]);
+                }
+                Polygon polygon = factory.createPolygon(list);
+                return polygon.convexHull();
+            } catch (TransformException e) {
+                // return the bounding box
+                return null;
+                // return JTS.toGeometry(this.getBoundingBox(invTransform));
+            }
+        }
+
+        /**
+         * return the original bounding box
+         *
+         * @return
+         */
+        public Envelope getBoundingBox() {
+            return boundingBox;
+        }
+
+        public List<Double> getBoundingBoxList(MathTransform invTransform) {
+            Envelope x = null;
+            if (invTransform == null) {
+                x = this.getBoundingBox();
+            } else {
+                x = this.getBoundingBox(invTransform);
+            }
+            List<Double> output = new ArrayList<Double>();
+            output.add(x.getMinX());
+            output.add(x.getMinY());
+            output.add(x.getMaxX());
+            output.add(x.getMaxY());
+            return output;
+        }
+        /**
+         * Return the bounding box in the system source env
+         *
+         * @param invTransform
+         * @return
+         */
+        public Envelope getBoundingBox(MathTransform invTransform) {
+            double[] srcPt = new double[2];
+            double[] dstPt = new double[2];
+            double[] srcPt2 = new double[2];
+            double[] dstPt2 = new double[2];
+            srcPt[0] = boundingBox.getMinX();
+            srcPt[1] = boundingBox.getMinY();
+            srcPt2[0] = boundingBox.getMaxX();
+            srcPt2[1] = boundingBox.getMaxY();
+            try {
+                invTransform.transform(srcPt, 0, dstPt, 0, 1);
+                invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
+                return new Envelope(dstPt[0], dstPt2[0], dstPt[1], dstPt2[1]);
+            } catch (TransformException e) {
+                // TODO Auto-generated catch block
+                return null;
+            }
         }
 
         public Coordinate getLocation() {
@@ -446,51 +737,67 @@ public class PointStackerProcess implements VectorProcess {
             if (uniquePts == null) return 1;
             return uniquePts.size();
         }
-        /** compute bounding box */
-        public Envelope getBoundingBox() {
-            return this.boundingBox;
-            /*
-            Coordinate coords[]=uniquePts.toArray(new Coordinate[uniquePts.size()]);
 
-            Geometry result=factory.createPolygon(coords).getEnvelope();
-            System.out.println(result);
-            return result;
-            */
-
+        /** get the clustered attributes of the points that have been clustered */
+        public JSONArray getClusteredAttributeValues() {
+            return this.idsClustered;
         }
 
+        /**
+         * @todo change GeometryFactory
+         * @param pt
+         * @param clusterType
+         */
         public void add(Coordinate pt) {
-            this.add(pt, false);
-        }
-
-        /** @todo change GeometryFactory */
-        public void add(Coordinate pt, boolean weightClusterPosition) {
+            if (first == null) {
+                first = pt;
+            }
             count++;
             /**
-             * Only create set if this is the second point seen (and assum the first pt is in
+             * Only create set if this is the second point seen (and assume the first pt is in
              * location)
              */
             if (uniquePts == null) {
-                uniquePts = new HashSet<>();
+                uniquePts = new HashSet<Coordinate>();
+            }
+            if (allPts == null) {
+                allPts = new ArrayList<Coordinate>();
             }
             uniquePts.add(pt);
+            allPts.add(pt);
 
-            if (weightClusterPosition) {
+            if (clusterType == ClusterType.GridWeight) {
                 pickWeightedLocation(pt);
-            } else {
+            } else if (clusterType == ClusterType.GridWeightHalf) {
+                pickBoundedWeightedLocation(pt);
+            } else if (clusterType == ClusterType.GridNearest) {
                 pickNearestLocation(pt);
+            } else if (clusterType == ClusterType.GridCenter) {
+                pickCenterLocation(pt);
+            } else if (clusterType == ClusterType.Natural) {
+                pickBoundedWeightedLocation(pt);
             }
+
             if (boundingBox == null) {
                 boundingBox = new Envelope();
-            } else {
-                boundingBox.expandToInclude(pt);
             }
-            // pickCenterLocation(pt);
+            boundingBox.expandToInclude(pt);
+        }
+
+        @SuppressWarnings("unchecked")
+        public void addClusteredAttribute(Object id) {
+            /** Add in cluster */
+            if (idsClustered == null) {
+                idsClustered = new JSONArray();
+            }
+            idsClustered.add(id.toString());
         }
 
         /**
          * The original location of the points, in case they are all superimposed (or there is a
          * single point), otherwise null
+         *
+         * @return
          */
         public Coordinate getOriginalLocation() {
             if (uniquePts != null && uniquePts.size() == 1) {
@@ -500,20 +807,12 @@ public class PointStackerProcess implements VectorProcess {
             }
         }
 
-        /** Calcultate the weighted position of the cluster based on points which it holds. */
-        private void pickWeightedLocation(Coordinate pt) {
-            if (location == null) {
-                location = pt;
-                return;
-            }
-
-            location = average(location, pt);
-        }
-
         /**
          * Picks the location as the point which is nearest to the center of the cell. In addition,
          * the nearest location is averaged with the cell center. This gives the best chance of
          * avoiding conflicts.
+         *
+         * @param pt
          */
         private void pickNearestLocation(Coordinate pt) {
             // strategy - pick most central point
@@ -527,8 +826,57 @@ public class PointStackerProcess implements VectorProcess {
         }
 
         /**
+         * Calculate the weighted position of the cluster based on cluster points. On grid systems
+         * this will not produce good results, best use GridNearest of the {@link ClusterType}
+         *
+         * @param pt
+         */
+        private void pickWeightedLocation(Coordinate pt) {
+            if (location == null) {
+                location = pt;
+                this.dx = pt.x;
+                this.dy = pt.y;
+                return;
+            }
+            // add to weighting system
+            this.dx += pt.x;
+            this.dy += pt.y;
+            location = new Coordinate(this.dx / this.count, this.dy / this.count);
+            // location = average(location, pt);
+        }
+
+        /**
+         * Computed the weight position by allowing a freedom of maximum r/2 from the center
+         * position. This would avoid symbolization issues
+         *
+         * @param pt
+         */
+        private void pickBoundedWeightedLocation(Coordinate pt) {
+            if (location == null) {
+                location = pt;
+                this.dx = pt.x;
+                this.dy = pt.y;
+                return;
+            }
+
+            double dx = this.dx + pt.x;
+            double dy = this.dy + pt.y;
+            if (new Coordinate(dx, dy).distance(first) > cellSize / 2) {
+                this.dx += first.x;
+                this.dy += first.y;
+            } else {
+                this.dx += pt.x;
+                this.dy += pt.y;
+            }
+            location = new Coordinate(this.dx / this.count, this.dy / this.count);
+            // location = average(location, pt);
+        }
+
+        /**
          * Picks the location as the centre point of the cell. This does not give a good
          * visualization - the gridding is very obvious
+         *
+         * @param pt
          */
         private void pickCenterLocation(Coordinate pt) {
             // strategy - pick first point
@@ -537,6 +885,20 @@ public class PointStackerProcess implements VectorProcess {
                 return;
             }
             location = centerPt;
+        }
+
+        /**
+         * Picks the first location encountered as the cell location. This is sub-optimal, since if
+         * the first point is near the cell boundary it is likely to collide with neighboring
+         * points.
+         *
+         * @param pt
+         */
+        private void pickFirstLocation(Coordinate pt) {
+            // strategy - pick first point
+            if (location == null) {
+                location = new Coordinate(pt);
+            }
         }
 
         private static Coordinate average(Coordinate p1, Coordinate p2) {

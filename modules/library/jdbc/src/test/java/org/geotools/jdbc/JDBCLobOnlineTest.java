@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureStore;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -70,9 +70,7 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
     }
 
     public void testWrite() throws Exception {
-        FeatureStore<SimpleFeatureType, SimpleFeature> fs =
-                (FeatureStore<SimpleFeatureType, SimpleFeature>)
-                        dataStore.getFeatureSource(tname(TESTLOB));
+        SimpleFeatureStore fs = (SimpleFeatureStore) dataStore.getFeatureSource(tname(TESTLOB));
 
         SimpleFeature sf =
                 SimpleFeatureBuilder.build(

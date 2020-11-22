@@ -25,7 +25,7 @@ import java.util.HashSet;
  *     Deoliveira's help)
  */
 public class XSDIdRegistry {
-    HashSet<String> ids = new HashSet<String>();
+    HashSet<String> ids = new HashSet<>();
 
     public boolean idExists(String id) {
         return ids.contains(id);

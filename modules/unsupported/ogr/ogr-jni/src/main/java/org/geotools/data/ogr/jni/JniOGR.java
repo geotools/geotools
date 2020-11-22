@@ -105,7 +105,7 @@ public class JniOGR implements OGR {
     }
 
     Vector<String> vector(String[] opts) {
-        return opts != null && opts.length > 0 ? new Vector<String>(Arrays.asList(opts)) : null;
+        return opts != null && opts.length > 0 ? new Vector<>(Arrays.asList(opts)) : null;
     }
 
     @Override

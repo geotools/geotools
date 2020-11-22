@@ -9,7 +9,7 @@
  */
 package org.opengis.metadata;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public final class Obligation extends CodeList<Obligation> {
     private static final long serialVersionUID = -2135167450448770693L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<Obligation> VALUES = new ArrayList<Obligation>(3);
+    private static final List<Obligation> VALUES = new ArrayList<>(3);
 
     /** Element is always required. */
     @UML(

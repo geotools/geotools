@@ -147,6 +147,7 @@ public class WPS1_0_0 extends WPSSpecification {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public ResponseDocumentType createResponseDocumentType(
             boolean lineage, boolean status, boolean storeExecuteResponse, String outputType) {
         ResponseDocumentType responseDoc = wpsFactory.createResponseDocumentType();

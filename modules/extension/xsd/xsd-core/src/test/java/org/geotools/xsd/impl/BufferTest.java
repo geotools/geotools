@@ -46,14 +46,14 @@ public class BufferTest extends TestCase {
 
     static class Consumer implements Runnable {
         Buffer buffer;
-        List taken;
+        List<Object> taken;
 
         public Consumer(Buffer buffer) {
             this.buffer = buffer;
         }
 
         public void run() {
-            taken = new ArrayList();
+            taken = new ArrayList<>();
 
             for (int i = 0; i < 1000; i++) {
                 taken.add(buffer.get());

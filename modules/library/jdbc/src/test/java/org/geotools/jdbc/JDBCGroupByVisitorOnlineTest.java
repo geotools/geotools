@@ -428,6 +428,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         featureSource.accepts(query, visitor, null);
         assertEquals(expectOptimized, visitor.wasOptimized());
         assertEquals(!expectOptimized, visitor.wasVisited());
+        @SuppressWarnings("unchecked")
         List<Object[]> value = visitor.getResult().toList();
         assertNotNull(value);
         return value;

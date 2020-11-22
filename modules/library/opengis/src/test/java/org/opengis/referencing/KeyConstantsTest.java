@@ -9,10 +9,11 @@
  */
 package org.opengis.referencing;
 
-import static org.junit.Assert.*;
-import static org.opengis.referencing.ReferenceSystem.*;
+import static org.junit.Assert.assertSame;
+import static org.opengis.referencing.ReferenceSystem.DOMAIN_OF_VALIDITY_KEY;
+import static org.opengis.referencing.ReferenceSystem.SCOPE_KEY;
 
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.referencing.datum.Datum;
 import org.opengis.referencing.operation.CoordinateOperation;
 

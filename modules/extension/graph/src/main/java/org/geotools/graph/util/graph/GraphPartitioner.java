@@ -36,6 +36,8 @@ import org.geotools.graph.traverse.standard.DepthFirstIterator;
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
+// this is mixing Graph and List<Serializable> in the same containers, refuse to untangle it
+@SuppressWarnings("unchecked")
 public class GraphPartitioner implements GraphWalker {
 
     /** graph to be partitioned into connected components * */

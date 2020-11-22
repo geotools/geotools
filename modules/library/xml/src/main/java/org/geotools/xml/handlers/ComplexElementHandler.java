@@ -54,7 +54,7 @@ public class ComplexElementHandler extends XMLElementHandler {
     private Element elem;
     private String text;
     private Attributes attr;
-    private List elements;
+    private List<XMLElementHandler> elements;
     private Object value = null;
     private ElementHandlerFactory ehf;
 
@@ -108,12 +108,12 @@ public class ComplexElementHandler extends XMLElementHandler {
     }
 
     /** */
-    public void endElement(URI namespaceURI, String localName, Map hints)
+    public void endElement(URI namespaceURI, String localName, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         text = (text == null) ? null : text.trim();
 
         if (hints == null) {
-            hints = new HashMap<String, Object>();
+            hints = new HashMap<>();
             hints.put(ElementHandlerFactory.KEY, ehf);
         } else {
             if (!hints.containsKey(ElementHandlerFactory.KEY))
@@ -502,10 +502,10 @@ public class ComplexElementHandler extends XMLElementHandler {
      *     java.util.Map)
      * @return XMLElementHandler
      */
-    public XMLElementHandler getHandler(URI namespaceURI, String localName, Map hints)
-            throws SAXException {
+    public XMLElementHandler getHandler(
+            URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException {
         if (elements == null) {
-            elements = new LinkedList();
+            elements = new LinkedList<>();
         }
 
         logger.finest("Starting search for element handler " + localName + " :: " + namespaceURI);

@@ -274,7 +274,7 @@ We have a number of ways to calculate the shortest path between two nodes:
     pf.calculate();
     
     //find some destinations to calculate paths to
-    List/*<Node>*/ destinations = ...
+    List<Node> destinations = ...
     
     //calculate the paths
     for ( Iterator d = destinations.iterator(); d.hasNext(); ) {

@@ -86,7 +86,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
      * Holds the intermediate {@link RenderedOp} we create along the path for this {@link
      * CoverageProcessingNode} in order to be able to dispose them later on.
      */
-    private Stack<RenderedImage> intermediateOps = new Stack<RenderedImage>();
+    private Stack<RenderedImage> intermediateOps = new Stack<>();
 
     /** alpha channel from previous nodes to be restored (it may be null) */
     private RenderedImage alpha;
@@ -150,7 +150,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
             GridGeometry2D gridGeometry = null;
             ImageLayout layout = null;
             final Hints hints = getHints();
-            final List<GridCoverage2D> sourceGridCoverages = new ArrayList<GridCoverage2D>();
+            final List<GridCoverage2D> sourceGridCoverages = new ArrayList<>();
             ImageWorker w = new ImageWorker();
             do {
                 // //

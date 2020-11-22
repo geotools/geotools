@@ -51,7 +51,7 @@ public class XLINKSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 
@@ -80,7 +80,7 @@ public class XLINKSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 

@@ -16,11 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.awt.*;
+import java.awt.Color;
 import org.geotools.data.DataTestCase;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.Graphic;

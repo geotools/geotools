@@ -16,7 +16,7 @@
  */
 package org.geotools.process.elasticsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.geom.Point2D;
 import java.awt.image.RenderedImage;

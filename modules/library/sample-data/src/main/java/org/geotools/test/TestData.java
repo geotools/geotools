@@ -108,7 +108,7 @@ public class TestData implements Runnable {
      * The files to delete at shutdown time. {@link File#deleteOnExit} alone doesn't seem suffisient
      * since it will preserve any overwritten files.
      */
-    private static final LinkedList<Deletable> toDelete = new LinkedList<Deletable>();
+    private static final LinkedList<Deletable> toDelete = new LinkedList<>();
 
     /** {@code true} if JAI media lib is available. */
     private static final boolean mediaLibAvailable;

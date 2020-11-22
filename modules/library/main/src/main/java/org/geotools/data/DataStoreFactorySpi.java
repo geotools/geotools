@@ -91,7 +91,7 @@ public interface DataStoreFactorySpi extends DataAccessFactory {
      * @throws IOException if there were any problems setting up (creating or connecting) the
      *     datasource.
      */
-    DataStore createDataStore(Map<String, java.io.Serializable> params) throws IOException;
+    DataStore createDataStore(Map<String, ?> params) throws IOException;
 
     //    /**
     //     * Construct a simple MetadataEntity providing internationlization information
@@ -107,5 +107,5 @@ public interface DataStoreFactorySpi extends DataAccessFactory {
     //     *         internationlization support).
     //     */
     //    DataSourceMetadataEnity createMetadata( Map params ) throws IOException;
-    DataStore createNewDataStore(Map<String, java.io.Serializable> params) throws IOException;
+    DataStore createNewDataStore(Map<String, ?> params) throws IOException;
 }

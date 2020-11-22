@@ -17,6 +17,7 @@
 package org.geotools.data.mysql;
 
 import java.util.HashMap;
+import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
@@ -29,7 +30,7 @@ public class MySQLDataStoreFactoryTest extends TestCase {
     }
 
     public void testCanProcess() throws Exception {
-        HashMap params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         assertFalse(factory.canProcess(params));
 
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
@@ -52,7 +53,7 @@ public class MySQLDataStoreFactoryTest extends TestCase {
         // actually exist. Test ensures that no NPE is thrown
         // from final block of method
         try {
-            factory.isMySqlVersion56(store);
+            factory.isMySqlVersion56OrAbove(store);
         } catch (NullPointerException e) {
             fail("an exception occured during checking of MySQL version " + e);
         }

@@ -31,7 +31,7 @@ import org.geotools.ysld.parse.Util;
 /** Ysld Tuple implementation. */
 public class Tuple {
     static Logger LOG = Logging.getLogger(Tuple.class);
-    static final Map<Integer, Pattern> PATTERNS = new HashMap<Integer, Pattern>();
+    static final Map<Integer, Pattern> PATTERNS = new HashMap<>();
 
     /** Return a tuple comprised of the passed values */
     public static Tuple of(Object... values) {

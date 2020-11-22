@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.operation.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.Random;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.operation.transform.GeocentricTranslation;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
@@ -41,7 +41,7 @@ public final class BursaWolfTransformBuilderTest {
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
 
-        List<MappedPosition> vectors = new ArrayList<MappedPosition>();
+        List<MappedPosition> vectors = new ArrayList<>();
 
         vectors.add(
                 new MappedPosition(
@@ -91,7 +91,7 @@ public final class BursaWolfTransformBuilderTest {
 
         DirectPosition ptSrc;
         DirectPosition ptDst;
-        List<MappedPosition> vectors = new ArrayList<MappedPosition>();
+        List<MappedPosition> vectors = new ArrayList<>();
 
         BursaWolfParameters bwp = new BursaWolfParameters(null);
         bwp.dx = random.nextDouble() * 100;

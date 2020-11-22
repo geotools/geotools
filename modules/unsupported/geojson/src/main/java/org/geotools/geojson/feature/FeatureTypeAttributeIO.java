@@ -26,7 +26,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 
 public class FeatureTypeAttributeIO implements AttributeIO {
 
-    HashMap<String, AttributeIO> ios = new HashMap();
+    HashMap<String, AttributeIO> ios = new HashMap<>();
 
     public FeatureTypeAttributeIO(SimpleFeatureType featureType) {
         for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {

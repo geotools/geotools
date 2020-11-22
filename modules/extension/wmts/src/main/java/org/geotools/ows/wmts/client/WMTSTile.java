@@ -56,7 +56,7 @@ class WMTSTile extends Tile {
      *
      * <p>You can set the cache size using the property WMTS_TILE_CACHE_SIZE_PROPERTY_NAME.
      */
-    private static final ObjectCache tileImages;
+    private static final ObjectCache<String, BufferedImage> tileImages;
 
     static {
         int cacheSize = 150;
@@ -118,7 +118,12 @@ class WMTSTile extends Tile {
 
     private URL getRESTurl(String baseUrl, TileIdentifier tileIdentifier) throws RuntimeException {
         String tileMatrix = service.getTileMatrix(tileIdentifier.getZ()).getIdentifier();
-        baseUrl = baseUrl.replace("{style}", service.getStyleName());
+
+        if (baseUrl.indexOf("{style}") != -1)
+            baseUrl = baseUrl.replace("{style}", service.getStyleName());
+        else if (baseUrl.indexOf("{Style}") != -1)
+            baseUrl = baseUrl.replace("{Style}", service.getStyleName());
+
         baseUrl = baseUrl.replace("{TileMatrixSet}", service.getTileMatrixSetName());
         baseUrl = baseUrl.replace("{TileMatrix}", "" + tileMatrix);
         baseUrl = baseUrl.replace("{TileCol}", "" + tileIdentifier.getX());
@@ -216,7 +221,7 @@ class WMTSTile extends Tile {
     }
 
     public BufferedImage doLoadImageTileImage(Tile tile) throws IOException {
-
+        @SuppressWarnings("unchecked")
         Map<String, String> headers =
                 (Map<String, String>)
                         this.service.getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);

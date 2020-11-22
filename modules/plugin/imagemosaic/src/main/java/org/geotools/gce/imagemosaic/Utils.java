@@ -75,8 +75,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
@@ -90,6 +88,7 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
+import org.geotools.gce.imagemosaic.catalog.CogConfiguration;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.catalog.index.ObjectFactory;
@@ -143,6 +142,9 @@ public class Utils {
 
     private static final String MVCC_KEY = "MVCC";
 
+    public static final String DEFAULT_RANGE_READER =
+            "it.geosolutions.imageioimpl.plugins.cog.HttpRangeReader";
+
     private static final double RESOLUTION_TOLERANCE_FACTOR = 1E-2;
 
     public static final Key EXCLUDE_MOSAIC = new Key(Boolean.class);
@@ -151,6 +153,8 @@ public class Utils {
     public static final Hints EXCLUDE_MOSAIC_HINTS = new Hints(Utils.EXCLUDE_MOSAIC, true);
 
     public static final Key CHECK_AUXILIARY_METADATA = new Key(Boolean.class);
+
+    public static final Key COG_SETTINGS = new Hints.Key(Map.class);
 
     public static final Key AUXILIARY_FILES_PATH = new Key(String.class);
 
@@ -168,9 +172,9 @@ public class Utils {
 
     static final String DEFAULT = "default";
 
+    public static final String DATASTORE_PROPERTIES = "datastore.properties";
+
     public static final String PROPERTIES_SEPARATOR = ";";
-    /** EHCache instance to cache histograms */
-    private static Cache ehcache;
 
     /** RGB to GRAY coefficients (for Luminance computation) */
     public static final double RGB_TO_GRAY_MATRIX[][] = {{0.114, 0.587, 0.299, 0}};
@@ -337,6 +341,16 @@ public class Utils {
 
         public static final String GRANULE_COLLECTOR_FACTORY = "GranuleCollectorFactory";
 
+        public static final String COG = "Cog";
+
+        public static final String COG_RANGE_READER = "CogRangeReader";
+
+        public static final String COG_USE_CACHE = "CogUseCache";
+
+        public static final String COG_USER = "CogUser";
+
+        public static final String COG_PASSWORD = "CogPassword";
+
         /**
          * The NoData value used in case no granule is found, but the request falls inside the image
          * mosaic bounds
@@ -489,7 +503,7 @@ public class Utils {
         }
 
         // this is going to help us with catching exceptions and logging them
-        final Queue<Throwable> exceptions = new LinkedList<Throwable>();
+        final Queue<Throwable> exceptions = new LinkedList<>();
         try {
 
             final ImageMosaicEventHandlers.ProcessingEventListener listener =
@@ -654,6 +668,11 @@ public class Utils {
                     Boolean.valueOf(
                             properties.getProperty(Prop.CHECK_AUXILIARY_METADATA, "false").trim());
             retValue.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
+        }
+
+        // COG Settings
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG)) {
+            setCogConfig(catalogConfigurationBean, properties, ignorePropertiesSet);
         }
 
         //
@@ -951,6 +970,34 @@ public class Utils {
 
         // return value
         return retValue;
+    }
+
+    private static void setCogConfig(
+            CatalogConfigurationBean catalogConfigurationBean,
+            Properties properties,
+            Set<String> ignorePropertiesSet) {
+        final boolean ignoreSome = ignorePropertiesSet != null && !ignorePropertiesSet.isEmpty();
+        final boolean cog = Boolean.valueOf(properties.getProperty(Prop.COG, "false").trim());
+        if (cog) {
+            CogConfiguration cogBean = new CogConfiguration();
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_RANGE_READER)) {
+                cogBean.setRangeReader(properties.getProperty(Prop.COG_RANGE_READER));
+            } else {
+                cogBean.setRangeReader(DEFAULT_RANGE_READER);
+            }
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_USE_CACHE)) {
+                final boolean cogUseCaching =
+                        Boolean.valueOf(properties.getProperty(Prop.COG_USE_CACHE, "false").trim());
+                cogBean.setUseCache(cogUseCaching);
+            }
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_USER)) {
+                cogBean.setUser(properties.getProperty(Prop.COG_USER));
+            }
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_PASSWORD)) {
+                cogBean.setPassword(properties.getProperty(Prop.COG_PASSWORD));
+            }
+            catalogConfigurationBean.setCogConfiguration(cogBean);
+        }
     }
 
     private static CoordinateReferenceSystem decodeSrs(String property) throws FactoryException {
@@ -1335,14 +1382,15 @@ public class Utils {
     public static Map<String, Serializable> createDataStoreParamsFromPropertiesFile(
             Properties properties, DataStoreFactorySpi spi) throws IOException {
         // get the params
-        final Map<String, Serializable> params = new HashMap<String, Serializable>();
+        final Map<String, Serializable> params = new HashMap<>();
         final Param[] paramsInfo = spi.getParametersInfo();
         for (Param p : paramsInfo) {
             // search for this param and set the value if found
             if (properties.containsKey(p.key)) {
-                params.put(
-                        p.key,
-                        (Serializable) Converters.convert(properties.getProperty(p.key), p.type));
+                @SuppressWarnings("unchecked")
+                Serializable converted =
+                        (Serializable) Converters.convert(properties.getProperty(p.key), p.type);
+                params.put(p.key, converted);
             } else if (p.required && p.sample == null)
                 throw new IOException("Required parameter missing: " + p.toString());
         }
@@ -1353,12 +1401,15 @@ public class Utils {
     public static Map<String, Serializable> filterDataStoreParams(
             Properties properties, DataStoreFactorySpi spi) throws IOException {
         // get the params
-        final Map<String, Serializable> params = new HashMap<String, Serializable>();
+        final Map<String, Serializable> params = new HashMap<>();
         final Param[] paramsInfo = spi.getParametersInfo();
         for (Param p : paramsInfo) {
             // search for this param and set the value if found
             if (properties.containsKey(p.key)) {
-                params.put(p.key, (Serializable) Converters.convert(properties.get(p.key), p.type));
+                @SuppressWarnings("unchecked")
+                Serializable converted =
+                        (Serializable) Converters.convert(properties.get(p.key), p.type);
+                params.put(p.key, converted);
             } else if (p.required && p.sample == null)
                 throw new IOException("Required parameter missing: " + p.toString());
         }
@@ -1405,32 +1456,26 @@ public class Utils {
 
                 // this can be used to look for properties files that do NOT
                 // define a datastore
-                final File[] properties =
-                        sourceFile.listFiles(
-                                (FilenameFilter)
-                                        FileFilterUtils.and(
-                                                FileFilterUtils.notFileFilter(
-                                                        FileFilterUtils.nameFileFilter(
-                                                                "datastore.properties")),
-                                                FileFilterUtils.makeFileOnly(
-                                                        FileFilterUtils.suffixFileFilter(
-                                                                ".properties"))));
 
                 // do we have a valid datastore + mosaic properties pair?
+                File[] properties = null;
                 if (Utils.checkFileReadable(dataStoreProperties)) {
                     // we have a datastore.properties file
                     datastoreFound = true;
 
                     // check the first valid mosaic properties
-                    boolean found = false;
-                    for (File propFile : properties)
-                        if (Utils.checkFileReadable(propFile)) {
-                            // load it
-                            if (null != Utils.loadMosaicProperties(URLs.fileToUrl(propFile))) {
-                                found = true;
-                                break;
+                    boolean found = null != Utils.lookForMosaicConfig(sourceURL);
+                    if (!found) {
+                        properties = lookForPropertiesFiles(sourceFile);
+                        for (File propFile : properties)
+                            if (Utils.checkFileReadable(propFile)) {
+                                // load it
+                                if (null != Utils.loadMosaicProperties(URLs.fileToUrl(propFile))) {
+                                    found = true;
+                                    break;
+                                }
                             }
-                        }
+                    }
 
                     // we did not find any good candidate for mosaic.properties
                     // file, this will signal it
@@ -1448,6 +1493,8 @@ public class Utils {
                 //
                 File shapeFile = null;
                 if (!datastoreFound) {
+                    properties =
+                            properties == null ? lookForPropertiesFiles(sourceFile) : properties;
                     for (File propFile : properties) {
 
                         // load properties
@@ -1545,6 +1592,37 @@ public class Utils {
             }
         }
         return sourceURL;
+    }
+
+    private static File[] lookForPropertiesFiles(File sourceFile) {
+        return sourceFile.listFiles(
+                (FilenameFilter)
+                        FileFilterUtils.and(
+                                FileFilterUtils.notFileFilter(
+                                        FileFilterUtils.nameFileFilter("datastore.properties")),
+                                FileFilterUtils.makeFileOnly(
+                                        FileFilterUtils.suffixFileFilter(".properties"))));
+    }
+
+    static MosaicConfigurationBean lookForMosaicConfig(URL sourceURL) {
+        File sourceFile = URLs.urlToFile(sourceURL);
+        File parent = sourceFile;
+        String separator = File.separator;
+        if (!sourceFile.isDirectory()) {
+            parent = sourceFile.getParentFile();
+            separator = "";
+        }
+        String sourceFilePath = sourceFile.getAbsolutePath() + separator;
+        String configPropertiesPath =
+                FilenameUtils.getFullPath(sourceFilePath)
+                        + FilenameUtils.getName(parent.getAbsolutePath())
+                        + ".properties";
+        File configFile = new File(configPropertiesPath);
+        if (!configFile.exists()) {
+            return null;
+        }
+        URL testPropertiesUrl = URLs.fileToUrl(configFile);
+        return Utils.loadMosaicProperties(testPropertiesUrl);
     }
 
     private static String getDefaultIndexName(final String locationPath) {
@@ -1690,13 +1768,6 @@ public class Utils {
     static IOFileFilter MOSAIC_SUPPORT_FILES_FILTER;
 
     /**
-     * Private constructor to initialize the ehCache instance. It can be configured through a Bean.
-     */
-    private Utils(Cache ehcache) {
-        Utils.ehcache = ehcache;
-    }
-
-    /**
      * Setup a {@link Histogram} object by deserializing a file representing a serialized Histogram.
      *
      * @return the deserialized histogram.
@@ -1705,29 +1776,11 @@ public class Utils {
         Utilities.ensureNonNull("file", file);
         Histogram histogram = null;
 
-        // Firstly: check if the histogram have been already
-        // deserialized and it is available in cache
-        if (ehcache != null && ehcache.isKeyInCache(file)) {
-            if (ehcache.isElementInMemory(file)) {
-                final Element element = ehcache.get(file);
-                if (element != null) {
-                    final Object value = element.getObjectValue();
-                    if (value != null && value instanceof Histogram) {
-                        histogram = (Histogram) value;
-                        return histogram;
-                    }
-                }
-            }
-        }
-
         // No histogram in cache. Deserializing...
         if (histogram == null) {
             try (ObjectInputStream objectStream =
                     new ObjectInputStream(new FileInputStream(file))) {
                 histogram = (Histogram) objectStream.readObject();
-                if (ehcache != null) {
-                    ehcache.put(new Element(file, histogram));
-                }
             } catch (FileNotFoundException e) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
@@ -1889,35 +1942,26 @@ public class Utils {
     }
 
     public static ImageLayout getImageLayoutHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-            return null;
-        } else {
-            return (ImageLayout) renderHints.get(JAI.KEY_IMAGE_LAYOUT);
-        }
+        return (ImageLayout) getHintIfAvailable(renderHints, JAI.KEY_IMAGE_LAYOUT);
     }
 
     public static TileCache getTileCacheHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_TILE_CACHE)) {
-            return null;
-        } else {
-            return (TileCache) renderHints.get(JAI.KEY_TILE_CACHE);
-        }
+        return (TileCache) getHintIfAvailable(renderHints, JAI.KEY_TILE_CACHE);
     }
 
     public static BorderExtender getBorderExtenderHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-            return null;
-        } else {
-            return (BorderExtender) renderHints.get(JAI.KEY_BORDER_EXTENDER);
-        }
+        return (BorderExtender) getHintIfAvailable(renderHints, JAI.KEY_BORDER_EXTENDER);
     }
 
     public static TileScheduler getTileSchedulerHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_TILE_SCHEDULER)) {
-            return null;
-        } else {
-            return (TileScheduler) renderHints.get(JAI.KEY_TILE_SCHEDULER);
+        return (TileScheduler) getHintIfAvailable(renderHints, JAI.KEY_TILE_SCHEDULER);
+    }
+
+    public static Object getHintIfAvailable(RenderingHints hints, RenderingHints.Key key) {
+        if (hints != null && hints.containsKey(key)) {
+            return hints.get(key);
         }
+        return null;
     }
 
     public static Hints setupJAIHints(RenderingHints inputHints) {
@@ -1952,17 +1996,17 @@ public class Utils {
                             + targetClass.toString());
         }
         if (targetClass == Byte.class) {
-            return new Range<Byte>(Byte.class, (Byte) firstValue, (Byte) secondValue);
+            return new Range<>(Byte.class, (Byte) firstValue, (Byte) secondValue);
         } else if (targetClass == Short.class) {
-            return new Range<Short>(Short.class, (Short) firstValue, (Short) secondValue);
+            return new Range<>(Short.class, (Short) firstValue, (Short) secondValue);
         } else if (targetClass == Integer.class) {
-            return new Range<Integer>(Integer.class, (Integer) firstValue, (Integer) secondValue);
+            return new Range<>(Integer.class, (Integer) firstValue, (Integer) secondValue);
         } else if (targetClass == Long.class) {
-            return new Range<Long>(Long.class, (Long) firstValue, (Long) secondValue);
+            return new Range<>(Long.class, (Long) firstValue, (Long) secondValue);
         } else if (targetClass == Float.class) {
-            return new Range<Float>(Float.class, (Float) firstValue, (Float) secondValue);
+            return new Range<>(Float.class, (Float) firstValue, (Float) secondValue);
         } else if (targetClass == Double.class) {
-            return new Range<Double>(Double.class, (Double) firstValue, (Double) secondValue);
+            return new Range<>(Double.class, (Double) firstValue, (Double) secondValue);
         } else return null;
     }
 

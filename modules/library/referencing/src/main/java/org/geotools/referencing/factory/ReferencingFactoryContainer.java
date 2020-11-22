@@ -17,7 +17,11 @@
 package org.geotools.referencing.factory;
 
 import java.awt.RenderingHints;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -33,10 +37,25 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.crs.*;
-import org.opengis.referencing.cs.*;
-import org.opengis.referencing.datum.*;
-import org.opengis.referencing.operation.*;
+import org.opengis.referencing.crs.CRSFactory;
+import org.opengis.referencing.crs.CompoundCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.SingleCRS;
+import org.opengis.referencing.crs.VerticalCRS;
+import org.opengis.referencing.cs.CSFactory;
+import org.opengis.referencing.cs.CartesianCS;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.EllipsoidalCS;
+import org.opengis.referencing.datum.Datum;
+import org.opengis.referencing.datum.DatumFactory;
+import org.opengis.referencing.datum.VerticalDatumType;
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.Matrix;
 
 /**
  * A set of utilities methods working on factories. Many of those methods requires more than one
@@ -321,7 +340,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
                 return single;
             }
             final int i = xyFirst ? hi : vi;
-            components = new ArrayList<SingleCRS>(components);
+            components = new ArrayList<>(components);
             components.remove(i);
             components.set(i, single);
             final SingleCRS[] c = components.toArray(new SingleCRS[components.size()]);

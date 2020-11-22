@@ -22,7 +22,12 @@ import java.util.List;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineSegment;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Builds a graph representing a line network in which edges in the network are represented by
@@ -68,7 +73,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
             Coordinate[] coordinates = ls.getCoordinates();
             List<Coordinate> coordinateList = Arrays.asList(coordinates);
             // list from asList does not support add(index,object), must make an arraylist
-            List<Coordinate> nCoordinateList = new ArrayList<Coordinate>(coordinateList);
+            List<Coordinate> nCoordinateList = new ArrayList<>(coordinateList);
             if (!ls.getCoordinateN(0).equals(lineSegment.p0)) {
                 nCoordinateList.add(0, lineSegment.p0);
             } else if (!ls.getCoordinateN(ls.getNumPoints() - 1).equals(lineSegment.p1)) {

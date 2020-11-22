@@ -41,7 +41,7 @@ class DefaultResourceInfo implements ResourceInfo {
 
     public DefaultResourceInfo(FeatureSource fs) {
         this.fs = fs;
-        words = new HashSet<String>();
+        words = new HashSet<>();
         {
             words.add("features");
             words.add(fs.getSchema().getName().toString());

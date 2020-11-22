@@ -40,8 +40,8 @@ public class RestrictionHandler extends XSIElementHandler {
     private String id;
     private String base;
     private Object child;
-    private List constraints;
-    private List attrDecs;
+    private List<FacetHandler> constraints;
+    private List<XSIElementHandler> attrDecs;
     private AnyAttributeHandler anyAttribute;
 
     /** @see java.lang.Object#hashCode() */
@@ -77,7 +77,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // enumeration
             if (EnumerationHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 EnumerationHandler eh = new EnumerationHandler();
@@ -89,7 +89,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // fractionDigits
             if (FractionDigitsHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 FractionDigitsHandler eh = new FractionDigitsHandler();
@@ -101,7 +101,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // length
             if (LengthHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 LengthHandler eh = new LengthHandler();
@@ -113,7 +113,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // minInclusive
             if (MinInclusiveHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 MinInclusiveHandler eh = new MinInclusiveHandler();
@@ -125,7 +125,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // maxInclusive
             if (MaxInclusiveHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 MaxInclusiveHandler eh = new MaxInclusiveHandler();
@@ -137,7 +137,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // minExclusive
             if (MinExclusiveHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 MinExclusiveHandler eh = new MinExclusiveHandler();
@@ -149,7 +149,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // maxExclusive
             if (MaxExclusiveHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 MaxExclusiveHandler eh = new MaxExclusiveHandler();
@@ -161,7 +161,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // maxLength
             if (MaxLengthHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 MaxLengthHandler eh = new MaxLengthHandler();
@@ -173,7 +173,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // minLength
             if (MinLengthHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 MinLengthHandler eh = new MinLengthHandler();
@@ -185,7 +185,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // pattern
             if (PatternHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 PatternHandler eh = new PatternHandler();
@@ -197,7 +197,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // totalDigits
             if (TotalDigitsHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (constraints == null) {
-                    constraints = new LinkedList();
+                    constraints = new LinkedList<>();
                 }
 
                 TotalDigitsHandler eh = new TotalDigitsHandler();
@@ -277,7 +277,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // attribute
             if (AttributeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (attrDecs == null) {
-                    attrDecs = new LinkedList();
+                    attrDecs = new LinkedList<>();
                 }
 
                 AttributeHandler ah = new AttributeHandler();
@@ -289,7 +289,7 @@ public class RestrictionHandler extends XSIElementHandler {
             // attributeGroup
             if (AttributeGroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (attrDecs == null) {
-                    attrDecs = new LinkedList();
+                    attrDecs = new LinkedList<>();
                 }
 
                 AttributeGroupHandler ah = new AttributeGroupHandler();

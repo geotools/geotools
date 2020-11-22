@@ -86,7 +86,8 @@ public class GMLLineStringPropertyTypeBinding extends AbstractComplexBinding {
         return GML2EncodingUtils.GeometryPropertyType_getProperty((LineString) object, name, false);
     }
 
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         return GML2EncodingUtils.GeometryPropertyType_getProperties((LineString) object);
     }
 }

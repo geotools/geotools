@@ -16,7 +16,10 @@
  */
 package org.geotools.ows.wmts.client;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileReader;
@@ -324,5 +327,32 @@ public class WMTSTileFactory4326Test {
         // check that url contains style instead of {style}
         assertTrue(url.contains(service.getStyleName()));
         assertFalse(url.contains("{style}"));
+    }
+
+    @Test
+    public void testWMTSTileWithStyleInCapabilities2() throws Exception {
+        // capabilities file with resource URL having an
+        // {Style} placeholder
+        URL capaResource = getClass().getClassLoader().getResource("test-data/basemapGetCapa.xml");
+
+        WMTSCapabilities capa = createCapabilities(new File(capaResource.toURI()));
+
+        String baseURL =
+                "https://maps1.wien.gv.at/basemap/bmapoberflaeche/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg";
+        WMTSTileService service =
+                new WMTSTileService(
+                        baseURL,
+                        WMTSServiceType.REST,
+                        capa.getLayer("bmaphidpi"),
+                        "normal",
+                        capa.getMatrixSet("EPSG:4326"));
+
+        WMTSTileIdentifier tileId =
+                new WMTSTileIdentifier(1, 1, service.getZoomLevel(1), "SomeName");
+        WMTSTile tile = new WMTSTile(tileId, service);
+        String url = tile.getUrl().toString();
+        // check that url contains style name instead of {Style}
+        assertTrue(url.contains(service.getStyleName()));
+        assertFalse(url.contains("{Style}"));
     }
 }

@@ -252,7 +252,7 @@ public class SpatialCapabilitiesTypeImpl extends EObjectImpl implements SpatialC
 
     @Override
     public Collection<GeometryOperand> getGeometryOperands() {
-        List<GeometryOperand> geometryOperands = new ArrayList<GeometryOperand>();
+        List<GeometryOperand> geometryOperands = new ArrayList<>();
         if (getGeometryOperands2() != null) {
             for (GeometryOperandType go : getGeometryOperands2().getGeometryOperand()) {
                 geometryOperands.add(GeometryOperand.get(go.getName().getNamespaceURI(), go.getName().getLocalPart()));

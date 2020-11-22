@@ -46,6 +46,7 @@ import org.opengis.filter.Filter;
  *
  * @author Andrea Aime - GeoSolutions
  */
+@SuppressWarnings("unchecked") // don't know how to make it work without raw types...
 class DataAccessStoreWrapper implements DataStore {
 
     DataAccess delegate;
@@ -172,8 +173,7 @@ class DataAccessStoreWrapper implements DataStore {
         if (fs instanceof SimpleFeatureStore) {
             ((SimpleFeatureStore) fs).setTransaction(transaction);
         }
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(
-                fs.getSchema(), fs.getFeatures().features());
+        return new DelegateFeatureReader<>(fs.getSchema(), fs.getFeatures().features());
     }
 
     @Override

@@ -141,8 +141,15 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         st = cx.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         st.setFetchSize(featureSource.getDataStore().getFetchSize());
 
-        ((BasicSQLDialect) featureSource.getDataStore().getSQLDialect())
-                .onSelect(st, cx, featureType);
+        SQLDialect sqlDialect = featureSource.getDataStore().getSQLDialect();
+        if (sqlDialect instanceof BasicSQLDialect) {
+            ((BasicSQLDialect) sqlDialect).onSelect(st, cx, featureType);
+        } else if (sqlDialect instanceof PreparedStatementSQLDialect
+                && st instanceof PreparedStatement) {
+            ((PreparedStatementSQLDialect) sqlDialect)
+                    .onSelect((PreparedStatement) st, cx, featureType);
+        }
+
         runQuery(() -> st.executeQuery(sql), st);
     }
 
@@ -421,18 +428,22 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 // conversion will be needed)
                 if (value != null) {
                     EnumMapper mapper = enumMappers[i];
-                    if (mapper != null)
+                    Object converted = null;
+                    if (mapper != null) {
                         value = mapper.fromInteger(Converters.convert(value, Integer.class));
-                    Class binding = type.getType().getBinding();
-                    Object converted = Converters.convert(value, binding);
+                        converted = value;
+                    } else {
+                        converted = dataStore.dialect.convertValue(value, type);
+                    }
+
                     if (converted != null && converted != value) {
                         value = converted;
                         if (dataStore.getLogger().isLoggable(Level.FINER)) {
                             String msg =
                                     value
                                             + " is not of type "
-                                            + binding.getName()
-                                            + ", attempting conversion";
+                                            + type.getType().getBinding().getName()
+                                            + ", value was converted";
                             dataStore.getLogger().finer(msg);
                         }
                     }
@@ -502,7 +513,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      */
     private int[] buildAttributeRsIndex() {
         LinkedHashSet<String> pkColumns = dataStore.getColumnNames(pkey);
-        List<String> pkColumnsList = new ArrayList<String>(pkColumns);
+        List<String> pkColumnsList = new ArrayList<>(pkColumns);
         int[] indexes = new int[featureType.getAttributeCount()];
         int exposedPks = 0;
         for (int i = 0; i < indexes.length; i++) {
@@ -592,7 +603,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         HashMap<String, Integer> index;
 
         /** user data */
-        HashMap<Object, Object> userData = new HashMap<Object, Object>();
+        HashMap<Object, Object> userData = new HashMap<>();
 
         /** true if primary keys are not returned (the default is false) */
         boolean exposePrimaryKeys;
@@ -625,7 +636,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             dirty = new boolean[values.length];
 
             // set up name lookup
-            index = new HashMap<String, Integer>();
+            index = new HashMap<>();
 
             int offset = 0;
 
@@ -913,6 +924,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return true;
         }
 
+        @SuppressWarnings("unchecked")
         public void setValue(Object value) {
             setValue((Collection<Property>) value);
         }

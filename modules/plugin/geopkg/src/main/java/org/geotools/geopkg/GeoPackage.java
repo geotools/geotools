@@ -62,7 +62,8 @@ import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
-import org.geotools.geopkg.geom.GeometryFunction;
+import org.geotools.geopkg.geom.GeometryBooleanFunction;
+import org.geotools.geopkg.geom.GeometryDoubleFunction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCFeatureStore;
@@ -75,6 +76,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
@@ -117,6 +119,14 @@ public class GeoPackage implements Closeable {
     public static final String SPATIAL_INDEX = "gpkg_spatial_index";
 
     public static final String SCHEMA = "gpkg_schema";
+
+    /**
+     * Adding this key into a {@link FeatureType#getUserData()} with a value of true will allow
+     * creating tables without registering them as feature entries in the GeoPackage. Used by
+     * extensions to create extra feature tables that should be visible only by clients aware of the
+     * specific extension intent and usage.
+     */
+    public static final String SKIP_REGISTRATION = "skip_registration";
 
     /**
      * Add this among a AttributeType user data, in order to force a particular {@link DataColumn}
@@ -187,7 +197,7 @@ public class GeoPackage implements Closeable {
     public GeoPackage(File file, String user, String passwd, boolean readOnly) throws IOException {
         this.file = file;
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         if (user != null) {
             params.put(GeoPkgDataStoreFactory.USER.key, user);
         }
@@ -200,7 +210,7 @@ public class GeoPackage implements Closeable {
 
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
         params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
-        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE, 1000);
+        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 1000);
 
         this.connPool = new GeoPkgDataStoreFactory(writerConfig).createDataSource(params);
     }
@@ -209,7 +219,18 @@ public class GeoPackage implements Closeable {
         this.connPool = dataSource;
     }
 
-    GeoPackage(JDBCDataStore dataStore) {
+    /**
+     * Builds a GeoPackage from the given store (that has supposedly been created by the {@link
+     * GeoPkgDataStoreFactory)}. Used to get access to lower level methods and internals of the
+     * GeoPackage.
+     *
+     * @param dataStore
+     */
+    public GeoPackage(JDBCDataStore dataStore) {
+        if (!(dataStore.getSQLDialect() instanceof GeoPkgDialect)) {
+            throw new IllegalArgumentException(
+                    "Invalid data store, should be associated to a GeoPkgDialect");
+        }
         this.dataStore = dataStore;
         this.connPool = dataStore.getDataSource();
     }
@@ -220,7 +241,7 @@ public class GeoPackage implements Closeable {
 
         // enrich params with the basics
         Map<String, Object> params =
-                new HashMap(storeParams != null ? storeParams : Collections.emptyMap());
+                new HashMap<>(storeParams != null ? storeParams : Collections.emptyMap());
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
         params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
 
@@ -308,56 +329,67 @@ public class GeoPackage implements Closeable {
         Function.create(
                 cx,
                 "ST_MinX",
-                new GeometryFunction() {
-                    @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                new GeometryDoubleFunction() {
+
+                    public double execute(GeoPkgGeomReader reader) throws IOException {
                         return reader.getEnvelope().getMinX();
                     }
-                });
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
 
         // maxx
         Function.create(
                 cx,
                 "ST_MaxX",
-                new GeometryFunction() {
+                new GeometryDoubleFunction() {
                     @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                    public double execute(GeoPkgGeomReader reader) throws IOException {
                         return reader.getEnvelope().getMaxX();
                     }
-                });
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
 
         // miny
         Function.create(
                 cx,
                 "ST_MinY",
-                new GeometryFunction() {
-                    @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                new GeometryDoubleFunction() {
+
+                    public double execute(GeoPkgGeomReader reader)
+                            throws IOException, SQLException {
                         return reader.getEnvelope().getMinY();
                     }
-                });
-
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
         // maxy
         Function.create(
                 cx,
                 "ST_MaxY",
-                new GeometryFunction() {
-                    @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                new GeometryDoubleFunction() {
+
+                    public double execute(GeoPkgGeomReader reader)
+                            throws IOException, SQLException {
                         return reader.getEnvelope().getMaxY();
                     }
-                });
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
 
         // empty
         Function.create(
                 cx,
                 "ST_IsEmpty",
-                new GeometryFunction() {
+                new GeometryBooleanFunction() {
                     @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                    public boolean execute(GeoPkgGeomReader reader) throws IOException {
                         return reader.getHeader().getFlags().isEmpty();
                     }
-                });
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
     }
 
     /**
@@ -538,7 +570,7 @@ public class GeoPackage implements Closeable {
 
     /** Returns list of contents of the geopackage. */
     public List<Entry> contents() {
-        List<Entry> contents = new ArrayList<Entry>();
+        List<Entry> contents = new ArrayList<>();
         try {
             try (Connection cx = connPool.getConnection()) {
 
@@ -584,7 +616,7 @@ public class GeoPackage implements Closeable {
         try {
 
             try (Connection cx = connPool.getConnection()) {
-                List<FeatureEntry> entries = new ArrayList();
+                List<FeatureEntry> entries = new ArrayList<>();
                 String sql =
                         format(
                                 "SELECT a.*, b.column_name, b.geometry_type_name, b.z, b.m, c.organization_coordsys_id, c.definition"
@@ -682,7 +714,7 @@ public class GeoPackage implements Closeable {
             GeoPkgExtensionFactory factory = factories.next();
             GeoPkgExtension extension = factory.getExtension(extensionClass, this);
             if (extension != null) {
-                return (T) extension;
+                return extensionClass.cast(extension);
             }
         }
 
@@ -894,9 +926,13 @@ public class GeoPackage implements Closeable {
 
     static Geometries findGeometryType(SimpleFeatureType schema) {
         GeometryDescriptor gd = findGeometryDescriptor(schema);
-        return gd != null
-                ? Geometries.getForBinding((Class<? extends Geometry>) gd.getType().getBinding())
-                : null;
+        if (gd != null) {
+            @SuppressWarnings("unchecked")
+            Class<? extends Geometry> binding =
+                    (Class<? extends Geometry>) gd.getType().getBinding();
+            return Geometries.getForBinding(binding);
+        }
+        return null;
     }
 
     static GeometryDescriptor findGeometryDescriptor(SimpleFeatureType schema) {
@@ -925,8 +961,7 @@ public class GeoPackage implements Closeable {
 
     void addGeoPackageContentsEntry(Entry e, Connection cx) throws IOException {
         try {
-            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
-            DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+            final SimpleDateFormat dateFormat = getDateFormat();
             if (!initialised) {
                 init(cx);
             }
@@ -974,7 +1009,7 @@ public class GeoPackage implements Closeable {
             }
 
             if (e.getLastChange() != null) {
-                psb.set(DATE_FORMAT.format(e.getLastChange()));
+                psb.set(dateFormat.format(e.getLastChange()));
             }
             if (e.getBounds() != null) {
                 psb.set(e.getBounds().getMinX())
@@ -1014,6 +1049,13 @@ public class GeoPackage implements Closeable {
         } catch (Exception ex) {
             throw new IOException(ex);
         }
+    }
+
+    /** Returns a new instance of SimpleDateFormat with the default GeoPackage ISO formatting */
+    public static SimpleDateFormat getDateFormat() {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_STRING);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return dateFormat;
     }
 
     void deleteGeoPackageContentsEntry(Entry e) throws IOException {
@@ -1090,7 +1132,7 @@ public class GeoPackage implements Closeable {
      * @param e feature entry to create spatial index for
      */
     public void createSpatialIndex(FeatureEntry e) throws IOException {
-        Map<String, String> properties = new HashMap<String, String>();
+        Map<String, String> properties = new HashMap<>();
 
         PrimaryKey pk =
                 ((JDBCFeatureStore) (dataStore.getFeatureSource(e.getTableName()))).getPrimaryKey();
@@ -1146,7 +1188,7 @@ public class GeoPackage implements Closeable {
         try {
             Connection cx = connPool.getConnection();
             try {
-                List<TileEntry> entries = new ArrayList();
+                List<TileEntry> entries = new ArrayList<>();
                 String sql =
                         format(
                                 "SELECT a.*, c.organization_coordsys_id, c.definition"
@@ -1408,12 +1450,13 @@ public class GeoPackage implements Closeable {
             Integer highRow)
             throws IOException {
 
-        List<String> q = new ArrayList();
+        List<String> q = new ArrayList<>();
         addRange("zoom_level", lowZoom, highZoom, q);
         addRange("tile_column", lowCol, highCol, q);
         addRange("tile_row", lowRow, highRow, q);
 
-        StringBuffer sql = new StringBuffer("SELECT * FROM ").append(entry.getTableName());
+        StringBuffer sql =
+                new StringBuffer("SELECT * FROM \"").append(entry.getTableName()).append("\"");
         if (!q.isEmpty()) {
             sql.append(" WHERE ");
             for (String s : q) {
@@ -1503,7 +1546,7 @@ public class GeoPackage implements Closeable {
     public Set<Identifier> searchSpatialIndex(
             FeatureEntry entry, Double minX, Double minY, Double maxX, Double maxY)
             throws IOException {
-        List<String> q = new ArrayList();
+        List<String> q = new ArrayList<>();
 
         if (minX != null) {
             q.add("minx >= " + minX);
@@ -1539,7 +1582,7 @@ public class GeoPackage implements Closeable {
                     ResultSet rs = st.executeQuery(sql.toString());
 
                     try {
-                        HashSet<Identifier> ids = new HashSet<Identifier>();
+                        HashSet<Identifier> ids = new HashSet<>();
 
                         while (rs.next()) {
                             ids.add(new FeatureIdImpl(rs.getString(1)));
@@ -1624,7 +1667,7 @@ public class GeoPackage implements Closeable {
         PreparedStatement psm =
                 cx.prepareStatement(
                         format(
-                                "SELECT *, exists(SELECT 1 FROM %s data where data.zoom_level = tileMatrix.zoom_level) as has_tiles"
+                                "SELECT *, exists(SELECT 1 FROM \"%s\" data where data.zoom_level = tileMatrix.zoom_level) as has_tiles"
                                         + " FROM %s as tileMatrix"
                                         + " WHERE table_name = ?"
                                         + " ORDER BY zoom_level ASC",
@@ -1715,11 +1758,8 @@ public class GeoPackage implements Closeable {
         e.setDescription(rs.getString("description"));
         e.setTableName(rs.getString("table_name"));
         try {
-            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
-
-            DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-            e.setLastChange(DATE_FORMAT.parse(rs.getString("last_change")));
+            final SimpleDateFormat dateFormat = getDateFormat();
+            e.setLastChange(dateFormat.parse(rs.getString("last_change")));
         } catch (ParseException ex) {
             throw new IOException(ex);
         }

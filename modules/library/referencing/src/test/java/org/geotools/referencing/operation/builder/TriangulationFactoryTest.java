@@ -16,14 +16,14 @@
  */
 package org.geotools.referencing.operation.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import org.geotools.geometry.DirectPosition2D;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 
 public final class TriangulationFactoryTest {
@@ -86,7 +86,7 @@ public final class TriangulationFactoryTest {
 
         Quadrilateral quad = new Quadrilateral(leftDown, rightDown, rightTop, leftTop);
 
-        List<TINTriangle> triangles = new ArrayList<TINTriangle>();
+        List<TINTriangle> triangles = new ArrayList<>();
 
         TriangulationFactory trigfac = new TriangulationFactory(quad, vertices);
         triangles = trigfac.getTriangulation();

@@ -85,7 +85,7 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
     }
 
     public <O> O[] toArray(O[] a) {
-        List<F> list = new ArrayList<F>();
+        List<F> list = new ArrayList<>();
         FeatureIterator<F> i = features();
         try {
             while (i.hasNext()) {
@@ -111,11 +111,11 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
     }
 
     public FeatureIterator<F> features() {
-        return new FilteringFeatureIterator<F>(delegate.features(), filter);
+        return new FilteringFeatureIterator<>(delegate.features(), filter);
     }
 
     public FeatureReader<T, F> reader() throws IOException {
-        return new DelegateFeatureReader<T, F>(getSchema(), features());
+        return new DelegateFeatureReader<>(getSchema(), features());
     }
 
     public ReferencedEnvelope getBounds() {

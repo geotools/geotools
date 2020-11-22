@@ -19,7 +19,11 @@ package org.geotools.appschema.feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.geotools.feature.*;
+import org.geotools.feature.AttributeImpl;
+import org.geotools.feature.ComplexAttributeImpl;
+import org.geotools.feature.FeatureImpl;
+import org.geotools.feature.GeometryAttributeImpl;
+import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
 import org.opengis.feature.Attribute;
@@ -188,7 +192,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      */
     private Collection<Property> buildCollectionIfNull(Collection<Property> value) {
         if (value == null) {
-            return new ArrayList<Property>();
+            return new ArrayList<>();
         } else {
             return value;
         }

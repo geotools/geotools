@@ -24,7 +24,11 @@ import org.geotools.kml.KML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:LinearRingType.

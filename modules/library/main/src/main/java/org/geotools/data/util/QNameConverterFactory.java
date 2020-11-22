@@ -28,18 +28,18 @@ import org.geotools.util.factory.Hints;
  */
 public class QNameConverterFactory implements ConverterFactory {
 
-    public Converter createConverter(Class source, Class target, Hints hints) {
+    public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         if (target.equals(String.class)) {
             // qname to string
             if (source.equals(QName.class)) {
                 return new Converter() {
 
-                    public Object convert(Object source, Class target) throws Exception {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
                         QName qname = (QName) source;
                         if (qname.getPrefix() == null || "".equals(qname.getPrefix())) {
-                            return qname.getLocalPart();
+                            return target.cast(qname.getLocalPart());
                         } else {
-                            return qname.getPrefix() + ":" + qname.getLocalPart();
+                            return target.cast(qname.getPrefix() + ":" + qname.getLocalPart());
                         }
                     }
                 };

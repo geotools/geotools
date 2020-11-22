@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>24-SNAPSHOT</version>
+    <version>25-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -60,7 +60,6 @@
     <module>imagemosaic</module>
     <module>imageio-ext-gdal</module>
     <module>imagepyramid</module>
-    <module>imagemosaic-jdbc</module>
     <module>jdbc</module>
     <module>jp2k</module>
     <module>mongodb</module>

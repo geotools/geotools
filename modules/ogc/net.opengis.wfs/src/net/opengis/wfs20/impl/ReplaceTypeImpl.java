@@ -150,7 +150,7 @@ public class ReplaceTypeImpl extends AbstractTransactionActionTypeImpl implement
    */
     public EList<Object> getAny() {
     if (any == null) {
-      any = new EDataTypeUniqueEList<Object>(Object.class, this, Wfs20Package.REPLACE_TYPE__ANY);
+      any = new EDataTypeUniqueEList<>(Object.class, this, Wfs20Package.REPLACE_TYPE__ANY);
     }
     return any;
   }

@@ -69,10 +69,10 @@ public interface DataSourceFactorySpi extends Factory {
      * @throws IOException if there were any problems setting up (creating or connecting) the
      *     datasource.
      */
-    DataSource createDataSource(Map params) throws IOException;
+    DataSource createDataSource(Map<String, ?> params) throws IOException;
 
     /** Same as {@link #createDataSource(Map)}, but forces the creation of a new DataSource */
-    DataSource createNewDataSource(Map params) throws IOException;
+    DataSource createNewDataSource(Map<String, ?> params) throws IOException;
 
     /**
      * Name suitable for display to end user.
@@ -110,7 +110,7 @@ public interface DataSourceFactorySpi extends Factory {
      * @return booean true if and only if this factory can process the resource indicated by the
      *     param set and all the required params are pressent.
      */
-    boolean canProcess(Map params);
+    boolean canProcess(Map<String, ?> params);
 
     /**
      * Test to see if this data source is available, if it has all the appropriate libraries to

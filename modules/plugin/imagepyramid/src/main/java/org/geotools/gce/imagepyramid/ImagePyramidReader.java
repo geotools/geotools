@@ -17,7 +17,7 @@
 package org.geotools.gce.imagepyramid;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -485,7 +485,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
 
     public String[] getMetadataNames() {
         final String[] parentNames = super.getMetadataNames();
-        final List<String> metadataNames = new ArrayList<String>();
+        final List<String> metadataNames = new ArrayList<>();
         metadataNames.add(TIME_DOMAIN);
         metadataNames.add(HAS_TIME_DOMAIN);
         metadataNames.add(TIME_DOMAIN_MINIMUM);

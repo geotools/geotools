@@ -57,12 +57,12 @@ public class MapPropertyAccessorFactory implements PropertyAccessorFactory {
                     return object instanceof Map;
                 }
 
-                public Object get(Object object, String xpath, Class target)
+                @SuppressWarnings("unchecked")
+                public <T> T get(Object object, String xpath, Class<T> target)
                         throws IllegalArgumentException {
                     JXPathContext context = JXPathContext.newContext(object);
                     context.setLenient(true);
-                    Object value = context.getValue(xpath);
-                    return value;
+                    return (T) context.getValue(xpath);
                 }
 
                 public void set(Object object, String xpath, Object value, Class target)

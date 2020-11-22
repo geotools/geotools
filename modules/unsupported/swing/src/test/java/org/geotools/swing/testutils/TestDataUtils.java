@@ -124,7 +124,7 @@ public class TestDataUtils {
      * @throws Exception on error accessing the feature data
      */
     private static Layer createLayer(URL url) throws Exception {
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("url", url);
         DataStore dataStore = DataStoreFinder.getDataStore(params);
         String typeName = dataStore.getTypeNames()[0];

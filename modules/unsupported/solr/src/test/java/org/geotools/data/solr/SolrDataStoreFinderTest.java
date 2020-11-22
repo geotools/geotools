@@ -42,7 +42,7 @@ public class SolrDataStoreFinderTest extends TestCase {
         assertTrue(new SolrDataStoreFactory().isAvailable());
         scanForPlugins();
 
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put(SolrDataStoreFactory.URL.key, new URL("http://localhost:8080/solr"));
         map.put(SolrDataStoreFactory.FIELD.key, "layer_type");
         map.put(SolrDataStoreFactory.NAMESPACE.key, "namesapce");

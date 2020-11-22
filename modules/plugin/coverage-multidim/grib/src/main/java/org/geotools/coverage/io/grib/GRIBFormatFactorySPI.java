@@ -31,7 +31,7 @@ public class GRIBFormatFactorySPI implements GridFormatFactorySpi {
 
     @Override
     public Map<Key, ?> getImplementationHints() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     @Override

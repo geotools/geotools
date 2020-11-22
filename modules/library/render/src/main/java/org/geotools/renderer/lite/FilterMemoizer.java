@@ -76,11 +76,14 @@ class FilterMemoizer {
         }
 
         // cache results using a memoizing proxy
-        return (T)
-                Proxy.newProxyInstance(
-                        FilterMemoizer.class.getClassLoader(),
-                        delegate.getClass().getInterfaces(),
-                        new MemoizingHandler(delegate));
+        @SuppressWarnings("unchecked")
+        T result =
+                (T)
+                        Proxy.newProxyInstance(
+                                FilterMemoizer.class.getClassLoader(),
+                                delegate.getClass().getInterfaces(),
+                                new MemoizingHandler(delegate));
+        return result;
     }
 
     private static class MemoizingHandler<T extends Filter> implements InvocationHandler {

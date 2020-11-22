@@ -91,7 +91,7 @@ public class ZonalStatisticsTest extends TestCase {
          * results
          */
         private Map<String, Map<Integer, Map<StatsType, Object>>> feature2StatisticsMap =
-                new HashMap<String, Map<Integer, Map<StatsType, Object>>>();
+                new HashMap<>();
 
         private StatisticsTool(
                 Set<StatsType> statisticsSet,
@@ -137,6 +137,7 @@ public class ZonalStatisticsTest extends TestCase {
                             ((ZonalStatistics) PROCESSOR.getOperation("Zonal"))
                                     .doOperation(params, null);
             // Results for each geometry
+            @SuppressWarnings("unchecked")
             final List<ZoneGeometry> zoneList =
                     (List<ZoneGeometry>) coverage.getProperty(ZonalStatsDescriptor.ZS_PROPERTY);
 
@@ -150,8 +151,7 @@ public class ZonalStatisticsTest extends TestCase {
 
                 final String fid = feature.getID();
                 // Creation of a Map associated with each range
-                final Map<Integer, Map<StatsType, Object>> rangeMap =
-                        new HashMap<Integer, Map<StatsType, Object>>();
+                final Map<Integer, Map<StatsType, Object>> rangeMap = new HashMap<>();
 
                 int count = 0;
                 // If local statistics are requested, then the results are stored for each range
@@ -159,7 +159,7 @@ public class ZonalStatisticsTest extends TestCase {
                     // Cycle on all the ranges
                     for (Range range : ranges) {
                         // Selection of the statistics for the selected range
-                        final Map<StatsType, Object> statsMap = new HashMap<StatsType, Object>();
+                        final Map<StatsType, Object> statsMap = new HashMap<>();
 
                         Statistics[] stats = geom.getStatsPerBandPerClassPerRange(0, 0, range);
 
@@ -182,7 +182,7 @@ public class ZonalStatisticsTest extends TestCase {
                     // If Range statistics are not local then all the results are stored into only
                     // one
                     // map.
-                    final Map<StatsType, Object> statsMap = new HashMap<StatsType, Object>();
+                    final Map<StatsType, Object> statsMap = new HashMap<>();
 
                     Statistics[] stats = geom.getStatsPerBandNoClassifierNoRange(0);
 
@@ -255,7 +255,7 @@ public class ZonalStatisticsTest extends TestCase {
                                 null);
 
         // Selection of the input geometries and creation of the related list.
-        List<SimpleFeature> polygonList = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> polygonList = new ArrayList<>();
         FeatureIterator<SimpleFeature> featureIterator = ZonalStasTest.testPolygons.features();
         while (featureIterator.hasNext()) {
             SimpleFeature feature = featureIterator.next();
@@ -264,7 +264,7 @@ public class ZonalStatisticsTest extends TestCase {
         featureIterator.close();
 
         // choose the stats
-        Set<StatsType> statsSet = new LinkedHashSet<StatsType>();
+        Set<StatsType> statsSet = new LinkedHashSet<>();
         statsSet.add(StatsType.MIN);
         statsSet.add(StatsType.MAX);
         statsSet.add(StatsType.MEAN);
@@ -272,7 +272,7 @@ public class ZonalStatisticsTest extends TestCase {
         statsSet.add(StatsType.DEV_STD);
 
         // Selection of the range where the calculations are performed
-        List<Range> includedRanges = new ArrayList<Range>();
+        List<Range> includedRanges = new ArrayList<>();
         includedRanges.add(RangeFactory.create(0f, false, 1300f, true, false));
         includedRanges.add(RangeFactory.create(1370f, true, 1600f, true, false));
 
@@ -372,7 +372,7 @@ public class ZonalStatisticsTest extends TestCase {
                                 null);
 
         // Selection of the input geometries and creation of the related list.
-        List<SimpleFeature> polygonList = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> polygonList = new ArrayList<>();
         FeatureIterator<SimpleFeature> featureIterator = ZonalStasTest.testPolygons.features();
         while (featureIterator.hasNext()) {
             SimpleFeature feature = featureIterator.next();
@@ -381,7 +381,7 @@ public class ZonalStatisticsTest extends TestCase {
         featureIterator.close();
 
         // choose the stats
-        Set<StatsType> statsSet = new LinkedHashSet<StatsType>();
+        Set<StatsType> statsSet = new LinkedHashSet<>();
         statsSet.add(StatsType.MIN);
         statsSet.add(StatsType.MAX);
         statsSet.add(StatsType.MEAN);
@@ -389,7 +389,7 @@ public class ZonalStatisticsTest extends TestCase {
         statsSet.add(StatsType.DEV_STD);
 
         // Selection of the range where the calculations are performed
-        List<Range> includedRanges = new ArrayList<Range>();
+        List<Range> includedRanges = new ArrayList<>();
         includedRanges.add(RangeFactory.create(0f, false, 1300f, true, false));
         includedRanges.add(RangeFactory.create(1370f, true, 1600f, true, false));
 

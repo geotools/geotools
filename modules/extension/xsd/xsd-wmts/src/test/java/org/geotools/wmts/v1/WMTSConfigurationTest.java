@@ -16,7 +16,10 @@
  */
 package org.geotools.wmts.v1;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -183,8 +186,6 @@ public class WMTSConfigurationTest {
         encoder.getNamespaces().declarePrefix("wmts", WMTS.NAMESPACE);
         encoder.getNamespaces().declarePrefix("xlink", XLINK.NAMESPACE);
         Document doc = encoder.encodeAsDOM(caps, WMTS.Capabilities);
-
-        print(doc);
 
         // Now evaluate what was encoded
         Map<String, String> namespaces = new HashMap<>();

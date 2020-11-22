@@ -153,9 +153,11 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
                 Object obj = map.get(name);
 
                 if (obj instanceof List) {
-                    values = (List<Object>) obj;
+                    @SuppressWarnings("unchecked")
+                    List<Object> cast = (List<Object>) obj;
+                    values = cast;
                 } else {
-                    values = new ArrayList<Object>();
+                    values = new ArrayList<>();
                     values.add(obj);
                     map.put(name, values);
                 }

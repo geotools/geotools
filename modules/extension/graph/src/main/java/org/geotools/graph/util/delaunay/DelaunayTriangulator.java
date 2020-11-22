@@ -38,7 +38,7 @@ public class DelaunayTriangulator {
 
     public DelaunayNode temp1, temp2, temp3;
     private DelaunayNode[] nodes;
-    private Vector triangleList;
+    private Vector<Triangle> triangleList;
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(DelaunayTriangulator.class);
 
@@ -57,7 +57,7 @@ public class DelaunayTriangulator {
         nodes = featuresToNodes(data);
     }
 
-    public Vector getTriangles() {
+    public Vector<Triangle> getTriangles() {
         return triangleList;
     }
 
@@ -135,7 +135,7 @@ public class DelaunayTriangulator {
         temp3 = tempNodes[nodes.length + 2];
 
         // initialize triangulation to the bounding triangle
-        triangleList = new Vector();
+        triangleList = new Vector<>();
         DelaunayEdge e1 = new DelaunayEdge(tempNodes[nodes.length], tempNodes[nodes.length + 1]);
         DelaunayEdge e2 = new DelaunayEdge(tempNodes[nodes.length], tempNodes[nodes.length + 2]);
         DelaunayEdge e3 =
@@ -174,12 +174,12 @@ public class DelaunayTriangulator {
         return g;
     }
 
-    public Graph triangleListToGraph(Vector tList) {
+    public Graph triangleListToGraph(Vector<Triangle> tList) {
         // turn what I've got into a proper GeoTools2 Graph!
         // But don't include the three temporary nodes and all incident edges.
-        Vector edgeList = new Vector();
-        Vector nodeList = new Vector();
-        Iterator triangleIterator = tList.iterator();
+        Vector<Edge> edgeList = new Vector<>();
+        Vector<Node> nodeList = new Vector<>();
+        Iterator<Triangle> triangleIterator = tList.iterator();
         while (triangleIterator.hasNext()) {
             Triangle next = (Triangle) triangleIterator.next();
             Edge[] edges = next.getEdges();
@@ -207,12 +207,12 @@ public class DelaunayTriangulator {
         return new BasicGraph(nodeList, edgeList);
     }
 
-    public Vector insertNode(DelaunayNode newNode, Vector tList) {
+    public Vector<Triangle> insertNode(DelaunayNode newNode, Vector<Triangle> tList) {
         // find triangle containing node or if node is on an edge, the two triangles bordering that
         // edge.
         // this finding-the-triangle section can be given better efficiency using the method on pp.
         // 192-193 of book mentioned above.
-        Iterator triangleIterator = tList.iterator();
+        Iterator<Triangle> triangleIterator = tList.iterator();
         Triangle contains = null;
         Triangle borderA = null;
         Triangle borderB =
@@ -220,7 +220,7 @@ public class DelaunayTriangulator {
         // intersection of 3 or more.
         boolean notDone = true;
         while ((triangleIterator.hasNext()) && (notDone)) {
-            Triangle next = (Triangle) triangleIterator.next();
+            Triangle next = triangleIterator.next();
             int relation = next.relate(newNode);
             switch (relation) {
                 case Triangle.INSIDE:
@@ -378,7 +378,8 @@ public class DelaunayTriangulator {
         return tList;
     }
 
-    private void legalizeEdge(Triangle t, DelaunayEdge e, DelaunayNode p, Vector triangleList) {
+    private void legalizeEdge(
+            Triangle t, DelaunayEdge e, DelaunayNode p, Vector<Triangle> triangleList) {
         LOGGER.fine("legalizing " + t + " and " + e.getOtherFace(t));
         if (isIllegal(t, e, p)) {
             Triangle otherFace = e.getOtherFace(t);

@@ -18,7 +18,11 @@ package org.geotools.data.geobuf;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import org.geotools.data.DataUtilities;
 import org.junit.Rule;
 import org.junit.Test;

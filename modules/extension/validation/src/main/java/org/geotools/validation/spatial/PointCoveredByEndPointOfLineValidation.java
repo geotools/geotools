@@ -56,11 +56,11 @@ public class PointCoveredByEndPointOfLineValidation extends PointLineAbstractVal
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource lineSource =
-                (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
-        SimpleFeatureSource pointSource = (SimpleFeatureSource) layers.get(getPointTypeRef());
+        SimpleFeatureSource lineSource = layers.get(getRestrictedLineTypeRef());
+        SimpleFeatureSource pointSource = layers.get(getPointTypeRef());
 
         Object[] points = pointSource.getFeatures().toArray();
         Object[] lines = lineSource.getFeatures().toArray();

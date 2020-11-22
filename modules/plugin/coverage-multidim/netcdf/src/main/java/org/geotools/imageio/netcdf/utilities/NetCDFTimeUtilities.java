@@ -30,15 +30,15 @@ public class NetCDFTimeUtilities {
 
     public static final TimeZone UTC_TIMEZONE = TimeZone.getTimeZone("GMT");
 
-    public static final Set<String> MONTH_SET = new HashSet<String>();
+    public static final Set<String> MONTH_SET = new HashSet<>();
 
-    public static final Set<String> DAY_SET = new HashSet<String>();
+    public static final Set<String> DAY_SET = new HashSet<>();
 
-    public static final Set<String> HOUR_SET = new HashSet<String>();
+    public static final Set<String> HOUR_SET = new HashSet<>();
 
-    public static final Set<String> MINUTE_SET = new HashSet<String>();
+    public static final Set<String> MINUTE_SET = new HashSet<>();
 
-    public static final Set<String> SECOND_SET = new HashSet<String>();
+    public static final Set<String> SECOND_SET = new HashSet<>();
 
     static {
         MONTH_SET.add("month");

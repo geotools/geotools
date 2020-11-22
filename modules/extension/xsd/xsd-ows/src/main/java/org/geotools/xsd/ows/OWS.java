@@ -281,7 +281,7 @@ public final class OWS extends XSD {
         return instance;
     }
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(XLINK.getInstance());
         dependencies.add(OGC.getInstance());
     }

@@ -17,7 +17,17 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Halo;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.Rule;
+import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.filter.FilterFactory;

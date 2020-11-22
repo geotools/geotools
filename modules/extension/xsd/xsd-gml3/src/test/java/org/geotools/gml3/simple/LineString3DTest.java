@@ -19,7 +19,6 @@ package org.geotools.gml3.simple;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
@@ -28,7 +27,7 @@ public class LineString3DTest extends GeometryEncoderTestSupport {
 
     public void testEncode3DLine() throws Exception {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        Geometry geometry = new WKTReader2().read("LINESTRING(0 0 50, 120 0 100)");
+        LineString geometry = (LineString) new WKTReader2().read("LINESTRING(0 0 50, 120 0 100)");
         Document doc = encode(encoder, geometry, "threed");
         // print(doc);
         assertEquals("0 0 50 120 0 100", xpath.evaluate("//gml:posList", doc));

@@ -23,7 +23,6 @@ import java.util.Set;
 import junit.framework.TestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -151,7 +150,7 @@ public class ValidatorTest extends TestCase {
         DefaultFeatureResults results = new DefaultFeatureResults();
         Set<Name> set = fixture.repository.getNames();
 
-        Map<String, FeatureSource<?, ?>> map = new HashMap<String, FeatureSource<?, ?>>();
+        Map<String, SimpleFeatureSource> map = new HashMap<>();
 
         for (Name name : set) {
             DataStore store = fixture.repository.dataStore(name);
@@ -202,7 +201,7 @@ public class ValidatorTest extends TestCase {
 
         DefaultFeatureResults results = new DefaultFeatureResults();
         Set<Name> set = fixture.repository.getNames();
-        Map<Name, FeatureSource<?, ?>> map = new HashMap<Name, FeatureSource<?, ?>>();
+        Map<Name, SimpleFeatureSource> map = new HashMap<>();
 
         for (Name name : set) {
             DataStore store = fixture.repository.dataStore(name);
@@ -220,8 +219,8 @@ public class ValidatorTest extends TestCase {
         Validator validator = new Validator(fixture.repository, fixture.processor);
 
         DefaultFeatureResults results = new DefaultFeatureResults();
-        Set set = new HashSet();
-        Map<Name, FeatureSource<?, ?>> map = new HashMap();
+        Set<String> set = new HashSet<>();
+        Map<Name, SimpleFeatureSource> map = new HashMap<>();
         set.add("RIVERS:rivers");
         map.put(new NameImpl("RIVERS", "rivers"), fixture.repository.source("RIVERS", "rivers"));
 

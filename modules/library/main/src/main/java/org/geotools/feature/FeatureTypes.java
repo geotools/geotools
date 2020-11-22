@@ -125,10 +125,10 @@ public class FeatureTypes {
     public static final SimpleFeatureType EMPTY =
             new SimpleFeatureTypeImpl(
                     new NameImpl("Empty"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
 
@@ -546,7 +546,7 @@ public class FeatureTypes {
      * is not included as an ancestor, only its strict ancestors.
      */
     public static List<FeatureType> getAncestors(FeatureType featureType) {
-        List<FeatureType> ancestors = new ArrayList<FeatureType>();
+        List<FeatureType> ancestors = new ArrayList<>();
         while (featureType.getSuper() instanceof FeatureType) {
             FeatureType superType = (FeatureType) featureType.getSuper();
             ancestors.add(superType);
@@ -667,20 +667,23 @@ public class FeatureTypes {
                 && equalsAncestors(typeA, typeB);
     }
 
-    static boolean equals(List attributesA, List attributesB, boolean compareUserMaps) {
+    static boolean equals(
+            List<AttributeDescriptor> attributesA,
+            List<AttributeDescriptor> attributesB,
+            boolean compareUserMaps) {
         return equals(
-                (AttributeDescriptor[])
-                        attributesA.toArray(new AttributeDescriptor[attributesA.size()]),
-                (AttributeDescriptor[])
-                        attributesB.toArray(new AttributeDescriptor[attributesB.size()]),
+                attributesA.toArray(new AttributeDescriptor[attributesA.size()]),
+                attributesB.toArray(new AttributeDescriptor[attributesB.size()]),
                 compareUserMaps);
     }
 
-    public static boolean equals(List attributesA, List attributesB) {
+    public static boolean equals(
+            List<AttributeDescriptor> attributesA, List<AttributeDescriptor> attributesB) {
         return equals(attributesA, attributesB, false);
     }
 
-    public static boolean equalsExact(List attributesA, List attributesB) {
+    public static boolean equalsExact(
+            List<AttributeDescriptor> attributesA, List<AttributeDescriptor> attributesB) {
         return equals(attributesA, attributesB, true);
     }
 
@@ -714,11 +717,11 @@ public class FeatureTypes {
         return ancestors(typeA).equals(ancestors(typeB));
     }
 
-    public static Set ancestors(SimpleFeatureType featureType) {
+    public static Set<FeatureType> ancestors(SimpleFeatureType featureType) {
         if (featureType == null || getAncestors(featureType).isEmpty()) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
-        return new HashSet(getAncestors(featureType));
+        return new HashSet<>(getAncestors(featureType));
     }
 
     public static boolean equals(AttributeDescriptor a, AttributeDescriptor b) {
@@ -748,7 +751,7 @@ public class FeatureTypes {
      * Tolerant map comparison. Two maps are considered to be equal if they express the same
      * content. So for example two null maps are equal, but also a null and an empty one are
      */
-    static boolean equals(Map a, Map b) {
+    static boolean equals(Map<?, ?> a, Map<?, ?> b) {
         if (a == b) return true;
 
         // null == null handled above

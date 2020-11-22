@@ -103,7 +103,7 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
    */
     public EList<QName> getTypeName() {
     if (typeName == null) {
-      typeName = new EDataTypeEList<QName>(QName.class, this, Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME);
+      typeName = new EDataTypeEList<>(QName.class, this, Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME);
     }
     return typeName;
   }

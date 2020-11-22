@@ -133,7 +133,7 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
             return Collections.emptyList();
         }
         List<Node> children = node.getChildren();
-        List<String> names = new ArrayList<String>(children.size());
+        List<String> names = new ArrayList<>(children.size());
         for (Node child : children) {
             InstanceComponent component = child.getComponent();
             String paramValue = component.getName();

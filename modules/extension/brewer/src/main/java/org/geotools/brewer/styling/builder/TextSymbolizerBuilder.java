@@ -31,7 +31,7 @@ import org.opengis.filter.expression.Expression;
 public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     FillBuilder fill = new FillBuilder(this).unset();
 
-    List<FontBuilder> fonts = new ArrayList<FontBuilder>();
+    List<FontBuilder> fonts = new ArrayList<>();
 
     FontBuilder font;
 

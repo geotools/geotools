@@ -16,11 +16,15 @@
  */
 package org.geotools.renderer.lite;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
+import org.apache.commons.lang3.tuple.Pair;
+import org.geotools.filter.function.InFunction;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.util.Converters;
 import org.opengis.annotation.Extension;
@@ -45,6 +49,7 @@ import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
@@ -111,7 +116,58 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
 
     @Override
     public Object visit(Or filter, Object extraData) {
-        return memoize(filter, extraData, super::visit);
+        return memoize(filter, extraData, this::inFilterOptimizer);
+    }
+
+    /** Checks if an Or filter can be replaced by a single IN condition. */
+    private Object inFilterOptimizer(Or filter, Object extraData) {
+        InFunction inFilter = replaceWithInFilter(filter);
+        if (inFilter == null) return super.visit(filter, extraData);
+        return ff.equals(inFilter, ff.literal(true));
+    }
+
+    /**
+     * Check if it's possible generate an IN function from the provided OR filter. If the OR filter
+     * doesn't accomplish the conditions, returns null.
+     */
+    private InFunction replaceWithInFilter(Or filter) {
+        List<Filter> children = filter.getChildren();
+        Expression expression = null;
+        List<Literal> literals = new ArrayList<>(children.size());
+        for (Filter childFilter : children) {
+            if (!(childFilter instanceof PropertyIsEqualTo)) return null;
+            PropertyIsEqualTo eqto = (PropertyIsEqualTo) childFilter;
+            Pair<Expression, Literal> equalsParameters = getEqualsParameters(eqto);
+            if (equalsParameters == null) return null;
+            if (expression == null) {
+                expression = equalsParameters.getLeft();
+            } else {
+                if (!Objects.equals(expression, equalsParameters.getLeft())) return null;
+            }
+            literals.add(equalsParameters.getRight());
+        }
+        // create the IN function instance
+        List<Expression> inParameters = new ArrayList<>(literals.size() + 1);
+        inParameters.add(expression);
+        inParameters.addAll(literals);
+        InFunction inFunction = new InFunction();
+        inFunction.setParameters(inParameters);
+        return inFunction;
+    }
+
+    private Pair<Expression, Literal> getEqualsParameters(PropertyIsEqualTo equals) {
+        Literal literal = null;
+        Expression expression = null;
+        if (equals.getExpression1() instanceof Literal) {
+            literal = (Literal) equals.getExpression1();
+            expression = equals.getExpression2();
+        } else if (equals.getExpression2() instanceof Literal) {
+            literal = (Literal) equals.getExpression2();
+            expression = equals.getExpression1();
+        }
+
+        if (expression != null && literal != null) return Pair.of(expression, literal);
+        return null;
     }
 
     @Override
@@ -215,11 +271,15 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         if (!memoizeCandidates.contains(filter)) {
             // drill down, this clones and at the same time visits sub-filters
             // (the small parts inside a complex filter are the ones likely to repeat)
-            return (T) duplicator.apply(filter, extraData);
+            @SuppressWarnings("unchecked")
+            T result = (T) duplicator.apply(filter, extraData);
+            return result;
         }
         // see if we already built a memoized replacement for it
+        @SuppressWarnings("unchecked")
         T replacement = (T) filterReplacements.get(filter);
         if (replacement == null) {
+            @SuppressWarnings("unchecked")
             T duplicated = (T) duplicator.apply(filter, extraData);
             replacement = FilterMemoizer.memoize(duplicated);
             filterReplacements.put(filter, replacement);
@@ -299,7 +359,9 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
                     try {
                         Object value = sf.getAttribute(index);
                         if (context == null || context.isInstance(value)) {
-                            return (T) value;
+                            @SuppressWarnings("unchecked")
+                            T result = (T) value;
+                            return result;
                         } else {
                             return Converters.convert(value, context);
                         }
@@ -365,6 +427,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
 
         @Override
         @Extension
+        @SuppressWarnings("unchecked")
         public <T> T evaluate(Object object, Class<T> context) {
             if (object != lastFeature || !Objects.equals(lastContext, context)) {
                 lastResult = delegate.evaluate(object, context);

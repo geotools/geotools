@@ -16,7 +16,15 @@
  */
 package org.geotools.util;
 
-import static org.geotools.util.Classes.*;
+import static org.geotools.util.Classes.BYTE;
+import static org.geotools.util.Classes.CHARACTER;
+import static org.geotools.util.Classes.DOUBLE;
+import static org.geotools.util.Classes.FLOAT;
+import static org.geotools.util.Classes.INTEGER;
+import static org.geotools.util.Classes.LONG;
+import static org.geotools.util.Classes.SHORT;
+import static org.geotools.util.Classes.getEnumConstant;
+import static org.geotools.util.Classes.wrapperToPrimitive;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -162,7 +170,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /** Converts a value from an arbitrary type to the wrapper of {@link #arrayElementClass}. */
-    private Comparable<?> toArrayElement(Comparable<?> value) {
+    @SuppressWarnings("unchecked")
+    private <T> Comparable<T> toArrayElement(Comparable<T> value) {
         if (!relaxedClass.isInstance(value)) {
             throw new IllegalArgumentException(
                     value == null
@@ -224,7 +233,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         if (!range.isMinIncluded() || !range.isMaxIncluded()) {
             throw new UnsupportedOperationException("Open interval not yet supported");
         }
-        return add((Comparable) range.getMinValue(), (Comparable) range.getMaxValue());
+        return add(range.getMinValue(), range.getMaxValue());
     }
 
     /**
@@ -236,6 +245,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @return {@code true} if this set changed as a result of the call.
      * @throws IllegalArgumentException if {@code lower} is greater than {@code upper}.
      */
+    @SuppressWarnings("unchecked")
     public <N> boolean add(final Comparable<? super N> min, final Comparable<? super N> max)
             throws IllegalArgumentException {
         Comparable lower = toArrayElement(min);
@@ -450,6 +460,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @return {@code true} if this set changed as a result of the call.
      * @throws IllegalArgumentException if {@code lower} is greater than {@code upper}.
      */
+    // this class uses converters to adapt  types, cannot be type safe
+    @SuppressWarnings("unchecked")
     public <N> boolean remove(final Comparable<? super N> min, final Comparable<? super N> max)
             throws IllegalArgumentException {
         Comparable lower = toArrayElement(min);
@@ -676,9 +688,12 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      */
     private Range<T> newRange(final T lower, final T upper) {
         if (isNumeric) {
-            return new NumberRange(elementClass, lower, upper);
+            // verified it's a number in the if, but cannot make it type safe
+            @SuppressWarnings("unchecked")
+            Range<T> result = new NumberRange(elementClass, lower, upper);
+            return result;
         } else {
-            return new Range<T>(elementClass, lower, upper);
+            return new Range<>(elementClass, lower, upper);
         }
     }
 
@@ -742,7 +757,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @param value The value to search.
      * @return The index of the range which contains this value, or -1 if there is no such range.
      */
-    public int indexOfRange(final Comparable value) {
+    public <T> int indexOfRange(final Comparable<T> value) {
         int index = binarySearch(toArrayElement(value));
         if (index < 0) {
             // Found an insertion point. Make sure that the insertion
@@ -764,14 +779,13 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @return {@code true} if the given object is equals to this set.
      */
     @Override
+    @SuppressWarnings("unchecked")
     public boolean contains(final Object object) {
-        @SuppressWarnings("unchecked") // We are going to check just the line after.
         final Range<T> range = (Range<T>) object;
         if (elementClass.equals(range.elementClass)) {
             if (range.isMinIncluded() && range.isMaxIncluded()) {
-                final int index = binarySearch(toArrayElement(range.getMinValue()));
+                final int index = binarySearch(toArrayElement((Comparable<T>) range.getMinValue()));
                 if (index >= 0 && (index & 1) == 0) {
-                    @SuppressWarnings("unchecked")
                     final int c = get(index + 1).compareTo(range.getMaxValue());
                     return c == 0;
                 }

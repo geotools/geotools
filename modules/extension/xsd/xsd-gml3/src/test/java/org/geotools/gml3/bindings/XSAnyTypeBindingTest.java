@@ -145,8 +145,8 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     public ComplexAttribute testAnyTypeTest(QName typeName, String classValue) {
         Name myType = new NameImpl(typeName.getNamespaceURI(), typeName.getLocalPart());
 
-        List<Property> properties = new ArrayList<Property>();
-        List<PropertyDescriptor> propertyDescriptors = new ArrayList<PropertyDescriptor>();
+        List<Property> properties = new ArrayList<>();
+        List<PropertyDescriptor> propertyDescriptors = new ArrayList<>();
 
         // assume attributes from same namespace as typename
 
@@ -166,7 +166,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 
@@ -178,8 +178,8 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     public ComplexAttribute createUnrestrictedAttr(QName typeName, String contents) {
         Name unrestrictedType = new NameImpl(typeName.getNamespaceURI(), typeName.getLocalPart());
 
-        List<Property> properties = new ArrayList<Property>();
-        List<PropertyDescriptor> propertyDescriptors = new ArrayList<PropertyDescriptor>();
+        List<Property> properties = new ArrayList<>();
+        List<PropertyDescriptor> propertyDescriptors = new ArrayList<>();
 
         // create fake attribute simpleContent
         Name attName = new NameImpl(null, "simpleContent");
@@ -196,7 +196,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
 

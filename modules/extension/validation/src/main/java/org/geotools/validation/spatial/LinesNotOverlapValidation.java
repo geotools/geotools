@@ -54,11 +54,11 @@ public class LinesNotOverlapValidation extends LineLineAbstractValidation {
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource lineSource1 = (SimpleFeatureSource) layers.get(getLineTypeRef());
-        SimpleFeatureSource lineSource2 =
-                (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
+        SimpleFeatureSource lineSource1 = layers.get(getLineTypeRef());
+        SimpleFeatureSource lineSource2 = layers.get(getRestrictedLineTypeRef());
 
         Object[] lines1 = lineSource1.getFeatures().toArray();
         Object[] lines2 = lineSource2.getFeatures().toArray();

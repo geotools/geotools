@@ -119,14 +119,14 @@ public class DocumentWriter {
      *   <li>SCHEMA_ORDER - (String[] or Schema[]) resolve ambiguity & import
      * </ul>
      */
-    public static void writeDocument(Object value, Schema schema, File f, Map hints)
+    public static void writeDocument(Object value, Schema schema, File f, Map<String, Object> hints)
             throws OperationNotSupportedException, IOException {
         if ((f == null) || (!f.canWrite())) {
             throw new IOException("Cannot write to " + f);
         }
 
         if ((hints != null) && hints.containsKey(WRITE_SCHEMA)) {
-            Map hints2 = new HashMap(hints);
+            Map<String, Object> hints2 = new HashMap<>(hints);
             hints2.remove(WRITE_SCHEMA);
 
             File f2 =
@@ -157,7 +157,8 @@ public class DocumentWriter {
      *
      * @param hints optional hints for writing
      */
-    public static void writeDocument(Object value, Schema schema, Writer w, Map hints)
+    public static void writeDocument(
+            Object value, Schema schema, Writer w, Map<String, Object> hints)
             throws OperationNotSupportedException, IOException {
         if ((hints != null) && hints.containsKey(WRITE_SCHEMA)) {
             @SuppressWarnings("PMD.CloseResource")
@@ -186,7 +187,7 @@ public class DocumentWriter {
      *   <li>SCHEMA_ORDER - (String[] or Schema[]) resolve ambiguity & import
      * </ul>
      */
-    public static void writeFragment(Object value, Schema schema, File f, Map hints)
+    public static void writeFragment(Object value, Schema schema, File f, Map<String, Object> hints)
             throws OperationNotSupportedException, IOException {
         if ((f == null) || (!f.canWrite())) {
             throw new IOException("Cannot write to " + f);
@@ -210,7 +211,8 @@ public class DocumentWriter {
      *
      * @param hints optional hints for writing
      */
-    public static void writeFragment(Object value, Schema schema, Writer w, Map hints)
+    public static void writeFragment(
+            Object value, Schema schema, Writer w, Map<String, Object> hints)
             throws OperationNotSupportedException, IOException {
         WriterContentHandler wch =
                 new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations
@@ -249,7 +251,8 @@ public class DocumentWriter {
     }
 
     /** @throws IOException */
-    public static void writeSchema(Schema schema, Writer w, Map hints) throws IOException {
+    public static void writeSchema(Schema schema, Writer w, Map<String, Object> hints)
+            throws IOException {
         WriterContentHandler wch =
                 new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations
         Element[] elems = schema.getElements();
@@ -265,7 +268,8 @@ public class DocumentWriter {
         wch.endDocument();
     }
 
-    private static void writeSchema(Schema schema, PrintHandler ph, Map hints) throws IOException {
+    private static void writeSchema(Schema schema, PrintHandler ph, Map<String, Object> hints)
+            throws IOException {
         if (schema == null) {
             return;
         }
@@ -387,7 +391,8 @@ public class DocumentWriter {
         ph.element(XSISimpleTypes.NAMESPACE, "import", ai);
     }
 
-    private static void writeElement(Element element, Schema schema, PrintHandler ph, Map hints)
+    private static void writeElement(
+            Element element, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -547,7 +552,8 @@ public class DocumentWriter {
     }
 
     private static void writeAttribute(
-            Attribute attribute, Schema schema, PrintHandler ph, Map hints) throws IOException {
+            Attribute attribute, Schema schema, PrintHandler ph, Map<String, Object> hints)
+            throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
         if ((attribute.getId() != null) && (!attribute.getId().isEmpty())) {
@@ -644,7 +650,8 @@ public class DocumentWriter {
         ph.endElement(XSISimpleTypes.NAMESPACE, "attribute");
     }
 
-    private static void writeGroup(Group group, Schema schema, PrintHandler ph, Map hints)
+    private static void writeGroup(
+            Group group, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -705,7 +712,10 @@ public class DocumentWriter {
     }
 
     private static void writeAttributeGroup(
-            AttributeGroup attributeGroup, Schema schema, PrintHandler ph, Map hints)
+            AttributeGroup attributeGroup,
+            Schema schema,
+            PrintHandler ph,
+            Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -758,7 +768,8 @@ public class DocumentWriter {
     }
 
     private static void writeSimpleType(
-            SimpleType simpleType, Schema schema, PrintHandler ph, Map hints) throws IOException {
+            SimpleType simpleType, Schema schema, PrintHandler ph, Map<String, Object> hints)
+            throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
         if ((simpleType.getId() != null) && (!simpleType.getId().isEmpty())) {
@@ -863,7 +874,7 @@ public class DocumentWriter {
                 // determine whether to print or reference the child st
                 SimpleType[] sts = simpleType.getParents();
                 String memberTypes = null;
-                List childTs = new LinkedList();
+                List<SimpleType> childTs = new LinkedList<>();
 
                 if (sts != null) {
                     for (int j = 0; j < sts.length; j++) {
@@ -927,7 +938,8 @@ public class DocumentWriter {
         ph.endElement(XSISimpleTypes.NAMESPACE, "simpleType");
     }
 
-    private static void writeChoice(Choice choice, Schema schema, PrintHandler ph, Map hints)
+    private static void writeChoice(
+            Choice choice, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -994,7 +1006,8 @@ public class DocumentWriter {
         ph.endElement(XSISimpleTypes.NAMESPACE, "choice");
     }
 
-    private static void writeSequence(Sequence sequence, Schema schema, PrintHandler ph, Map hints)
+    private static void writeSequence(
+            Sequence sequence, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -1056,7 +1069,7 @@ public class DocumentWriter {
         ph.endElement(XSISimpleTypes.NAMESPACE, "sequence");
     }
 
-    private static void writeAll(All all, Schema schema, PrintHandler ph, Map hints)
+    private static void writeAll(All all, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -1123,7 +1136,8 @@ public class DocumentWriter {
     }
 
     private static void writeComplexType(
-            ComplexType complexType, Schema schema, PrintHandler ph, Map hints) throws IOException {
+            ComplexType complexType, Schema schema, PrintHandler ph, Map<String, Object> hints)
+            throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
         if ((complexType.getId() != null) && (!complexType.getId().isEmpty())) {
@@ -1289,14 +1303,15 @@ public class DocumentWriter {
     private static class WriterContentHandler implements PrintHandler {
         private boolean firstElement = true; // needed for NS declarations
         private Writer writer;
-        private Map prefixMappings; // when the value is null it has not been included yet into the
+        private Map<URI, String>
+                prefixMappings; // when the value is null it has not been included yet into the
         // document ...
         private Schema schema;
-        protected Map hints;
+        protected Map<String, Object> hints;
         private Schema[] searchOrder = null;
         private String encoding = "UTF-8";
 
-        WriterContentHandler(Schema schema, Writer writer, Map hints) {
+        WriterContentHandler(Schema schema, Writer writer, Map<String, Object> hints) {
             this.writer = writer;
             this.schema = schema;
             this.hints = hints;
@@ -1308,7 +1323,7 @@ public class DocumentWriter {
                 }
             }
 
-            prefixMappings = new HashMap();
+            prefixMappings = new HashMap<>();
             prefixMappings.put(schema.getTargetNamespace(), "");
 
             Schema[] imports = schema.getImports();
@@ -1641,11 +1656,11 @@ public class DocumentWriter {
                             schema,
                         };
             } else {
-                List so = new LinkedList();
+                List<Schema> so = new LinkedList<>();
 
                 if ((hints != null) && hints.containsKey(SCHEMA_ORDER)) {
                     Object order = hints.get(SCHEMA_ORDER);
-                    List targNS = new LinkedList();
+                    List<Object> targNS = new LinkedList<>(); // strings and URIs both
                     targNS.add(schema.getTargetNamespace());
 
                     if (schema.getImports() != null) {

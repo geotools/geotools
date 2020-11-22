@@ -17,6 +17,14 @@
  */
 package org.geotools.gce.geotiff;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
@@ -93,7 +101,7 @@ import org.opengis.referencing.operation.Projection;
  *
  * @author Simone Giannecchini
  */
-public class GeoTiffReaderTest extends org.junit.Assert {
+public class GeoTiffReaderTest {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class);
 

@@ -42,7 +42,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public class MemoryFeatureCollection extends AbstractFeatureCollection
         implements RandomFeatureAccess, Collection<SimpleFeature> {
-    TreeMap<String, SimpleFeature> contents = new TreeMap<String, SimpleFeature>();
+    TreeMap<String, SimpleFeature> contents = new TreeMap<>();
 
     public MemoryFeatureCollection(SimpleFeatureType schema) {
         super(schema);

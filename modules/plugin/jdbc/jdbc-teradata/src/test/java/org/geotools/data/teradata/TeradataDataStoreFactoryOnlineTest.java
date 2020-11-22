@@ -17,7 +17,12 @@
 package org.geotools.data.teradata;
 
 import static org.geotools.data.teradata.TeradataDataStoreFactory.PORT;
-import static org.geotools.jdbc.JDBCDataStoreFactory.*;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
+import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
+import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,7 +47,7 @@ public class TeradataDataStoreFactoryOnlineTest extends JDBCTestSupport {
             throws IOException {
         Properties db = fixture;
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(PORT.key, db.getProperty(PORT.key));

@@ -35,25 +35,27 @@ public class HomogeneousCRSAcceptor implements GranuleAcceptor {
 
     @Override
     public boolean accepts(
-            GridCoverage2DReader coverage,
+            GridCoverage2DReader reader,
             String inputCoverageName,
             File fileBeingProcessed,
             ImageMosaicConfigHandler mosaicConfigHandler)
             throws IOException {
         String targetCoverageName =
-                mosaicConfigHandler.getTargetCoverageName(coverage, inputCoverageName);
+                mosaicConfigHandler.getTargetCoverageName(reader, inputCoverageName);
         MosaicConfigurationBean config =
                 mosaicConfigHandler.getConfigurations().get(targetCoverageName);
-        return config == null || checkCRS(coverage, config, inputCoverageName);
+        return config == null || checkCRS(reader, config, inputCoverageName);
     }
 
     private boolean checkCRS(
-            GridCoverage2DReader coverage,
-            MosaicConfigurationBean config,
-            String inputCoverageName) {
+            GridCoverage2DReader reader, MosaicConfigurationBean config, String inputCoverageName) {
         CoordinateReferenceSystem expectedCRS = config.getCrs();
+        // old configs might be missing the CRS, in that case, use the reader's one, works fine
+        // for homogeneous CRS mosaics too
+        if (expectedCRS == null) expectedCRS = reader.getCoordinateReferenceSystem();
+
         CoordinateReferenceSystem actualCRS =
-                coverage.getCoordinateReferenceSystem(inputCoverageName);
+                reader.getCoordinateReferenceSystem(inputCoverageName);
 
         return CRS.equalsIgnoreMetadata(expectedCRS, actualCRS);
     }

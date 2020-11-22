@@ -255,7 +255,8 @@ final class BandSelector2D extends GridCoverage2D {
                 image = iw.getPlanarImage();
 
                 // Check the NOData properties
-                Map properties = source.getProperties();
+                @SuppressWarnings("unchecked")
+                Map<String, Object> properties = source.getProperties();
                 if (properties != null && CoverageUtilities.getNoDataProperty(source) != null) {
                     NoDataContainer noDataC = CoverageUtilities.getNoDataProperty(source);
                     Range noData =

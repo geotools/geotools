@@ -17,7 +17,9 @@
 package org.geotools.gce.imagemosaic.properties.time;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.geotools.util.DateTimeParser;
 
@@ -56,13 +58,12 @@ public class TimeParser {
      * @throws ParseException if the string can not be parsed.
      */
     public List<Date> parse(String value) throws ParseException {
-        Collection results = parser.parse(value);
+        Collection<?> results = parser.parse(value);
         List<Date> dates =
-                (List<Date>)
-                        results.stream()
-                                .filter(o -> o instanceof Date)
-                                .map(o -> (Date) o)
-                                .collect(Collectors.toList());
+                results.stream()
+                        .filter(o -> o instanceof Date)
+                        .map(o -> (Date) o)
+                        .collect(Collectors.toList());
         return dates;
     }
 }

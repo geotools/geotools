@@ -79,7 +79,8 @@ public class Log extends BaseMathOperationJAI {
     }
 
     /** Returns the expected range of values for the resulting image. */
-    protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
+    protected NumberRange<? extends Number> deriveRange(
+            final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         final NumberRange range = ranges[0];
         final double min = Math.log(range.getMinimum());
         final double max = Math.log(range.getMaximum());
@@ -90,6 +91,7 @@ public class Log extends BaseMathOperationJAI {
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation("algebric")) {
             parameters.set(Operator.LOG, 0);
+            @SuppressWarnings("unchecked")
             Collection<GridCoverage2D> sources =
                     (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
             for (GridCoverage2D source : sources) {

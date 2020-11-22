@@ -69,7 +69,7 @@ public abstract class TestCaseSupport extends TestCase {
     protected OGR ogr;
 
     /** Stores all temporary files here - delete on tear down. */
-    private final List tmpFiles = new ArrayList();
+    private final List<File> tmpFiles = new ArrayList<>();
 
     /** availability flag that tracks if ogr library is available */
     private static Boolean AVAILABLE;

@@ -441,7 +441,7 @@ public class OperationFactoryTest extends TestCase {
 
         sourceHorizontalCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:25831");
         sourceVerticalCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5783");
-        properties = new HashMap<String, Object>();
+        properties = new HashMap<>();
         properties.put(
                 IdentifiedObject.NAME_KEY,
                 new NamedIdentifier(Citations.fromName("TEST"), "Compound 28530+5783"));

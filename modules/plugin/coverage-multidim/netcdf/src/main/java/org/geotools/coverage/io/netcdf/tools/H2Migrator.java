@@ -230,6 +230,7 @@ public class H2Migrator {
         // extract unique values
         UniqueVisitor uniqueLocations = new UniqueVisitor(locationAttribute);
         featureSource.getFeatures(q).accepts(uniqueLocations, null);
+        @SuppressWarnings("unchecked")
         Set<String> locations = uniqueLocations.getUnique();
         // map via pathtype and return
         return locations
@@ -296,6 +297,7 @@ public class H2Migrator {
         UniqueVisitor uniqueLocations = new UniqueVisitor(locationAttribute);
         final SimpleFeatureCollection granules = granuleSource.getGranules(q);
         granules.accepts(uniqueLocations, null);
+        @SuppressWarnings("unchecked")
         Set<String> locations = uniqueLocations.getUnique();
         // map via pathtype and return
         return locations

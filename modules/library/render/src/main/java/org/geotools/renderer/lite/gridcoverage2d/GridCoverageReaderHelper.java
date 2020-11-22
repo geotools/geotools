@@ -240,7 +240,7 @@ public class GridCoverageReaderHelper {
 
         // get the areas that we are likely to have to read, and have the projection
         // handler also cut them
-        List<GridCoverage2D> coverages = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> coverages = new ArrayList<>();
         List<ReferencedEnvelope> queryEnvelopes = handler.getQueryEnvelopes();
         for (ReferencedEnvelope envelope : queryEnvelopes) {
             List<GridCoverage2D> readCoverages =

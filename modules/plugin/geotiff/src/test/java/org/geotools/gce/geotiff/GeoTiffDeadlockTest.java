@@ -1,6 +1,6 @@
 package org.geotools.gce.geotiff;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -40,7 +40,7 @@ public class GeoTiffDeadlockTest {
 
         // start them
         // System.out.println("Testing with " + numFiles + " files");
-        final List<Thread> threads = new ArrayList<Thread>();
+        final List<Thread> threads = new ArrayList<>();
         final int total = numFiles * multiplier;
         // System.out.println("Testing with " + total + " threads");
         for (int index = 0; index < total; index++) {

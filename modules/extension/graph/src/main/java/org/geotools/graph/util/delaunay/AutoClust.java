@@ -47,11 +47,11 @@ public class AutoClust {
         // Such a diagram can be obtained through
         // org.geotools.graph.util.delaunay.DelaunayTriangulator.
 
-        HashMap map = new HashMap();
-        Collection nodes = d.getNodes();
-        Collection edges = d.getEdges();
+        HashMap<DelaunayNode, AutoClustData> map = new HashMap<>();
+        Collection<Node> nodes = d.getNodes();
+        Collection<Edge> edges = d.getEdges();
         showGraph(nodes, edges, 0);
-        Iterator nodeIt = nodes.iterator();
+        Iterator<Node> nodeIt = nodes.iterator();
         double[] localDevs = new double[nodes.size()];
         int index = 0;
         while (nodeIt.hasNext()) {
@@ -88,9 +88,9 @@ public class AutoClust {
         double meanStDev = total / localDevs.length;
 
         // these three are for coloring the graph in the poster, not for algorithmic purposes
-        Vector allShortEdges = new Vector();
-        Vector allLongEdges = new Vector();
-        Vector allOtherEdges = new Vector();
+        Vector<Edge> allShortEdges = new Vector<>();
+        Vector<Edge> allLongEdges = new Vector<>();
+        Vector<Edge> allOtherEdges = new Vector<>();
 
         Iterator anotherNodeIt = nodes.iterator();
         while (anotherNodeIt.hasNext()) {
@@ -98,9 +98,9 @@ public class AutoClust {
             List localEdges = AutoClustUtils.findAdjacentEdges(next, edges);
             AutoClustData acd = (AutoClustData) map.get(next);
             Iterator edgeIt = localEdges.iterator();
-            Vector shortEdges = new Vector();
-            Vector longEdges = new Vector();
-            Vector otherEdges = new Vector();
+            Vector<Edge> shortEdges = new Vector<>();
+            Vector<Edge> longEdges = new Vector<>();
+            Vector<Edge> otherEdges = new Vector<>();
             LOGGER.fine("local mean is " + acd.getLocalMean());
             LOGGER.fine("mean st dev is " + meanStDev);
             while (edgeIt.hasNext()) {
@@ -171,9 +171,9 @@ public class AutoClust {
         while (nodeIt4.hasNext()) {
             DelaunayNode next = (DelaunayNode) nodeIt4.next();
             AutoClustData acd = (AutoClustData) map.get(next);
-            List shortEdges = acd.getShortEdges();
+            List<Edge> shortEdges = acd.getShortEdges();
             if (!(shortEdges.isEmpty())) {
-                Vector shortlyConnectedComponents = new Vector();
+                Vector<Graph> shortlyConnectedComponents = new Vector<>();
                 Iterator shortIt = shortEdges.iterator();
                 while (shortIt.hasNext()) {
                     Edge nextEdge = (Edge) shortIt.next();
@@ -209,8 +209,8 @@ public class AutoClust {
             } // end if shortEdges isn't empty
             Graph gr = getMyComponent(next, connectedComponents);
             if (gr.getNodes().size() == 1) {
-                Vector shortlyConnectedComponents = new Vector();
-                Iterator shortIt = shortEdges.iterator();
+                Vector<Graph> shortlyConnectedComponents = new Vector<>();
+                Iterator<Edge> shortIt = shortEdges.iterator();
                 while (shortIt.hasNext()) {
                     Edge nextEdge = (Edge) shortIt.next();
                     Node other = nextEdge.getOtherNode(next);
@@ -235,8 +235,8 @@ public class AutoClust {
         Iterator nodeIt5 = nodes.iterator();
         while (nodeIt5.hasNext()) {
             DelaunayNode next = (DelaunayNode) nodeIt5.next();
-            Vector edgesWithinTwo = new Vector();
-            List adjacentEdges =
+            Vector<Edge> edgesWithinTwo = new Vector<>();
+            List<Edge> adjacentEdges =
                     AutoClustUtils.findAdjacentEdges(
                             next,
                             edges); // yes, next.getEdges() could work, but there's no guarantee
@@ -301,7 +301,7 @@ public class AutoClust {
         return ret;
     }
 
-    private static void showGraph(Collection nodes, Collection edges, int phase) {
+    private static void showGraph(Collection<Node> nodes, Collection<Edge> edges, int phase) {
         Graph g = new BasicGraph(nodes, edges);
         javax.swing.JFrame frame = new javax.swing.JFrame();
         GraphViewer viewer = new GraphViewer();

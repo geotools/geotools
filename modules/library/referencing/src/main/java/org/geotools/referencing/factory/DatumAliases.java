@@ -20,7 +20,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.measure.Unit;
@@ -28,14 +38,28 @@ import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
+import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.datum.AbstractDatum;
 import org.geotools.util.LocalName;
 import org.geotools.util.NameFactory;
 import org.geotools.util.XArray;
 import org.opengis.metadata.Identifier;
+import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.datum.*;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.datum.Datum;
+import org.opengis.referencing.datum.DatumFactory;
+import org.opengis.referencing.datum.Ellipsoid;
+import org.opengis.referencing.datum.EngineeringDatum;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.datum.ImageDatum;
+import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.datum.PrimeMeridian;
+import org.opengis.referencing.datum.TemporalDatum;
+import org.opengis.referencing.datum.VerticalDatum;
+import org.opengis.referencing.datum.VerticalDatumType;
 import org.opengis.util.GenericName;
 import org.opengis.util.ScopedName;
 
@@ -95,7 +119,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * values are initially {@code String[]} objects. They are converted to {@code GenericName[]}
      * only when first needed.
      */
-    private final Map<String, Object[]> aliasMap = new HashMap<String, Object[]>();
+    private final Map<String, Object[]> aliasMap = new HashMap<>();
 
     /**
      * The authorities. This is the first line in the alias table. This array is constructed by
@@ -213,14 +237,14 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
              */
             String line = readLine(in);
             if (line != null) {
-                final List<Object> elements = new ArrayList<Object>();
+                final List<Object> elements = new ArrayList<>();
                 StringTokenizer st = new StringTokenizer(line, SEPARATORS);
                 while (st.hasMoreTokens()) {
                     final String name = st.nextToken().trim();
                     elements.add(name.length() != 0 ? new LocalName(name) : null);
                 }
                 authorities = elements.toArray(new LocalName[elements.size()]);
-                final Map<String, String> canonical = new HashMap<String, String>();
+                final Map<String, String> canonical = new HashMap<>();
                 /*
                  * Parses all aliases. They are stored as arrays of strings for now, but will be
                  * converted to array of generic names by {@link #getAliases} when first needed.
@@ -398,7 +422,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
             int count = aliases.length;
             value = properties.get(IdentifiedObject.ALIAS_KEY);
             if (value != null) {
-                final Map<String, GenericName> merged = new LinkedHashMap<String, GenericName>();
+                final Map<String, GenericName> merged = new LinkedHashMap<>();
                 putAll(NameFactory.toArray(value), merged);
                 count -= putAll(aliases, merged);
                 final Collection<GenericName> c = merged.values();
@@ -409,7 +433,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
              * all our aliases were replaced by user's aliases (count <= 0).
              */
             if (count > 0) {
-                final Map<String, Object> copy = new HashMap<String, Object>(properties);
+                final Map<String, Object> copy = new HashMap<>(properties);
                 copy.put(IdentifiedObject.ALIAS_KEY, aliases);
                 properties = copy;
             }

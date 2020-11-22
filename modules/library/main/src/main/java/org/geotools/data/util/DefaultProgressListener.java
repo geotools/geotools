@@ -93,10 +93,10 @@ public class DefaultProgressListener extends NullProgressListener
     }
 
     /** List of warnings occurred during the execution.* */
-    private final Queue<Warning> warnings = new LinkedList<Warning>();
+    private final Queue<Warning> warnings = new LinkedList<>();
 
     /** List of exceptions that were caught during executiong.* */
-    private final Queue<Throwable> exceptionQueue = new LinkedList<Throwable>();
+    private final Queue<Throwable> exceptionQueue = new LinkedList<>();
 
     /** IS the task we are listening for completed?.* */
     private boolean completed;
@@ -193,7 +193,7 @@ public class DefaultProgressListener extends NullProgressListener
      * @return a copy of the {@link Queue} of exceptions that had happened.
      */
     public Queue<Throwable> getExceptions() {
-        return new LinkedList<Throwable>(exceptionQueue);
+        return new LinkedList<>(exceptionQueue);
     }
 
     /**
@@ -220,6 +220,6 @@ public class DefaultProgressListener extends NullProgressListener
      * @return a copy of the warnings occurred.
      */
     public Queue<Warning> getWarnings() {
-        return new LinkedList<Warning>(warnings);
+        return new LinkedList<>(warnings);
     }
 }

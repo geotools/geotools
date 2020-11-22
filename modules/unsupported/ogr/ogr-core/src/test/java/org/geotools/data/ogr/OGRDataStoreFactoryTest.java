@@ -32,7 +32,7 @@ public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
     }
 
     public void testLookup() throws Exception {
-        Map<String, Serializable> map = new HashMap<String, Serializable>();
+        Map<String, Serializable> map = new HashMap<>();
         map.put(OGRDataStoreFactory.OGR_NAME.key, getAbsolutePath(STATE_POP));
         DataStore ds = null;
         try {
@@ -51,7 +51,7 @@ public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
     }
 
     public void testNamespace() throws Exception {
-        Map<String, Serializable> map = new HashMap<String, Serializable>();
+        Map<String, Serializable> map = new HashMap<>();
         URI namespace = new URI("http://jesse.com");
         map.put(OGRDataStoreFactory.NAMESPACEP.key, namespace);
         map.put(OGRDataStoreFactory.OGR_NAME.key, getAbsolutePath(STATE_POP));

@@ -17,7 +17,9 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.*;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.Rule;
+import org.geotools.styling.Symbolizer;
 import org.geotools.ysld.YamlObject;
 
 /** Handles parsing a Ysld "point" symbolizer property into a {@link Symbolizer} object. */

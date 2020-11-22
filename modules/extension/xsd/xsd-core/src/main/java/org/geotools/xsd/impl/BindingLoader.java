@@ -36,9 +36,9 @@ import org.picocontainer.defaults.InstanceComponentAdapter;
  */
 public class BindingLoader {
 
-    Map bindings;
+    Map<QName, Object> bindings;
 
-    public BindingLoader(Map bindings) {
+    public BindingLoader(Map<QName, Object> bindings) {
         this.bindings = bindings;
     }
 

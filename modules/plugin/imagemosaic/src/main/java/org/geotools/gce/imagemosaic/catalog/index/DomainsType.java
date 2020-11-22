@@ -65,7 +65,7 @@ public class DomainsType {
      */
     public List<DomainType> getDomain() {
         if (domain == null) {
-            domain = new ArrayList<DomainType>();
+            domain = new ArrayList<>();
         }
         return this.domain;
     }

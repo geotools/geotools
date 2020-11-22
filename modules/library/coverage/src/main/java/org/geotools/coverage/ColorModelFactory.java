@@ -57,8 +57,7 @@ final class ColorModelFactory {
      *       they plan to reuse it often in a short period of time.
      * </ul>
      */
-    private static final Map<ColorModelFactory, ColorModel> colors =
-            new WeakValueHashMap<ColorModelFactory, ColorModel>();
+    private static final Map<ColorModelFactory, ColorModel> colors = new WeakValueHashMap<>();
 
     /** The list of categories for the construction of a single instance of a {@link ColorModel}. */
     private final Category[] categories;

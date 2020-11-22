@@ -348,7 +348,7 @@ public class DB2SQLDialect extends SQLDialect {
         Statement st = null;
         ResultSet rs = null;
 
-        List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+        List<ReferencedEnvelope> result = new ArrayList<>();
         try {
             st = cx.createStatement();
 

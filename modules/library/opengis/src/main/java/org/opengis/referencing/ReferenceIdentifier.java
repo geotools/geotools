@@ -9,8 +9,8 @@
  */
 package org.opengis.referencing;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.OPTIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import org.opengis.annotation.UML;
 import org.opengis.metadata.Identifier;

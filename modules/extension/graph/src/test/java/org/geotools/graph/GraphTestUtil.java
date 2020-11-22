@@ -19,6 +19,8 @@ package org.geotools.graph;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.GraphGenerator;
@@ -86,8 +88,8 @@ public class GraphTestUtil {
 
     public static Object[] buildNoBifurcations(OptGraphBuilder builder, int nnodes) {
         // use maps for id since optimized graphable doesn't use id's
-        HashMap node2id = new HashMap();
-        HashMap edge2id = new HashMap();
+        Map<Node, Integer> node2id = new HashMap<>();
+        Map<Edge, Integer> edge2id = new HashMap<>();
 
         OptNode n1 = (OptNode) builder.buildNode();
         n1.setDegree(1);
@@ -119,8 +121,8 @@ public class GraphTestUtil {
 
     public static Object[] buildNoBifurcations(OptDirectedGraphBuilder builder, int nnodes) {
         // use maps for id since optimized graphable doesn't use id's
-        HashMap node2id = new HashMap();
-        HashMap edge2id = new HashMap();
+        Map<Node, Integer> node2id = new HashMap<>();
+        Map<Edge, Integer> edge2id = new HashMap<>();
 
         OptDirectedNode n1 = (OptDirectedNode) builder.buildNode();
         n1.setInDegree(0);
@@ -160,7 +162,7 @@ public class GraphTestUtil {
             final GraphBuilder builder, int nnodes, final int bifurcation) {
         Node[] ends = buildNoBifurcations(builder, nnodes - 1);
         final Node n = builder.buildNode();
-        final ArrayList bif = new ArrayList();
+        final List<Graphable> bif = new ArrayList<>();
 
         builder.getGraph()
                 .visitNodes(

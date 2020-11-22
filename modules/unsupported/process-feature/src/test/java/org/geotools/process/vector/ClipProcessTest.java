@@ -220,7 +220,7 @@ public class ClipProcessTest extends Assert {
 
         SimpleFeatureCollection features = fsLines.getFeatures();
 
-        Map<String, Object> arguments = new HashMap<String, Object>();
+        Map<String, Object> arguments = new HashMap<>();
         arguments.put("features", features);
         arguments.put(
                 "clip",

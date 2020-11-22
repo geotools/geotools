@@ -50,7 +50,7 @@ abstract class Value {
     public static final Map<String, String> COLORS_TO_HEX;
 
     static {
-        COLORS_TO_HEX = new HashMap<String, String>();
+        COLORS_TO_HEX = new HashMap<>();
         COLORS_TO_HEX.put("aliceblue", "#f0f8ff");
         COLORS_TO_HEX.put("antiquewhite", "#faebd7");
         COLORS_TO_HEX.put("aqua", "#00ffff");

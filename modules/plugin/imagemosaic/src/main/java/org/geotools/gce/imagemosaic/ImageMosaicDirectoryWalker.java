@@ -199,7 +199,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
             if (numFiles > 0) {
                 setNumFiles(numFiles);
                 final List<String> indexingDirectories =
-                        new ArrayList<String>(Arrays.asList(indexDirectories));
+                        new ArrayList<>(Arrays.asList(indexDirectories));
                 new MosaicDirectoryWalker(indexingDirectories, finalFilter, this);
 
             } else {

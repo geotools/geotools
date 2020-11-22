@@ -16,7 +16,7 @@
  */
 package org.geotools.data.mysql;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 
@@ -32,9 +32,9 @@ public class MySQLDataStoreManualEnhandedSpatialSupportTest extends JDBCTestSupp
     }
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
         // TODO Auto-generated method stub
-        HashMap params = super.createDataStoreFactoryParams();
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         params.put(MySQLDataStoreFactory.ENHANCED_SPATIAL_SUPPORT.key, true);
         return params;
     }
@@ -42,7 +42,7 @@ public class MySQLDataStoreManualEnhandedSpatialSupportTest extends JDBCTestSupp
     public void testManualEnhancedSpatialSupportDetection() throws Exception {
         // ensure that if not version 5.6 or later then PreciseSpatialOps are
         // disabled
-        boolean isMySQL56 = MySQLDataStoreFactory.isMySqlVersion56(dataStore);
+        boolean isMySQL56 = MySQLDataStoreFactory.isMySqlVersion56OrAbove(dataStore);
         if (!isMySQL56) {
             assertFalse(((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());
         }

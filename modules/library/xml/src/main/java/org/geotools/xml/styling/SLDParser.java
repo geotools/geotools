@@ -16,7 +16,8 @@
  */
 package org.geotools.xml.styling;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -31,8 +32,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.Base64;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
@@ -572,7 +575,7 @@ public class SLDParser {
     }
 
     private FeatureTypeConstraint[] parseLayerFeatureConstraints(Node root) {
-        List<FeatureTypeConstraint> featureTypeConstraints = new ArrayList<FeatureTypeConstraint>();
+        List<FeatureTypeConstraint> featureTypeConstraints = new ArrayList<>();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -841,8 +844,8 @@ public class SLDParser {
         }
 
         FeatureTypeStyle ft = factory.createFeatureTypeStyle();
-        ArrayList<Rule> rules = new ArrayList<Rule>();
-        ArrayList<String> sti = new ArrayList<String>();
+        ArrayList<Rule> rules = new ArrayList<>();
+        ArrayList<String> sti = new ArrayList<>();
         NodeList children = style.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -918,7 +921,7 @@ public class SLDParser {
         }
 
         Rule rule = factory.createRule();
-        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+        List<Symbolizer> symbolizers = new ArrayList<>();
         NodeList children = ruleNode.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -999,7 +1002,7 @@ public class SLDParser {
         final int length = children.getLength();
         StringBuilder text = new StringBuilder();
 
-        Map<String, String> translations = new HashMap<String, String>();
+        Map<String, String> translations = new HashMap<>();
 
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
@@ -1166,7 +1169,7 @@ public class SLDParser {
             symbol.setUnitOfMeasure(uomMapping.getUnit());
         }
 
-        List<org.geotools.styling.Font> fonts = new ArrayList<org.geotools.styling.Font>();
+        List<org.geotools.styling.Font> fonts = new ArrayList<>();
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -1254,7 +1257,9 @@ public class SLDParser {
         String key = child.getAttributes().getNamedItem("name").getNodeValue();
         String value = getFirstChildValue(child);
 
-        options.put(key, value);
+        if (StringUtils.isNotBlank(value)) {
+            options.put(key, value);
+        }
     }
 
     /**
@@ -1348,7 +1353,7 @@ public class SLDParser {
             String text = textNode.getNodeValue();
             return ff.literal(text.trim());
         }
-        List<Expression> expressionList = new ArrayList<Expression>();
+        List<Expression> expressionList = new ArrayList<>();
         for (int index = 0; index < children.getLength(); index++) {
             Node child = children.item(index);
             if (child instanceof CharacterData) {
@@ -1832,7 +1837,7 @@ public class SLDParser {
         String format = "";
         String uri = "";
         String content = null;
-        Map<String, Object> paramList = new HashMap<String, Object>();
+        Map<String, Object> paramList = new HashMap<>();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -2220,8 +2225,8 @@ public class SLDParser {
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
-        List<Expression> expressions = new ArrayList<Expression>();
-        List<Boolean> cdatas = new ArrayList<Boolean>();
+        List<Expression> expressions = new ArrayList<>();
+        List<Boolean> cdatas = new ArrayList<>();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 

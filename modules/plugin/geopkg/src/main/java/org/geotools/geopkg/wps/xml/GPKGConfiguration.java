@@ -57,5 +57,6 @@ public class GPKGConfiguration extends Configuration {
         container.registerComponentImplementation(
                 GPKG.gridsettype_grids, Gridsettype_gridsBinding.class);
         container.registerComponentImplementation(GPKG.bboxtype, BboxtypeBinding.class);
+        container.registerComponentImplementation(GPKG.overview, OverviewBinding.class);
     }
 }

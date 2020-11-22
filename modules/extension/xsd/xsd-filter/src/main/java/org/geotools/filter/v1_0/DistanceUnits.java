@@ -31,12 +31,16 @@ public final class DistanceUnits {
         return new DistanceUnits(distance, units);
     }
 
+    /**
+     * We still support old client queries without any units specified, thus allowing units to be
+     * null.
+     *
+     * @param distance
+     * @param units
+     */
     private DistanceUnits(double distance, String units) {
         if (distance < 0) {
             throw new IllegalArgumentException("distance must be >= 0");
-        }
-        if (units == null) {
-            throw new IllegalArgumentException("units must not be null");
         }
         this.distance = distance;
         this.units = units;

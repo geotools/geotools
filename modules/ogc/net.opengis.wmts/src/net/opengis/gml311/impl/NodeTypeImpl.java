@@ -83,7 +83,7 @@ public class NodeTypeImpl extends AbstractTopoPrimitiveTypeImpl implements NodeT
      */
     public EList<DirectedEdgePropertyType> getDirectedEdge() {
         if (directedEdge == null) {
-            directedEdge = new EObjectContainmentEList<DirectedEdgePropertyType>(DirectedEdgePropertyType.class, this, Gml311Package.NODE_TYPE__DIRECTED_EDGE);
+            directedEdge = new EObjectContainmentEList<>(DirectedEdgePropertyType.class, this, Gml311Package.NODE_TYPE__DIRECTED_EDGE);
         }
         return directedEdge;
     }

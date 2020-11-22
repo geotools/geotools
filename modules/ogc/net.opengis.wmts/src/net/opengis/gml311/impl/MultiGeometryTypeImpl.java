@@ -83,7 +83,7 @@ public class MultiGeometryTypeImpl extends AbstractGeometricAggregateTypeImpl im
      */
     public EList<GeometryPropertyType> getGeometryMember() {
         if (geometryMember == null) {
-            geometryMember = new EObjectContainmentEList<GeometryPropertyType>(GeometryPropertyType.class, this, Gml311Package.MULTI_GEOMETRY_TYPE__GEOMETRY_MEMBER);
+            geometryMember = new EObjectContainmentEList<>(GeometryPropertyType.class, this, Gml311Package.MULTI_GEOMETRY_TYPE__GEOMETRY_MEMBER);
         }
         return geometryMember;
     }

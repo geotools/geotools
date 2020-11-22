@@ -16,7 +16,9 @@
  */
 package org.geotools.temporal.reference;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -128,7 +130,7 @@ public class DefaultCalendarTest {
                                 new DefaultInstant(
                                         new DefaultPosition(
                                                 new DefaultJulianDate(calendar1, null, 2299160)))));
-        Collection<CalendarEra> collection = new ArrayList<CalendarEra>();
+        Collection<CalendarEra> collection = new ArrayList<>();
         collection.add(calendarEra);
         ((DefaultCalendar) calendar1).setBasis(collection);
         assertFalse(calendar1.getBasis().equals(result));

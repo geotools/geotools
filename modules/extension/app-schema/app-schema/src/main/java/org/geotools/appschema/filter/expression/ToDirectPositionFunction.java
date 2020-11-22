@@ -68,7 +68,7 @@ public class ToDirectPositionFunction implements Function {
     public static final Expression SRS_NAME = ff.literal("SRS_NAME");
 
     public ToDirectPositionFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public ToDirectPositionFunction(List<Expression> parameters, Literal fallback) {

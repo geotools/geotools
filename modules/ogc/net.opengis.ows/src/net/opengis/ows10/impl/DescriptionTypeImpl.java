@@ -160,7 +160,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    */
 	public EList<KeywordsType> getKeywords() {
     if (keywords == null) {
-      keywords = new EObjectContainmentEList<KeywordsType>(KeywordsType.class, this, Ows10Package.DESCRIPTION_TYPE__KEYWORDS);
+      keywords = new EObjectContainmentEList<>(KeywordsType.class, this, Ows10Package.DESCRIPTION_TYPE__KEYWORDS);
     }
     return keywords;
   }

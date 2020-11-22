@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.citation;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class PresentationForm extends CodeList<PresentationForm> {
     private static final long serialVersionUID = 5668779490885399888L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<PresentationForm> VALUES = new ArrayList<PresentationForm>(14);
+    private static final List<PresentationForm> VALUES = new ArrayList<>(14);
 
     /** Digital representation of a primarily textual item (can contain illustrations also). */
     @UML(identifier = "documentDigital", obligation = CONDITIONAL, specification = ISO_19115)

@@ -19,7 +19,11 @@ package org.geotools.referencing.operation.projection;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.util.Utilities;
-import org.opengis.parameter.*;
+import org.opengis.parameter.ParameterDescriptor;
+import org.opengis.parameter.ParameterDescriptorGroup;
+import org.opengis.parameter.ParameterNotFoundException;
+import org.opengis.parameter.ParameterValue;
+import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.ConicProjection;
 import org.opengis.referencing.operation.MathTransform;
 import si.uom.NonSI;
@@ -39,7 +43,7 @@ public class LambertConformalEsriProvider extends MapProjection.AbstractProvider
      * Override of the std parallel 1 as we downgrade from 2sp to 1sp when the two std parallels are
      * equal
      */
-    public static final ParameterDescriptor STANDARD_PARALLEL_1 =
+    public static final ParameterDescriptor<Double> STANDARD_PARALLEL_1 =
             createOptionalDescriptor(
                     new NamedIdentifier[] {
                         new NamedIdentifier(Citations.OGC, "standard_parallel_1"),

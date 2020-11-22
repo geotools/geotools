@@ -16,7 +16,13 @@
  */
 package org.geotools.metadata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -24,7 +30,7 @@ import java.util.Set;
 import org.geotools.metadata.iso.MetaDataImpl;
 import org.geotools.util.CheckedCollection;
 import org.geotools.util.Classes;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.metadata.MetaData;
 import org.opengis.metadata.citation.CitationFactory;
 import org.opengis.metadata.citation.OnLineResource;
@@ -180,7 +186,7 @@ public final class ISOTest {
     public void testDependencies() {
         assertNull(getImplementation(Number.class));
         assertSame(MetaDataImpl.class, getImplementation(MetaData.class));
-        final Set<Class<?>> done = new HashSet<Class<?>>();
+        final Set<Class<?>> done = new HashSet<>();
         for (int i = 0; i < TEST.length; i++) {
             final Class<?> type = TEST[i];
             final Class<?> impl = getImplementation(type);

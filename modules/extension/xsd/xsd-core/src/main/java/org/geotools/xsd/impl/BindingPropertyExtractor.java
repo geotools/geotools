@@ -68,7 +68,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
     }
 
     public List properties(Object object, XSDElementDeclaration element) {
-        final List properties = new ArrayList();
+        final List<Object[]> properties = new ArrayList<>();
 
         // first get all the properties that can be inferred from the schema
         final List<XSDParticle> children =
@@ -104,8 +104,8 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     object, encoder.getBindingWalker(), element, executor, context);
 
             if (!executor.getProperties().isEmpty()) {
-                // group into a map of name, list
-                MultiValuedMap map = new ArrayListValuedHashMap();
+                // group into a map of name, list (name can be a QName or a XSDParticle...)
+                MultiValuedMap<Object, Object> map = new ArrayListValuedHashMap<>();
 
                 for (Iterator p = executor.getProperties().iterator(); p.hasNext(); ) {
                     Object[] property = (Object[]) p.next();
@@ -113,7 +113,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                 }
 
                 // turn each map entry into a particle
-                HashMap particles = new HashMap();
+                HashMap<QName, XSDParticle> particles = new HashMap<>();
 
                 for (Iterator e = map.keySet().iterator(); e.hasNext(); ) {
                     Object key = e.next();
@@ -126,7 +126,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     }
 
                     QName name = (QName) key;
-                    Collection values = map.get(key);
+                    Collection values = map.get(name);
 
                     // check for comment
                     if (Encoder.COMMENT.equals(name)) {
@@ -268,7 +268,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
          to maintain the feature properties order, sort the properties to their original order as in "children" list
         */
         if (object instanceof ComplexAttributeImpl && propertiesSortable(properties, children)) {
-            List sortedProperties = new ArrayList();
+            List<Object[]> sortedProperties = new ArrayList<>();
 
             // sort properties according to their XSDParticle order in "children"
             for (int i = 0; i < children.size(); i++) {
@@ -306,7 +306,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
     }
 
     private void processUnboundedSequence(
-            Object object, List properties, List<XSDParticle> children) {
+            Object object, List<Object[]> properties, List<XSDParticle> children) {
         final ComplexAttribute complexAttr = (ComplexAttribute) object;
         final Deque<Attribute> attrDeque = getChildrenAttributes(complexAttr);
         // separate into repeat tuples

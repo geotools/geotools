@@ -111,11 +111,16 @@ public class GridTypeBinding extends AbstractComplexBinding {
         List<Node> axisNames = node.getChildren("axisName");
         if (axisNames != null && !axisNames.isEmpty()) {
             for (Node axisName : axisNames) {
-                grid.getAxisName().add(axisName.getValue());
+                addAxisName(grid, axisName);
             }
         }
 
         return grid;
         //       return super.parse(instance, node, value);
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean addAxisName(RectifiedGridType grid, Node axisName) {
+        return grid.getAxisName().add(axisName.getValue());
     }
 }

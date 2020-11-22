@@ -98,7 +98,7 @@ public interface GranuleStore extends GranuleSource {
      *
      * <pre>
      * <code>
-     * Transation t = new DefaultTransaction();
+     * Transaction t = new DefaultTransaction();
      * GranuleStore.setTransaction(t);
      * try {
      *     GranuleStore.addGranules (granules);

@@ -4,19 +4,18 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Assert;
 import junit.framework.TestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
-
 
 public class DataStoreTest extends TestCase {
 

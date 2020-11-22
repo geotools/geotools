@@ -181,7 +181,7 @@ public class JFontChooser extends JDialog {
         JLabel label = new JLabel("Family");
         panel.add(label);
 
-        familyCBox = new JComboBox<String>(families);
+        familyCBox = new JComboBox<>(families);
         familyCBox.setSelectedIndex(familyIndex);
         familyCBox.addActionListener(
                 new ActionListener() {
@@ -195,7 +195,7 @@ public class JFontChooser extends JDialog {
         label = new JLabel("Style");
         panel.add(label);
 
-        styleCBox = new JComboBox<String>(styles);
+        styleCBox = new JComboBox<>(styles);
         styleCBox.setSelectedIndex(styleIndex);
         styleCBox.addActionListener(
                 new ActionListener() {
@@ -209,7 +209,7 @@ public class JFontChooser extends JDialog {
         label = new JLabel("Weight");
         panel.add(label);
 
-        weightCBox = new JComboBox<String>(weights);
+        weightCBox = new JComboBox<>(weights);
         weightCBox.setSelectedIndex(weightIndex);
         weightCBox.addActionListener(
                 new ActionListener() {
@@ -223,7 +223,7 @@ public class JFontChooser extends JDialog {
         label = new JLabel("Size");
         panel.add(label);
 
-        sizeCBox = new JComboBox<Integer>(sizes);
+        sizeCBox = new JComboBox<>(sizes);
         sizeCBox.setSelectedIndex(sizeIndex);
         sizeCBox.addActionListener(
                 new ActionListener() {

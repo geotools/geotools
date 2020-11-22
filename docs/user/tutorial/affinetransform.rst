@@ -21,7 +21,7 @@ making use of the power of these kind of calculations.
    
    Christian Mueller is a GeoTools developer and is working for a big customer to build
    up a GIS infrastructure. In the GeoTools project he is best known for his work on
-   :doc:`/library/coverage/jdbc/index`
+   :doc:`/unsupported/imagemosaic-jdbc/index`
 
 Definitions
 -----------

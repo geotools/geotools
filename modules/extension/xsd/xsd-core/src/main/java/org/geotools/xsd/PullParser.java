@@ -312,8 +312,7 @@ public class PullParser {
 
         public OrPullParserHandler(Configuration config, Object... handlerSpecs) {
             super(config);
-            Collection<PullParserHandler> handlers =
-                    new ArrayList<PullParserHandler>(handlerSpecs.length);
+            Collection<PullParserHandler> handlers = new ArrayList<>(handlerSpecs.length);
             for (Object spec : handlerSpecs) {
                 if (spec instanceof Class) {
                     handlers.add(new TypePullParserHandler((Class<?>) spec, config));

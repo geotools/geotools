@@ -17,7 +17,11 @@
 package org.geotools.geopkg.mosaic;
 
 import it.geosolutions.jaiext.mosaic.MosaicRIF;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -89,7 +93,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
     protected File sourceFile;
 
-    protected Map<String, TileEntry> tiles = new LinkedHashMap<String, TileEntry>();
+    protected Map<String, TileEntry> tiles = new LinkedHashMap<>();
 
     GeoPackage file;
 
@@ -394,7 +398,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         // simple
         RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
         hints.putAll(GeoTools.getDefaultHints());
-        return new OpImage(new Vector(sourceImages), il, hints, false) {
+        return new OpImage(new Vector<>(sourceImages), il, hints, false) {
 
             @Override
             public Raster computeTile(int tileX, int tileY) {
@@ -432,6 +436,12 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             public Rectangle mapDestRect(Rectangle destRect, int sourceIndex) {
                 // should not really be used
                 return destRect;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public Vector<RenderedImage> getSources() {
+                return super.getSources();
             }
         };
     }

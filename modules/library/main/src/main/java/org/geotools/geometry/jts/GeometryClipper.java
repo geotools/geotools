@@ -292,7 +292,7 @@ public class GeometryClipper {
             return null;
         }
 
-        List<LinearRing> holes = new ArrayList<LinearRing>();
+        List<LinearRing> holes = new ArrayList<>();
         for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
             LinearRing hole = (LinearRing) polygon.getInteriorRingN(i);
             hole = polygonClip(hole);
@@ -534,7 +534,7 @@ public class GeometryClipper {
         if (gc.getNumGeometries() == 1) {
             return clip(gc.getGeometryN(0), ensureValid);
         } else {
-            List<Geometry> result = new ArrayList<Geometry>(gc.getNumGeometries());
+            List<Geometry> result = new ArrayList<>(gc.getNumGeometries());
             for (int i = 0; i < gc.getNumGeometries(); i++) {
                 Geometry clipped = clip(gc.getGeometryN(i), ensureValid);
                 if (clipped != null) {
@@ -601,7 +601,7 @@ public class GeometryClipper {
     /** Clips a linestring using the Cohen-Sutherlan segment clipping helper method */
     Geometry clipLineString(LineString line) {
         // the result
-        List<LineString> clipped = new ArrayList<LineString>();
+        List<LineString> clipped = new ArrayList<>();
 
         // grab all the factories a
         final GeometryFactory gf = line.getFactory();

@@ -19,7 +19,6 @@ package org.geotools.data.vpf.file;
 import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.data.DataStore;
@@ -44,7 +43,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         File file = (File) FILE_PARAM.lookUp(params);
         this.store = new VPFFileStore(file.getPath());
         return this.store;
@@ -62,7 +61,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#createNewDataStore(java.util.Map)
      */
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException("Only existing data stores may be created.");
     }
 
@@ -100,7 +99,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#canProcess(java.util.Map)
      */
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         try {
             String filePath = (String) FILE_PARAM.lookUp(params);
             if (filePath != null) {

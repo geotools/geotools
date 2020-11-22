@@ -151,7 +151,7 @@ public abstract class AbstractDatumTypeImpl extends AbstractDatumBaseTypeImpl im
      */
     public EList<IdentifierType> getDatumID() {
         if (datumID == null) {
-            datumID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.ABSTRACT_DATUM_TYPE__DATUM_ID);
+            datumID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.ABSTRACT_DATUM_TYPE__DATUM_ID);
         }
         return datumID;
     }

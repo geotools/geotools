@@ -16,7 +16,9 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
@@ -30,7 +32,7 @@ import org.geotools.coverage.processing.operation.Histogram;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.junit.*;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;

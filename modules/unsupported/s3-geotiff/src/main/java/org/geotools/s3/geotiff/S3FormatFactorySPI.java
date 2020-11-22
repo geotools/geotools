@@ -16,9 +16,6 @@
  */
 package org.geotools.s3.geotiff;
 
-import java.awt.RenderingHints;
-import java.util.Collections;
-import java.util.Map;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
@@ -32,10 +29,5 @@ public class S3FormatFactorySPI implements GridFormatFactorySpi {
     @Override
     public boolean isAvailable() {
         return true;
-    }
-
-    @Override
-    public Map<RenderingHints.Key, ?> getImplementationHints() {
-        return Collections.EMPTY_MAP;
     }
 }

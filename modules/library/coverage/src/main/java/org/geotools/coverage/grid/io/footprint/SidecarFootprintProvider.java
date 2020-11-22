@@ -53,7 +53,7 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
 
     static final Logger LOGGER = Logging.getLogger(SidecarFootprintProvider.class);
 
-    static final Set<FootprintLoader> LOADERS = new HashSet<FootprintLoader>();
+    static final Set<FootprintLoader> LOADERS = new HashSet<>();
 
     private static final String FOOTPRINT_LOCATION_ATTRIBUTE = "location";
 

@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import junit.framework.TestCase;
 
 public abstract class WorldImageBaseTestCase extends TestCase {
@@ -35,7 +36,7 @@ public abstract class WorldImageBaseTestCase extends TestCase {
      * @author giannecchini
      */
     class MyFileFilter implements FilenameFilter {
-        private HashSet extensions = new HashSet();
+        private Set<String> extensions = new HashSet<>();
 
         public MyFileFilter() {
             String[] extensions =

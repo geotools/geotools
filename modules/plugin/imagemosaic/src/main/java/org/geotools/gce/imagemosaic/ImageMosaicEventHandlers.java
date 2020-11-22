@@ -37,8 +37,7 @@ public class ImageMosaicEventHandlers {
             org.geotools.util.logging.Logging.getLogger(ImageMosaicEventHandlers.class);
 
     /** List containing all the objects that want to be notified during processing. */
-    protected List<ProcessingEventListener> notificationListeners =
-            new CopyOnWriteArrayList<ProcessingEventListener>();
+    protected List<ProcessingEventListener> notificationListeners = new CopyOnWriteArrayList<>();
 
     /**
      * Set this to false for command line UIs where the delayed event sending may prevent some

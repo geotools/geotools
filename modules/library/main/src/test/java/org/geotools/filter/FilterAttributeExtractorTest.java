@@ -101,7 +101,7 @@ public class FilterAttributeExtractorTest extends TestCase {
 
         FilterAttributeExtractor extract = new FilterAttributeExtractor(null);
 
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
         // used to collect names from expression1, expression2, and filter
 
         expression1.accept(extract, names);

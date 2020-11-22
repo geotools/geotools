@@ -120,7 +120,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 
     public Object visit(And filter, Object extraData) {
         List<Filter> children = filter.getChildren();
-        List<Filter> newChildren = new ArrayList<Filter>();
+        List<Filter> newChildren = new ArrayList<>();
         for (Iterator<Filter> iter = children.iterator(); iter.hasNext(); ) {
             Filter child = iter.next();
             if (child != null) {
@@ -141,7 +141,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 
     public Object visit(Or filter, Object extraData) {
         List<Filter> children = filter.getChildren();
-        List<Filter> newChildren = new ArrayList<Filter>();
+        List<Filter> newChildren = new ArrayList<>();
         for (Iterator<Filter> iter = children.iterator(); iter.hasNext(); ) {
             Filter child = iter.next();
             if (child != null) {

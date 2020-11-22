@@ -42,9 +42,9 @@ import org.geotools.util.logging.Logging;
 public final class NIOUtilities {
 
     /** The buffer cache, partitioned by buffer size and fully concurrent */
-    static Map<Integer, Queue<Object>> cache = new ConcurrentHashMap<Integer, Queue<Object>>();
+    static Map<Integer, Queue<Object>> cache = new ConcurrentHashMap<>();
 
-    static Map<Class, Method> cleanerMethodCache = new ConcurrentHashMap<Class, Method>();
+    static Map<Class, Method> cleanerMethodCache = new ConcurrentHashMap<>();
 
     /**
      * The maximum size of the hard reference cache (the soft one can be unbounded, the GC will
@@ -140,7 +140,7 @@ public final class NIOUtilities {
             synchronized (cache) {
                 result = cache.get(size);
                 if (result == null) {
-                    result = new ConcurrentLinkedQueue<Object>();
+                    result = new ConcurrentLinkedQueue<>();
                     cache.put(size, result);
                 }
             }

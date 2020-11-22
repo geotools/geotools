@@ -78,7 +78,7 @@ public enum FootprintInsetPolicy {
                 return geometry;
             }
 
-            final List<Polygon> polygons = new ArrayList<Polygon>();
+            final List<Polygon> polygons = new ArrayList<>();
             geometry.apply(
                     new GeometryComponentFilter() {
 
@@ -102,7 +102,7 @@ public enum FootprintInsetPolicy {
 
         private List<LineString> filterRings(
                 List<LinearRing> footprintRings, Geometry bufferedOuterRings) {
-            List<LineString> result = new ArrayList<LineString>();
+            List<LineString> result = new ArrayList<>();
             for (LinearRing ring : footprintRings) {
                 Geometry difference = ring.difference(bufferedOuterRings);
                 if (difference != null) {
@@ -114,7 +114,7 @@ public enum FootprintInsetPolicy {
         }
 
         private Geometry buffer(List<? extends Geometry> geometries, double distance) {
-            List<Geometry> polygons = new ArrayList<Geometry>();
+            List<Geometry> polygons = new ArrayList<>();
             for (Geometry g : geometries) {
                 Geometry buffered = g.buffer(distance);
                 polygons.add(buffered);
@@ -124,7 +124,7 @@ public enum FootprintInsetPolicy {
         }
 
         private List<LinearRing> getRings(Geometry bounds) {
-            final ArrayList<LinearRing> rings = new ArrayList<LinearRing>();
+            final ArrayList<LinearRing> rings = new ArrayList<>();
             bounds.apply(
                     new GeometryComponentFilter() {
 
@@ -161,7 +161,7 @@ public enum FootprintInsetPolicy {
     /** Returns the list of names for this enum */
     public static List<String> names() {
         FootprintInsetPolicy[] values = FootprintInsetPolicy.values();
-        List<String> names = new ArrayList<String>(values.length);
+        List<String> names = new ArrayList<>(values.length);
 
         for (int i = 0; i < values.length; i++) {
             names.add(values[i].name());

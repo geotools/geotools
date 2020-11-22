@@ -120,7 +120,7 @@ public abstract class AbstractGMLTypeImpl extends MinimalEObjectImpl.Container i
      */
     public EList<MetaDataPropertyType> getMetaDataProperty() {
         if (metaDataProperty == null) {
-            metaDataProperty = new EObjectContainmentEList<MetaDataPropertyType>(MetaDataPropertyType.class, this, Gml311Package.ABSTRACT_GML_TYPE__META_DATA_PROPERTY);
+            metaDataProperty = new EObjectContainmentEList<>(MetaDataPropertyType.class, this, Gml311Package.ABSTRACT_GML_TYPE__META_DATA_PROPERTY);
         }
         return metaDataProperty;
     }

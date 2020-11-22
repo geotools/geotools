@@ -62,7 +62,7 @@ public class DefaultSubmosaicProducerFactory implements SubmosaicProducerFactory
 
                 // Prepare filtering
                 Map.Entry<String, List> multipleSelectionEntry = null;
-                final List<Filter> filters = new ArrayList<Filter>(entries.size());
+                final List<Filter> filters = new ArrayList<>(entries.size());
 
                 // Loop over the additional domains
                 for (Map.Entry<String, List> entry : entries) {

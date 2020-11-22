@@ -20,7 +20,16 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+import static java.lang.Math.tan;
 
 import java.awt.geom.Point2D;
 import org.geotools.metadata.i18n.ErrorKeys;

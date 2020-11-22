@@ -9,8 +9,7 @@
  */
 package org.opengis.temporal;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19108;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public final class RelativePosition extends CodeList<RelativePosition> {
     private static final long serialVersionUID = -2918422623747953495L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<RelativePosition> VALUES = new ArrayList<RelativePosition>(13);
+    private static final List<RelativePosition> VALUES = new ArrayList<>(13);
 
     public static final RelativePosition BEFORE = new RelativePosition("BEFORE");
     public static final RelativePosition AFTER = new RelativePosition("AFTER");

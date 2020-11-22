@@ -21,9 +21,9 @@ import static org.geotools.data.mongodb.MongoSchemaFileStore.SUFFIX_json;
 import static org.geotools.data.mongodb.MongoSchemaFileStore.typeName;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +46,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /** @author tkunicki@boundlessgeo.com */
 public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFileStore> {
 
-    Map<MongoSchemaFileStore, File> directories = new HashMap<MongoSchemaFileStore, File>();
+    Map<MongoSchemaFileStore, File> directories = new HashMap<>();
 
     static SchemaStoreDirectoryProvider direcotryProvider;
 

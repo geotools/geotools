@@ -131,7 +131,7 @@ public class GeometryEncoderTest extends TestCase {
                         writer.write(">");
                     }
                 };
-        geomElement.getType().encode(geomElement, geom, output, new HashMap());
+        geomElement.getType().encode(geomElement, geom, output, new HashMap<>());
         String expected =
                 "<GEOM><MultiPolygon srsName=EPSG:4326><polygonMember><Polygon srsName=EPSG:4326><outerBoundaryIs><LinearRing><coordinates decimal=. cs=, ts= >0.0,0.0 10.0,0.0 0.0,10.0 0.0,0.0</coordinates></LinearRing></outerBoundaryIs></Polygon></polygonMember></MultiPolygon></GEOM>";
         assertEquals(expected, writer.toString());

@@ -22,11 +22,13 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
@@ -143,7 +145,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
     /** Load all data accesses */
     public static void loadDataAccesses() throws Exception {
         /** Load Mapped Feature data access */
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url =
                 AppSchemaDataAccessRegistryTest.class.getResource(
                         schemaBase + "MappedFeaturePropertyfile.xml");
@@ -182,8 +184,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         final String SOURCE_ID = "MappedFeature";
         final String MAPPING_FILE = "MappedFeaturePropertyfile";
 
-        HashSet mappings = new HashSet();
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url = AppSchemaDataAccessRegistryTest.class.getResource(schemaBase);
         assertNotNull(url);
         final SourceDataStore ds = new SourceDataStore();
@@ -192,7 +193,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         ds.setParams(dsParams);
         config = new AppSchemaDataAccessDTO();
         config.setSourceDataStores(
-                new ArrayList() {
+                new ArrayList<SourceDataStore>() {
                     {
                         add(ds);
                     }
@@ -244,8 +245,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         }
 
         // should return a simple feature source
-        FeatureSource<FeatureType, Feature> source =
-                AppSchemaDataAccessRegistry.getMappingByName(typeName).getSource();
+        FeatureSource source = AppSchemaDataAccessRegistry.getMappingByName(typeName).getSource();
         assertNotNull(source);
         assertEquals(mapping.getSource(), source);
 
@@ -297,7 +297,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
     public void testDuplicateKey() throws IOException {
         boolean threwException = false;
         /** Test duplicate mappingName */
-        HashSet mappings = new HashSet();
+        Set<TypeMapping> mappings = new HashSet<>();
         TypeMapping duplicate = new TypeMapping();
         duplicate.setMappingName(dtoMappingName.getMappingName());
         duplicate.setSourceDataStore(dtoMappingName.getSourceDataStore());
@@ -372,7 +372,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
     @Test
     public void testUniqueKey() throws IOException {
         /** When mappingName are present in both mappings, and they're unique */
-        HashSet mappings = new HashSet();
+        Set<TypeMapping> mappings = new HashSet<>();
         TypeMapping duplicate = new TypeMapping();
         duplicate.setMappingName(dtoMappingName.getTargetElementName());
         duplicate.setSourceDataStore(dtoMappingName.getSourceDataStore());

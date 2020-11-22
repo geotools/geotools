@@ -105,7 +105,7 @@ public class FilterEncodingPreProcessorTest extends TestCase {
         if (fid == null || fid.length == 0) {
             set = Collections.emptySet();
         } else {
-            set = new HashSet<FeatureId>();
+            set = new HashSet<>();
             for (String f : fid) {
                 set.add(factory.featureId(f));
             }

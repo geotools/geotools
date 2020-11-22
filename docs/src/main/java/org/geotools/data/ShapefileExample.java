@@ -69,7 +69,7 @@ public class ShapefileExample {
         FileDataStoreFactorySpi factory = new ShapefileDataStoreFactory();
 
         File file = new File("my.shp");
-        Map map = Collections.singletonMap("url", file.toURI().toURL());
+        Map<String, ?> map = Collections.singletonMap("url", file.toURI().toURL());
 
         DataStore myData = factory.createNewDataStore(map);
         SimpleFeatureType featureType =

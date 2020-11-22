@@ -115,7 +115,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
     }
 
     public <T> T[] toArray(T[] a) {
-        List<SimpleFeature> list = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> list = new ArrayList<>();
         SimpleFeatureIterator i = features();
         try {
             while (i.hasNext()) {
@@ -143,7 +143,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
     }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema(), features());
+        return new DelegateFeatureReader<>(getSchema(), features());
     }
 
     public ReferencedEnvelope getBounds() {

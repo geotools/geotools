@@ -91,7 +91,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
         // @todo: REVISIT, looks like a bug here, fromItems is not being read after assigned
         fromItems = removeTableAliases(fromItems);
 
-        List selectItems = qualifySelectItems(aliases, plainSelect.getSelectItems());
+        List<Object> selectItems = qualifySelectItems(aliases, plainSelect.getSelectItems());
         qualifiedSelect.setSelectItems(selectItems);
 
         Expression where = qualifyWhere(aliases, plainSelect.getWhere());
@@ -132,7 +132,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
         return items;
     }
 
-    private Expression qualifyWhere(Map tableAliases, Expression where) {
+    private Expression qualifyWhere(Map<String, ?> tableAliases, Expression where) {
         if (where == null) {
             return null;
         }
@@ -142,7 +142,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
         return qualifiedWhere;
     }
 
-    private List<OrderByElement> qualifyOrderBy(Map tableAliases, List orderByElements) {
+    private List<OrderByElement> qualifyOrderBy(Map<String, ?> tableAliases, List orderByElements) {
         if (orderByElements == null) {
             return null;
         }
@@ -161,17 +161,17 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
         return qualifiedOrderElems;
     }
 
-    private List qualifySelectItems(Map tableAlias, List selectItems) {
+    private List<Object> qualifySelectItems(Map<String, ?> tableAlias, List selectItems) {
         if (selectItems == null) {
             return null;
         }
 
-        List qualifiedItems = new ArrayList();
+        List<Object> qualifiedItems = new ArrayList<>();
 
         for (Iterator it = selectItems.iterator(); it.hasNext(); ) {
             SelectItem selectItem = (SelectItem) it.next();
 
-            List items = SelectItemQualifier.qualify(session, tableAlias, selectItem);
+            List<Object> items = SelectItemQualifier.qualify(session, tableAlias, selectItem);
 
             qualifiedItems.addAll(items);
         }

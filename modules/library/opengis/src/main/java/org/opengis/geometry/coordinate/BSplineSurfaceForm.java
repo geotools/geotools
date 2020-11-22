@@ -9,8 +9,8 @@
  */
 package org.opengis.geometry.coordinate;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class BSplineSurfaceForm extends CodeList<BSplineSurfaceForm> {
     private static final long serialVersionUID = -5066463171878030795L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<BSplineSurfaceForm> VALUES = new ArrayList<BSplineSurfaceForm>(6);
+    private static final List<BSplineSurfaceForm> VALUES = new ArrayList<>(6);
 
     /**
      * A bounded portion of a plane represented by a B-spline surface of degree 1 in each parameter.

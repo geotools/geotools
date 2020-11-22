@@ -28,12 +28,26 @@ But first to upgrade - change your dependency geotools.version to |release| (or 
         ....
     </dependencies>
 
+GeoTools 25.x
+-------------
+
+The DataAccess and DataStore creation parameters have been switched from ``Map<String, Serializable>``
+to ``Map<String, ?>``, to match actual usage (some stores require non serializable parameters).
+This should not affect end users of the API, but ``DataAccessFactory`` and ``DataStoreFactory``
+implementations will have to be updated to match.
+
+For those feeding ``Properties`` object to ``DataAccess.getDataStore()`` a new utility method,
+``DataUtilities.toConnectionParameters`` has been made available, which converts a ``Properties``
+to a ``Map<String, ?>``.
+
 GeoTools 24.x
 -------------
 
 The Oracle extension was upgraded to use the current JDBC driver release. If you are using ``oracle.jdbc.driver.OracleDriver`` in your code to load the JDBC driver you should change this to ``oracle.jdbc.OracleDriver``.
 
 ``DbaseFileHeader.readHeader(ReadableByteChannel, Charset)`` method was removed. Instead ``DbaseFileHeader`` constructor must be used to pass a charset and ``DbaseFileHeader.readHeader(ReadableByteChannel)`` to read the header.
+
+The Units library (JSR 385) was updated to Units 2.0. This is mostly a change from package ``tec.uom.se.*`` to ``tech.units.indriya.*``. If you make any use of the Units library in your own code you will need to update the imports. There are also changes to the arithmetic operations' names. See this `blog post <https://schneide.blog/tag/unit-api-2-0/>`_ for more details.
 
 GeoTools 22.x
 -------------
@@ -1682,7 +1696,7 @@ empty Hints object.
      * Returns an empty Hints set
      */
     public Hints getHints() {
-        return new Hints(Collections.EMPTY_MAP);
+        return new Hints(Collections.emptyMap());
     }
 
 Filter

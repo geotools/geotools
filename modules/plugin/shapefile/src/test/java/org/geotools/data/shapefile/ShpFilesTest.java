@@ -20,7 +20,8 @@ import static org.geotools.data.shapefile.files.ShpFileType.DBF;
 import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 import static org.geotools.data.shapefile.files.ShpFileType.SHX;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -104,7 +105,7 @@ public class ShpFilesTest {
 
     public static Map<ShpFileType, File> createFiles(
             String string, ShpFileType[] values, boolean uppercase) throws IOException {
-        Map<ShpFileType, File> files = new HashMap<ShpFileType, File>();
+        Map<ShpFileType, File> files = new HashMap<>();
 
         String extensionWithPeriod = values[0].extensionWithPeriod;
         File baseFile = File.createTempFile(string, extensionWithPeriod);
@@ -196,7 +197,7 @@ public class ShpFilesTest {
 
     @Test
     public void testNonFileURLs() throws IOException {
-        Map<ShpFileType, URL> expected = new HashMap<ShpFileType, URL>();
+        Map<ShpFileType, URL> expected = new HashMap<>();
         String base = "http://www.geotools.org/testFile";
         ShpFileType[] types = ShpFileType.values();
         for (ShpFileType type : types) {

@@ -122,6 +122,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
+import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.identity.ResourceId;
 import org.opengis.filter.identity.Version;
 import org.opengis.filter.sort.SortBy;
@@ -206,24 +207,24 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
     }
 
     public And and(Filter f, Filter g) {
-        List /*<Filter>*/ list = new ArrayList /*<Filter>*/(2);
+        List<Filter> list = new ArrayList<>(2);
         list.add(f);
         list.add(g);
         return new AndImpl(list);
     }
 
-    public And and(List /*<Filter>*/ filters) {
+    public And and(List<Filter> filters) {
         return new AndImpl(filters);
     }
 
     public Or or(Filter f, Filter g) {
-        List /*<Filter>*/ list = new ArrayList /*<Filter>*/(2);
+        List<Filter> list = new ArrayList<>(2);
         list.add(f);
         list.add(g);
         return new OrImpl(list);
     }
 
-    public Or or(List /*<Filter>*/ filters) {
+    public Or or(List<Filter> filters) {
         return new OrImpl(filters);
     }
 
@@ -232,12 +233,12 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new NotImpl(filter);
     }
 
-    public Id id(Set id) {
+    public Id id(Set<? extends Identifier> id) {
         return new FidFilterImpl(id);
     }
 
     public Id id(FeatureId... fids) {
-        Set<FeatureId> selection = new HashSet<FeatureId>();
+        Set<FeatureId> selection = new HashSet<>();
         for (FeatureId featureId : fids) {
             if (featureId == null) continue;
             selection.add(featureId);
@@ -888,8 +889,8 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
                 : new LiteralExpressionImpl(Boolean.FALSE);
     }
 
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 
     public SortBy sort(String propertyName, SortOrder order) {
@@ -1062,7 +1063,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             int minOccurs,
             int maxOccurs,
             T defaultValue) {
-        return new org.geotools.data.Parameter<T>(
+        return new org.geotools.data.Parameter<>(
                 name, type, title, description, required, minOccurs, maxOccurs, defaultValue, null);
     };
 

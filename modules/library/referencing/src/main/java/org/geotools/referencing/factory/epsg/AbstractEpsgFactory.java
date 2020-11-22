@@ -16,9 +16,22 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import static org.geotools.measure.Units.*;
+import static org.geotools.measure.Units.DEGREE_ANGLE;
+import static org.geotools.measure.Units.DEGREE_MINUTE_SECOND;
+import static org.geotools.measure.Units.FOOT;
+import static org.geotools.measure.Units.GRADE;
+import static org.geotools.measure.Units.KILOMETER;
+import static org.geotools.measure.Units.METRE;
+import static org.geotools.measure.Units.MICRORADIAN;
+import static org.geotools.measure.Units.MINUTE_ANGLE;
+import static org.geotools.measure.Units.NAUTICAL_MILE;
+import static org.geotools.measure.Units.ONE;
+import static org.geotools.measure.Units.PPM;
+import static org.geotools.measure.Units.RADIAN;
+import static org.geotools.measure.Units.SECOND_ANGLE;
+import static org.geotools.measure.Units.SEXAGESIMAL_DMS;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectStreamException;
@@ -49,6 +62,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.measure.Unit;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Length;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import org.geotools.measure.Units;
@@ -218,8 +233,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * <p>This field is managed as part of our connection lifecycle.
      */
-    private final Map<String, PreparedStatement> statements =
-            new IdentityHashMap<String, PreparedStatement>();
+    private final Map<String, PreparedStatement> statements = new IdentityHashMap<>();
 
     /**
      * Last object type returned by {@link #createObject}, or -1 if none. This type is an index in
@@ -239,7 +253,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * @see #getAxisName
      */
-    private final Map<String, AxisName> axisNames = new HashMap<String, AxisName>();
+    private final Map<String, AxisName> axisNames = new HashMap<>();
 
     /**
      * Cache for axis numbers. This service is not provided by {@link BufferedAuthorityFactory}
@@ -247,7 +261,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * @see #getDimensionForCRS
      */
-    private final Map<String, Short> axisCounts = new HashMap<String, Short>();
+    private final Map<String, Short> axisCounts = new HashMap<>();
 
     /**
      * Cache for projection checks. This service is not provided by {@link BufferedAuthorityFactory}
@@ -255,16 +269,16 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * @see #isProjection
      */
-    private final Map<String, Boolean> codeProjection = new HashMap<String, Boolean>();
+    private final Map<String, Boolean> codeProjection = new HashMap<>();
 
     /** Pool of naming systems, used for caching. There is usually few of them (about 15). */
-    private final Map<String, LocalName> scopes = new HashMap<String, LocalName>();
+    private final Map<String, LocalName> scopes = new HashMap<>();
 
     /**
      * The properties to be given the objects to construct. Reused every time {@link
      * #createProperties} is invoked.
      */
-    private final Map<String, Object> properties = new HashMap<String, Object>();
+    private final Map<String, Object> properties = new HashMap<>();
 
     /**
      * A safety guard for preventing never-ending loops in recursive calls to {@link #createDatum}.
@@ -272,7 +286,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * target datum could have its own Bursa-Wolf parameters, with one of them pointing again to the
      * source datum.
      */
-    private final Set<String> safetyGuard = new HashSet<String>();
+    private final Set<String> safetyGuard = new HashSet<>();
 
     public AbstractEpsgFactory(final Hints userHints) throws FactoryException {
         super(MAXIMUM_PRIORITY - 20);
@@ -449,7 +463,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      */
     protected synchronized Set<String> generateAuthorityCodes(final Class type)
             throws FactoryException {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (int i = 0; i < TABLES_INFO.length; i++) {
             final TableInfo table = TABLES_INFO[i];
             if (table.isTypeOf(type)) {
@@ -738,7 +752,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     generic = new ScopedName(cached, local);
                 }
                 if (alias == null) {
-                    alias = new ArrayList<GenericName>();
+                    alias = new ArrayList<>();
                 }
                 alias.add(generic);
             }
@@ -1010,7 +1024,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     final double semiMinorAxis = result.getDouble(5);
                     final String unitCode = getString(result, 6, code);
                     final String remarks = result.getString(7);
-                    final Unit unit = createUnit(unitCode);
+                    @SuppressWarnings("unchecked")
+                    final Unit<Length> unit = (Unit<Length>) createUnit(unitCode);
                     final Map<String, Object> properties = generateProperties(name, epsg, remarks);
                     final Ellipsoid ellipsoid;
                     if (inverseFlattening == 0) {
@@ -1100,7 +1115,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     final double longitude = getDouble(result, 3, code);
                     final String unit_code = getString(result, 4, code);
                     final String remarks = result.getString(5);
-                    final Unit unit = createUnit(unit_code);
+                    @SuppressWarnings("unchecked")
+                    final Unit<javax.measure.quantity.Angle> unit =
+                            (Unit<Angle>) createUnit(unit_code);
                     final Map<String, Object> properties = generateProperties(name, epsg, remarks);
                     PrimeMeridian primeMeridian =
                             factories
@@ -1240,7 +1257,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 final int method = getInt(result, 2, code);
                 final String datum = getString(result, 3, code);
                 if (bwInfos == null) {
-                    bwInfos = new ArrayList<Object>();
+                    bwInfos = new ArrayList<>();
                 }
                 bwInfos.add(new BursaWolfInfo(operation, method, datum));
             }
@@ -1260,7 +1277,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             final BursaWolfInfo[] codes = bwInfos.toArray(new BursaWolfInfo[size]);
             sort(codes);
             bwInfos.clear();
-            final Set<String> added = new HashSet<String>();
+            final Set<String> added = new HashSet<>();
             for (int i = 0; i < codes.length; i++) {
                 final BursaWolfInfo candidate = codes[i];
                 if (added.add(candidate.target)) {
@@ -1390,8 +1407,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                      *     case, we lost our paranoiac check for duplication.
                      */
                     if (type.equals("geodetic")) {
-                        properties =
-                                new HashMap<String, Object>(properties); // Protect from changes
+                        properties = new HashMap<>(properties); // Protect from changes
                         final Ellipsoid ellipsoid = createEllipsoid(getString(result, 9, code));
                         final PrimeMeridian meridian =
                                 createPrimeMeridian(getString(result, 10, code));
@@ -1933,10 +1949,10 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws FactoryException if some other kind of failure occured in the backing store. This
      *     exception usually have {@link SQLException} as its cause.
      */
-    public synchronized ParameterDescriptor generateParameterDescriptor(final String code)
+    public synchronized ParameterDescriptor<?> generateParameterDescriptor(final String code)
             throws FactoryException {
         ensureNonNull("code", code);
-        ParameterDescriptor returnValue = null;
+        ParameterDescriptor<?> returnValue = null;
         final PreparedStatement stmt;
         try {
             final String primaryKey =
@@ -1960,8 +1976,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     final String epsg = getString(result, 1, code);
                     final String name = getString(result, 2, code);
                     final String remarks = result.getString(3);
-                    final Unit unit;
-                    final Class type;
+                    final Unit<?> unit;
+                    final Class<?> type;
                     /*
                      * Search for units. We will choose the most commonly used one in parameter values.
                      * If the parameter appears to have at least one non-null value in the "Parameter
@@ -1995,9 +2011,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     /*
                      * Now creates the parameter descriptor.
                      */
-                    final ParameterDescriptor descriptor;
                     final Map<String, Object> properties = generateProperties(name, epsg, remarks);
-                    descriptor =
+                    @SuppressWarnings("unchecked")
+                    final ParameterDescriptor<?> descriptor =
                             new DefaultParameterDescriptor(
                                     properties, type, null, null, null, null, unit, true);
                     returnValue = ensureSingleton(descriptor, returnValue, code);
@@ -2031,7 +2047,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                                 + " ORDER BY SORT_ORDER");
         stmt.setString(1, method);
         try (ResultSet results = stmt.executeQuery()) {
-            final List<ParameterDescriptor> descriptors = new ArrayList<ParameterDescriptor>();
+            final List<ParameterDescriptor<? extends Object>> descriptors = new ArrayList<>();
             while (results.next()) {
                 final String param = getString(results, 1, method);
                 descriptors.add(generateParameterDescriptor(param));
@@ -2074,7 +2090,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             while (result.next()) {
                 final String name = getString(result, 1, operation);
                 final double value = result.getDouble(2);
-                final Unit unit;
+                final Unit<?> unit;
                 Object reference;
                 if (result.wasNull()) {
                     /*
@@ -2094,7 +2110,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     final String unitCode = result.getString(4);
                     unit = (unitCode != null) ? createUnit(unitCode) : null;
                 }
-                final ParameterValue param;
+                final ParameterValue<?> param;
                 try {
                     param = parameters.parameter(name);
                 } catch (ParameterNotFoundException exception) {
@@ -2216,7 +2232,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                                 + " AND SOURCE_CRS_CODE IS NOT NULL"
                                 + " AND TARGET_CRS_CODE IS NOT NULL");
         stmt.setString(1, code);
-        final Map<Dimensions, Dimensions> dimensions = new HashMap<Dimensions, Dimensions>();
+        final Map<Dimensions, Dimensions> dimensions = new HashMap<>();
         final Dimensions temp = new Dimensions((2 << 16) | 2); // Default to (2,2) dimensions.
         Dimensions max = temp;
         try (ResultSet result = stmt.executeQuery()) {
@@ -2529,7 +2545,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                                                 + " WHERE (CONCAT_OPERATION_CODE = ?)"
                                                 + " ORDER BY OP_PATH_STEP");
                         cstmt.setString(1, epsg);
-                        final List<String> codes = new ArrayList<String>();
+                        final List<String> codes = new ArrayList<>();
                         try (ResultSet cr = cstmt.executeQuery()) {
                             while (cr.next()) {
                                 codes.add(cr.getString(1));
@@ -2565,7 +2581,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                             try {
                                 Ellipsoid ellipsoid = CRSUtilities.getHeadGeoEllipsoid(sourceCRS);
                                 if (ellipsoid != null) {
-                                    final Unit axisUnit = ellipsoid.getAxisUnit();
+                                    final Unit<Length> axisUnit = ellipsoid.getAxisUnit();
                                     parameters
                                             .parameter("src_semi_major")
                                             .setValue(ellipsoid.getSemiMajorAxis(), axisUnit);
@@ -2603,7 +2619,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                          * At this stage, the parameters are ready for use. Creates the math transform
                          * and wraps it in the final operation (a Conversion or a Transformation).
                          */
-                        final Class expected;
+                        final Class<? extends CoordinateOperation> expected;
                         if (isTransformation) {
                             expected = Transformation.class;
                         } else if (isConversion) {
@@ -2784,7 +2800,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      */
     private final class Finder extends IdentifiedObjectFinder {
         /** Creates a new finder backed by the specified <em>buffered</em> authority factory. */
-        Finder(final Class /*<? extends IdentifiedObject>*/ type) {
+        Finder(final Class<? extends IdentifiedObject> type) {
             super(AbstractEpsgFactory.this, type);
         }
 
@@ -2794,7 +2810,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
          * AbstractEpsgFactory#getAuthorityCodes} would produce.
          */
         @Override
-        protected Set getCodeCandidates(final IdentifiedObject object) throws FactoryException {
+        protected Set<String> getCodeCandidates(final IdentifiedObject object)
+                throws FactoryException {
             String select = "COORD_REF_SYS_CODE";
             String from = "[Coordinate Reference System]";
             String where, code;
@@ -2828,7 +2845,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             String sql =
                     "SELECT " + select + " FROM " + from + " WHERE " + where + "='" + code + '\'';
             sql = adaptSQL(sql);
-            final Set<String> result = new LinkedHashSet<String>();
+            final Set<String> result = new LinkedHashSet<>();
             try (Statement s = getConnection().createStatement();
                     ResultSet r = s.executeQuery(sql)) {
                 while (r.next()) {
@@ -2842,13 +2859,14 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     }
 
     /** Constructs an exception for recursive calls. */
-    private static FactoryException recursiveCall(final Class type, final String code) {
+    private static FactoryException recursiveCall(
+            final Class<? extends IdentifiedObject> type, final String code) {
         return new FactoryException(Errors.format(ErrorKeys.RECURSIVE_CALL_$2, type, code));
     }
 
     /** Constructs an exception for a database failure. */
     private static FactoryException databaseFailure(
-            final Class type, final String code, final SQLException cause) {
+            final Class<? extends Object> type, final String code, final SQLException cause) {
         return new FactoryException(
                 Errors.format(ErrorKeys.DATABASE_FAILURE_$2, type, code), cause);
     }
@@ -2939,8 +2957,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             final boolean isClosed;
             try {
                 isClosed = connection.isClosed();
-                for (final Iterator it = statements.values().iterator(); it.hasNext(); ) {
-                    ((PreparedStatement) it.next()).close();
+                for (final Iterator<PreparedStatement> it = statements.values().iterator();
+                        it.hasNext(); ) {
+                    (it.next()).close();
                     it.remove();
                 }
                 connection.close();
@@ -3448,8 +3467,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
          * serialization. The serialised set of authority code is disconnected from the underlying
          * database.
          */
-        protected Object writeReplace() throws ObjectStreamException {
-            return new LinkedHashSet<String>(this);
+        protected LinkedHashSet<String> writeReplace() throws ObjectStreamException {
+            return new LinkedHashSet<>(this);
         }
 
         /**

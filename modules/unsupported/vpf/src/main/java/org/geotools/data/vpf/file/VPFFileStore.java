@@ -53,7 +53,7 @@ public class VPFFileStore extends ContentDataStore {
 
     /** Default constructor. Nothing special */
     public VPFFileStore(String vpfFilePath) throws IOException {
-        files = new HashMap<String, SimpleFeatureType>();
+        files = new HashMap<>();
 
         this.vpfFilePath = vpfFilePath;
         this.getTypeSchema(vpfFilePath);
@@ -68,7 +68,7 @@ public class VPFFileStore extends ContentDataStore {
      */
     public List<Name> getNames() {
         // String[] result = new String[files.size()];
-        ArrayList<Name> result = new ArrayList<Name>();
+        ArrayList<Name> result = new ArrayList<>();
         // int counter = 0;
         SimpleFeatureType currentFile;
         Iterator<SimpleFeatureType> iter = files.values().iterator();
@@ -175,7 +175,7 @@ public class VPFFileStore extends ContentDataStore {
 
         if (new File(pathName).exists()) return new VPFFile(pathName);
 
-        ArrayList<String> matches = new ArrayList<String>();
+        ArrayList<String> matches = new ArrayList<>();
         matches.add(""); // Need to start with something in the list
         StringTokenizer st = new StringTokenizer(pathName, File.separator);
         while (st.hasMoreTokens() && !matches.isEmpty()) {
@@ -184,7 +184,7 @@ public class VPFFileStore extends ContentDataStore {
             String currLower = curr.toLowerCase();
             boolean useUpper = !curr.equals(currUpper);
             boolean useLower = !curr.equals(currLower);
-            ArrayList<String> newMatches = new ArrayList<String>();
+            ArrayList<String> newMatches = new ArrayList<>();
 
             for (Iterator<String> it = matches.iterator(); it.hasNext(); ) {
                 String match = (String) it.next();

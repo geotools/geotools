@@ -90,9 +90,8 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
         return "SELECT 1 FROM DUMMY";
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         super.setupParameters(parameters);
 
         parameters.put(DBTYPE.key, DBTYPE);
@@ -102,16 +101,15 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String host = (String) HOST.lookUp(params);
         Integer port = (Integer) PORT.lookUp(params);
         Integer instance = (Integer) INSTANCE.lookUp(params);
         String database = (String) DATABASE.lookUp(params);
         Boolean useSsl = (Boolean) USE_SSL.lookUp(params);
 
-        HashMap<String, String> options = new HashMap<String, String>();
+        HashMap<String, String> options = new HashMap<>();
         if ((useSsl != null) && (useSsl == true)) {
             options.put("encrypt", "true");
         }
@@ -129,9 +127,8 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
         return HanaConnectionParameters.forSingleContainer(host, instance, options).buildUrl();
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
         HanaDialect dialect = (HanaDialect) dataStore.getSQLDialect();
         Boolean encodeFunctions = (Boolean) ENCODE_FUNCTIONS.lookUp(params);

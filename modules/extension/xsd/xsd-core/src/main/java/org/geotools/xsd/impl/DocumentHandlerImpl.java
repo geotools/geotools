@@ -69,7 +69,7 @@ public class DocumentHandlerImpl extends HandlerImpl implements DocumentHandler 
 
     //    public List getChildHandlers() {
     //    	if ( handler == null ) {
-    //    		return Collections.EMPTY_LIST;
+    //    		return Collections.emptyList();
     //    	}
     //
     //    	ArrayList list = new ArrayList();

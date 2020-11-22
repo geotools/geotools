@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.distribution;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class MediumName extends CodeList<MediumName> {
     private static final long serialVersionUID = 2634504971646621701L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<MediumName> VALUES = new ArrayList<MediumName>(18);
+    private static final List<MediumName> VALUES = new ArrayList<>(18);
 
     /** Read-only optical disk. */
     @UML(identifier = "cdRom", obligation = CONDITIONAL, specification = ISO_19115)

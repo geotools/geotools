@@ -19,13 +19,30 @@
 package org.geotools.filter.function;
 
 import java.awt.RenderingHints;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.visitor.Aggregate;
+import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.filter.DefaultExpression;
 import org.geotools.filter.FunctionExpression;
+import org.geotools.util.factory.GeoTools;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.ExpressionVisitor;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.Subtract;
 import org.opengis.util.ProgressListener;
 
 /**
@@ -40,11 +57,13 @@ public abstract class ClassificationFunction extends DefaultExpression
     protected static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ClassificationFunction.class);
 
+    static final FilterFactory2 FF =
+            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+
     FunctionName name;
 
     /** function params * */
-    List<org.opengis.filter.expression.Expression> params =
-            new ArrayList<org.opengis.filter.expression.Expression>(2);
+    List<org.opengis.filter.expression.Expression> params = new ArrayList<>(2);
 
     Literal fallback;
 
@@ -217,5 +236,65 @@ public abstract class ClassificationFunction extends DefaultExpression
         }
         sb.append(")");
         return sb.toString();
+    }
+
+    /**
+     * This method return percentages by using a single groupBy query to retrieve class members. Can
+     * be used if the class width is the same for all the classes.
+     *
+     * @param collection the feature collection to classify
+     * @param percentages the array of percentages to fill
+     * @param totalSize the totalSize of the collection
+     * @param min the min attribute value in the collection
+     * @param classWidth the classWidth
+     * @return
+     * @throws IOException
+     */
+    protected double[] computeGroupByPercentages(
+            FeatureCollection collection,
+            double[] percentages,
+            int totalSize,
+            double min,
+            double classWidth)
+            throws IOException {
+        Subtract subtract = FF.subtract(getParameters().get(0), FF.literal(min));
+        Divide divide = FF.divide(subtract, FF.literal(classWidth));
+        Function convert = FF.function("convert", divide, FF.literal(Integer.class));
+        GroupByVisitor groupBy =
+                new GroupByVisitor(
+                        Aggregate.COUNT, getParameters().get(0), Arrays.asList(convert), null);
+        collection.accepts(groupBy, null);
+        @SuppressWarnings("unchecked")
+        Map<List<Integer>, Integer> result = groupBy.getResult().toMap();
+        Map<Integer, Integer> resultIntKeys =
+                result.entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(e -> e.getKey().get(0), e -> e.getValue()));
+        // getting a tree set from the keys to get them asc ordered and
+        // collect percentages in the right order
+        Set<Integer> keys = new TreeSet<>(resultIntKeys.keySet());
+        for (Integer key : keys) {
+            int intKey = key.intValue();
+            computePercentage(
+                    percentages, Double.valueOf(resultIntKeys.get(key)), totalSize, intKey);
+        }
+        return percentages;
+    }
+
+    /**
+     * Compute the percentage from the input parameters, setting in the percentages array at the
+     * specified index
+     */
+    protected void computePercentage(
+            double[] percentages, double classMembers, double totalSize, int index) {
+        // handle case when the query return one class plus,
+        // e.g. classWidth is an integer so that in an interval of values 1-25,
+        // for three classes, we would have value 25 falling in group with key 3
+        if (index >= percentages.length) {
+            int last = percentages.length - 1;
+            percentages[last] += (classMembers / totalSize) * 100;
+        } else {
+            percentages[index] = (classMembers / totalSize) * 100;
+        }
     }
 }

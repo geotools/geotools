@@ -40,6 +40,6 @@ public class DefaultFileServiceInfo extends DefaultServiceInfo implements FileSe
      */
     @Override
     public CloseableIterator<FileGroup> getFiles(Query query) {
-        return new DefaultCloseableIterator<FileGroup>(files.iterator());
+        return new DefaultCloseableIterator<>(files.iterator());
     }
 }

@@ -68,7 +68,7 @@ public class TimeCalendarTypeImpl extends AbstractTimeReferenceSystemTypeImpl im
      */
     public EList<TimeCalendarEraPropertyType> getReferenceFrame() {
         if (referenceFrame == null) {
-            referenceFrame = new EObjectContainmentEList<TimeCalendarEraPropertyType>(TimeCalendarEraPropertyType.class, this, Gml311Package.TIME_CALENDAR_TYPE__REFERENCE_FRAME);
+            referenceFrame = new EObjectContainmentEList<>(TimeCalendarEraPropertyType.class, this, Gml311Package.TIME_CALENDAR_TYPE__REFERENCE_FRAME);
         }
         return referenceFrame;
     }

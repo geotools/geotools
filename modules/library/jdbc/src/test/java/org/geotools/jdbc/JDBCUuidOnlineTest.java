@@ -49,7 +49,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
                 dataStore.getFeatureReader(new Query(tname(("guid"))), Transaction.AUTO_COMMIT)) {
             r.hasNext();
 
-            Set<UUID> uuids = new HashSet<UUID>();
+            Set<UUID> uuids = new HashSet<>();
             uuids.add(uuid1);
             uuids.add(uuid2);
             while (r.hasNext()) {

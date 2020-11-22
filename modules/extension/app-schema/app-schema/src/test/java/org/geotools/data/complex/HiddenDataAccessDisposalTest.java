@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class HiddenDataAccessDisposalTest extends AbstractHiddenDataAccessDispos
     @Before
     public void loadDataAccesses() throws Exception {
         /** Load mapped feature data access */
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url = getClass().getResource(schemaBase + "MappedFeaturePropertyfile.xml");
         assertNotNull(url);
 

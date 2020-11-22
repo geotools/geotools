@@ -52,7 +52,7 @@ public final class IDRISIFormat extends BaseGDALGridFormat implements Format {
 
     /** Sets the metadata information. */
     protected void setInfo() {
-        final HashMap<String, String> info = new HashMap<String, String>();
+        final HashMap<String, String> info = new HashMap<>();
         info.put("name", "RST");
         info.put("description", "IDRIS (RST) Coverage Format");
         info.put("vendor", "Geotools");

@@ -24,8 +24,8 @@ import org.opengis.feature.simple.SimpleFeature;
 
 final class TempFeatureResults implements ValidationResults {
     Validation trial;
-    List error = new ArrayList();
-    List warning = new ArrayList();
+    List<String> error = new ArrayList<>();
+    List<String> warning = new ArrayList<>();
 
     public void setValidation(Validation validation) {
         trial = validation;

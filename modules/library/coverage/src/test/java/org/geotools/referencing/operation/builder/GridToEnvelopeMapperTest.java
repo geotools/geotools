@@ -17,7 +17,15 @@
 package org.geotools.referencing.operation.builder;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -34,7 +42,7 @@ import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

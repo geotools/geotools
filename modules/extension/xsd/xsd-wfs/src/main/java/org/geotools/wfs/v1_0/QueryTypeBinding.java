@@ -55,8 +55,10 @@ public class QueryTypeBinding extends org.geotools.wfs.bindings.QueryTypeBinding
             }
             return null;
         } else if ("PropertyName".equals(name.getLocalPart())) {
-            List l = new ArrayList();
-            for (String s : (List<String>) super.getProperty(object, name)) {
+            List<PropertyName> l = new ArrayList<>();
+            @SuppressWarnings("unchecked")
+            List<String> property = (List<String>) super.getProperty(object, name);
+            for (String s : property) {
                 l.add(filterFactory.property(s));
             }
             return l;
@@ -72,7 +74,7 @@ public class QueryTypeBinding extends org.geotools.wfs.bindings.QueryTypeBinding
             // in wfs 1.0 we are only allowed a singel type name
             QueryType query = (QueryType) eObject;
 
-            ArrayList list = new ArrayList();
+            List<Object> list = new ArrayList<>();
             list.add(value);
             query.setTypeName(list);
         } else if ("PropertyName".equals(property)) {

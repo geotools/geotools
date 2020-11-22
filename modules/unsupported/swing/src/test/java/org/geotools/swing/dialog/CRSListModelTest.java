@@ -17,7 +17,7 @@
 
 package org.geotools.swing.dialog;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
 import org.geotools.referencing.ReferencingFactoryFinder;

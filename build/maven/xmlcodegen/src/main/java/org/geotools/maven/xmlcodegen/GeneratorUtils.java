@@ -48,10 +48,10 @@ public class GeneratorUtils {
 	 */
 	public static List allTypes( XSDSchema schema ) {
 		//get the named types
-		List types = new ArrayList( schema.getTypeDefinitions() );
+		List<XSDTypeDefinition> types = new ArrayList<>( schema.getTypeDefinitions() );
     	
 		//get anonymous types
-		List anonymous = new ArrayList();
+		List<XSDTypeDefinition> anonymous = new ArrayList<>();
 		
 		//add any anonymous types of global elements + attributes
 		for ( Iterator e = schema.getElementDeclarations().iterator(); e.hasNext(); ) {
@@ -69,8 +69,8 @@ public class GeneratorUtils {
 			}
 		}
     	//add any anonymous types foudn with type definitions
-    	for ( Iterator t = types.iterator(); t.hasNext(); ) {
-    		XSDTypeDefinition type = (XSDTypeDefinition) t.next();
+    	for ( Iterator<XSDTypeDefinition> t = types.iterator(); t.hasNext(); ) {
+    		XSDTypeDefinition type = t.next();
     		List particles = Schemas.getChildElementParticles( type, false );
     		for ( Iterator p = particles.iterator(); p.hasNext(); ) {
     			XSDParticle particle = (XSDParticle) p.next();

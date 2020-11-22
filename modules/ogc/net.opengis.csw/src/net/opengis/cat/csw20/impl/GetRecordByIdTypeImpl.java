@@ -135,7 +135,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      */
     public EList<URI> getId() {
         if (id == null) {
-            id = new EDataTypeUniqueEList<URI>(URI.class, this, Csw20Package.GET_RECORD_BY_ID_TYPE__ID);
+            id = new EDataTypeUniqueEList<>(URI.class, this, Csw20Package.GET_RECORD_BY_ID_TYPE__ID);
         }
         return id;
     }

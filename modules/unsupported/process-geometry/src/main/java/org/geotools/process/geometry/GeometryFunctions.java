@@ -658,7 +658,7 @@ public class GeometryFunctions {
         Geometry polys = polygonize(nodedLinework);
 
         // Only keep polygons which are inside the input
-        List<Polygon> output = new ArrayList<Polygon>();
+        List<Polygon> output = new ArrayList<>();
         for (int i = 0; i < polys.getNumGeometries(); i++) {
             Polygon candpoly = (Polygon) polys.getGeometryN(i);
             // use interior point to test for inclusion in parent

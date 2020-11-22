@@ -49,11 +49,14 @@
   <!--                        reported by the surefire report      -->
   <!--                        plugin.                              -->
   <!--                                                             -->
-  <!--     online             Profile to active tests which end in -->
-  <!--                        "OnlineTest.java"                    -->
+  <!--     online             Profile to activate tests which end  -->
+  <!--                        in "OnlineTest.java                  -->
   <!--                                                             -->
-  <!--     stress             Profile to active tests which end in -->
-  <!--                        "StressTest.java"                    -->
+  <!--     stress             Profile to activate tests which end  -->
+  <!--                        in "StressTest.java"                 -->
+  <!--                                                             -->
+  <!--     jdk11test          Profile to activate tests which end  -->
+  <!--                        in "JDK11Test.java"                  -->
   <!--                                                             -->
   <!--     dependencycheck    Profile to check dependency versions -->
   <!--                                                             -->
@@ -83,17 +86,20 @@
     <interactive.image>false</interactive.image>
     <online.skip.pattern>**/*OnlineTest.java</online.skip.pattern>
     <stress.skip.pattern>**/*StressTest.java</stress.skip.pattern>
+    <jdk11test.skip.pattern>**/*JDK11Test.java</jdk11test.skip.pattern>
     <test.exclude.pattern>disabled</test.exclude.pattern>
     <test.maxHeapSize>256M</test.maxHeapSize>
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
     <test.forkMode>once</test.forkMode>
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.3.2</imageio.ext.version>
-    <jts.version>1.16.1</jts.version>
-    <jaiext.version>1.1.15</jaiext.version>
+    <imageio.ext.version>1.3.4</imageio.ext.version>
+    <jts.version>1.17.1</jts.version>
+    <jaiext.version>1.1.17</jaiext.version>
     <netcdf.version>4.6.15</netcdf.version>
-    <jt.version>1.5.0</jt.version>
+    <commons-beanutils.version>1.9.2</commons-beanutils.version>
+    <eclipse.emf.version>2.15.0</eclipse.emf.version>
+    <jt.version>1.6.0</jt.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
     <mockito.core.version>2.23.0</mockito.core.version>
@@ -105,11 +111,15 @@
     <fork.javac>false</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <postgresql.jdbc.version>42.2.14</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.2.18</postgresql.jdbc.version>
+    <ojdbc8.version>19.8.0.0</ojdbc8.version>
+    <mssql-jdbc.version>8.4.1.jre8</mssql-jdbc.version>
+    <jtds.jdbc.version>1.3.1</jtds.jdbc.version>
     <solrj.version>7.2.1</solrj.version>
     <elasticsearch.version>7.4.0</elasticsearch.version>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
+    <maven.pmd.plugin.version>3.12.0</maven.pmd.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
     <fmt.action>format</fmt.action>
@@ -125,7 +135,7 @@
     <checkstyle.skip>false</checkstyle.skip>
     <qa>false</qa>
     <jackson2.version>2.10.1</jackson2.version>
-    <lint>deprecation</lint>
+    <lint>deprecation,unchecked</lint>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -186,6 +196,12 @@
       </properties>
     </profile>
     <profile>
+      <id>jdk11test</id>
+      <properties>
+        <jdk11test.skip.pattern>disabled</jdk11test.skip.pattern>
+      </properties>
+    </profile>
+    <profile>
       <id>site.local</id>
       <distributionManagement>
         <site>
@@ -233,7 +249,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-pmd-plugin</artifactId>
-            <version>3.12.0</version>
+            <version>${maven.pmd.plugin.version}</version>
             <dependencies>
               <dependency>
                 <groupId>net.sourceforge.pmd</groupId>
@@ -268,6 +284,9 @@
               <excludeRoots>
                 <excludeRoot>target/generated-sources</excludeRoot>
               </excludeRoots>
+              <excludes>
+                <exclude>**/*JDK11Test.java</exclude>
+              </excludes>
             </configuration>
             <executions>
               <execution>
@@ -302,6 +321,8 @@
                 <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
                 <arg>-Xlint:${lint}</arg>
                 <arg>-Werror</arg>
+                <arg>-Xmaxwarns</arg>
+                <arg>1000</arg>
               </compilerArgs>
               <annotationProcessorPaths>
                 <path>
@@ -378,7 +399,6 @@
               <jvmArgs>-XX:+TieredCompilation -XX:TieredStopAtLevel=1</jvmArgs>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:${lint}</arg>
-                <arg>-Werror</arg>
               </compilerArgs>
             </configuration>
             <executions>
@@ -405,7 +425,6 @@
            <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-checkstyle-plugin</artifactId>
-              <version>3.1.1</version>
               <dependencies>
                 <dependency>
                   <groupId>com.puppycrawl.tools</groupId>
@@ -431,6 +450,42 @@
         </plugins>
       </build>  
     </profile>
+    <profile>
+      <id>enforcer</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.0.0-M3</version>
+            <executions>
+              <execution>
+                <id>enforce</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <banDuplicatePomDependencyVersions />
+                    <requirePluginVersions>
+                      <message>Best Practice is to always define plugin versions</message>
+                      <phases>clean,deploy,install</phases>
+                      <!-- ignore these for version check as they are part of the build -->
+                      <unCheckedPluginList>org.geotools.maven:jjtree-javacc, org.geotools.maven:xmlcodegen, org.geotools.maven:jar-collector</unCheckedPluginList>
+                    </requirePluginVersions>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 </profiles>
 
 
@@ -440,7 +495,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>24-SNAPSHOT</version>
+  <version>25-SNAPSHOT</version>
   <name>GeoTools</name>
 
   <scm>
@@ -968,7 +1023,17 @@
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-png</artifactId>
         <version>${imageio.ext.version}</version>
-      </dependency> 	  
+      </dependency>
+	  <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-cog-reader</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>
+	  <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-cog-streams</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>
 
       <!-- JAITools -->
       <dependency>
@@ -1127,7 +1192,7 @@
       <dependency>
         <groupId>org.apache.ant</groupId>
         <artifactId>ant</artifactId>
-        <version>1.8.1</version>
+        <version>1.9.15</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -1172,14 +1237,7 @@
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
-        <version>1.9.2</version>
-        <classifier>noclassprop</classifier>
-      </dependency>
-      <dependency>
-        <groupId>commons-beanutils</groupId>
-        <artifactId>commons-beanutils</artifactId>
-        <version>1.9.2</version>
-        <scope>provided</scope>
+        <version>1.9.4</version>
       </dependency>
       <dependency>
         <groupId>commons-httpclient</groupId>
@@ -1226,7 +1284,7 @@
       <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <version>5.1.46</version>
+        <version>8.0.22</version>
       </dependency>
       <dependency>
         <groupId>org.hsqldb</groupId>
@@ -1243,7 +1301,7 @@
       <dependency>
         <artifactId>ojdbc8</artifactId>
         <groupId>com.oracle.database.jdbc</groupId>
-        <version>19.6.0.0</version>
+        <version>${ojdbc8.version}</version>
       </dependency>
       <!-- Older version required by imagemosaic -->
       <dependency>
@@ -1255,6 +1313,17 @@
         <artifactId>sdoapi</artifactId>
         <groupId>com.oracle</groupId>
         <version>10.2.0</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>net.sourceforge.jtds</groupId>
+        <artifactId>jtds</artifactId>
+        <version>${jtds.jdbc.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.sqlserver</groupId>
+        <artifactId>mssql-jdbc</artifactId>
+        <version>${mssql-jdbc.version}</version>
       </dependency>
 
       <!-- H2 -->
@@ -1287,28 +1356,27 @@
       </dependency>
 
       <!-- EMF -->
-
       <dependency>
-	    <groupId>org.eclipse.emf</groupId>
-	    <artifactId>org.eclipse.emf.common</artifactId>
-	    <version>2.15.0</version>
-    </dependency>
-	<dependency>
-		<groupId>org.eclipse.emf</groupId>
-		<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-		<version>2.15.0</version>
-	</dependency>
-	<dependency>
-		<groupId>org.eclipse.emf</groupId>
-		<artifactId>org.eclipse.emf.ecore</artifactId>
-		<version>2.15.0</version>
-	</dependency>
-	<dependency>
-		<groupId>org.eclipse.xsd</groupId>
-		<artifactId>org.eclipse.xsd</artifactId>
-		<version>2.12.0</version>
-	</dependency>
-	    
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.common</artifactId>
+        <version>${eclipse.emf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+        <version>${eclipse.emf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore</artifactId>
+        <version>${eclipse.emf.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.xsd</groupId>
+          <artifactId>org.eclipse.xsd</artifactId>
+          <version>2.12.0</version>
+      </dependency>
+
       <!-- Other random non test dependencies -->
       <dependency>
         <groupId>net.sf.ehcache</groupId>
@@ -1337,7 +1405,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.12</version>
+        <version>4.13.1</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -1606,7 +1674,7 @@
       <dependency>
         <groupId>no.ecc.vectortile</groupId>
         <artifactId>java-vector-tile</artifactId>
-        <version>1.3.7</version>
+        <version>1.3.9</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -1672,6 +1740,30 @@
           <groupId>com.coveo</groupId>
             <artifactId>fmt-maven-plugin</artifactId>
             <version>2.4.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.1.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>3.0.0-M1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>3.0.0-M1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.3</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -1766,8 +1858,11 @@
           <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
           <fork>${fork.javac}</fork>
           <maxmem>${javac.maxHeapSize}</maxmem>
+	<compilerArgs>
+	<arg>-Xlint:${lint}</arg>
+        </compilerArgs>
         </configuration>
-      </plugin>
+</plugin>
 
       <!-- ======================================================= -->
       <!--     Resources.                                          -->
@@ -1817,6 +1912,7 @@
             <exclude>${online.skip.pattern}</exclude>
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
+            <exclude>${jdk11test.skip.pattern}</exclude>
           </excludes>
 	  <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --illegal-access=debug</argLine>
           <!-- Ignores test failure only if we are generating a       -->
@@ -2318,7 +2414,6 @@
       <snapshots><enabled>true</enabled></snapshots>
       <releases><enabled>false</enabled></releases>
     </repository>
-
   </repositories>
 
   <!-- =========================================================== -->

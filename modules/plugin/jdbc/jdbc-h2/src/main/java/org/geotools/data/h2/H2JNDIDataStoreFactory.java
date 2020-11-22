@@ -16,7 +16,8 @@
  */
 package org.geotools.data.h2;
 
-import static org.geotools.data.h2.H2DataStoreFactory.*;
+import static org.geotools.data.h2.H2DataStoreFactory.ASSOCIATIONS;
+import static org.geotools.data.h2.H2DataStoreFactory.AUTO_SERVER;
 
 import java.io.File;
 import java.util.Map;
@@ -27,6 +28,8 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  *
  * @author Christian Mueller
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class H2JNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 
     public H2JNDIDataStoreFactory() {

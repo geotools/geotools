@@ -17,6 +17,7 @@
 package org.geotools.gml3.bindings;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.xsd.AbstractComplexBinding;
@@ -91,7 +92,7 @@ public class MultiPointTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        ArrayList points = new ArrayList();
+        List<Point> points = new ArrayList<>();
 
         if (node.hasChild(Point.class)) {
             points.addAll(node.getChildValues(Point.class));

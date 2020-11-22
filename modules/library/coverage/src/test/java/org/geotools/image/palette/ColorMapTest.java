@@ -16,7 +16,8 @@
  */
 package org.geotools.image.palette;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -76,7 +77,7 @@ public class ColorMapTest {
         }
         assertEquals(64, map.table.length);
 
-        Set<Integer> colors = new HashSet<Integer>();
+        Set<Integer> colors = new HashSet<>();
         for (ColorEntry ce : map) {
             Integer color = ce.color;
             assertFalse(colors.contains(color));

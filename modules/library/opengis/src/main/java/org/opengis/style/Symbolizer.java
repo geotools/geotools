@@ -9,7 +9,7 @@
  */
 package org.opengis.style;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19117;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;

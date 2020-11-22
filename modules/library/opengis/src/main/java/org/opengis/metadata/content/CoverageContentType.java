@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.content;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class CoverageContentType extends CodeList<CoverageContentType> {
     private static final long serialVersionUID = -346887088822021485L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<CoverageContentType> VALUES = new ArrayList<CoverageContentType>(3);
+    private static final List<CoverageContentType> VALUES = new ArrayList<>(3);
 
     /**
      * Meaningful numerical representation of a physical parameter that is not the actual value of

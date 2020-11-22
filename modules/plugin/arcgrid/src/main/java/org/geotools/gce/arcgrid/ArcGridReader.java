@@ -480,7 +480,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
 
             final GridSampleDimension band =
                     new GridSampleDimension(coverageName, new Category[] {nan}, uom);
-            final Map<String, Object> properties = new HashMap<String, Object>();
+            final Map<String, Object> properties = new HashMap<>();
             CoverageUtilities.setNoDataProperty(properties, Double.valueOf(inNoData));
 
             //

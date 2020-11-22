@@ -40,7 +40,7 @@ public class PlugInDTO {
     private String className;
 
     /** the default arguments */
-    private Map args;
+    private Map<String, Object> args;
 
     /**
      * PlugInDTO constructor.
@@ -58,7 +58,7 @@ public class PlugInDTO {
         name = pi.getName();
         description = pi.getDescription();
         className = pi.getClassName();
-        args = new HashMap();
+        args = new HashMap<>();
 
         if (pi.getArgs() != null) {
             Iterator i = pi.getArgs().keySet().iterator();
@@ -156,7 +156,7 @@ public class PlugInDTO {
      *
      * @return Returns the args.
      */
-    public Map getArgs() {
+    public Map<String, Object> getArgs() {
         return args;
     }
 
@@ -165,7 +165,7 @@ public class PlugInDTO {
      *
      * @param args The args to set.
      */
-    public void setArgs(Map args) {
+    public void setArgs(Map<String, Object> args) {
         this.args = args;
     }
 

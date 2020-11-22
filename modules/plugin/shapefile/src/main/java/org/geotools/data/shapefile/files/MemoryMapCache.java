@@ -44,7 +44,7 @@ class MemoryMapCache {
     static final Logger LOGGER = Logging.getLogger(MemoryMapCache.class);
 
     SoftValueHashMap<MappingKey, MappedByteBuffer> buffers =
-            new SoftValueHashMap<MappingKey, MappedByteBuffer>(0, new BufferCleaner());
+            new SoftValueHashMap<>(0, new BufferCleaner());
 
     MappedByteBuffer map(FileChannel wrapped, URL url, MapMode mode, long position, long size)
             throws IOException {
@@ -87,7 +87,7 @@ class MemoryMapCache {
                 return;
             }
             File file = rawFile.getCanonicalFile();
-            List<MappingKey> keys = new ArrayList<MappingKey>(buffers.keySet());
+            List<MappingKey> keys = new ArrayList<>(buffers.keySet());
             for (MappingKey key : keys) {
                 if (key.file.equals(file)) {
                     MappedByteBuffer buffer = buffers.remove(key);
@@ -106,7 +106,7 @@ class MemoryMapCache {
     }
 
     void clean() {
-        List<MappingKey> keys = new ArrayList<MappingKey>(buffers.keySet());
+        List<MappingKey> keys = new ArrayList<>(buffers.keySet());
         for (MappingKey key : keys) {
             MappedByteBuffer buffer = buffers.remove(key);
             NIOUtilities.clean(buffer, true);
@@ -159,10 +159,9 @@ class MemoryMapCache {
      *
      * @author Andrea Aime
      */
-    public class BufferCleaner implements ValueCleaner {
+    public class BufferCleaner implements ValueCleaner<MappingKey, MappedByteBuffer> {
 
-        public void clean(Object key, Object object) {
-            MappedByteBuffer buffer = (MappedByteBuffer) object;
+        public void clean(MappingKey key, MappedByteBuffer buffer) {
             NIOUtilities.clean(buffer, true);
         }
     }

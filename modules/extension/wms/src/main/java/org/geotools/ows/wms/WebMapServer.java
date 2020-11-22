@@ -96,7 +96,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
         private Icon icon;
 
         WMSInfo() {
-            keywords = new HashSet<String>();
+            keywords = new HashSet<>();
             if (capabilities.getService() != null) {
                 String array[] = capabilities.getService().getKeywordList();
                 if (array != null) {
@@ -245,7 +245,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
 
             String source = getInfo().getSource().toString();
 
-            keywords = new TreeSet<String>();
+            keywords = new TreeSet<>();
 
             if (layer.getKeywords() != null) {
                 List<String> more = Arrays.asList(layer.getKeywords());

@@ -18,8 +18,19 @@
 
 package org.geotools.data.db2;
 
-import java.io.*;
-import org.locationtech.jts.geom.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateFilter;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ByteOrderValues;
 import org.locationtech.jts.io.OutStream;
 import org.locationtech.jts.io.OutputStreamOutStream;

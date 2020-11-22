@@ -36,7 +36,7 @@ import org.opengis.parameter.ParameterValueGroup;
 public class UnknownFormat extends AbstractGridFormat implements Format {
     /** Creates a new UnknownFormat object. */
     public UnknownFormat() {
-        mInfo = new HashMap<String, String>();
+        mInfo = new HashMap<>();
         mInfo.put("name", "Unknown Format");
         mInfo.put("description", "This format describes all unknown formats");
         mInfo.put("vendor", null);

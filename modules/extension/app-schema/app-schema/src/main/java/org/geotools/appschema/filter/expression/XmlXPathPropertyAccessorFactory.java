@@ -53,7 +53,8 @@ public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory 
             return (xpath != null) && !"".equals(xpath.trim());
         }
 
-        public Object get(Object object, String xpath, Class target) {
+        public <T> T get(Object object, String xpath, Class<T> target)
+                throws IllegalArgumentException {
 
             XmlXpathFilterData xmlResponse = (XmlXpathFilterData) object;
             String indexXpath = createIndexedXpath(xmlResponse, xpath);
@@ -62,7 +63,7 @@ public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory 
                     XmlXpathUtilites.getXPathValues(
                             xmlResponse.getNamespaces(), indexXpath, xmlResponse.getDoc());
             if (ls != null && !ls.isEmpty()) {
-                return ls.get(0);
+                return target.cast(ls.get(0));
             }
             return null;
         }

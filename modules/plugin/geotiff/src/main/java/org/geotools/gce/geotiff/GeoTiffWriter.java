@@ -19,7 +19,7 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.plugins.tiff.TIFFImageWriteParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriter;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.BufferedWriter;
@@ -80,7 +80,7 @@ import org.w3c.dom.Node;
 public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCoverageWriter {
     private static final Logger LOGGER = Logging.getLogger(GeoTiffWriter.class);
 
-    private final Map<String, String> metadataKeyValue = new HashMap<String, String>();
+    private final Map<String, String> metadataKeyValue = new HashMap<>();
 
     /** Constructor for a {@link GeoTiffWriter}. */
     public GeoTiffWriter(Object destination) throws IOException {

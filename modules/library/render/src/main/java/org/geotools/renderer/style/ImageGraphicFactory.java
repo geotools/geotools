@@ -48,11 +48,11 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
 
     /** Current way to load images */
     static Map<URL, BufferedImage> imageCache =
-            Collections.synchronizedMap(new SoftValueHashMap<URL, BufferedImage>());
+            Collections.synchronizedMap(new SoftValueHashMap<>());
 
     /** Holds the of graphic formats supported by the current jdk */
     static Set<String> supportedGraphicFormats =
-            new HashSet<String>(Arrays.asList(ImageIO.getReaderMIMETypes()));
+            new HashSet<>(Arrays.asList(ImageIO.getReaderMIMETypes()));
 
     public Icon getIcon(Feature feature, Expression url, String format, int size) {
         // check we do support the format

@@ -27,11 +27,41 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.referencing.*;
-import org.opengis.referencing.crs.*;
-import org.opengis.referencing.cs.*;
-import org.opengis.referencing.datum.*;
-import org.opengis.referencing.operation.*;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.IdentifiedObject;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CompoundCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.DerivedCRS;
+import org.opengis.referencing.crs.EngineeringCRS;
+import org.opengis.referencing.crs.GeneralDerivedCRS;
+import org.opengis.referencing.crs.GeocentricCRS;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.ImageCRS;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.TemporalCRS;
+import org.opengis.referencing.crs.VerticalCRS;
+import org.opengis.referencing.cs.CartesianCS;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.CylindricalCS;
+import org.opengis.referencing.cs.EllipsoidalCS;
+import org.opengis.referencing.cs.PolarCS;
+import org.opengis.referencing.cs.SphericalCS;
+import org.opengis.referencing.cs.TimeCS;
+import org.opengis.referencing.cs.VerticalCS;
+import org.opengis.referencing.datum.Datum;
+import org.opengis.referencing.datum.Ellipsoid;
+import org.opengis.referencing.datum.EngineeringDatum;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.datum.ImageDatum;
+import org.opengis.referencing.datum.PrimeMeridian;
+import org.opengis.referencing.datum.TemporalDatum;
+import org.opengis.referencing.datum.VerticalDatum;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.OperationMethod;
 
 /**
  * Delegates object creations to one of the {@code create} methods in a backing {@linkplain
@@ -119,7 +149,7 @@ abstract class AuthorityFactoryProxy {
      * @param type The type of objects to be created by the proxy.
      */
     public static AuthorityFactoryProxy getInstance(
-            final AuthorityFactory factory, Class /*<? extends IdentifiedObject>*/ type) {
+            final AuthorityFactory factory, Class<? extends IdentifiedObject> type) {
         AbstractAuthorityFactory.ensureNonNull("type", type);
         AbstractAuthorityFactory.ensureNonNull("factory", factory);
         type = getType(type);
@@ -151,10 +181,11 @@ abstract class AuthorityFactoryProxy {
      * @return The most specific GeoAPI interface implemented by {@code type}.
      * @throws IllegalArgumentException if the type doesn't implement a valid interface.
      */
-    public static Class /*<? extends IdentifiedObject>*/ getType(
-            final Class /*<? extends IdentifiedObject>*/ type) throws IllegalArgumentException {
+    public static Class<? extends IdentifiedObject> getType(
+            final Class<? extends IdentifiedObject> type) throws IllegalArgumentException {
         for (int i = 0; i < TYPES.length; i++) {
-            final Class /*<? extends IdentifiedObject>*/ candidate = TYPES[i];
+            @SuppressWarnings("unchecked")
+            final Class<? extends IdentifiedObject> candidate = TYPES[i];
             if (candidate.isAssignableFrom(type)) {
                 return candidate;
             }
@@ -164,7 +195,7 @@ abstract class AuthorityFactoryProxy {
     }
 
     /** Returns the type of the objects to be created by this proxy instance. */
-    public abstract Class /*<? extends IdentifiedObject>*/ getType();
+    public abstract Class<? extends IdentifiedObject> getType();
 
     /** Returns the authority factory used by the {@link #create create} method. */
     public abstract AuthorityFactory getAuthorityFactory();
@@ -173,8 +204,9 @@ abstract class AuthorityFactoryProxy {
      * Returns the set of authority codes.
      *
      * @throws FactoryException if access to the underlying database failed.
+     * @return
      */
-    public final Set /*<String>*/ getAuthorityCodes() throws FactoryException {
+    public final Set<String> getAuthorityCodes() throws FactoryException {
         return getAuthorityFactory().getAuthorityCodes(getType());
     }
 
@@ -223,7 +255,7 @@ abstract class AuthorityFactoryProxy {
         private final AuthorityFactory factory;
 
         /** The type of the objects to be created. */
-        private final Class /*<? extends IdentifiedObject>*/ type;
+        private final Class<? extends IdentifiedObject> type;
 
         /** The {@code createFoo} method to invoke. */
         private final Method method;
@@ -231,7 +263,7 @@ abstract class AuthorityFactoryProxy {
         /**
          * Creates a new proxy which will delegates the object creation to the specified instance.
          */
-        Default(final AuthorityFactory factory, final Class /*<? extends IdentifiedObject>*/ type)
+        Default(final AuthorityFactory factory, final Class<? extends IdentifiedObject> type)
                 throws IllegalArgumentException {
             this.factory = factory;
             this.type = type;
@@ -249,7 +281,7 @@ abstract class AuthorityFactoryProxy {
         }
 
         /** {@inheritDoc} */
-        public Class /*<? extends IdentifiedObject>*/ getType() {
+        public Class<? extends IdentifiedObject> getType() {
             return type;
         }
 
@@ -294,7 +326,7 @@ abstract class AuthorityFactoryProxy {
             this.factory = factory;
         }
 
-        public Class getType() {
+        public Class<? extends IdentifiedObject> getType() {
             return CoordinateReferenceSystem.class;
         }
 
@@ -319,7 +351,7 @@ abstract class AuthorityFactoryProxy {
         }
 
         @Override
-        public Class getType() {
+        public Class<? extends IdentifiedObject> getType() {
             return GeographicCRS.class;
         }
 
@@ -341,7 +373,7 @@ abstract class AuthorityFactoryProxy {
         }
 
         @Override
-        public Class getType() {
+        public Class<? extends IdentifiedObject> getType() {
             return ProjectedCRS.class;
         }
 

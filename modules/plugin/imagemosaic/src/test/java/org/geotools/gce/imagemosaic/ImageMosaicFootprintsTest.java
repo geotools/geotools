@@ -17,17 +17,19 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.geotools.gce.imagemosaic.Utils.FF;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import it.geosolutions.rendered.viewer.RenderedImageBrowser;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Transparency;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -54,7 +56,12 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GranuleRemovalPolicy;
 import org.geotools.coverage.grid.io.GranuleStore;
-import org.geotools.coverage.grid.io.footprint.*;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
+import org.geotools.coverage.grid.io.footprint.FootprintInsetPolicy;
+import org.geotools.coverage.grid.io.footprint.FootprintLoader;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
+import org.geotools.coverage.grid.io.footprint.WKBLoaderSPI;
+import org.geotools.coverage.grid.io.footprint.WKTLoaderSPI;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -493,7 +500,7 @@ public class ImageMosaicFootprintsTest {
             Geometry maskedGeometry = unionGeometry.intersection(intersectingMask);
             double inputMaskArea = maskedGeometry.getArea();
 
-            List<GeneralParameterValue> paramList = new ArrayList<GeneralParameterValue>();
+            List<GeneralParameterValue> paramList = new ArrayList<>();
 
             // Setup reading params
             // FOOTPRINT
@@ -599,7 +606,7 @@ public class ImageMosaicFootprintsTest {
         try {
             reader = format.getReader(multiWkts);
 
-            List<GeneralParameterValue> paramList = new ArrayList<GeneralParameterValue>();
+            List<GeneralParameterValue> paramList = new ArrayList<>();
 
             // Setup reading params
             // FOOTPRINT

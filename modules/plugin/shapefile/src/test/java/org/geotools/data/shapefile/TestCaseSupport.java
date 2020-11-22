@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -76,7 +76,7 @@ public class TestCaseSupport {
      */
     // protected static boolean verbose = false;
     /** Stores all temporary files here - delete on tear down. */
-    private final List<File> tmpFiles = new ArrayList<File>();
+    private final List<File> tmpFiles = new ArrayList<>();
 
     /**
      * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run

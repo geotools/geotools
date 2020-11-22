@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>24-SNAPSHOT</version>
+    <version>25-SNAPSHOT</version>
   </parent>
 
 
@@ -89,6 +89,12 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-metadata</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-arcgrid</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.geotools.jdbc</groupId>
@@ -172,7 +178,6 @@
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <classifier>noclassprop</classifier>
     </dependency>
     <dependency>
       <groupId>org.jaitools</groupId>
@@ -193,10 +198,6 @@
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.xml.bind</groupId>
@@ -237,6 +238,17 @@
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-library</artifactId>
+      <scope>test</scope>
+    </dependency>
+	  <dependency>
+       <groupId>it.geosolutions.imageio-ext</groupId>
+       <artifactId>imageio-ext-cog-reader</artifactId>
+       <version>${imageio.ext.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-cog-rangereader-http</artifactId>
+      <version>${imageio.ext.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

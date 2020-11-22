@@ -179,7 +179,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
             String sourceCRS, String targetCRS)
             throws NoSuchAuthorityCodeException, FactoryException {
 
-        Set<CoordinateOperation> coordops = new HashSet<CoordinateOperation>(1);
+        Set<CoordinateOperation> coordops = new HashSet<>(1);
 
         CoordinateOperation coordop =
                 createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS, false);
@@ -267,7 +267,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
         } catch (NullPointerException e) {
             methodName = mt.getClass().getSimpleName();
         }
-        Map<String, String> props = new HashMap<String, String>();
+        Map<String, String> props = new HashMap<>();
         props.put("name", methodName);
 
         // Create the OperationMethod

@@ -37,7 +37,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(StyleImpl.class);
 
-    private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
+    private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
     private DescriptionImpl description = new DescriptionImpl();
     private String name = "Default Styler";
     private boolean defaultB = false;

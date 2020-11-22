@@ -113,14 +113,14 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * if you are only planning on working with 50 CoordianteReferenceSystems please keep in mind
      * that you will need larger cache size in order to prevent a bottleneck.
      */
-    ObjectCache cache;
+    ObjectCache<Object, Object> cache;
 
     /**
      * The findCache is used to store search results; often match a "raw" CoordinateReferenceSystem
      * created from WKT (as the key) with a "real" CoordianteReferenceSystem as defined by this
      * authority.
      */
-    ObjectCache findCache;
+    ObjectCache<Object, Object> findCache;
 
     /**
      * Pool to hold workers which will be used to construct referencing objects which are not
@@ -180,7 +180,9 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @param cache The cache to use
      */
     protected AbstractAuthorityMediator(
-            int priority, ObjectCache cache, ReferencingFactoryContainer container) {
+            int priority,
+            ObjectCache<Object, Object> cache,
+            ReferencingFactoryContainer container) {
         super(priority);
         this.factories = container;
         this.cache = cache;
@@ -235,12 +237,15 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     /** The authority body of the objects this factory provides. */
     public abstract Citation getAuthority();
 
-    public Set getAuthorityCodes(Class type) throws FactoryException {
-        Set codes = (Set) cache.get(type);
+    public Set<String> getAuthorityCodes(Class type) throws FactoryException {
+        @SuppressWarnings("unchecked")
+        Set<String> codes = (Set) cache.get(type);
         if (codes == null) {
             try {
                 cache.writeLock(type);
-                codes = (Set) cache.peek(type);
+                @SuppressWarnings("unchecked")
+                Set<String> peek = (Set) cache.peek(type);
+                codes = peek;
                 if (codes == null) {
                     AbstractCachedAuthorityFactory worker = null;
                     try {
@@ -667,7 +672,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
-    public synchronized Set /* <CoordinateOperation> */ createFromCoordinateReferenceSystemCodes(
+    public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
 
         final Object key = ObjectCaches.toKey(getAuthority(), sourceCode, targetCode);
@@ -730,6 +735,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @param runner Used to generate a value in the case of a cache miss
      * @return value from either the cache or generated
      */
+    @SuppressWarnings("unchecked")
     protected <T> T createWith(Object key, WorkerSafeRunnable runner) throws FactoryException {
         T value = (T) cache.get(key);
         if (value == null) {
@@ -873,7 +879,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @since 2.4
      */
     public IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class /* <? extends IdentifiedObject> */ type) throws FactoryException {
+            final Class<? extends IdentifiedObject> type) throws FactoryException {
         return new LazyCachedFinder(type);
     }
     /**
@@ -889,9 +895,9 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * its original state before returning back to the <code>workers</code> pool.
      */
     private final class LazyCachedFinder extends IdentifiedObjectFinder {
-        private Class type;
+        private Class<? extends IdentifiedObject> type;
         /** Creates a finder for the underlying backing store. */
-        LazyCachedFinder(final Class type) {
+        LazyCachedFinder(final Class<? extends IdentifiedObject> type) {
             super(AbstractAuthorityMediator.this, type);
             this.type = type;
         }

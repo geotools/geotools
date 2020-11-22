@@ -43,11 +43,11 @@ public class SQLArrayConverterFactory implements ConverterFactory {
 
     static class SQLArrayToJavaConverter implements Converter {
 
-        public Object convert(Object source, Class target) throws Exception {
+        public <T> T convert(Object source, Class<T> target) throws Exception {
             Array sqlArray = (Array) source;
             Object array = sqlArray.getArray();
             int length = getLength(array);
-            Class componentType = target.getComponentType();
+            Class<?> componentType = target.getComponentType();
             Object result = newInstance(componentType, length);
             for (int i = 0; i < length; i++) {
                 Object original = get(array, i);
@@ -63,7 +63,7 @@ public class SQLArrayConverterFactory implements ConverterFactory {
                 }
             }
 
-            return result;
+            return target.cast(result);
         }
     }
 }

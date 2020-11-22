@@ -48,10 +48,9 @@ public class Descriptors {
      * @return The list of attribute descriptors.
      * @see #wrapAttributeType(AttributeType)
      */
-    public static final List wrapAttributeTypes(List /*<AttributeType>*/ typeList) {
-        List descriptors = new ArrayList(typeList.size());
-        for (Iterator i = typeList.iterator(); i.hasNext(); ) {
-            AttributeType attributeType = (AttributeType) i.next();
+    public static final List wrapAttributeTypes(List<AttributeType> typeList) {
+        List<AttributeDescriptor> descriptors = new ArrayList<>(typeList.size());
+        for (AttributeType attributeType : typeList) {
             descriptors.add(wrapAttributeType(attributeType));
         }
         return descriptors;
@@ -133,7 +132,7 @@ public class Descriptors {
     // }
     //
     // public ComplexType subtype(
-    // ComplexType parent, Collection/*<AttributeDescriptor>*/ schema
+    // ComplexType parent, Collection<AttributeDescriptor> schema
     // ) {
     // try {
     // return restriction(parent, schema);
@@ -198,7 +197,7 @@ public class Descriptors {
     //
     // }
     // public ComplexType restriction(ComplexType parent,
-    // Collection/*<AttributeDescriptor>*/ schema) {
+    // Collection<AttributeDescriptor> schema) {
     // ComplexType type = null;
     //
     // if (parent instanceof ChoiceType) {
@@ -241,7 +240,7 @@ public class Descriptors {
     // }
     //
     // public ComplexType extension(
-    // ComplexType parent, Collection/*<AttributeDescriptor>*/ schema
+    // ComplexType parent, Collection<AttributeDescriptor> schema
     // ) {
     //
     // //create a dummy type for the schema
@@ -341,9 +340,7 @@ public class Descriptors {
         if (node.getType() == restrict.getType()) {
             return restrict;
         }
-        for (AttributeType /* <?> */ type = restrict.getType();
-                type != null;
-                type = type.getSuper()) {
+        for (AttributeType type = restrict.getType(); type != null; type = type.getSuper()) {
             if (node.getType().equals(type)) {
                 return restrict;
             }
@@ -351,6 +348,7 @@ public class Descriptors {
         throw new IllegalArgumentException("Cannot restrict provided schema");
     }
 
+    @SuppressWarnings("unchecked")
     Collection restriction(Collection schema, Collection restrict, Collection restriction) {
 
         if (schema.size() != restrict.size()) {
@@ -507,8 +505,8 @@ public class Descriptors {
      *
      * @return List of nodes for the provided type, or empty.
      */
-    public static List /* <AttributeDescriptor> */ nodes(ComplexType schema, AttributeType type) {
-        List /* <AttributeDescriptor> */ nodes = new ArrayList /* <AttributeDescriptor> */();
+    public static List<AttributeDescriptor> nodes(ComplexType schema, AttributeType type) {
+        List<AttributeDescriptor> nodes = new ArrayList<>();
         for (Iterator itr = list(schema).iterator(); itr.hasNext(); ) {
             AttributeDescriptor node = (AttributeDescriptor) itr.next();
             if (node.getType().equals(type)) {
@@ -526,8 +524,8 @@ public class Descriptors {
      *
      * @return List of nodes for the provided type, or empty.
      */
-    public static List /* <AttributeType> */ types(AttributeType type) {
-        List /* <AttributeType> */ types = new ArrayList /* <AttributeType> */();
+    public static List<AttributeType> types(AttributeType type) {
+        List<AttributeType> types = new ArrayList<>();
         for (Iterator itr = list(type).iterator(); itr.hasNext(); ) {
             AttributeDescriptor node = (AttributeDescriptor) itr.next();
             types.add(node.getType());
@@ -551,7 +549,7 @@ public class Descriptors {
     }
 
     public static int maxOccurs(ComplexType schema, AttributeType type) {
-        List /* <AttributeDescriptor> */ nodes = nodes(schema, type);
+        List<AttributeDescriptor> nodes = nodes(schema, type);
         if (nodes.isEmpty()) return 0;
 
         int max = 0;
@@ -570,12 +568,12 @@ public class Descriptors {
      * when relevant.
      */
     // @SuppressWarnings("unchecked")
-    public static List /* <? extends Descriptor> */ list(AttributeType type) {
+    public static List /*<? extends Descriptor>*/ list(AttributeType type) {
 
-        ArrayList list = new ArrayList();
+        ArrayList list = new ArrayList<>();
 
         if (type instanceof ComplexType) {
-            list = new ArrayList(((ComplexType) type).getDescriptors());
+            list = new ArrayList<>(((ComplexType) type).getDescriptors());
         }
 
         return list;
@@ -583,15 +581,15 @@ public class Descriptors {
         // if (schema instanceof OrderedDescriptor) {
         // return ((OrderedDescriptor) schema).sequence();
         // } else if (schema instanceof AllDescriptor) {
-        // return new ArrayList/*<AttributeDescriptor>*/(((AllDescriptor)
+        // return new ArrayList<AttributeDescriptor>(((AllDescriptor)
         // schema)
         // .all());
         // } else if (schema instanceof ChoiceDescriptor) {
-        // return new ArrayList/*<Descriptor>*/(((ChoiceDescriptor) schema)
+        // return new ArrayList<Descriptor>(((ChoiceDescriptor) schema)
         // .options());
         // }
         //
-        // return Collections.EMPTY_LIST;
+        // return Collections.emptyList();
 
     }
 
@@ -601,7 +599,7 @@ public class Descriptors {
      * @param schema Collection of attribute descriptors.
      * @return True if schema is simple, otherwise false.
      */
-    public static boolean isSimple(Collection /* <AttributeDescriptor> */ schema) {
+    public static boolean isSimple(Collection<AttributeDescriptor> schema) {
         for (Iterator itr = schema.iterator(); itr.hasNext(); ) {
             AttributeDescriptor d = (AttributeDescriptor) itr.next();
             if (d.getMinOccurs() != 1 || d.getMaxOccurs() != 1) {

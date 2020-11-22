@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import junit.framework.TestCase;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.structure.basic.BasicNode;
+import org.geotools.graph.structure.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -56,7 +56,7 @@ public class LineStringGraphGeneratorTest extends TestCase {
         gen.add(lineString3);
 
         Graph graph = gen.getGraph();
-        Collection graphNodes = graph.getNodes();
+        Collection<Node> graphNodes = graph.getNodes();
         assertEquals(5, graphNodes.size());
         Collection<Coordinate> graphNodeCoordinates = getCoordinates(graphNodes);
         assertTrue(graphNodeCoordinates.contains(c2));
@@ -67,9 +67,9 @@ public class LineStringGraphGeneratorTest extends TestCase {
         assertEquals(3, graph.getEdges().size());
     }
 
-    private Collection<Coordinate> getCoordinates(Collection<BasicNode> graphNodes) {
-        Collection<Coordinate> coordinates = new ArrayList<Coordinate>();
-        for (BasicNode node : graphNodes) {
+    private Collection<Coordinate> getCoordinates(Collection<Node> graphNodes) {
+        Collection<Coordinate> coordinates = new ArrayList<>();
+        for (Node node : graphNodes) {
             coordinates.add(((Point) node.getObject()).getCoordinate());
         }
         return coordinates;

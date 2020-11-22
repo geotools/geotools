@@ -75,7 +75,7 @@ public class TemporalOperatorsTypeImpl extends EObjectImpl implements TemporalOp
      */
     public EList<TemporalOperator> getOperators() {
         if (temporalOperator == null) {
-            temporalOperator = new EObjectContainmentEList<TemporalOperator>(TemporalOperatorType.class, this, Fes20Package.TEMPORAL_OPERATORS_TYPE__TEMPORAL_OPERATOR);
+            temporalOperator = new EObjectContainmentEList<>(TemporalOperatorType.class, this, Fes20Package.TEMPORAL_OPERATORS_TYPE__TEMPORAL_OPERATOR);
         }
         return temporalOperator;
     }

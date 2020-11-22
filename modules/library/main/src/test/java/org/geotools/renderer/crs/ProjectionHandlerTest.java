@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.crs;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -24,7 +25,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -109,7 +109,7 @@ public class ProjectionHandlerTest {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4939", true);
         SingleCRS hcrs = CRS.getHorizontalCRS(crs);
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, hcrs);
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1.0);
         ProjectionHandler handler =
                 ProjectionHandlerFinder.getHandler(wgs84Envelope, crs, true, params);
@@ -134,7 +134,7 @@ public class ProjectionHandlerTest {
         // a geometry that will cross the dateline and sitting in the same area as the
         // rendering envelope
         Geometry g = new WKTReader().read("LINESTRING(-40 20, 190 20)");
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put(WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, false);
 
         MathTransform mt = CRS.findMathTransform(WGS84, MERCATOR, true);
@@ -165,7 +165,7 @@ public class ProjectionHandlerTest {
         LineString notDensified = (LineString) handler.preProcess(line);
         assertEquals(2, notDensified.getCoordinates().length);
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1.0);
         handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true, params);
         LineString densified = (LineString) handler.preProcess(line);
@@ -1387,8 +1387,7 @@ public class ProjectionHandlerTest {
         assertEquals(-180, qe.getMinX(), 1e-3);
         assertEquals(-90, qe.getMinY(), 1e-3);
         assertEquals(180, qe.getMaxX(), 1e-3);
-        // can't get this one quite right, but it's good enough for the moment I guess
-        assertEquals(89, qe.getMaxY(), 1e-3);
+        assertEquals(90, qe.getMaxY(), 1e-3);
     }
 
     @Test
@@ -1575,5 +1574,49 @@ public class ProjectionHandlerTest {
         ProjectionHandler handler =
                 ProjectionHandlerFinder.getHandler(worldWGS84, rotatedPolar, true);
         assertThat(handler, instanceOf(WrappingProjectionHandler.class));
+    }
+
+    @Test
+    public void testAzEqFalseOrigins() throws Exception {
+        String wkt =
+                "PROJCS[\"equi7_antarctica\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Azimuthal_Equidistant\"],PARAMETER[\"false_easting\",3714266.97719],PARAMETER[\"false_northing\",3402016.50625],PARAMETER[\"central_meridian\",0.0],PARAMETER[\"latitude_of_origin\",-90.0],UNIT[\"Meter\",1.0]]";
+        CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+        double beyond = 27000000;
+        double cx = 3714266.97719; // false easting
+        double cy = 3402016.50625; // false northing
+        ReferencedEnvelope re =
+                new ReferencedEnvelope(cx - beyond, cx + beyond, cy - beyond, cy + beyond, crs);
+
+        ProjectionHandler ph =
+                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        assertNotNull(ph);
+        List<ReferencedEnvelope> envelopes = ph.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        ReferencedEnvelope qe = envelopes.get(0);
+        assertEquals(-180, qe.getMinX(), 1e-3);
+        assertEquals(-90, qe.getMinY(), 1e-3);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+        assertEquals(90, qe.getMaxY(), 1e-3);
+    }
+
+    @Test
+    public void testAzEqPositiveLatOrigin() throws Exception {
+        String wkt =
+                "PROJCS[\"equi7_asia_nofalseXY\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Azimuthal_Equidistant\"],PARAMETER[\"false_easting\",4340913.84808],PARAMETER[\"false_northing\",4812712.92347],PARAMETER[\"central_meridian\",94.0],PARAMETER[\"latitude_of_origin\",47.0],UNIT[\"Meter\",1.0]]";
+        CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+        ReferencedEnvelope re =
+                new ReferencedEnvelope(-12000000, 12000000, -12000000, 12000000, crs);
+        ProjectionHandler ph =
+                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        assertNotNull(ph);
+        List<ReferencedEnvelope> envelopes = ph.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        ReferencedEnvelope qe = envelopes.get(0);
+        System.out.println(qe);
+        assertEquals(-180, qe.getMinX(), 1e-3);
+        // miny used to be a higher number, making the reprojection miss necessary data
+        assertEquals(-90, qe.getMinY(), 1e-3);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+        assertEquals(90, qe.getMaxY(), 1e-3);
     }
 }

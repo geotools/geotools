@@ -16,7 +16,7 @@
  */
 package org.geotools.brewer.color;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -349,7 +349,7 @@ public class StyleGenerator {
         Arrays.sort(items);
 
         String title = "";
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
         for (int item = 0; item < items.length; item++) {
 
             Filter filter;
@@ -510,7 +510,7 @@ public class StyleGenerator {
         // prepare the styleExpressions (fix out if they are ranged, and if so
         // their min and max values too
         boolean[] isRangedExpr = new boolean[styleExpression.length];
-        List<String> min = new ArrayList<String>();
+        List<String> min = new ArrayList<>();
         String[] max = new String[styleExpression.length];
 
         for (int i = 0; i < styleExpression.length; i++) {
@@ -704,7 +704,7 @@ public class StyleGenerator {
         }
 
         // more than one value exists, so wrap them inside a logical OR
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
         filters.add(cFilter);
         for (int i = 1; i < attribValue.length; i++) {
             cFilter = ff.equals(attribExpr, ff.literal(attribValue[i]));
@@ -741,7 +741,7 @@ public class StyleGenerator {
         }
 
         // more than one value exists, so wrap them inside a logical OR
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
         filters.add(cFilter);
         for (int i = 1; i < attribValue.length; i++) {
             cFilter = ff.equals(attribExpr, ff.literal(attribValue[i]));

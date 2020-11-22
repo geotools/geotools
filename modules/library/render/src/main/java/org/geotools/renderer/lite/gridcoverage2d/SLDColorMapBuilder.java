@@ -16,13 +16,15 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import it.geosolutions.jaiext.classifier.ColorMapTransform;
+import it.geosolutions.jaiext.classifier.ColorMapTransformElement;
 import it.geosolutions.jaiext.classifier.LinearColorMap;
 import it.geosolutions.jaiext.classifier.LinearColorMap.LinearColorMapType;
 import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import it.geosolutions.jaiext.piecewise.PiecewiseUtilities;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -55,8 +57,7 @@ public class SLDColorMapBuilder {
      * List of {@link LinearColorMapElement} we are putting together to create the final {@link
      * LinearColorMap}*
      */
-    private final List<LinearColorMapElement> colormapElements =
-            new ArrayList<LinearColorMapElement>();
+    private final List<LinearColorMapElement> colormapElements = new ArrayList<>();
 
     /**
      * {@link LinearColorMapType} *
@@ -72,7 +73,7 @@ public class SLDColorMapBuilder {
     private Color preservedValuesColor;
 
     /** List of values that we want to preserve through the color map.* */
-    private final List<Double> preservedValues = new ArrayList<Double>();
+    private final List<Double> preservedValues = new ArrayList<>();
 
     /** Number of colors we can distribute to each {@link ColorMapTransformElement}.* */
     private int colorsPerColorMapElement;

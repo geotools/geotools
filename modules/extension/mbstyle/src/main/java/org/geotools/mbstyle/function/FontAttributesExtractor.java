@@ -33,7 +33,7 @@ public class FontAttributesExtractor {
 
     private boolean bold;
     private boolean italic;
-    private String baseName;
+    private final String baseName;
 
     public FontAttributesExtractor(String name) {
         String[] split = SPACE_SPLITTER.split(name);

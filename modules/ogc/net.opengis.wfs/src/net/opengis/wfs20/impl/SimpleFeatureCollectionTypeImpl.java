@@ -133,7 +133,7 @@ public class SimpleFeatureCollectionTypeImpl extends EObjectImpl implements Simp
    */
     public EList<FeatureCollection> getMember() {
     if (member == null) {
-      member = new EDataTypeUniqueEList<FeatureCollection>(FeatureCollection.class, this, Wfs20Package.SIMPLE_FEATURE_COLLECTION_TYPE__MEMBER);
+      member = new EDataTypeUniqueEList<>(FeatureCollection.class, this, Wfs20Package.SIMPLE_FEATURE_COLLECTION_TYPE__MEMBER);
     }
     return member;
   }

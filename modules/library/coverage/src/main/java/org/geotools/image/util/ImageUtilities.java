@@ -21,7 +21,11 @@ import com.sun.media.jai.operator.ImageReadDescriptor;
 import com.sun.media.jai.util.Rational;
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
@@ -788,7 +792,7 @@ public final class ImageUtilities {
      */
     public static void disposePlanarImageChain(PlanarImage pi) {
         Utilities.ensureNonNull("PlanarImage", pi);
-        disposePlanarImageChain(pi, new HashSet<PlanarImage>());
+        disposePlanarImageChain(pi, new HashSet<>());
     }
 
     private static void disposePlanarImageChain(PlanarImage pi, Set<PlanarImage> visited) {

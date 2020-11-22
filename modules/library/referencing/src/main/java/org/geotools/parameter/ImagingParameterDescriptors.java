@@ -277,7 +277,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      */
     public static Map<String, Object> properties(final RegistryElementDescriptor operation) {
         String name = operation.getName();
-        final Map<String, Object> properties = new HashMap<String, Object>();
+        final Map<String, Object> properties = new HashMap<>();
         if (operation instanceof OperationDescriptor) {
             /*
              * Gets the vendor name (if available) using US locale in order to get something as
@@ -372,6 +372,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
      * this()/super() call in constructors").
      */
+    @SuppressWarnings("unchecked")
     private static ParameterDescriptor[] asDescriptors(
             final ParameterListDescriptor descriptor,
             final RegistryElementDescriptor operation,
@@ -383,8 +384,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
          * Note that this map will be modified again in the remaining of this method.
          */
         ensureNonNull("descriptor", descriptor);
-        final Map<String, ParameterDescriptor> replacements =
-                new LinkedHashMap<String, ParameterDescriptor>();
+        final Map<String, ParameterDescriptor> replacements = new LinkedHashMap<>();
         if (extension != null) {
             for (final ParameterDescriptor d : extension) {
                 final String name = d.getName().getCode().trim().toLowerCase();
@@ -402,7 +402,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
          */
         final int numSources;
         final int numParameters = descriptor.getNumParameters();
-        final Map<String, CharSequence> properties = new HashMap<String, CharSequence>();
+        final Map<String, CharSequence> properties = new HashMap<>();
         ParameterDescriptor[] desc;
         if (operation instanceof OperationDescriptor) {
             final OperationDescriptor op = (OperationDescriptor) operation;

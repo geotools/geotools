@@ -16,7 +16,7 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
-import static org.custommonkey.xmlunit.XMLAssert.*;
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;

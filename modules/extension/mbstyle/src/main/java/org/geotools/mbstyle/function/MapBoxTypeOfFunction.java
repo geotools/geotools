@@ -23,7 +23,7 @@ import org.opengis.filter.capability.FunctionName;
 /** Takes an object as an argument and returns the class as a string value. */
 class MapBoxTypeOfFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbTypeOf");
+    public static final FunctionName NAME = new FunctionNameImpl("mbTypeOf");
 
     MapBoxTypeOfFunction() {
         super(NAME);

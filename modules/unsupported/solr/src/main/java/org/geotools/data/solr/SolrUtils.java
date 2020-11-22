@@ -70,8 +70,9 @@ public class SolrUtils {
          */
         public ExtendedFieldSchemaInfo(
                 LukeResponse processSchema, LukeResponse processField, String fieldName) {
-            NamedList schema = (NamedList) processSchema.getResponse().get("schema");
-            NamedList<NamedList> flds = (NamedList<NamedList>) schema.get("fields");
+            NamedList schema = getField(processSchema.getResponse(), "schema");
+            @SuppressWarnings("unchecked")
+            NamedList<NamedList> flds = getField(schema, "fields");
             for (Entry<String, NamedList> entry : flds) {
                 String fn = entry.getKey();
                 if (fn.equals(fieldName)) {
@@ -85,7 +86,7 @@ public class SolrUtils {
                 }
             }
 
-            flds = (NamedList<NamedList>) processField.getResponse().get("fields");
+            flds = getField(processField.getResponse(), "fields");
             for (Entry<String, NamedList> entry : flds) {
                 String fn = entry.getKey();
                 if (fn.equals(fieldName)) {
@@ -98,6 +99,11 @@ public class SolrUtils {
                     break;
                 }
             }
+        }
+
+        @SuppressWarnings("unchecked")
+        private NamedList<NamedList> getField(NamedList<Object> response, String fields) {
+            return (NamedList<NamedList>) response.get(fields);
         }
 
         public Boolean getUniqueKey() {

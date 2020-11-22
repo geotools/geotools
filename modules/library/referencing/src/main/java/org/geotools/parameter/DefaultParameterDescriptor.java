@@ -237,8 +237,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
             }
         }
         if (validValues != null) {
-            final Set<T> valids =
-                    new HashSet<T>(Math.max(validValues.length * 4 / 3 + 1, 8), 0.75f);
+            final Set<T> valids = new HashSet<>(Math.max(validValues.length * 4 / 3 + 1, 8), 0.75f);
             for (int i = 0; i < validValues.length; i++) {
                 final T value = validValues[i];
                 AbstractParameter.ensureValidClass(valueClass, value);
@@ -286,7 +285,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
             final int minimum,
             final int maximum,
             final boolean required) {
-        return new DefaultParameterDescriptor<Integer>(
+        return new DefaultParameterDescriptor<>(
                 properties,
                 required,
                 Integer.class,
@@ -342,7 +341,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
             final double maximum,
             final Unit<?> unit,
             final boolean required) {
-        return new DefaultParameterDescriptor<Double>(
+        return new DefaultParameterDescriptor<>(
                 properties,
                 required,
                 Double.class,
@@ -390,11 +389,11 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
         if (remarks == null) {
             properties = Collections.singletonMap(NAME_KEY, (CharSequence) name);
         } else {
-            properties = new HashMap<String, CharSequence>(4);
+            properties = new HashMap<>(4);
             properties.put(NAME_KEY, name);
             properties.put(REMARKS_KEY, remarks);
         }
-        return new DefaultParameterDescriptor<T>(
+        return new DefaultParameterDescriptor<>(
                 properties, valueClass, codeList, defaultValue, null, null, null, required);
     }
 
@@ -423,7 +422,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
         if (Double.class.equals(valueClass) && unit == null) {
             return (ParameterValue) new FloatParameter((ParameterDescriptor) this);
         }
-        return new Parameter<T>(this);
+        return new Parameter<>(this);
     }
 
     /**

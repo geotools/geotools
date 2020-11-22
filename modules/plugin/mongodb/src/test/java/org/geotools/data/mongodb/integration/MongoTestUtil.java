@@ -17,8 +17,9 @@
  */
 package org.geotools.data.mongodb.integration;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
@@ -100,7 +101,7 @@ public class MongoTestUtil {
         FeatureIterator<?> iterator = collection.features();
         while (iterator.hasNext()) {
             Feature f = iterator.next();
-            Set<Property> pSet = new LinkedHashSet<Property>(f.getProperties());
+            Set<Property> pSet = new LinkedHashSet<>(f.getProperties());
             BasicDBObjectBuilder bdoBuilder = BasicDBObjectBuilder.start();
 
             GeometryAttribute gAttr = f.getDefaultGeometryProperty();

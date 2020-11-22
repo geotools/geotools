@@ -17,7 +17,6 @@
  */
 package org.geotools.arcsde.session;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -197,7 +196,7 @@ public class ArcSDEConnectionConfig {
         return o == null ? 1 : String.valueOf(o).hashCode();
     }
 
-    public static ArcSDEConnectionConfig fromMap(final Map<String, Serializable> map) {
+    public static ArcSDEConnectionConfig fromMap(final Map<String, ?> map) {
         ArcSDEConnectionConfig config = new ArcSDEConnectionConfig();
         config.setDatabaseName(String.valueOf(map.get(INSTANCE_NAME_PARAM_NAME)));
         config.setPassword(String.valueOf(map.get(PASSWORD_PARAM_NAME)));
@@ -215,8 +214,8 @@ public class ArcSDEConnectionConfig {
         return config;
     }
 
-    public Map<String, Serializable> toMap() {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+    public Map<String, Object> toMap() {
+        Map<String, Object> params = new HashMap<>();
         params.put(INSTANCE_NAME_PARAM_NAME, getDatabaseName());
         params.put(PASSWORD_PARAM_NAME, getPassword());
         params.put(PORT_NUMBER_PARAM_NAME, getPortNumber());

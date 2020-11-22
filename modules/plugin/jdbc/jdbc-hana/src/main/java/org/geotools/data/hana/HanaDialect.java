@@ -18,10 +18,21 @@ package org.geotools.data.hana;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Date;
-import java.text.MessageFormat;
-import java.util.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import org.geotools.data.Query;
 import org.geotools.data.hana.wkb.HanaWKBParser;
@@ -32,7 +43,16 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -55,7 +75,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     private static final String METADATA_TABLE_NAME = "METADATA_" + HANA_UUID;
 
-    private static final Map<String, Class<?>> TYPE_NAME_TO_CLASS = new HashMap<String, Class<?>>();
+    private static final Map<String, Class<?>> TYPE_NAME_TO_CLASS = new HashMap<>();
 
     private static final int GEOMETRY_TYPE_CODE = 29812;
 
@@ -90,8 +110,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         TYPE_NAME_TO_CLASS.put("BOOLEAN", Boolean.class);
     };
 
-    private static final Map<Integer, Class<?>> SQL_TYPE_TO_CLASS =
-            new HashMap<Integer, Class<?>>();
+    private static final Map<Integer, Class<?>> SQL_TYPE_TO_CLASS = new HashMap<>();
 
     static {
         SQL_TYPE_TO_CLASS.put(-4, byte[].class); // BLOB
@@ -101,8 +120,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         SQL_TYPE_TO_CLASS.put(GEOMETRY_TYPE_CODE, Geometry.class); // ST_GEOMETRY
     }
 
-    private static final Map<Class<?>, Integer> CLASS_TO_SQL_TYPE =
-            new HashMap<Class<?>, Integer>();
+    private static final Map<Class<?>, Integer> CLASS_TO_SQL_TYPE = new HashMap<>();
 
     static {
         CLASS_TO_SQL_TYPE.put(Geometry.class, GEOMETRY_TYPE_CODE);
@@ -181,8 +199,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         return GEOMETRY_TYPE_NAME;
     }
 
-    @Override
-    public Integer getGeometrySRID(
+    private Integer getGeometrySRIDFromView(
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         PreparedStatement ps = null;
@@ -211,6 +228,45 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             dataStore.closeSafe(rs);
             dataStore.closeSafe(ps);
         }
+    }
+
+    private Integer getGeometrySRIDViaSelect(
+            String schemaName, String tableName, String columnName, Connection cx)
+            throws SQLException {
+        // Try the first non-NULL geometry
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT ");
+        encodeIdentifiers(sql, columnName);
+        sql.append(".ST_SRID() FROM ");
+        encodeIdentifiers(sql, schemaName, tableName);
+        sql.append(" WHERE ");
+        encodeIdentifiers(sql, columnName);
+        sql.append(" IS NOT NULL LIMIT 1");
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = cx.prepareStatement(sql.toString());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return null;
+        } finally {
+            dataStore.closeSafe(rs);
+            dataStore.closeSafe(ps);
+        }
+    }
+
+    @Override
+    public Integer getGeometrySRID(
+            String schemaName, String tableName, String columnName, Connection cx)
+            throws SQLException {
+        Integer srid = getGeometrySRIDFromView(schemaName, tableName, columnName, cx);
+        if (srid == null) {
+            srid = getGeometrySRIDViaSelect(schemaName, tableName, columnName, cx);
+        }
+        return srid;
     }
 
     @Override
@@ -601,7 +657,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             throws SQLException {
         DatabaseMetaData dbmd = cx.getMetaData();
 
-        List<String> pkColumns = new ArrayList<String>();
+        List<String> pkColumns = new ArrayList<>();
         ResultSet rs = null;
         try {
             rs = dbmd.getPrimaryKeys(null, schemaName, tableName);
@@ -736,13 +792,9 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             int srid,
             Class binding,
             StringBuffer sql) {
-        String pattern = null;
-        if (srid > -1) {
-            pattern = "ST_GeomFromWKB( ? ,{0})";
-            sql.append(MessageFormat.format(pattern, Integer.toString(srid)));
-        } else {
-            sql.append("ST_GeomFromWKB( ? )");
-        }
+        sql.append("ST_GeomFromWKB(?, ");
+        sql.append(srid);
+        sql.append(")");
     }
 
     @Override

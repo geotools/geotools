@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.spatial;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class CellGeometry extends CodeList<CellGeometry> {
     private static final long serialVersionUID = -1901029875497457189L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<CellGeometry> VALUES = new ArrayList<CellGeometry>(2);
+    private static final List<CellGeometry> VALUES = new ArrayList<>(2);
 
     /** Each cell represents a point. */
     @UML(identifier = "point", obligation = CONDITIONAL, specification = ISO_19115)

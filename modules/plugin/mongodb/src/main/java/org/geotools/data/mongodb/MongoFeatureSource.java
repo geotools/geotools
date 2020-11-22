@@ -26,7 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.*;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.FilteringFeatureReader;
+import org.geotools.data.Query;
+import org.geotools.data.QueryCapabilities;
+import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.data.store.ContentEntry;
@@ -141,16 +146,14 @@ public class MongoFeatureSource extends ContentFeatureSource {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
 
-        List<Filter> postFilterList = new ArrayList<Filter>();
-        List<String> postFilterAttributes = new ArrayList<String>();
+        List<Filter> postFilterList = new ArrayList<>();
+        List<String> postFilterAttributes = new ArrayList<>();
         @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         DBCursor cursor = toCursor(query, postFilterList, postFilterAttributes);
         FeatureReader<SimpleFeatureType, SimpleFeature> r = new MongoFeatureReader(cursor, this);
 
         if (!postFilterList.isEmpty() && !isAll(postFilterList.get(0))) {
-            r =
-                    new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            r, postFilterList.get(0));
+            r = new FilteringFeatureReader<>(r, postFilterList.get(0));
 
             // check whether attributes not present in the original query have been
             // added to the set of retrieved attributes for the sake of
@@ -303,9 +306,11 @@ public class MongoFeatureSource extends ContentFeatureSource {
         if (q.getSortBy() != null) {
             BasicDBObject orderBy = new BasicDBObject();
             for (SortBy sortBy : q.getSortBy()) {
-                String propName = sortBy.getPropertyName().getPropertyName();
-                String property = mapper.getPropertyPath(propName);
-                orderBy.append(property, sortBy.getSortOrder() == SortOrder.ASCENDING ? 1 : -1);
+                if (sortBy.getPropertyName() != null) {
+                    String propName = sortBy.getPropertyName().getPropertyName();
+                    String property = mapper.getPropertyPath(propName);
+                    orderBy.append(property, sortBy.getSortOrder() == SortOrder.ASCENDING ? 1 : -1);
+                }
             }
             c = c.sort(orderBy);
         }

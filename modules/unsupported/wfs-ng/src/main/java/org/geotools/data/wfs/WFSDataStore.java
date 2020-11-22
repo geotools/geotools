@@ -68,14 +68,13 @@ public class WFSDataStore extends ContentDataStore {
 
     private ListStoredQueriesResponseType remoteStoredQueries;
 
-    protected Map<String, String> configuredStoredQueries = new ConcurrentHashMap<String, String>();
+    protected Map<String, String> configuredStoredQueries = new ConcurrentHashMap<>();
 
     public WFSDataStore(final WFSClient client) {
         this.client = client;
-        this.names = new ConcurrentHashMap<Name, QName>();
-        this.remoteFeatureTypes = new ConcurrentHashMap<QName, FeatureType>();
-        this.storedQueryDescriptionTypes =
-                new ConcurrentHashMap<String, StoredQueryDescriptionType>();
+        this.names = new ConcurrentHashMap<>();
+        this.remoteFeatureTypes = new ConcurrentHashMap<>();
+        this.storedQueryDescriptionTypes = new ConcurrentHashMap<>();
         this.storedQueryDescriptionTypesLock = new ReentrantReadWriteLock();
         // default factories
         setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
@@ -101,7 +100,7 @@ public class WFSDataStore extends ContentDataStore {
         String namespaceURI = getNamespaceURI();
 
         Set<QName> remoteTypeNames = client.getRemoteTypeNames();
-        List<Name> names = new ArrayList<Name>(remoteTypeNames.size());
+        List<Name> names = new ArrayList<>(remoteTypeNames.size());
         for (QName remoteTypeName : remoteTypeNames) {
             String localTypeName = client.getConfig().localTypeName(remoteTypeName);
             Name typeName =

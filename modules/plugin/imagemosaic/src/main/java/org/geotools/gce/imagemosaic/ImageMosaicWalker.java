@@ -58,9 +58,9 @@ abstract class ImageMosaicWalker implements Runnable {
     static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ImageMosaicWalker.class);
 
-    private DefaultTransaction transaction;
+    protected DefaultTransaction transaction;
 
-    private static Set<String> logExcludes = new HashSet<String>();
+    protected static Set<String> logExcludes = new HashSet<>();
 
     static {
         logExcludes.add("xml");
@@ -71,19 +71,17 @@ abstract class ImageMosaicWalker implements Runnable {
      * Proper way to stop a thread is not by calling Thread.stop() but by using a shared variable
      * that can be checked in order to notify a terminating condition.
      */
-    private volatile boolean stop = false;
+    protected volatile boolean stop = false;
 
     protected final ImageMosaicConfigHandler configHandler;
 
     protected final Hints excludeMosaicHints = new Hints(Utils.EXCLUDE_MOSAIC, true);
 
-    private AbstractGridFormat cachedFormat;
-
     /** index of the file being processed */
-    private int fileIndex = 0;
+    protected int fileIndex = 0;
 
     /** Number of files to process. */
-    private int numFiles = 1;
+    protected int numFiles = 1;
 
     protected final ImageMosaicEventHandlers eventHandler;
 
@@ -152,6 +150,7 @@ abstract class ImageMosaicWalker implements Runnable {
             // Getting a coverage reader for this coverage.
             //
             final AbstractGridFormat format;
+            final AbstractGridFormat cachedFormat = configHandler.getCachedFormat();
             if (cachedFormat == null) {
                 // When looking for formats which may parse this file, make sure to exclude the
                 // ImageMosaicFormat as return
@@ -241,7 +240,7 @@ abstract class ImageMosaicWalker implements Runnable {
                         }
                     }
                     // store the format only if we can accept this file, not before
-                    cachedFormat = format;
+                    configHandler.setCachedFormat(format);
                 } catch (Exception e) {
                     LOGGER.log(
                             Level.FINE,

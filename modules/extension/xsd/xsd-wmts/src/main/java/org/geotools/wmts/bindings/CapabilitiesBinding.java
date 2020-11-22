@@ -19,12 +19,16 @@
 package org.geotools.wmts.bindings;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
 import net.opengis.ows11.OnlineResourceType;
 import net.opengis.ows11.OperationsMetadataType;
 import net.opengis.ows11.ServiceIdentificationType;
 import net.opengis.ows11.ServiceProviderType;
-import net.opengis.wmts.v_1.*;
+import net.opengis.wmts.v_1.CapabilitiesType;
+import net.opengis.wmts.v_1.ContentsType;
+import net.opengis.wmts.v_1.ThemesType;
+import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
 import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
@@ -147,7 +151,13 @@ public class CapabilitiesBinding extends AbstractComplexEMFBinding {
         for (Node c : children) {
             capabilities.getServiceMetadataURL().add((OnlineResourceType) c.getValue());
         }
-        capabilities.getWSDL().addAll(node.getChildren("WSDL"));
+        capabilities
+                .getWSDL()
+                .addAll(
+                        node.getChildren("WSDL")
+                                .stream()
+                                .map(n -> (OnlineResourceType) n.getValue())
+                                .collect(Collectors.toList()));
         return capabilities;
     }
 }

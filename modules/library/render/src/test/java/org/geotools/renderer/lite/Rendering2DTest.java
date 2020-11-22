@@ -16,7 +16,8 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -96,7 +97,7 @@ public class Rendering2DTest extends TestCase {
 
     static final String COLLECTION = "collfeature";
 
-    protected static final Map rendererHints = new HashMap();
+    protected static final Map<Object, Object> rendererHints = new HashMap<>();
 
     protected static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 

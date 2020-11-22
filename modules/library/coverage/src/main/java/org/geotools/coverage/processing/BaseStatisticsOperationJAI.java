@@ -71,7 +71,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the SPATIAL_SUBSAMPLING_X */
     public static final ParameterDescriptor<Double> SPATIAL_SUBSAMPLING_X =
-            new DefaultParameterDescriptor<Double>(
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     "xPeriod",
                     Double.class, // Value class (mandatory)
@@ -84,7 +84,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the SPATIAL_SUBSAMPLING_Y */
     public static final ParameterDescriptor<Double> SPATIAL_SUBSAMPLING_Y =
-            new DefaultParameterDescriptor<Double>(
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     "yPeriod",
                     Double.class, // Value class (mandatory)
@@ -97,7 +97,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the Region Of Interest. */
     public static final ParameterDescriptor<Polygon> ROI =
-            new DefaultParameterDescriptor<Polygon>(
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     "roi",
                     Polygon.class, // Value class (mandatory)
@@ -111,7 +111,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
     private static Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
 
     static {
-        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<ParameterDescriptor>();
+        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<>();
         replacedDescriptors.add(SPATIAL_SUBSAMPLING_X);
         replacedDescriptors.add(SPATIAL_SUBSAMPLING_Y);
         replacedDescriptors.add(ROI);
@@ -158,9 +158,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
         super(
                 getOperationDescriptor(JAIExt.getOperationName(name)),
                 new ExtendedImagingParameterDescriptors(
-                        name,
-                        operationDescriptor,
-                        new HashSet<ParameterDescriptor>(REPLACED_DESCRIPTORS)));
+                        name, operationDescriptor, new HashSet<>(REPLACED_DESCRIPTORS)));
     }
 
     /**
@@ -172,8 +170,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
         super(
                 getOperationDescriptor(name),
                 new ImagingParameterDescriptors(
-                        getOperationDescriptor(name),
-                        new HashSet<ParameterDescriptor>(REPLACED_DESCRIPTORS)));
+                        getOperationDescriptor(name), new HashSet<>(REPLACED_DESCRIPTORS)));
     }
 
     /**

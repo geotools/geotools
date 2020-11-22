@@ -162,7 +162,7 @@ public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements 
    */
     public EList<LanguageStringType> getAbstract() {
     if (abstract_ == null) {
-      abstract_ = new EObjectContainmentEList<LanguageStringType>(LanguageStringType.class, this, Ows20Package.REFERENCE_TYPE__ABSTRACT);
+      abstract_ = new EObjectContainmentEList<>(LanguageStringType.class, this, Ows20Package.REFERENCE_TYPE__ABSTRACT);
     }
     return abstract_;
   }

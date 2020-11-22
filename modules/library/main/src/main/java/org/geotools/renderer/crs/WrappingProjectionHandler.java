@@ -79,8 +79,9 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             sourceHalfCircle = 180;
         } else {
             // assume a simplified earth circumference, which is 40075 km
-            Unit<?> sourceUnit = axis.getUnit();
-            UnitConverter converter = SI.METRE.getConverterTo((Unit<Length>) sourceUnit);
+            @SuppressWarnings("unchecked")
+            Unit<Length> sourceUnit = (Unit<Length>) axis.getUnit();
+            UnitConverter converter = SI.METRE.getConverterTo(sourceUnit);
             this.sourceHalfCircle = converter.convert(40075000 / 2);
         }
     }
@@ -90,7 +91,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
      * false disables the heuristic for dateline wrapping check (true by default)
      */
     @Override
-    public void setProjectionParameters(Map projectionParameters) {
+    public void setProjectionParameters(Map<String, Object> projectionParameters) {
         super.setProjectionParameters(projectionParameters);
         if (projectionParameters.containsKey(DATELINE_WRAPPING_CHECK_ENABLED)) {
             datelineWrappingCheckEnabled =
@@ -164,7 +165,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // viewing
         // area might be large enough to contain the same continent multiple
         // times (a-la Google Maps)
-        List<Geometry> geoms = new ArrayList<Geometry>();
+        List<Geometry> geoms = new ArrayList<>();
         Class geomType = null;
 
         // search the west-most location inside the current rendering envelope
@@ -199,7 +200,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         }
 
         // clone and offset as necessary
-        geomType = accumulate(geoms, geometry, geomType);
+        geomType = accumulate(geoms, geometry, geomType, renderingEnvelope);
         while (curr <= highLimit) {
             double offset = curr - base;
             if (Math.abs(offset) >= targetHalfCircle) {
@@ -207,7 +208,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
                 Geometry offseted = geometry.copy();
                 offseted.apply(new OffsetOrdinateFilter(northEast ? 1 : 0, offset));
                 offseted.geometryChanged();
-                geomType = accumulate(geoms, offseted, geomType);
+                geomType = accumulate(geoms, offseted, geomType, renderingEnvelope);
             }
 
             curr += targetHalfCircle * 2;
@@ -246,15 +247,17 @@ public class WrappingProjectionHandler extends ProjectionHandler {
      * @return the geometry type that all geometries added to the collection conform to. Worst case
      *     it's going to be Geometry.class
      */
-    private Class accumulate(List<Geometry> geoms, Geometry geometry, Class geomType) {
+    static Class accumulate(
+            List<Geometry> geoms, Geometry geometry, Class geomType, ReferencedEnvelope envelope) {
         Class gtype = null;
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             Geometry g = geometry.getGeometryN(i);
+            Class lastType = gtype;
 
             if (g instanceof GeometryCollection) {
-                gtype = accumulate(geoms, g, geomType);
+                gtype = accumulate(geoms, g, geomType, envelope);
             } else {
-                if (renderingEnvelope.intersects(g.getEnvelopeInternal())) {
+                if (envelope.intersects(g.getEnvelopeInternal())) {
                     geoms.add(g);
                     gtype = g.getClass();
                 }
@@ -262,7 +265,9 @@ public class WrappingProjectionHandler extends ProjectionHandler {
 
             if (gtype == null) {
                 gtype = g.getClass();
-            } else if (geomType != null && !g.getClass().equals(geomType)) {
+            } else if (geomType != null && !g.getClass().equals(geomType)
+                    || lastType != null && !g.getClass().equals(lastType)) {
+                // if we have different types, switch to Geometry type
                 gtype = Geometry.class;
             }
         }

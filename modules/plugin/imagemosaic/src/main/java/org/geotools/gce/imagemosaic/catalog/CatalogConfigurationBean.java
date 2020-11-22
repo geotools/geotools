@@ -46,6 +46,8 @@ public class CatalogConfigurationBean {
 
     private boolean heterogeneousCRS;
 
+    private CogConfiguration cogConfiguration;
+
     /**
      * Whether the specified store should be wrapped. Only PostGis stores support this parameter.
      * (Oracle stores are wrapped by default).
@@ -150,5 +152,13 @@ public class CatalogConfigurationBean {
 
     public void setSuggestedIsSPI(String suggestedIsSPI) {
         this.suggestedIsSPI = suggestedIsSPI;
+    }
+
+    public CogConfiguration getCogConfiguration() {
+        return cogConfiguration;
+    }
+
+    public void setCogConfiguration(CogConfiguration cogConfiguration) {
+        this.cogConfiguration = cogConfiguration;
     }
 }

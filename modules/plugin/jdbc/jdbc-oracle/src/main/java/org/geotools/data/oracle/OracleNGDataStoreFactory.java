@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Map;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.Parameter;
 import org.geotools.data.Transaction;
 import org.geotools.jdbc.JDBCDataStore;
@@ -120,7 +119,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected boolean checkDBType(Map params) {
+    protected boolean checkDBType(Map<String, ?> params) {
         if (super.checkDBType(params)) {
             try {
                 // check for old factory
@@ -138,7 +137,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         }
     }
 
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
 
         // make the schema uppercase if it's not already
@@ -184,7 +183,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String db = (String) DATABASE.lookUp(params);
         String host = (String) HOST.lookUp(params);
         Integer port = (Integer) PORT.lookUp(params);
@@ -205,7 +204,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         // NOTE: when adding parameters here remember to add them to OracleNGOCIDataStoreFactory and
         // OracleNGJNDIDataStoreFactory
 

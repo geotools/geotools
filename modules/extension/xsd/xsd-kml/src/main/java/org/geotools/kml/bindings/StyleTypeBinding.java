@@ -88,7 +88,7 @@ public class StyleTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List l = node.getChildValues(Symbolizer.class);
+        List<Symbolizer> l = node.getChildValues(Symbolizer.class);
         Symbolizer[] syms = (Symbolizer[]) l.toArray(new Symbolizer[l.size()]);
 
         FeatureTypeStyle style = sb.createFeatureTypeStyle(syms, 1.0, 1.0);

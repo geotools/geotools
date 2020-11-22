@@ -32,7 +32,7 @@ public final class CharacterSet extends CodeList<CharacterSet> {
     private static final long serialVersionUID = -4726629268456735927L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<CharacterSet> VALUES = new ArrayList<CharacterSet>(29);
+    private static final List<CharacterSet> VALUES = new ArrayList<>(29);
 
     /** 16-bit fixed size Universal Character Set, based on ISO/IEC 10646. */
     @UML(identifier = "ucs2", obligation = CONDITIONAL, specification = ISO_19115)

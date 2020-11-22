@@ -158,7 +158,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
 	 */
     public EList<WGS84BoundingBoxType> getWGS84BoundingBox() {
 		if (wGS84BoundingBox == null) {
-			wGS84BoundingBox = new EObjectContainmentEList<WGS84BoundingBoxType>(WGS84BoundingBoxType.class, this, Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX);
+			wGS84BoundingBox = new EObjectContainmentEList<>(WGS84BoundingBoxType.class, this, Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX);
 		}
 		return wGS84BoundingBox;
 	}

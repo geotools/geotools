@@ -16,6 +16,7 @@
  */
 package org.geotools.data.collection;
 
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,7 +75,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
     SpatialIndexFeatureCollection contents;
 
     private static final Set<Class> supportedFilterTypes =
-            new HashSet<Class>(
+            new HashSet<>(
                     Arrays.asList(
                             BBOX.class,
                             Contains.class,
@@ -169,7 +170,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
                 Comparator<SimpleFeature> comparator = DataUtilities.sortComparator(sortBy);
                 Arrays.sort(array, comparator);
             }
-            ArrayList<SimpleFeature> list = new ArrayList<SimpleFeature>(Arrays.asList(array));
+            ArrayList<SimpleFeature> list = new ArrayList<>(Arrays.asList(array));
             collection = new ListFeatureCollection(getSchema(), list);
         }
 
@@ -248,8 +249,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         };
     }
 
-    public Set getSupportedHints() {
-        HashSet hints = new HashSet();
-        return hints;
+    public Set<RenderingHints.Key> getSupportedHints() {
+        return new HashSet<>();
     }
 }

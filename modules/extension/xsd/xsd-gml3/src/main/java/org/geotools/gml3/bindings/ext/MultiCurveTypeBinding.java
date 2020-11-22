@@ -34,11 +34,13 @@ public class MultiCurveTypeBinding extends org.geotools.gml3.bindings.MultiCurve
 
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:curveMember"/&gt;
+        @SuppressWarnings("unchecked")
         List<Geometry> curveMemberList = node.getChildValues("curveMember");
         // &lt;element minOccurs="0" ref="gml:curveMembers"/&gt;
+        @SuppressWarnings("unchecked")
         Geometry curveMembers = (Geometry) node.getChildValue("curveMembers");
 
-        List<LineString> lineStrings = new ArrayList<LineString>();
+        List<LineString> lineStrings = new ArrayList<>();
 
         if (curveMemberList != null) {
             for (Geometry curveMember : curveMemberList) {

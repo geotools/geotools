@@ -60,7 +60,7 @@ class RasterManager {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(RasterManager.class);
 
-    final SoftValueHashMap<String, Granule> granulesCache = new SoftValueHashMap<String, Granule>();
+    final SoftValueHashMap<String, Granule> granulesCache = new SoftValueHashMap<>();
 
     /**
      * Simple support class for sorting overview resolutions
@@ -110,8 +110,7 @@ class RasterManager {
     }
 
     class OverviewsController {
-        final ArrayList<RasterManager.OverviewLevel> resolutionsLevels =
-                new ArrayList<OverviewLevel>();
+        final ArrayList<RasterManager.OverviewLevel> resolutionsLevels = new ArrayList<>();
 
         public OverviewsController() {
 

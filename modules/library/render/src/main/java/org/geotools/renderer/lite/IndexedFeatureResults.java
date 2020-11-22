@@ -110,6 +110,7 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
     /** @see org.geotools.data.FeatureResults#collection() */
     public SimpleFeatureCollection collection() throws IOException {
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        @SuppressWarnings("unchecked")
         List<SimpleFeature> results = index.query(bounds);
         for (Iterator<SimpleFeature> it = results.iterator(); it.hasNext(); ) {
             fc.add(it.next());

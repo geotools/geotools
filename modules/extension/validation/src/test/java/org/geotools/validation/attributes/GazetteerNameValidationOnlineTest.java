@@ -68,7 +68,7 @@ public class GazetteerNameValidationOnlineTest extends TestCase {
 
     public void XtestValidate() {
         class TestFeature implements SimpleFeature {
-            Map attrs = new HashMap();
+            Map<String, Object> attrs = new HashMap<>();
 
             public SimpleFeatureCollection getParent() {
                 return null;
@@ -232,8 +232,7 @@ public class GazetteerNameValidationOnlineTest extends TestCase {
                 return null;
             }
 
-            public List getAttributes() {
-
+            public List<Object> getAttributes() {
                 return null;
             }
 

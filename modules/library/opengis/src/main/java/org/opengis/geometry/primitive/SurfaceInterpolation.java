@@ -9,8 +9,8 @@
  */
 package org.opengis.geometry.primitive;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,7 @@ public final class SurfaceInterpolation extends CodeList<SurfaceInterpolation> {
     private static final long serialVersionUID = -8717227444427181227L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<SurfaceInterpolation> VALUES =
-            new ArrayList<SurfaceInterpolation>(10);
+    private static final List<SurfaceInterpolation> VALUES = new ArrayList<>(10);
 
     /**
      * The interior of the surface is not specified. The assumption is that the surface follows the

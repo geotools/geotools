@@ -27,7 +27,7 @@ public final class PrecisionType extends CodeList<PrecisionType> {
     private final boolean isFloating;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<PrecisionType> VALUES = new ArrayList<PrecisionType>(3);
+    private static final List<PrecisionType> VALUES = new ArrayList<>(3);
 
     /** Fixed precision indicates that coordinates have a fixed number of decimal places. */
     public static final PrecisionType FIXED = new PrecisionType("FIXED", false);

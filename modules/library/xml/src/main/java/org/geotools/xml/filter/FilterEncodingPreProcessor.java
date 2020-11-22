@@ -124,12 +124,14 @@ import org.opengis.filter.temporal.TOverlaps;
  *
  * @author Jesse Eichar
  */
+@SuppressWarnings(
+        "unchecked") // gigantic mess, too much untyped structures and methods to work on them
 public class FilterEncodingPreProcessor implements FilterVisitor {
     private static final int LOW = 0;
     private static final int MEDIUM = 1;
     private static final int HIGH = 2;
     private int complianceInt;
-    private Stack<Data> current = new Stack<Data>();
+    private Stack<Data> current = new Stack<>();
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     private boolean requiresPostProcessing = false;
@@ -159,7 +161,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         Data data = (Data) current.peek();
 
         if (data.fids.size() > 0) {
-            Set<FeatureId> set = new HashSet<FeatureId>();
+            Set<FeatureId> set = new HashSet<>();
             Set<String> fids = data.fids;
             for (String fid : fids) {
                 set.add(ff.featureId(fid));
@@ -328,7 +330,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
 
     private Set andFids(int startOfFilterStack) {
         if (!hasFidFilter(startOfFilterStack)) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
 
         Set toRemove = new HashSet();
@@ -354,7 +356,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
 
         if (fidSet.size() == 0) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
 
         if (fidSet.size() == 1) {
@@ -403,7 +405,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             return (Data) current.pop();
         }
 
-        List<org.opengis.filter.Filter> filterList = new ArrayList<org.opengis.filter.Filter>();
+        List<org.opengis.filter.Filter> filterList = new ArrayList<>();
 
         while (current.size() > startOfFilterStack) {
             Data data = (Data) current.pop();
@@ -429,7 +431,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             throws IllegalFilterException {
         BinaryLogicOperator result;
         int added = 0;
-        List<org.opengis.filter.Filter> resultList = new ArrayList<org.opengis.filter.Filter>();
+        List<org.opengis.filter.Filter> resultList = new ArrayList<>();
 
         if (filter instanceof And) {
             if (contains(f, Filter.EXCLUDE)) {

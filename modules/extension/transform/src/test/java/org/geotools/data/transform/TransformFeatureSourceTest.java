@@ -16,7 +16,12 @@
  */
 package org.geotools.data.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.RenderingHints.Key;
 import java.net.URI;
@@ -193,7 +198,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
 
         // and now read for good
         SimpleFeatureIterator fi = null;
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         try {
             fi = fc.features();
             while (fi.hasNext()) {
@@ -299,7 +304,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
 
         // and now read for good
         SimpleFeatureIterator fi = null;
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         try {
             fi = fc.features();
             while (fi.hasNext()) {
@@ -436,7 +441,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
 
         // and now read for good
         SimpleFeatureIterator fi = null;
-        List<Number> totals = new ArrayList<Number>();
+        List<Number> totals = new ArrayList<>();
         try {
             fi = fc.features();
             while (fi.hasNext()) {
@@ -450,7 +455,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         }
 
         // grab the two biggest from the original data set
-        List<Double> sums = new ArrayList<Double>();
+        List<Double> sums = new ArrayList<>();
         try {
             fi = STATES.getFeatures().features();
             while (fi.hasNext()) {

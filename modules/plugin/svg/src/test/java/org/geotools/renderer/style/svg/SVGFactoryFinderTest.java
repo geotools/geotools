@@ -44,7 +44,7 @@ public class SVGFactoryFinderTest extends TestCase {
         assertContainsClassInstance(result, MarkFactory.class);
     }
 
-    public void assertContainsClassInstance(List list, Class clazz) {
+    public void assertContainsClassInstance(List list, Class<?> clazz) {
         for (Object item : list) {
             if (item != null && clazz.isAssignableFrom(item.getClass())) return;
         }
@@ -52,7 +52,7 @@ public class SVGFactoryFinderTest extends TestCase {
     }
 
     public <T> List<T> loadIterator(Iterator<T> iterator) {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
         while (iterator.hasNext()) result.add(iterator.next());
         return result;
     }

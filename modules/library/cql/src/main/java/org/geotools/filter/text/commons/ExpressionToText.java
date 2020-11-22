@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.text.commons;
 
-import java.awt.*;
+import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -250,8 +250,12 @@ public class ExpressionToText implements ExpressionVisitor {
         } else if (literal instanceof Boolean) {
             output.append(literal);
         } else {
-            String escaped = literal.toString().replaceAll("'", "''");
-            output.append("'" + escaped + "'");
+            if (literal == null) {
+                throw new NullPointerException("ECQL does not support null literal value");
+            } else {
+                String escaped = literal.toString().replaceAll("'", "''");
+                output.append("'" + escaped + "'");
+            }
         }
         return output;
     }

@@ -31,7 +31,7 @@ import org.json.simple.parser.ParseException;
  */
 public class MBStyleParser {
 
-    JSONParser jsonParser;
+    final JSONParser jsonParser;
 
     public MBStyleParser() {
         jsonParser = new JSONParser();

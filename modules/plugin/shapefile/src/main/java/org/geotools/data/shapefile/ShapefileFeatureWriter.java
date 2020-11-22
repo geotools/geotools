@@ -99,7 +99,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     private DbaseFileHeader dbfHeader;
 
-    protected Map<ShpFileType, StorageFile> storageFiles = new HashMap<ShpFileType, StorageFile>();
+    protected Map<ShpFileType, StorageFile> storageFiles = new HashMap<>();
 
     // keep track of bounds during write
     protected Envelope bounds = new Envelope();
@@ -376,7 +376,13 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         }
 
         // convert geometry
-        g = JTSUtilities.convertToCollection(g, shapeType);
+        if (g != null) {
+            if (g.isEmpty()) {
+                g = null;
+            } else {
+                g = JTSUtilities.convertToCollection(g, shapeType);
+            }
+        }
 
         // bounds calculations
         if (g != null) {

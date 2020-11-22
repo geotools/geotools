@@ -71,7 +71,8 @@ public class DoubleListBinding extends AbstractSimpleBinding {
      * @generated modifiable
      */
     public Object parse(InstanceComponent instance, Object value) throws Exception {
-        List list = (List) value;
+        @SuppressWarnings("unchecked")
+        List<Double> list = (List<Double>) value;
 
         return list.toArray(new Double[list.size()]);
 

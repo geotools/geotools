@@ -151,6 +151,7 @@ public class UpdateElementTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         UpdateElementType updateElement = wfsfactory.createUpdateElementType();
 

@@ -157,7 +157,7 @@ public class MapContent {
         monitor.writeLock().lock();
         try {
             if (mapListeners == null) {
-                mapListeners = new CopyOnWriteArrayList<MapLayerListListener>();
+                mapListeners = new CopyOnWriteArrayList<>();
             }
             boolean added = mapListeners.addIfAbsent(listener);
             if (added && mapListeners.size() == 1) {
@@ -688,7 +688,7 @@ public class MapContent {
         monitor.writeLock().lock();
         try {
             if (propertyListeners == null) {
-                propertyListeners = new CopyOnWriteArrayList<java.beans.PropertyChangeListener>();
+                propertyListeners = new CopyOnWriteArrayList<>();
             }
             if (!propertyListeners.contains(listener)) {
                 propertyListeners.add(listener);

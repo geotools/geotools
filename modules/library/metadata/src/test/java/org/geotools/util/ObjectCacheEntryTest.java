@@ -16,9 +16,13 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import org.junit.*;
+import org.geotools.util.DefaultObjectCache.ObjectCacheEntry;
+import org.junit.Test;
 
 /**
  * Simple deadlock tests for {@link ObjectCacheEntry}.
@@ -27,7 +31,7 @@ import org.junit.*;
  */
 public final class ObjectCacheEntryTest {
 
-    DefaultObjectCache.ObjectCacheEntry entry;
+    DefaultObjectCache.ObjectCacheEntry<Integer> entry;
 
     private class EntryReaderThread implements Runnable {
 
@@ -73,7 +77,7 @@ public final class ObjectCacheEntryTest {
     @Test
     public void testWriteReadDeadlock() throws InterruptedException {
         // lock the entry as if we were writing
-        entry = new DefaultObjectCache.ObjectCacheEntry();
+        entry = new DefaultObjectCache.ObjectCacheEntry<>();
         entry.writeLock();
 
         // create another thread which starts reading
@@ -102,7 +106,7 @@ public final class ObjectCacheEntryTest {
     @Test
     public void testWriteWriteDeadlock() throws InterruptedException {
         // lock the entry as if we were writing
-        entry = new DefaultObjectCache.ObjectCacheEntry();
+        entry = new DefaultObjectCache.ObjectCacheEntry<>();
         entry.writeLock();
 
         // write the value 2
@@ -117,7 +121,7 @@ public final class ObjectCacheEntryTest {
         // check that the write thread was blocked
         Object[] values = ((EntryWriterThread) thread1).getValue();
         assertNull(values);
-        assertEquals(2, entry.getValue());
+        assertEquals(2, (int) entry.getValue());
 
         // unlock
         entry.writeUnLock();

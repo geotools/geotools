@@ -87,7 +87,7 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
      *
      * Subclasses can modify this map in their constructor in order to provide a different mapping.
      */
-    protected final Map map = new LinkedHashMap();
+    protected final Map<String, String> map = new LinkedHashMap<>();
 
     /**
      * The prefix before any table name. May be replaced by a schema if {@link #setSchema} is
@@ -143,9 +143,10 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
         } else if (length == 1) {
             throw new IllegalArgumentException(schema);
         }
-        for (final Iterator it = map.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
-            final String tableName = (String) entry.getValue();
+        for (final Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+                it.hasNext(); ) {
+            final Map.Entry<String, String> entry = it.next();
+            final String tableName = entry.getValue();
             /**
              * Update the map, prepending the schema name to the table name so long as the value is
              * a table name and not a field. This algorithm assumes that all old table names start

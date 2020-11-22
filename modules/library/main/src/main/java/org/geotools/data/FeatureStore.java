@@ -119,7 +119,7 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
      * FeatureStore}.
      *
      * <pre><code>
-     * Transation t = new DefaultTransaction();
+     * Transaction t = new DefaultTransaction();
      * featureStore.setTransaction(t);
      * try {
      *     featureStore.addFeatures( someFeatures );

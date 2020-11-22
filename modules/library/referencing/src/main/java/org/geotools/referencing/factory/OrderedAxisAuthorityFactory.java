@@ -97,7 +97,7 @@ import systems.uom.common.USCustomary;
  * @see Hints#FORCE_STANDARD_AXIS_UNITS
  */
 public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
-        implements CSAuthorityFactory, CRSAuthorityFactory, Comparator /*<CoordinateSystemAxis>*/ {
+        implements CSAuthorityFactory, CRSAuthorityFactory, Comparator<CoordinateSystemAxis> {
     /**
      * The default order for axis directions. Note that this array needs to contain only the
      * "{@linkplain AxisDirection#absolute absolute}" directions.
@@ -301,8 +301,9 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
      *     allowed to compile for J2SE 1.5.
      * @since 2.3
      */
-    public int compare(final Object axis1, final Object axis2) {
-        return rank((CoordinateSystemAxis) axis1) - rank((CoordinateSystemAxis) axis2);
+    @Override
+    public int compare(CoordinateSystemAxis axis1, CoordinateSystemAxis axis2) {
+        return rank(axis1) - rank(axis2);
     }
 
     /**

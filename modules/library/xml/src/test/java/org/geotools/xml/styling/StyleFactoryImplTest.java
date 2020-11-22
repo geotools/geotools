@@ -201,10 +201,10 @@ public class StyleFactoryImplTest extends TestCase {
 
         for (int i = 0; i < names.length; i++) {
             try {
-                Class target = styleFactory.getClass();
+                Class<?> target = styleFactory.getClass();
 
                 //                LOGGER.finer("About to load get"+names[i]+"Mark");
-                Method method = target.getMethod("get" + names[i] + "Mark", (Class[]) null);
+                Method method = target.getMethod("get" + names[i] + "Mark", (Class<?>[]) null);
 
                 //                LOGGER.finer("got method back " + method.toString());
                 m = (Mark) method.invoke(styleFactory, (Object[]) null);

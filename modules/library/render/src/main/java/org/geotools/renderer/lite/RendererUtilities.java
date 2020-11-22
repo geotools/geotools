@@ -262,7 +262,7 @@ public final class RendererUtilities {
      *
      * @return size adjusted for GeographicCRS or CRS units
      */
-    private static double toMeters(double size, CoordinateReferenceSystem crs) {
+    public static double toMeters(double size, CoordinateReferenceSystem crs) {
         if (crs == null) {
             LOGGER.finer(
                     "toMeters: assuming the original size is in meters already, as crs is null");

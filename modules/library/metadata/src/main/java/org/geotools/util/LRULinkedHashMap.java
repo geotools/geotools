@@ -195,7 +195,7 @@ public final class LRULinkedHashMap<K, V> extends LinkedHashMap<K, V> {
      */
     public static <K, V> LRULinkedHashMap<K, V> createForRecentAccess(final int maximumSize) {
         checkMaximumSize(maximumSize);
-        return new LRULinkedHashMap<K, V>(true, maximumSize);
+        return new LRULinkedHashMap<>(true, maximumSize);
     }
 
     /**
@@ -211,7 +211,7 @@ public final class LRULinkedHashMap<K, V> extends LinkedHashMap<K, V> {
      */
     public static <K, V> LRULinkedHashMap<K, V> createForRecentInserts(final int maximumSize) {
         checkMaximumSize(maximumSize);
-        return new LRULinkedHashMap<K, V>(false, maximumSize);
+        return new LRULinkedHashMap<>(false, maximumSize);
     }
 
     /**

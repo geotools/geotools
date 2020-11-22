@@ -1,8 +1,8 @@
 package org.geotools.data.georest;
 
-import org.junit.Assert;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -18,7 +18,6 @@ import org.opengis.filter.spatial.BBOX;
  * service does not support the vast amount of filters that GeoTools supports.
  *
  * @author Pieter De Graef, Geosparc
-
  */
 public class GeoRestFilterVisitorTest extends TestCase {
 

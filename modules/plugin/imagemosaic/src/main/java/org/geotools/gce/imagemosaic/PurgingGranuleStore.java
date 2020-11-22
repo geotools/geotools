@@ -172,6 +172,7 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
 
     private Map<String, Integer> calcToCountMap(CalcResult result) {
         // the result is a map going from list of grouping attributes to value
+        @SuppressWarnings("unchecked")
         Map<List<String>, Integer> map = result.toMap();
         return map.entrySet()
                 .stream()

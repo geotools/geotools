@@ -16,7 +16,9 @@
  */
 package org.geotools.mbstyle.expression;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import org.geotools.mbstyle.MBStyle;
@@ -54,9 +56,7 @@ public class MBLookupTest extends AbstractMBExpressionTest {
         List<FeatureTypeStyle> getFeatures = testLayer.transformInternal(getTest);
         try {
             String xml = new SLDTransformer().transform(getFeatures.get(0));
-            assertTrue(
-                    xml.contains(
-                            "<ogc:Function name=\"property\"><ogc:Literal>Name</ogc:Literal></ogc:Function>"));
+            assertTrue(xml.contains("<ogc:PropertyName>Name</ogc:PropertyName>"));
         } catch (Exception e) {
         }
         // test nested "get expression

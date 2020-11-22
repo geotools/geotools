@@ -16,7 +16,14 @@
  */
 package org.geotools.metadata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -24,7 +31,7 @@ import java.util.Set;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.SimpleInternationalString;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.util.InternationalString;
@@ -183,7 +190,7 @@ public final class PropertyAccessorTest {
         hashCode = accessor.hashCode(citation);
         assertEquals("Metadata with a single String value.", ISBN.hashCode(), hashCode);
 
-        final Set<Object> set = new HashSet<Object>();
+        final Set<Object> set = new HashSet<>();
         assertEquals("By Set.hashCode() contract.", 0, set.hashCode());
         assertTrue(set.add(ISBN));
         assertEquals("Expected Metadata.hashCode() == Set.hashCode().", set.hashCode(), hashCode);
@@ -197,7 +204,7 @@ public final class PropertyAccessorTest {
         assertEquals("CitationsImpl.hashCode() should delegate.", hashCode, citation.hashCode());
 
         final Collection<Object> values = citation.asMap().values();
-        assertEquals(hashCode, new HashSet<Object>(values).hashCode());
+        assertEquals(hashCode, new HashSet<>(values).hashCode());
         assertTrue(values.containsAll(set));
         assertTrue(set.containsAll(values));
     }

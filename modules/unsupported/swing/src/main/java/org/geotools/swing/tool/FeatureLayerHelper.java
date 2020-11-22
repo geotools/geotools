@@ -81,6 +81,7 @@ public class FeatureLayerHelper extends InfoToolHelper {
         GeometryDescriptor geomDesc = layer.getFeatureSource().getSchema().getGeometryDescriptor();
         attrName = geomDesc.getLocalName();
 
+        @SuppressWarnings("unchecked")
         Class<? extends Geometry> geomClass =
                 (Class<? extends Geometry>) geomDesc.getType().getBinding();
         geomType = Geometries.getForBinding(geomClass);

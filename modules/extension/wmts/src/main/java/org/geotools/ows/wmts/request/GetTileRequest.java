@@ -40,6 +40,8 @@ public interface GetTileRequest extends Request {
 
     void setStyle(String styleName);
 
+    void setFormat(String format);
+
     Set<Tile> getTiles() throws ServiceException;
 
     void setRequestedHeight(int height);

@@ -80,15 +80,15 @@ public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
     private static final Param[] PARAMS =
             new Param[] {DSTYPE, DRIVERCLASS, JDBC_URL, USERNAME, PASSWORD, MAXACTIVE, MAXIDLE};
 
-    public DataSource createDataSource(Map params) throws IOException {
+    public DataSource createDataSource(Map<String, ?> params) throws IOException {
         return createNewDataSource(params);
     }
 
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
         return super.canProcess(params) && "DBCP".equals(params.get("dstype"));
     }
 
-    public DataSource createNewDataSource(Map params) throws IOException {
+    public DataSource createNewDataSource(Map<String, ?> params) throws IOException {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName((String) DRIVERCLASS.lookUp(params));
         dataSource.setUrl((String) JDBC_URL.lookUp(params));

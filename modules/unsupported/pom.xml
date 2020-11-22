@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>24-SNAPSHOT</version>
+    <version>25-SNAPSHOT</version>
   </parent>
   <!-- =========================================================== -->
   <!-- Module Description -->
@@ -56,18 +56,6 @@
       </activation>
       <modules>
         <module>gtopo30</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>geometry</id>
-      <activation>
-        <property>
-          <name>all</name>
-        </property>
-      </activation>
-      <modules>
-        <module>jts-wrapper</module>
-        <module>geometry</module>
       </modules>
     </profile>
     <profile>
@@ -244,6 +232,8 @@
     <module>postgis-raster</module>
     <module>ogcapi-client</module>
     <module>tpk</module>
+    <module>imagemosaic-jdbc</module>
+      <module>cql-json</module>
   </modules>
 </project>
 

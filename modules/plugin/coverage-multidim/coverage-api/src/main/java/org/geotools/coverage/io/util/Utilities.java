@@ -42,6 +42,7 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.measure.Quantity;
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FilenameUtils;
@@ -142,7 +143,7 @@ public class Utilities {
             final String name,
             final double equatorialRadius,
             final double inverseFlattening,
-            Unit unit) {
+            Unit<Length> unit) {
 
         DefaultEllipsoid ellipsoid =
                 DefaultEllipsoid.createFlattenedSphere(
@@ -151,7 +152,7 @@ public class Utilities {
         // TODO: Should I change this behavior?
         if (identifiers == null)
             throw new IllegalArgumentException("Reference Identifier not available");
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         properties.put(DefaultGeodeticDatum.NAME_KEY, identifiers[0]);
         properties.put(DefaultGeodeticDatum.ALIAS_KEY, identifiers);
         DefaultGeodeticDatum datum =
@@ -220,7 +221,7 @@ public class Utilities {
             //
             // //
 
-            final Map<String, String> props = new HashMap<String, String>();
+            final Map<String, Object> props = new HashMap<>();
             props.put("name", "Mercator CRS");
             OperationMethod method = null;
             final MathTransform mt =

@@ -71,7 +71,7 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
      *
      * @return the implementation hints (an empty map, actually)
      */
-    public Map getImplementationHints() {
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 }

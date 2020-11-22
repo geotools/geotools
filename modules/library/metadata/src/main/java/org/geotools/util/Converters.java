@@ -76,7 +76,7 @@ public final class Converters {
      */
     public static synchronized Set<ConverterFactory> getConverterFactories(Hints hints) {
         hints = GeoTools.addDefaultHints(hints);
-        return new LazySet<ConverterFactory>(
+        return new LazySet<>(
                 getServiceRegistry().getFactories(ConverterFactory.class, null, hints));
     }
 
@@ -93,7 +93,7 @@ public final class Converters {
      * @since 2.5
      */
     public static Set<ConverterFactory> getConverterFactories(Class<?> source, Class<?> target) {
-        HashSet<ConverterFactory> factories = new HashSet<ConverterFactory>();
+        HashSet<ConverterFactory> factories = new HashSet<>();
         for (ConverterFactory factory : factories()) {
             if (factory.createConverter(source, target, null) != null) {
                 factories.add(factory);

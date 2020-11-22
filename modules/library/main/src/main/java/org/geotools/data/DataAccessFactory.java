@@ -17,7 +17,6 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -107,8 +106,8 @@ public interface DataAccessFactory extends Factory {
      * @throws IOException if there were any problems setting up (creating or connecting) the
      *     datasource.
      */
-    DataAccess<? extends FeatureType, ? extends Feature> createDataStore(
-            Map<String, Serializable> params) throws IOException;
+    DataAccess<? extends FeatureType, ? extends Feature> createDataStore(Map<String, ?> params)
+            throws IOException;
 
     /**
      * Name suitable for display to end user.
@@ -176,7 +175,7 @@ public interface DataAccessFactory extends Factory {
      * @return booean true if and only if this factory can process the resource indicated by the
      *     param set and all the required params are pressent.
      */
-    default boolean canProcess(java.util.Map<String, Serializable> params) {
+    default boolean canProcess(java.util.Map<String, ?> params) {
         if (params == null) {
             return false;
         }
@@ -211,6 +210,7 @@ public interface DataAccessFactory extends Factory {
                 if (param.metadata != null) {
                     // check metadata
                     if (param.metadata.containsKey(Param.OPTIONS)) {
+                        @SuppressWarnings("unchecked")
                         java.util.List<Object> options =
                                 (List<Object>) param.metadata.get(Param.OPTIONS);
                         if (options != null && !options.contains(value)) {
@@ -515,7 +515,7 @@ public interface DataAccessFactory extends Factory {
             // parsing be tried on each element, then build the array as a result
             if (type.isArray()) {
                 StringTokenizer tokenizer = new StringTokenizer(text, " ");
-                List<Object> result = new ArrayList<Object>();
+                List<Object> result = new ArrayList<>();
 
                 while (tokenizer.hasMoreTokens()) {
                     String token = tokenizer.nextToken();

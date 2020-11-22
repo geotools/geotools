@@ -55,7 +55,7 @@
                 "text-letter-spacing": 0.05,
                 "text-max-width": 5,
                 "text-font": ["Bitstream Vera Sans", "Other Test Font"],
-                "text-allow-overlap": true,      
+                "text-allow-overlap": true
                 
             },
             "paint": {
@@ -65,7 +65,7 @@
                     0
                 ],
                 "text-translate": [0, 0],
-                "text-color": "#000000",
+                "text-color": "#000000"
             }
         }
     ],

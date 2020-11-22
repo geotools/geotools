@@ -19,7 +19,9 @@ package org.geotools.data.flatgeobuf;
 import static com.google.flatbuffers.Constants.SIZE_PREFIX_LENGTH;
 
 import com.google.flatbuffers.ByteBufferUtil;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;

@@ -49,7 +49,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         Object object2 = 2;
         Object object3 = 3;
 
-        List values = new ArrayList();
+        List<Object> values = new ArrayList<>();
         values.add(object1);
         values.add(object2);
         values.add(object3);
@@ -65,7 +65,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         Filter filter = fac.greater(property, literal, true, MatchAction.ANY);
         Filter expected =
                 fac.or(
-                        new ArrayList<Filter>(
+                        new ArrayList<>(
                                 Arrays.asList(
                                         fac.greater(property, literal1, true, MatchAction.ANY),
                                         fac.greater(property, literal2, true, MatchAction.ANY),
@@ -79,7 +79,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         filter = fac.greater(property, literal, true, MatchAction.ALL);
         expected =
                 fac.and(
-                        new ArrayList<Filter>(
+                        new ArrayList<>(
                                 Arrays.asList(
                                         fac.greater(property, literal1, true, MatchAction.ALL),
                                         fac.greater(property, literal2, true, MatchAction.ALL),
@@ -93,10 +93,10 @@ public class LiteralDemultiplyingFilterVisitorTest {
         filter = fac.greater(property, literal, true, MatchAction.ONE);
         expected =
                 fac.or(
-                        new ArrayList<Filter>(
+                        new ArrayList<>(
                                 Arrays.asList(
                                         fac.and(
-                                                new ArrayList<Filter>(
+                                                new ArrayList<>(
                                                         Arrays.asList(
                                                                 fac.greater(
                                                                         property,
@@ -117,7 +117,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
                                                                                 MatchAction
                                                                                         .ONE))))),
                                         fac.and(
-                                                new ArrayList<Filter>(
+                                                new ArrayList<>(
                                                         Arrays.asList(
                                                                 fac.not(
                                                                         fac.greater(
@@ -138,7 +138,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
                                                                                 MatchAction
                                                                                         .ONE))))),
                                         fac.and(
-                                                new ArrayList<Filter>(
+                                                new ArrayList<>(
                                                         Arrays.asList(
                                                                 fac.not(
                                                                         fac.greater(
@@ -173,7 +173,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         Object object2 = builder.point(3, 4);
         Object object3 = builder.point(5, 6);
 
-        List values = new ArrayList();
+        List<Object> values = new ArrayList<>();
         values.add(object1);
         values.add(object2);
         values.add(object3);
@@ -189,7 +189,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         Filter filter = fac.beyond(property, literal, 5, "x", MatchAction.ANY);
         Filter expected =
                 fac.or(
-                        new ArrayList<Filter>(
+                        new ArrayList<>(
                                 Arrays.asList(
                                         fac.beyond(property, literal1, 5, "x", MatchAction.ANY),
                                         fac.beyond(property, literal2, 5, "x", MatchAction.ANY),
@@ -203,7 +203,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         filter = fac.beyond(property, literal, 5, "x", MatchAction.ALL);
         expected =
                 fac.and(
-                        new ArrayList<Filter>(
+                        new ArrayList<>(
                                 Arrays.asList(
                                         fac.beyond(property, literal1, 5, "x", MatchAction.ANY),
                                         fac.beyond(property, literal2, 5, "x", MatchAction.ANY),
@@ -217,10 +217,10 @@ public class LiteralDemultiplyingFilterVisitorTest {
         filter = fac.beyond(property, literal, 5, "x", MatchAction.ONE);
         expected =
                 fac.or(
-                        new ArrayList<Filter>(
+                        new ArrayList<>(
                                 Arrays.asList(
                                         fac.and(
-                                                new ArrayList<Filter>(
+                                                new ArrayList<>(
                                                         Arrays.asList(
                                                                 fac.beyond(
                                                                         property,
@@ -244,7 +244,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
                                                                                 MatchAction
                                                                                         .ONE))))),
                                         fac.and(
-                                                new ArrayList<Filter>(
+                                                new ArrayList<>(
                                                         Arrays.asList(
                                                                 fac.not(
                                                                         fac.beyond(
@@ -268,7 +268,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
                                                                                 MatchAction
                                                                                         .ONE))))),
                                         fac.and(
-                                                new ArrayList<Filter>(
+                                                new ArrayList<>(
                                                         Arrays.asList(
                                                                 fac.not(
                                                                         fac.beyond(
@@ -304,7 +304,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         Object object2 = "2014-02-02";
         Object object3 = "2014-03-03";
 
-        List values = new ArrayList();
+        List<Object> values = new ArrayList<>();
         values.add(object1);
         values.add(object2);
         values.add(object3);
@@ -320,7 +320,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         Filter filter = fac.after(property, literal, MatchAction.ANY);
         Filter expected =
                 fac.or(
-                        new ArrayList<Filter>(
+                        new ArrayList<>(
                                 Arrays.asList(
                                         fac.after(property, literal1, MatchAction.ANY),
                                         fac.after(property, literal2, MatchAction.ANY),
@@ -334,7 +334,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         filter = fac.after(property, literal, MatchAction.ALL);
         expected =
                 fac.and(
-                        new ArrayList<Filter>(
+                        new ArrayList<>(
                                 Arrays.asList(
                                         fac.after(property, literal1, MatchAction.ALL),
                                         fac.after(property, literal2, MatchAction.ALL),
@@ -348,10 +348,10 @@ public class LiteralDemultiplyingFilterVisitorTest {
         filter = fac.after(property, literal, MatchAction.ONE);
         expected =
                 fac.or(
-                        new ArrayList<Filter>(
+                        new ArrayList<>(
                                 Arrays.asList(
                                         fac.and(
-                                                new ArrayList<Filter>(
+                                                new ArrayList<>(
                                                         Arrays.asList(
                                                                 fac.after(
                                                                         property,
@@ -369,7 +369,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
                                                                                 MatchAction
                                                                                         .ONE))))),
                                         fac.and(
-                                                new ArrayList<Filter>(
+                                                new ArrayList<>(
                                                         Arrays.asList(
                                                                 fac.not(
                                                                         fac.after(
@@ -387,7 +387,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
                                                                                 MatchAction
                                                                                         .ONE))))),
                                         fac.and(
-                                                new ArrayList<Filter>(
+                                                new ArrayList<>(
                                                         Arrays.asList(
                                                                 fac.not(
                                                                         fac.after(

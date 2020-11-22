@@ -17,7 +17,11 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.jaiext.utilities.ImageLayout2;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
@@ -1061,7 +1065,7 @@ public final class GridCoverageRenderer {
         Parameter<int[]> bandIndicesParam = null;
         bandIndicesParam = (Parameter<int[]>) AbstractGridFormat.BANDS.createValue();
         bandIndicesParam.setValue(bandIndices);
-        List<GeneralParameterValue> paramList = new ArrayList<GeneralParameterValue>();
+        List<GeneralParameterValue> paramList = new ArrayList<>();
         if (readParams != null) {
             paramList.addAll(Arrays.asList(readParams));
         }

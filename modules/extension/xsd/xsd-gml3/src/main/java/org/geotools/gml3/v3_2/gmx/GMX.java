@@ -22,6 +22,7 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.gco.GCO;
 import org.geotools.gml3.v3_2.gmd.GMD;
 import org.geotools.xlink.XLINK;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.type.Schema;
 
 /**
@@ -43,7 +44,7 @@ public final class GMX extends GML.DelegatingXSD {
     /** private constructor */
     private GMX() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(XLINK.getInstance());
         dependencies.add(GCO.getInstance());
         dependencies.add(GMD.getInstance());

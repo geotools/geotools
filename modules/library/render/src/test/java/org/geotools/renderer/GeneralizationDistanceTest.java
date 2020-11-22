@@ -19,7 +19,7 @@ package org.geotools.renderer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -147,7 +147,7 @@ public class GeneralizationDistanceTest {
     }
 
     public void assertDistanceWholeWorldRendering(
-            Map<String, Boolean> hints, double expectedDistance) {
+            Map<Object, Object> hints, double expectedDistance) {
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(source, style));
         StreamingRenderer sr = new StreamingRenderer();

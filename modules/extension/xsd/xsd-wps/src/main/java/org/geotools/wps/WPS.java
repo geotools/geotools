@@ -41,7 +41,7 @@ public final class WPS extends XSD {
     /** private constructor */
     private WPS() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
     }
 

@@ -33,6 +33,7 @@ package org.geotools.filter.function;
  *
  * @author Cory Horner, Refractions Research
  */
+@SuppressWarnings("unchecked") // for the life of me I cannot turn this into a type safe thing
 public final class RangedClassifier extends Classifier {
 
     Comparable<?> min[];

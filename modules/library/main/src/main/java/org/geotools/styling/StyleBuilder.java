@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;

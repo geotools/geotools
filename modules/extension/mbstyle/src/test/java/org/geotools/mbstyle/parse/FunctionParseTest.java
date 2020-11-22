@@ -17,16 +17,22 @@
 package org.geotools.mbstyle.parse;
 
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.categories;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -169,6 +175,7 @@ public class FunctionParseTest {
     }
 
     /** Verify that an interval function for colours can be parsed. */
+    @SuppressWarnings("unchecked")
     @Test
     public void testParseIntervalFunctionColour() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("functionIntervalColour");
@@ -177,6 +184,7 @@ public class FunctionParseTest {
         assertThat(fn, hasProperty("type", is(MBFunction.FunctionType.INTERVAL)));
         assertThat(fn, categories(containsInAnyOrder(MBFunction.FunctionCategory.PROPERTY)));
         assertThat(fn, hasProperty("property", equalTo("temperature")));
+
         assertThat(
                 fn,
                 hasProperty(
@@ -193,6 +201,7 @@ public class FunctionParseTest {
      * @throws IOException problem reading json
      */
     @Test
+    @SuppressWarnings("unchecked")
     public void testParseIntervalFunctionNumber() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("functionIntervalNumeric");
         JSONObject j = traverse(layer, JSONObject.class, "paint", "circle-radius").get();

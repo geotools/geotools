@@ -83,7 +83,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 
     public synchronized void addListener(CollectionListener listener) throws NullPointerException {
         if (listeners == null) {
-            listeners = Collections.synchronizedList(new ArrayList<CollectionListener>());
+            listeners = Collections.synchronizedList(new ArrayList<>());
         }
         listeners.add(listener);
     }
@@ -149,11 +149,9 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
             LOGGER.fine("Found no spatial element in " + filter);
             LOGGER.fine("Just going to iterate");
         }
-        for (Iterator<SimpleFeature> iter = (Iterator<SimpleFeature>) index.query(env).iterator();
-                iter.hasNext(); ) {
-
-            SimpleFeature sample = iter.next();
-
+        @SuppressWarnings("unchecked")
+        List<SimpleFeature> queryResults = (List<SimpleFeature>) index.query(env);
+        for (SimpleFeature sample : queryResults) {
             if (LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.finest("Looking at " + sample);
             }

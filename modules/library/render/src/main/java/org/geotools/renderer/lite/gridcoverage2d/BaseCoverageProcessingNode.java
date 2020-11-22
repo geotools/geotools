@@ -92,14 +92,14 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @uml.property name="sources"
      */
-    private final List<CoverageProcessingNode> sources = new ArrayList<CoverageProcessingNode>();
+    private final List<CoverageProcessingNode> sources = new ArrayList<>();
 
     /**
      * {@link List} of sinks for this {@link CoverageProcessingNode} .
      *
      * @uml.property name="sinks"
      */
-    private final List<CoverageProcessingNode> sinks = new ArrayList<CoverageProcessingNode>();
+    private final List<CoverageProcessingNode> sinks = new ArrayList<>();
 
     /**
      * Output of this {@link CoverageProcessingNode}

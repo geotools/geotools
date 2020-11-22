@@ -215,7 +215,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
         } else if (crs instanceof CompoundCRS) {
             final List<CoordinateReferenceSystem> elements =
                     ((CompoundCRS) crs).getCoordinateReferenceSystems();
-            singles = new ArrayList<SingleCRS>(elements.size());
+            singles = new ArrayList<>(elements.size());
             getSingleCRS(elements, singles);
         } else {
             singles = Collections.singletonList((SingleCRS) crs);
@@ -247,7 +247,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
      * has the same content.
      */
     private boolean computeSingleCRS(List<? extends CoordinateReferenceSystem> crs) {
-        singles = new ArrayList<SingleCRS>(crs.size());
+        singles = new ArrayList<>(crs.size());
         final boolean identical = getSingleCRS(crs, singles);
         singles = UnmodifiableArrayList.wrap(singles.toArray(new SingleCRS[singles.size()]));
         return identical;

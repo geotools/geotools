@@ -259,7 +259,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
             targetType = sourceType;
         }
         // Default setting: no scaling
-        NumberRange targetRange = TypeMap.getRange(targetType);
+        NumberRange<? extends Number> targetRange = TypeMap.getRange(targetType);
         Category[] categories = new Category[1];
         /*
          * Now, constructs the sample dimensions. We will inconditionnaly provides a "nodata"

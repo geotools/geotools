@@ -147,7 +147,7 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> 
      *
      * @param typeName the type name for features that will be accessible
      * @param filter defines additional constraints on the features that will be accessible
-     * @param transaction the transation that the returned writer operates against
+     * @param transaction the transaction that the returned writer operates against
      * @return an instance of {@code FeatureWriter}
      * @throws IOException if data access errors occur
      * @see #getFeatureWriterAppend(String, Transaction)
@@ -162,7 +162,7 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> 
      * <p>The returned writer does <b>not</b> allow features to be added.
      *
      * @param typeName the type name for features that will be accessible
-     * @param transaction the transation that the returned writer operates against
+     * @param transaction the transaction that the returned writer operates against
      * @return an instance of {@code FeatureWriter}
      * @throws IOException if data access errors occur
      * @see #getFeatureWriterAppend(String, Transaction)

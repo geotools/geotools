@@ -9,8 +9,8 @@
  */
 package org.opengis.referencing.datum;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19111;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public final class PixelInCell extends CodeList<PixelInCell> {
     private static final long serialVersionUID = 2857889370030758462L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<PixelInCell> VALUES = new ArrayList<PixelInCell>(2);
+    private static final List<PixelInCell> VALUES = new ArrayList<>(2);
 
     /**
      * The origin of the image coordinate system is the centre of a grid cell or image pixel.

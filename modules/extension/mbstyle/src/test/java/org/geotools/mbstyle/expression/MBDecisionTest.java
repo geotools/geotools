@@ -32,7 +32,7 @@ public class MBDecisionTest extends AbstractMBExpressionTest {
     }
 
     @Override
-    protected Class getExpressionClassType() {
+    protected Class<MBDecision> getExpressionClassType() {
         return MBDecision.class;
     }
 
@@ -228,13 +228,13 @@ public class MBDecisionTest extends AbstractMBExpressionTest {
     public void testDecisionCase() throws Exception {
         final JSONObject j = getObjectByLayerId("decisionCase", "layout");
         // get the case-trueFalseDefault, which should evaluate to 10
-        assertEquals(10l, getExpressionEvaluation(j, "case-trueFalseDefault"));
+        assertEquals(10L, getExpressionEvaluation(j, "case-trueFalseDefault"));
         // get the case-falseTrueDefault, which should evaluate to "aString"
         assertEquals("aString", getExpressionEvaluation(j, "case-falseTrueDefault"));
         // get the case-falseFalseDefault, which should evaluate to true
         assertEquals(true, getExpressionEvaluation(j, "case-falseFalseDefault"));
         // get the case-chainedTrueFalseDefault, which should evaluate to 10
-        assertEquals(10l, getExpressionEvaluation(j, "case-chainedTrueFalseDefault"));
+        assertEquals(10L, getExpressionEvaluation(j, "case-chainedTrueFalseDefault"));
         // get the case-chainedFalseTrueDefault, which should evaluate to "aString"
         assertEquals("aString", getExpressionEvaluation(j, "case-chainedFalseTrueDefault"));
         // get the case-chainedFalseFalseDefault, which should evaluate to true
@@ -247,11 +247,11 @@ public class MBDecisionTest extends AbstractMBExpressionTest {
         // get the coalesce-stringNull, which should evaluate to "aString"
         assertEquals("aString", getExpressionEvaluation(j, "coalesce-stringNull"));
         // get the coalesce-nullNumber, which should evaluate to 5
-        assertEquals(5l, getExpressionEvaluation(j, "coalesce-nullNumber"));
+        assertEquals(5L, getExpressionEvaluation(j, "coalesce-nullNumber"));
         // get the coalesce-stringNullNumber, which should evaluate to "aString"
         assertEquals("aString", getExpressionEvaluation(j, "coalesce-stringNullNumber"));
         // get the coalesce-nullNumberString, which should evaluate to 5
-        assertEquals(5l, getExpressionEvaluation(j, "coalesce-nullNumberString"));
+        assertEquals(5L, getExpressionEvaluation(j, "coalesce-nullNumberString"));
         // get the coalesce-chainedNullStringNumber, which should evaluate to "aString"
         assertEquals("aString", getExpressionEvaluation(j, "coalesce-chainedNullStringNumber"));
     }

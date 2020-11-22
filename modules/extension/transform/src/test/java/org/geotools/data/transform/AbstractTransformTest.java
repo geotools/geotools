@@ -44,7 +44,7 @@ public abstract class AbstractTransformTest {
     }
 
     SimpleFeatureSource transformWithSelection() throws IOException {
-        List<Definition> definitions = new ArrayList<Definition>();
+        List<Definition> definitions = new ArrayList<>();
         definitions.add(new Definition("the_geom"));
         definitions.add(new Definition("state_name"));
         definitions.add(new Definition("persons"));
@@ -55,7 +55,7 @@ public abstract class AbstractTransformTest {
     }
 
     SimpleFeatureSource transformWithRename() throws Exception {
-        List<Definition> definitions = new ArrayList<Definition>();
+        List<Definition> definitions = new ArrayList<>();
         definitions.add(new Definition("geom", ECQL.toExpression("the_geom")));
         definitions.add(new Definition("name", ECQL.toExpression("state_name")));
         definitions.add(new Definition("people", ECQL.toExpression("persons")));
@@ -65,7 +65,7 @@ public abstract class AbstractTransformTest {
     }
 
     SimpleFeatureSource transformWithExpressions() throws Exception {
-        List<Definition> definitions = new ArrayList<Definition>();
+        List<Definition> definitions = new ArrayList<>();
         definitions.add(new Definition("geom", ECQL.toExpression("buffer(the_geom, 1)")));
         definitions.add(new Definition("name", ECQL.toExpression("strToLowercase(state_name)")));
         definitions.add(new Definition("total", ECQL.toExpression("male + female")));
@@ -77,7 +77,7 @@ public abstract class AbstractTransformTest {
     }
 
     SimpleFeatureSource transformWithExpressionsWithEmptySource() throws Exception {
-        List<Definition> definitions = new ArrayList<Definition>();
+        List<Definition> definitions = new ArrayList<>();
         definitions.add(new Definition("geom", ECQL.toExpression("buffer(the_geom, 1)")));
         definitions.add(new Definition("name", ECQL.toExpression("strToLowercase(state_name)")));
         definitions.add(new Definition("total", ECQL.toExpression("male + female")));

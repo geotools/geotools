@@ -41,10 +41,12 @@ public class SwingUtil {
         });
     }
 
+    @SuppressWarnings("unchecked")
     public static ListModel toListModel(Collection elements) {
         return (toListModel(new ArrayList(elements)));
     }
 
+    @SuppressWarnings("unchecked")
     public static List toList(ListModel model) {
         ArrayList list = new ArrayList(model.getSize());
         for (int i = 0; i < model.getSize(); i++) {

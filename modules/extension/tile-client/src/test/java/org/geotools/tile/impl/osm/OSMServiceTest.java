@@ -41,7 +41,7 @@ public class OSMServiceTest extends ServiceTest {
         String urlPrefix = "http://tile.openstreetmap.org/";
         String urlSuffix = ".png";
 
-        extentNameToUrlList = new HashMap<String, List<String>>();
+        extentNameToUrlList = new HashMap<>();
         List<String> expectedIds_DE =
                 Arrays.asList(new String[] {"5/16/11", "5/17/11", "5/16/10", "5/17/10"});
 

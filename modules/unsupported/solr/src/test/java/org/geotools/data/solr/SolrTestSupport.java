@@ -21,7 +21,13 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -89,7 +95,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     protected void connect() throws Exception {
         String url = fixture.getProperty(SolrDataStoreFactory.URL.key);
 
-        Map params = createConnectionParams(url, fixture);
+        Map<String, ?> params = createConnectionParams(url, fixture);
 
         SolrDataStoreFactory factory = new SolrDataStoreFactory();
         dataStore = (SolrDataStore) factory.createDataStore(params);
@@ -106,10 +112,10 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         }
     }
 
-    protected Map createConnectionParams(String url, Properties fixture) {
+    protected Map<String, Object> createConnectionParams(String url, Properties fixture) {
         String field = "status_s";
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put(SolrDataStoreFactory.URL.key, url);
         params.put(SolrDataStoreFactory.FIELD.key, field);
         params.put(SolrDataStoreFactory.NAMESPACE.key, SolrDataStoreFactory.NAMESPACE.sample);
@@ -129,7 +135,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     protected void init(String layerName, String geometryField) throws Exception {
         this.layerName = layerName;
         SolrLayerConfiguration solrLayerConfiguration =
-                new SolrLayerConfiguration(new ArrayList<SolrAttribute>());
+                new SolrLayerConfiguration(new ArrayList<>());
         solrLayerConfiguration.setLayerName(this.layerName);
         List<SolrAttribute> layerAttributes = new ArrayList<>();
         for (SolrAttribute solrAttribute : attributes) {

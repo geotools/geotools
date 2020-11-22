@@ -9,9 +9,9 @@
  */
 package org.opengis.metadata.spatial;
 
-import static org.opengis.annotation.ComplianceLevel.*;
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.ComplianceLevel.CORE;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +33,7 @@ public final class SpatialRepresentationType extends CodeList<SpatialRepresentat
     private static final long serialVersionUID = 4790487150664264363L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<SpatialRepresentationType> VALUES =
-            new ArrayList<SpatialRepresentationType>(6);
+    private static final List<SpatialRepresentationType> VALUES = new ArrayList<>(6);
 
     /** Vector data is used to represent geographic data. */
     @UML(identifier = "vector", obligation = CONDITIONAL, specification = ISO_19115)

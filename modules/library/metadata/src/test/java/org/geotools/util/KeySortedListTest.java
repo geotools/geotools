@@ -16,14 +16,16 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.ListIterator;
 import java.util.Random;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests {@link KeySortedList}.
@@ -40,8 +42,8 @@ public final class KeySortedListTest {
     @Test
     public void testAdd() {
         final Random random = new Random(6969483179756527012L);
-        final KeySortedList<Integer, Double> list = new KeySortedList<Integer, Double>();
-        final Collection<Double> check = new ArrayList<Double>();
+        final KeySortedList<Integer, Double> list = new KeySortedList<>();
+        final Collection<Double> check = new ArrayList<>();
         final int maxElements = 1000;
         for (int i = 0; i < maxElements; i++) {
             final double x = random.nextDouble() * (maxElements / 10);
@@ -55,7 +57,7 @@ public final class KeySortedListTest {
          */
         assertEquals(maxElements, check.size());
         assertEquals(maxElements, list.size());
-        assertEquals(new HashSet<Double>(check), new HashSet<Double>(list));
+        assertEquals(new HashSet<>(check), new HashSet<>(list));
         /*
          * Checks the iteration.
          */
@@ -77,7 +79,7 @@ public final class KeySortedListTest {
         final Integer midKey = (maxElements / 10) / 2;
         final KeySortedList<Integer, Double> head = list.headList(midKey);
         final KeySortedList<Integer, Double> tail = list.tailList(midKey);
-        final Collection<Double> rebuild = new ArrayList<Double>(head);
+        final Collection<Double> rebuild = new ArrayList<>(head);
         rebuild.addAll(tail);
         assertEquals(list.size(), head.size() + tail.size());
         assertEquals(list, rebuild);

@@ -34,10 +34,38 @@ import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.*;
-import org.opengis.referencing.cs.*;
-import org.opengis.referencing.datum.*;
-import org.opengis.referencing.operation.*;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CompoundCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.DerivedCRS;
+import org.opengis.referencing.crs.EngineeringCRS;
+import org.opengis.referencing.crs.GeocentricCRS;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.ImageCRS;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.TemporalCRS;
+import org.opengis.referencing.crs.VerticalCRS;
+import org.opengis.referencing.cs.CSAuthorityFactory;
+import org.opengis.referencing.cs.CartesianCS;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.CylindricalCS;
+import org.opengis.referencing.cs.EllipsoidalCS;
+import org.opengis.referencing.cs.PolarCS;
+import org.opengis.referencing.cs.SphericalCS;
+import org.opengis.referencing.cs.TimeCS;
+import org.opengis.referencing.cs.VerticalCS;
+import org.opengis.referencing.datum.DatumAuthorityFactory;
+import org.opengis.referencing.datum.Ellipsoid;
+import org.opengis.referencing.datum.EngineeringDatum;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.datum.ImageDatum;
+import org.opengis.referencing.datum.PrimeMeridian;
+import org.opengis.referencing.datum.TemporalDatum;
+import org.opengis.referencing.datum.VerticalDatum;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.util.InternationalString;
 
 /**
@@ -213,7 +241,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     @Override
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
             throws FactoryException {
-        final Set<String> codes = new LinkedHashSet<String>(super.getAuthorityCodes(type));
+        final Set<String> codes = new LinkedHashSet<>(super.getAuthorityCodes(type));
         codes.addAll(fallback.getAuthorityCodes(type));
         return codes;
     }

@@ -16,10 +16,11 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.referencing.operation.TransformTestBase;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests the {@link MolodenskiTransform} class.

@@ -33,7 +33,7 @@ import org.junit.Assert;
  *     <p>Base testing class initializing JAI properties to be used during tests.
  */
 @SuppressWarnings("deprecation")
-public class BaseJP2K extends Assert {
+public class BaseJP2K {
 
     protected static final double DELTA = 1.0E-6;
 

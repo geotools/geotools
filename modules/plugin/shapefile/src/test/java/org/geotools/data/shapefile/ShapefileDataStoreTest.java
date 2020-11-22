@@ -484,7 +484,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         assertTrue("selection non empty", features.size() > 0);
         ReferencedEnvelope bounds = features.getBounds();
 
-        final Set<FeatureId> selection = new LinkedHashSet<FeatureId>();
+        final Set<FeatureId> selection = new LinkedHashSet<>();
         features.accepts(
                 new FeatureVisitor() {
                     public void visit(Feature feature) {
@@ -543,11 +543,11 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = featureSource.getFeatures();
         SimpleFeatureIterator indexIter = features.features();
 
-        Set<String> expectedFids = new LinkedHashSet<String>();
+        Set<String> expectedFids = new LinkedHashSet<>();
         final Filter fidFilter;
         try {
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-            Set<FeatureId> fids = new HashSet<FeatureId>();
+            Set<FeatureId> fids = new HashSet<>();
             while (indexIter.hasNext()) {
                 SimpleFeature newFeature = indexIter.next();
                 String id = newFeature.getID();
@@ -559,7 +559,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             indexIter.close();
         }
 
-        Set<String> actualFids = new HashSet<String>();
+        Set<String> actualFids = new HashSet<>();
         {
             features = featureSource.getFeatures(fidFilter);
             try {
@@ -576,10 +576,10 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             }
         }
 
-        TreeSet<String> lackingFids = new TreeSet<String>(expectedFids);
+        TreeSet<String> lackingFids = new TreeSet<>(expectedFids);
         lackingFids.removeAll(actualFids);
 
-        TreeSet<String> unexpectedFids = new TreeSet<String>(actualFids);
+        TreeSet<String> unexpectedFids = new TreeSet<>(actualFids);
         unexpectedFids.removeAll(expectedFids);
 
         String lacking = String.valueOf(lackingFids);
@@ -926,7 +926,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         transaction.commit();
 
         reader = s.getFeatureReader();
-        Set<Object> numOfDistinctValues = new HashSet<Object>();
+        Set<Object> numOfDistinctValues = new HashSet<>();
         try {
             while (reader.hasNext()) {
                 SimpleFeature f = reader.next();
@@ -1780,7 +1780,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             features.close();
         }
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-        Set<Identifier> ids = new HashSet<Identifier>();
+        Set<Identifier> ids = new HashSet<>();
         ids.add(ff.featureId(validFid1));
         ids.add(ff.featureId(validFid2));
         ids.add(ff.featureId(invalidFid1));

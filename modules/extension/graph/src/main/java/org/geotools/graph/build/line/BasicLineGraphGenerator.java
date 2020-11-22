@@ -75,7 +75,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
      * node.
      */
     public BasicLineGraphGenerator() {
-        m_coord2node = new HashMap<Coordinate, Node>();
+        m_coord2node = new HashMap<>();
         setGraphBuilder(new BasicGraphBuilder());
     }
 
@@ -90,7 +90,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
     public BasicLineGraphGenerator(double tolerance) {
         this.tolerance = tolerance;
         spatialIndex = new Bintree();
-        m_coord2node = new HashMap<Coordinate, Node>();
+        m_coord2node = new HashMap<>();
         setGraphBuilder(new BasicGraphBuilder());
     }
 
@@ -262,8 +262,11 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
     private Node findClosestNodeWithinTolerance(Coordinate inCoord) {
         double closestDistance = Double.MAX_VALUE;
         Coordinate closestCoordinate = null;
+        @SuppressWarnings("unchecked")
         List<Coordinate> list =
-                spatialIndex.query(new Interval(inCoord.y - tolerance, inCoord.y + tolerance));
+                (List<Coordinate>)
+                        spatialIndex.query(
+                                new Interval(inCoord.y - tolerance, inCoord.y + tolerance));
         for (Coordinate c : list) {
             double distance = inCoord.distance(c);
             if (distance < closestDistance) {

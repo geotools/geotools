@@ -10,7 +10,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class FeatureReaderIteratorTest extends TestCase {
 
     public void testCloseOnException() {
-        FeatureReaderIterator it = new FeatureReaderIterator(new BreakingFeatureReader());
+        FeatureReaderIterator<SimpleFeature> it =
+                new FeatureReaderIterator<>(new BreakingFeatureReader());
         assertFalse(it.hasNext());
         // the reader is really closed or not?
         assertNull(it.reader);

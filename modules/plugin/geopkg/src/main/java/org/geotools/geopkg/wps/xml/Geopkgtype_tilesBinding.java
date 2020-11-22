@@ -80,14 +80,14 @@ public class Geopkgtype_tilesBinding extends LayertypeBinding {
         XSQNameBinding nameBinding = new XSQNameBinding(namespaceContext);
 
         GeoPackageProcessRequest.TilesLayer layer = new GeoPackageProcessRequest.TilesLayer();
-        List<QName> layers = new ArrayList<QName>();
+        List<QName> layers = new ArrayList<>();
         for (String layerName : Arrays.asList(((String) node.getChildValue("layers")).split(","))) {
             layers.add((QName) nameBinding.parse(null, layerName.trim()));
         }
         layer.setLayers(layers);
         String styleNames = (String) node.getChildValue("styles");
         if (styleNames != null) {
-            List<String> styles = new ArrayList<String>();
+            List<String> styles = new ArrayList<>();
             for (String styleName : Arrays.asList(styleNames.split(","))) {
                 styles.add(styleName.trim());
             }
@@ -110,7 +110,9 @@ public class Geopkgtype_tilesBinding extends LayertypeBinding {
         if (gridSet instanceof String) {
             layer.setGridSetName((String) gridSet);
         } else if (gridSet instanceof List<?>) {
-            layer.setGrids((List<TileMatrix>) gridSet);
+            @SuppressWarnings("unchecked")
+            List<TileMatrix> list = (List<TileMatrix>) gridSet;
+            layer.setGrids(list);
         }
         return layer;
     }

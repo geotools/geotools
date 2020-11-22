@@ -83,7 +83,7 @@ public class StyleTypeImpl extends AbstractStyleTypeImpl implements StyleType {
      */
     public EList<FeatureStylePropertyType> getFeatureStyle() {
         if (featureStyle == null) {
-            featureStyle = new EObjectContainmentEList<FeatureStylePropertyType>(FeatureStylePropertyType.class, this, Gml311Package.STYLE_TYPE__FEATURE_STYLE);
+            featureStyle = new EObjectContainmentEList<>(FeatureStylePropertyType.class, this, Gml311Package.STYLE_TYPE__FEATURE_STYLE);
         }
         return featureStyle;
     }

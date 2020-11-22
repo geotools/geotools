@@ -88,7 +88,7 @@ public class AllAuthoritiesFactory extends ManyAuthoritiesFactory {
         if (authorities != authorityNames) {
             authorityNames = authorities;
             final Hints hints = getHints();
-            final Set<AuthorityFactory> factories = new LinkedHashSet<AuthorityFactory>();
+            final Set<AuthorityFactory> factories = new LinkedHashSet<>();
             factories.addAll(ReferencingFactoryFinder.getCRSAuthorityFactories(hints));
             factories.addAll(ReferencingFactoryFinder.getCSAuthorityFactories(hints));
             factories.addAll(ReferencingFactoryFinder.getDatumAuthorityFactories(hints));
@@ -157,8 +157,10 @@ public class AllAuthoritiesFactory extends ManyAuthoritiesFactory {
         private Set<AuthorityFactory> fromFactoryRegistry() {
             final ManyAuthoritiesFactory factory =
                     (ManyAuthoritiesFactory) getProxy().getAuthorityFactory();
-            final Class<? extends AuthorityFactory> type = getProxy().getType();
-            final Set<AuthorityFactory> factories = new LinkedHashSet<AuthorityFactory>();
+            @SuppressWarnings("unchecked")
+            final Class<? extends AuthorityFactory> type =
+                    (Class<? extends AuthorityFactory>) getProxy().getType();
+            final Set<AuthorityFactory> factories = new LinkedHashSet<>();
             for (final String authority : ReferencingFactoryFinder.getAuthorityNames()) {
                 factory.fromFactoryRegistry(authority, type, factories);
             }

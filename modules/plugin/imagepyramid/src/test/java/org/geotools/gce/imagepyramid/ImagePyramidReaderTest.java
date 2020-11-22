@@ -388,7 +388,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
                         ge.getMaximum(1),
                         ge.getCoordinateReferenceSystem());
         final Parameter<GridGeometry2D> readGG =
-                new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
+                new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
         readGG.setValue(new GridGeometry2D(new GridEnvelope2D(0, 0, 400, 400), requestedEnvelope));
 
         // make sure we get back a null, not an exception
@@ -723,7 +723,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(
-                new ArrayList() {
+                new ArrayList<DateRange>() {
                     {
                         add(
                                 new DateRange(
@@ -815,7 +815,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(
-                new ArrayList() {
+                new ArrayList<DateRange>() {
                     {
                         add(
                                 new DateRange(

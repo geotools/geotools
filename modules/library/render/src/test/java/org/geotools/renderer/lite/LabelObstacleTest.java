@@ -16,8 +16,9 @@
  */
 package org.geotools.renderer.lite;
 
-import static java.awt.RenderingHints.*;
-import static org.junit.Assert.*;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -132,7 +133,7 @@ public class LabelObstacleTest {
     }
 
     Style[] styles(String... names) throws Exception {
-        List<Style> styles = new ArrayList();
+        List<Style> styles = new ArrayList<>();
         for (String name : names) {
             styles.add(name != null ? style(name) : null);
         }
@@ -140,7 +141,7 @@ public class LabelObstacleTest {
     }
 
     FeatureSource[] sources(String... names) throws Exception {
-        List<FeatureSource> sources = new ArrayList();
+        List<FeatureSource> sources = new ArrayList<>();
         for (String name : names) {
             sources.add(mem.getFeatureSource(name));
         }

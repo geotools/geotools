@@ -40,7 +40,12 @@ import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.ows.wms.*;
+import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.MultithreadedHttpClient;
+import org.geotools.ows.wms.WMS1_1_1;
+import org.geotools.ows.wms.WMSCapabilities;
+import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetFeatureInfoRequest;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.request.GetStylesRequest;
@@ -445,7 +450,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
         wmsRequest.setLayers(layers);
         // Test URL
         String queryParamters = wmsRequest.getFinalURL().getQuery();
-        Map parameters = new HashMap();
+        Map<String, String> parameters = new HashMap<>();
         String[] rawParameters = queryParamters.split("&");
         for (String param : rawParameters) {
             String[] keyValue = param.split("=");

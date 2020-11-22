@@ -17,6 +17,7 @@
 package org.geotools.data.db2;
 
 import java.util.HashMap;
+import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 
@@ -28,7 +29,7 @@ public class DB2DataStoreFactoryTest extends TestCase {
     }
 
     public void testCanProcess() throws Exception {
-        HashMap params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         assertFalse(factory.canProcess(params));
 
         // params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");

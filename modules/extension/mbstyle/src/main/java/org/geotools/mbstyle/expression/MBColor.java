@@ -22,7 +22,7 @@ import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
-/** A class to transform mapbox color expressions into geotools expressions. */
+/** A class to transform mapbox color expressions into GeoTools expressions. */
 public class MBColor extends MBExpression {
 
     public MBColor(JSONArray json) {
@@ -36,22 +36,22 @@ public class MBColor extends MBExpression {
      *
      * @return Color expression
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public Expression colorRGB() {
         if (json.size() == 4) {
             Expression er = parse.string(json, 1);
             er = transformLiteral(er);
-            Function roundr = ff.function("round_2", er);
+            Function roundR = ff.function("round_2", er);
 
             Expression eg = parse.string(json, 2);
             eg = transformLiteral(eg);
-            Function roundg = ff.function("round_2", eg);
+            Function roundG = ff.function("round_2", eg);
 
             Expression eb = parse.string(json, 3);
             eb = transformLiteral(eb);
-            Function roundb = ff.function("round_2", eb);
+            Function roundB = ff.function("round_2", eb);
 
-            Function color = ff.function("torgb", roundr, roundg, roundb);
-            return color;
+            return ff.function("torgb", roundR, roundG, roundB);
         } else {
             throw new MBFormatException("Expression \"rgb\" requires exactly 3 arguments");
         }

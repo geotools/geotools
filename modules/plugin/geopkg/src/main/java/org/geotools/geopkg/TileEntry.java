@@ -28,7 +28,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  */
 public class TileEntry extends Entry {
 
-    List<TileMatrix> tileMatricies = new ArrayList();
+    List<TileMatrix> tileMatricies = new ArrayList<>();
 
     ReferencedEnvelope tileMatrixSetBounds;
 

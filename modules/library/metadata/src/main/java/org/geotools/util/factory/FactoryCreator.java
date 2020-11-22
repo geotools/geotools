@@ -50,14 +50,13 @@ public class FactoryCreator extends FactoryRegistry {
     private static final Class<?>[] HINTS_ARGUMENT = new Class[] {Hints.class};
 
     /** List of factories already created. Used as a cache. */
-    private final Map<Class<?>, List<Reference<?>>> cache =
-            new HashMap<Class<?>, List<Reference<?>>>();
+    private final Map<Class<?>, List<Reference<?>>> cache = new HashMap<>();
 
     /**
      * Objects under construction for each implementation class. Used by {@link #safeCreate} as a
      * guard against infinite recursivity.
      */
-    private final Set<Class<?>> underConstruction = new HashSet<Class<?>>();
+    private final Set<Class<?>> underConstruction = new HashSet<>();
 
     /**
      * Constructs a new registry for the specified category.
@@ -93,7 +92,7 @@ public class FactoryCreator extends FactoryRegistry {
     final <T> List<Reference<T>> getCachedFactories(final Class<T> category) {
         List<Reference<?>> c = cache.get(category);
         if (c == null) {
-            c = new LinkedList<Reference<?>>();
+            c = new LinkedList<>();
             cache.put(category, c);
         }
         @SuppressWarnings({"unchecked", "rawtypes"})
@@ -107,7 +106,7 @@ public class FactoryCreator extends FactoryRegistry {
 
     /** Caches the specified factory under the specified category. */
     private <T> void cache(final Class<T> category, final T factory) {
-        getCachedFactories(category).add(new WeakReference<T>(factory));
+        getCachedFactories(category).add(new WeakReference<>(factory));
     }
 
     /**

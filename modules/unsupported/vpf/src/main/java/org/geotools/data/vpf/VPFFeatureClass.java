@@ -50,11 +50,14 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
@@ -72,7 +75,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     private SimpleFeatureType featureType;
 
     /** The columns that are part of this feature class */
-    private final List<VPFColumn> columns = new Vector<VPFColumn>();
+    private final List<VPFColumn> columns = new Vector<>();
 
     private final Map<String, ColumnSet> columnSet = new LinkedHashMap<>();
     private final Map<String, TableRelation> relations = new LinkedHashMap<>();
@@ -103,7 +106,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
     private boolean enableFeatureCache = true;
 
-    private final List<SimpleFeature> featureCache = new ArrayList<SimpleFeature>();
+    private final List<SimpleFeature> featureCache = new ArrayList<>();
 
     private int cacheRow = 0;
 
@@ -534,7 +537,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
         Geometry geometry = null;
 
-        List<Object> vlist = new ArrayList<Object>();
+        List<Object> vlist = new ArrayList<>();
 
         // List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
 
@@ -656,8 +659,8 @@ public class VPFFeatureClass implements SimpleFeatureType {
     public synchronized List<VPFFile> getFileList() {
         // return fileList;
 
-        List<ColumnSet> csets = new ArrayList<ColumnSet>(columnSet.values());
-        List<VPFFile> fileList = new ArrayList<VPFFile>();
+        List<ColumnSet> csets = new ArrayList<>(columnSet.values());
+        List<VPFFile> fileList = new ArrayList<>();
         for (int i = 0; i < csets.size(); i++) {
             ColumnSet cs = csets.get(i);
             fileList.add(cs.table);
@@ -719,7 +722,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return featureType.getDescriptor(index);
     }
 
-    public List getAttributeDescriptors() {
+    public List<AttributeDescriptor> getAttributeDescriptors() {
         return featureType.getAttributeDescriptors();
     }
 
@@ -735,7 +738,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return featureType.getType(index);
     }
 
-    public List getTypes() {
+    public List<AttributeType> getTypes() {
         return featureType.getTypes();
     }
 
@@ -747,11 +750,11 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return featureType.getGeometryDescriptor();
     }
 
-    public Class getBinding() {
+    public Class<Collection<Property>> getBinding() {
         return featureType.getBinding();
     }
 
-    public Collection getDescriptors() {
+    public Collection<PropertyDescriptor> getDescriptors() {
         return featureType.getDescriptors();
     }
 

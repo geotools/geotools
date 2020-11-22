@@ -16,7 +16,7 @@
  */
 package org.geotools.image;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;

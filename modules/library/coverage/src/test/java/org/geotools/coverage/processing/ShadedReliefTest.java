@@ -16,13 +16,15 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import it.geosolutions.jaiext.shadedrelief.ShadedReliefAlgorithm;
 import java.awt.image.RenderedImage;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterNotFoundException;

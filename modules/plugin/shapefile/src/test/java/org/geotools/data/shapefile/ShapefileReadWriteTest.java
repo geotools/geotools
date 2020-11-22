@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -185,7 +185,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
 
         ShapefileDataStore shapefile;
         String typeName;
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, tmp.toURI().toURL());
         params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, memorymapped);
         shapefile = (ShapefileDataStore) maker.createDataStore(params);

@@ -40,7 +40,7 @@ public class PropertyDescriptorImpl implements PropertyDescriptor {
         this.minOccurs = min;
         this.maxOccurs = max;
         this.isNillable = isNillable;
-        userData = new HashMap();
+        userData = new HashMap<>();
 
         if (type == null) {
             throw new NullPointerException("type");

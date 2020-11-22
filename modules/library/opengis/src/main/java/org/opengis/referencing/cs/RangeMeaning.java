@@ -9,8 +9,8 @@
  */
 package org.opengis.referencing.cs;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19111;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public final class RangeMeaning extends CodeList<RangeMeaning> {
     private static final long serialVersionUID = -3525560558294789416L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<RangeMeaning> VALUES = new ArrayList<RangeMeaning>(2);
+    private static final List<RangeMeaning> VALUES = new ArrayList<>(2);
 
     /**
      * Any value between and including {@linkplain CoordinateSystemAxis#getMinimumValue minimum

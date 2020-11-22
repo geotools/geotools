@@ -1,6 +1,6 @@
 package org.geotools.wcs.v1_1;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +14,9 @@ public class GetCapabilitiesTest {
     @Test
     public void testParseCapabilitiesRequest() throws Exception {
         String capRequestPath = "requestGetCapabilities.xml";
+        @SuppressWarnings("unchecked")
         HashMap<String, Object> caps =
-                (HashMap<String, Object>)
-                        parser.parse(getClass().getResourceAsStream(capRequestPath));
+                (HashMap) parser.parse(getClass().getResourceAsStream(capRequestPath));
         assertEquals("WCS", caps.get("service"));
 
         List versions = (List) ((HashMap) caps.get("AcceptVersions")).get("Version");

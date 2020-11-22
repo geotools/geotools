@@ -18,7 +18,6 @@ package org.geotools.feature.type;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -51,7 +50,7 @@ public class ProfileImpl implements Schema {
     private Set<Name> profile;
 
     /** Profile contents (created in a lazy fashion). */
-    private Map contents = null;
+    private Map<Name, AttributeType> contents = null;
 
     /** Subset parent schema with profile keys. */
     public ProfileImpl(Schema parent, Set<Name> profile) {
@@ -70,7 +69,7 @@ public class ProfileImpl implements Schema {
 
     public Schema profile(Set<Name> profile) {
         if (!this.profile.containsAll(profile)) {
-            Set<Name> set = new TreeSet<Name>(profile);
+            Set<Name> set = new TreeSet<>(profile);
             set.removeAll(this.profile);
             throw new IllegalArgumentException("Unable to profile the following names: " + set);
         }
@@ -132,9 +131,8 @@ public class ProfileImpl implements Schema {
 
     private synchronized Map<Name, AttributeType> contents() {
         if (contents == null) {
-            contents = new LinkedHashMap();
-            for (Iterator i = profile.iterator(); i.hasNext(); ) {
-                Object key = i.next();
+            contents = new LinkedHashMap<>();
+            for (Name key : profile) {
                 contents.put(key, parent.get(key));
             }
         }

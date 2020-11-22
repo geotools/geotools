@@ -64,7 +64,7 @@ public class CustomGlyphRenderer implements GlyphRenderer {
     }
 
     public List getFormats() {
-        Vector ret = new Vector();
+        Vector<String> ret = new Vector<>();
         ret.add("image/hack");
         return ret;
     }

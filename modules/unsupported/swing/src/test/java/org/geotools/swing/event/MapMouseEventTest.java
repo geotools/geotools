@@ -16,7 +16,7 @@
  */
 package org.geotools.swing.event;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;

@@ -16,7 +16,7 @@
  */
 package org.geotools.data.mysql;
 
-import static org.geotools.data.mysql.MySQLDataStoreFactory.*;
+import static org.geotools.data.mysql.MySQLDataStoreFactory.STORAGE_ENGINE;
 
 import java.util.Map;
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
@@ -26,6 +26,8 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  *
  * @author Christian Mueller
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class MySQLJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 
     public MySQLJNDIDataStoreFactory() {

@@ -47,7 +47,7 @@ public interface GetFeatureInfoRequest extends Request {
      *
      * @param layers A Set of type Layer, each to be queried
      */
-    public void setQueryLayers(Set layers);
+    public void setQueryLayers(Set<Layer> layers);
 
     /**
      * Add a Layer to the set of layers to be queried in the request. This Layer must have queryable

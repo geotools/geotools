@@ -58,7 +58,7 @@ public class H2ClobConverterFactory implements ConverterFactory {
                     sb.append(cbuf, 0, read);
                 }
 
-                return (T) sb.toString();
+                return target.cast(sb.toString());
             } finally {
                 if (r != null) r.close();
             }

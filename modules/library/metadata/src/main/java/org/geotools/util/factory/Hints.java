@@ -16,7 +16,7 @@
  */
 package org.geotools.util.factory;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -72,8 +72,7 @@ import org.xml.sax.EntityResolver;
  */
 public class Hints extends RenderingHints {
     /** A set of system-wide hints to use by default. */
-    private static volatile Map<RenderingHints.Key, Object> GLOBAL =
-            new ConcurrentHashMap<RenderingHints.Key, Object>();
+    private static volatile Map<RenderingHints.Key, Object> GLOBAL = new ConcurrentHashMap<>();
 
     /** {@code true} if {@link #scanSystemProperties} needs to be invoked. */
     private static AtomicBoolean needScan = new AtomicBoolean(true);
@@ -1132,7 +1131,7 @@ public class Hints extends RenderingHints {
             if (!(key instanceof RenderingHints.Key)) {
                 if (filtered == hints) {
                     // Copies the map only if needed.
-                    filtered = new HashMap<RenderingHints.Key, Object>(filtered);
+                    filtered = new HashMap<>(filtered);
                 }
                 filtered.remove(key);
             }
@@ -1177,8 +1176,7 @@ public class Hints extends RenderingHints {
      */
     private static boolean ensureSystemDefaultLoaded() {
         if (needScan.get()) {
-            Map<RenderingHints.Key, Object> newGlobal =
-                    new ConcurrentHashMap<RenderingHints.Key, Object>(GLOBAL);
+            Map<RenderingHints.Key, Object> newGlobal = new ConcurrentHashMap<>(GLOBAL);
             boolean modified = GeoTools.scanForSystemHints(newGlobal);
             GLOBAL = newGlobal;
             needScan.set(false);
@@ -1222,7 +1220,7 @@ public class Hints extends RenderingHints {
      * every other entry that might have keys of different nature
      */
     private static Map<java.awt.RenderingHints.Key, Object> toMap(RenderingHints hints) {
-        Map<RenderingHints.Key, Object> result = new HashMap<RenderingHints.Key, Object>();
+        Map<RenderingHints.Key, Object> result = new HashMap<>();
         for (Map.Entry<Object, Object> entry : hints.entrySet()) {
             if (entry.getKey() instanceof RenderingHints.Key) {
                 result.put((java.awt.RenderingHints.Key) entry.getKey(), entry.getValue());
@@ -1791,7 +1789,7 @@ public class Hints extends RenderingHints {
          */
         public OptionKey(final String... alternatives) {
             super(String.class);
-            final Set<String> options = new TreeSet<String>(Arrays.asList(alternatives));
+            final Set<String> options = new TreeSet<>(Arrays.asList(alternatives));
             this.wildcard = options.remove("*");
             this.options = Collections.unmodifiableSet(options);
         }
@@ -1853,8 +1851,7 @@ public class Hints extends RenderingHints {
      * @author Sampo Savolainen
      */
     public static final class ConfigurationMetadataKey extends Key {
-        private static Map<String, ConfigurationMetadataKey> map =
-                new HashMap<String, Hints.ConfigurationMetadataKey>();
+        private static Map<String, ConfigurationMetadataKey> map = new HashMap<>();
 
         /** The constructor is private to avoid multiple instances sharing the same key. */
         private ConfigurationMetadataKey(String key) {

@@ -17,7 +17,7 @@
 
 package org.geotools.swing.tool;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -60,6 +60,7 @@ public abstract class CursorToolTestBase extends GraphicsTestBase {
     protected WaitingMapPaneListener listener;
 
     @Before
+    @SuppressWarnings("unchecked")
     public void setupPaneAndTool() throws Exception {
         mapContent = new MockMapContent();
         mapContent.addLayer(getTestLayer());

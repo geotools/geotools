@@ -104,8 +104,7 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @return Set of available geometry factory implementations.
      */
     public static synchronized Set<GeometryFactory> getGeometryFactories() {
-        return new LazySet<GeometryFactory>(
-                getServiceRegistry().getFactories(GeometryFactory.class, null, null));
+        return new LazySet<>(getServiceRegistry().getFactories(GeometryFactory.class, null, null));
     }
 
     /**
@@ -131,8 +130,7 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @return Set of available precision model implementations.
      */
     public static synchronized Set<PrecisionModel> getPrecisionModels() {
-        return new LazySet<PrecisionModel>(
-                getServiceRegistry().getFactories(PrecisionModel.class, null, null));
+        return new LazySet<>(getServiceRegistry().getFactories(PrecisionModel.class, null, null));
     }
 
     /**
@@ -163,7 +161,7 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @return Set of available coordinate sequence factory implementations.
      */
     public static synchronized Set<CoordinateSequenceFactory> getCoordinateSequenceFactories() {
-        return new LazySet<CoordinateSequenceFactory>(
+        return new LazySet<>(
                 getServiceRegistry().getFactories(CoordinateSequenceFactory.class, null, null));
     }
 
@@ -224,8 +222,8 @@ public class JTSFactoryFinder extends FactoryFinder {
          * @param hints The user requirements.
          * @return {@code true} if the {@code provider} meets the user requirements.
          */
-        protected boolean isAcceptable(
-                final Object provider, final Class category, final Hints hints) {
+        protected <T> boolean isAcceptable(
+                final T provider, final Class<T> category, final Hints hints) {
             if (GeometryFactory.class.isAssignableFrom(category)) {
                 final GeometryFactory factory = (GeometryFactory) provider;
                 final CoordinateSequenceFactory sequence = factory.getCoordinateSequenceFactory();
@@ -278,7 +276,8 @@ public class JTSFactoryFinder extends FactoryFinder {
              * accepts instances of this class or any subclasses.
              */
             if (actual != null && requested instanceof Class) {
-                return ((Class) requested).isAssignableFrom(actual.getClass());
+                Class<?> cast = (Class<?>) requested;
+                return cast.isAssignableFrom(actual.getClass());
             }
             return false;
         }

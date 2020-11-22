@@ -122,7 +122,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    */
     public EList<WGS84BoundingBoxType> getWGS84BoundingBox() {
     if (wGS84BoundingBox == null) {
-      wGS84BoundingBox = new EObjectContainmentEList<WGS84BoundingBoxType>(WGS84BoundingBoxType.class, this, Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__WGS84_BOUNDING_BOX);
+      wGS84BoundingBox = new EObjectContainmentEList<>(WGS84BoundingBoxType.class, this, Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__WGS84_BOUNDING_BOX);
     }
     return wGS84BoundingBox;
   }
@@ -219,7 +219,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    */
     public EList<DatasetDescriptionSummaryBaseType> getDatasetDescriptionSummary() {
     if (datasetDescriptionSummary == null) {
-      datasetDescriptionSummary = new EObjectContainmentEList<DatasetDescriptionSummaryBaseType>(DatasetDescriptionSummaryBaseType.class, this, Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY);
+      datasetDescriptionSummary = new EObjectContainmentEList<>(DatasetDescriptionSummaryBaseType.class, this, Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY);
     }
     return datasetDescriptionSummary;
   }

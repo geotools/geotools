@@ -79,6 +79,7 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     private Object calculateNumerical(List[] bin, Comparable globalMin, Comparable globalMax) {
         if (globalMax.equals(globalMin)) {
             return new RangedClassifier(new Comparable[] {globalMin}, new Comparable[] {globalMax});
@@ -143,6 +144,7 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
         return new RangedClassifier(localMin, localMax);
     }
 
+    @SuppressWarnings("unchecked")
     private Object calculateNonNumerical(List[] bin, Comparable globalMin, Comparable globalMax) {
         if (globalMax.equals(globalMin)) {
             return new ExplicitClassifier(new Set[] {Collections.singleton(globalMin)});

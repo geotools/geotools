@@ -60,7 +60,7 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
         super.setUp();
 
         // nested feature type
-        ArrayList<PropertyDescriptor> childSchema = new ArrayList<PropertyDescriptor>();
+        ArrayList<PropertyDescriptor> childSchema = new ArrayList<>();
         Name attOne = new NameImpl("ns", "att1");
         AttributeDescriptor attOneDescriptor =
                 new AttributeDescriptorImpl(FakeTypes.STRING_TYPE, attOne, 0, -1, false, null);
@@ -76,7 +76,7 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
                         null);
 
         // parent feature type
-        ArrayList<PropertyDescriptor> parentSchema = new ArrayList<PropertyDescriptor>();
+        ArrayList<PropertyDescriptor> parentSchema = new ArrayList<>();
         parentSchema.add(attOneDescriptor);
         Name attTwo = new NameImpl("ns", "att2");
         AttributeDescriptor attTwoDescriptor =
@@ -101,7 +101,7 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
         Feature childFeature = builder.buildFeature("childFeature");
 
         builder = new ComplexFeatureBuilder(parentType);
-        ArrayList<Property> childFeatures = new ArrayList<Property>();
+        ArrayList<Property> childFeatures = new ArrayList<>();
         childFeatures.add(childFeature);
         builder.append(attTwo, new ComplexAttributeImpl(childFeatures, attTwoDescriptor, null));
         complexFeature = builder.buildFeature("parentFeature");

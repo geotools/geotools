@@ -12,12 +12,11 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>24-SNAPSHOT</version>
+    <version>25-SNAPSHOT</version>
   </parent>
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
-  <groupId>org.geotools</groupId>
   <artifactId>gt-mbstyle</artifactId>
   <packaging>jar</packaging>
   <name>MBStyle Extension</name>

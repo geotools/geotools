@@ -25,6 +25,7 @@ import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AssociationDescriptor;
@@ -91,19 +92,21 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
     }
 
     public ComplexAttribute createComplexAttribute(
-            Collection value, AttributeDescriptor descriptor, String id) {
+            Collection<Property> value, AttributeDescriptor descriptor, String id) {
         return new ComplexAttributeImpl(value, descriptor, id == null ? null : ff.gmlObjectId(id));
     }
 
-    public ComplexAttribute createComplexAttribute(Collection value, ComplexType type, String id) {
+    public ComplexAttribute createComplexAttribute(
+            Collection<Property> value, ComplexType type, String id) {
         return new ComplexAttributeImpl(value, type, id == null ? null : ff.gmlObjectId(id));
     }
 
-    public Feature createFeature(Collection value, AttributeDescriptor descriptor, String id) {
+    public Feature createFeature(
+            Collection<Property> value, AttributeDescriptor descriptor, String id) {
         return new FeatureImpl(value, descriptor, ff.featureId(id));
     }
 
-    public Feature createFeature(Collection value, FeatureType type, String id) {
+    public Feature createFeature(Collection<Property> value, FeatureType type, String id) {
         return new FeatureImpl(value, type, ff.featureId(id));
     }
 

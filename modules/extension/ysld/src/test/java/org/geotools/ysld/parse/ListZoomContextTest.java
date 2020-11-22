@@ -18,10 +18,10 @@
 package org.geotools.ysld.parse;
 
 import static org.geotools.ysld.TestUtils.rangeContains;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import org.junit.Test;

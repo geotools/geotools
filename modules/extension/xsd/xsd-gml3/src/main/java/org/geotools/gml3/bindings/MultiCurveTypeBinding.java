@@ -92,7 +92,7 @@ public class MultiCurveTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:curveMember"/&gt;
-        List curves = node.getChildValues(LineString.class);
+        List<LineString> curves = node.getChildValues(LineString.class);
 
         // &lt;element minOccurs="0" ref="gml:curveMembers"/&gt;
         if (node.hasChild(MultiLineString[].class)) {
@@ -101,7 +101,7 @@ public class MultiCurveTypeBinding extends AbstractComplexBinding {
                     (MultiLineString[]) node.getChildValue(MultiLineString[].class);
             for (MultiLineString mline : lines) {
                 if (mline.getNumGeometries() == 1) {
-                    curves.add(mline.getGeometryN(0));
+                    curves.add((LineString) mline.getGeometryN(0));
                 } else {
                     // TODO: perhaps log this instead?
                     throw new IllegalArgumentException(

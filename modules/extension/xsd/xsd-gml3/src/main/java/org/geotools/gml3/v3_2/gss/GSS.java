@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.gco.GCO;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.type.Schema;
 
 /**
@@ -41,7 +42,7 @@ public final class GSS extends GML.DelegatingXSD {
     /** private constructor */
     private GSS() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(GCO.getInstance());
         dependencies.add(GML.getInstance());
     }

@@ -54,14 +54,14 @@ public interface Node {
      * @return <code>true</code> if a child node exists with the class, otherwise <code>false</code>
      *     .
      */
-    boolean hasChild(Class clazz);
+    boolean hasChild(Class<?> clazz);
 
     /**
      * Returns all nodes corresponding child elements.
      *
      * @return A list containing objects of type Node.
      */
-    List getChildren();
+    List<Node> getChildren();
 
     /**
      * Returns all nodes corresponding child elements with the specified name. This method returns
@@ -70,7 +70,7 @@ public interface Node {
      * @param name The name of a child element.
      * @return A list containing objects of type Node.
      */
-    List getChildren(String name);
+    List<Node> getChildren(String name);
 
     /**
      * Returns all nodes corresponding to child elements with the parsed values
@@ -81,7 +81,7 @@ public interface Node {
      * @return A list containing objects of type Node, such that node#getValue()
      * is an instance of <code>clazz<code>, or an empty list.
      */
-    List getChildren(Class clazz);
+    List<Node> getChildren(Class<?> clazz);
 
     /**
      * Returns a node corresponding to a child element. This method returns the first such node it
@@ -104,7 +104,7 @@ public interface Node {
      *
      * @return The first node found, or null.
      */
-    Node getChild(Class clazz);
+    Node getChild(Class<?> clazz);
 
     /**
      * Helper method for access to child's parsed contents.
@@ -162,7 +162,7 @@ public interface Node {
      * @return the value of the child which is an instance of <code>clazz</code>, or <code>null
      *     </code> if no such child exists.
      */
-    Object getChildValue(Class clazz);
+    <T> T getChildValue(Class<T> clazz);
 
     /**
      * Helper method for access to child's parsed contents by class, returning a
@@ -177,7 +177,7 @@ public interface Node {
      * @return the value of the child which is an instance of <code>clazz</code>, or <code>
      *     defaultValue</code> if no such child exists.
      */
-    Object getChildValue(Class clazz, Object defaultValue);
+    <T> T getChildValue(Class<T> clazz, T defaultValue);
 
     /**
      * Helper method for access to the set of parse child values with the specified name.
@@ -197,7 +197,7 @@ public interface Node {
      * @return A list of child values which are instances of <code>class<code>,
      * or an empty list if no such values exist.
      */
-    List getChildValues(Class clazz);
+    <T> List<T> getChildValues(Class<T> clazz);
 
     /**
      * Determines if the node has an attribute with the specified name.
@@ -214,14 +214,14 @@ public interface Node {
      * @return <code>true</code> if an attribute exists with the class, otherwise <code>false</code>
      *     .
      */
-    boolean hasAttribute(Class clazz);
+    boolean hasAttribute(Class<?> clazz);
 
     /**
      * Returns all nodes corresponding to attributes.
      *
      * @return A list containing objects of type node.
      */
-    List getAttributes();
+    List<Node> getAttributes();
 
     /**
      * Returns all nodes corresponding to attributes which has a parsed values which are instances
@@ -231,7 +231,7 @@ public interface Node {
      * @return A list of attribute nodes whose parsed values are instances of <code>clazz</code>, or
      *     an empty list.
      */
-    List getAttributes(Class clazz);
+    List<Node> getAttributes(Class<?> clazz);
 
     /**
      * Returns the node corresonding to the attribute with the specified name. This method returns
@@ -251,7 +251,7 @@ public interface Node {
      * @return The attribute node whose parsed value is an instance of <code>clazz</code>, or <code>
      *     null</code> if no such node exists.
      */
-    Node getAttribute(Class clazz);
+    Node getAttribute(Class<?> clazz);
 
     /**
      * Helper method for access to the parsed value of the attribute with the specified name.
@@ -283,7 +283,7 @@ public interface Node {
      * @return the parsed value of the attribute matching the criteria, or <code>null</code> if no
      *     such attribute is found.
      */
-    Object getAttributeValue(Class clazz);
+    Object getAttributeValue(Class<?> clazz);
 
     /**
      * Helper method for access to the parsed value of the attribute whose parsed value is an
@@ -297,7 +297,7 @@ public interface Node {
      * @return the parsed value of the attribute matching the criteria, or <code>defaultValue</code>
      *     if no such attribute is found.
      */
-    Object getAttributeValue(Class clazz, Object defaultValue);
+    Object getAttributeValue(Class<?> clazz, Object defaultValue);
 
     /**
      * Helper method for access ot the parsed values of attribute nodes whose parsed values are
@@ -307,7 +307,7 @@ public interface Node {
      * @return The list of attribute values which are instances of <code>clazz</code>, or an empty
      *     list.
      */
-    List getAttributeValues(Class clazz);
+    List<Object> getAttributeValues(Class<?> clazz);
 
     /**
      * Returns the parent node for this node

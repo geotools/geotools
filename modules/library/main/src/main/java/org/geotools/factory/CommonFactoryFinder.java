@@ -118,8 +118,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<StyleFactory> getStyleFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<StyleFactory>(
-                getServiceRegistry().getFactories(StyleFactory.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(StyleFactory.class, null, hints));
     }
 
     /**
@@ -130,8 +129,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<Function> getFunctions(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<Function>(
-                getServiceRegistry().getFactories(Function.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(Function.class, null, hints));
     }
 
     /**
@@ -142,8 +140,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FunctionFactory> getFunctionFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<FunctionFactory>(
-                getServiceRegistry().getFactories(FunctionFactory.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(FunctionFactory.class, null, hints));
     }
 
     /**
@@ -155,7 +152,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FileDataStoreFactorySpi> getFileDataStoreFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<FileDataStoreFactorySpi>(
+        return new LazySet<>(
                 getServiceRegistry().getFactories(FileDataStoreFactorySpi.class, null, hints));
     }
 
@@ -262,8 +259,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FilterFactory> getFilterFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<FilterFactory>(
-                getServiceRegistry().getFactories(FilterFactory.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(FilterFactory.class, null, hints));
     }
 
     /**

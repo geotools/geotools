@@ -44,7 +44,7 @@ public final class SemanticType extends CodeList<SemanticType> {
     private static final long serialVersionUID = -7328502367911363577L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<SemanticType> VALUES = new ArrayList<SemanticType>(6);
+    private static final List<SemanticType> VALUES = new ArrayList<>(6);
 
     /** Semantic identifies a point geometry. */
     @XmlElement("generic:point")

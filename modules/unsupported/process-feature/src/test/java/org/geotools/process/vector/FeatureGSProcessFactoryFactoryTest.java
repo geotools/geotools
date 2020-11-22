@@ -17,7 +17,7 @@
  */
 package org.geotools.process.vector;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;

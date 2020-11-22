@@ -55,7 +55,7 @@ public class LapplyFunction extends FunctionExpressionImpl {
             return null;
         }
 
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         for (Object item : source) {
             result.add(getExpression(1).evaluate(item));
         }

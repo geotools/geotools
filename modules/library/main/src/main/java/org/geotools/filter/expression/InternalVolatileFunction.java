@@ -64,9 +64,4 @@ public abstract class InternalVolatileFunction extends FunctionImpl
 
     @Override
     public abstract Object evaluate(Object object);
-
-    @Override
-    public Object evaluate(Object object, @SuppressWarnings("rawtypes") Class context) {
-        return super.evaluate(object, context);
-    }
 }

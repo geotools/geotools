@@ -67,11 +67,11 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
         boolean isLeft = false;
         Coordinate previousCoordinate = null;
         Coordinate coordinate = null;
-        List coordinates = null;
+        List<Coordinate> coordinates = null;
         Polygon result = null;
         GeometryFactory geometryFactory = new GeometryFactory();
         LinearRing outerRing = null;
-        List innerRings = new Vector();
+        List<LinearRing> innerRings = new Vector<>();
 
         // Get face information
         // TODO: turn these column names into constants
@@ -118,7 +118,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
 
         while (faceFeature != null) {
             if (faceFeature.getAttribute("id").equals(Integer.valueOf(faceId))) {
-                coordinates = new LinkedList();
+                coordinates = new LinkedList<>();
 
                 int ringId = Integer.parseInt(faceFeature.getAttribute("ring_ptr").toString());
 
@@ -260,7 +260,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                     }
                 }
 
-                // The dorks at JTS insist that you explicitly close your rings. Ugh.
+                // Close ring
                 if (!coordinate.equals(coordinates.get(0))) {
                     coordinates.add(coordinates.get(0));
                 }

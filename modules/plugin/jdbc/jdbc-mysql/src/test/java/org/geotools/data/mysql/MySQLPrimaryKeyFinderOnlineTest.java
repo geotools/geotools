@@ -16,7 +16,7 @@
  */
 package org.geotools.data.mysql;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
@@ -34,8 +34,8 @@ public class MySQLPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineT
     }
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
-        HashMap params = super.createDataStoreFactoryParams();
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         params.put(JDBCDataStoreFactory.PK_METADATA_TABLE.key, "gt_pk_metadata");
         return params;
     }

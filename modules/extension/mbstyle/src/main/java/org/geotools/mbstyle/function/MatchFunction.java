@@ -71,7 +71,7 @@ import org.opengis.filter.expression.Expression;
  */
 class MatchFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("match");
+    public static final FunctionName NAME = new FunctionNameImpl("match");
 
     MatchFunction() {
         super(NAME);
@@ -112,7 +112,7 @@ class MatchFunction extends FunctionExpressionImpl {
                     return params.get(outputIndex).evaluate(feature);
                 } else if (JSONArray.class.isAssignableFrom(label.getClass())) {
                     // potential label is an array. Loop through the values tosee if we have a match
-                    final JSONArray jsonArray = JSONArray.class.cast(label);
+                    final JSONArray jsonArray = (JSONArray) label;
                     if (jsonArray.contains(inputType)) {
                         // found a match
                         return params.get(outputIndex).evaluate(feature);

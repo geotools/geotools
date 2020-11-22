@@ -9,8 +9,8 @@
  */
 package org.opengis.coverage;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.OGC_01004;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
     private static final long serialVersionUID = 6947933527594223350L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<ColorInterpretation> VALUES = new ArrayList<ColorInterpretation>(14);
+    private static final List<ColorInterpretation> VALUES = new ArrayList<>(14);
 
     /** Band is not associated with a color model component. */
     @UML(identifier = "CV_Undefined", obligation = CONDITIONAL, specification = OGC_01004)

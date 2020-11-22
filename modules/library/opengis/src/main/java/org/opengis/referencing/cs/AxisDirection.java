@@ -9,8 +9,9 @@
  */
 package org.opengis.referencing.cs;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19111;
+import static org.opengis.annotation.Specification.OGC_01009;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public final class AxisDirection extends CodeList<AxisDirection> {
     private static final long serialVersionUID = -4405275475770755714L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<AxisDirection> VALUES = new ArrayList<AxisDirection>(32);
+    private static final List<AxisDirection> VALUES = new ArrayList<>(32);
 
     /** Unknown or unspecified axis orientation. */
     @UML(identifier = "CS_AxisOrientationEnum.CS_AO_Other", specification = OGC_01009)

@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
@@ -20,7 +19,7 @@ public class StringTemplateFunctionTest extends SEFunctionTestBase {
 
     @Before
     public void setup() {
-        parameters = new ArrayList<Expression>();
+        parameters = new ArrayList<>();
         fallback = ff2.literal("NOT_FOUND");
     }
 

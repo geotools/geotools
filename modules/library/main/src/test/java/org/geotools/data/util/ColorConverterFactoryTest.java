@@ -21,7 +21,7 @@ import static java.awt.Color.GREEN;
 import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
 
-import java.awt.*;
+import java.awt.Color;
 import junit.framework.TestCase;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Converter;

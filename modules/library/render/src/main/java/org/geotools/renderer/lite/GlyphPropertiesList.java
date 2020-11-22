@@ -24,14 +24,14 @@ import org.opengis.filter.expression.Expression;
 /** @author jfc173 */
 public class GlyphPropertiesList {
 
-    private Vector list = new Vector();
-    private Vector names = new Vector();
+    private Vector<GlyphProperty> list = new Vector<>();
+    private Vector<String> names = new Vector<>();
     private FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
 
     /** Creates a new instance of GlyphPropertiesList */
     public GlyphPropertiesList() {}
 
-    public void addProperty(String name, Class type, Object value) {
+    public void addProperty(String name, Class<?> type, Object value) {
         if (type.isAssignableFrom(value.getClass())) {
             list.add(new GlyphProperty(name, type, value));
             names.add(name);

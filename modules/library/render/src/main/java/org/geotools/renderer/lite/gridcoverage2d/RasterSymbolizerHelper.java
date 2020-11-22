@@ -145,7 +145,8 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // Apply opacity if needed
         // ///////////////////////////////////////////////////////////////////
         final RenderedImage finalImage;
-        Map properties = output.getProperties();
+        @SuppressWarnings("unchecked")
+        Map<String, Object> properties = output.getProperties();
         if (properties == null) {
             properties = new HashMap<>();
         }

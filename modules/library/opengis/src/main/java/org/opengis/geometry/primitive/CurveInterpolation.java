@@ -9,13 +9,13 @@
  */
 package org.opengis.geometry.primitive;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.opengis.annotation.UML;
-import org.opengis.geometry.DirectPosition; // For javadoc
+import org.opengis.geometry.DirectPosition;
 import org.opengis.util.CodeList;
 
 /**
@@ -34,7 +34,7 @@ public final class CurveInterpolation extends CodeList<CurveInterpolation> {
     private static final long serialVersionUID = 170309206092641598L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<CurveInterpolation> VALUES = new ArrayList<CurveInterpolation>(10);
+    private static final List<CurveInterpolation> VALUES = new ArrayList<>(10);
 
     /**
      * The interpolation mechanism shall return {@linkplain DirectPosition direct positions} on a

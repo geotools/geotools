@@ -29,6 +29,7 @@ import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
@@ -60,7 +61,7 @@ public class FunctionFinder {
      */
     public List<FunctionName> getAllFunctionDescriptions() {
         Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
-        List<FunctionName> allFunctionDescriptions = new ArrayList<FunctionName>();
+        List<FunctionName> allFunctionDescriptions = new ArrayList<>();
 
         for (FunctionFactory factory : functionFactories) {
             List<FunctionName> functionNames = factory.getFunctionNames();
@@ -124,8 +125,7 @@ public class FunctionFinder {
      * @return Generated function
      * @throws a RuntimeException if an implementation for name could not be found
      */
-    public Function findFunction(
-            String name, List<org.opengis.filter.expression.Expression> parameters) {
+    public Function findFunction(String name, List<Expression> parameters) {
         return findFunction(toName(name), parameters);
     }
 
@@ -148,8 +148,7 @@ public class FunctionFinder {
      * @return Generated function
      * @throws a RuntimeException if an implementation for name could not be found
      */
-    public Function findFunction(
-            Name name, List<org.opengis.filter.expression.Expression> parameters) {
+    public Function findFunction(Name name, List<Expression> parameters) {
         return findFunction(name, parameters, null);
     }
 
@@ -167,10 +166,7 @@ public class FunctionFinder {
      * @return Function for the provided name, may be a FallbackFunction if an implementation could
      *     not be found
      */
-    public Function findFunction(
-            String name,
-            List<org.opengis.filter.expression.Expression> parameters,
-            Literal fallback) {
+    public Function findFunction(String name, List<Expression> parameters, Literal fallback) {
         return findFunction(new NameImpl(name), parameters, fallback);
     }
 
@@ -188,10 +184,7 @@ public class FunctionFinder {
      * @return Function for the provided name, may be a FallbackFunction if an implementation could
      *     not be found
      */
-    public Function findFunction(
-            Name name,
-            List<org.opengis.filter.expression.Expression> parameters,
-            Literal fallback) {
+    public Function findFunction(Name name, List<Expression> parameters, Literal fallback) {
         // try name as is
         Function f = findFunctionInternal(name, parameters, fallback);
 
@@ -215,7 +208,7 @@ public class FunctionFinder {
         throw new RuntimeException("Unable to find function " + name);
     }
 
-    Function findFunctionInternal(Name name, List parameters, Literal fallback) {
+    Function findFunctionInternal(Name name, List<Expression> parameters, Literal fallback) {
         if (functionFactoryCache == null) {
             synchronized (this) {
                 if (functionFactoryCache == null) {
@@ -242,7 +235,7 @@ public class FunctionFinder {
 
     private HashMap<Name, FunctionFactory> lookupFunctions() {
         // get all filter functions via function factory
-        HashMap<Name, FunctionFactory> result = new HashMap<Name, FunctionFactory>();
+        HashMap<Name, FunctionFactory> result = new HashMap<>();
 
         Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
         for (FunctionFactory ff : functionFactories) {

@@ -66,7 +66,7 @@ public class JoinInfo {
             // hack on the join filter as necessary
             Filter joinFilter = j.getJoinFilter();
 
-            Map<String, String> mappings = new HashMap<String, String>();
+            Map<String, String> mappings = new HashMap<>();
             if (query.getAlias() != null) {
                 // rewrite any user specified alias with the one we specified
                 mappings.put(query.getAlias(), "a");
@@ -143,7 +143,7 @@ public class JoinInfo {
     String primaryAlias;
 
     /** parts of the join */
-    List<JoinPart> parts = new ArrayList();
+    List<JoinPart> parts = new ArrayList<>();
 
     /** the "joinified" filter of the main query */
     Filter filter;

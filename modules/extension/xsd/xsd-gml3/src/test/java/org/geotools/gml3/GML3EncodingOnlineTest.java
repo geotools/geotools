@@ -49,7 +49,7 @@ public class GML3EncodingOnlineTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("test", TEST.TestFeature.getNamespaceURI());
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }
@@ -129,7 +129,7 @@ public class GML3EncodingOnlineTest extends TestCase {
 
         Validator v = s.newValidator();
 
-        final ArrayList errors = new ArrayList();
+        final ArrayList<SAXParseException> errors = new ArrayList<>();
         DefaultHandler handler =
                 new DefaultHandler() {
                     public void error(SAXParseException e) throws SAXException {

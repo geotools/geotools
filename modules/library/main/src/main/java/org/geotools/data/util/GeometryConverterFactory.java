@@ -52,8 +52,8 @@ public class GeometryConverterFactory implements ConverterFactory {
             // String to Geometry
             if (String.class.equals(source)) {
                 return new Converter() {
-                    public Object convert(Object source, Class target) throws Exception {
-                        return new WKTReader2().read((String) source);
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
+                        return target.cast(new WKTReader2().read((String) source));
                     }
                 };
             }
@@ -61,19 +61,20 @@ public class GeometryConverterFactory implements ConverterFactory {
             // Envelope to Geometry
             if (Envelope.class.isAssignableFrom(source)) {
                 return new Converter() {
-                    public Object convert(Object source, Class target) throws Exception {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
                         Envelope e = (Envelope) source;
                         GeometryFactory factory = new GeometryFactory();
-                        return factory.createPolygon(
-                                factory.createLinearRing(
-                                        new Coordinate[] {
-                                            new Coordinate(e.getMinX(), e.getMinY()),
-                                            new Coordinate(e.getMaxX(), e.getMinY()),
-                                            new Coordinate(e.getMaxX(), e.getMaxY()),
-                                            new Coordinate(e.getMinX(), e.getMaxY()),
-                                            new Coordinate(e.getMinX(), e.getMinY())
-                                        }),
-                                null);
+                        return target.cast(
+                                factory.createPolygon(
+                                        factory.createLinearRing(
+                                                new Coordinate[] {
+                                                    new Coordinate(e.getMinX(), e.getMinY()),
+                                                    new Coordinate(e.getMaxX(), e.getMinY()),
+                                                    new Coordinate(e.getMaxX(), e.getMaxY()),
+                                                    new Coordinate(e.getMinX(), e.getMaxY()),
+                                                    new Coordinate(e.getMinX(), e.getMinY())
+                                                }),
+                                        null));
                     }
                 };
             }
@@ -83,14 +84,16 @@ public class GeometryConverterFactory implements ConverterFactory {
             // Geometry to envelope
             if (Envelope.class.equals(target)) {
                 return new Converter() {
-                    public Object convert(Object source, Class target) throws Exception {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
                         Geometry geometry = (Geometry) source;
                         Envelope envelope = geometry.getEnvelopeInternal();
                         if (geometry.getUserData() instanceof CoordinateReferenceSystem) {
-                            return new ReferencedEnvelope(
-                                    envelope, (CoordinateReferenceSystem) geometry.getUserData());
+                            envelope =
+                                    new ReferencedEnvelope(
+                                            envelope,
+                                            (CoordinateReferenceSystem) geometry.getUserData());
                         }
-                        return envelope;
+                        return target.cast(envelope);
                     }
                 };
             }
@@ -98,9 +101,9 @@ public class GeometryConverterFactory implements ConverterFactory {
             // Geometry to String
             if (String.class.equals(target)) {
                 return new Converter() {
-                    public Object convert(Object source, Class target) throws Exception {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
                         Geometry geometry = (Geometry) source;
-                        return geometry.toText();
+                        return target.cast(geometry.toText());
                     }
                 };
             }

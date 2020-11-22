@@ -152,7 +152,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      */
     public EList<ThemesType> getThemes() {
         if (themes == null) {
-            themes = new EObjectContainmentEList<ThemesType>(ThemesType.class, this, wmtsv_1Package.CAPABILITIES_TYPE__THEMES);
+            themes = new EObjectContainmentEList<>(ThemesType.class, this, wmtsv_1Package.CAPABILITIES_TYPE__THEMES);
         }
         return themes;
     }
@@ -164,7 +164,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      */
     public EList<OnlineResourceType> getWSDL() {
         if (wSDL == null) {
-            wSDL = new EObjectContainmentEList<OnlineResourceType>(OnlineResourceType.class, this, wmtsv_1Package.CAPABILITIES_TYPE__WSDL);
+            wSDL = new EObjectContainmentEList<>(OnlineResourceType.class, this, wmtsv_1Package.CAPABILITIES_TYPE__WSDL);
         }
         return wSDL;
     }
@@ -176,7 +176,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      */
     public EList<OnlineResourceType> getServiceMetadataURL() {
         if (serviceMetadataURL == null) {
-            serviceMetadataURL = new EObjectContainmentEList<OnlineResourceType>(OnlineResourceType.class, this, wmtsv_1Package.CAPABILITIES_TYPE__SERVICE_METADATA_URL);
+            serviceMetadataURL = new EObjectContainmentEList<>(OnlineResourceType.class, this, wmtsv_1Package.CAPABILITIES_TYPE__SERVICE_METADATA_URL);
         }
         return serviceMetadataURL;
     }

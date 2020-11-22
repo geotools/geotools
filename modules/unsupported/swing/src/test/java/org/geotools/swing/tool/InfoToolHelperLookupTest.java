@@ -17,7 +17,8 @@
 
 package org.geotools.swing.tool;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;

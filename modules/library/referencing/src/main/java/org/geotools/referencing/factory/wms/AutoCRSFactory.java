@@ -65,7 +65,7 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
      *
      * @todo Replace this with full FactorySPI system.
      */
-    private final Map<Integer, Factlet> factlets = new TreeMap<Integer, Factlet>();
+    private final Map<Integer, Factlet> factlets = new TreeMap<>();
 
     /** Constructs a default factory for the {@code AUTO} authority. */
     public AutoCRSFactory() {
@@ -129,16 +129,17 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
      * org.geotools.referencing.factory.AllAuthoritiesFactory#getAuthorityCodes all authorities
      * factory}.
      */
-    public Set getAuthorityCodes(final Class type) throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         if (type.isAssignableFrom(ProjectedCRS.class)) {
-            final Set set = new LinkedHashSet();
-            for (final Iterator it = factlets.keySet().iterator(); it.hasNext(); ) {
-                Integer code = (Integer) it.next();
+            final Set<String> set = new LinkedHashSet<>();
+            for (final Iterator<Integer> it = factlets.keySet().iterator(); it.hasNext(); ) {
+                Integer code = it.next();
                 set.add(String.valueOf(code));
             }
             return set;
         } else {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
     }
 

@@ -39,7 +39,7 @@ public final class WCSEO extends XSD {
     /** private constructor */
     private WCSEO() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(WCS.getInstance());
     }
 

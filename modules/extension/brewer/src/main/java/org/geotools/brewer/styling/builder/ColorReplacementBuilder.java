@@ -24,7 +24,7 @@ import org.opengis.filter.expression.Expression;
 public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplacement> {
     private Expression propertyName;
 
-    private List<Expression> mapping = new ArrayList<Expression>();
+    private List<Expression> mapping = new ArrayList<>();
 
     public ColorReplacementBuilder() {
         this(null);

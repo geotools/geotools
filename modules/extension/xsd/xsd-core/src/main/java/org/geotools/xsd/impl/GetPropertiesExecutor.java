@@ -36,15 +36,15 @@ public class GetPropertiesExecutor implements BindingWalker.Visitor {
     XSDElementDeclaration element;
 
     /** the properties */
-    List properties;
+    List<Object[]> properties;
 
     public GetPropertiesExecutor(Object parent, XSDElementDeclaration element) {
         this.parent = parent;
         this.element = element;
-        properties = new ArrayList();
+        properties = new ArrayList<>();
     }
 
-    public List getProperties() {
+    public List<Object[]> getProperties() {
         return properties;
     }
 
@@ -53,7 +53,7 @@ public class GetPropertiesExecutor implements BindingWalker.Visitor {
             ComplexBinding complex = (ComplexBinding) binding;
 
             try {
-                List properties = complex.getProperties(parent, element);
+                List<Object[]> properties = complex.getProperties(parent, element);
                 if (properties != null) {
                     this.properties.addAll(properties);
                 }

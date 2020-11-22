@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.citation;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public final class Role extends CodeList<Role> {
     private static final long serialVersionUID = -7763516018565534103L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<Role> VALUES = new ArrayList<Role>(11);
+    private static final List<Role> VALUES = new ArrayList<>(11);
 
     /** Party that supplies the resource. */
     @UML(identifier = "resourceProvider", obligation = CONDITIONAL, specification = ISO_19115)

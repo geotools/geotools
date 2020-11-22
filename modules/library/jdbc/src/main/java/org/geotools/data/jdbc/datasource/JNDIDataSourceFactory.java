@@ -50,15 +50,15 @@ public class JNDIDataSourceFactory extends AbstractDataSourceFactorySpi {
 
     private static final Param[] PARAMS = new Param[] {DSTYPE, JNDI_REFNAME};
 
-    public DataSource createDataSource(Map params) throws IOException {
+    public DataSource createDataSource(Map<String, ?> params) throws IOException {
         return createNewDataSource(params);
     }
 
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
         return super.canProcess(params) && "JNDI".equals(params.get("dstype"));
     }
 
-    public DataSource createNewDataSource(Map params) throws IOException {
+    public DataSource createNewDataSource(Map<String, ?> params) throws IOException {
         String refName = (String) JNDI_REFNAME.lookUp(params);
         try {
             return (DataSource)

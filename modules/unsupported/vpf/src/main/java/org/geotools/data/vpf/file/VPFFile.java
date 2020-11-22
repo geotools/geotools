@@ -99,7 +99,7 @@ public class VPFFile {
      */
     private char byteOrder = LEAST_SIGNIF_FIRST;
     /** The columns of the file. This list shall contain objects of type <code>VPFColumn</code> */
-    private final List<VPFColumn> columns = new Vector<VPFColumn>();
+    private final List<VPFColumn> columns = new Vector<>();
 
     /**
      * Variable <code>description</code> keeps value of text description of the table's contents.
@@ -439,7 +439,7 @@ public class VPFFile {
      * @exception IOException if an error occurs
      */
     public synchronized AbstractList<SimpleFeature> readAllRows() throws IOException {
-        AbstractList<SimpleFeature> list = new LinkedList<SimpleFeature>();
+        AbstractList<SimpleFeature> list = new LinkedList<>();
 
         try {
             setPosition(1);

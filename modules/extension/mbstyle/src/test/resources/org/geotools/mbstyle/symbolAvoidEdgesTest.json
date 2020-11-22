@@ -38,8 +38,8 @@
         "text-justify": "left",
         "visibility": "visible",
         "text-offset": [
-          00,
-          00
+          0,
+          0
         ],
         "text-anchor": "CENTER",
         "text-pitch-alignment": "viewport",

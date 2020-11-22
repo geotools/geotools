@@ -232,7 +232,7 @@ class NetCDFRequest extends CoverageReadRequest {
                     && NetCDFUtilities.getParameterBehaviour(NetCDFUtilities.ELEVATION_DIM)
                             == ParameterBehaviour.DO_NOTHING) {
                 if (verticalExtent != null) {
-                    verticalSubset = new HashSet<NumberRange<Double>>(verticalExtent);
+                    verticalSubset = new HashSet<>(verticalExtent);
                 }
                 request.setVerticalSubset(verticalSubset);
             } else {
@@ -256,7 +256,7 @@ class NetCDFRequest extends CoverageReadRequest {
                             minimumDistance = distance;
                         }
                     }
-                    verticalSubset = new HashSet<NumberRange<Double>>(1);
+                    verticalSubset = new HashSet<>(1);
                     verticalSubset.add(nearestEnvelope);
                     request.setVerticalSubset(verticalSubset);
                 }

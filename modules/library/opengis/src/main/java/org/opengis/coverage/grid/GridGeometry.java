@@ -9,8 +9,8 @@
  */
 package org.opengis.coverage.grid;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Specification.OGC_01004;
 
 import org.opengis.annotation.UML;
 import org.opengis.referencing.datum.PixelInCell;

@@ -16,9 +16,11 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link DefaultObjectCache} with simple tests.
@@ -34,7 +36,7 @@ public final class DefaultObjectCacheTest {
         String value1 = new String("value 1");
         String value2 = new String("value 2");
 
-        ObjectCache cache = new DefaultObjectCache();
+        ObjectCache<Integer, String> cache = new DefaultObjectCache<>();
         assertNotNull(cache);
         assertEquals(null, cache.get(key1));
 
@@ -58,7 +60,7 @@ public final class DefaultObjectCacheTest {
         String value1 = new String("value 1");
         String value2 = new String("value 2");
 
-        ObjectCache cache = new DefaultObjectCache();
+        ObjectCache<Integer, String> cache = new DefaultObjectCache<>();
         assertNotNull(cache);
         assertEquals(null, cache.get(key1));
         assertEquals(1, cache.getKeys().size());

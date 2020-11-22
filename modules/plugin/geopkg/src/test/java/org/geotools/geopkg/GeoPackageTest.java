@@ -22,7 +22,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -57,9 +59,11 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.Geometries;
@@ -67,6 +71,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.mosaic.GeoPackageFormat;
 import org.geotools.geopkg.mosaic.GeoPackageReader;
 import org.geotools.image.test.ImageAssert;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
@@ -88,6 +93,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.identity.Identifier;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.sqlite.SQLiteConfig;
@@ -466,6 +472,63 @@ public class GeoPackageTest {
     }
 
     @Test
+    public void testDoubleFloatPrecision() throws Exception {
+        double pi = 3.1415926535897932;
+        SimpleFeatureType featureType =
+                createFeatureTypeWithAttribute("double-pi", "pie", Double.class);
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
+        SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, pi);
+        SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, collection);
+
+        FeatureEntry readFeature = geopkg.features().get(0);
+        try (SimpleFeatureReader reader = geopkg.reader(readFeature, null, null)) {
+            Object attribute = reader.next().getAttribute("pie");
+            assertTrue(attribute instanceof Double);
+            Double readValue = (Double) attribute;
+            assertEquals(pi, readValue, 1e-10);
+        }
+    }
+
+    @Test
+    public void testSingleFloatPrecision() throws Exception {
+        float pi = 3.14159265f;
+        SimpleFeatureType featureType =
+                createFeatureTypeWithAttribute("single-pi", "pie", Float.class);
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
+        SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, pi);
+        SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, collection);
+
+        FeatureEntry readFeature = geopkg.features().get(0);
+        try (SimpleFeatureReader reader = geopkg.reader(readFeature, null, null)) {
+            Object attribute = reader.next().getAttribute("pie");
+            assertTrue(attribute instanceof Double);
+            Double attributeValue = (Double) attribute;
+            assertEquals(pi, attributeValue, 1e-5);
+        }
+    }
+
+    private SimpleFeatureType createFeatureTypeWithAttribute(
+            String featureName, String attributeName, Class<?> attributeClazz) {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(featureName);
+        builder.setCRS(DefaultGeographicCRS.WGS84);
+        builder.add("the_geom", LineString.class);
+        builder.add(attributeName, attributeClazz);
+        return builder.buildFeatureType();
+    }
+
+    private SimpleFeature createSimpleFeatureWithValue(
+            SimpleFeatureBuilder featureBuilder, Object value) {
+        featureBuilder.add(createGeometry());
+        featureBuilder.add(value);
+        return featureBuilder.buildFeature(null);
+    }
+
+    @Test
     public void testFunctionsNoEnvelope() throws Exception {
         ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
         SimpleFeatureReader re = Features.simple(shp.getFeatureReader());
@@ -586,7 +649,8 @@ public class GeoPackageTest {
 
         assertTrue(geopkg.hasSpatialIndex(entry));
 
-        Set ids = geopkg.searchSpatialIndex(entry, 590230.0, 4915038.0, 590234.0, 4915040.0);
+        Set<Identifier> ids =
+                geopkg.searchSpatialIndex(entry, 590230.0, 4915038.0, 590234.0, 4915040.0);
         try (SimpleFeatureReader sfr = geopkg.reader(entry, ff.id(ids), null)) {
             assertTrue(sfr.hasNext());
             assertEquals("bugsites.1", sfr.next().getID().toString());
@@ -654,7 +718,7 @@ public class GeoPackageTest {
         geopkg.create(e);
         assertTileEntry(e);
 
-        List<Tile> tiles = new ArrayList();
+        List<Tile> tiles = new ArrayList<>();
         tiles.add(new Tile(0, 0, 0, new byte[] {0}));
         tiles.add(new Tile(1, 0, 0, new byte[] {1}));
         tiles.add(new Tile(1, 0, 1, new byte[] {2}));
@@ -756,7 +820,7 @@ public class GeoPackageTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(1536, 768)),
                         new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true)));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         BufferedImage img = ((PlanarImage) gc.getRenderedImage()).getAsBufferedImage();
 
@@ -958,5 +1022,128 @@ public class GeoPackageTest {
         FileUtils.copyURLToFile(TestData.url(this, "Pk50095.png"), new File(d, "Pk50095.png"));
         FileUtils.copyURLToFile(TestData.url(this, "Pk50095.pgw"), new File(d, "Pk50095.pgw"));
         return URLs.fileToUrl(new File(d, "Pk50095.png"));
+    }
+
+    @Test
+    public void testIntegerTypes() throws Exception {
+        // all types work in creation
+        String typeName = "numericTypes";
+        final SimpleFeatureType numericType =
+                DataUtilities.createType(
+                        typeName,
+                        "n_byte:java.lang.Byte,n_short:java.lang.Short,n_int:java.lang.Integer,n_long:java.lang.Long");
+        JDBCDataStore store = geopkg.dataStore();
+        store.createSchema(numericType);
+        SimpleFeatureType createdType = store.getSchema(typeName);
+        assertTrue(FeatureTypes.equals(numericType, createdType));
+
+        // write it out, each number at the limits of its range
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(numericType);
+        fb.add(Byte.MAX_VALUE);
+        fb.add(Short.MAX_VALUE);
+        fb.add(Integer.MAX_VALUE);
+        fb.add(Long.MAX_VALUE);
+        SimpleFeature feature = fb.buildFeature(null);
+        SimpleFeatureCollection collection = DataUtilities.collection(feature);
+        SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource(typeName);
+        fs.addFeatures(collection);
+
+        // read it back
+        SimpleFeature read = DataUtilities.first(fs.getFeatures());
+        assertEquals(Byte.MAX_VALUE, read.getAttribute("n_byte"));
+        assertEquals(Short.MAX_VALUE, read.getAttribute("n_short"));
+        assertEquals(Integer.MAX_VALUE, read.getAttribute("n_int"));
+        assertEquals(Long.MAX_VALUE, read.getAttribute("n_long"));
+    }
+
+    @Test
+    public void testMetadata() throws Exception {
+        // create a geopacakge from a shapefile
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, shp.getFeatureSource(), null);
+        assertTableExists("bugsites");
+
+        // grab the metadata extension, check it's initially empty
+        GeoPkgMetadataExtension ext = geopkg.getExtension(GeoPkgMetadataExtension.class);
+        assertEquals(Collections.emptyList(), ext.getMetadatas());
+
+        // add metadata
+        GeoPkgMetadata metadata =
+                new GeoPkgMetadata(
+                        GeoPkgMetadata.Scope.Dataset,
+                        "http://geotools.org/geopackage",
+                        "application/json",
+                        "{ \"metadata\" : \"on\"");
+        ext.addMetadata(metadata);
+        assertNotNull(metadata.getId());
+
+        // fetch it
+        List<GeoPkgMetadata> metadatas = ext.getMetadatas();
+        assertEquals(1, metadatas.size());
+        GeoPkgMetadata readMetadata = metadatas.get(0);
+        assertEquals(metadata, readMetadata);
+
+        // update it
+        metadata.setMetadata("{ \"metadata\" : \"updated\"");
+        ext.updateMetadata(metadata);
+        GeoPkgMetadata updatedMetadata = ext.getMetadatas().get(0);
+        assertEquals(metadata, updatedMetadata);
+
+        // clean up
+        ext.removeMetadata(metadata);
+        assertEquals(0, ext.getMetadatas().size());
+    }
+
+    @Test
+    public void testMetadataReferences() throws Exception {
+        // create a geopacakge from a shapefile
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, shp.getFeatureSource(), null);
+        assertTableExists("bugsites");
+
+        // grab the metadata extension and add a couple of metadata entries
+        GeoPkgMetadataExtension ext = geopkg.getExtension(GeoPkgMetadataExtension.class);
+        GeoPkgMetadata metadata =
+                new GeoPkgMetadata(
+                        GeoPkgMetadata.Scope.Dataset,
+                        "http://geotools.org/geopackage",
+                        "application/json",
+                        "{ \"metadata\" : \"on\"");
+        ext.addMetadata(metadata);
+        GeoPkgMetadata parentMetadata =
+                new GeoPkgMetadata(
+                        GeoPkgMetadata.Scope.Dataset,
+                        "http://geotools.org/geopackage",
+                        "application/json",
+                        "{ \"metadata\" : \"theBoss\"");
+        ext.addMetadata(parentMetadata);
+
+        // create references
+        GeoPkgMetadataReference reference =
+                new GeoPkgMetadataReference(
+                        GeoPkgMetadataReference.Scope.Table,
+                        "bugsites",
+                        null,
+                        null,
+                        new Date(),
+                        metadata,
+                        parentMetadata);
+        ext.addReference(reference);
+        List<GeoPkgMetadataReference> references = ext.getReferences(metadata);
+        assertEquals(1, references.size());
+        GeoPkgMetadataReference readReference = references.get(0);
+        assertEquals(reference, readReference);
+
+        // update references
+        reference.setColumn("cat");
+        ext.updateReference(reference);
+        GeoPkgMetadataReference updatedReference = ext.getReferences(metadata).get(0);
+        assertEquals(reference, updatedReference);
+
+        // clean up
+        ext.removeReference(reference);
+        assertEquals(0, ext.getReferences(metadata).size());
     }
 }

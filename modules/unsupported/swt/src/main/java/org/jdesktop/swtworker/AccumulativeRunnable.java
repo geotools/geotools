@@ -98,7 +98,7 @@ abstract class AccumulativeRunnable<T> implements Runnable {
         boolean isSubmitted = true;
         if (arguments == null) {
             isSubmitted = false;
-            arguments = new ArrayList<T>();
+            arguments = new ArrayList<>();
         }
         if (isPrepend) {
             arguments.addAll(0, Arrays.asList(args));

@@ -11,7 +11,7 @@ import org.w3c.dom.Node;
 public abstract class GML32TestSupport extends XMLTestSupport {
 
     static {
-        HashMap namespaces = new HashMap();
+        HashMap<String, String> namespaces = new HashMap<>();
         namespaces.put("gml", GML.NAMESPACE);
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }

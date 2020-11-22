@@ -142,7 +142,7 @@ public abstract class AbstractFilterBuilder {
     public List<Filter> getFilterList() throws CQLException {
 
         int size = resultStack.size();
-        List<Filter> results = new ArrayList<Filter>(size);
+        List<Filter> results = new ArrayList<>(size);
 
         for (int i = 0; i < size; i++) {
             Result item = this.resultStack.popResult();
@@ -520,7 +520,7 @@ public abstract class AbstractFilterBuilder {
         try {
 
             // retrieves all part of identifier from result stack
-            ArrayList<String> arrayParts = new ArrayList<String>();
+            ArrayList<String> arrayParts = new ArrayList<>();
 
             while (this.resultStack.size() > 0) {
                 Result r = this.resultStack.peek();
@@ -599,7 +599,7 @@ public abstract class AbstractFilterBuilder {
     public PropertyName buildCompoundAttribute(
             final int nodeSimpleAttr, final String nodeAttrSeparator) throws CQLException {
 
-        ArrayList<String> arrayIdentifiers = new ArrayList<String>();
+        ArrayList<String> arrayIdentifiers = new ArrayList<>();
 
         // precondition: stack has one or more simple attributes
         while (this.resultStack.size() > 0) {
@@ -1199,7 +1199,7 @@ public abstract class AbstractFilterBuilder {
 
         // extracts the arguments from stack. Each argument in the stack
         // is preceded by an argument node. Finally extracts the function name
-        List<Expression> argList = new LinkedList<Expression>();
+        List<Expression> argList = new LinkedList<>();
 
         while (!this.resultStack.empty()) {
             Result node = this.resultStack.peek();

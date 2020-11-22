@@ -49,6 +49,7 @@ import org.opengis.filter.spatial.Within;
  *
  * @author Jody Garnett, Refractions Research
  */
+@SuppressWarnings("unchecked") // Diff is coded against SimpleFeature, while this is generified
 public class DiffFeatureReader<T extends FeatureType, F extends Feature>
         implements FeatureReader<T, F> {
     FeatureReader<T, F> reader;

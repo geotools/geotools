@@ -54,7 +54,7 @@ public class Function_NamesTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<?> getType() {
         return FunctionName[].class;
     }
 
@@ -66,7 +66,7 @@ public class Function_NamesTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List functions = node.getChildValues(FunctionName.class);
+        List<FunctionName> functions = node.getChildValues(FunctionName.class);
 
         return functions.toArray(new FunctionName[functions.size()]);
     }

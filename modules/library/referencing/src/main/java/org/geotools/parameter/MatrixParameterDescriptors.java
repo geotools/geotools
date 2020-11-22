@@ -287,7 +287,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
          * constructed twice.
          */
         param =
-                new DefaultParameterDescriptor<Double>(
+                new DefaultParameterDescriptor<>(
                         Collections.singletonMap(NAME_KEY, prefix + row + separator + column),
                         Double.class,
                         null,

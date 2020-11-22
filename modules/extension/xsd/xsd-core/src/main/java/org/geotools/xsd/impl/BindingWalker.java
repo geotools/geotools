@@ -37,17 +37,17 @@ import org.picocontainer.MutablePicoContainer;
 public class BindingWalker implements TypeWalker.Visitor {
     BindingLoader loader;
 
-    SoftValueHashMap /*<XSDFeature,BindingExecutionChain>*/ chains;
+    SoftValueHashMap<XSDFeature, BindingExecutionChain> chains;
     TypeWalker typeWalker;
     MutablePicoContainer context;
-    ArrayList bindings;
+    List<Binding> bindings;
     XSDFeature component;
     XSDTypeDefinition container;
 
     public BindingWalker(BindingLoader factory) {
         this.loader = factory;
 
-        chains = new SoftValueHashMap(100);
+        chains = new SoftValueHashMap<>(100);
         typeWalker = new TypeWalker();
     }
 
@@ -155,7 +155,7 @@ public class BindingWalker implements TypeWalker.Visitor {
             this.container = container;
             this.component = component;
             this.context = context;
-            this.bindings = new ArrayList();
+            this.bindings = new ArrayList<>();
 
             // first walk the type hierarchy to get the binding objects
             typeWalker.walk(component.getType(), this);
@@ -203,7 +203,7 @@ public class BindingWalker implements TypeWalker.Visitor {
 
         public void execute(Visitor visitor) {
             // simulated call stack
-            Stack stack = new Stack();
+            Stack<Binding> stack = new Stack<>();
 
             // visit from bottom to top
             for (int i = 0; i < bindings.size(); i++) {

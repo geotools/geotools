@@ -93,7 +93,7 @@ public class WMSCapabilities extends Capabilities {
      */
     public List<Layer> getLayerList() {
         if (layers == null) {
-            layers = new ArrayList<Layer>();
+            layers = new ArrayList<>();
             layers.add(layer);
             addChildrenRecursive(layers, layer);
         }

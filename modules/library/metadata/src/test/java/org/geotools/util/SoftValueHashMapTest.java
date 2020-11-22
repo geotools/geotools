@@ -16,9 +16,15 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -26,7 +32,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests {@link SoftValueHashMap}.
@@ -54,9 +60,8 @@ public final class SoftValueHashMapTest {
             // make sure we can keep as many strong references as the sample, since there is no
             // guarantee
             // the distribution of random.nextBoolean() is uniform in the short term
-            final SoftValueHashMap<Integer, Integer> softMap =
-                    new SoftValueHashMap<Integer, Integer>(SAMPLE_SIZE);
-            final HashMap<Integer, Integer> strongMap = new HashMap<Integer, Integer>();
+            final SoftValueHashMap<Integer, Integer> softMap = new SoftValueHashMap<>(SAMPLE_SIZE);
+            final HashMap<Integer, Integer> strongMap = new HashMap<>();
             for (int i = 0; i < SAMPLE_SIZE; i++) {
                 Integer key = random.nextInt(SAMPLE_SIZE);
                 final Integer value = random.nextInt(SAMPLE_SIZE);
@@ -161,7 +166,7 @@ public final class SoftValueHashMapTest {
     @Test
     public void testGetPutInMultithreadEnv() throws InterruptedException {
         final Random random = getRandom();
-        SoftValueHashMap<Integer, Integer> cache = new SoftValueHashMap<Integer, Integer>();
+        SoftValueHashMap<Integer, Integer> cache = new SoftValueHashMap<>();
 
         // create threads
         ExecutorService executor = Executors.newFixedThreadPool(NUMTHREADS);
@@ -186,7 +191,7 @@ public final class SoftValueHashMapTest {
     @Test
     public void testGetPutIteratorsInMultithreadEnv() throws InterruptedException {
         final Random random = getRandom();
-        SoftValueHashMap<Integer, Integer> cache = new SoftValueHashMap<Integer, Integer>();
+        SoftValueHashMap<Integer, Integer> cache = new SoftValueHashMap<>();
 
         // create threads
         ExecutorService executor = Executors.newFixedThreadPool(NUMTHREADS);

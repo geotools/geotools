@@ -34,6 +34,8 @@
  */
 package org.geotools.gce.geotiff;
 
+import it.geosolutions.imageioimpl.plugins.cog.CogImageReaderSpi;
+import it.geosolutions.imageioimpl.plugins.cog.CogSourceSPIProvider;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
 import java.io.File;
@@ -92,7 +94,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
      * force the writer to write a tfw file.
      */
     public static final DefaultParameterDescriptor<Boolean> WRITE_TFW =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "WRITE_TFW",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -120,7 +122,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
      * force the writer to retain the axes order.
      */
     public static final DefaultParameterDescriptor<Boolean> RETAIN_AXES_ORDER =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "RETAIN_AXES_ORDER",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -132,10 +134,12 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
     /** SPI for the reader. */
     private static final TIFFImageReaderSpi IMAGEIO_READER_FACTORY = new TIFFImageReaderSpi();
 
+    private static final CogImageReaderSpi COG_IMAGE_READER_SPI = new CogImageReaderSpi();
+
     /** Creates a new instance of GeoTiffFormat */
     public GeoTiffFormat() {
         writeParameters = null;
-        mInfo = new HashMap<String, String>();
+        mInfo = new HashMap<>();
         mInfo.put("name", "GeoTIFF");
         mInfo.put("description", "Tagged Image File Format with Geographic information");
         mInfo.put("vendor", "Geotools");
@@ -187,35 +191,39 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
         ImageInputStream inputStream = null;
         boolean closeMe = true;
         try {
-            if (o instanceof URL) {
-                // /////////////////////////////////////////////////////////////
-                //
-                // URL management
-                // In case the URL points to a file we need to get to the fie
-                // directly and avoid caching. In case it points to http or ftp
-                // or it is an opnen stream we have very small to do and we need
-                // to enable caching.
-                //
-                // /////////////////////////////////////////////////////////////
-                final URL url = (URL) o;
-                o = URLs.urlToFile(url);
+            if (o instanceof CogSourceSPIProvider) {
+                inputStream = ((CogSourceSPIProvider) o).getStream();
+                reader = COG_IMAGE_READER_SPI.createReaderInstance();
             } else if (o instanceof ImageInputStream) {
                 closeMe = false;
+                inputStream = (ImageInputStream) o;
+            } else {
+                if (o instanceof URL) {
+                    // /////////////////////////////////////////////////////////////
+                    //
+                    // URL management
+                    // In case the URL points to a file we need to get to the fie
+                    // directly and avoid caching. In case it points to http or ftp
+                    // or it is an opnen stream we have very small to do and we need
+                    // to enable caching.
+                    //
+                    // /////////////////////////////////////////////////////////////
+                    final URL url = (URL) o;
+                    o = URLs.urlToFile(url);
+                }
+                inputStream = ImageIO.createImageInputStream(o);
             }
-            // get a stream
-            inputStream =
-                    (ImageInputStream)
-                            ((o instanceof ImageInputStream)
-                                    ? o
-                                    : ImageIO.createImageInputStream(o));
+
             if (inputStream == null) {
                 if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Unable to get an ImageInputStream");
                 return false;
             }
 
             // get a reader
-            if (!IMAGEIO_READER_FACTORY.canDecodeInput(inputStream)) return false;
-            reader = IMAGEIO_READER_FACTORY.createReaderInstance();
+            if (reader == null) {
+                if (!IMAGEIO_READER_FACTORY.canDecodeInput(inputStream)) return false;
+                reader = IMAGEIO_READER_FACTORY.createReaderInstance();
+            }
 
             inputStream.mark();
             reader.setInput(inputStream);

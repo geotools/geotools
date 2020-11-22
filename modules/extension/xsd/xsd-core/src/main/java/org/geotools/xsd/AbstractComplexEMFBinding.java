@@ -78,7 +78,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
      * <p>This implementation is a heuristic and is not guaranteed to work. Subclasses may override
      * to provide the type explicitly.
      */
-    public Class getType() {
+    public Class<?> getType() {
         if (type != null) {
             return type;
         }
@@ -282,7 +282,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     }
 
     /** Helper method to convert a value, throwing an exception when it cant be converted. */
-    private Object convert(Object value, Class target, RuntimeException toThrow)
+    private Object convert(Object value, Class<?> target, RuntimeException toThrow)
             throws RuntimeException {
         Object converted = value;
         if ((converted != null) && !converted.getClass().isAssignableFrom(target)) {

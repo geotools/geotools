@@ -74,7 +74,7 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
         overlap.setExpected(false);
         overlap.setGeomTypeRefA("my:line");
 
-        Map map = new HashMap();
+        Map<String, SimpleFeatureSource> map = new HashMap<>();
         try {
             map.put("my:line", mds.getFeatureSource("line"));
         } catch (IOException e1) {
@@ -95,7 +95,7 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
         overlap.setGeomTypeRefA("my:line");
 
         // System.out.println("=========================================");
-        Map map = new HashMap();
+        Map<String, SimpleFeatureSource> map = new HashMap<>();
         try {
             map.put("my:line", mds.getFeatureSource("line"));
         } catch (IOException e1) {

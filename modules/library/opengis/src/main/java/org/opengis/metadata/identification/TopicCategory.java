@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.identification;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public final class TopicCategory extends CodeList<TopicCategory> {
     private static final long serialVersionUID = -4987523565852255081L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<TopicCategory> VALUES = new ArrayList<TopicCategory>(19);
+    private static final List<TopicCategory> VALUES = new ArrayList<>(19);
 
     /**
      * Rearing of animals and/or cultivation of plants.

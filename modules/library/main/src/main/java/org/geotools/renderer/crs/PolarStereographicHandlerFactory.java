@@ -126,7 +126,7 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
                                     renderingEnvelope.getMinY(),
                                     renderingEnvelope.getMaxY(),
                                     renderingEnvelope.getCoordinateReferenceSystem());
-                    envelopes = new ArrayList<ReferencedEnvelope>();
+                    envelopes = new ArrayList<>();
                     envelopes.add(e1);
                     envelopes.add(e2);
                     reprojectEnvelopes(sourceCRS, envelopes);
@@ -148,7 +148,7 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
                                     renderingEnvelope.getMinY(),
                                     renderingEnvelope.getMaxY(),
                                     renderingEnvelope.getCoordinateReferenceSystem());
-                    envelopes = new ArrayList<ReferencedEnvelope>();
+                    envelopes = new ArrayList<>();
                     envelopes.add(e1);
                     envelopes.add(e2);
                     reprojectEnvelopes(sourceCRS, envelopes);

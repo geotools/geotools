@@ -378,7 +378,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
             return geomFac.createGeometryCollection(gs);
         }
 
-        ArrayList gs = new ArrayList(geom.getNumGeometries());
+        ArrayList<Geometry> gs = new ArrayList<>(geom.getNumGeometries());
         int n = geom.getNumGeometries();
         for (int t = 0; t < n; t++) {
             gs.add(cloneGeometry(geom.getGeometryN(t), dimension));

@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -102,7 +103,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
     @BeforeClass
     public static void oneTimeSetUp() throws IOException {
         // System.out.println("beforeclass");
-        final Map dsParams = new HashMap();
+        final Map<String, Serializable> dsParams = new HashMap<>();
         final URL url = BoreholeTest.class.getResource(schemaBase + "BoreholeTest_properties.xml");
         dsParams.put("dbtype", "app-schema");
         dsParams.put("url", url.toExternalForm());
@@ -159,7 +160,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
             // ensure all needed types were parsed and aren't just empty proxies
             Collection properties = borehole.getTypeDescriptors();
             assertEquals(16, properties.size());
-            Map expectedNamesAndTypes = new HashMap();
+            Map<Name, Name> expectedNamesAndTypes = new HashMap<>();
             // from gml:AbstractFeatureType
             expectedNamesAndTypes.put(
                     name(GMLNS, "metaDataProperty"), typeName(GMLNS, "MetaDataPropertyType"));
@@ -230,7 +231,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         return Types.typeName(ns, localName);
     }
 
-    private Object name(String ns, String localName) {
+    private Name name(String ns, String localName) {
         return new NameImpl(ns, localName);
     }
 
@@ -380,8 +381,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         namespaces.declarePrefix("geo", GEONS);
         namespaces.declarePrefix("xlink", XLINK.NAMESPACE);
 
-        FeatureCollection<FeatureType, Feature> features =
-                (FeatureCollection) fSource.getFeatures();
+        FeatureCollection features = fSource.getFeatures();
         Feature f = (Feature) features.features().next();
         traverse(f);
     }

@@ -143,7 +143,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.featureType = featureType;
 
-        List<String> header = new ArrayList<String>();
+        List<String> header = new ArrayList<>();
 
         GeometryDescriptor gd = featureType.getGeometryDescriptor();
         CoordinateReferenceSystem crs = gd != null ? gd.getCoordinateReferenceSystem() : null;

@@ -17,14 +17,17 @@
  */
 package org.geotools.ysld.validate;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -648,7 +651,7 @@ public class YsldValidateTest {
                 .append("\n")
                 .append("");
 
-        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.EMPTY_LIST);
+        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.emptyList());
         assertThat(errors, empty());
     }
 
@@ -704,7 +707,7 @@ public class YsldValidateTest {
                 .append("\n")
                 .append("");
 
-        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.EMPTY_LIST);
+        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.emptyList());
         assertThat(errors, empty());
     }
 
@@ -766,7 +769,7 @@ public class YsldValidateTest {
                 .append("\n") // Empty displacement on line 26
                 .append("");
 
-        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.EMPTY_LIST);
+        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.emptyList());
         assertThat(errors, contains(hasProperty("problemMark", problemOn(26))));
     }
 
@@ -781,7 +784,7 @@ public class YsldValidateTest {
                         + "  - scale: *s\n"
                         + "    filter: ${x = true}\n";
 
-        List<MarkedYAMLException> errors = validate(yaml, Collections.EMPTY_LIST);
+        List<MarkedYAMLException> errors = validate(yaml, Collections.emptyList());
         assertThat(errors, empty());
     }
 
@@ -796,7 +799,7 @@ public class YsldValidateTest {
                         + "  - scale: [*s, max]\n"
                         + "    filter: ${x = true}\n";
 
-        List<MarkedYAMLException> errors = validate(yaml, Collections.EMPTY_LIST);
+        List<MarkedYAMLException> errors = validate(yaml, Collections.emptyList());
         assertThat(errors, empty());
     }
 
@@ -829,7 +832,7 @@ public class YsldValidateTest {
                 .append("\n")
                 .append("");
 
-        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.EMPTY_LIST);
+        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.emptyList());
         assertThat(errors, empty());
     }
 
@@ -862,7 +865,7 @@ public class YsldValidateTest {
                 .append("\n")
                 .append("");
 
-        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.EMPTY_LIST);
+        List<MarkedYAMLException> errors = validate(builder.toString(), Collections.emptyList());
         assertThat(errors, empty());
     }
 

@@ -244,7 +244,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
             Literal l = (Literal) one;
             Object value = l.getValue();
             if (value instanceof Collection) { // demultiplying is necessary
-                List<Filter> filters = new ArrayList<Filter>(); // list of all filters
+                List<Filter> filters = new ArrayList<>(); // list of all filters
                 for (Object valueElement : (Collection) value) {
                     // create a single-valued new filter
                     filters.add(replacer.replaceExpressions(filter, ff.literal(valueElement), two));
@@ -255,9 +255,9 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
                 } else if (filter.getMatchAction() == MatchAction.ALL) {
                     return ff.and(filters);
                 } else if (filter.getMatchAction() == MatchAction.ONE) {
-                    List<Filter> filters2 = new ArrayList<Filter>();
+                    List<Filter> filters2 = new ArrayList<>();
                     for (int i = 0; i < filters.size(); i++) {
-                        List<Filter> filters3 = new ArrayList<Filter>();
+                        List<Filter> filters3 = new ArrayList<>();
                         for (int j = 0; j < filters.size(); j++) {
                             if (i == j) {
                                 filters3.add(filters.get(j));
@@ -286,15 +286,12 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
             Literal l = (Literal) two;
             Object value = l.getValue();
             if (value instanceof Collection) { // demultiplying is necessary
-                List<Filter> filters = new ArrayList<Filter>(); // list of all filters
+                List<Filter> filters = new ArrayList<>(); // list of all filters
                 for (Object valueElement : (Collection) value) {
                     // create a single-valued new filter
-                    filters.add(
-                            demultiplyFirst(
-                                    (T)
-                                            replacer.replaceExpressions(
-                                                    filter, one, ff.literal(valueElement)),
-                                    replacer));
+                    @SuppressWarnings("unchecked")
+                    T cast = (T) replacer.replaceExpressions(filter, one, ff.literal(valueElement));
+                    filters.add(demultiplyFirst(cast, replacer));
                 }
                 // merge the filters depending on match action
                 if (filter.getMatchAction() == MatchAction.ANY) {
@@ -302,9 +299,9 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
                 } else if (filter.getMatchAction() == MatchAction.ALL) {
                     return ff.and(filters);
                 } else if (filter.getMatchAction() == MatchAction.ONE) {
-                    List<Filter> filters2 = new ArrayList<Filter>();
+                    List<Filter> filters2 = new ArrayList<>();
                     for (int i = 0; i < filters.size(); i++) {
-                        List<Filter> filters3 = new ArrayList<Filter>();
+                        List<Filter> filters3 = new ArrayList<>();
                         for (int j = 0; j < filters.size(); j++) {
                             if (i == j) {
                                 filters3.add(filters.get(j));

@@ -16,7 +16,10 @@
  */
 package org.geotools.mbstyle.parse;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import org.geotools.mbstyle.MapboxTestUtils;
@@ -31,7 +34,7 @@ import org.opengis.filter.expression.Function;
 /** Individual parsing tests. */
 public class MBObjectParserTest {
 
-    private MBObjectParser parser = new MBObjectParser(this.getClass());
+    private final MBObjectParser parser = new MBObjectParser(this.getClass());
 
     @Test
     public void optional() throws ParseException {

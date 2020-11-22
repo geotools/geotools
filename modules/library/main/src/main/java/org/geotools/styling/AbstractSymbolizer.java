@@ -111,7 +111,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
 
     public Map<String, String> getOptions() {
         if (options == null) {
-            options = new LinkedHashMap<String, String>();
+            options = new LinkedHashMap<>();
         }
         return options;
     }

@@ -32,7 +32,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.geotools.arcsde.data.*;
+import org.geotools.arcsde.data.ArcSDEDataStore;
+import org.geotools.arcsde.data.ArcSDEDataStoreConfig;
+import org.geotools.arcsde.data.ArcSDEDataStoreFactory;
+import org.geotools.arcsde.data.InProcessViewSupportTestData;
+import org.geotools.arcsde.data.TestData;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.UnavailableConnectionException;
@@ -144,7 +148,7 @@ public class ArcSDEDataStoreFactoryTest {
     @Test
     public void testCreateNewDataStore() {
         try {
-            dsFactory.createNewDataStore((Map<String, Serializable>) Collections.EMPTY_MAP);
+            dsFactory.createNewDataStore(Collections.emptyMap());
             fail("Expected UOE as we can't create new datastores");
         } catch (UnsupportedOperationException e) {
             assertTrue(true);

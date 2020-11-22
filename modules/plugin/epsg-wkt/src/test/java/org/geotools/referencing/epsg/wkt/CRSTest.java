@@ -18,8 +18,6 @@ package org.geotools.referencing.epsg.wkt;
 
 import static org.junit.Assert.assertArrayEquals;
 
-import java.util.HashMap;
-import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
@@ -155,12 +153,7 @@ public class CRSTest extends TestCase {
     }
     /** Taken from empty udig map calculation of scale. */
     public void testSamplePixel() throws Exception {
-        Map map = new HashMap();
-        // map.put( Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true );
-        // map.put( Hints.FORCE_STANDARD_AXIS_DIRECTIONS, true );
-        // map.put( Hints.FORCE_STANDARD_AXIS_UNITS, true );
-
-        Hints global = new Hints(map);
+        Hints global = new Hints();
         GeoTools.init(global);
 
         // ReferencedEnvelope[-0.24291497975705742 : 0.24291497975711265, -0.5056179775280899 :

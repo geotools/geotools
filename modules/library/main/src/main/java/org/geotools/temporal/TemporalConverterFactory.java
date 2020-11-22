@@ -37,7 +37,7 @@ public class TemporalConverterFactory implements ConverterFactory {
     static Converter dateToInstant =
             new Converter() {
                 public <T> T convert(Object source, Class<T> target) throws Exception {
-                    return (T) new DefaultInstant(new DefaultPosition((Date) source));
+                    return target.cast(new DefaultInstant(new DefaultPosition((Date) source)));
                 }
             };
 

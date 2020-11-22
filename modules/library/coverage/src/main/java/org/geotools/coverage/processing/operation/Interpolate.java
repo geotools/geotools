@@ -95,8 +95,8 @@ public class Interpolate extends Operation2D {
     private static final long serialVersionUID = 6742127682733620661L;
 
     /** The parameter descriptor for the interpolation type. */
-    public static final ParameterDescriptor TYPE =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Object> TYPE =
+            new DefaultParameterDescriptor<>(
                     Citations.OGC,
                     "Type",
                     Object.class, // Value class (mandatory)

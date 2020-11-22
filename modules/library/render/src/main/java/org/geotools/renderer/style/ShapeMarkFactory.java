@@ -32,7 +32,7 @@ public class ShapeMarkFactory implements MarkFactory {
 
     private static final String SHAPE_PREFIX = "shape://";
 
-    static Map<String, Shape> shapes = new HashMap<String, Shape>();
+    static Map<String, Shape> shapes = new HashMap<>();
 
     static {
         shapes.put("vertline", new Line2D.Double(0, -0.5, 0, 0.5));

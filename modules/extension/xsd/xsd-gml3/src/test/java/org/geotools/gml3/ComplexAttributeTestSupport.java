@@ -47,8 +47,8 @@ public abstract class ComplexAttributeTestSupport extends GML3TestSupport {
     public ComplexAttribute gmlCodeType(QName typeName, String value, String codeSpace) {
         Name myType = new NameImpl(typeName.getNamespaceURI(), typeName.getLocalPart());
 
-        List<Property> properties = new ArrayList<Property>();
-        List<PropertyDescriptor> propertyDescriptors = new ArrayList<PropertyDescriptor>();
+        List<Property> properties = new ArrayList<>();
+        List<PropertyDescriptor> propertyDescriptors = new ArrayList<>();
 
         Name attName = new NameImpl("codeSpace");
         // Name name, Class<?> binding, boolean isAbstract, List<Filter> restrictions,
@@ -81,7 +81,7 @@ public abstract class ComplexAttributeTestSupport extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 
@@ -93,8 +93,8 @@ public abstract class ComplexAttributeTestSupport extends GML3TestSupport {
     public ComplexAttribute gmlMeasureType(QName typeName, String value, String uom) {
         Name myType = new NameImpl(typeName.getNamespaceURI(), typeName.getLocalPart());
 
-        List<Property> properties = new ArrayList<Property>();
-        List<PropertyDescriptor> propertyDescriptors = new ArrayList<PropertyDescriptor>();
+        List<Property> properties = new ArrayList<>();
+        List<PropertyDescriptor> propertyDescriptors = new ArrayList<>();
 
         // assume attributes from same namespace as typename
 
@@ -129,7 +129,7 @@ public abstract class ComplexAttributeTestSupport extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 

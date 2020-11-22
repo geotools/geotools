@@ -303,7 +303,7 @@ public class GMLParserTest extends TestCase {
             if (f.exists()) f.delete();
             f.createNewFile();
 
-            HashMap hints = new HashMap();
+            HashMap<String, Object> hints = new HashMap<>();
             hints.put(
                     DocumentWriter.SCHEMA_ORDER,
                     new String[] {"http://www.opengis.net/wfs", "http://www.openplans.org/topp"});

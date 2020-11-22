@@ -80,10 +80,10 @@ public class PointHandler implements ShapeHandler {
         }
 
         Coordinate c;
-        if (shapeType == ShapeType.POINTZ) {
+        if (shapeType == ShapeType.POINTZ && !flatGeometry) {
 
             c = new CoordinateXYZM();
-        } else if (shapeType == ShapeType.POINTM) {
+        } else if (shapeType == ShapeType.POINTM && !flatGeometry) {
             c = new CoordinateXYM();
         } else {
             c = new CoordinateXY();
@@ -91,13 +91,13 @@ public class PointHandler implements ShapeHandler {
         c.setX(buffer.getDouble());
         c.setY(buffer.getDouble());
 
-        if (shapeType == ShapeType.POINTM) {
+        if (shapeType == ShapeType.POINTM && !flatGeometry) {
             c.setM(buffer.getDouble());
         }
 
-        if (shapeType == ShapeType.POINTZ) {
+        if (shapeType == ShapeType.POINTZ && !flatGeometry) {
             c.setZ(buffer.getDouble());
-            c.setM(buffer.getDouble());
+            if (buffer.hasRemaining()) c.setM(buffer.getDouble());
         }
 
         return geometryFactory.createPoint(c);

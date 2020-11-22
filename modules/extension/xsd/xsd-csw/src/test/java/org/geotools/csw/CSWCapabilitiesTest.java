@@ -1,6 +1,9 @@
 package org.geotools.csw;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.StringReader;
 import java.util.Collection;
@@ -211,7 +214,7 @@ public class CSWCapabilitiesTest {
         // System.out.println(encoded);
 
         // prepare xmlunit
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("csw", CSW.NAMESPACE);
         namespaces.put("ows", OWS.NAMESPACE);
         namespaces.put("rim", rimNamespace);

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -38,10 +39,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.Join.Type;
 import org.geotools.data.Query;
+import org.geotools.feature.visitor.AverageVisitor;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.StandardDeviationVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
@@ -50,6 +53,7 @@ import org.geotools.filter.visitor.ExpressionTypeVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
@@ -375,14 +379,12 @@ public abstract class SQLDialect {
      *
      * <ul>
      *   <li>{@link UniqueVisitor} -> "unique"
-     *   <li>
      *   <li>{@link CountVisitor} -> "count"
-     *   <li>
      *   <li>{@link MaxVisitor} -> "max"
-     *   <li>
      *   <li>{@link MinVisitor} -> "min"
-     *   <li>
      *   <li>{@link SumVisitor} -> "sum"
+     *   <li>{@link AverageVisitor} -> "avg"
+     *   <li>{@link StandardDeviationVisitor} -> "stddev_pop"
      *   <li>
      * </ul>
      *
@@ -390,12 +392,14 @@ public abstract class SQLDialect {
      */
     public void registerAggregateFunctions(
             Map<Class<? extends FeatureVisitor>, String> aggregates) {
-        // register the well known
+        // register the well known functions, from the SQL standard
         aggregates.put(UniqueVisitor.class, "distinct");
         aggregates.put(CountVisitor.class, "count");
         aggregates.put(MinVisitor.class, "min");
         aggregates.put(MaxVisitor.class, "max");
         aggregates.put(SumVisitor.class, "sum");
+        aggregates.put(AverageVisitor.class, "avg");
+        aggregates.put(StandardDeviationVisitor.class, "stddev_pop");
     }
 
     /**
@@ -1226,7 +1230,7 @@ public abstract class SQLDialect {
         try {
             indexInfo = md.getIndexInfo(cx.getCatalog(), databaseSchema, typeName, false, true);
 
-            Map<String, Index> indexes = new LinkedHashMap<String, Index>();
+            Map<String, Index> indexes = new LinkedHashMap<>();
             while (indexInfo.next()) {
                 short type = indexInfo.getShort("TYPE");
                 if (type != DatabaseMetaData.tableIndexStatistic) {
@@ -1243,7 +1247,7 @@ public abstract class SQLDialect {
                 }
             }
 
-            return new ArrayList<Index>(indexes.values());
+            return new ArrayList<>(indexes.values());
         } finally {
             dataStore.closeSafe(indexInfo);
         }
@@ -1357,5 +1361,24 @@ public abstract class SQLDialect {
      */
     public Integer getSQLType(AttributeDescriptor ad) {
         return null;
+    }
+
+    /**
+     * Returns true if the attribute in question is an array. By default comparers the {@link
+     * JDBCDataStore#JDBC_NATIVE_TYPE} stored in the attribute user data with {@link Types#ARRAY},
+     * but subclasses can override to use a different approach.
+     */
+    public boolean isArray(AttributeDescriptor att) {
+        Integer nativeType = (Integer) att.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPE);
+        return Objects.equals(Types.ARRAY, nativeType);
+    }
+
+    /**
+     * Convertes the given value to the target type. The default implementation uses converters to
+     * match the attribute descriptor binding, subclasses can override.
+     */
+    public Object convertValue(Object value, AttributeDescriptor ad) {
+        Class<?> binding = ad.getType().getBinding();
+        return Converters.convert(value, binding);
     }
 }

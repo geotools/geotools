@@ -50,6 +50,9 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author dzwiers, Refractions Research, Inc.
  * @author bowens
  */
+// too broken to be fixed? the dsm structure in runTransactions neesd the values to be
+// DataStore and FeatureSource at the same time!
+@SuppressWarnings("unchecked")
 public class BatchValidator {
     private static Properties dataStoreProp;
 
@@ -625,7 +628,8 @@ class BatchValidatorProcessor extends ValidationProcessor {
      * @param plugIns Map a map of names -> PlugInDTO objects
      * @see load(Map,Map)
      */
-    public BatchValidatorProcessor(Map testSuites, Map plugIns) {
+    public BatchValidatorProcessor(
+            Map<String, TestSuiteDTO> testSuites, Map<String, PlugInDTO> plugIns) {
         super();
         load(testSuites, plugIns);
     }
@@ -635,14 +639,14 @@ class BatchValidatorProcessor extends ValidationProcessor {
      *
      * <p>loads this instance data into this instance.
      */
-    public void load(Map testSuites, Map plugIns) {
+    public void load(Map<String, TestSuiteDTO> testSuites, Map<String, PlugInDTO> plugIns) {
         // step 1 make a list required plug-ins
-        Set plugInNames = new HashSet();
-        Iterator i = testSuites.keySet().iterator();
+        Set<String> plugInNames = new HashSet<>();
+        Iterator<String> suiteNames = testSuites.keySet().iterator();
 
         // go through each test suite
-        while (i.hasNext()) {
-            TestSuiteDTO dto = (TestSuiteDTO) testSuites.get(i.next());
+        while (suiteNames.hasNext()) {
+            TestSuiteDTO dto = testSuites.get(suiteNames.next());
             Iterator j = dto.getTests().keySet().iterator();
             // go through each test plugIn
             while (j.hasNext()) {
@@ -651,20 +655,20 @@ class BatchValidatorProcessor extends ValidationProcessor {
             }
         }
 
-        i = plugIns.values().iterator();
-        Map errors = new HashMap();
+        Iterator<PlugInDTO> plugins = plugIns.values().iterator();
+        Map<Object, Object> errors = new HashMap<>();
 
         // go through each plugIn and add it to errors
-        while (i.hasNext()) errors.put(i.next(), Boolean.FALSE);
+        while (plugins.hasNext()) errors.put(plugins.next(), Boolean.FALSE);
 
         // step 2 configure plug-ins with defaults
-        Map defaultPlugIns = new HashMap(plugInNames.size());
-        i = plugInNames.iterator();
+        Map<String, PlugIn> defaultPlugIns = new HashMap<>(plugInNames.size());
+        Iterator<String> pluginNames = plugInNames.iterator();
 
         // go through each plugIn
-        while (i.hasNext()) {
-            String plugInName = (String) i.next();
-            PlugInDTO dto = (PlugInDTO) plugIns.get(plugInName);
+        while (pluginNames.hasNext()) {
+            String plugInName = pluginNames.next();
+            PlugInDTO dto = plugIns.get(plugInName);
             Class plugInClass = null;
 
             try {
@@ -679,10 +683,10 @@ class BatchValidatorProcessor extends ValidationProcessor {
                 plugInClass = Validation.class;
             }
 
-            Map plugInArgs = dto.getArgs();
+            Map<String, Object> plugInArgs = dto.getArgs();
 
             if (plugInArgs == null) {
-                plugInArgs = new HashMap();
+                plugInArgs = new HashMap<>();
             }
 
             try {
@@ -702,11 +706,11 @@ class BatchValidatorProcessor extends ValidationProcessor {
         }
 
         // step 3 configure plug-ins with tests + add to processor
-        i = testSuites.keySet().iterator();
+        suiteNames = testSuites.keySet().iterator();
 
         // for each TEST SUITE
-        while (i.hasNext()) {
-            TestSuiteDTO tdto = (TestSuiteDTO) testSuites.get(i.next());
+        while (suiteNames.hasNext()) {
+            TestSuiteDTO tdto = (TestSuiteDTO) testSuites.get(suiteNames.next());
             Iterator j = tdto.getTests().keySet().iterator();
 
             // for each TEST in the test suite
@@ -714,13 +718,14 @@ class BatchValidatorProcessor extends ValidationProcessor {
                 TestDTO dto = (TestDTO) tdto.getTests().get(j.next());
 
                 // deal with test
-                Map testArgs = dto.getArgs();
+                @SuppressWarnings("unchecked")
+                Map<String, Object> testArgs = (Map) dto.getArgs();
 
                 if (testArgs == null) {
-                    testArgs = new HashMap();
+                    testArgs = new HashMap<>();
                 } else {
-                    Map m = new HashMap();
-                    Iterator k = testArgs.keySet().iterator();
+                    Map<String, Object> m = new HashMap<>();
+                    Iterator<String> k = testArgs.keySet().iterator();
 
                     while (k.hasNext()) {
                         ArgumentDTO adto = (ArgumentDTO) testArgs.get(k.next());

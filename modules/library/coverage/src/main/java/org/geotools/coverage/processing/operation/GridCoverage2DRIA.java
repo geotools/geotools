@@ -1578,4 +1578,10 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             return java.awt.Image.UndefinedProperty;
         }
     }
+
+    @Override
+    @SuppressWarnings("unchecked") // PlanarImage does not have generics, overrides this method
+    public Vector<RenderedImage> getSources() {
+        return super.getSources();
+    }
 }

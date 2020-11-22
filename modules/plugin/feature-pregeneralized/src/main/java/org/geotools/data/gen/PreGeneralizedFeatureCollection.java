@@ -85,7 +85,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
     }
 
     public boolean containsAll(Collection coll) {
-        List searchColl = new ArrayList();
+        List<Object> searchColl = new ArrayList<>();
         Iterator it = coll.iterator();
         while (it.hasNext()) {
             Object feature = it.next();
@@ -165,17 +165,20 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         return res;
     }
 
-    public Object[] toArray(Object[] arg0) {
-        Object[] res = backendCollection.toArray(arg0);
+    public <O> O[] toArray(O[] a) {
+        O[] res = backendCollection.toArray(a);
         for (int i = 0; i < res.length; i++) {
-            res[i] =
-                    new PreGeneralizedSimpleFeature(
-                            getSchema(),
-                            getSchema(),
-                            indexMapping,
-                            (SimpleFeature) res[i],
-                            geomPropertyName,
-                            backendGeomPropertyName);
+            @SuppressWarnings("unchecked")
+            O cast =
+                    (O)
+                            new PreGeneralizedSimpleFeature(
+                                    getSchema(),
+                                    getSchema(),
+                                    indexMapping,
+                                    (SimpleFeature) res[i],
+                                    geomPropertyName,
+                                    backendGeomPropertyName);
+            res[i] = cast;
         }
         return res;
     }

@@ -39,7 +39,7 @@ public class RangeTreeTest extends Assert {
 
         final DateRange dr1 = new DateRange(start1, end1);
         final DateRange dr2 = new DateRange(start2, end2);
-        final List<DateRange> list = new ArrayList<DateRange>();
+        final List<DateRange> list = new ArrayList<>();
         list.add(dr2);
         list.add(dr1);
 
@@ -64,7 +64,7 @@ public class RangeTreeTest extends Assert {
         final NumberRange<Double> dr6 = NumberRange.create(20d, 30d);
         final NumberRange<Double> dr7 = NumberRange.create(25d, 30d);
 
-        final List<NumberRange<Double>> list = new ArrayList<NumberRange<Double>>();
+        final List<NumberRange<Double>> list = new ArrayList<>();
         list.add(dr1);
         list.add(dr2);
         list.add(dr3);

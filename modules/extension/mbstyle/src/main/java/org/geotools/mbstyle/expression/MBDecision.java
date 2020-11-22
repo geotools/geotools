@@ -75,7 +75,6 @@ public class MBDecision extends MBExpression {
         if (json.size() != 3) {
             throwUnexpectedArgumentCount(NOT_EQUALS, 2);
         }
-        // get the comparables
         Expression comparable1 = parse.string(json, 1);
         Expression comparable2 = parse.string(json, 2);
         return ff.function("mbNotEqualTo", comparable1, comparable2);
@@ -127,7 +126,6 @@ public class MBDecision extends MBExpression {
         if (json.size() != 3) {
             throwUnexpectedArgumentCount(EQUALS, 2);
         }
-        // get the comparables
         Expression comparable1 = parse.string(json, 1);
         Expression comparable2 = parse.string(json, 2);
         return ff.function("mbEqualTo", comparable1, comparable2);
@@ -199,7 +197,7 @@ public class MBDecision extends MBExpression {
     private Expression decisionAny() {
         // validate the arg list
         if (json.size() < 2) {
-            throwInsufficientArgumentCount(ALL, 1);
+            throwInsufficientArgumentCount(ANY, 1);
         }
         Expression[] expressions = new Expression[json.size() - 1];
         for (int i = 1; i < json.size(); ++i) {
@@ -233,7 +231,7 @@ public class MBDecision extends MBExpression {
      * Evaluates each expression in turn until the first non-null value is obtained, and returns
      * that value. Example: ["coalesce", OutputType, OutputType, ...]: OutputType
      *
-     * @return coalesce expresson
+     * @return coalesce expression
      */
     private Expression decisionCoalesce() {
         // validate the arg list

@@ -35,37 +35,37 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody Garnett
  */
-public final class CollectionSource {
+public final class CollectionSource<T> {
 
-    private Collection collection;
+    private Collection<T> collection;
     private CoordinateReferenceSystem crs;
 
-    public CollectionSource(Collection collection) {
+    public CollectionSource(Collection<T> collection) {
         this(collection, null);
     }
 
-    public CollectionSource(Collection collection, CoordinateReferenceSystem crs) {
+    public CollectionSource(Collection<T> collection, CoordinateReferenceSystem crs) {
         this.collection = Collections.unmodifiableCollection(collection);
         this.crs = crs;
     }
 
-    public Collection content() {
+    public Collection<T> content() {
         return collection;
     }
 
-    public Collection content(String query, String queryLanguage) {
+    public Collection<T> content(String query, String queryLanguage) {
         throw new UnsupportedOperationException("Please help me hook up the parser!");
     }
 
-    public Collection content(Filter filter) {
+    public Collection<T> content(Filter filter) {
         return content(filter, Integer.MAX_VALUE);
     }
 
-    public Collection content(Filter filter, int countLimit) {
-        List list = new ArrayList();
+    public Collection<T> content(Filter filter, int countLimit) {
+        List<T> list = new ArrayList<>();
         int count = 0;
-        for (Iterator i = collection.iterator(); i.hasNext() && count < countLimit; ) {
-            Object obj = i.next();
+        for (Iterator<T> i = collection.iterator(); i.hasNext() && count < countLimit; ) {
+            T obj = i.next();
             if (filter.evaluate(obj)) {
                 list.add(obj);
                 count++;

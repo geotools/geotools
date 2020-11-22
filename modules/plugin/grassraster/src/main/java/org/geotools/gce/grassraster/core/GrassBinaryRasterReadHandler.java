@@ -384,7 +384,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     @SuppressWarnings({"nls", "PMD.CloseResource"})
     public void parseHeaderAndAccessoryFiles() throws IOException {
         try {
-            LinkedHashMap<String, String> readerFileHeaderMap = new LinkedHashMap<String, String>();
+            LinkedHashMap<String, String> readerFileHeaderMap = new LinkedHashMap<>();
             /* Read contents of 'cellhd/name' file from the current mapset */
             String line;
             BufferedReader cellhead;
@@ -420,7 +420,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                     }
                 }
                 /* Instantiate the reclass table */
-                reclassTable = new Vector<Object>();
+                reclassTable = new Vector<>();
                 /* The next line holds the start value for categories */
                 if ((line = cellhead.readLine()) == null) {
                     throw new IOException(
@@ -1170,7 +1170,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                 }
             }
 
-            List<String> attrs = new ArrayList<String>();
+            List<String> attrs = new ArrayList<>();
             Enumeration<CellAttribute> categories = attTable.getCategories();
             while (categories.hasMoreElements()) {
                 AttributeTable.CellAttribute object = categories.nextElement();

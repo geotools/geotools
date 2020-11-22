@@ -28,6 +28,7 @@ import static org.geotools.ysld.TestUtils.isColor;
 import static org.geotools.ysld.TestUtils.lexEqualTo;
 import static org.geotools.ysld.TestUtils.literal;
 import static org.geotools.ysld.TestUtils.nilExpression;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -45,7 +46,6 @@ import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -104,6 +104,7 @@ import org.opengis.style.RasterSymbolizer;
 import org.opengis.style.SelectedChannelType;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
+@SuppressWarnings("unchecked") // unchecked generics array creation due to Hamcrest
 public class YsldParseTest {
     Logger LOG = Logging.getLogger("org.geotools.ysld.Ysld");
 

@@ -67,7 +67,7 @@ public class GeometryProcessFactoryTest extends TestCase {
         org.geotools.process.Process buffer = factory.create(new NameImpl("geo", "Buffer"));
 
         // try less than the required params
-        Map<String, Object> inputs = new HashMap<String, Object>();
+        Map<String, Object> inputs = new HashMap<>();
         try {
             buffer.execute(inputs, null);
             fail("What!!! Should have failed big time!");
@@ -126,7 +126,7 @@ public class GeometryProcessFactoryTest extends TestCase {
         org.geotools.process.Process union = factory.create(new NameImpl("geo", "union"));
 
         // try less than the required params
-        Map<String, Object> inputs = new HashMap<String, Object>();
+        Map<String, Object> inputs = new HashMap<>();
         try {
             union.execute(inputs, null);
             fail("What!!! Should have failed big time!");
@@ -137,7 +137,7 @@ public class GeometryProcessFactoryTest extends TestCase {
         // try again with less
         Geometry geom1 = new WKTReader().read("POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))");
         Geometry geom2 = new WKTReader().read("POLYGON((0 1, 0 2, 1 2, 1 1, 0 1))");
-        List<Geometry> geometries = new ArrayList<Geometry>();
+        List<Geometry> geometries = new ArrayList<>();
         geometries.add(geom1);
         inputs.put("geom", geometries);
         try {
@@ -161,7 +161,7 @@ public class GeometryProcessFactoryTest extends TestCase {
         NameImpl hullName = new NameImpl("geo", "convexHull");
         org.geotools.process.Process hull = factory.create(hullName);
 
-        Map<String, Object> inputs = new HashMap<String, Object>();
+        Map<String, Object> inputs = new HashMap<>();
         Geometry geom = new WKTReader().read("LINESTRING(0 0, 0 1, 1 1)");
         inputs.put("geom", geom);
         Map<String, Object> output = hull.execute(inputs, null);

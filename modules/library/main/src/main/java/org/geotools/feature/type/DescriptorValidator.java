@@ -22,7 +22,7 @@ class DescriptorValidator {
         // no-op
     }
 
-    //	public static void validate(AttributeDescriptor schema, List/*<Attribute>*/ content) {
+    //	public static void validate(AttributeDescriptor schema, List<Attribute> content) {
     //		if (schema == null) {
     //			throw new NullPointerException("schema");
     //		}
@@ -30,7 +30,7 @@ class DescriptorValidator {
     //			throw new NullPointerException("content");
     //		}
     //
-    //		List/*<AttributeType>*/ allowedTypes =
+    //		List<AttributeType> allowedTypes =
     //			Descriptors.types(schema.getType());
     //
     //		int index = 0;
@@ -65,7 +65,7 @@ class DescriptorValidator {
     //	 *
     //	 */
     //	private static void validateSequence(AttributeDescriptor schema,
-    //			List/*<Attribute>*/ content) {
+    //			List<Attribute> content) {
     //		// empty sequences are allowed, in such a case, content should be empty
     //		if (((List)((SequenceType)schema.getType()).attributes()).isEmpty()) {
     //			if (content.size() > 0) {
@@ -75,12 +75,12 @@ class DescriptorValidator {
     //			return;
     //		}
     //
-    //		final List/*<AttributeDescriptor>*/ descriptors =
+    //		final List<AttributeDescriptor> descriptors =
     //			(List) ((SequenceType)schema.getType()).attributes();
     //		final int min = schema.getMinOccurs();
     //		final int max = schema.getMaxOccurs();
     //
-    //		List/*<Attribute>*/ remaining = processSequence(descriptors, content, min,
+    //		List<Attribute> remaining = processSequence(descriptors, content, min,
     //				max);
     //
     //		if (remaining.size() > 0) {
@@ -91,7 +91,7 @@ class DescriptorValidator {
     //	}
     //
     //	private static void validateChoice(AttributeDescriptor choice,
-    //			List/*<Attribute>*/ content) {
+    //			List<Attribute> content) {
     //
     //		ChoiceType type = (ChoiceType) choice.getType();
     //		// empty sequences are allowed, in such a case, content should be empty
@@ -103,11 +103,11 @@ class DescriptorValidator {
     //			return;
     //		}
     //
-    //		final Set/*<Descriptor>*/ descriptors = (Set) type.attributes();
+    //		final Set<Descriptor> descriptors = (Set) type.attributes();
     //		final int min = choice.getMinOccurs();
     //		final int max = choice.getMaxOccurs();
     //
-    //		List/*<Attribute>*/ remaining = processChoice(descriptors, content, min,
+    //		List<Attribute> remaining = processChoice(descriptors, content, min,
     //				max);
     //
     //		if (remaining.size() > 0) {
@@ -117,17 +117,17 @@ class DescriptorValidator {
     //		}
     //	}
     //
-    //	private static void validateAll(AttributeDescriptor all, List/*<Attribute>*/ content)
+    //	private static void validateAll(AttributeDescriptor all, List<Attribute> content)
     //			throws NullPointerException, IllegalArgumentException {
     //		if (content == null) {
     //			throw new NullPointerException("content");
     //		}
     //
     //		ComplexType ctype = (ComplexType)all.getType();
-    //		List/*<AttributeType>*/ usedTypes = new ArrayList/*<AttributeType>*/();
+    //		List<AttributeType> usedTypes = new ArrayList<AttributeType>();
     //		for (Iterator itr = content.iterator(); itr.hasNext();) {
     //			Attribute att = (Attribute) itr.next();
-    //			AttributeType/*<?>*/ type = att.getType();
+    //			AttributeType<?> type = att.getType();
     //
     //			// cannot be more than one instance of its type
     //			// (shortcut to multiplicity rangecheck)
@@ -142,7 +142,7 @@ class DescriptorValidator {
     //			AttributeDescriptor node = (AttributeDescriptor) itr.next();
     //			int min = node.getMinOccurs();
     //			int max = node.getMaxOccurs();
-    //			AttributeType/*<?>*/ expectedType = node.getType();
+    //			AttributeType<?> expectedType = node.getType();
     //			if (max == 0 && usedTypes.contains(expectedType)) {
     //				throw new IllegalArgumentException(
     //						expectedType.getName()
@@ -157,18 +157,18 @@ class DescriptorValidator {
     //
     //	}
     //
-    //	private static List/*<Attribute>*/ processDescriptor(AttributeDescriptor schema,
-    //			List/*<Attribute>*/ content) {
+    //	private static List<Attribute> processDescriptor(AttributeDescriptor schema,
+    //			List<Attribute> content) {
     //		final int min = schema.getMinOccurs();
     //		final int max = schema.getMaxOccurs();
     //
     //		if (schema.getType() instanceof ChoiceType) {
-    //			Set/*<AttributeDescriptor>*/ options =
+    //			Set<AttributeDescriptor> options =
     //				(Set) ((ChoiceType)schema.getType()).attributes();
     //			return processChoice(options, content, min, max);
     //		}
     //		else if (schema.getType() instanceof SequenceType) {
-    //			List/*<AttributeDescriptor>*/ sequence =
+    //			List<AttributeDescriptor> sequence =
     //				(List) ((SequenceType) schema.getType()).attributes();
     //			return processSequence(sequence, content, min, max);
     //		}
@@ -178,12 +178,12 @@ class DescriptorValidator {
     //		}
     //	}
     //
-    //	private static List/*<Attribute>*/ processSequence(
-    //			List/*<AttributeDescriptor>*/ sequence, List/*<Attribute>*/ content,
+    //	private static List<Attribute> processSequence(
+    //			List<AttributeDescriptor> sequence, List<Attribute> content,
     //			int min, int max) {
     //
     //		int count = 0;
-    //		List/*<Attribute>*/ remaining = content;
+    //		List<Attribute> remaining = content;
     //
     //		while (true) {
     //			for (Iterator itr = sequence.iterator(); itr.hasNext();) {
@@ -203,8 +203,8 @@ class DescriptorValidator {
     //		return remaining;
     //	}
     //
-    //	private static List/*<Attribute>*/ processChoice(
-    //			Set/*<Descriptor>*/ allowableContent, List/*<Attribute>*/ content, int min,
+    //	private static List<Attribute> processChoice(
+    //			Set<Descriptor> allowableContent, List<Attribute> content, int min,
     //			int max) {
     //		throw new UnsupportedOperationException("not yet implemented");
     //		/*
@@ -248,7 +248,7 @@ class DescriptorValidator {
     //	 * maxOccurs.
     //	 *
     //	 */
-    //	private static List/*<Attribute>*/ processType(List/*<Attribute>*/ content,
+    //	private static List<Attribute> processType(List<Attribute> content,
     //			AttributeType expectedType, int min, int max) {
     //		int count = 0;
     //
@@ -275,16 +275,16 @@ class DescriptorValidator {
     //	}
     //
     //	private static void validateNode(AttributeDescriptor schema,
-    //			List/*<Attribute>*/ content) {
+    //			List<Attribute> content) {
     //		// no-op
     //	}
     //
     //	/**
     //	 */
     //	private static void checkAttIsOfAllowedType(
-    //			List/*<AttributeType>*/ allowedTypes, int index, Attribute att)
+    //			List<AttributeType> allowedTypes, int index, Attribute att)
     //			throws IllegalArgumentException {
-    //		AttributeType/*<?>*/ type = att.getType();
+    //		AttributeType<?> type = att.getType();
     //		if (!allowedTypes.contains(type)) {
     //			throw new IllegalArgumentException("Attribute of type "
     //					+ type.getName() + " found at index " + index

@@ -68,7 +68,7 @@ public class MultiLineStringTypeImpl extends AbstractGeometricAggregateTypeImpl 
      */
     public EList<LineStringPropertyType> getLineStringMember() {
         if (lineStringMember == null) {
-            lineStringMember = new EObjectContainmentEList<LineStringPropertyType>(LineStringPropertyType.class, this, Gml311Package.MULTI_LINE_STRING_TYPE__LINE_STRING_MEMBER);
+            lineStringMember = new EObjectContainmentEList<>(LineStringPropertyType.class, this, Gml311Package.MULTI_LINE_STRING_TYPE__LINE_STRING_MEMBER);
         }
         return lineStringMember;
     }

@@ -40,7 +40,7 @@ public class QueryOptimizeTest extends TestCase {
         renderer = new StreamingRenderer();
         context = new MapContent();
         renderer.setMapContent(context);
-        Map hints = new HashMap();
+        Map<Object, Object> hints = new HashMap<>();
         hints.put("maxFiltersToSendToDatastore", 2);
         hints.put("optimizedDataLoadingEnabled", true);
         renderer.setRendererHints(hints);

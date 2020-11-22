@@ -20,14 +20,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import junit.framework.TestCase;
+import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
+import org.geotools.graph.structure.Node;
 
 public class BasicGraphTest extends TestCase {
 
-    private List m_nodes;
-    private List m_edges;
+    private List<Node> m_nodes;
+    private List<Edge> m_edges;
     private BasicGraph m_graph;
 
     public BasicGraphTest(String name) {
@@ -52,13 +55,13 @@ public class BasicGraphTest extends TestCase {
         n3.add(e3);
         n4.add(e3);
 
-        m_nodes = new ArrayList();
+        m_nodes = new ArrayList<>();
         m_nodes.add(n1);
         m_nodes.add(n2);
         m_nodes.add(n3);
         m_nodes.add(n4);
 
-        m_edges = new ArrayList();
+        m_edges = new ArrayList<>();
         m_edges.add(e1);
         m_edges.add(e2);
         m_edges.add(e3);
@@ -107,7 +110,7 @@ public class BasicGraphTest extends TestCase {
     }
 
     public void test_visitNodes() {
-        final HashSet visited = new HashSet();
+        final Set<Graphable> visited = new HashSet<>();
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
@@ -118,13 +121,13 @@ public class BasicGraphTest extends TestCase {
 
         m_graph.visitNodes(visitor);
 
-        for (Iterator itr = m_nodes.iterator(); itr.hasNext(); ) {
+        for (Iterator<Node> itr = m_nodes.iterator(); itr.hasNext(); ) {
             assertTrue(visited.contains(itr.next()));
         }
     }
 
     public void test_visitEdges() {
-        final HashSet visited = new HashSet();
+        final Set<Graphable> visited = new HashSet<>();
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
@@ -135,7 +138,7 @@ public class BasicGraphTest extends TestCase {
 
         m_graph.visitEdges(visitor);
 
-        for (Iterator itr = m_edges.iterator(); itr.hasNext(); ) {
+        for (Iterator<Edge> itr = m_edges.iterator(); itr.hasNext(); ) {
             assertTrue(visited.contains(itr.next()));
         }
     }

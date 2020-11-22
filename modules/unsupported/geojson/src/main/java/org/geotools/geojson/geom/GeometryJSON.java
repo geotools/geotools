@@ -218,7 +218,7 @@ public class GeometryJSON {
     }
 
     Map<String, Object> createPoint(Point point) {
-        LinkedHashMap obj = new LinkedHashMap();
+        LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
 
         obj.put("type", "Point");
         obj.put("coordinates", new CoordinateSequenceEncoder(point.getCoordinateSequence(), scale));
@@ -272,7 +272,7 @@ public class GeometryJSON {
     }
 
     Map<String, Object> createLine(LineString line) {
-        LinkedHashMap obj = new LinkedHashMap();
+        LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
 
         obj.put("type", "LineString");
         obj.put("coordinates", new CoordinateSequenceEncoder(line.getCoordinateSequence(), scale));
@@ -326,7 +326,7 @@ public class GeometryJSON {
     }
 
     Map<String, Object> createPolygon(Polygon poly) {
-        LinkedHashMap obj = new LinkedHashMap();
+        LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
 
         obj.put("type", "Polygon");
         obj.put("coordinates", toList(poly));
@@ -380,7 +380,7 @@ public class GeometryJSON {
     }
 
     Map<String, Object> createMultiPoint(MultiPoint mpoint) {
-        LinkedHashMap obj = new LinkedHashMap();
+        LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
 
         obj.put("type", "MultiPoint");
         obj.put("coordinates", toList(mpoint));
@@ -434,7 +434,7 @@ public class GeometryJSON {
     }
 
     Map<String, Object> createMultiLine(MultiLineString mline) {
-        LinkedHashMap obj = new LinkedHashMap();
+        LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
 
         obj.put("type", "MultiLineString");
         obj.put("coordinates", toList(mline));
@@ -488,7 +488,7 @@ public class GeometryJSON {
     }
 
     Map<String, Object> createMultiPolygon(MultiPolygon mpoly) {
-        LinkedHashMap obj = new LinkedHashMap();
+        LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
 
         obj.put("type", "MultiPolygon");
         obj.put("coordinates", toList(mpoly));
@@ -543,9 +543,9 @@ public class GeometryJSON {
     }
 
     Map<String, Object> createGeometryCollection(GeometryCollection gcol) {
-        LinkedHashMap obj = new LinkedHashMap();
+        LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
 
-        ArrayList geoms = new ArrayList(gcol.getNumGeometries());
+        ArrayList<Map<String, Object>> geoms = new ArrayList<>(gcol.getNumGeometries());
         for (int i = 0; i < gcol.getNumGeometries(); i++) {
             geoms.add(create(gcol.getGeometryN(i)));
         }
@@ -627,8 +627,8 @@ public class GeometryJSON {
         GeoJSONUtil.encode(obj, output);
     }
 
-    List toList(Polygon poly) {
-        ArrayList list = new ArrayList();
+    List<CoordinateSequenceEncoder> toList(Polygon poly) {
+        ArrayList<CoordinateSequenceEncoder> list = new ArrayList<>();
         list.add(
                 new CoordinateSequenceEncoder(
                         poly.getExteriorRing().getCoordinateSequence(), scale));
@@ -643,7 +643,7 @@ public class GeometryJSON {
     }
 
     List toList(GeometryCollection mgeom) {
-        ArrayList list = new ArrayList(mgeom.getNumGeometries());
+        ArrayList<Object> list = new ArrayList<>(mgeom.getNumGeometries());
         for (int i = 0; i < mgeom.getNumGeometries(); i++) {
             Geometry g = mgeom.getGeometryN(i);
             if (g instanceof Polygon) {
@@ -681,6 +681,7 @@ public class GeometryJSON {
             this.scale = scale;
         }
 
+        @Override
         public String toJSONString() {
             int size = seq.size();
 

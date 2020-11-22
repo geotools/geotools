@@ -51,7 +51,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
 
     /** Creates a new, initially empty list. */
     public KeySortedList() {
-        map = new TreeMap<K, List<V>>();
+        map = new TreeMap<>();
     }
 
     /** Creates a list using the specified map of <var>key</var>-<var>list of values</var> pairs. */
@@ -85,7 +85,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     public void add(final K key, final V element) {
         List<V> values = map.get(key);
         if (values == null) {
-            values = new ArrayList<V>();
+            values = new ArrayList<>();
             map.put(key, values);
         }
         values.add(element);
@@ -360,7 +360,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
      * @return A view of the specified initial range of this list.
      */
     public KeySortedList<K, V> headList(final K toKey) {
-        return new KeySortedList<K, V>(map.headMap(toKey));
+        return new KeySortedList<>(map.headMap(toKey));
     }
 
     /**
@@ -372,6 +372,6 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
      * @return A view of the specified final range of this list.
      */
     public KeySortedList<K, V> tailList(final K fromKey) {
-        return new KeySortedList<K, V>(map.tailMap(fromKey));
+        return new KeySortedList<>(map.tailMap(fromKey));
     }
 }

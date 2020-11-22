@@ -114,26 +114,17 @@ public class FillViewer {
     Listener sync = new Listener();
     private SelectionListener listener;
 
-    /**
-     * Accepts a listener that will be notified when content changes.
-     *
-     */
+    /** Accepts a listener that will be notified when content changes. */
     public void addListener(SelectionListener listener1) {
         this.listener = listener1;
     }
 
-    /**
-     * Remove listener.
-     *
-     */
+    /** Remove listener. */
     public void removeListener(SelectionListener listener1) {
         if (this.listener == listener1) this.listener = null;
     }
 
-    /**
-     * TODO summary sentence for fire ...
-     *
-     */
+    /** TODO summary sentence for fire ... */
     protected void fire(SelectionEvent event) {
         if (this.listener == null) return;
         this.listener.widgetSelected(event);
@@ -191,10 +182,7 @@ public class FillViewer {
         }
     }
 
-    /**
-     * TODO summary sentence for setFill ...
-     *
-     */
+    /** TODO summary sentence for setFill ... */
     public void setFill(Fill fill2, Mode mode, Color defaultColor) {
         listen(false);
         try {

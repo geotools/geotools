@@ -114,7 +114,8 @@ public class SimpleTypeGT implements SimpleType {
      *
      * @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes)
      */
-    public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+    public Object getValue(
+            Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         if ((value == null) || (value.length != 1)) {
             throw new SAXException("can only have one text value ... and one is required");
@@ -134,7 +135,8 @@ public class SimpleTypeGT implements SimpleType {
     /*
      * Helper for getValue(Element,ElementValue[])
      */
-    private Object getUnionValue(Element element, ElementValue value, Attributes attrs, Map hints)
+    private Object getUnionValue(
+            Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         if (parents == null) {
             return null;
@@ -157,14 +159,15 @@ public class SimpleTypeGT implements SimpleType {
     /*
      * Helper for getValue(Element,ElementValue[])
      */
-    private Object getListValue(Element element, ElementValue value, Attributes attrs, Map hints)
+    private Object getListValue(
+            Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         if ((parents == null) || (parents[0] == null)) {
             return null;
         }
 
         String[] vals = ((String) value.getValue()).split("\\s");
-        List l = new LinkedList();
+        List<Object> l = new LinkedList<>();
         ElementValueGT[] valss = new ElementValueGT[1];
 
         for (int i = 0; i < vals.length; i++) {
@@ -180,7 +183,8 @@ public class SimpleTypeGT implements SimpleType {
     /*
      * Helper for getValue(Element,ElementValue[])
      */
-    private Object getRestValue(Element element, ElementValue value, Attributes attrs, Map hints)
+    private Object getRestValue(
+            Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         if ((parents == null) || (parents[0] == null)) {
             return null;
@@ -402,7 +406,7 @@ public class SimpleTypeGT implements SimpleType {
      * @see org.geotools.xml.schema.SimpleType#toAttribute(org.geotools.xml.schema.Attribute,
      *     java.lang.Object, java.util.Map)
      */
-    public AttributeValue toAttribute(Attribute attribute, Object value, Map hints)
+    public AttributeValue toAttribute(Attribute attribute, Object value, Map<String, Object> hints)
             throws OperationNotSupportedException {
         if (value == null) {
             return null;
@@ -447,7 +451,8 @@ public class SimpleTypeGT implements SimpleType {
      *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
      *     java.lang.Object, java.util.Map)
      */
-    public boolean canCreateAttributes(Attribute attribute, Object value, Map hints) {
+    public boolean canCreateAttributes(
+            Attribute attribute, Object value, Map<String, Object> hints) {
         if (value == null) {
             return false;
         }
@@ -476,7 +481,7 @@ public class SimpleTypeGT implements SimpleType {
      * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
      *     java.lang.Object, java.util.Map)
      */
-    public boolean canEncode(Element element, Object value, Map hints) {
+    public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
         if (value == null) {
             return false;
         }
@@ -505,7 +510,8 @@ public class SimpleTypeGT implements SimpleType {
      * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object,
      *     org.geotools.xml.PrintHandler, java.util.Map)
      */
-    public void encode(Element element, Object value, PrintHandler output, Map hints)
+    public void encode(
+            Element element, Object value, PrintHandler output, Map<String, Object> hints)
             throws IOException, OperationNotSupportedException {
         if (value == null) {
             return;

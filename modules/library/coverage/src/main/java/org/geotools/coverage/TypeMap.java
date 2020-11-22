@@ -16,7 +16,17 @@
  */
 package org.geotools.coverage;
 
-import static org.opengis.coverage.SampleDimensionType.*;
+import static org.opengis.coverage.SampleDimensionType.REAL_32BITS;
+import static org.opengis.coverage.SampleDimensionType.REAL_64BITS;
+import static org.opengis.coverage.SampleDimensionType.SIGNED_16BITS;
+import static org.opengis.coverage.SampleDimensionType.SIGNED_32BITS;
+import static org.opengis.coverage.SampleDimensionType.SIGNED_8BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_16BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_1BIT;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_2BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_32BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_4BITS;
+import static org.opengis.coverage.SampleDimensionType.UNSIGNED_8BITS;
 
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
@@ -53,7 +63,7 @@ public final class TypeMap {
     private static final TypeMap[] MAP = new TypeMap[SampleDimensionType.values().length];
 
     static {
-        final Map<Number, Number> pool = new HashMap<Number, Number>(32);
+        final Map<Number, Number> pool = new HashMap<>(32);
         final Float M1 = -Float.MAX_VALUE;
         final Float P1 = Float.MAX_VALUE;
         final Double M2 = -Double.MAX_VALUE;
@@ -125,6 +135,7 @@ public final class TypeMap {
     }
 
     /** Constructs a new mapping with the specified value. */
+    @SuppressWarnings("unchecked")
     private TypeMap(
             final SampleDimensionType code,
             final int type,

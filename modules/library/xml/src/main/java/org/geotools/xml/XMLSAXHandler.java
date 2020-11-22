@@ -64,7 +64,7 @@ public class XMLSAXHandler extends DefaultHandler {
     protected static Level level = Level.FINE;
 
     // the stack of handlers
-    private Stack handlers = new Stack();
+    private Stack<XMLElementHandler> handlers = new Stack<>();
 
     /**
      * Collects string chunks in {@link #characters(char[], int, int)} callback to be handled at the
@@ -109,12 +109,12 @@ public class XMLSAXHandler extends DefaultHandler {
         }
     }
     // hints
-    private Map hints;
+    private Map<String, Object> hints;
     private ElementHandlerFactory ehf = new ElementHandlerFactory(logger);
 
     // used to store prefix -> targetNamespace mapping until which time as the
     // schema uri is availiable (on the next startElement Call).
-    private Map schemaProxy = new HashMap();
+    private Map<String, String> schemaProxy = new HashMap<>();
 
     // the base handler for the document
     private DocumentHandler document = null;
@@ -131,7 +131,7 @@ public class XMLSAXHandler extends DefaultHandler {
      * instance document. The instance document's uri is also be provided, as this will allow the
      * parser to resolve relative uri's.
      */
-    public XMLSAXHandler(URI intendedDocument, Map hints) {
+    public XMLSAXHandler(URI intendedDocument, Map<String, Object> hints) {
         instanceDocument = intendedDocument;
         init(hints);
         logger.setLevel(level);
@@ -153,7 +153,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
     protected void init(Map<String, Object> hints) {
         if (hints == null) {
-            hints = new HashMap<String, Object>();
+            hints = new HashMap<>();
         }
         this.hints = hints;
         setEntityResolver(XMLHandlerHints.toEntityResolver(hints));

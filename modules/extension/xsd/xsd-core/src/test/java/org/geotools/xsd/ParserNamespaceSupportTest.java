@@ -47,6 +47,7 @@ public class ParserNamespaceSupportTest extends TestCase {
 
         nsSupport.add(delegate);
 
+        @SuppressWarnings("unchecked")
         List<String> prefixes = list(nsSupport.getPrefixes());
         assertTrue(prefixes.contains("foo"));
         assertTrue(prefixes.contains("bar"));
@@ -55,7 +56,7 @@ public class ParserNamespaceSupportTest extends TestCase {
     }
 
     List list(Enumeration e) {
-        List<Object> l = new ArrayList<Object>();
+        List<Object> l = new ArrayList<>();
         while (e.hasMoreElements()) {
             l.add(e.nextElement());
         }

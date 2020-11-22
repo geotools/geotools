@@ -16,10 +16,9 @@
  */
 package org.geotools.data.geobuf;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.data.DataStore;
@@ -61,7 +60,7 @@ public class GeobufDataStoreFactory implements DataStoreFactorySpi {
     public GeobufDataStoreFactory() {}
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> map) throws IOException {
+    public DataStore createDataStore(Map<String, ?> map) throws IOException {
         File file = (File) FILE_PARAM.lookUp(map);
         Integer precision = (Integer) PRECISION_PARAM.lookUp(map);
         if (precision == null) {
@@ -79,7 +78,7 @@ public class GeobufDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> map) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> map) throws IOException {
         File file = (File) FILE_PARAM.lookUp(map);
         Integer precision = (Integer) PRECISION_PARAM.lookUp(map);
         if (precision == null) {
@@ -115,7 +114,7 @@ public class GeobufDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public boolean canProcess(Map<String, Serializable> map) {
+    public boolean canProcess(Map<String, ?> map) {
         try {
             File file = (File) FILE_PARAM.lookUp(map);
             if (file != null) {

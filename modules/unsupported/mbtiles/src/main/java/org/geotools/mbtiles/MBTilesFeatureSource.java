@@ -20,7 +20,14 @@ import static org.geotools.mbtiles.MBTilesDataStore.DEFAULT_CRS;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,6 +36,7 @@ import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -109,9 +117,9 @@ class MBTilesFeatureSource extends ContentFeatureSource {
                             .flatMap(tb -> getReaderSuppliersFor(z, tb).stream())
                             .collect(Collectors.toList());
 
-            FeatureReader reader;
+            SimpleFeatureReader reader;
             if (suppliers.isEmpty()) {
-                reader = new EmptyFeatureReader<>(getSchema());
+                reader = DataUtilities.simple(new EmptyFeatureReader<>(getSchema()));
             } else {
                 reader = new CompositeSimpleFeatureReader(getSchema(), suppliers);
             }

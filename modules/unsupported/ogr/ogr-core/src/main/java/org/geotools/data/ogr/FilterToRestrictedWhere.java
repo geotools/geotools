@@ -288,7 +288,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
         return context;
     }
 
-    protected Object evaluateLiteral(Literal expression, Class target) {
+    protected Object evaluateLiteral(Literal expression, Class<?> target) {
         Object literal = null;
 
         // HACK: let expression figure out the right value for numbers,

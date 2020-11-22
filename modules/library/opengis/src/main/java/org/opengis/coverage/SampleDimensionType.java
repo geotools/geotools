@@ -9,8 +9,8 @@
  */
 package org.opengis.coverage;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.OGC_01004;
 
 import java.awt.image.DataBuffer;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public final class SampleDimensionType extends CodeList<SampleDimensionType> {
     private static final long serialVersionUID = -4153433145134818506L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<SampleDimensionType> VALUES = new ArrayList<SampleDimensionType>(11);
+    private static final List<SampleDimensionType> VALUES = new ArrayList<>(11);
 
     /**
      * Unsigned 1 bit integers.

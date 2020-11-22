@@ -21,11 +21,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
 
@@ -134,6 +138,7 @@ public class VPFFeatureType implements SimpleFeatureType {
     /* (non-Javadoc)
      * @see org.geotools.feature.FeatureType#getAttributeCount()
      */
+    @Override
     public int getAttributeCount() {
         return featureClass.getAttributeCount();
     }
@@ -181,6 +186,7 @@ public class VPFFeatureType implements SimpleFeatureType {
     /* (non-Javadoc)
      * @see org.geotools.feature.FeatureType#getTypeName()
      */
+    @Override
     public String getTypeName() {
         return typeName;
     }
@@ -188,6 +194,7 @@ public class VPFFeatureType implements SimpleFeatureType {
     /* (non-Javadoc)
      * @see org.geotools.feature.FeatureType#isAbstract()
      */
+    @Override
     public boolean isAbstract() {
         return featureClass.isAbstract();
     }
@@ -201,6 +208,7 @@ public class VPFFeatureType implements SimpleFeatureType {
         return faccCode;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof VPFFeatureType) {
             return Objects.equals(featureClass, ((VPFFeatureType) obj).featureClass);
@@ -208,90 +216,112 @@ public class VPFFeatureType implements SimpleFeatureType {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return featureClass.hashCode();
     }
 
+    @Override
     public AttributeDescriptor getDescriptor(int index) {
         return featureClass.getDescriptor(index);
     }
 
-    public List getAttributeDescriptors() {
+    @Override
+    public List<AttributeDescriptor> getAttributeDescriptors() {
         return featureClass.getAttributeDescriptors();
     }
 
+    @Override
     public AttributeDescriptor getDescriptor(Name name) {
         return featureClass.getDescriptor(name);
     }
 
+    @Override
     public AttributeDescriptor getDescriptor(String name) {
         return featureClass.getDescriptor(name);
     }
 
+    @Override
     public org.opengis.feature.type.AttributeType getType(Name name) {
         return featureClass.getType(name);
     }
 
+    @Override
     public org.opengis.feature.type.AttributeType getType(String name) {
         return featureClass.getType(name);
     }
 
+    @Override
     public org.opengis.feature.type.AttributeType getType(int index) {
         return featureClass.getType(index);
     }
 
-    public List getTypes() {
+    @Override
+    public List<AttributeType> getTypes() {
         return featureClass.getTypes();
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return featureClass.getCoordinateReferenceSystem();
     }
 
+    @Override
     public GeometryDescriptor getGeometryDescriptor() {
         return featureClass.getGeometryDescriptor();
     }
 
-    public Class getBinding() {
+    @Override
+    public Class<Collection<Property>> getBinding() {
         return featureClass.getBinding();
     }
 
-    public Collection getDescriptors() {
+    @Override
+    public Collection<PropertyDescriptor> getDescriptors() {
         return featureClass.getDescriptors();
     }
 
+    @Override
     public boolean isInline() {
         return featureClass.isInline();
     }
 
-    public List getRestrictions() {
+    @Override
+    public List<Filter> getRestrictions() {
         return featureClass.getRestrictions();
     }
 
+    @Override
     public org.opengis.feature.type.AttributeType getSuper() {
         return featureClass.getSuper();
     }
 
+    @Override
     public boolean isIdentified() {
         return featureClass.isIdentified();
     }
 
+    @Override
     public InternationalString getDescription() {
         return featureClass.getDescription();
     }
 
+    @Override
     public Name getName() {
         return featureClass.getName();
     }
 
+    @Override
     public Map<Object, Object> getUserData() {
         return featureClass.getUserData();
     }
 
+    @Override
     public int indexOf(String name) {
         return featureClass.indexOf(name);
     }
 
+    @Override
     public int indexOf(Name name) {
         return featureClass.indexOf(name);
     }

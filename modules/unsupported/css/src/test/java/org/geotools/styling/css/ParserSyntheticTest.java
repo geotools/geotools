@@ -17,7 +17,11 @@
 package org.geotools.styling.css;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -814,6 +818,6 @@ public class ParserSyntheticTest extends CssBaseTest {
 
     private <T extends Selector> T assertSelector(Selector selector, Class<T> clazz) {
         assertThat(selector, instanceOf(clazz));
-        return (T) selector;
+        return clazz.cast(selector);
     }
 }

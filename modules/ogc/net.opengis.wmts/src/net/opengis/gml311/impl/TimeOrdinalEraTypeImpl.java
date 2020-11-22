@@ -130,7 +130,7 @@ public class TimeOrdinalEraTypeImpl extends DefinitionTypeImpl implements TimeOr
      */
     public EList<RelatedTimeType> getRelatedTime() {
         if (relatedTime == null) {
-            relatedTime = new EObjectContainmentEList<RelatedTimeType>(RelatedTimeType.class, this, Gml311Package.TIME_ORDINAL_ERA_TYPE__RELATED_TIME);
+            relatedTime = new EObjectContainmentEList<>(RelatedTimeType.class, this, Gml311Package.TIME_ORDINAL_ERA_TYPE__RELATED_TIME);
         }
         return relatedTime;
     }
@@ -271,7 +271,7 @@ public class TimeOrdinalEraTypeImpl extends DefinitionTypeImpl implements TimeOr
      */
     public EList<TimeOrdinalEraPropertyType> getMember() {
         if (member == null) {
-            member = new EObjectContainmentEList<TimeOrdinalEraPropertyType>(TimeOrdinalEraPropertyType.class, this, Gml311Package.TIME_ORDINAL_ERA_TYPE__MEMBER);
+            member = new EObjectContainmentEList<>(TimeOrdinalEraPropertyType.class, this, Gml311Package.TIME_ORDINAL_ERA_TYPE__MEMBER);
         }
         return member;
     }

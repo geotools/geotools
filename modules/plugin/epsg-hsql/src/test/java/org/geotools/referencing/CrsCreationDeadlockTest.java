@@ -1,6 +1,6 @@
 package org.geotools.referencing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
@@ -35,7 +35,7 @@ public class CrsCreationDeadlockTest {
                 };
 
         // start them
-        final List<Thread> threads = new ArrayList<Thread>();
+        final List<Thread> threads = new ArrayList<>();
         for (int index = 0; index < NUMBER_OF_THREADS; index++) {
             final Thread thread = new Thread(runnable);
             thread.start();

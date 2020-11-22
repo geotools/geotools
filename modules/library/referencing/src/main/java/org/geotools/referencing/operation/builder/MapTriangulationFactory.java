@@ -19,7 +19,6 @@ package org.geotools.referencing.operation.builder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import org.geotools.geometry.DirectPosition2D;
 import org.opengis.geometry.DirectPosition;
 
@@ -52,7 +51,7 @@ class MapTriangulationFactory {
      * @return Map of a source and destination triangles.
      * @throws TriangulationException thrown when the source points are outside the quad.
      */
-    public Map getTriangleMap() throws TriangulationException {
+    public HashMap<TINTriangle, Object> getTriangleMap() throws TriangulationException {
         Quadrilateral mQuad = mappedQuad(quad, vectors);
 
         ExtendedPosition[] vertices = new ExtendedPosition[vectors.size()];
@@ -60,17 +59,15 @@ class MapTriangulationFactory {
         // converts MappedPosition to ExtendedPosition
         for (int i = 0; i < vectors.size(); i++) {
             vertices[i] =
-                    new ExtendedPosition(
-                            ((MappedPosition) vectors.get(i)).getSource(),
-                            ((MappedPosition) vectors.get(i)).getTarget());
+                    new ExtendedPosition(vectors.get(i).getSource(), vectors.get(i).getTarget());
         }
 
         TriangulationFactory triangulator = new TriangulationFactory(mQuad, vertices);
-        List taggedSourceTriangles = triangulator.getTriangulation();
-        final HashMap triangleMap = new HashMap();
+        List<TINTriangle> taggedSourceTriangles = triangulator.getTriangulation();
+        final HashMap<TINTriangle, Object> triangleMap = new HashMap<>();
 
-        for (Iterator i = taggedSourceTriangles.iterator(); i.hasNext(); ) {
-            final TINTriangle sourceTriangle = (TINTriangle) i.next();
+        for (Object taggedSourceTriangle : taggedSourceTriangles) {
+            final TINTriangle sourceTriangle = (TINTriangle) taggedSourceTriangle;
             triangleMap.put(
                     sourceTriangle,
                     new TINTriangle(

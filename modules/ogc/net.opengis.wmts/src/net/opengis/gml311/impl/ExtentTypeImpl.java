@@ -162,7 +162,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      */
     public EList<EnvelopeType> getBoundingBox() {
         if (boundingBox == null) {
-            boundingBox = new EObjectContainmentEList<EnvelopeType>(EnvelopeType.class, this, Gml311Package.EXTENT_TYPE__BOUNDING_BOX);
+            boundingBox = new EObjectContainmentEList<>(EnvelopeType.class, this, Gml311Package.EXTENT_TYPE__BOUNDING_BOX);
         }
         return boundingBox;
     }
@@ -174,7 +174,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      */
     public EList<PolygonType> getBoundingPolygon() {
         if (boundingPolygon == null) {
-            boundingPolygon = new EObjectContainmentEList<PolygonType>(PolygonType.class, this, Gml311Package.EXTENT_TYPE__BOUNDING_POLYGON);
+            boundingPolygon = new EObjectContainmentEList<>(PolygonType.class, this, Gml311Package.EXTENT_TYPE__BOUNDING_POLYGON);
         }
         return boundingPolygon;
     }
@@ -186,7 +186,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      */
     public EList<EnvelopeType> getVerticalExtent() {
         if (verticalExtent == null) {
-            verticalExtent = new EObjectContainmentEList<EnvelopeType>(EnvelopeType.class, this, Gml311Package.EXTENT_TYPE__VERTICAL_EXTENT);
+            verticalExtent = new EObjectContainmentEList<>(EnvelopeType.class, this, Gml311Package.EXTENT_TYPE__VERTICAL_EXTENT);
         }
         return verticalExtent;
     }
@@ -198,7 +198,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      */
     public EList<TimePeriodType> getTemporalExtent() {
         if (temporalExtent == null) {
-            temporalExtent = new EObjectContainmentEList<TimePeriodType>(TimePeriodType.class, this, Gml311Package.EXTENT_TYPE__TEMPORAL_EXTENT);
+            temporalExtent = new EObjectContainmentEList<>(TimePeriodType.class, this, Gml311Package.EXTENT_TYPE__TEMPORAL_EXTENT);
         }
         return temporalExtent;
     }

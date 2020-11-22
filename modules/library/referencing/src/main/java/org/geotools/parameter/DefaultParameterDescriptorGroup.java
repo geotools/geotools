@@ -209,7 +209,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
         @Override
         public boolean contains(final Object object) {
             if (asSet == null) {
-                asSet = new HashSet<GeneralParameterDescriptor>(this);
+                asSet = new HashSet<>(this);
             }
             return asSet.contains(object);
         }
@@ -262,7 +262,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
                     }
                 } else if (param instanceof DefaultParameterDescriptorGroup) {
                     if (subgroups == null) {
-                        subgroups = new LinkedList<DefaultParameterDescriptorGroup>();
+                        subgroups = new LinkedList<>();
                     }
                     assert !subgroups.contains(param) : param;
                     subgroups.add((DefaultParameterDescriptorGroup) param);

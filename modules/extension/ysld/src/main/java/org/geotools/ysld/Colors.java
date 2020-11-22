@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +27,7 @@ import java.util.Map;
  * @see http://en.wikipedia.org/wiki/X11_color_names
  */
 public class Colors {
-    static Map<String, Color> colorMap = new HashMap<String, Color>();
+    static Map<String, Color> colorMap = new HashMap<>();
 
     static {
         colorMap.put("aliceblue", color(240, 248, 255));

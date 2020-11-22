@@ -92,7 +92,7 @@ public class WFSExtensions {
 
         Iterator<WFSResponseFactory> serviceProviders = getServiceProviders();
 
-        List<WFSResponseFactory> matches = new ArrayList<WFSResponseFactory>(5);
+        List<WFSResponseFactory> matches = new ArrayList<>(5);
 
         while (serviceProviders.hasNext()) {
             WFSResponseFactory factory = serviceProviders.next();

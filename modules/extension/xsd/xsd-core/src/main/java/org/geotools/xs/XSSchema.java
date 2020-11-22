@@ -58,7 +58,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
 
@@ -82,7 +82,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYTYPE_TYPE,
                     null);
 
@@ -129,7 +129,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -173,7 +173,7 @@ public class XSSchema extends SchemaImpl {
                     BigDecimal.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -203,7 +203,7 @@ public class XSSchema extends SchemaImpl {
                     BigInteger.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     DECIMAL_TYPE,
                     null);
 
@@ -232,7 +232,7 @@ public class XSSchema extends SchemaImpl {
                     BigInteger.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     INTEGER_TYPE,
                     null);
 
@@ -265,7 +265,7 @@ public class XSSchema extends SchemaImpl {
                     BigInteger.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NONNEGATIVEINTEGER_TYPE,
                     null);
 
@@ -294,7 +294,7 @@ public class XSSchema extends SchemaImpl {
                     Long.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     UNSIGNEDLONG_TYPE,
                     null);
 
@@ -323,7 +323,7 @@ public class XSSchema extends SchemaImpl {
                     Integer.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     UNSIGNEDINT_TYPE,
                     null);
 
@@ -352,7 +352,7 @@ public class XSSchema extends SchemaImpl {
                     Short.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     UNSIGNEDSHORT_TYPE,
                     null);
 
@@ -393,7 +393,7 @@ public class XSSchema extends SchemaImpl {
                     QName.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -434,7 +434,7 @@ public class XSSchema extends SchemaImpl {
                     String.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -463,7 +463,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     STRING_TYPE,
                     null);
 
@@ -492,7 +492,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NORMALIZEDSTRING_TYPE,
                     null);
 
@@ -527,7 +527,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     TOKEN_TYPE,
                     null);
 
@@ -562,7 +562,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NAME_TYPE,
                     null);
 
@@ -589,7 +589,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NCNAME_TYPE,
                     null);
 
@@ -633,7 +633,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -663,7 +663,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     TOKEN_TYPE,
                     null);
 
@@ -699,7 +699,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     TOKEN_TYPE,
                     null);
 
@@ -741,7 +741,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -789,7 +789,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -831,7 +831,7 @@ public class XSSchema extends SchemaImpl {
                     Float.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -873,7 +873,7 @@ public class XSSchema extends SchemaImpl {
                     Timestamp.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -915,7 +915,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -942,7 +942,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NCNAME_TYPE,
                     null);
 
@@ -977,7 +977,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     TOKEN_TYPE,
                     null);
 
@@ -1011,7 +1011,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NMTOKEN_TYPE,
                     null);
 
@@ -1042,7 +1042,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     DERIVATIONCONTROL_TYPE,
                     null);
 
@@ -1071,7 +1071,7 @@ public class XSSchema extends SchemaImpl {
                     BigInteger.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     INTEGER_TYPE,
                     null);
 
@@ -1100,7 +1100,7 @@ public class XSSchema extends SchemaImpl {
                     BigInteger.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NONPOSITIVEINTEGER_TYPE,
                     null);
 
@@ -1142,7 +1142,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1173,7 +1173,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NMTOKEN_TYPE,
                     null);
 
@@ -1202,7 +1202,7 @@ public class XSSchema extends SchemaImpl {
                     BigInteger.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NONNEGATIVEINTEGER_TYPE,
                     null);
 
@@ -1243,7 +1243,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1285,7 +1285,7 @@ public class XSSchema extends SchemaImpl {
                     Double.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1334,7 +1334,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1376,7 +1376,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1415,7 +1415,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1457,7 +1457,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1491,7 +1491,7 @@ public class XSSchema extends SchemaImpl {
                     Long.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     INTEGER_TYPE,
                     null);
 
@@ -1521,7 +1521,7 @@ public class XSSchema extends SchemaImpl {
                     Integer.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     LONG_TYPE,
                     null);
 
@@ -1551,7 +1551,7 @@ public class XSSchema extends SchemaImpl {
                     Short.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     INT_TYPE,
                     null);
 
@@ -1581,7 +1581,7 @@ public class XSSchema extends SchemaImpl {
                     Byte.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     SHORT_TYPE,
                     null);
 
@@ -1618,7 +1618,7 @@ public class XSSchema extends SchemaImpl {
                     Boolean.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1659,7 +1659,7 @@ public class XSSchema extends SchemaImpl {
                     URI.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1701,7 +1701,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1743,7 +1743,7 @@ public class XSSchema extends SchemaImpl {
                     Time.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1784,7 +1784,7 @@ public class XSSchema extends SchemaImpl {
                     byte[].class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1826,7 +1826,7 @@ public class XSSchema extends SchemaImpl {
                     java.sql.Date.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1860,7 +1860,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ANYSIMPLETYPE_TYPE,
                     null);
 
@@ -1887,7 +1887,7 @@ public class XSSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     NCNAME_TYPE,
                     null);
 
@@ -1996,7 +1996,7 @@ public class XSSchema extends SchemaImpl {
      * @return Subset of XSSchema capturing a unique mapping for Java classes
      */
     public ProfileImpl profile() {
-        Set<Name> profile = new LinkedHashSet<Name>();
+        Set<Name> profile = new LinkedHashSet<>();
         profile.add(new NameImpl(XS.BYTE)); // Byte.class
         profile.add(new NameImpl(XS.HEXBINARY)); // byte[].class
         profile.add(new NameImpl(XS.SHORT)); // Short.class

@@ -75,9 +75,8 @@ public final class WMTS extends XSD {
     /** private constructor */
     private WMTS() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(org.geotools.ows.v1_1.OWS.getInstance());
-
         super.addDependencies(dependencies);
     }
 

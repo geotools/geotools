@@ -40,7 +40,7 @@ class TINTriangle extends Polygon {
     /** The third vertex. */
     public DirectPosition p2;
 
-    private final List<TINTriangle> adjacentTriangles = new ArrayList<TINTriangle>();
+    private final List<TINTriangle> adjacentTriangles = new ArrayList<>();
 
     /**
      * Creates a Triangle.
@@ -95,7 +95,7 @@ class TINTriangle extends Polygon {
      * @return three Triangles created by splitting this TINTriangle at a newVertex.
      */
     public List<TINTriangle> subTriangles(DirectPosition newVertex) {
-        ArrayList<TINTriangle> triangles = new ArrayList<TINTriangle>();
+        ArrayList<TINTriangle> triangles = new ArrayList<>();
         TINTriangle trigA = new TINTriangle(p0, p1, newVertex);
         TINTriangle trigB = new TINTriangle(p1, p2, newVertex);
         TINTriangle trigC = new TINTriangle(p2, p0, newVertex);

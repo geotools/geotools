@@ -243,7 +243,7 @@ public class ParseExecutor implements Visitor {
 
                 // now we must parse the items up
                 final XSDSimpleTypeDefinition itemType = type.getItemTypeDefinition();
-                List parsed = new ArrayList();
+                List<Object> parsed = new ArrayList<>();
 
                 // create a pseudo declaration
                 final XSDElementDeclaration element =

@@ -75,8 +75,8 @@ public class OrthoLineBuilder {
 
         init(lineDefs, lineFeatureBuilder, vertexSpacing);
 
-        List<OrthoLineDef> horizontal = new ArrayList<OrthoLineDef>();
-        List<OrthoLineDef> vertical = new ArrayList<OrthoLineDef>();
+        List<OrthoLineDef> horizontal = new ArrayList<>();
+        List<OrthoLineDef> vertical = new ArrayList<>();
 
         for (OrthoLineDef lineDef : lineDefs) {
             switch (lineDef.getOrientation()) {
@@ -126,7 +126,7 @@ public class OrthoLineBuilder {
             boolean[] atCurPos = new boolean[NDEFS];
             boolean[] generate = new boolean[NDEFS];
 
-            Map<String, Object> attributes = new HashMap<String, Object>();
+            Map<String, Object> attributes = new HashMap<>();
             String geomPropName =
                     lineFeatureBuilder.getType().getGeometryDescriptor().getLocalName();
 

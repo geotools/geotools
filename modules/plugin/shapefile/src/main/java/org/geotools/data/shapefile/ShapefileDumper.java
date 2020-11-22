@@ -207,7 +207,7 @@ public class ShapefileDumper {
         fc = RemappingFeatureCollection.getShapefileCompatibleCollection(fc);
         SimpleFeatureType schema = fc.getSchema();
 
-        Map<Class<?>, StoreWriter> writers = new HashMap<Class<?>, StoreWriter>();
+        Map<Class<?>, StoreWriter> writers = new HashMap<>();
         boolean featuresWritten = false;
         Class<?> geomType = schema.getGeometryDescriptor().getType().getBinding();
         // let's see if we will need to write multiple geometry types
@@ -385,12 +385,10 @@ public class ShapefileDumper {
             geometryType = "Line";
         } else {
             throw new RuntimeException(
-                    "This should never happen, "
-                            + "there's a bug in the SHAPE-ZIP output format. I got a geometry of type "
-                            + g.getClass());
+                    "This should never happen, I got a geometry of type " + g.getClass());
         }
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("target", target);
         map.put("geometryType", geometryType);
         return map;

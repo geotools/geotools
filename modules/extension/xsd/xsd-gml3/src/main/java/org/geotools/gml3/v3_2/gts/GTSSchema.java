@@ -72,7 +72,7 @@ public class GTSSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.DURATION_TYPE,
@@ -135,7 +135,7 @@ public class GTSSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.ABSTRACTTIMEPRIMITIVETYPE_TYPE,

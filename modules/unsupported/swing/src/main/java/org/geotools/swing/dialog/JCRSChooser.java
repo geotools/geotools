@@ -137,8 +137,7 @@ public class JCRSChooser {
             selected = doShow(title, initialCode, authority);
 
         } else {
-            final SynchronousQueue<CoordinateReferenceSystem> sq =
-                    new SynchronousQueue<CoordinateReferenceSystem>();
+            final SynchronousQueue<CoordinateReferenceSystem> sq = new SynchronousQueue<>();
 
             final Thread currentThread = Thread.currentThread();
 
@@ -203,7 +202,7 @@ public class JCRSChooser {
         private final String initialCode;
 
         private CRSListModel model;
-        private JList listBox;
+        private JList<String> listBox;
         private JButton okButton;
 
         private CoordinateReferenceSystem crs;
@@ -256,7 +255,7 @@ public class JCRSChooser {
 
             panel.add(filterFld, "wrap");
 
-            listBox = new JList(model);
+            listBox = new JList<>(model);
             listBox.addMouseListener(
                     new MouseAdapter() {
 

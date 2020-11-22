@@ -165,7 +165,7 @@ public class CoverageClassStats implements RasterProcess {
         Double[] breaks = (Double[]) c.getBreaks()[0];
 
         // build up the classes/ranges
-        List<Range<Double>> ranges = new ArrayList<Range<Double>>();
+        List<Range<Double>> ranges = new ArrayList<>();
         for (int i = 0; i < breaks.length - 1; i++) {
             ranges.add(Range.create(breaks[i], true, breaks[i + 1], i == breaks.length - 2));
         }

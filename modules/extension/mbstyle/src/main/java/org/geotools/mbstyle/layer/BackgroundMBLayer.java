@@ -17,7 +17,7 @@
  */
 package org.geotools.mbstyle.layer;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.mbstyle.MBStyle;
@@ -45,9 +45,9 @@ import org.opengis.style.SemanticType;
  */
 public class BackgroundMBLayer extends MBLayer {
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "background";
+    private static final String TYPE = "background";
 
     public BackgroundMBLayer(JSONObject json) {
         super(json, new MBObjectParser(BackgroundMBLayer.class));
@@ -93,7 +93,7 @@ public class BackgroundMBLayer extends MBLayer {
 
     /** @return True if the layer has a background-pattern explicitly provided. */
     public boolean hasBackgroundPattern() {
-        return parse.isPropertyDefined(paint, "background-pattern");
+        return parse.isDefined(paint, "background-pattern");
     }
 
     /**

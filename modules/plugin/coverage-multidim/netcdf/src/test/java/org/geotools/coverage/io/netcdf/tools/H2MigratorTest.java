@@ -16,12 +16,12 @@
  */
 package org.geotools.coverage.io.netcdf.tools;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import com.google.common.io.Files;
@@ -188,7 +188,7 @@ public class H2MigratorTest {
 
         // create an H2 store to hold the mosaic slices
         final String mosaicDatabasePath = new File(testDir, "customDB").getAbsolutePath();
-        Map sourceParams = new HashMap<>();
+        Map<String, Object> sourceParams = new HashMap<>();
         sourceParams.put("database", mosaicDatabasePath);
         sourceParams.put("MVCC", "true");
         final JDBCDataStore customStore = new H2DataStoreFactory().createDataStore(sourceParams);
@@ -284,6 +284,7 @@ public class H2MigratorTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void assertMultiCoverageMigration(
             File testDir, File logDir, H2MigrateConfiguration config) throws Exception {
         // check the migrated data
@@ -303,7 +304,7 @@ public class H2MigratorTest {
             assertEquals(2, airTemperature.size());
             airTemperature.accepts(u1, null);
             assertThat(
-                    (Set<String>) u1.getUnique(),
+                    getUniqueStrings(u1),
                     Matchers.containsInAnyOrder(
                             endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
 
@@ -313,7 +314,7 @@ public class H2MigratorTest {
             assertEquals(2, seaSurfaceTemperature.size());
             seaSurfaceTemperature.accepts(u2, null);
             assertThat(
-                    (Set<String>) u2.getUnique(),
+                    getUniqueStrings(u2),
                     Matchers.containsInAnyOrder(
                             endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
 
@@ -349,6 +350,11 @@ public class H2MigratorTest {
         // check each mosaic property file has the aux datastore property too
         assertCoveragePropertiesUpdate(
                 testDir, new String[] {"air_temperature", "sea_surface_temperature"});
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<String> getUniqueStrings(UniqueVisitor u1) {
+        return (Set<String>) u1.getUnique();
     }
 
     public void assertIndexerUpdated(File testDir) throws JAXBException {
@@ -421,6 +427,7 @@ public class H2MigratorTest {
 
     /** Test migration on a mosaic with multiple files each one having one coverage */
     @Test
+    @SuppressWarnings("unchecked")
     public void testMultiCoverageSplitNames() throws Exception {
         File testDir = tempFolder.newFolder("gome");
         URL testUrl = URLs.fileToUrl(testDir);
@@ -480,7 +487,7 @@ public class H2MigratorTest {
             UniqueVisitor u1 = new UniqueVisitor("location");
             bro.accepts(u1, null);
             assertThat(
-                    (Set<String>) u1.getUnique(),
+                    getUniqueStrings(u1),
                     Matchers.containsInAnyOrder(
                             endsWith("20130101.BrO.DUMMY.nc"), endsWith("20130108.BrO.DUMMY.nc")));
 
@@ -489,7 +496,7 @@ public class H2MigratorTest {
             UniqueVisitor u2 = new UniqueVisitor("location");
             no2.accepts(u2, null);
             assertThat(
-                    (Set<String>) u2.getUnique(),
+                    getUniqueStrings(u2),
                     Matchers.containsInAnyOrder(
                             endsWith("20130101.NO2.DUMMY.nc"), endsWith("20130108.NO2.DUMMY.nc")));
 

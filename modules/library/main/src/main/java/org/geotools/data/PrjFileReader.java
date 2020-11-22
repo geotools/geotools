@@ -18,6 +18,7 @@ package org.geotools.data;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
@@ -119,7 +120,7 @@ public class PrjFileReader implements Closeable {
         if (channel instanceof FileChannel && USE_MEMORY_MAPPED_BUFFERS) {
             FileChannel fc = (FileChannel) channel;
             buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-            buffer.position((int) fc.position());
+            ((Buffer) buffer).position((int) fc.position());
         } else {
             // Some other type of channel
             // start with a 8K buffer, should be more than adequate

@@ -84,7 +84,7 @@ public class DialogUtils {
     public static <T extends JComponent> List<T> getChildComponents(
             Class<T> clazz, Container parent, boolean includeNested) {
 
-        List<T> children = new ArrayList<T>();
+        List<T> children = new ArrayList<>();
 
         for (Component c : parent.getComponents()) {
             boolean isClazz = clazz.isAssignableFrom(c.getClass());

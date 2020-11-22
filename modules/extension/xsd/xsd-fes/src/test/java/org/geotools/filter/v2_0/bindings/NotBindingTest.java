@@ -35,10 +35,12 @@ public class NotBindingTest {
         assertEquals("prop", prop);
     }
 
+    @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
     private void defaultNamespaceContext(XPath xpath) {
         xpath.setNamespaceContext(
                 new NamespaceContext() {
                     @Override
+                    @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
                     public Iterator getPrefixes(String namespaceURI) {
                         return null;
                     }

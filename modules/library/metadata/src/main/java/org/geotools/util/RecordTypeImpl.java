@@ -69,7 +69,7 @@ public class RecordTypeImpl implements RecordType {
             final Collection<MemberName> members) {
         this.parent = parent;
         this.typeName = typeName;
-        final Map<MemberName, TypeName> attributeTypes = new HashMap<MemberName, TypeName>();
+        final Map<MemberName, TypeName> attributeTypes = new HashMap<>();
         for (final MemberName member : members) {
             attributeTypes.put(member, member.getAttributeType());
         }

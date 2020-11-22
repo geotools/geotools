@@ -61,9 +61,9 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
             Icon icon, Collection<ColorReplacement> replaces, OnLineResource source) {
         this.inlineContent = icon;
         if (replaces == null) {
-            colorReplacements = new TreeSet<ColorReplacement>();
+            colorReplacements = new TreeSet<>();
         } else {
-            colorReplacements = new TreeSet<ColorReplacement>(replaces);
+            colorReplacements = new TreeSet<>(replaces);
         }
         this.online = source;
     }

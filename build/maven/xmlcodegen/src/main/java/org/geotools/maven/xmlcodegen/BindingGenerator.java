@@ -106,7 +106,7 @@ public class BindingGenerator extends AbstractGenerator {
     }
     
     public void generate(XSDSchema schema) {
-        List components = new ArrayList();
+        List<Object> components = new ArrayList<>();
 
         if (generateElements) {
             List elements = schema.getElementDeclarations();
@@ -171,7 +171,7 @@ public class BindingGenerator extends AbstractGenerator {
             }
             
             //copy over all included schemas
-            ArrayList includes = new ArrayList();
+            List<File> includes = new ArrayList<>();
            
             File file = null;
             try {

@@ -18,7 +18,7 @@ package org.geotools.gml3.simple;
 
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
-import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.io.ParseException;
 import org.w3c.dom.Document;
 
@@ -32,11 +32,12 @@ public class GeometryCollectionEncoderTest extends GeometryEncoderTestSupport {
     public void testGeometryCollectionEncoder() throws ParseException, Exception {
         GeometryCollectionEncoder gce =
                 new GeometryCollectionEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        Geometry geometry =
-                new WKTReader2()
-                        .read(
-                                "GEOMETRYCOLLECTION (LINESTRING"
-                                        + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
+        GeometryCollection geometry =
+                (GeometryCollection)
+                        new WKTReader2()
+                                .read(
+                                        "GEOMETRYCOLLECTION (LINESTRING"
+                                                + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
         Document doc = encode(gce, geometry, "feature.1");
         // XMLTestSupport.print(doc);
         assertEquals(1, xpath.getMatchingNodes("//gml:LineString", doc).getLength());

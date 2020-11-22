@@ -70,12 +70,13 @@ public class LineCoveredByPolygonValidation extends LinePolygonAbstractValidatio
      * @param results Used to coallate results information
      * @return <code>true</code> if all the features pass this test.
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
 
         boolean r = true;
 
-        SimpleFeatureSource fsLine = (SimpleFeatureSource) layers.get(getLineTypeRef());
+        SimpleFeatureSource fsLine = layers.get(getLineTypeRef());
 
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
         try (SimpleFeatureIterator fLine = fcLine.features()) {

@@ -19,6 +19,7 @@ package org.geotools.gml3.bindings;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
+import javax.xml.namespace.QName;
 import junit.framework.TestCase;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
@@ -35,7 +36,7 @@ public class GMLConfigurationTest extends TestCase {
     public void testBindingTypes() throws Exception {
         GMLConfiguration configuration = new GMLConfiguration();
         assertEquals(GML.NAMESPACE, configuration.getNamespaceURI());
-        Map bindings = configuration.setupBindings();
+        Map<QName, Object> bindings = configuration.setupBindings();
         for (Object object : bindings.values()) {
             if (object instanceof Class) {
                 Class type = (Class) object;

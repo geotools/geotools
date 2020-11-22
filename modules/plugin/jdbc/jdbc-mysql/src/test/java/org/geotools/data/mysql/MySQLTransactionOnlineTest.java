@@ -20,7 +20,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTransactionOnlineTest;
 
 /**
- * Transation test for MySQL.
+ * Transaction test for MySQL.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

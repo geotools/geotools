@@ -914,7 +914,7 @@ public class SimpleFeatureTypeBuilder {
         if (origional == null) {
             return newList();
         }
-        if (origional == Collections.EMPTY_LIST) {
+        if (origional == Collections.emptyList()) {
             return newList();
         }
         try {

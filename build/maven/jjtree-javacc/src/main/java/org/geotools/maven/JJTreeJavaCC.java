@@ -322,7 +322,7 @@ public class JJTreeJavaCC extends AbstractMojo {
             directory = new File(directory, nodePackage.replace('.', '/'));
         }
         if (!directory.isDirectory()) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         final File outDir = new File(timestampDirectory);
         try {
@@ -366,7 +366,7 @@ public class JJTreeJavaCC extends AbstractMojo {
      * @return The arguments to pass to {@code jjtree}.
      */
     private String[] generateJJTreeArgumentList(final String sourceFilename) {
-        final List argsList = new ArrayList();
+        final List<String> argsList = new ArrayList<>();
         if (nodePackage != null && nodePackage.trim().length() != 0) {
             argsList.add("-NODE_PACKAGE:" + nodePackage);
         }
@@ -383,7 +383,7 @@ public class JJTreeJavaCC extends AbstractMojo {
      * @return The arguments to pass to {@code javacc}.
      */
     private String[] generateJavaCCArgumentList(final String sourceInput) {
-        final List argsList = new ArrayList();
+        final List<String> argsList = new ArrayList<>();
         argsList.add("-OUTPUT_DIRECTORY:" + outputPackageDirectory.getPath());
         argsList.add(sourceInput);
         getLog().debug("javacc arguments list: " + argsList.toString());

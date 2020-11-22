@@ -60,7 +60,7 @@ import org.opengis.filter.expression.Expression;
  */
 class CaseFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("case");
+    public static final FunctionName NAME = new FunctionNameImpl("case");
 
     CaseFunction() {
         super(NAME);

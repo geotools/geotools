@@ -16,9 +16,9 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link RangeSet} implementation.
@@ -30,15 +30,15 @@ public final class RangeSetTest {
     /** Tests {@link RangeSet#remove}. */
     @Test
     public void testRangeRemoval() {
-        RangeSet<Double> rs = new RangeSet<Double>(Double.class);
+        RangeSet<Double> rs = new RangeSet<>(Double.class);
         rs.add(10.0, 22.0);
         rs.remove(8.0, 12.0);
-        RangeSet<Double> rsResult = new RangeSet<Double>(Double.class);
+        RangeSet<Double> rsResult = new RangeSet<>(Double.class);
         rsResult.add(12.0, 22.0);
         assertEquals("Lower removal:", rs, rsResult);
 
         rs.remove(20.0, 30.0);
-        rsResult = new RangeSet<Double>(Double.class);
+        rsResult = new RangeSet<>(Double.class);
         rsResult.add(12.0, 20.0);
         assertEquals("Upper removal:", rs, rsResult);
 
@@ -53,7 +53,7 @@ public final class RangeSetTest {
         assertEquals("Upper touch removal:", rs, rsResult);
 
         rs.remove(14.0, 16.0);
-        rsResult = new RangeSet<Double>(Double.class);
+        rsResult = new RangeSet<>(Double.class);
         rsResult.add(12.0, 14.0);
         rsResult.add(16.0, 20.0);
         assertEquals("Central removal:", rs, rsResult);
@@ -65,32 +65,32 @@ public final class RangeSetTest {
         assertEquals("Central touch null removal:", rs, rsResult);
 
         rs.remove(15.0, 17.0);
-        rsResult = new RangeSet<Double>(Double.class);
+        rsResult = new RangeSet<>(Double.class);
         rsResult.add(12.0, 14.0);
         rsResult.add(17.0, 20.0);
         assertEquals("Central right removal:", rs, rsResult);
 
         rs.remove(13.0, 15.0);
-        rsResult = new RangeSet<Double>(Double.class);
+        rsResult = new RangeSet<>(Double.class);
         rsResult.add(12.0, 13.0);
         rsResult.add(17.0, 20.0);
         assertEquals("Central left removal:", rs, rsResult);
 
         rs.remove(12.5, 18.0);
-        rsResult = new RangeSet<Double>(Double.class);
+        rsResult = new RangeSet<>(Double.class);
         rsResult.add(12.0, 12.5);
         rsResult.add(18.0, 20.0);
         assertEquals("Central both removal:", rs, rsResult);
 
         rs.remove(18.5, 19.0);
-        rsResult = new RangeSet<Double>(Double.class);
+        rsResult = new RangeSet<>(Double.class);
         rsResult.add(12.0, 12.5);
         rsResult.add(18.0, 18.5);
         rsResult.add(19.0, 20.0);
         assertEquals("Central removal 2:", rs, rsResult);
 
         rs.remove(17.0, 19.0);
-        rsResult = new RangeSet<Double>(Double.class);
+        rsResult = new RangeSet<>(Double.class);
         rsResult.add(12.0, 12.5);
         rsResult.add(19.0, 20.0);
         assertEquals("Central wipeout:", rs, rsResult);

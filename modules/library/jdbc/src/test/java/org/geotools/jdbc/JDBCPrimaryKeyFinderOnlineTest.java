@@ -17,8 +17,8 @@
 package org.geotools.jdbc;
 
 import org.geotools.data.DataUtilities;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ContentFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.locationtech.jts.geom.Coordinate;
@@ -59,7 +59,7 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
         assertTrue(
                 fs.getPrimaryKey().getColumns().get(0) instanceof NonIncrementingPrimaryKeyColumn);
 
-        FeatureCollection features = fs.getFeatures();
+        SimpleFeatureCollection features = fs.getFeatures();
         assertPrimaryKeyValues(features, 3);
     }
 
@@ -97,7 +97,7 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
                         .matches(tname(featureType.getTypeName()) + ".4(\\..*)?"));
     }
 
-    protected void assertPrimaryKeyValues(final FeatureCollection features, int count)
+    protected void assertPrimaryKeyValues(final SimpleFeatureCollection features, int count)
             throws Exception {
         assertFeatureIterator(
                 1,

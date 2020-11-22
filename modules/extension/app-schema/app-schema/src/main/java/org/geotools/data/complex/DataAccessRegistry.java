@@ -60,8 +60,7 @@ public class DataAccessRegistry implements Repository {
     protected InterpolationProperties properties = null;
 
     /** Data Access Resources */
-    protected List<DataAccess<FeatureType, Feature>> registry =
-            new ArrayList<DataAccess<FeatureType, Feature>>();
+    protected List<DataAccess<FeatureType, Feature>> registry = new ArrayList<>();
 
     /** Sole constructor */
     protected DataAccessRegistry() {}
@@ -161,13 +160,13 @@ public class DataAccessRegistry implements Repository {
         // step 1: collect all hidden data access instances that are still referenced by some other
         // data access
         boolean canSafelyRemove = true;
-        Set<DataAccess<?, ?>> stillReferencedHiddenDataAccesses = new HashSet<DataAccess<?, ?>>();
+        Set<DataAccess<?, ?>> stillReferencedHiddenDataAccesses = new HashSet<>();
         for (DataAccess<FeatureType, Feature> da : registry) {
             if (da instanceof AppSchemaDataAccess) {
                 AppSchemaDataAccess asda = (AppSchemaDataAccess) da;
                 if (!asda.hidden) {
                     // reach out to all referenced (directly or indirectly) DataAccesses
-                    Set<DataAccess<?, ?>> reachedDataAccesses = new HashSet<DataAccess<?, ?>>();
+                    Set<DataAccess<?, ?>> reachedDataAccesses = new HashSet<>();
                     canSafelyRemove =
                             canSafelyRemove
                                     && reachOutToReferencedDataAccesses(
@@ -185,8 +184,7 @@ public class DataAccessRegistry implements Repository {
         // step 2: remove hidden data access instances that are no more referenced;
         // this step is performed only if no polymorphic nested mapping was found
         if (canSafelyRemove) {
-            List<DataAccess<FeatureType, Feature>> copyRegistry =
-                    new ArrayList<DataAccess<FeatureType, Feature>>(registry);
+            List<DataAccess<FeatureType, Feature>> copyRegistry = new ArrayList<>(registry);
             for (DataAccess<FeatureType, Feature> da : copyRegistry) {
                 if (da instanceof AppSchemaDataAccess) {
                     AppSchemaDataAccess asda = (AppSchemaDataAccess) da;
@@ -261,8 +259,7 @@ public class DataAccessRegistry implements Repository {
      * tests.
      */
     public synchronized void disposeAndUnregisterAll() {
-        List<DataAccess<FeatureType, Feature>> copyRegistry =
-                new ArrayList<DataAccess<FeatureType, Feature>>(registry);
+        List<DataAccess<FeatureType, Feature>> copyRegistry = new ArrayList<>(registry);
         for (DataAccess<FeatureType, Feature> da : copyRegistry) {
             da.dispose();
         }
@@ -437,7 +434,7 @@ public class DataAccessRegistry implements Repository {
      * @param featureTypeName Name of feature type
      */
     protected void throwDataSourceException(Name featureTypeName) throws IOException {
-        List<Name> typeNames = new ArrayList<Name>();
+        List<Name> typeNames = new ArrayList<>();
         for (Iterator<DataAccess<FeatureType, Feature>> dataAccessIterator = registry.iterator();
                 dataAccessIterator.hasNext(); ) {
             typeNames.addAll(dataAccessIterator.next().getNames());

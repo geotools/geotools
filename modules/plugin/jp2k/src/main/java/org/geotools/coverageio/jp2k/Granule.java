@@ -160,8 +160,7 @@ class Granule {
 
     File granuleFile;
 
-    final Map<Integer, Level> granuleLevels =
-            Collections.synchronizedMap(new HashMap<Integer, Level>());
+    final Map<Integer, Level> granuleLevels = Collections.synchronizedMap(new HashMap<>());
 
     AffineTransform baseGridToWorld;
 

@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpressionImpl;
@@ -50,7 +50,7 @@ public class FilterFunction_property extends FunctionExpressionImpl implements V
     }
 
     @Override
-    public Object evaluate(Object object, Class context) {
+    public <T> T evaluate(Object object, Class<T> context) {
         Object result = evaluate(object);
         if (result == null) {
             return null;

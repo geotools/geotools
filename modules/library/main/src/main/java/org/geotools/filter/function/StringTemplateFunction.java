@@ -68,7 +68,7 @@ public class StringTemplateFunction implements Function {
             new FunctionNameImpl("stringTemplate", "input", "pattern", "template", "defaultValue");
 
     public StringTemplateFunction() {
-        this.parameters = new ArrayList<Expression>();
+        this.parameters = new ArrayList<>();
         this.fallback = null;
     }
 
@@ -133,7 +133,9 @@ public class StringTemplateFunction implements Function {
         if (context != null) {
             return Converters.convert(result, context);
         } else {
-            return (T) result;
+            @SuppressWarnings("unchecked")
+            T converted = (T) result;
+            return converted;
         }
     }
 

@@ -320,7 +320,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
         // using an H2 based datastore for imageMosaic index
         File dsp = TestData.file(this, "datastore.properties");
         FileUtils.copyFileToDirectory(dsp, mosaic);
-        Map<String, String> overrideMap = new HashMap<String, String>();
+        Map<String, String> overrideMap = new HashMap<>();
         overrideMap.put("database", "lowlevelindex");
         createDatastoreProperties(mosaic, overrideMap);
 

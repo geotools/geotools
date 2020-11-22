@@ -85,7 +85,7 @@ public class ContentsTypeImpl extends ContentsBaseTypeImpl implements ContentsTy
 	 */
     public EList<CoverageSummaryType> getCoverageSummary() {
 		if (coverageSummary == null) {
-			coverageSummary = new EObjectContainmentEList<CoverageSummaryType>(CoverageSummaryType.class, this, Wcs20Package.CONTENTS_TYPE__COVERAGE_SUMMARY);
+			coverageSummary = new EObjectContainmentEList<>(CoverageSummaryType.class, this, Wcs20Package.CONTENTS_TYPE__COVERAGE_SUMMARY);
 		}
 		return coverageSummary;
 	}

@@ -58,6 +58,7 @@ public class RescaleToPixelsFunction extends FunctionExpressionImpl {
             return null;
         }
 
+        @SuppressWarnings("unchecked")
         Unit<Length> defaultUnit = getExpression(1).evaluate(feature, Unit.class);
 
         Double scaleFactor = getExpression(2).evaluate(feature, Double.class);

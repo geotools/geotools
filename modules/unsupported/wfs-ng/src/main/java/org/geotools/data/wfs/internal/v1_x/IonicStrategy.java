@@ -39,7 +39,7 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
             new OGCConfiguration() {
 
                 @Override
-                protected void registerBindings(Map bindings) {
+                protected void registerBindings(Map<QName, Object> bindings) {
                     super.registerBindings(bindings);
                 }
 

@@ -28,7 +28,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
 
     boolean extended = false;
 
-    List<ColorMapEntry> entries = new ArrayList<ColorMapEntry>();
+    List<ColorMapEntry> entries = new ArrayList<>();
 
     ColorMapEntryBuilder colorMapEntryBuilder = null;
 
@@ -84,7 +84,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
     public ColorMapBuilder reset() {
         type = ColorMap.TYPE_RAMP;
         extended = false;
-        entries = new ArrayList<ColorMapEntry>();
+        entries = new ArrayList<>();
         unset = false;
         return this;
     }
@@ -95,7 +95,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
         }
         type = original.getType();
         extended = original.getExtendedColors();
-        entries = new ArrayList<ColorMapEntry>(Arrays.asList(original.getColorMapEntries()));
+        entries = new ArrayList<>(Arrays.asList(original.getColorMapEntries()));
         unset = false;
         return this;
     }

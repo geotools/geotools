@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -124,7 +124,7 @@ public class SLDTransformerTest {
         transformer.setIndentation(4);
 
         // setup xml unit
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("sld", "http://www.opengis.net/sld");
         namespaces.put("ogc", "http://www.opengis.net/ogc");
         namespaces.put("gml", "http://www.opengis.net/gml");

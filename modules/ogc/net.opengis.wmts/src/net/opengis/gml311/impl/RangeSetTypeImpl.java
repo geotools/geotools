@@ -116,7 +116,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      */
     public EList<ValueArrayType> getValueArray() {
         if (valueArray == null) {
-            valueArray = new EObjectContainmentEList<ValueArrayType>(ValueArrayType.class, this, Gml311Package.RANGE_SET_TYPE__VALUE_ARRAY);
+            valueArray = new EObjectContainmentEList<>(ValueArrayType.class, this, Gml311Package.RANGE_SET_TYPE__VALUE_ARRAY);
         }
         return valueArray;
     }

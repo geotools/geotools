@@ -48,6 +48,7 @@ public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
         super(WFS.FeatureTypeListType, FeatureTypeListType.class, Binding.OVERRIDE);
     }
 
+    @SuppressWarnings("unchecked")
     public void testEncode() throws Exception {
         FeatureTypeListType ftl = factory.createFeatureTypeListType();
         {

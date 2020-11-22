@@ -16,14 +16,19 @@
  */
 package org.geotools.mbstyle.parse;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.layer.MBLayer;
-import org.geotools.styling.*;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayer;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;

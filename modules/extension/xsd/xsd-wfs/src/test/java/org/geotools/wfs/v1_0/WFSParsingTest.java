@@ -254,6 +254,7 @@ public class WFSParsingTest {
 
         assertEquals("EPSG:4326", featureType.getDefaultSRS());
 
+        @SuppressWarnings("unchecked")
         List<WGS84BoundingBoxType> wgs84BoundingBox = featureType.getWGS84BoundingBox();
         assertEquals(1, wgs84BoundingBox.size());
 

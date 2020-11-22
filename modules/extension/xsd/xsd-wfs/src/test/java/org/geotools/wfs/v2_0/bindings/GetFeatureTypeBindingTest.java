@@ -13,6 +13,7 @@ import net.opengis.wfs20.StoredQueryType;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
+import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Disjoint;
 
 public class GetFeatureTypeBindingTest extends WFSTestSupport {
@@ -203,6 +204,44 @@ public class GetFeatureTypeBindingTest extends WFSTestSupport {
         assertNotNull(d);
 
         assertEquals(2, q.getSortBy().size());
+    }
+
+    public void testParse5() throws Exception {
+        String xml =
+                "<GetFeature "
+                        + "   version='2.0.0' "
+                        + "   service='WFS' "
+                        + "   count='10' "
+                        + "   xmlns:wfs='http://www.opengis.net/wfs/2.0'"
+                        + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
+                        + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
+                        + "   xmlns:tiger='http://www.census.gov'> "
+                        + "   <wfs:Query typeNames='tiger:tiger_roads'> "
+                        + "      <PropertyName>tiger:the_geom</PropertyName> "
+                        + "      <fes:Filter> "
+                        + "         <fes:DWithin> "
+                        + "             <fes:ValueReference>the_geom</fes:ValueReference> "
+                        + "             <gml:Point srsName='urn:ogc:def:crs:EPSG:3067'> "
+                        + "                 <gml:pos>219158.795 6800828.901</gml:pos> "
+                        + "             </gml:Point> "
+                        + "             <fes:Distance uom='m'>100</fes:Distance> "
+                        + "        </fes:DWithin> "
+                        + "      </fes:Filter> "
+                        + "   </wfs:Query> "
+                        + "</GetFeature> ";
+        buildDocument(xml);
+
+        GetFeatureType gf = (GetFeatureType) parse();
+        assertNotNull(gf);
+
+        assertEquals(1, gf.getAbstractQueryExpression().size());
+        QueryType q = (QueryType) gf.getAbstractQueryExpression().get(0);
+        assertNotNull(q);
+
+        DWithin f = (DWithin) q.getFilter();
+        assertNotNull(f);
+        assertEquals(100.0, f.getDistance());
+        assertEquals("m", f.getDistanceUnits());
     }
 
     public void testParseGetFeatureWithLock() throws Exception {

@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Map;
 import java.util.Properties;
+import org.geotools.data.DataUtilities;
 
 public abstract class MongoTestSetup {
 
@@ -35,7 +35,9 @@ public abstract class MongoTestSetup {
     protected abstract Date getDateProperty(int featureIdx);
 
     public MongoDataStore createDataStore(Properties fixture) throws IOException {
-        MongoDataStore dataStore = new MongoDataStoreFactory().createDataStore((Map) fixture);
+        MongoDataStore dataStore =
+                new MongoDataStoreFactory()
+                        .createDataStore(DataUtilities.toConnectionParameters(fixture));
         setUpDataStore(dataStore);
         return dataStore;
     }

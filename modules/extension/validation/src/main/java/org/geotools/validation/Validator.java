@@ -26,9 +26,9 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultRepository;
-import org.geotools.data.FeatureSource;
 import org.geotools.data.Repository;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.type.Name;
@@ -97,7 +97,7 @@ public class Validator {
      * @param featureStores Map of required FeatureStores by typeRef (dataStoreId:typeName)
      */
     public void integrityValidation(
-            Map<Name, FeatureSource<?, ?>> featureStores,
+            Map<Name, SimpleFeatureSource> featureStores,
             ReferencedEnvelope bBox,
             ValidationResults results)
             throws IOException, Exception // WfsTransactionException
@@ -113,12 +113,12 @@ public class Validator {
 
         // go through each typeName passed in through stores
         // and ask what we need to check
-        Set typeRefs = new HashSet();
+        Set<String> typeRefs = new HashSet<>();
         for (Name name : featureStores.keySet()) {
             String typeRef = typeRef(name);
             typeRefs.add(typeRef);
 
-            Set dependencies = validationProcessor.getDependencies(typeRef);
+            Set<String> dependencies = validationProcessor.getDependencies(typeRef);
             LOGGER.finer("typeRef " + typeRef + " requires " + dependencies);
             if (dependencies != null && dependencies.size() > 0) typeRefs.addAll(dependencies);
         }
@@ -127,7 +127,7 @@ public class Validator {
         // Grab from the provided stores - so we check against
         // the transaction
         //
-        Map<String, FeatureSource> sources = new HashMap<>();
+        Map<String, SimpleFeatureSource> sources = new HashMap<>();
 
         for (Iterator i = typeRefs.iterator(); i.hasNext(); ) {
             String typeRef = (String) i.next();
@@ -161,7 +161,7 @@ public class Validator {
 
                 // FeatureTypeInfo meta = catalog.getFeatureTypeInfo(typeName);
                 LOGGER.finer(" loaded required typeRef: " + typeRef);
-                FeatureSource<?, ?> source = repository.source(dataStoreId, typeName);
+                SimpleFeatureSource source = repository.source(dataStoreId, typeName);
                 sources.put(typeRef, source);
             }
         }

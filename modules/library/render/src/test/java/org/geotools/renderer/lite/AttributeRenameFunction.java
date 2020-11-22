@@ -1,6 +1,6 @@
 package org.geotools.renderer.lite;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class AttributeRenameFunction extends FunctionExpressionImpl
 
         // build the result feature collection
         final SimpleFeatureBuilder fb = new SimpleFeatureBuilder(targetSchema);
-        final List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+        final List<SimpleFeature> features = new ArrayList<>();
         try {
             fc.accepts(
                     new FeatureVisitor() {

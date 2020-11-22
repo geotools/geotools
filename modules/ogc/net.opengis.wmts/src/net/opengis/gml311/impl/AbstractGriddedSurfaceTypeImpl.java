@@ -115,7 +115,7 @@ public class AbstractGriddedSurfaceTypeImpl extends AbstractParametricCurveSurfa
      */
     public EList<RowType> getRow() {
         if (row == null) {
-            row = new EObjectContainmentEList<RowType>(RowType.class, this, Gml311Package.ABSTRACT_GRIDDED_SURFACE_TYPE__ROW);
+            row = new EObjectContainmentEList<>(RowType.class, this, Gml311Package.ABSTRACT_GRIDDED_SURFACE_TYPE__ROW);
         }
         return row;
     }

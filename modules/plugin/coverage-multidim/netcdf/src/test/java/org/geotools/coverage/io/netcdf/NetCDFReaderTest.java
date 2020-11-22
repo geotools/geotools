@@ -17,7 +17,8 @@
 package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -351,7 +352,7 @@ public class NetCDFReaderTest extends Assert {
                 formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
                 final Date timeD = formatD.parse("2012-04-01T00:00:00.000Z");
                 time.setValue(
-                        new ArrayList() {
+                        new ArrayList<Date>() {
                             {
                                 add(timeD);
                             }
@@ -359,7 +360,7 @@ public class NetCDFReaderTest extends Assert {
 
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
                 elevation.setValue(
-                        new ArrayList() {
+                        new ArrayList<Double>() {
                             {
                                 add(450d); // Elevation
                             }
@@ -601,7 +602,7 @@ public class NetCDFReaderTest extends Assert {
                 formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
                 final Date timeD = formatD.parse("2012-04-01T00:00:00.000Z");
                 time.setValue(
-                        new ArrayList() {
+                        new ArrayList<Date>() {
                             {
                                 add(timeD);
                             }
@@ -609,7 +610,7 @@ public class NetCDFReaderTest extends Assert {
 
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
                 elevation.setValue(
-                        new ArrayList() {
+                        new ArrayList<Double>() {
                             {
                                 add(450d); // Elevation
                             }
@@ -746,7 +747,7 @@ public class NetCDFReaderTest extends Assert {
                 formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
                 final Date timeD = formatD.parse("2012-04-01T00:00:00.000Z");
                 time.setValue(
-                        new ArrayList() {
+                        new ArrayList<Date>() {
                             {
                                 add(timeD);
                             }
@@ -754,7 +755,7 @@ public class NetCDFReaderTest extends Assert {
 
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
                 elevation.setValue(
-                        new ArrayList() {
+                        new ArrayList<Double>() {
                             {
                                 add(450d); // Elevation
                             }
@@ -857,10 +858,10 @@ public class NetCDFReaderTest extends Assert {
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
 
-                ParameterValue<List<String>> sigmaValue = null;
+                ParameterValue<List> sigmaValue = null;
                 final String selectedSigma = "1";
                 Set<ParameterDescriptor<List>> params = reader.getDynamicParameters(coverageName);
-                for (ParameterDescriptor param : params) {
+                for (ParameterDescriptor<List> param : params) {
                     if (param.getName().getCode().equalsIgnoreCase("NUMSIGMA")) {
                         sigmaValue = param.createValue();
                         sigmaValue.setValue(
@@ -1212,7 +1213,7 @@ public class NetCDFReaderTest extends Assert {
                 calendar.set(0, 0, 16, 0, 0, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
                 time.setValue(
-                        new ArrayList() {
+                        new ArrayList<Date>() {
                             {
                                 add(calendar.getTime());
                             }
@@ -1220,7 +1221,7 @@ public class NetCDFReaderTest extends Assert {
 
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
                 elevation.setValue(
-                        new ArrayList() {
+                        new ArrayList<Double>() {
                             {
                                 add(50d); // Elevation
                             }

@@ -91,14 +91,14 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
     static {
         // If Grib Library is available, then the GRIB extension must be added to support.
         // If NC4 C Library is available, then the proper MIME Types must be added to support.
-        List<String> suffixesList = new ArrayList<String>();
+        List<String> suffixesList = new ArrayList<>();
         Collections.addAll(suffixesList, "nc", "NC");
         Collections.addAll(suffixesList, "ncml", "NCML");
 
-        List<String> formatNamesList = new ArrayList<String>();
+        List<String> formatNamesList = new ArrayList<>();
         Collections.addAll(formatNamesList, "netcdf", "NetCDF", NetCDFUtilities.NETCDF_3);
 
-        List<String> mimeTypesList = new ArrayList<String>();
+        List<String> mimeTypesList = new ArrayList<>();
         Collections.addAll(
                 mimeTypesList,
                 NetCDFUtilities.NETCDF3_MIMETYPE,

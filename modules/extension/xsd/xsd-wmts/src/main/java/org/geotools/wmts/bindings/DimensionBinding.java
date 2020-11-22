@@ -18,6 +18,7 @@
 
 package org.geotools.wmts.bindings;
 
+import java.util.List;
 import javax.xml.namespace.QName;
 import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows11.CodeType;
@@ -117,7 +118,7 @@ public class DimensionBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<?> getType() {
         return DimensionType.class;
     }
 
@@ -141,7 +142,9 @@ public class DimensionBinding extends DescriptionTypeBinding {
         ((DimensionType) value).setDefault((String) node.getChildValue("Default"));
         ((DimensionType) value).setIdentifier((CodeType) node.getChildValue("Identifier"));
         ((DimensionType) value).setUnitSymbol((String) node.getChildValue("UnitSymbol", null));
-        ((DimensionType) value).getValue().addAll(node.getChildValues("Value"));
+        @SuppressWarnings("unchecked")
+        List<String> values = node.getChildValues("Value");
+        ((DimensionType) value).getValue().addAll(values);
 
         Object UomList = node.getChildValue("UOM");
         if (UomList != null) {

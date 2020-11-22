@@ -9,7 +9,7 @@
  */
 package org.opengis.referencing.operation;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.OGC_01009;
 
 import java.util.Set;
 import org.opengis.annotation.UML;

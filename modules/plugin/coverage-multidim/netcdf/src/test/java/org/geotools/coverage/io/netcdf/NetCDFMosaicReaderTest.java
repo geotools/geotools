@@ -20,12 +20,20 @@ import static org.geotools.gce.imagemosaic.Utils.FF;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.emptyArray;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
@@ -51,7 +59,7 @@ import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
-import javax.swing.*;
+import javax.swing.JFrame;
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
 import org.apache.commons.io.FileUtils;
@@ -63,6 +71,7 @@ import org.geotools.coverage.grid.io.GranuleRemovalPolicy;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.HarvestedSource;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.Query;
 import org.geotools.data.directory.DirectoryDataStore;
@@ -118,7 +127,7 @@ import ucar.nc2.Variable;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de
  * @since 2.3
  */
-public class NetCDFMosaicReaderTest extends Assert {
+public class NetCDFMosaicReaderTest {
 
     @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
@@ -346,7 +355,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testCustomTimeAttributeRepository() throws IOException {
         // setup repository
         ShpFileStoreFactory dialect =
-                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
         File indexDirectory = new File("./target/custom_time_attribute_idx");
         FileUtils.deleteQuietly(indexDirectory);
         indexDirectory.mkdir();
@@ -402,7 +411,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testSharedRepository() throws IOException {
         // setup repository
         ShpFileStoreFactory dialect =
-                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
         File indexDirectory = new File("./target/repo_idx");
         FileUtils.deleteQuietly(indexDirectory);
         indexDirectory.mkdir();
@@ -518,7 +527,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testHarvestWithSharedRepository() throws IOException {
         // setup repository
         ShpFileStoreFactory dialect =
-                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
         File indexDirectory = new File("./target/repo2_idx");
         FileUtils.deleteQuietly(indexDirectory);
         indexDirectory.mkdir();
@@ -940,7 +949,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
             final Date timeD = parseTimeStamp("2013-01-01T00:00:00.000");
             time.setValue(
-                    new ArrayList() {
+                    new ArrayList<Date>() {
                         {
                             add(timeD);
                         }
@@ -952,7 +961,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             // Specify a new time (Check if two times returns two different coverages)
             final Date timeD2 = parseTimeStamp("2013-01-08T00:00:00.000");
             time.setValue(
-                    new ArrayList() {
+                    new ArrayList<Date>() {
                         {
                             add(timeD2);
                         }
@@ -1459,12 +1468,12 @@ public class NetCDFMosaicReaderTest extends Assert {
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
         bkg.setValue(new double[] {-9999.0});
 
-        ParameterValue<List<String>> dateValue = null;
-        ParameterValue<List<String>> sigmaValue = null;
+        ParameterValue<List> dateValue = null;
+        ParameterValue<List> sigmaValue = null;
         final String selectedSigma = "1";
         final String selectedRuntime = "20110620020000";
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters(name);
-        for (ParameterDescriptor param : params) {
+        for (ParameterDescriptor<List> param : params) {
             if (param.getName().getCode().equalsIgnoreCase("RUNTIME")) {
                 dateValue = param.createValue();
                 dateValue.setValue(
@@ -1698,11 +1707,13 @@ public class NetCDFMosaicReaderTest extends Assert {
         }
 
         // check that the NetCDF database has been cleaned too
-        Properties connectionParams = new Properties();
+        Properties props = new Properties();
         try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
-            connectionParams.load(fr);
+            props.load(fr);
         }
-        JDBCDataStore store = new H2DataStoreFactory().createDataStore(connectionParams);
+        JDBCDataStore store =
+                new H2DataStoreFactory()
+                        .createDataStore(DataUtilities.toConnectionParameters(props));
         assertEquals(0, store.getFeatureSource("NO2").getFeatures(locationFilter).size());
         assertEquals(0, store.getFeatureSource("O3").getFeatures(locationFilter).size());
     }
@@ -1758,11 +1769,13 @@ public class NetCDFMosaicReaderTest extends Assert {
         }
 
         // check that the NetCDF database has been cleaned too
-        Properties connectionParams = new Properties();
+        Properties props = new Properties();
         try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
-            connectionParams.load(fr);
+            props.load(fr);
         }
-        JDBCDataStore store = new H2DataStoreFactory().createDataStore(connectionParams);
+        JDBCDataStore store =
+                new H2DataStoreFactory()
+                        .createDataStore(DataUtilities.toConnectionParameters(props));
         assertEquals(0, store.getFeatureSource("NO2").getFeatures(locationFilter).size());
         assertEquals(0, store.getFeatureSource("O3").getFeatures(locationFilter).size());
     }

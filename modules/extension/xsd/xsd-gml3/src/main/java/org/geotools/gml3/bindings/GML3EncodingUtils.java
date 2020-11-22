@@ -227,7 +227,7 @@ public class GML3EncodingUtils {
      *   <li>PolygonPropertyType
      * </ul>
      */
-    public List GeometryPropertyType_GetProperties(Geometry geometry) {
+    public List<Object[]> GeometryPropertyType_GetProperties(Geometry geometry) {
         return e.GeometryPropertyType_getProperties(geometry);
     }
 
@@ -275,7 +275,7 @@ public class GML3EncodingUtils {
         return encoding;
     }
 
-    public List AbstractFeatureTypeGetProperties(
+    public List<Object[]> AbstractFeatureTypeGetProperties(
             Object object,
             XSDElementDeclaration element,
             SchemaIndex schemaIndex,
@@ -284,7 +284,7 @@ public class GML3EncodingUtils {
                 object,
                 element,
                 schemaIndex,
-                new HashSet<String>(
+                new HashSet<>(
                         Arrays.asList(
                                 "name",
                                 "description",

@@ -64,7 +64,7 @@ public class DefaultClassesTest {
     @BeforeClass
     public static void setup() throws MalformedURLException {
         emptyMap = Collections.emptyMap();
-        connectionParams = new HashMap<String, Serializable>();
+        connectionParams = new HashMap<>();
         url = new URL(TestDriver.TEST_URL);
         connectionParams.put(DefaultFileDriver.URL.key, url);
         hints = new Hints();
@@ -227,7 +227,7 @@ public class DefaultClassesTest {
                                 new float[][] {{1.0f, 1.0f}},
                                 new ReferencedEnvelope(0.0d, 1.0d, 0.0d, 1.0d, null));
         DateRange temporalExtent = new DateRange(new Date(10000), new Date(20000));
-        NumberRange<Double> verticalExtent = new NumberRange<Double>(Double.class, 0.0d, 100.0d);
+        NumberRange<Double> verticalExtent = new NumberRange<>(Double.class, 0.0d, 100.0d);
         DefaultGridCoverageResponse response =
                 new DefaultGridCoverageResponse(cov, temporalExtent, verticalExtent);
 

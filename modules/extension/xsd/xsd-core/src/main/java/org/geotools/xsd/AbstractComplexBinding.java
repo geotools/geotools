@@ -84,7 +84,8 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
      * <p>Note that this method only needs to be implemented for schema types which are open-ended
      * in which the contents are not specifically specified by the schema.
      */
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         // do nothing, subclasses should override
         return null;
     }

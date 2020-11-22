@@ -77,10 +77,10 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
         if (restrictions == null) {
             this.restrictions = Collections.emptyList();
         } else {
-            this.restrictions = Collections.unmodifiableList(new ArrayList<Filter>(restrictions));
+            this.restrictions = Collections.unmodifiableList(new ArrayList<>(restrictions));
         }
         this.description = description;
-        this.userData = new HashMap<Object, Object>();
+        this.userData = new HashMap<>();
     }
 
     /**

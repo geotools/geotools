@@ -44,6 +44,7 @@ import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
+import org.geotools.referencing.operation.projection.AzimuthalEquidistant;
 import org.geotools.referencing.operation.projection.LambertAzimuthalEqualArea;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.PolarStereographic;
@@ -313,7 +314,7 @@ public final class CRS {
      */
     public static Version getVersion(final String authority) throws FactoryRegistryException {
         Object candidate = ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null);
-        final Set<Factory> guard = new HashSet<Factory>();
+        final Set<Factory> guard = new HashSet<>();
         while (candidate instanceof Factory) {
             final Factory factory = (Factory) candidate;
             if (!guard.add(factory)) {
@@ -1615,18 +1616,22 @@ public final class CRS {
                 if (equalsIgnoreMetadata(DefaultCoordinateSystemAxis.LONGITUDE, axis)) {
                     double minLon = envelope.getMinimum(i);
                     double maxLon = envelope.getMaximum(i);
+                    DirectPosition lower = generalEnvelope.getLowerCorner();
+                    DirectPosition upper = generalEnvelope.getUpperCorner();
+                    DirectPosition dest = new DirectPosition2D();
                     // world spanning longitude? add points around the globe quadrants then
                     if ((maxLon - minLon) >= 360) {
-                        DirectPosition lower = generalEnvelope.getLowerCorner();
-                        DirectPosition upper = generalEnvelope.getUpperCorner();
-                        DirectPosition dest = new DirectPosition2D();
                         for (int lon = -180; lon <= 180; lon += 90) {
-                            lower.setOrdinate(i, lon);
-                            mt.transform(lower, dest);
-                            transformed.add(dest);
-                            upper.setOrdinate(i, lon);
-                            mt.transform(upper, dest);
-                            transformed.add(dest);
+                            addLowerUpperPoints(mt, transformed, i, lower, upper, dest, lon);
+                        }
+                    } else {
+                        // quadrants are still extreme points of the reprojected "circle",
+                        // add them if the envelope happens to cross them, or if the envelope
+                        // is "world spanning"
+                        for (int lon = -180; lon <= 180; lon += 90) {
+                            if (minLon < lon && maxLon > lon) {
+                                addLowerUpperPoints(mt, transformed, i, lower, upper, dest, lon);
+                            }
                         }
                     }
                 }
@@ -1740,8 +1745,8 @@ public final class CRS {
 
         if (targetProjection != null) {
             // the points intersecting the rays emanating from the center of the projection in polar
-            // stereographic
-            // and other projections is a maximum deformation point, add those to the envelope too
+            // stereographic and other projections is a maximum deformation point,
+            // add those to the envelope too
             getProjectionCenterLonLat(targetCRS, centerPt);
             // now try to intesect the source envelope with the center point
             if (isPole(centerPt, DefaultGeographicCRS.WGS84)) {
@@ -1775,13 +1780,93 @@ public final class CRS {
                 } catch (FactoryException | TransformException e) {
                     LOGGER.log(
                             Level.FINE,
-                            "Failed to transform from source to WGS84 to further enlarge the envelope on extreme points, proceeding without expansion",
+                            "Failed to transform from source to WGS84 to further enlarge the "
+                                    + "envelope on extreme points, proceeding without expansion",
+                            e);
+                }
+            }
+
+            // Azimuthal equidistant is weird, the extreme points in the output map are close
+            // to the negated center latitude so in WGS84 they might be in the middle of the box,
+            // whilst so far we are mostly considering the border
+            if (targetProjection instanceof AzimuthalEquidistant.Abstract) {
+                getProjectionCenterLonLat(targetCRS, centerPt);
+                try {
+                    MathTransform geoToTarget;
+                    Envelope geoEnvelope;
+                    if (sourceCRS instanceof GeographicCRS) {
+                        // this is a simplification to avoid dateline flips due to datum differences
+                        geoToTarget = findMathTransform(sourceCRS, targetCRS);
+                        geoEnvelope = envelope;
+                    } else {
+                        MathTransform mtWgs84 =
+                                findMathTransform(sourceCRS, DefaultGeographicCRS.WGS84);
+                        geoToTarget = findMathTransform(DefaultGeographicCRS.WGS84, targetCRS);
+                        geoEnvelope = transform(mtWgs84, envelope, null);
+                    }
+                    double nagativeMeridian = -centerPt.getOrdinate(1);
+
+                    if (geoEnvelope.getMinimum(1) <= nagativeMeridian
+                            && geoEnvelope.getMaximum(1) >= nagativeMeridian) {
+                        expandOnMeridian(
+                                transformed, geoToTarget, geoEnvelope, nagativeMeridian - 1e-6, 50);
+                        expandOnMeridian(
+                                transformed, geoToTarget, geoEnvelope, nagativeMeridian + 1e-6, 50);
+                    }
+                } catch (FactoryException | TransformException e) {
+                    LOGGER.log(
+                            Level.FINE,
+                            "Failed to transform from source to WGS84 to further enlarge the "
+                                    + "envelope on extreme points, proceeding without expansion",
                             e);
                 }
             }
         }
 
         return transformed;
+    }
+
+    private static void expandOnMeridian(
+            GeneralEnvelope target,
+            MathTransform geoToTarget,
+            Envelope geoEnvelope,
+            double antimeridian,
+            int numPoints)
+            throws TransformException {
+        double minLon = geoEnvelope.getMinimum(0);
+        double maxLon = geoEnvelope.getMaximum(0);
+        double[] points = new double[numPoints * 2];
+        double lon = minLon;
+        double delta = (maxLon - minLon) / (numPoints - 1); // (n points, n-1 intervals)
+        for (int i = 0; i < points.length; ) {
+            points[i++] = lon;
+            points[i++] = antimeridian;
+            lon = minLon + delta * i / 2;
+        }
+        geoToTarget.transform(points, 0, points, 0, numPoints);
+        DirectPosition dp = new DirectPosition2D();
+        for (int i = 0; i < points.length; ) {
+            dp.setOrdinate(0, points[i++]);
+            dp.setOrdinate(1, points[i++]);
+            target.add(dp);
+        }
+    }
+
+    private static void addLowerUpperPoints(
+            MathTransform mt,
+            GeneralEnvelope transformed,
+            int axis,
+            DirectPosition lower,
+            DirectPosition upper,
+            DirectPosition dest,
+            double ordinate)
+            throws TransformException {
+        lower.setOrdinate(axis, ordinate);
+        mt.transform(lower, dest);
+        transformed.add(dest);
+        upper.setOrdinate(axis, ordinate);
+        mt.transform(upper, dest);
+        transformed.add(dest);
     }
 
     private static double rollLongitude(final double x) {

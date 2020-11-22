@@ -113,7 +113,7 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
         NodeList strs = getElementsByQName(doc, new QName("http://geotools.org", "str"));
         assertEquals(2, strs.getLength());
 
-        Set vals = new HashSet(Arrays.asList("zero", "one"));
+        Set<String> vals = new HashSet<>(Arrays.asList("zero", "one"));
         vals.remove(strs.item(0).getFirstChild().getNodeValue());
         vals.remove(strs.item(1).getFirstChild().getNodeValue());
         assertTrue(vals.isEmpty());

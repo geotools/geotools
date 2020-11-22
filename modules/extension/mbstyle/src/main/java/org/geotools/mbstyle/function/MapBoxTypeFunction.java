@@ -30,9 +30,9 @@ import org.opengis.filter.expression.Expression;
  * string argument, throws an exception if no arguments are of type specified.
  */
 class MapBoxTypeFunction extends FunctionExpressionImpl {
-    Class type;
+    Class<?> type;
 
-    public static FunctionName NAME = new FunctionNameImpl("mbType");
+    public static final FunctionName NAME = new FunctionNameImpl("mbType");
 
     MapBoxTypeFunction() {
         super(NAME);
@@ -61,7 +61,7 @@ class MapBoxTypeFunction extends FunctionExpressionImpl {
                 "Function \"mbType\" failed with no arguments of type JSONObject");
     }
 
-    public Class type(String string) {
+    public Class<?> type(String string) {
         switch (string) {
             case "array":
                 return Collection.class;

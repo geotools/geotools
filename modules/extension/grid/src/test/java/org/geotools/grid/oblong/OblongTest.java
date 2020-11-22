@@ -115,8 +115,7 @@ public class OblongTest extends TestBase {
         assertNotNull(polygon);
         assertTrue(polygon instanceof Polygon);
 
-        Set<Coordinate> polyCoords =
-                new HashSet<Coordinate>(Arrays.asList(polygon.getCoordinates()));
+        Set<Coordinate> polyCoords = new HashSet<>(Arrays.asList(polygon.getCoordinates()));
         for (Coordinate c : oblong.getVertices()) {
             assertTrue(polyCoords.contains(c));
         }

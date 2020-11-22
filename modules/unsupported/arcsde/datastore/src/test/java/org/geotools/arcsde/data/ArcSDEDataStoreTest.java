@@ -112,7 +112,7 @@ public class ArcSDEDataStoreTest {
         sdeDs = DataStoreFinder.getDataStore(testData.getConProps());
         assertNotNull(sdeDs);
         String failMsg = sdeDs + " is not an ArcSDEDataStore";
-        assertTrue(failMsg, (sdeDs instanceof ArcSDEDataStore));
+        assertTrue(failMsg, sdeDs instanceof ArcSDEDataStore);
         LOGGER.fine("testFinder OK :" + sdeDs.getClass().getName());
     }
 
@@ -215,12 +215,13 @@ public class ArcSDEDataStoreTest {
             throws IOException, SchemaException, SeException, UnavailableConnectionException {
         final String typeName;
         {
-            ISessionPool connectionPool = testData.getConnectionPool();
-            ISession session = connectionPool.getSession();
-            final String user;
-            user = session.getUser();
-            session.dispose();
-            typeName = user + ".GT_TEST_CREATE";
+            try (ISessionPool connectionPool = testData.getConnectionPool()) {
+                ISession session = connectionPool.getSession();
+                final String user;
+                user = session.getUser();
+                session.dispose();
+                typeName = user + ".GT_TEST_CREATE";
+            }
         }
 
         SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();

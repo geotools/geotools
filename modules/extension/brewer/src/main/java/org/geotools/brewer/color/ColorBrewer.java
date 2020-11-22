@@ -53,7 +53,7 @@ public class ColorBrewer {
     public static final PaletteType QUALITATIVE = new PaletteType(false, true, "QUALITATIVE");
     String name = null;
     String description = null;
-    Hashtable<String, BrewerPalette> palettes = new Hashtable<String, BrewerPalette>();
+    Hashtable<String, BrewerPalette> palettes = new Hashtable<>();
 
     /** Creates a new instance of ColorBrewer */
     public ColorBrewer() {}
@@ -113,7 +113,7 @@ public class ColorBrewer {
     }
 
     public BrewerPalette[] getPalettes(PaletteType type, int numClasses) {
-        List<BrewerPalette> palettes = new ArrayList<BrewerPalette>();
+        List<BrewerPalette> palettes = new ArrayList<>();
         Object[] entry = this.palettes.keySet().toArray();
 
         for (int i = 0; i < entry.length; i++) {
@@ -140,7 +140,7 @@ public class ColorBrewer {
     }
 
     public BrewerPalette[] getPalettes(PaletteType type, int numClasses, int requiredViewers) {
-        List<BrewerPalette> palettes = new ArrayList<BrewerPalette>();
+        List<BrewerPalette> palettes = new ArrayList<>();
         Object[] entry = this.palettes.keySet().toArray();
 
         for (int i = 0; i < entry.length; i++) {
@@ -220,7 +220,7 @@ public class ColorBrewer {
      */
     public String[] getPaletteNames(int minClasses, int maxClasses) {
         Object[] keys = palettes.keySet().toArray();
-        Set<String> paletteSet = new HashSet<String>();
+        Set<String> paletteSet = new HashSet<>();
 
         // generate the set of palette names
         for (int i = 0; i < keys.length; i++) {
@@ -454,7 +454,7 @@ public class ColorBrewer {
     public void reset() {
         name = null;
         description = null;
-        palettes = new Hashtable<String, BrewerPalette>();
+        palettes = new Hashtable<>();
     }
 
     public boolean isSet(int singleValue, int multipleValue) {

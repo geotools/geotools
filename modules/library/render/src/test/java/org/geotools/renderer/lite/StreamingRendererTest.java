@@ -26,7 +26,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -198,7 +202,7 @@ public class StreamingRendererTest {
         StyleBuilder sb = new StyleBuilder();
         mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
         StreamingRenderer sr = new StreamingRenderer();
-        Map hints = new HashMap();
+        Map<Object, Object> hints = new HashMap<>();
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
         sr.setRendererHints(hints);
@@ -244,7 +248,7 @@ public class StreamingRendererTest {
         StyleBuilder sb = new StyleBuilder();
         mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
         StreamingRenderer sr = new StreamingRenderer();
-        Map hints = new HashMap();
+        Map<Object, Object> hints = new HashMap<>();
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
         sr.setRendererHints(hints);
@@ -414,7 +418,7 @@ public class StreamingRendererTest {
         SimpleFeatureSource fs = createNiceMock(SimpleFeatureSource.class);
         expect(fs.getFeatures((Query) anyObject())).andReturn(fc);
         expect(fs.getSchema()).andReturn(testLineFeatureType).anyTimes();
-        expect(fs.getSupportedHints()).andReturn(new HashSet()).anyTimes();
+        expect(fs.getSupportedHints()).andReturn(new HashSet<>()).anyTimes();
         replay(fs);
 
         // build map context
@@ -494,7 +498,7 @@ public class StreamingRendererTest {
                     }
                 };
         sr.setMapContent(mapContent);
-        final List<Exception> exceptions = new ArrayList<Exception>();
+        final List<Exception> exceptions = new ArrayList<>();
         sr.addRenderListener(
                 new RenderListener() {
                     public void featureRenderer(SimpleFeature feature) {
@@ -552,7 +556,7 @@ public class StreamingRendererTest {
 
     @Test
     public void testRepeatedEnvelopeExpansion() throws Exception {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
 
         SimpleFeatureSource testSource =
                 new CollectionFeatureSource(createLineCollection()) {
@@ -619,7 +623,7 @@ public class StreamingRendererTest {
         sr.setMapContent(mc);
 
         // collect rendered features
-        final List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+        final List<SimpleFeature> features = new ArrayList<>();
         RenderListener renderedFeaturesCollector =
                 new RenderListener() {
 
@@ -660,7 +664,7 @@ public class StreamingRendererTest {
      */
     @Test
     public void testFindLineStyleAttributeWithAddedFilter() throws Exception {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
 
         SimpleFeatureSource testSource =
                 new CollectionFeatureSource(createLineCollection()) {
@@ -831,7 +835,7 @@ public class StreamingRendererTest {
         finalGraphics.setColor(Color.RED);
         finalGraphics.fillRect(0, 0, 100, 100);
 
-        List<LiteFeatureTypeStyle> lfts = new ArrayList<LiteFeatureTypeStyle>();
+        List<LiteFeatureTypeStyle> lfts = new ArrayList<>();
         Layer layer =
                 new DirectLayer() {
 
@@ -848,7 +852,8 @@ public class StreamingRendererTest {
         DelayedBackbufferGraphic graphics =
                 new DelayedBackbufferGraphic(finalGraphics, new Rectangle(100, 100));
         LiteFeatureTypeStyle style1 =
-                new LiteFeatureTypeStyle(layer, graphics, new ArrayList(), new ArrayList(), null);
+                new LiteFeatureTypeStyle(
+                        layer, graphics, new ArrayList<>(), new ArrayList<>(), null);
         style1.composite = AlphaComposite.DstIn;
         lfts.add(style1);
 
@@ -906,7 +911,7 @@ public class StreamingRendererTest {
 
         // render
         StreamingRenderer sr = new StreamingRenderer();
-        Map hints = new HashMap();
+        Map<Object, Object> hints = new HashMap<>();
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
         sr.setRendererHints(hints);

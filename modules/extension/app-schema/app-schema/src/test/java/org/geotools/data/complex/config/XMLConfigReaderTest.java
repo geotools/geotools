@@ -52,7 +52,7 @@ public class XMLConfigReaderTest extends AppSchemaTestSupport {
         assertNotNull(mapping.getTargetFeature());
         assertNotNull(mapping.getSource());
 
-        // Map/*<String, Expression>*/idMappings = mapping.getIdMappings();
+        // Map<String, Expression>idMappings = mapping.getIdMappings();
         // assertEquals(idMappings.get("RoadSegment"), ExpressionBuilder.parse("getId()"));
     }
 }

@@ -24,7 +24,7 @@ import org.geotools.styling.Style;
 import org.geotools.util.SimpleInternationalString;
 
 public class StyleBuilder extends AbstractStyleBuilder<Style> {
-    List<FeatureTypeStyleBuilder> fts = new ArrayList<FeatureTypeStyleBuilder>();
+    List<FeatureTypeStyleBuilder> fts = new ArrayList<>();
 
     String name;
 

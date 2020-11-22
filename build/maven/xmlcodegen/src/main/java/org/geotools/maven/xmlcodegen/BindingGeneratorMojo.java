@@ -174,7 +174,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
 		}
 		
 		//list of urls to use as class loading locations
-		Set urls = new HashSet();
+		Set<URL> urls = new HashSet<>();
 		
 		try {
 		    //get the ones from the project
@@ -235,7 +235,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
 		}
 		
 		if ( includes != null && includes.length > 0 ) {
-			HashSet included = new HashSet( Arrays.asList( includes ) );
+			Set<String> included = new HashSet<>( Arrays.asList( includes ) );
 			getLog().info( "Including: " + included ); 
 			generator.setIncluded( included );
 		}

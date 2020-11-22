@@ -29,7 +29,7 @@ public class DataDefinition {
     private ArrayList<Field> fields;
 
     public DataDefinition(String charset) {
-        fields = new ArrayList<Field>();
+        fields = new ArrayList<>();
         this.charset = Charset.forName(charset);
     }
 

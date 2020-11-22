@@ -173,7 +173,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     }
 
     public void testLoadAndCheckParentTypeIsPolygon() throws Exception {
-        FeatureCollection features = loadFeatures(STATE_POP, Query.ALL);
+        SimpleFeatureCollection features = loadFeatures(STATE_POP, Query.ALL);
         SimpleFeatureType schema = firstFeature(features).getFeatureType();
         assertEquals(schema.getSuper(), BasicFeatureTypes.POLYGON);
     }
@@ -398,7 +398,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     }
 
     public void testAttributesWritingShapefile() throws Exception {
-        FeatureCollection features = createFeatureCollection();
+        SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-shp", ".shp");
         tmpFile.delete();
         OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "ESRI shapefile");
@@ -948,7 +948,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     }
 
     private OGRDataStore createDataStore(File f) throws Exception {
-        FeatureCollection fc = createFeatureCollection();
+        SimpleFeatureCollection fc = createFeatureCollection();
         f.delete();
         OGRDataStore sds = createDataStore(f.getAbsolutePath(), "ESRI shapefile");
         writeFeatures(sds, fc);

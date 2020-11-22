@@ -119,10 +119,37 @@ filter
 
 *Optional* :ref:`Expression <expressions>`.
 
-
-
 A expression specifying conditions on source features. Only features
 that match the filter are displayed.
+
+::
+
+    ["to-number", value, fallback: value, fallback: value, ...]: number
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 0.41.0
+     - >= 23.0
+     - 
+   * - collator
+     - >= 0.45.0
+     - >= Not yet supported
+     - 
+   * - other filter
+     - >= 0.10.0
+     - >= 17.1
+     - >= 2.4.0
+   * - other filter ``has``/``!has``
+     - >= 0.19.0
+     - >= 17.1
+     - >= 2.4.0
 
 layout
 ^^^^^^

@@ -33,7 +33,7 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
 
     private String extensionName;
 
-    private Map<String, Expression> parameters = new HashMap<String, Expression>();
+    private Map<String, Expression> parameters = new HashMap<>();
 
     public ExtensionSymbolizerBuilder() {
         this(null);
@@ -107,7 +107,7 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
         description.unset();
         uom = null;
         extensionName = null;
-        parameters = new HashMap<String, Expression>();
+        parameters = new HashMap<>();
         unset = false;
         return this;
     }

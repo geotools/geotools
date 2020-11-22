@@ -8,7 +8,7 @@ to statically check code quality and fail the build in case of rule violation:
 * `Error Prone <https://errorprone.info/>`_, 
 * `Spotbugs <https://spotbugs.github.io/>`_
 * `CheckStyle <http://checkstyle.sourceforge.net/>`_ on build servers .
-* ``javac`` own linting abilities, in particular, checking calls to deprecated APIs
+* ``javac`` own linting abilities, in particular, checking calls to deprecated APIs and unchecked warnings.
 
 Each tool is setup to run on high priority checks in order to limit the number of false positives,
 but some might still happen, the rest of this document shows how errors are reported and what
@@ -138,8 +138,12 @@ javac
 ^^^^^
 
 The Java compiler has a set of options to "lint" the source code. The build server in particular
-enable checks for deprecated APIs, making javac return a compile error any time a deprecated method
-or object is used. 
+enables:
+
+* Checks for deprecated APIs, making javac return a compile error any time a deprecated method 
+  or object is used.
+* Unchecked warnings, making javac return a compile error any time an unchecked cast happens
+  (typically a mixup between raw types and types with generics).
 
 In most cases, one should check the javadoc of the API in question, learn about replacements, and
 stop using the deprecated API. This is not always possible, for example, when creating an object
@@ -152,3 +156,25 @@ the compiler error. It's often possible to simply "refactor away" the call point
 other automated operations. If that is not feasible, manually resolving deprecated call will provide
 a good perspective on what the library users will have to face, and help improve suggestions for
 replacement in the deprecated API javadocs.
+
+Regarding unchecked warnings, they normally happen when a raw type is mixed with generic types.
+Specifying corresponding generics normally solves them problem.
+Many parts of GeoTools support converting between types, or extracting a specific object type
+out of a generic container (e.g., the Feature user map). In these cases an unchecked warning
+is unavoidable, and needs to be suppressed. The ``@SuppressWarnings("unchecked")`` annotation
+can be placed in a few different places:
+
+* On a variable/field declaration, allowing surgical suppression just in the place where is needed.
+* By annotating a full method, useful in case the method would require many internal suppressions.
+* By annotating a full class, useful in case the class contents are beyond repair in terrm of
+  type safety.
+
+Another common source of unchecked warnings is casting a generic method result to the type variable
+"T" before returning the value. In this case, either declare a local variable of type ``T`` and
+suppress the warning there, or, if a ``Class<T>`` is available in scope, use ``theClass.cast(value)``
+to perform the conversion.
+
+More information about generics and unchecked warnings can be found here:
+
+* `Excerpt about unchecked warning removal <https://www.informit.com/articles/article.aspx?p=2861454&seqNum=2>`_, from Effective Java.
+* `Java tutorial about generics <https://docs.oracle.com/javase/tutorial/java/generics/index.html>`_.

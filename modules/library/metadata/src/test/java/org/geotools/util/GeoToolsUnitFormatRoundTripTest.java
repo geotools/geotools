@@ -17,7 +17,15 @@
 package org.geotools.util;
 
 import static junit.framework.TestCase.assertEquals;
-import static tech.units.indriya.unit.Units.*;
+import static tech.units.indriya.unit.Units.GRAM;
+import static tech.units.indriya.unit.Units.JOULE;
+import static tech.units.indriya.unit.Units.KELVIN;
+import static tech.units.indriya.unit.Units.KILOGRAM;
+import static tech.units.indriya.unit.Units.METRE;
+import static tech.units.indriya.unit.Units.MOLE;
+import static tech.units.indriya.unit.Units.PASCAL;
+import static tech.units.indriya.unit.Units.SECOND;
+import static tech.units.indriya.unit.Units.WATT;
 
 import java.util.Arrays;
 import java.util.Collection;

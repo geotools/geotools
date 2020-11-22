@@ -96,7 +96,7 @@ public class CategorizeFunction implements Function {
                     "succeeding or preceding");
 
     public CategorizeFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public CategorizeFunction(List<Expression> parameters, Literal fallback) {
@@ -217,7 +217,7 @@ public class CategorizeFunction implements Function {
 
             // if we can use the pre-converted go for it, otherwise dynamic eval
             if (convertedValuesContext == context) {
-                return (T) convertedValues[valIdx];
+                return context.cast(convertedValues[valIdx]);
             } else {
                 return values[valIdx].evaluate(object, context);
             }

@@ -94,7 +94,7 @@ public class VectorFillTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        Map<String, Object> rendererParams = new HashMap<String, Object>();
+        Map<Object, Object> rendererParams = new HashMap<>();
         rendererParams.put(StreamingRenderer.VECTOR_RENDERING_KEY, Boolean.TRUE);
         renderer.setRendererHints(rendererParams);
 

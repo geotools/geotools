@@ -9,8 +9,8 @@
  */
 package org.opengis.geometry.coordinate;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class KnotType extends CodeList<KnotType> {
     private static final long serialVersionUID = -431722533158166557L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<KnotType> VALUES = new ArrayList<KnotType>(3);
+    private static final List<KnotType> VALUES = new ArrayList<>(3);
 
     /** The form of knots is appropriate for a uniform B-spline. */
     @UML(identifier = "uniform", obligation = CONDITIONAL, specification = ISO_19107)

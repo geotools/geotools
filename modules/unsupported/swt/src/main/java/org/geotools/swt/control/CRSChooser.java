@@ -268,17 +268,14 @@ public class CRSChooser {
         searchText.setText(""); // $NON-NLS-1$
     }
 
-    /**
-     * Takes in a CRS, finds it in the list and highlights it
-     *
-     */
+    /** Takes in a CRS, finds it in the list and highlights it */
     @SuppressWarnings("unchecked")
     public void gotoCRS(CoordinateReferenceSystem crs) {
         if (crs != null) {
             final List list = codesList.getList();
-            Set<Identifier> identifiers = new HashSet<Identifier>(crs.getIdentifiers());
+            Set<Identifier> identifiers = new HashSet<>(crs.getIdentifiers());
 
-            final Set<Integer> candidates = new HashSet<Integer>();
+            final Set<Integer> candidates = new HashSet<>();
 
             for (int i = 0; i < list.getItemCount(); i++) {
                 for (Identifier identifier : identifiers) {
@@ -390,8 +387,8 @@ public class CRSChooser {
      * @return Set of CRS Names which contain all the filter keywords
      */
     protected Set<String> filterCRSNames(String[] filter) {
-        crsCodeMap = new HashMap<String, String>();
-        Set<String> descriptions = new TreeSet<String>();
+        crsCodeMap = new HashMap<>();
+        Set<String> descriptions = new TreeSet<>();
 
         for (Object object : ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
             CRSAuthorityFactory factory = (CRSAuthorityFactory) object;
@@ -423,7 +420,7 @@ public class CRSChooser {
         String[] searchParms = searchText.getText().toUpperCase().split(" "); // $NON-NLS-1$
         Set<String> descriptions = filterCRSNames(searchParms);
         descriptions = filterCustomCRSs(descriptions, searchParms);
-        java.util.List<String> list = new ArrayList<String>(descriptions);
+        java.util.List<String> list = new ArrayList<>(descriptions);
         codesList.setInput(list);
         if (list != null && !list.isEmpty()) {
             codesList.setSelection(new StructuredSelection(list.get(0)));
@@ -557,7 +554,7 @@ public class CRSChooser {
                         }
 
                         Set<Identifier> identifiers =
-                                new HashSet<Identifier>(createdCRS.getIdentifiers());
+                                new HashSet<>(createdCRS.getIdentifiers());
                         for (Identifier identifier : identifiers) {
                             found = createCRS(identifier.toString());
                             if (found != null
@@ -588,8 +585,7 @@ public class CRSChooser {
         return selectedCRS;
     }
 
-    /**
-     */
+    /** */
     private void saveKeywords(CoordinateReferenceSystem found)
             throws CoreException, IOException, BackingStoreException {
         String[] keywords = keywordsText.getText().split(","); // $NON-NLS-1$
@@ -612,8 +608,7 @@ public class CRSChooser {
         wktText.setText(found.toWKT());
     }
 
-    /**
-     */
+    /** */
     private CoordinateReferenceSystem saveCustomizedCRS(
             String text, boolean processWKT, CoordinateReferenceSystem createdCRS)
             throws CoreException, IOException, BackingStoreException {

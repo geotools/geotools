@@ -197,7 +197,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterToSQL.class);
 
     /** Character used to escape database schema, table and column names */
-    private String sqlNameEscape = "";
+    protected String sqlNameEscape = "";
 
     /** where to write the constructed string from visiting the filters. */
     protected Writer out;
@@ -515,7 +515,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         // JD: hack for date values, we append some additional padding to handle
         // the matching of time/timezone/etc...
         Class attributeType = getExpressionType(att);
-        if (Date.class.isAssignableFrom(attributeType)) {
+        // null check if returnType of expression is Object, null is returned
+        // from getExpressionType
+        if (attributeType != null && Date.class.isAssignableFrom(attributeType)) {
             literal += multi;
         }
 
@@ -596,7 +598,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         // cannot optimize index access otherwise
         // The collector contains name -> list<values> for equalities, and the filter->null
         // otherwise
-        LinkedHashMap<Object, Object> grouped = new LinkedHashMap<>();
+        LinkedHashMap<Object, List<Literal>> grouped = new LinkedHashMap<>();
         int maxGroupSize = 0;
         for (Filter child : filter.getChildren()) {
             Expression[] nameLiteral = getNameLiteralFromEquality(child);
@@ -605,7 +607,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             } else {
                 PropertyName name = (PropertyName) nameLiteral[0];
                 Literal value = (Literal) nameLiteral[1];
-                List<Literal> values = (List<Literal>) grouped.get(name);
+                List<Literal> values = grouped.get(name);
                 if (values == null) {
                     values = new ArrayList<>();
                     grouped.put(name, values);
@@ -621,7 +623,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
 
         try {
-            Iterator<Map.Entry<Object, Object>> iterator = grouped.entrySet().iterator();
+            Iterator<Map.Entry<Object, List<Literal>>> iterator = grouped.entrySet().iterator();
 
             // ok, we can output at least one "in" statement
             if (grouped.size() > 1) {
@@ -629,7 +631,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             }
 
             while (iterator.hasNext()) {
-                Map.Entry<Object, Object> entry = iterator.next();
+                Map.Entry<Object, List<Literal>> entry = iterator.next();
                 if (entry.getKey() instanceof PropertyName) {
                     PropertyName pn = (PropertyName) entry.getKey();
                     List<Literal> literals = (List<Literal>) entry.getValue();
@@ -834,6 +836,28 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         Class rightContext = getExpressionType(left);
         Class leftContext = getExpressionType(right);
 
+        encodeBinaryComparisonOperator(filter, extraData, left, right, leftContext, rightContext);
+    }
+
+    /**
+     * Encode a BinaryComparisonOperator to SQL
+     *
+     * @param filter the comparison operator to be turned to SQL
+     * @param extraData extraData
+     * @param left left parameter of the binary operator
+     * @param right right parameter of the binary operator
+     * @param leftContext expression type of the right parameter used as context for the left
+     *     parameter
+     * @param rightContext expression type of the left parameter used as context for the right
+     *     parameter
+     */
+    protected void encodeBinaryComparisonOperator(
+            BinaryComparisonOperator filter,
+            Object extraData,
+            Expression left,
+            Expression right,
+            Class leftContext,
+            Class rightContext) {
         // case sensitivity
         boolean matchCase = true;
         if (!filter.isMatchingCase()) {
@@ -882,7 +906,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 f.setParameters(Arrays.asList(right));
                 f.accept(this, Arrays.asList(rightContext));
             }
-
         } catch (java.io.IOException ioe) {
             throw new RuntimeException(IO_ERROR, ioe);
         }
@@ -1521,7 +1544,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     private void writeEncodedField(
-            Class target, PropertyName expression, AttributeDescriptor attribute)
+            Class<?> target, PropertyName expression, AttributeDescriptor attribute)
             throws IOException {
         String encodedField;
         if (attribute != null) {
@@ -1589,7 +1612,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return context;
     }
 
-    public Object evaluateLiteral(Literal expression, Class target) {
+    public Object evaluateLiteral(Literal expression, Class<?> target) {
         Object literal = null;
 
         // HACK: let expression figure out the right value for numbers,
@@ -1633,7 +1656,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /*
      * helper to do a safe convesion of expression to a number
      */
-    Number safeConvertToNumber(Expression expression, Class target) {
+    Number safeConvertToNumber(Expression expression, Class<?> target) {
         Object evaluated = expression.evaluate(null);
         // don't try conversion for arrays, to avoid wrong arraytosingle conversion
         if (evaluated != null && evaluated.getClass().isArray()) {
@@ -1976,6 +1999,11 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     public void setSqlNameEscape(String escape) {
         sqlNameEscape = escape;
+    }
+
+    /** @return the sqlNameEscape */
+    public String getSqlNameEscape() {
+        return sqlNameEscape;
     }
 
     /**

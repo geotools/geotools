@@ -38,7 +38,12 @@ import it.geosolutions.jaiext.stats.Statistics;
 import it.geosolutions.jaiext.stats.Statistics.StatsType;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -101,14 +106,24 @@ import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.WarpGrid;
 import javax.media.jai.operator.AddDescriptor;
+import javax.media.jai.operator.BandCombineDescriptor;
+import javax.media.jai.operator.BandSelectDescriptor;
+import javax.media.jai.operator.BinarizeDescriptor;
+import javax.media.jai.operator.ColorConvertDescriptor;
 import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.operator.ErrorDiffusionDescriptor;
 import javax.media.jai.operator.ExtremaDescriptor;
+import javax.media.jai.operator.FormatDescriptor;
 import javax.media.jai.operator.HistogramDescriptor;
 import javax.media.jai.operator.InvertDescriptor;
+import javax.media.jai.operator.LookupDescriptor;
 import javax.media.jai.operator.MeanDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 import javax.media.jai.operator.MosaicType;
 import javax.media.jai.operator.MultiplyConstDescriptor;
+import javax.media.jai.operator.MultiplyDescriptor;
+import javax.media.jai.operator.OrderedDitherDescriptor;
+import javax.media.jai.operator.RescaleDescriptor;
 import javax.media.jai.operator.SubtractDescriptor;
 import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
@@ -2786,7 +2801,7 @@ public class ImageWorker {
          * Find the index of the specified color. Most of the time, the color should appears only once, which will leads us to a BITMASK image.
          * However we allows more occurences, which will leads us to a TRANSLUCENT image.
          */
-        final List<Integer> transparentPixelsIndexes = new ArrayList<Integer>();
+        final List<Integer> transparentPixelsIndexes = new ArrayList<>();
         for (int i = 0; i < mapSize; i++) {
             // Gets the color for this pixel removing the alpha information.
             final int color = cm.getRGB(i) & 0xFFFFFF;
@@ -5424,7 +5439,8 @@ public class ImageWorker {
                 } else {
                     if (nodata != null) {
                         // must map nodata to alpha
-                        RangeLookupTable.Builder builder = new RangeLookupTable.Builder();
+                        RangeLookupTable.Builder<Byte, Byte> builder =
+                                new RangeLookupTable.Builder<>();
                         if (nodata.getMin().doubleValue() != Double.NEGATIVE_INFINITY) {
                             builder.add(
                                     RangeFactory.create(

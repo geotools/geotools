@@ -56,18 +56,18 @@ import org.locationtech.jts.geom.LineSegment;
 public class OptLineGraphGenerator implements LineGraphGenerator {
 
     /** coordinate to node / count * */
-    private HashMap m_coord2count;
+    private Map<Coordinate, Object> m_coord2count;
 
     /** lines added to the network * */
-    private ArrayList m_lines;
+    private List<LineSegment> m_lines;
 
     /** underlying builder * */
     private GraphBuilder m_builder;
 
     /** Constructs a new OptLineGraphGenerator. */
     public OptLineGraphGenerator() {
-        m_coord2count = new HashMap();
-        m_lines = new ArrayList();
+        m_coord2count = new HashMap<>();
+        m_lines = new ArrayList<>();
         setGraphBuilder(new OptLineGraphBuilder());
     }
 
@@ -163,14 +163,15 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
      *
      * @return A list of LineSegment objects.
      */
-    protected List getLines() {
+    protected List<LineSegment> getLines() {
         return (m_lines);
     }
 
     protected void generateNodes() {
         // create nodes from coordiante counts
-        for (Iterator itr = m_coord2count.entrySet().iterator(); itr.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) itr.next();
+        for (Iterator<Map.Entry<Coordinate, Object>> itr = m_coord2count.entrySet().iterator();
+                itr.hasNext(); ) {
+            Map.Entry<Coordinate, Object> entry = itr.next();
             Coordinate coord = (Coordinate) entry.getKey();
             Integer count = (Integer) entry.getValue();
 

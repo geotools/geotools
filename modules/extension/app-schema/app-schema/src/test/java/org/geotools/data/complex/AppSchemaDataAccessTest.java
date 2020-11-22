@@ -92,7 +92,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
                 tf.createAttributeDescriptor(
                         targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
         targetName = targetFeature.getName();
-        List mappings = TestData.createMappingsColumnsAndValues(targetFeature);
+        List<AttributeMapping> mappings = TestData.createMappingsColumnsAndValues(targetFeature);
 
         Name sourceName = TestData.WATERSAMPLE_TYPENAME;
         FeatureSource<SimpleFeatureType, SimpleFeature> source = ds.getFeatureSource(sourceName);
@@ -302,8 +302,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
         AppSchemaDataAccessDTO config = new XMLConfigDigester().parse(configUrl);
 
-        Set /* <FeatureTypeMapping> */ mappings =
-                AppSchemaDataAccessConfigurator.buildMappings(config);
+        Set<FeatureTypeMapping> mappings = AppSchemaDataAccessConfigurator.buildMappings(config);
 
         dataStore = new AppSchemaDataAccess(mappings);
         FeatureSource<FeatureType, Feature> source = dataStore.getFeatureSource(typeName);

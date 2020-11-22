@@ -68,7 +68,7 @@ public abstract class AbstractTimePrimitiveTypeImpl extends AbstractTimeObjectTy
      */
     public EList<RelatedTimeType> getRelatedTime() {
         if (relatedTime == null) {
-            relatedTime = new EObjectContainmentEList<RelatedTimeType>(RelatedTimeType.class, this, Gml311Package.ABSTRACT_TIME_PRIMITIVE_TYPE__RELATED_TIME);
+            relatedTime = new EObjectContainmentEList<>(RelatedTimeType.class, this, Gml311Package.ABSTRACT_TIME_PRIMITIVE_TYPE__RELATED_TIME);
         }
         return relatedTime;
     }

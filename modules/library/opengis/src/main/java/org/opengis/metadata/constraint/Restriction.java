@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.constraint;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class Restriction extends CodeList<Restriction> {
     private static final long serialVersionUID = 7949159742645339894L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<Restriction> VALUES = new ArrayList<Restriction>(8);
+    private static final List<Restriction> VALUES = new ArrayList<>(8);
 
     /**
      * Exclusive right to the publication, production, or sale of the rights to a literary,

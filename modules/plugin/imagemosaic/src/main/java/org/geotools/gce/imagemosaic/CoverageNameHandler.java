@@ -63,7 +63,7 @@ class CoverageNameHandler {
     private void initializeProperties(String propertiesString) {
         if (propertiesString != null && !propertiesString.trim().isEmpty()) {
             String[] propertiesKVP = propertiesString.split(Utils.PROPERTIES_SEPARATOR);
-            properties = new HashMap<String, String>();
+            properties = new HashMap<>();
             for (String property : propertiesKVP) {
                 String[] kvp = property.split("=");
                 properties.put(kvp[0], kvp[1]);

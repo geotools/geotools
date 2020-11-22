@@ -21,7 +21,10 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static org.geotools.mbtiles.MBTilesDataStore.DEFAULT_CRS;
 import static org.junit.Assert.assertFalse;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;

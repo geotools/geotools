@@ -125,4 +125,13 @@ public class WMTSLayer extends Layer {
     public StyleImpl getDefaultStyle() {
         return defaultStyle;
     }
+
+    /**
+     * Return the possible templates for this layer keyed by format.
+     *
+     * @return
+     */
+    public Map<String, String> getTemplates() {
+        return templates;
+    }
 }

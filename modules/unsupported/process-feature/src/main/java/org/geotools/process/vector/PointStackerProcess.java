@@ -195,7 +195,7 @@ public class PointStackerProcess implements VectorProcess {
             @DescribeParameter(
                         name = "cellSize",
                         description =
-                                "In grid systetems, this is the size of grid (in pixesls) in natural clustering this is the diameter of cell (in pixels)"
+                                "In grid systems, this is the size of grid (in pixels), in natural clustering this is the diameter of cell (in pixels)"
                     )
                     Integer cellSize,
             @DescribeParameter(

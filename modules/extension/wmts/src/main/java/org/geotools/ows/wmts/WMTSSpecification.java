@@ -41,9 +41,7 @@ public class WMTSSpecification extends Specification {
     private WMTSServiceType type;
 
     /** */
-    public WMTSSpecification() {
-        // TODO Auto-generated constructor stub
-    }
+    public WMTSSpecification() {}
 
     @Override
     public String getVersion() {
@@ -53,7 +51,6 @@ public class WMTSSpecification extends Specification {
 
     @Override
     public GetCapabilitiesRequest createGetCapabilitiesRequest(URL server) {
-        // TODO Auto-generated method stub
         return new GetCapsRequest(server);
     }
 
@@ -81,13 +78,21 @@ public class WMTSSpecification extends Specification {
                 WMTSCapabilities capabilities,
                 HTTPClient client) {
             super(onlineResource, properties, client);
-            this.type = capabilities.getType();
+            if (properties.containsKey("type")) {
+                String t = (String) properties.get("type");
+                if ("REST".equalsIgnoreCase(t)) {
+                    this.type = WMTSServiceType.REST;
+                } else if ("KVP".equalsIgnoreCase(t)) {
+                    this.type = WMTSServiceType.KVP;
+                }
+            } else {
+                this.type = capabilities.getType();
+            }
             this.capabilities = capabilities;
         }
 
         @Override
         public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
-            // TODO Auto-generated method stub
             return new GetTileResponse(response, getType());
         }
 

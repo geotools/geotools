@@ -19,6 +19,7 @@ package org.geotools.ows.wmts.request;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.*;
@@ -76,9 +77,9 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     private final HTTPClient client;
 
-    private WMTSLayer layer = null;
+    protected WMTSLayer layer = null;
 
-    private String styleName = "";
+    protected String styleName = "";
 
     private String srs;
 
@@ -99,6 +100,8 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     private CoordinateReferenceSystem crs;
 
     private final Map<String, String> headers = new HashMap<>();
+
+    private String format = "image/png";
 
     /**
      * Constructs a GetMapRequest. The data passed in represents valid values that can be used.
@@ -130,6 +133,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     @Override
     public void setLayer(WMTSLayer layer) {
+
         this.layer = layer;
         if (styleName.isEmpty()) {
             StyleImpl defaultStyle = layer.getDefaultStyle();
@@ -142,6 +146,14 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     @Override
     public void setStyle(String styleName) {
         this.styleName = styleName;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     public void setRequestedHeight(int height) {
@@ -214,8 +226,6 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                             + requestedHeight);
 
         TileMatrixSet matrixSet = selectMatrixSet();
-
-        String requestUrl = onlineResource.toString();
         String format = (String) getProperties().get(FORMAT);
         if (StringUtils.isEmpty(format)) {
             if (!layer.getFormats().isEmpty()) {
@@ -229,24 +239,13 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                 }
             }
         }
+
         if (StringUtils.isEmpty(format)) {
             format = "image/png";
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Format not set, trying with " + format);
         }
-        if (WMTSServiceType.REST.equals(type)) {
-            requestUrl = layer.getTemplate(format);
-            if (requestUrl == null) {
-                if (LOGGER.isLoggable(Level.INFO))
-                    LOGGER.info("Template URL not available for format  " + format);
-                format = layer.getFormats().get(0);
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Available formats: " + layer.getFormats() + " -- Selecting " + format);
-                }
-                requestUrl = layer.getTemplate(format);
-            }
-        }
-
+        String requestUrl = getFinalURL().toExternalForm();
+        // TODO - Add properties that match the URL {}
         WMTSTileService wmtsService =
                 new WMTSTileService(requestUrl, type, layer, styleString, matrixSet, this.client);
 
@@ -312,6 +311,32 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         tiles.removeAll(tilesOutsideLimits);
 
         return tiles;
+    }
+
+    @Override
+    public URL getFinalURL() {
+        String requestUrl = onlineResource.toString();
+        if (WMTSServiceType.REST.equals(type)) {
+            requestUrl = layer.getTemplate(format);
+            if (requestUrl == null) {
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info("Template URL not available for format  " + format);
+                // format = layer.getFormats().get(0);
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
+                            "Available formats: " + layer.getFormats() + " -- Selecting " + format);
+                }
+                requestUrl = layer.getTemplate(format);
+            }
+        }
+        URL ret = null;
+        try {
+            ret = new URL(requestUrl);
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return ret;
     }
 
     private TileMatrixSet selectMatrixSet() throws ServiceException, RuntimeException {

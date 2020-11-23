@@ -273,6 +273,11 @@ Use the following to create and start a MySQL 5 (5.7.31 at the time of writing) 
     docker pull mysql:5
     docker run --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=geotools --name geotools -h geotools -d mysql:5
 
+or use the following to create and start a MySQL 8 (8.0.22 at the time of writing) container listening on port 3306:::
+
+    docker pull mysql:8
+    docker run --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=geotools --name geotools -h geotools -d mysql:8
+
 Note that the ``--rm`` option will delete the container after stopping it, the image is preserved so you won't need
 to pull it next time, but you may want to preserve the container so you don't have to build a new one.
 

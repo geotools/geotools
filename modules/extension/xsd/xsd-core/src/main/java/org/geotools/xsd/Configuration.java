@@ -483,7 +483,7 @@ public abstract class Configuration {
      *
      * @param bindings Map containing all bindings, keyed by {@link QName}.
      */
-    protected void configureBindings(Map bindings) {
+    protected void configureBindings(Map<QName, Object> bindings) {
         // do nothing
     }
 

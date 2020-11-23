@@ -663,7 +663,7 @@ public class StreamingRenderer implements GTRenderer {
             ReferencedEnvelope envelope,
             Rectangle paintArea,
             AffineTransform worldToScreen,
-            Map hints) {
+            Map<?, ?> hints) {
         if (getScaleComputationMethod().equals(SCALE_ACCURATE)) {
             try {
                 return RendererUtilities.calculateScale(

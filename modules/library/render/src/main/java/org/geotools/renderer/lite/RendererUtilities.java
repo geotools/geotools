@@ -319,7 +319,7 @@ public final class RendererUtilities {
      * hints contains a DPI then that DPI is used otherwise 90 is used (the OGS default).
      */
     public static double calculateScale(
-            ReferencedEnvelope envelope, int imageWidth, int imageHeight, Map hints)
+            ReferencedEnvelope envelope, int imageWidth, int imageHeight, Map<?, ?> hints)
             throws TransformException, FactoryException {
 
         if (hints != null && hints.containsKey("declaredScaleDenominator")) {

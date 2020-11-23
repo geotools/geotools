@@ -71,14 +71,32 @@ public class PointStackerProcessTest {
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result =
                 psp.execute(
-                        fc, 100, // cellSize
-                        null, // weightClusterPosition
-                        null, // normalize
-                        null, // preserve location
-                        null, null, null, null, bounds, // outputBBOX
+                        fc,
+                        100, // cellSize
+                        false, // weightClusterPosition
+                        false, // normalize
+                        PreserveLocation.Superimposed, // preserve location
+                        null, // collectClusterAttributeName
+                        ClusterType.GridCenter, // clusterType
+                        null, // computeBBox
+                        null, // computeBBoxType
+                        bounds, // outputBBOX
                         1000, // outputWidth
                         1000, // outputHeight
                         monitor);
+        /*psp.execute(
+                          fc, 100, // cellSize
+                          null, // weightClusterPosition
+                          null, // normalize
+                          null, // preserve location
+                          null, // collectClusterAttributeName
+        null, //clusterType
+        null, //argComputeBBox
+        null, //argComputeBBox
+        bounds, // outputBBOX
+                          1000, // outputWidth
+                          1000, // outputHeight
+                          monitor);*/
 
         checkSchemaCorrect(result.getSchema(), false);
         assertEquals(2, result.size());
@@ -107,14 +125,28 @@ public class PointStackerProcessTest {
         SimpleFeatureCollection result =
                 psp.execute(
                         fc, 100, // cellSize
-                        false, // weighClusterPostion
+                        false, // weightClusterPosition
                         true, // normalize
                         null, // preserve location
-                        null, null, null, null, bounds, // outputBBOX
+                        null, // collectClusterAttributeName
+                        null, // clusterType
+                        null, // computeBBox
+                        null, // computeBBoxType
+                        bounds, // outputBBOX
                         1000, // outputWidth
                         1000, // outputHeight
                         monitor);
-
+        /*
+           psp.execute(
+                             fc, 100, // cellSize
+                             false, // weighClusterPostion
+                             true, // normalize
+                             null, // preserve location
+                             null, null, null, null, bounds, // outputBBOX
+                             1000, // outputWidth
+                             1000, // outputHeight
+                             monitor);
+        */
         checkSchemaCorrect(result.getSchema(), true);
         assertEquals(2, result.size());
         checkResultPoint(result, new Coordinate(4, 4), 3, 2, 1.0d, 1.0d);
@@ -387,10 +419,10 @@ public class PointStackerProcessTest {
     private void checkSchemaCorrect(SimpleFeatureType ft, boolean includeProportionColumns) {
         if (includeProportionColumns) {
             // assertEquals(5, ft.getAttributeCount()); old version before adding envelope
-            assertEquals(7, ft.getAttributeCount());
+            assertEquals(8, ft.getAttributeCount());
         } else {
             // assertEquals(3, ft.getAttributeCount()); old version before adding envelope.
-            assertEquals(5, ft.getAttributeCount());
+            assertEquals(6, ft.getAttributeCount());
         }
         assertEquals(Point.class, ft.getGeometryDescriptor().getType().getBinding());
         assertEquals(

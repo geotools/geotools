@@ -59,11 +59,11 @@ import org.opengis.util.ProgressListener;
  *
  * <p>This is sometimes called "point clustering". The term stacking is used instead, since
  * clustering has multiple meanings in geospatial processing - it is also used to mean identifying
- * groups defined by point proximity.</p>
+ * groups defined by point proximity.
  *
  * <p>The stacking is defined by specifying a grid to aggregate to. The grid cell size is specified
  * in pixels relative to the requested output image size. This makes it more intuitive to pick an
- * appropriate grid size, and ensures that the aggregation works at all zoom levels.</p>
+ * appropriate grid size, and ensures that the aggregation works at all zoom levels.
  *
  * <p>The output is a FeatureCollection containing the following attributes:
  *
@@ -72,37 +72,42 @@ import org.opengis.util.ProgressListener;
  *   <li><code>count</code> - the total number of points in the cluster
  *   <li><code>countUnique</code> - the number of unique point locations in the cluster
  *   <li><code>computedArea</code> - Area of the point locations in the cluster
- *   <li><code>computedBBox</code> - Bounding box of the point location in the cluster (see computeBBox)
- *   <li><code>clusteredAttributes</code> - Attributes IDs of the point location part of the cluster (see collectClusterAttributeName)
+ *   <li><code>computedBBox</code> - Bounding box of the point location in the cluster (see
+ *       computeBBox)
+ *   <li><code>clusteredAttributes</code> - Attributes IDs of the point location part of the cluster
+ *       (see collectClusterAttributeName)
  * </ul>
- * </p>
  *
- * <p> Parameters
+ * <p>Parameters
+ *
  * <ul>
  *   <li><code>cellSize</code> - Maximum distance (in pixels) between points
- *   <li><code>collectClusterAttributeName</code> - Name of the attribute which will be part of clusteredAttributes list.
+ *   <li><code>collectClusterAttributeName</code> - Name of the attribute which will be part of
+ *       clusteredAttributes list.
  *   <li><code>clusterType</code> - Type of cluster, possibile values
- * 		<ul>
- * 		  <li><code>GridCenter</code> - Grid X/Y, center point is centered
- * 		  <li><code>GridWeight</code> - Grid X/Y, center point weighted
- * 		  <li><code>GridWeightHalf</code> - Grid X/Y, center point is weighted at maximum (cellSize/2)
- * 		  <li><code>GridNearest</code> - Grid X/Y, center point is Nearest to the center
- * 		  <li><code>Natural</code> - Centers is computed naturally, similar with OpenLayers clustering strategy. Internally it is using a greedy approach in order to be fast. 
- * 		</ul>
+ *       <ul>
+ *         <li><code>GridCenter</code> - Grid X/Y, center point is centered
+ *         <li><code>GridWeight</code> - Grid X/Y, center point weighted
+ *         <li><code>GridWeightHalf</code> - Grid X/Y, center point is weighted at maximum
+ *             (cellSize/2)
+ *         <li><code>GridNearest</code> - Grid X/Y, center point is Nearest to the center
+ *         <li><code>Natural</code> - Centers is computed naturally, similar with OpenLayers
+ *             clustering strategy. Internally it is using a greedy approach in order to be fast.
+ *       </ul>
  *   <li><code>weightClusterPosition</code> - Equivalent with clusterType=GridWeight
  *   <li><code>normalize</code> - Indicates whether to add fields normalized to the range 0-1.
- *   <li><code>preserveLocation</code> - Indicates wheter to preserve the original location of points for single/superimposed points
- *   <li><code>computeBBox</code> - Compute a BBox of the points contained in the cluster, default value is 'false'
+ *   <li><code>preserveLocation</code> - Indicates wheter to preserve the original location of
+ *       points for single/superimposed points
+ *   <li><code>computeBBox</code> - Compute a BBox of the points contained in the cluster, default
+ *       value is 'false'
  *   <li><code>computeBBoxType</code> - Type of he BBox
- * 		<ul>
- * 		  <li><code>Original</code> - The BBox will be using the original crs
- * 		  <li><code>Map</code> - The BBox will be using the map crs
- * 		</ul>
+ *       <ul>
+ *         <li><code>Original</code> - The BBox will be using the original crs
+ *         <li><code>Map</code> - The BBox will be using the map crs
+ *       </ul>
  *   <li><code>clusterType</code> - type of cluster, possibile values
- *	 </li>
- *
  * </ul>
- * </p>
+ *
  * Note that as required by the Rendering Transformation API, the output has the CRS of the input
  * data.
  *
@@ -297,6 +302,10 @@ public class PointStackerProcess implements VectorProcess {
             computeBBox = argComputeBBox;
         }
 
+        // default value
+        if (clusterType == null) {
+            clusterType = ClusterType.GridCenter;
+        }
         // TODO: allow output CRS to be different to data CRS
         // assume same CRS for now...
         double cellSizeSrc = cellSize * outputEnv.getWidth() / outputWidth;
@@ -454,7 +463,7 @@ public class PointStackerProcess implements VectorProcess {
                 indexPt.y = pout.y;
 
                 StackedPoint stkPt = null;
-                if (clusterType == ClusterType.Natural) {
+                if (ClusterType.Natural == clusterType) {
                     // clustering is natural
                     // searching for best cluster using center point
                     // in case of Natural Clustering the cellSize is the
@@ -678,7 +687,7 @@ public class PointStackerProcess implements VectorProcess {
         }
 
         /**
-         * return the original bounding box
+         * Return the original bounding box
          *
          * @return
          */
@@ -744,7 +753,6 @@ public class PointStackerProcess implements VectorProcess {
         }
 
         /**
-         * @todo change GeometryFactory
          * @param pt
          * @param clusterType
          */

@@ -873,7 +873,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         int j = preStack.size();
 
         for (int k = 0; k < expression.getParameters().size(); k++) {
-            ((Expression) expression.getParameters().get(i)).accept(this, null);
+            ((Expression) expression.getParameters().get(k)).accept(this, null);
 
             if (i < postStack.size()) {
                 while (j < preStack.size()) preStack.pop();

@@ -23,6 +23,7 @@ import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_geometryType;
+import org.geotools.filter.function.JsonPointerFunction;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -401,5 +402,27 @@ public class PostPreProcessFilterSplittingVisitorTest
         or.accept(visitor, null);
         assertEquals(or, visitor.getFilterPre());
         assertEquals(Filter.INCLUDE, visitor.getFilterPost());
+    }
+
+    public void testIndexOutOfBoundExceptionNotHappensWithTwoInMemoryFilter() {
+        // test a bug doesn't occur when having in the filter a function
+        // with a number of parameters <= the number of filters in the post stack
+        FilterCapabilities caps = new FilterCapabilities();
+        PostPreProcessFilterSplittingVisitor visitor =
+                new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        caps.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
+        caps.addType(JsonPointerFunction.class);
+        caps.addType(And.class);
+        Filter memoryOne = ff.crosses(null, null);
+        Filter memoryTwo = ff.crosses(null, null);
+        Filter otherFilter =
+                ff.equal(
+                        ff.function("jsonPointer", ff.literal("/pointer"), ff.property("property")),
+                        ff.literal("test"),
+                        false);
+        And and = ff.and(Arrays.asList(memoryOne, memoryTwo, otherFilter));
+        and.accept(visitor, null);
+        assertEquals(ff.and(Arrays.asList(memoryOne, memoryTwo)), visitor.getFilterPost());
+        assertEquals(otherFilter, visitor.getFilterPre());
     }
 }

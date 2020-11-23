@@ -656,7 +656,7 @@ public class PointStackerProcess implements VectorProcess {
             return polygon.convexHull();
         }
 
-        public Geometry getPoligon(MathTransform invTransform) {
+        public Geometry getPolygon(MathTransform invTransform) {
             GeometryFactory factory = new GeometryFactory();
             allPts.add(allPts.get(0));
             Coordinate[] list = allPts.toArray(new Coordinate[] {});

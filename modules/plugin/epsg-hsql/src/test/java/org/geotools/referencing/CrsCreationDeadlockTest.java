@@ -13,7 +13,7 @@ import org.opengis.referencing.crs.CRSAuthorityFactory;
 
 public class CrsCreationDeadlockTest {
 
-    private static final int NUMBER_OF_THREADS = 32;
+    private static final int NUMBER_OF_THREADS = 1;
 
     @Test
     public void testForDeadlock() throws InterruptedException {

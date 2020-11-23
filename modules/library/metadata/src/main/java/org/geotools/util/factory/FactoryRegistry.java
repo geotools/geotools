@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -128,7 +129,8 @@ public class FactoryRegistry {
      * need to be scanned for plugins. After a category has been first used, it is removed from this
      * set so we don't scan for plugins again.
      */
-    private final Set<Class<?>> needScanForPlugins = new HashSet<>();
+    private final Set<Class<?>> needScanForPlugins =
+            Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     /**
      * Categories under scanning. This is used by {@link #scanForPlugins(Collection,Class)} as a
@@ -247,7 +249,7 @@ public class FactoryRegistry {
      * @return Factories ready to use for the specified category, filter and hints.
      * @since 19
      */
-    public synchronized <T> Stream<T> getFactories(
+    public <T> Stream<T> getFactories(
             final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
         /*
          * The implementation of this method is very similar to the 'getUnfilteredFactories'
@@ -896,7 +898,7 @@ public class FactoryRegistry {
      * Scans the given category for plugins only if needed. After this method has been invoked once
      * for a given category, it will no longer scan for that category.
      */
-    private void scanForPluginsIfNeeded(final Class<?> category) {
+    private synchronized void scanForPluginsIfNeeded(final Class<?> category) {
         if (needScanForPlugins.remove(category)) {
             scanForPlugins(getClassLoaders(), category);
         }

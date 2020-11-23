@@ -173,7 +173,8 @@ public class Schemas {
      * @param configuration The parser configuration.
      * @return A list of location resolvers, empty if none found.
      */
-    public static List findSchemaLocationResolvers(Configuration configuration) {
+    public static List<XSDSchemaLocationResolver> findSchemaLocationResolvers(
+            Configuration configuration) {
         List<Configuration> all = configuration.allDependencies();
         List<XSDSchemaLocationResolver> resolvers = new ArrayList<>();
 

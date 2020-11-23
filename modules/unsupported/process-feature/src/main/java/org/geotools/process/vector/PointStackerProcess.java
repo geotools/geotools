@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -119,9 +118,6 @@ import org.opengis.util.ProgressListener;
     description = "Aggregates a collection of points over a grid into one point per grid cell."
 )
 public class PointStackerProcess implements VectorProcess {
-    /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.process.vector");
 
     public enum PreserveLocation {
         /** Preserves the original point location in case there is a single point in the cell */
@@ -747,15 +743,16 @@ public class PointStackerProcess implements VectorProcess {
             return uniquePts.size();
         }
 
-        /** get the clustered attributes of the points that have been clustered */
+        /**
+         * Get the clustered attributes of the points that have been clustered
+         *
+         * @return
+         */
         public JSONArray getClusteredAttributeValues() {
             return this.idsClustered;
         }
 
-        /**
-         * @param pt
-         * @param clusterType
-         */
+        /** @param pt */
         public void add(Coordinate pt) {
             if (first == null) {
                 first = pt;

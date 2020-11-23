@@ -333,7 +333,7 @@ public class PointStackerProcess implements VectorProcess {
                 if (maxCountUnique < sp.getCount()) maxCountUnique = sp.getCountUnique();
             }
         }
-        // get all stecked points and create features.
+        // get all stacked points and create features.
         for (StackedPoint sp : stackedPts) {
             // create feature for stacked point
             Coordinate pt = getStackedPointLocation(preserveLocation, sp);

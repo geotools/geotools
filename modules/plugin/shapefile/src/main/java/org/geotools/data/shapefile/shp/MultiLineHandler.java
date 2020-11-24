@@ -221,10 +221,12 @@ public class MultiLineHandler implements ShapeHandler {
                 }
             }
         }
-        if ((shapeType == ShapeType.ARCZ || shapeType == ShapeType.ARCM) && !flatGeometry) {
+        boolean isArcZWithM = doubleBuffer.hasRemaining() && shapeType == ShapeType.ARCZ;
+        if ((isArcZWithM || shapeType == ShapeType.ARCM) && !flatGeometry) {
             // M min, max
             // buffer.position(buffer.position() + 2 * 8);
             ((Buffer) doubleBuffer).position(doubleBuffer.position() + 2);
+
             for (int part = 0; part < numParts; part++) {
                 start = partOffsets[part];
 

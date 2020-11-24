@@ -2,6 +2,9 @@ name: Linux with OpenJDK 1.8 GitHub CI
 
 on: [pull_request]
 
+env:
+  MAVEN_OPTS: -Dmaven.wagon.httpconnectionManager.ttlSeconds=25 -Dmaven.wagon.http.retryHandler.count=3
+
 jobs:
   build:
 
@@ -14,7 +17,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Maven repository caching
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}

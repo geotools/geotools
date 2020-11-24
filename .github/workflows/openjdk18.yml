@@ -1,11 +1,11 @@
-name: Windows GitHub CI
+name: OpenJDK 1.8 (Linux and Windows) GitHub CI
 
 on: [pull_request]
 
 jobs:
   build:
 
-    runs-on: [windows-latest]
+    runs-on: [windows-latest, ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v1

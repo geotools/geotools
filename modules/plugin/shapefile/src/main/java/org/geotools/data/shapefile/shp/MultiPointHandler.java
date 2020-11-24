@@ -141,8 +141,8 @@ public class MultiPointHandler implements ShapeHandler {
             }
         }
 
-        if ((shapeType == ShapeType.MULTIPOINTZ || shapeType == ShapeType.MULTIPOINTM)
-                && !flatGeometry) {
+        boolean isArcZWithM = shapeType == ShapeType.MULTIPOINTZ && dbuffer.hasRemaining();
+        if ((isArcZWithM || shapeType == ShapeType.MULTIPOINTM) && !flatGeometry) {
             ((Buffer) dbuffer).position(dbuffer.position() + 2);
 
             dbuffer.get(ordinates, 0, numpoints);

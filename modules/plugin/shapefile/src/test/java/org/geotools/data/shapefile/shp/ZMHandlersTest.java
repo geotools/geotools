@@ -87,7 +87,7 @@ public class ZMHandlersTest {
     }
 
     @Test
-    public void testReadMZMultiPoints() throws ShapefileException, IOException {
+    public void testReadMZMultiPointsWithOptionalM() throws ShapefileException, IOException {
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zmmultipoints.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
@@ -101,16 +101,17 @@ public class ZMHandlersTest {
     }
 
     @Test
-    public void testReadZMultiPoints() throws ShapefileException, IOException {
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zmmultipoints.shp");
+    public void testReadZMultiPointsWithOptionalM() throws ShapefileException, IOException {
+        // test multipoints with type ArcZ and optional M are parsed
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/multipointsz.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
         MultiPoint geom = (MultiPoint) feature.getDefaultGeometry();
         Coordinate coordinate = geom.getCoordinates()[0];
 
-        assertEquals("wrong x", 1208.5983, coordinate.getX(), 0.001);
-        assertEquals("wrong y", 924.8555, coordinate.getY(), 0.001);
-        assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
+        assertEquals("wrong x", 24.54682976316134, coordinate.getX(), 0d);
+        assertEquals("wrong y", 60.81447758588624, coordinate.getY(), 0d);
+        assertEquals("wrong z", 0d, coordinate.getZ(), 0d);
     }
 
     @Test
@@ -127,7 +128,8 @@ public class ZMHandlersTest {
     }
 
     @Test
-    public void testReadMZLine() throws ShapefileException, IOException {
+    public void testReadMZLineWithOptionalM() throws ShapefileException, IOException {
+        // test line with type ArcTypeZ and optional M is parsed
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mzlines.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
@@ -154,16 +156,16 @@ public class ZMHandlersTest {
     }
 
     @Test
-    public void testReadZLine() throws ShapefileException, IOException {
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zlines.shp");
+    public void testReadZLineWithOptionalM() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/linez.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
         MultiLineString geom = (MultiLineString) feature.getDefaultGeometry();
         Coordinate coordinate = geom.getCoordinates()[0];
 
-        assertEquals("wrong x", 589.4648, coordinate.getX(), 0.001);
-        assertEquals("wrong y", 909.9963, coordinate.getY(), 0.001);
-        assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
+        assertEquals("wrong x", 340d, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 377d, coordinate.getY(), 0.001);
+        assertEquals("wrong z", 3d, coordinate.getZ(), 0.00001);
     }
 
     @Test
@@ -317,16 +319,17 @@ public class ZMHandlersTest {
     }
 
     @Test
-    public void testReadZPolygon() throws ShapefileException, IOException {
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zpolygons.shp");
+    public void testReadZPolygonWithOptionalM() throws ShapefileException, IOException {
+        // test Polygon with type ArcZ and optional M is parsed
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/polygonz.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
         MultiPolygon geom = (MultiPolygon) feature.getDefaultGeometry();
         Coordinate coordinate = geom.getCoordinates()[0];
 
-        assertEquals("wrong x", 96.944404, coordinate.getX(), 0.001);
-        assertEquals("wrong y", 653.67509, coordinate.getY(), 0.001);
-        assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
+        assertEquals("wrong x", 665d, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 294d, coordinate.getY(), 0.001);
+        assertEquals("wrong z", 1d, coordinate.getZ(), 0.00001);
     }
 
     /**
@@ -392,6 +395,51 @@ public class ZMHandlersTest {
         ShapefileDataStore store = new ShapefileDataStore(url);
         Query q = new Query(store.getTypeNames()[0]);
         q.getHints().put(Hints.FEATURE_2D, Boolean.FALSE);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        while (reader.hasNext()) {
+            SimpleFeature f = reader.next();
+            assertNotNull(f.getDefaultGeometry());
+        }
+    }
+
+    @Test
+    public void testReadZMultipointsWithNoOptionalM() throws IOException {
+        // test MultiPoints with type ArcZ and no optional M are parsed
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/multipointsz.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        Query q = new Query(store.getTypeNames()[0]);
+        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        while (reader.hasNext()) {
+            SimpleFeature f = reader.next();
+            assertNotNull(f.getDefaultGeometry());
+        }
+    }
+
+    @Test
+    public void testReadZLinesWithNoOptionalM() throws IOException {
+        // test Line with type ArcZ and no optional M is parsed.
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/linez.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        Query q = new Query(store.getTypeNames()[0]);
+        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        while (reader.hasNext()) {
+            SimpleFeature f = reader.next();
+            assertNotNull(f.getDefaultGeometry());
+        }
+    }
+
+    @Test
+    public void testReadZPolygonWithNoOptionalM() throws IOException {
+        // test Polygon shapefile with type ArcZ and no optional M is parsed.
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/polygonz.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        Query q = new Query(store.getTypeNames()[0]);
+        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 store.getFeatureReader(q, Transaction.AUTO_COMMIT);
         while (reader.hasNext()) {

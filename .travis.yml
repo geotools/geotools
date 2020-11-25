@@ -7,17 +7,7 @@ language: java
 before_install:
   - sed -i.bak -e 's|https://nexus.codehaus.org/snapshots/|https://oss.sonatype.org/content/repositories/codehaus-snapshots/|g' ~/.m2/settings.xml
   - unset _JAVA_OPTIONS
-  - if [ "$TRAVIS_JOB_NAME" == "Oracle XE" ]; then
-       sh ".travis/start-oracle-xe.sh";
-       sh ".travis/setup-oracle.sh";
-    fi
 
-
-install: 
-  - if [ "$TRAVIS_JOB_NAME" == "MS SQL server 2019" ]; then
-       sh ".travis/install-mssql2019.sh";
-       sh ".travis/setup-mssql.sh";
-    fi
 env:
   global:
     - MAVEN_OPTS=-Xmx756m
@@ -38,13 +28,3 @@ matrix:
       env: ARGS="-Dfmt.skip=true -Pjdk11tests"
     - jdk: openjdk11
       env: ARGS="-Dfmt.action=check -Dqa=true -DskipTests=true"
-    - jdk: openjdk8
-      env: ARGS="-pl :gt-jdbc-oracle -Ponline -Ptravis-oracle-build -Dfmt.skip=true -am"
-      dist: bionic
-      name: "Oracle XE"
-      services:
-        - docker
-      addons:
-        apt:
-          packages:
-            - docker-ce

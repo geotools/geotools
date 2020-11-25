@@ -1,2 +1,0 @@
-SET NOCOUNT ON;
-GO

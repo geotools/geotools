@@ -42,10 +42,6 @@ matrix:
     - jdk: openjdk11
       env: ARGS="-Dfmt.action=check -Dqa=true -DskipTests=true"
     - jdk: openjdk8
-      env: ARGS="-pl :gt-jdbc-sqlserver -Dfmt.skip=true -Ponline -am"
-      dist: bionic
-      name: "MS SQL server 2019"
-    - jdk: openjdk8
       env: ARGS="-pl :gt-jdbc-oracle -Ponline -Ptravis-oracle-build -Dfmt.skip=true -am"
       dist: bionic
       name: "Oracle XE"

@@ -95,18 +95,20 @@ Example fixture ~/.geotools/postgis/local.properties::
 In windows you cannot create a ".geotools" folder!
 
 1. Open up a CMD window
-2. cd to your home directory and use mkdir
-    
-    C:\Documents and Settings\Fred>mkdir .geotools
+2. cd to your home directory and use mkdir::
 
-3. And set up any fixtures you need:
-    
-    C:\Documents and Settings\Fred>cd .geotools
-    C:\Documents and Settings\Fred\.geotools>mkdir postgis
-    C:\Documents and Settings\Fred\.geotools>cd postgis
-    C:\Documents and Settings\Fred\.geotools\postgis>notepad typical.properties
+    C:\\Documents and Settings\\Fred\>mkdir .geotools
 
-4. And use the as a guide: https://github.com/geotools/geotools/tree/master/build/fixtures
+
+3. And set up any fixtures you need::
+
+    C:\\Documents and Settings\\Fred>cd .geotools
+    C:\\Documents and Settings\\Fred\\.geotools>mkdir postgis
+    C:\\Documents and Settings\\Fred\\.geotools>cd postgis
+    C:\\Documents and Settings\\Fred\\.geotools\\postgis>notepad typical.properties
+
+
+4. And use these as a guide: https://github.com/geotools/geotools/tree/master/build/fixtures
    
    Examples:
    

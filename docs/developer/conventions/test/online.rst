@@ -120,8 +120,8 @@ Setting up a database for online testing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can use `docker <https://www.docker.com/>`_ to run a database flavour of your choice,
-some examples are given below. Also the Travis-CI build script shows how to install / run
-SQL Server, MySQL and Oracle XE (see `.travis.yml <https://github.com/geotools/geotools/blob/master/.travis.yml>`_).
+some examples are given below. Also the GitHub workflows show how to run SQL Server, MySQL 
+and Oracle XE (see `.github/workflows/ <https://github.com/geotools/geotools/tree/master/.github/workflows>`_).
 Using docker will prevent the hassle of local installation on your computer possibly messing up your configuration.
 
 Oracle XE
@@ -270,7 +270,7 @@ ____________________
 
 Official MySQL images are provided `on dockerhub <https://hub.docker.com/_/mysql/>`_.
 
-Use the following to create and start a MySQL 5 (5.7.31 at the time of writing) container listening on port 3306:::
+Use the following to create and start a MySQL 5 (5.7.32 at the time of writing) container listening on port 3306:::
 
     docker pull mysql:5
     docker run --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=geotools --name geotools -h geotools -d mysql:5
@@ -285,7 +285,7 @@ to pull it next time, but you may want to preserve the container so you don't ha
 
 Then create a ``geotools`` database using:::
 
-    docker exec -i geotools mysql -uroot -pgeotools < .travis/mysql_setup.sql
+    docker exec -i geotools mysql -uroot -pgeotools < build/ci/mysql/setup_mysql.sql
 
 The appropriate fixture for using the above database schema would be::
 
@@ -297,6 +297,8 @@ The appropriate fixture for using the above database schema would be::
     password=geotools
 
 In file ``~/.geotools/mysql.properties``
+
+Shell scripts for the above steps are provided in directory ``build/ci/mysql/`` of the source tree.
 
 To run the online tests for the ``gt-jdbc-mysql`` module use the following Maven command:::
 

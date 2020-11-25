@@ -11,10 +11,7 @@ before_install:
        sh ".travis/start-oracle-xe.sh";
        sh ".travis/setup-oracle.sh";
     fi
-  - if [[ "$TRAVIS_JOB_NAME" == MySQL* ]]; then
-       sh ".travis/start-mysql.sh" $MYSQL;
-       sh ".travis/setup-mysql.sh";
-    fi
+
 
 install: 
   - if [ "$TRAVIS_JOB_NAME" == "MS SQL server 2019" ]; then
@@ -45,26 +42,6 @@ matrix:
       env: ARGS="-pl :gt-jdbc-oracle -Ponline -Ptravis-oracle-build -Dfmt.skip=true -am"
       dist: bionic
       name: "Oracle XE"
-      services:
-        - docker
-      addons:
-        apt:
-          packages:
-            - docker-ce
-    - jdk: openjdk8
-      env: ARGS="-pl :gt-jdbc-mysql -Ponline -Dfmt.skip=true -am" MYSQL="5"
-      dist: bionic
-      name: "MySQL 5"
-      services:
-        - docker
-      addons:
-        apt:
-          packages:
-            - docker-ce
-    - jdk: openjdk11
-      env: ARGS="-pl :gt-jdbc-mysql -Ponline -Dfmt.skip=true -am" MYSQL="8"
-      dist: bionic
-      name: "MySQL 8"
       services:
         - docker
       addons:

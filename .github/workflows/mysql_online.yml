@@ -1,0 +1,40 @@
+name: MySQL online tests
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: MySQL ${{ matrix.mysql }} online test
+    runs-on: [ubuntu-latest]
+    strategy:
+      matrix:
+        mysql: [5, 8]
+        java: [1.8]
+
+    steps:
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java }}
+    - uses: actions/checkout@v2
+    - name: Maven repository caching
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: mysql-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          mysql-${{ runner.os }}-maven-
+    - name: Setup test environment for MySQL ${{ matrix.mysql }} 
+      run: |
+        ./build/ci/mysql/start-mysql.sh ${{ matrix.mysql }}
+        ./build/ci/mysql/setup-mysql.sh
+    - name: Build GeoTools dependent modules (no tests)
+      run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-mysql -DskipTests -Dfmt.skip=true -am
+    - name: Test MySQL data store
+      run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-mysql -Ponline -Dfmt.skip=true
+    - name: Remove SNAPSHOT jars from repository
+      run: |
+        find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

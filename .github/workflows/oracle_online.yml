@@ -33,7 +33,6 @@ jobs:
     - name: Build GeoTools dependent modules (no tests)
       run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-oracle -DskipTests -am
     - name: Test Oracle data store
-      # note that travis was running with -Ptravis-oracle-build 
       run: mvn -B clean install -pl :gt-jdbc-oracle -Ponline -Dfmt.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |

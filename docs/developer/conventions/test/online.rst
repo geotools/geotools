@@ -221,6 +221,8 @@ The appropriate fixture for using the above database schema would be::
 
 In file ``~/.geotools/sqlserver.properties``
 
+Shell scripts for the above steps are provided in directory ``build/ci/mssql/`` of the source tree.
+
 To run the online test for the ``gt-jdbc-sqlserver`` module use the following Maven command:::
 
     mvn install -Dall -pl :gt-jdbc-sqlserver -Ponline -T1.1C -Dfmt.skip=true -am

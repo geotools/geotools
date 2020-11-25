@@ -28,5 +28,5 @@ jobs:
         mvn -B clean install -Dall -T2 --file pom.xml
     - name: Remove SNAPSHOT jars from repository
       run: |
-        cmd --% /c for /f %i in ('dir /a:d /s /b %userprofile%\*SNAPSHOT*') do rd /s /q %i
+        find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 
 

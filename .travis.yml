@@ -36,8 +36,6 @@ addons:
 matrix:
   include:
     - jdk: openjdk11
-      env: ARGS="-Dfmt.skip=true -Pjdk11tests"
-    - jdk: openjdk11
       env: ARGS="-Dfmt.action=check -Dqa=true -DskipTests=true"
     - jdk: openjdk8
       env: ARGS="-pl :gt-jdbc-sqlserver -Dfmt.skip=true -Ponline -am"

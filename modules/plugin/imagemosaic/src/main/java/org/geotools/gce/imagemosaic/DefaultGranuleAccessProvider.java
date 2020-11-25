@@ -221,4 +221,10 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
             granuleDescriptor.setGranuleEnvelope(gcReader.getOriginalEnvelope());
         }
     }
+
+    @Override
+    public GranuleAccessProvider copyProviders() {
+        DefaultGranuleAccessProvider provider = new DefaultGranuleAccessProvider(hints);
+        return provider;
+    }
 }

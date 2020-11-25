@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic.catalog;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.BeanUtils;
 import org.geotools.gce.imagemosaic.PathType;
+import org.geotools.gce.imagemosaic.URLSourceSPIProvider;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.Utilities;
 
@@ -46,7 +47,7 @@ public class CatalogConfigurationBean {
 
     private boolean heterogeneousCRS;
 
-    private CogConfiguration cogConfiguration;
+    private URLSourceSPIProvider urlSourceSPIProvider;
 
     /**
      * Whether the specified store should be wrapped. Only PostGis stores support this parameter.
@@ -154,11 +155,11 @@ public class CatalogConfigurationBean {
         this.suggestedIsSPI = suggestedIsSPI;
     }
 
-    public CogConfiguration getCogConfiguration() {
-        return cogConfiguration;
+    public URLSourceSPIProvider getUrlSourceSPIProvider() {
+        return urlSourceSPIProvider;
     }
 
-    public void setCogConfiguration(CogConfiguration cogConfiguration) {
-        this.cogConfiguration = cogConfiguration;
+    public void setUrlSourceSPIProvider(URLSourceSPIProvider urlSourceSPIProvider) {
+        this.urlSourceSPIProvider = urlSourceSPIProvider;
     }
 }

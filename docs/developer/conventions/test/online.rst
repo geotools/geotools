@@ -151,9 +151,9 @@ Also note that the Oracle docker image and container will take quite a few gigab
 
 To create a user and schema for testing you can use the following command::
 
-    docker exec -i geotools sqlplus -l system/oracle@//localhost:1521/XE < .travis/create_user.sql
+    docker exec -i geotools sqlplus -l system/oracle@//localhost:1521/XE < build/ci/oracle/setup-oracle.sql
 
-The ``create_user.sql`` can be found in `.travis/ <https://github.com/geotools/geotools/tree/master/.travis>`_ it consists of::
+The ``setup-oracle.sql`` can be found in `.travis/ <https://github.com/geotools/geotools/tree/master/.travis>`_ it consists of::
 
     ALTER SESSION SET "_ORACLE_SCRIPT"=true;
     CREATE USER "GEOTOOLS" IDENTIFIED BY "geotools"  DEFAULT TABLESPACE "USERS" TEMPORARY TABLESPACE "TEMP";
@@ -178,6 +178,8 @@ The appropriate fixture for using the above database schema would be::
     driver=oracle.jdbc.OracleDriver
 
 In file ``~/.geotools/oracle.properties``
+
+Shell scripts for the above steps are provided in directory ``build/ci/oracle/`` of the source tree.
 
 To run the online test for the ``gt-jdbc-oracle`` module use the following Maven command:::
 

@@ -29,7 +29,9 @@
   <name>Oracle DataStore</name>
 
 
-  <description>DataStore for Oracle Database</description>
+  <description>
+	DataStore for Oracle Database.
+  </description>
 
   <licenses>
     <license>
@@ -71,4 +73,23 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>travis-oracle-build</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <travis-oracle-build>true</travis-oracle-build>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  
 </project>

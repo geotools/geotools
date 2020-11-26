@@ -8,9 +8,6 @@ docker pull pvargacl/oracle-xe-18.4.0:latest
 # this container can be stopped using: docker stop geotools
 docker run --rm -p 1521:1521 --name geotools -h geotools -d pvargacl/oracle-xe-18.4.0:latest
 
-# print logs
-# docker logs geotools
-
 printf "\n\nStarting Oracle XE container, this could take a few minutes..."
 printf "\nWaiting for Oracle XE database to start up.... "
 _WAIT=0;
@@ -25,6 +22,5 @@ do
     _WAIT=$(($_WAIT+10))
 done
 
-# docker ps -a
 # print logs
 docker logs geotools

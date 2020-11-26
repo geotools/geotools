@@ -75,7 +75,7 @@
 
   <profiles>
     <profile>
-      <id>travis-oracle-build</id>
+      <id>ci-oracle-build</id>
       <build>
         <plugins>
           <plugin>
@@ -83,7 +83,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <systemPropertyVariables>
-                <travis-oracle-build>true</travis-oracle-build>
+                <ci-oracle-build>true</ci-oracle-build>
               </systemPropertyVariables>
             </configuration>
           </plugin>

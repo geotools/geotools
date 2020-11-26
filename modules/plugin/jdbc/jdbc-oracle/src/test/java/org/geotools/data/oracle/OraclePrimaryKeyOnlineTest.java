@@ -33,9 +33,9 @@ public class OraclePrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override
     public void testSequencedPrimaryKey() throws Exception {
-        // on Travis this test does not work, we cannot figure out why though.
+        // on Github this test does not always work, we cannot figure out why though.
         // Works fine on local builds in two different machines
-        if (System.getProperty("travis-oracle-build") != null) {
+        if (System.getProperty("ci-oracle-build") != null) {
             return;
         }
         super.testSequencedPrimaryKey();

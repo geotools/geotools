@@ -1,9 +1,6 @@
 name: GeoPackage integration tests
 
-on:
-  pull_request:
-    branches:
-      - master
+on: [pull_request]
 
 jobs:
   build:

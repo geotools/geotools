@@ -232,6 +232,8 @@ public class WMTSCapabilities extends Capabilities {
         request.setGetCapabilities(operationType);
         OperationsMetadataType operationsMetadata = caps.getOperationsMetadata();
         setType(WMTSServiceType.REST);
+        boolean isKVP = false;
+        boolean isREST = false;
         if (operationsMetadata != null) {
             for (Object op : operationsMetadata.getOperation()) {
                 OperationType opt = operationType;
@@ -253,10 +255,10 @@ public class WMTSCapabilities extends Capabilities {
                                     for (Object v : t.getValue()) {
                                         ValueType vt = (ValueType) v;
                                         if (vt.getValue().equalsIgnoreCase("KVP")) {
-                                            setType(WMTSServiceType.KVP);
+                                            isKVP = true;
                                         } else if (vt.getValue().equalsIgnoreCase("REST")
                                                 || vt.getValue().equalsIgnoreCase("RESTful")) {
-                                            setType(WMTSServiceType.REST);
+                                            isREST = true;
                                         }
                                     }
                                 }
@@ -278,10 +280,10 @@ public class WMTSCapabilities extends Capabilities {
                                     for (Object v : t.getValue()) {
                                         ValueType vt = (ValueType) v;
                                         if (vt.getValue().equalsIgnoreCase("KVP")) {
-                                            setType(WMTSServiceType.KVP);
+                                            isKVP = true;
                                         } else if (vt.getValue().equalsIgnoreCase("REST")
                                                 || vt.getValue().equalsIgnoreCase("RESTful")) {
-                                            setType(WMTSServiceType.REST);
+                                            isREST = true;
                                         }
                                     }
                                 }
@@ -292,7 +294,11 @@ public class WMTSCapabilities extends Capabilities {
                         }
                     }
                 }
-
+                if (isREST) { // Given the choice we prefer REST (it's less likely to be broken)
+                    setType(WMTSServiceType.REST);
+                } else if (isKVP) {
+                    setType(WMTSServiceType.KVP);
+                }
                 if (opx.getName().equalsIgnoreCase("GetCapabilities")) {
                     request.setGetCapabilities(opt);
                 } else if (opx.getName().equalsIgnoreCase("GetTile")) {

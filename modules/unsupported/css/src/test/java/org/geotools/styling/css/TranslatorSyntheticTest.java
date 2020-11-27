@@ -501,6 +501,21 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertLiteral("italic", font.getStyle());
         assertLiteral("20", font.getSize());
     }
+    /*
+     * Don't seem to be able to set font-size with out setting font-style
+     */
+    @Test
+    public void testGEOS9808() throws Exception {
+        String css = "* { label: 'test'; font-fill: black; font-size: 20;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        assertLiteral("test", ts.getLabel());
+        Font font = ts.getFont();
+        assertNotNull(font);
+        assertLiteral("#000000", ts.getFill().getColor());
+        assertLiteral("20", font.getSize());
+    }
 
     @Test
     public void labelShield() throws Exception {

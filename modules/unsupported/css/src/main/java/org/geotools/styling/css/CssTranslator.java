@@ -1246,6 +1246,7 @@ public class CssTranslator {
                                 "font-family",
                                 "font-style",
                                 "font-weight",
+                                "font-size",
                                 "font-family");
                 for (int j = 0; j < maxSize; j++) {
                     FontBuilder fb = tb.newFont();

@@ -164,12 +164,12 @@ public class WebMapTileServerTest {
         }
     }
 
-    @Test
     /**
      * Check that servers that don't support KVP work
      *
      * @throws Exception
      */
+    @Test
     public void testGEOT6741() throws Exception {
         WebMapTileServer server = createServer("linz.xml");
 
@@ -178,6 +178,16 @@ public class WebMapTileServerTest {
         tileRequest.setLayer(layer);
         String url = tileRequest.getFinalURL().toString();
         assertFalse(url.contains("REQUEST=GetTile"));
+    }
+
+    /** Add ability to parse "broken" URN from WMTS Spec urn:ogc:def:crs:EPSG:6.18:3:3857 */
+    @Test
+    public void testGEOT6742() throws Exception {
+        WebMapTileServer server = createServer("noaa-tileserver.xml");
+        GetTileRequest tileRequest = server.createGetTileRequest();
+        WMTSLayer layer = server.getCapabilities().getLayer("83637_2");
+        tileRequest.setLayer(layer);
+        String url = tileRequest.getFinalURL().toString();
     }
 
     private WebMapTileServer createServer(String resourceName) throws Exception {

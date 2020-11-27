@@ -72,6 +72,8 @@ class MBTilesFeatureSource extends ContentFeatureSource {
 
         hints.add(Hints.GEOMETRY_SIMPLIFICATION);
         hints.add(Hints.GEOMETRY_GENERALIZATION);
+        hints.add(Hints.GEOMETRY_DISTANCE);
+        hints.add(Hints.GEOMETRY_CLIP);
         hints.add(Hints.GEOMETRY_CLIP);
     }
 
@@ -198,10 +200,15 @@ class MBTilesFeatureSource extends ContentFeatureSource {
         return Optional.ofNullable(query)
                 .map(Query::getHints)
                 .map(
-                        h ->
-                                h.get(Hints.GEOMETRY_GENERALIZATION) != null
-                                        ? h.get(Hints.GEOMETRY_GENERALIZATION)
-                                        : h.get(Hints.GEOMETRY_SIMPLIFICATION))
+                        h -> {
+                            if (h.get(Hints.GEOMETRY_GENERALIZATION) != null) {
+                                return h.get(Hints.GEOMETRY_GENERALIZATION);
+                            } else if (h.get(Hints.GEOMETRY_SIMPLIFICATION) != null) {
+                                return h.get(Hints.GEOMETRY_SIMPLIFICATION);
+                            } else {
+                                return h.get(Hints.GEOMETRY_DISTANCE);
+                            }
+                        })
                 .map(
                         d -> {
                             try {

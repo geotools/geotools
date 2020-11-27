@@ -182,6 +182,29 @@ public class MBTilesFeatureSourceTest {
         assertEquals(0, actual.difference(expected).getArea(), 200000);
     }
 
+    // make it work with clients passing the distance hint instead of the simplification one
+    @Test
+    public void testGetLowerResolutionDistance() throws IOException, ParseException {
+        MBTilesFeatureSource fs = getMadagascarSource("water");
+        Query query = new Query("water", FF.equal(FF.property("class"), FF.literal("ocean"), true));
+        query.setHints(new Hints(Hints.GEOMETRY_DISTANCE, 78271d));
+        ContentFeatureCollection fc = fs.getFeatures(query);
+        assertEquals(1, fc.size());
+        SimpleFeature feature = DataUtilities.first(fc);
+        // this one got from ogrinfo on the tile
+        Geometry expected =
+                new WKTReader()
+                        .read(
+                                IOUtils.toString(
+                                        getClass().getResourceAsStream("ocean_1_0_1.wkt"),
+                                        Charset.forName("UTF8")));
+        Geometry actual = (Geometry) feature.getDefaultGeometry();
+        // there is some difference in size, but nothing major (200k square meters are a square
+        // with a side of less than 500 meters, against a tile that covers 1/4 of the planet
+        assertEquals(0, expected.difference(actual).getArea(), 200000);
+        assertEquals(0, actual.difference(expected).getArea(), 200000);
+    }
+
     @Test
     public void testReadMultipleLayers() throws IOException, ParseException {
         // a bug was causing multiple layers to return the same schema, checking that along with a

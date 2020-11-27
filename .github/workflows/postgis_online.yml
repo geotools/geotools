@@ -1,9 +1,6 @@
 name: PostGIS online tests
 
-on:
-  pull_request:
-    branches:
-      - master
+on: [pull_request]
 
 jobs:
   build:
@@ -21,9 +18,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Maven repository caching
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ~/.m2/repository
         key: postgis-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}

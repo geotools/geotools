@@ -52,7 +52,7 @@ public class MySQLDataStoreFactoryTest extends TestCase {
         // actually exist. Test ensures that no NPE is thrown
         // from final block of method
         try {
-            factory.isMySqlVersion56(store);
+            factory.isMySqlVersion56OrAbove(store);
         } catch (NullPointerException e) {
             fail("an exception occured during checking of MySQL version " + e);
         }

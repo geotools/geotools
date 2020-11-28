@@ -26,11 +26,12 @@ public class MySQLEmptyTestSetup extends JDBCEmptyTestSetup {
 
     @Override
     protected void createEmptyTable() throws Exception {
-        run("CREATE TABLE empty (id int, geom GEOMETRY) ");
+        // since v 8.0.4 EMPTY is a reserved keyword
+        run("CREATE TABLE `empty` (id int, geom GEOMETRY) ");
     }
 
     @Override
     protected void dropEmptyTable() throws Exception {
-        runSafe("DROP TABLE empty");
+        runSafe("DROP TABLE `empty`");
     }
 }

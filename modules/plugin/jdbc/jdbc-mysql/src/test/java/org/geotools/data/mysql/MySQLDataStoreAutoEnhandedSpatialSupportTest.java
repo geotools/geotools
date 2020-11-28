@@ -31,8 +31,11 @@ public class MySQLDataStoreAutoEnhandedSpatialSupportTest extends JDBCTestSuppor
     }
 
     public void testEnhancedSpatialSupportDetection() throws Exception {
-        boolean isMySQL56 = MySQLDataStoreFactory.isMySqlVersion56(dataStore);
+        boolean isMySQL56 = MySQLDataStoreFactory.isMySqlVersion56OrAbove(dataStore);
+        boolean isMySQL80 = MySQLDataStoreFactory.isMySqlVersion80OrAbove(dataStore);
         if (isMySQL56) {
+            assertTrue(((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());
+        } else if (isMySQL80) {
             assertTrue(((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());
         } else {
             assertFalse(((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());

@@ -76,17 +76,17 @@ public class MySQLTestSetup extends JDBCTestSetup {
 
         sb = new StringBuffer();
         sb.append("INSERT INTO ft1 VALUES (")
-                .append("0,GeometryFromText('POINT(0 0)',4326), 0, 0.0,'zero');");
+                .append("0,ST_GeomFromText('POINT(0 0)',4326), 0, 0.0,'zero');");
         run(sb.toString());
 
         sb = new StringBuffer();
         sb.append("INSERT INTO ft1 VALUES (")
-                .append("1,GeometryFromText('POINT(1 1)',4326), 1, 1.1,'one');");
+                .append("1,ST_GeomFromText('POINT(1 1)',4326), 1, 1.1,'one');");
         run(sb.toString());
 
         sb = new StringBuffer();
         sb.append("INSERT INTO ft1 VALUES (")
-                .append("2,GeometryFromText('POINT(2 2)',4326), 2, 2.2,'two');");
+                .append("2,ST_GeomFromText('POINT(2 2)',4326), 2, 2.2,'two');");
         run(sb.toString());
     }
 

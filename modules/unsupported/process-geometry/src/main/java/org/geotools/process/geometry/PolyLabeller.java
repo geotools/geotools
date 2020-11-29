@@ -17,9 +17,7 @@
  */
 package org.geotools.process.geometry;
 
-import java.util.logging.Logger;
 import org.geotools.geometry.jts.GeometryBuilder;
-import org.geotools.util.logging.Logging;
 import org.locationtech.jts.algorithm.construct.MaximumInscribedCircle;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -32,7 +30,6 @@ import org.locationtech.jts.geom.Polygon;
  * @author Casper Børgesen
  */
 public class PolyLabeller {
-    private static final Logger LOGGER = Logging.getLogger(PolyLabeller.class);
 
     static GeometryBuilder GB = new GeometryBuilder();
 

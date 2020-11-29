@@ -133,7 +133,9 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     @Override
     public void setLayer(WMTSLayer layer) {
-
+        if (layer == null) {
+            throw new IllegalArgumentException("Attempt to add a NULL layer to WMTS");
+        }
         this.layer = layer;
         if (styleName.isEmpty()) {
             StyleImpl defaultStyle = layer.getDefaultStyle();
@@ -321,12 +323,8 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
             if (requestUrl == null) {
                 if (LOGGER.isLoggable(Level.INFO))
                     LOGGER.info("Template URL not available for format  " + format);
-                // format = layer.getFormats().get(0);
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Available formats: " + layer.getFormats() + " -- Selecting " + format);
-                }
-                requestUrl = layer.getTemplate(format);
+                type = WMTSServiceType.KVP;
+                requestUrl = onlineResource.toString();
             }
         }
         URL ret = null;

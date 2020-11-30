@@ -36,15 +36,15 @@ import org.opengis.referencing.operation.MathTransform;
  * layers.
  *
  * @author Michael Bedward
- * @since 2.6
  * @version $URL$
+ * @since 2.6
  */
 public abstract class InfoToolHelper implements MapBoundsListener {
     private static final Logger LOGGER = Logging.getLogger(InfoToolHelper.class);
 
     /**
      * String key used for the position element in the {@code Map} passed to {@linkplain #getInfo(
-     * org.geotools.util.KVP )}.
+     * org.geotools.util.KVP)}.
      */
     public static final String KEY_POSITION = "pos";
 
@@ -170,8 +170,9 @@ public abstract class InfoToolHelper implements MapBoundsListener {
                         }
                     }
                 }
+            }
 
-            } else {
+            if (transform == null && !transformFailed) {
                 // one or both of content and layer CRS is null
                 transform = new AffineTransform2D(new AffineTransform());
             }

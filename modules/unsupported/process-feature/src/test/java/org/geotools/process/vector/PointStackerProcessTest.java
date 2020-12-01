@@ -284,13 +284,12 @@ public class PointStackerProcessTest {
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result =
                 psp.execute(
-                        fc,
-                        100, // cellSize
+                        fc, 100, // cellSize
                         null, // weightClusterPosition
                         null, // normalize
                         null, // preserve location
                         null, // collectClusterAttributeName
-                        ClusterType.GridCenter, // clusterType
+                        null, // clusterType
                         null, // computeBBox
                         null, // computeBBoxType
                         outBounds, // outputBBOX
@@ -338,13 +337,12 @@ public class PointStackerProcessTest {
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result =
                 psp.execute(
-                        fc,
-                        100, // cellSize
+                        fc, 100, // cellSize
                         true, // weightClusterPosition
                         null, // normalize
                         null, // preserve location
                         null, // collectClusterAttributeName
-                        ClusterType.GridCenter, // clusterType
+                        null, // clusterType
                         null, // computeBBox
                         null, // computeBBoxType
                         outBounds, // outputBBOX
@@ -419,10 +417,10 @@ public class PointStackerProcessTest {
     private void checkSchemaCorrect(SimpleFeatureType ft, boolean includeProportionColumns) {
         if (includeProportionColumns) {
             // assertEquals(5, ft.getAttributeCount()); old version before adding envelope
-            assertEquals(8, ft.getAttributeCount());
+            assertEquals(9, ft.getAttributeCount());
         } else {
             // assertEquals(3, ft.getAttributeCount()); old version before adding envelope.
-            assertEquals(6, ft.getAttributeCount());
+            assertEquals(7, ft.getAttributeCount());
         }
         assertEquals(Point.class, ft.getGeometryDescriptor().getType().getBinding());
         assertEquals(

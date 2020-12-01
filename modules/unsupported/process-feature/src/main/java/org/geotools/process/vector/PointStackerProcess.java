@@ -43,6 +43,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
@@ -167,6 +168,9 @@ public class PointStackerProcess implements VectorProcess {
     /** area, internally it is a Polygon */
     public static final String ATTR_BOUNDING_AREA = "computedArea";
 
+    /** bounding box geometry encoded */
+    public static final String ATTR_BOUNDING_BOX_GEOM = "computedBBoxGeom";
+
     /** bounding box */
     public static final String ATTR_BOUNDING_BOX = "computedBBox";
 
@@ -284,6 +288,10 @@ public class PointStackerProcess implements VectorProcess {
             normalize = argNormalize;
         }
 
+        if (clusterType == null) {
+            clusterType = ClusterType.GridCenter;
+        }
+
         boolean weightClusterPosition = false;
         if (argWeightClusterPosition != null) {
             weightClusterPosition = argWeightClusterPosition;
@@ -298,10 +306,6 @@ public class PointStackerProcess implements VectorProcess {
             computeBBox = argComputeBBox;
         }
 
-        // default value
-        if (clusterType == null) {
-            clusterType = ClusterType.GridCenter;
-        }
         // TODO: allow output CRS to be different to data CRS
         // assume same CRS for now...
         double cellSizeSrc = cellSize * outputEnv.getWidth() / outputWidth;
@@ -320,7 +324,7 @@ public class PointStackerProcess implements VectorProcess {
         ListFeatureCollection result = new ListFeatureCollection(schema);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
 
-        GeometryFactory factory = new GeometryFactory();
+        GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
         double[] srcPt = new double[2];
         double[] dstPt = new double[2];
 
@@ -351,32 +355,23 @@ public class PointStackerProcess implements VectorProcess {
             fb.add(sp.getCountUnique());
             if (computeBBox) {
                 // adding bounding box of the points staked, as geometry
-                // envelope transformation
-                // Envelope boundingBox = sp.getBoundingBox(invTransform);
-                /*
-                srcPt[0] = boundingBox.getMinX();
-                srcPt[1] = boundingBox.getMinY();
-                srcPt2[0] = boundingBox.getMaxX();
-                srcPt2[1] = boundingBox.getMaxY();
-
-                invTransform.transform(srcPt, 0, dstPt, 0, 1);
-                invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
-                Envelope boundingBoxTransformed = new Envelope(dstPt[0], dstPt[1], dstPt2[0], dstPt2[1]);
-                */
                 if (argComputeBBoxType == ComputeBBoxType.Original) {
-                    fb.add(sp.getPoligon(invTransform));
+                    fb.add(sp.getPolygon(invTransform));
+                    fb.add(sp.getBoundingBox(invTransform));
                     fb.add(sp.getBoundingBoxList(invTransform));
                 } else if (argComputeBBoxType == ComputeBBoxType.Map) {
-                    fb.add(sp.getPoligon());
+                    fb.add(sp.getPolygon());
+                    fb.add(sp.getBoundingBox(null));
                     fb.add(sp.getBoundingBoxList(null));
                 } else {
+                    // none of the valid ComputeBBoxType values, should we throw an exception?
+                    fb.add(null);
                     fb.add(null);
                     fb.add(null);
                 }
-                // adding bounding box of the points staked, as string
-                // fb.add(boundingBoxTransformed.toString()); //not used
             } else {
                 // we need to maintain the order of the fields.
+                fb.add(null);
                 fb.add(null);
                 fb.add(null);
             }
@@ -574,6 +569,8 @@ public class PointStackerProcess implements VectorProcess {
         tb.add(ATTR_COUNT, Integer.class);
         tb.add(ATTR_COUNT_UNIQUE, Integer.class);
         tb.add(ATTR_BOUNDING_AREA, Geometry.class);
+
+        tb.add(ATTR_BOUNDING_BOX_GEOM, Polygon.class);
         tb.add(ATTR_BOUNDING_BOX, List.class);
 
         if (stretch) {
@@ -599,8 +596,9 @@ public class PointStackerProcess implements VectorProcess {
 
         /** Internal Key */
         private Coordinate key;
-        /** Default Value, but it will be overridden at initialization (constructor) */
-        ClusterType clusterType = ClusterType.Natural;
+
+        /** Type of cluster */
+        ClusterType clusterType;
 
         private Coordinate centerPt;
 
@@ -644,8 +642,8 @@ public class PointStackerProcess implements VectorProcess {
          *
          * @return
          */
-        public Geometry getPoligon() {
-            GeometryFactory factory = new GeometryFactory();
+        public Geometry getPolygon() {
+            GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
             allPts.add(allPts.get(0));
             Coordinate[] list = allPts.toArray(new Coordinate[] {});
             if (list.length < 4) {
@@ -657,7 +655,7 @@ public class PointStackerProcess implements VectorProcess {
         }
 
         public Geometry getPolygon(MathTransform invTransform) {
-            GeometryFactory factory = new GeometryFactory();
+            GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
             allPts.add(allPts.get(0));
             Coordinate[] list = allPts.toArray(new Coordinate[] {});
             if (list.length < 4) {

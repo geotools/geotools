@@ -117,6 +117,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
 
     long maxDbfSize = ShapefileFeatureWriter.DEFAULT_MAX_DBF_SIZE;
 
+    boolean tryCpgFile = false;
+
     public ShapefileDataStore(URL url) {
         shpFiles = new ShpFiles(url);
         if (TRACE_ENABLED) {
@@ -217,6 +219,14 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     /** Allows to set the maximum DBF size (the natural limit of 4GB is used by default) */
     void setMaxDbfSize(long maxDbfSize) {
         this.maxDbfSize = maxDbfSize;
+    }
+
+    public boolean isTryCpgFile() {
+        return tryCpgFile;
+    }
+
+    public void setTryCpgFile(boolean tryCpgFile) {
+        this.tryCpgFile = tryCpgFile;
     }
 
     @Override

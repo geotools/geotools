@@ -242,6 +242,9 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             store.setMemoryMapped(useMemoryMappedBuffer);
             store.setBufferCachingEnabled(cacheMemoryMaps);
             store.setCharset(dbfCharset);
+            if (!hasParam(DBFCHARSET, params)) {
+                store.tryCpgFile = true;
+            }
             store.setTimeZone(dbfTimeZone);
             store.setIndexed(enableIndex);
             store.setIndexCreationEnabled(createIndex);
@@ -266,6 +269,10 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             result = target.cast(param.getDefaultValue());
         }
         return result;
+    }
+
+    private boolean hasParam(Param param, Map<String, ?> params) {
+        return params.containsKey(param.key);
     }
 
     @Override

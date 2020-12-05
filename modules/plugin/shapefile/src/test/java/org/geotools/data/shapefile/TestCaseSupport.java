@@ -100,6 +100,7 @@ public class TestCaseSupport {
             dieDieDIE(sibling(targetFile, "grx"));
             dieDieDIE(sibling(targetFile, "prj"));
             dieDieDIE(sibling(targetFile, "shp.xml"));
+            dieDieDIE(sibling(targetFile, "cpg"));
 
             f.remove();
         }
@@ -200,6 +201,11 @@ public class TestCaseSupport {
         }
         try {
             assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "shp.xml")).canRead());
+        } catch (FileNotFoundException e) {
+            // Ignore: this file is optional.
+        }
+        try {
+            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "cpg")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }

@@ -14,27 +14,26 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.wkt;
+package org.geotools.measure;
 
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+
 import javax.measure.Unit;
-import javax.measure.format.UnitFormat;
-import org.geotools.measure.Units;
-import org.geotools.metadata.iso.citation.Citations;
+
 import org.junit.Test;
+
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
-import tech.units.indriya.format.SimpleUnitFormat;
 
 /** @author ian */
-public class GeoToolsUnitFormatTest {
+public class BaseUnitFormatTest {
 
-    private UnitFormat epsgUnitFormat = GeoToolsCRSUnitFormat.getInstance(Citations.EPSG);
+    private final UnitFormat epsgUnitFormat = EpsgUnitFormatFactory.getInstance();
 
-    private UnitFormat esriUnitFormat = GeoToolsCRSUnitFormat.getInstance(Citations.ESRI);
+    private final UnitFormat esriUnitFormat = EsriUnitFormatFactory.getInstance();
 
     /**
      * Test method for {@link UnitFormat#format(javax.measure.Unit, java.lang.Appendable)} for units
@@ -77,7 +76,7 @@ public class GeoToolsUnitFormatTest {
      */
     @Test
     public void testFormatForGTDefinedUnits() throws IOException {
-        UnitFormat unitFormat = SimpleUnitFormat.getInstance();
+        UnitFormat unitFormat = BaseUnitFormatFactory.getInstance();
         doTestFormatForGTDefinedUnits(Units.SEXAGESIMAL_DMS, unitFormat, "D.MS");
     }
 
@@ -93,4 +92,5 @@ public class GeoToolsUnitFormatTest {
         unitFormat.format(u, appendable);
         assertEquals("Missing symbol formats", u.toString(), appendable.toString());
     }
+
 }

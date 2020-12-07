@@ -22,13 +22,11 @@ import javax.measure.Quantity;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Time;
-import org.geotools.referencing.wkt.DefaultUnitParser;
-import org.geotools.util.GeoToolsUnitFormat;
+
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
@@ -115,21 +113,15 @@ public final class Units {
 
     public static final Unit<Time> YEAR = SI.YEAR;
 
-    static final UnitFormat format = SimpleUnitFormat.getInstance();
-
-    static {
-        /** Associates the labels to units created in this class. */
-        registerCustomUnits((SimpleUnitFormat) format);
-    }
     /**
      * Gets an instance of the default system-wide Unit format. Use this method instead of
      * SimpleUnitFormat.getInstance(), since custom Geotools units might not get registered if
      * SimpleUnitFormat.getInstance() is directly accessed.
      *
-     * @see GeoToolsUnitFormat#getInstance()
+     * @see BaseUnitFormatFactory#getInstance()
      */
     public static UnitFormat getDefaultFormat() {
-        return format;
+        return BaseUnitFormatFactory.getInstance();
     }
 
     /**
@@ -137,7 +129,7 @@ public final class Units {
      *
      * @param format The UnitFormat in which the labels and aliases must be registered.
      */
-    static void registerCustomUnits(SimpleUnitFormat format) {
+    public static void registerCustomUnits(SimpleUnitFormat format) {
         format.label(Units.DEGREE_MINUTE_SECOND, "DMS");
         format.alias(Units.DEGREE_MINUTE_SECOND, "degree minute second");
 
@@ -149,6 +141,8 @@ public final class Units {
         format.label(Units.PPM, "ppm");
 
         format.label(NonSI.DEGREE_ANGLE, "°");
+        format.label(NonSI.DEGREE_ANGLE, "rad");
+
         format.label(Units.PIXEL, "pixel");
 
         format.label(USCustomary.GRADE, "grad");
@@ -187,8 +181,8 @@ public final class Units {
      */
     @SuppressWarnings("unchecked")
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
-        return DefaultUnitParser.getInstance(SimpleUnitFormat.Flavor.Default)
-                .getEquivalentUnit(unit);
+        return ((WktUnitFormatFactory.WktUnitFormat) WktUnitFormatFactory.getInstance())
+            .getEquivalentUnit(unit);
     }
 
     /**
@@ -254,6 +248,6 @@ public final class Units {
      * @return A unit instance
      */
     public static Unit<?> parseUnit(String name) {
-        return Units.autoCorrect(DefaultUnitParser.getInstance().parse(name));
+        return Units.autoCorrect(WktUnitFormatFactory.getInstance().parse(name));
     }
 }

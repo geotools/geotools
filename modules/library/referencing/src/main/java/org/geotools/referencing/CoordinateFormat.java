@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.measure;
+package org.geotools.referencing;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -30,9 +30,13 @@ import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Time;
+
+import org.geotools.measure.Angle;
+import org.geotools.measure.AngleFormat;
+import org.geotools.measure.Latitude;
+import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultTemporalCRS;
 import org.geotools.referencing.util.CRSUtilities;
@@ -55,7 +59,7 @@ import tech.units.indriya.format.SimpleUnitFormat;
  *
  * <ul>
  *   <li>Ordinate values in {@linkplain NonSI#DEGREE_ANGLE degrees} are formated as angles using
- *       {@link AngleFormat}.
+ *       {@link org.geotools.measure.AngleFormat}.
  *   <li>Ordinate values in any unit compatible with {@linkplain SI#SECOND seconds} are formated as
  *       dates using {@link DateFormat}.
  *   <li>All other values are formatted as numbers using {@link NumberFormat}.

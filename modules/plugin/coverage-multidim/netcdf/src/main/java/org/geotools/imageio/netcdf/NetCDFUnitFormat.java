@@ -27,10 +27,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
-import org.geotools.util.GeoToolsUnitFormat;
+
+import org.geotools.measure.BaseUnitFormatFactory;
 import org.geotools.util.logging.Logging;
+
 import si.uom.NonSI;
 import tech.units.indriya.format.SimpleUnitFormat;
 import tech.units.indriya.function.LogConverter;
@@ -42,24 +45,6 @@ import tech.units.indriya.function.LogConverter;
 public class NetCDFUnitFormat {
 
     static final Logger LOGGER = Logging.getLogger(NetCDFUnitFormat.class);
-
-    /**
-     * We want to use a separate instance during re-configuration and get isolation from the normal
-     * formatters, this abstract class allows to do the trick.
-     */
-    public abstract static class AbstractNetCDFUnitFormat extends GeoToolsUnitFormat {
-        static class InternalFormat extends BaseGT2Format {
-
-            public InternalFormat() {
-                super();
-                super.initUnits(SimpleUnitFormat.getInstance());
-            }
-        }
-
-        public static SimpleUnitFormat getNewInstance() {
-            return new InternalFormat();
-        }
-    }
 
     /** The format used to parse units */
     private static SimpleUnitFormat FORMAT;
@@ -73,7 +58,7 @@ public class NetCDFUnitFormat {
     public static final String NETCDF_UNIT_REPLACEMENTS = "netcdf-unit-replacements.properties";
 
     /** Hard coded replacements for common operations */
-    private static Map<String, String> CONTENT_REPLACEMENTS =
+    private static final Map<String, String> CONTENT_REPLACEMENTS =
             new LinkedHashMap<String, String>() {
                 {
                     put(" ", "*");
@@ -140,7 +125,7 @@ public class NetCDFUnitFormat {
      * Configures the aliases to be used on the unit parser. An alias is a different name for a unit
      */
     public static void setAliases(Map<String, String> aliases) {
-        SimpleUnitFormat format = AbstractNetCDFUnitFormat.getNewInstance();
+        SimpleUnitFormat format = BaseUnitFormatFactory.create();
 
         // missing unit that cannot be expressed via config files
         Unit<?> bel = ONE.transform(new LogConverter(10));

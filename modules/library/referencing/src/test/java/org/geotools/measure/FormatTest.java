@@ -25,7 +25,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
 import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.referencing.CoordinateFormat;
 import org.geotools.referencing.crs.AbstractCRS;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -39,7 +41,7 @@ import org.junit.Test;
 import org.opengis.geometry.MismatchedDimensionException;
 
 /**
- * Tests formatting done by the {@link CoordinateFormat} class.
+ * Tests formatting done by the {@link org.geotools.referencing.CoordinateFormat} class.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

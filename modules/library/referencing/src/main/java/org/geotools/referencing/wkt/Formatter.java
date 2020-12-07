@@ -28,13 +28,17 @@ import java.util.Locale;
 import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
-import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
+
+import org.geotools.measure.EpsgUnitFormatFactory;
+import org.geotools.measure.EsriUnitFormatFactory;
+import org.geotools.measure.UnitFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.math.XMath;
+import org.geotools.referencing.CRS;
 import org.geotools.util.Arguments;
 import org.geotools.util.Utilities;
 import org.geotools.util.X364;
@@ -134,14 +138,17 @@ public class Formatter {
 
     public void setAuthority(Citation authority) {
         this.authority = authority;
-        this.unitFormat = GeoToolsCRSUnitFormat.getInstance(authority);
+        this.unitFormat =
+                CRS.equalsIgnoreMetadata(Citations.ESRI, authority)
+                        ? EsriUnitFormatFactory.getInstance()
+                        : EpsgUnitFormatFactory.getInstance();
     }
 
     /** The object to use for formatting numbers. */
     private final NumberFormat numberFormat;
 
     /** The object to use for formatting units. */
-    private UnitFormat unitFormat = GeoToolsCRSUnitFormat.getInstance(Citations.EPSG);
+    private UnitFormat unitFormat = EpsgUnitFormatFactory.getInstance();
 
     /** Dummy field position. */
     private final FieldPosition dummy = new FieldPosition(0);

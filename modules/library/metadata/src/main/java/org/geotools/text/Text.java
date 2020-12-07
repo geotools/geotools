@@ -25,7 +25,7 @@ import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 
 /**
- * Helper class for working with InternaionalString and other forms of Text.
+ * Helper class for working with InternationalString and other forms of Text.
  *
  * @author Jody Garnett
  */

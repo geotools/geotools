@@ -35,7 +35,6 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.TransformedDirectPosition;
 import org.geotools.measure.Angle;
-import org.geotools.measure.CoordinateFormat;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;

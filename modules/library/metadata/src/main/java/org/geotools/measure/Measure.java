@@ -112,10 +112,6 @@ public final class Measure extends Number {
     /** Returns a string representation of this measure. */
     @Override
     public String toString() {
-        final StringBuilder buffer = new StringBuilder();
-        buffer.append(value);
-        buffer.append(' ');
-        buffer.append(unit);
-        return buffer.toString();
+        return String.valueOf(value) + ' ' + unit;
     }
 }

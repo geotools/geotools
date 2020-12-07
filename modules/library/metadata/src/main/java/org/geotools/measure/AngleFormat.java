@@ -25,13 +25,13 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.math.XMath;
 import org.geotools.util.Classes;
-import org.geotools.util.Utilities;
 import org.geotools.util.logging.LoggedFormat;
 
 /**
@@ -1466,11 +1466,11 @@ public class AngleFormat extends Format {
                     && width2 == cast.width2
                     && widthDecimal == cast.widthDecimal
                     && decimalSeparator == cast.decimalSeparator
-                    && Utilities.equals(prefix, cast.prefix)
-                    && Utilities.equals(suffix0, cast.suffix0)
-                    && Utilities.equals(suffix1, cast.suffix1)
-                    && Utilities.equals(suffix2, cast.suffix2)
-                    && Utilities.equals(
+                    && Objects.equals(prefix, cast.prefix)
+                    && Objects.equals(suffix0, cast.suffix0)
+                    && Objects.equals(suffix1, cast.suffix1)
+                    && Objects.equals(suffix2, cast.suffix2)
+                    && Objects.equals(
                             numberFormat.getDecimalFormatSymbols(),
                             cast.numberFormat.getDecimalFormatSymbols());
         } else {

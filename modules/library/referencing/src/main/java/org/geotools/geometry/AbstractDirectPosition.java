@@ -133,7 +133,7 @@ public abstract class AbstractDirectPosition implements DirectPosition {
      * Returns a string representation of this coordinate. The default implementation is okay for
      * occasional formatting (for example for debugging purpose). But if there is a lot of positions
      * to format, users will get more control by using their own instance of {@link
-     * org.geotools.measure.CoordinateFormat}.
+     * org.geotools.referencing.CoordinateFormat}.
      */
     @Override
     public String toString() {

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -13,15 +13,16 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
+ *
+ *    This package contains documentation from OpenGIS specifications.
+ *    OpenGIS consortium's work is fully acknowledged here.
  */
-package org.geotools.referencing.wkt;
+package org.geotools.measure;
 
 import java.util.HashMap;
 import java.util.Objects;
 import javax.measure.Quantity;
 import javax.measure.Unit;
-import org.geotools.measure.Units;
-import org.geotools.referencing.wkt.GeoToolsCRSUnitFormat.BaseGT2Format;
 import tech.units.indriya.unit.TransformedUnit;
 
 /**
@@ -29,48 +30,49 @@ import tech.units.indriya.unit.TransformedUnit;
  * particular unit literal definition, this format includes the aliases of EPSG and ESRI citations,
  * in order to be able to parse the widest possible range of units.
  */
-public class DefaultUnitParser extends BaseGT2Format {
+public final class WktUnitFormatterFactory {
 
-    private static final DefaultUnitParser UNITPARSER = new DefaultUnitParser();
-    protected HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap = new HashMap<>();
-
-    //    /**
-    //     * Gets a UnitFormat configured to parse units. Since usually we don't know the citation
-    // in use
-    //     * for a particular unit literal definition, this format includes the aliases of EPSG and
-    // ESRI
-    //     * citations, in order to be able to parse the widest possible range of units.
-    //     *
-    //     */
-    //    public static DefaultUnitParser getInstance() {
-    //        return UNITPARSER;
-    //    }
-
-    public static DefaultUnitParser getInstance(
-            Flavor flavour) { // to avoid confusions with parent class
-        return UNITPARSER;
+    public static UnitFormatter getUnitFormatterSingleton() {
+        return INSTANCE;
     }
 
-    DefaultUnitParser() {
-        initUnits(Units.getDefaultFormat());
-        esriLabelsAndAliases(this);
-        // add epsg labels the latest, to override esri ones if they collide
-        epsgLabelsAndAliases(this);
+    public static UnitFormatter create() {
+        return new WktUnitFormatter();
     }
 
-    @Override
-    protected void addUnit(Unit<?> unit) {
-        unitWrapperToUnitMap.put(new UnitWrapper(unit), unit);
-    }
+    private static final WktUnitFormatter INSTANCE = new WktUnitFormatter();
 
-    /**
-     * Returns an equivalent unit instance based on the provided unit. First, it tries to get one of
-     * the reference units defined in the JSR 385 implementation in use. If no equivalent reference
-     * unit is defined, it returns the provided unit
-     */
-    @SuppressWarnings("unchecked")
-    public <Q extends Quantity<Q>> Unit<Q> getEquivalentUnit(Unit<Q> unit) {
-        return (Unit<Q>) unitWrapperToUnitMap.getOrDefault(new UnitWrapper(unit), unit);
+    private WktUnitFormatterFactory() {}
+
+    static class WktUnitFormatter extends SimpleUnitFormatForwarder.BaseUnitFormatter
+            implements UnitFormatter {
+
+        private HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap;
+
+        WktUnitFormatter() {
+            EsriUnitFormatterFactory.addEsriLabelsAndAliases(this);
+            // add epsg labels the latest, to override esri ones if they collide
+            EpsgUnitFormatterFactory.addEpsgLabelsAndAliases(this);
+        }
+
+        @Override
+        protected void addUnit(Unit<?> unit) {
+            if (unitWrapperToUnitMap == null) {
+                unitWrapperToUnitMap = new HashMap<>();
+            }
+            unitWrapperToUnitMap.put(new UnitWrapper(unit), unit);
+        }
+
+        /**
+         * Returns an equivalent unit instance based on the provided unit. First, it tries to get
+         * one of the reference units defined in the JSR 385 implementation in use. If no equivalent
+         * reference unit is defined, it returns the provided unit
+         */
+        @SuppressWarnings("unchecked")
+        public <Q extends Quantity<Q>> Unit<Q> getEquivalentUnit(Unit<Q> unit) {
+            return (Unit<Q>)
+                    INSTANCE.unitWrapperToUnitMap.getOrDefault(new UnitWrapper(unit), unit);
+        }
     }
 
     /**

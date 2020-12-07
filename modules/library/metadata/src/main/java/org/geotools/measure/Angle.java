@@ -26,6 +26,9 @@ import org.geotools.util.ClassChanger;
  * An angle in degrees. An angle is the amount of rotation needed to bring one line or plane into
  * coincidence with another, generally measured in degrees, sexagesimal degrees or grads.
  *
+ * <p>This class is registered with {@link org.geotools.util.ClassChanger}, which means it can be
+ * converted to and from {@link Double}.
+ *
  * @since 2.0
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)

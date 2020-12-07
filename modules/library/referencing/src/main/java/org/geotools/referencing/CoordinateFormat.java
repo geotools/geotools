@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.measure;
+package org.geotools.referencing;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -28,11 +28,15 @@ import java.util.Locale;
 import java.util.TimeZone;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Time;
+import org.geotools.measure.Angle;
+import org.geotools.measure.AngleFormat;
+import org.geotools.measure.GeoToolsUnitFormatterFactory;
+import org.geotools.measure.Latitude;
+import org.geotools.measure.Longitude;
+import org.geotools.measure.UnitFormatter;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultTemporalCRS;
 import org.geotools.referencing.util.CRSUtilities;
@@ -46,7 +50,6 @@ import org.opengis.referencing.datum.Datum;
 import org.opengis.referencing.datum.TemporalDatum;
 import si.uom.NonSI;
 import si.uom.SI;
-import tech.units.indriya.format.SimpleUnitFormat;
 
 /**
  * Formats a {@linkplain org.geotools.geometry.GeneralDirectPosition direct position} in an
@@ -55,7 +58,7 @@ import tech.units.indriya.format.SimpleUnitFormat;
  *
  * <ul>
  *   <li>Ordinate values in {@linkplain NonSI#DEGREE_ANGLE degrees} are formated as angles using
- *       {@link AngleFormat}.
+ *       {@link org.geotools.measure.AngleFormat}.
  *   <li>Ordinate values in any unit compatible with {@linkplain SI#SECOND seconds} are formated as
  *       dates using {@link DateFormat}.
  *   <li>All other values are formatted as numbers using {@link NumberFormat}.
@@ -85,7 +88,7 @@ public class CoordinateFormat extends Format {
     private Format[] formats;
 
     /** Formatter for units. Will be created only when first needed. */
-    private transient UnitFormat unitFormat;
+    private transient UnitFormatter unitFormatter;
 
     /**
      * The type for each value in the {@code formats} array. Types are: 0=number, 1=longitude,
@@ -444,10 +447,10 @@ public class CoordinateFormat extends Format {
             if (type == 0 && cs != null) {
                 final Unit<?> unit = cs.getAxis(i).getUnit();
                 if (unit != null) {
-                    if (unitFormat == null) {
-                        unitFormat = SimpleUnitFormat.getInstance();
+                    if (unitFormatter == null) {
+                        unitFormatter = GeoToolsUnitFormatterFactory.getUnitFormatterSingleton();
                     }
-                    final String asText = unitFormat.format(unit);
+                    final String asText = unitFormatter.format(unit);
                     if (asText.length() != 0) {
                         toAppendTo.append('\u00A0'); // No break space
                         toAppendTo.append(unit);

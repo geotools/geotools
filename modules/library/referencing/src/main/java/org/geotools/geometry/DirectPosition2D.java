@@ -271,10 +271,10 @@ public class DirectPosition2D extends Point2D.Double
 
     /**
      * Returns a string representation of this coordinate. The default implementation formats this
-     * coordinate using a shared instance of {@link org.geotools.measure.CoordinateFormat}. This is
-     * okay for occasional formatting (for example for debugging purpose). But if there is a lot of
-     * positions to format, users will get better performance and more control by using their own
-     * instance of {@link org.geotools.measure.CoordinateFormat}.
+     * coordinate using a shared instance of {@link org.geotools.referencing.CoordinateFormat}. This
+     * is okay for occasional formatting (for example for debugging purpose). But if there is a lot
+     * of positions to format, users will get better performance and more control by using their own
+     * instance of {@link org.geotools.referencing.CoordinateFormat}.
      */
     @Override
     public String toString() {

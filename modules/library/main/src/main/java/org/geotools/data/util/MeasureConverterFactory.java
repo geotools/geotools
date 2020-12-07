@@ -22,11 +22,11 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.measure.Unit;
+import org.geotools.measure.GeoToolsUnitFormatterFactory;
 import org.geotools.measure.Measure;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
-import tech.units.indriya.format.SimpleUnitFormat;
 
 /**
  * ConverterFactory which converts between the {@link Measure} and String.
@@ -78,7 +78,9 @@ public class MeasureConverterFactory implements ConverterFactory {
                             // this will throw an exception in case of failure
                             String group = matcher.group(2).trim();
                             if (!group.isEmpty()) {
-                                unit = SimpleUnitFormat.getInstance().parse(group);
+                                unit =
+                                        GeoToolsUnitFormatterFactory.getUnitFormatterSingleton()
+                                                .parse(group);
                             }
                         }
 

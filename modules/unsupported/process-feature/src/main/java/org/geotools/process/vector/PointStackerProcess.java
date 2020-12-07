@@ -227,7 +227,7 @@ public class PointStackerProcess implements VectorProcess {
             @DescribeParameter(
                         name = "collectClusterAttributeName",
                         description =
-                                "Return the specfied attribute for each feature in the cluster",
+                                "Collect the value of the attribute for each feature in the cluster, and return them as a list",
                         defaultValue = ""
                     )
                     String returnClusteredAttribute,

@@ -51,4 +51,16 @@ public class CommonFactoryFinderTest {
         assertTrue(client instanceof SimpleHttpClient);
  
     }
+    
+    @Test
+    public void findingMultithreadedHttpClientTestByHints() throws Exception {
+
+        HTTPClient client =
+                CommonFactoryFinder.getHttpClientFactory()
+                        .getClient(new Hints(
+                                Hints.HTTP_CLIENT,
+                                MultithreadedHttpClient.class));
+
+        assertTrue(client instanceof MultithreadedHttpClient);
+    }
 }

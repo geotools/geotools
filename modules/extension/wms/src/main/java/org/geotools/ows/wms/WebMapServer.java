@@ -35,8 +35,8 @@ import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesResponse;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.OperationType;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.ows.Specification;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
@@ -352,7 +352,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     public WebMapServer(WMSCapabilities capabilities) throws IOException, ServiceException {
         super(
                 capabilities.getRequest().getGetCapabilities().getGet(),
-                new SimpleHttpClient(),
+                CommonFactoryFinder.getHttpClientFactory().getClient(),
                 capabilities);
     }
 
@@ -410,8 +410,8 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
         super(serverURL, getHttpClient(timeout), null);
     }
 
-    public static SimpleHttpClient getHttpClient(int timeout) {
-        SimpleHttpClient client = new SimpleHttpClient();
+    public static HTTPClient getHttpClient(int timeout) {
+        HTTPClient client = CommonFactoryFinder.getHttpClientFactory().getClient();
         client.setReadTimeout(timeout);
         return client;
     }

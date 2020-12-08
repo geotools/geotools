@@ -54,6 +54,7 @@
     <module>cql</module>
     <module>render</module>
     <module>jdbc</module>
+    <module>http</module>
   </modules>
 
 </project>

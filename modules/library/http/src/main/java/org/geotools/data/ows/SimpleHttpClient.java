@@ -51,6 +51,12 @@ public class SimpleHttpClient implements HTTPClient {
     private int readTimeout = DEFAULT_TIMEOUT;
 
     private boolean tryGzip = true;
+    
+    /**
+     * A SimpleHttpClient should be initiated by a call to CommonFactoryFinder.getHttpClientFactory().getClient();
+     */
+    public SimpleHttpClient() {
+    }
 
     @Override
     public String getUser() {

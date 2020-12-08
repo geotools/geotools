@@ -993,6 +993,12 @@ public class Hints extends RenderingHints {
     /** A flag to enabled/disable EWKT geometry encoding in ECQL */
     public static final Key ENCODE_EWKT = new Key(Boolean.class);
 
+    public static final ClassKey HTTP_CLIENT_FACTORY =
+            new ClassKey("org.geotools.http.HTTPClientFactory");
+    
+    public static final ClassKey HTTP_CLIENT = 
+    		new ClassKey("org.geotools.data.ows.HTTPClient");
+
     /**
      * Controls date time formatting output for GML 2.
      *

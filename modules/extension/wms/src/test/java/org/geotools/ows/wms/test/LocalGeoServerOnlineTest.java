@@ -38,11 +38,12 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.http.MultithreadedHttpClient;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
-import org.geotools.ows.wms.MultithreadedHttpClient;
 import org.geotools.ows.wms.WMS1_1_1;
 import org.geotools.ows.wms.WMSCapabilities;
 import org.geotools.ows.wms.WebMapServer;
@@ -61,6 +62,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -139,7 +141,8 @@ public class LocalGeoServerOnlineTest extends TestCase {
             // do setup once!
             if (serverURL != null) {
                 try {
-                    wms = new WebMapServer(serverURL, new MultithreadedHttpClient());
+                    wms = new WebMapServer(serverURL, CommonFactoryFinder.getHttpClientFactory()
+                    									.getClient(new Hints(Hints.HTTP_CLIENT, MultithreadedHttpClient.class)));
                     capabilities = wms.getCapabilities();
                 } catch (Exception eek) {
                     serverURL = null;

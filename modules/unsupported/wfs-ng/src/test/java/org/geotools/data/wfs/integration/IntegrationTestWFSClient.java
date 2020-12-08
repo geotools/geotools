@@ -43,7 +43,6 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.internal.AbstractWFSStrategy;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
@@ -92,7 +91,7 @@ public class IntegrationTestWFSClient extends WFSClient {
     public IntegrationTestWFSClient(final String baseDirectory, WFSConfig config)
             throws ServiceException, IOException {
 
-        super(url(baseDirectory + "/GetCapabilities.xml"), new SimpleHttpClient(), config);
+        super(url(baseDirectory + "/GetCapabilities.xml"), CommonFactoryFinder.getHttpClientFactory().getClient(), config);
 
         this.baseDirectory = url(baseDirectory);
     }

@@ -26,7 +26,6 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.impl.WFSDataAccessFactory;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSClient;
@@ -134,7 +133,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         final WFSConfig config = WFSConfig.fromParams(params);
         return config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
                 ? new MultithreadedHttpClient(config)
-                : new SimpleHttpClient();
+                : CommonFactoryFinder.getHttpClientFactory().getClient();
     }
 
     private static boolean isHttp(java.net.URL capabilitiesURL) {

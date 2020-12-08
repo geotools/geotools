@@ -53,6 +53,7 @@ import org.geotools.util.logging.Logging;
  * @author groldan
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
+@Deprecated
 public class MultithreadedHttpClient implements HTTPClient {
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);

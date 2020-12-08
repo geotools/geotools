@@ -89,6 +89,11 @@
       <artifactId>gt-render</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-http</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <!--   Third Party modules   -->
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>

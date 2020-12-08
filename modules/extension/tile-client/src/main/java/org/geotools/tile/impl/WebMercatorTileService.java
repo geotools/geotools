@@ -19,7 +19,7 @@ package org.geotools.tile.impl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -63,7 +63,7 @@ public abstract class WebMercatorTileService extends TileService {
     }
 
     protected WebMercatorTileService(String name, String baseURL) {
-        this(name, baseURL, new SimpleHttpClient());
+        this(name, baseURL, CommonFactoryFinder.getHttpClientFactory().getClient());
     }
 
     protected WebMercatorTileService(String name, String baseURL, HTTPClient client) {

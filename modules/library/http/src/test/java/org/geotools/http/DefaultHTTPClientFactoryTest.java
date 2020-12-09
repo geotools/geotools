@@ -1,7 +1,7 @@
 /*    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2020, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ import static org.junit.Assert.assertTrue;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.LoggingHTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 
 /** @author Roar Brænden */
@@ -36,9 +37,7 @@ public class DefaultHTTPClientFactoryTest {
     @Test
     public void testLoggingUsage() throws Exception {
         HTTPClientFactory factory = new DefaultHTTPClientFactory();
-        factory.logging(true);
-
-        HTTPClient client = factory.getClient();
+        HTTPClient client = factory.getClient(new Hints(Hints.HTTP_LOGGING, "TRUE"));
         assertTrue(client instanceof LoggingHTTPClient);
     }
 }

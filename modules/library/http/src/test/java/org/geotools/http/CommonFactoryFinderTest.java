@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2020, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -92,9 +92,8 @@ public class CommonFactoryFinderTest {
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
         try {
             HTTPClientFactory factory = CommonFactoryFinder.getHttpClientFactory();
-            factory.logging(false);
 
-            HTTPClient client = factory.getClient();
+            HTTPClient client = factory.getClient(new Hints(Hints.HTTP_LOGGING, "False"));
             assertTrue(client instanceof SimpleHttpClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);

@@ -1,4 +1,4 @@
-/*    GeoTools - The Open Source Java GIS Toolkit
+/**    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2020, Open Source Geospatial Foundation (OSGeo)

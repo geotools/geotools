@@ -33,16 +33,16 @@ public class DefaultHTTPClientFactory extends AbstractHTTPClientFactory {
 
     private static final Logger LOGGER = Logging.getLogger(DefaultHTTPClientFactory.class);
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked")
     @Override
     protected HTTPClient createClient(Hints hints) {
         if (!hints.containsKey(Hints.HTTP_CLIENT)) {
             return new SimpleHttpClient();
         } else {
             try {
-                Class cls = (Class) hints.get(Hints.HTTP_CLIENT);
-                return (HTTPClient) cls.newInstance();
-            } catch (InstantiationException | IllegalAccessException ex) {
+                Class<HTTPClient> cls = (Class<HTTPClient>) hints.get(Hints.HTTP_CLIENT);
+                return cls.getDeclaredConstructor().newInstance();
+            } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, "Exception when initiating new HTTP client.", ex);
                 throw new RuntimeException(
                         String.format(

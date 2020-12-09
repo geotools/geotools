@@ -55,8 +55,8 @@ import org.geotools.util.logging.Logging;
  * <p>Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser},
  * and {@code http.proxyPassword} are respected.
  *
- * Copied from gt-wms
- * 
+ * <p>Copied from gt-wms
+ *
  * @author groldan
  * @author awaterme
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)

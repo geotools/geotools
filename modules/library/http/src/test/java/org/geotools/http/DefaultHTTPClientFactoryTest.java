@@ -15,7 +15,6 @@
  */
 package org.geotools.http;
 
-
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.ows.HTTPClient;
@@ -23,11 +22,7 @@ import org.geotools.data.ows.LoggingHTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.junit.Test;
 
-/**
- * 
- * @author Roar Brænden
- *
- */
+/** @author Roar Brænden */
 public class DefaultHTTPClientFactoryTest {
 
     @Test
@@ -37,14 +32,13 @@ public class DefaultHTTPClientFactoryTest {
         assertTrue(client != null);
         assertTrue(client instanceof SimpleHttpClient);
     }
-    
+
     @Test
     public void testLoggingUsage() throws Exception {
-    	HTTPClientFactory factory = new DefaultHTTPClientFactory();
-    	factory.logging(true);
-    	
-    	HTTPClient client = factory.getClient();
-    	assertTrue(client instanceof LoggingHTTPClient);
-    }
+        HTTPClientFactory factory = new DefaultHTTPClientFactory();
+        factory.logging(true);
 
+        HTTPClient client = factory.getClient();
+        assertTrue(client instanceof LoggingHTTPClient);
+    }
 }

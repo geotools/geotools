@@ -996,11 +996,10 @@ public class Hints extends RenderingHints {
     /** Which Http client factory should be used */
     public static final ClassKey HTTP_CLIENT_FACTORY =
             new ClassKey("org.geotools.http.HTTPClientFactory");
-    
+
     /** Which Http client should be created. */
-    public static final ClassKey HTTP_CLIENT = 
-    		new ClassKey("org.geotools.data.ows.HTTPClient");
-    
+    public static final ClassKey HTTP_CLIENT = new ClassKey("org.geotools.data.ows.HTTPClient");
+
     /** Should we log each http request FALSE/TRUE/charset */
     public static final Key HTTP_LOGGING = new Key(String.class);
 

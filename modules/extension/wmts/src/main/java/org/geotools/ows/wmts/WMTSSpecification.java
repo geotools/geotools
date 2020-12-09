@@ -62,7 +62,8 @@ public class WMTSSpecification extends Specification {
 
     public GetTileRequest createGetTileRequest(
             URL server, Properties props, WMTSCapabilities caps) {
-        return this.createGetTileRequest(server, props, caps, CommonFactoryFinder.getHttpClientFactory().getClient());
+        return this.createGetTileRequest(
+                server, props, caps, CommonFactoryFinder.getHttpClientFactory().getClient());
     }
 
     public GetTileRequest createGetTileRequest(
@@ -75,7 +76,11 @@ public class WMTSSpecification extends Specification {
         /** */
         public GetTileRequest(
                 URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
-            this(onlineResource, properties, capabilities, CommonFactoryFinder.getHttpClientFactory().getClient());
+            this(
+                    onlineResource,
+                    properties,
+                    capabilities,
+                    CommonFactoryFinder.getHttpClientFactory().getClient());
         }
 
         public GetTileRequest(

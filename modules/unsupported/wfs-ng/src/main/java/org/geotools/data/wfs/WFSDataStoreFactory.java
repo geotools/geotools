@@ -134,15 +134,19 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         final URL capabilitiesURL = (URL) URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);
         if (config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)) {
-        	final MultithreadedHttpClient client = (MultithreadedHttpClient)CommonFactoryFinder.getHttpClientFactory()
-        			.getClient(new Hints(Hints.HTTP_CLIENT, MultithreadedHttpClient.class));
-        	client.setConnectTimeout(config.getTimeoutMillis() / 1000);
-        	client.setReadTimeout(config.getTimeoutMillis() / 1000);
-        	client.setMaxConnections(config.getMaxConnectionPoolSize());
-        	return client;
-        }
-        else {
-        	return CommonFactoryFinder.getHttpClientFactory().getClient();
+            final MultithreadedHttpClient client =
+                    (MultithreadedHttpClient)
+                            CommonFactoryFinder.getHttpClientFactory()
+                                    .getClient(
+                                            new Hints(
+                                                    Hints.HTTP_CLIENT,
+                                                    MultithreadedHttpClient.class));
+            client.setConnectTimeout(config.getTimeoutMillis() / 1000);
+            client.setReadTimeout(config.getTimeoutMillis() / 1000);
+            client.setMaxConnections(config.getMaxConnectionPoolSize());
+            return client;
+        } else {
+            return CommonFactoryFinder.getHttpClientFactory().getClient();
         }
     }
 

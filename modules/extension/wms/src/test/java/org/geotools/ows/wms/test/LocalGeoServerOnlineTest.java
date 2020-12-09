@@ -141,8 +141,14 @@ public class LocalGeoServerOnlineTest extends TestCase {
             // do setup once!
             if (serverURL != null) {
                 try {
-                    wms = new WebMapServer(serverURL, CommonFactoryFinder.getHttpClientFactory()
-                    									.getClient(new Hints(Hints.HTTP_CLIENT, MultithreadedHttpClient.class)));
+                    wms =
+                            new WebMapServer(
+                                    serverURL,
+                                    CommonFactoryFinder.getHttpClientFactory()
+                                            .getClient(
+                                                    new Hints(
+                                                            Hints.HTTP_CLIENT,
+                                                            MultithreadedHttpClient.class)));
                     capabilities = wms.getCapabilities();
                 } catch (Exception eek) {
                     serverURL = null;

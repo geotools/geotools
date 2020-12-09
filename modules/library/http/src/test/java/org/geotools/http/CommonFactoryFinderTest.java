@@ -23,112 +23,93 @@ import org.geotools.data.ows.LoggingHTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.Hints;
-
 import org.junit.Before;
 import org.junit.Test;
-/**
- * 
- * @author Roar Brænden
- *
- */
+
+/** @author Roar Brænden */
 public class CommonFactoryFinderTest {
-	
-	@Before
-	public void resetCommonFactorys() {
-		CommonFactoryFinder.reset();
-	}
-	
-	
-	@Test
-	public void findingSimpleHttpClientAsDefault() throws Exception {
+
+    @Before
+    public void resetCommonFactorys() {
+        CommonFactoryFinder.reset();
+    }
+
+    @Test
+    public void findingSimpleHttpClientAsDefault() throws Exception {
         HTTPClient client = CommonFactoryFinder.getHttpClientFactory().getClient();
 
         assertTrue(client != null);
         assertTrue(client instanceof SimpleHttpClient);
-	}
+    }
 
     @Test
     public void findingSimpleHttpClientTestByHints() throws Exception {
-    	
+
         HTTPClient client =
                 CommonFactoryFinder.getHttpClientFactory()
-                        .getClient(new Hints(
-                                Hints.HTTP_CLIENT,
-                                SimpleHttpClient.class));
+                        .getClient(new Hints(Hints.HTTP_CLIENT, SimpleHttpClient.class));
 
         assertTrue(client instanceof SimpleHttpClient);
- 
     }
-    
+
     @Test
     public void findingMultithreadedHttpClientTestByHints() throws Exception {
-    	
+
         HTTPClient client =
                 CommonFactoryFinder.getHttpClientFactory()
-                        .getClient(new Hints(
-                                Hints.HTTP_CLIENT,
-                                MultithreadedHttpClient.class));
+                        .getClient(new Hints(Hints.HTTP_CLIENT, MultithreadedHttpClient.class));
 
         assertTrue(client instanceof MultithreadedHttpClient);
     }
-    
-    
+
     @Test
     public void usingSystemPropertiesToSetHttpClient() throws Exception {
-    	
-    	Hints.putSystemDefault(Hints.HTTP_CLIENT, MultithreadedHttpClient.class);
-    	
-    	try {
-	    	HTTPClient client = CommonFactoryFinder.getHttpClientFactory().getClient();
-	    	assertTrue(client instanceof MultithreadedHttpClient);
-    	}
-    	finally {
-    		Hints.removeSystemDefault(Hints.HTTP_CLIENT);
-    	}
+
+        Hints.putSystemDefault(Hints.HTTP_CLIENT, MultithreadedHttpClient.class);
+
+        try {
+            HTTPClient client = CommonFactoryFinder.getHttpClientFactory().getClient();
+            assertTrue(client instanceof MultithreadedHttpClient);
+        } finally {
+            Hints.removeSystemDefault(Hints.HTTP_CLIENT);
+        }
     }
-    
-    
+
     @Test
     public void usingSystemPropertiesToSetLogging() throws Exception {
-    	
-    	Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
-    	try {
-	    	HTTPClient client = CommonFactoryFinder.getHttpClientFactory().getClient();
-	    	assertTrue(client instanceof LoggingHTTPClient);
-    	}
-    	finally {
-    		Hints.removeSystemDefault(Hints.HTTP_LOGGING);
-    	}
-    }
-    
 
-    
+        Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
+        try {
+            HTTPClient client = CommonFactoryFinder.getHttpClientFactory().getClient();
+            assertTrue(client instanceof LoggingHTTPClient);
+        } finally {
+            Hints.removeSystemDefault(Hints.HTTP_LOGGING);
+        }
+    }
+
     @Test
     public void avoidLoggingInspiteSystemProperty() throws Exception {
-    	Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
-    	try {
-    		HTTPClientFactory factory = CommonFactoryFinder.getHttpClientFactory();
-    		factory.logging(false);
-    		
-	    	HTTPClient client = factory.getClient();
-	    	assertTrue(client instanceof SimpleHttpClient);
-    	}
-    	finally {
-    		Hints.removeSystemDefault(Hints.HTTP_LOGGING);
-    	}
+        Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
+        try {
+            HTTPClientFactory factory = CommonFactoryFinder.getHttpClientFactory();
+            factory.logging(false);
+
+            HTTPClient client = factory.getClient();
+            assertTrue(client instanceof SimpleHttpClient);
+        } finally {
+            Hints.removeSystemDefault(Hints.HTTP_LOGGING);
+        }
     }
-    
-    
+
     @Test
     public void usingSystemPropertiesToSetLoggingWithCharset() throws Exception {
-    	
-    	Hints.putSystemDefault(Hints.HTTP_LOGGING, "utf-8");
-    	try {
-	    	HTTPClient client = CommonFactoryFinder.getHttpClientFactory().getClient();
-	    	assertTrue(client instanceof LoggingHTTPClient);
-    	}
-    	finally {
-    		Hints.removeSystemDefault(Hints.HTTP_LOGGING);
-    	}
+
+        Hints.putSystemDefault(Hints.HTTP_LOGGING, "utf-8");
+        try {
+            HTTPClient client = CommonFactoryFinder.getHttpClientFactory().getClient();
+            assertTrue(client instanceof LoggingHTTPClient);
+        } finally {
+            Hints.removeSystemDefault(Hints.HTTP_LOGGING);
+        }
     }
 }

@@ -53,29 +53,6 @@ public class CommonFactoryFinderTest {
     }
 
     @Test
-    public void findingMultithreadedHttpClientTestByHints() throws Exception {
-
-        HTTPClient client =
-                CommonFactoryFinder.getHttpClientFactory()
-                        .getClient(new Hints(Hints.HTTP_CLIENT, MultithreadedHttpClient.class));
-
-        assertTrue(client instanceof MultithreadedHttpClient);
-    }
-
-    @Test
-    public void usingSystemPropertiesToSetHttpClient() throws Exception {
-
-        Hints.putSystemDefault(Hints.HTTP_CLIENT, MultithreadedHttpClient.class);
-
-        try {
-            HTTPClient client = CommonFactoryFinder.getHttpClientFactory().getClient();
-            assertTrue(client instanceof MultithreadedHttpClient);
-        } finally {
-            Hints.removeSystemDefault(Hints.HTTP_CLIENT);
-        }
-    }
-
-    @Test
     public void usingSystemPropertiesToSetLogging() throws Exception {
 
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");

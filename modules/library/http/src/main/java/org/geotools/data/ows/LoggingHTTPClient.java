@@ -24,12 +24,13 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 
 public class LoggingHTTPClient extends DelegateHTTPClient {
 
     private String charsetName;
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-    private static final Logger LOGGER = Logger.getLogger("org.geotools.data.ows.httpclient");
+    private static final Logger LOGGER = Logging.getLogger(LoggingHTTPClient.class);
 
     public LoggingHTTPClient(HTTPClient delegate) {
         this(delegate, "UTF-8");
@@ -43,32 +44,25 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
     @Override
     public HTTPResponse post(URL url, InputStream postContent, String postContentType)
             throws IOException {
+        LOGGER.info("POST Request URL: " + url);
         if (LOGGER.isLoggable(Level.FINEST)) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             copy(postContent, out);
-            LOGGER.finest("POST Request URL: " + url);
             LOGGER.finest("POST Request Body: \n" + out.toString(charsetName));
 
-            return new LoggingHTTPResponse(
-                    delegate.post(
-                            url, new ByteArrayInputStream(out.toByteArray()), postContentType),
-                    charsetName);
-        } else {
-            return delegate.post(url, postContent, postContentType);
+            postContent = new ByteArrayInputStream(out.toByteArray());
         }
+        return new LoggingHTTPResponse(
+                delegate.post(url, postContent, postContentType), charsetName);
     }
 
     @Override
     public HTTPResponse get(URL url) throws IOException {
-        if (LOGGER.isLoggable(Level.FINEST)) {
-            LOGGER.finest("GET Request URL: " + url);
-            return new LoggingHTTPResponse(delegate.get(url), charsetName);
-        } else {
-            return delegate.get(url);
-        }
+        LOGGER.fine("GET Request URL: " + url);
+        return new LoggingHTTPResponse(delegate.get(url), charsetName);
     }
 
-    public static void copy(InputStream input, OutputStream output) throws IOException {
+    static void copy(InputStream input, OutputStream output) throws IOException {
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         int n = 0;
         while (-1 != (n = input.read(buffer))) {
@@ -82,12 +76,17 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
 
         public LoggingHTTPResponse(HTTPResponse delegate, String charsetName) throws IOException {
             super(delegate);
+            LOGGER.info("Response received.");
 
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            LoggingHTTPClient.copy(delegate.getResponseStream(), output);
-            LOGGER.finest("Response: \n" + output.toString(charsetName));
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                ByteArrayOutputStream output = new ByteArrayOutputStream();
+                LoggingHTTPClient.copy(delegate.getResponseStream(), output);
 
-            input = new ByteArrayInputStream(output.toByteArray());
+                LOGGER.finest("Body: \n" + output.toString(charsetName));
+                input = new ByteArrayInputStream(output.toByteArray());
+            } else {
+                input = delegate.getResponseStream();
+            }
         }
 
         @Override

@@ -37,10 +37,16 @@ public class DefaultHTTPClientFactory extends AbstractHTTPClientFactory {
     @Override
     protected HTTPClient createClient(Hints hints) {
         if (!hints.containsKey(Hints.HTTP_CLIENT)) {
+            LOGGER.fine("Using default Http client SimpleHttpClient.");
             return new SimpleHttpClient();
         } else {
             try {
-                Class<HTTPClient> cls = (Class<HTTPClient>) hints.get(Hints.HTTP_CLIENT);
+                Object hint = hints.get(Hints.HTTP_CLIENT);
+                Class<HTTPClient> cls =
+                        (Class<HTTPClient>)
+                                (hint instanceof String ? Class.forName((String) hint) : hint);
+
+                LOGGER.fine("Using special Http client " + cls.getName());
                 return cls.getDeclaredConstructor().newInstance();
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, "Exception when initiating new HTTP client.", ex);

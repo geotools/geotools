@@ -161,10 +161,10 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
             List<Double> lowerCorner = bboxType.getLowerCorner();
             @SuppressWarnings("unchecked")
             List<Double> upperCorner = bboxType.getUpperCorner();
-            double minLon = (Double) lowerCorner.get(0);
-            double minLat = (Double) lowerCorner.get(1);
-            double maxLon = (Double) upperCorner.get(0);
-            double maxLat = (Double) upperCorner.get(1);
+            double minLon = lowerCorner.get(0);
+            double minLat = lowerCorner.get(1);
+            double maxLon = upperCorner.get(0);
+            double maxLat = upperCorner.get(1);
 
             ReferencedEnvelope latLonBounds =
                     new ReferencedEnvelope(

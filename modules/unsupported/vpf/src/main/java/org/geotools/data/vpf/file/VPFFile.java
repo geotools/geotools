@@ -147,7 +147,7 @@ public class VPFFile {
 
         Iterator<VPFColumn> iter = columns.iterator();
         while (iter.hasNext()) {
-            column = (VPFColumn) iter.next();
+            column = iter.next();
 
             if (column.isGeometry()) {
                 geometryName = column.getName();
@@ -281,7 +281,7 @@ public class VPFFile {
         Iterator<VPFColumn> iter = columns.iterator();
 
         while (iter.hasNext()) {
-            VPFColumn column = (VPFColumn) iter.next();
+            VPFColumn column = iter.next();
             int length = FeatureTypes.getFieldLength(column.getDescriptor());
             if (length > -1) {
                 size += length;
@@ -331,7 +331,7 @@ public class VPFFile {
 
         try {
             // This speeds things up mightily
-            String firstColumnName = ((VPFColumn) columns.get(0)).getName();
+            String firstColumnName = columns.get(0).getName();
 
             if (idName.equals(firstColumnName)) {
                 setPosition(id);
@@ -373,7 +373,7 @@ public class VPFFile {
         int value = -1;
 
         while (iter.hasNext()) {
-            currentFeature = (SimpleFeature) iter.next();
+            currentFeature = iter.next();
             try {
                 value = Integer.parseInt(currentFeature.getAttribute(idName).toString());
 
@@ -615,7 +615,7 @@ public class VPFFile {
 
         try {
             for (int inx = 0; inx < columns.size(); inx++) {
-                column = (VPFColumn) columns.get(inx);
+                column = columns.get(inx);
                 AttributeDescriptor descriptor = column.getDescriptor();
 
                 if (descriptor.getType().getRestrictions().isEmpty()

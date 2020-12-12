@@ -183,7 +183,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
                         }
                     }
                 } else {
-                    env = (Envelope) bbox.evaluate(null, Envelope.class);
+                    env = bbox.evaluate(null, Envelope.class);
                 }
                 if (env == null) return;
                 minx = env.getMinX();

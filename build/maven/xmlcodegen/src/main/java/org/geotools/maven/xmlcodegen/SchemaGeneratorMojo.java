@@ -148,7 +148,7 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 	        
 	        
 	        ClassLoader ext = 
-	            new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ), getClass().getClassLoader() );
+	            new URLClassLoader(urls.toArray( new URL[ urls.size() ] ), getClass().getClassLoader() );
 
 		    for ( int i = 0; i < imports.length; i++ ) {
 		        String schemaClassName = imports[i];

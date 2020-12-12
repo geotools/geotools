@@ -526,7 +526,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     protected String extractIdForAttribute(final Expression idExpression, Object sourceInstance) {
-        String value = (String) idExpression.evaluate(sourceInstance, String.class);
+        String value = idExpression.evaluate(sourceInstance, String.class);
         return value;
     }
 
@@ -1067,11 +1067,11 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             Map<Name, Expression> clientPropsMappings)
             throws IOException {
         // process sub-type mapping
-        DataAccess<FeatureType, Feature> da = DataAccessRegistry.getDataAccess((Name) mappingName);
+        DataAccess<FeatureType, Feature> da = DataAccessRegistry.getDataAccess(mappingName);
         if (da instanceof AppSchemaDataAccess) {
             // why wouldn't it be? check just to be safe
             FeatureTypeMapping fTypeMapping =
-                    ((AppSchemaDataAccess) da).getMappingByName((Name) mappingName);
+                    ((AppSchemaDataAccess) da).getMappingByName(mappingName);
             List<AttributeMapping> polymorphicMappings = fTypeMapping.getAttributeMappings();
             AttributeDescriptor attDescriptor = fTypeMapping.getTargetFeature();
             AttributeType type = attDescriptor.getType();
@@ -1676,7 +1676,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         Step step = null;
         if (stepsIterator.hasNext()) {
             step = stepsIterator.next();
-            properties = ((ComplexAttribute) root).getProperties(Types.toTypeName(step.getName()));
+            properties = root.getProperties(Types.toTypeName(step.getName()));
         }
 
         while (stepsIterator.hasNext()) {

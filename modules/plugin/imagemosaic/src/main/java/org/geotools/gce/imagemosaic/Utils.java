@@ -379,7 +379,7 @@ public class Utils {
         public Object visit(BBOX filter, Object data) {
             final ReferencedEnvelope bbox = ReferencedEnvelope.reference(filter.getBounds());
             if (this.bbox != null) {
-                this.bbox = (ReferencedEnvelope) this.bbox.intersection(bbox);
+                this.bbox = this.bbox.intersection(bbox);
             } else {
                 this.bbox = bbox;
             }

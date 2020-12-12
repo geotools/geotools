@@ -96,7 +96,7 @@ public class TimePositionUnionBinding extends AbstractSimpleBinding {
 
         if (date == null) {
             try {
-                date = (Date) new XSDateBinding().parse(instance, value);
+                date = new XSDateBinding().parse(instance, value);
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }

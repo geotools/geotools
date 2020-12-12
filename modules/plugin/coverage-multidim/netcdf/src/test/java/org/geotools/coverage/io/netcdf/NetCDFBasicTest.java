@@ -790,7 +790,7 @@ public final class NetCDFBasicTest extends Assert {
         final File inputFile = TestData.file(this, "times/times.nc");
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
         final NetCDFReader reader = new NetCDFReader(inputFile, null);
         Assert.assertNotNull(format);
         Assert.assertNotNull(reader);
@@ -833,7 +833,7 @@ public final class NetCDFBasicTest extends Assert {
         final File inputFile = TestData.file(this, "axisorder.nc");
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
         final NetCDFReader reader = new NetCDFReader(inputFile, null);
         Assert.assertNotNull(format);
         Assert.assertNotNull(reader);

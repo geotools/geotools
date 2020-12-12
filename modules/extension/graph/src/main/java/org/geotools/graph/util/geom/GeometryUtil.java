@@ -218,8 +218,8 @@ public class GeometryUtil {
             y += c.y;
         }
 
-        x /= (double) n;
-        y /= (double) n;
+        x /= n;
+        y /= n;
 
         LineString simple =
                 gf().createLineString(

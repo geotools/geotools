@@ -348,7 +348,7 @@ public class Parser extends MathTransformParser {
                 properties = new HashMap<>(4);
                 properties.put(IdentifiedObject.NAME_KEY, name);
             } else {
-                properties = singletonMap(IdentifiedObject.NAME_KEY, (Object) name);
+                properties = singletonMap(IdentifiedObject.NAME_KEY, name);
             }
         } else {
             final String auth = element.pullString("name");

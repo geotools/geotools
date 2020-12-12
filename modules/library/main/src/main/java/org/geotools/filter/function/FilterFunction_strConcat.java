@@ -43,7 +43,7 @@ public class FilterFunction_strConcat extends FunctionExpressionImpl {
 
         try {
             // attempt to get value and perform conversion
-            arg0 = (String) getExpression(0).evaluate(feature, String.class);
+            arg0 = getExpression(0).evaluate(feature, String.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -51,7 +51,7 @@ public class FilterFunction_strConcat extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = (String) getExpression(1).evaluate(feature, String.class);
+            arg1 = getExpression(1).evaluate(feature, String.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

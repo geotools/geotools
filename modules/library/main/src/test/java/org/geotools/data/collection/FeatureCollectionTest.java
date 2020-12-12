@@ -201,8 +201,8 @@ public abstract class FeatureCollectionTest extends TestCase {
         assertTrue(!copy.isEmpty());
 
         List<SimpleFeature> list = DataUtilities.list(features);
-        SimpleFeature[] f1 = (SimpleFeature[]) list.toArray(new SimpleFeature[list.size()]);
-        SimpleFeature[] f2 = (SimpleFeature[]) features.toArray(new SimpleFeature[list.size()]);
+        SimpleFeature[] f1 = list.toArray(new SimpleFeature[list.size()]);
+        SimpleFeature[] f2 = features.toArray(new SimpleFeature[list.size()]);
         assertEquals(f1.length, f2.length);
         for (int i = 0; i < f1.length; i++) {
             assertSame(f1[i], f2[i]);

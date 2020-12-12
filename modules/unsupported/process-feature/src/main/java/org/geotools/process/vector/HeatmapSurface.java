@@ -175,7 +175,7 @@ public class HeatmapSurface {
 
     private float kernelVal(int kernelRadius) {
         // This kernel function has been confirmed to integrate to 1 over the full radius
-        float val = (float) (1.0f / (2 * kernelRadius + 1));
+        float val = 1.0f / (2 * kernelRadius + 1);
         return val;
     }
 

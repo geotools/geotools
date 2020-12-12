@@ -135,7 +135,7 @@ final class TestUtils extends Assert {
             GeneralParameterValue[] values,
             final boolean checkForNull)
             throws IOException {
-        final GridCoverage2D coverage = (GridCoverage2D) reader.read(values);
+        final GridCoverage2D coverage = reader.read(values);
         if (checkForNull) {
             Assert.assertNotNull(coverage);
         }

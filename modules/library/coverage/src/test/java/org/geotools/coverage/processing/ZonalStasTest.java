@@ -189,7 +189,8 @@ public class ZonalStasTest extends TestCase {
             final AffineTransform gridToWorldTransformCorrected =
                     new AffineTransform(
                             (AffineTransform)
-                                    ((GridGeometry2D) gridCoverage2D.getGridGeometry())
+                                    gridCoverage2D
+                                            .getGridGeometry()
                                             .getGridToCRS2D(PixelOrientation.UPPER_LEFT));
             final MathTransform worldToGridTransform;
             try {

@@ -67,8 +67,7 @@ public class SubHandlerLineString extends SubHandler {
      * @return JTS LineString geometry.
      */
     public Geometry create(GeometryFactory geometryFactory) {
-        Coordinate[] coords =
-                (Coordinate[]) coordinateList.toArray(new Coordinate[coordinateList.size()]);
+        Coordinate[] coords = coordinateList.toArray(new Coordinate[coordinateList.size()]);
         LineString lineString = geometryFactory.createLineString(coords);
         lineString.setUserData(getSRS());
         lineString.setSRID(getSRID());

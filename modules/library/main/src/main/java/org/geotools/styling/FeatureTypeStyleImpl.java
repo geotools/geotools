@@ -153,7 +153,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         clone.rules = new ArrayList<>();
         clone.featureTypeNames = new LinkedHashSet<>();
         clone.semantics = new LinkedHashSet<>();
-        final List<Rule> cloneRules = (List<Rule>) clone.rules();
+        final List<Rule> cloneRules = clone.rules();
         cloneRules.addAll(rulesCopy);
         clone.featureTypeNames().addAll(featureTypeNames);
         clone.semanticTypeIdentifiers().addAll(semantics);

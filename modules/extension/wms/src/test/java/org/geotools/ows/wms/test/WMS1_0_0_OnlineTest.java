@@ -126,10 +126,9 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
             assertEquals(capabilities.getLayerList().size(), 21);
 
             Layer[] layers =
-                    (Layer[])
-                            capabilities
-                                    .getLayerList()
-                                    .toArray(new Layer[capabilities.getLayerList().size()]);
+                    capabilities
+                            .getLayerList()
+                            .toArray(new Layer[capabilities.getLayerList().size()]);
             assertEquals(layers[0].getTitle(), "World Map");
             assertEquals(layers[0].getParent(), null);
             assertTrue(layers[0].getSrs().contains("EPSG:4326")); //  case should not matter
@@ -140,7 +139,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
             assertEquals(layers[20].getName(), "Ocean features");
             assertEquals(layers[0].getBoundingBoxes().size(), 1);
 
-            CRSEnvelope bbox = (CRSEnvelope) layers[1].getBoundingBoxes().get("EPSG:4326");
+            CRSEnvelope bbox = layers[1].getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
         } catch (Exception e) {
             if (e.getMessage().indexOf("timed out") > 0) {

@@ -208,11 +208,11 @@ public class Diff {
             SimpleFeature old = null;
 
             if (addedFeatures.containsKey(fid)) {
-                old = (SimpleFeature) addedFeatures.get(fid);
+                old = addedFeatures.get(fid);
                 addedFeatures.remove(fid);
                 addedFidList.remove(fid);
             } else {
-                old = (SimpleFeature) modifiedFeatures.get(fid);
+                old = modifiedFeatures.get(fid);
                 modifiedFeatures.put(fid, Diff.NULL);
             }
             if (old != null) {
@@ -288,7 +288,7 @@ public class Diff {
             Iterator<Entry<String, SimpleFeature>> i = diff.added.entrySet().iterator();
             while (i.hasNext()) {
                 Entry<String, SimpleFeature> e = i.next();
-                SimpleFeature f = (SimpleFeature) e.getValue();
+                SimpleFeature f = e.getValue();
                 if (!diff.modifiedFeatures.containsKey(f.getID())) {
                     tree.insert(ReferencedEnvelope.reference(f.getBounds()), f);
                 }
@@ -296,7 +296,7 @@ public class Diff {
             Iterator<Entry<String, SimpleFeature>> j = diff.getModified().entrySet().iterator();
             while (j.hasNext()) {
                 Entry<String, SimpleFeature> e = j.next();
-                SimpleFeature f = (SimpleFeature) e.getValue();
+                SimpleFeature f = e.getValue();
                 tree.insert(ReferencedEnvelope.reference(f.getBounds()), f);
             }
         }

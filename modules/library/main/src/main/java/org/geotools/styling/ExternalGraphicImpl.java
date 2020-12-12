@@ -246,7 +246,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
         if (item == null) {
             return null;
         } else if (item instanceof ExternalGraphicImpl) {
-            return (ExternalGraphic) item;
+            return item;
         } else if (item instanceof org.opengis.style.ExternalGraphic) {
             org.opengis.style.ExternalGraphic graphic = (org.opengis.style.ExternalGraphic) item;
             ExternalGraphicImpl copy = new ExternalGraphicImpl();

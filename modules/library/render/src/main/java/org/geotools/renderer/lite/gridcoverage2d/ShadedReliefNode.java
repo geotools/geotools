@@ -36,7 +36,6 @@ import javax.media.jai.registry.RenderedRegistryMode;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
@@ -241,15 +240,14 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
                 sd = source.getSampleDimensions();
             } else {
                 sd = new GridSampleDimension[numActualBands];
-                for (int i = 0; i < numActualBands; i++)
-                    sd[i] = (GridSampleDimension) source.getSampleDimension(0);
+                for (int i = 0; i < numActualBands; i++) sd[i] = source.getSampleDimension(0);
             }
 
             GridCoverage2D output =
                     factory.create(
                             "sr_coverage" + source.getName(),
                             finalImage,
-                            (GridGeometry2D) source.getGridGeometry(),
+                            source.getGridGeometry(),
                             sd,
                             new GridCoverage[] {source},
                             props);
@@ -265,7 +263,7 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
                             factory.create(
                                     "sr_coverage" + source.getName().toString(),
                                     mapCoverage.getRenderedImage(),
-                                    (GridGeometry2D) source.getGridGeometry(),
+                                    source.getGridGeometry(),
                                     output.getSampleDimensions(),
                                     new GridCoverage[] {output},
                                     props);

@@ -1064,7 +1064,7 @@ public class GMLComplexTypes {
                         "Internal error, ElementValues require an associated Element.");
             }
 
-            return (Geometry) value[0].getValue();
+            return value[0].getValue();
         }
 
         public Class getInstanceType() {
@@ -1229,7 +1229,7 @@ public class GMLComplexTypes {
                         "Internal error, ElementValues require an associated Element.");
             }
 
-            return (Point) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.xsi.Type#getInstanceType() */
@@ -1397,7 +1397,7 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            return (LineString) value[0].getValue();
+            return value[0].getValue();
         }
 
         public Class getInstanceType() {
@@ -1564,7 +1564,7 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            return (Polygon) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.xsi.Type#getInstanceType() */
@@ -1731,7 +1731,7 @@ public class GMLComplexTypes {
                             "Internal error, ElementValues require an associated Element.");
                 return null;
             }
-            return (LinearRing) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.xsi.Type#getInstanceType() */
@@ -4480,7 +4480,7 @@ public class GMLComplexTypes {
                 throw new SAXException("must be one geometry");
             }
 
-            return (Geometry) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.xsi.Type#getInstanceType() */
@@ -4950,7 +4950,7 @@ public class GMLComplexTypes {
                 throw new SAXException("must be one geometry");
             }
 
-            return (Point) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.xsi.Type#getInstanceType() */
@@ -5096,7 +5096,7 @@ public class GMLComplexTypes {
                 throw new SAXException("must be one geometry");
             }
 
-            return (Polygon) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.xsi.Type#getInstanceType() */
@@ -5242,7 +5242,7 @@ public class GMLComplexTypes {
                 throw new SAXException("must be one geometry");
             }
 
-            return (LineString) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.xsi.Type#getInstanceType() */
@@ -5389,7 +5389,7 @@ public class GMLComplexTypes {
             }
 
             Object value2 = value[0].getValue();
-            return (MultiPoint) value2;
+            return value2;
             //            if( value2 instanceof MultiPoint)
             //            	return (MultiPoint) value2;
             //            else if( value2 instanceof Point ){
@@ -5544,7 +5544,7 @@ public class GMLComplexTypes {
             }
 
             Object value2 = value[0].getValue();
-            return (MultiLineString) value2;
+            return value2;
 
             //            if( value2 instanceof MultiLineString)
             //            	return (MultiLineString) value2;
@@ -5701,7 +5701,7 @@ public class GMLComplexTypes {
 
             Object value2 = value[0].getValue();
 
-            return (MultiPolygon) value2;
+            return value2;
             //            if( value2 instanceof MultiPolygon)
             //            	return (MultiPolygon) value2;
             //            else if( value2 instanceof Polygon ){
@@ -5857,7 +5857,7 @@ public class GMLComplexTypes {
             }
 
             Object value2 = value[0].getValue();
-            return (GeometryCollection) value2;
+            return value2;
 
             //            if( value2 instanceof GeometryCollection)
             //            	return (GeometryCollection) value2;
@@ -5960,9 +5960,7 @@ public class GMLComplexTypes {
         //        }
 
         AttributeDescriptor[] attrs =
-                (AttributeDescriptor[])
-                        getAttributes(element.getName(), child)
-                                .toArray(new AttributeDescriptor[] {,});
+                getAttributes(element.getName(), child).toArray(new AttributeDescriptor[] {,});
         for (int i = 0; i < attrs.length; i++) {
             if (attrs[i] != null) {
                 build.add(attrs[i]);
@@ -6172,7 +6170,7 @@ public class GMLComplexTypes {
             return null;
         }
         if (l.size() == 1) {
-            return (AttributeDescriptor) l.iterator().next();
+            return l.iterator().next();
         }
         // Do some magic to find the type
         Class<?> type = getCommonType(l);

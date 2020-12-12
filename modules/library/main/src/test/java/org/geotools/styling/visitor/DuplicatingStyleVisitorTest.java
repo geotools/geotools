@@ -491,7 +491,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         Graphic graphic = sf.getDefaultGraphic();
         graphic.graphicalSymbols().add(sf.getDefaultMark());
 
-        Graphic clone = (Graphic) visitor.copy(graphic);
+        Graphic clone = visitor.copy(graphic);
         assertCopy(graphic, clone);
         assertEqualsContract(clone, graphic);
         assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());

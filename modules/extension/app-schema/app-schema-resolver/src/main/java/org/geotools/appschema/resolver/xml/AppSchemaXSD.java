@@ -18,7 +18,6 @@
 package org.geotools.appschema.resolver.xml;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
@@ -82,7 +81,7 @@ public class AppSchemaXSD extends XSD {
     @Override
     protected void addDependencies(Set dependencies) {
         if (configuration != null) {
-            for (Configuration dependency : (List<Configuration>) configuration.getDependencies()) {
+            for (Configuration dependency : configuration.getDependencies()) {
                 dependencies.add(dependency.getXSD());
             }
         }

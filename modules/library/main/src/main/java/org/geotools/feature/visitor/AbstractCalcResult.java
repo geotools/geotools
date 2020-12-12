@@ -63,7 +63,7 @@ public class AbstractCalcResult implements CalcResult {
             Number number = (Number) value;
             return number.intValue();
         } else {
-            return (int) 0;
+            return 0;
         }
     }
 
@@ -73,7 +73,7 @@ public class AbstractCalcResult implements CalcResult {
             Number number = (Number) value;
             return number.doubleValue();
         } else {
-            return (double) 0;
+            return 0;
         }
     }
 
@@ -83,7 +83,7 @@ public class AbstractCalcResult implements CalcResult {
             Number number = (Number) value;
             return number.longValue();
         } else {
-            return (long) 0;
+            return 0;
         }
     }
 

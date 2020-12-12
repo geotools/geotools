@@ -95,7 +95,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
         if (params.size() != 1) {
             throw new IllegalArgumentException("Require a single argument for average");
         }
-        expr = (Expression) getExpression(0);
+        expr = getExpression(0);
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
         expr = (Expression) expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
     }

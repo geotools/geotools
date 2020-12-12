@@ -207,9 +207,7 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
         } else {
             if (this instanceof Period) {
                 if (((Period) this).getBeginning() != null && ((Period) this).getEnding() != null) {
-                    response =
-                            ((DefaultInstant) ((Period) this).getBeginning())
-                                    .distance(((DefaultInstant) ((Period) this).getEnding()));
+                    response = ((Period) this).getBeginning().distance(((Period) this).getEnding());
                     return response;
                 }
             }

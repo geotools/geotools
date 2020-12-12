@@ -71,7 +71,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     public Style getDefaultStyle() {
         // descend into the layers
         for (int i = 0; i < layers.size(); i++) {
-            StyledLayer layer = (StyledLayer) layers.get(i);
+            StyledLayer layer = layers.get(i);
 
             if (layer instanceof UserLayer) {
                 UserLayer userLayer = (UserLayer) layer;
@@ -92,7 +92,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     }
 
     public StyledLayer[] getStyledLayers() {
-        return (StyledLayerImpl[]) layers.toArray(new StyledLayerImpl[layers.size()]);
+        return layers.toArray(new StyledLayerImpl[layers.size()]);
     }
 
     public void setStyledLayers(StyledLayer[] layers) {
@@ -110,7 +110,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     }
 
     public void addStyledLayer(StyledLayer layer) {
-        layers.add((StyledLayerImpl) layer);
+        layers.add(layer);
     }
 
     /**

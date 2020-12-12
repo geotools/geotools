@@ -2633,8 +2633,7 @@ public class StreamingRenderer implements GTRenderer {
 
         // for each lite feature type style, scan the whole collection and draw
         for (LiteFeatureTypeStyle liteFeatureTypeStyle : lfts) {
-            try (FeatureIterator<?> featureIterator =
-                    ((FeatureCollection<?, ?>) features).features()) {
+            try (FeatureIterator<?> featureIterator = features.features()) {
                 if (featureIterator == null) {
                     return; // nothing to do
                 }
@@ -3402,8 +3401,7 @@ public class StreamingRenderer implements GTRenderer {
                         }
                 }
 
-                SymbolizerAssociation sa =
-                        (SymbolizerAssociation) symbolizerAssociationHT.get(symbolizer);
+                SymbolizerAssociation sa = symbolizerAssociationHT.get(symbolizer);
                 MathTransform crsTransform = null;
                 MathTransform atTransform = null;
                 MathTransform fullTransform = null;
@@ -3572,7 +3570,7 @@ public class StreamingRenderer implements GTRenderer {
             // already done full generalization at the desired level
             if (generalizationDistance == 0 || !inMemoryGeneralization) return NULL_DECIMATOR;
 
-            Decimator decimator = (Decimator) decimators.get(mathTransform);
+            Decimator decimator = decimators.get(mathTransform);
             if (decimator == null) {
                 try {
                     if (mathTransform != null && !mathTransform.isIdentity())

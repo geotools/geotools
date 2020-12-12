@@ -54,7 +54,7 @@ public class TouchesIntegrity extends RelationIntegrity {
         LOGGER.finer("Starting test " + getName() + " (" + getClass().getName() + ")");
         String typeRef1 = getGeomTypeRefA();
         LOGGER.finer(typeRef1 + ": looking up SimpleFeatureSource ");
-        SimpleFeatureSource geomSource1 = (SimpleFeatureSource) layers.get(typeRef1);
+        SimpleFeatureSource geomSource1 = layers.get(typeRef1);
         LOGGER.finer(typeRef1 + ": found " + geomSource1.getSchema().getTypeName());
 
         String typeRef2 = getGeomTypeRefB();
@@ -62,7 +62,7 @@ public class TouchesIntegrity extends RelationIntegrity {
             return validateSingleLayer(geomSource1, isExpected(), results, envelope);
         else {
             LOGGER.finer(typeRef2 + ": looking up SimpleFeatureSource ");
-            SimpleFeatureSource geomSource2 = (SimpleFeatureSource) layers.get(typeRef2);
+            SimpleFeatureSource geomSource2 = layers.get(typeRef2);
             LOGGER.finer(typeRef2 + ": found " + geomSource2.getSchema().getTypeName());
             return validateMultipleLayers(
                     geomSource1, geomSource2, isExpected(), results, envelope);

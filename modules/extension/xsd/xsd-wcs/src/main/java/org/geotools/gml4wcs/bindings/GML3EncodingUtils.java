@@ -157,7 +157,7 @@ public class GML3EncodingUtils {
             // check for case of multi geometry, if it has > 0 goemetries
             // we consider this to be not empty
             if (geometry instanceof GeometryCollection) {
-                if (((GeometryCollection) geometry).getNumGeometries() != 0) {
+                if (geometry.getNumGeometries() != 0) {
                     return false;
                 }
             }

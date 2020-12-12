@@ -66,7 +66,7 @@ public class XPathUtil {
         public String toString() {
             StringBuffer sb = new StringBuffer();
             for (Iterator<Step> it = iterator(); it.hasNext(); ) {
-                Step s = (Step) it.next();
+                Step s = it.next();
                 sb.append(s.toString());
                 if (it.hasNext()) {
                     sb.append("/");
@@ -117,7 +117,7 @@ public class XPathUtil {
         public StepList clone() {
             StepList copy = new StepList();
             for (Step step : this) {
-                copy.add((Step) step.clone());
+                copy.add(step.clone());
             }
             return copy;
         }
@@ -502,7 +502,7 @@ public class XPathUtil {
         // root
         // node as it is redundant
         if (root != null && steps.size() > 1) {
-            Step step = (Step) steps.get(0);
+            Step step = steps.get(0);
             Name rootName = root.getName();
             QName stepName = step.getName();
             if (Types.equals(rootName, stepName)) {

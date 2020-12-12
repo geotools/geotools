@@ -66,7 +66,7 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
      *     Hints#FORCE_AXIS_ORDER_HONORING}.
      */
     public Abstract_URI_AuthorityFactory(String hintsAuthority) {
-        this((Hints) null, hintsAuthority);
+        this(null, hintsAuthority);
     }
 
     /**

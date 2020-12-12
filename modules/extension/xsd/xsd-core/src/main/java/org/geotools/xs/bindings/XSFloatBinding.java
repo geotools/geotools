@@ -99,7 +99,7 @@ public class XSFloatBinding implements SimpleBinding {
             return Float.valueOf(Float.POSITIVE_INFINITY);
         }
 
-        return Float.valueOf((String) text);
+        return Float.valueOf(text);
     }
 
     /**

@@ -65,14 +65,13 @@ class TINTriangle extends Polygon {
         // DirectPosition center = new DirectPosition2D();
         List<DirectPosition> reducedVertices = reduce();
 
-        CoordinateReferenceSystem crs =
-                ((DirectPosition) reducedVertices.get(1)).getCoordinateReferenceSystem();
+        CoordinateReferenceSystem crs = reducedVertices.get(1).getCoordinateReferenceSystem();
 
-        double x1 = ((DirectPosition) reducedVertices.get(1)).getCoordinate()[0];
-        double y1 = ((DirectPosition) reducedVertices.get(1)).getCoordinate()[1];
+        double x1 = reducedVertices.get(1).getCoordinate()[0];
+        double y1 = reducedVertices.get(1).getCoordinate()[1];
 
-        double x2 = ((DirectPosition) reducedVertices.get(2)).getCoordinate()[0];
-        double y2 = ((DirectPosition) reducedVertices.get(2)).getCoordinate()[1];
+        double x2 = reducedVertices.get(2).getCoordinate()[0];
+        double y2 = reducedVertices.get(2).getCoordinate()[1];
 
         // Calculation of Circumcicle center
         double t =
@@ -126,7 +125,7 @@ class TINTriangle extends Polygon {
         Iterator<TINTriangle> i = this.getAdjacentTriangles().iterator();
 
         while (i.hasNext()) {
-            TINTriangle trig = (TINTriangle) i.next();
+            TINTriangle trig = i.next();
             trig.removeAdjacent(this);
         }
 
@@ -146,7 +145,7 @@ class TINTriangle extends Polygon {
 
         while (i.hasNext()) {
             try {
-                TINTriangle candidate = (TINTriangle) i.next();
+                TINTriangle candidate = i.next();
 
                 if (candidate.isAdjacent(this) && !this.adjacentTriangles.contains(candidate)) {
                     this.addAdjacentTriangle(candidate);

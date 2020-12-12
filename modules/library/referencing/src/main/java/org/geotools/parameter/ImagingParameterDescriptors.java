@@ -91,7 +91,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      */
     @SuppressWarnings("unchecked")
     public static final Map<Class<?>, Class<?>> DEFAULT_SOURCE_TYPE_MAP =
-            (Map) Collections.singletonMap(RenderedImage.class, GridCoverage.class);
+            Collections.singletonMap(RenderedImage.class, GridCoverage.class);
 
     /**
      * The registry mode, usually {@value javax.media.jai.registry.RenderedRegistryMode#MODE_NAME}.
@@ -411,7 +411,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
             numSources = op.getNumSources();
             desc = new ParameterDescriptor[numParameters + numSources];
             for (int i = 0; i < numSources; i++) {
-                Class<?> type = (Class<?>) sourceTypeMap.get(types[i]);
+                Class<?> type = sourceTypeMap.get(types[i]);
                 if (type == null) {
                     type = types[i];
                 }

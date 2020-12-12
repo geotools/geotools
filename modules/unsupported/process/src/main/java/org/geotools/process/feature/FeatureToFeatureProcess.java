@@ -62,7 +62,7 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
                 getTargetSchema((SimpleFeatureType) features.getSchema(), input);
         DefaultFeatureCollection result = new DefaultFeatureCollection(null, targetSchema);
 
-        SimpleFeatureBuilder fb = new SimpleFeatureBuilder((SimpleFeatureType) result.getSchema());
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(result.getSchema());
         FeatureIterator fi = features.features();
         try {
             int counter = 0;

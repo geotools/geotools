@@ -390,7 +390,7 @@ public class Schemas {
         Resource resource = schema.eResource();
         if (resource == null) {
             final ResourceSet resourceSet = new ResourceSetImpl();
-            resource = (XSDResourceImpl) resourceSet.createResource(URI.createURI(".xsd"));
+            resource = resourceSet.createResource(URI.createURI(".xsd"));
             resource.getContents().add(schema);
         }
 
@@ -497,7 +497,7 @@ public class Schemas {
         q.add(location);
 
         while (!q.isEmpty()) {
-            location = (String) q.removeFirst();
+            location = q.removeFirst();
             validator.setBaseLocation(location);
 
             try {
@@ -818,7 +818,7 @@ public class Schemas {
         queue.addLast((XSDParticle) cType.getContent());
 
         while (!queue.isEmpty()) {
-            XSDParticle particle = (XSDParticle) queue.removeFirst();
+            XSDParticle particle = queue.removeFirst();
 
             // analyze type of particle content
             int pType = XSDUtil.nodeType(particle.getElement());
@@ -928,7 +928,7 @@ public class Schemas {
 
         new TypeWalker().walk(type, visitor);
 
-        return found.isEmpty() ? null : (XSDTypeDefinition) found.get(0);
+        return found.isEmpty() ? null : found.get(0);
     }
 
     /**
@@ -999,7 +999,7 @@ public class Schemas {
                     "Element: " + element + " not found in type: " + type);
         }
 
-        return ((Integer) minOccurs.get(0)).intValue();
+        return minOccurs.get(0).intValue();
     }
 
     /**
@@ -1047,7 +1047,7 @@ public class Schemas {
                     "Element: " + element + " not found in type: " + type);
         }
 
-        return ((Integer) maxOccurs.get(0)).intValue();
+        return maxOccurs.get(0).intValue();
     }
 
     private static void visitElements(
@@ -1084,7 +1084,7 @@ public class Schemas {
         queue.addLast((XSDParticle) cType.getContent());
 
         while (!queue.isEmpty()) {
-            XSDParticle particle = (XSDParticle) queue.removeFirst();
+            XSDParticle particle = queue.removeFirst();
 
             // analyze type of particle content
             int pType = XSDUtil.nodeType(particle.getElement());
@@ -1405,7 +1405,7 @@ public class Schemas {
         queue.addLast(schema);
 
         while (!queue.isEmpty()) {
-            schema = (XSDSchema) queue.removeFirst();
+            schema = queue.removeFirst();
 
             List contents = schema.getContents();
 
@@ -1677,7 +1677,7 @@ public class Schemas {
                 String rawSchemaLocationURI,
                 String resolvedSchemaLocationURI) {
             for (int i = 0; i < locators.size(); i++) {
-                XSDSchemaLocator locator = (XSDSchemaLocator) locators.get(i);
+                XSDSchemaLocator locator = locators.get(i);
                 XSDSchema schema =
                         locator.locateSchema(
                                 xsdSchema,
@@ -1729,7 +1729,7 @@ public class Schemas {
         public String resolveSchemaLocation(
                 XSDSchema schema, String namespaceURI, String rawSchemaLocationURI) {
             for (int i = 0; i < resolvers.size(); i++) {
-                XSDSchemaLocationResolver resolver = (XSDSchemaLocationResolver) resolvers.get(i);
+                XSDSchemaLocationResolver resolver = resolvers.get(i);
                 String resolved =
                         resolver.resolveSchemaLocation(schema, namespaceURI, rawSchemaLocationURI);
 

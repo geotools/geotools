@@ -154,8 +154,8 @@ public class BasicGraphTest extends TestCase {
     }
 
     public void test_getVisitedNodes() {
-        ((BasicNode) m_nodes.get(1)).setVisited(true);
-        ((BasicNode) m_nodes.get(2)).setVisited(true);
+        m_nodes.get(1).setVisited(true);
+        m_nodes.get(2).setVisited(true);
 
         List visited = m_graph.getVisitedNodes(true);
         assertTrue(visited.size() == 2);
@@ -169,7 +169,7 @@ public class BasicGraphTest extends TestCase {
     }
 
     public void test_getVisitedEdges() {
-        ((BasicEdge) m_edges.get(1)).setVisited(true);
+        m_edges.get(1).setVisited(true);
 
         List visited = m_graph.getVisitedEdges(true);
         assertTrue(visited.size() == 1);

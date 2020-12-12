@@ -119,7 +119,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
 
         } else if (destination instanceof OutputStream) {
 
-            this.outStream = ImageIOExt.createImageOutputStream(null, (OutputStream) destination);
+            this.outStream = ImageIOExt.createImageOutputStream(null, destination);
 
         } else if (destination instanceof ImageOutputStream)
             this.outStream = (ImageOutputStream) destination;
@@ -239,12 +239,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         // write image
         //
-        writeImage(
-                ((GridCoverage2D) gc).getRenderedImage(),
-                this.outStream,
-                metadata,
-                gtParams,
-                listener);
+        writeImage(gc.getRenderedImage(), this.outStream, metadata, gtParams, listener);
 
         //
         // write tfw

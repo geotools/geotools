@@ -30,7 +30,7 @@ public class ImageMosaicServiceTest {
                 GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
         while (list.hasNext()) {
-            final GridFormatFactorySpi fac = (GridFormatFactorySpi) list.next();
+            final GridFormatFactorySpi fac = list.next();
 
             if (fac instanceof ImageMosaicFormatFactory) {
                 found = true;

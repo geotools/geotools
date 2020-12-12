@@ -1654,7 +1654,7 @@ public class FilterOpsComplexTypes {
                 ElementValue[] value,
                 Attributes attrs,
                 Map<String, Object> hints) {
-            return (Expression) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
@@ -1737,7 +1737,7 @@ public class FilterOpsComplexTypes {
                 ElementValue[] value,
                 Attributes attrs,
                 Map<String, Object> hints) {
-            return (Expression) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
@@ -1839,7 +1839,7 @@ public class FilterOpsComplexTypes {
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
 
             try {
-                short type = (short) SpatialOpsType.findFilterType(element.getName());
+                short type = SpatialOpsType.findFilterType(element.getName());
 
                 Expression geometry1 = (Expression) value[0].getValue();
                 Expression geometry2 = (Expression) value[1].getValue();

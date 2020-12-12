@@ -134,7 +134,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
     public List<org.opengis.util.LocalName> getParsedNames() {
         // No need to sychronize: it is not a big deal if this object is built twice.
         if (parsedNames == null) {
-            parsedNames = Collections.singletonList((org.opengis.util.LocalName) this);
+            parsedNames = Collections.singletonList(this);
         }
         return parsedNames;
     }

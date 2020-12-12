@@ -316,8 +316,7 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
             }
 
             final Hints configurationHints = configHandler.getRunConfiguration().getHints();
-            coverageReader =
-                    (GridCoverage2DReader) format.getReader(readerInputObject, configurationHints);
+            coverageReader = format.getReader(readerInputObject, configurationHints);
 
             // Setting of the ReaderSPI to use
             if (configHandler.getCachedReaderSPI() == null) {
@@ -330,7 +329,7 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
                 try {
                     // Get the ImageInputStream from the SPI
 
-                    inStream = ((CogSourceSPIProvider) readerInputObject).getStream();
+                    inStream = readerInputObject.getStream();
                     // Throws an Exception if the ImageInputStream is not present
                     if (inStream == null) {
                         if (LOGGER.isLoggable(Level.WARNING)) {

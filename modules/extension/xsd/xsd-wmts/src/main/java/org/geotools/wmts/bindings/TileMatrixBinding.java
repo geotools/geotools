@@ -133,7 +133,7 @@ public class TileMatrixBinding extends DescriptionTypeBinding {
             // we are in a
             // Contents/Layer/TileMatrixSetLink/TileMatrixSetLimits/TileMatrixLimits/TileMatrix
             // (simple) element
-            return (String) value;
+            return value;
         }
 
         if (!(value instanceof TileMatrixType)) {

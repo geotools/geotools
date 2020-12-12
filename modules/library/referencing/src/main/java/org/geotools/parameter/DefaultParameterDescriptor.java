@@ -387,7 +387,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
         }
         final Map<String, CharSequence> properties;
         if (remarks == null) {
-            properties = Collections.singletonMap(NAME_KEY, (CharSequence) name);
+            properties = Collections.singletonMap(NAME_KEY, name);
         } else {
             properties = new HashMap<>(4);
             properties.put(NAME_KEY, name);

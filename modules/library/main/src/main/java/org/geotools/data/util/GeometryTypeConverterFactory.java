@@ -152,7 +152,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                         throws Exception {
                     List<T> result = new ArrayList<>();
                     for (int count = 0; count < gc.getNumGeometries(); count++) {
-                        T geo = (T) convert(gc.getGeometryN(count), target);
+                        T geo = convert(gc.getGeometryN(count), target);
                         if (geo != null) result.add(geo);
                     }
                     return result;
@@ -183,7 +183,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                                 points =
                                         this.convertAll((GeometryCollection) source, Point.class)
                                                 .toArray(new Point[] {});
-                            else points = new Point[] {(Point) this.convert(source, Point.class)};
+                            else points = new Point[] {this.convert(source, Point.class)};
                             destGeometry = gFac.createMultiPoint(points);
                         } else if (MultiLineString.class.isAssignableFrom(target)) {
                             LineString[] lineStrings;
@@ -199,9 +199,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                                                 .toArray(new LineString[] {});
                             else
                                 lineStrings =
-                                        new LineString[] {
-                                            (LineString) this.convert(source, LineString.class)
-                                        };
+                                        new LineString[] {this.convert(source, LineString.class)};
                             destGeometry = gFac.createMultiLineString(lineStrings);
                         } else if (MultiPolygon.class.isAssignableFrom(target)) {
                             Polygon[] polygons;
@@ -213,11 +211,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                                 polygons =
                                         this.convertAll((GeometryCollection) source, Polygon.class)
                                                 .toArray(new Polygon[] {});
-                            else
-                                polygons =
-                                        new Polygon[] {
-                                            (Polygon) this.convert(source, Polygon.class)
-                                        };
+                            else polygons = new Polygon[] {this.convert(source, Polygon.class)};
                             destGeometry = gFac.createMultiPolygon(polygons);
                         }
 

@@ -185,7 +185,7 @@ public class GeoPackage implements Closeable {
      * <p>This constructor assumes no credentials are required to connect to the database.
      */
     public GeoPackage(File file) throws IOException {
-        this(file, (String) null, (String) null);
+        this(file, null, (String) null);
     }
 
     /** Creates a GeoPackage from an existing file specifying database credentials. */

@@ -247,7 +247,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
                 updateFilter = next;
                 break;
             } else {
-                updateFilter = (Filter) ff.or(updateFilter, next);
+                updateFilter = ff.or(updateFilter, next);
             }
         }
         if (updateFilter == Filter.INCLUDE || f == Filter.INCLUDE) return Filter.INCLUDE;
@@ -543,8 +543,8 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         int i = postStack.size();
 
         Expression leftGeometry, rightGeometry;
-        leftGeometry = ((BinarySpatialOperator) filter).getExpression1();
-        rightGeometry = ((BinarySpatialOperator) filter).getExpression2();
+        leftGeometry = filter.getExpression1();
+        rightGeometry = filter.getExpression2();
 
         if (leftGeometry == null || rightGeometry == null) {
             postStack.push(filter);
@@ -781,8 +781,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
                             + parent.getTypeName());
         }
         if (transactionAccessor != null) {
-            Filter updateFilter =
-                    (Filter) transactionAccessor.getUpdateFilter(expression.getPropertyName());
+            Filter updateFilter = transactionAccessor.getUpdateFilter(expression.getPropertyName());
             if (updateFilter != null) {
                 changedStack.add(updateFilter);
                 preStack.push(updateFilter);
@@ -873,7 +872,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         int j = preStack.size();
 
         for (int k = 0; k < expression.getParameters().size(); k++) {
-            ((Expression) expression.getParameters().get(k)).accept(this, null);
+            expression.getParameters().get(k).accept(this, null);
 
             if (i < postStack.size()) {
                 while (j < preStack.size()) preStack.pop();
@@ -906,7 +905,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         List<Filter> translated = new ArrayList<>();
 
         while (i.hasNext()) {
-            Filter f = (Filter) i.next();
+            Filter f = i.next();
 
             if (f instanceof Not) {
                 // simplify it

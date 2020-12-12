@@ -20,7 +20,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLCompiler;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQLCompiler;
-import org.geotools.util.factory.Hints;
 import org.opengis.filter.FilterFactory;
 
 /**
@@ -45,7 +44,7 @@ final class CompilerFactory {
         FilterFactory ff = filterFactory;
 
         if (filterFactory == null) {
-            ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+            ff = CommonFactoryFinder.getFilterFactory(null);
         }
         ICompiler compiler;
         if (language == Language.ECQL) {

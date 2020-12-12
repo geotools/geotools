@@ -60,7 +60,7 @@ public class JDoubleField extends ParamField {
     }
 
     public void setValue(Object value) {
-        text.setText(((Double) value).toString());
+        text.setText(value.toString());
     }
 
     public boolean validate() {

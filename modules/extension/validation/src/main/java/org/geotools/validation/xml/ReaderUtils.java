@@ -401,7 +401,7 @@ class ReaderUtils {
             }
         }
 
-        Object[] s = (Object[]) keywords.toArray();
+        Object[] s = keywords.toArray();
 
         if (s == null) {
             return new String[0];

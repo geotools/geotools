@@ -136,7 +136,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
         int size = 0;
 
         for (int i = 0; i < columnDefs.size(); i++) {
-            TableColumnDef colDef = (TableColumnDef) columnDefs.get(i);
+            TableColumnDef colDef = columnDefs.get(i);
 
             //       VPFLogger.log("Column def no. "+i+" column size: "+
             //                          colDef.getColumnSize());

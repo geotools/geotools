@@ -388,7 +388,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             boolean swapped,
             Object extraData) {
         return visitBinarySpatialOperator(
-                filter, (Expression) property, (Expression) geometry, swapped, extraData);
+                filter, property, (Expression) geometry, swapped, extraData);
     }
 
     @Override

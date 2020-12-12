@@ -147,7 +147,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             case 0:
                 throw new IllegalArgumentException("No filters to combine");
             case 1:
-                return (Filter) combinedFilters.get(0);
+                return combinedFilters.get(0);
             default:
                 return ff.or(combinedFilters);
         }
@@ -283,7 +283,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
                 continue;
             }
 
-            Step step = (Step) targetXPath.get(0);
+            Step step = targetXPath.get(0);
             QName stepName = step.getName();
             if (namespace.equals(stepName.getNamespaceURI())) {
                 if (name.equals(stepName.getLocalPart())) {
@@ -792,7 +792,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         }
 
         Expression[] unmapped = new Expression[arguments.size()];
-        unmapped = (Expression[]) arguments.toArray(unmapped);
+        unmapped = arguments.toArray(unmapped);
 
         Function unmappedFunction = ff.function(function.getName(), unmapped);
 

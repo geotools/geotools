@@ -173,7 +173,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getValue() {
-            Comparable max = (Comparable) maxValue;
+            Comparable max = maxValue;
 
             return max;
         }

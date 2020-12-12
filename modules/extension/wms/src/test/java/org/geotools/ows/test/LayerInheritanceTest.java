@@ -52,7 +52,7 @@ public class LayerInheritanceTest extends TestCase {
         WMSCapabilities capabilities = (WMSCapabilities) object;
 
         // Get first test layer
-        Layer layer = (Layer) capabilities.getLayerList().get(0);
+        Layer layer = capabilities.getLayerList().get(0);
         assertNotNull(layer);
         assertEquals(3, layer.getDimensions().size());
         assertEquals("ISO8601", layer.getDimension("time").getUnits());
@@ -60,7 +60,7 @@ public class LayerInheritanceTest extends TestCase {
         // Get next test layer, it's nested 3 deep
         List<Layer> allLayers = capabilities.getLayerList();
 
-        layer = (Layer) allLayers.get(2);
+        layer = allLayers.get(2);
         assertNotNull(layer);
         assertNotNull(layer.getParent());
         assertEquals(3, layer.getDimensions().size());
@@ -83,7 +83,7 @@ public class LayerInheritanceTest extends TestCase {
         assertTrue(layer.getStyles().contains(new StyleImpl("default")));
 
         // Next test layer, nested 3 deep but different path
-        layer = (Layer) capabilities.getLayerList().get(4);
+        layer = capabilities.getLayerList().get(4);
         assertNotNull(layer);
         assertNotNull(layer.getParent());
         assertEquals(3, layer.getDimensions().size());

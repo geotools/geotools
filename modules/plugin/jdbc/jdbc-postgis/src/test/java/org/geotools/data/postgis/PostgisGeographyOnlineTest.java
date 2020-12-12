@@ -95,7 +95,7 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
         PropertyName geomName = ff.property(aname("geo"));
         Literal lit = ff.literal(geometry);
 
-        DWithin dwithinGeomFilter = ((FilterFactory2) ff).dwithin(geomName, lit, distance, unit);
+        DWithin dwithinGeomFilter = ff.dwithin(geomName, lit, distance, unit);
         Query query = new Query(tname("geopoint"), dwithinGeomFilter);
         SimpleFeatureCollection features =
                 dataStore.getFeatureSource(tname("geopoint")).getFeatures(query);

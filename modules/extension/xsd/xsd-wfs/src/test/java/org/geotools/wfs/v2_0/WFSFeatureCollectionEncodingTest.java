@@ -306,14 +306,14 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
 
     Encoder encoderFormatting() {
         WFSConfiguration configuration = new WFSConfiguration();
-        ((org.geotools.gml3.v3_2.GMLConfiguration)
-                        configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class))
+        configuration
+                .getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class)
                 .setNumDecimals(4);
-        ((org.geotools.gml3.v3_2.GMLConfiguration)
-                        configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class))
+        configuration
+                .getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class)
                 .setForceDecimalEncoding(true);
-        ((org.geotools.gml3.v3_2.GMLConfiguration)
-                        configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class))
+        configuration
+                .getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class)
                 .setPadWithZeros(true);
         configuration.getProperties().add(org.geotools.gml2.GMLConfiguration.OPTIMIZED_ENCODING);
         return new Encoder(configuration);

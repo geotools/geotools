@@ -191,7 +191,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             // the whole chain of AND is equivalent to
             // EXCLUDE
             if (child == Filter.EXCLUDE) {
-                return Arrays.asList((Filter) Filter.EXCLUDE);
+                return Arrays.asList(Filter.EXCLUDE);
             }
 
             // these can be skipped
@@ -210,7 +210,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 if (f1.equals(f2)) {
                     simplified.remove(j);
                 } else if (dualFilters(f1, f2)) {
-                    return Arrays.asList((Filter) Filter.EXCLUDE);
+                    return Arrays.asList(Filter.EXCLUDE);
                 } else {
                     j++;
                 }
@@ -314,7 +314,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             // the whole chain of OR is equivalent to
             // INCLUDE
             if (child == Filter.INCLUDE) {
-                return Arrays.asList((Filter) Filter.INCLUDE);
+                return Arrays.asList(Filter.INCLUDE);
             }
 
             // these can be skipped
@@ -333,7 +333,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 if (f1.equals(f2)) {
                     simplified.remove(j);
                 } else if (dualFilters(f1, f2)) {
-                    return Arrays.asList((Filter) Filter.INCLUDE);
+                    return Arrays.asList(Filter.INCLUDE);
                 } else {
                     j++;
                 }

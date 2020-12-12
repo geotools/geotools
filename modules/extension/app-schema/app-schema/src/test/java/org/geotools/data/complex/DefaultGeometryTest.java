@@ -113,8 +113,8 @@ public class DefaultGeometryTest {
         assertEquals(STATION_WITH_GEOM_FEATURE_TYPE, ft.getName());
         assertNotNull(stationsDataAccess.getSchema(STATION_DEFAULT_GEOM_OVERRIDE_MAPPING));
 
-        FeatureSource fs = (FeatureSource) stationsDataAccess.getFeatureSource(STATION_FEATURE);
-        FeatureCollection stationFeatures = (FeatureCollection) fs.getFeatures();
+        FeatureSource fs = stationsDataAccess.getFeatureSource(STATION_FEATURE);
+        FeatureCollection stationFeatures = fs.getFeatures();
         assertEquals(3, size(stationFeatures));
 
         ft = measurementsDataAccess.getSchema(MEASUREMENT_FEATURE);

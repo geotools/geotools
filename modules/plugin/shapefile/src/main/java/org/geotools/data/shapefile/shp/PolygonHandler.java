@@ -254,12 +254,12 @@ public class PolygonHandler implements ShapeHandler {
         // quick optimization: if there's only one shell no need to check
         // for holes inclusion
         if (shells.size() == 1) {
-            return createMulti((LinearRing) shells.get(0), holes);
+            return createMulti(shells.get(0), holes);
         }
         // if for some reason, there is only one hole, we just reverse it and
         // carry on.
         else if (holes.size() == 1 && shells.size() == 0) {
-            return createMulti((LinearRing) holes.get(0));
+            return createMulti(holes.get(0));
         } else {
 
             // build an association between shells and holes
@@ -346,7 +346,7 @@ public class PolygonHandler implements ShapeHandler {
         // we just reverse each hole
         if (shells.size() == 0) {
             for (int i = 0, ii = holes.size(); i < ii; i++) {
-                LinearRing hole = (LinearRing) holes.get(i);
+                LinearRing hole = holes.get(i);
                 polygons[i] = geometryFactory.createPolygon(hole, null);
             }
         }
@@ -366,7 +366,7 @@ public class PolygonHandler implements ShapeHandler {
 
         // find homes
         for (int i = 0; i < holes.size(); i++) {
-            LinearRing testRing = (LinearRing) holes.get(i);
+            LinearRing testRing = holes.get(i);
             LinearRing minShell = null;
             Envelope minEnv = null;
             Envelope testEnv = testRing.getEnvelopeInternal();

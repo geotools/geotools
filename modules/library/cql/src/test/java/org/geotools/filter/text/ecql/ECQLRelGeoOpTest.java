@@ -22,7 +22,6 @@ import org.geotools.filter.function.FilterFunction_buffer;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLRelGeoOpTest;
-import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -41,7 +40,7 @@ import org.opengis.filter.spatial.DistanceBufferOperator;
  */
 public class ECQLRelGeoOpTest extends CQLRelGeoOpTest {
     protected static final FilterFactory FILTER_FACTORY =
-            CommonFactoryFinder.getFilterFactory((Hints) null);
+            CommonFactoryFinder.getFilterFactory(null);
 
     public ECQLRelGeoOpTest() {
         super(Language.ECQL);

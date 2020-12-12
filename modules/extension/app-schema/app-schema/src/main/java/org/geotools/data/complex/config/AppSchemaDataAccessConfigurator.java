@@ -1043,9 +1043,8 @@ public class AppSchemaDataAccessConfigurator {
 
         AppSchemaDataAccessConfigurator.LOGGER.entering(
                 getClass().getName(), "resolveRelativePaths");
-        for (Map.Entry<String, Serializable> entry :
-                (Set<Map.Entry<String, Serializable>>) datastoreParams.entrySet()) {
-            String key = (String) entry.getKey();
+        for (Map.Entry<String, Serializable> entry : datastoreParams.entrySet()) {
+            String key = entry.getKey();
             String value = (String) entry.getValue();
 
             if (value != null && value.startsWith("file:")) {
@@ -1053,7 +1052,7 @@ public class AppSchemaDataAccessConfigurator {
                 // any file paths entered without this prefix will remain unchanged
                 String oldValue = value;
                 String resolvedDataPath = null;
-                String inputDataPath = (String) value.substring("file:".length());
+                String inputDataPath = value.substring("file:".length());
                 File f = new File(inputDataPath);
 
                 if (!f.isAbsolute()) {

@@ -125,7 +125,7 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
 
         // if there is a single attribute, return it
         if ((node.getAttributes().size() == 1) && node.getChildren().isEmpty() && (text == null)) {
-            return ((Node) node.getAttributes().get(0)).getValue();
+            return node.getAttributes().get(0).getValue();
         }
 
         // create a map of the elements and attributes

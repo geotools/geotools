@@ -239,11 +239,11 @@ public class SchemaFactory {
             Schema s = (Schema) i.next();
             if (prefix.equals(s.getPrefix())) l.add(s);
         }
-        return (Schema[]) l.toArray(new Schema[l.size()]);
+        return l.toArray(new Schema[l.size()]);
     }
 
     private synchronized Schema getRealInstance(URI targetNamespace) {
-        Schema r = (Schema) schemas.get(targetNamespace);
+        Schema r = schemas.get(targetNamespace);
 
         if (r != null) {
             return r;
@@ -306,13 +306,13 @@ public class SchemaFactory {
             }
 
             if (schemas.get(targetNamespace) != null) {
-                schema = merge(schema, (Schema) schemas.get(targetNamespace));
+                schema = merge(schema, schemas.get(targetNamespace));
             }
             schemas.put(targetNamespace, schema);
             return schema;
         } else {
-            if (!((Schema) schemas.get(targetNamespace)).includesURI(desiredSchema)) {
-                Schema sh = (Schema) schemas.get(targetNamespace);
+            if (!schemas.get(targetNamespace).includesURI(desiredSchema)) {
+                Schema sh = schemas.get(targetNamespace);
                 setParser();
 
                 XSISAXHandler contentHandler = getSAXHandler(desiredSchema);
@@ -329,7 +329,7 @@ public class SchemaFactory {
             }
         }
 
-        return (Schema) schemas.get(targetNamespace);
+        return schemas.get(targetNamespace);
     }
 
     /** */
@@ -359,19 +359,19 @@ public class SchemaFactory {
 
             Schema schema = contentHandler.getSchema();
             if (schemas.get(targetNamespace) != null) {
-                schema = merge(schema, (Schema) schemas.get(targetNamespace));
+                schema = merge(schema, schemas.get(targetNamespace));
             }
 
             schemas.put(targetNamespace, schema);
 
         } else {
-            Schema sh = (Schema) schemas.get(targetNamespace);
+            Schema sh = schemas.get(targetNamespace);
             XSISAXHandler contentHandler = parseSchema(is1, level);
 
             sh = merge(sh, contentHandler.getSchema());
             schemas.put(targetNamespace, sh); // over-write
         }
-        return (Schema) schemas.get(targetNamespace);
+        return schemas.get(targetNamespace);
     }
 
     private XSISAXHandler parseSchema(InputStream is1, Level level) throws SAXException {

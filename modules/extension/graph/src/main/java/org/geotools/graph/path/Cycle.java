@@ -57,8 +57,8 @@ public class Cycle extends Walk {
         List<Edge> edges = super.buildEdges();
 
         // get the edge between the first and last nodes
-        Node first = (Node) get(0);
-        Node last = (Node) get(size() - 1);
+        Node first = get(0);
+        Node last = get(size() - 1);
 
         Edge e = first.getEdge(last);
         if (e != null) {

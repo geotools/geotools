@@ -149,7 +149,7 @@ public class BindingWalker implements TypeWalker.Visitor {
             Visitor visitor,
             XSDTypeDefinition container,
             MutablePicoContainer context) {
-        BindingExecutionChain chain = (BindingExecutionChain) chains.get(component);
+        BindingExecutionChain chain = chains.get(component);
 
         if (chain == null) {
             this.container = container;
@@ -222,7 +222,7 @@ public class BindingWalker implements TypeWalker.Visitor {
 
             // unwind the call stack
             while (!stack.isEmpty()) {
-                Binding binding = (Binding) stack.pop();
+                Binding binding = stack.pop();
 
                 visitor.visit(binding);
             }

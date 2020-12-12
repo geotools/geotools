@@ -38,7 +38,7 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
             assertTrue(feature.getAttribute(0).toString().equals("POINT (0 0)"));
             assertTrue((Integer) feature.getAttribute(1) == 0);
             assertTrue((Double) feature.getAttribute(2) == 0.0);
-            assertTrue(((String) feature.getAttribute(3)).equals("zero"));
+            assertTrue(feature.getAttribute(3).equals("zero"));
         }
         try (FeatureWriter writer =
                 dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT)) {

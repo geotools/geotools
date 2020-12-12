@@ -62,7 +62,7 @@ public class ChartFactoryTest extends TestCase {
 
     public void testSizeFromChartSpec() throws Exception {
         Literal url = ff.literal("http://chart?cht=p&chd=t:10,20,70&chs=200x100");
-        Icon icon = (Icon) factory.getIcon(null, url, ChartGraphicFactory.FORMAT, -1);
+        Icon icon = factory.getIcon(null, url, ChartGraphicFactory.FORMAT, -1);
         assertNotNull(icon);
         assertEquals(200, icon.getIconWidth());
         assertEquals(100, icon.getIconHeight());
@@ -70,7 +70,7 @@ public class ChartFactoryTest extends TestCase {
 
     public void testSizeFromSLD() throws Exception {
         Literal url = ff.literal("http://chart?cht=p&chd=t:10,20,70");
-        Icon icon = (Icon) factory.getIcon(null, url, ChartGraphicFactory.FORMAT, 200);
+        Icon icon = factory.getIcon(null, url, ChartGraphicFactory.FORMAT, 200);
         assertNotNull(icon);
         assertEquals(200, icon.getIconWidth());
         assertEquals(200, icon.getIconHeight());
@@ -78,7 +78,7 @@ public class ChartFactoryTest extends TestCase {
 
     public void testSizeFromSLDAndChart() throws Exception {
         Literal url = ff.literal("http://chart?cht=p&chd=t:10,20,70&chs=200x100");
-        Icon icon = (Icon) factory.getIcon(null, url, ChartGraphicFactory.FORMAT, 600);
+        Icon icon = factory.getIcon(null, url, ChartGraphicFactory.FORMAT, 600);
         assertNotNull(icon);
         assertEquals(600, icon.getIconWidth());
         assertEquals(300, icon.getIconHeight());
@@ -86,7 +86,7 @@ public class ChartFactoryTest extends TestCase {
 
     public void testSizeFromSLDAndChartVertical() throws Exception {
         Literal url = ff.literal("http://chart?cht=p&chd=t:10,20,70&chs=100x300");
-        Icon icon = (Icon) factory.getIcon(null, url, ChartGraphicFactory.FORMAT, 600);
+        Icon icon = factory.getIcon(null, url, ChartGraphicFactory.FORMAT, 600);
         assertNotNull(icon);
         assertEquals(200, icon.getIconWidth());
         assertEquals(600, icon.getIconHeight());

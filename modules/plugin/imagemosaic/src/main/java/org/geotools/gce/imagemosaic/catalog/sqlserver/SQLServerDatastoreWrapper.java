@@ -64,8 +64,7 @@ public class SQLServerDatastoreWrapper extends DataStoreWrapper {
                 JDBCDataStore jdbcDataStore = (JDBCDataStore) this.datastore;
 
                 SQLDialect dialect = jdbcDataStore.getSQLDialect();
-                String metadataTable =
-                        (String) BeanUtils.getProperty(dialect, METADATA_TABLE_PROPERTY);
+                String metadataTable = BeanUtils.getProperty(dialect, METADATA_TABLE_PROPERTY);
                 if (metadataTable == null) {
                     metadataTable = DEFAULT_METADATA_TABLE;
                     BeanUtils.setProperty(dialect, METADATA_TABLE_PROPERTY, DEFAULT_METADATA_TABLE);
@@ -132,9 +131,8 @@ public class SQLServerDatastoreWrapper extends DataStoreWrapper {
             return transformedSource;
         } else {
             transformedSource =
-                    (SimpleFeatureSource)
-                            new SQLServerTransformFeatureStore(
-                                    store, mapper.getName(), mapper.getDefinitions(), datastore);
+                    new SQLServerTransformFeatureStore(
+                            store, mapper.getName(), mapper.getDefinitions(), datastore);
             ((SQLServerTypeMapper) mapper).setSimpleFeatureSource(transformedSource);
             return transformedSource;
         }

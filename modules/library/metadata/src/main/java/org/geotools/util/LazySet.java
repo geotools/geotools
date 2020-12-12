@@ -58,7 +58,7 @@ public final class LazySet<E> extends AbstractSet<E> {
      */
     @SuppressWarnings("unchecked")
     public LazySet(Stream<? extends E> stream) {
-        this.iterator = (Iterator<? extends E>) stream.iterator();
+        this.iterator = stream.iterator();
         elements = (E[]) new Object[4];
     }
 

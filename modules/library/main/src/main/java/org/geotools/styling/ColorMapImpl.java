@@ -47,11 +47,11 @@ public class ColorMapImpl implements ColorMap {
     }
 
     public ColorMapEntry[] getColorMapEntries() {
-        return (ColorMapEntry[]) list.toArray(new ColorMapEntry[0]);
+        return list.toArray(new ColorMapEntry[0]);
     }
 
     public ColorMapEntry getColorMapEntry(int index) {
-        return (ColorMapEntry) list.get(index);
+        return list.get(index);
     }
 
     /** @see org.geotools.styling.ColorMap#getType() */

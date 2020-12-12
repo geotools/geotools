@@ -74,7 +74,7 @@ public enum TestUtils {
     /** Matches a Literal expression with a value matching m */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Expression> literal(Matcher m) {
-        return (Matcher) allOf(instanceOf(Literal.class), hasProperty("value", m));
+        return allOf(instanceOf(Literal.class), hasProperty("value", m));
     }
 
     /** Matches a Literal expression with a value matching o */
@@ -105,11 +105,10 @@ public enum TestUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Expression> function(
             String name, Matcher<? extends Iterable<Expression>> parameters) {
-        return (Matcher)
-                allOf(
-                        instanceOf(Function.class),
-                        hasProperty("functionName", hasProperty("name", equalTo(name))),
-                        hasProperty("parameters", parameters));
+        return allOf(
+                instanceOf(Function.class),
+                hasProperty("functionName", hasProperty("name", equalTo(name))),
+                hasProperty("parameters", parameters));
     }
 
     /** Compares the string representation of the object being matched to that of value. */
@@ -358,7 +357,7 @@ public enum TestUtils {
     public static Matcher<Object> yTuple(int n) {
         Matcher[] matchers = new Matcher[n];
         Arrays.fill(matchers, anything());
-        return Matchers.describedAs("A YSLD Tuple with %0 values", (Matcher) yTuple(matchers), n);
+        return Matchers.describedAs("A YSLD Tuple with %0 values", yTuple(matchers), n);
     }
 
     /** For apparent consistency to the user, some values are wrapped in fake YAML strings. */

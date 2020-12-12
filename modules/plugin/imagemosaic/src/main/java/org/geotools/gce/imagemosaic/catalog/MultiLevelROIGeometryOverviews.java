@@ -206,7 +206,7 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
             if (roi instanceof ROIGeometry) {
                 return ((ROIGeometry) roi).getAsGeometry();
             } else if (roi instanceof ROIShape) {
-                final Shape shape = ((ROIShape) roi).getAsShape();
+                final Shape shape = roi.getAsShape();
                 final Geometry geom = ShapeReader.read(shape, 0, new GeometryFactory());
                 geom.apply(Y_INVERSION);
                 return geom;

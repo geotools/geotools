@@ -619,8 +619,7 @@ class RasterLayerRequest {
         coverageCRS2D = CRS.getHorizontalCRS(coverageCRS);
         assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
         if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
-            final MathTransform transform =
-                    CRS.findMathTransform(coverageCRS, (CoordinateReferenceSystem) coverageCRS2D);
+            final MathTransform transform = CRS.findMathTransform(coverageCRS, coverageCRS2D);
             final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
             bbox.setCoordinateReferenceSystem(coverageCRS2D);
             coverageBBox = new ReferencedEnvelope(bbox);
@@ -731,7 +730,7 @@ class RasterLayerRequest {
             ////
             // intersect the requested area with the bounds of this
             // layer in native crs
-            if (!requestedBBox.intersects((BoundingBox) coverageBBox)) {
+            if (!requestedBBox.intersects(coverageBBox)) {
                 requestedBBox = null;
                 return;
             }

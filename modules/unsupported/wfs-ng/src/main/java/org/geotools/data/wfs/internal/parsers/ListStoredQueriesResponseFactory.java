@@ -56,7 +56,7 @@ public class ListStoredQueriesResponseFactory implements WFSResponseFactory {
     public WFSResponse createResponse(WFSRequest request, HTTPResponse response)
             throws IOException {
         try {
-            return new ListStoredQueriesResponse((ListStoredQueriesRequest) request, response);
+            return new ListStoredQueriesResponse(request, response);
         } catch (ServiceException e) {
             throw new IOException(e);
         }

@@ -66,7 +66,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -185,9 +184,8 @@ public class Drawer {
             // set graphic size to 10 by default
             point.getGraphic()
                     .setSize(
-                            (Expression)
-                                    CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints())
-                                            .literal(10));
+                            CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints())
+                                    .literal(10));
 
             // danger assumes a Mark!
             Mark mark = (Mark) point.getGraphic().graphicalSymbols().get(0);
@@ -368,7 +366,7 @@ public class Drawer {
 
                 g.setTransform(AffineTransform.getRotateInstance(rotation));
 
-                BufferedImage image = (BufferedImage) style.getImage();
+                BufferedImage image = style.getImage();
 
                 g.drawImage(
                         image,
@@ -423,13 +421,13 @@ public class Drawer {
         // TODO: fix the styles, the getGeometryPropertyName should probably be
         // moved into an interface...
         if (s instanceof PolygonSymbolizer) {
-            geomName = ((PolygonSymbolizer) s).getGeometryPropertyName();
+            geomName = s.getGeometryPropertyName();
         } else if (s instanceof PointSymbolizer) {
-            geomName = ((PointSymbolizer) s).getGeometryPropertyName();
+            geomName = s.getGeometryPropertyName();
         } else if (s instanceof LineSymbolizer) {
-            geomName = ((LineSymbolizer) s).getGeometryPropertyName();
+            geomName = s.getGeometryPropertyName();
         } else if (s instanceof TextSymbolizer) {
-            geomName = ((TextSymbolizer) s).getGeometryPropertyName();
+            geomName = s.getGeometryPropertyName();
         }
         return geomName;
     }

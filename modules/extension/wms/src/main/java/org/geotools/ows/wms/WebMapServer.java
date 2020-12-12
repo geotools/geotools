@@ -431,7 +431,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     }
 
     protected ResourceInfo createInfo(Layer layer) {
-        return new LayerInfo((Layer) layer);
+        return new LayerInfo(layer);
     }
 
     public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)
@@ -475,7 +475,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @return a WMSCapabilities object, representing the Capabilities of the server
      */
     public WMSCapabilities getCapabilities() {
-        return (WMSCapabilities) capabilities;
+        return capabilities;
     }
 
     private WMSSpecification getSpecification() {
@@ -497,7 +497,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     public GetMapRequest createGetMapRequest() {
         URL onlineResource = findURL(getCapabilities().getRequest().getGetMap());
 
-        return (GetMapRequest) getSpecification().createGetMapRequest(onlineResource);
+        return getSpecification().createGetMapRequest(onlineResource);
     }
 
     /**

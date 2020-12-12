@@ -119,7 +119,7 @@ public class SpatialIndexFeatureCollectionTest extends FeatureCollectionWrapperT
         typeBuilder.setDefaultGeometry("polyGeom");
         typeBuilder.add("someAtt", Integer.class);
 
-        SimpleFeatureType featureType = (SimpleFeatureType) typeBuilder.buildFeatureType();
+        SimpleFeatureType featureType = typeBuilder.buildFeatureType();
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         WKTReader reader = new WKTReader();

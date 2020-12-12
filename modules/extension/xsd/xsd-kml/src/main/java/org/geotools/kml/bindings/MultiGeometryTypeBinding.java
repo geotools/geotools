@@ -107,24 +107,24 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
             if (geometryClass == Point.class) {
                 // create a multi point
                 return geometryFactory.createMultiPoint(
-                        (Point[]) geometries.toArray(new Point[geometries.size()]));
+                        geometries.toArray(new Point[geometries.size()]));
             }
 
             if ((geometryClass == LineString.class) || (geometryClass == LinearRing.class)) {
                 // create a multi line string
                 return geometryFactory.createMultiLineString(
-                        (LineString[]) geometries.toArray(new LineString[geometries.size()]));
+                        geometries.toArray(new LineString[geometries.size()]));
             }
 
             if (geometryClass == Polygon.class) {
                 // create a multi polygon
                 return geometryFactory.createMultiPolygon(
-                        (Polygon[]) geometries.toArray(new Polygon[geometries.size()]));
+                        geometries.toArray(new Polygon[geometries.size()]));
             }
         }
 
         return geometryFactory.createGeometryCollection(
-                (Geometry[]) geometries.toArray(new Geometry[geometries.size()]));
+                geometries.toArray(new Geometry[geometries.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

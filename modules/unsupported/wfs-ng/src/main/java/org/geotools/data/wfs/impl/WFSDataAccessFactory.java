@@ -584,7 +584,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
             return false;
         }
         try {
-            URL url = (URL) URL.lookUp(params);
+            URL url = URL.lookUp(params);
             if (!"http".equalsIgnoreCase(url.getProtocol())
                     && !"https".equalsIgnoreCase(url.getProtocol())) {
                 if (!Boolean.TRUE.equals(params.get("TESTING"))) {
@@ -610,7 +610,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
 
         // Check compliance level
         try {
-            Integer complianceLevel = (Integer) GML_COMPLIANCE_LEVEL.lookUp(params);
+            Integer complianceLevel = GML_COMPLIANCE_LEVEL.lookUp(params);
             if (complianceLevel != null && complianceLevel > maximumGmlComplianceLevel) {
                 return false;
             }
@@ -693,7 +693,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         http.setConnectTimeout(timeoutMillis / 1000);
         http.setReadTimeout(timeoutMillis / 1000);
 
-        final URL capabilitiesURL = (URL) URL.lookUp(params);
+        final URL capabilitiesURL = URL.lookUp(params);
 
         // WFSClient performs version negotiation and selects the correct
         // strategy

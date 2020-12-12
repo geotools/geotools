@@ -139,7 +139,7 @@ public class SubHandlerPolygon extends SubHandler {
      */
     public Geometry create(GeometryFactory geometryFactory) {
         for (int i = 0; i < innerBoundaries.size(); i++) {
-            LinearRing hole = (LinearRing) innerBoundaries.get(i);
+            LinearRing hole = innerBoundaries.get(i);
             if (hole.crosses(outerBoundary)) {
                 LOGGER.warning("Topology Error building polygon");
 
@@ -147,8 +147,7 @@ public class SubHandlerPolygon extends SubHandler {
             }
         }
 
-        LinearRing[] rings =
-                (LinearRing[]) innerBoundaries.toArray(new LinearRing[innerBoundaries.size()]);
+        LinearRing[] rings = innerBoundaries.toArray(new LinearRing[innerBoundaries.size()]);
         Polygon polygon = geometryFactory.createPolygon(outerBoundary, rings);
         polygon.setUserData(getSRS());
         polygon.setSRID(getSRID());

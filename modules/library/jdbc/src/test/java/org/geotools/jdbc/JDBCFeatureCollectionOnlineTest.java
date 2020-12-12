@@ -116,7 +116,7 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
             boolean found = false;
 
             while (i.hasNext()) {
-                SimpleFeature f = (SimpleFeature) i.next();
+                SimpleFeature f = i.next();
 
                 if ("three".equals(f.getAttribute(aname("stringProperty")))) {
                     assertEquals(

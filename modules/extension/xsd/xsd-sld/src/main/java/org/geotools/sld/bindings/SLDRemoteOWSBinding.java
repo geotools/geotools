@@ -16,7 +16,6 @@
  */
 package org.geotools.sld.bindings;
 
-import java.net.URI;
 import javax.xml.namespace.QName;
 import org.geotools.styling.RemoteOWS;
 import org.geotools.styling.StyleFactory;
@@ -103,6 +102,6 @@ public class SLDRemoteOWSBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return styleFactory.createRemoteOWS(
                 (String) node.getChildValue("Service"),
-                ((URI) node.getChildValue("OnlineResource")).toString());
+                node.getChildValue("OnlineResource").toString());
     }
 }

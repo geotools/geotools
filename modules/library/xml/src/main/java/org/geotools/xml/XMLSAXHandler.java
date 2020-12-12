@@ -203,7 +203,7 @@ public class XMLSAXHandler extends DefaultHandler {
             characters.setLength(0);
 
             if ((text != null) && !"".equals(text)) {
-                ((XMLElementHandler) handlers.peek()).characters(text);
+                handlers.peek().characters(text);
             }
         } catch (SAXException e) {
             logger.warning(e.toString());
@@ -237,7 +237,7 @@ public class XMLSAXHandler extends DefaultHandler {
         XMLElementHandler handler = null;
         try {
 
-            handler = (XMLElementHandler) handlers.peek();
+            handler = handlers.peek();
             URI uri = new URI(namespaceURI);
             handler.endElement(uri, localName, hints);
         } catch (Exception e) {
@@ -261,7 +261,7 @@ public class XMLSAXHandler extends DefaultHandler {
         } finally {
             handlers.pop(); // we must do this or leak memory
             if (handler != null && !handlers.isEmpty()) {
-                XMLElementHandler parent = ((XMLElementHandler) handlers.peek());
+                XMLElementHandler parent = handlers.peek();
                 if (parent instanceof ComplexElementHandler) {
                     ComplexElementHandler complexParent = (ComplexElementHandler) parent;
                     String typename = complexParent.getType().getClass().getName();
@@ -322,7 +322,7 @@ public class XMLSAXHandler extends DefaultHandler {
                     for (int i = 0; i < (targ2uri.length / 2); i++) {
                         String uri = targ2uri[(i * 2) + 1];
                         String targ = targ2uri[i * 2];
-                        String prefix = (String) schemaProxy.get(targ);
+                        String prefix = schemaProxy.get(targ);
                         URI targUri = null;
 
                         boolean set = false;
@@ -358,7 +358,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
                 while (it.hasNext()) {
                     String targ = (String) it.next();
-                    String prefix = (String) schemaProxy.get(targ);
+                    String prefix = schemaProxy.get(targ);
                     ehf.startPrefixMapping(prefix, targ);
 
                     it.remove();
@@ -369,7 +369,7 @@ public class XMLSAXHandler extends DefaultHandler {
         logger.finest("Moving on to finding the element handler");
 
         try {
-            XMLElementHandler parent = ((XMLElementHandler) handlers.peek());
+            XMLElementHandler parent = handlers.peek();
             logger.finest(
                     "Parent Node = "
                             + parent.getClass().getName()

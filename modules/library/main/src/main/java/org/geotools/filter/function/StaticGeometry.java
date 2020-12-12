@@ -535,7 +535,7 @@ public class StaticGeometry {
             return Long.parseLong(s);
         } catch (NumberFormatException e) // be nice for silly people!
         {
-            return (long) Math.round(parseDouble(s));
+            return Math.round(parseDouble(s));
         }
     }
 

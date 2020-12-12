@@ -285,7 +285,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature feature;
 
         while (reader.hasNext()) {
-            feature = (SimpleFeature) reader.next();
+            feature = reader.next();
             feature.setAttribute("name", null);
         }
 
@@ -294,7 +294,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         reader = data.getFeatureSource("road").getReader();
 
         while (reader.hasNext()) {
-            feature = (SimpleFeature) reader.next();
+            feature = reader.next();
             assertNotNull(feature.getAttribute("name"));
         }
 
@@ -657,11 +657,11 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature feature;
 
         while (writer.hasNext()) {
-            feature = (SimpleFeature) writer.next();
+            feature = writer.next();
         }
 
         assertFalse(writer.hasNext());
-        feature = (SimpleFeature) writer.next();
+        feature = writer.next();
         feature.setAttributes(newRoad.getAttributes());
         writer.write();
         assertFalse(writer.hasNext());
@@ -769,7 +769,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             // -------------------------------
             // - tests transaction independence from DataStore
             while (writer1.hasNext()) {
-                feature = (SimpleFeature) writer1.next();
+                feature = writer1.next();
                 assertEquals("road.rd1", feature.getID());
                 writer1.remove();
             }
@@ -794,7 +794,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             // writer 2 adds road.rd4 on t2
             // ----------------------------
             // - tests transaction independence from each other
-            feature = (SimpleFeature) writer2.next();
+            feature = writer2.next();
             feature.setAttributes(newRoad.getAttributes());
             writer2.write();
 
@@ -1263,7 +1263,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             }
 
             FeatureEvent getEvent(int i) {
-                return (FeatureEvent) events.get(i);
+                return events.get(i);
             }
 
             public String toString() {

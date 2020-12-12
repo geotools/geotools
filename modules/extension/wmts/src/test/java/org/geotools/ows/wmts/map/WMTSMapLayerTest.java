@@ -49,12 +49,12 @@ public class WMTSMapLayerTest extends OnlineTestCase {
     protected void setUpInternal() throws Exception {
         serverURL = new URL(fixture.getProperty("kvp_server"));
         WebMapTileServer server = new WebMapTileServer(serverURL);
-        WMTSLayer wlayer = (WMTSLayer) server.getCapabilities().getLayer("topp:states");
+        WMTSLayer wlayer = server.getCapabilities().getLayer("topp:states");
 
         kvpMapLayer = new WMTSMapLayer(server, wlayer);
         restWMTS = new URL(fixture.getProperty("rest_server"));
         WebMapTileServer server2 = new WebMapTileServer(restWMTS);
-        WMTSLayer w2layer = (WMTSLayer) server2.getCapabilities().getLayer("topp:states");
+        WMTSLayer w2layer = server2.getCapabilities().getLayer("topp:states");
         restMapLayer = new WMTSMapLayer(server2, w2layer);
     }
 

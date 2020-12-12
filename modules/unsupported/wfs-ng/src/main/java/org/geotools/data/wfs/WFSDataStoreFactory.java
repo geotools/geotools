@@ -91,7 +91,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
             }
         }
 
-        final URL capabilitiesURL = (URL) URL.lookUp(params);
+        final URL capabilitiesURL = URL.lookUp(params);
 
         final HTTPClient http = getHttpClient(params);
         http.setTryGzip(config.isTryGZIP());
@@ -130,7 +130,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      * @return the HttpClient instance
      */
     public HTTPClient getHttpClient(final Map<String, ?> params) throws IOException {
-        final URL capabilitiesURL = (URL) URL.lookUp(params);
+        final URL capabilitiesURL = URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);
         return config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
                 ? new MultithreadedHttpClient(config)

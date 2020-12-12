@@ -69,7 +69,7 @@ final class CoordinateOperationSet extends IdentifiedObjectSet {
     /** Creates an object for the specified code. */
     protected IdentifiedObject createObject(final String code) throws FactoryException {
         if (projections != null) {
-            final String crs = (String) projections.get(code);
+            final String crs = projections.get(code);
             if (crs != null) {
                 return ((CRSAuthorityFactory) factory)
                         .createProjectedCRS(crs)

@@ -58,7 +58,7 @@ public class SwingUtil {
 
     public static void setSelection(JList list, Object element) {
         for (int i = 0; i < list.getModel().getSize(); i++) {
-            Object value = (Object) list.getModel().getElementAt(i);
+            Object value = list.getModel().getElementAt(i);
             if (value == element) {
                 list.setSelectedIndex(i);
                 list.scrollRectToVisible(list.getCellBounds(i, i));

@@ -64,7 +64,7 @@ public class StyleGeneratorTest extends DataTestCase {
             SimpleFeatureIterator it = filteredCollection.features();
 
             while (it.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) it.next();
+                SimpleFeature feature = it.next();
                 filterInfo += ("'" + feature.getAttribute(attribName) + "'");
 
                 if (it.hasNext()) {

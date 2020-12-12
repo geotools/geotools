@@ -410,7 +410,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
             return image;
         }
 
-        final GridSampleDimension visibleSD = ((GridSampleDimension) gc2D.getSampleDimension(0));
+        final GridSampleDimension visibleSD = gc2D.getSampleDimension(0);
 
         // getting categories
         final List oldCategories = visibleSD.getCategories();

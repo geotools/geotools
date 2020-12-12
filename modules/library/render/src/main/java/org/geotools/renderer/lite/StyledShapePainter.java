@@ -52,7 +52,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.filter.expression.Literal;
 import org.opengis.style.ExternalGraphic;
 import org.opengis.style.GraphicLegend;
 import org.opengis.style.GraphicalSymbol;
@@ -417,10 +416,8 @@ public class StyledShapePainter {
 
                 // Note: Converting to Radians here due to direct use of SLD Expressions which uses
                 // degrees
-                double rotation =
-                        Math.toRadians(
-                                ((Literal) legend.getRotation()).evaluate(null, Double.class));
-                float opacity = ((Literal) legend.getOpacity()).evaluate(null, Float.class);
+                double rotation = Math.toRadians(legend.getRotation().evaluate(null, Double.class));
+                float opacity = legend.getOpacity().evaluate(null, Float.class);
                 AlphaComposite composite =
                         AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 

@@ -118,18 +118,14 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
                 new GeneralMatrix(getMappedPositions().size() * 2, getMappedPositions().size() * 2);
 
         for (int i = 0; i < getMappedPositions().size(); i = i + 2) {
-            if (Double.compare(
-                            (((MappedPosition) getMappedPositions().get(i)).getAccuracy()),
-                            Double.NaN)
-                    == 0) {
+            if (Double.compare((getMappedPositions().get(i).getAccuracy()), Double.NaN) == 0) {
                 throw new MissingInfoException("Accuracy has to be defined for all points");
             }
 
             // weight for x
-            P.setElement(i, i, 1 / ((MappedPosition) getMappedPositions().get(i)).getAccuracy());
+            P.setElement(i, i, 1 / getMappedPositions().get(i).getAccuracy());
             // weight for y
-            P.setElement(
-                    i + 1, i + 1, 1 / ((MappedPosition) getMappedPositions().get(i)).getAccuracy());
+            P.setElement(i + 1, i + 1, 1 / getMappedPositions().get(i).getAccuracy());
         }
     }
 
@@ -220,7 +216,7 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
             }
         }
 
-        GeneralMatrix AT = (GeneralMatrix) A.clone();
+        GeneralMatrix AT = A.clone();
         AT.transpose();
 
         GeneralMatrix ATP = new GeneralMatrix(AT.getNumRow(), P.getNumCol());

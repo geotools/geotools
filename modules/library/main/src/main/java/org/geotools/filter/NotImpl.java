@@ -30,7 +30,7 @@ public class NotImpl extends LogicFilterImpl implements Not {
     }
 
     public Filter getFilter() {
-        return (Filter) children.get(0);
+        return children.get(0);
     }
 
     public void setFilter(Filter filter) {

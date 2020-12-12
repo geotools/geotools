@@ -80,8 +80,8 @@ public class DuplicateFilterVisitorTest extends TestCase {
                 Expression expr1 = expression.getExpression1();
                 Expression expr2 = expression.getExpression2();
                 if (expr1 instanceof Literal && expr2 instanceof Literal) {
-                    Double number1 = (Double) expr1.evaluate(null, Double.class);
-                    Double number2 = (Double) expr2.evaluate(null, Double.class);
+                    Double number1 = expr1.evaluate(null, Double.class);
+                    Double number2 = expr2.evaluate(null, Double.class);
 
                     return ff.literal(number1.doubleValue() + number2.doubleValue());
                 }

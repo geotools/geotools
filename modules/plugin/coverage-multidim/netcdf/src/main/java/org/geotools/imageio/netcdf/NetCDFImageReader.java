@@ -196,14 +196,13 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      * @param input the input object.
      * @return the dataset or <code>null</code>.
      */
+    @SuppressWarnings("PMD.CloseResource")
     private NetcdfDataset extractDataset(Object input) throws IOException {
         NetcdfDataset dataset = null;
         if (input instanceof URIImageInputStream) {
-            @SuppressWarnings("PMD.CloseResource") // not managed here
             URIImageInputStream uriInStream = (URIImageInputStream) input;
             dataset = NetCDFUtilities.acquireDataset(uriInStream.getUri());
-        }
-        if (input instanceof URL) {
+        } else if (input instanceof URL) {
             final URL tempURL = (URL) input;
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("dods")) {

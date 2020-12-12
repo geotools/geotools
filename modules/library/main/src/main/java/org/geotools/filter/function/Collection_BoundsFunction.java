@@ -97,8 +97,7 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl {
         }
 
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        org.opengis.filter.expression.Expression expr =
-                (org.opengis.filter.expression.Expression) args.get(0);
+        org.opengis.filter.expression.Expression expr = args.get(0);
         expr =
                 (org.opengis.filter.expression.Expression)
                         expr.accept(new CollectionFeatureMemberFilterVisitor(), null);

@@ -94,8 +94,7 @@ public class InFunction extends FunctionExpressionImpl {
         Object candidate = getExpression(0).evaluate(feature);
 
         boolean result = false;
-        List<Expression> valuesToTest =
-                (List<Expression>) getParameters().subList(1, getParameters().size());
+        List<Expression> valuesToTest = getParameters().subList(1, getParameters().size());
         for (Expression expression : valuesToTest) {
             Object value = expression.evaluate(feature);
             if (candidate == null) {

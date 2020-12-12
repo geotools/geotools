@@ -93,7 +93,7 @@ public class WKTMarkFactory implements MarkFactory {
     protected String getFromCache(String urlLib, String wktName) {
         Map<String, String> library = CACHE.get(urlLib);
         if (library != null) {
-            return (String) library.get(wktName);
+            return library.get(wktName);
         }
         return null;
     }
@@ -118,7 +118,7 @@ public class WKTMarkFactory implements MarkFactory {
             @SuppressWarnings("unchecked")
             Enumeration<String> names = (Enumeration<String>) propLib.propertyNames();
             for (Enumeration<String> e = names; e.hasMoreElements(); ) {
-                String shpName = (String) (e.nextElement());
+                String shpName = e.nextElement();
                 library.put(shpName, (String) (propLib.get(shpName)));
             }
             CACHE.put(urlLib, library);

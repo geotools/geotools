@@ -84,7 +84,7 @@ public class ExhaustivePathFinder {
         O:
         while (!stack.isEmpty() && (iterations++ < m_maxitr)) {
             // peek the stack
-            Node top = (Node) stack.peek();
+            Node top = stack.peek();
 
             switch (visitor.visit(top)) {
                 case END_PATH_AND_CONTINUE:

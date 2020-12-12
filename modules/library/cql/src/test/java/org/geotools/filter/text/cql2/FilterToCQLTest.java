@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -136,7 +135,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testEndedByUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         EndedBy filter = ff.endedBy(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -146,7 +145,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testEndsUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Ends filter = ff.ends(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -156,7 +155,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testMeetsUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Meets filter = ff.meets(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -166,7 +165,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testMetByUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         MetBy filter = ff.metBy(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -176,7 +175,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testOverlappedByUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         OverlappedBy filter = ff.overlappedBy(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -186,7 +185,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testTContainsUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         TContains filter = ff.tcontains(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -196,7 +195,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testTEqualsUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         TEquals filter = ff.tequals(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -206,7 +205,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testTOverlapsUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         TOverlaps filter = ff.toverlaps(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -217,7 +216,7 @@ public class FilterToCQLTest {
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date dateTime = dateFormatter.parse("2006-11-30T01:30:00Z");
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         return ff.literal(dateTime);
     }
@@ -225,7 +224,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testBeginsUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Begins filter = ff.begins(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -246,7 +245,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testBegunByUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         BegunBy filter = ff.begunBy(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
@@ -256,7 +255,7 @@ public class FilterToCQLTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testAnyInteractsUnsuported() throws Exception {
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         AnyInteracts filter = ff.anyInteracts(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();

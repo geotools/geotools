@@ -44,14 +44,14 @@ public class WMSSchema_StyleAbstractTest extends TestCase {
 
         WMSCapabilities capabilities = (WMSCapabilities) object;
 
-        Layer Layer_with_Abstract_in_Style = (Layer) capabilities.getLayerList().get(1);
+        Layer Layer_with_Abstract_in_Style = capabilities.getLayerList().get(1);
         assertEquals(Layer_with_Abstract_in_Style.getName(), "Layer_with_Abstract_in_Style");
         assertEquals(Layer_with_Abstract_in_Style.getTitle(), "Layer with Abstract in Style");
         assertEquals(
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png",
                 Layer_with_Abstract_in_Style.getStyles().get(0).getLegendURLs().get(0));
 
-        Layer Layer_with_empty_Abstract_in_Style = (Layer) capabilities.getLayerList().get(2);
+        Layer Layer_with_empty_Abstract_in_Style = capabilities.getLayerList().get(2);
         assertEquals(
                 Layer_with_empty_Abstract_in_Style.getName(), "Layer_with_empty_Abstract_in_Style");
         assertEquals(

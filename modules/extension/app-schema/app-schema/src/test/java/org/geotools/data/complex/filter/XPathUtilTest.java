@@ -68,8 +68,7 @@ public class XPathUtilTest {
 
         xpath = "/";
         assertEquals(1, XPathUtil.steps(descriptor, xpath, namespaces).size());
-        XPathUtil.Step step =
-                (XPathUtil.Step) XPathUtil.steps(descriptor, xpath, namespaces).get(0);
+        XPathUtil.Step step = XPathUtil.steps(descriptor, xpath, namespaces).get(0);
         QName rootQName = new QName(name.getNamespaceURI(), name.getLocalPart());
         assertEquals(rootQName, step.getName());
 

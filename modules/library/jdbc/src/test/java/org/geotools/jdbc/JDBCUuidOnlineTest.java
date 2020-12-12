@@ -53,7 +53,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
             uuids.add(uuid1);
             uuids.add(uuid2);
             while (r.hasNext()) {
-                SimpleFeature f = (SimpleFeature) r.next();
+                SimpleFeature f = r.next();
                 assertNotNull(uuids.remove(f.getAttribute(aname("uuidProperty"))));
             }
             assertTrue(uuids.isEmpty());

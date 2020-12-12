@@ -64,7 +64,7 @@ public class WMSComplexTypesTest extends TestCase {
                 capabilities.getRequest().getGetCapabilities().getFormats().get(0),
                 "application/vnd.ogc.wms_xml");
 
-        Layer topLayer = (Layer) capabilities.getLayerList().get(0);
+        Layer topLayer = capabilities.getLayerList().get(0);
         assertNotNull(topLayer);
         assertNull(topLayer.getParent());
         assertEquals(topLayer.getTitle(), "GMap WMS Demo Server");

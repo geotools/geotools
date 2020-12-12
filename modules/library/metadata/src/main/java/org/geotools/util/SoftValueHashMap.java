@@ -265,7 +265,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
              *
              * In highly concurrent environments, key could have been already removed.
              */
-            hardCache.remove((K) replaceNull(key));
+            hardCache.remove(replaceNull(key));
         }
         retainStrongly((K) replaceNull(key));
         final V v = (V) oldValue;

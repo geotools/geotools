@@ -319,7 +319,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     public Object visit(Literal expression, Object extraData) {
         Object value = expression.getValue();
         if (value instanceof Geometry) {
-            value = reproject((Geometry) value, featureType.getCoordinateReferenceSystem());
+            value = reproject(value, featureType.getCoordinateReferenceSystem());
         }
 
         return getFactory(extraData).literal(value);
@@ -499,7 +499,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
 
         public Object evaluate(Object object) {
             Object value = delegate.evaluate(object);
-            return reproject((Geometry) value, propertyCrs);
+            return reproject(value, propertyCrs);
         }
 
         public <T> T evaluate(Object object, Class<T> context) {

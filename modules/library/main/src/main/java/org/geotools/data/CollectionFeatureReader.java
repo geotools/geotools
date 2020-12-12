@@ -89,7 +89,7 @@ public class CollectionFeatureReader implements FeatureReader<SimpleFeatureType,
             throw new NoSuchElementException("Reader has been closed");
         }
 
-        return (SimpleFeature) features.next();
+        return features.next();
     }
 
     /** @see org.geotools.data.FeatureReader#hasNext() */

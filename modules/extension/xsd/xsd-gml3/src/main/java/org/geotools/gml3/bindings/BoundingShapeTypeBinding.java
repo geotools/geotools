@@ -73,7 +73,7 @@ public class BoundingShapeTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Envelope envelope = (Envelope) node.getChildValue(Envelope.class);
+        Envelope envelope = node.getChildValue(Envelope.class);
 
         if (envelope == null) {
             envelope = new Envelope();

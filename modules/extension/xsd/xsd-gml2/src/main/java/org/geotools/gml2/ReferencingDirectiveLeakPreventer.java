@@ -70,8 +70,7 @@ public class ReferencingDirectiveLeakPreventer implements Adapter {
         synchronized (target) {
             ArrayList<Integer> toremove = new ArrayList<>();
             for (int i = 0; i < target.getReferencingDirectives().size(); i++) {
-                XSDSchemaDirective directive =
-                        (XSDSchemaDirective) target.getReferencingDirectives().get(i);
+                XSDSchemaDirective directive = target.getReferencingDirectives().get(i);
                 XSDSchema schema2 = directive.getSchema();
                 if (schema2 == null) {
                     toremove.add(i);

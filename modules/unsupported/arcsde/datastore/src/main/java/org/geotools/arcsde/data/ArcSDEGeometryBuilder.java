@@ -306,7 +306,7 @@ public abstract class ArcSDEGeometryBuilder {
      */
     public static ArcSDEGeometryBuilder builderFor(Class<? extends Geometry> jtsGeometryClass)
             throws IllegalArgumentException {
-        ArcSDEGeometryBuilder builder = (ArcSDEGeometryBuilder) builders.get(jtsGeometryClass);
+        ArcSDEGeometryBuilder builder = builders.get(jtsGeometryClass);
 
         if (builder == null) {
             String msg =
@@ -325,7 +325,7 @@ public abstract class ArcSDEGeometryBuilder {
             throw new NullPointerException("got null geometry class");
         }
 
-        Geometry emptyGeom = (Geometry) nullGeometries.get(geoClass);
+        Geometry emptyGeom = nullGeometries.get(geoClass);
 
         return emptyGeom;
     }

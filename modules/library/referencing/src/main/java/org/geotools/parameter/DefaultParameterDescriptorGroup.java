@@ -258,7 +258,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
             for (final GeneralParameterDescriptor param : parameters) {
                 if (param instanceof ParameterDescriptor) {
                     if (nameMatches(param, name)) {
-                        return (ParameterDescriptor) param;
+                        return param;
                     }
                 } else if (param instanceof DefaultParameterDescriptorGroup) {
                     if (subgroups == null) {

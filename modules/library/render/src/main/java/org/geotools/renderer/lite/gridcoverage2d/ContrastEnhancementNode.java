@@ -41,7 +41,6 @@ import javax.media.jai.ROI;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
@@ -462,20 +461,19 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                             factory.create(
                                     name,
                                     finalImage,
-                                    (GridGeometry2D) source.getGridGeometry(),
+                                    source.getGridGeometry(),
                                     source.getSampleDimensions(),
                                     new GridCoverage[] {source},
                                     props);
                 } else {
                     // replicate input bands
                     final GridSampleDimension sd[] = new GridSampleDimension[numActualBands];
-                    for (int i = 0; i < numActualBands; i++)
-                        sd[i] = (GridSampleDimension) source.getSampleDimension(0);
+                    for (int i = 0; i < numActualBands; i++) sd[i] = source.getSampleDimension(0);
                     output =
                             factory.create(
                                     "ce_coverage" + source.getName().toString(),
                                     finalImage,
-                                    (GridGeometry2D) source.getGridGeometry(),
+                                    source.getGridGeometry(),
                                     sd,
                                     new GridCoverage[] {source},
                                     props);

@@ -85,7 +85,7 @@ public class FileSystemFileSetManager implements FileSetManager {
     @Override
     public void purge() {
         if (!fileSet.isEmpty()) {
-            String[] files = (String[]) fileSet.toArray(new String[fileSet.size()]);
+            String[] files = fileSet.toArray(new String[fileSet.size()]);
             for (String filePath : files) {
                 removeFile(filePath);
             }

@@ -32,7 +32,7 @@ public abstract class JDBCEscapingOnlineTest extends JDBCTestSupport {
 
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> fw =
                 dataStore.getFeatureWriterAppend(tname(ESCAPING), Transaction.AUTO_COMMIT)) {
-            SimpleFeature f = (SimpleFeature) fw.next();
+            SimpleFeature f = fw.next();
             f.setAttribute(aname(ID), 1);
             f.setAttribute(aname(NAME), "abc");
             fw.write();

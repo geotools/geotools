@@ -256,8 +256,8 @@ public class GraphFuserTest extends TestCase {
                 Object[] obj = new Object[2];
 
                 if (ends.size() == 2) {
-                    Edge end0 = (Edge) ends.get(0);
-                    Edge end1 = (Edge) ends.get(1);
+                    Edge end0 = ends.get(0);
+                    Edge end1 = ends.get(1);
 
                     obj[0] =
                             end0.getNodeA().getDegree() == 2
@@ -268,8 +268,8 @@ public class GraphFuserTest extends TestCase {
                                     ? end1.getNodeB().getObject()
                                     : end1.getNodeA().getObject();
                 } else if (ends.size() == 0) {
-                    obj[0] = ((Edge) edges.get(0)).getNodeA().getObject();
-                    obj[1] = ((Edge) edges.get(0)).getNodeA().getObject();
+                    obj[0] = edges.get(0).getNodeA().getObject();
+                    obj[1] = edges.get(0).getNodeA().getObject();
                 } else throw new IllegalStateException("Found " + ends.size() + " ends.");
 
                 return (obj);

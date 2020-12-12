@@ -640,7 +640,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             assertFalse(baselineIter.hasNext());
             assertEquals(baselineFeatures.size(), indexedFeatures.size());
             for (Iterator<SimpleFeature> it = baselineFeatures.iterator(); it.hasNext(); ) {
-                SimpleFeature f = (SimpleFeature) it.next();
+                SimpleFeature f = it.next();
                 assertTrue(
                         f.getID() + ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal(),
                         indexedFeatures.contains(f));
@@ -1437,7 +1437,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
             if (fromShape instanceof GeometryCollection) {
                 if (!(geom instanceof GeometryCollection)) {
-                    fromShape = ((GeometryCollection) fromShape).getGeometryN(0);
+                    fromShape = fromShape.getGeometryN(0);
                 }
             }
             try {

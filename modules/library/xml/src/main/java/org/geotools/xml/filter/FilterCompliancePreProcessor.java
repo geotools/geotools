@@ -162,7 +162,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             Set<FeatureId> empty = Collections.emptySet();
             return ff.id(empty);
         }
-        Data data = (Data) current.peek();
+        Data data = current.peek();
         if (data.fids.size() > 0) {
             Set<FeatureId> set = new HashSet<>();
             Set<String> fids = data.fids;
@@ -185,7 +185,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         if (current.isEmpty()) {
             return Filter.EXCLUDE;
         }
-        return ((Data) this.current.peek()).filter;
+        return this.current.peek().filter;
     }
 
     // between
@@ -449,7 +449,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         Set<String> set = new HashSet<>();
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (!data.fids.isEmpty()) {
                 set.addAll(data.fids);
@@ -469,7 +469,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         boolean doRemove = true;
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (data.fids.isEmpty()) {
                 toRemove.add(data);
@@ -531,13 +531,13 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         }
 
         if (current.size() == (startOfFilterStack + 1)) {
-            return (Data) current.pop();
+            return current.pop();
         }
 
         List<Filter> filterList = new ArrayList<>();
 
         while (current.size() > startOfFilterStack) {
-            Data data = (Data) current.pop();
+            Data data = current.pop();
             if (data.filter != Filter.EXCLUDE) {
                 filterList.add(data.filter);
             }
@@ -567,7 +567,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                 }
 
                 for (Filter item : ((And) f).getChildren()) {
-                    org.opengis.filter.Filter filter = (org.opengis.filter.Filter) item;
+                    org.opengis.filter.Filter filter = item;
                     if (filter == Filter.INCLUDE) {
                         continue;
                     }
@@ -636,7 +636,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         if (current.size() > (startOfFilterStack + 1)) {
             throw new UnsupportedFilterException("A not filter cannot have more than one filter");
         } else {
-            Data tmp = (Data) current.pop();
+            Data tmp = current.pop();
 
             Data data = new Data(ff.not(tmp.filter));
 
@@ -698,7 +698,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
     private boolean hasNonFidFilter(int startOfFilterStack) {
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (data.filter != Filter.EXCLUDE) {
                 return true;
@@ -710,7 +710,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
     private boolean hasFidFilter(int startOfFilterStack) {
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (!data.fids.isEmpty()) {
                 return true;

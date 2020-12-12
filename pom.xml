@@ -119,7 +119,7 @@
     <elasticsearch.version>7.4.0</elasticsearch.version>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
-    <maven.pmd.plugin.version>3.12.0</maven.pmd.plugin.version>
+    <maven.pmd.plugin.version>3.14.0</maven.pmd.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
     <fmt.action>format</fmt.action>
@@ -131,7 +131,7 @@
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
     <spotbugs.skip>false</spotbugs.skip>
-    <pmd.version>6.20.0</pmd.version>
+    <pmd.version>6.29.0</pmd.version>
     <checkstyle.skip>false</checkstyle.skip>
     <qa>false</qa>
     <jackson2.version>2.10.1</jackson2.version>

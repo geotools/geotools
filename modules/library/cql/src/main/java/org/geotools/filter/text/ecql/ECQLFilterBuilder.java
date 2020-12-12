@@ -164,7 +164,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
             }
             getResultStack().popResult();
 
-            Expression expr = (Expression) getResultStack().popExpression();
+            Expression expr = getResultStack().popExpression();
             exprList.add(expr);
         }
 

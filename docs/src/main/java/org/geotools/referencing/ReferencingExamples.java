@@ -482,7 +482,7 @@ public class ReferencingExamples {
             System.out.println("    no aliases");
         } else {
             for (int i = 0; aliases.hasNext(); i++) {
-                System.out.println("    alias(" + i + "): " + (GenericName) aliases.next());
+                System.out.println("    alias(" + i + "): " + aliases.next());
             }
         }
 

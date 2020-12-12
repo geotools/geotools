@@ -60,7 +60,7 @@ public class SurfaceArrayPropertyTypeBinding
         // This property element contains a list of surfaces.
         // The order of the elements is significant and shall be preserved when processing the
         // array.
-        for (Node child : (List<Node>) node.getChildren()) {
+        for (Node child : node.getChildren()) {
             Object nodeValue = child.getValue();
             if (nodeValue instanceof MultiPolygon) { // Surface
                 MultiPolygon surface = (MultiPolygon) nodeValue;
@@ -74,7 +74,7 @@ public class SurfaceArrayPropertyTypeBinding
             }
         }
 
-        return gf.createMultiPolygon((Polygon[]) polygons.toArray(new Polygon[polygons.size()]));
+        return gf.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));
     }
 
     public int compareTo(Object o) {

@@ -67,7 +67,7 @@ public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory 
 
     @Override
     public CoordinateSequence create(int size, int dimension, int measures) {
-        return new LiteCoordinateSequence((int) size, (int) dimension, (int) measures);
+        return new LiteCoordinateSequence(size, dimension, measures);
     }
 
     /**

@@ -420,7 +420,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         Map<String, Object> map = new LinkedHashMap<>();
         setupParameters(map);
 
-        return (Param[]) map.values().toArray(new Param[map.size()]);
+        return map.values().toArray(new Param[map.size()]);
     }
 
     /**

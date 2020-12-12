@@ -334,7 +334,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
             }
             if (clientProperties.containsKey(lastStepName)) {
                 // end NC - added
-                exp = (Expression) clientProperties.get(lastStepName);
+                exp = clientProperties.get(lastStepName);
             } else if (XPath.isId(lastStep)) {
                 if (mapping.getIdentifierExpression() == Expression.NIL) {
                     // no specific attribute mapping or that idExpression is not mapped

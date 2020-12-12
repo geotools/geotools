@@ -85,8 +85,8 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
             int id = node.getID();
             int expected = -1;
 
-            if (id == (int) size / 2) expected = size - 1;
-            else if (id < (int) size / 2) {
+            if (id == size / 2) expected = size - 1;
+            else if (id < size / 2) {
                 if (!flip) {
                     expected = id * 2;
                 } else {

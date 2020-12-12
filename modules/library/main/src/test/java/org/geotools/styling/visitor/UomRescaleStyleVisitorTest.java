@@ -323,9 +323,7 @@ public class UomRescaleStyleVisitorTest {
             lineSymb.accept(visitor);
             LineSymbolizer rescaledLineSymb = (LineSymbolizer) visitor.getCopy();
             String rescaledDynamicDashArray =
-                    (String)
-                            ((Expression) rescaledLineSymb.getStroke().dashArray().get(0))
-                                    .evaluate(null);
+                    (String) rescaledLineSymb.getStroke().dashArray().get(0).evaluate(null);
 
             assertEquals(expectedDashArray, rescaledDynamicDashArray);
             assertNotSame(rescaledLineSymb, lineSymb);

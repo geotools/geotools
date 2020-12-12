@@ -2136,7 +2136,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             if (connectionLifecycleListeners.size() > 0) {
                 List<ConnectionLifecycleListener> locals =
                         new ArrayList<>(connectionLifecycleListeners);
-                cx = new LifecycleConnection(this, cx, locals);
+                return new LifecycleConnection(this, cx, locals);
             }
             return cx;
         } catch (SQLException e) {

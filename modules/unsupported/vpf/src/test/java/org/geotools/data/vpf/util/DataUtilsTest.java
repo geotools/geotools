@@ -297,9 +297,6 @@ public class DataUtilsTest extends TestCase implements DataTypesDefinition {
     public void testUnsigByteToInt3039496() {
         assertEquals(
                 "Is negative byte converted correcly:", 255, DataUtils.unsigByteToInt((byte) 0xFF));
-        assertEquals(
-                "Is negative byte converted correcly:",
-                (int) 1,
-                DataUtils.unsigByteToInt((byte) 1));
+        assertEquals("Is negative byte converted correcly:", 1, DataUtils.unsigByteToInt((byte) 1));
     } // end of testUnsigByteToInt3039496(byte)
 } // end of DataUtilsTest

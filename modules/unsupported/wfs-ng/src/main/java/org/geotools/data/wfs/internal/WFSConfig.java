@@ -121,7 +121,7 @@ public class WFSConfig {
 
         WFSConfig config = new WFSConfig();
 
-        Boolean preferPost = (Boolean) PROTOCOL.lookUp(params);
+        Boolean preferPost = PROTOCOL.lookUp(params);
 
         if (preferPost == null) {
             config.preferredMethod = PreferredHttpMethod.AUTO;
@@ -132,26 +132,26 @@ public class WFSConfig {
                             : PreferredHttpMethod.HTTP_GET;
         }
 
-        config.user = (String) USERNAME.lookUp(params);
-        config.pass = (String) PASSWORD.lookUp(params);
-        config.timeoutMillis = (Integer) TIMEOUT.lookUp(params);
-        config.buffer = (Integer) BUFFER_SIZE.lookUp(params);
-        config.tryGZIP = (Boolean) TRY_GZIP.lookUp(params);
-        config.lenient = (Boolean) LENIENT.lookUp(params);
+        config.user = USERNAME.lookUp(params);
+        config.pass = PASSWORD.lookUp(params);
+        config.timeoutMillis = TIMEOUT.lookUp(params);
+        config.buffer = BUFFER_SIZE.lookUp(params);
+        config.tryGZIP = TRY_GZIP.lookUp(params);
+        config.lenient = LENIENT.lookUp(params);
 
-        String encoding = (String) ENCODING.lookUp(params);
+        String encoding = ENCODING.lookUp(params);
         config.defaultEncoding = Charset.forName(encoding);
 
-        config.maxFeatures = (Integer) MAXFEATURES.lookUp(params);
-        config.wfsStrategy = (String) WFS_STRATEGY.lookUp(params);
-        config.filterCompliance = (Integer) FILTER_COMPLIANCE.lookUp(params);
-        config.namespaceOverride = (String) NAMESPACE.lookUp(params);
-        config.outputformatOverride = (String) OUTPUTFORMAT.lookUp(params);
-        config.axisOrder = (String) AXIS_ORDER.lookUp(params);
+        config.maxFeatures = MAXFEATURES.lookUp(params);
+        config.wfsStrategy = WFS_STRATEGY.lookUp(params);
+        config.filterCompliance = FILTER_COMPLIANCE.lookUp(params);
+        config.namespaceOverride = NAMESPACE.lookUp(params);
+        config.outputformatOverride = OUTPUTFORMAT.lookUp(params);
+        config.axisOrder = AXIS_ORDER.lookUp(params);
         config.axisOrderFilter =
-                (String) AXIS_ORDER_FILTER.lookUp(params) == null
-                        ? (String) AXIS_ORDER.lookUp(params)
-                        : (String) AXIS_ORDER_FILTER.lookUp(params);
+                AXIS_ORDER_FILTER.lookUp(params) == null
+                        ? AXIS_ORDER.lookUp(params)
+                        : AXIS_ORDER_FILTER.lookUp(params);
 
         config.gmlCompatibleTypenames =
                 GML_COMPATIBLE_TYPENAMES.lookUp(params) == null

@@ -578,7 +578,7 @@ public class SpatialRequestHelper {
 
             // intersect requested BBox in native CRS with coverage native bbox to get the crop bbox
             // intersect the requested area with the bounds of this layer in native crs
-            if (!cropBBox.intersects((BoundingBox) coverageProperties.bbox)) {
+            if (!cropBBox.intersects(coverageProperties.bbox)) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(
                             new StringBuilder("The computed CropBoundingBox ")

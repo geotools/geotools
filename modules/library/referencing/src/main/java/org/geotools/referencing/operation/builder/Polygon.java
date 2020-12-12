@@ -183,7 +183,7 @@ class Polygon implements Cloneable {
      */
     protected boolean containsAll(List<DirectPosition> coordinate) {
         for (Iterator<DirectPosition> i = coordinate.iterator(); i.hasNext(); ) {
-            if (!this.containsOrIsVertex((DirectPosition) i.next())) {
+            if (!this.containsOrIsVertex(i.next())) {
                 return false;
             }
         }

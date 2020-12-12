@@ -2299,7 +2299,7 @@ public class ImageWorker {
                 pb.set(background[0], 1);
             } else if (nodata != null) {
                 // default background value may screw up things, let's preserve nodata
-                pb.set(((Number) nodata.getMin()).doubleValue(), 1);
+                pb.set(nodata.getMin().doubleValue(), 1);
             }
         }
         pb.set(roi, 3);
@@ -2350,7 +2350,7 @@ public class ImageWorker {
                 pb.set(background[0], 1);
             } else if (nodata != null) {
                 // default background value may screw up things, let's preserve nodata
-                pb.set(((Number) nodata.getMin()).doubleValue(), 1);
+                pb.set(nodata.getMin().doubleValue(), 1);
             }
         }
         pb.set(roi, 3);
@@ -2403,7 +2403,7 @@ public class ImageWorker {
                 pb.set(background[0], 1);
             } else if (nodata != null) {
                 // default background value may screw up things, let's preserve nodata
-                pb.set(((Number) nodata.getMin()).doubleValue(), 1);
+                pb.set(nodata.getMin().doubleValue(), 1);
             }
         }
         pb.set(transformationList, 3);
@@ -3463,7 +3463,7 @@ public class ImageWorker {
         // All post conditions for this method contract.
         assert isIndexed();
         assert translucent || !isTranslucent() : translucent;
-        assert ((IndexColorModel) image.getColorModel()).getAlpha(transparent) == 0;
+        assert image.getColorModel().getAlpha(transparent) == 0;
         return this;
     }
 
@@ -5023,7 +5023,7 @@ public class ImageWorker {
         for (ROI roi : rois) {
             if (roi instanceof ROIShape || roi instanceof ROIGeometry) {
                 if (vectorReference == null && roi instanceof ROIGeometry) {
-                    vectorReference = (ROIGeometry) roi;
+                    vectorReference = roi;
                 } else {
                     vectorROIs.add(roi);
                 }

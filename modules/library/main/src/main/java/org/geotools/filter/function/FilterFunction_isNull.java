@@ -37,7 +37,7 @@ public class FilterFunction_isNull extends FunctionExpressionImpl {
         Object arg0;
 
         try { // attempt to get value and perform conversion
-            arg0 = (Object) getExpression(0).evaluate(feature);
+            arg0 = getExpression(0).evaluate(feature);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

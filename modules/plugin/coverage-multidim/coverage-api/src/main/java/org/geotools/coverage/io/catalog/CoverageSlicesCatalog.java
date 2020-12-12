@@ -327,7 +327,7 @@ public class CoverageSlicesCatalog {
 
     public String[] getTypeNames() {
         if (this.typeNames != null && !this.typeNames.isEmpty()) {
-            return (String[]) this.typeNames.toArray(new String[] {});
+            return this.typeNames.toArray(new String[] {});
         }
         return null;
     }
@@ -469,7 +469,7 @@ public class CoverageSlicesCatalog {
                 // getting the features
                 while (it.hasNext()) {
                     SimpleFeature feature = it.next();
-                    final SimpleFeature sf = (SimpleFeature) feature;
+                    final SimpleFeature sf = feature;
                     final CoverageSlice slice;
 
                     // caching by granule's index

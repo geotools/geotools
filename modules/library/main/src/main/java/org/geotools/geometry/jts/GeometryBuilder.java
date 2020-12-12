@@ -276,8 +276,7 @@ public class GeometryBuilder {
      */
     public Polygon polygon(Polygon shell, Polygon hole) {
         return geomFact.createPolygon(
-                (LinearRing) shell.getExteriorRing(),
-                new LinearRing[] {(LinearRing) hole.getExteriorRing()});
+                shell.getExteriorRing(), new LinearRing[] {hole.getExteriorRing()});
     }
 
     /**

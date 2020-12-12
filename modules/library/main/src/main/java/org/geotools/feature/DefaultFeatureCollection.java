@@ -180,7 +180,7 @@ public class DefaultFeatureCollection
         if (this.schema == null) {
             this.schema = feature.getFeatureType();
         }
-        SimpleFeatureType childType = (SimpleFeatureType) getSchema();
+        SimpleFeatureType childType = getSchema();
         if (!feature.getFeatureType().equals(childType)) {
             LOGGER.warning("Feature Collection contains a heterogeneous" + " mix of features");
         }
@@ -313,7 +313,7 @@ public class DefaultFeatureCollection
             }
 
             public SimpleFeature next() {
-                currFeature = (SimpleFeature) iterator.next();
+                currFeature = iterator.next();
                 return currFeature;
             }
 

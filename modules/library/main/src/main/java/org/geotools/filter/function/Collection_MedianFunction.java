@@ -89,8 +89,7 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
      */
     public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        org.opengis.filter.expression.Expression expr =
-                (org.opengis.filter.expression.Expression) args.get(0);
+        org.opengis.filter.expression.Expression expr = args.get(0);
         expr =
                 (org.opengis.filter.expression.Expression)
                         expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
@@ -102,7 +101,7 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
         if (feature == null) {
             return Integer.valueOf(0); // no features were visited in the making of this answer
         }
-        Expression expr = (Expression) getExpression(0);
+        Expression expr = getExpression(0);
         FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection =
                 (SimpleFeatureCollection) feature;
         synchronized (featureCollection) {

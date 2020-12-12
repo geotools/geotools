@@ -88,7 +88,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
         Expression name = null;
         List<Expression> names = node.getChildValues(Expression.class);
         if (names.size() == 2) { // simple pair extract PropertyName
-            name = (Expression) node.getChildValue(PropertyName.class);
+            name = node.getChildValue(PropertyName.class);
         }
         if (name == null) { // search for a non literal Expression
             for (Expression n : names) {
@@ -98,7 +98,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
                 name = n;
             }
         }
-        Literal literal = (Literal) node.getChildValue(Literal.class);
+        Literal literal = node.getChildValue(Literal.class);
 
         String wildcard = (String) node.getAttributeValue("wildCard");
         String single = (String) node.getAttributeValue("singleChar");

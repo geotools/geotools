@@ -469,9 +469,8 @@ abstract class Value {
         private org.opengis.filter.expression.Expression[] toExpressionArray(
                 List<org.opengis.filter.expression.Expression> arguments) {
             org.opengis.filter.expression.Expression[] argsArray =
-                    (org.opengis.filter.expression.Expression[])
-                            arguments.toArray(
-                                    new org.opengis.filter.expression.Expression[arguments.size()]);
+                    arguments.toArray(
+                            new org.opengis.filter.expression.Expression[arguments.size()]);
             return argsArray;
         }
 

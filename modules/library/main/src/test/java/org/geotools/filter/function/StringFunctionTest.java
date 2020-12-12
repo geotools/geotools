@@ -37,11 +37,11 @@ public class StringFunctionTest {
         Literal bar = ff.literal("bar");
 
         Function f = ff.function("strReplace", new Expression[] {foo, o, bar, ff.literal(true)});
-        String s = (String) f.evaluate(null, String.class);
+        String s = f.evaluate(null, String.class);
         assertEquals("fbarbar", s);
 
         f = ff.function("strReplace", new Expression[] {foo, o, bar, ff.literal(false)});
-        s = (String) f.evaluate(null, String.class);
+        s = f.evaluate(null, String.class);
         assertEquals("fbaro", s);
     }
 

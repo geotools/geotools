@@ -47,7 +47,7 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 
         URL statURL =
                 TestData.url(this, (new StringBuffer(this.fileName).append(".DEM").toString()));
-        AbstractGridFormat format = (AbstractGridFormat) new GTopo30FormatFactory().createFormat();
+        AbstractGridFormat format = new GTopo30FormatFactory().createFormat();
 
         if (format.accepts(statURL)) {
 
@@ -70,7 +70,7 @@ public class GT30ReaderWriterTest extends GT30TestBase {
             assertTrue(layout.getTileWidth(null) > 0);
 
             // get a grid coverage
-            gc = ((GridCoverage2D) reader.read(null));
+            gc = reader.read(null);
             if (TestData.isInteractiveTest()) gc.show();
 
             // preparing to write it down
@@ -88,7 +88,7 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 
             // read it again
             reader = format.getReader(statURL);
-            GridCoverage2D gc1 = ((GridCoverage2D) reader.read(null));
+            GridCoverage2D gc1 = reader.read(null);
 
             /**
              * STEP 3 Visualizing the lcoverage we just read in order to see if everything is fine.

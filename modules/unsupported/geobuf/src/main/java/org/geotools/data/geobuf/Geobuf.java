@@ -846,7 +846,7 @@ public final class Geobuf {
                     output.writeString(11, getId());
                 }
                 if (idTypeCase_ == 12) {
-                    output.writeSInt64(12, (long) ((java.lang.Long) idType_));
+                    output.writeSInt64(12, (Long) idType_);
                 }
                 for (int i = 0; i < values_.size(); i++) {
                     output.writeMessage(13, values_.get(i));
@@ -884,7 +884,7 @@ public final class Geobuf {
                 if (idTypeCase_ == 12) {
                     size +=
                             com.google.protobuf.CodedOutputStream.computeSInt64Size(
-                                    12, (long) ((java.lang.Long) idType_));
+                                    12, (Long) idType_);
                 }
                 for (int i = 0; i < values_.size(); i++) {
                     size +=
@@ -4361,16 +4361,16 @@ public final class Geobuf {
                     output.writeString(1, getStringValue());
                 }
                 if (valueTypeCase_ == 2) {
-                    output.writeDouble(2, (double) ((java.lang.Double) valueType_));
+                    output.writeDouble(2, (Double) valueType_);
                 }
                 if (valueTypeCase_ == 3) {
-                    output.writeUInt64(3, (long) ((java.lang.Long) valueType_));
+                    output.writeUInt64(3, (Long) valueType_);
                 }
                 if (valueTypeCase_ == 4) {
-                    output.writeUInt64(4, (long) ((java.lang.Long) valueType_));
+                    output.writeUInt64(4, (Long) valueType_);
                 }
                 if (valueTypeCase_ == 5) {
-                    output.writeBool(5, (boolean) ((java.lang.Boolean) valueType_));
+                    output.writeBool(5, (Boolean) valueType_);
                 }
                 if (valueTypeCase_ == 6) {
                     output.writeString(6, getJsonValue());
@@ -4391,22 +4391,22 @@ public final class Geobuf {
                 if (valueTypeCase_ == 2) {
                     size +=
                             com.google.protobuf.CodedOutputStream.computeDoubleSize(
-                                    2, (double) ((java.lang.Double) valueType_));
+                                    2, (Double) valueType_);
                 }
                 if (valueTypeCase_ == 3) {
                     size +=
                             com.google.protobuf.CodedOutputStream.computeUInt64Size(
-                                    3, (long) ((java.lang.Long) valueType_));
+                                    3, (Long) valueType_);
                 }
                 if (valueTypeCase_ == 4) {
                     size +=
                             com.google.protobuf.CodedOutputStream.computeUInt64Size(
-                                    4, (long) ((java.lang.Long) valueType_));
+                                    4, (Long) valueType_);
                 }
                 if (valueTypeCase_ == 5) {
                     size +=
                             com.google.protobuf.CodedOutputStream.computeBoolSize(
-                                    5, (boolean) ((java.lang.Boolean) valueType_));
+                                    5, (Boolean) valueType_);
                 }
                 if (valueTypeCase_ == 6) {
                     size +=

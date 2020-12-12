@@ -125,7 +125,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @since 2.3
      */
     public GridSampleDimension(final CharSequence description) {
-        this(description, (CategoryList) null, 1, 0);
+        this(description, null, 1, 0);
     }
 
     /**

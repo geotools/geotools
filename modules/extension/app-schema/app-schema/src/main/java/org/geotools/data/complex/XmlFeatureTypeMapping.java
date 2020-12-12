@@ -160,7 +160,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         AttributeMapping attMapping;
         List<AttributeMapping> mappings = Collections.emptyList();
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
-            attMapping = (AttributeMapping) it.next();
+            attMapping = it.next();
             if (sourceExpression.equals(attMapping.getSourceExpression())) {
                 if (mappings.size() == 0) {
                     mappings = new ArrayList<>(2);
@@ -180,7 +180,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     public AttributeMapping getAttributeMappingByLabel(String label) {
         AttributeMapping attMapping;
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
-            attMapping = (AttributeMapping) it.next();
+            attMapping = it.next();
             if (label.equals(attMapping.getLabel())) {
                 return attMapping;
             }
@@ -198,7 +198,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     public AttributeMapping getStringMapping(final StepList exactPath) {
         AttributeMapping attMapping;
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
-            attMapping = (AttributeMapping) it.next();
+            attMapping = it.next();
             if (exactPath.equals(attMapping.getTargetXPath())) {
                 return attMapping;
             }

@@ -71,7 +71,7 @@ class ItemsListQualifier implements ItemsListVisitor {
         List<Expression> qualifiedList = new ArrayList<Expression>(expressions.size());
 
         for (Iterator<Expression> it = expressions.iterator(); it.hasNext(); ) {
-            Expression exp = (Expression) it.next();
+            Expression exp = it.next();
             Expression qExp = ExpressionQualifier.qualify(session, tableAliases, exp);
 
             qualifiedList.add(qExp);

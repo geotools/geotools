@@ -91,7 +91,7 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
         Expression[] args = new Expression[node.getChildren().size()];
 
         for (int i = 0; i < node.getChildren().size(); i++) {
-            Node child = (Node) node.getChildren().get(i);
+            Node child = node.getChildren().get(i);
             args[i] = (Expression) child.getValue();
         }
 

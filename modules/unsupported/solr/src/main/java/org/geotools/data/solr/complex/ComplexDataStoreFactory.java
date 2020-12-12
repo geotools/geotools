@@ -122,7 +122,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         ComplexDataStoreConfig complexDataStoreConfig = (ComplexDataStoreConfig) dataStoreConfig;
         IndexesConfig indexesConfig = complexDataStoreConfig.getIndexesConfig();
         // specify the index attributes we are interested in based on the App-Schema mappings file
-        for (TypeMapping mapping : (Set<TypeMapping>) appSchemaConfig.getTypeMappings()) {
+        for (TypeMapping mapping : appSchemaConfig.getTypeMappings()) {
             // get all the attributes names used in the feature type mapping
             Set<String> attributes = extractAttributesNames(mapping);
             indexesConfig.addAttributes(mapping.getSourceTypeName(), attributes);

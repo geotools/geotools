@@ -103,7 +103,6 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
-import org.opengis.style.GraphicLegend;
 
 /**
  * Test the inner workings of StreamingRenderer.
@@ -692,7 +691,7 @@ public class StreamingRendererTest {
                 sf.createRule(
                         new Symbolizer[0],
                         new DescriptionImpl(),
-                        (GraphicLegend) null,
+                        null,
                         "bbox",
                         bbox,
                         false,

@@ -113,7 +113,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
             try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                     dataStore.getFeatureWriter(tname("ft1"), tx)) {
                 while (writer.hasNext()) {
-                    SimpleFeature feature = (SimpleFeature) writer.next();
+                    SimpleFeature feature = writer.next();
                     Number old = (Number) feature.getAttribute(aname("intProperty"));
 
                     feature.setAttribute(aname("intProperty"), Integer.valueOf(100));

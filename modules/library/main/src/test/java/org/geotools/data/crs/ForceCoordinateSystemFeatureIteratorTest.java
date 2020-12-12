@@ -131,10 +131,7 @@ public class ForceCoordinateSystemFeatureIteratorTest extends TestCase {
         SimpleFeatureCollection collection = createDatastore(crs, p);
 
         try {
-            new ForceCoordinateSystemIterator(
-                    collection.features(),
-                    collection.getSchema(),
-                    (CoordinateReferenceSystem) null);
+            new ForceCoordinateSystemIterator(collection.features(), collection.getSchema(), null);
             fail(); // should throw a nullpointer exception.
         } catch (NullPointerException e) {
             // good

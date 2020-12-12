@@ -20,7 +20,6 @@ package org.geotools.data.complex.feature.type;
 import java.util.Collection;
 import java.util.Map;
 import org.opengis.feature.Property;
-import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -57,7 +56,7 @@ public class ComplexTypeProxy extends AttributeTypeProxy implements ComplexType 
         // in GeoServer app-schema tests, SimpleAttributeFeatureChainWfsTest
         @SuppressWarnings("unchecked")
         Class<Collection<Property>> result =
-                (Class<Collection<Property>>) ((AttributeType) getSubject()).getBinding();
+                (Class<Collection<Property>>) getSubject().getBinding();
         return result;
     }
 }

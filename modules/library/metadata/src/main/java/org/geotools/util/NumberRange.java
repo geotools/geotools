@@ -299,9 +299,9 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
         // TODO: remove the (Number) casts when we will be allowed to compile for Java 6.
         this(
                 type,
-                ClassChanger.cast((Number) range.getMinValue(), type),
+                ClassChanger.cast(range.getMinValue(), type),
                 range.isMinIncluded(),
-                ClassChanger.cast((Number) range.getMaxValue(), type),
+                ClassChanger.cast(range.getMaxValue(), type),
                 range.isMaxIncluded());
     }
 
@@ -489,7 +489,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
          * throw an exception otherwise.
          */
         range = convertAndCast((Range) range, (Class) type);
-        return castTo((Class) type).containsNC((Range) range);
+        return castTo((Class) type).containsNC(range);
     }
 
     /** Returns {@code true} if this range intersects the given range. */
@@ -504,7 +504,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
          * throw an exception otherwise.
          */
         range = convertAndCast((Range) range, (Class) type);
-        return castTo((Class) type).intersectsNC((Range) range);
+        return castTo((Class) type).intersectsNC(range);
     }
 
     /**
@@ -516,7 +516,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     public NumberRange<?> union(Range<?> range) {
         final Class<? extends Number> type = getWidestClass(elementClass, getElementClass(range));
         range = convertAndCast((Range) range, (Class) type);
-        return (NumberRange<?>) castTo((Class) type).unionNC((Range) range);
+        return (NumberRange<?>) castTo((Class) type).unionNC(range);
     }
 
     /**
@@ -560,7 +560,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @return The minimum value.
      */
     public double getMinimum() {
-        final Number value = (Number) getMinValue();
+        final Number value = getMinValue();
         return (value != null) ? value.doubleValue() : Double.NEGATIVE_INFINITY;
     }
 
@@ -588,7 +588,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @return The maximum value.
      */
     public double getMaximum() {
-        final Number value = (Number) getMaxValue();
+        final Number value = getMaxValue();
         return (value != null) ? value.doubleValue() : Double.POSITIVE_INFINITY;
     }
 

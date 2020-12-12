@@ -2679,7 +2679,7 @@ public class DataUtilities {
         try {
             while (i.hasNext()) {
                 @SuppressWarnings("unused")
-                Feature feature = (Feature) i.next();
+                Feature feature = i.next();
                 count++;
             }
             return count;
@@ -3016,8 +3016,7 @@ public class DataUtilities {
             }
         }
 
-        return ff.createFeature(
-                value, (FeatureType) schema, SimpleFeatureBuilder.createDefaultFeatureId());
+        return ff.createFeature(value, schema, SimpleFeatureBuilder.createDefaultFeatureId());
     }
 
     /**

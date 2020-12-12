@@ -253,7 +253,7 @@ public class MapLayerTableCellRenderer extends JPanel implements ListCellRendere
             boolean isSelected, // is the cell selected
             boolean cellHasFocus) // the list and the cell have the focus
             {
-        Layer layer = (Layer) value;
+        Layer layer = value;
         String name = layer.getTitle();
         if (name == null || name.trim().length() == 0) {
             name = layer.getFeatureSource().getName().getLocalPart();

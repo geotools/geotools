@@ -282,7 +282,7 @@ public class SLDStyleFactory {
         Style2D style = null;
 
         SymbolizerKey key = new SymbolizerKey(symbolizer, scaleRange);
-        style = (Style2D) staticSymbolizers.get(key);
+        style = staticSymbolizers.get(key);
 
         requests++;
 
@@ -864,7 +864,7 @@ public class SLDStyleFactory {
         int styleCode;
 
         if (FONT_STYLE_LOOKUP.containsKey(reqStyle)) {
-            styleCode = ((Integer) FONT_STYLE_LOOKUP.get(reqStyle)).intValue();
+            styleCode = FONT_STYLE_LOOKUP.get(reqStyle).intValue();
         } else {
             styleCode = java.awt.Font.PLAIN;
         }
@@ -935,7 +935,7 @@ public class SLDStyleFactory {
         joinType = evalToString(stroke.getLineJoin(), feature, "miter");
 
         if (JOIN_LOOKUP.containsKey(joinType)) {
-            joinCode = ((Integer) JOIN_LOOKUP.get(joinType)).intValue();
+            joinCode = JOIN_LOOKUP.get(joinType).intValue();
         } else {
             joinCode = java.awt.BasicStroke.JOIN_MITER;
         }
@@ -947,7 +947,7 @@ public class SLDStyleFactory {
         capType = evalToString(stroke.getLineCap(), feature, "square");
 
         if (CAP_LOOKUP.containsKey(capType)) {
-            capCode = ((Integer) CAP_LOOKUP.get(capType)).intValue();
+            capCode = CAP_LOOKUP.get(capType).intValue();
         } else {
             capCode = java.awt.BasicStroke.CAP_SQUARE;
         }
@@ -1438,7 +1438,7 @@ public class SLDStyleFactory {
     /** */
     public static int lookUpJoin(String joinType) {
         if (SLDStyleFactory.JOIN_LOOKUP.containsKey(joinType)) {
-            return ((Integer) JOIN_LOOKUP.get(joinType)).intValue();
+            return JOIN_LOOKUP.get(joinType).intValue();
         } else {
             return java.awt.BasicStroke.JOIN_MITER;
         }
@@ -1447,7 +1447,7 @@ public class SLDStyleFactory {
     /** */
     public static int lookUpCap(String capType) {
         if (SLDStyleFactory.CAP_LOOKUP.containsKey(capType)) {
-            return ((Integer) CAP_LOOKUP.get(capType)).intValue();
+            return CAP_LOOKUP.get(capType).intValue();
         } else {
             return java.awt.BasicStroke.CAP_SQUARE;
         }

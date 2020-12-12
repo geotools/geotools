@@ -573,7 +573,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             }
         }
 
-        dct.attributes = (Attribute[]) attr.toArray(new Attribute[attr.size()]);
+        dct.attributes = attr.toArray(new Attribute[attr.size()]);
         dct.namespace = parent.getTargetNamespace();
         dct.block = block;
         dct.finaL = finaL;
@@ -850,7 +850,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                         }
                     }
 
-                    return (l.size() > 0) ? (Element[]) l.toArray(new Element[l.size()]) : null;
+                    return (l.size() > 0) ? l.toArray(new Element[l.size()]) : null;
 
                 case ElementGrouping.ELEMENT:
                     return new Element[] {
@@ -875,7 +875,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                         }
                     }
 
-                    return (l.size() > 0) ? (Element[]) l.toArray(new Element[l.size()]) : null;
+                    return (l.size() > 0) ? l.toArray(new Element[l.size()]) : null;
             }
 
             return null;

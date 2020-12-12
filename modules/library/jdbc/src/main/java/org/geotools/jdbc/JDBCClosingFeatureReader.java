@@ -38,7 +38,7 @@ public class JDBCClosingFeatureReader
     }
 
     public SimpleFeatureType getFeatureType() {
-        return (SimpleFeatureType) reader.getFeatureType();
+        return reader.getFeatureType();
     }
 
     public boolean hasNext() throws IOException {
@@ -47,7 +47,7 @@ public class JDBCClosingFeatureReader
 
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
-        return (SimpleFeature) reader.next();
+        return reader.next();
     }
 
     @SuppressWarnings({"PMD.CloseResource", "unchecked"}) // we are actually closing

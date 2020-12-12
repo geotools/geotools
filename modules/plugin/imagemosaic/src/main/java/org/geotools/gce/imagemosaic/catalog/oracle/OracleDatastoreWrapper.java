@@ -49,9 +49,8 @@ public class OracleDatastoreWrapper extends DataStoreWrapper {
             return transformedSource;
         } else {
             transformedSource =
-                    (SimpleFeatureSource)
-                            new OracleTransformFeatureStore(
-                                    store, mapper.getName(), mapper.getDefinitions(), datastore);
+                    new OracleTransformFeatureStore(
+                            store, mapper.getName(), mapper.getDefinitions(), datastore);
             ((OracleFeatureTypeMapper) mapper).setSimpleFeatureSource(transformedSource);
             return transformedSource;
         }

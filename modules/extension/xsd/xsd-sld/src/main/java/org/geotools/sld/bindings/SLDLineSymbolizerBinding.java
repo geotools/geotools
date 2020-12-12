@@ -16,7 +16,6 @@
  */
 package org.geotools.sld.bindings;
 
-import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.LineSymbolizer;
@@ -124,11 +123,11 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:Stroke" minOccurs="0"/&gt;
         if (node.hasChild(Stroke.class)) {
-            ls.setStroke((Stroke) node.getChildValue(Stroke.class));
+            ls.setStroke(node.getChildValue(Stroke.class));
         }
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
-        for (CssParameter param : (List<CssParameter>) node.getChildValues(CssParameter.class)) {
+        for (CssParameter param : node.getChildValues(CssParameter.class)) {
             ls.getOptions()
                     .put(param.getName(), param.getExpression().evaluate(null, String.class));
         }

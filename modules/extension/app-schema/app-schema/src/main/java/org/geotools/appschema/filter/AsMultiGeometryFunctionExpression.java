@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.Attribute;
 import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Function which wraps an instance of geometry in its associatd multi geometry type.
@@ -65,7 +64,7 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
             return null;
         }
         Attribute att = (Attribute) obj;
-        org.opengis.filter.expression.Expression arg = (Expression) getParameters().get(0);
+        org.opengis.filter.expression.Expression arg = getParameters().get(0);
         Object value = arg.evaluate(att);
 
         if (value != null) {

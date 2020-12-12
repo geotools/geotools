@@ -67,11 +67,11 @@ public class CommonsConverterFactory implements ConverterFactory {
             String string = (String) source;
             Number parsed = null;
             try { // first try integer
-                parsed = (Number) new IntegerConverter().convert(string, Integer.class);
+                parsed = new IntegerConverter().convert(string, Integer.class);
             } catch (Exception e) {
             }
             if (parsed == null) { // try double
-                parsed = (Number) new DoubleConverter().convert(string, Double.class);
+                parsed = new DoubleConverter().convert(string, Double.class);
             }
             return (T) parsed;
         }

@@ -81,8 +81,7 @@ public class LineCoveredByPolygonValidation extends LinePolygonAbstractValidatio
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
         try (SimpleFeatureIterator fLine = fcLine.features()) {
 
-            SimpleFeatureSource fsPoly =
-                    (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+            SimpleFeatureSource fsPoly = layers.get(getRestrictedPolygonTypeRef());
 
             ListFeatureCollection fcPoly = new ListFeatureCollection(fsPoly.getFeatures());
 

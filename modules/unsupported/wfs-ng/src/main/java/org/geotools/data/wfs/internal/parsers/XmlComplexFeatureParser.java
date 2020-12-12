@@ -348,7 +348,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                                             1,
                                             1,
                                             true,
-                                            (Object) null);
+                                            null);
                             list.add(
                                     new AttributeImpl(
                                             convertedValue, simpleContentDescriptor, null));
@@ -397,7 +397,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                     // If this item has an id we'll register it in case
                     // anything else points to it with an xlink:
                     if (id != null) {
-                        this.registerGmlTarget(id, (ComplexAttribute) attribteValue);
+                        this.registerGmlTarget(id, attribteValue);
                     }
 
                     return new ReturnAttribute(id, currentTagName, attribteValue);

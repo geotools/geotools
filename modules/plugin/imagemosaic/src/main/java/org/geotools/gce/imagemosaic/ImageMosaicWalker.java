@@ -177,8 +177,7 @@ abstract class ImageMosaicWalker implements Runnable {
             }
 
             final Hints configurationHints = configHandler.getRunConfiguration().getHints();
-            coverageReader =
-                    (GridCoverage2DReader) format.getReader(fileBeingProcessed, configurationHints);
+            coverageReader = format.getReader(fileBeingProcessed, configurationHints);
 
             // Setting of the ReaderSPI to use
             if (configHandler.getCachedReaderSPI() == null) {

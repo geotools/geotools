@@ -172,7 +172,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
         for (Iterator<Map.Entry<Coordinate, Object>> itr = m_coord2count.entrySet().iterator();
                 itr.hasNext(); ) {
             Map.Entry<Coordinate, Object> entry = itr.next();
-            Coordinate coord = (Coordinate) entry.getKey();
+            Coordinate coord = entry.getKey();
             Integer count = (Integer) entry.getValue();
 
             OptXYNode node = (OptXYNode) m_builder.buildNode();

@@ -300,7 +300,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
                 }
             }
         }
-        return UnmodifiableArrayList.wrap((GeneralParameterValue[]) XArray.resize(parameters, k));
+        return UnmodifiableArrayList.wrap(XArray.resize(parameters, k));
     }
 
     /**

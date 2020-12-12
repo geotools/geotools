@@ -337,7 +337,7 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         public String findPrefix(FeatureType type) {
-            String pre = (String) lookup.get(type);
+            String pre = lookup.get(type);
 
             if (pre == null) {
                 pre = defaultPrefix;

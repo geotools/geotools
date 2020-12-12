@@ -1116,8 +1116,8 @@ public class SLDParser {
      */
     protected PolygonSymbolizer parsePolygonSymbolizer(Node root) {
         PolygonSymbolizer symbol = factory.createPolygonSymbolizer();
-        symbol.setFill((Fill) null);
-        symbol.setStroke((org.geotools.styling.Stroke) null);
+        symbol.setFill(null);
+        symbol.setStroke(null);
 
         NamedNodeMap namedNodeMap = root.getAttributes();
         Node uomNode = namedNodeMap.getNamedItem(uomString);

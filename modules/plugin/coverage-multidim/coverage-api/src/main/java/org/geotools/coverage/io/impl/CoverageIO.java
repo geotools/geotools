@@ -224,10 +224,10 @@ public class CoverageIO {
         final Set<? extends Driver> drivers = CoverageIO.getAvailableDrivers();
         final List<Driver> driverSet = new ArrayList<>(drivers.size());
         for (Iterator<? extends Driver> iter = drivers.iterator(); iter.hasNext(); ) {
-            final Driver element = (Driver) iter.next();
+            final Driver element = iter.next();
             if (element.isAvailable()) driverSet.add(element);
         }
-        return (Driver[]) driverSet.toArray(new Driver[driverSet.size()]);
+        return driverSet.toArray(new Driver[driverSet.size()]);
     }
 
     /**
@@ -243,7 +243,7 @@ public class CoverageIO {
         final Iterator<? extends Driver> it = availableDrivers.iterator();
         while (it.hasNext()) {
             // get the factory
-            final Driver spi = (Driver) it.next();
+            final Driver spi = it.next();
             // check if we can accept it
             Map<String, Serializable> params = new HashMap<>();
             params.put("url", url);
@@ -265,7 +265,7 @@ public class CoverageIO {
     public static Driver findDriver(URL url) {
         final Set<Driver> drivers = findDrivers(url);
         final Iterator<Driver> it = drivers.iterator();
-        if (it.hasNext()) return (Driver) it.next();
+        if (it.hasNext()) return it.next();
         return null;
     }
 }

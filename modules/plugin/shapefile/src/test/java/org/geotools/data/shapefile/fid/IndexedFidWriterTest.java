@@ -60,7 +60,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
 
         for (int i = 1, j = indexFile.getRecordCount(); i < j; i++) {
             assertTrue(i + "th record", writer.hasNext());
-            assertEquals((long) i, writer.next());
+            assertEquals(i, writer.next());
         }
     }
 
@@ -76,7 +76,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
 
         for (int i = 2, j = indexFile.getRecordCount(); i < j; i++) {
             assertTrue(writer.hasNext());
-            assertEquals((long) i, writer.next());
+            assertEquals(i, writer.next());
         }
 
         writer.write();
@@ -156,7 +156,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
         initWriter();
         for (int i = 1; i <= 5; i++) {
             assertTrue(writer.hasNext());
-            assertEquals((long) i, writer.next());
+            assertEquals(i, writer.next());
         }
     }
 }

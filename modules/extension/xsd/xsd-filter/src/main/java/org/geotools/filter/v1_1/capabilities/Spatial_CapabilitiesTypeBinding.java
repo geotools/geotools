@@ -77,8 +77,8 @@ public class Spatial_CapabilitiesTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return factory.spatialCapabilities(
-                (GeometryOperand[]) node.getChildValue(GeometryOperand[].class),
-                (SpatialOperators) node.getChildValue(SpatialOperators.class));
+                node.getChildValue(GeometryOperand[].class),
+                node.getChildValue(SpatialOperators.class));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

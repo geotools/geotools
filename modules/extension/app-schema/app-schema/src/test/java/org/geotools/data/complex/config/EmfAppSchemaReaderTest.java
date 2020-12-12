@@ -133,7 +133,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
                 descriptor.getUserData().get(XSDElementDeclaration.class)
                         instanceof XSDElementDeclaration);
 
-        type = (AttributeType) descriptor.getType();
+        type = descriptor.getType();
         Assert.assertNotNull(type);
         Assert.assertFalse(type instanceof ComplexType);
         Assert.assertEquals(typeName, type.getName());
@@ -154,7 +154,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             typeRegistry.addSchemas(schemaIndex);
 
             Name typeName = Types.typeName(NS_URI, "wq_plus_Type");
-            AttributeType type = (AttributeType) typeRegistry.getAttributeType(typeName);
+            AttributeType type = typeRegistry.getAttributeType(typeName);
             Assert.assertTrue(type instanceof FeatureType);
             Assert.assertFalse(type instanceof SimpleFeatureType);
             Assert.assertEquals(typeName, type.getName());

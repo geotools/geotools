@@ -179,7 +179,7 @@ class RangeVisitor implements FeatureCalc {
         final Object firstValue = expr1.evaluate(feature);
         final Object secondValue = expr2.evaluate(feature);
         if (firstValue != null && secondValue != null) {
-            set.add((Range) Utils.createRange(firstValue, secondValue));
+            set.add(Utils.createRange(firstValue, secondValue));
         }
     }
 

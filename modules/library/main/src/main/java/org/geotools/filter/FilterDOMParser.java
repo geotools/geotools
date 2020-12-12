@@ -142,7 +142,7 @@ public final class FilterDOMParser {
             // boolean like = false;
             // boolean between = false;
             try {
-                short type = ((Integer) comparisions.get(childName)).shortValue();
+                short type = comparisions.get(childName).shortValue();
                 // CompareFilter filter = null;
                 LOGGER.finer("type is " + type);
 
@@ -385,7 +385,7 @@ public final class FilterDOMParser {
             LOGGER.finest("a spatial filter " + childName);
 
             try {
-                short type = ((Integer) spatial.get(childName)).shortValue();
+                short type = spatial.get(childName).shortValue();
                 //  GeometryFilter filter = FILTER_FACT.createGeometryFilter(type);
                 Node value = child.getFirstChild();
 

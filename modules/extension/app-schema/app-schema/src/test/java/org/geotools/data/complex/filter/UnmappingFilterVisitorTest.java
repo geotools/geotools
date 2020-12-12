@@ -291,7 +291,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
             if (targetXPath.size() > 1) {
                 continue;
             }
-            Step step = (Step) targetXPath.get(0);
+            Step step = targetXPath.get(0);
             if (featureName.equals(step.getName())) {
                 featureMapping = attMapping;
                 break;
@@ -352,7 +352,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         Function fe = (Function) unmappedExpr;
         assertEquals("buffer", fe.getName());
 
-        Expression arg0 = (Expression) fe.getParameters().get(0);
+        Expression arg0 = fe.getParameters().get(0);
         assertTrue(arg0 instanceof PropertyName);
         assertEquals("location", ((PropertyName) arg0).getPropertyName());
     }
@@ -418,7 +418,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
             assertNotNull(unrolled);
             assertEquals(1, unrolled.size());
             assertTrue(unrolled.get(0) instanceof Expression);
-            assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+            assertEquals(unrolled.get(0).toString(), "strConcat([bh.], [BGS_ID])");
         }
 
         {
@@ -430,7 +430,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
             assertNotNull(unrolled);
             assertEquals(1, unrolled.size());
             assertTrue(unrolled.get(0) instanceof Expression);
-            assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+            assertEquals(unrolled.get(0).toString(), "strConcat([bh.], [BGS_ID])");
         }
 
         {
@@ -442,7 +442,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
             assertNotNull(unrolled);
             assertEquals(1, unrolled.size());
             assertTrue(unrolled.get(0) instanceof Expression);
-            assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+            assertEquals(unrolled.get(0).toString(), "strConcat([bh.], [BGS_ID])");
         }
     }
 
@@ -456,7 +456,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
                         MatchAction.ALL);
 
         PropertyIsBetween unrolled = (PropertyIsBetween) bf.accept(visitor, null);
-        assertEquals(MatchAction.ALL, ((PropertyIsBetween) unrolled).getMatchAction());
+        assertEquals(MatchAction.ALL, unrolled.getMatchAction());
         Expression att = unrolled.getExpression();
         assertTrue(att instanceof PropertyName);
         String propertyName = ((PropertyName) att).getPropertyName();
@@ -577,7 +577,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         And sourceAnd = (And) unrolled;
         assertEquals(2, sourceAnd.getChildren().size());
 
-        Filter sourceEquals = (Filter) sourceAnd.getChildren().get(0);
+        Filter sourceEquals = sourceAnd.getChildren().get(0);
         assertTrue(sourceEquals instanceof PropertyIsEqualTo);
 
         Expression left = ((PropertyIsEqualTo) sourceEquals).getExpression1();
@@ -588,7 +588,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         assertEquals("results_value", ((PropertyName) left).getPropertyName());
         assertEquals(Double.valueOf(1.1), ((Literal) right).getValue());
 
-        Filter sourceGreater = (Filter) sourceAnd.getChildren().get(1);
+        Filter sourceGreater = sourceAnd.getChildren().get(1);
         assertTrue(sourceGreater instanceof PropertyIsGreaterThan);
 
         left = ((PropertyIsGreaterThan) sourceGreater).getExpression1();
@@ -644,7 +644,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         Function fe = (Function) left;
         assertEquals("buffer", fe.getName());
 
-        Expression arg0 = (Expression) fe.getParameters().get(0);
+        Expression arg0 = fe.getParameters().get(0);
         assertTrue(arg0 instanceof PropertyName);
         assertEquals("location", ((PropertyName) arg0).getPropertyName());
     }

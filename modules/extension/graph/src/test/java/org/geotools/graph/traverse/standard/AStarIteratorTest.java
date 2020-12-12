@@ -223,8 +223,8 @@ public class AStarIteratorTest extends TestCase {
         assertTrue(p.size() == 4);
         // #2
         for (int j = 0; j < p.size() - 1; j++) {
-            Node n = (Node) p.get(j);
-            Node parent = (Node) p.get(j + 1);
+            Node n = p.get(j);
+            Node parent = p.get(j + 1);
             String n_id = rmap.get(n).toString();
             String parent_id = rmap.get(parent).toString();
             assertTrue(n_id.startsWith(parent_id));

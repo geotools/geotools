@@ -133,13 +133,10 @@ public class CapabilitiesBinding extends AbstractComplexEMFBinding {
 
         CapabilitiesType capabilities = factory.createCapabilitiesType();
 
-        capabilities.setContents((ContentsType) node.getChildValue(ContentsType.class));
-        capabilities.setOperationsMetadata(
-                (OperationsMetadataType) node.getChildValue(OperationsMetadataType.class));
-        capabilities.setServiceIdentification(
-                (ServiceIdentificationType) node.getChildValue(ServiceIdentificationType.class));
-        capabilities.setServiceProvider(
-                (ServiceProviderType) node.getChildValue(ServiceProviderType.class));
+        capabilities.setContents(node.getChildValue(ContentsType.class));
+        capabilities.setOperationsMetadata(node.getChildValue(OperationsMetadataType.class));
+        capabilities.setServiceIdentification(node.getChildValue(ServiceIdentificationType.class));
+        capabilities.setServiceProvider(node.getChildValue(ServiceProviderType.class));
         capabilities.setUpdateSequence((String) node.getChildValue("UpdateSequence"));
 
         List<Node> themesChildren = node.getChildren(ThemesType.class);

@@ -399,7 +399,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         // force full string match
         regex = "^" + regex + "$";
         Pattern p = Pattern.compile(regex, flags);
-        output.put((String) expr, p);
+        output.put(expr, p);
 
         return output;
     }

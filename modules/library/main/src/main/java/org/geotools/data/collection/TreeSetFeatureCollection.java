@@ -95,7 +95,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
     /** FeatureCollection schema will be defined by the first added feature. */
     public TreeSetFeatureCollection() {
-        this((String) null, (SimpleFeatureType) null);
+        this(null, null);
     }
 
     /**
@@ -176,7 +176,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         if (this.schema == null) {
             this.schema = feature.getFeatureType();
         }
-        SimpleFeatureType childType = (SimpleFeatureType) getSchema();
+        SimpleFeatureType childType = getSchema();
         // if ( childType==null ){
         // //this.childType=
         // }else{
@@ -208,7 +208,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         try {
             List featuresAdded = new ArrayList(collection.size());
             while (iterator.hasNext()) {
-                SimpleFeature f = (SimpleFeature) iterator.next();
+                SimpleFeature f = iterator.next();
                 boolean added = add(f);
                 changed |= added;
 
@@ -249,7 +249,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         if (contents.isEmpty()) return;
 
         SimpleFeature[] oldFeatures = new SimpleFeature[contents.size()];
-        oldFeatures = (SimpleFeature[]) contents.values().toArray(oldFeatures);
+        oldFeatures = contents.values().toArray(oldFeatures);
 
         contents.clear();
         // fireChange(oldFeatures, CollectionEvent.FEATURES_REMOVED);
@@ -322,7 +322,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
             }
 
             public SimpleFeature next() {
-                currFeature = (SimpleFeature) iterator.next();
+                currFeature = iterator.next();
                 return currFeature;
             }
 

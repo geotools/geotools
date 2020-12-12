@@ -205,7 +205,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
                 throws IllegalAttributeException {
 
             if (object instanceof SimpleFeature) {
-                ((SimpleFeature) object).setDefaultGeometry((Geometry) value);
+                ((SimpleFeature) object).setDefaultGeometry(value);
             }
             if (object instanceof SimpleFeatureType) {
                 throw new IllegalAttributeException("feature type is immutable");

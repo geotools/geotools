@@ -630,7 +630,7 @@ public class WKTWriter2 extends WKTWriter {
                     indentCoords(i, level + 1, writer);
                 }
                 writer.write("(");
-                appendCoordinate(((Point) multiPoint.getGeometryN(i)).getCoordinate(), writer);
+                appendCoordinate(multiPoint.getGeometryN(i).getCoordinate(), writer);
                 writer.write(")");
             }
             writer.write(")");

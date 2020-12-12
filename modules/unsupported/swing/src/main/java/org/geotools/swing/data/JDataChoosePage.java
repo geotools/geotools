@@ -90,7 +90,7 @@ public class JDataChoosePage extends JPage {
         list.addListSelectionListener(
                 new ListSelectionListener() {
                     public void valueChanged(ListSelectionEvent e) {
-                        format = (DataStoreFactorySpi) list.getSelectedValue();
+                        format = list.getSelectedValue();
                     }
                 });
         JScrollPane scroll = new JScrollPane(list);

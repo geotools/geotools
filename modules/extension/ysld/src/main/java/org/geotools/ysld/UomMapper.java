@@ -60,7 +60,7 @@ public class UomMapper {
         if (unit == null) {
             throw new IllegalArgumentException("Unknown unit identifier: " + identifier);
         }
-        return (Unit<Length>) unit;
+        return unit;
     }
 
     public String getIdentifier(Unit<Length> unit) {

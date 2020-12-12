@@ -27,7 +27,6 @@ import javax.media.jai.ROI;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.Vocabulary;
@@ -105,10 +104,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
                             .setRenderingHints(this.getHints())
                             .retainBands(new int[] {visibleBand})
                             .getRenderedImage();
-            sd =
-                    new GridSampleDimension[] {
-                        (GridSampleDimension) output.getSampleDimension(visibleBand)
-                    };
+            sd = new GridSampleDimension[] {output.getSampleDimension(visibleBand)};
         } else {
             sd = output.getSampleDimensions();
         }
@@ -174,7 +170,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
                     .create(
                             output.getName(),
                             finalImage,
-                            (GridGeometry2D) output.getGridGeometry(),
+                            output.getGridGeometry(),
                             sd,
                             new GridCoverage[] {output},
                             properties);
@@ -185,7 +181,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
                 .create(
                         output.getName(),
                         outputImage,
-                        (GridGeometry2D) output.getGridGeometry(),
+                        output.getGridGeometry(),
                         sd,
                         new GridCoverage[] {output},
                         properties);
@@ -312,7 +308,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         /////////////////////////////////////////////////////////////////////
         final Expression op = rs.getOpacity();
         if (op != null) {
-            final Number number = (Number) op.evaluate(null, Float.class);
+            final Number number = op.evaluate(null, Float.class);
             if (number != null) {
                 opacity = number.floatValue();
             }

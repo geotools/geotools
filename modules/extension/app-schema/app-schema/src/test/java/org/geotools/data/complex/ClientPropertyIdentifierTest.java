@@ -86,9 +86,9 @@ public class ClientPropertyIdentifierTest {
         FeatureType observationFeatureType = omsoDataAccess.getSchema(OBSERVATION_FEATURE);
         assertNotNull(observationFeatureType);
 
-        obsSource = (FeatureSource) omsoDataAccess.getFeatureSource(OBSERVATION_FEATURE);
+        obsSource = omsoDataAccess.getFeatureSource(OBSERVATION_FEATURE);
         assertNotNull(obsSource);
-        FeatureCollection obsFeatures = (FeatureCollection) obsSource.getFeatures();
+        FeatureCollection obsFeatures = obsSource.getFeatures();
         assertEquals(2, size(obsFeatures));
     }
 

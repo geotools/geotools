@@ -135,7 +135,7 @@ public class ColorConverterFactoryTest extends TestCase {
 
     Color convert(Object value) throws Exception {
         Converter converter = factory.createConverter(value.getClass(), Color.class, null);
-        return (Color) converter.convert(value, Color.class);
+        return converter.convert(value, Color.class);
     }
 
     public void testRegisteredWithConverters() {

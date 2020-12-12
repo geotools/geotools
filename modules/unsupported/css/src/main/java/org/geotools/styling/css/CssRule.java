@@ -342,7 +342,7 @@ public class CssRule {
                 rootProperties.add(
                         new Property(
                                 "z-index",
-                                Arrays.asList((Value) new Value.Literal(String.valueOf(zIndex)))));
+                                Arrays.asList(new Value.Literal(String.valueOf(zIndex)))));
             }
             CssRule zRule = new CssRule(this.getSelector(), zProperties, this.getComment());
             zRule.nestedRules = nestedByZIndex;

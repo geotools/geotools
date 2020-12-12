@@ -565,8 +565,8 @@ public class NADCONTransform extends AbstractMathTransform
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException, FactoryException {
             return new NADCONTransform(
-                    (URI) getParameter(LAT_DIFF_FILE, values).getValue(),
-                    (URI) getParameter(LONG_DIFF_FILE, values).getValue());
+                    getParameter(LAT_DIFF_FILE, values).getValue(),
+                    getParameter(LONG_DIFF_FILE, values).getValue());
         }
     }
 }

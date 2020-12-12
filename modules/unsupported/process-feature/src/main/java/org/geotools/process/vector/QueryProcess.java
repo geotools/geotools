@@ -56,7 +56,7 @@ public class QueryProcess implements VectorProcess {
 
         // apply retyping if necessary
         if (attributes != null && attributes.size() > 0) {
-            final String[] names = (String[]) attributes.toArray(new String[attributes.size()]);
+            final String[] names = attributes.toArray(new String[attributes.size()]);
             SimpleFeatureType ft = SimpleFeatureTypeBuilder.retype(features.getSchema(), names);
             if (!(ft.equals(features.getSchema()))) {
                 features = new ReTypingFeatureCollection(features, ft);

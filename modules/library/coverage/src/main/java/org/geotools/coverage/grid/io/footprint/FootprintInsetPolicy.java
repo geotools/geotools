@@ -95,7 +95,7 @@ public enum FootprintInsetPolicy {
             } else if (polygons.size() == 1) {
                 return polygons.get(0);
             } else {
-                Polygon[] array = (Polygon[]) polygons.toArray(new Polygon[polygons.size()]);
+                Polygon[] array = polygons.toArray(new Polygon[polygons.size()]);
                 return array[0].getFactory().createMultiPolygon(array);
             }
         }

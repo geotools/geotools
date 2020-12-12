@@ -480,7 +480,7 @@ public final class Logging {
      * @since 2.5
      */
     public static boolean unexpectedException(Class<?> classe, String method, Throwable error) {
-        return unexpectedException((Logger) null, classe, method, error);
+        return unexpectedException(null, classe, method, error);
     }
 
     /**

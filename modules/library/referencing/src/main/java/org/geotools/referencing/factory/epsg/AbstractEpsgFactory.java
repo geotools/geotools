@@ -2321,7 +2321,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      */
     final synchronized boolean isProjection(final String code) throws SQLException {
         final PreparedStatement stmt;
-        Boolean projection = (Boolean) codeProjection.get(code);
+        Boolean projection = codeProjection.get(code);
         if (projection == null) {
             stmt =
                     prepareStatement(

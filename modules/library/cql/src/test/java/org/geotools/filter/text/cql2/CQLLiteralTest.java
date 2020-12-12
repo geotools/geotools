@@ -234,9 +234,7 @@ public class CQLLiteralTest {
         // special characters
         final String otherChars = "üä";
 
-        filter =
-                (PropertyIsEqualTo)
-                        CompilerUtil.parseFilter(language, "NAME = '" + otherChars + "'");
+        filter = CompilerUtil.parseFilter(language, "NAME = '" + otherChars + "'");
 
         Assert.assertNotNull(filter);
         Assert.assertTrue(filter instanceof PropertyIsEqualTo);
@@ -266,8 +264,7 @@ public class CQLLiteralTest {
 
     private void testCharacterString(final String str) throws Exception {
 
-        Filter filter =
-                (PropertyIsEqualTo) CompilerUtil.parseFilter(language, "NAME = '" + str + "'");
+        Filter filter = CompilerUtil.parseFilter(language, "NAME = '" + str + "'");
 
         Assert.assertNotNull(filter);
         Assert.assertTrue(filter instanceof PropertyIsEqualTo);

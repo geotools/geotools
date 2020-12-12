@@ -79,7 +79,7 @@ public class Arithmetic_OperatorsTypeBinding extends AbstractComplexBinding {
                 node.hasChild("Simple_Arithmetic") || node.hasChild("SimpleArithmetic"); // 1.1
 
         // &lt;xsd:element name="Functions" type="ogc:FunctionsType"/&gt;
-        Functions functions = (Functions) node.getChildValue(Functions.class);
+        Functions functions = node.getChildValue(Functions.class);
 
         return factory.arithmeticOperators(simpleArithmetic, functions);
     }

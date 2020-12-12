@@ -140,7 +140,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
         final String encodedColumnDefinition;
         if (this.definitionQuery != null) {
             // its an inprocess view
-            SelectExpressionItem colDef = (SelectExpressionItem) attributeNames.get(alias);
+            SelectExpressionItem colDef = attributeNames.get(alias);
             // String alias = colDef.getAlias();
             String sqlExpression = String.valueOf(colDef);
 

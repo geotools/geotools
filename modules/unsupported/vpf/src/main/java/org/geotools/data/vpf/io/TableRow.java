@@ -102,7 +102,7 @@ public class TableRow implements VPFRow {
      * @return a <code>RowField</code> value
      */
     public RowField get(String name) {
-        return (RowField) fieldsMap.get(name);
+        return fieldsMap.get(name);
     }
 
     /**

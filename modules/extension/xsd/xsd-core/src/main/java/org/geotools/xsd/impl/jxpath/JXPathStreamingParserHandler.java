@@ -22,7 +22,6 @@ import org.apache.commons.jxpath.JXPathContextFactory;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Node;
-import org.geotools.xsd.impl.DocumentHandler;
 import org.geotools.xsd.impl.ElementHandler;
 import org.geotools.xsd.impl.NodeImpl;
 import org.geotools.xsd.impl.StreamingParserHandler;
@@ -46,7 +45,7 @@ public class JXPathStreamingParserHandler extends StreamingParserHandler {
 
         //        ElementHandler rootHandler =
         //        	((DocumentHandler) handlers.firstElement()).getDocumentElementHandler();
-        Node root = ((DocumentHandler) handlers.firstElement()).getParseNode();
+        Node root = handlers.firstElement().getParseNode();
         JXPathContext jxpContext = JXPathContextFactory.newInstance().newContext(null, root);
 
         jxpContext.setLenient(true);

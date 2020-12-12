@@ -339,8 +339,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     protected FilterToSQL createFilterToSQL(
             SimpleFeatureType ft, boolean usePreparedStatementParameters) {
         if (getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
-            PreparedFilterToSQL pfsql =
-                    (PreparedFilterToSQL) getDataStore().createPreparedFilterToSQL(ft);
+            PreparedFilterToSQL pfsql = getDataStore().createPreparedFilterToSQL(ft);
             pfsql.setPrepareEnabled(usePreparedStatementParameters);
             return pfsql;
         } else {

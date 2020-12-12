@@ -66,10 +66,10 @@ public class BarnesSurfaceProcessTest {
                         "value", // valueAttr
                         1000, // dataLimit
                         10.0, // scale
-                        (Double) null, // convergence
-                        (Integer) 2, // passes
-                        (Integer) null, // minObservations
-                        (Double) null, // maxObservationDistance
+                        null, // convergence
+                        2, // passes
+                        null, // minObservations
+                        null, // maxObservationDistance
                         -999.0, // noDataValue
                         1, // pixelsPerCell
                         0.0, // queryBuffer

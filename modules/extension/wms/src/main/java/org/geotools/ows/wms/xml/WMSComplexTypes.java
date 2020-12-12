@@ -2299,7 +2299,7 @@ public class WMSComplexTypes {
             } catch (MalformedURLException e) {
             }
 
-            return (URL) value[0].getValue();
+            return value[0].getValue();
         }
 
         /*
@@ -2411,7 +2411,7 @@ public class WMSComplexTypes {
             } catch (MalformedURLException e) {
             }
 
-            return (URL) value[0].getValue();
+            return value[0].getValue();
         }
 
         /*
@@ -2815,7 +2815,7 @@ public class WMSComplexTypes {
             layer.setStyles(styles);
             layer.setMetadataURL(metadataURLS);
 
-            layer.setChildren((Layer[]) childLayers.toArray(new Layer[childLayers.size()]));
+            layer.setChildren(childLayers.toArray(new Layer[childLayers.size()]));
 
             // Attributes -- only do queryable for now
 

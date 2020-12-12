@@ -60,11 +60,11 @@ public class ExplicitBoundsShape implements Shape {
     }
 
     public boolean contains(Point2D p) {
-        return shape.contains((Point2D) p);
+        return shape.contains(p);
     }
 
     public boolean contains(Rectangle2D r) {
-        return shape.contains((Rectangle2D) r);
+        return shape.contains(r);
     }
 
     /**

@@ -72,7 +72,7 @@ public class CoverageTestBase {
             if (geometry != null) {
                 final MathTransform gridToCRS;
                 if (geometry instanceof GridGeometry2D) {
-                    gridToCRS = ((GridGeometry2D) geometry).getGridToCRS();
+                    gridToCRS = geometry.getGridToCRS();
                 } else {
                     gridToCRS = geometry.getGridToCRS();
                 }

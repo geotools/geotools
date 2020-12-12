@@ -172,12 +172,12 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
 
     /** @see NodeSequence#getFirst() */
     public Node getFirst() {
-        return ((Node) get(0));
+        return get(0);
     }
 
     /** @see NodeSequence#getLast() */
     public Node getLast() {
-        return ((Node) get(size() - 1));
+        return get(size() - 1);
     }
 
     /**
@@ -191,8 +191,8 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
         List<Edge> edges = new ArrayList<>();
 
         for (int i = 1; i < size(); i++) {
-            Node prev = (Node) get(i - 1);
-            Node curr = (Node) get(i);
+            Node prev = get(i - 1);
+            Node curr = get(i);
 
             Edge e = curr.getEdge(prev);
 

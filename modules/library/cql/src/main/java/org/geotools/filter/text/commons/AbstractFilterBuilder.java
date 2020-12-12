@@ -542,7 +542,7 @@ public abstract class AbstractFilterBuilder {
             int i = 0;
 
             for (i = arrayParts.size() - 1; i > 0; i--) {
-                part = (String) arrayParts.get(i);
+                part = arrayParts.get(i);
                 identifier.append(part).append(":");
             }
             assert i == 0;
@@ -944,8 +944,7 @@ public abstract class AbstractFilterBuilder {
 
         org.opengis.filter.expression.Literal begin = period.getBeginning();
 
-        org.opengis.filter.expression.Expression property =
-                (org.opengis.filter.expression.Expression) resultStack.popExpression();
+        org.opengis.filter.expression.Expression property = resultStack.popExpression();
 
         PropertyIsGreaterThanOrEqualTo filter = filterFactory.greaterOrEqual(property, begin);
 
@@ -1223,7 +1222,7 @@ public abstract class AbstractFilterBuilder {
         // Puts the argument in correct order
         Collections.reverse(argList);
 
-        Expression[] args = (Expression[]) argList.toArray(new Expression[argList.size()]);
+        Expression[] args = argList.toArray(new Expression[argList.size()]);
 
         Function function = null;
         try {

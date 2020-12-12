@@ -19,7 +19,6 @@ package org.geotools.swing.data;
 
 import java.awt.Font;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -68,7 +67,7 @@ public class JDataStorePage extends JPage {
             params = new HashMap<>();
             if (format != null) {
                 for (Param param : format.getParametersInfo()) {
-                    params.put(param.key, (Serializable) param.sample);
+                    params.put(param.key, param.sample);
                 }
             }
         }
@@ -160,7 +159,7 @@ public class JDataStorePage extends JPage {
             ParamField field = entry.getValue();
 
             Object value = field.getValue();
-            connectionParameters.put(param.key, (Serializable) value);
+            connectionParameters.put(param.key, value);
             field.setValue(value);
         }
         for (Entry<Param, ParamField> entry : fields.entrySet()) {

@@ -73,7 +73,7 @@ public class FunctionsTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        FunctionName[] functionNames = (FunctionName[]) node.getChildValue(FunctionName[].class);
+        FunctionName[] functionNames = node.getChildValue(FunctionName[].class);
 
         return factory.functions(functionNames);
     }

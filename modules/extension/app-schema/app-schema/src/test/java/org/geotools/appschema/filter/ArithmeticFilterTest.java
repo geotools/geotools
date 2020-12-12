@@ -70,7 +70,7 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
         dsParams.put("url", url.toExternalForm());
         dataAccess = DataAccessFinder.getDataStore(dsParams);
 
-        fSource = (FeatureSource<FeatureType, Feature>) dataAccess.getFeatureSource(FEATURE_TYPE);
+        fSource = dataAccess.getFeatureSource(FEATURE_TYPE);
     }
 
     @Test

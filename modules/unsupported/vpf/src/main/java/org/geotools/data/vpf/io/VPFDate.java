@@ -41,7 +41,7 @@ public class VPFDate {
      * @param date a <code>byte[]</code> value
      */
     public VPFDate(byte[] date) {
-        dateBin = (byte[]) date.clone();
+        dateBin = date.clone();
         initialize();
     }
 

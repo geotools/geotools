@@ -60,7 +60,7 @@ public class NodeImpl implements Node {
         }
 
         for (int i = 0; i < children.size(); i++) {
-            Node child = (Node) children.get(i);
+            Node child = children.get(i);
 
             if (name.equals(child.getComponent().getName())) {
                 return true;
@@ -76,7 +76,7 @@ public class NodeImpl implements Node {
         }
 
         for (int i = 0; i < children.size(); i++) {
-            Node child = (Node) children.get(i);
+            Node child = children.get(i);
 
             if (child.getValue() == null) {
                 continue;
@@ -335,7 +335,7 @@ public class NodeImpl implements Node {
     }
 
     public Object getChildValue(int index) {
-        return ((Node) children.get(index)).getValue();
+        return children.get(index).getValue();
     }
 
     public Object getChildValue(String name) {
@@ -487,7 +487,7 @@ public class NodeImpl implements Node {
 
     public void collapseWhitespace() {
         // leading whitespace
-        for (Iterator<Node> it = ((List<Node>) children).iterator(); it.hasNext(); ) {
+        for (Iterator<Node> it = children.iterator(); it.hasNext(); ) {
             Text t = text(it.next());
             if (t == null) break;
 
@@ -501,7 +501,7 @@ public class NodeImpl implements Node {
 
         // trailing whitespace
         for (int i = children.size() - 1; i > -1; i--) {
-            Text t = text((Node) children.get(i));
+            Text t = text(children.get(i));
             if (t == null) break;
 
             if (t.isWhitespace()) {
@@ -514,7 +514,7 @@ public class NodeImpl implements Node {
 
         // inner whitespace
         boolean remove = false;
-        for (Iterator<Node> it = ((List<Node>) children).iterator(); it.hasNext(); ) {
+        for (Iterator<Node> it = children.iterator(); it.hasNext(); ) {
             Text t = text(it.next());
             if (t == null) continue;
 

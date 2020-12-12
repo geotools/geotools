@@ -45,7 +45,6 @@ import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.TestHttpResponse;
-import org.geotools.data.wfs.internal.AbstractWFSStrategy;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
 import org.geotools.data.wfs.internal.GetCapabilitiesRequest;
@@ -217,8 +216,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         WFSStrategy strategy = getStrategy();
 
-        final Filter serverFiler =
-                ((AbstractWFSStrategy) strategy).splitFilters(typeName, request.getFilter())[0];
+        final Filter serverFiler = strategy.splitFilters(typeName, request.getFilter())[0];
 
         final Diff diff = diff(typeName);
 

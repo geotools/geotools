@@ -309,7 +309,7 @@ public class GML2MockData {
         typeBuilder.add("count", Integer.class);
         typeBuilder.add("date", Date.class);
 
-        SimpleFeatureType type = (SimpleFeatureType) typeBuilder.buildFeatureType();
+        SimpleFeatureType type = typeBuilder.buildFeatureType();
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         builder.add("theName");
@@ -318,7 +318,7 @@ public class GML2MockData {
         builder.add(Integer.valueOf(1));
         builder.add(new Date());
 
-        return (SimpleFeature) builder.buildFeature("fid.1");
+        return builder.buildFeature("fid.1");
     }
 
     static Element featureMember(Document document, Node parent) {

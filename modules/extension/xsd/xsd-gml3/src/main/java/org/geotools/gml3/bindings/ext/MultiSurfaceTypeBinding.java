@@ -64,7 +64,7 @@ public class MultiSurfaceTypeBinding extends org.geotools.gml3.bindings.MultiSur
             }
         }
 
-        return gf.createMultiPolygon((Polygon[]) polygons.toArray(new Polygon[polygons.size()]));
+        return gf.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

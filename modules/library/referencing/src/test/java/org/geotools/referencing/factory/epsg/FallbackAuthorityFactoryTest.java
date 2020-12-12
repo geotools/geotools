@@ -84,7 +84,7 @@ public final class FallbackAuthorityFactoryTest {
         boolean foundWkt = false;
         boolean foundExtra = false;
         for (Iterator<CRSAuthorityFactory> it = factories.iterator(); it.hasNext(); ) {
-            CRSAuthorityFactory factory = (CRSAuthorityFactory) it.next();
+            CRSAuthorityFactory factory = it.next();
             Class<?> type = factory.getClass();
             if (VERBOSE) {
                 // System.out.println(type);

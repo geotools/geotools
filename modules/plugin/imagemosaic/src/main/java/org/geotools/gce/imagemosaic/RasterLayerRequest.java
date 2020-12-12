@@ -931,7 +931,7 @@ public class RasterLayerRequest {
         if (name.equals(ImageMosaicFormat.MASKING_BUFFER_PIXELS.getName())) {
             final Object value = param.getValue();
             if (value == null) return;
-            maskingBufferPixels = (double) param.doubleValue();
+            maskingBufferPixels = param.doubleValue();
             return;
         }
 

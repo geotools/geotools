@@ -269,8 +269,7 @@ public class AdvancedReaderTest extends TestCase {
         readGG.setValue(new GridGeometry2D(gridEnvelope, env));
         readParams[0] = readGG;
 
-        AbstractGridFormat format =
-                (AbstractGridFormat) new GrassCoverageFormatFactory().createFormat();
+        AbstractGridFormat format = new GrassCoverageFormatFactory().createFormat();
         GridCoverageReader reader = format.getReader(file);
         GridCoverage2D gc = ((GridCoverage2D) reader.read(readParams));
         return gc;
@@ -302,8 +301,7 @@ public class AdvancedReaderTest extends TestCase {
         readGG.setValue(new GridGeometry2D(gridEnvelope, env));
         readParams[0] = readGG;
         // do the reading
-        AbstractGridFormat format =
-                (AbstractGridFormat) new GrassCoverageFormatFactory().createFormat();
+        AbstractGridFormat format = new GrassCoverageFormatFactory().createFormat();
         GridCoverageReader reader = format.getReader(file);
         GridCoverage2D gc = ((GridCoverage2D) reader.read(readParams));
 

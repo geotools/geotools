@@ -296,9 +296,7 @@ public abstract class DataStoreWrapper implements DataStore {
 
     @Override
     public String[] getTypeNames() throws IOException {
-        return typeNames != null
-                ? (String[]) typeNames.toArray(new String[typeNames.size()])
-                : null;
+        return typeNames != null ? typeNames.toArray(new String[typeNames.size()]) : null;
     }
 
     @Override

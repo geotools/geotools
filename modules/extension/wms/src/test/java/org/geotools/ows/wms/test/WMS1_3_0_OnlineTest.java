@@ -111,7 +111,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                     capabilities.getRequest().getGetFeatureInfo().getGet(),
                     new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
 
-            Layer topLayer = (Layer) capabilities.getLayerList().get(0);
+            Layer topLayer = capabilities.getLayerList().get(0);
             assertNotNull(topLayer);
             assertNull(topLayer.getParent());
             assertFalse(topLayer.isQueryable());
@@ -128,7 +128,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
 
             assertEquals(topLayer.getBoundingBoxes().size(), 1);
 
-            CRSEnvelope bbox = (CRSEnvelope) topLayer.getBoundingBoxes().get("CRS:84");
+            CRSEnvelope bbox = topLayer.getBoundingBoxes().get("CRS:84");
             assertNotNull(bbox);
             assertEquals(bbox.getEPSGCode(), "CRS:84");
             assertEquals(bbox.getMinX(), -184, 0.0);
@@ -136,7 +136,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(bbox.getMinY(), -90.0000000017335, 0.0);
             assertEquals(bbox.getMaxY(), 90, 0.0);
 
-            Layer layer = (Layer) capabilities.getLayerList().get(1);
+            Layer layer = capabilities.getLayerList().get(1);
             assertEquals(layer.getParent(), topLayer);
             assertTrue(layer.isQueryable());
             assertEquals(layer.getName(), "Bathymetry");
@@ -150,7 +150,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(llbbox.getMinY(), -90, 0.0);
             assertEquals(llbbox.getMaxY(), 90, 0.0);
 
-            bbox = (CRSEnvelope) layer.getBoundingBoxes().get("CRS:84");
+            bbox = layer.getBoundingBoxes().get("CRS:84");
             assertNotNull(bbox);
             assertEquals(bbox.getEPSGCode(), "CRS:84");
             assertEquals(bbox.getMinX(), -180, 0.0);
@@ -160,7 +160,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
 
             assertEquals(capabilities.getLayerList().size(), 21);
 
-            layer = (Layer) capabilities.getLayerList().get(20);
+            layer = capabilities.getLayerList().get(20);
             assertEquals(layer.getParent(), topLayer);
             assertTrue(layer.isQueryable());
             assertEquals(layer.getName(), "Ocean features");
@@ -174,7 +174,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(llbbox.getMinY(), -90, 0.0);
             assertEquals(llbbox.getMaxY(), 90, 0.0);
 
-            bbox = (CRSEnvelope) layer.getBoundingBoxes().get("CRS:84");
+            bbox = layer.getBoundingBoxes().get("CRS:84");
             assertNotNull(bbox);
             assertEquals(bbox.getEPSGCode(), "CRS:84");
             assertEquals(bbox.getMinX(), -180, 0.0);
@@ -199,7 +199,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(capabilities.getVersion(), "1.3.0");
             assertEquals(capabilities.getService().getName(), "WMS");
 
-            Layer topLayer = (Layer) capabilities.getLayerList().get(0);
+            Layer topLayer = capabilities.getLayerList().get(0);
             assertNotNull(topLayer);
             assertNull(topLayer.getParent());
             assertFalse(topLayer.isQueryable());
@@ -265,7 +265,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             // System.out.println(request.getFinalURL());
 
             //     TODO   Currently this server rtreturns code 400 !?
-            GetFeatureInfoResponse response = (GetFeatureInfoResponse) wms.issueRequest(request);
+            GetFeatureInfoResponse response = wms.issueRequest(request);
             // System.out.println(response.getContentType());
             assertTrue(response.getContentType().indexOf("text/html") != -1);
             BufferedReader in =

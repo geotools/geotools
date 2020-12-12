@@ -548,7 +548,7 @@ public class GMLEncodingUtils {
             // check for case of multi geometry, if it has > 0 goemetries
             // we consider this to be not empty
             if (geometry instanceof GeometryCollection) {
-                if (((GeometryCollection) geometry).getNumGeometries() != 0) {
+                if (geometry.getNumGeometries() != 0) {
                     return false;
                 }
             }
@@ -674,6 +674,6 @@ public class GMLEncodingUtils {
             }
         }
 
-        return (SimpleFeature[]) features.toArray(new SimpleFeature[features.size()]);
+        return features.toArray(new SimpleFeature[features.size()]);
     }
 }

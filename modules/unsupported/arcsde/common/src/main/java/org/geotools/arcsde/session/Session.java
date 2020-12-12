@@ -286,7 +286,7 @@ class Session implements ISession {
             }
         }
 
-        SeTable seTable = (SeTable) cachedTables.get(tableName);
+        SeTable seTable = cachedTables.get(tableName);
 
         return seTable;
     }

@@ -181,7 +181,7 @@ public class DelaunayTriangulator {
         Vector<Node> nodeList = new Vector<>();
         Iterator<Triangle> triangleIterator = tList.iterator();
         while (triangleIterator.hasNext()) {
-            Triangle next = (Triangle) triangleIterator.next();
+            Triangle next = triangleIterator.next();
             Edge[] edges = next.getEdges();
             for (int i = 0; i < 3; i++) {
                 if (!(((DelaunayEdge) edges[i]).hasEndPoint(temp1)

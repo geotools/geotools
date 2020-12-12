@@ -829,7 +829,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             case Types.TIME:
                 // HANA cannot deal with time instances where the date part is before 1970.
                 // We re-create the time with a proper date part.
-                Time time = Time.valueOf(((Time) convert(value, Time.class)).toString());
+                Time time = Time.valueOf(convert(value, Time.class).toString());
                 ps.setTime(column, time);
                 break;
             default:

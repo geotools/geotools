@@ -126,7 +126,7 @@ public class ExpressionSAXParser {
                 String name = getFunctionName(atts);
                 Function function = functionFinder.findFunction(name);
                 if (function != null && function instanceof FunctionExpression) {
-                    curExprssn = (FunctionExpression) function;
+                    curExprssn = function;
                 } else {
                     throw new IllegalFilterException(
                             name + " not availabel as FunctionExpressio:" + function);

@@ -171,6 +171,7 @@ class OGRFeatureSource extends ContentFeatureSource {
         return getReaderInternal(null, null, query);
     }
 
+    @SuppressWarnings("PMD.CloseResource") // due to re-assignment of reader
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(
             OGRDataSource dataSource, Object layer, Query query) throws IOException {
         // check how much we can encode
@@ -365,7 +366,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                 }
                 if (ignoredFields.size() > 0) {
                     String[] ignoredFieldsArr =
-                            (String[]) ignoredFields.toArray(new String[ignoredFields.size()]);
+                            ignoredFields.toArray(new String[ignoredFields.size()]);
                     ogr.CheckError(ogr.LayerSetIgnoredFields(layer, ignoredFieldsArr));
                 }
             }

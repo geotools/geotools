@@ -246,11 +246,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter f = ff.not(ff.between(prop, l10, l20));
         Filter result = (Filter) f.accept(simpleVisitor, null);
         assertEquals(
-                ff.or(
-                        Arrays.asList(
-                                (Filter) ff.less(prop, l10),
-                                ff.greater(prop, l20),
-                                ff.isNull(prop))),
+                ff.or(Arrays.asList(ff.less(prop, l10), ff.greater(prop, l20), ff.isNull(prop))),
                 result);
     }
 
@@ -269,11 +265,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter f = ff.not(ff.between(prop, l10, l20));
         Filter result = (Filter) f.accept(simpleVisitor, null);
         assertEquals(
-                ff.or(
-                        Arrays.asList(
-                                (Filter) ff.less(prop, l10),
-                                ff.greater(prop, l20),
-                                ff.isNull(prop))),
+                ff.or(Arrays.asList(ff.less(prop, l10), ff.greater(prop, l20), ff.isNull(prop))),
                 result);
 
         // when FeatureType is not null and property is nullable
@@ -282,19 +274,14 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         f = ff.not(ff.between(prop, l10, l20));
         result = (Filter) f.accept(simpleVisitor, null);
         assertEquals(
-                ff.or(
-                        Arrays.asList(
-                                (Filter) ff.less(prop, l10),
-                                ff.greater(prop, l20),
-                                ff.isNull(prop))),
+                ff.or(Arrays.asList(ff.less(prop, l10), ff.greater(prop, l20), ff.isNull(prop))),
                 result);
 
         // when FeatureType is not null and property is not nullable
         prop = ff.property("prop2");
         f = ff.not(ff.between(prop, l10, l20));
         result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(
-                ff.or(Arrays.asList((Filter) ff.less(prop, l10), ff.greater(prop, l20))), result);
+        assertEquals(ff.or(Arrays.asList(ff.less(prop, l10), ff.greater(prop, l20))), result);
     }
 
     public void testDoubleNegation() {
@@ -580,7 +567,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter original =
                 ff.and(
                         Arrays.asList( //
-                                (Filter) ff.greater(ff.property("a"), ff.literal(min)), //
+                                ff.greater(ff.property("a"), ff.literal(min)), //
                                 ff.less(ff.property("a"), ff.literal(max)), //
                                 ff.less(ff.property("a"), ff.literal(mid))));
 
@@ -611,7 +598,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter original =
                 ff.or(
                         Arrays.asList( //
-                                (Filter) ff.greater(ff.property("a"), ff.literal(min)), //
+                                ff.greater(ff.property("a"), ff.literal(min)), //
                                 ff.greater(ff.property("a"), ff.literal(max))));
 
         Filter simplified = (Filter) original.accept(visitor, null);
@@ -638,7 +625,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter original =
                 ff.and(
                         Arrays.asList( //
-                                (Filter) ff.greaterOrEqual(ff.property("a"), ff.literal(min)), //
+                                ff.greaterOrEqual(ff.property("a"), ff.literal(min)), //
                                 ff.less(ff.property("a"), ff.literal(max)), //
                                 ff.lessOrEqual(ff.property("a"), ff.literal(mid))));
 

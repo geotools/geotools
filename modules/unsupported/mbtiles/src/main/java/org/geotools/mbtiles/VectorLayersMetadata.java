@@ -32,7 +32,7 @@ class VectorLayersMetadata {
             new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     static VectorLayersMetadata parseMetadata(String json) throws IOException {
-        return (VectorLayersMetadata) MAPPER.readValue(json, VectorLayersMetadata.class);
+        return MAPPER.readValue(json, VectorLayersMetadata.class);
     }
 
     @JsonProperty("vector_layers")

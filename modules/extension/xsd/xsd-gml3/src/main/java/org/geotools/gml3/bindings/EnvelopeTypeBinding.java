@@ -172,8 +172,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         }
 
         if (node.hasChild(CoordinateSequence.class)) {
-            CoordinateSequence seq =
-                    (CoordinateSequence) node.getChildValue(CoordinateSequence.class);
+            CoordinateSequence seq = node.getChildValue(CoordinateSequence.class);
 
             if (seq.getDimension() > 2) {
                 return new ReferencedEnvelope3D(

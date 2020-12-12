@@ -74,8 +74,7 @@ public class Geopkgtype_featuresBinding extends LayertypeBinding {
         XSQNameBinding nameBinding = new XSQNameBinding(namespaceContext);
 
         GeoPackageProcessRequest.FeaturesLayer layer = new GeoPackageProcessRequest.FeaturesLayer();
-        layer.setFeatureType(
-                (QName) nameBinding.parse(null, (String) node.getChildValue("featuretype")));
+        layer.setFeatureType((QName) nameBinding.parse(null, node.getChildValue("featuretype")));
         String pns = (String) node.getChildValue("propertynames");
         if (pns != null) {
             Set<QName> qnames = new HashSet<>();

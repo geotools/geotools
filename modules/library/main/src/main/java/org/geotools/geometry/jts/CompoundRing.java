@@ -119,7 +119,7 @@ public class CompoundRing extends LinearRing
 
     // should be protected when fixed in LinearRing
     public CompoundRing reverseInternal() {
-        CompoundCurve reversedDelegate = (CompoundCurve) delegate.reverse();
+        CompoundCurve reversedDelegate = delegate.reverse();
         return new CompoundRing(reversedDelegate);
     }
 

@@ -215,7 +215,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
 			return;
 		}
 		
-		ClassLoader cl = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ) );
+		ClassLoader cl = new URLClassLoader(urls.toArray( new URL[ urls.size() ] ));
 		if ( bindingConstructorArguments != null ) {
 			HashMap map = new HashMap();
 			

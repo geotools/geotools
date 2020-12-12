@@ -1021,7 +1021,7 @@ public class ArgHelper {
                 throw new ClassCastException("Object of type Long was expected.");
             }
 
-            return "<float>" + ((Float) obj).toString() + "</float>\n";
+            return "<float>" + obj.toString() + "</float>\n";
         }
 
         public String toString(Object o) {
@@ -1114,7 +1114,7 @@ public class ArgHelper {
                 throw new ClassCastException("Object of type Long was expected.");
             }
 
-            return "<double>" + ((Double) obj).toString() + "</double>\n";
+            return "<double>" + obj.toString() + "</double>\n";
         }
 
         public String toString(Object o) {
@@ -1324,7 +1324,7 @@ public class ArgHelper {
                 throw new ClassCastException("Object of type Long was expected.");
             }
 
-            return "<anyURI>" + ((URI) obj).toString() + "</anyURI>\n";
+            return "<anyURI>" + obj.toString() + "</anyURI>\n";
         }
 
         public String toString(Object o) {

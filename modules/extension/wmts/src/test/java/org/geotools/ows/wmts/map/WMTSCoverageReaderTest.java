@@ -68,9 +68,7 @@ public class WMTSCoverageReaderTest {
     public void testRESTInitMapRequest() throws Exception {
         WebMapTileServer server = createServer(REST_CAPA_RESOURCENAME);
         WMTSLayer layer =
-                (WMTSLayer)
-                        server.getCapabilities()
-                                .getLayer("ch.are.agglomerationen_isolierte_staedte");
+                server.getCapabilities().getLayer("ch.are.agglomerationen_isolierte_staedte");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);

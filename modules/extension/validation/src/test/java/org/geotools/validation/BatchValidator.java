@@ -650,7 +650,7 @@ class BatchValidatorProcessor extends ValidationProcessor {
             Iterator j = dto.getTests().keySet().iterator();
             // go through each test plugIn
             while (j.hasNext()) {
-                TestDTO tdto = (TestDTO) dto.getTests().get(j.next());
+                TestDTO tdto = dto.getTests().get(j.next());
                 plugInNames.add(tdto.getPlugIn().getName());
             }
         }
@@ -710,12 +710,12 @@ class BatchValidatorProcessor extends ValidationProcessor {
 
         // for each TEST SUITE
         while (suiteNames.hasNext()) {
-            TestSuiteDTO tdto = (TestSuiteDTO) testSuites.get(suiteNames.next());
+            TestSuiteDTO tdto = testSuites.get(suiteNames.next());
             Iterator j = tdto.getTests().keySet().iterator();
 
             // for each TEST in the test suite
             while (j.hasNext()) {
-                TestDTO dto = (TestDTO) tdto.getTests().get(j.next());
+                TestDTO dto = tdto.getTests().get(j.next());
 
                 // deal with test
                 @SuppressWarnings("unchecked")
@@ -736,9 +736,7 @@ class BatchValidatorProcessor extends ValidationProcessor {
                 }
 
                 try {
-                    PlugIn plugIn =
-                            (org.geotools.validation.PlugIn)
-                                    defaultPlugIns.get(dto.getPlugIn().getName());
+                    PlugIn plugIn = defaultPlugIns.get(dto.getPlugIn().getName());
                     Validation validation =
                             plugIn.createValidation(dto.getName(), dto.getDescription(), testArgs);
 

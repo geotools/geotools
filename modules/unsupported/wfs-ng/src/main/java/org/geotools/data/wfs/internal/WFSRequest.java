@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Properties;
 import java.util.logging.Level;
 import javax.xml.namespace.QName;
 import org.apache.commons.io.IOUtils;
@@ -52,7 +51,7 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
     public WFSRequest(
             final WFSOperationType operation, final WFSConfig config, final WFSStrategy strategy) {
 
-        super(url(operation, config, strategy), (Properties) null);
+        super(url(operation, config, strategy), null);
         this.operation = operation;
         this.config = config;
         this.strategy = strategy;

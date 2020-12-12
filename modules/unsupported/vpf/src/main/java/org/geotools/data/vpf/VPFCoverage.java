@@ -160,7 +160,7 @@ public class VPFCoverage {
             // If there is no char.vdt,
             // we can assume there is only one feature type
             // and only one feature class
-            VPFFeatureClass coverageClass = (VPFFeatureClass) featureClasses.get(0);
+            VPFFeatureClass coverageClass = featureClasses.get(0);
             VPFFeatureType featureType = new VPFFeatureType(coverageClass);
             featureTypes.add(featureType);
         }

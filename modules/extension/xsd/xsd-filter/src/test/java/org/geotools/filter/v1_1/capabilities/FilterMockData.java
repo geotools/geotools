@@ -166,7 +166,7 @@ public class FilterMockData {
         o.add(ff.operator("Between"));
         o.add(ff.operator("NullCheck"));
 
-        return ff.comparisonOperators((Operator[]) o.toArray(new Operator[o.size()]));
+        return ff.comparisonOperators(o.toArray(new Operator[o.size()]));
     }
 
     static Element scalarCapabilities(Document document, Node parent) {
@@ -257,7 +257,7 @@ public class FilterMockData {
         o.add(spatialOperator("Beyond"));
         o.add(spatialOperator("DWithin"));
 
-        return ff.spatialOperators((SpatialOperator[]) o.toArray(new SpatialOperator[o.size()]));
+        return ff.spatialOperators(o.toArray(new SpatialOperator[o.size()]));
     }
 
     static SpatialCapabilities spatialCapabilities() {

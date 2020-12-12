@@ -40,7 +40,7 @@ public class AbstractCmd {
             if (f.exists()) {
                 return f.toURI().toURL();
             }
-            sourceURL = new URL(URLDecoder.decode((String) source, "UTF8"));
+            sourceURL = new URL(URLDecoder.decode(source, "UTF8"));
 
         } catch (Exception ex) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);

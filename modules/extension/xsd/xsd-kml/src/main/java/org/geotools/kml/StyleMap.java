@@ -38,6 +38,6 @@ public class StyleMap {
     }
 
     public FeatureTypeStyle get(URI uri) {
-        return (FeatureTypeStyle) map.get(uri);
+        return map.get(uri);
     }
 }

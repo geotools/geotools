@@ -126,7 +126,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     @Override
     public boolean endObject() throws ParseException, IOException {
         if (delegate instanceof IContentHandler) {
-            ((IContentHandler) delegate).endObject();
+            delegate.endObject();
 
             if (delegate instanceof GeometryHandler) {
                 GeometryHandler geometryHandler = (GeometryHandler) delegate;

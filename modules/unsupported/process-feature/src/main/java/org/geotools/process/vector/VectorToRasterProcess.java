@@ -406,11 +406,11 @@ public class VectorToRasterProcess implements VectorProcess {
                 }
                 if (hasException) {
                     throw new VectorToRasterException(
-                            ((Expression) attribute).toString() + " does not evaluate to a number");
+                            attribute.toString() + " does not evaluate to a number");
                 }
             } else if (!Number.class.isAssignableFrom(value.getClass())) {
                 throw new VectorToRasterException(
-                        ((Expression) attribute).toString() + " does not evaluate to a number");
+                        attribute.toString() + " does not evaluate to a number");
             } else if (Float.class.isAssignableFrom(value.getClass())) {
                 transferType = TransferType.FLOAT;
             } else if (Double.class.isAssignableFrom(value.getClass())) {

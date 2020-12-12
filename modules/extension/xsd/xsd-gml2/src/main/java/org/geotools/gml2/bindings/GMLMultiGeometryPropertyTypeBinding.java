@@ -86,6 +86,6 @@ public class GMLMultiGeometryPropertyTypeBinding extends AbstractComplexBinding 
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        return (GeometryCollection) value;
+        return value;
     }
 }

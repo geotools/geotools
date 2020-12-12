@@ -79,7 +79,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
             Object value, GeometryDescriptor descriptor, String id, CoordinateReferenceSystem crs) {
         if (crs != null && !(crs.equals(descriptor.getCoordinateReferenceSystem()))) {
             // update CRS
-            GeometryType origType = (GeometryType) descriptor.getType();
+            GeometryType origType = descriptor.getType();
             GeometryType geomType =
                     new GeometryTypeImpl(
                             origType.getName(),
@@ -99,7 +99,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
                             descriptor.getMinOccurs(),
                             descriptor.getMaxOccurs(),
                             descriptor.isNillable(),
-                            ((GeometryDescriptor) descriptor).getDefaultValue());
+                            descriptor.getDefaultValue());
             descriptor.getUserData().putAll(descriptor.getUserData());
         }
         return new GeometryAttributeImpl(value, descriptor, buildSafeGmlObjectId(id));

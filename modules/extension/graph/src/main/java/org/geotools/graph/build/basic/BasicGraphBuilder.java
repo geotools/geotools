@@ -122,7 +122,7 @@ public class BasicGraphBuilder implements GraphBuilder {
 
     /** @see GraphBuilder#clone(boolean) */
     public Object clone(boolean deep) throws Exception {
-        GraphBuilder builder = (GraphBuilder) getClass().getDeclaredConstructor().newInstance();
+        GraphBuilder builder = getClass().getDeclaredConstructor().newInstance();
         if (deep) builder.importGraph(getGraph());
 
         return (builder);

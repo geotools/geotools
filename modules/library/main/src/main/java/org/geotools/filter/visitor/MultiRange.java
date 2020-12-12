@@ -181,7 +181,7 @@ public class MultiRange<T extends Comparable<? super T>> {
                 if (next.getMinValue().equals(curr.getMaxValue())) {
                     // do we have a hole?
                     if (!next.isMinIncluded() && !curr.isMaxIncluded()) {
-                        exclusions.add((T) curr.getMaxValue());
+                        exclusions.add(curr.getMaxValue());
                     }
                     i++;
                     curr = next;
@@ -197,9 +197,9 @@ public class MultiRange<T extends Comparable<? super T>> {
                 Range<T> union =
                         new Range<>(
                                 range.getElementClass(),
-                                (T) range.getMinValue(),
+                                range.getMinValue(),
                                 range.isMinIncluded(),
-                                (T) curr.getMaxValue(),
+                                curr.getMaxValue(),
                                 curr.isMaxIncluded());
                 Filter filter = toFilter(ff, variable, union);
                 if (exclusions.size() == 0) {

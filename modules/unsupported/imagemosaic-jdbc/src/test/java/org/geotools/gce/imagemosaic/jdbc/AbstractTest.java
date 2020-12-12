@@ -593,7 +593,7 @@ public abstract class AbstractTest extends TestCase {
             hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, crs);
         }
 
-        AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(configUrl);
+        AbstractGridFormat format = GridFormatFinder.findFormat(configUrl);
         ImageMosaicJDBCReader reader = (ImageMosaicJDBCReader) format.getReader(configUrl, hints);
 
         ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
@@ -621,8 +621,7 @@ public abstract class AbstractTest extends TestCase {
                         ? ImageMosaicJDBCFormat.BACKGROUND_COLOR.getDefaultValue()
                         : bColor);
 
-        GridCoverage2D coverage =
-                (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg, outTransp, bgColor});
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg, outTransp, bgColor});
 
         if (expectsData) assertNotNull(coverage);
         else assertNull(coverage);

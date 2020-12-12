@@ -571,7 +571,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         final int numSources = sources.size();
 
         // get first image as reference
-        RenderedImage first = (RenderedImage) sources.get(0);
+        RenderedImage first = sources.get(0);
         ColorModel firstColorModel = first.getColorModel();
         SampleModel firstSampleModel = first.getSampleModel();
 
@@ -596,7 +596,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         boolean hasUnsupportedTypes = false;
         int maxBands = firstBands;
         for (int i = 1; i < numSources; i++) {
-            RenderedImage source = (RenderedImage) sources.get(i);
+            RenderedImage source = sources.get(i);
             SampleModel sourceSampleModel = source.getSampleModel();
             ColorModel sourceColorModel = source.getColorModel();
             int sourceBands = sourceSampleModel.getNumBands();

@@ -301,6 +301,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *
      * @return a string representing the filter encoded to SQL.
      */
+    @SuppressWarnings("PMD.CloseResource")
     public String encodeToString(Filter filter) throws FilterToSQLException {
         StringWriter out = new StringWriter();
         this.out = out;
@@ -329,6 +330,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *
      * @return a string representing the filter encoded to SQL.
      */
+    @SuppressWarnings("PMD.CloseResource")
     public String encodeToString(Expression expression) throws FilterToSQLException {
         StringWriter out = new StringWriter();
         this.out = out;
@@ -469,9 +471,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     public Object visit(PropertyIsBetween filter, Object extraData) throws RuntimeException {
         LOGGER.finer("exporting PropertyIsBetween");
 
-        Expression expr = (Expression) filter.getExpression();
-        Expression lowerbounds = (Expression) filter.getLowerBoundary();
-        Expression upperbounds = (Expression) filter.getUpperBoundary();
+        Expression expr = filter.getExpression();
+        Expression lowerbounds = filter.getLowerBoundary();
+        Expression upperbounds = filter.getUpperBoundary();
 
         Class context;
         AttributeDescriptor attType = (AttributeDescriptor) expr.evaluate(featureType);
@@ -634,7 +636,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 Map.Entry<Object, List<Literal>> entry = iterator.next();
                 if (entry.getKey() instanceof PropertyName) {
                     PropertyName pn = (PropertyName) entry.getKey();
-                    List<Literal> literals = (List<Literal>) entry.getValue();
+                    List<Literal> literals = entry.getValue();
 
                     pn.accept(this, extraData);
                     Class binding = getExpressionType(pn);
@@ -736,7 +738,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data (unused by this method)
      */
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        visitBinaryComparisonOperator((BinaryComparisonOperator) filter, "=");
+        visitBinaryComparisonOperator(filter, "=");
         return extraData;
     }
 
@@ -747,7 +749,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data (unused by this method)
      */
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
-        visitBinaryComparisonOperator((BinaryComparisonOperator) filter, ">=");
+        visitBinaryComparisonOperator(filter, ">=");
         return extraData;
     }
 
@@ -758,7 +760,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data (unused by this method)
      */
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
-        visitBinaryComparisonOperator((BinaryComparisonOperator) filter, ">");
+        visitBinaryComparisonOperator(filter, ">");
         return extraData;
     }
 
@@ -769,7 +771,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data (unused by this method)
      */
     public Object visit(PropertyIsLessThan filter, Object extraData) {
-        visitBinaryComparisonOperator((BinaryComparisonOperator) filter, "<");
+        visitBinaryComparisonOperator(filter, "<");
         return extraData;
     }
 
@@ -780,7 +782,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data (unused by this method)
      */
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
-        visitBinaryComparisonOperator((BinaryComparisonOperator) filter, "<=");
+        visitBinaryComparisonOperator(filter, "<=");
         return extraData;
     }
 
@@ -791,7 +793,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data (unused by this method)
      */
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
-        visitBinaryComparisonOperator((BinaryComparisonOperator) filter, "!=");
+        visitBinaryComparisonOperator(filter, "!=");
         return extraData;
     }
 
@@ -1173,47 +1175,47 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     public Object visit(BBOX filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(Beyond filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(Contains filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(Crosses filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(Disjoint filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(DWithin filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(Equals filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(Intersects filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(Overlaps filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(Touches filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     public Object visit(Within filter, Object extraData) {
-        return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
+        return visitBinarySpatialOperator(filter, extraData);
     }
 
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Object extraData) {
@@ -1226,13 +1228,13 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                             + filter.getClass());
 
         // extract the property name and the geometry literal
-        BinarySpatialOperator op = (BinarySpatialOperator) filter;
+        BinarySpatialOperator op = filter;
         Expression e1 = op.getExpression1();
         Expression e2 = op.getExpression2();
 
         if (e1 instanceof Literal && e2 instanceof PropertyName) {
-            e1 = (PropertyName) op.getExpression2();
-            e2 = (Literal) op.getExpression1();
+            e1 = op.getExpression2();
+            e2 = op.getExpression1();
         }
 
         if (e1 instanceof PropertyName) {
@@ -1300,8 +1302,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         Expression e2 = filter.getExpression2();
 
         if (e1 instanceof Literal && e2 instanceof PropertyName) {
-            e1 = (PropertyName) filter.getExpression2();
-            e2 = (Literal) filter.getExpression1();
+            e1 = filter.getExpression2();
+            e2 = filter.getExpression1();
         }
 
         if (e1 instanceof PropertyName && e2 instanceof Literal) {
@@ -1702,7 +1704,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             out.write("]");
         } else {
             // we don't know the type...just convert back to a string
-            String encoding = (String) Converters.convert(literal, String.class, null);
+            String encoding = Converters.convert(literal, String.class, null);
             if (encoding == null) {
                 // could not convert back to string, use original l value
                 encoding = literal.toString();
@@ -1730,19 +1732,19 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     public Object visit(Add expression, Object extraData) {
-        return visit((BinaryExpression) expression, "+", extraData);
+        return visit(expression, "+", extraData);
     }
 
     public Object visit(Divide expression, Object extraData) {
-        return visit((BinaryExpression) expression, "/", extraData);
+        return visit(expression, "/", extraData);
     }
 
     public Object visit(Multiply expression, Object extraData) {
-        return visit((BinaryExpression) expression, "*", extraData);
+        return visit(expression, "*", extraData);
     }
 
     public Object visit(Subtract expression, Object extraData) {
-        return visit((BinaryExpression) expression, "-", extraData);
+        return visit(expression, "-", extraData);
     }
 
     /**

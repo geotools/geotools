@@ -685,7 +685,7 @@ public class ImageMosaicConfigHandler {
                                     try {
                                         geometryHandler.handleGranule(
                                                 fileBeingProcessed,
-                                                (StructuredGridCoverage2DReader) inputReader,
+                                                inputReader,
                                                 destFeature,
                                                 destFeature.getFeatureType(),
                                                 sourceFeature,

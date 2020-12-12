@@ -72,14 +72,14 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
         PropertyName p = ff.property(aname("geom"));
         Literal collect = ff.literal(ml);
 
-        DWithin dwithinGeomCo = ((FilterFactory2) ff).dwithin(p, collect, 5, "meter");
+        DWithin dwithinGeomCo = ff.dwithin(p, collect, 5, "meter");
         Query dq = new Query(tname("road"), dwithinGeomCo);
         SimpleFeatureCollection features =
                 dataStore.getFeatureSource(tname("road")).getFeatures(dq);
         int numFeatures = features.size();
         assertEquals(2, numFeatures);
 
-        Beyond beyondGeomCo = ((FilterFactory2) ff).beyond(p, collect, 5, "meter");
+        Beyond beyondGeomCo = ff.beyond(p, collect, 5, "meter");
         dq = new Query(tname("road"), beyondGeomCo);
         features = dataStore.getFeatureSource(tname("road")).getFeatures(dq);
         numFeatures = features.size();

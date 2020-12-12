@@ -188,7 +188,7 @@ class TriangulationFactory {
 
         // Finds shared and unshared vertices
         for (Iterator<DirectPosition> i = ABCvertices.iterator(); i.hasNext(); ) {
-            DirectPosition vertex = (DirectPosition) i.next();
+            DirectPosition vertex = i.next();
 
             if (!BCDvertices.contains(vertex)) {
                 unsharedVertices.add(vertex);
@@ -238,7 +238,7 @@ class TriangulationFactory {
         }
 
         for (Iterator<TINTriangle> i = BCD.getAdjacentTriangles().iterator(); i.hasNext(); ) {
-            TINTriangle trig = (TINTriangle) i.next();
+            TINTriangle trig = i.next();
             trig.removeAdjacent(BCD);
             trig.tryToAddAdjacent(list);
         }
@@ -254,7 +254,7 @@ class TriangulationFactory {
      */
     private TINTriangle triangleContains(DirectPosition p) {
         for (Iterator<TINTriangle> i = triangles.iterator(); i.hasNext(); ) {
-            TINTriangle triangle = (TINTriangle) i.next();
+            TINTriangle triangle = i.next();
 
             if (triangle.containsOrIsVertex(p)) {
                 return triangle;

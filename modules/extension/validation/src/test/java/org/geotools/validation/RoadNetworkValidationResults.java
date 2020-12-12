@@ -107,7 +107,7 @@ public class RoadNetworkValidationResults implements ValidationResults {
     public String[] getFailedMessages() {
         String[] result = new String[failureMessages.size()];
         for (int i = 0; i < failureMessages.size(); i++) {
-            result[i] = (String) failureMessages.get(i);
+            result[i] = failureMessages.get(i);
         }
 
         return result;
@@ -121,7 +121,7 @@ public class RoadNetworkValidationResults implements ValidationResults {
     public String[] getWarningMessages() {
         String[] result = new String[warningMessages.size()];
         for (int i = 0; i < warningMessages.size(); i++) {
-            result[i] = (String) warningMessages.get(i);
+            result[i] = warningMessages.get(i);
         }
 
         return result;

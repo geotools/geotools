@@ -62,6 +62,6 @@ public class FilterFunction_max_2 extends FunctionExpressionImpl {
                     "Filter Function problem for function max argument #1 - expected type long");
         }
 
-        return (long) Math.max((Long) arg0, (Long) arg1);
+        return Math.max((Long) arg0, (Long) arg1);
     }
 }

@@ -126,7 +126,7 @@ public class VPFFileStore extends ContentDataStore {
         SimpleFeatureType result = null;
 
         if (files.containsKey(pathName)) {
-            result = (SimpleFeatureType) files.get(pathName);
+            result = files.get(pathName);
         } else {
             try {
                 VPFFile file = findFile(pathName);
@@ -187,7 +187,7 @@ public class VPFFileStore extends ContentDataStore {
             ArrayList<String> newMatches = new ArrayList<>();
 
             for (Iterator<String> it = matches.iterator(); it.hasNext(); ) {
-                String match = (String) it.next();
+                String match = it.next();
                 String tmp = match + File.separator + curr;
 
                 if (new File(tmp).exists()) newMatches.add(tmp);
@@ -212,6 +212,6 @@ public class VPFFileStore extends ContentDataStore {
             throw new FileNotFoundException("Could not find file: " + pathName);
         }
 
-        return new VPFFile((String) matches.get(0));
+        return new VPFFile(matches.get(0));
     }
 }

@@ -193,7 +193,7 @@ public class GribTest extends Assert {
             throws MalformedURLException, IOException {
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
 
         assertTrue(format.accepts(inputFile));
 
@@ -239,7 +239,7 @@ public class GribTest extends Assert {
         final File inputFile = TestData.file(this, "sampleGrib.grb2");
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
         assertTrue(format.accepts(inputFile));
         AbstractGridCoverage2DReader reader = null;
         assertNotNull(format);
@@ -297,7 +297,7 @@ public class GribTest extends Assert {
         final File inputFile = TestData.file(this, "tpcprblty.2019100912.incremental.grib2");
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
         assertTrue(format.accepts(inputFile));
         AbstractGridCoverage2DReader reader = null;
         assertNotNull(format);

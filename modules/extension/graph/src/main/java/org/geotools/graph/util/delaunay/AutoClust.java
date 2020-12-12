@@ -96,7 +96,7 @@ public class AutoClust {
         while (anotherNodeIt.hasNext()) {
             DelaunayNode next = (DelaunayNode) anotherNodeIt.next();
             List localEdges = AutoClustUtils.findAdjacentEdges(next, edges);
-            AutoClustData acd = (AutoClustData) map.get(next);
+            AutoClustData acd = map.get(next);
             Iterator edgeIt = localEdges.iterator();
             Vector<Edge> shortEdges = new Vector<>();
             Vector<Edge> longEdges = new Vector<>();
@@ -151,7 +151,7 @@ public class AutoClust {
         Iterator nodeIt3 = nodes.iterator();
         while (nodeIt3.hasNext()) {
             DelaunayNode next = (DelaunayNode) nodeIt3.next();
-            AutoClustData acd = (AutoClustData) map.get(next);
+            AutoClustData acd = map.get(next);
             List shortEdges = acd.getShortEdges();
             List longEdges = acd.getLongEdges();
             edges.removeAll(shortEdges);
@@ -170,7 +170,7 @@ public class AutoClust {
         Iterator nodeIt4 = nodes.iterator();
         while (nodeIt4.hasNext()) {
             DelaunayNode next = (DelaunayNode) nodeIt4.next();
-            AutoClustData acd = (AutoClustData) map.get(next);
+            AutoClustData acd = map.get(next);
             List<Edge> shortEdges = acd.getShortEdges();
             if (!(shortEdges.isEmpty())) {
                 Vector<Graph> shortlyConnectedComponents = new Vector<>();
@@ -196,7 +196,7 @@ public class AutoClust {
                         }
                     }
                 } else {
-                    cv = (Graph) shortlyConnectedComponents.get(0);
+                    cv = shortlyConnectedComponents.get(0);
                 }
                 Iterator shortIt2 = shortEdges.iterator();
                 while (shortIt2.hasNext()) {
@@ -212,7 +212,7 @@ public class AutoClust {
                 Vector<Graph> shortlyConnectedComponents = new Vector<>();
                 Iterator<Edge> shortIt = shortEdges.iterator();
                 while (shortIt.hasNext()) {
-                    Edge nextEdge = (Edge) shortIt.next();
+                    Edge nextEdge = shortIt.next();
                     Node other = nextEdge.getOtherNode(next);
                     Graph g = getMyComponent(other, connectedComponents);
                     if (!(shortlyConnectedComponents.contains(g))) {

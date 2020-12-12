@@ -240,7 +240,7 @@ public class CQLJsonCompiler implements ICompiler {
                     out = builder.convertOr(filtersOr);
                     break;
                 case "Predicates": // This is Not, which can apply to any predicates
-                    Filter notFilter = convertToFilter((Predicates) processedNotNull);
+                    Filter notFilter = convertToFilter(processedNotNull);
                     out = builder.convertNot(notFilter);
                     break;
                 case "Lte":

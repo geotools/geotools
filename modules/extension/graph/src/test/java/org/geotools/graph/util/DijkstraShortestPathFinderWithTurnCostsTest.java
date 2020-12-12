@@ -25,7 +25,6 @@ import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
 import org.locationtech.jts.geom.Coordinate;
@@ -79,8 +78,7 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
 
         // create the path finder
         DijkstraShortestPathFinder pf =
-                new DijkstraShortestPathFinder(
-                        graph, (Graphable) source, costFunction(), tcostFunction());
+                new DijkstraShortestPathFinder(graph, source, costFunction(), tcostFunction());
 
         pf.calculate();
 
@@ -89,7 +87,7 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
         while (it1.hasNext()) {
             Node d = (Node) it1.next();
 
-            Path path = pf.getPath((Graphable) d);
+            Path path = pf.getPath(d);
 
             gotArray.add(pf.getCost(d));
         }

@@ -28,7 +28,6 @@ import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.function.PropertyExistsFunction;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
@@ -326,7 +325,7 @@ public final class ECQLTest {
     public void functionExpressionToCQL() throws Exception {
 
         Expression[] absArgs = new Expression[1];
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         absArgs[0] = ff.literal(10);
         Function abs = ff.function("abs", absArgs);
 

@@ -290,7 +290,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
             //            }
             //            insideFeature = false;
             for (int i = 0, ii = attributes.size(); i < ii; i++) {
-                String name = (String) attributeNames.get(i);
+                String name = attributeNames.get(i);
                 Class clazz = attributes.get(i).getClass();
                 tb.add(name, clazz);
             }

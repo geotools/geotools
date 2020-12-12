@@ -249,7 +249,7 @@ public class ParserSyntheticTest extends CssBaseTest {
                 0,
                 "mark",
                 new Value.Function(
-                        "symbol", Collections.singletonList((Value) new Value.Literal("circle"))));
+                        "symbol", Collections.singletonList(new Value.Literal("circle"))));
     }
 
     @Test

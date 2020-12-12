@@ -98,7 +98,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
     }
 
     public void testTime() throws Exception {
-        Integer nil = (Integer) null;
+        Integer nil = null;
         java.sql.Time expected;
 
         expected = new java.sql.Time(timestamp(nil, nil, nil, 10, 53, 24));

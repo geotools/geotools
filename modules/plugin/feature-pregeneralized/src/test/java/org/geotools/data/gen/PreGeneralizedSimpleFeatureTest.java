@@ -18,7 +18,6 @@
 package org.geotools.data.gen;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.data.DataStore;
@@ -34,7 +33,6 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
 import org.junit.Assert;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class PreGeneralizedSimpleFeatureTest extends TestCase {
@@ -299,7 +297,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             }
 
             try {
-                feature1.setValue((Collection<Property>) null);
+                feature1.setValue(null);
             } catch (UnsupportedOperationException ex) {
                 error = false;
             }

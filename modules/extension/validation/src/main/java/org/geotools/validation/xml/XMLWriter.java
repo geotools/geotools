@@ -97,7 +97,7 @@ public class XMLWriter {
                 Iterator i = dto.getArgs().keySet().iterator();
 
                 while (i.hasNext()) {
-                    writeArgument((ArgumentDTO) dto.getArgs().get(i.next()), w);
+                    writeArgument(dto.getArgs().get(i.next()), w);
                 }
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -134,7 +134,7 @@ public class XMLWriter {
                 Iterator i = dto.getTests().keySet().iterator();
 
                 while (i.hasNext()) {
-                    writeTest((TestDTO) dto.getTests().get(i.next()), w);
+                    writeTest(dto.getTests().get(i.next()), w);
                 }
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

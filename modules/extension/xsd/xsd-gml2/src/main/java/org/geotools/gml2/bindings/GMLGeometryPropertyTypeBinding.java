@@ -87,7 +87,7 @@ public class GMLGeometryPropertyTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        return (Geometry) value;
+        return value;
     }
 
     @Override

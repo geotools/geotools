@@ -109,7 +109,7 @@ public class SLDFeatureTypeConstraintBinding extends AbstractComplexBinding {
 
         @SuppressWarnings("unchecked")
         List<Extent> extentList = node.getChildValues("Extent");
-        Extent[] extents = (Extent[]) extentList.toArray(new Extent[extentList.size()]);
+        Extent[] extents = extentList.toArray(new Extent[extentList.size()]);
 
         return styleFactory.createFeatureTypeConstraint(featureTypeName, filter, extents);
     }

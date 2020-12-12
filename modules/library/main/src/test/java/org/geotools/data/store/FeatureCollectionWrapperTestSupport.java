@@ -49,7 +49,7 @@ public class FeatureCollectionWrapperTestSupport extends TestCase {
         typeBuilder.add("otherGeom", LineString.class);
         typeBuilder.setDefaultGeometry("defaultGeom");
 
-        SimpleFeatureType featureType = (SimpleFeatureType) typeBuilder.buildFeatureType();
+        SimpleFeatureType featureType = typeBuilder.buildFeatureType();
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
 

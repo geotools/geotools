@@ -1634,7 +1634,7 @@ public class GridCoverageRendererTest {
         symbolizer.setChannelSelection(chSel);
         symbolizer.setOpacity(sldBuilder.literalExpression(1.0));
 
-        Graphics2D graphics = ((BufferedImage) TestMultiBandReader.image).createGraphics();
+        Graphics2D graphics = TestMultiBandReader.image.createGraphics();
         renderer.paint(
                 graphics,
                 reader,
@@ -1945,8 +1945,7 @@ public class GridCoverageRendererTest {
         symbolizer.setChannelSelection(
                 sf.createChannelSelection(
                         new SelectedChannelType[] {
-                            sf.createSelectedChannelType(
-                                    String.valueOf(band), (ContrastEnhancement) null)
+                            sf.createSelectedChannelType(String.valueOf(band), null)
                         }));
         return symbolizer;
     }

@@ -95,7 +95,7 @@ public class LonLatEnvelopeTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         GeneralEnvelope envelope = (GeneralEnvelope) value;
 
-        List<Node> timePositions = (List<Node>) node.getChildren("timePosition");
+        List<Node> timePositions = node.getChildren("timePosition");
 
         if (timePositions != null && !timePositions.isEmpty()) {
             final Map<String, Object> properties = new HashMap<>(4);

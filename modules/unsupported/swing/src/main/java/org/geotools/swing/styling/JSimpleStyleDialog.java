@@ -187,7 +187,7 @@ public class JSimpleStyleDialog extends JDialog {
      * @return a new Style instance or null if the user cancels the dialog
      */
     public static Style showDialog(Component parent, DataStore dataStore) {
-        return showDialog(parent, dataStore, (Style) null);
+        return showDialog(parent, dataStore, null);
     }
 
     /**
@@ -221,7 +221,7 @@ public class JSimpleStyleDialog extends JDialog {
      * @return a new Style instance or null if the user cancels the dialog
      */
     public static Style showDialog(Component parent, SimpleFeatureType featureType) {
-        return showDialog(parent, featureType, (Style) null);
+        return showDialog(parent, featureType, null);
     }
 
     /**

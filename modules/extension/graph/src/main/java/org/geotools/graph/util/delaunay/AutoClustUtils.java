@@ -42,7 +42,7 @@ public class AutoClustUtils {
 
         Iterator<Node> nodesIt = nodes.iterator();
         while (nodesIt.hasNext()) {
-            Node next = (Node) nodesIt.next();
+            Node next = nodesIt.next();
             if (!(nodesVisited.contains(next))) {
                 Vector<Node> componentNodes = new Vector<>();
                 Vector<Edge> componentEdges = new Vector<>();
@@ -75,7 +75,7 @@ public class AutoClustUtils {
 
             Iterator<Edge> aeIt = adjacentEdges.iterator();
             while (aeIt.hasNext()) {
-                Edge next = (Edge) aeIt.next();
+                Edge next = aeIt.next();
                 //                LOGGER.finer("looking at edge " + next);
                 Node additionalNode = next.getOtherNode(node);
                 //                LOGGER.finer("its other node is " + additionalNode);

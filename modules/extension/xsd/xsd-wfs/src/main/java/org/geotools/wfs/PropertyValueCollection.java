@@ -122,7 +122,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
             if (values.isEmpty()) {
                 Object value = null;
                 while (it.hasNext()) {
-                    Feature f = (Feature) it.next();
+                    Feature f = it.next();
                     value = propertyName.evaluate(f);
                     if (value != null
                             && !(value instanceof Collection && ((Collection) value).isEmpty())) {

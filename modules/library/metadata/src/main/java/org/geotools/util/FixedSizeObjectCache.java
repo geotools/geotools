@@ -101,7 +101,7 @@ final class FixedSizeObjectCache<K, V> implements ObjectCache<K, V> {
 
     public void writeUnLock(final K key) {
         synchronized (locks) {
-            final ReentrantLock lock = (ReentrantLock) locks.get(key);
+            final ReentrantLock lock = locks.get(key);
             if (lock == null) {
                 throw new IllegalMonitorStateException("Cannot unlock prior to locking");
             }
@@ -117,7 +117,7 @@ final class FixedSizeObjectCache<K, V> implements ObjectCache<K, V> {
 
     boolean holdsLock(final K key) {
         synchronized (locks) {
-            final ReentrantLock lock = (ReentrantLock) locks.get(key);
+            final ReentrantLock lock = locks.get(key);
             if (lock != null) {
                 return lock.getHoldCount() != 0;
             }

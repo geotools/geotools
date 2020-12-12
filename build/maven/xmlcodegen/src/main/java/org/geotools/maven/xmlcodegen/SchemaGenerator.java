@@ -295,7 +295,7 @@ public class SchemaGenerator extends AbstractGenerator {
      * @return The imported schema, or null if non exists.
      */
     public Schema getImport(String namespace) {
-        return (Schema) imports.get(namespace);
+        return imports.get(namespace);
     }
 
     /**
@@ -500,12 +500,12 @@ public class SchemaGenerator extends AbstractGenerator {
 	
     protected AttributeType createType( XSDSimpleTypeDefinition xsdType, int depth ) {
         if (types.containsKey(xsdType)) {
-            return (AttributeType) types.get(xsdType);
+            return types.get(xsdType);
         }
 
         //import?
         if (!xsdType.getTargetNamespace().equals(schema.getTargetNamespace())) {
-            return (AttributeType) findType(xsdType);
+            return findType(xsdType);
         }
 
         //first build super type
@@ -544,7 +544,7 @@ public class SchemaGenerator extends AbstractGenerator {
                 
 		//already processed?
 		if (types.containsKey(xsdType)) {
-			return (AttributeType) types.get(xsdType);
+			return types.get(xsdType);
 		}
 		
 		//import?
@@ -659,7 +659,7 @@ public class SchemaGenerator extends AbstractGenerator {
                 Schema imported = (Schema) itr.next();
 
                 if (imported.containsKey(name)) {
-                    return (AttributeType) imported.get(name);
+                    return imported.get(name);
                 }
             }
         }

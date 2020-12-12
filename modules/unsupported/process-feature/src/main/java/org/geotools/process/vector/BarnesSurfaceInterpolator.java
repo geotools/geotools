@@ -272,7 +272,7 @@ public class BarnesSurfaceInterpolator {
         for (int i = 0; i < inputObs.length; i++) {
             Coordinate dp = inputObs[i];
             float del = (float) refinedDelta(dp.x, dp.y, convergenceFactor);
-            if (!Float.isNaN(del)) estimate[i] = (float) currEst[i] + del;
+            if (!Float.isNaN(del)) estimate[i] = currEst[i] + del;
             else estimate[i] = (float) inputObs[i].getZ();
         }
         return estimate;
@@ -290,7 +290,7 @@ public class BarnesSurfaceInterpolator {
                 double x = trans.x(i);
                 double y = trans.y(j);
 
-                grid[i][j] = (float) noDataValue;
+                grid[i][j] = noDataValue;
                 if (useObservationMask && !isSupportedGridPt(x, y)) continue;
 
                 float est = (float) estimatedValue(x, y);

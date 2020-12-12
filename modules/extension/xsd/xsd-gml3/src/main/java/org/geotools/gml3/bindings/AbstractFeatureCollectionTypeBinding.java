@@ -94,8 +94,7 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
         collection.addAll(childValues);
 
         // &lt;element minOccurs="0" ref="gml:featureMembers"/&gt;
-        SimpleFeature[] featureMembers =
-                (SimpleFeature[]) node.getChildValue(SimpleFeature[].class);
+        SimpleFeature[] featureMembers = node.getChildValue(SimpleFeature[].class);
 
         if (featureMembers != null) {
             for (int i = 0; i < featureMembers.length; i++) {

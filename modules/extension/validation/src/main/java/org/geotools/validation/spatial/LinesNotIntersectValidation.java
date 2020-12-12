@@ -76,7 +76,7 @@ public class LinesNotIntersectValidation extends LineLineAbstractValidation {
                     for (int i = 0; i < geoms.size(); i++) // for each existing geometry
                     {
                         // I don't trust this thing to work correctly
-                        if (geom.crosses((Geometry) geoms.get(i))) {
+                        if (geom.crosses(geoms.get(i))) {
                             results.error(feature, "Lines cross when they shouldn't.");
                             result = false;
                         }

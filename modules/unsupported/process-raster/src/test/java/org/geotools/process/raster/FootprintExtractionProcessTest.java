@@ -288,7 +288,7 @@ public class FootprintExtractionProcessTest {
             double fullArea = geometry.getArea();
 
             // Getting to the simplified Footprint
-            feature = (SimpleFeature) iter.next();
+            feature = iter.next();
             geometry = (Geometry) feature.getDefaultGeometry();
             double simplifiedArea = geometry.getArea();
 

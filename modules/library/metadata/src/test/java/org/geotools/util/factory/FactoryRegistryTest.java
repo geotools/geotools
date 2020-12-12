@@ -74,7 +74,7 @@ public final class FactoryRegistryTest {
             final Factory factory2,
             final Factory factory3) {
         @SuppressWarnings("unchecked")
-        final Set<Class<?>> categories = (Set) Collections.singleton(DummyFactory.class);
+        final Set<Class<?>> categories = Collections.singleton(DummyFactory.class);
         // The above line fails without the cast, I don't know why...
         final FactoryRegistry registry;
         if (creator) {

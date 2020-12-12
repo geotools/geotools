@@ -332,7 +332,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
     /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, double defaultValue) {
-        double scaleFactor = (double) scale.evaluate(null, Double.class);
+        double scaleFactor = scale.evaluate(null, Double.class);
         if (options.get(key) != null) {
             double rescaled = Converters.convert(options.get(key), Double.class) * scaleFactor;
             options.put(key, String.valueOf(rescaled));
@@ -343,7 +343,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
     /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
-        double scaleFactor = (double) scale.evaluate(null, Double.class);
+        double scaleFactor = scale.evaluate(null, Double.class);
         if (options.get(key) != null) {
             int rescaled =
                     (int)
@@ -358,7 +358,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
     /** Rescales the specified vendor option */
     protected void rescaleArrayOption(Map<String, String> options, String key, int defaultValue) {
-        double scaleFactor = (double) scale.evaluate(null, Double.class);
+        double scaleFactor = scale.evaluate(null, Double.class);
         if (options.get(key) != null) {
             String strValue = options.get(key);
             String[] splitted = strValue.split("\\s+");

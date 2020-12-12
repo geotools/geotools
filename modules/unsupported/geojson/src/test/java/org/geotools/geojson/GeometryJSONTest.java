@@ -522,12 +522,8 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     public void testGeometryCollectionRead() throws Exception {
-        assertEqual(
-                collection(),
-                (GeometryCollection) gjson.readGeometryCollection(reader(collectionText())));
-        assertEqual(
-                collection3d(),
-                (GeometryCollection) gjson.readGeometryCollection(reader(collection3dText())));
+        assertEqual(collection(), gjson.readGeometryCollection(reader(collectionText())));
+        assertEqual(collection3d(), gjson.readGeometryCollection(reader(collection3dText())));
     }
 
     public void testRead() throws Exception {

@@ -86,10 +86,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
             InternationalString description) {
         adaptee =
                 new BaseCoverageProcessingNode(
-                        maxSources,
-                        hints != null ? (Hints) hints.clone() : null,
-                        name,
-                        description) {
+                        maxSources, hints != null ? hints.clone() : null, name, description) {
 
                     protected GridCoverage execute() {
                         synchronized (StyleVisitorCoverageProcessingNodeAdapter.this) {

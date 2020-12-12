@@ -772,7 +772,7 @@ public class OperationJAI extends Operation2D {
                     result[numBands] = sampleDim;
                     continue;
                 }
-                categoryArray = (Category[]) categories.toArray(new Category[categories.size()]);
+                categoryArray = categories.toArray(new Category[categories.size()]);
                 indexOfQuantitative = getQuantitative(categoryArray);
                 if (indexOfQuantitative < 0) {
                     return null;
@@ -1169,7 +1169,7 @@ public class OperationJAI extends Operation2D {
 
         // Getting NoData propery
         NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
-        Range innerNodata = (Range) ((nodataProp != null) ? nodataProp.getAsRange() : null);
+        Range innerNodata = (nodataProp != null) ? nodataProp.getAsRange() : null;
         // Setting the NoData Range parameter if not present
         if (JAIExt.isJAIExtOperation(operationName) && noDataIndex >= 0) {
             Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);

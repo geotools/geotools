@@ -104,7 +104,7 @@ public class SLDColorMapBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ColorMap colorMap = styleFactory.createColorMap();
-        List entries = (List) node.getChildValues("ColorMapEntry");
+        List entries = node.getChildValues("ColorMapEntry");
 
         for (Iterator itr = entries.iterator(); itr.hasNext(); ) {
             colorMap.addColorMapEntry((ColorMapEntry) itr.next());

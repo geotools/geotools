@@ -298,7 +298,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
                                 : PositionalAccuracyImpl.DATUM_SHIFT_OMITTED
                     });
         } else {
-            properties = Collections.singletonMap(NAME_KEY, (Object) name);
+            properties = Collections.singletonMap(NAME_KEY, name);
         }
         return properties;
     }

@@ -132,7 +132,7 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         request.setBBox("366800,2170400,816000,2460400");
 
         // System.out.println(request.getFinalURL());
-        GetMapResponse response = (GetMapResponse) wms.issueRequest(request);
+        GetMapResponse response = wms.issueRequest(request);
 
         assertEquals(response.getContentType(), format);
         // System.out.println("Content Type: " + response.getContentType());
@@ -169,13 +169,13 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         String format = "image/gif";
         List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
         if (!formats.contains("image/gif")) {
-            format = (String) formats.get(0);
+            format = formats.get(0);
         }
         request.setFormat(format);
 
         request.setBBox("-93.239328320802,44.8440037593985,-92.976671679198,45.0409962406015");
 
-        GetMapResponse response = (GetMapResponse) wms.issueRequest(request);
+        GetMapResponse response = wms.issueRequest(request);
 
         BufferedImage image = ImageIO.read(response.getInputStream());
         assertNotNull(image);
@@ -247,7 +247,7 @@ public class WebMapServerOnlineTest extends ServerTestCase {
 
         WMSCapabilities caps = wms.getCapabilities();
 
-        Layer layer = (Layer) caps.getLayerList().get(0);
+        Layer layer = caps.getLayerList().get(0);
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
 
         GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
@@ -267,7 +267,7 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         assertEquals(envelope.getMaximum(0), 3.0728e+06, 0.0);
         assertEquals(envelope.getMaximum(1), 3.84e+06, 0.0);
 
-        layer = (Layer) caps.getLayerList().get(2);
+        layer = caps.getLayerList().get(2);
         crs = CRS.decode("EPSG:4326");
 
         envelope = wms.getEnvelope(layer, crs);

@@ -462,7 +462,7 @@ public class FeatureTypes {
             // use the default super type
             tb.setSuperType(ABSTRACT_FEATURE_TYPE);
         }
-        return (SimpleFeatureType) tb.buildFeatureType();
+        return tb.buildFeatureType();
     }
 
     /**

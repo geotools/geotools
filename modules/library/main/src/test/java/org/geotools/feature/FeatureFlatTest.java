@@ -69,32 +69,31 @@ public class FeatureFlatTest extends TestCase {
                         .equalsExact(gf.createPoint(new Coordinate(1, 2))));
         assertTrue(
                 "boolean retrieval and match",
-                ((Boolean) testFeature.getAttribute("testBoolean")).equals(Boolean.valueOf(true)));
+                testFeature.getAttribute("testBoolean").equals(Boolean.valueOf(true)));
         assertTrue(
                 "character retrieval and match",
-                ((Character) testFeature.getAttribute("testCharacter"))
-                        .equals(Character.valueOf('t')));
+                testFeature.getAttribute("testCharacter").equals(Character.valueOf('t')));
         assertTrue(
                 "byte retrieval and match",
-                ((Byte) testFeature.getAttribute("testByte")).equals(Byte.valueOf("10")));
+                testFeature.getAttribute("testByte").equals(Byte.valueOf("10")));
         assertTrue(
                 "short retrieval and match",
-                ((Short) testFeature.getAttribute("testShort")).equals(Short.valueOf("101")));
+                testFeature.getAttribute("testShort").equals(Short.valueOf("101")));
         assertTrue(
                 "integer retrieval and match",
-                ((Integer) testFeature.getAttribute("testInteger")).equals(Integer.valueOf(1002)));
+                testFeature.getAttribute("testInteger").equals(Integer.valueOf(1002)));
         assertTrue(
                 "long retrieval and match",
-                ((Long) testFeature.getAttribute("testLong")).equals(Long.valueOf(10003)));
+                testFeature.getAttribute("testLong").equals(Long.valueOf(10003)));
         assertTrue(
                 "float retrieval and match",
-                ((Float) testFeature.getAttribute("testFloat")).equals(Float.valueOf(10000.4f)));
+                testFeature.getAttribute("testFloat").equals(Float.valueOf(10000.4f)));
         assertTrue(
                 "double retrieval and match",
-                ((Double) testFeature.getAttribute("testDouble")).equals(Double.valueOf(100000.5)));
+                testFeature.getAttribute("testDouble").equals(Double.valueOf(100000.5)));
         assertTrue(
                 "string retrieval and match",
-                ((String) testFeature.getAttribute("testString")).equals("test string data"));
+                testFeature.getAttribute("testString").equals("test string data"));
     }
 
     public void testBogusCreation() throws Exception {
@@ -163,7 +162,7 @@ public class FeatureFlatTest extends TestCase {
     }
 
     public void testToStringWontThrow() throws IllegalAttributeException {
-        SimpleFeature f = (SimpleFeature) SampleFeatureFixtures.createFeature();
+        SimpleFeature f = SampleFeatureFixtures.createFeature();
         f.setAttributes(new Object[f.getAttributeCount()]);
         String s = f.toString();
     }

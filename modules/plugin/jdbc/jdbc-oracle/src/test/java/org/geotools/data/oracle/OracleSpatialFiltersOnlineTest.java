@@ -84,7 +84,7 @@ public class OracleSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest
         PropertyName geomName = ff.property(aname("geom"));
         Literal lit = ff.literal(geometry);
 
-        DWithin dwithinGeomFilter = ((FilterFactory2) ff).dwithin(geomName, lit, distance, unit);
+        DWithin dwithinGeomFilter = ff.dwithin(geomName, lit, distance, unit);
         Query query = new Query(tname("road"), dwithinGeomFilter);
         SimpleFeatureCollection features =
                 dataStore.getFeatureSource(tname("road")).getFeatures(query);

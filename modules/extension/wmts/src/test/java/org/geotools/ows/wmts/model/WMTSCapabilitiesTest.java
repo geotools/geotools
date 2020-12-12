@@ -94,7 +94,7 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertEquals("b_road_polyline", layers.get(20).getTitle());
             assertEquals("meridian:b_road_polyline", layers.get(20).getName());
 
-            CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
+            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -159,7 +159,7 @@ public class WMTSCapabilitiesTest extends TestCase {
                     14285750.5715,
                     capabilities.getMatrixSets().get(0).getMatrices().get(0).getDenominator());
 
-            CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
+            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
 
         } catch (Exception e) {
@@ -209,7 +209,7 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertTrue(
                     "Bad dimension name (Time!=" + dimName + ")", "Time".equalsIgnoreCase(dimName));
 
-            CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
+            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
 
         } catch (Exception e) {

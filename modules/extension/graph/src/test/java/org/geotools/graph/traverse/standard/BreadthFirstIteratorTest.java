@@ -452,7 +452,7 @@ public class BreadthFirstIteratorTest extends TestCase {
                         return (Graph.FAIL_QUERY);
                     }
                 };
-        Node source = (Node) builder().getGraph().queryNodes(visitor).get(0);
+        Node source = builder().getGraph().queryNodes(visitor).get(0);
 
         CountingWalker walker = new CountingWalker();
         BreadthFirstIterator iterator = createIterator();

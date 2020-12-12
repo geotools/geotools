@@ -69,7 +69,7 @@ public class DirectoryDataStore implements DataStore {
         } else if (fs instanceof FeatureStore) {
             return new DirectoryFeatureStore((SimpleFeatureStore) fs);
         } else {
-            return new DirectoryFeatureSource((SimpleFeatureSource) fs);
+            return new DirectoryFeatureSource(fs);
         }
     }
 

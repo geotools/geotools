@@ -304,7 +304,7 @@ public final class MathTransformTest {
             ctr.transform(sourcePt, 0, targetPt, 0, numPts);
             for (int i = random.nextInt(2) + 1; --i >= 0; ) {
                 final MathTransform1D step = getRandomTransform1D();
-                ctr = (MathTransform1D) factory.createConcatenatedTransform(ctr, step);
+                ctr = factory.createConcatenatedTransform(ctr, step);
                 step.transform(targetPt, 0, targetPt, 0, numPts);
             }
             ctr.transform(sourcePt, 0, compare, 0, numPts);

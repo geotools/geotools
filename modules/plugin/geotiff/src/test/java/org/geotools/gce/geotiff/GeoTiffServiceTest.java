@@ -36,7 +36,7 @@ public class GeoTiffServiceTest {
         boolean found = false;
 
         while (list.hasNext()) {
-            GridFormatFactorySpi fac = (GridFormatFactorySpi) list.next();
+            GridFormatFactorySpi fac = list.next();
 
             if (fac instanceof GeoTiffFormatFactorySpi) {
                 found = true;

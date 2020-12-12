@@ -259,7 +259,7 @@ public class GeoJSONUtil {
     }
 
     public static Coordinate[] createCoordinates(List<Coordinate> coordinates) {
-        return (Coordinate[]) coordinates.toArray(new Coordinate[coordinates.size()]);
+        return coordinates.toArray(new Coordinate[coordinates.size()]);
     }
 
     @SuppressWarnings("unchecked")

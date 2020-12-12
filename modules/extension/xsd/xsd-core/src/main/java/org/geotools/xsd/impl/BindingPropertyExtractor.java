@@ -227,7 +227,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                 // process the particles in order in which we got the properties
                 for (Iterator p = executor.getProperties().iterator(); p.hasNext(); ) {
                     Object[] property = (Object[]) p.next();
-                    Collection values = (Collection) map.get(property[0]);
+                    Collection values = map.get(property[0]);
 
                     QName name;
                     if (property[0] instanceof XSDParticle) {
@@ -236,7 +236,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                         name = (QName) property[0];
                     }
 
-                    XSDParticle particle = (XSDParticle) particles.get(name);
+                    XSDParticle particle = particles.get(name);
 
                     if (particle == null) {
                         continue; // already processed, must be a multi property

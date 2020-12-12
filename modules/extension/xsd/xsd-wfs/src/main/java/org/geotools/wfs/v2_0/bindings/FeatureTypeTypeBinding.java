@@ -58,7 +58,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
             if (value instanceof String) {
                 stringValue = (String) value;
             } else if (value instanceof URI) {
-                stringValue = ((URI) value).toString();
+                stringValue = value.toString();
             }
 
             if (stringValue != null) {
@@ -78,7 +78,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
                 value = formatListAsString;
             } else {
                 if (value instanceof URI) {
-                    value = ((URI) value).toString();
+                    value = value.toString();
                 }
             }
         } else if ("Keywords".equals(property)) {
@@ -97,7 +97,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
                 OutputFormatListType oflt = ((FeatureTypeType) object).getOutputFormats();
 
                 if (oflt == null) {
-                    oflt = ((Wfs20Factory) factory).createOutputFormatListType();
+                    oflt = factory.createOutputFormatListType();
                 }
 
                 if (value instanceof Map<?, ?>) {

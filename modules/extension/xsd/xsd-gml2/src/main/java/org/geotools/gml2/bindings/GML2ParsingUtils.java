@@ -282,7 +282,7 @@ public class GML2ParsingUtils {
             }
 
             // get the last binding in the chain to execute
-            Binding last = ((Binding) bindings.get(bindings.size() - 1));
+            Binding last = bindings.get(bindings.size() - 1);
             Class theClass = last.getType();
 
             if (theClass == null) {
@@ -439,17 +439,13 @@ public class GML2ParsingUtils {
         GeometryCollection gc = null;
 
         if (MultiPoint.class.isAssignableFrom(clazz)) {
-            gc = gFactory.createMultiPoint((Point[]) geoms.toArray(new Point[geoms.size()]));
+            gc = gFactory.createMultiPoint(geoms.toArray(new Point[geoms.size()]));
         } else if (MultiLineString.class.isAssignableFrom(clazz)) {
-            gc =
-                    gFactory.createMultiLineString(
-                            (LineString[]) geoms.toArray(new LineString[geoms.size()]));
+            gc = gFactory.createMultiLineString(geoms.toArray(new LineString[geoms.size()]));
         } else if (MultiPolygon.class.isAssignableFrom(clazz)) {
-            gc = gFactory.createMultiPolygon((Polygon[]) geoms.toArray(new Polygon[geoms.size()]));
+            gc = gFactory.createMultiPolygon(geoms.toArray(new Polygon[geoms.size()]));
         } else {
-            gc =
-                    gFactory.createGeometryCollection(
-                            (Geometry[]) geoms.toArray(new Geometry[geoms.size()]));
+            gc = gFactory.createGeometryCollection(geoms.toArray(new Geometry[geoms.size()]));
         }
 
         // set an srs if there is one

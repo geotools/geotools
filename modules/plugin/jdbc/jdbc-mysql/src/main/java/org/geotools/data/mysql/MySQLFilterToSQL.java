@@ -93,10 +93,10 @@ public class MySQLFilterToSQL extends FilterToSQL {
 
         if (usePreciseSpatialOps) {
             return visitBinarySpatialOperatorEnhanced(
-                    filter, (Expression) property, (Expression) geometry, swapped, extraData);
+                    filter, property, geometry, swapped, extraData);
         } else {
             return visitBinarySpatialOperator(
-                    filter, (Expression) property, (Expression) geometry, swapped, extraData);
+                    filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 

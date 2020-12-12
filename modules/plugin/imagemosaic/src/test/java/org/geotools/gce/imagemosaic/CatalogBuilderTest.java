@@ -166,7 +166,7 @@ public class CatalogBuilderTest extends Assert {
         assertTrue(relativeMosaic.exists());
 
         assertTrue(new ImageMosaicFormat().accepts(relativeMosaic));
-        reader = (ImageMosaicReader) new ImageMosaicReader(relativeMosaic);
+        reader = new ImageMosaicReader(relativeMosaic);
 
         // limit yourself to reading just a bit of it
         gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
@@ -183,7 +183,7 @@ public class CatalogBuilderTest extends Assert {
         // use imageio with defined tiles
 
         // Test the output coverage
-        coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg, useJai, tileSize});
+        coverage = reader.read(new GeneralParameterValue[] {gg, useJai, tileSize});
         Assert.assertNotNull(coverage);
         PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
 
@@ -242,7 +242,7 @@ public class CatalogBuilderTest extends Assert {
         }
 
         assertTrue(new ImageMosaicFormat().accepts(absoluteMosaic));
-        reader = (ImageMosaicReader) new ImageMosaicReader(absoluteMosaic);
+        reader = new ImageMosaicReader(absoluteMosaic);
 
         // limit yourself to reading just a bit of it
         gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
@@ -259,7 +259,7 @@ public class CatalogBuilderTest extends Assert {
         // use imageio with defined tiles
 
         // Test the output coverage
-        coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg, useJai, tileSize});
+        coverage = reader.read(new GeneralParameterValue[] {gg, useJai, tileSize});
         Assert.assertNotNull(coverage);
         PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
 
@@ -316,7 +316,7 @@ public class CatalogBuilderTest extends Assert {
             assertTrue(value.toLowerCase().equals("false"));
 
             assertTrue(new ImageMosaicFormat().accepts(relativeMosaic));
-            reader = (ImageMosaicReader) new ImageMosaicReader(relativeMosaic);
+            reader = new ImageMosaicReader(relativeMosaic);
 
             GranuleCatalog catalog = reader.getRasterManager(reader.defaultName).granuleCatalog;
             assertTrue(catalog.getClass().toString().endsWith("GTDataStoreGranuleCatalog"));
@@ -359,7 +359,7 @@ public class CatalogBuilderTest extends Assert {
             assertTrue(relativeMosaic.exists());
 
             assertTrue(new ImageMosaicFormat().accepts(relativeMosaic));
-            reader = (ImageMosaicReader) new ImageMosaicReader(relativeMosaic);
+            reader = new ImageMosaicReader(relativeMosaic);
 
             GranuleCatalog catalog = reader.getRasterManager(reader.defaultName).granuleCatalog;
             assertTrue(catalog.getClass().toString().endsWith("STRTreeGranuleCatalog"));

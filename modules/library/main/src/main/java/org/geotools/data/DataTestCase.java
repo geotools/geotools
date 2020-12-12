@@ -101,7 +101,7 @@ public class DataTestCase extends TestCase {
 
     /** Invoked before a test is run. The default implementation invokes {@link #dataSetUp}. */
     protected void setUp() throws Exception {
-        ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory2(null);
         dataSetUp();
     }
 

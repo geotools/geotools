@@ -91,7 +91,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
      * @return an array of the attribute names found so far during the visit
      */
     public String[] getAttributeNames() {
-        return (String[]) attributeNames.toArray(new String[attributeNames.size()]);
+        return attributeNames.toArray(new String[attributeNames.size()]);
     }
 
     /** Resets the attributes found so that a new attribute search can be performed */

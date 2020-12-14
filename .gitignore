@@ -18,3 +18,7 @@ workspace
 *.db
 .metadata
 .gradle
+
+# Microsoft Visual Studio Code
+.vscode/
+_build

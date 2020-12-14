@@ -112,6 +112,9 @@ public abstract class Tile implements ImageLoader {
     /** A delegate to proved direct loading or load from a disk (cache). */
     private ImageLoader imageLoader = this;
 
+    /** The initiating service */
+    protected TileService service = null;
+
     public void setImageLoader(ImageLoader imageLoader) {
         if (imageLoader == null) {
             throw new IllegalArgumentException("ImageLoader cannot be null");
@@ -134,6 +137,12 @@ public abstract class Tile implements ImageLoader {
             throw new IllegalArgumentException("TileIdentifier cannot be null");
         }
         this.tileIdentifier = tileId;
+    }
+
+    public Tile(TileIdentifier tileId, ReferencedEnvelope env, int tileSize, TileService service) {
+        this(tileId, env, tileSize);
+        imageLoader = service;
+        this.service = service;
     }
 
     public void setStateChangedListener(TileStateChangedListener listener) {
@@ -171,6 +180,7 @@ public abstract class Tile implements ImageLoader {
         }
     }
 
+    @Deprecated
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
         return ImageIOExt.readBufferedImage(getUrl());
     }

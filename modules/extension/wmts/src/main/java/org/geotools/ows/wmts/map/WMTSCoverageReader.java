@@ -303,6 +303,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             ReferencedEnvelope global = null;
             for (Tile tile : responses) {
                 ReferencedEnvelope extent = tile.getExtent();
+                extent = toEastNorthAxisOrder(extent);
+
                 if (global == null) {
                     global = new ReferencedEnvelope(extent);
                 } else {
@@ -326,9 +328,20 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             renderTiles(responses, image.createGraphics(), requestedEnvelope, targetTransform);
 
             return gcf.create(layer.getTitle(), image, global);
-        } catch (ServiceException e) {
+        } catch (ServiceException | FactoryException | TransformException e) {
             throw new IOException("GetMap failed", e);
         }
+    }
+
+    private ReferencedEnvelope toEastNorthAxisOrder(ReferencedEnvelope extent)
+            throws FactoryException, TransformException {
+        CoordinateReferenceSystem crsExtent = extent.getCoordinateReferenceSystem();
+        if (CRS.getAxisOrder(crsExtent) == CRS.AxisOrder.NORTH_EAST) {
+            String srsExtent = CRS.toSRS(crsExtent);
+            crsExtent = CRS.decode(srsExtent, true);
+            extent = extent.transform(crsExtent, false);
+        }
+        return extent;
     }
 
     protected void renderTiles(

@@ -303,6 +303,9 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             ReferencedEnvelope global = null;
             for (Tile tile : responses) {
                 ReferencedEnvelope extent = tile.getExtent();
+                // ensure the extent has EAST_NORTH axis order because otherwise
+                // RendererUtilities.worldToScreenTransform will produce
+                // incorrect results:
                 extent = toEastNorthAxisOrder(extent);
 
                 if (global == null) {
@@ -333,15 +336,24 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         }
     }
 
-    private ReferencedEnvelope toEastNorthAxisOrder(ReferencedEnvelope extent)
+    /**
+     * Checks if a referenced envelope has EAST_NORTH axis order and if not
+     * creates a copy with EAST_NORTH axis order.
+     *
+     * @param envelope The referenced envelope.
+     * @return The referenced envelope eith EAST_NORTH axis order.
+     * @throws FactoryException
+     * @throws TransformException
+     */
+    private ReferencedEnvelope toEastNorthAxisOrder(ReferencedEnvelope envelope)
             throws FactoryException, TransformException {
-        CoordinateReferenceSystem crsExtent = extent.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem crsExtent = envelope.getCoordinateReferenceSystem();
         if (CRS.getAxisOrder(crsExtent) == CRS.AxisOrder.NORTH_EAST) {
             String srsExtent = CRS.toSRS(crsExtent);
             crsExtent = CRS.decode(srsExtent, true);
-            extent = extent.transform(crsExtent, false);
+            envelope = envelope.transform(crsExtent, false);
         }
-        return extent;
+        return envelope;
     }
 
     protected void renderTiles(

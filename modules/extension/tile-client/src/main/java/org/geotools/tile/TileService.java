@@ -329,6 +329,7 @@ public abstract class TileService implements ImageLoader {
         return tileList;
     }
 
+    /** Fetches the image from url given by tile. */
     @Override
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
         final HTTPResponse response = getHttpClient().get(tile.getUrl());

@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.logging.Logging;
@@ -180,9 +181,17 @@ public abstract class Tile implements ImageLoader {
         }
     }
 
-    @Deprecated
+    /**
+     * Implementation of ImageLoader. Has been moved to {@link
+     * org.geotools.tile.TileService#loadImageTileImage(Tile)}
+     */
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
-        return ImageIOExt.readBufferedImage(getUrl());
+        final HTTPResponse response = service.getHttpClient().get(tile.getUrl());
+        try {
+            return ImageIOExt.readBufferedImage(response.getResponseStream());
+        } finally {
+            response.dispose();
+        }
     }
 
     /**

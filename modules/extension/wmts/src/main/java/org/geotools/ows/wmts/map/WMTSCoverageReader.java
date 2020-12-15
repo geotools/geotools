@@ -337,8 +337,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     }
 
     /**
-     * Checks if a referenced envelope has EAST_NORTH axis order and if not
-     * creates a copy with EAST_NORTH axis order.
+     * Checks if a referenced envelope has EAST_NORTH axis order and if not creates a copy with
+     * EAST_NORTH axis order.
      *
      * @param envelope The referenced envelope.
      * @return The referenced envelope eith EAST_NORTH axis order.

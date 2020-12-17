@@ -1557,4 +1557,9 @@ public class PostGISDialect extends BasicSQLDialect {
         }
         return expression;
     }
+
+    @Override
+    public String[] getDesiredTablesType() {
+        return new String[] {"TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM", "PARTITIONED TABLE"};
+    }
 }

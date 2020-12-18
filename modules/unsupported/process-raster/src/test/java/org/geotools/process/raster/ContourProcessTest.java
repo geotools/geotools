@@ -20,9 +20,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -31,10 +38,18 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.GridReaderLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
+import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
+import org.geotools.xml.styling.SLDParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -226,5 +241,60 @@ public class ContourProcessTest {
         }
 
         return covFactory.create("coverage", DATA, worldEnv);
+    }
+
+    @Test
+    public void testContourWithTransformAndReprojection() throws Exception {
+        int width = 256;
+        int height = 256;
+        // The style with opacity will not use the screenmap.
+        int whiteSamples1 = countWhiteSamples("contour_with_opacity.sld", width, height);
+        // The style without opacity will use the screenmap.
+        int whiteSamples2 = countWhiteSamples("contour_without_opacity.sld", width, height);
+        // The white contour lines with the sample data and styles should cover about
+        // 0.25% of the rendered image regardless of whether the screenmap is used.
+        // The bug that this is testing would cause a large number of diagonal lines
+        // to be drawn across the image so the percentage of white pixels with the
+        // bug would be significantly higher.
+        double area = width * height;
+        assertEquals(0.0025, whiteSamples1 / area, 0.0005);
+        assertEquals(0.0025, whiteSamples2 / area, 0.0005);
+    }
+
+    private int countWhiteSamples(String styleName, int width, int height) throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        URL url = TestData.getResource(this, styleName);
+        Style style = new SLDParser(factory, url).readXML()[0];
+
+        // load the sample coverage with a Mercator projection
+        GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "mer.tiff"));
+        MapContent mc = new MapContent();
+        mc.addLayer(new GridReaderLayer(reader, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        Map<Object, Object> rendererParams = new HashMap<>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
+        renderer.setRendererHints(rendererParams);
+        renderer.setMapContent(mc);
+
+        // render the image with the EPSG:4326 projection
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = image.createGraphics();
+        renderer.paint(
+                graphics,
+                new Rectangle(image.getWidth(), image.getHeight()),
+                new ReferencedEnvelope(-71, -68, 6, 9, CRS.decode("EPSG:4326", true)));
+        graphics.dispose();
+        Raster raster = image.getData();
+
+        // count the number of white samples in the rendered image
+        int whiteSamples = 0;
+        for (int i = 0; i < 256; i++) {
+            for (int j = 0; j < 256; j++) {
+                whiteSamples += raster.getSample(i, j, 0) == 255 ? 1 : 0;
+            }
+        }
+        return whiteSamples;
     }
 }

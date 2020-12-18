@@ -59,6 +59,7 @@ import org.geotools.brewer.styling.builder.SymbolizerBuilder;
 import org.geotools.brewer.styling.builder.TextSymbolizerBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.FeatureTypeStyle;
@@ -1409,10 +1410,10 @@ public class CssTranslator {
                                             + entry);
                         }
                         ColorMapEntryBuilder eb = cmb.entry();
-                        eb.color(f.parameters.get(0).toExpression());
-                        eb.quantity(f.parameters.get(1).toExpression());
+                        eb.colorAsLiteral(wrapColorMapAttribute(f.parameters.get(0).toExpression()));
+                        eb.quantityAsLiteral(wrapColorMapAttribute(f.parameters.get(1).toExpression()));
                         if (f.parameters.size() > 2) {
-                            eb.opacity(f.parameters.get(2).toExpression());
+                            eb.opacityAsLiteral(wrapColorMapAttribute(f.parameters.get(2).toExpression()));
                         }
                         if (f.parameters.size() == 4) {
                             eb.label(f.parameters.get(3).toLiteral());
@@ -1434,6 +1435,17 @@ public class CssTranslator {
             }
 
             addVendorOptions(rb, RASTER_VENDOR_OPTIONS, values, i);
+        }
+    }
+
+    private String wrapColorMapAttribute(Expression expression) {
+        if (expression instanceof org.opengis.filter.expression.Literal) {
+            // return expression as simple String
+            return expression.toString();
+        } else {
+            // This allows to support CQL Expressions for colorMapEntry attributes
+            // being lately used by SLD ColorMapBuilder
+            return "${" + CQL.toCQL(expression) + "}";
         }
     }
 

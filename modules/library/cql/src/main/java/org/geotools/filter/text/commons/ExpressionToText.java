@@ -147,13 +147,20 @@ public class ExpressionToText implements ExpressionVisitor {
      */
     @Override
     public Object visit(Divide expression, Object extraData) {
-
         StringBuilder output = asStringBuilder(extraData);
-        expression.getExpression1().accept(this, output);
+        visitWithBrackets(expression.getExpression1(), output);
         output.append(" / ");
-        expression.getExpression2().accept(this, output);
-
+        visitWithBrackets(expression.getExpression2(), output);
         return output;
+    }
+
+    private void visitWithBrackets(Expression expression, StringBuilder output) {
+        boolean needsBrackets = (expression instanceof Subtract || expression instanceof Add);
+        // Make sure to include Subtract or Add expression between brackets to preserve
+        // operator precedences.
+        output.append(needsBrackets ? "(" : "");
+        expression.accept(this, output);
+        output.append(needsBrackets ? ")" : "");
     }
 
     /* (non-Javadoc)
@@ -265,12 +272,10 @@ public class ExpressionToText implements ExpressionVisitor {
      */
     @Override
     public Object visit(Multiply expression, Object extraData) {
-
         StringBuilder output = asStringBuilder(extraData);
-        expression.getExpression1().accept(this, output);
+        visitWithBrackets(expression.getExpression1(), output);
         output.append(" * ");
-        expression.getExpression2().accept(this, output);
-
+        visitWithBrackets(expression.getExpression2(), output);
         return output;
     }
 

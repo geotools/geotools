@@ -27,6 +27,7 @@ import org.geotools.data.ows.HTTPResponse;
  *
  * @author Andrea Aime - GeoSolutions
  */
+@Deprecated
 public class AbstractTestHTTPClient implements HTTPClient {
 
     protected String user;

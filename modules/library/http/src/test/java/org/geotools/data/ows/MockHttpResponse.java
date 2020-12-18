@@ -16,10 +16,17 @@
  */
 package org.geotools.data.ows;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,22 +37,26 @@ import java.util.Map;
  */
 public class MockHttpResponse implements HTTPResponse {
 
+    InputStream stream;
+
     String contentType;
 
-    Map<String, String> headers;
-
-    byte[] response;
+    Map<String, String> headers = new HashMap<>();
 
     String responseCharset;
+
+    public MockHttpResponse(File responseFile, String contentType) throws FileNotFoundException {
+        this.stream = new FileInputStream(responseFile);
+        this.contentType = contentType;
+    }
 
     public MockHttpResponse(String response, String contentType, String... headers) {
         this(response.getBytes(), contentType, headers);
     }
 
     public MockHttpResponse(byte[] response, String contentType, String... headers) {
-        this.response = response;
+        this.stream = new ByteArrayInputStream(response);
         this.contentType = contentType;
-        this.headers = new HashMap<>();
 
         if (headers != null) {
             if (headers.length % 2 != 0) {
@@ -75,7 +86,7 @@ public class MockHttpResponse implements HTTPResponse {
     }
 
     public InputStream getResponseStream() throws IOException {
-        return new ByteArrayInputStream(response);
+        return stream;
     }
 
     /**
@@ -89,13 +100,29 @@ public class MockHttpResponse implements HTTPResponse {
 
     @Override
     public String toString() {
-        String contents = null;
-        if (responseCharset != null) {
-            contents = new String(response, Charset.forName(responseCharset));
-        } else {
-            contents = new String(response);
+        Charset charset =
+                (responseCharset != null
+                        ? Charset.forName(responseCharset)
+                        : StandardCharsets.UTF_8);
+
+        StringBuilder textBuilder = new StringBuilder();
+        try {
+            try (Reader reader = new BufferedReader(new InputStreamReader(stream, charset))) {
+                int c = 0;
+                while ((c = reader.read()) != -1) {
+                    textBuilder.append((char) c);
+                }
+            }
+            return contentType + " - " + textBuilder.toString();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            try {
+                stream.reset();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
-        return contentType + " - " + contents;
     }
 
     public void setResponseCharset(String responseCharset) {

@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.net.URL;
 import javax.xml.namespace.QName;
 import org.apache.commons.io.IOUtils;
+import org.geotools.data.ows.AbstractHttpClient;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
@@ -222,7 +223,7 @@ public class WFSTestData {
         return new TestWFSClient(capabilitiesURL, http);
     }
 
-    public static class MockHTTPClient extends AbstractTestHTTPClient {
+    public static class MockHTTPClient extends AbstractHttpClient {
 
         private HTTPResponse mockResponse;
 

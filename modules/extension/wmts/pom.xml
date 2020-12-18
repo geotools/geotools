@@ -109,6 +109,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+	      <groupId>org.geotools</groupId>
+	      <artifactId>gt-http</artifactId>
+	      <scope>test</scope>
+	      <classifier>tests</classifier>
+	      <version>${project.version}</version>
+	    </dependency>
+        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-swing</artifactId>
             <version>${project.version}</version>

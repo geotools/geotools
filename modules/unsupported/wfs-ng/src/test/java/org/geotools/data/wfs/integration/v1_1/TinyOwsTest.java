@@ -31,12 +31,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.commons.io.IOUtils;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.geotools.data.Query;
+import org.geotools.data.ows.AbstractHttpClient;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.wfs.AbstractTestHTTPClient;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData;
@@ -491,13 +491,13 @@ public class TinyOwsTest {
         return sf;
     }
 
-    class TinyOwsMockHttpClient extends AbstractTestHTTPClient {
+    class TinyOwsMockHttpClient extends AbstractHttpClient {
         @Override
         public HTTPResponse get(URL url) throws IOException {
             if (url.getQuery().contains("REQUEST=GetCapabilities")) {
                 return new TestHttpResponse(url("tinyows/GetCapabilities.xml"), "text/xml");
             } else {
-                return super.get(url);
+                throw new IOException("Url not supported by mock client:" + url.toString());
             }
         }
 
@@ -515,8 +515,7 @@ public class TinyOwsTest {
             } else if (isDescribeFeatureRequest(request)) {
                 return new TestHttpResponse(url("tinyows/DescribeFeatureType.xsd"), "text/xml");
             } else {
-                return super.post(
-                        url, new ByteArrayInputStream(request.getBytes("UTF-8")), postContentType);
+                throw new IOException("Request not supported by mock client.");
             }
         }
     }

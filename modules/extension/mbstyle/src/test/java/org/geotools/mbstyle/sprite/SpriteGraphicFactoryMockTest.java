@@ -19,56 +19,61 @@ package org.geotools.mbstyle.sprite;
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.net.URL;
 import javax.swing.Icon;
-import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.MockHttpClient;
 import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.factory.Hints;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 
 public class SpriteGraphicFactoryMockTest {
 
-    static class TestSpriteGraphicFactory extends SpriteGraphicFactory {
+    private static final URL pngURL =
+            SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.png");
+    private static final URL jsonURL =
+            SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.json");
 
-        URL jsonResource;
-        URL pngResource;
+    public static class SpriteMockHttpClient extends MockHttpClient {
 
-        public TestSpriteGraphicFactory(URL jsonResource, URL pngResource) {
-            this.jsonResource = jsonResource;
-            this.pngResource = pngResource;
-        }
+        public SpriteMockHttpClient() {
 
-        @Override
-        protected HTTPClient getHttpClient() {
-            MockHttpClient client = new MockHttpClient();
             try {
-                MockHttpResponse jsonResponse =
-                        new MockHttpResponse(toByteArray(jsonResource), "application/json");
+                final MockHttpResponse jsonResponse =
+                        new MockHttpResponse(toByteArray(jsonURL), "application/json");
                 jsonResponse.setResponseCharset("UTF-8");
-                client.expectGet(jsonResource, jsonResponse);
+                expectGet(jsonURL, jsonResponse);
 
-                MockHttpResponse pngResponse =
-                        new MockHttpResponse(toByteArray(pngResource), "image/png");
-                client.expectGet(pngResource, pngResponse);
-            } catch (Exception e) {
+                final MockHttpResponse pngResponse =
+                        new MockHttpResponse(toByteArray(pngURL), "image/png");
+                expectGet(pngURL, pngResponse);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            return client;
         }
     }
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    @Before
+    public void setup() throws Exception {
+        Hints.putSystemDefault(Hints.HTTP_CLIENT, SpriteMockHttpClient.class);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Hints.removeSystemDefault(Hints.HTTP_CLIENT);
+    }
 
     @Test
     public void testJsonCharset() throws Exception {
-        URL pngURL = this.getClass().getResource("test-data/liberty/osm-liberty.png");
-        URL jsonURL = this.getClass().getResource("test-data/liberty/osm-liberty.json");
         String urlStr = pngURL.toExternalForm();
         String spriteBaseUrl = urlStr.substring(0, urlStr.lastIndexOf(".png"));
+        final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
-        SpriteGraphicFactory factory = new TestSpriteGraphicFactory(jsonURL, pngURL);
+        SpriteGraphicFactory factory = new SpriteGraphicFactory();
         Icon icon =
                 factory.getIcon(null, FF.literal(spriteBaseUrl + "#aerialway_11"), "mbsprite", 15);
         assertNotNull(icon);

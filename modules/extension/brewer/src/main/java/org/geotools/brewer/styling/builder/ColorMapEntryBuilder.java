@@ -62,6 +62,10 @@ public class ColorMapEntryBuilder extends AbstractStyleBuilder<ColorMapEntry> {
         return color(cqlExpression(cqlExpression));
     }
 
+    public ColorMapEntryBuilder colorAsLiteral(String color) {
+        return color(literal(color));
+    }
+
     public ColorMapEntryBuilder opacity(Expression opacity) {
         this.opacity = opacity;
         return this;
@@ -75,12 +79,20 @@ public class ColorMapEntryBuilder extends AbstractStyleBuilder<ColorMapEntry> {
         return opacity(cqlExpression(cqlExpression));
     }
 
+    public ColorMapEntryBuilder opacityAsLiteral(String opacity) {
+        return opacity(literal(opacity));
+    }
+
     public ColorMapEntryBuilder quantity(Expression quantity) {
         this.quantity = quantity;
         return this;
     }
 
     public ColorMapEntryBuilder quantity(double quantity) {
+        return quantity(literal(quantity));
+    }
+
+    public ColorMapEntryBuilder quantityAsLiteral(String quantity) {
         return quantity(literal(quantity));
     }
 

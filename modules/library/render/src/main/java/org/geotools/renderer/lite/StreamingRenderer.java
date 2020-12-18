@@ -2637,23 +2637,48 @@ public class StreamingRenderer implements GTRenderer {
                 // Handler
                 CoordinateReferenceSystem featureCrs =
                         features.getSchema().getCoordinateReferenceSystem();
-                if (liteFeatureTypeStyle.projectionHandler != null
+                ScreenMap screenMap = liteFeatureTypeStyle.screenMap;
+                if (handler != null
                         && featureCrs != null
-                        && !CRS.equalsIgnoreMetadata(
-                                liteFeatureTypeStyle.projectionHandler.getSourceCRS(),
-                                featureCrs)) {
+                        && !CRS.equalsIgnoreMetadata(handler.getSourceCRS(), featureCrs)) {
                     try {
                         handler =
                                 ProjectionHandlerFinder.getHandler(
-                                        mapExtent,
-                                        features.getSchema().getCoordinateReferenceSystem(),
-                                        isMapWrappingEnabled());
-                    } catch (FactoryException e) {
+                                        mapExtent, featureCrs, isMapWrappingEnabled());
+                        if (screenMap != null) {
+                            Envelope mapArea = mapExtent;
+                            if (getRenderingBuffer() == 0) {
+                                int metaBuffer = findRenderingBuffer(lfts);
+                                if (metaBuffer > 0) {
+                                    mapArea =
+                                            expandEnvelope(
+                                                    mapArea, worldToScreenTransform, metaBuffer);
+                                }
+                            }
+                            ReferencedEnvelope envelope =
+                                    expandEnvelopeByTransformations(
+                                            lfts, new ReferencedEnvelope(mapArea, destinationCrs));
+                            envelope = new ReferencedEnvelope(envelope, destinationCrs);
+                            SingleCRS crs2D = CRS.getHorizontalCRS(featureCrs);
+                            MathTransform sourceToScreen =
+                                    buildFullTransform(
+                                            crs2D, destinationCrs, worldToScreenTransform);
+                            double[] spans =
+                                    getGeneralizationSpans(
+                                            envelope,
+                                            sourceToScreen,
+                                            worldToScreenTransform,
+                                            featureCrs,
+                                            screenSize);
+                            screenMap.setTransform(sourceToScreen);
+                            screenMap.setSpans(spans[0], spans[1]);
+                        }
+                    } catch (FactoryException | TransformException e) {
                         fireErrorEvent(e);
                     }
                 }
 
-                rf.setScreenMap(liteFeatureTypeStyle.screenMap);
+                rf.setScreenMap(screenMap);
                 // loop exit condition tested inside try catch
                 // make sure we test hasNext() outside of the try/cath that follows, as that
                 // one is there to make sure a single feature error does not ruin the rendering

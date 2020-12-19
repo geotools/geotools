@@ -72,7 +72,7 @@ class SessionPool implements ISessionPool {
     /** Apache commons-pool used to pool arcsde connections */
     private GenericObjectPool pool;
 
-    private final Queue<Session> openSessionsNonTransactional = new LinkedList<Session>(); // new
+    private final Queue<Session> openSessionsNonTransactional = new LinkedList<>(); // new
 
     // ConcurrentLinkedQueue<Session>();
 

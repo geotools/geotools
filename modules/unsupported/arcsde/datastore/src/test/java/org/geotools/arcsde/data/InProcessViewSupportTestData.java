@@ -102,7 +102,7 @@ public class InProcessViewSupportTestData {
         createMasterTable(session, td);
         createChildTable(session, td);
 
-        registerViewParams = new HashMap<String, String>();
+        registerViewParams = new HashMap<>();
         registerViewParams.put("sqlView.1.typeName", typeName);
         registerViewParams.put("sqlView.1.sqlQuery", masterChildSql);
     }

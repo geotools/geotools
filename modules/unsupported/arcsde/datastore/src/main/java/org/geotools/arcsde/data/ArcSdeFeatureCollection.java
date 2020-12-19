@@ -119,7 +119,7 @@ public class ArcSdeFeatureCollection extends DataFeatureCollection {
     @Override
     protected Iterator<SimpleFeature> openIterator() throws IOException {
         try {
-            return new FeatureReaderIterator<SimpleFeature>(reader());
+            return new FeatureReaderIterator<>(reader());
         } catch (IOException e) {
             return new NoContentIterator(e);
         }

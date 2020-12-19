@@ -329,7 +329,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         Stopwatch sw = new Stopwatch();
         sw.start();
 
-        List<Callable<Object>> tasks = new ArrayList<Callable<Object>>(threads);
+        List<Callable<Object>> tasks = new ArrayList<>(threads);
 
         final long[] stats = {Long.MAX_VALUE, Long.MIN_VALUE, 0, 0}; // min/max/total/max mem
 
@@ -725,11 +725,9 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         GridGeometry2D gg2d;
         gg2d = new GridGeometry2D(new GridEnvelope2D(new Rectangle(reqWidth, reqHeight)), reqEnv);
 
-        requestParams[0] =
-                new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg2d);
+        requestParams[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg2d);
         requestParams[1] =
-                new Parameter<OverviewPolicy>(
-                        AbstractGridFormat.OVERVIEW_POLICY, OverviewPolicy.NEAREST);
+                new Parameter<>(AbstractGridFormat.OVERVIEW_POLICY, OverviewPolicy.NEAREST);
 
         final GridCoverage2D coverage;
         coverage = (GridCoverage2D) reader.read(requestParams);

@@ -176,7 +176,7 @@ public class AbstractCalcResult implements CalcResult {
         if (value instanceof Collection) {
             @SuppressWarnings("unchecked")
             Collection<Object> cast = (Collection<Object>) value;
-            return new ArrayList<Object>(cast);
+            return new ArrayList<>(cast);
         }
 
         return null;

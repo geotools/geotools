@@ -125,9 +125,9 @@ class Session implements ISession {
 
     private boolean isPassivated;
 
-    private Map<String, SeTable> cachedTables = new WeakHashMap<String, SeTable>();
+    private Map<String, SeTable> cachedTables = new WeakHashMap<>();
 
-    private Map<String, SeLayer> cachedLayers = new WeakHashMap<String, SeLayer>();
+    private Map<String, SeLayer> cachedLayers = new WeakHashMap<>();
 
     /**
      * Keeps track of the number of references to this session (ie, how many times it has been

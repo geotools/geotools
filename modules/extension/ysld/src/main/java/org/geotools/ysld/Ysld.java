@@ -236,7 +236,7 @@ public class Ysld {
      */
     public static List<MarkedYAMLException> validate(Object ysld) throws IOException {
 
-        return validate(ysld, Collections.<ZoomContextFinder>emptyList(), new UomMapper());
+        return validate(ysld, Collections.emptyList(), new UomMapper());
     }
 
     /**

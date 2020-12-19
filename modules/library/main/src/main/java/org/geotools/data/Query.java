@@ -153,7 +153,7 @@ public class Query {
      *
      * <p>Note the query will still return a result - limited to FeatureIDs.
      */
-    public static final List<PropertyName> NO_PROPERTIES = Collections.<PropertyName>emptyList();
+    public static final List<PropertyName> NO_PROPERTIES = Collections.emptyList();
 
     /**
      * A constant (value {@code null}) that can be used with {@linkplain
@@ -430,7 +430,7 @@ public class Query {
         if (properties == ALL_PROPERTIES) {
             return ALL_PROPERTIES;
         }
-        return Collections.<PropertyName>unmodifiableList(properties);
+        return Collections.unmodifiableList(properties);
     }
 
     /**

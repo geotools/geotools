@@ -100,8 +100,7 @@ public class ArcSDEDataStoreVersioningTest {
             session.dispose();
         }
 
-        Map<String, Serializable> params =
-                new HashMap<String, Serializable>(testData.getConProps());
+        Map<String, Serializable> params = new HashMap<>(testData.getConProps());
         ArcSDEDataStoreFactory factory = new ArcSDEDataStoreFactory();
         defaultVersionDataStore = factory.createDataStore(params);
 

@@ -354,7 +354,7 @@ public class ArcSDEFeatureSourceTest {
         SimpleFeatureSource fSource = ds.getFeatureSource(testData.getTempTableName());
         SimpleFeatureType type = fSource.getSchema();
         Query attOnlyQuery = new Query(type.getTypeName());
-        List<String> propNames = new ArrayList<String>(type.getAttributeCount() - 1);
+        List<String> propNames = new ArrayList<>(type.getAttributeCount() - 1);
 
         for (int i = 0; i < type.getAttributeCount(); i++) {
             if (type.getDescriptor(i) instanceof GeometryDescriptor) {
@@ -403,7 +403,7 @@ public class ArcSDEFeatureSourceTest {
         // grab some fids
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 ds.getFeatureReader(new Query(typeName), Transaction.AUTO_COMMIT);
-        List<FeatureId> fids = new ArrayList<FeatureId>();
+        List<FeatureId> fids = new ArrayList<>();
 
         while (reader.hasNext()) {
             fids.add(ff.featureId(reader.next().getID()));
@@ -416,7 +416,7 @@ public class ArcSDEFeatureSourceTest {
 
         reader.close();
 
-        Id filter = ff.id(new HashSet<FeatureId>(fids));
+        Id filter = ff.id(new HashSet<>(fids));
 
         SimpleFeatureSource source = ds.getFeatureSource(typeName);
         Query query = new Query(typeName, filter);
@@ -454,7 +454,7 @@ public class ArcSDEFeatureSourceTest {
 
         final String idTemplate;
         Set<FeatureId> fids =
-                new TreeSet<FeatureId>(
+                new TreeSet<>(
                         new Comparator<FeatureId>() {
                             public int compare(FeatureId o1, FeatureId o2) {
                                 return o1.getID().compareTo(o2.getID());

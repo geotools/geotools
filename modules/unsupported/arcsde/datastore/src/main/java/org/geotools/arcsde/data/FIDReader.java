@@ -93,7 +93,7 @@ public abstract class FIDReader {
      */
     public String[] getPropertiesToFetch(SimpleFeatureType schema) throws IOException {
 
-        List<String> attNames = new ArrayList<String>(schema.getAttributeCount() + 1);
+        List<String> attNames = new ArrayList<>(schema.getAttributeCount() + 1);
 
         // /List attDescriptors = Descriptors.nodes(schema.getDescriptor());
         List<AttributeDescriptor> attDescriptors = schema.getAttributeDescriptors();
@@ -224,7 +224,7 @@ public abstract class FIDReader {
          */
         @Override
         public String[] getPropertiesToFetch(SimpleFeatureType schema) throws IOException {
-            List<String> attNames = new ArrayList<String>(schema.getAttributeCount() + 1);
+            List<String> attNames = new ArrayList<>(schema.getAttributeCount() + 1);
 
             // /List attDescriptors = Descriptors.nodes(schema.getDescriptor());
             List<AttributeDescriptor> attDescriptors = schema.getAttributeDescriptors();

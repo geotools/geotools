@@ -97,7 +97,7 @@ class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
                             && (attribute.getValidDateFormats() != null
                                     || attribute.getDateFormat() != null)) {
                         if (attribute.getValidDateFormats() == null) {
-                            List<String> validFormats = new ArrayList<String>();
+                            List<String> validFormats = new ArrayList<>();
                             validFormats.add(attribute.getDateFormat());
                             attribute.setValidDateFormats(validFormats);
                         }

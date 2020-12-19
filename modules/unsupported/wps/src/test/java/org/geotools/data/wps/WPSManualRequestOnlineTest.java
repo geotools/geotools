@@ -321,27 +321,27 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         if (idt.getIdentifier().getValue().equalsIgnoreCase("buffer")) {
             // set buffer input
             DataType input = WPSUtils.createInputDataType(bufferAmnt, idt);
-            List<EObject> list = new ArrayList<EObject>();
+            List<EObject> list = new ArrayList<>();
             list.add(input);
             exeRequest.addInput(idt.getIdentifier().getValue(), list);
             // set geom input
             idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(1);
 
             DataType input2 = WPSUtils.createInputDataType(geom1, idt);
-            List<EObject> list2 = new ArrayList<EObject>();
+            List<EObject> list2 = new ArrayList<>();
             list2.add(input2);
             exeRequest.addInput(idt.getIdentifier().getValue(), list2);
         } else {
             // set geom input
             DataType input2 = WPSUtils.createInputDataType(geom1, idt);
-            List<EObject> list2 = new ArrayList<EObject>();
+            List<EObject> list2 = new ArrayList<>();
             list2.add(input2);
             exeRequest.addInput(idt.getIdentifier().getValue(), list2);
             // set buffer input
             idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(1);
 
             DataType input = WPSUtils.createInputDataType(bufferAmnt, idt);
-            List<EObject> list = new ArrayList<EObject>();
+            List<EObject> list = new ArrayList<>();
             list.add(input);
             exeRequest.addInput(idt.getIdentifier().getValue(), list);
         }
@@ -419,7 +419,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // create and set the input on the exe request
         DataType input = WPSUtils.createInputDataType(geom1, idt);
-        List<EObject> list = new ArrayList<EObject>();
+        List<EObject> list = new ArrayList<>();
         list.add(input);
         exeRequest.addInput(idt.getIdentifier().getValue(), list);
     }
@@ -503,7 +503,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         // create and set the input on the exe request
         if (idt.getIdentifier().getValue().equalsIgnoreCase("geom")) {
             // set geom inputs
-            List<EObject> list = new ArrayList<EObject>();
+            List<EObject> list = new ArrayList<>();
             DataType input =
                     WPSUtils.createInputDataType(
                             new CDATAEncoder(geom1),
@@ -614,13 +614,13 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         Double d2 = 40039.229;
 
         // create and set the input on the exe request
-        List<EObject> list = new ArrayList<EObject>();
+        List<EObject> list = new ArrayList<>();
         DataType input = WPSUtils.createInputDataType(d1, idt);
         list.add(input);
         exeRequest.addInput(idt.getIdentifier().getValue(), list);
 
         InputDescriptionType idt2 = (InputDescriptionType) pdt.getDataInputs().getInput().get(1);
-        List<EObject> list2 = new ArrayList<EObject>();
+        List<EObject> list2 = new ArrayList<>();
         DataType input2 = WPSUtils.createInputDataType(d2, idt2);
         list2.add(input2);
         exeRequest.addInput(idt2.getIdentifier().getValue(), list2);

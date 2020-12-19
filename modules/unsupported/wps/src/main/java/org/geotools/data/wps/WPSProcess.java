@@ -93,7 +93,7 @@ public class WPSProcess extends AbstractProcess {
             if (inputValue != null) {
                 // if our value is some sort of collection, then created multiple
                 // dataTypes for this inputdescriptiontype.
-                List<EObject> list = new ArrayList<EObject>();
+                List<EObject> list = new ArrayList<>();
                 if (inputValue instanceof Map) {
                     for (Object inVal : ((Map) inputValue).values()) {
                         DataType createdInput = WPSUtils.createInputDataType(inVal, idt);
@@ -134,7 +134,7 @@ public class WPSProcess extends AbstractProcess {
         ExecuteResponseType executeResponse = response.getExecuteResponse();
 
         // create the result map of outputs
-        Map<String, Object> results = new TreeMap<String, Object>();
+        Map<String, Object> results = new TreeMap<>();
         results = WPSUtils.createResultMap(executeResponse, results);
 
         return results;

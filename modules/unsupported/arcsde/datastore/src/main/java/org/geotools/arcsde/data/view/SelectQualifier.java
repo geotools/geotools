@@ -103,7 +103,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
     }
 
     private Map<String, Table> extractTableAliases(List<FromItem> fromItems) {
-        Map<String, Table> aliases = new HashMap<String, Table>();
+        Map<String, Table> aliases = new HashMap<>();
         for (Iterator<FromItem> it = fromItems.iterator(); it.hasNext(); ) {
             FromItem fromItem = it.next();
             if (fromItem instanceof Table) {
@@ -118,7 +118,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
     }
 
     private List<FromItem> removeTableAliases(final List<FromItem> fromItems) {
-        List<FromItem> items = new ArrayList<FromItem>(fromItems);
+        List<FromItem> items = new ArrayList<>(fromItems);
 
         for (Iterator<FromItem> it = items.iterator(); it.hasNext(); ) {
 
@@ -147,7 +147,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
             return null;
         }
 
-        List<OrderByElement> qualifiedOrderElems = new ArrayList<OrderByElement>();
+        List<OrderByElement> qualifiedOrderElems = new ArrayList<>();
 
         for (Iterator it = orderByElements.iterator(); it.hasNext(); ) {
             OrderByElement orderByElem = (OrderByElement) it.next();
@@ -184,7 +184,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
             return null;
         }
 
-        List<FromItem> qualifiedFromItems = new ArrayList<FromItem>();
+        List<FromItem> qualifiedFromItems = new ArrayList<>();
 
         for (Iterator it = fromItems.iterator(); it.hasNext(); ) {
             FromItem fromItem = (FromItem) it.next();

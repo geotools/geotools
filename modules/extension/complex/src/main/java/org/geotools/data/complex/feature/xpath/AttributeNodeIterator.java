@@ -62,7 +62,7 @@ public class AttributeNodeIterator implements NodeIterator {
         AttributeDescriptor descriptor = feature.getDescriptor();
         Name attName = descriptor == null ? feature.getType().getName() : descriptor.getName();
         if (attName.equals(name)) {
-            children = Collections.<Property>singletonList(feature);
+            children = Collections.singletonList(feature);
         } else {
             children = new ArrayList<>(feature.getProperties(name));
         }

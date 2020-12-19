@@ -75,7 +75,7 @@ public class ArcSDEUtilsTest {
         try {
             int[] projcsCodelist = PeFactory.projcsCodelist();
             int[] geogtranCodelist = PeFactory.geogcsCodelist();
-            Map<Integer, String> coordsystems = new TreeMap<Integer, String>();
+            Map<Integer, String> coordsystems = new TreeMap<>();
             for (int i : projcsCodelist) {
                 PeProjectedCS coordsys = PeFactory.projcs(i);
                 if (coordsys != null) {

@@ -726,7 +726,7 @@ public class FeatureTypeRegistry {
                             String.class,
                             false,
                             false,
-                            Collections.<Filter>emptyList(),
+                            Collections.emptyList(),
                             null,
                             null);
         }

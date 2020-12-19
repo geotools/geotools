@@ -264,7 +264,7 @@ public class Commands {
             } catch (SeException cause) {
 
                 if (cause.getSeError().getSdeError() == -126) {
-                    ArrayList<String> available = new ArrayList<String>();
+                    ArrayList<String> available = new ArrayList<>();
                     try {
                         SeVersion[] versionList = connection.getVersionList(null);
                         for (SeVersion v : versionList) {
@@ -395,7 +395,7 @@ public class Commands {
                         throws SeException, IOException {
 
                     final Vector<SeRasterColumn> rasterColumns = connection.getRasterColumns();
-                    List<String> names = new ArrayList<String>(rasterColumns.size());
+                    List<String> names = new ArrayList<>(rasterColumns.size());
 
                     for (SeRasterColumn col : rasterColumns) {
                         names.add(col.getQualifiedTableName());

@@ -1308,7 +1308,7 @@ public class Hints extends RenderingHints {
         final boolean changed;
         changed = ensureSystemDefaultLoaded();
         if (!GLOBAL.isEmpty()) {
-            extra = new HashMap<Object, Object>(GLOBAL);
+            extra = new HashMap<>(GLOBAL);
         }
         if (changed) {
             GeoTools.fireConfigurationChanged();

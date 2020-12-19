@@ -70,7 +70,7 @@ public class ElasticAttributeTest {
         srid = 10;
         order = 1;
         dateFormat = "yyyy-mm-dd";
-        validDateFormats = new ArrayList<String>();
+        validDateFormats = new ArrayList<>();
         validDateFormats.add(dateFormat);
         analyzed = true;
         stored = true;

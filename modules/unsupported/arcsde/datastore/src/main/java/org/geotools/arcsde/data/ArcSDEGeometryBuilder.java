@@ -81,11 +81,10 @@ public abstract class ArcSDEGeometryBuilder {
     private static final Logger LOGGER = Logging.getLogger(ArcSDEGeometryBuilder.class);
 
     /** lookup specialized geometry builders classes by it's geometry type */
-    private static final Map<Class<?>, ArcSDEGeometryBuilder> builders =
-            new HashMap<Class<?>, ArcSDEGeometryBuilder>();
+    private static final Map<Class<?>, ArcSDEGeometryBuilder> builders = new HashMap<>();
 
     /** Look up "empty" geometry instances based on geometry class */
-    private static final Map<Class<?>, Geometry> nullGeometries = new HashMap<Class<?>, Geometry>();
+    private static final Map<Class<?>, Geometry> nullGeometries = new HashMap<>();
 
     static {
         builders.put(Geometry.class, GenericGeometryBuilder.getInstance());
@@ -182,7 +181,7 @@ public abstract class ArcSDEGeometryBuilder {
             gcol = new GeometryFactory().createGeometryCollection(geoms);
         }
 
-        List<SDEPoint> allPoints = new ArrayList<SDEPoint>();
+        List<SDEPoint> allPoints = new ArrayList<>();
         numParts = gcol.getNumGeometries();
 
         int[] partOffsets = new int[numParts];

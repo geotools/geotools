@@ -135,7 +135,7 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
 
     /** overrides just to avoid the "WHERE" keyword */
     public void encode(Filter filter) throws GeometryEncoderException {
-        this.sdeSpatialFilters = new ArrayList<SeShapeFilter>();
+        this.sdeSpatialFilters = new ArrayList<>();
         if (Filter.INCLUDE.equals(filter)) {
             return;
         }

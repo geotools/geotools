@@ -79,11 +79,10 @@ public class ArcSDEAdapter {
     private static final Logger LOGGER = Logging.getLogger(ArcSDEAdapter.class);
 
     /** mappings of SDE attribute's types to Java ones */
-    private static final Map<Integer, Class<?>> sde2JavaTypes = new HashMap<Integer, Class<?>>();
+    private static final Map<Integer, Class<?>> sde2JavaTypes = new HashMap<>();
 
     /** inverse of sdeTypes, maps Java types to SDE ones */
-    private static final Map<Class<?>, SdeTypeDef> java2SDETypes =
-            new HashMap<Class<?>, SdeTypeDef>();
+    private static final Map<Class<?>, SdeTypeDef> java2SDETypes = new HashMap<>();
 
     static {
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_NSTRING), String.class);
@@ -412,7 +411,7 @@ public class ArcSDEAdapter {
         CoordinateReferenceSystem metadata = null;
 
         final int nCols = seColumns.length;
-        List<AttributeDescriptor> attDescriptors = new ArrayList<AttributeDescriptor>(nCols);
+        List<AttributeDescriptor> attDescriptors = new ArrayList<>(nCols);
 
         Class<?> typeClass = null;
 

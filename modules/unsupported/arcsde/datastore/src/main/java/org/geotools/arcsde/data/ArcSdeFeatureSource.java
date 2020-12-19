@@ -57,7 +57,7 @@ public class ArcSdeFeatureSource implements SimpleFeatureSource {
      *
      * @see #getSupportedHints()
      */
-    private static final Set<Key> supportedHints = new HashSet<Key>();
+    private static final Set<Key> supportedHints = new HashSet<>();
 
     static {
         supportedHints.add(Hints.FEATURE_DETACHED);

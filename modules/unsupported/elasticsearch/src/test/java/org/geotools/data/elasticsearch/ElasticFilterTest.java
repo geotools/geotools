@@ -201,7 +201,7 @@ public class ElasticFilterTest {
         dateAttBuilder.setName("dateAttrWithFormat");
         dateAttBuilder.setBinding(Date.class);
         dateAtt = dateAttBuilder.buildDescriptor("dateAttrWithFormat", dateAttBuilder.buildType());
-        List<String> validFormats = new ArrayList<String>();
+        List<String> validFormats = new ArrayList<>();
         validFormats.add(format);
         dateAtt.getUserData().put(ElasticConstants.DATE_FORMAT, validFormats);
         typeBuilder.add(dateAtt);

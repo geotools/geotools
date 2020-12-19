@@ -199,7 +199,7 @@ public class ArcSDEDataStore implements DataStore {
      * @see #createSchema(SimpleFeatureType, Map)
      */
     public void createSchema(final SimpleFeatureType featureType) throws IOException {
-        Map<String, String> hints = new HashMap<String, String>();
+        Map<String, String> hints = new HashMap<>();
         hints.put("rowid.column.type", "SDE");
         String rowIdName = "SDE_ROW_ID";
         while (featureType.getDescriptor(rowIdName) != null) {
@@ -307,7 +307,7 @@ public class ArcSDEDataStore implements DataStore {
             throws IOException {
         Filter filter = query.getFilter();
         if (filter == Filter.EXCLUDE || filter.equals(Filter.EXCLUDE)) {
-            return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(featureType);
+            return new EmptyFeatureReader<>(featureType);
         }
 
         final String typeName = query.getTypeName();
@@ -352,7 +352,7 @@ public class ArcSDEDataStore implements DataStore {
         final Filter queryFilter = query.getFilter();
 
         if (queryFilter == Filter.EXCLUDE || queryFilter.equals(Filter.EXCLUDE)) {
-            return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(targetSchema);
+            return new EmptyFeatureReader<>(targetSchema);
         }
 
         @SuppressWarnings("PMD.CloseResource") // wrapped and returned
@@ -390,14 +390,11 @@ public class ArcSDEDataStore implements DataStore {
         // so we do post filtering in memory with the full filter (it's fast anyways)
         if (!unsupportedFilter.equals(Filter.INCLUDE)) {
             // use the full filter in this case, no sure how it was unpacked
-            reader =
-                    new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, queryFilter);
+            reader = new FilteringFeatureReader<>(reader, queryFilter);
         } else if (!Filter.INCLUDE.equals(sdeQuery.getFilters().getGeometryFilter())) {
             // its ok to just use the geometry filter in-process
             reader =
-                    new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, sdeQuery.getFilters().getGeometryFilter());
+                    new FilteringFeatureReader<>(reader, sdeQuery.getFilters().getGeometryFilter());
         }
 
         if (!targetSchema.equals(reader.getFeatureType())) {
@@ -406,9 +403,7 @@ public class ArcSDEDataStore implements DataStore {
         }
 
         if (query.getMaxFeatures() != Query.DEFAULT_MAX) {
-            reader =
-                    new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, query.getMaxFeatures());
+            reader = new MaxFeatureReader<>(reader, query.getMaxFeatures());
         }
 
         return reader;
@@ -535,7 +530,7 @@ public class ArcSDEDataStore implements DataStore {
             @SuppressWarnings("PMD.CloseResource") // wrapped and returned
             final FeatureReader<SimpleFeatureType, SimpleFeature> reader;
             if (Filter.EXCLUDE.equals(filter)) {
-                reader = new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(featureType);
+                reader = new EmptyFeatureReader<>(featureType);
             } else {
                 final Query query = new Query(typeName, filter);
                 final ISession nonDisposableSession =
@@ -773,7 +768,7 @@ public class ArcSDEDataStore implements DataStore {
      *     <code>select</code>
      */
     private void verifyQueryIsSupported(PlainSelect select) throws UnsupportedOperationException {
-        List<Object> errors = new LinkedList<Object>();
+        List<Object> errors = new LinkedList<>();
         // @TODO errors.add(select.getDistinct());
         // @TODO errors.add(select.getHaving());
         verifyUnsupportedSqlConstruct(errors, select.getGroupByColumnReferences());

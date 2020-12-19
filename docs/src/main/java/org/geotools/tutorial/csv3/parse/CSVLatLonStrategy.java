@@ -140,7 +140,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.featureType = featureType;
 
-        List<String> header = new ArrayList<String>();
+        List<String> header = new ArrayList<>();
 
         GeometryDescriptor gd = featureType.getGeometryDescriptor();
         CoordinateReferenceSystem crs = gd != null ? gd.getCoordinateReferenceSystem() : null;
@@ -219,7 +219,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
     // docs start encode
     @Override
     public String[] encode(SimpleFeature feature) {
-        List<String> csvRecord = new ArrayList<String>();
+        List<String> csvRecord = new ArrayList<>();
         String[] headers = csvFileState.getCSVHeaders();
         int latIndex = 0;
         int lngIndex = 0;

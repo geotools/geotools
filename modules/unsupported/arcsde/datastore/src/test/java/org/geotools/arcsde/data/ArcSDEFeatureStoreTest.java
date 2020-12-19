@@ -163,7 +163,7 @@ public class ArcSDEFeatureStoreTest {
         // public Transaction.AUTO_COMMIT view of the world
         // is as expected.
         assertEquals(8, origional.getCount(Query.ALL));
-        final SortedSet<String> allFids = new TreeSet<String>();
+        final SortedSet<String> allFids = new TreeSet<>();
         SimpleFeatureCollection collection = origional.getFeatures();
         TestProgressListener progress = new TestProgressListener();
         collection.accepts(
@@ -205,7 +205,7 @@ public class ArcSDEFeatureStoreTest {
 
         collection = featureStore1.getFeatures(queryOneFeature);
         progress.reset();
-        final SortedSet<String> fids = new TreeSet<String>();
+        final SortedSet<String> fids = new TreeSet<>();
         collection.accepts(
                 new FeatureVisitor() {
                     public void visit(Feature feature) {
@@ -343,7 +343,7 @@ public class ArcSDEFeatureStoreTest {
             }
 
             final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-            Set<FeatureId> ids = new HashSet<FeatureId>();
+            Set<FeatureId> ids = new HashSet<>();
             ids.add(ff.featureId(fid));
             fidFilter = ff.id(ids);
         }
@@ -564,7 +564,7 @@ public class ArcSDEFeatureStoreTest {
             final List<FeatureId> addedFids = fStore.addFeatures(testFeatures);
             final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-            final Set<FeatureId> fids = new HashSet<FeatureId>();
+            final Set<FeatureId> fids = new HashSet<>();
             for (FeatureId fid : addedFids) {
                 fids.add(fid);
             }
@@ -1012,7 +1012,7 @@ public class ArcSDEFeatureStoreTest {
         LOGGER.info("Confirmed exactly one feature in new sde layer");
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        HashSet<FeatureId> ids = new HashSet<FeatureId>();
+        HashSet<FeatureId> ids = new HashSet<>();
         ids.add(ff.featureId(newId));
         Filter idFilter = ff.id(ids);
 
@@ -1388,7 +1388,7 @@ public class ArcSDEFeatureStoreTest {
                             // System.err.println("got " + addedFids);
                             final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-                            final Set<FeatureId> fids = new HashSet<FeatureId>();
+                            final Set<FeatureId> fids = new HashSet<>();
                             for (FeatureId fid : addedFids) {
                                 fids.add(fid);
                             }

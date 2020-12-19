@@ -297,7 +297,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         private Set<String> keywords;
 
         WPSInfo() {
-            keywords = new HashSet<String>();
+            keywords = new HashSet<>();
             keywords.add("WPS");
             keywords.add(serverURL.toString());
         }

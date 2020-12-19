@@ -46,7 +46,7 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
 
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
-        List<String> header = new ArrayList<String>();
+        List<String> header = new ArrayList<>();
         this.featureType = featureType;
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) continue;
@@ -64,7 +64,7 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
 
     @Override
     public String[] encode(SimpleFeature feature) {
-        List<String> csvRecord = new ArrayList<String>();
+        List<String> csvRecord = new ArrayList<>();
         for (Property property : feature.getProperties()) {
             Object value = property.getValue();
             if (value == null) {

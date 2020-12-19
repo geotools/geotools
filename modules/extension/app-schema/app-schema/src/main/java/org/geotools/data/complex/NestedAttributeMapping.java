@@ -371,7 +371,7 @@ public class NestedAttributeMapping extends AttributeMapping {
             throws IOException {
 
         if (foreignKeyValue == null) {
-            return Collections.<Feature>emptyList();
+            return Collections.emptyList();
         }
 
         if (isSameSource()) {

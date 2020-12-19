@@ -301,7 +301,7 @@ class ExpressionQualifier implements ExpressionVisitor {
 
         List<WhenClause> whenClauses = null;
         if (caseExpression.getWhenClauses() != null) {
-            whenClauses = new ArrayList<WhenClause>();
+            whenClauses = new ArrayList<>();
             for (Iterator<WhenClause> it = caseExpression.getWhenClauses().iterator();
                     it.hasNext(); ) {
                 WhenClause whenClause = it.next();

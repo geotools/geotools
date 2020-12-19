@@ -459,7 +459,7 @@ public class GeometryBuilderTest {
             gcol = new GeometryFactory().createGeometryCollection(geoms);
         }
 
-        List<SDEPoint> allPoints = new ArrayList<SDEPoint>();
+        List<SDEPoint> allPoints = new ArrayList<>();
         numParts = gcol.getNumGeometries();
 
         int[] partOffsets = new int[numParts];

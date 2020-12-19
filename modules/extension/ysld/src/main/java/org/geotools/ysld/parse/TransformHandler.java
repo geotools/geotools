@@ -153,7 +153,7 @@ public class TransformHandler extends YsldParseHandler {
             input = "data";
         }
         if (input != null) {
-            processArgs.add(paramExpression(input, Collections.<Expression>emptyList()));
+            processArgs.add(paramExpression(input, Collections.emptyList()));
         }
         if (outputBBOX != null) {
             processArgs.add(outputBBOX);

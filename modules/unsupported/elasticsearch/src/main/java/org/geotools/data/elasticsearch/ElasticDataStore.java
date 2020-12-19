@@ -365,7 +365,7 @@ public class ElasticDataStore extends ContentDataStore {
                     binding = Boolean.class;
                     break;
                 case "date":
-                    List<String> validFormats = new ArrayList<String>();
+                    List<String> validFormats = new ArrayList<>();
                     String availableFormat = (String) map.get("format");
                     if (availableFormat == null) {
                         validFormats.add("date_optional_time");

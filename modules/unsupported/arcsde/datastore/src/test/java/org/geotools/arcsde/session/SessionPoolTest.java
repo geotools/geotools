@@ -76,7 +76,7 @@ public class SessionPoolTest {
 
         conProps.load(in);
         in.close();
-        connectionParameters = new HashMap<String, Serializable>();
+        connectionParameters = new HashMap<>();
         for (Entry<Object, Object> e : conProps.entrySet()) {
             connectionParameters.put((String) e.getKey(), (String) e.getValue());
         }
@@ -175,8 +175,7 @@ public class SessionPoolTest {
         // override pool.minConnections and pool.maxConnections from
         // the configured parameters to test the connections' pool
         // availability
-        Map<String, Serializable> params =
-                new HashMap<String, Serializable>(this.connectionParameters);
+        Map<String, Serializable> params = new HashMap<>(this.connectionParameters);
         params.put(MIN_CONNECTIONS_PARAM_NAME, Integer.valueOf(MIN_CONNECTIONS));
         params.put(MAX_CONNECTIONS_PARAM_NAME, Integer.valueOf(MAX_CONNECTIONS));
 
@@ -201,8 +200,7 @@ public class SessionPoolTest {
         // override pool.minConnections and pool.maxConnections from
         // the configured parameters to test the connections' pool
         // availability
-        Map<String, Serializable> params =
-                new HashMap<String, Serializable>(this.connectionParameters);
+        Map<String, Serializable> params = new HashMap<>(this.connectionParameters);
         params.put(MIN_CONNECTIONS_PARAM_NAME, Integer.valueOf(MIN_CONNECTIONS));
         params.put(MAX_CONNECTIONS_PARAM_NAME, Integer.valueOf(1));
 
@@ -228,8 +226,7 @@ public class SessionPoolTest {
         final int MIN_CONNECTIONS = 2;
         final int MAX_CONNECTIONS = 2;
 
-        Map<String, Serializable> params =
-                new HashMap<String, Serializable>(this.connectionParameters);
+        Map<String, Serializable> params = new HashMap<>(this.connectionParameters);
         params.put(MIN_CONNECTIONS_PARAM_NAME, Integer.valueOf(MIN_CONNECTIONS));
         params.put(MAX_CONNECTIONS_PARAM_NAME, Integer.valueOf(MAX_CONNECTIONS));
 
@@ -266,8 +263,7 @@ public class SessionPoolTest {
     /** a null database name should not be an impediment to create the pool */
     @Test
     public void testCreateWithNullDBName() throws IOException {
-        Map<String, Serializable> params =
-                new HashMap<String, Serializable>(this.connectionParameters);
+        Map<String, Serializable> params = new HashMap<>(this.connectionParameters);
         params.remove(INSTANCE_NAME_PARAM_NAME);
         createPool(params);
     }
@@ -275,8 +271,7 @@ public class SessionPoolTest {
     /** an empty database name should not be an impediment to create the pool */
     @Test
     public void testCreateWithEmptyDBName() throws IOException {
-        Map<String, Serializable> params =
-                new HashMap<String, Serializable>(this.connectionParameters);
+        Map<String, Serializable> params = new HashMap<>(this.connectionParameters);
         params.put(INSTANCE_NAME_PARAM_NAME, "");
         createPool(params);
     }

@@ -87,7 +87,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
             throws SeException, IOException {
         LOGGER.fine("Gathering raster dataset metadata for " + rasterTableName);
         final String[] rasterColumns = getRasterColumns(connection, rasterTableName);
-        final List<RasterInfo> rastersLayoutInfo = new ArrayList<RasterInfo>();
+        final List<RasterInfo> rastersLayoutInfo = new ArrayList<>();
         {
             final List<SeRasterAttr> rasterAttributes;
             rasterAttributes = getSeRasterAttr(connection, rasterTableName, rasterColumns);
@@ -210,7 +210,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
             throw new ArcSdeException(
                     "Exception fetching the list of columns for table " + rasterTable, e);
         }
-        List<String> fetchColumns = new ArrayList<String>(cols.length / 2);
+        List<String> fetchColumns = new ArrayList<>(cols.length / 2);
         for (int i = 0; i < cols.length; i++) {
             if (cols[i].getType() == SeColumnDefinition.TYPE_RASTER)
                 fetchColumns.add(cols[i].getName());
@@ -244,7 +244,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
 
         LOGGER.fine("Gathering raster attributes for " + rasterTable);
         SeRasterAttr rasterAttributes;
-        LinkedList<SeRasterAttr> rasterAttList = new LinkedList<SeRasterAttr>();
+        LinkedList<SeRasterAttr> rasterAttList = new LinkedList<>();
         SeQuery query = null;
         try {
             query = new SeQuery(scon, rasterColumns, new SeSqlConstruct(rasterTable));
@@ -281,7 +281,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
         final String auxTableName = getAuxTableName(rasterColumnId, scon);
         LOGGER.fine("Quering auxiliary table " + auxTableName + " for color map data");
 
-        Map<Long, IndexColorModel> colorMaps = new HashMap<Long, IndexColorModel>();
+        Map<Long, IndexColorModel> colorMaps = new HashMap<>();
         SeQuery query = null;
         try {
             SeSqlConstruct sqlConstruct = new SeSqlConstruct();
@@ -462,7 +462,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
             throw new ArcSdeException(e);
         }
 
-        List<RasterBandInfo> detachedBandInfo = new ArrayList<RasterBandInfo>(numBands);
+        List<RasterBandInfo> detachedBandInfo = new ArrayList<>(numBands);
 
         RasterBandInfo bandInfo;
         SeRasterBand band;

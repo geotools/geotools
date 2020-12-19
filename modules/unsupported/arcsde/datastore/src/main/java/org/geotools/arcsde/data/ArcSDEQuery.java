@@ -298,7 +298,7 @@ class ArcSDEQuery implements Closeable {
             final Filter unsupportedFilter,
             final SimpleFeatureType fullSchema)
             throws DataSourceException {
-        final List<String> columnNames = new ArrayList<String>();
+        final List<String> columnNames = new ArrayList<>();
 
         if ((queryProperties == null) || (queryProperties.length == 0)) {
             final List<AttributeDescriptor> attNames = fullSchema.getAttributeDescriptors();
@@ -579,7 +579,7 @@ class ArcSDEQuery implements Closeable {
 
         final SimpleFeatureType schema = this.schema;
 
-        final List<String> colNames = new ArrayList<String>(2);
+        final List<String> colNames = new ArrayList<>(2);
         {
             String fidAtt;
             if (fidReader.getFidColumn() == null) {
@@ -692,7 +692,7 @@ class ArcSDEQuery implements Closeable {
 
                                     final String[] queryColumns;
                                     {
-                                        List<String> cols = new ArrayList<String>(2);
+                                        List<String> cols = new ArrayList<>(2);
                                         String geomCol =
                                                 schema.getGeometryDescriptor().getLocalName();
                                         geomCol =

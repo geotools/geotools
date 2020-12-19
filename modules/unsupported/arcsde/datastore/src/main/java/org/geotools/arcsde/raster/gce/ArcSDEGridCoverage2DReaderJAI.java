@@ -187,7 +187,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
             serviceInfo = new DefaultServiceInfo();
             serviceInfo.setTitle(rasterInfo.getRasterTable());
             serviceInfo.setDescription(rasterInfo.toString());
-            Set<String> keywords = new HashSet<String>();
+            Set<String> keywords = new HashSet<>();
             keywords.add("ArcSDE");
             serviceInfo.setKeywords(keywords);
         }
@@ -407,7 +407,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
             final LoggingHelper log)
             throws IOException {
 
-        List<RenderedImage> transformed = new ArrayList<RenderedImage>(queries.size());
+        List<RenderedImage> transformed = new ArrayList<>(queries.size());
 
         /*
          * Do we need to expand to RGB color space and then create a new colormapped image with the
@@ -785,7 +785,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
 
         private StringBuilder getGeom(String geomName) {
             if (geoms == null) {
-                geoms = new HashMap<String, StringBuilder>();
+                geoms = new HashMap<>();
             }
             StringBuilder sb = geoms.get(geomName);
             if (sb == null) {

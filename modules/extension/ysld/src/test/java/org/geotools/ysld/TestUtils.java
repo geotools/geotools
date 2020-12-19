@@ -56,9 +56,8 @@ public enum TestUtils {
         return describedAs(
                 "rule applies to scale denom %0",
                 allOf(
-                        Matchers.<Rule>hasProperty("maxScaleDenominator", greaterThan(scale)),
-                        Matchers.<Rule>hasProperty(
-                                "minScaleDenominator", lessThanOrEqualTo(scale))),
+                        Matchers.hasProperty("maxScaleDenominator", greaterThan(scale)),
+                        Matchers.hasProperty("minScaleDenominator", lessThanOrEqualTo(scale))),
                 scale);
     }
 
@@ -66,8 +65,8 @@ public enum TestUtils {
         return describedAs(
                 "scale range that contains 1:%0",
                 allOf(
-                        Matchers.<ScaleRange>hasProperty("maxDenom", greaterThan(scale)),
-                        Matchers.<ScaleRange>hasProperty("minDenom", lessThanOrEqualTo(scale))),
+                        Matchers.hasProperty("maxDenom", greaterThan(scale)),
+                        Matchers.hasProperty("minDenom", lessThanOrEqualTo(scale))),
                 scale);
     }
 
@@ -90,9 +89,9 @@ public enum TestUtils {
 
     /** Matches as an attribute expression for a named attribute. */
     public static Matcher<Expression> attribute(String name) {
-        return Matchers.<Expression>allOf(
-                Matchers.<Expression>instanceOf(PropertyName.class),
-                Matchers.<Expression>hasProperty("propertyName", equalTo(name)));
+        return Matchers.allOf(
+                Matchers.instanceOf(PropertyName.class),
+                Matchers.hasProperty("propertyName", equalTo(name)));
     }
 
     /** Matches a function with the given name and parameters matching the given matchers. */

@@ -28,7 +28,7 @@ import org.geotools.data.FeatureListener;
  * @author Jody Garnett
  */
 public class TestFeatureListener implements FeatureListener {
-    List<FeatureEvent> list = new LinkedList<FeatureEvent>();
+    List<FeatureEvent> list = new LinkedList<>();
 
     public void changed(FeatureEvent e) {
         list.add(new FeatureEvent(e));

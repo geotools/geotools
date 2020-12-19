@@ -1157,9 +1157,9 @@ public class YsldParseTest {
                 (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
-                                Matchers.<Rule>hasProperty(
+                                Matchers.hasProperty(
                                         "maxScaleDenominator", Matchers.closeTo(64, 0.0000001d)),
-                                Matchers.<Rule>hasProperty(
+                                Matchers.hasProperty(
                                         "minScaleDenominator", Matchers.closeTo(42, 0.0000001d)))));
 
         verify(finder, context);
@@ -1216,9 +1216,9 @@ public class YsldParseTest {
                 (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
-                                Matchers.<Rule>hasProperty(
+                                Matchers.hasProperty(
                                         "maxScaleDenominator", Matchers.closeTo(64, 0.0000001d)),
-                                Matchers.<Rule>hasProperty(
+                                Matchers.hasProperty(
                                         "minScaleDenominator", Matchers.closeTo(42, 0.0000001d)))));
 
         verify(finder, context);
@@ -2012,8 +2012,7 @@ public class YsldParseTest {
 
         replay(locator);
 
-        StyledLayerDescriptor sld =
-                Ysld.parse(yaml, Collections.<ZoomContextFinder>emptyList(), locator);
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Collections.emptyList(), locator);
 
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
 

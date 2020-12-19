@@ -387,7 +387,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
         final LinkedHashMap<Integer, String> mutableColumns = getUpdatableColumnNames();
         final String[] rowColumnNames =
-                new ArrayList<String>(mutableColumns.values()).toArray(new String[0]);
+                new ArrayList<>(mutableColumns.values()).toArray(new String[0]);
         final String typeName = featureType.getTypeName();
         final String fid = modifiedFeature.getID();
         final long numericFid = ArcSDEAdapter.getNumericFid(fid);
@@ -470,8 +470,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
                                 }
                             }
                             String[] rowColumnNames =
-                                    new ArrayList<String>(insertColumns.values())
-                                            .toArray(new String[0]);
+                                    new ArrayList<>(insertColumns.values()).toArray(new String[0]);
                             String typeName = featureType.getTypeName();
                             insertStream.intoTable(typeName, rowColumnNames);
                             insertStream.setWriteMode(true);
@@ -718,7 +717,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             }
 
             // use LinkedHashMap to respect column order
-            LinkedHashMap<Integer, String> columnList = new LinkedHashMap<Integer, String>();
+            LinkedHashMap<Integer, String> columnList = new LinkedHashMap<>();
 
             SeColumnDefinition columnDefinition;
             String columnName;
@@ -768,7 +767,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             final SeColumnDefinition[] columnDefinitions = session.describe(typeName);
 
             // use LinkedHashMap to respect column order
-            LinkedHashMap<Integer, String> columnList = new LinkedHashMap<Integer, String>();
+            LinkedHashMap<Integer, String> columnList = new LinkedHashMap<>();
 
             SeColumnDefinition columnDefinition;
             String columnName;

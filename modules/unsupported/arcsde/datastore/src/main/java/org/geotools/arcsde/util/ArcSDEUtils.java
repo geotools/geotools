@@ -46,7 +46,7 @@ public final class ArcSDEUtils {
     public static final Logger LOGGER = Logging.getLogger(ArcSDEUtils.class);
 
     private static final WeakHashMap<String, CoordinateReferenceSystem> PE_CS_TO_EPSG =
-            new WeakHashMap<String, CoordinateReferenceSystem>();
+            new WeakHashMap<>();
 
     private ArcSDEUtils() {
         // private default constructor to stress the pure utility nature of this class

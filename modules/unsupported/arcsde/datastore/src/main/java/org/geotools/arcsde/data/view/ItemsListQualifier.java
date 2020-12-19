@@ -68,7 +68,7 @@ class ItemsListQualifier implements ItemsListVisitor {
     @SuppressWarnings("unchecked")
     public void visit(ExpressionList expressionList) {
         List<Expression> expressions = expressionList.getExpressions();
-        List<Expression> qualifiedList = new ArrayList<Expression>(expressions.size());
+        List<Expression> qualifiedList = new ArrayList<>(expressions.size());
 
         for (Iterator<Expression> it = expressions.iterator(); it.hasNext(); ) {
             Expression exp = it.next();

@@ -186,9 +186,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
             if (value instanceof ComplexAttribute) {
                 result =
                         factory.createComplexAttribute(
-                                Collections.<Property>singletonList((Property) value),
-                                newDescriptor,
-                                null);
+                                Collections.singletonList((Property) value), newDescriptor, null);
             } else {
                 value = value instanceof Attribute ? ((Attribute) value).getValue() : value;
                 result = factory.createAttribute(value, newDescriptor, null);

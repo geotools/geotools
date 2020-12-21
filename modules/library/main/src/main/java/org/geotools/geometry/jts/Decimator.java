@@ -263,7 +263,7 @@ public final class Decimator {
                     if (holes == null) {
                         holes = new LinearRing[length];
                         for (int j = 0; j < i; j++) {
-                            holes[j] = (LinearRing) polygon.getInteriorRingN(j);
+                            holes[j] = polygon.getInteriorRingN(j);
                         }
                     }
                     holes[i] = generalized;

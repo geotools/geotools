@@ -136,8 +136,7 @@ public class ImageMosaicEgrTest {
             params.add(geom);
         }
 
-        GeneralParameterValue[] result =
-                (GeneralParameterValue[]) params.toArray(new GeneralParameterValue[params.size()]);
+        GeneralParameterValue[] result = params.toArray(new GeneralParameterValue[params.size()]);
         return result;
     }
 

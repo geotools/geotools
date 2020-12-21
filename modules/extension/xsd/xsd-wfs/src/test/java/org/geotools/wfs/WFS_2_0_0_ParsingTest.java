@@ -214,7 +214,7 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
 
         assertEquals(14, ftl.getFeatureType().size());
 
-        FeatureTypeType featureType = (FeatureTypeType) ftl.getFeatureType().get(0);
+        FeatureTypeType featureType = ftl.getFeatureType().get(0);
         assertEquals("poly_landmarks", featureType.getName().getLocalPart());
         assertEquals("tiger", featureType.getName().getPrefix());
         assertEquals("http://www.census.gov", featureType.getName().getNamespaceURI());
@@ -235,7 +235,7 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
     }
 
     void assertFilterCapabilities(WFSCapabilitiesType caps) {
-        FilterCapabilities fc = (FilterCapabilities) caps.getFilterCapabilities();
+        FilterCapabilities fc = caps.getFilterCapabilities();
 
         assertNotNull(fc.getSpatialCapabilities());
         assertNotNull(fc.getSpatialCapabilities().getSpatialOperators());

@@ -43,14 +43,14 @@ public class SimpleFeaturePropertyAccessorTest extends TestCase {
         typeBuilder.add("bar", Double.class);
         typeBuilder.add(COMPLEX_PROPERTY, Double.class);
 
-        type = (SimpleFeatureType) typeBuilder.buildFeatureType();
+        type = typeBuilder.buildFeatureType();
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         builder.add(Integer.valueOf(1));
         builder.add(Double.valueOf(2.0));
         builder.add(Double.valueOf(3.0));
 
-        feature = (SimpleFeature) builder.buildFeature("fid");
+        feature = builder.buildFeature("fid");
         accessor = SimpleFeaturePropertyAccessorFactory.ATTRIBUTE_ACCESS;
     }
 

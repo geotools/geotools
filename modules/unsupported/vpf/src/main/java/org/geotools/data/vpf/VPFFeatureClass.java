@@ -156,7 +156,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         String fcsFileName = directoryName + File.separator + TABLE_FCS;
 
         try {
-            VPFFile fcsFile = (VPFFile) VPFFileFactory.getInstance().getFile(fcsFileName);
+            VPFFile fcsFile = VPFFileFactory.getInstance().getFile(fcsFileName);
 
             Iterator<SimpleFeature> iter = fcsFile.readAllRows().iterator();
 
@@ -166,7 +166,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
             }
 
             while (iter.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) iter.next();
+                SimpleFeature feature = iter.next();
                 String featureClassName = feature.getAttribute("feature_class").toString().trim();
 
                 if (typeName.equals(featureClassName)) {
@@ -185,7 +185,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
             String geometryName = null;
 
             while (iter2.hasNext()) {
-                column = (VPFColumn) iter2.next();
+                column = iter2.next();
                 if (column == null) continue;
                 if (column.isGeometry()) {
                     geometryName = column.getName();

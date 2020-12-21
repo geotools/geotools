@@ -194,7 +194,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
             return visitBBOXSpatialOperator((BBOX) filter, property, geometry, extraData);
         } else {
             return visitBinarySpatialOperator(
-                    filter, (Expression) property, (Expression) geometry, swapped, extraData);
+                    filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 

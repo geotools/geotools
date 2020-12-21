@@ -55,7 +55,7 @@ public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, Sim
         }
 
         try {
-            return SimpleFeatureBuilder.copy((SimpleFeature) iterator.next());
+            return SimpleFeatureBuilder.copy(iterator.next());
         } catch (NoSuchElementException end) {
             throw new DataSourceException("There are no more Features", end);
         }

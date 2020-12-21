@@ -105,7 +105,7 @@ public class OGCUtils {
             return new Expression[] {(Expression) names.get(0), (Expression) names.get(1)};
         }
 
-        PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
+        PropertyName name = node.getChildValue(PropertyName.class);
         Expression spatial = null;
 
         if (node.hasChild(Geometry.class)) {
@@ -113,7 +113,7 @@ public class OGCUtils {
         } else if (node.hasChild(Envelope.class)) {
             // JD: creating an envelope here would break a lot of our code, for instance alot of
             // code that encodes a filter into sql will choke on this
-            Envelope envelope = (Envelope) node.getChildValue(Envelope.class);
+            Envelope envelope = node.getChildValue(Envelope.class);
             Polygon polygon =
                     gf.createPolygon(
                             gf.createLinearRing(

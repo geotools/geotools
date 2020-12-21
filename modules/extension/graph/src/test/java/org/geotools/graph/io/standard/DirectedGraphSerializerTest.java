@@ -87,8 +87,8 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
                             } else {
                                 assertTrue(n.getDegree() == 2);
 
-                                Edge in = (Edge) n.getInEdges().get(0);
-                                Edge out = (Edge) n.getOutEdges().get(0);
+                                Edge in = n.getInEdges().get(0);
+                                Edge out = n.getOutEdges().get(0);
 
                                 assertTrue(
                                         (in.getID() == n.getID() - 1 && out.getID() == n.getID()));
@@ -146,8 +146,8 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
                                 // root
                                 assertTrue(n.getDegree() == 2);
 
-                                Node n0 = ((Edge) n.getEdges().get(0)).getOtherNode(n);
-                                Node n1 = ((Edge) n.getEdges().get(1)).getOtherNode(n);
+                                Node n0 = n.getEdges().get(0).getOtherNode(n);
+                                Node n1 = n.getEdges().get(1).getOtherNode(n);
 
                                 assertTrue(
                                         n0.getObject().equals("0.0") && n1.getObject().equals("0.1")

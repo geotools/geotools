@@ -30,7 +30,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -58,7 +57,7 @@ public class ReprojectingIterator implements Iterator<SimpleFeature> {
         this.schema = schema;
 
         tx = transformer;
-        tx.setMathTransform((MathTransform2D) transform);
+        tx.setMathTransform(transform);
     }
 
     public ReprojectingIterator(
@@ -93,7 +92,7 @@ public class ReprojectingIterator implements Iterator<SimpleFeature> {
     }
 
     public SimpleFeature next() {
-        SimpleFeature feature = (SimpleFeature) delegate.next();
+        SimpleFeature feature = delegate.next();
         try {
             return reproject(feature);
         } catch (IOException e) {

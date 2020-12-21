@@ -148,7 +148,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getValue() {
-            Comparable min = (Comparable) minValue;
+            Comparable min = minValue;
 
             return min;
         }

@@ -640,7 +640,7 @@ public final class MarchingSquaresVectorizer {
         // Compute the ROIShape
         if (!innerGeometry.isEmpty()) {
             LiteShape2 shape = new LiteShape2(innerGeometry, TRANSLATED_TX, null, false);
-            roiShape = (ROIShape) new ROIShape(shape);
+            roiShape = new ROIShape(shape);
         }
     }
 
@@ -1153,7 +1153,7 @@ public final class MarchingSquaresVectorizer {
         coordinateList.add(startCoordinate);
 
         Coordinate[] coordinateArray =
-                (Coordinate[]) coordinateList.toArray(new Coordinate[coordinateList.size()]);
+                coordinateList.toArray(new Coordinate[coordinateList.size()]);
 
         LinearRing linearRing = GF.createLinearRing(coordinateArray);
         Polygon polygon = GF.createPolygon(linearRing, null);

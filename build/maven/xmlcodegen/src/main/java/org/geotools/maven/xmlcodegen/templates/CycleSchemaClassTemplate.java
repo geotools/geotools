@@ -330,7 +330,7 @@ public class CycleSchemaClassTemplate
                     String pdTypeName = pdType.getName().getLocalPart().toUpperCase() + 
                         "_TYPE";
                     if (ns2import.containsKey(pdType.getName().getNamespaceURI())) {
-                        String importClassName = (String) ns2import.get(pdType.getName().getNamespaceURI());
+                        String importClassName = ns2import.get(pdType.getName().getNamespaceURI());
                         pdTypeName = importClassName + "." + pdTypeName;
                     }
                     String pdName = "new NameImpl(\"" + pd.getName().getNamespaceURI() + 

@@ -51,7 +51,7 @@ public class GeometryCollectionHandler extends DelegatingHandler<GeometryCollect
     public boolean endObject() throws ParseException, IOException {
         if (delegate instanceof GeometryHandlerBase) {
             // end of a member geometry
-            ((GeometryHandlerBase) delegate).endObject();
+            delegate.endObject();
             Geometry geomObject = ((GeometryHandlerBase) delegate).getValue();
             if (geomObject != null) geoms.add(geomObject);
             delegate = NULL;

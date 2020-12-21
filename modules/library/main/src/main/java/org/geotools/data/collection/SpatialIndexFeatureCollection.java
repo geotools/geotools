@@ -101,8 +101,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
             return;
         }
         CollectionEvent event = new CollectionEvent(this, features, eventType);
-        CollectionListener[] notify =
-                (CollectionListener[]) listeners.toArray(new CollectionListener[listeners.size()]);
+        CollectionListener[] notify = listeners.toArray(new CollectionListener[listeners.size()]);
         for (CollectionListener listener : notify) {
             try {
                 listener.collectionChanged(event);
@@ -310,7 +309,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
                         Double.NEGATIVE_INFINITY,
                         Double.POSITIVE_INFINITY);
         final List<SimpleFeature> list = (List<SimpleFeature>) index.query(everything);
-        return (Iterator<SimpleFeature>) list.iterator();
+        return list.iterator();
     }
 
     public void purge() {}

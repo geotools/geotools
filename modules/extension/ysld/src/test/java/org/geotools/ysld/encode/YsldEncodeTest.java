@@ -1027,7 +1027,7 @@ public class YsldEncodeTest {
         style.featureTypeStyles().get(0).rules().add(rule);
 
         PointSymbolizer p = styleFactory.createPointSymbolizer();
-        rule.symbolizers().add((Symbolizer) p);
+        rule.symbolizers().add(p);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
@@ -1060,7 +1060,7 @@ public class YsldEncodeTest {
         style.featureTypeStyles().get(0).rules().add(rule);
 
         PointSymbolizer p = styleFactory.createPointSymbolizer();
-        rule.symbolizers().add((Symbolizer) p);
+        rule.symbolizers().add(p);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
@@ -1433,7 +1433,7 @@ public class YsldEncodeTest {
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
         fts.rules().add(rule);
 
-        rule.symbolizers().add((Symbolizer) sym);
+        rule.symbolizers().add(sym);
         return fts;
     }
 

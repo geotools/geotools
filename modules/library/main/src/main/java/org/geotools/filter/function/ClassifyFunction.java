@@ -44,11 +44,11 @@ public class ClassifyFunction extends FunctionExpressionImpl {
             Literal literal = (Literal) expr;
             return (Classifier) literal.getValue();
         }
-        return (Classifier) expr.evaluate(context, Classifier.class);
+        return expr.evaluate(context, Classifier.class);
     }
 
     public org.opengis.filter.expression.Expression getExpression() {
-        return (org.opengis.filter.expression.Expression) getParameters().get(0);
+        return getParameters().get(0);
     }
 
     public Object evaluate(Object feature) {

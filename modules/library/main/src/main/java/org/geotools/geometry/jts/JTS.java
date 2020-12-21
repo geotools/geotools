@@ -612,7 +612,7 @@ public final class JTS {
          * shared instances of GeodeticCalculator and GeneralDirectPosition (POSITIONS). None of
          * them are thread-safe.
          */
-        GeodeticCalculator gc = (GeodeticCalculator) CALCULATORS.get(crs);
+        GeodeticCalculator gc = CALCULATORS.get(crs);
 
         if (gc == null) {
             gc = new GeodeticCalculator(crs);
@@ -756,8 +756,7 @@ public final class JTS {
                             coords.add(coords.get(0));
                             lines.add(
                                     factory.createLinearRing(
-                                            (Coordinate[])
-                                                    coords.toArray(new Coordinate[coords.size()])));
+                                            coords.toArray(new Coordinate[coords.size()])));
                             coords.clear();
                         }
                         break;
@@ -772,8 +771,7 @@ public final class JTS {
                         if (!coords.isEmpty()) {
                             lines.add(
                                     factory.createLineString(
-                                            (Coordinate[])
-                                                    coords.toArray(new Coordinate[coords.size()])));
+                                            coords.toArray(new Coordinate[coords.size()])));
                             coords.clear();
                         }
 
@@ -798,9 +796,7 @@ public final class JTS {
          * End of loops: create the last LineString if any, then create the MultiLineString.
          */
         if (!coords.isEmpty()) {
-            lines.add(
-                    factory.createLineString(
-                            (Coordinate[]) coords.toArray(new Coordinate[coords.size()])));
+            lines.add(factory.createLineString(coords.toArray(new Coordinate[coords.size()])));
         }
 
         switch (lines.size()) {
@@ -808,7 +804,7 @@ public final class JTS {
                 return null;
 
             case 1:
-                return (LineString) lines.get(0);
+                return lines.get(0);
 
             default:
                 return factory.createMultiLineString(GeometryFactory.toLineStringArray(lines));
@@ -1594,8 +1590,7 @@ public final class JTS {
                 Polygon item = result.get(i);
                 if (item.getNumInteriorRing() > 0) {
                     GeometryFactory factory = item.getFactory();
-                    Polygon noHoles =
-                            factory.createPolygon((LinearRing) item.getExteriorRing(), null);
+                    Polygon noHoles = factory.createPolygon(item.getExteriorRing(), null);
                     result.set(i, noHoles);
                 }
             }

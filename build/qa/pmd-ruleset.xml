@@ -45,6 +45,7 @@ This ruleset might be used as a starting point for an own customized ruleset [0]
   <rule ref="category/java/codestyle.xml/UnnecessaryReturn"/>
   <rule ref="category/java/codestyle.xml/UselessParentheses"/>
   <rule ref="category/java/codestyle.xml/UselessQualifiedThis"/>
+  <rule ref="category/java/codestyle.xml/UnnecessaryCast" />
   <!-- rule ref="category/java/design.xml/CollapsibleIfStatements" / -->
   <!-- rule ref="category/java/design.xml/SimplifiedTernary" / -->
   <!-- rule ref="category/java/design.xml/UselessOverridingMethod" / -->

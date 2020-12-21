@@ -79,7 +79,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     public ContrastEnhancementImpl(FilterFactory factory) {
-        this(factory, (ContrastMethod) null);
+        this(factory, null);
     }
 
     public ContrastEnhancementImpl(FilterFactory factory, ContrastMethod method) {

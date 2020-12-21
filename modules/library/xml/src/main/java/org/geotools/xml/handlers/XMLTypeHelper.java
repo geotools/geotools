@@ -46,7 +46,7 @@ public class XMLTypeHelper {
             }
             if (complexType.getParent() != null) {
                 Type parent = complexType.getParent();
-                return findChildElement((ComplexType) parent, localName, namespaceURI);
+                return findChildElement(parent, localName, namespaceURI);
             }
         } else {
             return type.findChildElement(localName);

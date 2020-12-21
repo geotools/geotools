@@ -178,7 +178,7 @@ public class Ysld {
      * @return The GeoTools SLD object.
      */
     public static StyledLayerDescriptor parse(Object ysld) throws IOException {
-        return parse(ysld, (List<ZoomContextFinder>) null, (ResourceLocator) null, new UomMapper());
+        return parse(ysld, null, null, new UomMapper());
     }
 
     /**

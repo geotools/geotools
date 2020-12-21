@@ -168,7 +168,7 @@ public class XPath extends XPathUtil {
         AttributeDescriptor parentDescriptor = parent.getDescriptor();
         if (parentDescriptor != null) {
             rootName = parentDescriptor.getName();
-            Step rootStep = (Step) steps.get(0);
+            Step rootStep = steps.get(0);
             QName stepName = rootStep.getName();
             if (Types.equals(rootName, stepName)) {
                 // first step is the self reference to att, so skip it
@@ -807,7 +807,7 @@ public class XPath extends XPathUtil {
                         1,
                         1,
                         true,
-                        (Object) null);
+                        null);
         return new AttributeImpl(convertedValue, descriptor, null);
     }
 
@@ -831,7 +831,7 @@ public class XPath extends XPathUtil {
     private boolean isUnboundedMultivalue(final Attribute parent) {
         final Object value = parent.getUserData().get(MULTI_VALUE_TYPE);
         if (value instanceof String) {
-            return UNBOUNDED_MULTI_VALUE.equals((String) value);
+            return UNBOUNDED_MULTI_VALUE.equals(value);
         }
         return false;
     }

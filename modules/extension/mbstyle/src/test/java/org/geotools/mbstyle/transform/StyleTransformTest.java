@@ -75,7 +75,6 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -278,7 +277,7 @@ public class StyleTransformTest {
         List<Integer> expectedDashes = Arrays.asList(50, 50); // 5 times 10, the line width
         assertEquals(expectedDashes.size(), lsym.getStroke().dashArray().size());
         for (int i = 0; i < expectedDashes.size(); i++) {
-            Integer n = (Integer) lsym.getStroke().dashArray().get(i).evaluate(null, Integer.class);
+            Integer n = lsym.getStroke().dashArray().get(i).evaluate(null, Integer.class);
             assertEquals(expectedDashes.get(i), n);
         }
     }
@@ -602,7 +601,7 @@ public class StyleTransformTest {
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
-        assertEquals("false", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
+        assertEquals("false", symbolizer.getOptions().get("partials"));
     }
 
     @Test
@@ -619,7 +618,7 @@ public class StyleTransformTest {
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
-        assertEquals("false", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
+        assertEquals("false", symbolizer.getOptions().get("partials"));
     }
 
     @Test
@@ -636,7 +635,7 @@ public class StyleTransformTest {
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
-        assertEquals("false", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
+        assertEquals("false", symbolizer.getOptions().get("partials"));
     }
 
     @Test
@@ -711,7 +710,7 @@ public class StyleTransformTest {
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
-        assertNull("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("labelObstacle"));
+        assertNull("true", symbolizer.getOptions().get("labelObstacle"));
     }
 
     /** Read a test Mapbox Style file (json) and parse it into a {@link JSONObject}. */

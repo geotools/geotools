@@ -107,7 +107,7 @@ public class MultiLineHandler implements ShapeHandler {
     }
 
     private Object createNull() {
-        return geometryFactory.createMultiLineString((LineString[]) null);
+        return geometryFactory.createMultiLineString(null);
     }
 
     public Object read(ByteBuffer buffer, ShapeType type, boolean flatGeometry) {

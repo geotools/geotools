@@ -81,12 +81,10 @@ public class Scalar_CapabilitiesTypeBinding extends AbstractComplexBinding {
                 node.hasChild("Logical_Operators") || node.hasChild("LogicalOperators"); /* 1.1 */
 
         // &lt;xsd:element name="Comparison_Operators" type="ogc:Comparison_OperatorsType"/&gt;
-        ComparisonOperators comparison =
-                (ComparisonOperators) node.getChildValue(ComparisonOperators.class);
+        ComparisonOperators comparison = node.getChildValue(ComparisonOperators.class);
 
         // &lt;xsd:element name="Arithmetic_Operators" type="ogc:Arithmetic_OperatorsType"/&gt;
-        ArithmeticOperators arithmetic =
-                (ArithmeticOperators) node.getChildValue(ArithmeticOperators.class);
+        ArithmeticOperators arithmetic = node.getChildValue(ArithmeticOperators.class);
 
         return factory.scalarCapabilities(comparison, arithmetic, logical);
     }

@@ -35,7 +35,6 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.operator.MosaicDescriptor;
-import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -432,9 +431,7 @@ public class Crop extends Operation2D {
         //
         // //
         final AffineTransform sourceCornerGridToWorld =
-                (AffineTransform)
-                        ((GridGeometry2D) source.getGridGeometry())
-                                .getGridToCRS(PixelInCell.CELL_CORNER);
+                (AffineTransform) source.getGridGeometry().getGridToCRS(PixelInCell.CELL_CORNER);
 
         // //
         //
@@ -506,8 +503,7 @@ public class Crop extends Operation2D {
         // Getting the source coverage and its child geolocation objects
         //
         final RenderedImage sourceImage = sourceCoverage.getRenderedImage();
-        final GridGeometry2D sourceGridGeometry =
-                ((GridGeometry2D) sourceCoverage.getGridGeometry());
+        final GridGeometry2D sourceGridGeometry = sourceCoverage.getGridGeometry();
         final GridEnvelope2D sourceGridRange = sourceGridGeometry.getGridRange2D();
 
         //
@@ -796,10 +792,7 @@ public class Crop extends Operation2D {
                                     new GridEnvelope2D(croppedImage.getBounds()),
                                     sourceGridGeometry.getGridToCRS2D(PixelOrientation.CENTER),
                                     sourceCoverage.getCoordinateReferenceSystem()),
-                            (GridSampleDimension[])
-                                    (actionTaken == 1
-                                            ? null
-                                            : sourceCoverage.getSampleDimensions().clone()),
+                            actionTaken == 1 ? null : sourceCoverage.getSampleDimensions().clone(),
                             new GridCoverage[] {sourceCoverage},
                             properties);
 

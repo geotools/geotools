@@ -85,7 +85,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         dataAccess = DataAccessFinder.getDataStore(dsParams);
 
         FeatureSource<FeatureType, Feature> fSource = dataAccess.getFeatureSource(EXAMPLE_TYPE);
-        exCollection = (FeatureCollection<FeatureType, Feature>) fSource.getFeatures();
+        exCollection = fSource.getFeatures();
 
         assertEquals(3, size(exCollection));
     }

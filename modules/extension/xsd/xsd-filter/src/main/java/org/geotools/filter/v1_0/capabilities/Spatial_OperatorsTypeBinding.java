@@ -93,8 +93,7 @@ public class Spatial_OperatorsTypeBinding extends AbstractComplexBinding {
             ops.add(factory.spatialOperator(child.getComponent().getName(), null));
         }
 
-        return factory.spatialOperators(
-                (SpatialOperator[]) ops.toArray(new SpatialOperator[ops.size()]));
+        return factory.spatialOperators(ops.toArray(new SpatialOperator[ops.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

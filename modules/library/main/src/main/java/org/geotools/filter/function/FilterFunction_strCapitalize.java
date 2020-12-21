@@ -40,7 +40,7 @@ public class FilterFunction_strCapitalize extends FunctionExpressionImpl {
         String arg0;
 
         try { // attempt to get value and perform conversion
-            arg0 = (String) getExpression(0).evaluate(feature, String.class); // extra
+            arg0 = getExpression(0).evaluate(feature, String.class); // extra
             // protection
             // for
             // strings

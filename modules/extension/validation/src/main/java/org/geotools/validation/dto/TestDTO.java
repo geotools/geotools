@@ -69,7 +69,7 @@ public class TestDTO {
                 String key = (String) i.next();
 
                 // TODO clone value.
-                args.put(key, new ArgumentDTO((ArgumentDTO) t.getArgs().get(key)));
+                args.put(key, new ArgumentDTO(t.getArgs().get(key)));
             }
         }
     }

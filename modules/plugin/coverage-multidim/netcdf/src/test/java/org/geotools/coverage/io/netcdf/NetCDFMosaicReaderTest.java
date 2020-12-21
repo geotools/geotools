@@ -1248,7 +1248,7 @@ public class NetCDFMosaicReaderTest {
                 props.load(inStream);
             }
             // Before the fix, the AuxiliaryFile was always an absolute path
-            assertEquals(auxFileName, (String) props.getProperty(Prop.AUXILIARY_FILE));
+            assertEquals(auxFileName, props.getProperty(Prop.AUXILIARY_FILE));
         } finally {
             if (reader != null) {
                 try {

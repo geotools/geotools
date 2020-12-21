@@ -124,7 +124,7 @@ public abstract class ClassificationFunction extends DefaultExpression
 
     public int getClasses() {
         Literal classes = (Literal) getParameters().get(1);
-        return ((Integer) classes.evaluate(null, Integer.class)).intValue();
+        return classes.evaluate(null, Integer.class).intValue();
     }
 
     public void setClasses(int classes) {

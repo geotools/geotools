@@ -200,7 +200,7 @@ public class Utils {
 
         int JGREG = 15 + 31 * (10 + 12 * 1582);
         int jalpha, ja, jb, jc, jd, je, year, month, day;
-        ja = (int) jdt.getCoordinateValue().intValue();
+        ja = jdt.getCoordinateValue().intValue();
         if (ja >= JGREG) {
             jalpha = (int) (((ja - 1867216) - 0.25) / 36524.25);
             ja = ja + 1 + jalpha - jalpha / 4;

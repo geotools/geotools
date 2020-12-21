@@ -195,7 +195,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
 
             assertEquals(capabilities.getLayerList().size(), 12);
 
-            Layer layer = (Layer) capabilities.getLayerList().get(0);
+            Layer layer = capabilities.getLayerList().get(0);
             assertNull(layer.getParent());
             assertEquals(layer.getName(), "DEMO");
             assertEquals(layer.get_abstract(), "Abstract Test");
@@ -217,14 +217,14 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
             assertEquals(layer.getBoundingBoxes().size(), 1);
             assertNotNull(layer.getBoundingBoxes().get("EPSG:42304"));
 
-            Layer layer2 = (Layer) capabilities.getLayerList().get(1);
+            Layer layer2 = capabilities.getLayerList().get(1);
             assertEquals(layer2.getParent(), layer);
             assertEquals(layer2.getName(), "bathymetry");
             assertEquals(layer2.getTitle(), "Elevation/Bathymetry");
             assertTrue(layer2.getSrs().contains("EPSG:42304"));
             assertFalse(layer2.isQueryable());
 
-            layer2 = (Layer) capabilities.getLayerList().get(2);
+            layer2 = capabilities.getLayerList().get(2);
             assertEquals(layer2.getParent(), layer);
             assertEquals(layer2.getName(), "land_fn");
             assertEquals(layer2.getTitle(), "Foreign Lands");
@@ -235,7 +235,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
             assertFalse(layer2.isQueryable());
             assertNotNull(layer2.getBoundingBoxes().get("EPSG:42304"));
 
-            layer2 = (Layer) capabilities.getLayerList().get(3);
+            layer2 = capabilities.getLayerList().get(3);
             assertEquals(layer2.getParent(), layer);
             assertEquals(layer2.getName(), "park");
             assertEquals(layer2.getTitle(), "Parks");
@@ -247,7 +247,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
             assertTrue(layer2.isQueryable());
             assertNotNull(layer2.getBoundingBoxes().get("EPSG:42304"));
 
-            layer2 = (Layer) capabilities.getLayerList().get(11);
+            layer2 = capabilities.getLayerList().get(11);
             assertEquals(layer2.getParent(), layer);
             assertEquals(layer2.getName(), "grid");
             assertEquals(layer2.getTitle(), "Grid");

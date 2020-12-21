@@ -610,7 +610,7 @@ public class DbaseFileHeader {
                 field.fieldDataAddress = in.getInt();
 
                 // read the field length in bytes
-                int length = (int) in.get();
+                int length = in.get();
                 if (length < 0) {
                     length = length + 256;
                 }
@@ -621,7 +621,7 @@ public class DbaseFileHeader {
                 }
 
                 // read the field decimal count in bytes
-                field.decimalCount = (int) in.get();
+                field.decimalCount = in.get();
 
                 // reserved bytes.
                 // in.skipBytes(14);
@@ -640,7 +640,7 @@ public class DbaseFileHeader {
             in.position(in.position() + 1);
 
             fields = new DbaseField[lfields.size()];
-            fields = (DbaseField[]) lfields.toArray(fields);
+            fields = lfields.toArray(fields);
         } finally {
             NIOUtilities.clean(in, false);
         }
@@ -725,7 +725,7 @@ public class DbaseFileHeader {
             field.fieldDataAddress = in.getInt();
 
             // read the field length in bytes
-            int length = (int) in.get();
+            int length = in.get();
             if (length < 0) {
                 length = length + 256;
             }
@@ -736,7 +736,7 @@ public class DbaseFileHeader {
             }
 
             // read the field decimal count in bytes
-            field.decimalCount = (int) in.get();
+            field.decimalCount = in.get();
 
             // reserved bytes.
             // in.skipBytes(14);
@@ -755,7 +755,7 @@ public class DbaseFileHeader {
         in.position(in.position() + 1);
 
         fields = new DbaseField[lfields.size()];
-        fields = (DbaseField[]) lfields.toArray(fields);
+        fields = lfields.toArray(fields);
     }
 
     /**
@@ -793,7 +793,7 @@ public class DbaseFileHeader {
             buffer.order(ByteOrder.LITTLE_ENDIAN);
 
             // write the output file type.
-            buffer.put((byte) MAGIC);
+            buffer.put(MAGIC);
 
             // write the date stuff
             Calendar c = Calendar.getInstance();

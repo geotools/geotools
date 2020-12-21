@@ -905,7 +905,7 @@ public class Utilities {
                                             scaleX, 0, 0, scaleY, translateX, translateY)),
                             raster2Model),
                     coordinateReferenceSystem,
-                    (GeneralEnvelope) null,
+                    null,
                     sampleDimensions);
         } else {
             // In case of no transformation is required (As an instance,
@@ -915,8 +915,8 @@ public class Utilities {
                     coverageName,
                     imageIndex,
                     image,
-                    (MathTransform) null,
-                    (CoordinateReferenceSystem) null,
+                    null,
+                    null,
                     coverageEnvelope2D,
                     sampleDimensions);
         }

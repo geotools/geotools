@@ -76,7 +76,7 @@ public class JCRSStatusBarItemGraphicsTest
                         });
 
         windowFixture = new FrameFixture(frame);
-        ((FrameFixture) windowFixture).show();
+        windowFixture.show();
     }
 
     @Test

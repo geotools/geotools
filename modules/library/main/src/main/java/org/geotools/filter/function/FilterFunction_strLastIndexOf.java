@@ -41,7 +41,7 @@ public class FilterFunction_strLastIndexOf extends FunctionExpressionImpl {
         String arg1;
 
         try { // attempt to get value and perform conversion
-            arg0 = (String) getExpression(0).evaluate(feature, String.class); // extra
+            arg0 = getExpression(0).evaluate(feature, String.class); // extra
             // protection
             // for
             // strings
@@ -52,7 +52,7 @@ public class FilterFunction_strLastIndexOf extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = (String) getExpression(1).evaluate(feature, String.class); // extra
+            arg1 = getExpression(1).evaluate(feature, String.class); // extra
             // protection
             // for
             // strings

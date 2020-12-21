@@ -121,7 +121,7 @@ class UomRescaleHelper {
         float[] rescaledDashArray = new float[dashArray.length];
 
         for (int i = 0; i < rescaledDashArray.length; i++) {
-            rescaledDashArray[i] = (float) rescale((double) dashArray[i], uom);
+            rescaledDashArray[i] = (float) rescale(dashArray[i], uom);
         }
         return rescaledDashArray;
     }

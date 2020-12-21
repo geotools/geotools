@@ -515,14 +515,13 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         }
 
         // return the coverage
-        return (GridCoverage2D)
-                coverageFactory.create(
-                        coverageName,
-                        image,
-                        new GeneralEnvelope(originalEnvelope),
-                        new GridSampleDimension[] {band},
-                        null,
-                        metadata);
+        return coverageFactory.create(
+                coverageName,
+                image,
+                new GeneralEnvelope(originalEnvelope),
+                new GridSampleDimension[] {band},
+                null,
+                metadata);
     }
 
     /**

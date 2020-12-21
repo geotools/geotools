@@ -101,8 +101,8 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: crs
-        PropertyName propertyName = (PropertyName) node.getChildValue(PropertyName.class);
-        Envelope box = (Envelope) node.getChildValue(Envelope.class);
+        PropertyName propertyName = node.getChildValue(PropertyName.class);
+        Envelope box = node.getChildValue(Envelope.class);
 
         if (box instanceof ReferencedEnvelope) {
             return factory.bbox(

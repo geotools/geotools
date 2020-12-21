@@ -68,9 +68,9 @@ public class EdgeData extends HashMap<Object, Object> {
                     Object tmp = ((RowField) value).getValue();
 
                     if (tmp instanceof TripletId) {
-                        return super.put(key_s, (TripletId) tmp);
+                        return super.put(key_s, tmp);
                     } else if (tmp instanceof Integer) {
-                        return super.put(key_s, ((Integer) tmp));
+                        return super.put(key_s, tmp);
                     } else {
                         VPFLogger.log("DYNGE I TRIPLETGENERERING!!!");
                     }

@@ -142,7 +142,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
 
         Set<Function> functions = CommonFactoryFinder.getFunctions(null);
         for (Iterator<Function> i = functions.iterator(); i.hasNext(); ) {
-            Function function = (Function) i.next();
+            Function function = i.next();
             FunctionName functionName = getFunctionName(function);
             Name name = functionName.getFunctionName();
 

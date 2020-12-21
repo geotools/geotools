@@ -37,7 +37,7 @@ public abstract class RangeValidator<T extends Comparable<T>> extends TupleValid
 
     @Override
     protected List<ScalarValidator> getSubValidators() {
-        return Arrays.asList((ScalarValidator) new ValueValidator(true), new ValueValidator(false));
+        return Arrays.asList(new ValueValidator(true), new ValueValidator(false));
     }
 
     class ValueValidator extends ScalarValidator {

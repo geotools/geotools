@@ -45,8 +45,7 @@ public class GT30ZipWriterTest extends GT30TestBase {
     /** Testing zipped-package writing capabilites. */
     public void test() throws Exception {
         final URL statURL = TestData.getResource(this, this.fileName + ".DEM");
-        final AbstractGridFormat format =
-                (AbstractGridFormat) new GTopo30FormatFactory().createFormat();
+        final AbstractGridFormat format = new GTopo30FormatFactory().createFormat();
 
         final GTopo30WriteParams wp = new GTopo30WriteParams();
         wp.setCompressionMode(GTopo30WriteParams.MODE_EXPLICIT);
@@ -68,10 +67,7 @@ public class GT30ZipWriterTest extends GT30TestBase {
             newDir.mkdir();
 
             final GridCoverageWriter writer = format.getWriter(newDir);
-            writer.write(
-                    gc,
-                    (GeneralParameterValue[])
-                            params.values().toArray(new GeneralParameterValue[1]));
+            writer.write(gc, params.values().toArray(new GeneralParameterValue[1]));
 
             gc.dispose(false);
         }
@@ -80,8 +76,7 @@ public class GT30ZipWriterTest extends GT30TestBase {
     /** Testing zipped-package writing capabilites. */
     public void testExternalZIP() throws Exception {
         final URL sourceURL = TestData.getResource(this, this.fileName + ".DEM");
-        final AbstractGridFormat format =
-                (AbstractGridFormat) new GTopo30FormatFactory().createFormat();
+        final AbstractGridFormat format = new GTopo30FormatFactory().createFormat();
 
         assertTrue(
                 "Unable to parse source data for this GTOPO30 write test",

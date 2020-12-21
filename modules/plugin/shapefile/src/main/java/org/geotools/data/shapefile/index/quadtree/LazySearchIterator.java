@@ -83,11 +83,11 @@ public class LazySearchIterator implements CloseableIterator<Data> {
         if (closed) throw new IllegalStateException("Iterator has been closed!");
         if (next != null) return true;
         if (data != null && data.hasNext()) {
-            next = (Data) data.next();
+            next = data.next();
         } else {
             data = null;
             fillCache();
-            if (data != null && data.hasNext()) next = (Data) data.next();
+            if (data != null && data.hasNext()) next = data.next();
         }
         return next != null;
     }

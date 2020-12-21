@@ -106,7 +106,7 @@ public final class ECWTest extends GDALTestCase {
         final ParameterValue<Boolean> jai =
                 ((AbstractGridFormat) reader.getFormat()).USE_JAI_IMAGEREAD.createValue();
         jai.setValue(true);
-        GridCoverage2D gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {jai});
+        GridCoverage2D gc = reader.read(new GeneralParameterValue[] {jai});
         LOGGER.info(gc.toString());
         forceDataLoading(gc);
 
@@ -143,16 +143,14 @@ public final class ECWTest extends GDALTestCase {
                                         (int) (range.width / 4.0 / cropFactor),
                                         (int) (range.height / 4.0 / cropFactor))),
                         cropEnvelope));
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
+        gc = reader.read(new GeneralParameterValue[] {gg});
         Assert.assertNotNull(gc);
         // NOTE: in some cases might be too restrictive
         Assert.assertTrue(
                 cropEnvelope.equals(
                         gc.getEnvelope(),
                         XAffineTransform.getScale(
-                                        ((AffineTransform)
-                                                ((GridGeometry2D) gc.getGridGeometry())
-                                                        .getGridToCRS2D()))
+                                        ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
                                 / 2,
                         true));
 
@@ -181,11 +179,10 @@ public final class ECWTest extends GDALTestCase {
                 ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         gg2.setValue(
                 new GridGeometry2D(
-                        new GridEnvelope2D(
-                                new Rectangle(0, 0, (int) (range.width), (int) (range.height))),
+                        new GridEnvelope2D(new Rectangle(0, 0, range.width, range.height)),
                         wrongEnvelope));
 
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg2});
+        gc = reader.read(new GeneralParameterValue[] {gg2});
         Assert.assertNull("Wrong envelope requested", gc);
     }
 
@@ -243,8 +240,7 @@ public final class ECWTest extends GDALTestCase {
         ParameterValue<String> footprint = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprint.setValue(FootprintBehavior.Transparent.toString());
 
-        GridCoverage2D gc =
-                (GridCoverage2D) reader.read(new GeneralParameterValue[] {jai, footprint});
+        GridCoverage2D gc = reader.read(new GeneralParameterValue[] {jai, footprint});
         LOGGER.info(gc.toString());
         forceDataLoading(gc);
 

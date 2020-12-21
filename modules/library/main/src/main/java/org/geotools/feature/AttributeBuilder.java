@@ -198,7 +198,7 @@ public class AttributeBuilder {
      */
     public void setDescriptor(AttributeDescriptor descriptor) {
         this.descriptor = descriptor;
-        this.type = (AttributeType) descriptor.getType();
+        this.type = descriptor.getType();
     }
 
     /** @return The type of the attribute being built. */
@@ -423,7 +423,7 @@ public class AttributeBuilder {
     protected Attribute create(
             Object value, AttributeType type, AttributeDescriptor descriptor, String id) {
         if (descriptor != null) {
-            type = (AttributeType) descriptor.getType();
+            type = descriptor.getType();
         }
         // if (type instanceof FeatureCollectionType) {
         // attribute = descriptor != null ? attributeFactory.createFeatureCollection(

@@ -118,7 +118,7 @@ public class MBFunctionFactoryTest {
         assertEquals(0, (int) expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential( 5, 0.7, 0,0, 10,100)");
-        assertTrue(50 < (int) expr.evaluate(null, Integer.class));
+        assertTrue(50 < expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential(10, 0.7, 0,0, 10,100)");
         assertEquals(100, (int) expr.evaluate(null, Integer.class));
@@ -130,7 +130,7 @@ public class MBFunctionFactoryTest {
         assertEquals(0, (int) expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential( 5, 1.4, 0,0, 10,100)");
-        assertTrue(50 > (int) expr.evaluate(null, Integer.class));
+        assertTrue(50 > expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential(10, 1.5, 0,0, 10,100)");
         assertEquals(100, (int) expr.evaluate(null, Integer.class));

@@ -74,7 +74,7 @@ public class XSISimpleTypes {
             load();
         }
 
-        SimpleType r = (SimpleType) m.get(type);
+        SimpleType r = m.get(type);
 
         return r;
     }
@@ -86,7 +86,7 @@ public class XSISimpleTypes {
             load();
         }
 
-        SimpleType r = (SimpleType) m.get(type);
+        SimpleType r = m.get(type);
 
         return r;
     }

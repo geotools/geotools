@@ -393,7 +393,7 @@ public class Filters {
         if (value instanceof String) {
             String text = (String) value;
             try {
-                Number number = (Number) gets(text, Number.class);
+                Number number = gets(text, Number.class);
                 return number.doubleValue();
             } catch (Throwable e) {
                 throw new IllegalArgumentException("Unable to decode '" + text + "' as a number");

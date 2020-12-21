@@ -76,7 +76,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
         ///////////////////////////////////////////////////////////////////////
         final Iterator<RenderedImage> it = intermediateOps.iterator();
         while (it.hasNext()) {
-            final PlanarImage image = PlanarImage.wrapRenderedImage((RenderedImage) it.next());
+            final PlanarImage image = PlanarImage.wrapRenderedImage(it.next());
             image.dispose();
         }
         super.dispose(force);
@@ -158,11 +158,11 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                 // Get the source image and do the merge
                 //
                 // //
-                final CoverageProcessingNode currentSourceNode = (CoverageProcessingNode) it.next();
+                final CoverageProcessingNode currentSourceNode = it.next();
                 final GridCoverage2D currentSourceCoverage =
                         (GridCoverage2D) currentSourceNode.getOutput();
                 sourceGridCoverages.add(currentSourceCoverage);
-                final GridGeometry2D gg = (GridGeometry2D) currentSourceCoverage.getGridGeometry();
+                final GridGeometry2D gg = currentSourceCoverage.getGridGeometry();
                 if (gridGeometry == null) {
                     // get the envelope for the first source.
                     gridGeometry = gg;

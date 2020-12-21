@@ -52,8 +52,7 @@ public class WFSParsingUtils {
         }
 
         // check for an array
-        SimpleFeature[] featureMembers =
-                (SimpleFeature[]) node.getChildValue(SimpleFeature[].class);
+        SimpleFeature[] featureMembers = node.getChildValue(SimpleFeature[].class);
         if (featureMembers != null) {
             Collection<SimpleFeature> collection = DataUtilities.collectionCast(fc);
             for (int i = 0; i < featureMembers.length; i++) {

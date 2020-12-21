@@ -403,7 +403,7 @@ public class InProcessLockingManager implements LockingManager {
 
             for (Iterator<String> j = fidMap.keySet().iterator(); j.hasNext(); ) {
                 String fid = j.next();
-                lock = (Lock) fidMap.get(fid);
+                lock = fidMap.get(fid);
                 // LOGGER.info("checking lock " + lock + ", is match "
                 //    + lock.isMatch(authID));
 

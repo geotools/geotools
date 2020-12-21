@@ -36,7 +36,7 @@ public class CollectionUtil {
         SimpleFeatureIterator iterator = collection.features();
         try {
             while (iterator.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) iterator.next();
+                SimpleFeature feature = iterator.next();
                 visitor.visit(feature);
             }
         } finally {
@@ -48,7 +48,7 @@ public class CollectionUtil {
         SimpleFeatureIterator iterator = collection.features();
         try {
             while (iterator.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) iterator.next();
+                SimpleFeature feature = iterator.next();
 
                 for (int i = 0; i < visitors.length; i++) {
                     FeatureVisitor visitor = visitors[i];

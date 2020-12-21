@@ -386,7 +386,7 @@ public final class GeoTiffMetadata2CRSAdapter {
                     gcs =
                             new DefaultGeographicCRS(
                                     DefaultEllipsoidalCS.getName(gcs, new CitationImpl("EPSG")),
-                                    (GeodeticDatum) gcs.getDatum(),
+                                    gcs.getDatum(),
                                     DefaultEllipsoidalCS.GEODETIC_2D.usingUnit(angularUnit));
                 }
             } catch (FactoryException fe) {

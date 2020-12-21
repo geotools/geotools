@@ -83,7 +83,7 @@ abstract class GeometryBuilder {
         Coordinate[] coordinates = new Coordinate[size];
         int i = 0;
         while (!stack.empty()) {
-            coordinates[i++] = (Coordinate) stack.pop();
+            coordinates[i++] = stack.pop();
         }
         return coordinates;
     }

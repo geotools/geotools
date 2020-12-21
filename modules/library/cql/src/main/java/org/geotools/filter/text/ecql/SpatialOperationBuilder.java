@@ -181,7 +181,7 @@ class SpatialOperationBuilder {
 
         Expression expr = getResultStack().popExpression();
 
-        FilterFactory2 ff = (FilterFactory2) getFilterFactory();
+        FilterFactory2 ff = getFilterFactory();
 
         BBOX bbox = ff.bbox(expr, minX, minY, maxX, maxY, crs);
         return bbox;

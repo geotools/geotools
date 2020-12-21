@@ -84,7 +84,7 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
         }
 
         public Context getInitialContext(Hashtable environment) throws NamingException {
-            mockContext = (Context) Mockito.mock(Context.class);
+            mockContext = Mockito.mock(Context.class);
             Mockito.when(mockContext.lookup("ds")).thenReturn(dataSource);
             return mockContext;
         }

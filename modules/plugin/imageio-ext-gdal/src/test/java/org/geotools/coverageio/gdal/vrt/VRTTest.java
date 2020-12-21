@@ -70,7 +70,7 @@ public final class VRTTest extends GDALTestCase {
         GridFormatFactorySpi fac = null;
 
         while (list.hasNext()) {
-            fac = (GridFormatFactorySpi) list.next();
+            fac = list.next();
 
             if (fac instanceof VRTFormatFactory) {
                 found = true;
@@ -106,7 +106,7 @@ public final class VRTTest extends GDALTestCase {
         // read once
         //
         // /////////////////////////////////////////////////////////////////////
-        GridCoverage2D gc = (GridCoverage2D) reader.read(null);
+        GridCoverage2D gc = reader.read(null);
         forceDataLoading(gc);
 
         // /////////////////////////////////////////////////////////////////////
@@ -142,8 +142,7 @@ public final class VRTTest extends GDALTestCase {
         cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg =
-                (ParameterValue)
-                        ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         gg.setValue(
                 new GridGeometry2D(
                         new GridEnvelope2D(
@@ -153,7 +152,7 @@ public final class VRTTest extends GDALTestCase {
                                         (int) (range.width / 2.0 / cropFactor),
                                         (int) (range.height / 2.0 / cropFactor))),
                         cropEnvelope));
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
+        gc = reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
     }
 }

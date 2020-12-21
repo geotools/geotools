@@ -179,7 +179,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
                 }
             }
 
-            attributes = (Attribute[]) h.toArray(new Attribute[h.size()]);
+            attributes = h.toArray(new Attribute[h.size()]);
         }
 
         String name1 = this.name;

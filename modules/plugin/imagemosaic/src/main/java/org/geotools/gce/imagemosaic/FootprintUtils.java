@@ -210,7 +210,7 @@ class FootprintUtils {
         Utilities.ensureNonNull("footprintGeometryMap", footprintGeometryMap);
 
         if (!footprintGeometryMap.isEmpty() && footprintGeometryMap.containsKey(locationKey)) {
-            final Geometry polygon = (Geometry) footprintGeometryMap.get(locationKey);
+            final Geometry polygon = footprintGeometryMap.get(locationKey);
             if (polygon != null) {
                 final String s = writer.write(polygon);
                 String id = featureID;

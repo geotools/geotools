@@ -278,7 +278,7 @@ public abstract class Configuration {
         stack.push(this);
 
         while (!stack.isEmpty()) {
-            Configuration c = (Configuration) stack.pop();
+            Configuration c = stack.pop();
 
             if (!unpacked.contains(c)) {
                 unpacked.addFirst(c);
@@ -292,8 +292,8 @@ public abstract class Configuration {
 
         // create a graph of the dependencies
         DepGraph g = new DepGraph();
-        for (Configuration c : (List<Configuration>) unpacked) {
-            for (Configuration d : (List<Configuration>) c.getDependencies()) {
+        for (Configuration c : unpacked) {
+            for (Configuration d : c.getDependencies()) {
                 g.addEdge(c, d);
             }
         }
@@ -516,7 +516,7 @@ public abstract class Configuration {
 
             // set any parser properties
             synchronized (dependency.getProperties()) {
-                for (QName property : (Set<QName>) dependency.getProperties()) {
+                for (QName property : dependency.getProperties()) {
                     try {
                         container.registerComponentInstance(property, property);
                     } catch (DuplicateComponentKeyRegistrationException e) {

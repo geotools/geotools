@@ -588,8 +588,7 @@ public class Encoder {
         }
         // so let's see if the nested type is a reference
         for (XSDParticle childParticle :
-                (List<XSDParticle>)
-                        Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
+                Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
             XSDElementDeclaration childElement = (XSDElementDeclaration) childParticle.getContent();
             if (childElement.isElementDeclarationReference()) {
                 childElement = childElement.getResolvedElementDeclaration();
@@ -710,12 +709,12 @@ public class Encoder {
             encoded.add(new EncodingEntry(object, root, null));
 
             while (!encoded.isEmpty()) {
-                EncodingEntry entry = (EncodingEntry) encoded.peek();
+                EncodingEntry entry = encoded.peek();
 
                 if (entry.encoding != null) {
                     // element has been started, get the next child
                     if (!entry.children.isEmpty()) {
-                        Object[] child = (Object[]) entry.children.get(0);
+                        Object[] child = entry.children.get(0);
                         XSDElementDeclaration element =
                                 ((XSDElementDeclaration) child[0]).getResolvedElementDeclaration();
                         Iterator itr = (Iterator) child[1];
@@ -833,8 +832,7 @@ public class Encoder {
 
                             // if one, we are gold
                             if (matches.size() == 1) {
-                                entry.element =
-                                        (XSDElementDeclaration) ((Object[]) matches.get(0))[0];
+                                entry.element = (XSDElementDeclaration) matches.get(0)[0];
                             }
                             // if multiple we have a problem
                             else if (matches.size() > 0) {
@@ -857,8 +855,7 @@ public class Encoder {
                             }
 
                             if (matches.size() > 0) {
-                                entry.element =
-                                        (XSDElementDeclaration) ((Object[]) matches.get(0))[0];
+                                entry.element = (XSDElementDeclaration) matches.get(0)[0];
                             }
 
                             // if zero, just use the abstract element
@@ -1094,9 +1091,9 @@ public class Encoder {
             // case
             if (encoded != null) {
                 while (!encoded.isEmpty()) {
-                    EncodingEntry entry = (EncodingEntry) encoded.pop();
+                    EncodingEntry entry = encoded.pop();
                     if (!entry.children.isEmpty()) {
-                        Object[] child = (Object[]) entry.children.get(0);
+                        Object[] child = entry.children.get(0);
                         Iterator itr = (Iterator) child[1];
                         try {
                             closeIterator(itr, child[2]);

@@ -133,7 +133,7 @@ public class FeatureTypeMapping {
             if (targetXPath.size() > 1) {
                 continue;
             }
-            Step step = (Step) targetXPath.get(0);
+            Step step = targetXPath.get(0);
             QName stepName = step.getName();
             if (Types.equals(target.getName(), stepName)) {
                 featureFidMapping = attMapping.getIdentifierExpression();
@@ -172,7 +172,7 @@ public class FeatureTypeMapping {
         AttributeMapping attMapping;
         List<AttributeMapping> mappings = new ArrayList<>();
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
-            attMapping = (AttributeMapping) it.next();
+            attMapping = it.next();
             if (targetPath.equalsIgnoreIndex(attMapping.getTargetXPath())) {
                 mappings.add(attMapping);
             }
@@ -190,7 +190,7 @@ public class FeatureTypeMapping {
         AttributeMapping attMapping;
         List<AttributeMapping> mappings = new ArrayList<>();
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
-            attMapping = (AttributeMapping) it.next();
+            attMapping = it.next();
             if (sourceExpression.equals(attMapping.getSourceExpression())) {
                 mappings.add(attMapping);
             }
@@ -208,7 +208,7 @@ public class FeatureTypeMapping {
     public AttributeMapping getAttributeMapping(final StepList exactPath) {
         AttributeMapping attMapping;
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
-            attMapping = (AttributeMapping) it.next();
+            attMapping = it.next();
             if (exactPath.equals(attMapping.getTargetXPath())) {
                 return attMapping;
             }
@@ -276,7 +276,7 @@ public class FeatureTypeMapping {
         List<AttributeMapping> mappings = new ArrayList<>();
         AttributeMapping attMapping;
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
-            attMapping = (AttributeMapping) it.next();
+            attMapping = it.next();
             if (attMapping.isList()) {
                 mappings.add(attMapping);
             }
@@ -322,7 +322,7 @@ public class FeatureTypeMapping {
         // could have been generated from an xpath of the form
         // @attName or propA/propB@attName
         if (candidates.size() == 0 && propertyName.size() > 0) {
-            XPath.Step clientPropertyStep = (Step) propertyName.get(propertyName.size() - 1);
+            XPath.Step clientPropertyStep = propertyName.get(propertyName.size() - 1);
             if (clientPropertyStep.isXmlAttribute()) {
                 Name clientPropertyName = Types.toTypeName(clientPropertyStep.getName());
                 XPath.StepList parentPath;
@@ -381,7 +381,7 @@ public class FeatureTypeMapping {
                     clientPropertyExpressions.add(attMapping.getIdentifierExpression());
                 } else if (clientProperties.containsKey(clientPropertyName)) {
                     // end NC - added
-                    propertyExpression = (Expression) clientProperties.get(clientPropertyName);
+                    propertyExpression = clientProperties.get(clientPropertyName);
                     clientPropertyExpressions.add(propertyExpression);
                 }
             }

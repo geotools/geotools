@@ -110,7 +110,7 @@ public class ContentEntry {
             return state.get(transaction);
         } else {
             ContentState auto = state.get(Transaction.AUTO_COMMIT);
-            ContentState copy = (ContentState) auto.copy();
+            ContentState copy = auto.copy();
             Transaction t = (transaction != null ? transaction : Transaction.AUTO_COMMIT);
             copy.setTransaction(t);
             state.put(t, copy);

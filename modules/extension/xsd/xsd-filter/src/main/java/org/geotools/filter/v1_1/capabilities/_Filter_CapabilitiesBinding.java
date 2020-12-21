@@ -80,9 +80,9 @@ public class _Filter_CapabilitiesBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return factory.capabilities(
                 FilterCapabilities.VERSION_110,
-                (ScalarCapabilities) node.getChildValue(ScalarCapabilities.class),
-                (SpatialCapabilities) node.getChildValue(SpatialCapabilities.class),
-                (IdCapabilities) node.getChildValue(IdCapabilities.class));
+                node.getChildValue(ScalarCapabilities.class),
+                node.getChildValue(SpatialCapabilities.class),
+                node.getChildValue(IdCapabilities.class));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

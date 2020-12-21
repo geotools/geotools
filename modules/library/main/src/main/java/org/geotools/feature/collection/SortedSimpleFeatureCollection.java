@@ -48,6 +48,7 @@ public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollec
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public SimpleFeatureIterator features() {
         try {
             SimpleFeatureIterator features = delegate.features();

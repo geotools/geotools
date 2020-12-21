@@ -49,7 +49,7 @@ public class LiterateTest {
                                 ff.function("litem", ff.property("list2"), ff.property("index"))));
         Object value = exp.evaluate(map);
         assertTrue(value instanceof List);
-        assertEquals(Arrays.asList(4.0, 6.0, 6.0, 4.0), ((List<?>) value));
+        assertEquals(Arrays.asList(4.0, 6.0, 6.0, 4.0), value);
     }
 
     @Test
@@ -66,6 +66,6 @@ public class LiterateTest {
                         ff.function("litem", ff.property("list1"), ff.property("index")));
         Object value = exp.evaluate(map);
         assertTrue(value instanceof List);
-        assertEquals(Arrays.asList(), ((List<?>) value));
+        assertEquals(Arrays.asList(), value);
     }
 }

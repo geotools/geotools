@@ -280,9 +280,9 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         // Checking params
         //
         // /////////////////////////////////////////////////////////////////////
-        state.setBackgroundColor((Color) ImageMosaicJDBCFormat.BACKGROUND_COLOR.getDefaultValue());
+        state.setBackgroundColor(ImageMosaicJDBCFormat.BACKGROUND_COLOR.getDefaultValue());
         state.setOutputTransparentColor(
-                (Color) ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR.getDefaultValue());
+                ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR.getDefaultValue());
 
         if (params != null) {
             for (GeneralParameterValue generalParameterValue : params) {

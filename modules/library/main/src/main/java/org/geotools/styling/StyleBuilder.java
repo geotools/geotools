@@ -1564,7 +1564,7 @@ public class StyleBuilder {
         SimpleFeatureIterator it = fc.features();
         try {
             while (it.hasNext()) {
-                SimpleFeature f = (SimpleFeature) it.next();
+                SimpleFeature f = it.next();
                 values[count++] = ((Number) f.getAttribute(name)).doubleValue();
             }
         } finally {

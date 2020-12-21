@@ -142,10 +142,8 @@ public class DefaultTemporalReferenceSystemTest {
     /** Test of setScope method, of class DefaultTemporalReferenceSystem. */
     @Test
     public void testSetScope() {
-        InternationalString result =
-                ((DefaultTemporalReferenceSystem) temporalReferenceSystem1).getScope();
-        assertEquals(
-                ((DefaultTemporalReferenceSystem) temporalReferenceSystem1).getScope(), result);
+        InternationalString result = temporalReferenceSystem1.getScope();
+        assertEquals(temporalReferenceSystem1.getScope(), result);
     }
 
     /** Test of equals method, of class DefaultTemporalReferenceSystem. */

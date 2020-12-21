@@ -49,7 +49,7 @@ public class Quickstart {
         WebMapTileServer server = new WebMapTileServer(serverURL);
         String name = "topp:states";
         name = "osm";
-        WMTSLayer wlayer = (WMTSLayer) server.getCapabilities().getLayer(name);
+        WMTSLayer wlayer = server.getCapabilities().getLayer(name);
         // System.out.println(wlayer.getLatLonBoundingBox());
         WMTSMapLayer mapLayer = new WMTSMapLayer(server, wlayer);
         map.addLayer(mapLayer);

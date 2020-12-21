@@ -475,7 +475,7 @@ public final class ExpressionDOMParser {
             org.locationtech.jts.geom.Envelope env = new org.locationtech.jts.geom.Envelope();
 
             for (int i = 0; i < coordList.size(); i++) {
-                env.expandToInclude((Coordinate) coordList.get(i));
+                env.expandToInclude(coordList.get(i));
             }
             Coordinate[] coords = new Coordinate[NUM_BOX_COORDS];
             coords[0] = new Coordinate(env.getMinX(), env.getMinY());
@@ -546,7 +546,7 @@ public final class ExpressionDOMParser {
             }
 
             if (inner.size() > 0) {
-                return gfac.createPolygon(outer, (LinearRing[]) inner.toArray(new LinearRing[0]));
+                return gfac.createPolygon(outer, inner.toArray(new LinearRing[0]));
             } else {
                 return gfac.createPolygon(outer, null);
             }
@@ -569,7 +569,7 @@ public final class ExpressionDOMParser {
             org.locationtech.jts.geom.LinearRing ring = null;
 
             try {
-                ring = gfac.createLinearRing((Coordinate[]) coordList.toArray(new Coordinate[] {}));
+                ring = gfac.createLinearRing(coordList.toArray(new Coordinate[] {}));
             } catch (TopologyException te) {
                 LOGGER.finer("Topology Exception build linear ring: " + te);
 
@@ -585,7 +585,7 @@ public final class ExpressionDOMParser {
                     new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
 
             org.locationtech.jts.geom.LineString line = null;
-            line = gfac.createLineString((Coordinate[]) coordList.toArray(new Coordinate[] {}));
+            line = gfac.createLineString(coordList.toArray(new Coordinate[] {}));
 
             return line;
         }
@@ -596,7 +596,7 @@ public final class ExpressionDOMParser {
                     new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
 
             org.locationtech.jts.geom.Point point = null;
-            point = gfac.createPoint((Coordinate) coordList.get(0));
+            point = gfac.createPoint(coordList.get(0));
 
             return point;
         }
@@ -618,13 +618,13 @@ public final class ExpressionDOMParser {
 
             if (childName.toLowerCase().startsWith("gml:multipolygon")) {
                 LOGGER.finer("MultiPolygon");
-                return gfac.createMultiPolygon((Polygon[]) multi.toArray(new Polygon[0]));
+                return gfac.createMultiPolygon(multi.toArray(new Polygon[0]));
             } else if (childName.toLowerCase().startsWith("gml:multilinestring")) {
                 LOGGER.finer("MultiLineString");
-                return gfac.createMultiLineString((LineString[]) multi.toArray(new LineString[0]));
+                return gfac.createMultiLineString(multi.toArray(new LineString[0]));
             } else {
                 LOGGER.finer("MultiPoint");
-                return gfac.createMultiPoint((Point[]) multi.toArray(new Point[0]));
+                return gfac.createMultiPoint(multi.toArray(new Point[0]));
             }
         }
 

@@ -66,7 +66,7 @@ public class FeatureIteratorImpl<F extends Feature> implements FeatureIterator<F
      * @throws java.util.NoSuchElementException If no more Features exist.
      */
     public F next() throws java.util.NoSuchElementException {
-        return (F) iterator.next();
+        return iterator.next();
     }
     /** Required so SimpleFeatureCollection classes can implement close( SimpleFeatureIterator ). */
     public void close() {

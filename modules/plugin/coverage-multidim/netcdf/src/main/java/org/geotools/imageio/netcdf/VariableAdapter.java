@@ -637,8 +637,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             // Find the descriptor related to the current dimension
             if (descriptor.getName().toUpperCase().equalsIgnoreCase(currentDimName)) {
                 final String updatedAttribute = attributeDescriptor.getLocalName();
-                if (!updatedAttribute.equals(
-                        ((DefaultDimensionDescriptor) descriptor).getStartAttribute())) {
+                if (!updatedAttribute.equals(descriptor.getStartAttribute())) {
                     // Remap attributes in case the schema's attribute doesn't match the current
                     // attribute
                     ((DefaultDimensionDescriptor) descriptor).setStartAttribute(updatedAttribute);
@@ -969,10 +968,10 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                                         "Axis values contains NaN; finding first valid values");
                             }
                             for (int j = 0; j < vals.size(); j++) {
-                                double v = ((Number) vals.get(j)).doubleValue();
+                                double v = vals.get(j).doubleValue();
                                 if (!Double.isNaN(v)) {
                                     for (int k = vals.size(); k > j; k--) {
-                                        double vv = ((Number) vals.get(k)).doubleValue();
+                                        double vv = vals.get(k).doubleValue();
                                         if (!Double.isNaN(vv)) {
                                             origin[0] = v;
                                             scaleX = (vv - v) / vals.size();
@@ -1018,10 +1017,10 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                                         "Axis values contains NaN; finding first valid values");
                             }
                             for (int j = 0; j < values.size(); j++) {
-                                double v = ((Number) values.get(j)).doubleValue();
+                                double v = values.get(j).doubleValue();
                                 if (!Double.isNaN(v)) {
                                     for (int k = values.size(); k > j; k--) {
-                                        double vv = ((Number) values.get(k)).doubleValue();
+                                        double vv = values.get(k).doubleValue();
                                         if (!Double.isNaN(vv)) {
                                             origin[1] = v;
                                             scaleY = -(vv - v) / values.size();

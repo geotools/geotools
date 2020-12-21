@@ -98,8 +98,8 @@ final class LiteFeatureTypeStyle {
             Expression transformation) {
         this.layer = layer;
         this.graphics = graphics;
-        this.ruleList = (Rule[]) ruleList.toArray(new Rule[ruleList.size()]);
-        this.elseRules = (Rule[]) elseRuleList.toArray(new Rule[elseRuleList.size()]);
+        this.ruleList = ruleList.toArray(new Rule[ruleList.size()]);
+        this.elseRules = elseRuleList.toArray(new Rule[elseRuleList.size()]);
         this.transformation = transformation;
     }
 }

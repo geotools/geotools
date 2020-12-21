@@ -674,7 +674,7 @@ public class Types {
             throws IllegalAttributeException {
 
         // do normal validation
-        validate((AttributeType) type, (Attribute) attribute, (Object) content, false);
+        validate(type, attribute, content, false);
 
         if (content == null) {
             // not really much else we can do

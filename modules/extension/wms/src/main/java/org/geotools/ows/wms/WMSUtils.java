@@ -51,10 +51,7 @@ public class WMSUtils {
         List<Layer> namedLayersList = new ArrayList<>();
 
         Layer[] layers =
-                (Layer[])
-                        capabilities
-                                .getLayerList()
-                                .toArray(new Layer[capabilities.getLayerList().size()]);
+                capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
 
         for (int i = 0; i < layers.length; i++) {
             if ((layers[i].getName() != null) && (layers[i].getName().length() != 0)) {
@@ -64,7 +61,7 @@ public class WMSUtils {
 
         Layer[] namedLayers = new Layer[namedLayersList.size()];
         for (int i = 0; i < namedLayersList.size(); i++) {
-            namedLayers[i] = (Layer) namedLayersList.get(i);
+            namedLayers[i] = namedLayersList.get(i);
         }
 
         return namedLayers;
@@ -90,10 +87,7 @@ public class WMSUtils {
         Set<String> srss = new TreeSet<>();
 
         Layer[] layers =
-                (Layer[])
-                        capabilities
-                                .getLayerList()
-                                .toArray(new Layer[capabilities.getLayerList().size()]);
+                capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
 
         for (int i = 0; i < layers.length; i++) {
             if (layers[i].getSrs() != null) {

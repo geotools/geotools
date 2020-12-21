@@ -199,7 +199,7 @@ public class CLASS
 		constructor.append( "\t\tsuper(");
 		boolean trim = false;
 		for ( int i = 0; i < constructorArgs.length; i++ ) {
-            String fieldName = (String) fieldNames.get(i);
+            String fieldName = fieldNames.get(i);
             if ( "parent".equals( constructorArgs[i].getMode() ) ) {
               constructor.append(fieldName + ",");
               trim = true;
@@ -211,7 +211,7 @@ public class CLASS
 		constructor.append( ");\n");
 		
 		for ( int i = 0; i < constructorArgs.length; i++ ) {
-            String fieldName = (String) fieldNames.get(i);
+            String fieldName = fieldNames.get(i);
             if ( "member".equals( constructorArgs[i].getMode() ) ) {
                 constructor.append( "\t\tthis." + fieldName + " = " + fieldName + ";\n");
             }

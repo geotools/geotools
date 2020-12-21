@@ -56,7 +56,16 @@ class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
     public CogGranuleAccessProvider(CatalogConfigurationBean bean) {
         // A Cog Provider will always have at least a streamSpi and an ImageReaderSpi
         this(getHints(bean));
-        cogConfig = bean.getCogConfiguration();
+        URLSourceSPIProvider urlSourceSpiProvider = bean.getUrlSourceSPIProvider();
+        if (urlSourceSpiProvider instanceof CogConfiguration) {
+            cogConfig = (CogConfiguration) urlSourceSpiProvider;
+        } else {
+            throw new RuntimeException(
+                    "This access provider needs a URL Source SPI Provider of "
+                            + "type CogConfiguration whilst "
+                            + urlSourceSpiProvider
+                            + " has been found.");
+        }
     }
 
     private static Hints getHints(CatalogConfigurationBean bean) {
@@ -132,5 +141,12 @@ class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
     @Override
     public ImageInputStream getImageInputStream() throws IOException {
         return ((CogSourceSPIProvider) input).getStream();
+    }
+
+    @Override
+    public GranuleAccessProvider copyProviders() {
+        CogGranuleAccessProvider provider = new CogGranuleAccessProvider(hints);
+        provider.cogConfig = this.cogConfig;
+        return provider;
     }
 }

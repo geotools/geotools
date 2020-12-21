@@ -20,7 +20,6 @@ package org.geotools.gce.gtopo30;
 import java.awt.Rectangle;
 import java.net.URL;
 import javax.media.jai.PlanarImage;
-import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
@@ -50,14 +49,13 @@ public class GT30DecimationTest extends GT30TestBase {
 
         URL statURL =
                 TestData.url(this, (new StringBuffer(this.fileName).append(".DEM").toString()));
-        AbstractGridFormat format = (AbstractGridFormat) new GTopo30FormatFactory().createFormat();
+        AbstractGridFormat format = new GTopo30FormatFactory().createFormat();
 
         if (format.accepts(statURL)) {
 
             /** STEP 1 Reading the coverage into memory in order to write it down again */
             // get a reader
-            AbstractGridCoverage2DReader reader =
-                    (AbstractGridCoverage2DReader) format.getReader(statURL);
+            AbstractGridCoverage2DReader reader = format.getReader(statURL);
 
             // get a grid coverage
             final ParameterValueGroup params = reader.getFormat().getReadParameters();
@@ -66,11 +64,7 @@ public class GT30DecimationTest extends GT30TestBase {
                             new GridGeometry2D(
                                     new GridEnvelope2D(new Rectangle(0, 0, 640, 480)),
                                     reader.getOriginalEnvelope()));
-            gc =
-                    ((GridCoverage2D)
-                            reader.read(
-                                    (GeneralParameterValue[])
-                                            params.values().toArray(new GeneralParameterValue[1])));
+            gc = reader.read(params.values().toArray(new GeneralParameterValue[1]));
             if (TestData.isInteractiveTest()) {
                 //				 logging some info
                 logger.info(gc.getCoordinateReferenceSystem2D().toWKT());

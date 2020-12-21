@@ -816,8 +816,7 @@ class RasterLayerRequest {
             //
             // intersect the requested area with the bounds of this
             // layer in native crs
-            if (!cropBBox.intersects(
-                    (BoundingBox) rasterManager.spatialDomainManager.coverageBBox)) {
+            if (!cropBBox.intersects(rasterManager.spatialDomainManager.coverageBBox)) {
                 cropBBox = null;
                 empty = true;
                 return;

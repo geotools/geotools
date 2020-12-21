@@ -52,7 +52,7 @@ public class GlyphPropertiesList {
      * property 1.
      */
     public String getPropertyName(int i) {
-        return ((GlyphProperty) list.get(i)).getName();
+        return list.get(i).getName();
     }
 
     public int getPropertyIndex(String name) {
@@ -64,7 +64,7 @@ public class GlyphPropertiesList {
      * property 1.
      */
     public Class getPropertyType(int i) {
-        return ((GlyphProperty) list.get(i)).getType();
+        return list.get(i).getType();
     }
 
     public Class getPropertyType(String name) {
@@ -86,7 +86,7 @@ public class GlyphPropertiesList {
      * property 1.
      */
     public Object getPropertyValue(int i) {
-        return ((GlyphProperty) list.get(i)).getValue();
+        return list.get(i).getValue();
     }
 
     public Object getPropertyValue(String name) {
@@ -122,7 +122,7 @@ public class GlyphPropertiesList {
     public void setPropertyValue(String name, Object value) {
         int index = names.indexOf(name);
         if (index != -1) {
-            GlyphProperty prop = (GlyphProperty) list.get(index);
+            GlyphProperty prop = list.get(index);
             if (value instanceof String) {
                 value = stringToLiteral((String) value);
             }

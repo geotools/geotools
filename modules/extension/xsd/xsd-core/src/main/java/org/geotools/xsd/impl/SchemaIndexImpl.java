@@ -105,13 +105,13 @@ public class SchemaIndexImpl implements SchemaIndex {
     public XSDImport[] getImports() {
         Collection<XSDImport> imports = find(XSDImport.class);
 
-        return (XSDImport[]) imports.toArray(new XSDImport[imports.size()]);
+        return imports.toArray(new XSDImport[imports.size()]);
     }
 
     public XSDInclude[] getIncludes() {
         Collection<XSDInclude> includes = find(XSDInclude.class);
 
-        return (XSDInclude[]) includes.toArray(new XSDInclude[includes.size()]);
+        return includes.toArray(new XSDInclude[includes.size()]);
     }
 
     public XSDElementDeclaration getElementDeclaration(QName qName) {
@@ -175,7 +175,7 @@ public class SchemaIndexImpl implements SchemaIndex {
             }
 
             if (matches.size() == 1) {
-                return (XSDNamedComponent) matches.get(0);
+                return matches.get(0);
             }
         }
 
@@ -255,7 +255,7 @@ public class SchemaIndexImpl implements SchemaIndex {
             }
 
             if (matches.size() == 1) {
-                particle = (XSDParticle) matches.get(0);
+                particle = matches.get(0);
 
                 XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
 

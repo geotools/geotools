@@ -69,7 +69,7 @@ public class SortedReaderTest {
         typeBuilder.add("otherGeom", LineString.class);
         typeBuilder.setDefaultGeometry("defaultGeom");
 
-        schema = (SimpleFeatureType) typeBuilder.buildFeatureType();
+        schema = typeBuilder.buildFeatureType();
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(schema);
 

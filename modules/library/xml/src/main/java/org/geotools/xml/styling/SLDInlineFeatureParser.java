@@ -463,8 +463,7 @@ public class SLDInlineFeatureParser {
      * the epsg.properties file. I cannot image a system with more than a dozen CRSs in it...
      */
     private CoordinateReferenceSystem getSRS(int epsg) throws Exception {
-        CoordinateReferenceSystem result =
-                (CoordinateReferenceSystem) SRSLookup.get(Integer.valueOf(epsg));
+        CoordinateReferenceSystem result = SRSLookup.get(Integer.valueOf(epsg));
         if (result == null) {
             // make and add to hash
             result = CRS.decode("EPSG:" + epsg);

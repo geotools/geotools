@@ -508,7 +508,7 @@ public class NetCDFCRSUtilities {
             return SI.DAY;
         } else {
             try {
-                return (Unit<?>) UNIT_FORMAT.parse(unitName);
+                return UNIT_FORMAT.parse(unitName);
             } catch (UnsupportedOperationException e) {
                 throw new FactoryException("Unit not known : " + unitName, e);
             }

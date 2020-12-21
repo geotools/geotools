@@ -251,7 +251,7 @@ public class NoBifurcationIteratorTest extends TestCase {
                         return (Graph.FAIL_QUERY);
                     }
                 };
-        Node source = (Node) builder().getGraph().queryNodes(visitor).get(0);
+        Node source = builder().getGraph().queryNodes(visitor).get(0);
 
         CountingWalker walker = new CountingWalker();
         NoBifurcationIterator iterator = createIterator();

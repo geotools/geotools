@@ -922,7 +922,7 @@ public class TypeBuilder {
      * @throws IllegalArgumentExcception if class is not bound to a prototype
      */
     public AttributeType getBinding(Class binding) {
-        AttributeType type = (AttributeType) bindings().get(binding);
+        AttributeType type = bindings().get(binding);
         if (type == null) {
             throw new IllegalArgumentException("No type bound to: " + binding);
         }

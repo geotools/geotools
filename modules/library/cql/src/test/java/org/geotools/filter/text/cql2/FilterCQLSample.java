@@ -27,7 +27,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
-import org.geotools.util.factory.Hints;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -59,7 +58,7 @@ import org.opengis.temporal.Period;
  */
 public class FilterCQLSample {
 
-    private static final FilterFactory FACTORY = CommonFactoryFinder.getFilterFactory((Hints) null);
+    private static final FilterFactory FACTORY = CommonFactoryFinder.getFilterFactory(null);
 
     private static final String DATE_TIME_FORMATTER = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static final String DATE_TIME_FORMATTER_MILLIS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

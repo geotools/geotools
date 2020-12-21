@@ -185,7 +185,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * <p>Note this method is public just for unit testing purposes
      */
     public FeatureTypeMapping getMappingByName(Name typeName) throws IOException {
-        FeatureTypeMapping mapping = (FeatureTypeMapping) this.mappings.get(typeName);
+        FeatureTypeMapping mapping = this.mappings.get(typeName);
         if (mapping == null) {
             throw new DataSourceException(
                     typeName + " not found. Available: " + mappings.keySet().toString());
@@ -200,7 +200,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * <p>Note this method is public just for unit testing purposes
      */
     public FeatureTypeMapping getMappingByNameOrElement(Name typeName) throws IOException {
-        FeatureTypeMapping mapping = (FeatureTypeMapping) this.mappings.get(typeName);
+        FeatureTypeMapping mapping = this.mappings.get(typeName);
         if (mapping != null) {
             return mapping;
         }

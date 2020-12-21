@@ -90,12 +90,12 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         @SuppressWarnings("unchecked")
         Iterator<OperationType> iterator = cap.getOperationsMetadata().getOperation().iterator();
         while (iterator.hasNext()) {
-            OperationType next = (OperationType) iterator.next();
+            OperationType next = iterator.next();
             if (operation.compareToIgnoreCase(next.getName()) == 0) {
                 @SuppressWarnings("unchecked")
                 Iterator<DCPType> iterator2 = next.getDCP().iterator();
                 while (iterator2.hasNext()) {
-                    DCPType next2 = (DCPType) iterator2.next();
+                    DCPType next2 = iterator2.next();
                     HTTPType http = next2.getHTTP();
                     if (getGet && !http.getGet().isEmpty()) {
                         RequestMethodType rmt = (RequestMethodType) http.getGet().get(0);
@@ -218,7 +218,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
      * @return a WPSCapabilitiesType object, representing the Capabilities of the server
      */
     public WPSCapabilitiesType getCapabilities() {
-        return (WPSCapabilitiesType) capabilities;
+        return capabilities;
     }
 
     public DescribeProcessRequest createDescribeProcessRequest()

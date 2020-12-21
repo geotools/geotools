@@ -182,7 +182,7 @@ public class Preprocessor extends Format {
     public Object parseObject(String text, final Class<?> type)
             throws ParseException, FactoryException {
         Object value;
-        final Definition def = (Definition) definitions.get(text);
+        final Definition def = definitions.get(text);
         if (def != null) {
             value = def.asObject;
             if (type.isAssignableFrom(value.getClass())) {
@@ -265,8 +265,7 @@ public class Preprocessor extends Format {
                  * search is "WGS84", do not accept "TOWGS84").
                  */
                 final int upper = index + name.length();
-                final CharSequence cs =
-                        (buffer != null) ? (CharSequence) buffer : (CharSequence) text;
+                final CharSequence cs = (buffer != null) ? buffer : text;
                 if ((index == 0 || !Character.isJavaIdentifierPart(cs.charAt(index - 1)))
                         && (upper == cs.length()
                                 || !Character.isJavaIdentifierPart(cs.charAt(upper)))) {

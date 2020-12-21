@@ -213,7 +213,7 @@ public class GeoPkgGeomReader {
         input.read(buf);
 
         // next byte flags
-        h.setFlags(new GeometryHeaderFlags((byte) buf[3]));
+        h.setFlags(new GeometryHeaderFlags(buf[3]));
 
         // set endianess
         ByteOrderDataInStream din = new ByteOrderDataInStream(input);

@@ -134,7 +134,7 @@ public final class RendererUtilities {
         // Get the transform
         //
         // //
-        final GridToEnvelopeMapper m = (GridToEnvelopeMapper) gridToEnvelopeMappers.get();
+        final GridToEnvelopeMapper m = gridToEnvelopeMappers.get();
         try {
             m.setGridRange(new GridEnvelope2D(paintArea));
             m.setEnvelope(genvelope);
@@ -577,7 +577,7 @@ public final class RendererUtilities {
         // is a hashtable lookup. The benefit is reusing the last
         // transform (instead of creating a new one) if the grid
         // and envelope are the same one than during last invocation.
-        final GridToEnvelopeMapper m = (GridToEnvelopeMapper) gridToEnvelopeMappers.get();
+        final GridToEnvelopeMapper m = gridToEnvelopeMappers.get();
         m.setGridRange(new GridEnvelope2D(paintArea));
         m.setEnvelope(newEnvelope);
         return (AffineTransform) (m.createTransform().inverse());

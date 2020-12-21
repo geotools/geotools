@@ -84,8 +84,7 @@ public class Collection_UniqueFunction extends FunctionExpressionImpl {
      */
     public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        org.opengis.filter.expression.Expression expr =
-                (org.opengis.filter.expression.Expression) args.get(0);
+        org.opengis.filter.expression.Expression expr = args.get(0);
         expr =
                 (org.opengis.filter.expression.Expression)
                         expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
@@ -98,7 +97,7 @@ public class Collection_UniqueFunction extends FunctionExpressionImpl {
             return Integer.valueOf(0); // no features were visited in the making of this answer
         }
         SimpleFeatureCollection featureCollection = (SimpleFeatureCollection) feature;
-        Expression expr = (Expression) getExpression(0);
+        Expression expr = getExpression(0);
         synchronized (featureCollection) {
             if (featureCollection != previousFeatureCollection) {
                 previousFeatureCollection = featureCollection;

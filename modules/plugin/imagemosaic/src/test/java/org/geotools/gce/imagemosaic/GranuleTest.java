@@ -32,7 +32,6 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleOverviewLevelDescriptor;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -104,7 +103,7 @@ public class GranuleTest extends Assert {
                         null,
                         spi,
                         null,
-                        (MultiLevelROI) null);
+                        null);
         assertNotNull(granuleDescriptor.toString());
 
         // Get a GranuleOverviewLevelDescriptor
@@ -169,15 +168,14 @@ public class GranuleTest extends Assert {
                         null,
                         spi,
                         null,
-                        (MultiLevelROI) null);
+                        null);
         final GranuleOverviewLevelDescriptor granuleOverviewLevelDescriptor =
                 granuleDescriptor.getLevel(0);
         assertNotNull(granuleOverviewLevelDescriptor);
 
         final Hints crsHints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
-        final ImageMosaicReader reader =
-                (ImageMosaicReader) new ImageMosaicFormat().getReader(testMosaic, crsHints);
+        final ImageMosaicReader reader = new ImageMosaicFormat().getReader(testMosaic, crsHints);
         assertNotNull(reader);
         final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
 
@@ -293,8 +291,7 @@ public class GranuleTest extends Assert {
         final DefaultProjectedCRS crs_EN = (DefaultProjectedCRS) parser.parseObject(NZTM_WKT_EN);
         final DefaultProjectedCRS crs_NE = (DefaultProjectedCRS) parser.parseObject(NZTM_WKT_NE);
 
-        final ImageMosaicReader reader =
-                (ImageMosaicReader) new ImageMosaicFormat().getReader(testMosaic);
+        final ImageMosaicReader reader = new ImageMosaicFormat().getReader(testMosaic);
 
         assertNotNull(reader);
         final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);

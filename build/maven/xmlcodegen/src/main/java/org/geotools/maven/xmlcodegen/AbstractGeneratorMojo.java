@@ -261,7 +261,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		}
 		
 		ClassLoader ext = 
-			new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ), getClass().getClassLoader() );
+			new URLClassLoader(urls.toArray( new URL[ urls.size() ] ), getClass().getClassLoader() );
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Using following classpath for XSD lookup: ");
 		for ( Iterator u = urls.iterator(); u.hasNext(); ) {
@@ -283,7 +283,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
                 }
 		
 		for ( int i = 0; i < xsds.size(); i++ ) {
-			String className = (String) xsds.get( i );
+			String className = xsds.get( i );
 			try {
 				Class<?> clazz = ext.loadClass( className );
 				Method m = clazz.getMethod("getInstance", null);

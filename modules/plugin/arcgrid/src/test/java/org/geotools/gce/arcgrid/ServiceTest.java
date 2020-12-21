@@ -46,7 +46,7 @@ public class ServiceTest extends TestCase {
         boolean found = false;
         GridFormatFactorySpi fac = null;
         while (list.hasNext()) {
-            fac = (GridFormatFactorySpi) list.next();
+            fac = list.next();
 
             if (fac instanceof ArcGridFormatFactory) {
                 found = true;

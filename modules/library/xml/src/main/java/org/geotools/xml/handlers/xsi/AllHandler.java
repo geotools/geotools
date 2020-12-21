@@ -126,8 +126,7 @@ public class AllHandler extends ElementGroupingHandler {
             cache.elements = new Element[elements.size()];
 
             for (int i = 0; i < cache.elements.length; i++) {
-                cache.elements[i] =
-                        (Element) ((ElementTypeHandler) elements.get(i)).compress(parent);
+                cache.elements[i] = (Element) elements.get(i).compress(parent);
             }
         }
 

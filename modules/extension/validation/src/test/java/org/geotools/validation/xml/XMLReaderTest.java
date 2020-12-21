@@ -116,7 +116,7 @@ public class XMLReaderTest extends TestCase {
             "see if they are on the list of possible road names.\n"+
             "It also checks to see if any roads are contained in\n"+
             "a specified box.").equals(testsuite.getDescription()));*/
-            TestDTO test = (TestDTO) testsuite.getTests().get("NameLookup");
+            TestDTO test = testsuite.getTests().get("NameLookup");
 
             assertNotNull("NameLookup does not exist as a test", test);
 

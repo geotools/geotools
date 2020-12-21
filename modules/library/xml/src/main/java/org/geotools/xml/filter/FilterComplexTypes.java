@@ -418,7 +418,7 @@ public class FilterComplexTypes {
             }
 
             if (elements[0].getName().equals(value[0].getElement().getName())) {
-                return (FilterCapabilities) value[0].getValue();
+                return value[0].getValue();
             }
 
             throw new SAXException("Invalid child element: " + value[0].getElement().getName());
@@ -694,7 +694,7 @@ public class FilterComplexTypes {
             }
 
             if (elements[0].getName().equals(value[0].getElement().getName())) {
-                return (FilterCapabilities) value[0].getValue();
+                return value[0].getValue();
             }
 
             throw new SAXException("Invalid child element: " + value[0].getElement().getName());

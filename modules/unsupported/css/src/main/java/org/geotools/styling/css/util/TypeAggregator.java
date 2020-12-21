@@ -37,15 +37,10 @@ class TypeAggregator {
     Map<String, Class> types = new LinkedHashMap<>();
 
     static final List<Class<?>> INTEGRAL_NUMBER_TYPES =
-            Arrays.asList(
-                    (Class<?>) Byte.class,
-                    Short.class,
-                    Integer.class,
-                    Long.class,
-                    BigInteger.class);
+            Arrays.asList(Byte.class, Short.class, Integer.class, Long.class, BigInteger.class);
 
     static final List<Class<?>> FLOAT_NUMBER_TYPES =
-            Arrays.asList((Class<?>) Float.class, Double.class, BigDecimal.class);
+            Arrays.asList(Float.class, Double.class, BigDecimal.class);
 
     /** Adds/merges a property and its type */
     public void addType(String name, Class<?> binding) {

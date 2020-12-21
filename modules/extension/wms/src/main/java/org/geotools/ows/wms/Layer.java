@@ -739,7 +739,7 @@ public class Layer implements Comparable<Layer> {
             // Locate an exact bounding box if we can (searches all bounding boxes associated with
             // layer)
             Map<String, CRSEnvelope> boxes = getBoundingBoxes(); // extents for layer and parents
-            tempBBox = (CRSEnvelope) boxes.get(srsName);
+            tempBBox = boxes.get(srsName);
             if (tempBBox != null) {
                 break;
             }
@@ -758,7 +758,7 @@ public class Layer implements Comparable<Layer> {
 
         // last attempt grab the first thing (and we will transform it)
         if (tempBBox == null && getBoundingBoxes() != null && getBoundingBoxes().size() > 0) {
-            tempBBox = (CRSEnvelope) getBoundingBoxes().values().iterator().next();
+            tempBBox = getBoundingBoxes().values().iterator().next();
         }
 
         if (tempBBox != null) {

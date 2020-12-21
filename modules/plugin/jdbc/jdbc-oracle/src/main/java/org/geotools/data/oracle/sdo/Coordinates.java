@@ -161,9 +161,7 @@ public class Coordinates {
             */
 
             CoordinateAccess c =
-                    (CoordinateAccess)
-                            ((CoordinateAccessFactory) factory)
-                                    .create(subCoordArray, subAttributeArray);
+                    ((CoordinateAccessFactory) factory).create(subCoordArray, subAttributeArray);
 
             return c;
         }
@@ -199,9 +197,7 @@ public class Coordinates {
             }
 
             CoordinateAccess c =
-                    (CoordinateAccess)
-                            ((CoordinateAccessFactory) factory)
-                                    .create(subCoordArray, subAttributeArray);
+                    ((CoordinateAccessFactory) factory).create(subCoordArray, subAttributeArray);
 
             return c;
         } else // else CoordinateSequence
@@ -259,7 +255,7 @@ public class Coordinates {
 
     public static int D(CoordinateSequence cs) {
         if (cs instanceof CoordinateAccess) {
-            return ((CoordinateAccess) cs).getDimension();
+            return cs.getDimension();
         }
 
         if (cs.size() > 0) {

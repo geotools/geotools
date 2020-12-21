@@ -102,7 +102,7 @@ public class FilterFunction_listMultiplyTest {
     public void testEvaluateNull() {
         FilterFunction_listMultiply func =
                 (FilterFunction_listMultiply)
-                        ff.function("listMultiply", ff.literal(2.5), ff.literal((String) null));
+                        ff.function("listMultiply", ff.literal(2.5), ff.literal(null));
         Object evaluate = func.evaluate(null);
         assertNull(evaluate);
     }

@@ -86,8 +86,7 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     @Test
     public void testFeaturesData() throws Exception {
         FeatureSource<FeatureType, Feature> fSource =
-                (FeatureSource<FeatureType, Feature>)
-                        mappingDataStore.getFeatureSource(mappedTypeName);
+                mappingDataStore.getFeatureSource(mappedTypeName);
         List<Feature> features = toFeaturesList(fSource.getFeatures());
         // check features count
         assertEquals(2, features.size());

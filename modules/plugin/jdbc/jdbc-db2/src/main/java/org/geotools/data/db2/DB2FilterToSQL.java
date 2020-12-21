@@ -271,7 +271,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
                     (DistanceBufferOperator) filter, property, geometry, swapped, extraData);
         } else {
             return visitBinarySpatialOperator(
-                    filter, (Expression) property, (Expression) geometry, swapped, extraData);
+                    filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 

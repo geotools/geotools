@@ -101,12 +101,11 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
         synchronized (this) {
             if (defaultGeometry == null) {
                 // look it up from the type
-                if (((FeatureType) getType()).getGeometryDescriptor() == null) {
+                if (getType().getGeometryDescriptor() == null) {
                     return null;
                 }
 
-                GeometryType geometryType =
-                        (GeometryType) getType().getGeometryDescriptor().getType();
+                GeometryType geometryType = getType().getGeometryDescriptor().getType();
 
                 if (geometryType != null) {
                     for (Iterator itr = getValue().iterator(); itr.hasNext(); ) {

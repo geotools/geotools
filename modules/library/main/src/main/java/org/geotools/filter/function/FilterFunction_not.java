@@ -37,7 +37,7 @@ public class FilterFunction_not extends FunctionExpressionImpl {
         boolean arg0;
 
         try { // attempt to get value and perform conversion
-            arg0 = ((Boolean) getExpression(0).evaluate(feature, Boolean.class)).booleanValue();
+            arg0 = getExpression(0).evaluate(feature, Boolean.class).booleanValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

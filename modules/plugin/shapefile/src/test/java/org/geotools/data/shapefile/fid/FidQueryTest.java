@@ -220,7 +220,7 @@ public class FidQueryTest extends FIDTestCase {
         allfeatures = featureStore.getFeatures();
         try (SimpleFeatureIterator features = allfeatures.features()) {
 
-            SimpleFeature f = (SimpleFeature) features.next();
+            SimpleFeature f = features.next();
             assertFalse(fidFilter.evaluate(f));
         }
 

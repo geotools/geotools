@@ -224,7 +224,7 @@ public class ZMHandlersTest {
         query.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
         try (SimpleFeatureIterator itr = store.getFeatureSource().getFeatures(query).features()) {
             while (itr.hasNext()) {
-                SimpleFeature f = (SimpleFeature) itr.next();
+                SimpleFeature f = itr.next();
                 System.out.println(f.getDefaultGeometryProperty());
             }
         }

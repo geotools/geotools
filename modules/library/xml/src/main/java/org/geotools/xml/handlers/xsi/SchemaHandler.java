@@ -146,7 +146,7 @@ public class SchemaHandler extends XSIElementHandler {
                 String uriT = (String) i.next();
 
                 if (targetNamespace1.equals(uriT)) {
-                    prefix = (String) prefixCache.get(uriT);
+                    prefix = prefixCache.get(uriT);
                     i = null;
                 }
             }
@@ -448,7 +448,7 @@ public class SchemaHandler extends XSIElementHandler {
             @SuppressWarnings("unchecked")
             TreeSet<Object> tmp = new TreeSet<>(SchemaComparator.getInstance());
             tmp.addAll(imports);
-            schema1.imports = (Schema[]) tmp.toArray(new Schema[tmp.size()]);
+            schema1.imports = tmp.toArray(new Schema[tmp.size()]);
         }
 
         // these need to be retyped
@@ -470,7 +470,7 @@ public class SchemaHandler extends XSIElementHandler {
             @SuppressWarnings("unchecked")
             TreeSet<Object> tmp = new TreeSet<>(SchemaComparator.getInstance());
             tmp.addAll(simpleTypes);
-            schema1.simpleTypes = (SimpleType[]) tmp.toArray(new SimpleType[tmp.size()]);
+            schema1.simpleTypes = tmp.toArray(new SimpleType[tmp.size()]);
         }
 
         if (attributeGroups != null) {
@@ -490,8 +490,7 @@ public class SchemaHandler extends XSIElementHandler {
             @SuppressWarnings("unchecked")
             TreeSet<Object> tmp = new TreeSet<>(SchemaComparator.getInstance());
             tmp.addAll(attributeGroups);
-            schema1.attributeGroups =
-                    (AttributeGroup[]) tmp.toArray(new AttributeGroup[tmp.size()]);
+            schema1.attributeGroups = tmp.toArray(new AttributeGroup[tmp.size()]);
         }
 
         if (attributes != null) {
@@ -511,7 +510,7 @@ public class SchemaHandler extends XSIElementHandler {
             @SuppressWarnings("unchecked")
             TreeSet<Object> tmp = new TreeSet<>(SchemaComparator.getInstance());
             tmp.addAll(attributes);
-            schema1.attributes = (Attribute[]) tmp.toArray(new Attribute[tmp.size()]);
+            schema1.attributes = tmp.toArray(new Attribute[tmp.size()]);
         }
 
         if (complexTypes != null) {
@@ -531,7 +530,7 @@ public class SchemaHandler extends XSIElementHandler {
             @SuppressWarnings("unchecked")
             TreeSet<Object> tmp = new TreeSet<>(SchemaComparator.getInstance());
             tmp.addAll(complexTypes);
-            schema1.complexTypes = (ComplexType[]) tmp.toArray(new ComplexType[tmp.size()]);
+            schema1.complexTypes = tmp.toArray(new ComplexType[tmp.size()]);
         }
 
         if (elements != null) {
@@ -551,7 +550,7 @@ public class SchemaHandler extends XSIElementHandler {
             @SuppressWarnings("unchecked")
             TreeSet<Object> tmp = new TreeSet<>(SchemaComparator.getInstance());
             tmp.addAll(elements);
-            schema1.elements = (Element[]) tmp.toArray(new Element[tmp.size()]);
+            schema1.elements = tmp.toArray(new Element[tmp.size()]);
         }
 
         if (groups != null) {
@@ -571,7 +570,7 @@ public class SchemaHandler extends XSIElementHandler {
             @SuppressWarnings("unchecked")
             TreeSet<Object> tmp = new TreeSet<>(SchemaComparator.getInstance());
             tmp.addAll(groups);
-            schema1.groups = (Group[]) tmp.toArray(new Group[tmp.size()]);
+            schema1.groups = tmp.toArray(new Group[tmp.size()]);
         }
 
         attributeGroups =
@@ -645,7 +644,7 @@ public class SchemaHandler extends XSIElementHandler {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
 
-                    String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
+                    String prefixLookup = prefixCache != null ? prefixCache.get(ns) : null;
                     if (prefix1 == null || prefixLookup == null || prefix1.equals(prefixLookup)) {
                         SimpleType st = lookUpSimpleType(localName, s, new TreeSet<>());
                         if (st != null) {
@@ -750,7 +749,7 @@ public class SchemaHandler extends XSIElementHandler {
                 while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
-                    String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
+                    String prefixLookup = prefixCache != null ? prefixCache.get(ns) : null;
                     if (prefix1 == null || prefixLookup == null || prefix1.equals(prefixLookup)) {
                         ComplexType ct = lookUpComplexType(localName, s, new TreeSet<>());
                         if (ct != null) {
@@ -852,7 +851,7 @@ public class SchemaHandler extends XSIElementHandler {
                 while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
-                    String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
+                    String prefixLookup = prefixCache != null ? prefixCache.get(ns) : null;
                     if (prefix1 == null || prefixLookup == null || prefix1.equals(prefixLookup)) {
                         Element ct = lookupElement(localName, s, new TreeSet<>());
                         if (ct != null) {
@@ -866,7 +865,7 @@ public class SchemaHandler extends XSIElementHandler {
                 while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
-                    String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
+                    String prefixLookup = prefixCache != null ? prefixCache.get(ns) : null;
                     if (prefix1 == null || prefixLookup == null || prefix1.equals(prefixLookup)) {
                         Element ct = lookupElement(localName, s, new TreeSet<>());
                         if (ct != null) {
@@ -961,7 +960,7 @@ public class SchemaHandler extends XSIElementHandler {
                 while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
-                    String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
+                    String prefixLookup = prefixCache != null ? prefixCache.get(ns) : null;
                     if (prefix1 == null || prefixLookup == null || prefix1.equals(prefixLookup)) {
                         Group ct = lookUpGroup(localName, s, new TreeSet<>());
                         if (ct != null) {
@@ -1059,7 +1058,7 @@ public class SchemaHandler extends XSIElementHandler {
                 while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
-                    String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
+                    String prefixLookup = prefixCache != null ? prefixCache.get(ns) : null;
                     if (prefix1 == null || prefixLookup == null || prefix1.equals(prefixLookup)) {
                         AttributeGroup ct = lookUpAttributeGroup(localName, s, new TreeSet<>());
                         if (ct != null) {
@@ -1159,7 +1158,7 @@ public class SchemaHandler extends XSIElementHandler {
                 while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
-                    String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
+                    String prefixLookup = prefixCache != null ? prefixCache.get(ns) : null;
                     if (prefix1 == null || prefixLookup == null || prefix1.equals(prefixLookup)) {
                         Attribute ct = lookUpAttribute(localName, s, new TreeSet<>());
                         if (ct != null) {

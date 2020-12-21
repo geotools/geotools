@@ -602,7 +602,7 @@ public final class SDO {
                 }
 
                 if (geom instanceof MultiPoint) {
-                    return ((MultiPoint) geom).getNumGeometries();
+                    return geom.getNumGeometries();
                 }
 
                 break;

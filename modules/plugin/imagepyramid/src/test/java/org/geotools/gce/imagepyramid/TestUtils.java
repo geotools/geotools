@@ -108,7 +108,7 @@ final class TestUtils extends Assert {
             GeneralParameterValue[] values,
             final boolean checkForNull)
             throws IOException {
-        final GridCoverage2D coverage = (GridCoverage2D) reader.read(values);
+        final GridCoverage2D coverage = reader.read(values);
         if (checkForNull) {
             Assert.assertNotNull(coverage);
         }
@@ -127,8 +127,7 @@ final class TestUtils extends Assert {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(testURL, hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(testURL, hints);
         Assert.assertNotNull(format);
         Assert.assertFalse("UknownFormat", format instanceof UnknownFormat);
         return format;

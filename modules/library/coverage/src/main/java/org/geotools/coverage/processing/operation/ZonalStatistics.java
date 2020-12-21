@@ -34,7 +34,6 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
 import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.coverage.util.CoverageUtilities;
@@ -116,7 +115,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
             final AffineTransform gridToWorldTransformCorrected =
                     new AffineTransform(
                             (AffineTransform)
-                                    ((GridGeometry2D) source.getGridGeometry())
+                                    source.getGridGeometry()
                                             .getGridToCRS2D(PixelOrientation.UPPER_LEFT));
             final MathTransform worldToGridTransform;
             try {

@@ -124,7 +124,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
                 styleFactory.createGraphic(
                         null,
                         null,
-                        (Symbol[]) symbols.toArray(new Symbol[symbols.size()]),
+                        symbols.toArray(new Symbol[symbols.size()]),
                         opacity,
                         size,
                         rotation);

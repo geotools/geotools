@@ -100,7 +100,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
         SimpleFeatureIterator it = collection.features();
         try {
             while (it.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) it.next();
+                SimpleFeature feature = it.next();
                 if (id.equals(feature.getID())) {
                     return feature;
                 }
@@ -136,7 +136,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
                 }
             }
             if (sort != null && !sort.isEmpty()) {
-                final SortBy initialOrder = (SortBy) sort.get(sort.size() - 1);
+                final SortBy initialOrder = sort.get(sort.size() - 1);
                 final FeatureIdAccessor idAccessor = new FeatureIdAccessor(true);
                 Collections.sort(
                         fids,
@@ -148,7 +148,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
                                 int compare = compare(feature1, feature2, initialOrder);
                                 if (compare == 0 && sort.size() > 1) {
                                     for (int i = sort.size() - 1; compare == 0 && i >= 0; i--) {
-                                        compare = compare(feature1, feature2, (SortBy) sort.get(i));
+                                        compare = compare(feature1, feature2, sort.get(i));
                                     }
                                 }
                                 return compare;

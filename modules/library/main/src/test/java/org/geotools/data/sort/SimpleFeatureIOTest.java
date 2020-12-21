@@ -80,7 +80,7 @@ public class SimpleFeatureIOTest {
         sfio = new SimpleFeatureIO(tempFile, type);
         SimpleFeature readFeature = sfio.read();
         assertEquals(name.length(), ((String) readFeature.getAttribute(NAME_FIELD)).length());
-        assertEquals(name, (String) readFeature.getAttribute(NAME_FIELD));
+        assertEquals(name, readFeature.getAttribute(NAME_FIELD));
         sfio.close(true);
     }
 

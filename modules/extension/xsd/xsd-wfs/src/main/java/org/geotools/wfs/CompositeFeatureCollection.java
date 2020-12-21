@@ -98,7 +98,7 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
                 }
 
                 // grap next
-                iterator = ((FeatureCollection) collections.get(index++)).features();
+                iterator = collections.get(index++).features();
 
                 if (iterator.hasNext()) {
                     return true;

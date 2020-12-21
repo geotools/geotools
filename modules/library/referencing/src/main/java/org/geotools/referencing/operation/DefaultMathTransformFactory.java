@@ -193,8 +193,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
         @Override
         public boolean test(MathTransformProvider element) {
             if (element instanceof MathTransformProvider) {
-                final Class<? extends Operation> t =
-                        ((MathTransformProvider) element).getOperationType();
+                final Class<? extends Operation> t = element.getOperationType();
                 if (t != null && !type.isAssignableFrom(t)) {
                     return false;
                 }
@@ -671,7 +670,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
                 if (args.length == 0) {
                     methods = Collections.emptySet();
                 } else {
-                    methods = Collections.singleton((OperationMethod) factory.getProvider(args[0]));
+                    methods = Collections.singleton(factory.getProvider(args[0]));
                 }
             }
             /*

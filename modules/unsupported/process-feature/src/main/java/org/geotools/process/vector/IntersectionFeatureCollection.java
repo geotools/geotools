@@ -258,7 +258,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
             Geometry firstTargetGeometry = reprojectAndDensify(first, firstCRS, null);
             Geometry secondTargetGeometry = reprojectAndDensify(second, firstCRS, null);
             double numeratorArea =
-                    (double) (firstTargetGeometry.intersection(secondTargetGeometry)).getArea();
+                    (firstTargetGeometry.intersection(secondTargetGeometry)).getArea();
             if (divideFirst) {
                 double denom = firstTargetGeometry.getArea();
                 if (denom != 0) return numeratorArea / denom;
@@ -576,7 +576,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
                                     } else if (intersectionMode == IntersectionMode.FIRST) {
                                         attribute = currentGeom;
                                     } else if (intersectionMode == IntersectionMode.SECOND) {
-                                        attribute = (Geometry) second.getDefaultGeometry();
+                                        attribute = second.getDefaultGeometry();
                                     }
                                     if (((Geometry) attribute).getNumGeometries() > 0) {
                                         fb.add(attribute);

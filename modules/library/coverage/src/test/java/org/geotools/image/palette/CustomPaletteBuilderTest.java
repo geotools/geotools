@@ -199,11 +199,9 @@ public class CustomPaletteBuilderTest {
         // now use the JAI op
         //
         assertNotNull(
-                (OperationDescriptor)
-                        JAI.getDefaultInstance()
-                                .getOperationRegistry()
-                                .getDescriptor(
-                                        OperationDescriptor.class, "org.geotools.ColorReduction"));
+                JAI.getDefaultInstance()
+                        .getOperationRegistry()
+                        .getDescriptor(OperationDescriptor.class, "org.geotools.ColorReduction"));
         ParameterBlockJAI pbj = new ParameterBlockJAI("org.geotools.ColorReduction");
         // I will tile the image in 4 tiles and force parallelism here
         JAI.getDefaultInstance().getTileScheduler().setParallelism(4);
@@ -238,11 +236,9 @@ public class CustomPaletteBuilderTest {
         // now use the inversion of color
         //
         assertNotNull(
-                (OperationDescriptor)
-                        JAI.getDefaultInstance()
-                                .getOperationRegistry()
-                                .getDescriptor(
-                                        OperationDescriptor.class, "org.geotools.ColorInversion"));
+                JAI.getDefaultInstance()
+                        .getOperationRegistry()
+                        .getDescriptor(OperationDescriptor.class, "org.geotools.ColorInversion"));
         pbj = new ParameterBlockJAI("org.geotools.ColorInversion");
         pbj.addSource(
                 new ImageWorker(image)

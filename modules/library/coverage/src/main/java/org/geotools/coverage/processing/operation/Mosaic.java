@@ -860,10 +860,7 @@ public class Mosaic extends OperationJAI {
             final ParameterBlockJAI parameters, RenderingHints hints) {
         parameters.getSources();
         RenderedImage[] images =
-                (RenderedImage[])
-                        parameters
-                                .getSources()
-                                .toArray(new RenderedImage[parameters.getSources().size()]);
+                parameters.getSources().toArray(new RenderedImage[parameters.getSources().size()]);
         MosaicType type = getParameter(parameters, 0);
         PlanarImage[] alphas = getParameter(parameters, ALPHA_PARAM);
         ROI[] rois = getParameter(parameters, ROI_PARAM);

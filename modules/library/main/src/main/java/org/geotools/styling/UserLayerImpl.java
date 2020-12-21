@@ -116,7 +116,7 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
     }
 
     public Style[] getUserStyles() {
-        return (Style[]) styles.toArray(new Style[0]);
+        return styles.toArray(new Style[0]);
     }
 
     public void setUserStyles(Style[] styles) {

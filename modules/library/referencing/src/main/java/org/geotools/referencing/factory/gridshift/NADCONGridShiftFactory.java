@@ -441,8 +441,8 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
                         gridShift.setLocalizationPoint(
                                 j,
                                 i,
-                                (double) Float.parseFloat(longSt.nextToken()),
-                                (double) Float.parseFloat(latSt.nextToken()));
+                                Float.parseFloat(longSt.nextToken()),
+                                Float.parseFloat(latSt.nextToken()));
                         ++j;
                     }
                 }

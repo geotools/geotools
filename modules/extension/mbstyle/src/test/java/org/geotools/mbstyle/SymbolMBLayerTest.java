@@ -233,7 +233,7 @@ public class SymbolMBLayerTest {
     @Test
     public void testTextFont() {
         // check the json
-        MBLayer fontLayer = (SymbolMBLayer) fontStyle.layer("text-font");
+        MBLayer fontLayer = fontStyle.layer("text-font");
         assertEquals(
                 true, ((JSONObject) fontLayer.getLayout().get("text-font")).containsKey("stops"));
         JSONArray stops =

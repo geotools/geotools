@@ -101,7 +101,7 @@ public class WMSSchemaTest extends TestCase {
                 capabilities.getRequest().getGetFeatureInfo().getGet(),
                 new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
 
-        Layer topLayer = (Layer) capabilities.getLayerList().get(0);
+        Layer topLayer = capabilities.getLayerList().get(0);
         assertNotNull(topLayer);
         assertNull(topLayer.getParent());
         assertFalse(topLayer.isQueryable());
@@ -118,7 +118,7 @@ public class WMSSchemaTest extends TestCase {
 
         assertEquals(topLayer.getBoundingBoxes().size(), 1);
 
-        CRSEnvelope bbox = (CRSEnvelope) topLayer.getBoundingBoxes().get("CRS:84");
+        CRSEnvelope bbox = topLayer.getBoundingBoxes().get("CRS:84");
         assertNotNull(bbox);
         assertEquals(bbox.getEPSGCode(), "CRS:84");
         assertEquals(bbox.getMinX(), -184, 0.0);
@@ -126,7 +126,7 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(bbox.getMinY(), -90.0000000017335, 0.0);
         assertEquals(bbox.getMaxY(), 90, 0.0);
 
-        Layer layer = (Layer) capabilities.getLayerList().get(1);
+        Layer layer = capabilities.getLayerList().get(1);
         assertEquals(layer.getParent(), topLayer);
         assertTrue(layer.isQueryable());
         assertEquals(layer.getName(), "Bathymetry");
@@ -160,7 +160,7 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(llbbox.getMinY(), -90, 0.0);
         assertEquals(llbbox.getMaxY(), 90, 0.0);
 
-        bbox = (CRSEnvelope) layer.getBoundingBoxes().get("CRS:84");
+        bbox = layer.getBoundingBoxes().get("CRS:84");
         assertNotNull(bbox);
         assertEquals(bbox.getEPSGCode(), "CRS:84");
         assertEquals(bbox.getMinX(), -180, 0.0);
@@ -170,7 +170,7 @@ public class WMSSchemaTest extends TestCase {
 
         assertEquals(capabilities.getLayerList().size(), 21);
 
-        layer = (Layer) capabilities.getLayerList().get(2);
+        layer = capabilities.getLayerList().get(2);
         assertEquals(layer.getParent(), topLayer);
         assertTrue(layer.isQueryable());
         assertEquals(layer.getName(), "Countries");
@@ -183,7 +183,7 @@ public class WMSSchemaTest extends TestCase {
         logoURL = attribution.getLogoURL();
         assertNull(logoURL);
 
-        layer = (Layer) capabilities.getLayerList().get(3);
+        layer = capabilities.getLayerList().get(3);
         assertEquals(layer.getParent(), topLayer);
         assertTrue(layer.isQueryable());
         assertEquals(layer.getName(), "Topography");
@@ -196,7 +196,7 @@ public class WMSSchemaTest extends TestCase {
         logoURL = attribution.getLogoURL();
         assertNull(logoURL);
 
-        layer = (Layer) capabilities.getLayerList().get(4);
+        layer = capabilities.getLayerList().get(4);
         assertEquals(layer.getParent(), topLayer);
         assertFalse(layer.isQueryable());
         assertEquals(layer.getName(), "Hillshading");
@@ -216,7 +216,7 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(logoURL.getHeight(), 0);
         assertEquals(logoURL.getWidth(), 0);
 
-        layer = (Layer) capabilities.getLayerList().get(20);
+        layer = capabilities.getLayerList().get(20);
         assertEquals(layer.getParent(), topLayer);
         assertTrue(layer.isQueryable());
         assertEquals(layer.getName(), "Ocean features");
@@ -232,7 +232,7 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(llbbox.getMinY(), -90, 0.0);
         assertEquals(llbbox.getMaxY(), 90, 0.0);
 
-        bbox = (CRSEnvelope) layer.getBoundingBoxes().get("CRS:84");
+        bbox = layer.getBoundingBoxes().get("CRS:84");
         assertNotNull(bbox);
         assertEquals(bbox.getEPSGCode(), "CRS:84");
         assertEquals(bbox.getMinX(), -180, 0.0);
@@ -269,7 +269,7 @@ public class WMSSchemaTest extends TestCase {
                 capabilities.getRequest().getGetCapabilities().getFormats().get(0),
                 "application/vnd.ogc.wms_xml");
 
-        Layer topLayer = (Layer) capabilities.getLayerList().get(0);
+        Layer topLayer = capabilities.getLayerList().get(0);
         assertNotNull(topLayer);
         assertNull(topLayer.getParent());
         assertFalse(topLayer.isQueryable());
@@ -290,7 +290,7 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(logoURL.getHeight(), 100);
         assertEquals(logoURL.getWidth(), 100);
 
-        Layer layer = (Layer) capabilities.getLayerList().get(1);
+        Layer layer = capabilities.getLayerList().get(1);
         assertEquals(layer.getParent(), topLayer);
         assertFalse(layer.isQueryable());
         assertEquals(layer.getName(), "bathymetry");
@@ -303,7 +303,7 @@ public class WMSSchemaTest extends TestCase {
         logoURL = attribution.getLogoURL();
         assertNull(logoURL);
 
-        layer = (Layer) capabilities.getLayerList().get(2);
+        layer = capabilities.getLayerList().get(2);
         assertEquals(layer.getParent(), topLayer);
         assertFalse(layer.isQueryable());
         assertEquals(layer.getName(), "land_fn");
@@ -316,7 +316,7 @@ public class WMSSchemaTest extends TestCase {
         logoURL = attribution.getLogoURL();
         assertNull(logoURL);
 
-        layer = (Layer) capabilities.getLayerList().get(3);
+        layer = capabilities.getLayerList().get(3);
         assertEquals(layer.getParent(), topLayer);
         assertTrue(layer.isQueryable());
         assertEquals(layer.getName(), "park");
@@ -336,7 +336,7 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(logoURL.getHeight(), 0);
         assertEquals(logoURL.getWidth(), 0);
 
-        layer = (Layer) capabilities.getLayerList().get(4);
+        layer = capabilities.getLayerList().get(4);
         assertEquals(layer.getParent(), topLayer);
         assertFalse(layer.isQueryable());
         assertEquals(layer.getName(), "drain_fn");

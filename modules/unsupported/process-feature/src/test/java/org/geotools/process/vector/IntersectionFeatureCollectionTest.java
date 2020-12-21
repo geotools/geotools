@@ -302,10 +302,7 @@ public class IntersectionFeatureCollectionTest {
         secondCollection = new GeometryCollection(secondArrayGeometry, new GeometryFactory());
         for (int i = 0; i < firstCollection.getNumGeometries() && iterator.hasNext(); i++) {
             Geometry expected =
-                    (Geometry)
-                            firstCollection
-                                    .getGeometryN(i)
-                                    .intersection(secondCollection.getGeometryN(i));
+                    firstCollection.getGeometryN(i).intersection(secondCollection.getGeometryN(i));
             SimpleFeature sf = iterator.next();
             assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
         }

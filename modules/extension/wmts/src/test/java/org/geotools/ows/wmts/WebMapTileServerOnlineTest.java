@@ -132,7 +132,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
         // request.setVersion("1.1.1");
 
-        WMTSLayer layer = (WMTSLayer) capabilities.getLayer("topp:states");
+        WMTSLayer layer = capabilities.getLayer("topp:states");
         assertNotNull(layer);
         request.setLayer(layer);
 
@@ -143,7 +143,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         request.setRequestedBBox(re);
 
         // System.out.println(request.getFinalURL());
-        Set<Tile> responses = (Set<Tile>) wmts.issueRequest(request);
+        Set<Tile> responses = wmts.issueRequest(request);
         assertFalse(responses.isEmpty());
         for (Tile response : responses) {
             // System.out.println("Content Type: " + response.getContentType());
@@ -158,7 +158,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
         WMTSCapabilities caps = wms.getCapabilities();
 
-        Layer layer = (Layer) caps.getLayer("topp:states");
+        Layer layer = caps.getLayer("topp:states");
         assertNotNull("test server doesn't have topp:states", layer);
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
 

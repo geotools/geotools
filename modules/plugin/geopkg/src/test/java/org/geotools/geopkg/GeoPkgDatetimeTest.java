@@ -224,7 +224,7 @@ public class GeoPkgDatetimeTest {
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures();
         features.accepts(visitor, NULL_LISTENER);
-        Map results = (Map) visitor.getResult().toMap();
+        Map results = visitor.getResult().toMap();
         assertEquals(java.sql.Date.valueOf("2020-02-19"), results.get(singletonList("1")));
         assertEquals(java.sql.Date.valueOf("2020-02-20"), results.get(singletonList("2")));
     }
@@ -242,7 +242,7 @@ public class GeoPkgDatetimeTest {
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures();
         features.accepts(visitor, NULL_LISTENER);
-        Map results = (Map) visitor.getResult().toMap();
+        Map results = visitor.getResult().toMap();
 
         assertEquals(5, results.size());
 

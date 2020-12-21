@@ -110,11 +110,10 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         Classifier classifier = (Classifier) function.evaluate(featureCollection);
         assertNotNull(classifier);
 
-        Classifier classifier2 =
-                (Classifier) function.evaluate(featureCollection, Classifier.class);
+        Classifier classifier2 = function.evaluate(featureCollection, Classifier.class);
         assertNotNull(classifier2);
 
-        Integer number = (Integer) function.evaluate(featureCollection, Integer.class);
+        Integer number = function.evaluate(featureCollection, Integer.class);
         assertNull(number);
     }
 

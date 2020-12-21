@@ -807,9 +807,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             pb.add(null);
             pb.add(readP);
             pb.add(readerSpi.createReaderInstance());
-            raster =
-                    JAI.create(
-                            "ImageRead", pb, newHints != null ? (RenderingHints) newHints : null);
+            raster = JAI.create("ImageRead", pb, newHints != null ? newHints : null);
         } catch (Exception e) {
             LOGGER.severe("Unable to read input Mask Band for coverage: " + coverageName);
         }

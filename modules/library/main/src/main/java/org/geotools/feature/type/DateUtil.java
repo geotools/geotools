@@ -67,7 +67,7 @@ public abstract class DateUtil {
     private static final int MSPERDAY = MSPERHOUR * 24;
 
     /** Number of milliseconds in a day as a long. */
-    private static final long LMSPERDAY = (long) MSPERDAY;
+    private static final long LMSPERDAY = MSPERDAY;
 
     /** Number of milliseconds in a (non-leap) year. */
     private static final long MSPERYEAR = LMSPERDAY * 365;

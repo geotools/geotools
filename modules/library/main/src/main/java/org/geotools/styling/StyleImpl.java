@@ -59,7 +59,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("number of fts set " + featureTypeStyles.size());
 
-            ret = (FeatureTypeStyle[]) featureTypeStyles.toArray(new FeatureTypeStyle[] {});
+            ret = featureTypeStyles.toArray(new FeatureTypeStyle[] {});
         }
 
         return ret;

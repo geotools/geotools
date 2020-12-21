@@ -92,7 +92,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
     }
 
     public AttributeType getType(Name name) {
-        AttributeDescriptor attribute = (AttributeDescriptor) getDescriptor(name);
+        AttributeDescriptor attribute = getDescriptor(name);
         if (attribute != null) {
             return attribute.getType();
         }
@@ -100,7 +100,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
     }
 
     public AttributeType getType(String name) {
-        AttributeDescriptor attribute = (AttributeDescriptor) getDescriptor(name);
+        AttributeDescriptor attribute = getDescriptor(name);
         if (attribute != null) {
             return attribute.getType();
         }

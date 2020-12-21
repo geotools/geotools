@@ -40,7 +40,7 @@ public class FilterFunction_strToLowerCase extends FunctionExpressionImpl {
         String arg0;
 
         try { // attempt to get value and perform conversion
-            arg0 = (String) getExpression(0).evaluate(feature, String.class);
+            arg0 = getExpression(0).evaluate(feature, String.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

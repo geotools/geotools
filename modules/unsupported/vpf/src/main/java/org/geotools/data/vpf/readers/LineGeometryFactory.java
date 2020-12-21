@@ -65,7 +65,7 @@ public class LineGeometryFactory extends VPFGeometryFactory implements FileConst
             Short tileId =
                     Short.valueOf(Short.parseShort(values.getAttribute("tile_id").toString()));
             VPFLibrary vpf = featureClass.getCoverage().getLibrary();
-            String tileName = (String) vpf.getTileMap().get(tileId);
+            String tileName = vpf.getTileMap().get(tileId);
 
             if (tileName != null) {
 

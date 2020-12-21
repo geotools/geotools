@@ -259,11 +259,7 @@ public class FilterAttributeExtractorTest extends TestCase {
                 fac.equals(testAttribute, fac.literal("incorrect test string data"));
 
         // Test OR for false negatives
-        Or filter =
-                fac.or(
-                        Arrays.asList(
-                                (org.opengis.filter.Filter) filterFalse,
-                                (org.opengis.filter.Filter) filterTrue));
+        Or filter = fac.or(Arrays.asList(filterFalse, filterTrue));
 
         assertAttributeName(filter, "testString");
     }

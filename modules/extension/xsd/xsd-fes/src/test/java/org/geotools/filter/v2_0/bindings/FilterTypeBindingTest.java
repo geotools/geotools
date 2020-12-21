@@ -155,15 +155,15 @@ public class FilterTypeBindingTest extends FESTestSupport {
 
         PropertyIsEqualTo f11 = (PropertyIsEqualTo) f1.getChildren().get(0);
         assertEquals("FIELD1", ((PropertyName) f11.getExpression1()).getPropertyName());
-        assertEquals("10", ((Literal) f11.getExpression2()).evaluate(null, String.class));
+        assertEquals("10", f11.getExpression2().evaluate(null, String.class));
 
         PropertyIsEqualTo f12 = (PropertyIsEqualTo) f1.getChildren().get(1);
         assertEquals("FIELD1", ((PropertyName) f12.getExpression1()).getPropertyName());
-        assertEquals("20", ((Literal) f12.getExpression2()).evaluate(null, String.class));
+        assertEquals("20", f12.getExpression2().evaluate(null, String.class));
 
         PropertyIsEqualTo f2 = (PropertyIsEqualTo) f.getChildren().get(1);
         assertEquals("STATUS", ((PropertyName) f2.getExpression1()).getPropertyName());
-        assertEquals("VALID", ((Literal) f2.getExpression2()).evaluate(null, String.class));
+        assertEquals("VALID", f2.getExpression2().evaluate(null, String.class));
     }
 
     public void testParse1() throws Exception {

@@ -17,6 +17,7 @@
 package org.geotools.gce.imagemosaic.properties;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,10 @@ public abstract class PropertiesCollector {
     }
 
     public PropertiesCollector collect(final File file) {
+        return this;
+    }
+
+    public PropertiesCollector collect(final URL url) {
         return this;
     }
 

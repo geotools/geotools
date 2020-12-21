@@ -121,10 +121,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
             } else {
                 String name = getComparisonPropertyName((BinaryComparisonOperator) child);
                 if (name == null) {
-                    // not a case we can simplify, visit and accumulate
-                    @SuppressWarnings("unchecked")
-                    List<Filter> cast = (List<Filter>) child.accept(this, null);
-                    grouped.put(child, cast);
+                    grouped.put(child, child.accept(this, null));
                 } else {
                     @SuppressWarnings("unchecked")
                     List<Filter> filters = (List<Filter>) grouped.get(name);

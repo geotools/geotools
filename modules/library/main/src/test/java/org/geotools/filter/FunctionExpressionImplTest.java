@@ -247,7 +247,7 @@ public class FunctionExpressionImplTest extends TestCase {
                             + ".getParameters() returned a wrong result when parameters were set through setArgs(Expression[])");
         }
 
-        function = (FunctionExpression) function.getClass().getDeclaredConstructor().newInstance();
+        function = function.getClass().getDeclaredConstructor().newInstance();
         function.setParameters(expected);
 
         List<Expression> returnedArgs = function.getParameters();

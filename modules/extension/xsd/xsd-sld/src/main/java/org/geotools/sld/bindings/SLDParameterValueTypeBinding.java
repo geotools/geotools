@@ -121,7 +121,7 @@ public class SLDParameterValueTypeBinding extends AbstractComplexBinding {
         if (expressions.isEmpty()) {
             return null;
         }
-        if (expressions.size() == 1) return (Expression) expressions.get(0);
+        if (expressions.size() == 1) return expressions.get(0);
 
         Expression e = expressions.get(0);
         for (int i = 1; i < expressions.size(); i++) {

@@ -288,7 +288,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
             }
         }
 
-        return (SimpleType[]) l.toArray(new SimpleType[l.size()]);
+        return l.toArray(new SimpleType[l.size()]);
     }
 
     static Facet[] getFacets(RestrictionHandler rh) {

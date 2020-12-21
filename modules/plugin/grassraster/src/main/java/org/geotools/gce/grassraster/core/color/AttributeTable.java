@@ -56,7 +56,7 @@ public class AttributeTable {
 
         while (low <= high) {
             int i = (low + high) / 2;
-            CellAttribute catt = (CellAttribute) atts.elementAt(i);
+            CellAttribute catt = atts.elementAt(i);
             int c = catt.compare(cat);
             if (c == 0) {
                 return catt.getText();
@@ -76,7 +76,7 @@ public class AttributeTable {
 
         while (low <= high) {
             i = (low + high) / 2;
-            CellAttribute catt = (CellAttribute) atts.elementAt(i);
+            CellAttribute catt = atts.elementAt(i);
             int c = catt.compare(cat);
             if (c == 0) {
                 /*

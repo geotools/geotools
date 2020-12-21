@@ -775,7 +775,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals("histogram", rcs.getMethod().name().toLowerCase());
 
         ContrastEnhancement gcs = greenChannel.getContrastEnhancement();
-        Double ggamma = (Double) gcs.getGammaValue().evaluate(null, Double.class);
+        Double ggamma = gcs.getGammaValue().evaluate(null, Double.class);
         assertEquals(2.8, ggamma.doubleValue());
 
         ContrastEnhancement bcs = blueChannel.getContrastEnhancement();
@@ -793,7 +793,7 @@ public class SLDStyleTest extends TestCase {
 
         // ContrastEnhancement
         ContrastEnhancement ce = rs.getContrastEnhancement();
-        Double v = (Double) ce.getGammaValue().evaluate(null, Double.class);
+        Double v = ce.getGammaValue().evaluate(null, Double.class);
         assertEquals(1.0, v.doubleValue());
     }
 
@@ -829,7 +829,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals("histogram", rcs.getMethod().name().toLowerCase());
 
         ContrastEnhancement gcs = greenChannel.getContrastEnhancement();
-        Double ggamma = (Double) gcs.getGammaValue().evaluate(null, Double.class);
+        Double ggamma = gcs.getGammaValue().evaluate(null, Double.class);
         assertEquals(3.8, ggamma.doubleValue());
 
         ContrastEnhancement bcs = blueChannel.getContrastEnhancement();
@@ -847,7 +847,7 @@ public class SLDStyleTest extends TestCase {
 
         // ContrastEnhancement
         ContrastEnhancement ce = rs.getContrastEnhancement();
-        Double v = (Double) ce.getGammaValue().evaluate(null, Double.class);
+        Double v = ce.getGammaValue().evaluate(null, Double.class);
         assertEquals(1.5, v.doubleValue());
     }
 

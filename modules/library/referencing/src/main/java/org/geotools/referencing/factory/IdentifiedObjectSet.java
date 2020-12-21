@@ -127,7 +127,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      */
     public boolean addAuthorityCode(final String code) {
         final boolean already = objects.containsKey(code);
-        final IdentifiedObject old = (IdentifiedObject) objects.put(code, null);
+        final IdentifiedObject old = objects.put(code, null);
         if (old != null) {
             // A fully created object was already there. Keep it.
             objects.put(code, old);
@@ -155,7 +155,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * @throws BackingStoreException if the object creation failed.
      */
     private IdentifiedObject get(final String code) throws BackingStoreException {
-        IdentifiedObject object = (IdentifiedObject) objects.get(code);
+        IdentifiedObject object = objects.get(code);
         if (object == null && objects.containsKey(code)) {
             try {
                 object = createObject(code);
@@ -275,7 +275,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
         objects.clear();
         for (int i = 0; i < codes.length; i++) {
             final String code = codes[i];
-            objects.put(code, (IdentifiedObject) copy.get(code));
+            objects.put(code, copy.get(code));
         }
     }
 

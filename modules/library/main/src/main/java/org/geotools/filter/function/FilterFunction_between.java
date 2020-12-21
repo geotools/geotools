@@ -48,7 +48,7 @@ public class FilterFunction_between extends FunctionExpressionImpl {
         Object high;
 
         try { // attempt to get value and perform conversion
-            value = (Object) getExpression(0).evaluate(feature);
+            value = getExpression(0).evaluate(feature);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -56,7 +56,7 @@ public class FilterFunction_between extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            low = (Object) getExpression(1).evaluate(feature);
+            low = getExpression(1).evaluate(feature);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -64,7 +64,7 @@ public class FilterFunction_between extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            high = (Object) getExpression(2).evaluate(feature);
+            high = getExpression(2).evaluate(feature);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

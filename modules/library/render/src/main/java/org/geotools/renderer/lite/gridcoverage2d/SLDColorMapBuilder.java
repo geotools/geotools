@@ -311,14 +311,14 @@ public class SLDColorMapBuilder {
             // Get the previous category
             final int newColorMapElementIndex = this.colormapElements.size();
             final LinearColorMapElement previous =
-                    (LinearColorMapElement) this.colormapElements.get(newColorMapElementIndex - 1);
+                    this.colormapElements.get(newColorMapElementIndex - 1);
 
             // //
             //
             // Build the new one.
             //
             // //
-            double previousMax = ((Range) previous.getRange()).getMax().doubleValue();
+            double previousMax = previous.getRange().getMax().doubleValue();
             Color[] previousColors = previous.getColors();
             if (PiecewiseUtilities.compare(previousMax, q) != 0) {
                 Range valueRange = RangeFactory.create(previousMax, true, q, false);
@@ -326,7 +326,7 @@ public class SLDColorMapBuilder {
                 switch (linearColorMapType) {
                     case ColorMap.TYPE_RAMP:
                         Color[] colors = new Color[] {lastColorValue, newColorValue};
-                        int previousMaximum = (int) previous.getOutputRange().getMax().intValue();
+                        int previousMaximum = previous.getOutputRange().getMax().intValue();
                         // the piecewise machinery will complain if we have different colors
                         // on touching ranges, work around it by not including the previous
                         // max at the beginning of the range in case that happens (uses might
@@ -477,7 +477,7 @@ public class SLDColorMapBuilder {
         ColorMapUtilities.ensureNonNull("ColorMapEntry", entry);
         Expression color = entry.getColor();
         ColorMapUtilities.ensureNonNull("color", color);
-        String colorString = (String) color.evaluate(null, String.class);
+        String colorString = color.evaluate(null, String.class);
         if (colorString != null && colorString.startsWith("${")) {
             color = ExpressionExtractor.extractCqlExpressions(colorString);
             colorString = color.evaluate(null, String.class);
@@ -504,7 +504,7 @@ public class SLDColorMapBuilder {
         ColorMapUtilities.ensureNonNull("entry", entry);
         Expression opacity = entry.getOpacity();
         Double opacityValue = null;
-        if (opacity != null) opacityValue = (Double) opacity.evaluate(null, Double.class);
+        if (opacity != null) opacityValue = opacity.evaluate(null, Double.class);
         else return 1.0;
         if (opacityValue == null && opacity instanceof Literal) {
             String opacityExp = opacity.evaluate(null, String.class);
@@ -639,8 +639,7 @@ public class SLDColorMapBuilder {
         // Create the last category
         //
         // /////////////////////////////////////////////////////////////////////
-        LinearColorMapElement last =
-                (LinearColorMapElement) this.colormapElements.get(this.colormapElements.size() - 1);
+        LinearColorMapElement last = this.colormapElements.get(this.colormapElements.size() - 1);
         if (linearColorMapType == ColorMap.TYPE_RAMP) {
 
             // //
@@ -691,9 +690,8 @@ public class SLDColorMapBuilder {
         this.colorMap =
                 new LinearColorMap(
                         name,
-                        (LinearColorMapElement[])
-                                colormapElements.toArray(
-                                        new LinearColorMapElement[colormapElements.size()]),
+                        colormapElements.toArray(
+                                new LinearColorMapElement[colormapElements.size()]),
                         preservedValuesElement,
                         this.gapsColor);
         return colorMap;

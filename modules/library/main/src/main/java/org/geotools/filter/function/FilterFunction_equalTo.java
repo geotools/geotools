@@ -70,7 +70,7 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
 
         if (getParameters().size() > 2) {
             try { // attempt to get value and perform conversion
-                matchAction = (MatchAction) getExpression(2).evaluate(feature, MatchAction.class);
+                matchAction = getExpression(2).evaluate(feature, MatchAction.class);
             } catch (Exception e) // probably a type error
             {
                 throw new IllegalArgumentException(

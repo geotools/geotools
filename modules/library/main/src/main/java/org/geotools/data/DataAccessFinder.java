@@ -80,7 +80,7 @@ public final class DataAccessFinder {
 
         IOException canProcessButNotAvailable = null;
         while (ps.hasNext()) {
-            fac = (DataAccessFactory) ps.next();
+            fac = ps.next();
             boolean canProcess = false;
             try {
                 canProcess = fac.canProcess(params);

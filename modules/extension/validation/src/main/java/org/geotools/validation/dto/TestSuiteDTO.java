@@ -61,7 +61,7 @@ public class TestSuiteDTO {
         Iterator i = ts.getTests().keySet().iterator();
 
         while (i.hasNext()) {
-            TestDTO t = (TestDTO) ts.getTests().get(i.next());
+            TestDTO t = ts.getTests().get(i.next());
             tests.put(t.getName(), new TestDTO(t));
         }
     }

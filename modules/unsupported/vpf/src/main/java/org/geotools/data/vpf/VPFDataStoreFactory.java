@@ -177,7 +177,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
                 VPFFeatureType.debugFeature(feature);
             }
 
-            feature = iter.hasNext() ? (SimpleFeature) iter.next() : null;
+            feature = iter.hasNext() ? iter.next() : null;
         }
 
         try {

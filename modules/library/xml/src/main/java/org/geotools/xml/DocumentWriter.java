@@ -1398,7 +1398,7 @@ public class DocumentWriter {
          */
         public void startElement(URI namespaceURI, String localName, Attributes attributes)
                 throws IOException {
-            String prefix = (String) prefixMappings.get(namespaceURI);
+            String prefix = prefixMappings.get(namespaceURI);
 
             if (prefix != null) {
                 if (!prefix.equals("")) {
@@ -1455,7 +1455,7 @@ public class DocumentWriter {
          */
         public void element(URI namespaceURI, String localName, Attributes attributes)
                 throws IOException {
-            String prefix = (String) prefixMappings.get(namespaceURI);
+            String prefix = prefixMappings.get(namespaceURI);
 
             if (prefix != null) {
                 if (!prefix.equals("")) {
@@ -1510,7 +1510,7 @@ public class DocumentWriter {
          * @param localName String
          */
         public void endElement(URI namespaceURI, String localName) throws IOException {
-            String prefix = (String) prefixMappings.get(namespaceURI);
+            String prefix = prefixMappings.get(namespaceURI);
 
             if (prefix != null) {
                 if (!prefix.equals("")) {
@@ -1734,7 +1734,7 @@ public class DocumentWriter {
                     }
                 }
 
-                searchOrder = (Schema[]) so.toArray(new Schema[so.size()]);
+                searchOrder = so.toArray(new Schema[so.size()]);
             }
 
             return searchOrder;

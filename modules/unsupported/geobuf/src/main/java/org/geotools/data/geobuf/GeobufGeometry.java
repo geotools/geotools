@@ -131,7 +131,7 @@ public class GeobufGeometry {
                 builder.addLengths(polygon.getExteriorRing().getCoordinates().length);
                 addCoords(builder, polygon.getExteriorRing().getCoordinates());
                 for (int j = 0; j < polygon.getNumInteriorRing(); j++) {
-                    LinearRing ring = (LinearRing) polygon.getInteriorRingN(j);
+                    LinearRing ring = polygon.getInteriorRingN(j);
                     builder.addLengths(ring.getCoordinates().length);
                     addCoords(builder, ring.getCoordinates());
                 }

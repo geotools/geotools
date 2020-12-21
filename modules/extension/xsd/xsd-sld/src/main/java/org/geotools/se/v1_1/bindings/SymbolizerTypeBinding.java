@@ -16,7 +16,6 @@
  */
 package org.geotools.se.v1_1.bindings;
 
-import java.net.URI;
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.styling.Symbolizer;
@@ -97,7 +96,7 @@ public class SymbolizerTypeBinding extends AbstractComplexBinding {
             sym.setDescription((Description) node.getChildValue("Description"));
         }
         if (node.hasAttribute("uom")) {
-            String uom = ((URI) node.getAttributeValue("uom")).toString();
+            String uom = node.getAttributeValue("uom").toString();
             if (UomOgcMapping.get(uom) == null) {
                 throw new IllegalArgumentException("uom " + uom + " not supported");
             }

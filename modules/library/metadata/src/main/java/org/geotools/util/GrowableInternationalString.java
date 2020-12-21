@@ -163,7 +163,7 @@ public class GrowableInternationalString extends AbstractInternationalString
             if (position == length) {
                 final Locale locale =
                         (i == 0)
-                                ? (Locale) null
+                                ? null
                                 : unique(
                                         new Locale(
                                                 parts[0] /* language */,

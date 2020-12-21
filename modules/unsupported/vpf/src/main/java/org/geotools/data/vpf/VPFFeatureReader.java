@@ -118,7 +118,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         VPFFile temp;
         Iterator<VPFFile> iter = featureType.getFeatureClass().getFileList().iterator();
         while (iter.hasNext()) {
-            temp = (VPFFile) iter.next();
+            temp = iter.next();
             if ((temp != null) && (temp.getColumn(columnName) != null)) {
                 result = temp;
                 break;

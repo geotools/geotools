@@ -171,7 +171,7 @@ public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, Di
                         });
 
         windowFixture = new DialogFixture(dialog);
-        ((DialogFixture) windowFixture).show();
+        windowFixture.show();
     }
 
     private JTextComponentFixture getDialogTextArea() {

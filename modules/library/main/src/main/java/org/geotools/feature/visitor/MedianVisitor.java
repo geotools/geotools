@@ -218,7 +218,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 for (int k = 0; k < size; k++) {
                     if (values[k].getClass() != bestClass)
                         values[k] = (Comparable) CalcUtil.convert(values[k], bestClass);
-                    newList.add((Comparable) values[k]);
+                    newList.add(values[k]);
                 }
                 return new MedianResult(newList);
             } else {
@@ -246,7 +246,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         Collections.sort(list);
 
         int index = -1;
-        index = (int) list.size() / 2;
+        index = list.size() / 2;
 
         if ((list.size() % 2) == 0) {
             // even number of elements, so we must average the 2 middle ones, or

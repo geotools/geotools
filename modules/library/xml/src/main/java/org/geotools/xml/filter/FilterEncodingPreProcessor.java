@@ -155,10 +155,10 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     public Id getFidFilter() {
         if (current.isEmpty()) {
             Set<FeatureId> empty = Collections.emptySet();
-            return (Id) ff.id(empty);
+            return ff.id(empty);
         }
 
-        Data data = (Data) current.peek();
+        Data data = current.peek();
 
         if (data.fids.size() > 0) {
             Set<FeatureId> set = new HashSet<>();
@@ -166,10 +166,10 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             for (String fid : fids) {
                 set.add(ff.featureId(fid));
             }
-            return (Id) ff.id(set);
+            return ff.id(set);
         } else {
             Set<FeatureId> empty = Collections.emptySet();
-            return (Id) ff.id(empty);
+            return ff.id(empty);
         }
     }
 
@@ -180,7 +180,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
      */
     public org.opengis.filter.Filter getFilter() {
         if (current.isEmpty()) return Filter.EXCLUDE;
-        return ((Data) this.current.peek()).filter;
+        return this.current.peek().filter;
     }
 
     public void visit(Filter filter) {
@@ -318,7 +318,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         Set set = new HashSet();
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (!data.fids.isEmpty()) {
                 set.addAll(data.fids);
@@ -338,7 +338,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         boolean doRemove = true;
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (data.fids.isEmpty()) {
                 toRemove.add(data);
@@ -402,13 +402,13 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
 
         if (current.size() == (startOfFilterStack + 1)) {
-            return (Data) current.pop();
+            return current.pop();
         }
 
         List<org.opengis.filter.Filter> filterList = new ArrayList<>();
 
         while (current.size() > startOfFilterStack) {
-            Data data = (Data) current.pop();
+            Data data = current.pop();
 
             if (data.filter != Filter.EXCLUDE) {
                 filterList.add(data.filter);
@@ -809,59 +809,59 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     //
 
     public Object visit(After after, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) after);
+        return visitTemporalFilter(after);
     }
 
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) anyInteracts);
+        return visitTemporalFilter(anyInteracts);
     }
 
     public Object visit(Before before, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) before);
+        return visitTemporalFilter(before);
     }
 
     public Object visit(Begins begins, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) begins);
+        return visitTemporalFilter(begins);
     }
 
     public Object visit(BegunBy begunBy, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) begunBy);
+        return visitTemporalFilter(begunBy);
     }
 
     public Object visit(During during, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) during);
+        return visitTemporalFilter(during);
     }
 
     public Object visit(EndedBy endedBy, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) endedBy);
+        return visitTemporalFilter(endedBy);
     }
 
     public Object visit(Ends ends, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) ends);
+        return visitTemporalFilter(ends);
     }
 
     public Object visit(Meets meets, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) meets);
+        return visitTemporalFilter(meets);
     }
 
     public Object visit(MetBy metBy, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) metBy);
+        return visitTemporalFilter(metBy);
     }
 
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) overlappedBy);
+        return visitTemporalFilter(overlappedBy);
     }
 
     public Object visit(TContains contains, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) contains);
+        return visitTemporalFilter(contains);
     }
 
     public Object visit(TEquals equals, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) equals);
+        return visitTemporalFilter(equals);
     }
 
     public Object visit(TOverlaps contains, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) contains);
+        return visitTemporalFilter(contains);
     }
 
     protected Object visitTemporalFilter(BinaryTemporalOperator filter) {

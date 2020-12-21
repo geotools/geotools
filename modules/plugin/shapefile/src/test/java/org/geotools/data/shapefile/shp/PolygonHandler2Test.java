@@ -83,7 +83,7 @@ public class PolygonHandler2Test extends org.geotools.data.shapefile.TestCaseSup
 
         PolygonHandler ph = new PolygonHandler(new GeometryFactory());
         List<List<LinearRing>> assigned = ph.assignHolesToShells(shells, holes);
-        assertEquals(((ArrayList<?>) assigned.get(0)).size(), holes.size());
+        assertEquals(assigned.get(0).size(), holes.size());
     }
 
     public static LinearRing rectangle(PrecisionModel pm, int SRID) {

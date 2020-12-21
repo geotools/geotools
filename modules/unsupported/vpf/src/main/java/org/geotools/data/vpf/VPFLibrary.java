@@ -359,7 +359,7 @@ public class VPFLibrary extends ContentDataStore {
     private void createTilingSchema(VPFCoverage coverage) throws IOException {
         //            File tilefile = new File(directory, "tilereft.tft");
 
-        VPFFeatureType tileType = (VPFFeatureType) coverage.getFeatureTypes().get(0);
+        VPFFeatureType tileType = coverage.getFeatureTypes().get(0);
 
         // VPFFile tileFile = (VPFFile) tileType.getFeatureClass().getFileList().get(0);
         // Iterator rowsIter = tileFile.readAllRows().iterator();

@@ -95,7 +95,7 @@ final class OverviewsController {
         // the overviews, something a perf sensitive person might do in fact
 
         // requested scale factor for least reduced axis
-        final OverviewLevel max = (OverviewLevel) resolutionsLevels.get(0);
+        final OverviewLevel max = resolutionsLevels.get(0);
 
         // the requested resolutions (even virtual)
         boolean useVirtual = false;
@@ -143,8 +143,7 @@ final class OverviewsController {
             return max.imageChoice;
         }
 
-        final OverviewLevel min =
-                (OverviewLevel) resolutionsLevels.get(resolutionsLevels.size() - 1);
+        final OverviewLevel min = resolutionsLevels.get(resolutionsLevels.size() - 1);
         if (requestedScaleFactor >= min.scaleFactor) {
             // are we looking for a resolution even lower than the smallest overview?
             if (useVirtual && min.imageChoice != 0) {

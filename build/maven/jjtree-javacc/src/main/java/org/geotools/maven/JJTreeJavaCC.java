@@ -373,7 +373,7 @@ public class JJTreeJavaCC extends AbstractMojo {
         argsList.add("-OUTPUT_DIRECTORY:" + outputPackageDirectory.getPath());
         argsList.add(sourceFilename);
         getLog().debug("jjtree arguments list: " + argsList.toString());
-        return (String[]) argsList.toArray(new String[argsList.size()]);
+        return argsList.toArray(new String[argsList.size()]);
     }
 
     /**
@@ -387,6 +387,6 @@ public class JJTreeJavaCC extends AbstractMojo {
         argsList.add("-OUTPUT_DIRECTORY:" + outputPackageDirectory.getPath());
         argsList.add(sourceInput);
         getLog().debug("javacc arguments list: " + argsList.toString());
-        return (String[]) argsList.toArray(new String[argsList.size()]);
+        return argsList.toArray(new String[argsList.size()]);
     }
 }

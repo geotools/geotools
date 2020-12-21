@@ -281,7 +281,7 @@ public class ParserHandler extends DefaultHandler2 {
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
         namespaces.declarePrefix(prefix, uri);
         if (!handlers.isEmpty()) {
-            Handler h = (Handler) handlers.peek();
+            Handler h = handlers.peek();
             h.startPrefixMapping(prefix, uri);
         }
     }
@@ -582,7 +582,7 @@ public class ParserHandler extends DefaultHandler2 {
         // get the handler at top of the stack and lookup child
 
         // First ask the parent handler for a child
-        Handler parent = (Handler) handlers.peek();
+        Handler parent = handlers.peek();
         ElementHandler handler = (ElementHandler) parent.createChildHandler(qualifiedName);
 
         if (handler == null) {
@@ -804,7 +804,7 @@ public class ParserHandler extends DefaultHandler2 {
     @Override
     public void endPrefixMapping(String prefix) throws SAXException {
         if (!handlers.isEmpty()) {
-            Handler h = (Handler) handlers.peek();
+            Handler h = handlers.peek();
             h.endPrefixMapping(prefix);
         }
     }
@@ -850,7 +850,7 @@ public class ParserHandler extends DefaultHandler2 {
 
         // grab handler on top of stack
         if (!handlers.isEmpty()) {
-            Handler h = (Handler) handlers.peek();
+            Handler h = handlers.peek();
             return h.getParseNode().getValue();
         }
 
@@ -874,7 +874,7 @@ public class ParserHandler extends DefaultHandler2 {
             return new XSDSchemaLocator[] {};
         }
 
-        return (XSDSchemaLocator[]) l.toArray(new XSDSchemaLocator[l.size()]);
+        return l.toArray(new XSDSchemaLocator[l.size()]);
     }
 
     protected XSDSchemaLocationResolver[] findSchemaLocationResolvers() {
@@ -885,7 +885,7 @@ public class ParserHandler extends DefaultHandler2 {
             return new XSDSchemaLocationResolver[] {};
         }
 
-        return (XSDSchemaLocationResolver[]) l.toArray(new XSDSchemaLocationResolver[l.size()]);
+        return l.toArray(new XSDSchemaLocationResolver[l.size()]);
     }
 
     @Override

@@ -107,7 +107,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
 
         public Object visit(Function expr, Object extraData) {
             for (int i = 0; i < expr.getParameters().size(); i++) {
-                ((Expression) expr.getParameters().get(i)).accept(this, null);
+                expr.getParameters().get(i).accept(this, null);
             }
 
             capable = capable && fcs.supports(expr.getClass());

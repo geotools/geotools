@@ -207,7 +207,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     /** Returns an example geometry from the list of geometries. */
     public Geometry getGeometry() {
-        return (Geometry) geoms.get(0);
+        return geoms.get(0);
     }
 
     /**

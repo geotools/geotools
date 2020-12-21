@@ -395,7 +395,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             rs = st.executeQuery();
             if (rs.next()) {
                 String gType = rs.getString(1);
-                Class geometryClass = (Class) TT.GEOM_CLASSES.get(gType);
+                Class geometryClass = TT.GEOM_CLASSES.get(gType);
                 if (geometryClass == null) {
                     // if there was a record but it's not a recognized geometry type fall back on
                     // geometry for backwards compatibility, but at least log the info

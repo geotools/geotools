@@ -102,7 +102,7 @@ public class ColorBrewer {
         BrewerPalette[] palettes = new BrewerPalette[entry.length];
 
         for (int i = 0; i < entry.length; i++) {
-            palettes[i] = (BrewerPalette) getPalette(entry[i].toString());
+            palettes[i] = getPalette(entry[i].toString());
         }
 
         return palettes;
@@ -117,7 +117,7 @@ public class ColorBrewer {
         Object[] entry = this.palettes.keySet().toArray();
 
         for (int i = 0; i < entry.length; i++) {
-            BrewerPalette pal = (BrewerPalette) getPalette(entry[i].toString());
+            BrewerPalette pal = getPalette(entry[i].toString());
             boolean match = true;
 
             // filter by number of classes
@@ -136,7 +136,7 @@ public class ColorBrewer {
             }
         }
 
-        return (BrewerPalette[]) palettes.toArray(new BrewerPalette[palettes.size()]);
+        return palettes.toArray(new BrewerPalette[palettes.size()]);
     }
 
     public BrewerPalette[] getPalettes(PaletteType type, int numClasses, int requiredViewers) {
@@ -144,7 +144,7 @@ public class ColorBrewer {
         Object[] entry = this.palettes.keySet().toArray();
 
         for (int i = 0; i < entry.length; i++) {
-            BrewerPalette pal = (BrewerPalette) getPalette(entry[i].toString());
+            BrewerPalette pal = getPalette(entry[i].toString());
             boolean match = true;
 
             // filter by number of classes
@@ -191,7 +191,7 @@ public class ColorBrewer {
             }
         }
 
-        return (BrewerPalette[]) palettes.toArray(new BrewerPalette[palettes.size()]);
+        return palettes.toArray(new BrewerPalette[palettes.size()]);
     }
 
     /**
@@ -224,7 +224,7 @@ public class ColorBrewer {
 
         // generate the set of palette names
         for (int i = 0; i < keys.length; i++) {
-            BrewerPalette thisPalette = (BrewerPalette) palettes.get(keys[i]);
+            BrewerPalette thisPalette = palettes.get(keys[i]);
             int numColors = thisPalette.getMaxColors();
 
             if ((numColors >= minClasses) && (numColors <= maxClasses)) {
@@ -244,7 +244,7 @@ public class ColorBrewer {
     }
 
     public BrewerPalette getPalette(String name) {
-        return (BrewerPalette) palettes.get(name);
+        return palettes.get(name);
     }
 
     /** Loads the default ColorBrewer palettes. */

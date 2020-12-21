@@ -102,7 +102,7 @@ public class SLDColorMapEntryBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ColorMapEntry entry = styleFactory.createColorMapEntry();
 
-        Expression color = filterFactory.literal((String) node.getAttributeValue("color"));
+        Expression color = filterFactory.literal(node.getAttributeValue("color"));
         entry.setColor(color);
 
         if (node.getAttributeValue("opacity") != null) {

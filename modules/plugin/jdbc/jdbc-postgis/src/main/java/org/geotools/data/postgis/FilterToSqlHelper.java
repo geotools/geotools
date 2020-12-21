@@ -338,8 +338,7 @@ class FilterToSqlHelper {
                 out.write(" AND ");
             }
 
-            visitBinarySpatialOperator(
-                    filter, (Expression) property, (Expression) geometry, swapped, extraData);
+            visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 
@@ -472,8 +471,7 @@ class FilterToSqlHelper {
         } else if (polygons.size() == 1) {
             return polygons.get(0);
         } else {
-            return gf.createMultiPolygon(
-                    (Polygon[]) polygons.toArray(new Polygon[polygons.size()]));
+            return gf.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));
         }
     }
 

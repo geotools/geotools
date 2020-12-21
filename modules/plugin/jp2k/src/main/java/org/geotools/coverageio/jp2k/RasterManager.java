@@ -149,7 +149,7 @@ class RasterManager {
             // the overviews, something a perf sensitive person might do in fact
 
             // requested scale factor for least reduced axis
-            final OverviewLevel max = (OverviewLevel) resolutionsLevels.get(0);
+            final OverviewLevel max = resolutionsLevels.get(0);
 
             // the requested resolutions
             final double requestedScaleFactorX;
@@ -169,8 +169,7 @@ class RasterManager {
             // are we looking for a resolution even higher than the native one?
             if (requestedScaleFactor <= 1) return max.imageChoice;
             // are we looking for a resolution even lower than the smallest overview?
-            final OverviewLevel min =
-                    (OverviewLevel) resolutionsLevels.get(resolutionsLevels.size() - 1);
+            final OverviewLevel min = resolutionsLevels.get(resolutionsLevels.size() - 1);
             if (requestedScaleFactor >= min.scaleFactor) return min.imageChoice;
             // Ok, so we know the overview is between min and max, skip the first
             // and search for an overview with a resolution lower than the one requested,
@@ -340,9 +339,7 @@ class RasterManager {
             coverageCRS2D = CRS.getHorizontalCRS(coverageCRS);
             assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
             if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
-                final MathTransform transform =
-                        CRS.findMathTransform(
-                                coverageCRS, (CoordinateReferenceSystem) coverageCRS2D);
+                final MathTransform transform = CRS.findMathTransform(coverageCRS, coverageCRS2D);
                 final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
                 bbox.setCoordinateReferenceSystem(coverageCRS2D);
                 coverageBBox = new ReferencedEnvelope(bbox);

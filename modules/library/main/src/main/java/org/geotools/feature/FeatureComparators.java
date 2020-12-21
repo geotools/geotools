@@ -99,7 +99,7 @@ public final class FeatureComparators {
          */
         @SuppressWarnings("unchecked")
         protected int compareAtts(Object att1, Object att2) {
-            return ((Comparable) att1).compareTo((Comparable) att2);
+            return ((Comparable) att1).compareTo(att2);
         }
     }
 
@@ -152,7 +152,7 @@ public final class FeatureComparators {
                 return 1;
             }
 
-            return ((Comparable) att1).compareTo((Comparable) att2);
+            return ((Comparable) att1).compareTo(att2);
         }
     }
 }

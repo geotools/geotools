@@ -99,7 +99,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             try (SimpleFeatureIterator iterator = features.features()) {
                 assertTrue(iterator.hasNext());
 
-                SimpleFeature feature = (SimpleFeature) iterator.next();
+                SimpleFeature feature = iterator.next();
                 assertEquals(fid, feature.getID());
                 assertFalse(iterator.hasNext());
             }
@@ -313,7 +313,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             numbers.add(Integer.valueOf(5));
 
             for (int i = 3; iterator.hasNext(); i++) {
-                SimpleFeature feature = (SimpleFeature) iterator.next();
+                SimpleFeature feature = iterator.next();
                 assertTrue(
                         numbers.contains(
                                 ((Number) feature.getAttribute(aname("intProperty"))).intValue()));
@@ -341,7 +341,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             assertTrue(i.hasNext());
 
             while (i.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) i.next();
+                SimpleFeature feature = i.next();
                 assertEquals("foo", feature.getAttribute(aname("stringProperty")));
             }
         }
@@ -360,7 +360,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             assertTrue(i.hasNext());
 
             while (i.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) i.next();
+                SimpleFeature feature = i.next();
                 assertTrue(point.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
             }
         }
@@ -384,7 +384,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             assertTrue(i.hasNext());
 
             while (i.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) i.next();
+                SimpleFeature feature = i.next();
                 assertTrue(point.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
             }
         }
@@ -399,7 +399,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             assertTrue(i.hasNext());
 
             while (i.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) i.next();
+                SimpleFeature feature = i.next();
                 assertEquals("foo", feature.getAttribute(aname("stringProperty")));
             }
         }

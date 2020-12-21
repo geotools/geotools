@@ -53,7 +53,7 @@ public class GetCapabilitiesRequestTest extends ServerTestCase {
             String token = tokenizer.nextToken();
             String[] param = token.split("=");
 
-            assertEquals((String) map.get(param[0]), param[1]);
+            assertEquals(map.get(param[0]), param[1]);
         }
     }
 

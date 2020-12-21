@@ -17,6 +17,7 @@
 package org.geotools.wps;
 
 import java.util.Map;
+import javax.xml.namespace.QName;
 import net.opengis.wps10.DataInputsType1;
 import net.opengis.wps10.DefaultType1;
 import net.opengis.wps10.DefaultType2;
@@ -55,7 +56,7 @@ public class WPSConfiguration extends Configuration {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void registerBindings(Map bindings) {
+    protected void registerBindings(Map<QName, Object> bindings) {
         bindings.put(WPS.InputReferenceType, InputReferenceTypeBinding.class);
         bindings.put(WPS.ComplexDataType, ComplexDataTypeBinding.class);
         bindings.put(

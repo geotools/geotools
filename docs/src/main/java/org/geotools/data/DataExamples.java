@@ -175,7 +175,7 @@ public class DataExamples {
                     feature = iterator.next();
 
                     // Step1: create a new empty feature on each call to next
-                    SimpleFeature aNewFeature = (SimpleFeature) writer.next();
+                    SimpleFeature aNewFeature = writer.next();
                     // Step2: copy the values in
                     aNewFeature.setAttributes(feature.getAttributes());
                     // Step3: write out the feature

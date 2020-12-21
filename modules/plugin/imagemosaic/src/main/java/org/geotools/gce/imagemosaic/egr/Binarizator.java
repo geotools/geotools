@@ -157,7 +157,7 @@ class Binarizator {
             Geometry geometry = ((ROIGeometry) roi).getAsGeometry();
             return add(geometry);
         } else if (roi instanceof ROIShape) {
-            Shape shape = ((ROIShape) roi).getAsShape();
+            Shape shape = roi.getAsShape();
             Geometry geometry = JTS.toGeometry(shape);
             return add(geometry);
         }

@@ -16,7 +16,9 @@
  */
 package org.geotools.gce.imagemosaic.namecollector;
 
+import it.geosolutions.imageio.core.SourceSPIProvider;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,11 +61,26 @@ public class FileNameRegexNameCollectorSPI implements CoverageNameCollectorSPI {
             Object source = reader.getSource();
             SourceGetter sourceGetter = new SourceGetter(source);
             final File file = sourceGetter.getFile();
+            String path = null;
             if (file == null) {
-                throw new IllegalArgumentException(
-                        "Unable to retrieve a valid source file" + " for the specified reader");
+                if (source instanceof SourceSPIProvider) {
+                    SourceSPIProvider provider = (SourceSPIProvider) source;
+                    try {
+                        path = provider.getSourceUrl().toString();
+                    } catch (MalformedURLException e) {
+                        throw new IllegalArgumentException(
+                                "Unable to retrieve a valid source for the specified reader");
+                    }
+                    int indexOf = path.lastIndexOf("/");
+                    path = path.substring(indexOf + 1);
+                } else {
+                    throw new IllegalArgumentException(
+                            "Unable to retrieve a valid source file" + " for the specified reader");
+                }
+            } else {
+                path = file.getAbsolutePath();
             }
-            String baseName = FilenameUtils.getBaseName(file.getAbsolutePath());
+            String baseName = FilenameUtils.getBaseName(path);
             final Matcher matcher = pattern.matcher(baseName);
             // Take the first match
             if (matcher.find()) {

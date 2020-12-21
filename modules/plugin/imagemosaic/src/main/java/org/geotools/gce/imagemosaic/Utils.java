@@ -48,6 +48,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -175,6 +176,13 @@ public class Utils {
     public static final String DATASTORE_PROPERTIES = "datastore.properties";
 
     public static final String PROPERTIES_SEPARATOR = ";";
+
+    public static final Set<String> LOG_EXCLUDES = new HashSet<>();
+
+    static {
+        LOG_EXCLUDES.add("xml");
+        LOG_EXCLUDES.add("properties");
+    }
 
     /** RGB to GRAY coefficients (for Luminance computation) */
     public static final double RGB_TO_GRAY_MATRIX[][] = {{0.114, 0.587, 0.299, 0}};
@@ -478,8 +486,9 @@ public class Utils {
         // create a mosaic index builder and set the relevant elements
         final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
         // check if the indexer.properties is there
-        configuration.setHints(
-                hints); // retain hints as this may contain an instance of an ImageMosaicReader
+
+        // retain hints as this may contain an instance of an ImageMosaicReader
+        configuration.setHints(hints);
         List<Parameter> parameterList = configuration.getIndexer().getParameters().getParameter();
 
         IndexerUtils.setParam(parameterList, Prop.ABSOLUTE_PATH, Boolean.toString(absolutePath));
@@ -489,18 +498,10 @@ public class Utils {
         IndexerUtils.setParam(parameterList, Prop.INDEXING_DIRECTORIES, location);
 
         // create the builder
-        // final ImageMosaicWalker catalogBuilder = new ImageMosaicWalker(configuration);
         final ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
         final ImageMosaicConfigHandler catalogHandler =
                 new ImageMosaicConfigHandler(configuration, eventHandler);
-        final ImageMosaicWalker walker;
-        if (catalogHandler.isUseExistingSchema()) {
-            // walks existing granules in the origin store
-            walker = new ImageMosaicDatastoreWalker(catalogHandler, eventHandler);
-        } else {
-            // collects granules from the file system
-            walker = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler);
-        }
+        final ImageMosaicWalker walker = catalogHandler.createWalker();
 
         // this is going to help us with catching exceptions and logging them
         final Queue<Throwable> exceptions = new LinkedList<>();
@@ -996,7 +997,7 @@ public class Utils {
             if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_PASSWORD)) {
                 cogBean.setPassword(properties.getProperty(Prop.COG_PASSWORD));
             }
-            catalogConfigurationBean.setCogConfiguration(cogBean);
+            catalogConfigurationBean.setUrlSourceSPIProvider(cogBean);
         }
     }
 

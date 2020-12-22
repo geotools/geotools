@@ -103,7 +103,7 @@ public class DbaseFileTest extends TestCaseSupport {
 
         Level before = LOGGER.getLevel();
         try {
-            LOGGER.setLevel(Level.INFO);
+            LOGGER.setLevel(Level.SEVERE);
 
             header.addColumn("emptyString", 'C', 20, 0);
             header.addColumn("emptyInt", 'N', 20, 0);
@@ -129,7 +129,7 @@ public class DbaseFileTest extends TestCaseSupport {
 
         Level before = LOGGER.getLevel();
         try {
-            LOGGER.setLevel(Level.INFO);
+            LOGGER.setLevel(Level.SEVERE);
 
             header.addColumn("emptyInt", 'N', 9, 0);
             assertSame(Integer.class, header.getFieldClass(0));
@@ -146,12 +146,20 @@ public class DbaseFileTest extends TestCaseSupport {
     @Test
     public void testEmptyFields() throws Exception {
         DbaseFileHeader header = new DbaseFileHeader();
-        header.addColumn("emptyString", 'C', 20, 0);
-        header.addColumn("emptyInt", 'N', 20, 0);
-        header.addColumn("emptyDouble", 'N', 20, 5);
-        header.addColumn("emptyFloat", 'F', 20, 5);
-        header.addColumn("emptyLogical", 'L', 1, 0);
-        header.addColumn("emptyDate", 'D', 20, 0);
+
+        Level before = LOGGER.getLevel();
+        try {
+            LOGGER.setLevel(Level.SEVERE);
+
+            header.addColumn("emptyString", 'C', 20, 0);
+            header.addColumn("emptyInt", 'N', 20, 0);
+            header.addColumn("emptyDouble", 'N', 20, 5);
+            header.addColumn("emptyFloat", 'F', 20, 5);
+            header.addColumn("emptyLogical", 'L', 1, 0);
+            header.addColumn("emptyDate", 'D', 20, 0);
+        } finally {
+            LOGGER.setLevel(before);
+        }
         header.setNumRecords(20);
         File f = new File(System.getProperty("java.io.tmpdir"), "scratchDBF.dbf");
         f.deleteOnExit();

@@ -225,7 +225,7 @@ public class ZMHandlersTest {
         try (SimpleFeatureIterator itr = store.getFeatureSource().getFeatures(query).features()) {
             while (itr.hasNext()) {
                 SimpleFeature f = itr.next();
-                System.out.println(f.getDefaultGeometryProperty());
+                // System.out.println(f.getDefaultGeometryProperty());
             }
         }
     }

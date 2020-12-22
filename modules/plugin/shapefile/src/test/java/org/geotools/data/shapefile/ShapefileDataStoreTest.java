@@ -2105,10 +2105,20 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         tmpFile.createNewFile();
         ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
         writeFeatures(s, features);
-        File expected =
+
+        File file = org.geotools.test.TestData.temp(this, "test-data/measure/multipolygonzm.shp");
+        File expectedFile =
                 new File(getClass().getResource("test-data/measure/multipolygonzm.shp").toURI());
+
+        ShapefileDataStore referenceDS = new ShapefileDataStore(expectedFile.toURL());
+
+        SimpleFeatureCollection expected = referenceDS.getFeatureSource().getFeatures();
+        SimpleFeatureCollection actual = s.getFeatureSource().getFeatures();
+
+        TestCaseSupport.assertEqualsExact("Features", expected, actual);
+
         // compare byte stream produced in shp file
-        assertTrue(FileUtils.contentEquals(tmpFile, expected));
+        assertTrue("Shapefile contents", FileUtils.contentEquals(tmpFile, expectedFile));
     }
 
     /** Tests measures (M) values on shp output for LineString type */

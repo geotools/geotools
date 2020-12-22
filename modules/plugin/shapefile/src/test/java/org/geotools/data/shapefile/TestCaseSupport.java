@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,6 +33,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.After;
+import org.junit.internal.ArrayComparisonFailure;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -163,6 +164,94 @@ public class TestCaseSupport {
         SimpleFeature next = features.next();
         features.close();
         return next;
+    }
+
+    /**
+     * Confirm two simple features are equal, values are checked using the same logic as
+     * SimpleFeatureImpl.
+     *
+     * @param message
+     * @param expected simple feature expected
+     * @param actual simple feature being
+     */
+    public static void assertEqualsExact(
+            String message, SimpleFeature expected, SimpleFeature actual) {
+        if (expected == null && actual == null) {
+            return;
+        }
+        if (expected == actual) {
+            return;
+        }
+        String cleanMessage = message == null ? "" : message;
+        if (expected == null) {
+            throw new AssertionError(message + "expected feature was null");
+        }
+        if (actual == null) {
+            throw new AssertionError(message + "actual feature was null");
+        }
+        for (int i = 0, ii = expected.getAttributeCount(); i < ii; i++) {
+            String attributeName = expected.getFeatureType().getDescriptor(i).getLocalName();
+            Object expectedAttribute = expected.getAttribute(i);
+            Object actualAttribute = actual.getAttribute(i);
+
+            if (expectedAttribute != null
+                    && expectedAttribute instanceof Geometry
+                    && actualAttribute != null
+                    && actualAttribute instanceof Geometry) {
+                Geometry expectedGeometry = (Geometry) expectedAttribute;
+                Geometry actualGeometry = (Geometry) actualAttribute;
+                assertTrue(attributeName, expectedGeometry.equalsExact(actualGeometry));
+            } else {
+                assertEquals(attributeName, expectedAttribute, actualAttribute);
+            }
+        }
+    }
+
+    /**
+     * Assert contents of two simple feature collections are equal.
+     *
+     * @param message
+     * @param expected
+     * @param actual
+     */
+    public static void assertEqualsExact(
+            String message, SimpleFeatureCollection expected, SimpleFeatureCollection actual) {
+        if (expected == actual) {
+            return;
+        }
+
+        StringBuilder build = new StringBuilder();
+        build.append(message == null ? "" : message + ": ");
+        if (expected == null) {
+            throw new AssertionError(build + "expected features null");
+        }
+        if (actual == null) {
+            throw new AssertionError(build + "actual features null");
+        }
+        int actualLength = expected.size();
+        int expectedLength = actual.size();
+
+        if (actualLength != expectedLength) {
+            build.append("features size different, expected size =");
+            build.append(expectedLength);
+            build.append("actual size=");
+            build.append(actualLength);
+            throw new AssertionError(build.toString());
+        }
+        final int SIZE = Math.min(actualLength, expectedLength);
+
+        try (SimpleFeatureIterator e = expected.features();
+                SimpleFeatureIterator a = actual.features()) {
+            for (int i = 0; i < SIZE; i++) {
+                SimpleFeature extectedFeature = e.next();
+                SimpleFeature actualFeature = a.next();
+                try {
+                    assertEqualsExact(null, extectedFeature, actualFeature);
+                } catch (AssertionError failure) {
+                    throw new ArrayComparisonFailure(build.toString(), failure, i);
+                }
+            }
+        }
     }
 
     /** Creates a temporary file, to be automatically deleted at the end of the test suite. */

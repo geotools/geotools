@@ -22,8 +22,11 @@ import org.geotools.filter.text.commons.Language;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.expression.Add;
+import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.expression.Subtract;
 
 /**
  * Expression Test
@@ -83,5 +86,47 @@ public class CQLExpressionTest {
     public final void testGetSyntaxError() throws CQLException {
         final String malformedExp = "12 / ] + 4";
         CompilerUtil.parseExpression(language, malformedExp);
+    }
+
+    @Test
+    public void testCombinedOperations() throws Exception {
+        final String combinedOperations = "4 / (1 + 3) + 5 * (10 - 8)";
+        Expression exp = CompilerUtil.parseExpression(language, combinedOperations);
+        assertExpectedExpressionsStructure(exp);
+
+        // Get the Expression as CQL text
+        String cql = CQL.toCQL(exp);
+
+        // parse back again the text to Expression, to validate operations are respected.
+        // Without the visitWithbrackets fix, the operators precedences get
+        // screwed up so that the result was
+        // 4 / 1 + 3 + 5 * 10 - 8
+        exp = CompilerUtil.parseExpression(language, cql);
+        assertExpectedExpressionsStructure(exp);
+    }
+
+    private void assertExpectedExpressionsStructure(Expression exp) {
+        // This is the originating expression
+        // [4 / (1 + 3)] + [5 * (10 - 8)]
+
+        Assert.assertTrue(exp instanceof Add);
+        Add add = (Add) exp;
+
+        // [4 / (1 + 3)]
+        Expression exp1 = add.getExpression1();
+        Assert.assertTrue(exp1 instanceof Divide);
+        Divide divide = (Divide) exp1;
+        //      (1 + 3)
+        Expression exp3 = divide.getExpression2();
+        Assert.assertTrue(exp3 instanceof Add);
+
+        //                 [5 * (10 - 8)]
+        Expression exp2 = add.getExpression2();
+        Assert.assertTrue(exp2 instanceof Multiply);
+        Multiply multiply = (Multiply) exp2;
+
+        //                      (10 - 8)
+        Expression exp4 = multiply.getExpression2();
+        Assert.assertTrue(exp4 instanceof Subtract);
     }
 }

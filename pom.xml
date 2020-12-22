@@ -2187,7 +2187,7 @@
         <groupId>com.coveo</groupId>
             <artifactId>fmt-maven-plugin</artifactId>
             <configuration>
-                <verbose>true</verbose>
+                <verbose>false</verbose>
                 <filesNamePattern>.*\.java</filesNamePattern>
                 <skip>${fmt.skip}</skip>
                 <style>aosp</style>

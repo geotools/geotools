@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.ows.wms;
+package org.geotools.http;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,11 +55,12 @@ import org.geotools.util.logging.Logging;
  * <p>Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser},
  * and {@code http.proxyPassword} are respected.
  *
+ * <p>Copied from gt-wms.
+ *
  * @author groldan
  * @author awaterme
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-@Deprecated
 public class MultithreadedHttpClient implements HTTPClient {
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);

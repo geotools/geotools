@@ -25,13 +25,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Helper class to mock HTTP responses
+ * Helper class to mock HTTP responses.
+ *
+ * <p>Taking anything that could be turned into an InputStream as an argument for the constructor.
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -45,17 +48,8 @@ public class MockHttpResponse implements HTTPResponse {
 
     String responseCharset;
 
-    public MockHttpResponse(File responseFile, String contentType) throws FileNotFoundException {
-        this.stream = new FileInputStream(responseFile);
-        this.contentType = contentType;
-    }
-
-    public MockHttpResponse(String response, String contentType, String... headers) {
-        this(response.getBytes(), contentType, headers);
-    }
-
-    public MockHttpResponse(byte[] response, String contentType, String... headers) {
-        this.stream = new ByteArrayInputStream(response);
+    public MockHttpResponse(InputStream stream, String contentType, String... headers) {
+        this.stream = stream;
         this.contentType = contentType;
 
         if (headers != null) {
@@ -73,8 +67,38 @@ public class MockHttpResponse implements HTTPResponse {
         }
     }
 
+    public MockHttpResponse(File responseFile, String contentType, String... headers)
+            throws FileNotFoundException {
+        this(new FileInputStream(responseFile), contentType, headers);
+    }
+
+    /**
+     * MockHttpResponse with a URL as the response.
+     *
+     * @param response Pointing at a file resource
+     * @param contentType
+     * @param headers
+     * @throws IOException
+     */
+    public MockHttpResponse(URL response, String contentType, String... headers)
+            throws IOException {
+        this(response.openStream(), contentType, headers);
+    }
+
+    public MockHttpResponse(String response, String contentType, String... headers) {
+        this(response.getBytes(), contentType, headers);
+    }
+
+    public MockHttpResponse(byte[] response, String contentType, String... headers) {
+        this(new ByteArrayInputStream(response), contentType, headers);
+    }
+
     public void dispose() {
-        // nothing to do
+        try {
+            this.stream.close();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public String getContentType() {

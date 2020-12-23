@@ -15,6 +15,7 @@ import org.junit.Assert;
  *
  * @author Andrea Aime - GeoSolutions
  */
+@Deprecated
 public class MockHttpResponse implements HTTPResponse {
 
     String contentType;

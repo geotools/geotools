@@ -11,6 +11,7 @@ import org.geotools.data.ows.HTTPResponse;
  *
  * @author Andrea Aime - GeoSolutions
  */
+@Deprecated
 public abstract class MockHttpClient implements HTTPClient {
 
     protected String user;

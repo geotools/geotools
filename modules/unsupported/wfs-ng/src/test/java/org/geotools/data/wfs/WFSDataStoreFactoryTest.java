@@ -33,6 +33,7 @@ import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSClient;
+import org.geotools.http.MultithreadedHttpClient;
 import org.geotools.util.Version;
 import org.junit.After;
 import org.junit.Before;

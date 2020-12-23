@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.ows;
+package org.geotools.http;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -40,7 +40,6 @@ import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
-import org.geotools.ows.wms.MultithreadedHttpClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -48,6 +47,8 @@ import org.junit.Test;
 
 /**
  * Tests for {@link MultithreadedHttpClient}.
+ *
+ * <p>Copied from gt-wms
  *
  * @author awaterme
  */

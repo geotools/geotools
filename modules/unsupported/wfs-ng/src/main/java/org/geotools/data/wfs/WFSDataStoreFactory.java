@@ -32,8 +32,10 @@ import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.http.MultithreadedHttpClient;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
@@ -132,7 +134,19 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         final URL capabilitiesURL = URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);
         if (config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)) {
-            return new MultithreadedHttpClient(config);
+            MultithreadedHttpClient client =
+                    (MultithreadedHttpClient)
+                            CommonFactoryFinder.getHttpClientFactory()
+                                    .getClient(
+                                            new Hints(
+                                                    Hints.HTTP_CLIENT,
+                                                    MultithreadedHttpClient.class));
+
+            client.setReadTimeout(config.getTimeoutMillis() / 1000);
+            client.setConnectTimeout(config.getTimeoutMillis() / 1000);
+            client.setMaxConnections(config.getMaxConnectionPoolSize());
+
+            return client;
         } else {
             return CommonFactoryFinder.getHttpClientFactory().getClient();
         }

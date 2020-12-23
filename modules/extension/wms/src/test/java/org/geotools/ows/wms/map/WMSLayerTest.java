@@ -28,9 +28,10 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.util.ParameterParser;
+import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.ows.MockHttpClient;
-import org.geotools.ows.MockHttpResponse;
+import org.geotools.data.ows.MockHttpClient;
+import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wms.WMSUtils;
@@ -66,7 +67,7 @@ public class WMSLayerTest {
     /** @throws java.lang.Exception */
     @Before
     public void setUp() throws Exception {
-        MockHttpClient client =
+        HTTPClient client =
                 new MockHttpClient() {
 
                     public HTTPResponse get(URL url) throws IOException {

@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.process.vector;
 
 import java.util.ArrayList;
@@ -40,6 +56,9 @@ public class Contours {
     private ProgressListener progressListener;
 
     public SimpleFeatureCollection contour(FeatureCollection features, String elevation) {
+        if (progressListener != null) {
+            progressListener.started();
+        }
         ArrayList<Coordinate> coords = new ArrayList<>();
 
         String ptype = "POINT";
@@ -83,8 +102,12 @@ public class Contours {
         Collection<QuadEdge> primaryEdges = quadEdgeSubdivision.getPrimaryEdges(false);
 
         ArrayList<SimpleFeature> feats = new ArrayList<>();
-        for (int cc = 0; cc < 250; cc += 10) {
-            double contourValue = cc;
+        int percent = 1;
+        int steps = levels.length;
+        for (double contourValue : levels) {
+            if (progressListener != null) {
+                progressListener.progress((100 / steps) * percent);
+            }
             ArrayList<LineString> lines = extractContour(primaryEdges, contourValue);
 
             MultiLineString ml = GF.createMultiLineString(lines.toArray(new LineString[] {}));
@@ -99,7 +122,9 @@ public class Contours {
             Collection<LineString> collection = merger.getMergedLineStrings();
 
             for (LineString l : collection) {
+
                 if (simplify) { // Should we smooth then simplify or visa versa
+
                     DouglasPeuckerSimplifier simplifier = new DouglasPeuckerSimplifier(l);
                     l = (LineString) simplifier.getResultGeometry();
                 }
@@ -109,8 +134,13 @@ public class Contours {
                     fBuilder.set("the_geom", l);
                 }
                 fBuilder.set("elevation", contourValue);
-                feats.add(fBuilder.buildFeature(null));
+                SimpleFeature f = fBuilder.buildFeature(null);
+
+                feats.add(f);
             }
+        }
+        if (progressListener != null) {
+            progressListener.complete();
         }
         return DataUtilities.collection(feats);
     }

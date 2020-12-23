@@ -398,7 +398,7 @@ public class GranuleDescriptor {
             Object providerHint =
                     Utils.getHintIfAvailable(hints, GranuleAccessProvider.GRANULE_ACCESS_PROVIDER);
             if (providerHint != null) {
-                granuleAccessProvider = (GranuleAccessProvider) providerHint;
+                granuleAccessProvider = ((GranuleAccessProvider) providerHint).copyProviders();
                 granuleAccessProvider.setGranuleInput(granuleUrl);
             } else {
                 granuleAccessProvider =

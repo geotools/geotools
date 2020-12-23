@@ -240,7 +240,7 @@ public class ImageMosaicReaderTest extends Assert {
 
     private URL imposedEnvelopeURL;
 
-    private static final String H2_SAMPLE_PROPERTIES =
+    static final String H2_SAMPLE_PROPERTIES =
             "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
                     + "dbtype=h2\n"
                     + "Loose\\ bbox=true #important for performances\n"
@@ -1220,8 +1220,7 @@ public class ImageMosaicReaderTest extends Assert {
 
     /** Simple test method to test emptyMosaic creation support followed by harvesting. dataset */
     @Test
-    // @Ignore
-    public void testEmpytMosaic() throws Exception {
+    public void testEmptyMosaic() throws Exception {
 
         final File workDir = new File(TestData.file(this, "."), "emptyMosaic");
         if (!workDir.mkdir()) {

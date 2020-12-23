@@ -17,9 +17,14 @@
 package org.geotools.imageio.netcdf.utilities;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.opengis.feature.simple.SimpleFeature;
@@ -30,6 +35,11 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
 class RuntimeExtractor extends PropertiesCollector {
+
+    /** Logger. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(RuntimeExtractor.class);
+
     Date date;
 
     enum RuntimeType {
@@ -69,6 +79,35 @@ class RuntimeExtractor extends PropertiesCollector {
         }
         // final String name = FilenameUtils.getBaseName(file.getAbsolutePath());
 
+        return this;
+    }
+
+    @Override
+    public RuntimeExtractor collect(URL url) {
+        super.collect(url);
+        if (type.equalsIgnoreCase(RuntimeType.MODIFY_TIME.toString())) {
+            String warningMessage = null;
+            try {
+                URLConnection connection = url.openConnection();
+                long lastModified = connection.getHeaderFieldDate("Last-Modified", -1);
+                if (lastModified != -1) {
+                    date = new Date(lastModified);
+                } else {
+                    date = new Date();
+                    warningMessage =
+                            "Unable to extract the last modified date from the provided url " + url;
+                }
+            } catch (IOException ioe) {
+                warningMessage =
+                        "Unable to extract the last modified date from the provided url "
+                                + url
+                                + " due to "
+                                + ioe.getLocalizedMessage();
+            }
+            if (warningMessage != null && LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(warningMessage);
+            }
+        }
         return this;
     }
 }

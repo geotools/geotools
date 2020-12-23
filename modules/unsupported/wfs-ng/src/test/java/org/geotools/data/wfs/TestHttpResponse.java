@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import org.geotools.data.ows.HTTPResponse;
 
+@Deprecated
 public class TestHttpResponse implements HTTPResponse {
 
     private String contentType;

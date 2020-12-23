@@ -41,9 +41,9 @@ import org.geotools.data.Diff;
 import org.geotools.data.DiffFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
-import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
 import org.geotools.data.wfs.internal.GetCapabilitiesRequest;
@@ -125,7 +125,7 @@ public class IntegrationTestWFSClient extends WFSClient {
     }
 
     protected Response mockCapabilities(Request request) throws IOException, ServiceException {
-        HTTPResponse httpResp = new TestHttpResponse("text/xml", "UTF-8", super.serverURL);
+        HTTPResponse httpResp = new MockHttpResponse(super.serverURL, "text/xml");
 
         EntityResolver resolver = null;
         if (hints != null) {
@@ -144,7 +144,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         String outputFormat = request.getOutputFormat();
 
-        HTTPResponse response = new TestHttpResponse(outputFormat, "UTF-8", contentUrl);
+        HTTPResponse response = new MockHttpResponse(contentUrl, outputFormat);
         DescribeFeatureTypeResponse ret = new DescribeFeatureTypeResponse(request, response);
         FeatureType featureType = ret.getFeatureType();
         this.featureTypes.put(typeName, (SimpleFeatureType) featureType);
@@ -160,7 +160,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         String outputFormat = request.getOutputFormat();
 
-        HTTPResponse httpResponse = new TestHttpResponse(outputFormat, "UTF-8", contentUrl);
+        HTTPResponse httpResponse = new MockHttpResponse(contentUrl, outputFormat);
 
         WFSResponse response = request.createResponse(httpResponse);
 
@@ -355,7 +355,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         String outputFormat = request.getOutputFormat();
         String responseContents = createTransactionResponseXml(added, updated, deleted);
-        HTTPResponse httpResponse = new TestHttpResponse(outputFormat, "UTF-8", responseContents);
+        HTTPResponse httpResponse = new MockHttpResponse(responseContents, outputFormat);
 
         return request.createResponse(httpResponse);
     }
@@ -368,7 +368,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         String outputFormat = request.getOutputFormat();
 
-        HTTPResponse httpResponse = new TestHttpResponse(outputFormat, "UTF-8", contentUrl);
+        HTTPResponse httpResponse = new MockHttpResponse(contentUrl, outputFormat);
 
         WFSResponse response = request.createResponse(httpResponse);
 

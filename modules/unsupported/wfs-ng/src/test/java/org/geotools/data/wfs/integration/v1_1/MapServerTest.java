@@ -28,10 +28,10 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.AbstractHttpClient;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.WFSClient;
@@ -66,10 +66,10 @@ public class MapServerTest {
                             @Override
                             public HTTPResponse get(URL url) throws IOException {
                                 if (url.getQuery().contains("REQUEST=GetCapabilities")) {
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("MapServer/GetCapabilities_1_1_0.xml"), "text/xml");
                                 } else {
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("MapServer/GetFeature_GovernmentalUnitCE.xml"),
                                             "text/xml");
                                 }
@@ -82,12 +82,12 @@ public class MapServerTest {
                                 String request =
                                         new String(IOUtils.toByteArray(postContent), "UTF-8");
                                 if (request.contains("<wfs:DescribeFeatureType")) {
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url(
                                                     "MapServer/DescribeFeatureType_GovernmentalUnitCE.xsd"),
                                             "text/xml");
                                 } else {
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("MapServer/GetFeature_GovernmentalUnitCE.xml"),
                                             "text/xml");
                                 }

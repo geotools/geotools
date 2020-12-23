@@ -34,10 +34,10 @@ import org.geotools.data.Query;
 import org.geotools.data.ows.AbstractHttpClient;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.WFSClient;
@@ -135,7 +135,7 @@ public class TinyOwsTest {
                                         queryXml)) {
                                     assertXMLEqual(
                                             "tinyows/CountFirstFeaturesRequest.xml", request);
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/CountFirstFeatures.xml"), "text/xml");
                                 } else if (stringContains(
                                         request,
@@ -144,7 +144,7 @@ public class TinyOwsTest {
                                         "resultType=\"results\"",
                                         queryXml)) {
                                     assertXMLEqual("tinyows/GetFirstFeaturesRequest.xml", request);
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/GetFirstFeatures.xml"), "text/xml");
                                 } else {
                                     return super.post(
@@ -182,7 +182,7 @@ public class TinyOwsTest {
                                     assertXMLEqual(
                                             "tinyows/GetFeatureIncludeAndPropertyGreaterThanAndIncludeRequest.xml",
                                             request);
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/GetFirstFeatures.xml"), "text/xml");
                                 } else {
                                     postContent.reset();
@@ -238,11 +238,11 @@ public class TinyOwsTest {
                                 if (isHitsRequest(request, queryTokens)) {
                                     assertXMLEqual(
                                             "tinyows/CountFeaturesByBBoxRequest.xml", request);
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/CountFeaturesByBBox.xml"), "text/xml");
                                 } else if (isResultsRequest(request, queryTokens)) {
                                     assertXMLEqual("tinyows/GetFeaturesByBBoxRequest.xml", request);
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/GetFeaturesByBBox.xml"), "text/xml");
                                 } else {
                                     return super.post(
@@ -282,7 +282,7 @@ public class TinyOwsTest {
                                         new String(IOUtils.toByteArray(postContent), "UTF-8");
                                 if (isResultsRequest(request, queryTokens)) {
                                     assertXMLEqual("tinyows/GetFeaturesByBBoxRequest.xml", request);
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/GetFeaturesByBBox.xml"), "text/xml");
                                 } else {
                                     return super.post(
@@ -328,7 +328,7 @@ public class TinyOwsTest {
                                         new String(IOUtils.toByteArray(postContent), "UTF-8");
                                 if (isResultsRequest(request, queryTokens)) {
                                     assertXMLEqual("tinyows/GetFeaturesByBBoxRequest.xml", request);
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/GetFeaturesByBBox.xml"), "text/xml");
                                 } else {
                                     return super.post(
@@ -374,13 +374,13 @@ public class TinyOwsTest {
                                 String request =
                                         new String(IOUtils.toByteArray(postContent), "UTF-8");
                                 if (isHitsRequest(request, idQueryTokens)) {
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/CountFeatureById.xml"), "text/xml");
                                 } else if (isResultsRequest(request, idQueryTokens)) {
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/GetFeatureById.xml"), "text/xml");
                                 } else if (isResultsRequest(request, bboxQueryTokens)) {
-                                    return new TestHttpResponse(
+                                    return new MockHttpResponse(
                                             url("tinyows/GetFeaturesByBBox.xml"), "text/xml");
                                 } else {
                                     return super.post(
@@ -495,7 +495,7 @@ public class TinyOwsTest {
         @Override
         public HTTPResponse get(URL url) throws IOException {
             if (url.getQuery().contains("REQUEST=GetCapabilities")) {
-                return new TestHttpResponse(url("tinyows/GetCapabilities.xml"), "text/xml");
+                return new MockHttpResponse(url("tinyows/GetCapabilities.xml"), "text/xml");
             } else {
                 throw new IOException("Url not supported by mock client:" + url.toString());
             }
@@ -508,12 +508,12 @@ public class TinyOwsTest {
             String request = new String(IOUtils.toByteArray(postContent), "UTF-8");
             if (isHitsRequest(request, query)) {
                 assertXMLEqual("tinyows/CountFeatureByIdRequest.xml", request);
-                return new TestHttpResponse(url("tinyows/CountFeatureById.xml"), "text/xml");
+                return new MockHttpResponse(url("tinyows/CountFeatureById.xml"), "text/xml");
             } else if (isResultsRequest(request, query)) {
                 assertXMLEqual("tinyows/GetFeatureByIdRequest.xml", request);
-                return new TestHttpResponse(url("tinyows/GetFeatureById.xml"), "text/xml");
+                return new MockHttpResponse(url("tinyows/GetFeatureById.xml"), "text/xml");
             } else if (isDescribeFeatureRequest(request)) {
-                return new TestHttpResponse(url("tinyows/DescribeFeatureType.xsd"), "text/xml");
+                return new MockHttpResponse(url("tinyows/DescribeFeatureType.xsd"), "text/xml");
             } else {
                 throw new IOException("Request not supported by mock client.");
             }

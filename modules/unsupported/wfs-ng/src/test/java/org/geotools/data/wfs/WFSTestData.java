@@ -28,7 +28,6 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.AbstractHttpClient;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
@@ -243,7 +242,7 @@ public class WFSTestData {
         @Override
         public HTTPResponse get(final URL baseUrl) throws IOException {
             if (baseUrl.getProtocol().equals("file")) {
-                return new MockHttpResponse(baseUrl, "text/xml");
+                return new TestHttpResponse(baseUrl, "text/xml");
             }
             this.targetUrl = baseUrl;
             return mockResponse;
@@ -359,7 +358,8 @@ public class WFSTestData {
                 return super.issueRequest(request);
             }
             HTTPResponse response =
-                    new MockHttpResponse(describeFeatureTypeUrlOverride, request.getOutputFormat());
+                    new TestHttpResponse(
+                            request.getOutputFormat(), "UTF-8", describeFeatureTypeUrlOverride);
             try {
                 return new DescribeFeatureTypeResponse(request, response);
             } catch (ServiceException e) {

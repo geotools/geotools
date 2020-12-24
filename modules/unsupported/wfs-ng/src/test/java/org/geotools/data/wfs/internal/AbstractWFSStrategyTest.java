@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import javax.xml.namespace.QName;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.MockHttpResponse;
+import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.internal.v2_0.StrictWFS_2_0_Strategy;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.LiteralExpressionImpl;
@@ -41,7 +41,7 @@ public class AbstractWFSStrategyTest {
     public void testSplitFilters() throws IOException, ServiceException {
         String baseDirectory = "GeoServer_2.2.x/2.0.0/";
         URL urlCap = url(baseDirectory + "/GetCapabilities.xml");
-        HTTPResponse httpResp = new MockHttpResponse(urlCap, "text/xml");
+        HTTPResponse httpResp = new TestHttpResponse("text/xml", "UTF-8", urlCap);
         EntityResolver resolver = null;
         WFSGetCapabilities capabilities =
                 new GetCapabilitiesResponse(httpResp, resolver).getCapabilities();

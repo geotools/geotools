@@ -26,11 +26,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 import org.geotools.data.Query;
-import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.WFSTestData.TestWFSClient;
@@ -59,9 +58,11 @@ public class AxisOrderTest {
     @Test
     public void testGetFeatureWithNorthEastAxisOrderOutputEPSG4326() throws Exception {
 
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        stream("axisorder/GetFeatureById4326.xml"), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        stream("axisorder/GetFeatureById4326.xml"));
 
         TestWFSClient wfs =
                 createTestProtocol(
@@ -106,9 +107,11 @@ public class AxisOrderTest {
     @Test
     public void testGetFeatureWithEastNorthAxisOrderFilter() throws Exception {
 
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        stream("axisorder/GetFeaturesByBBox.xml"), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        stream("axisorder/GetFeaturesByBBox.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
                         "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
@@ -147,9 +150,11 @@ public class AxisOrderTest {
     @Test
     public void testGetFeatureWithNorthEastAxisOrderFilter() throws Exception {
 
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        stream("axisorder/GetFeaturesByBBox.xml"), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        stream("axisorder/GetFeaturesByBBox.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
                         "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
@@ -190,9 +195,11 @@ public class AxisOrderTest {
     @Test
     public void testGetFeatureWithCompliantAxisOrderFilter() throws Exception {
 
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        stream("axisorder/GetFeaturesByBBox.xml"), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        stream("axisorder/GetFeaturesByBBox.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
                         "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
@@ -229,9 +236,11 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithEastNorthAxisOrderOutputEPSG4326() throws Exception {
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        stream("axisorder/GetFeatureById4326.xml"), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        stream("axisorder/GetFeatureById4326.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
                         "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
@@ -273,9 +282,11 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithEastNorthAxisOrderOutputEPSG3857() throws Exception {
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        stream("axisorder/GetFeatureById.xml"), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        stream("axisorder/GetFeatureById.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
                         "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));

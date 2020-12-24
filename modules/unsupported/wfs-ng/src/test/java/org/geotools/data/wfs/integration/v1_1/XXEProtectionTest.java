@@ -23,9 +23,9 @@ import static org.junit.Assert.fail;
 import java.net.URL;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
@@ -101,7 +101,8 @@ public class XXEProtectionTest {
                         String resource = "Transaction.xml";
                         URL contentUrl = new URL(baseDirectory, resource);
 
-                        HTTPResponse httpResp = new MockHttpResponse(contentUrl, "text/xml");
+                        HTTPResponse httpResp =
+                                new TestHttpResponse("text/xml", "UTF-8", contentUrl);
                         return request.createResponse(httpResp);
                     };
                 };

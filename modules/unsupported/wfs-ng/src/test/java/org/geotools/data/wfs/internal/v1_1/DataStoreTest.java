@@ -34,8 +34,7 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.crs.ReprojectFeatureReader;
-import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.MockHttpResponse;
+import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData.MockHTTPClient;
 import org.geotools.data.wfs.WFSTestData.TestWFSClient;
@@ -98,8 +97,8 @@ public class DataStoreTest {
      */
     @Test
     public void testGetSchema() throws IOException, ServiceException {
-        HTTPResponse httpResponse =
-                new MockHttpResponse(CUBEWERX_GOVUNITCE.SCHEMA.openStream(), "");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse("", "UTF-8", CUBEWERX_GOVUNITCE.SCHEMA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
                         CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
@@ -122,9 +121,11 @@ public class DataStoreTest {
 
     @Test
     public void testGetDefaultOutputFormat() throws IOException, ServiceException {
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        stream("CubeWerx_nsdi/1.1.0/gml212.xml"), "text/xml; subtype=gml/2.1.2");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/2.1.2",
+                        "UTF-8",
+                        stream("CubeWerx_nsdi/1.1.0/gml212.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
                         CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
@@ -157,9 +158,11 @@ public class DataStoreTest {
     @Test
     public void tesUseDefaultSRS()
             throws IOException, NoSuchAuthorityCodeException, FactoryException, ServiceException {
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        CUBEWERX_GOVUNITCE.DATA.openStream(), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        CUBEWERX_GOVUNITCE.DATA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
                         CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
@@ -199,9 +202,11 @@ public class DataStoreTest {
     @Test
     public void tesUseOtherSRS()
             throws IOException, NoSuchAuthorityCodeException, FactoryException, ServiceException {
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        CUBEWERX_GOVUNITCE.DATA.openStream(), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        CUBEWERX_GOVUNITCE.DATA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
                         CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
@@ -243,9 +248,11 @@ public class DataStoreTest {
     @Test
     public void tesUseOtherSRSUsingURN()
             throws IOException, NoSuchAuthorityCodeException, FactoryException, ServiceException {
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        CUBEWERX_GOVUNITCE.DATA.openStream(), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        CUBEWERX_GOVUNITCE.DATA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
                         CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
@@ -273,9 +280,11 @@ public class DataStoreTest {
 
     @Test
     public void tesGetFeatureReader() throws IOException, ServiceException {
-        HTTPResponse httpResponse =
-                new MockHttpResponse(
-                        CUBEWERX_GOVUNITCE.DATA.openStream(), "text/xml; subtype=gml/3.1.1");
+        TestHttpResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml; subtype=gml/3.1.1",
+                        "UTF-8",
+                        CUBEWERX_GOVUNITCE.DATA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
                         CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));

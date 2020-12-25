@@ -20,7 +20,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -204,8 +203,7 @@ public class GML2ParsingUtils {
         }
 
         // application schema defined attributes
-        for (Iterator c = node.getChildren().iterator(); c.hasNext(); ) {
-            Node child = (Node) c.next();
+        for (Node child : node.getChildren()) {
             String name = child.getComponent().getName();
             Object value = child.getValue();
 
@@ -254,8 +252,8 @@ public class GML2ParsingUtils {
         // actual xml schema type
         List children = Schemas.getChildElementParticles(element.getType(), true);
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            XSDParticle particle = (XSDParticle) itr.next();
+        for (Object child : children) {
+            XSDParticle particle = (XSDParticle) child;
             XSDElementDeclaration property = (XSDElementDeclaration) particle.getContent();
 
             if (property.isElementDeclarationReference()) {
@@ -428,9 +426,7 @@ public class GML2ParsingUtils {
         // extended by multi geometries, dont reference members by element name
         List<Geometry> geoms = new ArrayList<>();
 
-        for (Iterator itr = node.getChildren().iterator(); itr.hasNext(); ) {
-            Node cnode = (Node) itr.next();
-
+        for (Node cnode : node.getChildren()) {
             if (cnode.getValue() instanceof Geometry) {
                 geoms.add((Geometry) cnode.getValue());
             }

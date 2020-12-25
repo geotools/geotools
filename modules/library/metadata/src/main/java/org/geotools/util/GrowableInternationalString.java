@@ -204,8 +204,7 @@ public class GrowableInternationalString extends AbstractInternationalString
         if (LOCALES.isEmpty())
             try {
                 final Field[] fields = Locale.class.getFields();
-                for (int i = 0; i < fields.length; i++) {
-                    final Field field = fields[i];
+                for (final Field field : fields) {
                     if (Modifier.isStatic(field.getModifiers())) {
                         if (Locale.class.isAssignableFrom(field.getType())) {
                             final Locale toAdd = (Locale) field.get(null);
@@ -378,8 +377,7 @@ public class GrowableInternationalString extends AbstractInternationalString
             localMap = Collections.singletonMap(unique(entry.getKey()), entry.getValue());
         } else {
             localMap.clear();
-            for (int i = 0; i < entries.length; i++) {
-                final Map.Entry<Locale, String> entry = entries[i];
+            for (final Map.Entry<Locale, String> entry : entries) {
                 localMap.put(unique(entry.getKey()), entry.getValue());
             }
         }

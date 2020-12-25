@@ -53,9 +53,9 @@ public class WMSUtils {
         Layer[] layers =
                 capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
 
-        for (int i = 0; i < layers.length; i++) {
-            if ((layers[i].getName() != null) && (layers[i].getName().length() != 0)) {
-                namedLayersList.add(layers[i]);
+        for (Layer layer : layers) {
+            if ((layer.getName() != null) && (layer.getName().length() != 0)) {
+                namedLayersList.add(layer);
             }
         }
 
@@ -72,9 +72,7 @@ public class WMSUtils {
 
         Layer[] namedLayers = getNamedLayers(capabilities);
 
-        for (int i = 0; i < namedLayers.length; i++) {
-            Layer layer = namedLayers[i];
-
+        for (Layer layer : namedLayers) {
             if (layer.isQueryable()) {
                 layers.add(layer);
             }
@@ -89,9 +87,9 @@ public class WMSUtils {
         Layer[] layers =
                 capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
 
-        for (int i = 0; i < layers.length; i++) {
-            if (layers[i].getSrs() != null) {
-                srss.addAll(layers[i].getSrs());
+        for (Layer layer : layers) {
+            if (layer.getSrs() != null) {
+                srss.addAll(layer.getSrs());
             }
         }
 

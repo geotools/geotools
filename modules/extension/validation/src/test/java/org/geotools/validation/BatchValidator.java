@@ -111,10 +111,10 @@ public class BatchValidator {
             }
             // HACK: get ALL feature types and smash through their features
             // this is really really slow and will be fixed
-            for (int p = 0; p < typeNames.length; p++) {
+            for (String typeName : typeNames) {
                 try {
                     validator.featureValidation(
-                            typeNames[p], store.getFeatureSource(typeNames[p]).getFeatures(), null);
+                            typeName, store.getFeatureSource(typeName).getFeatures(), null);
                 } catch (IOException e1) {
                     java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
                 } catch (Exception e1) {
@@ -403,8 +403,8 @@ public class BatchValidator {
             String tmp = dataStoreProp.getProperty(ids[i] + ".Params");
             String[] params = tmp.split(",");
 
-            for (int j = 0; j < params.length; j++) {
-                String[] vals = params[j].split("=");
+            for (String param : params) {
+                String[] vals = param.split("=");
 
                 if (vals.length == 2) {
                     m.put(vals[0].trim(), vals[1].trim());

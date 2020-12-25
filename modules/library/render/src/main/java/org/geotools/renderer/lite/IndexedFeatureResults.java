@@ -112,8 +112,8 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
         @SuppressWarnings("unchecked")
         List<SimpleFeature> results = index.query(bounds);
-        for (Iterator<SimpleFeature> it = results.iterator(); it.hasNext(); ) {
-            fc.add(it.next());
+        for (SimpleFeature result : results) {
+            fc.add(result);
         }
         return fc;
     }

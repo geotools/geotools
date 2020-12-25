@@ -121,22 +121,22 @@ public class PropertyDataStore2Test extends TestCase {
     protected void tearDown() throws Exception {
         File dir = new File(TARGET_DIR, "propertyTestData");
         File list[] = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File item : list) {
+            item.delete();
         }
         dir.delete();
 
         dir = new File(TARGET_DIR, "propertyTestData2");
         list = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File value : list) {
+            value.delete();
         }
         dir.delete();
 
         dir = new File(TARGET_DIR, "propertyTestData3");
         list = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File file : list) {
+            file.delete();
         }
         dir.delete();
 

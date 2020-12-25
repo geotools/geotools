@@ -172,8 +172,8 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
     @Override
     public Iterator<DirectedEdge> getInRelated() {
         ArrayList<DirectedEdge> in = new ArrayList<>();
-        for (Iterator<? extends Edge> itr = m_in.getInEdges().iterator(); itr.hasNext(); ) {
-            DirectedEdge de = (DirectedEdge) itr.next();
+        for (Edge edge : m_in.getInEdges()) {
+            DirectedEdge de = (DirectedEdge) edge;
             // this check has to be because the edge could be a loop in which case
             // it is in related to itself
             if (!de.equals(this)) in.add(de);
@@ -189,8 +189,8 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
     @Override
     public Iterator<DirectedEdge> getOutRelated() {
         ArrayList<DirectedEdge> out = new ArrayList<>();
-        for (Iterator<?> itr = m_out.getOutEdges().iterator(); itr.hasNext(); ) {
-            DirectedEdge de = (DirectedEdge) itr.next();
+        for (Edge edge : m_out.getOutEdges()) {
+            DirectedEdge de = (DirectedEdge) edge;
             // this check has to be because the edge could be a loop in which case
             // it is in related to itself
             if (!de.equals(this)) out.add(de);

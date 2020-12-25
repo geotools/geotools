@@ -171,8 +171,8 @@ public class AStarIteratorTest extends TestCase {
         HashMap rmap = new HashMap();
         Map.Entry[] set = new Map.Entry[map.size()];
         map.entrySet().toArray(set);
-        for (int i = 0; i < set.length; i++) {
-            rmap.put(set[i].getValue(), set[i].getKey());
+        for (Map.Entry entry : set) {
+            rmap.put(entry.getValue(), entry.getKey());
         }
         final HashMap hashmap = rmap;
 

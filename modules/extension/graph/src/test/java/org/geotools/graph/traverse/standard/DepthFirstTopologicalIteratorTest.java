@@ -16,7 +16,6 @@
  */
 package org.geotools.graph.traverse.standard;
 
-import java.util.Iterator;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
@@ -67,16 +66,14 @@ public class DepthFirstTopologicalIteratorTest extends TestCase {
 
         boolean flip = false;
 
-        for (Iterator itr = builder().getGraph().getNodes().iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
+        for (Node node : builder().getGraph().getNodes()) {
             if (node.getID() == 0 && node.getCount() != 0) {
                 flip = true;
                 break;
             }
         }
 
-        for (Iterator itr = builder().getGraph().getNodes().iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
+        for (Node node : builder().getGraph().getNodes()) {
             if (flip) assertTrue(node.getCount() == 100 - 1 - node.getID());
             else assertTrue(node.getCount() == node.getID());
         }

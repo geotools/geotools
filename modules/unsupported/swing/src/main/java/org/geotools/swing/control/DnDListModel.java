@@ -76,8 +76,8 @@ public class DnDListModel<T> extends AbstractListModel<T> {
      */
     public List<T> getElementsAt(int[] indices) {
         List<T> refs = new ArrayList<>();
-        for (int k = 0; k < indices.length; k++) {
-            refs.add(items.get(indices[k]));
+        for (int index : indices) {
+            refs.add(items.get(index));
         }
 
         return refs;

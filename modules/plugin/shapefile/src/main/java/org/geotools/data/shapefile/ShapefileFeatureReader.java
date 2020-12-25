@@ -244,11 +244,11 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     SimpleFeature buildFeature(int number, Geometry geometry, Row row, Envelope envelope)
             throws IOException {
         if (dbfindexes != null) {
-            for (int i = 0; i < dbfindexes.length; i++) {
-                if (dbfindexes[i] == -1) {
+            for (int dbfindex : dbfindexes) {
+                if (dbfindex == -1) {
                     builder.add(geometry);
                 } else {
-                    builder.add(row.read(dbfindexes[i]));
+                    builder.add(row.read(dbfindex));
                 }
             }
         } else if (geometry != null) {

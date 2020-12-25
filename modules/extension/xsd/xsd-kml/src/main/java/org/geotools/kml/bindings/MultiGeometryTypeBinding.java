@@ -90,16 +90,17 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
         }
 
         // try to be smart about which subclass to return
-        int i = 0;
-        Class<?> geometryClass = geometries.get(i++).getClass();
-
-        for (; i < geometries.size(); i++) {
-            Class<?> clazz = geometries.get(i).getClass();
-
-            if (!clazz.isAssignableFrom(geometryClass) && !geometryClass.isAssignableFrom(clazz)) {
-                geometryClass = null;
-
-                break;
+        Class<?> geometryClass = null;
+        for (Geometry g : geometries) {
+            Class<?> clazz = g.getClass();
+            if (geometryClass == null) {
+                geometryClass = clazz;
+            } else {
+                if (!clazz.isAssignableFrom(geometryClass)
+                        && !geometryClass.isAssignableFrom(clazz)) {
+                    geometryClass = null;
+                    break;
+                }
             }
         }
 

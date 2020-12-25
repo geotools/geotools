@@ -45,8 +45,8 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
             assertTrue(writer.hasNext());
             final SimpleFeature feature = (SimpleFeature) writer.next();
             final List<Object> attributes = feature.getAttributes();
-            for (int k = 0; k < attributes.size(); k++) {
-                assertTrue(attributes.get(k) != null);
+            for (Object attribute : attributes) {
+                assertTrue(attribute != null);
             }
         }
     }

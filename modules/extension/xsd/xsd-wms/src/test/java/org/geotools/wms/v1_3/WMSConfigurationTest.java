@@ -4,7 +4,6 @@ import static junit.framework.TestCase.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,8 +25,8 @@ public class WMSConfigurationTest {
             p.parse(is);
         }
         if (!p.getValidationErrors().isEmpty()) {
-            for (Iterator e = p.getValidationErrors().iterator(); e.hasNext(); ) {
-                SAXParseException ex = (SAXParseException) e.next();
+            for (Exception exception : p.getValidationErrors()) {
+                SAXParseException ex = (SAXParseException) exception;
                 LOGGER.log(
                         Level.SEVERE,
                         ex.getLineNumber() + "," + ex.getColumnNumber() + " -" + ex.toString());

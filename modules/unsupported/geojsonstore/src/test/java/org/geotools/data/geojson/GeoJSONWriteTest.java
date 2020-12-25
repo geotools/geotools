@@ -114,10 +114,10 @@ public class GeoJSONWriteTest {
         if (list == null) {
             throw new IOException("no directory " + tmp);
         }
-        for (int i = 0; i < list.length; i++) {
-            if (list[i].exists()) {
-                if (!list[i].delete()) {
-                    throw new IOException("could not delete: " + list[i]);
+        for (File value : list) {
+            if (value.exists()) {
+                if (!value.delete()) {
+                    throw new IOException("could not delete: " + value);
                 }
             }
         }

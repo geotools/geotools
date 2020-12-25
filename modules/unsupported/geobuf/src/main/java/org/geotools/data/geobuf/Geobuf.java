@@ -848,8 +848,8 @@ public final class Geobuf {
                 if (idTypeCase_ == 12) {
                     output.writeSInt64(12, (Long) idType_);
                 }
-                for (int i = 0; i < values_.size(); i++) {
-                    output.writeMessage(13, values_.get(i));
+                for (Value value : values_) {
+                    output.writeMessage(13, value);
                 }
                 if (getPropertiesList().size() > 0) {
                     output.writeUInt32NoTag(114);
@@ -886,10 +886,8 @@ public final class Geobuf {
                             com.google.protobuf.CodedOutputStream.computeSInt64Size(
                                     12, (Long) idType_);
                 }
-                for (int i = 0; i < values_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    13, values_.get(i));
+                for (Value value : values_) {
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(13, value);
                 }
                 {
                     int dataSize = 0;
@@ -2407,11 +2405,11 @@ public final class Geobuf {
                 for (int i = 0; i < coords_.size(); i++) {
                     output.writeSInt64NoTag(coords_.getLong(i));
                 }
-                for (int i = 0; i < geometries_.size(); i++) {
-                    output.writeMessage(4, geometries_.get(i));
+                for (Geometry geometry : geometries_) {
+                    output.writeMessage(4, geometry);
                 }
-                for (int i = 0; i < values_.size(); i++) {
-                    output.writeMessage(13, values_.get(i));
+                for (Value value : values_) {
+                    output.writeMessage(13, value);
                 }
                 if (getCustomPropertiesList().size() > 0) {
                     output.writeUInt32NoTag(122);
@@ -2463,15 +2461,11 @@ public final class Geobuf {
                     }
                     coordsMemoizedSerializedSize = dataSize;
                 }
-                for (int i = 0; i < geometries_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    4, geometries_.get(i));
+                for (Geometry geometry : geometries_) {
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(4, geometry);
                 }
-                for (int i = 0; i < values_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    13, values_.get(i));
+                for (Value value : values_) {
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(13, value);
                 }
                 {
                     int dataSize = 0;
@@ -3534,11 +3528,11 @@ public final class Geobuf {
             public void writeTo(com.google.protobuf.CodedOutputStream output)
                     throws java.io.IOException {
                 getSerializedSize();
-                for (int i = 0; i < features_.size(); i++) {
-                    output.writeMessage(1, features_.get(i));
+                for (Feature feature : features_) {
+                    output.writeMessage(1, feature);
                 }
-                for (int i = 0; i < values_.size(); i++) {
-                    output.writeMessage(13, values_.get(i));
+                for (Value value : values_) {
+                    output.writeMessage(13, value);
                 }
                 if (getCustomPropertiesList().size() > 0) {
                     output.writeUInt32NoTag(122);
@@ -3555,15 +3549,11 @@ public final class Geobuf {
                 if (size != -1) return size;
 
                 size = 0;
-                for (int i = 0; i < features_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    1, features_.get(i));
+                for (Feature feature : features_) {
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, feature);
                 }
-                for (int i = 0; i < values_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    13, values_.get(i));
+                for (Value value : values_) {
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(13, value);
                 }
                 {
                     int dataSize = 0;
@@ -5331,8 +5321,8 @@ public final class Geobuf {
 
         public void writeTo(com.google.protobuf.CodedOutputStream output)
                 throws java.io.IOException {
-            for (int i = 0; i < keys_.size(); i++) {
-                output.writeString(1, keys_.get(i));
+            for (String s : keys_) {
+                output.writeString(1, s);
             }
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 output.writeUInt32(2, dimensions_);
@@ -5360,10 +5350,8 @@ public final class Geobuf {
             size = 0;
             {
                 int dataSize = 0;
-                for (int i = 0; i < keys_.size(); i++) {
-                    dataSize +=
-                            com.google.protobuf.CodedOutputStream.computeStringSizeNoTag(
-                                    keys_.get(i));
+                for (String s : keys_) {
+                    dataSize += com.google.protobuf.CodedOutputStream.computeStringSizeNoTag(s);
                 }
                 size += dataSize;
                 size += 1 * getKeysList().size();

@@ -1989,8 +1989,8 @@ public class LabelCacheImpl implements LabelCache {
         double maxSize = -1;
         Polygon maxPoly = null;
         Polygon cpoly;
-        for (int t = 0; t < clippedPolys.size(); t++) {
-            cpoly = clippedPolys.get(t);
+        for (Polygon clippedPoly : clippedPolys) {
+            cpoly = clippedPoly;
             final double area = cpoly.getArea();
             if (area > maxSize) {
                 maxPoly = cpoly;

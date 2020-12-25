@@ -245,8 +245,8 @@ public final class MathTransformBuilderTest {
             double[] tx = new double[x.getNumRow()];
             x.getColumn(0, tx);
 
-            for (int i = 0; i < tx.length; i++) {
-                assertTrue(tx[i] < 0.001);
+            for (double v : tx) {
+                assertTrue(v < 0.001);
             }
         }
     }

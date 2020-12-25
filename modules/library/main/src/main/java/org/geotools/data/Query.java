@@ -411,8 +411,7 @@ public class Query {
 
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         properties = new ArrayList<>(propNames.length);
-        for (int i = 0; i < propNames.length; i++) {
-            String xpath = propNames[i];
+        for (String xpath : propNames) {
             if (xpath != null) {
                 properties.add(ff.property(xpath));
             }
@@ -477,8 +476,7 @@ public class Query {
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         properties = new ArrayList<>(propNames.size());
-        for (int i = 0; i < propNames.size(); i++) {
-            String xpath = propNames.get(i);
+        for (String xpath : propNames) {
             if (xpath != null) {
                 properties.add(ff.property(xpath));
             }

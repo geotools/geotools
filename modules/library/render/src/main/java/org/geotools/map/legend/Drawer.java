@@ -211,8 +211,8 @@ public class Drawer {
 
         LiteShape shape = new LiteShape(null, worldToScreenTransform, false);
         if (symbs == null) return;
-        for (int m = 0; m < symbs.length; m++) {
-            drawFeature(bi, feature, worldToScreenTransform, drawVertices, symbs[m], mt, shape);
+        for (Symbolizer symb : symbs) {
+            drawFeature(bi, feature, worldToScreenTransform, drawVertices, symb, mt, shape);
         }
     }
 
@@ -255,8 +255,7 @@ public class Drawer {
                 if (averageDistance > 60) pixels = 5;
                 if (pixels > 1) {
                     graphics.setColor(Color.RED);
-                    for (int i = 0; i < coords.length; i++) {
-                        Coordinate coord = coords[i];
+                    for (Coordinate coord : coords) {
                         java.awt.Point p = worldToPixel(coord, worldToScreenTransform);
                         graphics.fillRect(
                                 p.x - (pixels - 1) / 2, p.y - (pixels - 1) / 2, pixels, pixels);

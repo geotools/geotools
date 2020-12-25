@@ -203,8 +203,8 @@ public class MemoryDataStore extends ContentDataStore {
             throw new IllegalArgumentException("Provided features are empty");
         }
         synchronized (entries) {
-            for (int i = 0; i < features.length; i++) {
-                addFeatureInternal(features[i]);
+            for (SimpleFeature feature : features) {
+                addFeatureInternal(feature);
             }
         }
     }

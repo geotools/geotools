@@ -1289,8 +1289,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         assertFalse(array.length == 0);
         assertNotNull(expected);
 
-        for (int i = 0; i < array.length; i++) {
-            if (id(array[i].getID(), array[i]).equals(expected.getID())) {
+        for (SimpleFeature simpleFeature : array) {
+            if (id(simpleFeature.getID(), simpleFeature).equals(expected.getID())) {
                 return;
             }
         }
@@ -1315,8 +1315,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(expected)) {
+        for (Object o : array) {
+            if (o.equals(expected)) {
                 return true;
             }
         }
@@ -1448,8 +1448,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         SimpleFeatureType type = expected.getFeatureType();
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].getID().equals(expected.getID())) {
+        for (SimpleFeature simpleFeature : array) {
+            if (simpleFeature.getID().equals(expected.getID())) {
                 return true;
             }
 
@@ -1538,8 +1538,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         SimpleFeatureType schema = feature.getFeatureType();
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].getID().equals(feature.getID())) {
+        for (SimpleFeature simpleFeature : array) {
+            if (simpleFeature.getID().equals(feature.getID())) {
                 return;
             }
 

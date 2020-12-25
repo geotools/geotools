@@ -280,9 +280,9 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
                 new ReferencedEnvelope(-80, 80, -180.0, 180.0, DefaultGeographicCRS.WGS84);
         int million = (int) 1e6;
         int scales[] = {100 * million, 25 * million, 10 * million, million, 500000};
-        for (int i = 0; i < services.length; i++) {
-            for (int k = 0; k < scales.length; k++) {
-                Set<Tile> tiles = services[i].findTilesInExtent(env, scales[k], true, 100);
+        for (WMTSTileService service : services) {
+            for (int scale : scales) {
+                Set<Tile> tiles = service.findTilesInExtent(env, scale, true, 100);
                 // System.out.println(tiles.size());
                 assertTrue(tiles.size() > 0);
             }

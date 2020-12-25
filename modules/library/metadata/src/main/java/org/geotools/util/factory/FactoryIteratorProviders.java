@@ -16,7 +16,6 @@
  */
 package org.geotools.util.factory;
 
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.geotools.util.XArray;
@@ -88,8 +87,7 @@ final class FactoryIteratorProviders {
              * for a immediate scanning.
              */
             int remaining = GLOBAL.iteratorProviders.size();
-            for (final Iterator it = GLOBAL.iteratorProviders.iterator(); it.hasNext(); ) {
-                final FactoryIteratorProvider candidate = (FactoryIteratorProvider) it.next();
+            for (final FactoryIteratorProvider candidate : GLOBAL.iteratorProviders) {
                 if (iteratorProviders.add(candidate)) {
                     if (newProviders == null) {
                         newProviders = new FactoryIteratorProvider[remaining];

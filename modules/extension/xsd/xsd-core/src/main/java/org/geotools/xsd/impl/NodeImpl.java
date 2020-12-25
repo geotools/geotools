@@ -59,9 +59,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (int i = 0; i < children.size(); i++) {
-            Node child = children.get(i);
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 return true;
             }
@@ -75,9 +73,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (int i = 0; i < children.size(); i++) {
-            Node child = children.get(i);
-
+        for (Node child : children) {
             if (child.getValue() == null) {
                 continue;
             }
@@ -147,9 +143,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 return child;
             }
@@ -163,9 +157,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (child.getValue() == null) {
                 continue;
             }
@@ -183,9 +175,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -203,9 +193,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (name.equals(att.getComponent().getName())) {
                 return true;
             }
@@ -247,9 +235,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (name.equals(att.getComponent().getName())) {
                 return att;
             }
@@ -263,9 +249,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -293,9 +277,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator a = attributes.iterator(); a.hasNext(); ) {
-            Node att = (Node) a.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -315,9 +297,7 @@ public class NodeImpl implements Node {
             return matches;
         }
 
-        for (Iterator a = attributes.iterator(); a.hasNext(); ) {
-            Node att = (Node) a.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -365,9 +345,7 @@ public class NodeImpl implements Node {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 matches.add(child.getValue());
             }
@@ -383,8 +361,7 @@ public class NodeImpl implements Node {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
+        for (Node child : children) {
             Object parsed = child.getValue();
 
             if (parsed == null) {

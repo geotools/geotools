@@ -211,9 +211,8 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
                     "Exception fetching the list of columns for table " + rasterTable, e);
         }
         List<String> fetchColumns = new ArrayList<>(cols.length / 2);
-        for (int i = 0; i < cols.length; i++) {
-            if (cols[i].getType() == SeColumnDefinition.TYPE_RASTER)
-                fetchColumns.add(cols[i].getName());
+        for (SeColumnDefinition col : cols) {
+            if (col.getType() == SeColumnDefinition.TYPE_RASTER) fetchColumns.add(col.getName());
         }
         if (fetchColumns.size() == 0) {
             throw new DataSourceException(

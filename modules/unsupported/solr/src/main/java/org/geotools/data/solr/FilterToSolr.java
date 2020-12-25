@@ -541,10 +541,9 @@ public class FilterToSolr implements FilterVisitor {
      * @return the escaped string
      */
     protected static String escapeSpecialCharacters(String searchPhrase, String... otherEscapes) {
-        for (int i = 0; i < LUCENE_SPECIAL_CHARACTERS.length; i++) {
+        for (String luceneSpecialCharacter : LUCENE_SPECIAL_CHARACTERS) {
             searchPhrase =
-                    searchPhrase.replace(
-                            LUCENE_SPECIAL_CHARACTERS[i], "\\" + LUCENE_SPECIAL_CHARACTERS[i]);
+                    searchPhrase.replace(luceneSpecialCharacter, "\\" + luceneSpecialCharacter);
         }
         for (String e : otherEscapes) {
             searchPhrase = searchPhrase.replace(e, "\\" + e);

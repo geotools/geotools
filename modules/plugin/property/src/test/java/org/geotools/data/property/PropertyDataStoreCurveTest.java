@@ -83,8 +83,8 @@ public class PropertyDataStoreCurveTest extends TestCase {
     protected void tearDown() throws Exception {
         File dir = new File("propertyCurveTestData");
         File list[] = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File file : list) {
+            file.delete();
         }
         dir.delete();
         super.tearDown();

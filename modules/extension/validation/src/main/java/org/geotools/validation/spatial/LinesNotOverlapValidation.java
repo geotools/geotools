@@ -81,12 +81,12 @@ public class LinesNotOverlapValidation extends LineLineAbstractValidation {
 
         boolean r = true;
 
-        for (int i = 0; i < lines2.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) lines2[i];
+        for (Object value : lines2) {
+            SimpleFeature tmp = (SimpleFeature) value;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
-            for (int j = 0; j < lines1.length; j++) {
-                SimpleFeature tmp2 = (SimpleFeature) lines1[j];
+            for (Object o : lines1) {
+                SimpleFeature tmp2 = (SimpleFeature) o;
                 Geometry gt2 = (Geometry) tmp2.getDefaultGeometry();
 
                 if (gt.overlaps(gt2)) {

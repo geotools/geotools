@@ -280,8 +280,7 @@ public class XMLSAXHandler extends DefaultHandler {
         StringBuffer msg = new StringBuffer(e.getLocalizedMessage());
         StackTraceElement[] trace = e.getStackTrace();
 
-        for (int i = 0; i < trace.length; i++) {
-            StackTraceElement element = trace[i];
+        for (StackTraceElement element : trace) {
             msg.append("    ");
             msg.append(element.toString());
             msg.append("\n");

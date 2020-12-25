@@ -589,8 +589,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         // Checking params
         //
         if (params != null) {
-            for (int i = 0; i < params.length; i++) {
-                final ParameterValue param = (ParameterValue) params[i];
+            for (GeneralParameterValue generalParameterValue : params) {
+                final ParameterValue param = (ParameterValue) generalParameterValue;
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();

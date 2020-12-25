@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.httpclient.NameValuePair;
@@ -49,8 +48,8 @@ public class WMSLayerTest {
         ParameterParser pp = new ParameterParser();
         List params = pp.parse(query, '&');
         Map<String, String> result = new HashMap<>();
-        for (Iterator it = params.iterator(); it.hasNext(); ) {
-            NameValuePair pair = (NameValuePair) it.next();
+        for (Object param : params) {
+            NameValuePair pair = (NameValuePair) param;
             result.put(pair.getName().toUpperCase(), pair.getValue());
         }
         return result;

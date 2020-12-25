@@ -857,9 +857,8 @@ public class FilterOpsComplexTypes {
                 List<org.opengis.filter.Filter> filters = new ArrayList<>();
                 Set<Identifier> ids = new HashSet<>();
                 boolean isOnlyFids = true;
-                for (int i = 0; i < value.length; i++) {
-                    org.opengis.filter.Filter value2 =
-                            (org.opengis.filter.Filter) value[i].getValue();
+                for (ElementValue elementValue : value) {
+                    Filter value2 = (Filter) elementValue.getValue();
                     if (value2 == Filter.EXCLUDE) continue;
                     if (value2 instanceof Id) {
                         Id idFilter = (Id) value2;
@@ -2463,8 +2462,8 @@ public class FilterOpsComplexTypes {
                 boolean fidOnly = true;
 
                 // LogicFilter filter = factory.createLogicFilter( type );
-                for (int i = 0; i < value.length; i++) {
-                    Filter filter = (Filter) value[i];
+                for (ElementValue elementValue : value) {
+                    Filter filter = (Filter) elementValue;
                     if (filter instanceof Id) {
                         Id id = (Id) filter;
                         ids.addAll(id.getIdentifiers());

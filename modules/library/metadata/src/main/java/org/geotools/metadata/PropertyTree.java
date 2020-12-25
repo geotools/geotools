@@ -20,7 +20,6 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -116,8 +115,7 @@ final class PropertyTree {
             }
         }
         if (value instanceof Collection) {
-            for (final Iterator it = ((Collection) value).iterator(); it.hasNext(); ) {
-                final Object element = it.next();
+            for (final Object element : (Collection) value) {
                 if (!PropertyAccessor.isEmpty(element)) {
                     append(branch, element);
                 }
@@ -146,8 +144,8 @@ final class PropertyTree {
      * for the same key.
      */
     private void appendMap(final DefaultMutableTreeNode branch, final Map asMap) {
-        for (final Iterator it = asMap.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (Object o : asMap.entrySet()) {
+            final Map.Entry entry = (Map.Entry) o;
             final Object value = entry.getValue();
             if (!PropertyAccessor.isEmpty(value)) {
                 final String name = localize((String) entry.getKey());

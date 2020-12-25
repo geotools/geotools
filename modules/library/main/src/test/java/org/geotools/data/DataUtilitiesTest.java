@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -799,8 +798,7 @@ public class DataUtilitiesTest extends DataTestCase {
         BinaryLogicOperator f = (BinaryLogicOperator) mixedFilter;
 
         assertTrue(f instanceof And);
-        for (Iterator fit = f.getChildren().iterator(); fit.hasNext(); ) {
-            Filter subFilter = (Filter) fit.next();
+        for (Filter subFilter : f.getChildren()) {
             assertTrue(filter1.equals(subFilter) || filter2.equals(subFilter));
         }
 

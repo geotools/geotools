@@ -936,8 +936,8 @@ public class CssParser extends BaseParser<Object> {
     }
 
     private boolean isInstance(Class[] classes, Object peek) {
-        for (int i = 0; i < classes.length; i++) {
-            if (classes[i].isInstance(peek)) {
+        for (Class aClass : classes) {
+            if (aClass.isInstance(peek)) {
                 return true;
             }
         }

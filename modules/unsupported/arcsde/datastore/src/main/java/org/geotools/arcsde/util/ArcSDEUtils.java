@@ -121,9 +121,9 @@ public final class ArcSDEUtils {
             }
             int seEpsgCode;
             PeCoordinateSystem candidate;
-            for (int i = 0; i < seEpsgCodes.length; i++) {
+            for (int code : seEpsgCodes) {
                 try {
-                    seEpsgCode = seEpsgCodes[i];
+                    seEpsgCode = code;
                     candidate = (PeCoordinateSystem) PeFactory.factory(seEpsgCode);
                     // in ArcSDE 9.2, if the PeFactory doesn't support a projection it claimed to
                     // support, it returns 'null'. So check for it.

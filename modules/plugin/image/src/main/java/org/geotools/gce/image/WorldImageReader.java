@@ -384,8 +384,8 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
         //
         // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            for (int i = 0; i < params.length; i++) {
-                final ParameterValue param = (ParameterValue) params[i];
+            for (GeneralParameterValue generalParameterValue : params) {
+                final ParameterValue param = (ParameterValue) generalParameterValue;
                 final String name = param.getDescriptor().getName().getCode();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
@@ -491,12 +491,10 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
                 final String[] pairs = query.split("&");
 
                 // parse each pair
-                final int numPairs = pairs.length;
                 String[] kvp = null;
-
-                for (int i = 0; i < numPairs; i++) {
+                for (String pair : pairs) {
                     // splitting the pairs
-                    kvp = pairs[i].split("=");
+                    kvp = pair.split("=");
 
                     // checking the fields
                     // BBOX

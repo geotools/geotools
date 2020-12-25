@@ -338,9 +338,8 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         Rectangle requestedDim = null;
         OverviewPolicy overviewPolicy = null;
         if (params != null) {
-            final int length = params.length;
-            for (int i = 0; i < length; i++) {
-                final ParameterValue param = (ParameterValue) params[i];
+            for (GeneralParameterValue generalParameterValue : params) {
+                final ParameterValue param = (ParameterValue) generalParameterValue;
                 final String name = param.getDescriptor().getName().getCode();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();

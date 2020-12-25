@@ -308,8 +308,7 @@ class ShapeFileIndexer implements FileWriter {
             Envelope bounds = new Envelope();
             if (node.getNumShapeIds() > 0) {
                 int[] shapeIds = node.getShapesId();
-                for (int i = 0; i < shapeIds.length; i++) {
-                    final int shapeId = shapeIds[i];
+                for (final int shapeId : shapeIds) {
                     int offset = index.getOffsetInBytes(shapeId);
                     reader.goTo(offset);
                     Record rec = reader.nextRecord();

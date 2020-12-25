@@ -20,7 +20,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -78,8 +77,8 @@ public class CollectionConverterFactory implements ConverterFactory {
 
                     try {
                         int x = 0;
-                        for (Iterator i = s.iterator(); i.hasNext(); x++) {
-                            Array.set(array, x, i.next());
+                        for (Object o : s) {
+                            Array.set(array, x++, o);
                         }
 
                         return target.cast(array);

@@ -207,9 +207,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
     }
 
     private boolean isAcceptable(Symbolizer s) {
-        for (int i = 0; i < acceptableTypes.length; i++) {
-            Class<?> type = acceptableTypes[i];
-
+        for (Class<?> type : acceptableTypes) {
             if (type.isAssignableFrom(s.getClass())) {
                 return true;
             }

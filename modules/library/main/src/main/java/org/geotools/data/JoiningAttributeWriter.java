@@ -44,9 +44,9 @@ public class JoiningAttributeWriter implements AttributeWriter {
         }
         AttributeDescriptor[] md = new AttributeDescriptor[total];
         int idx = 0;
-        for (int i = 0, ii = writers.length; i < ii; i++) {
-            for (int j = 0, jj = writers[i].getAttributeCount(); j < jj; j++) {
-                md[idx] = writers[i].getAttributeType(j);
+        for (AttributeWriter writer : writers) {
+            for (int j = 0, jj = writer.getAttributeCount(); j < jj; j++) {
+                md[idx] = writer.getAttributeType(j);
                 idx++;
             }
         }
@@ -58,9 +58,9 @@ public class JoiningAttributeWriter implements AttributeWriter {
      */
     public void close() throws IOException {
         IOException dse = null;
-        for (int i = 0, ii = writers.length; i < ii; i++) {
+        for (AttributeWriter writer : writers) {
             try {
-                writers[i].close();
+                writer.close();
             } catch (IOException e) {
                 dse = e;
             }
@@ -69,8 +69,8 @@ public class JoiningAttributeWriter implements AttributeWriter {
     }
 
     public boolean hasNext() throws IOException {
-        for (int i = 0, ii = writers.length; i < ii; i++) {
-            if (writers[i].hasNext()) {
+        for (AttributeWriter writer : writers) {
+            if (writer.hasNext()) {
                 return true;
             }
         }
@@ -78,9 +78,9 @@ public class JoiningAttributeWriter implements AttributeWriter {
     }
 
     public void next() throws IOException {
-        for (int i = 0, ii = writers.length; i < ii; i++) {
+        for (AttributeWriter writer : writers) {
             // if (writers[i].hasNext()) Dont want to check this, need to be able to insert
-            writers[i].next();
+            writer.next();
         }
     }
 

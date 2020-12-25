@@ -82,8 +82,8 @@ public class PolygonBoundaryCoveredByPolygonValidation extends PolygonPolygonAbs
             return false;
         }
 
-        for (int i = 0; i < polys.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) polys[i];
+        for (Object poly : polys) {
+            SimpleFeature tmp = (SimpleFeature) poly;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
             if (gt instanceof Polygon) {

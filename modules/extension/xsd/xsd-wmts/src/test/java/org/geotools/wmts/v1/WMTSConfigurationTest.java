@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -154,8 +153,8 @@ public class WMTSConfigurationTest {
             p.parse(is);
         }
         if (!p.getValidationErrors().isEmpty()) {
-            for (Iterator e = p.getValidationErrors().iterator(); e.hasNext(); ) {
-                SAXParseException ex = (SAXParseException) e.next();
+            for (Exception exception : p.getValidationErrors()) {
+                SAXParseException ex = (SAXParseException) exception;
                 LOGGER.log(
                         Level.SEVERE,
                         ex.getLineNumber() + "," + ex.getColumnNumber() + " -" + ex.toString());

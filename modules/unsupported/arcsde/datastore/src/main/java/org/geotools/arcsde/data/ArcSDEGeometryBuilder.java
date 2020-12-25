@@ -195,8 +195,8 @@ public abstract class ArcSDEGeometryBuilder {
 
             coords = geom.getCoordinates();
 
-            for (int i = 0; i < coords.length; i++) {
-                c = coords[i];
+            for (Coordinate coord : coords) {
+                c = coord;
                 allPoints.add(new SDEPoint(c.x, c.y));
             }
         }

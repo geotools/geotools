@@ -62,8 +62,8 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
         String id = next.getID();
 
         try {
-            for (int i = 0; i < types.length; i++) {
-                final String xpath = types[i].getLocalName();
+            for (AttributeDescriptor type : types) {
+                final String xpath = type.getLocalName();
                 builder.add(next.getAttribute(xpath));
             }
             builder.featureUserData(next);

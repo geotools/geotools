@@ -19,10 +19,10 @@ package org.geotools.xml.filter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import javax.xml.crypto.Data;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.xml.XMLHandlerHints;
@@ -334,7 +334,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
 
         Set toRemove = new HashSet();
-        List fidSet = new ArrayList();
+        List<Set> fidSet = new ArrayList<>();
         boolean doRemove = true;
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
@@ -360,16 +360,14 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
 
         if (fidSet.size() == 1) {
-            return (Set) fidSet.get(0);
+            return fidSet.get(0);
         }
 
         HashSet set = new HashSet();
 
-        for (int i = 0; i < fidSet.size(); i++) {
-            Set tmp = (Set) fidSet.get(i);
-
-            for (Iterator iter = tmp.iterator(); iter.hasNext(); ) {
-                String fid = (String) iter.next();
+        for (Set tmp : fidSet) {
+            for (Object o : tmp) {
+                String fid = (String) o;
 
                 if (allContain(fid, fidSet)) {
                     set.add(fid);
@@ -381,8 +379,8 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     }
 
     private boolean allContain(String fid, List fidSets) {
-        for (int i = 0; i < fidSets.size(); i++) {
-            Set tmp = (Set) fidSets.get(i);
+        for (Object fidSet : fidSets) {
+            Set tmp = (Set) fidSet;
 
             if (!tmp.contains(fid)) {
                 return false;

@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -435,9 +434,8 @@ public class DataAccessRegistry implements Repository {
      */
     protected void throwDataSourceException(Name featureTypeName) throws IOException {
         List<Name> typeNames = new ArrayList<>();
-        for (Iterator<DataAccess<FeatureType, Feature>> dataAccessIterator = registry.iterator();
-                dataAccessIterator.hasNext(); ) {
-            typeNames.addAll(dataAccessIterator.next().getNames());
+        for (DataAccess<FeatureType, Feature> featureTypeFeatureDataAccess : registry) {
+            typeNames.addAll(featureTypeFeatureDataAccess.getNames());
         }
         throw new DataSourceException(
                 "Feature type "

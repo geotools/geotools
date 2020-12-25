@@ -23,7 +23,6 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -1126,8 +1125,7 @@ public class Hints extends RenderingHints {
          */
         @SuppressWarnings("unchecked")
         Map<RenderingHints.Key, Object> filtered = (Map<RenderingHints.Key, Object>) hints;
-        for (final Iterator<?> it = hints.keySet().iterator(); it.hasNext(); ) {
-            final Object key = it.next();
+        for (final Object key : hints.keySet()) {
             if (!(key instanceof RenderingHints.Key)) {
                 if (filtered == hints) {
                     // Copies the map only if needed.
@@ -1368,8 +1366,7 @@ public class Hints extends RenderingHints {
      */
     private static String nameOf(final Class<?> type, final RenderingHints.Key key) {
         final Field[] fields = type.getFields();
-        for (int i = 0; i < fields.length; i++) {
-            final Field f = fields[i];
+        for (final Field f : fields) {
             if (Modifier.isStatic(f.getModifiers())) {
                 final Object v;
                 try {
@@ -1555,8 +1552,8 @@ public class Hints extends RenderingHints {
              */
             if (value instanceof Class<?>[]) {
                 final Class<?>[] types = (Class<?>[]) value;
-                for (int i = 0; i < types.length; i++) {
-                    if (!isCompatibleValue(types[i])) {
+                for (Class<?> type : types) {
+                    if (!isCompatibleValue(type)) {
                         return false;
                     }
                 }

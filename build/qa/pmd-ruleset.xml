@@ -35,6 +35,7 @@ This ruleset might be used as a starting point for an own customized ruleset [0]
   <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
   <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod"/>
   <rule ref="category/java/bestpractices.xml/SystemPrintln"/>
+  <rule ref="category/java/bestpractices.xml/ForLoopCanBeForeach" />
   <rule ref="category/java/codestyle.xml/DontImportJavaLang"/>
   <rule ref="category/java/codestyle.xml/DuplicateImports"/>
   <rule ref="category/java/codestyle.xml/ExtendsObject"/>

@@ -18,7 +18,6 @@ package org.geotools.graph.build.line;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.geotools.graph.build.GraphBuilder;
@@ -169,9 +168,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
 
     protected void generateNodes() {
         // create nodes from coordiante counts
-        for (Iterator<Map.Entry<Coordinate, Object>> itr = m_coord2count.entrySet().iterator();
-                itr.hasNext(); ) {
-            Map.Entry<Coordinate, Object> entry = itr.next();
+        for (Map.Entry<Coordinate, Object> entry : m_coord2count.entrySet()) {
             Coordinate coord = entry.getKey();
             Integer count = (Integer) entry.getValue();
 
@@ -187,8 +184,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
 
     protected void generateEdges() {
         // relate nodes
-        for (Iterator itr = m_lines.iterator(); itr.hasNext(); ) {
-            LineSegment line = (LineSegment) itr.next();
+        for (LineSegment line : m_lines) {
             generateEdge(line);
         }
     }

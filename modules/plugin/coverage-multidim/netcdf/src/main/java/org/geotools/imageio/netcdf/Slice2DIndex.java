@@ -88,8 +88,8 @@ public class Slice2DIndex {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        for (int i = 0; i < index.length; i++) {
-            result = prime * result + index[i];
+        for (int j : index) {
+            result = prime * result + j;
         }
         result = prime * result + ((variableName == null) ? 0 : variableName.hashCode());
         return result;

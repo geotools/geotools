@@ -434,8 +434,8 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
             char character = patternUC.charAt(i);
 
             boolean found = false;
-            for (int j = 0; j < validFlags.length; j++) {
-                if (validFlags[j] == character) {
+            for (char validFlag : validFlags) {
+                if (validFlag == character) {
                     found = true;
                     break;
                 }

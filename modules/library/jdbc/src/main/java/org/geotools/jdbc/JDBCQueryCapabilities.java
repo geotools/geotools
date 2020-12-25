@@ -43,8 +43,7 @@ class JDBCQueryCapabilities extends QueryCapabilities {
     public boolean supportsSorting(final SortBy[] sortAttributes) {
         if (super.supportsSorting(sortAttributes)) return true;
 
-        for (int i = 0; i < sortAttributes.length; i++) {
-            SortBy sortBy = sortAttributes[i];
+        for (SortBy sortBy : sortAttributes) {
             if (SortBy.NATURAL_ORDER == sortBy || SortBy.REVERSE_ORDER == sortBy) {
                 // we do only if we have a non null primary key
                 return !(source.getPrimaryKey() instanceof NullPrimaryKey);

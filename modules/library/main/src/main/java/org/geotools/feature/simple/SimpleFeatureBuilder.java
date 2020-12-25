@@ -205,8 +205,8 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
 
     /** Adds a list of attributes. */
     public void addAll(List<Object> values) {
-        for (int i = 0; i < values.size(); i++) {
-            add(values.get(i));
+        for (Object value : values) {
+            add(value);
         }
     }
 

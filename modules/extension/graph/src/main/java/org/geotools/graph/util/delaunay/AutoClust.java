@@ -82,8 +82,8 @@ public class AutoClust {
             map.put(next, acd);
         }
         double total = 0;
-        for (int i = 0; i < localDevs.length; i++) {
-            total = total + localDevs[i];
+        for (double localDev : localDevs) {
+            total = total + localDev;
         }
         double meanStDev = total / localDevs.length;
 

@@ -17,7 +17,6 @@
 package org.geotools.graph.build.line;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graphable;
@@ -110,9 +109,7 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
 
     protected void generateNodes() {
         // create the nodes, starting with in nodes
-        for (Iterator<Map.Entry<Coordinate, Object>> itr = m_in2count.entrySet().iterator();
-                itr.hasNext(); ) {
-            Map.Entry<Coordinate, Object> entry = itr.next();
+        for (Map.Entry<Coordinate, Object> entry : m_in2count.entrySet()) {
             Coordinate coord = entry.getKey();
             Integer count = (Integer) entry.getValue();
 
@@ -134,9 +131,7 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
         }
 
         // create only nodes that are not in the in set
-        for (Iterator<Map.Entry<Coordinate, Object>> itr = m_out2count.entrySet().iterator();
-                itr.hasNext(); ) {
-            Map.Entry<Coordinate, Object> entry = itr.next();
+        for (Map.Entry<Coordinate, Object> entry : m_out2count.entrySet()) {
             Coordinate coord = entry.getKey();
             Integer count = (Integer) entry.getValue();
 

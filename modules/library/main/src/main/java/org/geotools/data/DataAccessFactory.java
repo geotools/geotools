@@ -180,8 +180,7 @@ public interface DataAccessFactory extends Factory {
             return false;
         }
         Param arrayParameters[] = getParametersInfo();
-        for (int i = 0; i < arrayParameters.length; i++) {
-            Param param = arrayParameters[i];
+        for (Param param : arrayParameters) {
             Object value;
             if (!params.containsKey(param.key)) {
                 if (param.required) {
@@ -211,8 +210,7 @@ public interface DataAccessFactory extends Factory {
                     // check metadata
                     if (param.metadata.containsKey(Param.OPTIONS)) {
                         @SuppressWarnings("unchecked")
-                        java.util.List<Object> options =
-                                (List<Object>) param.metadata.get(Param.OPTIONS);
+                        List<Object> options = (List<Object>) param.metadata.get(Param.OPTIONS);
                         if (options != null && !options.contains(value)) {
                             return false; // invalid option
                         }

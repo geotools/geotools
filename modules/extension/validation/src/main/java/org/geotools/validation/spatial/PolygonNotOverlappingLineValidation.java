@@ -75,12 +75,12 @@ public class PolygonNotOverlappingLineValidation extends PolygonLineAbstractVali
             return false;
         }
 
-        for (int i = 0; i < poly1.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) poly1[i];
+        for (Object value : poly1) {
+            SimpleFeature tmp = (SimpleFeature) value;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
-            for (int j = 0; j < poly2.length; j++) {
-                SimpleFeature tmp2 = (SimpleFeature) poly2[j];
+            for (Object o : poly2) {
+                SimpleFeature tmp2 = (SimpleFeature) o;
                 Geometry gt2 = (Geometry) tmp2.getDefaultGeometry();
 
                 if (gt2.touches(gt)) {

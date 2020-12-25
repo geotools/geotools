@@ -163,8 +163,8 @@ public enum FootprintInsetPolicy {
         FootprintInsetPolicy[] values = FootprintInsetPolicy.values();
         List<String> names = new ArrayList<>(values.length);
 
-        for (int i = 0; i < values.length; i++) {
-            names.add(values[i].name());
+        for (FootprintInsetPolicy value : values) {
+            names.add(value.name());
         }
 
         return names;

@@ -64,17 +64,16 @@ public abstract class GT30TestBase extends TestCase {
     protected void deleteAll(File file) {
         final File[] fileList = file.listFiles();
         final int length = fileList.length;
-        for (int i = 0; i < length; i++) {
-            if (fileList[i].isDirectory()) {
-                deleteAll(fileList[i]);
-                fileList[i].delete();
+        for (File value : fileList) {
+            if (value.isDirectory()) {
+                deleteAll(value);
+                value.delete();
 
                 continue;
             }
 
-            if (!fileList[i].getName().endsWith("zip")
-                    && !fileList[i].getName().startsWith("W002N52")) {
-                fileList[i].delete();
+            if (!value.getName().endsWith("zip") && !value.getName().startsWith("W002N52")) {
+                value.delete();
             }
         }
     }

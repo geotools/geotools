@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -181,8 +180,8 @@ public class AppSchemaDataAccessConfigurator {
 
     private void declareNamespaces(AppSchemaDataAccessDTO config) {
         Map nsMap = config.getNamespaces();
-        for (Iterator it = nsMap.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Entry) it.next();
+        for (Object o : nsMap.entrySet()) {
+            Entry entry = (Entry) o;
             String prefix = (String) entry.getKey();
             String namespace = (String) entry.getValue();
             namespaces.declarePrefix(prefix, namespace);
@@ -204,8 +203,8 @@ public class AppSchemaDataAccessConfigurator {
             if (evaluatedURLs.contains(url.toExternalForm())) return;
             else evaluatedURLs.add(url.toExternalForm());
             AppSchemaDataAccessDTO config = configReader.parse(url);
-            for (Iterator it = config.getNamespaces().entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Entry) it.next();
+            for (Entry<String, String> stringStringEntry : config.getNamespaces().entrySet()) {
+                Entry entry = (Entry) stringStringEntry;
                 String prefix = (String) entry.getKey();
                 String namespace = (String) entry.getValue();
                 if (namespaces.getURI(prefix) == null) namespaces.declarePrefix(prefix, namespace);
@@ -320,8 +319,8 @@ public class AppSchemaDataAccessConfigurator {
 
         Set<FeatureTypeMapping> featureTypeMappings = new HashSet<>();
 
-        for (Iterator it = mappingsConfigs.iterator(); it.hasNext(); ) {
-            TypeMapping dto = (TypeMapping) it.next();
+        for (Object mappingsConfig : mappingsConfigs) {
+            TypeMapping dto = (TypeMapping) mappingsConfig;
             try {
                 FeatureSource<? extends FeatureType, ? extends Feature> featureSource =
                         getFeatureSource(dto, sourceDataStores);
@@ -504,10 +503,11 @@ public class AppSchemaDataAccessConfigurator {
             throws IOException {
         List<AttributeMapping> attMappings = new LinkedList<>();
 
-        for (Iterator it = attDtos.iterator(); it.hasNext(); ) {
+        /** Label and parent label are specific for web service backend */
+        for (Object dto : attDtos) {
 
             org.geotools.data.complex.config.AttributeMapping attDto;
-            attDto = (org.geotools.data.complex.config.AttributeMapping) it.next();
+            attDto = (org.geotools.data.complex.config.AttributeMapping) dto;
 
             String idExpr = attDto.getIdentifierExpression();
             String idXpath = null;
@@ -679,8 +679,7 @@ public class AppSchemaDataAccessConfigurator {
      * mappings xml configuration file)
      */
     private void validateConfiguredNamespaces(StepList targetXPathSteps) {
-        for (Iterator it = targetXPathSteps.iterator(); it.hasNext(); ) {
-            Step step = (Step) it.next();
+        for (Step step : targetXPathSteps) {
             QName name = step.getName();
             if (!XMLConstants.DEFAULT_NS_PREFIX.equals(name.getPrefix())) {
                 if (XMLConstants.DEFAULT_NS_PREFIX.equals(name.getNamespaceURI())) {
@@ -742,8 +741,8 @@ public class AppSchemaDataAccessConfigurator {
         final Map<Name, Expression> clientProperties = new HashMap<>();
 
         if (dto.getClientProperties().size() > 0) {
-            for (Iterator it = dto.getClientProperties().entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) it.next();
+            for (Entry<String, String> stringStringEntry : dto.getClientProperties().entrySet()) {
+                Entry entry = (Entry) stringStringEntry;
                 String name = (String) entry.getKey();
                 Name qName = Types.degloseName(name, namespaces);
                 String cqlExpression = (String) entry.getValue();
@@ -820,8 +819,8 @@ public class AppSchemaDataAccessConfigurator {
         schemaURIs = new HashMap<>(schemaFiles.size());
         String nameSpace;
         String schemaLocation;
-        for (Iterator it = schemaFiles.iterator(); it.hasNext(); ) {
-            schemaLocation = (String) it.next();
+        for (Object schemaFile : schemaFiles) {
+            schemaLocation = (String) schemaFile;
             final URL schemaUrl = resolveResourceLocation(baseUrl, schemaLocation);
             AppSchemaDataAccessConfigurator.LOGGER.fine(
                     "parsing schema " + schemaUrl.toExternalForm());

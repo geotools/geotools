@@ -65,8 +65,8 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
     @Test
     public void testAll() throws Throwable {
-        for (int i = 0, ii = files.length; i < ii; i++) {
-            test(files[i]);
+        for (String file : files) {
+            test(file);
         }
     }
 

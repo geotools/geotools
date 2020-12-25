@@ -69,9 +69,9 @@ public class ArgHelper {
             throw new NullPointerException("A Typename must be specified.");
         }
 
-        for (int i = 0; i < argumentTypeMappings.length; i++) {
-            if (elementName.equals(argumentTypeMappings[i].getElementName())) {
-                return argumentTypeMappings[i].getInstance(value);
+        for (Mapping argumentTypeMapping : argumentTypeMappings) {
+            if (elementName.equals(argumentTypeMapping.getElementName())) {
+                return argumentTypeMapping.getInstance(value);
             }
         }
 
@@ -93,9 +93,9 @@ public class ArgHelper {
             throw new NullPointerException("A Typename must be specified.");
         }
 
-        for (int i = 0; i < argumentTypeMappings.length; i++) {
-            if (elementName.equals(argumentTypeMappings[i].getType())) {
-                return argumentTypeMappings[i].getInstance(value);
+        for (Mapping argumentTypeMapping : argumentTypeMappings) {
+            if (elementName.equals(argumentTypeMapping.getType())) {
+                return argumentTypeMapping.getInstance(value);
             }
         }
 
@@ -116,14 +116,14 @@ public class ArgHelper {
         }
 
         if (o instanceof Class) {
-            for (int i = 0; i < argumentTypeMappings.length; i++)
-                if (argumentTypeMappings[i].isClass((Class) o)) {
-                    return argumentTypeMappings[i].getType();
+            for (Mapping argumentTypeMapping : argumentTypeMappings)
+                if (argumentTypeMapping.isClass((Class) o)) {
+                    return argumentTypeMapping.getType();
                 }
         } else {
-            for (int i = 0; i < argumentTypeMappings.length; i++)
-                if (argumentTypeMappings[i].isClassInstance(o)) {
-                    return argumentTypeMappings[i].getType();
+            for (Mapping argumentTypeMapping : argumentTypeMappings)
+                if (argumentTypeMapping.isClassInstance(o)) {
+                    return argumentTypeMapping.getType();
                 }
         }
 
@@ -143,9 +143,9 @@ public class ArgHelper {
             throw new NullPointerException("An argument instance must be specified.");
         }
 
-        for (int i = 0; i < argumentTypeMappings.length; i++)
-            if (argumentTypeMappings[i].isClassInstance(o)) {
-                return argumentTypeMappings[i].encode(o);
+        for (Mapping argumentTypeMapping : argumentTypeMappings)
+            if (argumentTypeMapping.isClassInstance(o)) {
+                return argumentTypeMapping.encode(o);
             }
 
         return "";
@@ -156,9 +156,9 @@ public class ArgHelper {
             throw new NullPointerException("An argument instance must be specified.");
         }
 
-        for (int i = 0; i < argumentTypeMappings.length; i++)
-            if (argumentTypeMappings[i].isClassInstance(o)) {
-                return argumentTypeMappings[i].toString(o);
+        for (Mapping argumentTypeMapping : argumentTypeMappings)
+            if (argumentTypeMapping.isClassInstance(o)) {
+                return argumentTypeMapping.toString(o);
             }
 
         return "";

@@ -243,9 +243,9 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
     private void logRequestParams(GeneralParameterValue[] params) {
         LOGGER.info("----PARAMS START-------");
 
-        for (int i = 0; i < params.length; i++) {
+        for (GeneralParameterValue param : params) {
             @SuppressWarnings("unchecked")
-            Parameter<Object> p = (Parameter<Object>) params[i];
+            Parameter<Object> p = (Parameter<Object>) param;
             LOGGER.info(p.getDescriptor().getName().toString() + ": " + p.getValue());
         }
 

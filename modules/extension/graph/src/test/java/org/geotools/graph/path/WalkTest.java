@@ -76,8 +76,7 @@ public class WalkTest extends TestCase {
         }
 
         Iterator itr = walk.iterator();
-        for (int i = 0; i < nodes.size(); i++) {
-            Node n1 = nodes.get(i);
+        for (Node n1 : nodes) {
             Node n2 = (Node) itr.next();
 
             assertTrue(n1 == n2);

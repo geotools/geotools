@@ -567,11 +567,9 @@ public class Mosaic extends OperationJAI {
             MathTransform g2w = gg.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
             // Initial Bounding box
             Envelope2D bbox = gg.getEnvelope2D();
-            // Number of the sources to use
-            int numSources = sources.length;
             // Cycle on all the GridCoverages in order to create the final Bounding box
-            for (int i = 0; i < numSources; i++) {
-                bbox.include(sources[i].getEnvelope2D());
+            for (GridCoverage2D source : sources) {
+                bbox.include(source.getEnvelope2D());
             }
 
             // Creation of a final GridGeometry containing the final Bounding Box
@@ -607,8 +605,7 @@ public class Mosaic extends OperationJAI {
         GridCoverage2D firstCoverage = sources[PRIMARY_SOURCE_INDEX];
         CoordinateReferenceSystem crs = firstCoverage.getCoordinateReferenceSystem();
 
-        for (int i = 0; i < sources.length; i++) {
-            final GridCoverage2D source = sources[i];
+        for (final GridCoverage2D source : sources) {
             CoordinateReferenceSystem crsSource = source.getCoordinateReferenceSystem();
             if (!CRS.equalsIgnoreMetadata(crs, crsSource)) {
                 throw new CoverageProcessingException("Input Coverages have different CRS");

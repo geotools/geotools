@@ -94,14 +94,14 @@ public class FilterFunction_listMultiply extends FunctionExpressionImpl {
         String[] values = WHITE_SPACE_SPLIT.split(arg1);
         StringBuilder b = new StringBuilder();
 
-        for (int i = 0; i < values.length; i++) {
-            if ("".equals(values[i])) {
+        for (String value : values) {
+            if ("".equals(value)) {
                 continue;
             }
             if (b.length() != 0) {
                 b.append(" ");
             }
-            b.append(Double.valueOf(values[i]) * arg0.doubleValue());
+            b.append(Double.valueOf(value) * arg0.doubleValue());
         }
 
         return b.toString();

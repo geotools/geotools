@@ -18,7 +18,6 @@
 package org.geotools.arcsde.data.view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.sf.jsqlparser.expression.BinaryExpression;
@@ -302,9 +301,7 @@ class ExpressionQualifier implements ExpressionVisitor {
         List<WhenClause> whenClauses = null;
         if (caseExpression.getWhenClauses() != null) {
             whenClauses = new ArrayList<>();
-            for (Iterator<WhenClause> it = caseExpression.getWhenClauses().iterator();
-                    it.hasNext(); ) {
-                WhenClause whenClause = it.next();
+            for (WhenClause whenClause : (Iterable<WhenClause>) caseExpression.getWhenClauses()) {
                 WhenClause qWhen = (WhenClause) qualify(session, tableAliases, whenClause);
                 whenClauses.add(qWhen);
             }

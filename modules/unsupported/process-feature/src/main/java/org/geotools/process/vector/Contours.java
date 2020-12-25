@@ -69,7 +69,7 @@ public class Contours {
         try (SimpleFeatureIterator itr = (SimpleFeatureIterator) features.features()) {
             while (itr.hasNext()) {
                 SimpleFeature f = itr.next();
-                ArrayList<Point> points = new ArrayList<Point>();
+                ArrayList<Point> points = new ArrayList<>();
                 if (ptype == "POINT") {
                     points.add((Point) f.getDefaultGeometry());
                 } else {

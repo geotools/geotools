@@ -259,9 +259,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         if (obj instanceof SimpleFeature) {
             SimpleFeature feature = (SimpleFeature) obj;
             ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
-            for (Iterator<SimpleFeature> iter = (Iterator<SimpleFeature>) index.query(bounds);
-                    iter.hasNext(); ) {
-                SimpleFeature sample = iter.next();
+            for (SimpleFeature sample : (List<SimpleFeature>) index.query(bounds)) {
                 if (sample == feature) {
                     return true;
                 }

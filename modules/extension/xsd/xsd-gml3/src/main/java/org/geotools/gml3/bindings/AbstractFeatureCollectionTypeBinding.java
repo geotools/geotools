@@ -97,8 +97,8 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
         SimpleFeature[] featureMembers = node.getChildValue(SimpleFeature[].class);
 
         if (featureMembers != null) {
-            for (int i = 0; i < featureMembers.length; i++) {
-                collection.add(featureMembers[i]);
+            for (SimpleFeature featureMember : featureMembers) {
+                collection.add(featureMember);
             }
         }
 

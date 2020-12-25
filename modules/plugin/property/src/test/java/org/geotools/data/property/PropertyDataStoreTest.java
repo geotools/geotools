@@ -171,8 +171,8 @@ public class PropertyDataStoreTest extends TestCase {
 
         File dir = new File("propertyTestData");
         File list[] = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File file : list) {
+            file.delete();
         }
         dir.delete();
         super.tearDown();

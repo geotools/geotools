@@ -394,9 +394,8 @@ public class ParserHandler extends DefaultHandler2 {
                     }
 
                     // first check for a location override
-                    for (int j = 0; j < resolvers.size(); j++) {
-                        String override =
-                                resolvers.get(j).resolveSchemaLocation(null, namespace, location);
+                    for (XSDSchemaLocationResolver resolver : resolvers) {
+                        String override = resolver.resolveSchemaLocation(null, namespace, location);
                         if (override != null) {
                             // ensure that override has no spaces
                             override = override.replaceAll(" ", "%20");
@@ -414,9 +413,8 @@ public class ParserHandler extends DefaultHandler2 {
                     }
 
                     // next check for schema override
-                    for (int j = 0; j < locators.size(); j++) {
-                        XSDSchema schema =
-                                locators.get(j).locateSchema(null, namespace, location, null);
+                    for (XSDSchemaLocator locator : locators) {
+                        XSDSchema schema = locator.locateSchema(null, namespace, location, null);
 
                         if (schema != null) {
                             schemas[i / 2] = schema;
@@ -455,8 +453,8 @@ public class ParserHandler extends DefaultHandler2 {
             } else {
                 // could not find a schemaLocation attribute, use the locators
                 // look for schema with locators
-                for (int i = 0; i < locators.size(); i++) {
-                    XSDSchema schema = locators.get(i).locateSchema(null, uri, null, null);
+                for (XSDSchemaLocator locator : locators) {
+                    XSDSchema schema = locator.locateSchema(null, uri, null, null);
 
                     if (schema != null) {
                         schemas = new XSDSchema[] {schema};
@@ -469,8 +467,8 @@ public class ParserHandler extends DefaultHandler2 {
             // strip out any null schemas
             int n = 0;
 
-            for (int i = 0; i < schemas.length; i++) {
-                if (schemas[i] != null) {
+            for (XSDSchema xsdSchema : schemas) {
+                if (xsdSchema != null) {
                     n++;
                 }
             }
@@ -479,12 +477,12 @@ public class ParserHandler extends DefaultHandler2 {
                 XSDSchema[] nschemas = new XSDSchema[n];
                 int j = 0;
 
-                for (int i = 0; i < schemas.length; i++) {
-                    if (schemas[i] == null) {
+                for (XSDSchema schema : schemas) {
+                    if (schema == null) {
                         continue;
                     }
 
-                    nschemas[j++] = schemas[i];
+                    nschemas[j++] = schema;
                 }
 
                 schemas = nschemas;
@@ -513,16 +511,16 @@ public class ParserHandler extends DefaultHandler2 {
             boolean found = false;
 
             O:
-            for (int i = 0; i < schemas.length; i++) {
-                if (config.getNamespaceURI().equals(schemas[i].getTargetNamespace())) {
+            for (XSDSchema schema : schemas) {
+                if (config.getNamespaceURI().equals(schema.getTargetNamespace())) {
                     found = true;
                     break O;
                 }
 
-                List imports = Schemas.getImports(schemas[i]);
+                List imports = Schemas.getImports(schema);
 
-                for (Iterator im = imports.iterator(); im.hasNext(); ) {
-                    XSDImport imprt = (XSDImport) im.next();
+                for (Object anImport : imports) {
+                    XSDImport imprt = (XSDImport) anImport;
 
                     if (config.getNamespaceURI().equals(imprt.getNamespace())) {
                         found = true;
@@ -609,8 +607,8 @@ public class ParserHandler extends DefaultHandler2 {
             // around to handle this
             List adapters = Schemas.getComponentAdaptersOfType(context, ParserDelegate.class);
             // List delegates = Schemas.getComponentInstancesOfType(context,ParserDelegate.class);
-            for (Iterator a = adapters.iterator(); a.hasNext(); ) {
-                ComponentAdapter adapter = (ComponentAdapter) a.next();
+            for (Object o : adapters) {
+                ComponentAdapter adapter = (ComponentAdapter) o;
                 ParserDelegate delegate = (ParserDelegate) adapter.getComponentInstance(context);
                 boolean canHandle = delegate.canHandle(qualifiedName, attributes, handler, parent);
 

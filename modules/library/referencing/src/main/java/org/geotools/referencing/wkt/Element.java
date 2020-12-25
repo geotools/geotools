@@ -547,9 +547,7 @@ public final class Element {
         if (list == null) {
             return;
         }
-        final int size = list.size();
-        for (int j = 0; j < size; j++) {
-            final Object object = list.get(j);
+        for (final Object object : list) {
             if (object instanceof Element) {
                 ((Element) object).print(out, level + 1);
             } else {

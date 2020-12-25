@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
@@ -88,8 +87,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = dataStore.getFilterFactory();
 
-        for (Iterator f = fids.iterator(); f.hasNext(); ) {
-            FeatureId identifier = (FeatureId) f.next();
+        for (FeatureId identifier : fids) {
             String fid = identifier.getID();
             Id filter = ff.id(Collections.singleton(identifier));
 
@@ -181,8 +179,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = dataStore.getFilterFactory();
 
-        for (Iterator f = fids.iterator(); f.hasNext(); ) {
-            FeatureId identifier = (FeatureId) f.next();
+        for (FeatureId identifier : fids) {
             String fid = identifier.getID();
             Id filter = ff.id(Collections.singleton(identifier));
 

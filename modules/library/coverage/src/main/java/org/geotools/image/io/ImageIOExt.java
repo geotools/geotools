@@ -160,6 +160,7 @@ public class ImageIOExt {
      *     ImageWriterSpi.class} to set the writer.
      * @param allowed {@code false} to disallow native acceleration.
      */
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public static synchronized <T extends ImageReaderWriterSpi> void allowNativeCodec(
             final String format, final Class<T> category, final boolean allowed) {
         T standard = null;
@@ -168,8 +169,8 @@ public class ImageIOExt {
         for (final Iterator<T> it = registry.getServiceProviders(category, false); it.hasNext(); ) {
             final T provider = it.next();
             final String[] formats = provider.getFormatNames();
-            for (int i = 0; i < formats.length; i++) {
-                if (formats[i].equalsIgnoreCase(format)) {
+            for (String s : formats) {
+                if (s.equalsIgnoreCase(format)) {
                     if (Classes.getShortClassName(provider).startsWith("CLib")) {
                         codeclib = provider;
                     } else {

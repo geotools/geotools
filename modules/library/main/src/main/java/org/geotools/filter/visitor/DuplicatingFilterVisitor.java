@@ -17,7 +17,6 @@
 package org.geotools.filter.visitor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
@@ -121,8 +120,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
     public Object visit(And filter, Object extraData) {
         List<Filter> children = filter.getChildren();
         List<Filter> newChildren = new ArrayList<>();
-        for (Iterator<Filter> iter = children.iterator(); iter.hasNext(); ) {
-            Filter child = iter.next();
+        for (Filter child : children) {
             if (child != null) {
                 Filter newChild = (Filter) child.accept(this, extraData);
                 newChildren.add(newChild);
@@ -142,8 +140,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
     public Object visit(Or filter, Object extraData) {
         List<Filter> children = filter.getChildren();
         List<Filter> newChildren = new ArrayList<>();
-        for (Iterator<Filter> iter = children.iterator(); iter.hasNext(); ) {
-            Filter child = iter.next();
+        for (Filter child : children) {
             if (child != null) {
                 Filter newChild = (Filter) child.accept(this, extraData);
                 newChildren.add(newChild);
@@ -322,12 +319,12 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
     }
 
     public Object visit(Function expression, Object extraData) {
-        List old = expression.getParameters();
+        @SuppressWarnings("unchecked")
+        List<Expression> old = expression.getParameters();
         Expression[] args = new Expression[old.size()];
         int i = 0;
-        for (Iterator iter = old.iterator(); iter.hasNext(); i++) {
-            Expression exp = (Expression) iter.next();
-            args[i] = visit(exp, extraData);
+        for (Expression exp : old) {
+            args[i++] = visit(exp, extraData);
         }
         Function duplicate;
         if (expression instanceof InternalFunction) {

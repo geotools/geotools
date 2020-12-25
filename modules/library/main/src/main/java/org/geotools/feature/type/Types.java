@@ -684,9 +684,7 @@ public class Types {
         Collection<PropertyDescriptor> schema = type.getDescriptors();
 
         int index = 0;
-        for (Iterator itr = content.iterator(); itr.hasNext(); ) {
-            Attribute att = (Attribute) itr.next();
-
+        for (Attribute att : content) {
             // att shall not be null
             if (att == null) {
                 throw new NullPointerException(
@@ -699,8 +697,8 @@ public class Types {
             // and has to be of one of the allowed types
             AttributeType attType = att.getType();
             boolean contains = false;
-            for (Iterator sitr = schema.iterator(); sitr.hasNext(); ) {
-                AttributeDescriptor ad = (AttributeDescriptor) sitr.next();
+            for (PropertyDescriptor propertyDescriptor : schema) {
+                AttributeDescriptor ad = (AttributeDescriptor) propertyDescriptor;
                 if (ad.getType().equals(attType)) {
                     contains = true;
                     break;
@@ -856,8 +854,7 @@ public class Types {
 
         List<PropertyDescriptor> match = new ArrayList<>();
 
-        for (Iterator itr = type.getDescriptors().iterator(); itr.hasNext(); ) {
-            PropertyDescriptor descriptor = (PropertyDescriptor) itr.next();
+        for (PropertyDescriptor descriptor : type.getDescriptors()) {
             String localPart = descriptor.getName().getLocalPart();
             if (name.equals(localPart)) {
                 match.add(descriptor);
@@ -939,22 +936,19 @@ public class Types {
         List<PropertyDescriptor> descriptors = descriptors(parentType);
 
         // find matching descriptor
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext(); ) {
-            PropertyDescriptor d = it.next();
+        for (PropertyDescriptor d : descriptors) {
             if (d.getName().equals(name)) {
                 return d;
             }
         }
 
         // nothing found, perhaps polymorphism?? let's loop again
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext(); ) {
+        for (PropertyDescriptor descriptor : descriptors) {
             @SuppressWarnings("unchecked")
             List<AttributeDescriptor> substitutionGroup =
-                    (List<AttributeDescriptor>) it.next().getUserData().get("substitutionGroup");
+                    (List<AttributeDescriptor>) descriptor.getUserData().get("substitutionGroup");
             if (substitutionGroup != null) {
-                for (Iterator<AttributeDescriptor> it2 = substitutionGroup.iterator();
-                        it2.hasNext(); ) {
-                    AttributeDescriptor d = it2.next();
+                for (AttributeDescriptor d : substitutionGroup) {
                     if (d.getName().equals(name)) { // BINGOOO !!
                         return d;
                     }
@@ -977,22 +971,19 @@ public class Types {
         List<PropertyDescriptor> descriptors = descriptors(parentType);
 
         // find matching descriptor
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext(); ) {
-            PropertyDescriptor d = it.next();
+        for (PropertyDescriptor d : descriptors) {
             if (d.getName().getLocalPart().equals(name)) {
                 return d;
             }
         }
 
         // nothing found, perhaps polymorphism?? let's loop again
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext(); ) {
+        for (PropertyDescriptor descriptor : descriptors) {
             @SuppressWarnings("unchecked")
             List<AttributeDescriptor> substitutionGroup =
-                    (List<AttributeDescriptor>) it.next().getUserData().get("substitutionGroup");
+                    (List<AttributeDescriptor>) descriptor.getUserData().get("substitutionGroup");
             if (substitutionGroup != null) {
-                for (Iterator<AttributeDescriptor> it2 = substitutionGroup.iterator();
-                        it2.hasNext(); ) {
-                    AttributeDescriptor d = it2.next();
+                for (AttributeDescriptor d : substitutionGroup) {
                     if (d.getName().getLocalPart().equals(name)) { // BINGOOO !!
                         return d;
                     }

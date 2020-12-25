@@ -125,8 +125,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         assertNotNull("process offerings shouldn't be null", processOfferings);
 
         EList processes = processOfferings.getProcess();
-        for (int i = 0; i < processes.size(); i++) {
-            ProcessBriefType process = (ProcessBriefType) processes.get(i);
+        for (Object o : processes) {
+            ProcessBriefType process = (ProcessBriefType) o;
             // System.out.println(process.getTitle());
             assertNotNull("process [" + process + " shouldn't be null", process.getTitle());
         }

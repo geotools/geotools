@@ -178,8 +178,7 @@ final class ColorModelFactory {
          * Interpolates the colors in the color palette. Colors that do not fall
          * in the range of a category will be set to a transparent color.
          */
-        for (int i = 0; i < categoryCount; i++) {
-            final Category category = categories[i];
+        for (final Category category : categories) {
             ColorUtilities.expand(
                     category.getColors(),
                     ARGB,
@@ -194,8 +193,8 @@ final class ColorModelFactory {
     public int hashCode() {
         final int categoryCount = categories.length;
         int code = 962745549 + ((numBands * 37 + visibleBand) * 37 + type) * 37 + categoryCount;
-        for (int i = 0; i < categoryCount; i++) {
-            code += categories[i].hashCode();
+        for (Category category : categories) {
+            code += category.hashCode();
             // Better be independant of categories order.
         }
         return code;

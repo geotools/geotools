@@ -724,8 +724,8 @@ public class IndexedResourceBundle extends ResourceBundle {
         buffer.append('[');
         if (values != null) {
             int count = 0;
-            for (int i = 0; i < values.length; i++) {
-                if (values[i] != null) count++;
+            for (String value : values) {
+                if (value != null) count++;
             }
             buffer.append(count);
             buffer.append(" values");

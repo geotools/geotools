@@ -20,7 +20,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.measure.Unit;
@@ -201,8 +200,8 @@ public final class CRSUtilities {
             if (c == null) {
                 return null;
             }
-            for (final Iterator<CoordinateReferenceSystem> it = c.iterator(); it.hasNext(); ) {
-                crs = it.next();
+            for (CoordinateReferenceSystem coordinateReferenceSystem : c) {
+                crs = coordinateReferenceSystem;
                 dimension = crs.getCoordinateSystem().getDimension();
                 if (lower < dimension) {
                     break;

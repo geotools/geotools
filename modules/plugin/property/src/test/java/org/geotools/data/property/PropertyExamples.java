@@ -91,9 +91,9 @@ public class PropertyExamples {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             File list[] = tmp.listFiles();
-            for (int i = 0; i < list.length; i++) {
-                list[i].delete();
-                System.out.println("remove " + list[i]);
+            for (File file : list) {
+                file.delete();
+                System.out.println("remove " + file);
             }
             tmp.delete();
             System.out.println("remove " + tmp);

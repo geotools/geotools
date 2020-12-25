@@ -223,8 +223,7 @@ public class CoverageIO {
     public static Driver[] getAvailableDriversArray() {
         final Set<? extends Driver> drivers = CoverageIO.getAvailableDrivers();
         final List<Driver> driverSet = new ArrayList<>(drivers.size());
-        for (Iterator<? extends Driver> iter = drivers.iterator(); iter.hasNext(); ) {
-            final Driver element = iter.next();
+        for (final Driver element : drivers) {
             if (element.isAvailable()) driverSet.add(element);
         }
         return driverSet.toArray(new Driver[driverSet.size()]);

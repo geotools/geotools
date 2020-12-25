@@ -279,7 +279,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
         if (union.getMemberTypes() != null) {
             String[] qNames = union.getMemberTypes().split("\\s");
 
-            for (int i = 0; i < qNames.length; i++) l.add(parent.lookUpSimpleType(qNames[i]));
+            for (String qName : qNames) l.add(parent.lookUpSimpleType(qName));
         }
 
         if (union.getSimpleTypes() != null) {

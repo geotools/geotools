@@ -180,15 +180,13 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     /** Helper method for settings properties of an eobject. */
     void setProperties(EObject eObject, Node node, boolean lax) {
         // reflectivley set the properties of it
-        for (Iterator c = node.getChildren().iterator(); c.hasNext(); ) {
-            Node child = (Node) c.next();
+        for (Node child : node.getChildren()) {
             String property = child.getComponent().getName();
 
             setProperty(eObject, property, child.getValue(), lax);
         }
 
-        for (Iterator a = node.getAttributes().iterator(); a.hasNext(); ) {
-            Node att = (Node) a.next();
+        for (Node att : node.getAttributes()) {
             String property = att.getComponent().getName();
 
             setProperty(eObject, property, att.getValue(), lax);

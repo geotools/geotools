@@ -415,9 +415,7 @@ public class ArcSDEAdapter {
 
         Class<?> typeClass = null;
 
-        for (int i = 0; i < nCols; i++) {
-            SeColumnDefinition colDef = seColumns[i];
-
+        for (SeColumnDefinition colDef : seColumns) {
             // didn't found in the ArcSDE Java API the way of knowing
             // if an SeColumnDefinition is nillable
             attName = colDef.getName();
@@ -530,8 +528,7 @@ public class ArcSDEAdapter {
         builder.setName(typeName);
         builder.setNamespaceURI(namespace);
 
-        for (Iterator<AttributeDescriptor> it = properties.iterator(); it.hasNext(); ) {
-            AttributeDescriptor attType = it.next();
+        for (AttributeDescriptor attType : properties) {
             builder.add(attType);
         }
 
@@ -980,9 +977,8 @@ public class ArcSDEAdapter {
                                     featureType.getAttributeDescriptors();
                             AttributeDescriptor currAtt;
 
-                            for (Iterator<AttributeDescriptor> it = atts.iterator();
-                                    it.hasNext(); ) {
-                                currAtt = it.next();
+                            for (AttributeDescriptor att : atts) {
+                                currAtt = att;
 
                                 if (currAtt instanceof GeometryDescriptor) {
                                     GeometryDescriptor geometryAtt = (GeometryDescriptor) currAtt;

@@ -102,9 +102,9 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         final File test_data_dir = TestData.file(this, null);
         final String[] fileList = test_data_dir.list(new MyFileFilter());
         final int length = fileList.length;
-        for (int i = 0; i < length; i++) {
+        for (String s : fileList) {
             // file
-            in = TestData.file(this, fileList[i]);
+            in = TestData.file(this, s);
             this.read(in);
         }
 

@@ -22,7 +22,6 @@ package org.geotools.data.oracle.sdo;
 import java.lang.reflect.Array;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -455,12 +454,11 @@ public final class SDO {
      * @param list List to cast to an array type
      * @return array of ints
      */
-    private static int[] intArray(List list) {
+    private static int[] intArray(List<Integer> list) {
         int[] array = new int[list.size()];
         int offset = 0;
-
-        for (Iterator i = list.iterator(); i.hasNext(); offset++) {
-            array[offset] = ((Number) i.next()).intValue();
+        for (Integer i : list) {
+            array[offset++] = i;
         }
 
         return array;
@@ -1158,8 +1156,8 @@ public final class SDO {
         double[] ords;
         int offset = 0;
 
-        for (int i = 0; i < NUMBER; i++) {
-            ords = (double[]) list.get(i);
+        for (Object o : list) {
+            ords = (double[]) o;
 
             if (ords != null) {
                 array[offset++] = ords[0];
@@ -1186,8 +1184,8 @@ public final class SDO {
         double[] ords;
         int offset = 0;
 
-        for (int i = 0; i < NUMBER; i++) {
-            ords = (double[]) list.get(i);
+        for (Object o : list) {
+            ords = (double[]) o;
 
             if (ords != null) {
                 array[offset++] = ords[0];
@@ -1507,9 +1505,8 @@ public final class SDO {
 
         Object array = Array.newInstance(type, list.size());
         int index = 0;
-
-        for (Iterator i = list.iterator(); i.hasNext(); index++) {
-            Array.set(array, index, i.next());
+        for (Object o : list) {
+            Array.set(array, index++, o);
         }
 
         return array;
@@ -1591,8 +1588,8 @@ public final class SDO {
      */
     private static void ensure(String condition, int actual, int[] set) {
         if (set == null) return; // don't apparently care
-        for (int i = 0; i < set.length; i++) {
-            if (set[i] == actual) return; // found it
+        for (int j : set) {
+            if (j == actual) return; // found it
         }
         StringBuffer array = new StringBuffer();
         for (int i = 0; i < set.length; i++) {

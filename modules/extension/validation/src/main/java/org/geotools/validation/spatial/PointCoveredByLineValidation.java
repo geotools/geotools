@@ -81,8 +81,8 @@ public class PointCoveredByLineValidation extends PointLineAbstractValidation {
             return false;
         }
 
-        for (int i = 0; i < lines.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) lines[i];
+        for (Object line : lines) {
+            SimpleFeature tmp = (SimpleFeature) line;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
             if (gt instanceof LineString) {

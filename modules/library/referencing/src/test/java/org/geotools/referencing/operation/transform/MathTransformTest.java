@@ -416,8 +416,7 @@ public final class MathTransformTest {
         for (int pass = 0; pass < 200; pass++) {
             for (int j = 0; j < maxDimSource; j++) {
                 final double ord = 100 * random.nextDouble();
-                for (int i = 0; i < sources.length; i++) {
-                    final GeneralDirectPosition source = sources[i];
+                for (final GeneralDirectPosition source : sources) {
                     if (j < source.ordinates.length) {
                         source.ordinates[j] = ord;
                     }

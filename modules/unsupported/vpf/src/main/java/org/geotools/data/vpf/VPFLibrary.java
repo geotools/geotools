@@ -248,8 +248,8 @@ public class VPFLibrary extends ContentDataStore {
 
                 List featureTypes = coverage.getFeatureTypes();
 
-                for (int ift = 0; ift < featureTypes.size(); ift++) {
-                    VPFFeatureType featureType = (VPFFeatureType) featureTypes.get(ift);
+                for (Object type : featureTypes) {
+                    VPFFeatureType featureType = (VPFFeatureType) type;
                     VPFFeatureClass featureClass = featureType.getFeatureClass();
                     String featureTypeName = featureType.getTypeName();
                     if (debug) {
@@ -266,8 +266,8 @@ public class VPFLibrary extends ContentDataStore {
                         VPFLogger.log("   file count :   " + fileList.size());
                     }
 
-                    for (int ifl = 0; ifl < fileList.size(); ifl++) {
-                        VPFFile vpfClassFile = (VPFFile) fileList.get(ifl);
+                    for (Object o : fileList) {
+                        VPFFile vpfClassFile = (VPFFile) o;
                         if (debug) {
                             if (vpfClassFile == null) {
                                 VPFLogger.log("null");

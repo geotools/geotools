@@ -501,8 +501,8 @@ public class StreamingRenderer implements GTRenderer {
         }
         if (renderListeners.size() > 0) {
             RenderListener listener;
-            for (int i = 0; i < renderListeners.size(); i++) {
-                listener = renderListeners.get(i);
+            for (RenderListener renderListener : renderListeners) {
+                listener = renderListener;
                 listener.featureRenderer((SimpleFeature) feature);
             }
         }
@@ -518,8 +518,8 @@ public class StreamingRenderer implements GTRenderer {
                 e = new Exception(t);
             }
             RenderListener listener;
-            for (int i = 0; i < renderListeners.size(); i++) {
-                listener = renderListeners.get(i);
+            for (RenderListener renderListener : renderListeners) {
+                listener = renderListener;
                 listener.errorOccurred(e);
             }
         }
@@ -1776,12 +1776,12 @@ public class StreamingRenderer implements GTRenderer {
 
         for (LiteFeatureTypeStyle lfts : styles) {
             Rule[] rules = lfts.elseRules;
-            for (int j = 0; j < rules.length; j++) {
-                rbe.visit(rules[j]);
+            for (Rule value : rules) {
+                rbe.visit(value);
             }
             rules = lfts.ruleList;
-            for (int j = 0; j < rules.length; j++) {
-                rbe.visit(rules[j]);
+            for (Rule rule : rules) {
+                rbe.visit(rule);
             }
         }
 
@@ -1918,13 +1918,12 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         Filter filter = Filter.INCLUDE;
-        final int length = attributes.size();
         Object attType;
 
-        for (int j = 0; j < length; j++) {
+        for (PropertyName attribute : attributes) {
             // NC - support nested attributes -> use evaluation for getting descriptor
             // result is not necessary a descriptor, is Name in case of @attribute
-            attType = attributes.get(j).evaluate(schema);
+            attType = attribute.evaluate(schema);
 
             // the attribute type might be missing because of rendering transformations, skip it
             if (attType == null) {
@@ -1932,7 +1931,7 @@ public class StreamingRenderer implements GTRenderer {
             }
 
             if (attType instanceof GeometryDescriptor) {
-                Filter gfilter = new FastBBOX(attributes.get(j), bboxes.get(0), filterFactory);
+                Filter gfilter = new FastBBOX(attribute, bboxes.get(0), filterFactory);
 
                 if (filter == Filter.INCLUDE) {
                     filter = gfilter;
@@ -1947,8 +1946,7 @@ public class StreamingRenderer implements GTRenderer {
                         filter =
                                 filterFactory.or(
                                         filter,
-                                        new FastBBOX(
-                                                attributes.get(j), bboxes.get(k), filterFactory));
+                                        new FastBBOX(attribute, bboxes.get(k), filterFactory));
                     }
                 }
             }
@@ -2850,10 +2848,9 @@ public class StreamingRenderer implements GTRenderer {
             Filter filter;
             Graphics2D graphics = fts.graphics;
             // applicable rules
-            final int length = ruleList.length;
             int paintCommands = 0;
-            for (int t = 0; t < length; t++) {
-                r = ruleList[t];
+            for (Rule value : ruleList) {
+                r = value;
                 filter = r.getFilter();
 
                 if (filter == null || filter.evaluate(rf.feature)) {
@@ -2868,9 +2865,8 @@ public class StreamingRenderer implements GTRenderer {
             }
 
             if (doElse) {
-                final int elseLength = elseRuleList.length;
-                for (int tt = 0; tt < elseLength; tt++) {
-                    r = elseRuleList[tt];
+                for (Rule rule : elseRuleList) {
+                    r = rule;
 
                     paintCommands += processSymbolizers(graphics, rf, r.symbolizers());
                 }

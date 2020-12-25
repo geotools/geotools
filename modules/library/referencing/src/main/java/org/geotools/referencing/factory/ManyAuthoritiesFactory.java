@@ -679,7 +679,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         final Set<AuthorityFactory> done = new HashSet<>();
         done.add(this); // Safety for avoiding recursive calls.
         FactoryException failure = null;
-        for (int type = 0; type < FACTORY_TYPES.length; type++) {
+        for (Class<? extends AuthorityFactory> factoryType : FACTORY_TYPES) {
             /*
              * Try all factories, starting with the CRS factory because it is the only one most
              * users care about. If the CRS factory doesn't know about the specified object, then
@@ -687,7 +687,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
              */
             final AuthorityFactory factory;
             try {
-                factory = getAuthorityFactory(FACTORY_TYPES[type], code);
+                factory = getAuthorityFactory(factoryType, code);
             } catch (NoSuchAuthorityCodeException exception) {
                 if (failure == null) {
                     failure = exception;
@@ -699,9 +699,12 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
                     return factory.getDescriptionText(code);
                 } catch (FactoryException exception) {
                     /*
-                     * Failed to creates an object using the current factory.  We will retain only the
-                     * first exception and discart all other ones, except if the first exceptions were
-                     * due to unknown authority (we will prefer exception due to unknown code instead).
+                     * Failed to creates an object using the current factory.  We will retain
+                     * only the
+                     * first exception and discart all other ones, except if the first exceptions
+                     *  were
+                     * due to unknown authority (we will prefer exception due to unknown code
+                     * instead).
                      * The first exception is usually thrown by the CRS factory, which is the only
                      * factory most users care about.
                      */
@@ -729,7 +732,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         final Set<AuthorityFactory> done = new HashSet<>();
         done.add(this); // Safety for avoiding recursive calls.
         FactoryException failure = null;
-        for (int type = 0; type < FACTORY_TYPES.length; type++) {
+        for (Class<? extends AuthorityFactory> factoryType : FACTORY_TYPES) {
             /*
              * Try all factories, starting with the CRS factory because it is the only one most
              * users care about. If the CRS factory doesn't know about the specified object, then
@@ -737,7 +740,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
              */
             final AuthorityFactory factory;
             try {
-                factory = getAuthorityFactory(FACTORY_TYPES[type], code);
+                factory = getAuthorityFactory(factoryType, code);
             } catch (NoSuchAuthorityCodeException exception) {
                 if (failure == null) {
                     failure = exception;
@@ -749,9 +752,12 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
                     return factory.createObject(code);
                 } catch (FactoryException exception) {
                     /*
-                     * Failed to creates an object using the current factory.  We will retain only the
-                     * first exception and discart all other ones, except if the first exceptions were
-                     * due to unknown authority (we will prefer exception due to unknown code instead).
+                     * Failed to creates an object using the current factory.  We will retain
+                     * only the
+                     * first exception and discart all other ones, except if the first exceptions
+                     *  were
+                     * due to unknown authority (we will prefer exception due to unknown code
+                     * instead).
                      * The first exception is usually thrown by the CRS factory, which is the only
                      * factory most users care about.
                      */

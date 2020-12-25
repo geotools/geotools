@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -110,9 +109,9 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
     /** @param capabilities */
     private void setupSpecification(final C capabilities) {
-        for (int i = 0; i < specs.length; i++) {
-            if (specs[i].getVersion().equals(capabilities.getVersion())) {
-                specification = specs[i];
+        for (Specification spec : specs) {
+            if (spec.getVersion().equals(capabilities.getVersion())) {
+                specification = spec;
 
                 break;
             }
@@ -335,8 +334,8 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
         String before = null;
 
-        for (Iterator i = known.iterator(); i.hasNext(); ) {
-            String test = (String) i.next();
+        for (Object o : known) {
+            String test = (String) o;
 
             if (test.compareTo(version) < 0) {
 
@@ -363,8 +362,8 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
         String after = null;
 
-        for (Iterator i = known.iterator(); i.hasNext(); ) {
-            String test = (String) i.next();
+        for (Object o : known) {
+            String test = (String) o;
 
             if (test.compareTo(version) > 0) {
                 if ((after == null) || (after.compareTo(test) < 0)) {

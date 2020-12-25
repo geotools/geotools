@@ -161,10 +161,10 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         assertEquals("java.lang.String", rs.getMetaData().getColumnClassName(3));
 
         // make sure that starting from startIdx we get an inline String or not
-        for (int i = 0; i < expectInline.length; i++) {
+        for (boolean b : expectInline) {
             rs.next();
             String result = rs.getString(3);
-            if (expectInline[i]) {
+            if (b) {
                 assertNotNull(result);
                 new WKTReader().read(result);
             } else {

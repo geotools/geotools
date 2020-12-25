@@ -537,8 +537,8 @@ public final class ImageUtilities {
             int minYL = result.getMinY(source);
             int maxXL = result.getWidth(source) + minXL;
             int maxYL = result.getHeight(source) + minYL;
-            for (int i = 0; i < n; i++) {
-                source = sources.get(i);
+            for (RenderedImage renderedImage : sources) {
+                source = renderedImage;
                 final int minX = source.getMinX();
                 final int minY = source.getMinY();
                 final int maxX = source.getWidth() + minX;

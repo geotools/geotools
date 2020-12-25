@@ -77,8 +77,8 @@ public class ChoiceGT implements Choice {
             return null;
         }
 
-        for (int i = 0; i < children.length; i++) {
-            Element e = children[i].findChildElement(name);
+        for (ElementGrouping child : children) {
+            Element e = child.findChildElement(name);
 
             if (e != null) {
                 return e;
@@ -93,8 +93,8 @@ public class ChoiceGT implements Choice {
             return null;
         }
 
-        for (int i = 0; i < children.length; i++) {
-            Element e = children[i].findChildElement(localName, namespaceURI);
+        for (ElementGrouping child : children) {
+            Element e = child.findChildElement(localName, namespaceURI);
 
             if (e != null) {
                 return e;

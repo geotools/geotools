@@ -337,8 +337,8 @@ public class GMLEncodingUtils {
         group.setCompositor(XSDCompositor.SEQUENCE_LITERAL);
 
         List attributes = featureType.getAttributeDescriptors();
-        for (int i = 0; i < attributes.size(); i++) {
-            AttributeDescriptor attribute = (AttributeDescriptor) attributes.get(i);
+        for (Object o : attributes) {
+            AttributeDescriptor attribute = (AttributeDescriptor) o;
 
             if (toFilter.contains(attribute.getLocalName())) {
                 continue;

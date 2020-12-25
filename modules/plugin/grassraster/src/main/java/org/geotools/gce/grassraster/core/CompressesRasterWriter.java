@@ -229,8 +229,8 @@ public class CompressesRasterWriter {
          * the header
          */
         theCreatedFile.seek(1);
-        for (int i = 0; i < rowaddresses.length; i++) {
-            theCreatedFile.writeInt((int) rowaddresses[i]);
+        for (long rowaddress : rowaddresses) {
+            theCreatedFile.writeInt((int) rowaddress);
         }
     }
 

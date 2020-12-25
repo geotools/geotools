@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -201,8 +200,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         Envelope result = new Envelope();
         if (filter instanceof And) {
             Envelope bounds = new Envelope();
-            for (Iterator iter = ((And) filter).getChildren().iterator(); iter.hasNext(); ) {
-                Filter f = (Filter) iter.next();
+            for (Filter f : ((And) filter).getChildren()) {
                 Envelope e = getEnvelope(f);
                 if (e == null) {
                     return null;

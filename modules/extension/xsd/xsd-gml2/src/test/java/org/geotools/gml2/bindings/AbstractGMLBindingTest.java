@@ -17,7 +17,6 @@
 package org.geotools.gml2.bindings;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import junit.framework.TestCase;
@@ -159,8 +158,8 @@ public class AbstractGMLBindingTest extends TestCase {
     XSDTypeDefinition findTypeDefinition(XSDSchema schema, QName type) {
         List types = schema.getTypeDefinitions();
 
-        for (Iterator itr = types.iterator(); itr.hasNext(); ) {
-            XSDTypeDefinition typeDef = (XSDTypeDefinition) itr.next();
+        for (Object o : types) {
+            XSDTypeDefinition typeDef = (XSDTypeDefinition) o;
 
             if (type.getNamespaceURI().equals(typeDef.getTargetNamespace())
                     && type.getLocalPart().equals(typeDef.getName())) {

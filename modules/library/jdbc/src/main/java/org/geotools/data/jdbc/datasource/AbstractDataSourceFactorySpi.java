@@ -47,8 +47,7 @@ public abstract class AbstractDataSourceFactorySpi implements DataSourceFactoryS
             return false;
         }
         Param arrayParameters[] = getParametersInfo();
-        for (int i = 0; i < arrayParameters.length; i++) {
-            Param param = arrayParameters[i];
+        for (Param param : arrayParameters) {
             Object value;
             if (!params.containsKey(param.key)) {
                 if (param.required) {

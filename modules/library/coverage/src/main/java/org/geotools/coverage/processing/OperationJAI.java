@@ -181,8 +181,8 @@ public class OperationJAI extends Operation2D {
         if (sourceClasses != null) {
             final int length = sourceClasses.length;
             assert length == operation.getNumSources();
-            for (int i = 0; i < length; i++) {
-                ensureRenderedImage(sourceClasses[i]);
+            for (Class sourceClass : sourceClasses) {
+                ensureRenderedImage(sourceClass);
             }
         }
         assert super.getNumSources() == operation.getNumSources();
@@ -728,11 +728,11 @@ public class OperationJAI extends Operation2D {
          * handle those cases.
          */
         int numBands = 1;
-        for (int i = 0; i < bandLists.length; i++) {
-            if (bandLists[i] == null) {
+        for (GridSampleDimension[] bandList : bandLists) {
+            if (bandList == null) {
                 continue;
             }
-            final int nb = bandLists[i].length;
+            final int nb = bandList.length;
             if (nb != 1) {
                 if (numBands != 1 && nb != numBands) {
                     return null;

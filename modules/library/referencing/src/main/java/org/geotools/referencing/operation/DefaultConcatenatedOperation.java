@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -322,8 +321,8 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
     @Override
     protected String formatWKT(final Formatter formatter) {
         final String label = super.formatWKT(formatter);
-        for (final Iterator it = operations.iterator(); it.hasNext(); ) {
-            formatter.append((CoordinateOperation) it.next());
+        for (SingleOperation operation : operations) {
+            formatter.append((CoordinateOperation) operation);
         }
         return label;
     }

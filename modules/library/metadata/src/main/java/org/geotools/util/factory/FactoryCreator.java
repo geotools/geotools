@@ -158,9 +158,7 @@ public class FactoryCreator extends FactoryRegistry {
                     // Should not fails, since non-class argument should
                     // have been accepted by 'getServiceProvider(...)'.
                 }
-                final int length = types.length;
-                for (int i = 0; i < length; i++) {
-                    final Class<?> type = types[i];
+                for (final Class<?> type : types) {
                     if (type != null && category.isAssignableFrom(type)) {
                         final int modifiers = type.getModifiers();
                         if (!Modifier.isAbstract(modifiers)) {
@@ -226,8 +224,8 @@ public class FactoryCreator extends FactoryRegistry {
 
     /** Returns {@code true} if the specified implementation is one of the specified types. */
     private static boolean isTypeOf(final Class<?>[] types, final Class<?> implementation) {
-        for (int i = 0; i < types.length; i++) {
-            if (types[i].isAssignableFrom(implementation)) {
+        for (Class<?> type : types) {
+            if (type.isAssignableFrom(implementation)) {
                 return true;
             }
         }

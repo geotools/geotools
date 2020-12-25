@@ -101,8 +101,8 @@ public class PlugIn {
         PropertyDescriptor[] properties = info.getPropertyDescriptors();
         Map<String, PropertyDescriptor> lookup = new HashMap<>(properties.length);
 
-        for (int i = 0; i < properties.length; i++) {
-            lookup.put(properties[i].getName(), properties[i]);
+        for (PropertyDescriptor property : properties) {
+            lookup.put(property.getName(), property);
         }
 
         return lookup;
@@ -168,8 +168,8 @@ public class PlugIn {
 
         PropertyDescriptor property;
 
-        for (Iterator i = config.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) i.next();
+        for (Object o : config.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
             property = propertyInfo((String) entry.getKey());
 
             if (property == null) {

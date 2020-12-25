@@ -334,9 +334,9 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         //
         // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            for (int i = 0; i < params.length; i++) {
+            for (GeneralParameterValue generalParameterValue : params) {
                 @SuppressWarnings("rawtypes")
-                final ParameterValue param = (ParameterValue) params[i];
+                final ParameterValue param = (ParameterValue) generalParameterValue;
                 if (param == null) {
                     continue;
                 }

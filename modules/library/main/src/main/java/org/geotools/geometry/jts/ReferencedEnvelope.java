@@ -686,12 +686,12 @@ public class ReferencedEnvelope extends Envelope
         delta[2] = getMinimum(1) - other.getMinimum(1);
         delta[3] = getMaximum(1) - other.getMaximum(1);
 
-        for (int i = 0; i < delta.length; i++) {
+        for (double v : delta) {
             /*
              * As per Envelope2D#boundsEquals we use ! here to
              * catch any NaN values
              */
-            if (!(Math.abs(delta[i]) <= eps)) {
+            if (!(Math.abs(v) <= eps)) {
                 return false;
             }
         }

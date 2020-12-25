@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -375,8 +374,7 @@ public class CoverageProcessor {
         final Collection<Operation> operations = getOperations();
         final CoverageParameterWriter writer = new CoverageParameterWriter(out);
         final List<ParameterDescriptorGroup> descriptors = new ArrayList<>(operations.size());
-        for (final Iterator<Operation> it = operations.iterator(); it.hasNext(); ) {
-            final Operation operation = it.next();
+        for (final Operation operation : operations) {
             if (operation instanceof AbstractOperation) {
                 descriptors.add(((AbstractOperation) operation).descriptor);
             }
@@ -399,8 +397,8 @@ public class CoverageProcessor {
         final CoverageParameterWriter writer = new CoverageParameterWriter(out);
         final String lineSeparator = System.getProperty("line.separator", "\n");
         if (names != null) {
-            for (int i = 0; i < names.length; i++) {
-                final Operation operation = getOperation(names[i]);
+            for (String name : names) {
+                final Operation operation = getOperation(name);
                 if (operation instanceof AbstractOperation) {
                     out.write(lineSeparator);
                     writer.format(((AbstractOperation) operation).descriptor);
@@ -408,8 +406,7 @@ public class CoverageProcessor {
             }
         } else {
             final Collection<Operation> operations = getOperations();
-            for (final Iterator<Operation> it = operations.iterator(); it.hasNext(); ) {
-                final Operation operation = it.next();
+            for (final Operation operation : operations) {
                 if (operation instanceof AbstractOperation) {
                     out.write(lineSeparator);
                     writer.format(((AbstractOperation) operation).descriptor);

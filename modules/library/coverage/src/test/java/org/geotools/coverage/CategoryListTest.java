@@ -79,8 +79,8 @@ public final class CategoryListTest {
             for (int i = 0; i < categories.length; i++) {
                 array[i] = categories[i].minimum;
             }
-            for (int i = 0; i < categories.length; i++) {
-                final double expected = categories[i].minimum;
+            for (Category category : categories) {
+                final double expected = category.minimum;
                 final int foundAt = CategoryList.binarySearch(array, expected);
                 final double actual = categories[foundAt].minimum;
                 assertEquals("binarySearch", toHexString(expected), toHexString(actual));

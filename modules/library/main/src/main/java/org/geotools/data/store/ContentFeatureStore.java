@@ -19,7 +19,6 @@ package org.geotools.data.store;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -228,8 +227,8 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
 
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
         try {
-            for (Iterator f = collection.iterator(); f.hasNext(); ) {
-                FeatureId id = addFeature((SimpleFeature) f.next(), writer);
+            for (Object o : collection) {
+                FeatureId id = addFeature((SimpleFeature) o, writer);
                 ids.add(id);
             }
         } finally {

@@ -719,8 +719,8 @@ public class DataUtilities {
             List list = (List) src;
             List<Object> copy = new ArrayList<>(list.size());
 
-            for (Iterator i = list.iterator(); i.hasNext(); ) {
-                copy.add(duplicate(i.next()));
+            for (Object o : list) {
+                copy.add(duplicate(o));
             }
 
             return Collections.unmodifiableList(copy);
@@ -731,8 +731,8 @@ public class DataUtilities {
             Map<Object, Object> map = (Map) src;
             Map<Object, Object> copy = new HashMap<>(map.size());
 
-            for (Iterator i = map.entrySet().iterator(); i.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) i.next();
+            for (Map.Entry<Object, Object> objectObjectEntry : map.entrySet()) {
+                Map.Entry entry = (Map.Entry) objectObjectEntry;
                 copy.put(entry.getKey(), duplicate(entry.getValue()));
             }
 
@@ -1169,9 +1169,8 @@ public class DataUtilities {
     public static SimpleFeatureCollection collection(SimpleFeature[] features) {
         // JG: There may be some performance to be gained by using ListFeatureCollection here
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
-        final int length = features.length;
-        for (int i = 0; i < length; i++) {
-            collection.add(features[i]);
+        for (SimpleFeature feature : features) {
+            collection.add(feature);
         }
         return collection;
     }
@@ -1795,9 +1794,9 @@ public class DataUtilities {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName(featureType.getName());
         tb.setCRS(null); // not interested in warnings from this simple method
-        for (int i = 0; i < properties.length; i++) {
+        for (String property : properties) {
             // let's get the attribute descriptor corresponding to the current property
-            AttributeDescriptor attributeDescriptor = featureType.getDescriptor(properties[i]);
+            AttributeDescriptor attributeDescriptor = featureType.getDescriptor(property);
             if (attributeDescriptor != null) {
                 // if the property doesn't map to an attribute descriptor we ignore it
                 // an attribute descriptor may be omitted for security proposes for example
@@ -1962,8 +1961,7 @@ public class DataUtilities {
         if (crs == null || crs.getIdentifiers() == null) {
             return -1; // not found
         }
-        for (Iterator<ReferenceIdentifier> it = crs.getIdentifiers().iterator(); it.hasNext(); ) {
-            ReferenceIdentifier id = it.next();
+        for (ReferenceIdentifier id : crs.getIdentifiers()) {
             Citation authority = id.getAuthority();
             if (authority != null && authority.getTitle().equals(Citations.EPSG.getTitle())) {
                 try {
@@ -2509,9 +2507,9 @@ public class DataUtilities {
         }
 
         if (atts2 != null) {
-            for (int i = 0; i < atts2.size(); i++) {
-                if (!atts.contains(atts2.get(i))) {
-                    atts.add(atts2.get(i));
+            for (PropertyName propertyName : atts2) {
+                if (!atts.contains(propertyName)) {
+                    atts.add(propertyName);
                 }
             }
         }
@@ -2896,8 +2894,7 @@ public class DataUtilities {
         if (params == null) {
             return false;
         }
-        for (int i = 0; i < arrayParameters.length; i++) {
-            Param param = arrayParameters[i];
+        for (Param param : arrayParameters) {
             Object value;
             if (!params.containsKey(param.key)) {
                 if (param.required) {

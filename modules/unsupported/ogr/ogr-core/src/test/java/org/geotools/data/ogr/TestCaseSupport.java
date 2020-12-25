@@ -228,12 +228,12 @@ public abstract class TestCaseSupport extends TestCase {
      */
     protected void copy(final String name, String[] requiredExtensions, String[] optionalExtensions)
             throws IOException {
-        for (int i = 0; i < requiredExtensions.length; i++) {
-            assertTrue(TestData.copy(this, sibling(name, requiredExtensions[i])).canRead());
+        for (String requiredExtension : requiredExtensions) {
+            assertTrue(TestData.copy(this, sibling(name, requiredExtension)).canRead());
         }
-        for (int i = 0; i < optionalExtensions.length; i++) {
+        for (String optionalExtension : optionalExtensions) {
             try {
-                assertTrue(TestData.copy(this, sibling(name, optionalExtensions[i])).canRead());
+                assertTrue(TestData.copy(this, sibling(name, optionalExtension)).canRead());
             } catch (FileNotFoundException e) {
                 // Ignore: this file is optional.
             }

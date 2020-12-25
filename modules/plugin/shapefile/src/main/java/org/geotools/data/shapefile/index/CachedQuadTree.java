@@ -61,8 +61,8 @@ public class CachedQuadTree {
         if (shapeIds != null && shapeIds.length > 0) {
             start = offsets.size();
             // turn the shape ids into offsets so that we won't need to open the index file anymore
-            for (int i = 0; i < shapeIds.length; i++) {
-                offsets.add(indexfile.getOffsetInBytes(shapeIds[i]));
+            for (int shapeId : shapeIds) {
+                offsets.add(indexfile.getOffsetInBytes(shapeId));
             }
             end = offsets.size();
         }

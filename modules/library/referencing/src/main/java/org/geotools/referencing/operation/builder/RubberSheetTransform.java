@@ -18,7 +18,6 @@ package org.geotools.referencing.operation.builder;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.util.Iterator;
 import java.util.Map;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
@@ -95,8 +94,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
         final String lineSeparator = System.getProperty("line.separator", "\n");
         final StringBuilder buffer = new StringBuilder();
 
-        for (final Iterator i = trianglesToKeysMap.keySet().iterator(); i.hasNext(); ) {
-            TINTriangle trian = (TINTriangle) i.next();
+        for (TINTriangle trian : trianglesToKeysMap.keySet()) {
             MathTransform mt = (MathTransform) trianglesToKeysMap.get(trian);
             buffer.append(trian.toString());
             buffer.append(lineSeparator);
@@ -146,9 +144,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
             return potentialTriangle;
         }
 
-        for (Iterator i = trianglesToKeysMap.keySet().iterator(); i.hasNext(); ) {
-            TINTriangle triangle = (TINTriangle) i.next();
-
+        for (TINTriangle triangle : trianglesToKeysMap.keySet()) {
             if (triangle.containsOrIsVertex(p)) {
                 previousTriangle = triangle;
 

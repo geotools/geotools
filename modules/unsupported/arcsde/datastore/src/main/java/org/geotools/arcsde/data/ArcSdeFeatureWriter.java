@@ -722,8 +722,8 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             SeColumnDefinition columnDefinition;
             String columnName;
             int usedIndex = 0;
-            for (int actualIndex = 0; actualIndex < columnDefinitions.length; actualIndex++) {
-                columnDefinition = columnDefinitions[actualIndex];
+            for (SeColumnDefinition definition : columnDefinitions) {
+                columnDefinition = definition;
                 columnName = columnDefinition.getName();
                 // this is an attribute added to the featuretype
                 // solely to support FIDs. It isn't an actual attribute
@@ -772,8 +772,8 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             SeColumnDefinition columnDefinition;
             String columnName;
             int usedIndex = 0;
-            for (int actualIndex = 0; actualIndex < columnDefinitions.length; actualIndex++) {
-                columnDefinition = columnDefinitions[actualIndex];
+            for (SeColumnDefinition definition : columnDefinitions) {
+                columnDefinition = definition;
                 columnName = columnDefinition.getName();
 
                 if (fidReader instanceof FIDReader.SdeManagedFidReader) {

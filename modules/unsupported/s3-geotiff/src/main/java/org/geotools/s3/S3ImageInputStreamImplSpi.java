@@ -63,6 +63,7 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
         return "Service provider that wraps a file in S3";
     }
 
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public void onRegistration(ServiceRegistry registry, Class<?> category) {
         super.onRegistration(registry, category);
         Class<ImageInputStreamSpi> targetClass = ImageInputStreamSpi.class;

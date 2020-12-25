@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -238,10 +237,9 @@ public class FidQueryTest extends FIDTestCase {
 
         int i = 0;
 
-        for (Iterator<Entry<String, SimpleFeature>> iter = fids.entrySet().iterator();
-                iter.hasNext(); ) {
+        for (Entry<String, SimpleFeature> stringSimpleFeatureEntry : fids.entrySet()) {
             i++;
-            Entry<String, SimpleFeature> entry = iter.next();
+            Entry<String, SimpleFeature> entry = stringSimpleFeatureEntry;
             String fid = entry.getKey();
             FeatureId id = fac.featureId(fid);
             Filter filter = fac.id(Collections.singleton(id));

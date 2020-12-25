@@ -888,14 +888,14 @@ public final class XArray {
      */
     public static boolean allEquals(final float[] array, final float value) {
         if (Float.isNaN(value)) {
-            for (int i = 0; i < array.length; i++) {
-                if (!Float.isNaN(array[i])) {
+            for (float v : array) {
+                if (!Float.isNaN(v)) {
                     return false;
                 }
             }
         } else {
-            for (int i = 0; i < array.length; i++) {
-                if (array[i] != value) {
+            for (float v : array) {
+                if (v != value) {
                     return false;
                 }
             }
@@ -909,14 +909,14 @@ public final class XArray {
      */
     public static boolean allEquals(final double[] array, final double value) {
         if (Double.isNaN(value)) {
-            for (int i = 0; i < array.length; i++) {
-                if (!Double.isNaN(array[i])) {
+            for (double v : array) {
+                if (!Double.isNaN(v)) {
                     return false;
                 }
             }
         } else {
-            for (int i = 0; i < array.length; i++) {
-                if (array[i] != value) {
+            for (double v : array) {
+                if (v != value) {
                     return false;
                 }
             }
@@ -929,8 +929,8 @@ public final class XArray {
      * value.
      */
     public static boolean hasNaN(final float[] array) {
-        for (int i = 0; i < array.length; i++) {
-            if (Float.isNaN(array[i])) {
+        for (float v : array) {
+            if (Float.isNaN(v)) {
                 return true;
             }
         }
@@ -942,8 +942,8 @@ public final class XArray {
      * value.
      */
     public static boolean hasNaN(final double[] array) {
-        for (int i = 0; i < array.length; i++) {
-            if (Double.isNaN(array[i])) {
+        for (double v : array) {
+            if (Double.isNaN(v)) {
                 return true;
             }
         }

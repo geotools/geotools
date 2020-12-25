@@ -66,14 +66,14 @@ public class DataUtils implements DataTypesDefinition {
             case DATA_LEVEL3_TEXT:
                 StringBuffer sb = new StringBuffer(bytes.length);
 
-                for (int i = 0; i < bytes.length; i++) {
-                    sb.append((char) bytes[i]);
+                for (byte aByte : bytes) {
+                    sb.append((char) aByte);
                 }
 
                 boolean isNull = false;
 
-                for (int i = 0; i < STRING_NULL_VALUES.length; i++) {
-                    isNull |= sb.toString().trim().equalsIgnoreCase(STRING_NULL_VALUES[i]);
+                for (String stringNullValue : STRING_NULL_VALUES) {
+                    isNull |= sb.toString().trim().equalsIgnoreCase(stringNullValue);
                 }
 
                 if (isNull) {

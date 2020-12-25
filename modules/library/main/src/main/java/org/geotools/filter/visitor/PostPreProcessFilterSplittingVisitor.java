@@ -526,9 +526,9 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
                     Within.class
                 };
 
-        for (int i = 0; i < spatialOps.length; i++) {
-            if (spatialOps[i].isAssignableFrom(filter.getClass())) {
-                if (!supports(spatialOps[i])) {
+        for (Class<? extends Filter> spatialOp : spatialOps) {
+            if (spatialOp.isAssignableFrom(filter.getClass())) {
+                if (!supports(spatialOp)) {
                     postStack.push(filter);
                     return;
                 } else {

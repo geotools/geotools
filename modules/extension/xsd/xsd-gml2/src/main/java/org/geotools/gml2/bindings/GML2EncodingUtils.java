@@ -18,7 +18,6 @@ package org.geotools.gml2.bindings;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -64,8 +63,9 @@ public class GML2EncodingUtils {
             return null;
         }
 
-        for (Iterator i = crs.getIdentifiers().iterator(); i.hasNext(); ) {
-            Identifier id = (Identifier) i.next();
+        for (org.opengis.referencing.ReferenceIdentifier referenceIdentifier :
+                crs.getIdentifiers()) {
+            Identifier id = (Identifier) referenceIdentifier;
 
             // return "EPSG:" + id.getCode();
             if ((id.getAuthority() != null)

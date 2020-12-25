@@ -275,8 +275,8 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         Classifier ranged2 = (Classifier) value2;
         double[] percentages2 = ranged2.getPercentages();
         assertEquals(percentages2.length, 6);
-        for (int i = 0; i < percentages2.length; i++) {
-            assertEquals(Math.floor(percentages2[i]), 16.0);
+        for (double v : percentages2) {
+            assertEquals(Math.floor(v), 16.0);
         }
     }
 
@@ -319,8 +319,8 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         RangedClassifier ranged = (RangedClassifier) value;
         double[] percentages = ranged.getPercentages();
         assertEquals(percentages.length, 8);
-        for (int i = 0; i < percentages.length; i++) {
-            assertTrue(percentages[i] == 12.5);
+        for (double percentage : percentages) {
+            assertTrue(percentage == 12.5);
         }
     }
 }

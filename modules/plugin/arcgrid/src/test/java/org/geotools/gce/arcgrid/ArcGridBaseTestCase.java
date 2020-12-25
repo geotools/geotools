@@ -62,15 +62,15 @@ public abstract class ArcGridBaseTestCase extends TestCase {
     protected void tearDown() throws Exception {
         final File[] fileList = TestData.file(this, "").listFiles();
         final int length = fileList.length;
-        for (int i = 0; i < length; i++) {
-            if (fileList[i].isDirectory()) {
-                fileList[i].delete();
+        for (File file : fileList) {
+            if (file.isDirectory()) {
+                file.delete();
 
                 continue;
             }
 
-            if (!fileList[i].getName().endsWith("zip")) {
-                fileList[i].delete();
+            if (!file.getName().endsWith("zip")) {
+                file.delete();
             }
         }
         super.tearDown();
@@ -80,17 +80,17 @@ public abstract class ArcGridBaseTestCase extends TestCase {
 
         final StringBuilder errors = new StringBuilder();
         final int length = testFiles.length;
-        for (int i = 0; i < length; i++) {
+        for (File testFile : testFiles) {
 
             try {
-                runMe(testFiles[i]);
+                runMe(testFile);
 
             } catch (Exception e) {
                 // e.printStackTrace();
                 final StringWriter writer = new StringWriter();
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 errors.append("\nFile ")
-                        .append(testFiles[i].getAbsolutePath())
+                        .append(testFile.getAbsolutePath())
                         .append(" :\n")
                         .append(e.getMessage())
                         .append("\n")

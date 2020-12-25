@@ -87,8 +87,8 @@ public class CSVWriteTest {
     public void removeTemporaryLocations() throws IOException {
         File list[] = tmp.listFiles();
         if (list != null) {
-            for (int i = 0; i < list.length; i++) {
-                list[i].delete();
+            for (File value : list) {
+                value.delete();
             }
         }
         tmp.delete();

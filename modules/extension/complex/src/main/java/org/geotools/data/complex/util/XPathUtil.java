@@ -76,8 +76,8 @@ public class XPathUtil {
         }
 
         public boolean containsPredicate() {
-            for (int i = 0; i < size(); i++) {
-                if (get(i).getPredicate() != null) {
+            for (Step step : this) {
+                if (step.getPredicate() != null) {
                     return true;
                 }
             }

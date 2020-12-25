@@ -16,7 +16,6 @@
  */
 package org.geotools.graph.traverse.standard;
 
-import java.util.Iterator;
 import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
@@ -259,9 +258,7 @@ public class BreadthFirstIteratorTest extends TestCase {
                         int level = component.getObject().toString().length();
 
                         // check all nodes that are at a lower level in the tree
-                        for (Iterator itr = builder().getGraph().getNodes().iterator();
-                                itr.hasNext(); ) {
-                            Node other = (Node) itr.next();
+                        for (Node other : builder().getGraph().getNodes()) {
                             if (other.getObject().toString().length() > level)
                                 assertTrue(other.getCount() > component.getCount());
                         }

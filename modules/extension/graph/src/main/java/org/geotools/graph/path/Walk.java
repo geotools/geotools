@@ -127,8 +127,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     }
 
     public void addEdges(Collection<Edge> edges) {
-        for (Iterator<Edge> itr = edges.iterator(); itr.hasNext(); ) {
-            Edge e = itr.next();
+        for (Edge e : edges) {
             addEdge(e);
         }
     }

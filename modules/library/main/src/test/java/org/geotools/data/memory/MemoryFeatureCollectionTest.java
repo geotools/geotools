@@ -41,8 +41,8 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
 
     public void testAdd() {
         MemoryFeatureCollection rivers = new MemoryFeatureCollection(riverType);
-        for (int i = 0; i < riverFeatures.length; i++) {
-            rivers.add(riverFeatures[i]);
+        for (SimpleFeature riverFeature : riverFeatures) {
+            rivers.add(riverFeature);
         }
         assertEquals(riverFeatures.length, rivers.size());
     }
@@ -87,9 +87,9 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
     public void testBounds() {
         MemoryFeatureCollection rivers = new MemoryFeatureCollection(riverType);
         ReferencedEnvelope expected = new ReferencedEnvelope();
-        for (int i = 0; i < riverFeatures.length; i++) {
-            rivers.add(riverFeatures[i]);
-            expected.include(riverFeatures[i].getBounds());
+        for (SimpleFeature riverFeature : riverFeatures) {
+            rivers.add(riverFeature);
+            expected.include(riverFeature.getBounds());
         }
         assertEquals(riverFeatures.length, rivers.size());
 

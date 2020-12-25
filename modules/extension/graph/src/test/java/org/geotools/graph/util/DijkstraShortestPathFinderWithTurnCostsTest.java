@@ -57,8 +57,8 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
         BasicLineGraphGenerator graphGen = new BasicLineGraphGenerator();
 
         // add the lines to the graph
-        for (int i = 0; i < lines.length; i++) {
-            graphGen.add(lines[i]);
+        for (LineSegment line : lines) {
+            graphGen.add(line);
         }
 
         this.graph = graphGen.getGraph();

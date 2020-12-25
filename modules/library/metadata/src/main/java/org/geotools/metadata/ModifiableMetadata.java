@@ -18,7 +18,6 @@ package org.geotools.metadata;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -238,8 +237,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
                 return Collections.emptyMap();
             }
             map = new LinkedHashMap(map);
-            for (final Iterator<Map.Entry> it = map.entrySet().iterator(); it.hasNext(); ) {
-                final Map.Entry entry = it.next();
+            for (final Map.Entry entry : (Iterable<Map.Entry>) map.entrySet()) {
                 entry.setValue(unmodifiable(entry.getValue()));
             }
             return Collections.unmodifiableMap(map);

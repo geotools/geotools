@@ -1140,10 +1140,12 @@ public final class JTS {
         // check each coordinate
         Coordinate[] c = geom.getCoordinates();
 
-        for (int i = 0; i < c.length; i++) {
-            if (!xUnbounded && ((c[i].x < x.getMinimumValue()) || (c[i].x > x.getMaximumValue()))) {
+        for (Coordinate coordinate : c) {
+            if (!xUnbounded
+                    && ((coordinate.x < x.getMinimumValue())
+                            || (coordinate.x > x.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(
-                        c[i].x
+                        coordinate.x
                                 + " outside of ("
                                 + x.getMinimumValue()
                                 + ","
@@ -1151,9 +1153,11 @@ public final class JTS {
                                 + ")");
             }
 
-            if (!yUnbounded && ((c[i].y < y.getMinimumValue()) || (c[i].y > y.getMaximumValue()))) {
+            if (!yUnbounded
+                    && ((coordinate.y < y.getMinimumValue())
+                            || (coordinate.y > y.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(
-                        c[i].y
+                        coordinate.y
                                 + " outside of ("
                                 + y.getMinimumValue()
                                 + ","

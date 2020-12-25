@@ -661,8 +661,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
         List<ColumnSet> csets = new ArrayList<>(columnSet.values());
         List<VPFFile> fileList = new ArrayList<>();
-        for (int i = 0; i < csets.size(); i++) {
-            ColumnSet cs = csets.get(i);
+        for (ColumnSet cs : csets) {
             fileList.add(cs.table);
         }
         return fileList;

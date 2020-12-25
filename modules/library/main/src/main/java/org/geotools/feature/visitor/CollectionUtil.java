@@ -50,8 +50,7 @@ public class CollectionUtil {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
 
-                for (int i = 0; i < visitors.length; i++) {
-                    FeatureVisitor visitor = visitors[i];
+                for (FeatureVisitor visitor : visitors) {
                     visitor.visit(feature);
                 }
             }

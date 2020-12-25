@@ -643,8 +643,8 @@ public class WKTReader2 extends WKTReader {
      */
     private Point[] toPoints(Coordinate[] coordinates) {
         ArrayList<Point> points = new ArrayList<>();
-        for (int i = 0; i < coordinates.length; i++) {
-            points.add(geometryFactory.createPoint(coordinates[i]));
+        for (Coordinate coordinate : coordinates) {
+            points.add(geometryFactory.createPoint(coordinate));
         }
         return points.toArray(new Point[points.size()]);
     }

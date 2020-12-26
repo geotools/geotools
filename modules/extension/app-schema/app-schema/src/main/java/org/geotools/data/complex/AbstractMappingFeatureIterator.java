@@ -628,7 +628,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         // FIXME should set a child Property.. but be careful for things that
         // are smuggled in there internally and don't exist in the schema, like
         // XSDTypeDefinition, CRS etc.
-        if (targetAttributes.size() > 0) {
+        if (!targetAttributes.isEmpty()) {
             target.getUserData().put(Attributes.class, targetAttributes);
         }
 
@@ -638,7 +638,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected void setGeometryUserData(Attribute target, Map<Name, Object> targetAttributes) {
         // with geometry objects, set ID and attributes in geometry object
         if (target instanceof GeometryAttribute
-                && (targetAttributes.size() > 0 || target.getIdentifier() != null)) {
+                && (!targetAttributes.isEmpty() || target.getIdentifier() != null)) {
             Geometry geom;
             if (target.getValue() == null) {
                 // create empty geometry if null but attributes
@@ -668,7 +668,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 if (target.getIdentifier() != null) {
                     newUserData.put("gml:id", target.getIdentifier().toString());
                 }
-                if (targetAttributes.size() > 0) {
+                if (!targetAttributes.isEmpty()) {
                     newUserData.put(Attributes.class, targetAttributes);
                 }
 

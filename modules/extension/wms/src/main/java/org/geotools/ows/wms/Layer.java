@@ -209,7 +209,7 @@ public class Layer implements Comparable<Layer> {
             }
 
             Layer parent = this.getParent();
-            while (parent != null && allBoundingBoxesCache.size() == 0) {
+            while (parent != null && allBoundingBoxesCache.isEmpty()) {
                 for (CRSEnvelope bbox : parent.getLayerBoundingBoxes()) {
                     allBoundingBoxesCache.put(bbox.getSRSName(), bbox);
                 }
@@ -757,7 +757,7 @@ public class Layer implements Comparable<Layer> {
         // TODO Attempt to figure out the valid area of the CRS and use that.
 
         // last attempt grab the first thing (and we will transform it)
-        if (tempBBox == null && getBoundingBoxes() != null && getBoundingBoxes().size() > 0) {
+        if (tempBBox == null && getBoundingBoxes() != null && !getBoundingBoxes().isEmpty()) {
             tempBBox = getBoundingBoxes().values().iterator().next();
         }
 

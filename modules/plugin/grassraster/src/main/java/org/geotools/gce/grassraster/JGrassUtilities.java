@@ -484,7 +484,7 @@ public class JGrassUtilities {
             colrFile.getParentFile().mkdir();
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(colrFile))) {
-            if (rules.size() == 0) {
+            if (rules.isEmpty()) {
                 throw new IllegalArgumentException("The list of colorrules can't be empty.");
             }
             String header = "% " + minMax[0] + "   " + minMax[1] + "   " + alpha;

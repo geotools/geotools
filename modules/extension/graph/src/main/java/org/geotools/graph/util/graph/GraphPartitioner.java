@@ -107,7 +107,7 @@ public class GraphPartitioner implements GraphWalker {
 
             for (Iterator<Serializable> itr = m_partitions.iterator(); itr.hasNext(); ) {
                 m_partition = (ArrayList<Serializable>) itr.next();
-                if (m_partition.size() == 0) continue;
+                if (m_partition.isEmpty()) continue;
 
                 nodes = new HashSet<>();
                 edges = new HashSet<>();

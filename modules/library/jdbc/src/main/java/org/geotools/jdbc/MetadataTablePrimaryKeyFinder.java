@@ -215,7 +215,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             }
 
             // see if we accumulated any info about this table
-            if (columns.size() > 0) return new PrimaryKey(table, columns);
+            if (!columns.isEmpty()) return new PrimaryKey(table, columns);
             else return null;
         } catch (SQLException e) {
             LOGGER.log(

@@ -70,7 +70,7 @@ public class SLDInlineFeatureParser {
                     "SLD InlineFeature Parser - couldnt determine a FeatureType.  See help for whats supported."); // shouldnt get here
 
         makeFeatures(root, isFeatureCollection);
-        if (features.size() == 0)
+        if (features.isEmpty())
             throw new Exception("SLD InlineFeature Parser - didnt find any features!");
 
         buildStore();

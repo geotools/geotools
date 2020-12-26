@@ -552,7 +552,7 @@ public class GeometryClipper {
                 result = filterCollection(Polygon.class, result);
             }
 
-            if (result.size() == 0) {
+            if (result.isEmpty()) {
                 return null;
             } else if (result.size() == 1) {
                 return result.get(0);

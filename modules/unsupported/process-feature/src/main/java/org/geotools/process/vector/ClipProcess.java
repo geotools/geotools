@@ -384,7 +384,7 @@ public class ClipProcess implements VectorProcess {
                             }
                         });
 
-                if (results.size() == 0) {
+                if (results.isEmpty()) {
                     return null;
                 } else {
                     return results;

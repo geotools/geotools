@@ -163,7 +163,7 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
         public String toString() {
             StringBuilder sb = new StringBuilder("[");
             sb.append(element);
-            if (outgoings.size() > 0) {
+            if (!outgoings.isEmpty()) {
                 sb.append(" -> (");
                 for (DirectedGraphNode outgoing : outgoings) {
                     sb.append(outgoing.element).append(",");

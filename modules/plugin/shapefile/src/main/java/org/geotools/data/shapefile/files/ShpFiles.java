@@ -403,7 +403,7 @@ public class ShpFiles {
                             + requestor
                             + " to have locked the url but it does not hold the lock for the URL");
         }
-        if (threadLockers.size() == 0) lockers.remove(Thread.currentThread());
+        if (threadLockers.isEmpty()) lockers.remove(Thread.currentThread());
         readWriteLock.readLock().unlock();
     }
 
@@ -533,7 +533,7 @@ public class ShpFiles {
                             + " to have locked the url but it does not hold the lock for the URL");
         }
 
-        if (threadLockers.size() == 0) {
+        if (threadLockers.isEmpty()) {
             lockers.remove(Thread.currentThread());
         } else {
             // get back read locks before giving up the write one

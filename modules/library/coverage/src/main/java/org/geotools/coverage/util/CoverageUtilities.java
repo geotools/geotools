@@ -308,7 +308,7 @@ public final class CoverageUtilities {
         for (int i = 0; i < background.length; i++) {
             // try to use the no data category if preset
             final List<Category> categories = sampleDimensions[i].getCategories();
-            if (categories != null && categories.size() > 0) {
+            if (categories != null && !categories.isEmpty()) {
                 for (Category category : categories) {
                     if (category.getName().equals(NODATA)) {
                         background[i] = category.getRange().getMinimum();
@@ -320,7 +320,7 @@ public final class CoverageUtilities {
 
             if (!found) {
                 // we don't have a proper no data value, let's try to suggest something
-                // meaningful fro mthe data type for this coverage
+                // meaningful from the data type for this coverage
                 background[i] = suggestNoDataValue(dataType).doubleValue();
             }
 

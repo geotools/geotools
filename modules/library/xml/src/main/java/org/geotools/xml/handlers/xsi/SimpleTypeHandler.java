@@ -292,14 +292,14 @@ public class SimpleTypeHandler extends XSIElementHandler {
     }
 
     static Facet[] getFacets(RestrictionHandler rh) {
-        List contraints = rh.getConstraints();
+        List constraints = rh.getConstraints();
 
-        if ((contraints == null) || (contraints.size() == 0)) {
+        if ((constraints == null) || (constraints.isEmpty())) {
             return null;
         }
 
-        Facet[] facets = new Facet[contraints.size()];
-        Iterator i = contraints.iterator();
+        Facet[] facets = new Facet[constraints.size()];
+        Iterator i = constraints.iterator();
         int index = 0;
 
         while (i.hasNext()) {

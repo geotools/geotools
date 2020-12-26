@@ -512,7 +512,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
                 // consider the updated feature if any, we need to know how
                 // many of those matched the filter before
-                if (modifiedFids.size() > 0) {
+                if (!modifiedFids.isEmpty()) {
                     Id idFilter = ff.id(modifiedFids);
                     Query q = new Query(query);
                     q.setFilter(ff.and(idFilter, query.getFilter()));

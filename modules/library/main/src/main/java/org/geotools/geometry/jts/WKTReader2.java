@@ -475,7 +475,7 @@ public class WKTReader2 extends WKTReader {
     /** Creates a <code>LineString</code> using the next token in the stream. */
     private LineString readCircularStringText() throws IOException, ParseException {
         List<Coordinate> coordinates = getCoordinateList(true);
-        if (coordinates.size() == 0) {
+        if (coordinates.isEmpty()) {
             return geometryFactory.createCurvedGeometry(
                     new LiteCoordinateSequence(new Coordinate[0]));
         } else if (coordinates.size() < 3) {

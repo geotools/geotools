@@ -166,11 +166,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         List leftExpressions = (List) left.accept(this, null);
         List rightExpressions = (List) right.accept(this, null);
 
-        if (leftExpressions.size() == 0) {
+        if (leftExpressions.isEmpty()) {
             throw new IllegalStateException(left + " mapping not found");
         }
 
-        if (rightExpressions.size() == 0) {
+        if (rightExpressions.isEmpty()) {
             throw new IllegalStateException(right + " mapping not found");
         }
 
@@ -208,11 +208,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         List leftExpressions = (List) left.accept(this, null);
         List rightExpressions = (List) right.accept(this, null);
 
-        if (leftExpressions.size() == 0) {
+        if (leftExpressions.isEmpty()) {
             throw new IllegalStateException(left + " mapping not found");
         }
 
-        if (rightExpressions.size() == 0) {
+        if (rightExpressions.isEmpty()) {
             throw new IllegalStateException(right + " mapping not found");
         }
 
@@ -862,7 +862,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         matchingMappings.remove(Expression.NIL);
 
-        if (matchingMappings.size() == 0) {
+        if (matchingMappings.isEmpty()) {
             throw new IllegalArgumentException("Can't find source expression for: " + targetXPath);
         }
 

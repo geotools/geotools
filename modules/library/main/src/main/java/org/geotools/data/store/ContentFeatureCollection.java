@@ -184,7 +184,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                 }
             }
             // no geometries, no bounds
-            if (geometries.size() == 0) {
+            if (geometries.isEmpty()) {
                 return new ReferencedEnvelope();
             } else {
                 q.setPropertyNames(geometries);

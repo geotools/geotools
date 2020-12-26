@@ -774,7 +774,7 @@ public class Encoder {
                         // ConcurrentModificationException
                         List sub = safeCopy(entry.element.getSubstitutionGroup());
 
-                        if (sub.size() > 0) {
+                        if (!sub.isEmpty()) {
                             // match up by type
                             List<Object[]> matches = new ArrayList<>();
 
@@ -835,7 +835,7 @@ public class Encoder {
                                 entry.element = (XSDElementDeclaration) matches.get(0)[0];
                             }
                             // if multiple we have a problem
-                            else if (matches.size() > 0) {
+                            else if (!matches.isEmpty()) {
                                 if (logger.isLoggable(Level.FINE)) {
                                     StringBuffer msg =
                                             new StringBuffer(
@@ -854,7 +854,7 @@ public class Encoder {
                                 Collections.sort(matches, new MatchComparator());
                             }
 
-                            if (matches.size() > 0) {
+                            if (!matches.isEmpty()) {
                                 entry.element = (XSDElementDeclaration) matches.get(0)[0];
                             }
 

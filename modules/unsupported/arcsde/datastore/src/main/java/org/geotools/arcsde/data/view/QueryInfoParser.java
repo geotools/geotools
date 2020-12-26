@@ -124,7 +124,7 @@ public class QueryInfoParser {
      *     net.sf.jsqlparser.statement.select.AllColumns}
      */
     private static String[] getColumns(ISession session, List selectItems) throws IOException {
-        if (selectItems == null || selectItems.size() == 0) {
+        if (selectItems == null || selectItems.isEmpty()) {
             return null;
         }
 

@@ -164,7 +164,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     }
 
     public CalcResult getResult() {
-        if (set.size() < 1) {
+        if (set.isEmpty()) {
             return CalcResult.NULL_RESULT;
         }
         return new UniqueResult(set, this.preserveOrder);

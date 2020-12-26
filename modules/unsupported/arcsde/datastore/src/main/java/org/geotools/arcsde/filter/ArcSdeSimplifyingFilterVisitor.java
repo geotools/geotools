@@ -126,7 +126,7 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
 
                 // we perform a reduction on the list of filters, trying to find groups that can be
                 // merged
-                while (propertyFilters.size() > 0) {
+                while (!propertyFilters.isEmpty()) {
                     SpatialOperation main = propertyFilters.get(0);
                     List<SpatialOperation> toMerge = new ArrayList<>();
                     toMerge.add(main);
@@ -165,9 +165,9 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
             }
 
             // did we manage to squash anything?
-            if (mergedFilters.size() == 1 && otherFilters.size() == 0) {
+            if (mergedFilters.size() == 1 && otherFilters.isEmpty()) {
                 simplified = mergedFilters.get(0);
-            } else if (mergedFilters.size() > 0) {
+            } else if (!mergedFilters.isEmpty()) {
                 List<Filter> full = new ArrayList<>();
                 full.addAll(mergedFilters);
                 full.addAll(otherFilters);

@@ -545,10 +545,10 @@ public final class ExpressionDOMParser {
                 }
             }
 
-            if (inner.size() > 0) {
-                return gfac.createPolygon(outer, inner.toArray(new LinearRing[0]));
-            } else {
+            if (inner.isEmpty()) {
                 return gfac.createPolygon(outer, null);
+            } else {
+                return gfac.createPolygon(outer, inner.toArray(new LinearRing[0]));
             }
         }
 

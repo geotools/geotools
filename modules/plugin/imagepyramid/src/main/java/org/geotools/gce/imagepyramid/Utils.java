@@ -233,7 +233,7 @@ class Utils {
         }
 
         // do we have at least one level?
-        if (mosaics.size() == 0) {
+        if (mosaics.isEmpty()) {
             return null;
         }
 

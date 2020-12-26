@@ -866,7 +866,7 @@ public class Types {
 
         // only look up in the super type if the descriptor is not found
         // as a direct child definition
-        if (match.size() == 0) {
+        if (match.isEmpty()) {
             AttributeType superType = type.getSuper();
             if (superType instanceof ComplexType) {
                 match.addAll(descriptors((ComplexType) superType, name));
@@ -896,7 +896,7 @@ public class Types {
 
         // only look up in the super type if the descriptor is not found
         // as a direct child definition
-        if (match.size() == 0) {
+        if (match.isEmpty()) {
             AttributeType superType = type.getSuper();
             if (superType instanceof ComplexType) {
                 List<PropertyDescriptor> superDescriptors =

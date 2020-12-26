@@ -191,7 +191,7 @@ public class NestedAttributeMapping extends AttributeMapping {
                 nestedTargetXPath.get(nestedTargetXPath.size() - 1).getName().getLocalPart())) {
             List<AttributeMapping> mappings =
                     featureTypeMapping.getAttributeMappingsIgnoreIndex(this.nestedTargetXPath);
-            if (mappings.size() < 1) {
+            if (mappings.isEmpty()) {
                 throw new IllegalArgumentException(
                         "Mapping is missing for: '" + this.nestedTargetXPath + "'!");
             }

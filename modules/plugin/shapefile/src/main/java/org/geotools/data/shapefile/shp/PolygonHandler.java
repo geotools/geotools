@@ -258,7 +258,7 @@ public class PolygonHandler implements ShapeHandler {
         }
         // if for some reason, there is only one hole, we just reverse it and
         // carry on.
-        else if (holes.size() == 1 && shells.size() == 0) {
+        else if (holes.size() == 1 && shells.isEmpty()) {
             return createMulti(holes.get(0));
         } else {
 
@@ -326,11 +326,11 @@ public class PolygonHandler implements ShapeHandler {
         Polygon[] polygons;
 
         // if we have shells, lets use them
-        if (shells.size() > 0) {
-            polygons = new Polygon[shells.size()];
+        if (shells.isEmpty()) {
             // oh, this is a bad record with only holes
-        } else {
             polygons = new Polygon[holes.size()];
+        } else {
+            polygons = new Polygon[shells.size()];
         }
 
         // this will do nothing for the "only holes case"
@@ -344,7 +344,7 @@ public class PolygonHandler implements ShapeHandler {
 
         // this will take care of the "only holes case"
         // we just reverse each hole
-        if (shells.size() == 0) {
+        if (shells.isEmpty()) {
             for (int i = 0, ii = holes.size(); i < ii; i++) {
                 LinearRing hole = holes.get(i);
                 polygons[i] = geometryFactory.createPolygon(hole, null);

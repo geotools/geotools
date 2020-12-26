@@ -723,7 +723,7 @@ public class LabelCacheImpl implements LabelCache {
                         labelItem.removeGroupOverlaps(),
                         labelItem.isPartialsEnabled());
 
-        if (lines == null || lines.size() == 0) return false;
+        if (lines == null || lines.isEmpty()) return false;
 
         // if we just want to label the longest line, remove the others
         if (!labelItem.labelAllGroup() && lines.size() > 1) {
@@ -945,7 +945,7 @@ public class LabelCacheImpl implements LabelCache {
                         labelItem.removeGroupOverlaps(),
                         labelItem.isPartialsEnabled());
 
-        if (lines == null || lines.size() == 0) return false;
+        if (lines == null || lines.isEmpty()) return false;
 
         // if we just want to label the longest line, remove the others
         if (!labelItem.labelAllGroup() && lines.size() > 1) {
@@ -1762,7 +1762,7 @@ public class LabelCacheImpl implements LabelCache {
                 }
             }
         }
-        if (pts.size() == 0) return null;
+        if (pts.isEmpty()) return null;
 
         // do better metric than this:
         return pts.get(0);
@@ -1799,7 +1799,7 @@ public class LabelCacheImpl implements LabelCache {
         for (Geometry g : geoms) {
             accumulateLineStrings(g, lines);
         }
-        if (lines.size() == 0) return null;
+        if (lines.isEmpty()) return null;
 
         // clip all the lines to the current bounds
         List<LineString> clippedLines = new ArrayList<>();
@@ -1843,16 +1843,16 @@ public class LabelCacheImpl implements LabelCache {
             clippedLines = cleanedLines;
         }
 
-        if (clippedLines == null || clippedLines.size() == 0) return null;
+        if (clippedLines == null || clippedLines.isEmpty()) return null;
 
         // at this point "lines" now is a list of linestring
         // join this algo doesnt always do what you want it to do, but its
         // pretty good
         List<LineString> merged = mergeLines(clippedLines);
 
-        // clippedLines is a list of LineString, all cliped (hopefully) to the
+        // clippedLines is a list of LineString, all clipped (hopefully) to the
         // display geometry. we choose longest one
-        if (merged.size() == 0) return null;
+        if (merged.isEmpty()) return null;
 
         // sort have the longest lines first
         Collections.sort(merged, new LineLengthComparator());
@@ -1961,7 +1961,7 @@ public class LabelCacheImpl implements LabelCache {
                 }
             }
         }
-        if (polys.size() == 0) return null;
+        if (polys.isEmpty()) return null;
 
         // at this point "polys" is a list of polygons. Clip them
         List<Polygon> clippedPolys = new ArrayList<>();
@@ -1983,7 +1983,7 @@ public class LabelCacheImpl implements LabelCache {
 
         // clippedPolys is a list of Polygon, all cliped (hopefully) to the
         // display geometry. we choose largest one
-        if (clippedPolys.size() == 0) {
+        if (clippedPolys.isEmpty()) {
             return null;
         }
         double maxSize = -1;
@@ -2057,7 +2057,7 @@ public class LabelCacheImpl implements LabelCache {
         }
 
         // convert to multipoly
-        if (polys.size() == 0) return null;
+        if (polys.isEmpty()) return null;
 
         return poly.getFactory().createMultiPolygon(polys.toArray(new Polygon[1]));
     }
@@ -2074,7 +2074,7 @@ public class LabelCacheImpl implements LabelCache {
         @SuppressWarnings("unchecked")
         List<LineString> merged = new ArrayList<>(lm.getMergedLineStrings());
 
-        if (merged.size() == 0) {
+        if (merged.isEmpty()) {
             return null; // shouldnt happen
         } else if (merged.size() == 1) { // simple case - no need to continue
             // merging
@@ -2125,19 +2125,19 @@ public class LabelCacheImpl implements LabelCache {
             List<LineString> nodeList2 = nodes.get(key2);
 
             // case 1 -- this line is independent
-            if ((nodeList.size() == 0) && (nodeList2.size() == 0)) {
+            if ((nodeList.isEmpty()) && (nodeList2.isEmpty())) {
                 result.add(ls);
                 index++; // move to next line
                 continue;
             }
 
-            if (nodeList.size() > 0) // touches something at the start
+            if (!nodeList.isEmpty()) // touches something at the start
             {
                 LineString ls2 = getLongest(nodeList); // merge with this one
                 ls = merge(ls, ls2);
                 removeFromHash(nodes, ls2);
             }
-            if (nodeList2.size() > 0) // touches something at the start
+            if (!nodeList2.isEmpty()) // touches something at the start
             {
                 LineString ls2 = getLongest(nodeList2); // merge with this one
                 ls = merge(ls, ls2);

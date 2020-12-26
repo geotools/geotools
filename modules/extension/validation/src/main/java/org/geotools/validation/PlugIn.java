@@ -162,7 +162,7 @@ public class PlugIn {
     }
 
     protected void configure(Object bean, Map config) throws ValidationException {
-        if ((config == null) || (config.size() == 0)) {
+        if ((config == null) || (config.isEmpty())) {
             return;
         }
 

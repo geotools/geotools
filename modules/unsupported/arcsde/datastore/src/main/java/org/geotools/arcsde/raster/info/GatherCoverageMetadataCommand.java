@@ -92,7 +92,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
             final List<SeRasterAttr> rasterAttributes;
             rasterAttributes = getSeRasterAttr(connection, rasterTableName, rasterColumns);
 
-            if (rasterAttributes.size() == 0) {
+            if (rasterAttributes.isEmpty()) {
                 throw new IllegalArgumentException(
                         "Table " + rasterTableName + " contains no raster datasets");
             }
@@ -215,7 +215,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
             if (cols[i].getType() == SeColumnDefinition.TYPE_RASTER)
                 fetchColumns.add(cols[i].getName());
         }
-        if (fetchColumns.size() == 0) {
+        if (fetchColumns.isEmpty()) {
             throw new DataSourceException(
                     "Couldn't find any TYPE_RASTER columns in ArcSDE table " + rasterTable);
         }

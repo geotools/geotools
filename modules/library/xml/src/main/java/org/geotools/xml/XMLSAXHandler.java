@@ -301,7 +301,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
         checkStatus();
 
-        if (schemaProxy.size() != 0) {
+        if (!schemaProxy.isEmpty()) {
             logger.fine("ADDING NAMESPACES: " + schemaProxy.size());
 
             String t = atts.getValue("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
@@ -353,7 +353,7 @@ public class XMLSAXHandler extends DefaultHandler {
                 }
             }
 
-            if (schemaProxy.size() != 0) {
+            if (!schemaProxy.isEmpty()) {
                 Iterator it = schemaProxy.keySet().iterator();
 
                 while (it.hasNext()) {

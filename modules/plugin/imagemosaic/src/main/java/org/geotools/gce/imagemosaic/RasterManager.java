@@ -420,7 +420,7 @@ public class RasterManager implements Cloneable {
             try {
                 Set<String> result =
                         extractDomain(propertyName, additionalPropertyName, domainType);
-                if (result.size() <= 0) {
+                if (result.isEmpty()) {
                     return "";
                 }
 
@@ -446,7 +446,7 @@ public class RasterManager implements Cloneable {
                 // implicit ordering
                 final Set result = new TreeSet(extractDomain(propertyName));
                 // check result
-                if (result.size() <= 0) {
+                if (result.isEmpty()) {
                     return "";
                 }
 
@@ -819,7 +819,7 @@ public class RasterManager implements Cloneable {
             Utilities.ensureNonNull("name", name);
 
             String value = null;
-            if (domainsMap.size() > 0) {
+            if (!domainsMap.isEmpty()) {
                 // is a domain?
                 if (domainsMap.containsKey(name)) {
                     final DomainDescriptor domainDescriptor = domainsMap.get(name);
@@ -1534,7 +1534,7 @@ public class RasterManager implements Cloneable {
                 UniqueVisitor visitor = new UniqueVisitor(parentReader.locationAttributeName);
                 collection.accepts(visitor, null);
                 Set<String> features = visitor.getUnique();
-                if (features.size() > 0) {
+                if (!features.isEmpty()) {
                     return true;
                 }
             }

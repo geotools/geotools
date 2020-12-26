@@ -328,7 +328,7 @@ public class ValidationProcessor {
             ReferencedEnvelope envelope,
             ValidationResults results)
             throws Exception {
-        if ((integrityLookup == null) || (integrityLookup.size() == 0)) {
+        if ((integrityLookup == null) || (integrityLookup.isEmpty())) {
             LOGGER.fine("No tests defined by integrityLookup - validation not needed");
 
             return;

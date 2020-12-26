@@ -165,7 +165,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         filters = extraAndSimplification(extraData, filters);
 
         // we might end up with an empty list
-        if (filters.size() == 0) {
+        if (filters.isEmpty()) {
             return Filter.INCLUDE;
         }
 
@@ -287,7 +287,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         filters = extraOrSimplification(extraData, filters);
 
         // we might end up with an empty list
-        if (filters.size() == 0) {
+        if (filters.isEmpty()) {
             return Filter.EXCLUDE;
         }
 
@@ -360,7 +360,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     @Override
     public Object visit(Id filter, Object extraData) {
         // if the set of ID is empty, it's actually equivalent to Filter.EXCLUDE
-        if (filter.getIDs().size() == 0) {
+        if (filter.getIDs().isEmpty()) {
             return Filter.EXCLUDE;
         }
 
@@ -378,7 +378,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         }
 
         Filter validIdFilter;
-        if (validFids.size() == 0) {
+        if (validFids.isEmpty()) {
             validIdFilter = Filter.EXCLUDE;
         } else {
             validIdFilter = getFactory(extraData).id(validFids);

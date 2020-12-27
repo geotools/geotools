@@ -17,7 +17,6 @@
 package org.geotools.filter.function;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
         Function fn = finder.findFunction("categorize", parameters, fallback);
         Object result = fn.evaluate(feature(0));
 
-        assertFalse("Could not locate 'categorize' function", result.equals(fallback.getValue()));
+        assertNotEquals("Could not locate 'categorize' function", result, fallback.getValue());
     }
 
     @Test

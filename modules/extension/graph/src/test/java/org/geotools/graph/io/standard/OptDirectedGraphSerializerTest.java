@@ -68,8 +68,8 @@ public class OptDirectedGraphSerializerTest extends TestCase {
             Graph after = serializer().read();
 
             // ensure same number of nodes and edges
-            assertTrue(before.getNodes().size() == after.getNodes().size());
-            assertTrue(before.getEdges().size() == after.getEdges().size());
+            assertEquals(before.getNodes().size(), after.getNodes().size());
+            assertEquals(before.getEdges().size(), after.getEdges().size());
 
             // ensure two nodes of degree 1, and nnodes-2 nodes of degree 2
             GraphVisitor visitor =
@@ -81,7 +81,7 @@ public class OptDirectedGraphSerializerTest extends TestCase {
                             return (Graph.FAIL_QUERY);
                         }
                     };
-            assertTrue(after.queryNodes(visitor).size() == 2);
+            assertEquals(2, after.queryNodes(visitor).size());
 
             visitor =
                     new GraphVisitor() {
@@ -93,11 +93,11 @@ public class OptDirectedGraphSerializerTest extends TestCase {
                         }
                     };
 
-            assertTrue(after.getNodesOfDegree(2).size() == nnodes - 2);
+            assertEquals(after.getNodesOfDegree(2).size(), nnodes - 2);
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            assertTrue(false);
+            fail();
         }
     }
 
@@ -121,8 +121,8 @@ public class OptDirectedGraphSerializerTest extends TestCase {
             Graph after = serializer().read();
 
             // ensure same number of nodes and edges
-            assertTrue(before.getNodes().size() == after.getNodes().size());
-            assertTrue(before.getEdges().size() == after.getEdges().size());
+            assertEquals(before.getNodes().size(), after.getNodes().size());
+            assertEquals(before.getEdges().size(), after.getEdges().size());
 
             GraphVisitor visitor =
                     new GraphVisitor() {
@@ -133,7 +133,7 @@ public class OptDirectedGraphSerializerTest extends TestCase {
                             return (Graph.FAIL_QUERY);
                         }
                     };
-            assertTrue(after.queryNodes(visitor).size() == 1); // root
+            assertEquals(1, after.queryNodes(visitor).size()); // root
 
             visitor =
                     new GraphVisitor() {
@@ -144,7 +144,7 @@ public class OptDirectedGraphSerializerTest extends TestCase {
                             return (Graph.FAIL_QUERY);
                         }
                     };
-            assertTrue(after.queryNodes(visitor).size() == Math.pow(2, k) - 2); // internal
+            assertEquals(after.queryNodes(visitor).size(), (int) Math.pow(2, k) - 2); // internal
 
             visitor =
                     new GraphVisitor() {
@@ -155,10 +155,10 @@ public class OptDirectedGraphSerializerTest extends TestCase {
                             return (Graph.FAIL_QUERY);
                         }
                     };
-            assertTrue(after.queryNodes(visitor).size() == Math.pow(2, k)); // leaves
+            assertEquals(after.queryNodes(visitor).size(), (int) Math.pow(2, k)); // leaves
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            assertTrue(false);
+            fail();
         }
     }
 

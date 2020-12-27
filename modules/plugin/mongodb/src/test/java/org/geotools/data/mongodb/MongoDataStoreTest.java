@@ -17,6 +17,8 @@
  */
 package org.geotools.data.mongodb;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -268,7 +270,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         SimpleFeatureIterator it = features.features();
         while (it.hasNext()) {
             SimpleFeature f = it.next();
-            assertFalse("one".equals(pn.evaluate(f)));
+            assertNotEquals("one", pn.evaluate(f));
         }
     }
 
@@ -365,7 +367,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         assertEquals(2, features.size());
         while (it.hasNext()) {
             SimpleFeature f = it.next();
-            assertFalse(pn.evaluate(f).equals("zero"));
+            assertNotEquals("zero", pn.evaluate(f));
         }
     }
 

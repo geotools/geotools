@@ -494,7 +494,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         feature = filteredResults.features().next();
         assertEquals("gu.25678", feature.getIdentifier().toString());
         Collection<Property> properties = feature.getProperties(Types.typeName(GMLNS, "name"));
-        assertTrue(properties.size() == 3);
+        assertEquals(3, properties.size());
         Iterator<Property> propIterator = properties.iterator();
         ComplexAttribute complexAttribute;
         Collection<? extends Property> values;
@@ -524,7 +524,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         // ensure it's the right feature
         assertEquals("gu.25678", feature.getIdentifier().toString());
         properties = feature.getProperties(Types.typeName(GSMLNS, "exposureColor"));
-        assertTrue(properties.size() == 2);
+        assertEquals(2, properties.size());
         propIterator = properties.iterator();
         values = (Collection) propIterator.next().getValue();
         assertEquals(1, values.size());

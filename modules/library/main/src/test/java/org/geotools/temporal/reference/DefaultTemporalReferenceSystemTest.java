@@ -17,7 +17,7 @@
 package org.geotools.temporal.reference;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,7 +63,7 @@ public class DefaultTemporalReferenceSystemTest {
     @Test
     public void testGetName() {
         ReferenceIdentifier result = temporalReferenceSystem1.getName();
-        assertFalse(temporalReferenceSystem2.getName().equals(result));
+        assertNotEquals(temporalReferenceSystem2.getName(), result);
     }
 
     /** Test of getDomainOfValidity method, of class DefaultTemporalReferenceSystem. */
@@ -113,7 +113,7 @@ public class DefaultTemporalReferenceSystemTest {
         ReferenceIdentifier result = temporalReferenceSystem1.getName();
         ((DefaultTemporalReferenceSystem) temporalReferenceSystem1)
                 .setName(new NamedIdentifier(Citations.CRS, "new name"));
-        assertFalse(temporalReferenceSystem1.getName().equals(result));
+        assertNotEquals(temporalReferenceSystem1.getName(), result);
     }
 
     /** Test of setDomainOfValidity method, of class DefaultTemporalReferenceSystem. */
@@ -130,7 +130,7 @@ public class DefaultTemporalReferenceSystemTest {
         domainOfValidity.setTemporalElements(collection);
         ((DefaultTemporalReferenceSystem) temporalReferenceSystem1)
                 .setDomainOfValidity(domainOfValidity);
-        assertFalse(temporalReferenceSystem1.getDomainOfValidity().equals(result));
+        assertNotEquals(temporalReferenceSystem1.getDomainOfValidity(), result);
     }
 
     /** Test of setValidArea method, of class DefaultTemporalReferenceSystem. */
@@ -149,22 +149,22 @@ public class DefaultTemporalReferenceSystemTest {
     /** Test of equals method, of class DefaultTemporalReferenceSystem. */
     @Test
     public void testEquals() {
-        assertFalse(temporalReferenceSystem1.equals(null));
+        assertNotEquals(null, temporalReferenceSystem1);
         assertEquals(temporalReferenceSystem1, temporalReferenceSystem1);
-        assertFalse(temporalReferenceSystem1.equals(temporalReferenceSystem2));
+        assertNotEquals(temporalReferenceSystem1, temporalReferenceSystem2);
     }
 
     /** Test of hashCode method, of class DefaultTemporalReferenceSystem. */
     @Test
     public void testHashCode() {
         int result = temporalReferenceSystem1.hashCode();
-        assertFalse(temporalReferenceSystem2.hashCode() == result);
+        assertNotEquals(temporalReferenceSystem2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultTemporalReferenceSystem. */
     @Test
     public void testToString() {
         String result = temporalReferenceSystem1.toString();
-        assertFalse(temporalReferenceSystem2.toString().equals(result));
+        assertNotEquals(temporalReferenceSystem2.toString(), result);
     }
 }

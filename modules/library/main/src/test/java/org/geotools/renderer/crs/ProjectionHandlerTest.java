@@ -816,7 +816,7 @@ public class ProjectionHandlerTest {
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(utmEnvelope, WGS84, true);
         assertTrue(handler.requiresProcessing(g));
         Geometry preProcessed = handler.preProcess(g);
-        assertTrue(!preProcessed.equalsTopo(g));
+        assertFalse(preProcessed.equalsTopo(g));
         assertTrue(handler.validAreaBounds.contains(preProcessed.getEnvelopeInternal()));
     }
 

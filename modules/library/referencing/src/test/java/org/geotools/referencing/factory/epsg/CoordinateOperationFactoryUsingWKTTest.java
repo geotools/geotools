@@ -124,7 +124,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
     /** Test method for {@link CoordinateOperationFactoryUsingWKT#getAuthority}. */
     @Test
     public void testGetAuthority() {
-        assertTrue(factory.getAuthority().equals(Citations.EPSG));
+        assertEquals(factory.getAuthority(), Citations.EPSG);
     }
 
     /** Test method for {@link CoordinateOperationFactoryUsingWKT#createCoordinateOperation}. */
@@ -186,7 +186,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
             // Test CoordinateOperation
             Set<CoordinateOperation> cos =
                     factory.createFromCoordinateReferenceSystemCodes(SOURCE_CRS, TARGET_CRS);
-            assertTrue(cos.size() == 1);
+            assertEquals(1, cos.size());
             CoordinateOperation co = cos.iterator().next();
             assertNotNull(co);
 

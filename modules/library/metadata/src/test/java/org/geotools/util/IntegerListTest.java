@@ -17,7 +17,7 @@
 package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -134,8 +134,8 @@ public final class IntegerListTest {
         assertEquals(400, list.size());
         final int old100 = list.getInteger(100);
         final int old101 = list.getInteger(101);
-        assertFalse(0 == old100);
-        assertFalse(0 == old101);
+        assertNotEquals(0, old100);
+        assertNotEquals(0, old101);
         list.resize(101);
         assertEquals(old100, list.getInteger(100));
         list.resize(200);

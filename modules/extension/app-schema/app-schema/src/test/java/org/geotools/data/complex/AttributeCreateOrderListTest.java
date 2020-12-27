@@ -19,6 +19,7 @@ package org.geotools.data.complex;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class AttributeCreateOrderListTest extends AppSchemaTestSupport {
 
         try {
             processTestData();
-            assertTrue(false);
+            fail();
         } catch (IllegalStateException e) {
             // expected result
         }
@@ -106,7 +107,7 @@ public class AttributeCreateOrderListTest extends AppSchemaTestSupport {
 
         try {
             createAttribute("child1", "child1");
-            assertTrue(false);
+            fail();
         } catch (IllegalArgumentException e) {
             // expected result
         }

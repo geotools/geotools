@@ -51,7 +51,7 @@ public class ECQLIDPredicateTest {
 
         Id filterId = (Id) filter;
         Set<?> resultIdentifiers = filterId.getIDs();
-        Assert.assertTrue("one id in filter Id was expected", resultIdentifiers.size() == 3);
+        Assert.assertEquals("one id in filter Id was expected", 3, resultIdentifiers.size());
 
         Assert.assertTrue(strId1 + " was expected", resultIdentifiers.contains(strId1));
 
@@ -88,7 +88,7 @@ public class ECQLIDPredicateTest {
         Id filterId = (Id) filter;
 
         Set<?> resultIdentifiers = filterId.getIDs();
-        Assert.assertTrue("one id in filter Id was expected", resultIdentifiers.size() == 3);
+        Assert.assertEquals("one id in filter Id was expected", 3, resultIdentifiers.size());
 
         Assert.assertTrue(strId1 + " was expected", resultIdentifiers.contains(strId1));
 
@@ -109,7 +109,7 @@ public class ECQLIDPredicateTest {
 
         Id filterId = (Id) filter;
         Set<?> resultIdentifiers = filterId.getIDs();
-        Assert.assertTrue("one id in filter Id was expected", resultIdentifiers.size() == 3);
+        Assert.assertEquals("one id in filter Id was expected", 3, resultIdentifiers.size());
 
         Assert.assertTrue(strId1 + " was expected", resultIdentifiers.contains(strId1));
 
@@ -134,7 +134,7 @@ public class ECQLIDPredicateTest {
         Id filterId = (Id) filter;
 
         Set<?> resultIdentifiers = filterId.getIDs();
-        Assert.assertTrue("one id in filter Id was expected", resultIdentifiers.size() == 3);
+        Assert.assertEquals("one id in filter Id was expected", 3, resultIdentifiers.size());
 
         Assert.assertTrue(date1 + " was expected", resultIdentifiers.contains(date1));
 
@@ -161,7 +161,7 @@ public class ECQLIDPredicateTest {
         Id filterId = (Id) filter;
 
         Set<?> resultIdentifiers = filterId.getIDs();
-        Assert.assertTrue("one id in filter Id was expected", resultIdentifiers.size() == 3);
+        Assert.assertEquals("one id in filter Id was expected", 3, resultIdentifiers.size());
 
         Assert.assertTrue(timeStamp1 + " was expected", resultIdentifiers.contains(timeStamp1));
 
@@ -200,7 +200,7 @@ public class ECQLIDPredicateTest {
 
         Id filterId = (Id) filter;
         Set<?> idSet = filterId.getIDs();
-        Assert.assertTrue("one id in filter Id was expected", idSet.size() == 1);
+        Assert.assertEquals("one id in filter Id was expected", 1, idSet.size());
         Assert.assertTrue(idValue + "was expected", idSet.contains(idValue));
     }
 
@@ -260,7 +260,7 @@ public class ECQLIDPredicateTest {
 
         try {
             final Filter filter = ECQL.toFilter(ecqlPredicate);
-            Assert.assertTrue(ecqlPredicate.equals(ECQL.toCQL(filter)));
+            Assert.assertEquals(ecqlPredicate, ECQL.toCQL(filter));
         } catch (CQLException e) {
             Assert.fail();
         }

@@ -121,9 +121,9 @@ public class BeanProcessFactoryTest {
                 IdentityProcess.class.getAnnotation(DescribeProcess.class);
 
         InternationalString desc = factory.getDescription(name);
-        assertTrue(desc.toString().equals(describeProcessAnno.description()));
+        assertEquals(desc.toString(), describeProcessAnno.description());
         InternationalString title = factory.getTitle(name);
-        assertTrue(title.toString().equals(describeProcessAnno.title()));
+        assertEquals(title.toString(), describeProcessAnno.title());
 
         Map<String, Parameter<?>> params = factory.getParameterInfo(name);
         assertEquals(1, params.size());

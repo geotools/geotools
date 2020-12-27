@@ -16,6 +16,8 @@
  */
 package org.geotools.data.crs;
 
+import static org.junit.Assert.assertNotEquals;
+
 import junit.framework.TestCase;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -105,10 +107,9 @@ public class ForceCoordinateSystemFeatureIteratorTest extends TestCase {
         assertEquals(
                 ((Geometry) f1.getDefaultGeometry()).getCoordinate(),
                 ((Geometry) f2.getDefaultGeometry()).getCoordinate());
-        assertFalse(
-                f1.getFeatureType()
-                        .getCoordinateReferenceSystem()
-                        .equals(f2.getFeatureType().getCoordinateReferenceSystem()));
+        assertNotEquals(
+                f1.getFeatureType().getCoordinateReferenceSystem(),
+                f2.getFeatureType().getCoordinateReferenceSystem());
         assertEquals(srcCRS, f1.getFeatureType().getCoordinateReferenceSystem());
         assertEquals(
                 srcCRS, f1.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
@@ -157,10 +158,9 @@ public class ForceCoordinateSystemFeatureIteratorTest extends TestCase {
         assertEquals(
                 ((Geometry) f1.getDefaultGeometry()).getCoordinate(),
                 ((Geometry) f2.getDefaultGeometry()).getCoordinate());
-        assertFalse(
-                f2.getFeatureType()
-                        .getCoordinateReferenceSystem()
-                        .equals(f1.getFeatureType().getCoordinateReferenceSystem()));
+        assertNotEquals(
+                f2.getFeatureType().getCoordinateReferenceSystem(),
+                f1.getFeatureType().getCoordinateReferenceSystem());
         assertEquals(srcCRS, f1.getFeatureType().getCoordinateReferenceSystem());
         assertEquals(
                 srcCRS, f1.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());

@@ -42,7 +42,7 @@ public class OptDirectedGraphBuilderTest extends TestCase {
     public void test_buildNode() {
         DirectedNode dn = (DirectedNode) m_builder.buildNode();
 
-        assertTrue(dn != null);
+        assertNotNull(dn);
         assertTrue(dn instanceof OptDirectedNode);
     }
 
@@ -52,10 +52,10 @@ public class OptDirectedGraphBuilderTest extends TestCase {
 
         DirectedEdge de = (DirectedEdge) m_builder.buildEdge(n1, n2);
 
-        assertTrue(de != null);
+        assertNotNull(de);
         assertTrue(de instanceof OptDirectedEdge);
-        assertTrue(de.getInNode() == n1);
-        assertTrue(de.getOutNode() == n2);
+        assertSame(de.getInNode(), n1);
+        assertSame(de.getOutNode(), n2);
     }
 
     public void test_addEdge() {

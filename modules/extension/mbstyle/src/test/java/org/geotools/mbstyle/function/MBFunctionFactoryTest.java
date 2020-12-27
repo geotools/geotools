@@ -21,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -312,7 +313,7 @@ public class MBFunctionFactoryTest {
         assertEquals("SoMeString", f.evaluate(null, String.class));
 
         f = ff.function("StringTransform", ff.literal(null), ff.literal(null));
-        assertTrue(null == f.evaluate(null, String.class));
+        assertNull(f.evaluate(null, String.class));
     }
 
     @Test

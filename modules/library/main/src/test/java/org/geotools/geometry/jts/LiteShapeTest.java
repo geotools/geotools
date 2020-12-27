@@ -64,8 +64,8 @@ public class LiteShapeTest extends TestCase {
         assertFalse(lineShape.contains(50, 50, 10, 10));
         assertTrue(lineShape.contains(new java.awt.Point(60, 60)));
         assertFalse(lineShape.contains(new java.awt.geom.Rectangle2D.Float(50, 50, 10, 10)));
-        assertTrue(lineShape.getBounds2D().equals(new Rectangle2D.Double(50, 50, 80, 250)));
-        assertTrue(lineShape.getBounds().equals(new java.awt.Rectangle(50, 50, 80, 250)));
+        assertEquals(lineShape.getBounds2D(), new Rectangle2D.Double(50, 50, 80, 250));
+        assertEquals(lineShape.getBounds(), new Rectangle(50, 50, 80, 250));
         assertTrue(lineShape.intersects(0, 0, 100, 100));
         assertTrue(lineShape.intersects(new Rectangle2D.Double(0, 0, 100, 100)));
         assertFalse(lineShape.intersects(55, 55, 3, 100));
@@ -84,8 +84,8 @@ public class LiteShapeTest extends TestCase {
         assertFalse(lineShape.contains(50, 50, 10, 10));
         assertTrue(lineShape.contains(new java.awt.Point(60, 60)));
         assertFalse(lineShape.contains(new java.awt.geom.Rectangle2D.Float(50, 50, 10, 10)));
-        assertTrue(lineShape.getBounds2D().equals(new Rectangle2D.Double(50, 50, 80, 250)));
-        assertTrue(lineShape.getBounds().equals(new java.awt.Rectangle(50, 50, 80, 250)));
+        assertEquals(lineShape.getBounds2D(), new Rectangle2D.Double(50, 50, 80, 250));
+        assertEquals(lineShape.getBounds(), new Rectangle(50, 50, 80, 250));
         assertTrue(lineShape.intersects(0, 0, 100, 100));
         assertTrue(lineShape.intersects(new Rectangle2D.Double(0, 0, 100, 100)));
         assertFalse(lineShape.intersects(55, 55, 3, 100));
@@ -109,8 +109,8 @@ public class LiteShapeTest extends TestCase {
         assertTrue(lineShape.contains(100, 100, 10, 10));
         assertTrue(lineShape.contains(new java.awt.Point(70, 90)));
         assertFalse(lineShape.contains(new java.awt.geom.Rectangle2D.Float(50, 50, 10, 10)));
-        assertTrue(lineShape.getBounds2D().equals(new Rectangle2D.Double(60, 70, 70, 50)));
-        assertTrue(lineShape.getBounds().equals(new java.awt.Rectangle(60, 70, 70, 50)));
+        assertEquals(lineShape.getBounds2D(), new Rectangle2D.Double(60, 70, 70, 50));
+        assertEquals(lineShape.getBounds(), new Rectangle(60, 70, 70, 50));
         assertTrue(lineShape.intersects(0, 0, 100, 100));
         assertTrue(lineShape.intersects(new Rectangle2D.Double(0, 0, 100, 100)));
         assertFalse(lineShape.intersects(55, 55, 3, 100));

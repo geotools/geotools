@@ -18,6 +18,7 @@ package org.geotools.metadata;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
@@ -105,10 +106,10 @@ public final class CitationsTest {
         assertNotSame(applied, omitted);
         assertTrue(applied.pass());
         assertFalse(omitted.pass());
-        assertFalse(applied.equals(omitted));
-        assertFalse(appliedResults.equals(omittedResults));
-        assertFalse(
-                PositionalAccuracyImpl.DATUM_SHIFT_APPLIED.equals(
-                        PositionalAccuracyImpl.DATUM_SHIFT_OMITTED));
+        assertNotEquals(applied, omitted);
+        assertNotEquals(appliedResults, omittedResults);
+        assertNotEquals(
+                PositionalAccuracyImpl.DATUM_SHIFT_APPLIED,
+                PositionalAccuracyImpl.DATUM_SHIFT_OMITTED);
     }
 }

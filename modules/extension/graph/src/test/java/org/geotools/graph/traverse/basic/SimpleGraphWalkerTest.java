@@ -46,7 +46,7 @@ public class SimpleGraphWalkerTest extends TestCase {
 
         SimpleGraphWalker walker = new SimpleGraphWalker(visitor);
 
-        assertTrue(walker.visit(n, null) == GraphTraversal.CONTINUE);
+        assertEquals(walker.visit(n, null), GraphTraversal.CONTINUE);
         assertTrue(m_visited);
     }
 }

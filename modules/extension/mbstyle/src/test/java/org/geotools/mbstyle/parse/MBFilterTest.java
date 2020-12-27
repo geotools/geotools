@@ -17,6 +17,7 @@
 package org.geotools.mbstyle.parse;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -54,7 +55,7 @@ public class MBFilterTest {
                         "['all',['==', 'class', 'street_limited'],['>=', 'admin_level', 3],['!in', '$type', 'Polygon']]");
         MBFilter mbfilter = new MBFilter(json);
         Set<SemanticType> types = mbfilter.semanticTypeIdentifiers();
-        assertTrue(!types.contains(SemanticType.POLYGON));
+        assertFalse(types.contains(SemanticType.POLYGON));
         Filter filter = mbfilter.filter();
         assertEquals(
                 "class = 'street_limited' AND admin_level >= 3 AND NOT ((dimension(geometry()) = 2 AND NOT (isCoverage() = true)))",

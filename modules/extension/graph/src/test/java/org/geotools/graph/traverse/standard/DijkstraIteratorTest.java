@@ -16,6 +16,10 @@
  */
 package org.geotools.graph.traverse.standard;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertNull;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -72,18 +76,18 @@ public class DijkstraIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         assertTrue(component.isVisited());
-                        assertTrue(iterator.getCost(component) == (double) component.getID());
+                        assertEquals(iterator.getCost(component), (double) component.getID());
                         if (component.getID() == 0) assertNull(iterator.getParent(component));
                         else
-                            assertTrue(
-                                    iterator.getParent(component).getID() == component.getID() - 1);
+                            assertEquals(
+                                    iterator.getParent(component).getID(), component.getID() - 1);
 
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -112,7 +116,7 @@ public class DijkstraIteratorTest extends TestCase {
                                 return (GraphTraversal.SUSPEND);
                             }
                         } else if (m_mode == 1) {
-                            assertTrue(element.getID() == suspend + 1);
+                            assertEquals(element.getID(), suspend + 1);
                             m_mode++;
                         }
                         return (GraphTraversal.CONTINUE);
@@ -131,12 +135,12 @@ public class DijkstraIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component.getID() <= suspend) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        else assertFalse(component.isVisited());
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - suspend + 1);
+        assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         // resume
         traversal.traverse();
@@ -145,17 +149,17 @@ public class DijkstraIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         assertTrue(component.isVisited());
-                        assertTrue(iterator.getCost(component) == (double) component.getID());
+                        assertEquals(iterator.getCost(component), (double) component.getID());
                         if (component.getID() == 0) assertNull(iterator.getParent(component));
                         else
-                            assertTrue(
-                                    iterator.getParent(component).getID() == component.getID() - 1);
+                            assertEquals(
+                                    iterator.getParent(component).getID(), component.getID() - 1);
 
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -198,18 +202,18 @@ public class DijkstraIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component.getID() <= kill) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        else assertFalse(component.isVisited());
 
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - kill + 1);
+        assertEquals(walker.getCount(), nnodes - kill + 1);
 
         // resume
         traversal.traverse();
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - kill + 1);
+        assertEquals(walker.getCount(), nnodes - kill + 1);
     }
 
     /**
@@ -239,21 +243,18 @@ public class DijkstraIteratorTest extends TestCase {
                         String id = component.getObject().toString();
                         StringTokenizer st = new StringTokenizer(id, ".");
 
-                        assertTrue(iterator.getCost(component) == (double) st.countTokens() - 1);
+                        assertEquals(iterator.getCost(component), (double) st.countTokens() - 1);
                         if (component != root) {
                             String parentid = id.substring(0, id.length() - 2);
-                            assertTrue(
-                                    iterator.getParent(component)
-                                            .getObject()
-                                            .toString()
-                                            .equals(parentid));
+                            assertEquals(
+                                    iterator.getParent(component).getObject().toString(), parentid);
                         }
 
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == Math.pow(2, k + 1) - 1);
+        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -300,7 +301,7 @@ public class DijkstraIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component != root && component != lc && component != rc)
-                            assertTrue(!component.isVisited());
+                            assertFalse(component.isVisited());
 
                         return 0;
                     }
@@ -318,7 +319,7 @@ public class DijkstraIteratorTest extends TestCase {
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == Math.pow(2, k + 1) - 1);
+        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -368,7 +369,7 @@ public class DijkstraIteratorTest extends TestCase {
                             assertTrue(component.isVisited());
                         else {
                             String id = component.getObject().toString();
-                            if (id.startsWith("0.1.")) assertTrue(!component.isVisited());
+                            if (id.startsWith("0.1.")) assertFalse(component.isVisited());
                             else assertTrue(component.isVisited());
                         }
 
@@ -377,7 +378,7 @@ public class DijkstraIteratorTest extends TestCase {
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == Math.pow(2, k) + 1);
+        assertEquals(walker.getCount(), (int) Math.pow(2, k) + 1);
     }
 
     /**
@@ -406,19 +407,18 @@ public class DijkstraIteratorTest extends TestCase {
                     public int visit(Graphable component) {
                         Graphable parent = iterator.getParent(component);
                         if (component.getID() < 50 && component.getID() > 0) {
-                            assertTrue(iterator.getCost(component) == (double) component.getID());
-                            assertTrue(parent.getID() == component.getID() - 1);
+                            assertEquals(iterator.getCost(component), (double) component.getID());
+                            assertEquals(parent.getID(), component.getID() - 1);
                         } else if (component.getID() > 50 && component.getID() < 99) {
-                            assertTrue(
-                                    iterator.getCost(component)
-                                            == (double) 100 - component.getID());
-                            assertTrue(parent.getID() == component.getID() + 1);
+                            assertEquals(
+                                    iterator.getCost(component), (double) 100 - component.getID());
+                            assertEquals(parent.getID(), component.getID() + 1);
                         } else if (component.getID() == 0) {
-                            assertTrue(parent == null);
-                            assertTrue(iterator.getCost(component) == 0d);
+                            assertNull(parent);
+                            assertEquals(0d, iterator.getCost(component));
                         } else if (component.getID() == 99) {
-                            assertTrue(parent.getID() == 0);
-                            assertTrue(iterator.getCost(component) == 1d);
+                            assertEquals(0, parent.getID());
+                            assertEquals(1d, iterator.getCost(component));
                         }
 
                         return (0);
@@ -426,7 +426,7 @@ public class DijkstraIteratorTest extends TestCase {
                 };
 
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     protected DijkstraIterator createIterator() {
@@ -485,7 +485,7 @@ public class DijkstraIteratorTest extends TestCase {
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -521,7 +521,7 @@ public class DijkstraIteratorTest extends TestCase {
                         }
                         while (related.hasNext()) {
                             Graphable relatedComponent = (Graphable) related.next();
-                            assertTrue(component.getID() == relatedComponent.getID() - 1);
+                            assertEquals(component.getID(), relatedComponent.getID() - 1);
                             count++;
                         }
                         assertEquals(expectedCount, count);
@@ -531,7 +531,7 @@ public class DijkstraIteratorTest extends TestCase {
                 };
         directedBuilder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     protected GraphBuilder createBuilder() {

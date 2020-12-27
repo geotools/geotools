@@ -34,7 +34,7 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
         assertEquals("x", isLike.getWildCard());
         assertEquals("y", isLike.getSingleChar());
         assertEquals("z", isLike.getEscape());
-        assertEquals(false, isLike.isMatchingCase());
+        assertFalse(isLike.isMatchingCase());
     }
 
     public void testEncode() throws Exception {

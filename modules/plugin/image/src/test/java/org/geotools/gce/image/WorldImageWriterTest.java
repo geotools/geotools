@@ -73,13 +73,13 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
                 buff.append(" Testing ability to write ").append(filePath);
                 // url
                 final URL url = TestData.getResource(this, filePath);
-                assertTrue(url != null);
+                assertNotNull(url);
                 output = this.write(url, format);
                 buff.append(" as url ").append(filePath).append(output.getName());
 
                 // getting file
                 final File file = TestData.file(this, filePath);
-                assertTrue(file != null);
+                assertNotNull(file);
                 // starting write test
                 output = this.write(file, format);
                 buff.append(" and file ").append(filePath).append(output.getName() + "\n");

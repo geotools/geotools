@@ -39,6 +39,6 @@ public class FilterFunction_disjoint3DTest extends TestCase {
         Function exp = ff.function("disjoint3D", ff.property("geom"), literal_geom);
         Object value = exp.evaluate(f);
         assertTrue(value instanceof Boolean);
-        assertTrue(!(Boolean) value);
+        assertFalse((Boolean) value);
     }
 }

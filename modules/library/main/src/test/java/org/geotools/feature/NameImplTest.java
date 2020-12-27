@@ -40,9 +40,9 @@ public class NameImplTest {
         NameImpl scoped2 = new NameImpl("hello", "fred");
         NameImpl fred = new NameImpl("world");
 
-        assertTrue(0 == scoped1.compareTo(scoped1));
-        assertTrue(0 == scoped2.compareTo(scoped2));
-        assertTrue(0 == fred.compareTo(fred));
+        assertEquals(0, scoped1.compareTo(scoped1));
+        assertEquals(0, scoped2.compareTo(scoped2));
+        assertEquals(0, fred.compareTo(fred));
 
         assertTrue(scoped1.compareTo(scoped2) > 0);
         assertTrue(scoped2.compareTo(scoped1) < 0);

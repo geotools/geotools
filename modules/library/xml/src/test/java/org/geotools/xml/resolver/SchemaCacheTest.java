@@ -74,8 +74,8 @@ public class SchemaCacheTest {
         Assert.assertTrue(resolvedLocation.endsWith("cache-test.xsd"));
         Assert.assertTrue(URLs.urlToFile((new URI(resolvedLocation)).toURL()).exists());
         // test that cache path is not canonical
-        Assert.assertFalse(
-                cacheDirectory.toString().equals(cacheDirectory.getCanonicalFile().toString()));
+        Assert.assertNotEquals(
+                cacheDirectory.toString(), cacheDirectory.getCanonicalFile().toString());
         // test that resolved location is canonical, despite cache directory not being canonical
         Assert.assertEquals(
                 resolvedLocation,

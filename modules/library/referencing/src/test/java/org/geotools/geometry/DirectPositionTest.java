@@ -16,7 +16,8 @@
  */
 package org.geotools.geometry;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -44,11 +45,11 @@ public final class DirectPositionTest {
         DirectPosition p1 = new DirectPosition2D(WGS84, 48.543261561072285, -123.47009555832284);
         GeneralDirectPosition p2 =
                 new GeneralDirectPosition(48.543261561072285, -123.47009555832284);
-        assertFalse(p1.equals(p2));
-        assertFalse(p2.equals(p1));
+        assertNotEquals(p1, p2);
+        assertNotEquals(p2, p1);
 
         p2.setCoordinateReferenceSystem(WGS84);
-        assertTrue(p1.equals(p2));
-        assertTrue(p2.equals(p1));
+        assertEquals(p1, p2);
+        assertEquals(p2, p1);
     }
 }

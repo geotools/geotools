@@ -19,6 +19,7 @@ package org.geotools.referencing.factory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -74,7 +75,7 @@ public class HTTP_URI_AuthorityFactoryTest {
         assertSame(crs, CRS.decode("http://www.opengis.net/def/crs/CRS/1.3/84"));
         assertSame(crs, CRS.decode("CRS:84"));
         assertNotSame(crs, DefaultGeographicCRS.WGS84);
-        assertFalse(DefaultGeographicCRS.WGS84.equals(crs));
+        assertNotEquals(DefaultGeographicCRS.WGS84, crs);
         assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs));
         crs = factory.createGeographicCRS("http://www.opengis.net/def/crs/CRS/1.3/83");
         assertSame(crs, CRS.decode("CRS:83"));

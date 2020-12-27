@@ -53,7 +53,7 @@ public class CQLExtensionTest {
     public void testIncludeFilter() throws Exception {
         Filter filter = CQL.toFilter("INCLUDE");
         Assert.assertNotNull(filter);
-        Assert.assertTrue(Filter.INCLUDE.equals(filter));
+        Assert.assertEquals(Filter.INCLUDE, filter);
 
         filter = CQL.toFilter("INCLUDE and a < 1");
         Assert.assertNotNull(filter);
@@ -61,7 +61,7 @@ public class CQLExtensionTest {
 
         filter = CQL.toFilter("INCLUDE or a < 1");
         Assert.assertNotNull(filter);
-        Assert.assertTrue(Filter.INCLUDE.equals(filter));
+        Assert.assertEquals(Filter.INCLUDE, filter);
     }
 
     /** An EXCLUDE token is parsed as {@link Filter#EXCLUDE} */
@@ -69,11 +69,11 @@ public class CQLExtensionTest {
     public void testExcludeFilter() throws Exception {
         Filter filter = CQL.toFilter("EXCLUDE");
         Assert.assertNotNull(filter);
-        Assert.assertTrue(Filter.EXCLUDE.equals(filter));
+        Assert.assertEquals(Filter.EXCLUDE, filter);
 
         filter = CQL.toFilter("EXCLUDE and a < 1");
         Assert.assertNotNull(filter);
-        Assert.assertTrue(Filter.EXCLUDE.equals(filter));
+        Assert.assertEquals(Filter.EXCLUDE, filter);
 
         filter = CQL.toFilter("EXCLUDE or a < 1");
         Assert.assertNotNull(filter);

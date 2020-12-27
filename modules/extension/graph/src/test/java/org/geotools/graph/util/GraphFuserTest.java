@@ -59,8 +59,8 @@ public class GraphFuserTest extends TestCase {
                         generator().getGraph(), generator().getGraphBuilder(), createEdgeMerger());
         assertTrue(fuser.fuse());
 
-        assertTrue(generator().getGraph().getNodes().size() == 2);
-        assertTrue(generator().getGraph().getEdges().size() == 1);
+        assertEquals(2, generator().getGraph().getNodes().size());
+        assertEquals(1, generator().getGraph().getEdges().size());
 
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -111,8 +111,8 @@ public class GraphFuserTest extends TestCase {
                         generator().getGraph(), generator().getGraphBuilder(), createEdgeMerger());
         assertTrue(fuser.fuse());
 
-        assertTrue(generator().getGraph().getNodes().size() == 4);
-        assertTrue(generator().getGraph().getEdges().size() == 4);
+        assertEquals(4, generator().getGraph().getNodes().size());
+        assertEquals(4, generator().getGraph().getEdges().size());
 
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -173,8 +173,8 @@ public class GraphFuserTest extends TestCase {
                         generator().getGraph(), generator().getGraphBuilder(), createEdgeMerger());
         assertTrue(fuser.fuse());
 
-        assertTrue(generator().getGraph().getNodes().size() == 4);
-        assertTrue(generator().getGraph().getEdges().size() == 4);
+        assertEquals(4, generator().getGraph().getNodes().size());
+        assertEquals(4, generator().getGraph().getEdges().size());
 
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -230,8 +230,8 @@ public class GraphFuserTest extends TestCase {
                         generator().getGraph(), generator().getGraphBuilder(), createEdgeMerger());
         assertTrue(fuser.fuse());
 
-        assertTrue(generator().getGraph().getNodes().size() == 1);
-        assertTrue(generator().getGraph().getEdges().size() == 1);
+        assertEquals(1, generator().getGraph().getNodes().size());
+        assertEquals(1, generator().getGraph().getEdges().size());
     }
 
     protected GraphGenerator createGenerator() {

@@ -16,6 +16,8 @@
  */
 package org.geotools.referencing.factory;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -392,7 +394,7 @@ public class OrderedAxisAuthorityFactoryTest extends TestCase {
         final CoordinateReferenceSystem search = CRS.parseWKT(wkt);
         final CoordinateReferenceSystem standard = CRS.decode("EPSG:4326", false);
         assertTrue(CRS.equalsIgnoreMetadata(search, standard));
-        assertFalse("Identifiers should not be the same.", search.equals(standard));
+        assertNotEquals("Identifiers should not be the same.", search, standard);
         find = finder.find(search);
         final CoordinateReferenceSystem crs = (CoordinateReferenceSystem) find;
         assertNotNull("Should find the CRS despite the different axis order.", find);

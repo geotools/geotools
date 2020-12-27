@@ -103,13 +103,13 @@ public class TileIdentifierTest {
 
     @Test
     public void testEquals() {
-        Assert.assertTrue(this.tileId.equals(this.tileId));
-        Assert.assertFalse(this.tileId.equals(null));
-        Assert.assertFalse(this.tileId.equals("Blah"));
+        Assert.assertEquals(this.tileId, this.tileId);
+        Assert.assertNotEquals(null, this.tileId);
+        Assert.assertNotEquals("Blah", this.tileId);
 
         TileIdentifier otherTile = createTestTileIdentifier(5, 10, 12, "SomeService");
-        Assert.assertTrue(this.tileId.equals(otherTile));
-        Assert.assertTrue(otherTile.equals(this.tileId));
+        Assert.assertEquals(this.tileId, otherTile);
+        Assert.assertEquals(otherTile, this.tileId);
     }
 
     protected TileIdentifier createTestTileIdentifier(

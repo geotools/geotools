@@ -16,6 +16,8 @@
  */
 package org.geotools.graph.linegraph;
 
+import static junit.framework.TestCase.assertEquals;
+
 import junit.framework.TestCase;
 import org.geotools.graph.build.line.OptDirectedLineGraphGenerator;
 import org.geotools.graph.structure.Edge;
@@ -64,8 +66,8 @@ public class OptDirectedLineGraphGeneratorTest extends TestCase {
         Graph built = generator().getGraph();
 
         // ensure correct graph structure
-        assertTrue(built.getEdges().size() == n);
-        assertTrue(built.getNodes().size() == n + 1);
+        assertEquals(built.getEdges().size(), n);
+        assertEquals(built.getNodes().size(), n + 1);
 
         // ensure coordinates
         GraphVisitor visitor =
@@ -77,12 +79,9 @@ public class OptDirectedLineGraphGeneratorTest extends TestCase {
 
                         // coordinats should be a distance of sqrt(2)
                         // assertTrue(b.getX() == a.getX() + 1 && b.getY() == a.getY() + 1);
-                        assertTrue(
-                                b.getCoordinate()
-                                        .equals(
-                                                new Coordinate(
-                                                        a.getCoordinate().x + 1,
-                                                        a.getCoordinate().y + 1)));
+                        assertEquals(
+                                b.getCoordinate(),
+                                new Coordinate(a.getCoordinate().x + 1, a.getCoordinate().y + 1));
 
                         return (0);
                     }
@@ -116,10 +115,10 @@ public class OptDirectedLineGraphGeneratorTest extends TestCase {
 
         Graph built = generator().getGraph();
 
-        assertTrue(built.getEdges().size() == n + 1);
-        assertTrue(built.getNodes().size() == n + 1);
+        assertEquals(built.getEdges().size(), n + 1);
+        assertEquals(built.getNodes().size(), n + 1);
 
-        assertTrue(built.getNodesOfDegree(2).size() == n + 1);
+        assertEquals(built.getNodesOfDegree(2).size(), n + 1);
 
         // ensure coordinates
         GraphVisitor visitor =
@@ -131,14 +130,12 @@ public class OptDirectedLineGraphGeneratorTest extends TestCase {
 
                         // coordinats should be a distance of sqrt(2)
                         if (b.getCoordinate().equals(base))
-                            assertTrue(a.getCoordinate().equals(new Coordinate(n, n)));
+                            assertEquals(a.getCoordinate(), new Coordinate(n, n));
                         else
-                            assertTrue(
-                                    b.getCoordinate()
-                                            .equals(
-                                                    new Coordinate(
-                                                            a.getCoordinate().x + 1,
-                                                            a.getCoordinate().y + 1)));
+                            assertEquals(
+                                    b.getCoordinate(),
+                                    new Coordinate(
+                                            a.getCoordinate().x + 1, a.getCoordinate().y + 1));
 
                         //        if (b.getX() == base.x && b.getY() == base.y)
                         //          assertTrue(a.getX() == n && a.getY() == n);

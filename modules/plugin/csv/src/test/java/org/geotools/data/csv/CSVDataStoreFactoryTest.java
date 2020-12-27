@@ -117,9 +117,7 @@ public class CSVDataStoreFactoryTest {
         File f = File.createTempFile("does-not-exist", ".csv");
         CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStoreFromFile(f);
 
-        assertTrue(
-                "Did not throw illegal argument exception for non-existent file",
-                datastore != null);
+        assertNotNull("Did not throw illegal argument exception for non-existent file", datastore);
     }
 
     @Test

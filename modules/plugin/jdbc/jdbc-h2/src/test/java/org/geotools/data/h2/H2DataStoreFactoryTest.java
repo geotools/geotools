@@ -16,6 +16,7 @@
  */
 package org.geotools.data.h2;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -141,7 +142,7 @@ public class H2DataStoreFactoryTest {
             assertNull(params.get(H2DataStoreFactory.FETCHSIZE.key));
             ds = factory.createDataStore(params);
             assertNotNull(ds);
-            assertTrue(ds.getFetchSize() == 1000);
+            assertEquals(1000, ds.getFetchSize());
         } finally {
             if (ds != null) {
                 ds.dispose();

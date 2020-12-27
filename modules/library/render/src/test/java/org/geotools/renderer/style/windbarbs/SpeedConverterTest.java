@@ -65,13 +65,13 @@ public class SpeedConverterTest extends Assert {
         // infinite
         try {
             speed = SpeedConverter.toKnots(Double.NEGATIVE_INFINITY, "km/h");
-            assertTrue(false);
+            fail();
         } catch (IllegalArgumentException e) {
             // ok
         }
         try {
             speed = SpeedConverter.toKnots(Double.POSITIVE_INFINITY, "km/h");
-            assertTrue(false);
+            fail();
         } catch (IllegalArgumentException e) {
             // ok
         }
@@ -82,7 +82,7 @@ public class SpeedConverterTest extends Assert {
 
         try {
             speed = SpeedConverter.toKnots(1, "a/s");
-            assertTrue(false);
+            fail();
         } catch (IllegalArgumentException e) {
             // ok
         }

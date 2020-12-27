@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.io.netcdf;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -53,7 +54,7 @@ public class ServiceTest {
                 driverFound = driver;
                 break;
             }
-        assertTrue("NetCDFDriver not registered", driverFound != null);
+        assertNotNull("NetCDFDriver not registered", driverFound);
         assertTrue("NetCDFDriver not available", driverFound.isAvailable());
     }
 

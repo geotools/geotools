@@ -17,6 +17,8 @@
 
 package org.geotools.feature.simple;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
@@ -54,9 +56,10 @@ public class SimpleFeatureTypeImplTest extends TestCase {
     public void testOrderSignificantEquals() {
         SimpleFeatureType type1 = buildLocationCountType();
         SimpleFeatureType type2 = buildCountLocationType();
-        assertFalse(
-                "Simple feature types with properties in a different order must not be equal",
-                type1.equals(type2));
+        assertNotEquals(
+                "Simple feature types with properties in a different order must not be " + "equal",
+                type1,
+                type2);
     }
 
     /** Test that distinct instances identically constructed are equal (location/count version). */

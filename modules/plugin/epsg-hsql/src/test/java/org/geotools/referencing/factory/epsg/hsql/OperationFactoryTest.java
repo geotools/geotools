@@ -276,7 +276,7 @@ public class OperationFactoryTest extends TestCase {
         String expectedText = "AUTHORITY[\"EPSG\",\"19986\"]";
 
         Set<CoordinateOperation> operations = findOperations(source, target);
-        assertTrue(operations.size() == 1); // same datum, exactly one operation expected
+        assertEquals(1, operations.size()); // same datum, exactly one operation expected
         assertOperationContained(operations, expectedText);
     }
 

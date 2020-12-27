@@ -156,9 +156,9 @@ public class MapGetFunctionTest extends TestCase {
                 FF.greater(
                         FF.function("mapGet", FF.property("attributes"), FF.literal("score")),
                         FF.literal(80));
-        assertEquals(true, gt.evaluate(features[0]));
-        assertEquals(false, gt.evaluate(features[1]));
-        assertEquals(false, gt.evaluate(features[2]));
+        assertTrue(gt.evaluate(features[0]));
+        assertFalse(gt.evaluate(features[1]));
+        assertFalse(gt.evaluate(features[2]));
 
         Function f2 = FF.function("mapGet", FF.property("attributes"), FF.literal("valid"));
         assertFalse(f2.evaluate(features[0], Boolean.class));

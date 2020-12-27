@@ -252,9 +252,7 @@ public final class ResampleTest extends GridProcessingTestBase {
                             CRS.parseWKT(GOOGLE_MERCATOR_WKT),
                             coverage.getGridGeometry(),
                             null));
-            Assert.assertTrue(
-                    "We should not be allowed to set different crs for target crs and target gg",
-                    false);
+            fail("We should not be allowed to set different crs for target crs and target gg");
         } catch (Exception e) {
             // ok!
         }

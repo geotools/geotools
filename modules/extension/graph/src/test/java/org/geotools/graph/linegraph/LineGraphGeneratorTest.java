@@ -16,6 +16,8 @@
  */
 package org.geotools.graph.linegraph;
 
+import static junit.framework.TestCase.assertEquals;
+
 import junit.framework.TestCase;
 import org.geotools.graph.build.line.BasicLineGraphGenerator;
 import org.geotools.graph.structure.Edge;
@@ -65,8 +67,8 @@ public class LineGraphGeneratorTest extends TestCase {
         Graph built = generator().getGraph();
 
         // ensure correct graph structure
-        assertTrue(built.getEdges().size() == n);
-        assertTrue(built.getNodes().size() == n + 1);
+        assertEquals(built.getEdges().size(), n);
+        assertEquals(built.getNodes().size(), n + 1);
 
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -77,7 +79,7 @@ public class LineGraphGeneratorTest extends TestCase {
                         if (node.getDegree() == 1) {
                             assertTrue(node.getID() == 0 || node.getID() == n);
                         } else {
-                            assertTrue(node.getDegree() == 2);
+                            assertEquals(2, node.getDegree());
                         }
 
                         assertTrue(c.x == base.x + node.getID() && c.y == base.y + node.getID());
@@ -127,11 +129,11 @@ public class LineGraphGeneratorTest extends TestCase {
 
         Graph built = generator().getGraph();
 
-        assertTrue(built.getEdges().size() == n + 1);
-        assertTrue(built.getNodes().size() == n + 1);
+        assertEquals(built.getEdges().size(), n + 1);
+        assertEquals(built.getNodes().size(), n + 1);
 
         // all nodes should be of degree 2
-        assertTrue(built.getNodesOfDegree(2).size() == built.getNodes().size());
+        assertEquals(built.getNodesOfDegree(2).size(), built.getNodes().size());
     }
 
     protected BasicLineGraphGenerator createGenerator() {

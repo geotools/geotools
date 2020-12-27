@@ -162,7 +162,7 @@ public class ArcSDEFeatureSourceTest {
             reader.close();
         }
 
-        assertTrue(queriedAttributeCount == resultSchema.getAttributeCount());
+        assertEquals(queriedAttributeCount, resultSchema.getAttributeCount());
 
         for (int i = 0; i < queriedAttributeCount; i++) {
             assertEquals(queryAtts[i], resultSchema.getDescriptor(i).getLocalName());

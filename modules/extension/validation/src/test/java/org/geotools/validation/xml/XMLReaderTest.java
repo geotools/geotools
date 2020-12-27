@@ -73,15 +73,17 @@ public class XMLReaderTest extends TestCase {
 
             PlugInDTO dto = XMLReader.readPlugIn(fr);
             assertNotNull("Error if null", dto);
-            assertTrue("Name read", "Constraint".equals(dto.getName()));
-            assertTrue(
+            assertEquals("Name read", "Constraint", dto.getName());
+            assertEquals(
                     "Description read",
-                    "All features must pass the provided filter".equals(dto.getDescription()));
-            assertTrue(
+                    "All features must pass the provided filter",
+                    dto.getDescription());
+            assertEquals(
                     "ClassName read",
-                    "org.geoserver.validation.plugins.filter.OGCFilter".equals(dto.getClassName()));
+                    "org.geoserver.validation.plugins.filter.OGCFilter",
+                    dto.getClassName());
             assertNotNull("Should be one arg.", dto.getArgs());
-            assertTrue("Should be one arg.", dto.getArgs().size() == 1);
+            assertEquals("Should be one arg.", 1, dto.getArgs().size());
             assertTrue("Arg. name", dto.getArgs().containsKey("tempDirectory"));
             assertTrue(
                     "Arg. value : " + dto.getArgs().get("tempDirectory"),
@@ -107,7 +109,7 @@ public class XMLReaderTest extends TestCase {
             fr = new FileReader("C:/Java/workspace/geoserver/conf/validation/RoadTestSuite.xml");
 
             TestSuiteDTO testsuite = XMLReader.readTestSuite("test", fr, m);
-            assertTrue("TestSuite Name read", "RoadTestSuite".equals(testsuite.getName()));
+            assertEquals("TestSuite Name read", "RoadTestSuite", testsuite.getName());
 
             // multi line so cannot effectively test
 
@@ -124,10 +126,10 @@ public class XMLReaderTest extends TestCase {
             // assertTrue("Test Description read","Checks to see if the road name is in the list of
             // possible names.".equals(test.getDescription()));
             assertNotNull("Should not be null", test.getPlugIn());
-            assertTrue("Test plugInName read", "NameInList".equals(test.getPlugIn().getName()));
+            assertEquals("Test plugInName read", "NameInList", test.getPlugIn().getName());
 
             assertNotNull("Should be one arg.", test.getArgs());
-            assertTrue("Should be one arg.", test.getArgs().size() == 2);
+            assertEquals("Should be one arg.", 2, test.getArgs().size());
             assertTrue("Arg. name", test.getArgs().containsKey("LUTName"));
 
             // multi line so cannot effectively test

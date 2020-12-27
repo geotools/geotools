@@ -121,13 +121,13 @@ public class FeatureTypeTest extends DataTestCase {
         assertEquals(ft, ft2);
 
         tb.setName("Thingee");
-        assertTrue(!ft.equals(tb.buildFeatureType()));
+        assertFalse(ft.equals(tb.buildFeatureType()));
 
         tb.init(ft);
         tb.setNamespaceURI("http://www.somewhereelse.net");
 
-        assertTrue(!ft.equals(tb.buildFeatureType()));
-        assertTrue(!ft.equals(null));
+        assertFalse(ft.equals(tb.buildFeatureType()));
+        assertFalse(ft.equals(null));
     }
 
     public void testCopyFeature() throws Exception {

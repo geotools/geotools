@@ -22,6 +22,7 @@ import static org.geotools.referencing.crs.DefaultEngineeringCRS.GENERIC_2D;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
@@ -453,8 +454,8 @@ public final class CoordinateOperationFactoryTest extends TransformTestBase {
         assertTrue(op.getSourceCRS() instanceof GeographicCRS); // 2D + 1D  --->  3D
         assertTrue(targetCRS instanceof CompoundCRS);
         assertTrue(op.getTargetCRS() instanceof GeographicCRS); // 2D + 1D  --->  3D
-        assertFalse(sourceCRS.equals(targetCRS));
-        assertFalse(op.getSourceCRS().equals(op.getTargetCRS()));
+        assertNotEquals(sourceCRS, targetCRS);
+        assertNotEquals(op.getSourceCRS(), op.getTargetCRS());
         assertFalse(mt.isIdentity());
         assertInterfaced(mt);
         // Note: Expected values below were computed with Geotools (not an external library).
@@ -483,8 +484,8 @@ public final class CoordinateOperationFactoryTest extends TransformTestBase {
         assertTrue(op.getSourceCRS() instanceof GeographicCRS); // 2D + 1D  --->  3D
         assertTrue(targetCRS instanceof CompoundCRS);
         assertTrue(op.getTargetCRS() instanceof GeographicCRS); // 2D + 1D  --->  3D
-        assertFalse(sourceCRS.equals(targetCRS));
-        assertFalse(op.getSourceCRS().equals(op.getTargetCRS()));
+        assertNotEquals(sourceCRS, targetCRS);
+        assertNotEquals(op.getSourceCRS(), op.getTargetCRS());
         assertFalse(mt.isIdentity());
         assertInterfaced(mt);
         // Note: Expected values below were computed with Geotools (not an external library).

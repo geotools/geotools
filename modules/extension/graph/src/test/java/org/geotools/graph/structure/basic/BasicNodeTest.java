@@ -49,12 +49,12 @@ public class BasicNodeTest extends TestCase {
 
         // test addition of multiple edges, same edge
         m_node.add(m_edge);
-        assertTrue(m_node.getEdges().size() == 2);
+        assertEquals(2, m_node.getEdges().size());
 
         // test addition of multiple edges, different
         Edge other = new BasicEdge(m_node, m_otherNode);
         m_node.add(other);
-        assertTrue(m_node.getEdges().size() == 3);
+        assertEquals(3, m_node.getEdges().size());
         assertTrue(m_node.getEdges().contains(m_edge));
         assertTrue(m_node.getEdges().contains(other));
     }
@@ -65,52 +65,52 @@ public class BasicNodeTest extends TestCase {
 
         // test removal of a single edge
         m_node.remove(m_edge);
-        assertTrue(m_node.getEdges().size() == 0);
+        assertEquals(0, m_node.getEdges().size());
 
         // test removal of multiple edges, same
         m_node.add(m_edge);
         m_node.add(m_edge);
-        assertTrue(m_node.getEdges().size() == 2);
+        assertEquals(2, m_node.getEdges().size());
 
         m_node.remove(m_edge);
-        assertTrue(m_node.getEdges().size() == 1);
+        assertEquals(1, m_node.getEdges().size());
 
         m_node.remove(m_edge);
-        assertTrue(m_node.getEdges().size() == 0);
+        assertEquals(0, m_node.getEdges().size());
 
         // test removal of multiple edges, different
         m_node.add(m_edge);
         m_node.add(m_otherEdge);
 
         m_node.remove(m_edge);
-        assertTrue(m_node.getEdges().size() == 1);
+        assertEquals(1, m_node.getEdges().size());
 
         m_node.remove(m_otherEdge);
-        assertTrue(m_node.getEdges().size() == 0);
+        assertEquals(0, m_node.getEdges().size());
     }
 
     public void test_getDegree() {
         // intially degree should be zero
-        assertTrue(m_node.getDegree() == 0);
+        assertEquals(0, m_node.getDegree());
 
         // add single edge making degree 1
         m_node.add(m_edge);
-        assertTrue(m_node.getDegree() == 1);
+        assertEquals(1, m_node.getDegree());
 
         // add the same edge, should be degree 2
         m_node.add(m_edge);
-        assertTrue(m_node.getDegree() == 2);
+        assertEquals(2, m_node.getDegree());
 
         // add different edge, should be degree 3
         m_node.add(m_otherEdge);
-        assertTrue(m_node.getDegree() == 3);
+        assertEquals(3, m_node.getDegree());
 
         m_node.getEdges().clear();
 
         // add a loop edge, degree should be two, but size will be one
         m_node.add(m_loop);
-        assertTrue(m_node.getEdges().size() == 1);
-        assertTrue(m_node.getDegree() == 2);
+        assertEquals(1, m_node.getEdges().size());
+        assertEquals(2, m_node.getDegree());
     }
 
     public void test_getEdge() {
@@ -135,7 +135,7 @@ public class BasicNodeTest extends TestCase {
 
         // add the same edge
         m_node.add(m_edge);
-        assertTrue(m_node.getEdges(m_otherNode).size() == 2);
+        assertEquals(2, m_node.getEdges(m_otherNode).size());
 
         // add a different edge
         m_node.add(m_otherEdge);
@@ -145,19 +145,19 @@ public class BasicNodeTest extends TestCase {
 
     public void test_getRelated() {
         // no edges should be empty
-        assertTrue(!m_node.getRelated().hasNext());
+        assertFalse(m_node.getRelated().hasNext());
 
         // single edge
         m_node.add(m_edge);
         Iterator itr = m_node.getRelated();
         assertSame(itr.next(), m_otherNode);
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         // multiple edges, same, same node should be returned twice
         m_node.add(m_edge);
         itr = m_node.getRelated();
         assertSame(itr.next(), m_otherNode);
         assertSame(itr.next(), m_otherNode);
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
     }
 }

@@ -70,21 +70,21 @@ public class OptDirectedNodeTest extends TestCase {
     }
 
     public void test_addIn() {
-        assertTrue(m_node.getInEdges().size() == 0);
+        assertEquals(0, m_node.getInEdges().size());
 
         // single in edge
         m_node.setInDegree(1);
         m_node.addIn(m_inEdge1);
 
         assertTrue(m_node.getInEdges().contains(m_inEdge1));
-        assertTrue(m_node.getInEdges().size() == 1);
+        assertEquals(1, m_node.getInEdges().size());
 
         // multiple in edges, same edge
         m_node.setInDegree(2);
         m_node.addIn(m_inEdge1);
         m_node.addIn(m_inEdge1);
 
-        assertTrue(m_node.getInEdges().size() == 2);
+        assertEquals(2, m_node.getInEdges().size());
 
         // multiple in edges, different
         m_node.setInDegree(2);
@@ -92,24 +92,24 @@ public class OptDirectedNodeTest extends TestCase {
         m_node.addIn(m_inEdge2);
         assertTrue(m_node.getInEdges().contains(m_inEdge1));
         assertTrue(m_node.getInEdges().contains(m_inEdge2));
-        assertTrue(m_node.getInEdges().size() == 2);
+        assertEquals(2, m_node.getInEdges().size());
     }
 
     public void test_addOut() {
-        assertTrue(m_node.getOutEdges().size() == 0);
+        assertEquals(0, m_node.getOutEdges().size());
 
         // single out edge
         m_node.setOutDegree(1);
         m_node.addOut(m_outEdge1);
         assertTrue(m_node.getOutEdges().contains(m_outEdge1));
-        assertTrue(m_node.getOutEdges().size() == 1);
+        assertEquals(1, m_node.getOutEdges().size());
 
         // multiple out edges, same edge
         m_node.setOutDegree(2);
         m_node.addOut(m_outEdge1);
         m_node.addOut(m_outEdge1);
 
-        assertTrue(m_node.getOutEdges().size() == 2);
+        assertEquals(2, m_node.getOutEdges().size());
 
         // multiple out edges, different
         m_node.setOutDegree(2);
@@ -117,7 +117,7 @@ public class OptDirectedNodeTest extends TestCase {
         m_node.addOut(m_outEdge2);
         assertTrue(m_node.getOutEdges().contains(m_outEdge1));
         assertTrue(m_node.getOutEdges().contains(m_outEdge2));
-        assertTrue(m_node.getOutEdges().size() == 2);
+        assertEquals(2, m_node.getOutEdges().size());
     }
 
     public void test_remove() {
@@ -198,7 +198,7 @@ public class OptDirectedNodeTest extends TestCase {
         m_node.addIn(m_inEdge1);
         m_node.addOut(m_outEdge1);
 
-        assertTrue(m_node.getEdges().size() == 2);
+        assertEquals(2, m_node.getEdges().size());
         assertTrue(m_node.getEdges().contains(m_inEdge1));
         assertTrue(m_node.getEdges().contains(m_outEdge1));
     }
@@ -231,13 +231,13 @@ public class OptDirectedNodeTest extends TestCase {
         m_node.addOut(m_outEdge2);
 
         assertTrue(m_node.getEdges(m_inNode1).contains(m_inEdge1));
-        assertTrue(m_node.getEdges(m_inNode1).size() == 2);
+        assertEquals(2, m_node.getEdges(m_inNode1).size());
         assertTrue(m_node.getEdges(m_inNode2).contains(m_inEdge2));
-        assertTrue(m_node.getEdges(m_inNode2).size() == 2);
+        assertEquals(2, m_node.getEdges(m_inNode2).size());
         assertTrue(m_node.getEdges(m_outNode1).contains(m_outEdge1));
-        assertTrue(m_node.getEdges(m_outNode1).size() == 2);
+        assertEquals(2, m_node.getEdges(m_outNode1).size());
         assertTrue(m_node.getEdges(m_outNode2).contains(m_outEdge2));
-        assertTrue(m_node.getEdges(m_outNode2).size() == 2);
+        assertEquals(2, m_node.getEdges(m_outNode2).size());
     }
 
     public void test_getInEdges_0() {
@@ -247,7 +247,7 @@ public class OptDirectedNodeTest extends TestCase {
 
         assertTrue(m_node.getInEdges().contains(m_inEdge1));
         assertTrue(m_node.getInEdges().contains(m_inEdge2));
-        assertTrue(m_node.getInEdges().size() == 2);
+        assertEquals(2, m_node.getInEdges().size());
     }
 
     public void test_getInEdges_1() {
@@ -265,10 +265,10 @@ public class OptDirectedNodeTest extends TestCase {
         m_node.addIn(m_inEdge2);
 
         assertTrue(m_node.getInEdges(m_inNode1).contains(m_inEdge1));
-        assertTrue(m_node.getInEdges(m_inNode1).size() == 2);
+        assertEquals(2, m_node.getInEdges(m_inNode1).size());
 
         assertTrue(m_node.getInEdges(m_inNode2).contains(m_inEdge2));
-        assertTrue(m_node.getInEdges(m_inNode2).size() == 2);
+        assertEquals(2, m_node.getInEdges(m_inNode2).size());
     }
 
     public void test_getOutEdges_0() {
@@ -278,7 +278,7 @@ public class OptDirectedNodeTest extends TestCase {
 
         assertTrue(m_node.getOutEdges().contains(m_outEdge1));
         assertTrue(m_node.getOutEdges().contains(m_outEdge2));
-        assertTrue(m_node.getOutEdges().size() == 2);
+        assertEquals(2, m_node.getOutEdges().size());
     }
 
     public void test_getOutEdges_1() {
@@ -296,10 +296,10 @@ public class OptDirectedNodeTest extends TestCase {
         m_node.addOut(m_outEdge2);
 
         assertTrue(m_node.getOutEdges(m_outNode1).contains(m_outEdge1));
-        assertTrue(m_node.getOutEdges(m_outNode1).size() == 2);
+        assertEquals(2, m_node.getOutEdges(m_outNode1).size());
 
         assertTrue(m_node.getOutEdges(m_outNode2).contains(m_outEdge2));
-        assertTrue(m_node.getOutEdges(m_outNode2).size() == 2);
+        assertEquals(2, m_node.getOutEdges(m_outNode2).size());
     }
 
     public void test_getDegree() {
@@ -309,7 +309,7 @@ public class OptDirectedNodeTest extends TestCase {
         m_node.addIn(m_inEdge1);
         m_node.addOut(m_outEdge2);
 
-        assertTrue(m_node.getDegree() == 2);
+        assertEquals(2, m_node.getDegree());
     }
 
     public void test_getInDegree() {
@@ -318,7 +318,7 @@ public class OptDirectedNodeTest extends TestCase {
 
         m_node.addIn(m_inEdge1);
         m_node.addOut(m_outEdge2);
-        assertTrue(m_node.getInDegree() == 1);
+        assertEquals(1, m_node.getInDegree());
     }
 
     public void test_getOutDegree() {
@@ -328,7 +328,7 @@ public class OptDirectedNodeTest extends TestCase {
         m_node.addIn(m_inEdge1);
         m_node.addOut(m_outEdge2);
 
-        assertTrue(m_node.getOutDegree() == 1);
+        assertEquals(1, m_node.getOutDegree());
     }
 
     public void test_getRelated() {
@@ -354,7 +354,7 @@ public class OptDirectedNodeTest extends TestCase {
         dn = (OptDirectedNode) related.next();
         assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2);
 
-        assertTrue(!related.hasNext());
+        assertFalse(related.hasNext());
 
         // add loop
         m_node.setInDegree(3);
@@ -418,7 +418,7 @@ public class OptDirectedNodeTest extends TestCase {
                         || dn == m_outNode2
                         || dn == m_node);
 
-        assertTrue(!related.hasNext());
+        assertFalse(related.hasNext());
     }
 
     public void test_getInRelated() {
@@ -437,7 +437,7 @@ public class OptDirectedNodeTest extends TestCase {
 
         dn = (OptDirectedNode) related.next();
         assertTrue(dn == m_inNode1 || dn == m_inNode2);
-        assertTrue(!related.hasNext());
+        assertFalse(related.hasNext());
 
         // add a loop
         m_node.setInDegree(3);
@@ -463,7 +463,7 @@ public class OptDirectedNodeTest extends TestCase {
         dn = (OptDirectedNode) related.next();
         assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_node);
 
-        assertTrue(!related.hasNext());
+        assertFalse(related.hasNext());
     }
 
     public void test_getOutRelated() {
@@ -483,7 +483,7 @@ public class OptDirectedNodeTest extends TestCase {
         dn = (OptDirectedNode) related.next();
         assertTrue(dn == m_outNode1 || dn == m_outNode2);
 
-        assertTrue(!related.hasNext());
+        assertFalse(related.hasNext());
 
         // add a loop
         m_node.setInDegree(3);
@@ -509,6 +509,6 @@ public class OptDirectedNodeTest extends TestCase {
         dn = (OptDirectedNode) related.next();
         assertTrue(dn == m_outNode1 || dn == m_outNode2 || dn == m_node);
 
-        assertTrue(!related.hasNext());
+        assertFalse(related.hasNext());
     }
 }

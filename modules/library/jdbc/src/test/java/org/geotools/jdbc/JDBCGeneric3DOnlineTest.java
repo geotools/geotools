@@ -139,7 +139,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
             Point p = (Point) fr.next().getDefaultGeometry();
-            assertTrue(new Coordinate(1, 1, 1).equals(p.getCoordinate()));
+            assertEquals(new Coordinate(1, 1, 1), p.getCoordinate());
         }
     }
 

@@ -166,16 +166,16 @@ public abstract class FeatureCollectionTest extends TestCase {
             otherHalf.removeAll(half);
             collection.removeAll(half);
             assertTrue(features.containsAll(otherHalf));
-            assertTrue(!features.containsAll(half));
+            assertFalse(features.containsAll(half));
             collection.removeAll(otherHalf);
-            assertTrue(features.size() == 0);
+            assertEquals(0, features.size());
             collection.addAll(half);
             assertTrue(features.containsAll(half));
             collection.addAll(otherHalf);
             assertTrue(features.containsAll(otherHalf));
             collection.retainAll(otherHalf);
             assertTrue(features.containsAll(otherHalf));
-            assertTrue(!features.containsAll(half));
+            assertFalse(features.containsAll(half));
             collection.addAll(otherHalf);
             Iterator<SimpleFeature> i = collection.iterator();
             while (i.hasNext()) {
@@ -188,7 +188,7 @@ public abstract class FeatureCollectionTest extends TestCase {
             tb.setName("XXX");
             SimpleFeatureBuilder b = new SimpleFeatureBuilder(tb.buildFeatureType());
 
-            assertTrue(!collection.remove(b.buildFeature(null)));
+            assertFalse(collection.remove(b.buildFeature(null)));
         }
     }
 
@@ -198,7 +198,7 @@ public abstract class FeatureCollectionTest extends TestCase {
         copy.clear();
         assertTrue(copy.isEmpty());
         copy.addAll(features);
-        assertTrue(!copy.isEmpty());
+        assertFalse(copy.isEmpty());
 
         List<SimpleFeature> list = DataUtilities.list(features);
         SimpleFeature[] f1 = list.toArray(new SimpleFeature[list.size()]);
@@ -238,13 +238,13 @@ public abstract class FeatureCollectionTest extends TestCase {
         // f1 has name, f2 has null name, expecting that f1 is greater g2
         assertTrue(compareName.compare(f1, f2) > 0);
         assertTrue(compareName.compare(f2, f1) < 0);
-        assertTrue(compareName.compare(f2, f3) == 0);
+        assertEquals(0, compareName.compare(f2, f3));
 
         Name compareNumber = new FeatureComparators.Name("name");
         // f1 has number, f2 has null number, expecting that f1 is greater g2
         assertTrue(compareNumber.compare(f1, f2) > 0);
         assertTrue(compareNumber.compare(f2, f1) < 0);
-        assertTrue(compareNumber.compare(f2, f3) == 0);
+        assertEquals(0, compareNumber.compare(f2, f3));
     }
 
     /**

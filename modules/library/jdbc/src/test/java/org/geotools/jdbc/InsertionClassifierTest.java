@@ -48,7 +48,7 @@ public class InsertionClassifierTest extends TestCase {
                 InsertionClassifier.classify(featureType, features);
         assertEquals(1, actual.size());
         for (InsertionClassifier kind : actual.keySet()) {
-            assertEquals(false, kind.useExisting);
+            assertFalse(kind.useExisting);
             assertEquals(2, kind.geometryTypes.size());
             assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
             assertEquals(Polygon.class, kind.geometryTypes.get("geom2"));
@@ -66,7 +66,7 @@ public class InsertionClassifierTest extends TestCase {
         assertEquals(2, actual.size());
         Set<Class<? extends Geometry>> geom2Classes = new HashSet<>();
         for (InsertionClassifier kind : actual.keySet()) {
-            assertEquals(false, kind.useExisting);
+            assertFalse(kind.useExisting);
             assertEquals(2, kind.geometryTypes.size());
             assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
             geom2Classes.add(kind.geometryTypes.get("geom2"));
@@ -106,7 +106,7 @@ public class InsertionClassifierTest extends TestCase {
         assertEquals(2, actual.size());
         Set<Class<? extends Geometry>> geom2Classes = new HashSet<>();
         for (InsertionClassifier kind : actual.keySet()) {
-            assertEquals(false, kind.useExisting);
+            assertFalse(kind.useExisting);
             assertEquals(2, kind.geometryTypes.size());
             assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
             geom2Classes.add(kind.geometryTypes.get("geom2"));

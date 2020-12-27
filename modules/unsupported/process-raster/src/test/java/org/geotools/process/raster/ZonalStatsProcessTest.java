@@ -190,12 +190,9 @@ public class ZonalStatsProcessTest extends Assert {
 
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                assertTrue(
-                        (feature.toString())
-                                .equals(
-                                        results.get(
-                                                feature.getID()
-                                                        + feature.getAttribute("classification"))));
+                assertEquals(
+                        (feature.toString()),
+                        results.get(feature.getID() + feature.getAttribute("classification")));
             }
 
         } finally {

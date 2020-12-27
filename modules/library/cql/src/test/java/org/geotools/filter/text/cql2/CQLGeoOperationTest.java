@@ -201,7 +201,7 @@ public class CQLGeoOperationTest {
         } catch (CQLException e) {
             final String error = e.getSyntaxError();
             Assert.assertNotNull(error);
-            Assert.assertFalse("".equals(error));
+            Assert.assertNotEquals("", error);
         }
     }
 

@@ -223,7 +223,7 @@ public class MosaicTest extends GridProcessingTestBase {
         // RenderingHints
         Hints hints = new Hints();
         // Ensure No Layout is set
-        Assert.assertTrue(!hints.containsKey(JAI.KEY_IMAGE_LAYOUT));
+        assertFalse(hints.containsKey(JAI.KEY_IMAGE_LAYOUT));
         // Add a fake Layout for the operation
         ImageLayout il = new ImageLayout();
         hints.put(JAI.KEY_IMAGE_LAYOUT, il);
@@ -276,10 +276,10 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(hints.containsKey(JAI.KEY_IMAGE_LAYOUT));
         // Ensure no additional bound parameter is set
         ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
-        Assert.assertTrue(!layout.isValid(ImageLayout.MIN_X_MASK));
-        Assert.assertTrue(!layout.isValid(ImageLayout.MIN_Y_MASK));
-        Assert.assertTrue(!layout.isValid(ImageLayout.WIDTH_MASK));
-        Assert.assertTrue(!layout.isValid(ImageLayout.HEIGHT_MASK));
+        assertFalse(layout.isValid(ImageLayout.MIN_X_MASK));
+        assertFalse(layout.isValid(ImageLayout.MIN_Y_MASK));
+        assertFalse(layout.isValid(ImageLayout.WIDTH_MASK));
+        assertFalse(layout.isValid(ImageLayout.HEIGHT_MASK));
         Assert.assertTrue(layout.isValid(ImageLayout.TILE_HEIGHT_MASK));
         Assert.assertTrue(layout.isValid(ImageLayout.TILE_WIDTH_MASK));
         return mosaic;

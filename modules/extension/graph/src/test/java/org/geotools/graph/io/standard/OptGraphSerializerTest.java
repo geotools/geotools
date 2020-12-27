@@ -65,16 +65,16 @@ public class OptGraphSerializerTest extends TestCase {
             Graph after = serializer().read();
 
             // ensure same number of nodes and edges
-            assertTrue(before.getNodes().size() == after.getNodes().size());
-            assertTrue(before.getEdges().size() == after.getEdges().size());
+            assertEquals(before.getNodes().size(), after.getNodes().size());
+            assertEquals(before.getEdges().size(), after.getEdges().size());
 
             // ensure two nodes of degree 1, and nnodes-2 nodes of degree 2
-            assertTrue(after.getNodesOfDegree(1).size() == 2);
-            assertTrue(after.getNodesOfDegree(2).size() == nnodes - 2);
+            assertEquals(2, after.getNodesOfDegree(1).size());
+            assertEquals(after.getNodesOfDegree(2).size(), nnodes - 2);
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            assertTrue(false);
+            fail();
         }
     }
 
@@ -97,9 +97,9 @@ public class OptGraphSerializerTest extends TestCase {
             Graph before = builder().getGraph();
             Graph after = serializer().read();
 
-            assertTrue(after.getNodesOfDegree(2).size() == 1); // root
-            assertTrue(after.getNodesOfDegree(3).size() == Math.pow(2, k) - 2); // internal
-            assertTrue(after.getNodesOfDegree(1).size() == Math.pow(2, k)); // leaves
+            assertEquals(1, after.getNodesOfDegree(2).size()); // root
+            assertEquals(after.getNodesOfDegree(3).size(), (int) Math.pow(2, k) - 2); // internal
+            assertEquals(after.getNodesOfDegree(1).size(), (int) Math.pow(2, k)); // leaves
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }

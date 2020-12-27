@@ -60,7 +60,7 @@ public class NumberFormatTest extends TestCase {
         Literal number = ff.literal(null);
 
         Function f = ff.function("numberFormat", new Expression[] {pattern, number});
-        assertEquals(null, f.evaluate(null, String.class));
+        assertNull(f.evaluate(null, String.class));
     }
 
     public void testNumberFormatNullPattern() {
@@ -69,7 +69,7 @@ public class NumberFormatTest extends TestCase {
         Literal number = ff.literal("-123456.7891");
 
         Function f = ff.function("numberFormat", new Expression[] {pattern, number});
-        assertEquals(null, f.evaluate(null, String.class));
+        assertNull(f.evaluate(null, String.class));
     }
 
     public void testNumber2FormatNullValue() {
@@ -82,7 +82,7 @@ public class NumberFormatTest extends TestCase {
 
         Function f =
                 ff.function("numberFormat2", new Expression[] {pattern, number, minus, ds, gs});
-        assertEquals(null, f.evaluate(null, String.class));
+        assertNull(f.evaluate(null, String.class));
     }
 
     public void testNumber2FormatNullPattern() {
@@ -95,7 +95,7 @@ public class NumberFormatTest extends TestCase {
 
         Function f =
                 ff.function("numberFormat2", new Expression[] {pattern, number, minus, ds, gs});
-        assertEquals(null, f.evaluate(null, String.class));
+        assertNull(f.evaluate(null, String.class));
     }
 
     public void testNumberFactoryLocaleParam() {

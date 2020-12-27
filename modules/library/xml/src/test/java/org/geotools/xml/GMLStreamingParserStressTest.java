@@ -88,7 +88,7 @@ public class GMLStreamingParserStressTest extends TestCase {
                 fr.next();
             }
 
-            assertTrue("# features = " + i, i == 70);
+            assertEquals("# features = " + i, 70, i);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -192,14 +192,14 @@ public class GMLStreamingParserStressTest extends TestCase {
                 cont = false;
                 for (int i = 0; i < 10 && fr1.hasNext(); i++) {
                     SimpleFeature ftr = fr1.next();
-                    assertTrue("Feature Null", ftr != null);
+                    assertNotNull("Feature Null", ftr);
                     //                    System.out.println(ftr);
                     cont = true;
                     count1++;
                 }
                 for (int i = 0; i < 10 && fr2.hasNext(); i++) {
                     SimpleFeature ftr = fr2.next();
-                    assertTrue("Feature Null", ftr != null);
+                    assertNotNull("Feature Null", ftr);
                     //                    System.out.println(ftr);
                     cont = true;
                     count2++;

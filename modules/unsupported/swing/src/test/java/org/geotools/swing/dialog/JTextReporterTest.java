@@ -285,7 +285,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
         Connection conn = showDialog(TITLE).get();
         String text = conn.getText();
         assertNotNull(text);
-        assertTrue(text.length() == 0);
+        assertEquals(0, text.length());
     }
 
     @Test

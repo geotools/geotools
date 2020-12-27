@@ -17,7 +17,7 @@
  */
 package org.geotools.coverageio.gdal.ecw;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -250,10 +250,10 @@ public final class ECWTest extends GDALTestCase {
 
         // Assert point in Greenland is masked out
         gc.evaluate(pointInGreenland, pixel);
-        assertTrue((pixel[3] & 0xFF) == 0);
+        assertEquals(0, (pixel[3] & 0xFF));
 
         // Assert point in Africa is present
         gc.evaluate(pointInAfrica, pixel);
-        assertTrue((pixel[3] & 0xFF) == 255);
+        assertEquals(255, (pixel[3] & 0xFF));
     }
 }

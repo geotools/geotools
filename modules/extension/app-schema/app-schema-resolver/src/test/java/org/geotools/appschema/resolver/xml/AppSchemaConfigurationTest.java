@@ -187,8 +187,8 @@ public class AppSchemaConfigurationTest {
                     schemaIndex.getElementDeclaration(
                             new QName("http://schemas.example.org/demo", "GeologicUnit")));
             // test that cache path is not canonical
-            Assert.assertFalse(
-                    cacheDirectory.toString().equals(cacheDirectory.getCanonicalFile().toString()));
+            Assert.assertNotEquals(
+                    cacheDirectory.toString(), cacheDirectory.getCanonicalFile().toString());
             // test that relative include can be resolved despite non-canonical cache path
             Assert.assertNotNull(
                     schemaIndex.getElementDeclaration(

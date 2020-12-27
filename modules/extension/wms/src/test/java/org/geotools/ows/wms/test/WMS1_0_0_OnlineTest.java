@@ -88,8 +88,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
     public void testCreateDescribeLayerRequest() throws Exception {
         try {
             spec.createDescribeLayerRequest(null);
-            assertTrue(
-                    "Shouldn't be able to create DescribeLayer requests for version 1.0.0", false);
+            fail("Shouldn't be able to create DescribeLayer requests for version 1.0.0");
         } catch (UnsupportedOperationException e) {
 
         }
@@ -130,7 +129,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
                             .getLayerList()
                             .toArray(new Layer[capabilities.getLayerList().size()]);
             assertEquals(layers[0].getTitle(), "World Map");
-            assertEquals(layers[0].getParent(), null);
+            assertNull(layers[0].getParent());
             assertTrue(layers[0].getSrs().contains("EPSG:4326")); //  case should not matter
             assertTrue(layers[0].getSrs().contains("EPSG:4327"));
             assertEquals(layers[1].getTitle(), "Bathymetry");

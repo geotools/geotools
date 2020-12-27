@@ -16,6 +16,8 @@
  */
 package org.geotools.graph.traverse.standard;
 
+import static junit.framework.TestCase.assertFalse;
+
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
@@ -67,7 +69,7 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
         traversal.init();
         traversal.traverse();
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
 
         boolean flip = false;
         for (Node node : builder().getGraph().getNodes()) {
@@ -97,7 +99,7 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
                 }
             }
 
-            assertTrue(expected == node.getCount());
+            assertEquals(expected, node.getCount());
         }
         ;
     }
@@ -143,7 +145,7 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == Math.pow(2, k + 1) - 1);
+        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -166,13 +168,13 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(!component.isVisited());
+                        assertFalse(component.isVisited());
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == 0);
+        assertEquals(0, walker.getCount());
     }
 
     protected GraphBuilder createBuilder() {

@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -28,7 +29,6 @@ import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import javax.xml.transform.TransformerException;
 import org.geotools.filter.function.EnvFunction;
@@ -284,7 +284,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertLiteral("1", stroke.getOpacity());
         assertLiteral("round", stroke.getLineCap());
         assertLiteral("round", stroke.getLineJoin());
-        assertTrue(Arrays.equals(new float[] {10, 5, 1, 5}, stroke.getDashArray()));
+        assertArrayEquals(new float[] {10, 5, 1, 5}, stroke.getDashArray(), 0f);
         assertLiteral("2", stroke.getDashOffset());
         assertNull(stroke.getGraphicFill());
         assertNull(stroke.getGraphicStroke());

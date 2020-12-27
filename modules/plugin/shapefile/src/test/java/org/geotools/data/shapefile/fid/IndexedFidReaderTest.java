@@ -17,7 +17,7 @@
 package org.geotools.data.shapefile.fid;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -111,7 +111,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
 
         for (String fid : expectedFids) {
             long offset = reader.findFid(fid);
-            assertFalse(-1 == offset);
+            assertNotEquals(-1, offset);
         }
     }
 
@@ -135,14 +135,14 @@ public class IndexedFidReaderTest extends FIDTestCase {
         assertTrue(expectedCount > 0);
         assertEquals(expectedCount, reader.getCount());
 
-        assertFalse("findFid for archsites.5 returned -1", -1 == reader.findFid("archsites.5"));
-        assertFalse("findFid for archsites.25 returned -1", -1 == reader.findFid("archsites.25"));
+        assertNotEquals("findFid for archsites.5 returned -1", -1, reader.findFid("archsites.5"));
+        assertNotEquals("findFid for archsites.25 returned -1", -1, reader.findFid("archsites.25"));
 
         for (String fid : expectedFids) {
             long offset = reader.findFid(fid);
             assertNotNull(offset);
             // System.out.print(fid + "=" + offset + ", ");
-            assertFalse("findFid for " + fid + " returned -1", -1 == offset);
+            assertNotEquals("findFid for " + fid + " returned -1", -1, offset);
         }
     }
 

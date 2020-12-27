@@ -407,6 +407,6 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         query.setStartIndex(1);
         query.setMaxFeatures(2);
         int count = dataStore.getFeatureSource("riverFullPlaceHolder").getCount(query);
-        assertTrue(count == 1);
+        assertEquals(1, count);
     }
 }

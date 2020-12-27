@@ -66,7 +66,7 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
                 genericGroupByTestTest(Query.ALL, Aggregate.MAX, expectOptimized, buildingTypeSub);
         assertNotNull(value);
 
-        assertTrue(value.size() == 3);
+        assertEquals(3, value.size());
         checkValueContains(value, "HOU", "6.0");
         checkValueContains(value, "FAB", "500.0");
         checkValueContains(value, "SCH", "60.0");

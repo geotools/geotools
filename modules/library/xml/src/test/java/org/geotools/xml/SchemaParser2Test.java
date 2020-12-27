@@ -61,6 +61,6 @@ public class SchemaParser2Test extends TestCase {
 
         Schema s2 = null;
         s2 = SchemaFactory.getInstance(targetNS);
-        assertTrue("Should be the same", s == s2);
+        assertSame("Should be the same", s, s2);
     }
 }

@@ -133,7 +133,7 @@ public class ComplexAttributeConverterFactoryTest extends TestCase {
                                 null),
                         null);
         Geometry geometry2 = Converters.convert(geoatt, Geometry.class);
-        assertTrue(geometry == geometry2);
+        assertSame(geometry, geometry2);
     }
 
     /** Checks that an attribute value is correctly converted to the expected type. */

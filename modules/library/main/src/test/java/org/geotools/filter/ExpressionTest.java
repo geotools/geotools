@@ -270,7 +270,7 @@ public class ExpressionTest extends TestCase {
 
     public void testFunctionNameTrim() throws IllegalFilterException {
         Function min = ff.function("minFunction", ff.literal(2), ff.literal(3));
-        assertTrue(min != null);
+        assertNotNull(min);
     }
 
     /**

@@ -17,7 +17,6 @@
 package org.geotools.filter.function;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -78,7 +77,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
         Function fn = finder.findFunction("Interpolate", parameters, fallback);
         Object result = fn.evaluate(feature(0));
 
-        assertFalse("Could not locate 'Interpolate' function", result.equals(fallback.getValue()));
+        assertNotEquals("Could not locate 'Interpolate' function", result, fallback.getValue());
     }
 
     @Test

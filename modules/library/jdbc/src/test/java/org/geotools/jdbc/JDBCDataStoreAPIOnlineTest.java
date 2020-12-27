@@ -1285,7 +1285,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     void assertContains(SimpleFeature[] array, SimpleFeature expected) {
-        assertFalse(array == null);
+        assertNotNull(array);
         assertFalse(array.length == 0);
         assertNotNull(expected);
 
@@ -1533,7 +1533,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     void assertMatch(SimpleFeature[] array, SimpleFeature feature) {
-        assertTrue(array != null);
+        assertNotNull(array);
         assertTrue(array.length != 0);
 
         SimpleFeatureType schema = feature.getFeatureType();

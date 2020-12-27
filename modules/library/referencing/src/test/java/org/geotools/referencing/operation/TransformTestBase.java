@@ -18,7 +18,6 @@ package org.geotools.referencing.operation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 import org.geotools.geometry.DirectPosition2D;
@@ -95,8 +94,8 @@ public abstract class TransformTestBase {
         if (transform.getTargetDimensions() != dim) {
             dim = 0;
         }
-        assertTrue("MathTransform1D", (dim == 1) == (transform instanceof MathTransform1D));
-        assertTrue("MathTransform2D", (dim == 2) == (transform instanceof MathTransform2D));
+        assertEquals("MathTransform1D", (dim == 1), (transform instanceof MathTransform1D));
+        assertEquals("MathTransform2D", (dim == 2), (transform instanceof MathTransform2D));
     }
 
     /**

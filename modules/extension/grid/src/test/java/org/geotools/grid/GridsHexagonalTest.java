@@ -19,6 +19,7 @@ package org.geotools.grid;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -105,7 +106,7 @@ public class GridsHexagonalTest {
             while (iter.hasNext()) {
                 SimpleFeature f = iter.next();
                 int id = (Integer) f.getAttribute("id");
-                assertFalse(id == 0);
+                assertNotEquals(0, id);
                 assertFalse(flag[id]);
                 flag[id] = true;
                 count++;

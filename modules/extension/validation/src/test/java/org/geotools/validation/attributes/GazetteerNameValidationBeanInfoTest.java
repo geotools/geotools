@@ -62,10 +62,9 @@ public class GazetteerNameValidationBeanInfoTest extends TestCase {
             }
             assertNotNull(url);
             assertNotNull(name);
-            assertTrue("test".equals(name.getReadMethod().invoke(gnv, null)));
-            assertTrue(
-                    (new URL("http://http://hydra/time/"))
-                            .equals(url.getReadMethod().invoke(gnv, null)));
+            assertEquals("test", name.getReadMethod().invoke(gnv, null));
+            assertEquals(
+                    (new URL("http://http://hydra/time/")), url.getReadMethod().invoke(gnv, null));
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());

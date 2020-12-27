@@ -16,6 +16,8 @@
  */
 package org.geotools.graph.traverse.standard;
 
+import static junit.framework.TestCase.assertFalse;
+
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
@@ -53,7 +55,7 @@ public class DirectedDepthFirstIteratorTest extends DepthFirstIteratorTest {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component == ends[1]) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        else assertFalse(component.isVisited());
                         return (0);
                     }
                 };

@@ -35,92 +35,64 @@ public class GeneralizationInfosTest extends TestCase {
             return;
         }
 
-        assertTrue("DSInfos".equals(infos.getDataSourceName()));
-        assertTrue("WSInfos".equals(infos.getDataSourceNameSpace()));
+        assertEquals("DSInfos", infos.getDataSourceName());
+        assertEquals("WSInfos", infos.getDataSourceNameSpace());
 
         Collection<String> coll = null;
         coll = infos.getBaseFeatureNames();
-        assertTrue(coll.size() == 2);
+        assertEquals(2, coll.size());
         assertTrue(coll.contains("BaseFeature1"));
         assertTrue(coll.contains("BaseFeature2"));
 
         coll = infos.getFeatureNames();
-        assertTrue(coll.size() == 2);
+        assertEquals(2, coll.size());
         assertTrue(coll.contains("GenFeature1"));
         assertTrue(coll.contains("BaseFeature2"));
 
         GeneralizationInfo info1 = infos.getGeneralizationInfoForBaseFeatureName("BaseFeature1");
-        assertTrue("DSInfo".equals(info1.getDataSourceName()));
-        assertTrue("WSInfo".equals(info1.getDataSourceNameSpace()));
+        assertEquals("DSInfo", info1.getDataSourceName());
+        assertEquals("WSInfo", info1.getDataSourceNameSpace());
 
-        assertTrue(info1 == infos.getGeneralizationInfoForFeatureName("GenFeature1"));
+        assertSame(info1, infos.getGeneralizationInfoForFeatureName("GenFeature1"));
 
         GeneralizationInfo info2 = infos.getGeneralizationInfoForBaseFeatureName("BaseFeature2");
-        assertTrue("DSInfos".equals(info2.getDataSourceName()));
-        assertTrue("WSInfos".equals(info2.getDataSourceNameSpace()));
+        assertEquals("DSInfos", info2.getDataSourceName());
+        assertEquals("WSInfos", info2.getDataSourceNameSpace());
 
-        assertTrue(info2 == infos.getGeneralizationInfoForFeatureName("BaseFeature2"));
+        assertSame(info2, infos.getGeneralizationInfoForFeatureName("BaseFeature2"));
 
-        assertTrue(info1.getFeatureName().equals("GenFeature1"));
-        assertTrue(info1.getBaseFeatureName().equals("BaseFeature1"));
-        assertTrue(info1.getGeomPropertyName().equals("the_geom"));
+        assertEquals("GenFeature1", info1.getFeatureName());
+        assertEquals("BaseFeature1", info1.getBaseFeatureName());
+        assertEquals("the_geom", info1.getGeomPropertyName());
 
-        assertTrue(info2.getFeatureName().equals("BaseFeature2"));
-        assertTrue(info2.getBaseFeatureName().equals("BaseFeature2"));
-        assertTrue(info2.getGeomPropertyName().equals("the_geom"));
+        assertEquals("BaseFeature2", info2.getFeatureName());
+        assertEquals("BaseFeature2", info2.getBaseFeatureName());
+        assertEquals("the_geom", info2.getGeomPropertyName());
 
-        assertTrue(info1.getGeneralizations().size() == 2);
-        assertTrue(info2.getGeneralizations().size() == 2);
+        assertEquals(2, info1.getGeneralizations().size());
+        assertEquals(2, info2.getGeneralizations().size());
 
-        assertTrue(info1.getGeneralizationForDistance(99.0) == null);
-        assertTrue(
-                info1.getGeneralizationForDistance(100.0).getFeatureName().equals("GenFeature1"));
-        assertTrue(
-                info1.getGeneralizationForDistance(999.0).getFeatureName().equals("GenFeature1"));
-        assertTrue("DSInfo".equals(info1.getGeneralizationForDistance(100.0).getDataSourceName()));
-        assertTrue(
-                "WSInfo"
-                        .equals(
-                                info1.getGeneralizationForDistance(100.0)
-                                        .getDataSourceNameSpace()));
+        assertNull(info1.getGeneralizationForDistance(99.0));
+        assertEquals("GenFeature1", info1.getGeneralizationForDistance(100.0).getFeatureName());
+        assertEquals("GenFeature1", info1.getGeneralizationForDistance(999.0).getFeatureName());
+        assertEquals("DSInfo", info1.getGeneralizationForDistance(100.0).getDataSourceName());
+        assertEquals("WSInfo", info1.getGeneralizationForDistance(100.0).getDataSourceNameSpace());
 
-        assertTrue(
-                info1.getGeneralizationForDistance(1000.0).getFeatureName().equals("GenFeature2"));
-        assertTrue(
-                info1.getGeneralizationForDistance(10000.0).getFeatureName().equals("GenFeature2"));
-        assertTrue(
-                "DSDistance"
-                        .equals(info1.getGeneralizationForDistance(1000.0).getDataSourceName()));
-        assertTrue(
-                "WSDistance"
-                        .equals(
-                                info1.getGeneralizationForDistance(1000.0)
-                                        .getDataSourceNameSpace()));
+        assertEquals("GenFeature2", info1.getGeneralizationForDistance(1000.0).getFeatureName());
+        assertEquals("GenFeature2", info1.getGeneralizationForDistance(10000.0).getFeatureName());
+        assertEquals("DSDistance", info1.getGeneralizationForDistance(1000.0).getDataSourceName());
+        assertEquals(
+                "WSDistance", info1.getGeneralizationForDistance(1000.0).getDataSourceNameSpace());
 
-        assertTrue(info2.getGeneralizationForDistance(99.0) == null);
-        assertTrue(
-                info2.getGeneralizationForDistance(100.0)
-                        .getGeomPropertyName()
-                        .equals("the_geom1"));
-        assertTrue(
-                info2.getGeneralizationForDistance(999.0)
-                        .getGeomPropertyName()
-                        .equals("the_geom1"));
-        assertTrue(
-                info2.getGeneralizationForDistance(1000.0)
-                        .getGeomPropertyName()
-                        .equals("the_geom2"));
-        assertTrue(
-                info2.getGeneralizationForDistance(10000.0)
-                        .getGeomPropertyName()
-                        .equals("the_geom2"));
+        assertNull(info2.getGeneralizationForDistance(99.0));
+        assertEquals("the_geom1", info2.getGeneralizationForDistance(100.0).getGeomPropertyName());
+        assertEquals("the_geom1", info2.getGeneralizationForDistance(999.0).getGeomPropertyName());
+        assertEquals("the_geom2", info2.getGeneralizationForDistance(1000.0).getGeomPropertyName());
+        assertEquals(
+                "the_geom2", info2.getGeneralizationForDistance(10000.0).getGeomPropertyName());
 
-        assertTrue("DSInfos".equals(info2.getGeneralizationForDistance(100.0).getDataSourceName()));
-        assertTrue(
-                "WSInfos"
-                        .equals(
-                                info2.getGeneralizationForDistance(100.0)
-                                        .getDataSourceNameSpace()));
+        assertEquals("DSInfos", info2.getGeneralizationForDistance(100.0).getDataSourceName());
+        assertEquals("WSInfos", info2.getGeneralizationForDistance(100.0).getDataSourceNameSpace());
 
         GeneralizationInfo gi = infos.getGeneralizationInfoForFeatureName("GenFeature1");
         assertNotNull(gi);

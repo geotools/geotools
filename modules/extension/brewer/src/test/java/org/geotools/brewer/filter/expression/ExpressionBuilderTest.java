@@ -17,6 +17,7 @@
 package org.geotools.brewer.filter.expression;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.geotools.brewer.styling.filter.expression.ExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
@@ -48,7 +49,7 @@ public class ExpressionBuilderTest {
 
         assertEquals(ff.literal(null), b.literal(null).build());
 
-        assertEquals(null, b.unset().build());
+        assertNull(b.unset().build());
         assertEquals(ff.literal(2), b.reset(ff.literal(2)).build());
     }
 
@@ -59,7 +60,7 @@ public class ExpressionBuilderTest {
         Expression e;
 
         assertEquals(Expression.NIL, b.reset().build());
-        assertEquals(null, b.reset(null).build());
+        assertNull(b.reset(null).build());
     }
 
     @Test

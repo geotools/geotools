@@ -57,7 +57,7 @@ public class DijkstraShortestPathFinderTest extends TestCase {
 
         int count = 99;
         for (Node n : p) {
-            assertTrue(n.getID() == count--);
+            assertEquals(n.getID(), count--);
         }
     }
 
@@ -76,9 +76,9 @@ public class DijkstraShortestPathFinderTest extends TestCase {
         pfinder.calculate();
         Path p = pfinder.getPath(ends[1]);
 
-        assertTrue(p.size() == 2);
-        assertTrue(p.get(0) == ends[1]);
-        assertTrue(p.get(1) == ends[0]);
+        assertEquals(2, p.size());
+        assertSame(p.get(0), ends[1]);
+        assertSame(p.get(1), ends[0]);
     }
 
     /**
@@ -101,10 +101,10 @@ public class DijkstraShortestPathFinderTest extends TestCase {
 
             if (id2node.get(id + ".0") == null) {
                 Path p = pfinder.getPath(node);
-                assertTrue(p.size() == k + 1);
+                assertEquals(p.size(), k + 1);
 
                 for (Node n : p) {
-                    assertTrue(n.getObject().toString().equals(id));
+                    assertEquals(n.getObject().toString(), id);
                     if (id.length() > 2) id = id.substring(0, id.length() - 2);
                 }
             }

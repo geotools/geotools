@@ -17,6 +17,7 @@
 package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -98,7 +99,7 @@ public final class CanonicalSetTest {
                         // (otherwise GC should not have cleared it).
                         assertTrue("add:", strongModified);
                     } else {
-                        assertTrue(value != weakSet.get(value));
+                        assertNotSame(value, weakSet.get(value));
                         if (strongModified) {
                             // If the element was already in the CanonicalSet but not in the
                             // HashSet, this is because GC has not cleared it yet. Replace it

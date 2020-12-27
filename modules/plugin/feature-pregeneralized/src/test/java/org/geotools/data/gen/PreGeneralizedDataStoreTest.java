@@ -52,30 +52,30 @@ public class PreGeneralizedDataStoreTest extends TestCase {
             PreGeneralizedDataStore ds = new PreGeneralizedDataStore(ginfos, TestSetup.REPOSITORY);
 
             String typeName = ds.getTypeNames()[0];
-            assertTrue("GenStreams".equals(typeName));
+            assertEquals("GenStreams", typeName);
             Query query = new Query(typeName);
 
             FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-            assertTrue(reader != null);
+            assertNotNull(reader);
             reader.close();
 
             SimpleFeatureSource fsource = ds.getFeatureSource(typeName);
-            assertTrue(fsource != null);
+            assertNotNull(fsource);
 
             fsource = ds.getFeatureSource(new NameImpl(typeName));
-            assertTrue(fsource != null);
+            assertNotNull(fsource);
 
             ServiceInfo si = ds.getInfo();
-            assertTrue(si != null);
+            assertNotNull(si);
             // System.out.println(si);
 
             List<Name> names = ds.getNames();
             assertTrue(names.contains(new NameImpl(typeName)));
-            assertTrue("GenStreams".equals(ds.getNames().get(0).getLocalPart()));
+            assertEquals("GenStreams", ds.getNames().get(0).getLocalPart());
 
             fsource = DataUtilities.createView(ds, query);
-            assertTrue(fsource != null);
+            assertNotNull(fsource);
 
             assertNotNull(ds.getSchema(typeName));
             assertNotNull(ds.getSchema(new NameImpl(typeName)));

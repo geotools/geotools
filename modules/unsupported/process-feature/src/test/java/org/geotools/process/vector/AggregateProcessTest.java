@@ -17,6 +17,7 @@
  */
 package org.geotools.process.vector;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -89,7 +90,7 @@ public class AggregateProcessTest {
         assertTrue(result.getGroupByResult().size() > 0);
         // the size of each line result should be 2 (one group by attribute and one aggregation
         // function)
-        assertTrue(result.getGroupByResult().get(0).length == 2);
+        assertEquals(2, result.getGroupByResult().get(0).length);
     }
 
     @Test
@@ -107,9 +108,9 @@ public class AggregateProcessTest {
         // we expect a group by result
         assertNotNull(result.getGroupByResult());
         // the group by result should not be empty
-        assertTrue(result.getGroupByResult().size() == 3);
+        assertEquals(3, result.getGroupByResult().size());
         // the size of each line result should be 2 (one group by attribute and one aggregation
         // function)
-        assertTrue(result.getGroupByResult().get(0).length == 2);
+        assertEquals(2, result.getGroupByResult().get(0).length);
     }
 }

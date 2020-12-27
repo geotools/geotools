@@ -129,7 +129,7 @@ public class ImageMosaicCogOnlineTest extends TestCase {
         assertNotNull(fileLocation);
         assertTrue(fileLocation instanceof String);
         String path = (String) fileLocation;
-        assertTrue(!path.isEmpty());
+        assertFalse(path.isEmpty());
         assertTrue(path.endsWith(".ovr"));
         reader.dispose();
     }

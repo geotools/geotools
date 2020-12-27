@@ -59,8 +59,8 @@ public class IsCoverageTest extends GridCoverageTestBase {
         build.add("testName");
         build.add(null);
         feature = build.buildFeature(null);
-        assertEquals(false, isCoverage.evaluate(feature));
-        assertEquals(true, isNotCoverage.evaluate(feature));
+        assertFalse(isCoverage.evaluate(feature));
+        assertTrue(isNotCoverage.evaluate(feature));
     }
 
     @Test

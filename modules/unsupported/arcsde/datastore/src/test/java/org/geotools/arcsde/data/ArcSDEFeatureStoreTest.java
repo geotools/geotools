@@ -1044,7 +1044,7 @@ public class ArcSDEFeatureStoreTest {
             assertTrue(reader.hasNext());
             feature = reader.next();
             MultiLineString recoveredMLS = (MultiLineString) feature.getDefaultGeometry();
-            assertTrue(!recoveredMLS.isEmpty());
+            assertFalse(recoveredMLS.isEmpty());
             // I tried to compare the recovered MLS to the
             // sampleMultiLineString, but they're
             // slightly different. SDE does some rounding, and winds up giving

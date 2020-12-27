@@ -198,13 +198,13 @@ public class OffsetCurveBuilderTest {
     @Test
     public void testHorizontalSegmentPositiveOffset() throws ParseException {
         Geometry offset = simpleOffsetTest("LINESTRING(0 0, 10 0)", 2);
-        assertTrue(offset.getEnvelopeInternal().getMinY() == 2);
+        assertEquals(2, offset.getEnvelopeInternal().getMinY(), 0.0);
     }
 
     @Test
     public void testHorizontalSegmentNegativeOffset() throws ParseException {
         Geometry offset = simpleOffsetTest("LINESTRING(0 0, 10 0)", -2);
-        assertTrue(offset.getEnvelopeInternal().getMinY() == -2);
+        assertEquals(offset.getEnvelopeInternal().getMinY(), -2, 0.0);
     }
 
     @Test

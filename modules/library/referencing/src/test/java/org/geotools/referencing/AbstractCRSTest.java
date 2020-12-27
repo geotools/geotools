@@ -147,7 +147,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             assertEquals(Integer.valueOf(4230), CRS.lookupEpsgCode(crs, false));
         } else {
             assertNull("Should not find the CRS without a scan.", CRS.lookupIdentifier(crs, false));
-            assertEquals(null, CRS.lookupEpsgCode(crs, false));
+            assertNull(CRS.lookupEpsgCode(crs, false));
         }
 
         assertEquals(

@@ -292,7 +292,7 @@ public final class ECQLTest {
 
         List<Filter> list = ECQL.toFilterList("A=1; B<4");
 
-        Assert.assertTrue(list.size() == 2);
+        assertEquals(2, list.size());
 
         Assert.assertTrue(list.get(0) instanceof PropertyIsEqualTo);
 
@@ -358,7 +358,7 @@ public final class ECQLTest {
         String expectedECQL = "QUANTITY = 1; YEAR < 1963";
         List<Filter> list = ECQL.toFilterList(expectedECQL);
 
-        Assert.assertTrue(list.size() == 2);
+        assertEquals(2, list.size());
 
         String cqlResult = ECQL.toCQL(list);
 
@@ -372,7 +372,7 @@ public final class ECQLTest {
                 "INTERSECTS(the_geom, SRID=4326;POINT (1 2)); INTERSECTS(abcd, SRID=4962;POINT (0 0))";
         List<Filter> list = ECQL.toFilterList(expectedECQL);
 
-        Assert.assertTrue(list.size() == 2);
+        assertEquals(2, list.size());
 
         String cqlResult = ECQL.toCQL(list);
 
@@ -395,7 +395,7 @@ public final class ECQLTest {
         String expectedCQL = "QUANTITY = 1; YEAR < 1963";
         List<Filter> list = CQL.toFilterList(expectedCQL);
 
-        Assert.assertTrue(list.size() == 2);
+        assertEquals(2, list.size());
 
         String cqlResult = CQL.toCQL(list);
 

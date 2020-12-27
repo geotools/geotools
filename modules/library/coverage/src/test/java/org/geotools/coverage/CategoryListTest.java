@@ -147,8 +147,8 @@ public final class CategoryListTest {
             final Range range = list.getRange();
             assertEquals("min", 0, ((Number) range.getMinValue()).doubleValue(), 0);
             assertEquals("max", 120, ((Number) range.getMaxValue()).doubleValue(), 0);
-            assertTrue("min included", range.isMinIncluded() == true);
-            assertTrue("max included", range.isMaxIncluded() == false);
+            assertEquals("min included", true, range.isMinIncluded());
+            assertEquals("max included", false, range.isMaxIncluded());
             /*
              * Checks category search.
              */

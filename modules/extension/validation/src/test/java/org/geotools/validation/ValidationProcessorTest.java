@@ -90,7 +90,7 @@ public class ValidationProcessorTest extends DataTestCase {
         // test the correct roads
         processor.runFeatureTests(
                 "dataStoreId", DataUtilities.collection(this.roadFeatures), results);
-        assertTrue(results.getFailedMessages().length == 0);
+        assertEquals(0, results.getFailedMessages().length);
 
         // test the broken road
         // make an incorrect line

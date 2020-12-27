@@ -476,7 +476,7 @@ public abstract class AbstractIntegrationTest {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         reader = data.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertCovered(first.features, reader);
-        assertEquals(false, reader.hasNext());
+        assertFalse(reader.hasNext());
     }
 
     @Test
@@ -1450,7 +1450,7 @@ public abstract class AbstractIntegrationTest {
             assertEquals("AdditionalErrorMessage", exceptionData.get(0).getTexts().get(1));
             return;
         }
-        assertTrue(false);
+        fail();
     }
 
     /**

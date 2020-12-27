@@ -55,11 +55,11 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         SimpleFeature feature = getSingleFeatureByName(name);
         SimpleFeatureType featureType = feature.getFeatureType();
         AttributeDescriptor descriptor = featureType.getDescriptor("jsonColumn");
-        assertTrue(String.class.equals(descriptor.getType().getBinding()));
+        assertEquals(String.class, descriptor.getType().getBinding());
 
         if (pgJsonTestSetup.supportJsonB) {
             descriptor = featureType.getDescriptor("jsonbColumn");
-            assertTrue(String.class.equals(descriptor.getType().getBinding()));
+            assertEquals(String.class, descriptor.getType().getBinding());
         }
     }
 

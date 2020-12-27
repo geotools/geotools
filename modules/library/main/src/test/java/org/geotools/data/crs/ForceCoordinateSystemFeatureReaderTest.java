@@ -16,6 +16,8 @@
  */
 package org.geotools.data.crs;
 
+import static org.junit.Assert.assertNotEquals;
+
 import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -109,9 +111,8 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
                     ((Geometry) f2.getDefaultGeometry()).getCoordinate());
             SimpleFeatureType f1Type = f1.getFeatureType();
             SimpleFeatureType f2Type = f2.getFeatureType();
-            assertFalse(
-                    f1Type.getCoordinateReferenceSystem()
-                            .equals(f2Type.getCoordinateReferenceSystem()));
+            assertNotEquals(
+                    f1Type.getCoordinateReferenceSystem(), f2Type.getCoordinateReferenceSystem());
             assertEquals(srcCRS, f1Type.getCoordinateReferenceSystem());
             assertEquals(srcCRS, f1Type.getGeometryDescriptor().getCoordinateReferenceSystem());
             assertEquals(destCRS, f2Type.getCoordinateReferenceSystem());
@@ -150,7 +151,7 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
 
         CoordinateReferenceSystem destCRS = DefaultEngineeringCRS.CARTESIAN_2D;
         try (ForceCoordinateSystemFeatureReader modified =
-                new ForceCoordinateSystemFeatureReader(DataUtilities.reader(features), destCRS); ) {
+                new ForceCoordinateSystemFeatureReader(DataUtilities.reader(features), destCRS)) {
             SimpleFeature f1 = original.next();
             SimpleFeature f2 = modified.next();
 
@@ -159,9 +160,8 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
                     ((Geometry) f2.getDefaultGeometry()).getCoordinate());
             SimpleFeatureType f1Type = f1.getFeatureType();
             SimpleFeatureType f2Type = f2.getFeatureType();
-            assertFalse(
-                    f2Type.getCoordinateReferenceSystem()
-                            .equals(f1Type.getCoordinateReferenceSystem()));
+            assertNotEquals(
+                    f2Type.getCoordinateReferenceSystem(), f1Type.getCoordinateReferenceSystem());
             assertEquals(srcCRS, f1Type.getCoordinateReferenceSystem());
             assertEquals(srcCRS, f1Type.getGeometryDescriptor().getCoordinateReferenceSystem());
             assertEquals(destCRS, f2Type.getCoordinateReferenceSystem());

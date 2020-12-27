@@ -114,12 +114,12 @@ public class FilterCapabilitiesTest extends TestCase {
 
     public void testShortSupports() {
         assertTrue(capabilities.supports(And.class));
-        assertTrue(!(capabilities.supports(PropertyIsLike.class)));
+        assertFalse(capabilities.supports(PropertyIsLike.class));
     }
 
     public void testFilterSupports() {
         assertTrue(capabilities.supports(compFilter));
-        assertTrue(!(capabilities.supports(gFilter)));
+        assertFalse(capabilities.supports(gFilter));
     }
 
     public void testFullySupports() {
@@ -127,8 +127,8 @@ public class FilterCapabilitiesTest extends TestCase {
         try {
             logFilter = ff.and(gFilter, compFilter);
             assertTrue(capabilities.fullySupports(compFilter));
-            assertTrue(!(capabilities.fullySupports(gFilter)));
-            assertTrue(!(capabilities.fullySupports(logFilter)));
+            assertFalse(capabilities.fullySupports(gFilter));
+            assertFalse(capabilities.fullySupports(logFilter));
             logFilter =
                     ff.and(
                             compFilter,
@@ -140,7 +140,7 @@ public class FilterCapabilitiesTest extends TestCase {
                             ff.between(ff.property("sample"), ff.literal(1), ff.literal(2)));
             assertTrue(capabilities.fullySupports(logFilter));
             logFilter = ff.and(logFilter, gFilter);
-            assertTrue(!(capabilities.fullySupports(logFilter)));
+            assertFalse(capabilities.fullySupports(logFilter));
         } catch (IllegalFilterException e) {
             LOGGER.fine("Bad filter " + e);
         }

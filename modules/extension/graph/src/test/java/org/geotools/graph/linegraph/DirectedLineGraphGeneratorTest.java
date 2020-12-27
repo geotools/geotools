@@ -66,8 +66,8 @@ public class DirectedLineGraphGeneratorTest extends TestCase {
         Graph built = generator().getGraph();
 
         // ensure correct graph structure
-        assertTrue(built.getEdges().size() == n);
-        assertTrue(built.getNodes().size() == n + 1);
+        assertEquals(built.getEdges().size(), n);
+        assertEquals(built.getNodes().size(), n + 1);
 
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -136,8 +136,8 @@ public class DirectedLineGraphGeneratorTest extends TestCase {
 
         Graph built = generator().getGraph();
 
-        assertTrue(built.getEdges().size() == n + 1);
-        assertTrue(built.getNodes().size() == n + 1);
+        assertEquals(built.getEdges().size(), n + 1);
+        assertEquals(built.getNodes().size(), n + 1);
 
         GraphVisitor visitor =
                 new GraphVisitor() {

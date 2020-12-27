@@ -365,7 +365,7 @@ public class FilterToMongoTest extends TestCase {
         assertEquals(1, obj.keySet().size());
         BasicDBObject operator = (BasicDBObject) obj.get("properties.foo");
 
-        assertEquals(null, operator.get("$eq"));
+        assertNull(operator.get("$eq"));
     }
 
     private Literal getGeometryParameter() {

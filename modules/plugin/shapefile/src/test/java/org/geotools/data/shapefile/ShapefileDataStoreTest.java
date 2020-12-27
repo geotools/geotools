@@ -361,9 +361,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // Now read it back
         shapeDataStore = new ShapefileDataStore(shapeUrl);
         SimpleFeatureCollection featureCollection = loadFeatures(shapeDataStore);
-        assertTrue(
-                String.class.equals(
-                        featureCollection.features().next().getAttribute("custom").getClass()));
+        assertEquals(
+                String.class,
+                featureCollection.features().next().getAttribute("custom").getClass());
         shapeDataStore.dispose();
     }
 
@@ -501,7 +501,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         features = featureSource.getFeatures(query);
 
         assertNotNull("selection query worked", features);
-        assertTrue("selection non empty", !features.isEmpty());
+        assertFalse("selection non empty", features.isEmpty());
         assertEquals(selection.size(), features.size());
         ds.dispose();
     }

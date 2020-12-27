@@ -16,6 +16,8 @@
  */
 package org.geotools.xml.styling;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -204,7 +206,7 @@ public class SLDStyleTest extends TestCase {
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
         Stroke stroke = validateDashArrayStyle(sld);
-        assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray()));
+        assertArrayEquals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray(), 0f);
     }
 
     public void testDashArray2() throws Exception {
@@ -214,7 +216,7 @@ public class SLDStyleTest extends TestCase {
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
         Stroke stroke = validateDashArrayStyle(sld);
-        assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray()));
+        assertArrayEquals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray(), 0f);
     }
 
     public void testDashArray3() throws Exception {
@@ -225,11 +227,11 @@ public class SLDStyleTest extends TestCase {
 
         List<Expression> expressions = validateDashArrayStyle(sld).dashArray();
 
-        assertTrue("more or less expressions available", expressions.size() == 4);
-        assertTrue("not expected expression", expressions.get(0).equals(ff.property("stroke1")));
-        assertTrue("not expected expression", expressions.get(1).equals(ff.literal(1.0)));
-        assertTrue("not expected expression", expressions.get(2).equals(ff.property("stroke2")));
-        assertTrue("not expected expression", expressions.get(3).equals(ff.literal(2.0)));
+        assertEquals("more or less expressions available", 4, expressions.size());
+        assertEquals("not expected expression", expressions.get(0), ff.property("stroke1"));
+        assertEquals("not expected expression", expressions.get(1), ff.literal(1.0));
+        assertEquals("not expected expression", expressions.get(2), ff.property("stroke2"));
+        assertEquals("not expected expression", expressions.get(3), ff.literal(2.0));
     }
 
     public void testDashArray3_dynamic() throws Exception {
@@ -345,7 +347,7 @@ public class SLDStyleTest extends TestCase {
                                 .get(0);
 
         assertTrue(rs.getColorMap().getExtendedColors());
-        assertTrue(rs.getColorMap().getType() == ColorMap.TYPE_RAMP);
+        assertEquals(rs.getColorMap().getType(), ColorMap.TYPE_RAMP);
     }
 
     public void testSLDParserWithhMixedContentCDATA() throws Exception {

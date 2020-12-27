@@ -34,8 +34,8 @@ public class GDALGridFormatFactorySpiTest {
     @Test
     public void test() throws Exception {
         final BaseGridFormatFactorySPI spi = new BaseGridFormatFactorySPI();
-        Assert.assertEquals(true, spi.createFormat() instanceof UnknownFormat);
-        Assert.assertEquals(false, spi.isAvailable());
-        Assert.assertEquals(true, spi.getImplementationHints().isEmpty());
+        Assert.assertTrue(spi.createFormat() instanceof UnknownFormat);
+        Assert.assertFalse(spi.isAvailable());
+        Assert.assertTrue(spi.getImplementationHints().isEmpty());
     }
 }

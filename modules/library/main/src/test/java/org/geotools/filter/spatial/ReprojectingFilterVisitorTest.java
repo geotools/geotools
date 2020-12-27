@@ -1,5 +1,7 @@
 package org.geotools.filter.spatial;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.util.Collections;
 import java.util.List;
 import junit.framework.TestCase;
@@ -142,10 +144,10 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         Intersects isClone = (Intersects) clone;
         assertEquals(isClone.getExpression1(), original.getExpression1());
         LineString clonedLs = (LineString) ((Literal) isClone.getExpression2()).getValue();
-        assertTrue(15 == clonedLs.getCoordinateN(0).x);
-        assertTrue(10 == clonedLs.getCoordinateN(0).y);
-        assertTrue(25 == clonedLs.getCoordinateN(1).x);
-        assertTrue(20 == clonedLs.getCoordinateN(1).y);
+        assertEquals(15d, clonedLs.getCoordinateN(0).x);
+        assertEquals(10d, clonedLs.getCoordinateN(0).y);
+        assertEquals(25d, clonedLs.getCoordinateN(1).x);
+        assertEquals(20d, clonedLs.getCoordinateN(1).y);
         assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
     }
 
@@ -177,10 +179,10 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         Intersects isClone = (Intersects) clone;
         assertEquals(isClone.getExpression1(), original.getExpression1());
         LineString clonedLs = (LineString) isClone.getExpression2().evaluate(null);
-        assertTrue(15 == clonedLs.getCoordinateN(0).x);
-        assertTrue(10 == clonedLs.getCoordinateN(0).y);
-        assertTrue(25 == clonedLs.getCoordinateN(1).x);
-        assertTrue(20 == clonedLs.getCoordinateN(1).y);
+        assertEquals(15d, clonedLs.getCoordinateN(0).x);
+        assertEquals(10d, clonedLs.getCoordinateN(0).y);
+        assertEquals(25d, clonedLs.getCoordinateN(1).x);
+        assertEquals(20d, clonedLs.getCoordinateN(1).y);
         assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
     }
 
@@ -215,10 +217,10 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         Intersects isClone = (Intersects) clone;
         assertEquals(isClone.getExpression1(), original.getExpression1());
         LineString clonedLs = (LineString) isClone.getExpression2().evaluate(null);
-        assertTrue(15 == clonedLs.getCoordinateN(0).x);
-        assertTrue(10 == clonedLs.getCoordinateN(0).y);
-        assertTrue(25 == clonedLs.getCoordinateN(1).x);
-        assertTrue(20 == clonedLs.getCoordinateN(1).y);
+        assertEquals(15d, clonedLs.getCoordinateN(0).x);
+        assertEquals(10d, clonedLs.getCoordinateN(0).y);
+        assertEquals(25d, clonedLs.getCoordinateN(1).x);
+        assertEquals(20d, clonedLs.getCoordinateN(1).y);
         assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
     }
 
@@ -231,10 +233,10 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         assertNotSame(original, clone);
         assertEquals(clone.getExpression1(), original.getExpression1());
         LineString clonedLs = (LineString) clone.getExpression2().evaluate(null);
-        assertTrue(15 == clonedLs.getCoordinateN(0).x);
-        assertTrue(10 == clonedLs.getCoordinateN(0).y);
-        assertTrue(25 == clonedLs.getCoordinateN(1).x);
-        assertTrue(20 == clonedLs.getCoordinateN(1).y);
+        assertEquals(15d, clonedLs.getCoordinateN(0).x);
+        assertEquals(10d, clonedLs.getCoordinateN(0).y);
+        assertEquals(25d, clonedLs.getCoordinateN(1).x);
+        assertEquals(20d, clonedLs.getCoordinateN(1).y);
         assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
     }
 
@@ -263,13 +265,13 @@ public class ReprojectingFilterVisitorTest extends TestCase {
 
         assertNotSame(intersects, clone);
         assertEquals(clone.getParameters().get(0), intersects.getParameters().get(0));
-        assertFalse(clone.getParameters().get(1).equals(intersects.getParameters().get(1)));
+        assertNotEquals(clone.getParameters().get(1), intersects.getParameters().get(1));
 
         LineString clonedLs = (LineString) ((Literal) clone.getParameters().get(1)).getValue();
-        assertTrue(15 == clonedLs.getCoordinateN(0).x);
-        assertTrue(10 == clonedLs.getCoordinateN(0).y);
-        assertTrue(25 == clonedLs.getCoordinateN(1).x);
-        assertTrue(20 == clonedLs.getCoordinateN(1).y);
+        assertEquals(15d, clonedLs.getCoordinateN(0).x);
+        assertEquals(10d, clonedLs.getCoordinateN(0).y);
+        assertEquals(25d, clonedLs.getCoordinateN(1).x);
+        assertEquals(20d, clonedLs.getCoordinateN(1).y);
         assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
     }
 

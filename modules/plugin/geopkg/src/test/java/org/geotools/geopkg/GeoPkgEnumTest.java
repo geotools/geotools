@@ -333,7 +333,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         q.setSortBy(new SortBy[] {ff.sort(aname("enumProperty"), SortOrder.ASCENDING)});
         List<SimpleFeature> features = DataUtilities.list(source.getFeatures(q));
         assertEquals(4, features.size());
-        assertEquals(null, features.get(0).getAttribute("enumProperty"));
+        assertNull(features.get(0).getAttribute("enumProperty"));
         assertEquals("one", features.get(1).getAttribute("enumProperty"));
         assertEquals("two", features.get(2).getAttribute("enumProperty"));
         assertEquals("three", features.get(3).getAttribute("enumProperty"));
@@ -378,7 +378,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         q.setFilter(ff.isNull(ff.property("enumProperty")));
         List<SimpleFeature> features = DataUtilities.list(source.getFeatures(q));
         assertEquals(1, features.size());
-        assertEquals(null, features.get(0).getAttribute("enumProperty"));
+        assertNull(features.get(0).getAttribute("enumProperty"));
         assertEquals(4, features.get(0).getAttribute("intProperty"));
     }
 
@@ -441,7 +441,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
             q.setSortBy(new SortBy[] {ff.sort(aname("enumProperty"), SortOrder.ASCENDING)});
             List<SimpleFeature> features = DataUtilities.list(source.getFeatures(q));
             assertEquals(4, features.size());
-            assertEquals(null, features.get(0).getAttribute("enumProperty"));
+            assertNull(features.get(0).getAttribute("enumProperty"));
             assertEquals("one", features.get(1).getAttribute("enumProperty"));
             assertEquals("two", features.get(2).getAttribute("enumProperty"));
             assertEquals("three", features.get(3).getAttribute("enumProperty"));

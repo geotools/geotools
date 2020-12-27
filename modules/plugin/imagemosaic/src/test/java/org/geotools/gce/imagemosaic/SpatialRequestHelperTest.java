@@ -84,12 +84,12 @@ public class SpatialRequestHelperTest extends Assert {
         // computed raster area
         Rectangle computedRasterArea = spatialRequestHelper.getComputedRasterArea();
         assertFalse(computedRasterArea.isEmpty());
-        assertTrue(computedRasterArea.equals(coverageProperties.rasterArea));
+        assertEquals(computedRasterArea, coverageProperties.rasterArea);
 
         // computed bbox
         BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
         assertFalse(computedBBox.isEmpty());
-        assertTrue(computedBBox.equals(sourceBBox));
+        assertEquals(computedBBox, sourceBBox);
 
         // transform
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();
@@ -185,12 +185,12 @@ public class SpatialRequestHelperTest extends Assert {
         // computed raster area is equal to requested raster area
         Rectangle computedRasterArea = spatialRequestHelper.getComputedRasterArea();
         assertFalse(computedRasterArea.isEmpty());
-        assertTrue(computedRasterArea.equals(requestedRasterArea));
+        assertEquals(computedRasterArea, requestedRasterArea);
 
         // computed bbox is equal to requestede bbox
         BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
         assertFalse(computedBBox.isEmpty());
-        assertTrue(computedBBox.equals(requestedBBox));
+        assertEquals(computedBBox, requestedBBox);
 
         // transform
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();
@@ -278,7 +278,7 @@ public class SpatialRequestHelperTest extends Assert {
         assertFalse(computedBBox.isEmpty());
         ReferencedEnvelope finalReferencedEnvelope =
                 new ReferencedEnvelope(0, 100, 0, 90, sourceCRS);
-        assertTrue(computedBBox.equals(finalReferencedEnvelope));
+        assertEquals(computedBBox, finalReferencedEnvelope);
 
         // computed raster area is equal to requested raster area
         Rectangle computedRasterArea = spatialRequestHelper.getComputedRasterArea();
@@ -427,7 +427,7 @@ public class SpatialRequestHelperTest extends Assert {
         // computed raster area
         Rectangle computedRasterArea = spatialRequestHelper.getComputedRasterArea();
         assertFalse(computedRasterArea.isEmpty());
-        assertTrue(computedRasterArea.equals(requestedRasterArea));
+        assertEquals(computedRasterArea, requestedRasterArea);
 
         // computed bbox is equal to the requested one
         BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
@@ -521,7 +521,7 @@ public class SpatialRequestHelperTest extends Assert {
         // computed raster area is equal to requested raster area
         Rectangle computedRasterArea = spatialRequestHelper.getComputedRasterArea();
         assertFalse(computedRasterArea.isEmpty());
-        assertTrue(computedRasterArea.equals(requestedRasterArea));
+        assertEquals(computedRasterArea, requestedRasterArea);
 
         // computed bbox is equal to requestede bbox
         BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
@@ -719,12 +719,12 @@ public class SpatialRequestHelperTest extends Assert {
         // computed raster area
         Rectangle computedRasterArea = spatialRequestHelper.getComputedRasterArea();
         assertFalse(computedRasterArea.isEmpty());
-        assertTrue(computedRasterArea.equals(requestedRasterArea));
+        assertEquals(computedRasterArea, requestedRasterArea);
 
         // computed bbox
         BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
         assertFalse(computedBBox.isEmpty());
-        assertTrue(computedBBox.equals(sourceBBox));
+        assertEquals(computedBBox, sourceBBox);
 
         // transform
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();

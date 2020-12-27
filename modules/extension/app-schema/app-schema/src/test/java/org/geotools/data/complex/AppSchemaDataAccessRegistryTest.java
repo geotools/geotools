@@ -239,7 +239,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         FeatureTypeMapping mapping = AppSchemaDataAccessRegistry.getMappingByName(typeName);
         assertNotNull(mapping);
         // compare with the supplied data access
-        assertEquals(dataAccess.getMappingByName(typeName).equals(mapping), true);
+        assertTrue(dataAccess.getMappingByName(typeName).equals(mapping));
         if (isNonFeature) {
             assertTrue(mapping.getTargetFeature().getType() instanceof NonFeatureTypeProxy);
         }
@@ -254,7 +254,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
                 DataAccessRegistry.getFeatureSource(typeName);
         assertNotNull(mappedSource);
         // compare with the supplied data access
-        assertTrue(mappedSource.getDataStore().equals(dataAccess));
+        assertEquals(mappedSource.getDataStore(), dataAccess);
     }
 
     /**

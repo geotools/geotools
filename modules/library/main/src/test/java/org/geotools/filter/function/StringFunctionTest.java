@@ -120,8 +120,8 @@ public class StringFunctionTest {
 
     @Test
     public void testNull() {
-        assertEquals(null, ff.function("strCapitalize", ff.literal(null)).evaluate(null));
-        assertEquals(null, ff.function("strToUpperCase", ff.literal(null)).evaluate(null));
+        assertNull(ff.function("strCapitalize", ff.literal(null)).evaluate(null));
+        assertNull(ff.function("strToUpperCase", ff.literal(null)).evaluate(null));
         assertEquals(0, ff.function("strLength", ff.literal(null)).evaluate(null));
         assertEquals(
                 false,

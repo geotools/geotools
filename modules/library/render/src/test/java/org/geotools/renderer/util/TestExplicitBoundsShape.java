@@ -5,6 +5,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertNotEquals;
 
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -115,12 +116,12 @@ public class TestExplicitBoundsShape extends TestCase {
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertTrue(target.equals(shape));
+            assertEquals(target, shape);
 
             Rectangle bounds = new Rectangle(1, 2, 5, 6);
             target.setBounds(bounds);
 
-            assertFalse(target.equals(shape));
+            assertNotEquals(target, shape);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -135,7 +136,7 @@ public class TestExplicitBoundsShape extends TestCase {
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertFalse(target.equals(null));
+            assertNotEquals(null, target);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -150,7 +151,7 @@ public class TestExplicitBoundsShape extends TestCase {
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertFalse(target.equals(new Object()));
+            assertNotEquals(target, new Object());
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -164,7 +165,7 @@ public class TestExplicitBoundsShape extends TestCase {
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertTrue(target.equals(target));
+            assertEquals(target, target);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -181,15 +182,15 @@ public class TestExplicitBoundsShape extends TestCase {
             ExplicitBoundsShape other = new ExplicitBoundsShape(shape);
             ExplicitBoundsShape another = new ExplicitBoundsShape(shape2);
 
-            assertTrue(target.equals(other));
-            assertFalse(target.equals(another));
+            assertEquals(target, other);
+            assertNotEquals(target, another);
 
             Rectangle bounds = new Rectangle(1, 1, 4, 4);
             target.setBounds(bounds);
-            assertFalse(target.equals(other));
+            assertNotEquals(target, other);
 
             another.setBounds(bounds);
-            assertFalse(target.equals(another));
+            assertNotEquals(target, another);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

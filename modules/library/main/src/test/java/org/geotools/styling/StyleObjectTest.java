@@ -140,7 +140,7 @@ public class StyleObjectTest extends TestCase {
         symb1 = styleFactory.createLineSymbolizer(styleFactory.getDefaultStroke(), "geometry");
         clone.symbolizers().clear();
         clone.symbolizers().add(symb1);
-        assertTrue(!rule.equals(clone));
+        assertFalse(rule.equals(clone));
     }
 
     public void testPointSymbolizer() throws Exception {
@@ -330,7 +330,7 @@ public class StyleObjectTest extends TestCase {
     private static void assertClone(Object real, Object clone) {
         assertNotNull("Real was null", real);
         assertNotNull("Clone was null", clone);
-        assertTrue("" + real.getClass().getName() + " was not cloned", real != clone);
+        assertNotSame("" + real.getClass().getName() + " was not cloned", real, clone);
     }
 
     private static void assertEqualsContract(Object controlEqual, Object controlNe, Object test) {
@@ -339,27 +339,27 @@ public class StyleObjectTest extends TestCase {
         assertNotNull(test);
 
         // check reflexivity
-        assertTrue("Reflexivity test failed", test.equals(test));
+        assertEquals("Reflexivity test failed", test, test);
 
         // check symmetric
-        assertTrue("Symmetry test failed", controlEqual.equals(test));
-        assertTrue("Symmetry test failed", test.equals(controlEqual));
-        assertTrue("Symmetry test failed", !test.equals(controlNe));
-        assertTrue("Symmetry test failed", !controlNe.equals(test));
+        assertEquals("Symmetry test failed", controlEqual, test);
+        assertEquals("Symmetry test failed", test, controlEqual);
+        assertFalse("Symmetry test failed", test.equals(controlNe));
+        assertFalse("Symmetry test failed", controlNe.equals(test));
 
         // check transitivity
-        assertTrue("Transitivity test failed", !controlEqual.equals(controlNe));
-        assertTrue("Transitivity test failed", !test.equals(controlNe));
-        assertTrue("Transitivity test failed", !controlNe.equals(controlEqual));
-        assertTrue("Transitivity test failed", !controlNe.equals(test));
+        assertFalse("Transitivity test failed", controlEqual.equals(controlNe));
+        assertFalse("Transitivity test failed", test.equals(controlNe));
+        assertFalse("Transitivity test failed", controlNe.equals(controlEqual));
+        assertFalse("Transitivity test failed", controlNe.equals(test));
 
         // check non-null
-        assertTrue("Non-null test failed", !test.equals(null));
+        assertFalse("Non-null test failed", test.equals(null));
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();
         int testHash = test.hashCode();
-        assertTrue("Equal objects should return equal hashcodes", controlEqHash == testHash);
+        assertEquals("Equal objects should return equal hashcodes", controlEqHash, testHash);
     }
 
     private static void assertEqualsContract(Object controlEqual, Object test) {
@@ -367,19 +367,19 @@ public class StyleObjectTest extends TestCase {
         assertNotNull(test);
 
         // check reflexivity
-        assertTrue("Reflexivity test failed", test.equals(test));
+        assertEquals("Reflexivity test failed", test, test);
 
         // check symmetric
-        assertTrue("Symmetry test failed", controlEqual.equals(test));
-        assertTrue("Symmetry test failed", test.equals(controlEqual));
+        assertEquals("Symmetry test failed", controlEqual, test);
+        assertEquals("Symmetry test failed", test, controlEqual);
 
         // check non-null
-        assertTrue("Non-null test failed", !test.equals(null));
+        assertFalse("Non-null test failed", test.equals(null));
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();
         int testHash = test.hashCode();
-        assertTrue("Equal objects should return equal hashcodes", controlEqHash == testHash);
+        assertEquals("Equal objects should return equal hashcodes", controlEqHash, testHash);
     }
 
     public void testFeatureStyleImplCopy() throws Exception {

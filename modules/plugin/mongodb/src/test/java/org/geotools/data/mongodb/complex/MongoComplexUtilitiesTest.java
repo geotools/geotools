@@ -53,7 +53,7 @@ public abstract class MongoComplexUtilitiesTest extends MongoTestSupport {
         Object value =
                 MongoComplexUtilities.getValue(list, Collections.emptyMap(), "path1.path2", null);
         // no exception thrown, the value is null
-        assertTrue(value == null);
+        assertNull(value);
     }
 
     public void testFeatureAttributeValueIsReturnedFromJsonPath()

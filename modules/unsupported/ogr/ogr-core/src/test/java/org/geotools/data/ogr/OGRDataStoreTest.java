@@ -192,7 +192,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeature of = null;
         while (true) {
             if (!sfr.hasNext()) {
-                assertTrue(!ofr.hasNext());
+                assertFalse(ofr.hasNext());
                 break;
             }
             sf = (SimpleFeature) sfr.next();

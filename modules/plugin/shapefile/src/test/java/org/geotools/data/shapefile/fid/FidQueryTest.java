@@ -18,6 +18,7 @@ package org.geotools.data.shapefile.fid;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -142,7 +143,7 @@ public class FidQueryTest extends FIDTestCase {
 
         SimpleFeatureIterator features = featureStore.getFeatures(createFidFilter).features();
         try {
-            assertFalse(feature.equals(features.next()));
+            assertNotEquals(feature, features.next());
         } finally {
             if (features != null) {
                 features.close();

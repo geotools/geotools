@@ -105,11 +105,11 @@ public class CatalogBuilderTest extends Assert {
         //		c2.setRootMosaicDirectory(TestData.file(this,"/rgb").toString());
         //		c2.setIndexingDirectories(Arrays.asList(TestData.file(this,"/rgb").toString()));
         //
-        assertTrue(c1.equals(c2));
+        assertEquals(c1, c2);
         assertEquals(c1.hashCode(), c2.hashCode());
 
         CatalogBuilderConfiguration c3 = c2.clone();
-        assertTrue(c3.equals(c2));
+        assertEquals(c3, c2);
         assertEquals(c3.hashCode(), c2.hashCode());
 
         // check errors
@@ -313,7 +313,7 @@ public class CatalogBuilderTest extends Assert {
             }
             String value = prop.getProperty("Caching");
             assertNotNull(value);
-            assertTrue(value.toLowerCase().equals("false"));
+            assertEquals("false", value.toLowerCase());
 
             assertTrue(new ImageMosaicFormat().accepts(relativeMosaic));
             reader = new ImageMosaicReader(relativeMosaic);
@@ -354,7 +354,7 @@ public class CatalogBuilderTest extends Assert {
 
             String value = prop.getProperty("Caching");
             assertNotNull(value);
-            assertTrue(value.toLowerCase().equals("true"));
+            assertEquals("true", value.toLowerCase());
 
             assertTrue(relativeMosaic.exists());
 

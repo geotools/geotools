@@ -158,10 +158,8 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertTrue(location.endsWith(SCHEMA_FILENAME));
             Assert.assertTrue(URLs.urlToFile((new URI(location)).toURL()).exists());
             // test that cache path is not canonical
-            Assert.assertFalse(
-                    CACHE_DIRECTORY
-                            .toString()
-                            .equals(CACHE_DIRECTORY.getCanonicalFile().toString()));
+            Assert.assertNotEquals(
+                    CACHE_DIRECTORY.toString(), CACHE_DIRECTORY.getCanonicalFile().toString());
             // test that resolved location is canonical, despite cache directory not being canonical
             Assert.assertEquals(
                     location,

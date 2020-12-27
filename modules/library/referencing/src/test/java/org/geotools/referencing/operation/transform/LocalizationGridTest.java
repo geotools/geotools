@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.transform;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
@@ -126,8 +127,8 @@ public final class LocalizationGridTest {
     @Test
     public void testProperties() {
         assertTrue(grid.isMonotonic(false));
-        assertTrue(!grid.isMonotonic(true));
-        assertTrue(!grid.isNaN());
+        assertFalse(grid.isMonotonic(true));
+        assertFalse(grid.isNaN());
     }
 
     /**

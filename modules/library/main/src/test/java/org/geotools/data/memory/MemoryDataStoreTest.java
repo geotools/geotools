@@ -276,7 +276,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 data.getFeatureSource("road").getReader();
         assertCovered(roadFeatures, reader);
-        assertEquals(false, reader.hasNext());
+        assertFalse(reader.hasNext());
     }
 
     public void testGetFeatureReaderMutability() throws IOException {

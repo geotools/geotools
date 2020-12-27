@@ -21,6 +21,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -273,7 +274,7 @@ public class ShapefileTest extends TestCaseSupport {
                 new ShapefileReader(shpFiles, false, true, new GeometryFactory(), false);
         try {
             assertTrue(reader.hasNext());
-            assertTrue(reader.nextRecord().shape() == null);
+            assertNull(reader.nextRecord().shape());
         } finally {
             reader.close();
         }

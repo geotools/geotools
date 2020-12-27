@@ -214,7 +214,7 @@ public class GribTest extends Assert {
             // value is not a NaN
             float[] result = new float[1];
             grid.evaluate(validPoint, result);
-            Assert.assertTrue(!Float.isNaN(result[0]));
+            Assert.assertFalse(Float.isNaN(result[0]));
             // Selection of one coordinate from the Coverage and check if the
             // value is NaN
             float[] result_2 = new float[1];

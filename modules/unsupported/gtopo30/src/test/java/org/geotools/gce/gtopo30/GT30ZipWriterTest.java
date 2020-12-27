@@ -100,7 +100,7 @@ public class GT30ZipWriterTest extends GT30TestBase {
             // on our own
             writer.write(gc, null);
         } catch (Exception e) {
-            assertTrue(e.getLocalizedMessage(), false);
+            fail(e.getLocalizedMessage());
         } finally {
             // close source GC
             gc.dispose(false);

@@ -16,6 +16,9 @@
  */
 package org.geotools.graph.traverse.standard;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -72,15 +75,15 @@ public class AStarIteratorTest extends TestCase {
                         if (component.getID() == 0)
                             assertNull(iterator.getParent((Node) component));
                         else
-                            assertTrue(
-                                    component.getID()
-                                            == iterator.getParent((Node) component).getID() + 1);
+                            assertEquals(
+                                    component.getID(),
+                                    iterator.getParent((Node) component).getID() + 1);
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -109,7 +112,7 @@ public class AStarIteratorTest extends TestCase {
                                 return (GraphTraversal.SUSPEND);
                             }
                         } else if (m_mode == 1) {
-                            assertTrue(element.getID() == suspend + 1);
+                            assertEquals(element.getID(), suspend + 1);
                             m_mode++;
                         }
                         return (GraphTraversal.CONTINUE);
@@ -127,12 +130,12 @@ public class AStarIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component.getID() <= suspend) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        else assertFalse(component.isVisited());
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - suspend + 1);
+        assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         // resume
         traversal.traverse();
@@ -144,15 +147,15 @@ public class AStarIteratorTest extends TestCase {
                         if (component.getID() == 0)
                             assertNull(iterator.getParent((Node) component));
                         else
-                            assertTrue(
-                                    iterator.getParent((Node) component).getID()
-                                            == component.getID() - 1);
+                            assertEquals(
+                                    iterator.getParent((Node) component).getID(),
+                                    component.getID() - 1);
 
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -220,7 +223,7 @@ public class AStarIteratorTest extends TestCase {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         p.getEdges();
-        assertTrue(p.size() == 4);
+        assertEquals(4, p.size());
         // #2
         for (int j = 0; j < p.size() - 1; j++) {
             Node n = p.get(j);
@@ -276,7 +279,7 @@ public class AStarIteratorTest extends TestCase {
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -311,7 +314,7 @@ public class AStarIteratorTest extends TestCase {
                         }
                         while (related.hasNext()) {
                             Graphable relatedComponent = (Graphable) related.next();
-                            assertTrue(component.getID() == relatedComponent.getID() - 1);
+                            assertEquals(component.getID(), relatedComponent.getID() - 1);
                             count++;
                         }
                         assertEquals(expectedCount, count);
@@ -321,7 +324,7 @@ public class AStarIteratorTest extends TestCase {
                 };
         directedBuilder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     private class MyVisitor implements GraphVisitor {

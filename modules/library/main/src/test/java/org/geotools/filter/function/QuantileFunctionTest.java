@@ -121,12 +121,12 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertEquals(5, range.getSize());
 
         for (int i = 0; i < 5; i++) {
-            assertTrue(i + 1 == ((Number) range.getMin(i)).doubleValue());
+            assertEquals(i + 1d, ((Number) range.getMin(i)).doubleValue());
             if (i != 4) {
-                assertTrue(i + 2 == ((Number) range.getMax(i)).doubleValue());
+                assertEquals(i + 2d, ((Number) range.getMax(i)).doubleValue());
                 assertEquals((i + 1) + ".." + (i + 2), range.getTitle(i));
             } else {
-                assertTrue(i + 1 == ((Number) range.getMax(i)).doubleValue());
+                assertEquals(i + 1d, ((Number) range.getMax(i)).doubleValue());
                 assertEquals((i + 1) + ".." + (i + 1), range.getTitle(i));
             }
         }
@@ -320,7 +320,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         double[] percentages = ranged.getPercentages();
         assertEquals(percentages.length, 8);
         for (double percentage : percentages) {
-            assertTrue(percentage == 12.5);
+            assertEquals(12.5, percentage);
         }
     }
 }

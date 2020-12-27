@@ -44,7 +44,7 @@ public class CycleDetectorTest extends TestCase {
         GraphTestUtil.buildNoBifurcations(builder(), 100);
 
         CycleDetector detector = new CycleDetector(builder().getGraph());
-        assertTrue(!detector.containsCycle());
+        assertFalse(detector.containsCycle());
     }
 
     /**

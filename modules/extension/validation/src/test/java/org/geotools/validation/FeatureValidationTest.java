@@ -87,8 +87,8 @@ public class FeatureValidationTest extends DataTestCase {
         } catch (IllegalAttributeException e) {
         }
 
-        assertTrue(
-                !validator.validate(
+        assertFalse(
+                validator.validate(
                         this.newRoad,
                         this.roadType,
                         validationResults)); // validate will return false

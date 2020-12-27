@@ -137,7 +137,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         SimpleFeatureIterator iterator = features.features();
         while (iterator.hasNext()) {
             SimpleFeature f = iterator.next();
-            assertTrue(!f.getAttribute("vendor_s").equals("D-Link"));
+            assertFalse(f.getAttribute("vendor_s").equals("D-Link"));
         }
     }
 
@@ -155,10 +155,10 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         SimpleFeatureIterator iterator = features.features();
         assertTrue(iterator.hasNext());
         SimpleFeature f = iterator.next();
-        assertTrue(!f.getAttribute(pkField).equals(1));
+        assertFalse(f.getAttribute(pkField).equals(1));
         assertTrue(iterator.hasNext());
         f = iterator.next();
-        assertTrue(!f.getAttribute(pkField).equals(7));
+        assertFalse(f.getAttribute(pkField).equals(7));
     }
 
     public void testGetFeaturesWithBetweenFilter() throws Exception {

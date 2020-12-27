@@ -43,6 +43,7 @@ import javax.measure.MetricPrefix;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.referencing.wkt.Formatter;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.parameter.InvalidParameterCardinalityException;
 import org.opengis.parameter.InvalidParameterNameException;
@@ -802,6 +803,6 @@ public final class ParametersTest {
         assertNotNull(message, o1);
         assertNotNull(message, o2);
         assertNotSame(message, o1, o2);
-        assertFalse(message, o1.equals(o2));
+        Assert.assertNotEquals(message, o1, o2);
     }
 }

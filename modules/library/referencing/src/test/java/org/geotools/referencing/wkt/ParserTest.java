@@ -464,7 +464,7 @@ public final class ParserTest {
                         expected.getCoordinateSystem(), observed.getCoordinateSystem()));
 
         assertTrue(CRS.equalsIgnoreMetadata(expected, observed));
-        assertTrue(expected.equals(observed));
+        assertEquals(expected, observed);
         assertEquals("Incorrect reading", expected, observed);
         assertFalse(check.contains("semi_major"));
         assertFalse(check.contains("semi_minor"));

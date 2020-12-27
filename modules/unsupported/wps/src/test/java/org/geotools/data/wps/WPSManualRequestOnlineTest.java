@@ -193,7 +193,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
             assertTrue(postText.toString().contains("wps:Reference"));
         } catch (Exception e) {
-            assertFalse(true);
+            fail();
         } finally {
             if (reader != null) {
                 reader.close();
@@ -590,7 +590,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // check result correctness
         EList outputs = executeResponse.getProcessOutputs().getOutput();
-        assertTrue(!outputs.isEmpty());
+        assertFalse(outputs.isEmpty());
 
         OutputDataType output = (OutputDataType) outputs.get(0);
         LiteralDataType literalData = output.getData().getLiteralData();

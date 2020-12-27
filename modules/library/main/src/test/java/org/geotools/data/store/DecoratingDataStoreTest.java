@@ -77,8 +77,8 @@ public class DecoratingDataStoreTest extends DataTestCase {
 
     @Test
     public void testUnwrap() {
-        assertTrue(decorator.unwrap(DataStore.class) == data);
-        assertTrue(decorator.unwrap(DataAccess.class) == data);
+        assertSame(decorator.unwrap(DataStore.class), data);
+        assertSame(decorator.unwrap(DataAccess.class), data);
     }
 
     @Test

@@ -144,7 +144,7 @@ public class BasicEdgeTest extends TestCase {
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         // nodes share multiple edges (same direction)
         m_nodeA.add(m_same);
@@ -196,7 +196,7 @@ public class BasicEdgeTest extends TestCase {
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_same));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
         m_nodeA.remove(m_same);
         m_nodeB.remove(m_same);
 
@@ -250,7 +250,7 @@ public class BasicEdgeTest extends TestCase {
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_opp));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         m_nodeA.remove(m_opp);
         m_nodeB.remove(m_opp);
@@ -302,7 +302,7 @@ public class BasicEdgeTest extends TestCase {
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopA));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         m_nodeA.remove(m_loopA);
 
@@ -353,7 +353,7 @@ public class BasicEdgeTest extends TestCase {
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         // test loop on both nodes
         m_nodeA.add(m_loopA);
@@ -416,15 +416,15 @@ public class BasicEdgeTest extends TestCase {
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
     }
 
     public void test_compareTo() {
         BasicEdge same = new BasicEdge(m_nodeA, m_nodeB);
         BasicEdge opp = new BasicEdge(m_nodeB, m_nodeA);
 
-        assertTrue(m_edge.compareNodes(same) == Edge.EQUAL_NODE_ORIENTATION);
-        assertTrue(m_edge.compareNodes(opp) == Edge.OPPOSITE_NODE_ORIENTATION);
-        assertTrue(m_edge.compareNodes(m_other1) == Edge.UNEQUAL_NODE_ORIENTATION);
+        assertEquals(m_edge.compareNodes(same), Edge.EQUAL_NODE_ORIENTATION);
+        assertEquals(m_edge.compareNodes(opp), Edge.OPPOSITE_NODE_ORIENTATION);
+        assertEquals(m_edge.compareNodes(m_other1), Edge.UNEQUAL_NODE_ORIENTATION);
     }
 }

@@ -18,6 +18,7 @@ package org.geotools.referencing.operation.projection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.geometry.DirectPosition2D;
@@ -319,7 +320,7 @@ public final class DirectCreationTest {
         descriptor = ((MapProjection) transform).getParameterDescriptors();
         assertFalse(AbstractIdentifiedObject.nameMatches(descriptor, "Oblique Mercator"));
         assertTrue(AbstractIdentifiedObject.nameMatches(descriptor, "Hotine Oblique Mercator"));
-        assertFalse(transform.equals(standard));
+        assertNotEquals(transform, standard);
     }
 
     /** For {@link #testObliqueMercator} internal use only. */

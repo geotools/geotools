@@ -17,6 +17,7 @@
 package org.geotools.filter.expression;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -214,7 +215,7 @@ public class FeaturePropertyAccessorTest {
                 new AttributeExpressionImpl(
                         "eg:complexAttribute/eg:rootAttribute[3]/eg:multiLeafAttribute",
                         new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals(null, ex.evaluate(feature));
+        assertNull(ex.evaluate(feature));
 
         // deeper nesting
         ex =
@@ -228,13 +229,13 @@ public class FeaturePropertyAccessorTest {
                 new AttributeExpressionImpl(
                         "eg:complexAttribute/eg:rootAttribute[2]/eg:multiLeafAttribute[2]",
                         new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals(null, ex.evaluate(feature));
+        assertNull(ex.evaluate(feature));
 
         // expect an exception when object supplied is not a complex attribute
         boolean exceptionThrown = false;
         try {
             ex.setLenient(false); // NC -added, only exception if lenient off
-            assertEquals(null, ex.evaluate(singleLeaf));
+            assertNull(ex.evaluate(singleLeaf));
         } catch (Exception e) {
             exceptionThrown = true;
         }
@@ -247,8 +248,8 @@ public class FeaturePropertyAccessorTest {
                 new AttributeExpressionImpl(
                         "randomAttribute",
                         new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals(null, ex.evaluate(feature));
-        assertEquals(null, ex.evaluate(fType));
+        assertNull(ex.evaluate(feature));
+        assertNull(ex.evaluate(fType));
 
         // NC - test xml attribute
         ex =

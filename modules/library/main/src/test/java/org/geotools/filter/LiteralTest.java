@@ -18,6 +18,8 @@
  */
 package org.geotools.filter;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
@@ -83,9 +85,9 @@ public class LiteralTest extends TestCase {
         Date d3 = cal.getTime();
         Literal l1 = ff.literal(d1);
         Literal l2 = ff.literal(d2);
-        assertFalse(l1.equals(l2));
+        assertNotEquals(l1, l2);
 
         Literal l3 = ff.literal(d3);
-        assertTrue(l2.equals(l3));
+        assertEquals(l2, l3);
     }
 }

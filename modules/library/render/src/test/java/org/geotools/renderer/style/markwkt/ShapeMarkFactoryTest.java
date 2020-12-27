@@ -59,7 +59,7 @@ public class ShapeMarkFactoryTest extends TestCase {
             this.exp = ff.literal("shape://triangle");
             smf.getShape(null, this.exp, this.feature);
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
             return;
         }
 
@@ -75,11 +75,11 @@ public class ShapeMarkFactoryTest extends TestCase {
                 return;
             }
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
             return;
         }
 
-        assertTrue(false);
+        fail();
     }
 
     public void testSouthArrow() {
@@ -90,7 +90,7 @@ public class ShapeMarkFactoryTest extends TestCase {
             // Check if the South Arrow is present
             assertNotNull(shape);
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
             return;
         }
 

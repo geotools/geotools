@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -414,9 +415,8 @@ public class ShapefileDumperTest {
                     if (Geometry.class.isAssignableFrom(attrValue.getClass()))
                         assertFalse("Empty geometry", ((Geometry) attrValue).isEmpty());
                     else
-                        assertFalse(
-                                "Empty value for attribute",
-                                attrValue.toString().trim().equals(""));
+                        assertNotEquals(
+                                "Empty value for attribute", "", attrValue.toString().trim());
                 }
             }
         }

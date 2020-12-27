@@ -16,6 +16,7 @@
  */
 package org.geotools.data.complex;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -97,8 +98,8 @@ public class FeatureTypeMappingIndexTest extends AppSchemaTestSupport {
     public void testSourcesFeatures() throws Exception {
         try (Stream<Feature> fstream = FeatureStreams.toFeatureStream(mappedSource.getFeatures())) {
             List<Feature> flist = fstream.collect(Collectors.toList());
-            assertTrue(flist.size() == 11);
-            assertTrue(flist.get(2).getIdentifier().getID().equals("st.3"));
+            assertEquals(11, flist.size());
+            assertEquals("st.3", flist.get(2).getIdentifier().getID());
         }
     }
 }

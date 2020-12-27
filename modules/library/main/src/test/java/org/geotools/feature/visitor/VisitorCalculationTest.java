@@ -461,7 +461,7 @@ public class VisitorCalculationTest extends DataTestCase {
         uniqueResult3 = uniqueResult2.merge(uniqueResult1);
         @SuppressWarnings("unchecked")
         Set<Object> set = uniqueResult3.toSet();
-        assertTrue(set.size() == 4);
+        assertEquals(4, set.size());
         assertTrue(set.contains(3.0));
         assertTrue(set.contains(4.5));
         assertTrue(set.contains(2));

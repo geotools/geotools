@@ -19,7 +19,6 @@ package org.geotools.coverage.processing;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -143,7 +142,7 @@ public final class CropTest extends GridProcessingTestBase {
         assertEquals(
                 source.getGridGeometry().getGridToCRS2D(),
                 cropped.getGridGeometry().getGridToCRS2D());
-        assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
+        assertNotEquals(cropEnvelope, cropped.getEnvelope());
 
         // check we did not use mosaic for this simple case
         RenderedOp op = (RenderedOp) raster;
@@ -233,7 +232,7 @@ public final class CropTest extends GridProcessingTestBase {
         assertEquals(
                 source.getGridGeometry().getGridToCRS2D(),
                 cropped.getGridGeometry().getGridToCRS2D());
-        assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
+        assertNotEquals(cropEnvelope, cropped.getEnvelope());
 
         ReferencedEnvelope refEnv = new ReferencedEnvelope(cropEnvelope);
         param.parameter("Envelope").setValue(refEnv);
@@ -253,7 +252,7 @@ public final class CropTest extends GridProcessingTestBase {
         assertEquals(
                 source.getGridGeometry().getGridToCRS2D(),
                 cropped.getGridGeometry().getGridToCRS2D());
-        assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
+        assertNotEquals(cropEnvelope, cropped.getEnvelope());
     }
 
     /** Tests the specific catchable exception thrown when the area has no overlap */
@@ -528,7 +527,7 @@ public final class CropTest extends GridProcessingTestBase {
         assertEquals(
                 source.getGridGeometry().getGridToCRS2D(),
                 cropped.getGridGeometry().getGridToCRS2D());
-        assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
+        assertNotEquals(cropEnvelope, cropped.getEnvelope());
     }
 
     /** Tests the "Crop" operation with a ROI set. */
@@ -613,7 +612,7 @@ public final class CropTest extends GridProcessingTestBase {
 
         // The value should be zero since we have cut away the corner
         assertEquals(0, raster.getTile(0, 0).getSample(0, 0, 0));
-        assertTrue(cropEnvelope.equals(cropped.getEnvelope()));
+        assertEquals(cropEnvelope, cropped.getEnvelope());
     }
 
     /** Tests the intersection of the ROI and the cropEnvelope in the "Crop" operation. */
@@ -681,7 +680,7 @@ public final class CropTest extends GridProcessingTestBase {
         assertEquals(
                 source.getGridGeometry().getGridToCRS2D(),
                 cropped.getGridGeometry().getGridToCRS2D());
-        assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
+        assertNotEquals(cropEnvelope, cropped.getEnvelope());
     }
 
     /** Tests cropping to an external ROI. */
@@ -876,6 +875,6 @@ public final class CropTest extends GridProcessingTestBase {
         // The value should be zero since that portion has been cut away
         assertEquals(
                 0, raster.getTile(0, 0).getSample(0, raster.getMinY() + raster.getHeight() / 2, 0));
-        assertTrue(cropEnvelope.equals(cropped.getEnvelope()));
+        assertEquals(cropEnvelope, cropped.getEnvelope());
     }
 }

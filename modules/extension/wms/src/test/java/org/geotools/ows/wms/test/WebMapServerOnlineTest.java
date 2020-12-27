@@ -286,7 +286,7 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         try {
             // System.out.println(request.getFinalURL());
             GetMapResponse response = wms.issueRequest(request);
-            assertTrue(false);
+            fail();
         } catch (ServiceException e) {
             // e.printStackTrace();
         }

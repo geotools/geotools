@@ -298,8 +298,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     private static Hints trim(final Hints userHints, final Hints.Key keep) {
         Hints reduced = userHints;
         if (userHints != null) {
-            for (int i = 0; i < TYPES.length; i++) {
-                final Hints.Key key = TYPES[i];
+            for (final Hints.Key key : TYPES) {
                 if (!keep.equals(key)) {
                     if (reduced == userHints) {
                         if (!userHints.containsKey(key)) {

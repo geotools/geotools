@@ -204,8 +204,8 @@ public class InProcessLockingManager implements LockingManager {
             Set<Lock> set = new HashSet<>();
             Map<String, Lock> fidLocks;
 
-            for (Iterator<Map<String, Lock>> i = lockTables.values().iterator(); i.hasNext(); ) {
-                fidLocks = i.next();
+            for (Map<String, Lock> stringLockMap : lockTables.values()) {
+                fidLocks = stringLockMap;
                 set.addAll(fidLocks.values());
             }
 
@@ -397,12 +397,10 @@ public class InProcessLockingManager implements LockingManager {
         // was only iterating through the values of a map, which I believe
         // java just copies, so it's immutable.  Or perhaps we just moved
         // through too many iterator layers...
-        for (Iterator<Map<String, Lock>> i = lockTables.values().iterator(); i.hasNext(); ) {
-            Map<String, Lock> fidMap = i.next();
+        for (Map<String, Lock> fidMap : lockTables.values()) {
             Set<String> unLockedFids = new HashSet<>();
 
-            for (Iterator<String> j = fidMap.keySet().iterator(); j.hasNext(); ) {
-                String fid = j.next();
+            for (String fid : fidMap.keySet()) {
                 lock = fidMap.get(fid);
                 // LOGGER.info("checking lock " + lock + ", is match "
                 //    + lock.isMatch(authID));
@@ -426,8 +424,8 @@ public class InProcessLockingManager implements LockingManager {
                 }
             }
 
-            for (Iterator<String> k = unLockedFids.iterator(); k.hasNext(); ) {
-                fidMap.remove(k.next());
+            for (String unLockedFid : unLockedFids) {
+                fidMap.remove(unLockedFid);
             }
         }
 

@@ -187,11 +187,11 @@ public class AreaFunction extends FunctionExpressionImpl {
         double maxx = Double.NEGATIVE_INFINITY;
         double miny = Double.POSITIVE_INFINITY;
         double maxy = Double.NEGATIVE_INFINITY;
-        for (int i = 0; i < numberOfExteriorRingCoordinates; i++) {
-            minx = Math.min(minx, exteriorRingCoordinates[i].x);
-            maxx = Math.max(maxx, exteriorRingCoordinates[i].x);
-            miny = Math.min(miny, exteriorRingCoordinates[i].y);
-            maxy = Math.max(maxy, exteriorRingCoordinates[i].y);
+        for (Coordinate exteriorRingCoordinate : exteriorRingCoordinates) {
+            minx = Math.min(minx, exteriorRingCoordinate.x);
+            maxx = Math.max(maxx, exteriorRingCoordinate.x);
+            miny = Math.min(miny, exteriorRingCoordinate.y);
+            maxy = Math.max(maxy, exteriorRingCoordinate.y);
         }
         // Calculate area of each trapezoid formed by dropping lines from
         // each pair of coordinates in exteriorRingCoordinates to the x-axis.

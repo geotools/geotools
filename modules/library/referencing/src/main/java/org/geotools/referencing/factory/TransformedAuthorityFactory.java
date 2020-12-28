@@ -523,6 +523,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * invokes the same method from the {@linkplain #operationFactory underlying operation factory},
      * and next invokes {@link #replace(CoordinateOperation) replace} for each operations.
      */
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
         final Set<CoordinateOperation> operations, modified;

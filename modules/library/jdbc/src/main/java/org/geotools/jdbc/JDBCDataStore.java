@@ -38,7 +38,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -2229,8 +2228,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
             // copy over to avoid array store exception
             values = new ArrayList<>(split.length);
-            for (int i = 0; i < split.length; i++) {
-                values.add(split[i]);
+            for (String s : split) {
+                values.add(s);
             }
         } else {
             // single value case
@@ -3506,15 +3505,15 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             PrimaryKey key = getPrimaryKey(featureType);
             sql.append(" ORDER BY ");
 
-            for (int i = 0; i < sort.length; i++) {
+            for (SortBy sortBy : sort) {
                 String order;
-                if (sort[i].getSortOrder() == SortOrder.DESCENDING) {
+                if (sortBy.getSortOrder() == SortOrder.DESCENDING) {
                     order = " DESC";
                 } else {
                     order = " ASC";
                 }
 
-                if (SortBy.NATURAL_ORDER.equals(sort[i]) || SortBy.REVERSE_ORDER.equals(sort[i])) {
+                if (SortBy.NATURAL_ORDER.equals(sortBy) || SortBy.REVERSE_ORDER.equals(sortBy)) {
                     if (key instanceof NullPrimaryKey)
                         throw new IOException(
                                 "Cannot do natural order without a primary key, please add it or "
@@ -3527,7 +3526,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     }
                 } else {
                     dialect.encodeColumnName(
-                            prefix, getPropertyName(featureType, sort[i].getPropertyName()), sql);
+                            prefix, getPropertyName(featureType, sortBy.getPropertyName()), sql);
                     sql.append(order);
                     sql.append(",");
                 }
@@ -3834,8 +3833,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     void buildEnvelopeAggregates(SimpleFeatureType featureType, StringBuffer sql) {
         // walk through all geometry attributes and build the query
-        for (Iterator a = featureType.getAttributeDescriptors().iterator(); a.hasNext(); ) {
-            AttributeDescriptor attribute = (AttributeDescriptor) a.next();
+        for (AttributeDescriptor attribute : featureType.getAttributeDescriptors()) {
             if (attribute instanceof GeometryDescriptor) {
                 String geometryColumn = attribute.getLocalName();
                 dialect.encodeGeometryEnvelope(featureType.getTypeName(), geometryColumn, sql);

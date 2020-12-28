@@ -478,12 +478,10 @@ public class RasterManager implements Cloneable {
 
             // === create the filter
             // loop values and AND them
-            final int size = values.size();
             final List<Filter> filters = new ArrayList<>();
             FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
-            for (int i = 0; i < size; i++) {
+            for (Object value : values) {
                 // checks
-                Object value = values.get(i);
                 if (value == null) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.info("Ignoring null date for the filter:" + this.identifier);

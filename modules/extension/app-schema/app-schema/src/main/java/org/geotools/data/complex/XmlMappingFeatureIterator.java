@@ -353,8 +353,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
 
             List<Pair> ls = elements.get(attMapping.getParentLabel());
             if (ls != null) {
-                for (int i = 0; i < ls.size(); i++) {
-                    Pair parentAttribute = ls.get(i);
+                for (Pair parentAttribute : ls) {
                     String countXpath = parentAttribute.getXpath();
                     // if instance path not set, then only count the root node
                     if (attMapping.getInstanceXpath() != null) {

@@ -223,8 +223,7 @@ public class GridCoverageFactory extends AbstractFactory {
             final CharSequence name, final float[][] matrix, final Envelope envelope) {
         int width = 0;
         int height = matrix.length;
-        for (int j = 0; j < height; j++) {
-            final float[] row = matrix[j];
+        for (final float[] row : matrix) {
             if (row != null) {
                 if (row.length > width) {
                     width = row.length;

@@ -19,7 +19,6 @@ package org.geotools.referencing.operation.builder;
 import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import org.geotools.geometry.DirectPosition2D;
@@ -93,9 +92,7 @@ public final class TriangulationFactoryTest {
 
         int j = 1;
 
-        for (Iterator<TINTriangle> i = triangles.iterator(); i.hasNext(); ) {
-            TINTriangle triangle = i.next();
-
+        for (TINTriangle triangle : triangles) {
             for (j = 0; j < vertices.length; j++) {
                 // Delunay Test - there are no vetrices in the CircumCicle
                 assertFalse(triangle.getCircumCicle().contains(vertices[j]));

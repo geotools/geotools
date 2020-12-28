@@ -136,8 +136,7 @@ public final class DirectionAlongMeridian
     /** Searchs for the specified name in the specified set of directions. */
     private static AxisDirection findDirection(
             final AxisDirection[] values, final String direction) {
-        for (int i = 0; i < values.length; i++) {
-            final AxisDirection candidate = values[i];
+        for (final AxisDirection candidate : values) {
             final String name = candidate.name();
             if (direction.equalsIgnoreCase(name)) {
                 return candidate;

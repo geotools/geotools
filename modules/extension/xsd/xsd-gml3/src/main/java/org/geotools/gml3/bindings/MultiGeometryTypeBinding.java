@@ -96,7 +96,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
         if (node.hasChild(Geometry[].class)) {
             Geometry[] g = node.getChildValue(Geometry[].class);
 
-            for (int i = 0; i < g.length; i++) geometries.add(g[i]);
+            for (Geometry geometry : g) geometries.add(geometry);
         }
 
         return factory.createGeometryCollection(

@@ -96,13 +96,13 @@ public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstra
             return true;
         }*/
         boolean success = true;
-        for (int i = 0; i < poly1.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) poly1[i];
+        for (Object value : poly1) {
+            SimpleFeature tmp = (SimpleFeature) value;
             LOGGER.finest("Polgon overlap test for:" + tmp.getID());
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
-            for (int j = 0; j < poly2.length; j++) {
-                SimpleFeature tmp2 = (SimpleFeature) poly2[j];
+            for (Object o : poly2) {
+                SimpleFeature tmp2 = (SimpleFeature) o;
                 LOGGER.finest("Polgon overlap test against:" + tmp2.getID());
                 Geometry gt2 = (Geometry) tmp2.getDefaultGeometry();
 

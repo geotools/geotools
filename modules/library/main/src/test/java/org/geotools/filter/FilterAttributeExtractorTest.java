@@ -140,8 +140,8 @@ public class FilterAttributeExtractorTest extends TestCase {
         assertNotNull(attNames);
         assertEquals(attNames.size(), names.length);
 
-        for (int i = 0; i < names.length; i++) {
-            assertTrue(attNames.contains(names[i]));
+        for (String name : names) {
+            assertTrue(attNames.contains(name));
         }
 
         // make sure the property name set is aligned

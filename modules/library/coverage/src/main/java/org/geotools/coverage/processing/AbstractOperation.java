@@ -17,7 +17,6 @@
 package org.geotools.coverage.processing;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
@@ -105,8 +104,7 @@ public abstract class AbstractOperation implements Operation, Serializable {
     /** Returns the number of source coverages in the specified parameter group. */
     private static int getNumSources(final ParameterDescriptorGroup descriptor) {
         int count = 0;
-        for (final Iterator it = descriptor.descriptors().iterator(); it.hasNext(); ) {
-            final GeneralParameterDescriptor candidate = (GeneralParameterDescriptor) it.next();
+        for (final GeneralParameterDescriptor candidate : descriptor.descriptors()) {
             if (candidate instanceof ParameterDescriptorGroup) {
                 count += getNumSources((ParameterDescriptorGroup) candidate);
                 continue;

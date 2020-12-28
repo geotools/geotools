@@ -276,8 +276,8 @@ public class ArcSDEDataStoreTest {
      * "SDE.SDE.TEST_POINT")
      */
     private void testTypeExists(String[] featureTypes, String table) {
-        for (int i = 0; i < featureTypes.length; i++) {
-            if (featureTypes[i].equalsIgnoreCase(table.toUpperCase())) {
+        for (String featureType : featureTypes) {
+            if (featureType.equalsIgnoreCase(table.toUpperCase())) {
                 LOGGER.fine("testTypeExists OK: " + table);
 
                 return;

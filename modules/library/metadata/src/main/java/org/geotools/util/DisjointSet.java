@@ -155,8 +155,8 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     public int size() {
         synchronized (map) {
             int count = 0;
-            for (final Iterator it = map.values().iterator(); it.hasNext(); ) {
-                if (it.next() == this) {
+            for (DisjointSet<E> es : map.values()) {
+                if (es == this) {
                     count++;
                 }
             }

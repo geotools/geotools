@@ -605,8 +605,7 @@ public final class MarchingSquaresVectorizer {
     private List<Polygon> validateGeometries(List<Polygon> geometriesList) {
         if (forceValid && (!geometriesList.isEmpty())) {
             List<Polygon> validated = new ArrayList<>(geometriesList.size());
-            for (int i = 0; i < geometriesList.size(); i++) {
-                Polygon polygon = geometriesList.get(i);
+            for (Polygon polygon : geometriesList) {
                 if (!polygon.isValid()) {
                     List<Polygon> validPolygons = JTS.makeValid(polygon, true);
                     validated.addAll(validPolygons);

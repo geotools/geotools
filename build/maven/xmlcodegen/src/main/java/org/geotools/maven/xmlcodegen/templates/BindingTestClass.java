@@ -95,12 +95,12 @@ public class BindingTestClass
     }
     
     String[] lines = writer.getBuffer().toString().split("\n");
-    for (int i = 0; i < lines.length; i++) {
+      for (String line : lines) {
 
-    stringBuffer.append(TEXT_4);
-    stringBuffer.append(lines[i].replaceAll("<","&lt;").replaceAll(">","&gt;"));
-    
-    }
+          stringBuffer.append(TEXT_4);
+          stringBuffer.append(line.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+
+      }
 
     stringBuffer.append(TEXT_5);
     

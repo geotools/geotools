@@ -115,8 +115,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
     protected Filter createFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Set<FeatureId> featureIds = new HashSet<>();
-        for (Iterator<FeatureId> it = index.iterator(); it.hasNext(); ) {
-            FeatureId fid = it.next();
+        for (FeatureId fid : index) {
             featureIds.add(ff.featureId(fid.getID()));
         }
         Id fids = ff.id(featureIds);

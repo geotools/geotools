@@ -134,8 +134,8 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         if (bounds == null) {
             bounds = new ReferencedEnvelope();
 
-            for (Iterator i = contents.values().iterator(); i.hasNext(); ) {
-                BoundingBox geomBounds = ((SimpleFeature) i.next()).getBounds();
+            for (SimpleFeature simpleFeature : contents.values()) {
+                BoundingBox geomBounds = simpleFeature.getBounds();
                 // IanS - as of 1.3, JTS expandToInclude ignores "null" Envelope
                 // and simply adds the new bounds...
                 // This check ensures this behavior does not occur.

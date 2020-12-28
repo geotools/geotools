@@ -281,8 +281,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
                          * in order to avoid constructing them again when they will be needed.
                          */
                         final String[] names = elements.toArray(new String[elements.size()]);
-                        for (int i = 0; i < names.length; i++) {
-                            final String name = names[i];
+                        for (final String name : names) {
                             final String key = toCaseless(name);
                             final Object[] previous = aliasMap.put(key, names);
                             if (previous != null && previous != NEED_LOADING) {
@@ -368,8 +367,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
          */
         int count = 0;
         GenericName[] names = new GenericName[aliases.length];
-        for (int i = 0; i < aliases.length; i++) {
-            final CharSequence alias = (CharSequence) aliases[i];
+        for (Object o : aliases) {
+            final CharSequence alias = (CharSequence) o;
             if (alias != null) {
                 if (count < authorities.length) {
                     final LocalName authority = authorities[count];
@@ -382,8 +381,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
             }
         }
         names = XArray.resize(names, count);
-        for (int i = 0; i < names.length; i++) {
-            final String alias = names[i].tip().toString();
+        for (GenericName genericName : names) {
+            final String alias = genericName.tip().toString();
             final Object[] previous = aliasMap.put(toCaseless(alias), names);
             assert previous == names || Arrays.equals(aliases, previous) : alias;
         }
@@ -449,8 +448,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      */
     private static final int putAll(final GenericName[] names, final Map<String, GenericName> map) {
         int ignored = 0;
-        for (int i = 0; i < names.length; i++) {
-            final GenericName name = names[i];
+        for (final GenericName name : names) {
             final GenericName scoped = name.toFullyQualifiedName();
             final String key = toCaseless(scoped.toString());
             final GenericName old = map.put(key, name);

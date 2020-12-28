@@ -101,7 +101,7 @@ public class MultiPointTypeBinding extends AbstractComplexBinding {
         if (node.hasChild(Point[].class)) {
             Point[] p = node.getChildValue(Point[].class);
 
-            for (int i = 0; i < p.length; i++) points.add(p[i]);
+            for (Point point : p) points.add(point);
         }
 
         return gFactory.createMultiPoint(points.toArray(new Point[points.size()]));

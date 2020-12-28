@@ -22,7 +22,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.geotools.factory.CommonFactoryFinder;
@@ -645,8 +644,7 @@ public class Filters {
                                 Object extraData) {
                             List<Filter> children = filter.getChildren();
                             List<Filter> newChildren = new ArrayList<>();
-                            for (Iterator<Filter> iter = children.iterator(); iter.hasNext(); ) {
-                                Filter child = iter.next();
+                            for (Filter child : children) {
                                 if (targetFilter.equals(child)) {
                                     continue; // skip this one
                                 }

@@ -674,8 +674,8 @@ public class CQLTemporalPredicateTest {
             threadList[i] = new Thread(cqlRunner);
         }
 
-        for (int i = 0; i < threadList.length; i++) {
-            threadList[i].start();
+        for (Thread thread : threadList) {
+            thread.start();
         }
     }
 

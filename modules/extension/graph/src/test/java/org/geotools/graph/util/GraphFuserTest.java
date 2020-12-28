@@ -17,7 +17,6 @@
 package org.geotools.graph.util;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
@@ -247,8 +246,7 @@ public class GraphFuserTest extends TestCase {
         return (new GraphFuser.EdgeMerger() {
             public Object merge(List<Edge> edges) {
                 List<Edge> ends = new ArrayList<>();
-                for (Iterator itr = edges.iterator(); itr.hasNext(); ) {
-                    Edge edge = (Edge) itr.next();
+                for (Edge edge : edges) {
                     if (edge.getNodeA().getDegree() != 2 || edge.getNodeB().getDegree() != 2)
                         ends.add(edge);
                 }

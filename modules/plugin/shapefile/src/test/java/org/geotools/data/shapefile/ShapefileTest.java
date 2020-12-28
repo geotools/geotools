@@ -233,8 +233,8 @@ public class ShapefileTest extends TestCaseSupport {
             reader.close();
             c2 = TestData.url(TestCaseSupport.class, STATEPOP);
             reader = new ShapefileReader(new ShpFiles(c2), false, false, new GeometryFactory());
-            for (int i = 0, ii = offsets.size(); i < ii; i++) {
-                reader.shapeAt(offsets.get(i).intValue());
+            for (Integer offset : offsets) {
+                reader.shapeAt(offset.intValue());
             }
         } finally {
             reader.close();

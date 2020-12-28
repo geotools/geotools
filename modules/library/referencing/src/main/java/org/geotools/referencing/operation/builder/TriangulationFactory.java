@@ -53,8 +53,7 @@ class TriangulationFactory {
 
         this.triangles = quad.getTriangles();
 
-        for (Iterator<DirectPosition> i = vertices.iterator(); i.hasNext(); ) {
-            DirectPosition vertex = i.next();
+        for (DirectPosition vertex : vertices) {
             insertPoint(vertex);
         }
     }
@@ -187,9 +186,7 @@ class TriangulationFactory {
         ArrayList<DirectPosition> unsharedVertices = new ArrayList<>();
 
         // Finds shared and unshared vertices
-        for (Iterator<DirectPosition> i = ABCvertices.iterator(); i.hasNext(); ) {
-            DirectPosition vertex = i.next();
-
+        for (DirectPosition vertex : ABCvertices) {
             if (!BCDvertices.contains(vertex)) {
                 unsharedVertices.add(vertex);
             } else if (BCDvertices.contains(vertex)) {
@@ -231,14 +228,12 @@ class TriangulationFactory {
         list.add(trigB);
 
         // Adjacent triangles of adjacent triangles are modified.
-        for (Iterator i = ABC.getAdjacentTriangles().iterator(); i.hasNext(); ) {
-            TINTriangle trig = (TINTriangle) i.next();
+        for (TINTriangle trig : ABC.getAdjacentTriangles()) {
             trig.removeAdjacent(ABC);
             trig.tryToAddAdjacent(list);
         }
 
-        for (Iterator<TINTriangle> i = BCD.getAdjacentTriangles().iterator(); i.hasNext(); ) {
-            TINTriangle trig = i.next();
+        for (TINTriangle trig : BCD.getAdjacentTriangles()) {
             trig.removeAdjacent(BCD);
             trig.tryToAddAdjacent(list);
         }
@@ -253,9 +248,7 @@ class TriangulationFactory {
      * @return the triangle containing p, or null if there is no triangle that contains p
      */
     private TINTriangle triangleContains(DirectPosition p) {
-        for (Iterator<TINTriangle> i = triangles.iterator(); i.hasNext(); ) {
-            TINTriangle triangle = i.next();
-
+        for (TINTriangle triangle : triangles) {
             if (triangle.containsOrIsVertex(p)) {
                 return triangle;
             }

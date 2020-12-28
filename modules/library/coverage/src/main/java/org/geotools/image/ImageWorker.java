@@ -1334,7 +1334,7 @@ public class ImageWorker {
     public final boolean isBytes() {
         final SampleModel sm = image.getSampleModel();
         final int[] sampleSize = sm.getSampleSize();
-        for (int i = 0; i < sampleSize.length; i++) if (sampleSize[i] != 8) return false;
+        for (int j : sampleSize) if (j != 8) return false;
         return true;
     }
 
@@ -2840,8 +2840,8 @@ public class ImageWorker {
                     new IndexColorModel(
                             cm.getPixelSize(), mapSize, rgb[0], rgb[1], rgb[2], transparencyIndex);
         } else {
-            for (int k = 0; k < found; k++) {
-                rgb[3][transparentPixelsIndexes.get(k)] = (byte) 0;
+            for (Integer transparentPixelsIndex : transparentPixelsIndexes) {
+                rgb[3][transparentPixelsIndex] = (byte) 0;
             }
             cm = new IndexColorModel(cm.getPixelSize(), mapSize, rgb[0], rgb[1], rgb[2], rgb[3]);
         }
@@ -4847,8 +4847,7 @@ public class ImageWorker {
             return null;
         }
 
-        for (int i = 0; i < background.length; i++) {
-            double component = background[i];
+        for (double component : background) {
             if (component < 0 || component > 255) {
                 return null;
             }
@@ -4915,9 +4914,9 @@ public class ImageWorker {
         int srcNum = 0;
         // pb.addSource(image);
         if (images != null && images.length > 0) {
-            for (int i = 0; i < images.length; i++) {
-                if (images[i] != null) {
-                    pb.addSource(images[i]);
+            for (RenderedImage renderedImage : images) {
+                if (renderedImage != null) {
+                    pb.addSource(renderedImage);
                     srcNum++;
                 }
             }

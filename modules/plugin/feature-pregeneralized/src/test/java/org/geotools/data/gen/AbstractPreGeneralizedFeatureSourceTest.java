@@ -90,13 +90,13 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             double[] distances = new double[] {1, 5, 10, 20, 25};
 
-            for (int i = 0; i < distances.length; i++) {
-                System.out.println(distances[i]);
+            for (double distance : distances) {
+                System.out.println(distance);
                 // subset of the properties, and out of order
                 Query query =
                         new Query(
                                 "GenStreams", Filter.INCLUDE, new String[] {"CAT_ID", "the_geom"});
-                query.getHints().put(Hints.GEOMETRY_DISTANCE, distances[i]);
+                query.getHints().put(Hints.GEOMETRY_DISTANCE, distance);
 
                 // check the collection schema
                 SimpleFeatureCollection fc = fs.getFeatures(query);

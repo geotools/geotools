@@ -251,8 +251,8 @@ public class Polynom implements Serializable {
             r[i] = Double.parseDouble(c[i]);
         }
         final double[] roots = roots(r);
-        for (int i = 0; i < roots.length; i++) {
-            System.out.println(roots[i]);
+        for (double root : roots) {
+            System.out.println(root);
         }
     }
 

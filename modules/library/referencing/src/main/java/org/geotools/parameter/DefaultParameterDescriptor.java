@@ -238,8 +238,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
         }
         if (validValues != null) {
             final Set<T> valids = new HashSet<>(Math.max(validValues.length * 4 / 3 + 1, 8), 0.75f);
-            for (int i = 0; i < validValues.length; i++) {
-                final T value = validValues[i];
+            for (final T value : validValues) {
                 AbstractParameter.ensureValidClass(valueClass, value);
                 valids.add(value);
             }

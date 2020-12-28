@@ -116,8 +116,8 @@ public class ServersTest extends TestCase {
         int total = 0;
         int passedCount = 0;
 
-        for (int i = 0; i < servers.size(); i++) {
-            URL server = (URL) servers.get(i);
+        for (Object o : servers) {
+            URL server = (URL) o;
             total++;
             Random random = new Random();
             String dir = "tests";

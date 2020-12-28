@@ -138,8 +138,7 @@ public class SubHandlerPolygon extends SubHandler {
      * @return Completed OGC Polygon.
      */
     public Geometry create(GeometryFactory geometryFactory) {
-        for (int i = 0; i < innerBoundaries.size(); i++) {
-            LinearRing hole = innerBoundaries.get(i);
+        for (LinearRing hole : innerBoundaries) {
             if (hole.crosses(outerBoundary)) {
                 LOGGER.warning("Topology Error building polygon");
 

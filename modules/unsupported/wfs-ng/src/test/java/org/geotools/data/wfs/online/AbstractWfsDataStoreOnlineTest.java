@@ -349,8 +349,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         List<String> typeNames = Arrays.asList(types);
         assertTrue(typeNames.contains(testType.FEATURETYPENAME));
 
-        for (int i = 0; i < types.length; i++) {
-            String typeName = types[i];
+        for (String typeName : types) {
             SimpleFeatureType type = wfs.getSchema(typeName);
             type.getTypeName();
             type.getName().getNamespaceURI();

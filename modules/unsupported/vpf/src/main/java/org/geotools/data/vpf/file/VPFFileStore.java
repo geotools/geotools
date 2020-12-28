@@ -186,8 +186,7 @@ public class VPFFileStore extends ContentDataStore {
             boolean useLower = !curr.equals(currLower);
             ArrayList<String> newMatches = new ArrayList<>();
 
-            for (Iterator<String> it = matches.iterator(); it.hasNext(); ) {
-                String match = it.next();
+            for (String match : matches) {
                 String tmp = match + File.separator + curr;
 
                 if (new File(tmp).exists()) newMatches.add(tmp);

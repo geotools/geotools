@@ -532,8 +532,8 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                     Within.class
                 };
 
-        for (int i = 0; i < spatialOps.length; i++) {
-            if (spatialOps[i].isAssignableFrom(filter.getClass())) {
+        for (Class spatialOp : spatialOps) {
+            if (spatialOp.isAssignableFrom(filter.getClass())) {
                 // if (!fcs.supports(spatialOps[i])) {
                 if (!fcs.supports(filter)) {
                     postStack.push(filter);

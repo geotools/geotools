@@ -261,13 +261,12 @@ public abstract class AbstractGenerator {
     	}
     	
     	if ( schemaLookupDirectories != null ) {
-    		for ( int i = 0; i < schemaLookupDirectories.length; i++ ) {
-    			File dir = schemaLookupDirectories[i];
-    			file = new File( dir, path );
-    			if ( file.exists() ) {
-    				return file;
-    			}
-    		}
+            for (File dir : schemaLookupDirectories) {
+                file = new File(dir, path);
+                if (file.exists()) {
+                    return file;
+                }
+            }
     	}
     	
     	return null;

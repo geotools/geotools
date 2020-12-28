@@ -172,8 +172,8 @@ public class AllHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++) {
-                Element t = elements[i].findChildElement(name);
+            for (Element element : elements) {
+                Element t = element.findChildElement(name);
 
                 if (t != null) { // found it
 
@@ -214,8 +214,8 @@ public class AllHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++) {
-                Element t = elements[i].findChildElement(localName, namespaceURI);
+            for (Element element : elements) {
+                Element t = element.findChildElement(localName, namespaceURI);
 
                 if (t != null) { // found it
 

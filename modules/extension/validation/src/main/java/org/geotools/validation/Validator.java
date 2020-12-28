@@ -19,7 +19,6 @@ package org.geotools.validation;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -129,8 +128,12 @@ public class Validator {
         //
         Map<String, SimpleFeatureSource> sources = new HashMap<>();
 
-        for (Iterator i = typeRefs.iterator(); i.hasNext(); ) {
-            String typeRef = (String) i.next();
+        /**
+         * This checks to see if we have already loaded in any feature stores. They can be loaded
+         * already if we are in a transaction operation. If this is for the "do it" button, there
+         * will be no feature stores already loaded and thus we always hit the 'else' statement.
+         */
+        for (String typeRef : typeRefs) {
             LOGGER.finer("Searching for required typeRef: " + typeRef);
 
             /**
@@ -142,14 +145,15 @@ public class Validator {
             Name name = name(typeRef);
             if (featureStores.containsKey(name)) // if it was passed in through stores
             {
-                LOGGER.finer(" found required typeRef: " + typeRef + " (it was already loaded)");
+                LOGGER.finer(
+                        " found required typeRef: " + typeRef + " (it was already " + "loaded)");
                 sources.put(typeRef, featureStores.get(name));
             } else // if we have to go get it (ie. it is a dependant for a test)
             {
                 // These will be using Transaction.AUTO_COMMIT
                 // this is okay as they were not involved in our
                 // Transaction...
-                LOGGER.finer(" could not find typeRef: " + typeRef + " (we will now load it)");
+                LOGGER.finer(" could not find typeRef: " + typeRef + " (we will now load " + "it)");
                 String split[] = typeRef.split(":");
                 String dataStoreId = split[0];
                 String typeName = split[1];
@@ -190,8 +194,8 @@ public class Validator {
          */
         LOGGER.finer("Validation fail - marshal result for transaction document");
         StringBuffer message = new StringBuffer();
-        for (Iterator i = failed.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) i.next();
+        for (Object o : failed.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
             message.append(entry.getKey());
             message.append(" failed test ");
             message.append(entry.getValue());

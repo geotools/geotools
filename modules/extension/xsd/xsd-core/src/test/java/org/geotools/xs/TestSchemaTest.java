@@ -76,9 +76,7 @@ public class TestSchemaTest extends TestSchema {
         Class xs = XS.class;
         Field[] fields = xs.getFields();
 
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-
+        for (Field field : fields) {
             if (field.getType() != QName.class) {
                 continue;
             }

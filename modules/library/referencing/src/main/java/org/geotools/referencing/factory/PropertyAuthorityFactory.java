@@ -386,8 +386,8 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
             return code;
         }
         final String candidate = scope.toString();
-        for (int i = 0; i < authorities.length; i++) {
-            if (Citations.identifierMatches(authorities[i], candidate)) {
+        for (Citation citation : authorities) {
+            if (Citations.identifierMatches(citation, candidate)) {
                 return name.tip().toString().trim();
             }
         }

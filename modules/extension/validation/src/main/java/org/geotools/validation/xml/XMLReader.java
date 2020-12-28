@@ -333,9 +333,9 @@ public class XMLReader {
             r = new HashMap<>();
 
             if (fileList != null) {
-                for (int i = 0; i < fileList.length; i++) {
-                    if (fileList[i].canWrite() && fileList[i].isFile()) {
-                        try (FileReader fr = new FileReader(fileList[i])) {
+                for (File file : fileList) {
+                    if (file.canWrite() && file.isFile()) {
+                        try (FileReader fr = new FileReader(file)) {
                             PlugInDTO dto = XMLReader.readPlugIn(fr);
                             r.put(dto.getName(), dto);
                         }
@@ -368,20 +368,20 @@ public class XMLReader {
         r = new HashMap<>();
 
         if (fileList != null) {
-            for (int i = 0; i < fileList.length; i++) {
+            for (File file : fileList) {
                 try {
-                    if (fileList[i].canWrite() && fileList[i].isFile()) {
-                        FileReader fr = new FileReader(fileList[i]);
+                    if (file.canWrite() && file.isFile()) {
+                        FileReader fr = new FileReader(file);
                         try {
                             TestSuiteDTO dto =
-                                    XMLReader.readTestSuite(fileList[i].getName(), fr, plugInDTOs);
+                                    XMLReader.readTestSuite(file.getName(), fr, plugInDTOs);
                             r.put(dto.getName(), dto);
                         } finally {
                             fr.close();
                         }
                     }
                 } catch (IOException open) {
-                    throw new ValidationException("Could not open " + fileList[i].getName(), open);
+                    throw new ValidationException("Could not open " + file.getName(), open);
                 }
             }
         }

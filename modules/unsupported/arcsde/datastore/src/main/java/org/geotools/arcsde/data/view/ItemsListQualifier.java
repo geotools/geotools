@@ -18,7 +18,6 @@
 package org.geotools.arcsde.data.view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.sf.jsqlparser.expression.Expression;
@@ -70,8 +69,7 @@ class ItemsListQualifier implements ItemsListVisitor {
         List<Expression> expressions = expressionList.getExpressions();
         List<Expression> qualifiedList = new ArrayList<>(expressions.size());
 
-        for (Iterator<Expression> it = expressions.iterator(); it.hasNext(); ) {
-            Expression exp = it.next();
+        for (Expression exp : expressions) {
             Expression qExp = ExpressionQualifier.qualify(session, tableAliases, exp);
 
             qualifiedList.add(qExp);

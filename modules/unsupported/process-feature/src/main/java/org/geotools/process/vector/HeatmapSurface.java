@@ -158,9 +158,9 @@ public class HeatmapSurface {
     /** Normalizes grid values to range [0,1] */
     private void normalize(float[][] grid) {
         float max = Float.NEGATIVE_INFINITY;
-        for (int i = 0; i < grid.length; i++) {
+        for (float[] floats : grid) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] > max) max = grid[i][j];
+                if (floats[j] > max) max = floats[j];
             }
         }
 

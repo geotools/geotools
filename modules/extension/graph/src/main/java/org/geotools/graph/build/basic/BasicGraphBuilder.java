@@ -19,7 +19,6 @@ package org.geotools.graph.build.basic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.structure.Edge;
@@ -94,8 +93,8 @@ public class BasicGraphBuilder implements GraphBuilder {
 
     /** @see GraphBuilder#removeNodes(Collection) */
     public void removeNodes(Collection nodes) {
-        for (Iterator itr = nodes.iterator(); itr.hasNext(); ) {
-            Node n = (Node) itr.next();
+        for (Object node : nodes) {
+            Node n = (Node) node;
             removeNode(n);
         }
     }
@@ -109,8 +108,8 @@ public class BasicGraphBuilder implements GraphBuilder {
 
     /** @see GraphBuilder#removeEdges(Collection) */
     public void removeEdges(Collection edges) {
-        for (Iterator itr = edges.iterator(); itr.hasNext(); ) {
-            Edge e = (Edge) itr.next();
+        for (Object edge : edges) {
+            Edge e = (Edge) edge;
             removeEdge(e);
         }
     }

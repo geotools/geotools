@@ -77,8 +77,7 @@ public class UnitBinding extends AbstractSimpleBinding {
     private Unit<?> lookup(Class<?> class1, String name) {
         Unit<?> unit;
         Field[] fields = class1.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
+        for (Field field : fields) {
             String name2 = field.getName();
             if ((field.getType().isAssignableFrom(BaseUnit.class)
                             || field.getType().isAssignableFrom(AlternateUnit.class))

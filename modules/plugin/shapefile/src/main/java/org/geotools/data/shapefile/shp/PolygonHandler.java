@@ -359,22 +359,18 @@ public class PolygonHandler implements ShapeHandler {
     /** <b>Package private for testing</b> */
     List<List<LinearRing>> assignHolesToShells(
             final ArrayList<LinearRing> shells, final ArrayList<LinearRing> holes) {
-        List<List<LinearRing>> holesForShells = new ArrayList<>(shells.size());
-        for (int i = 0; i < shells.size(); i++) {
-            holesForShells.add(new ArrayList<>());
-        }
+        List<List<LinearRing>> holesForShells = getListOfLists(shells.size());
 
         // find homes
-        for (int i = 0; i < holes.size(); i++) {
-            LinearRing testRing = holes.get(i);
+        for (LinearRing testRing : holes) {
             LinearRing minShell = null;
             Envelope minEnv = null;
             Envelope testEnv = testRing.getEnvelopeInternal();
             Coordinate testPt = testRing.getCoordinateN(0);
             LinearRing tryRing;
 
-            for (int j = 0; j < shells.size(); j++) {
-                tryRing = shells.get(j);
+            for (LinearRing shell : shells) {
+                tryRing = shell;
 
                 Envelope tryEnv = tryRing.getEnvelopeInternal();
                 if (minShell != null) {
@@ -408,6 +404,15 @@ public class PolygonHandler implements ShapeHandler {
             }
         }
 
+        return holesForShells;
+    }
+
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
+    private List<List<LinearRing>> getListOfLists(int size) {
+        List<List<LinearRing>> holesForShells = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            holesForShells.add(new ArrayList<>());
+        }
         return holesForShells;
     }
 

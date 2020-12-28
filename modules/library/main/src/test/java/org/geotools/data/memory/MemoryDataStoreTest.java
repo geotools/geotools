@@ -206,8 +206,8 @@ public class MemoryDataStoreTest extends DataTestCase {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(expected)) {
+        for (Object o : array) {
+            if (o.equals(expected)) {
                 return true;
             }
         }
@@ -221,8 +221,8 @@ public class MemoryDataStoreTest extends DataTestCase {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (match(array[i], expected)) {
+        for (SimpleFeature simpleFeature : array) {
+            if (match(simpleFeature, expected)) {
                 return true;
             }
         }

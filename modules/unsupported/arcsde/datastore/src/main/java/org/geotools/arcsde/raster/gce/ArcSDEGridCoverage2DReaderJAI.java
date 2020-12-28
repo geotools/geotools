@@ -633,8 +633,8 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         // Checking params
         //
         // /////////////////////////////////////////////////////////////////////
-        for (int i = 0; i < params.length; i++) {
-            final ParameterValue<?> param = (ParameterValue<?>) params[i];
+        for (GeneralParameterValue generalParameterValue : params) {
+            final ParameterValue<?> param = (ParameterValue<?>) generalParameterValue;
             final String name = param.getDescriptor().getName().getCode();
             if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                 final GridGeometry2D gg = (GridGeometry2D) param.getValue();

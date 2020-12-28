@@ -329,8 +329,8 @@ public class MetadataSource implements AutoCloseable {
          * maybe the numerical code are not the same in the database than in the Java
          * CodeList implementation. Check each code list element by name.
          */
-        for (int i = 0; i < values.length; i++) {
-            candidate = values[i];
+        for (CodeList<?> value : values) {
+            candidate = value;
             candidateName.setLength(base);
             candidateName.append(candidate.name());
             if (identifier.equals(geoApiToIso.getProperty(candidateName.toString()))) {

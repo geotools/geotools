@@ -92,7 +92,7 @@ class ChoiceAttributeTypeImpl extends AttributeTypeImpl implements ChoiceAttribu
 
     static InternationalString toDescription(Class[] bindings) {
         StringBuffer buf = new StringBuffer();
-        buf.append("Choice betwee ");
+        buf.append("Choice between ");
         for (Class bind : bindings) {
             buf.append(bind.getName());
             buf.append(",");

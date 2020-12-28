@@ -469,8 +469,7 @@ public class DateTimeParser {
     }
 
     private static void addDate(Collection<Object> result, Date newDate) {
-        for (Iterator<?> it = result.iterator(); it.hasNext(); ) {
-            final Object element = it.next();
+        for (final Object element : result) {
             if (element instanceof Date) {
                 if (newDate.equals(element)) return;
             } else if (((DateRange) element).contains(newDate)) {

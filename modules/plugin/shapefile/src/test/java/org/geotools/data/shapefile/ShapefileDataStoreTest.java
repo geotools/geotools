@@ -43,7 +43,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -639,8 +638,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             assertFalse(indexIter.hasNext());
             assertFalse(baselineIter.hasNext());
             assertEquals(baselineFeatures.size(), indexedFeatures.size());
-            for (Iterator<SimpleFeature> it = baselineFeatures.iterator(); it.hasNext(); ) {
-                SimpleFeature f = it.next();
+            for (SimpleFeature f : baselineFeatures) {
                 assertTrue(
                         f.getID() + ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal(),
                         indexedFeatures.contains(f));
@@ -1362,9 +1360,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
         String[] wktResources = new String[] {"line", "multiline", "polygon", "multipolygon"};
 
-        for (int i = 0; i < wktResources.length; i++) {
-            Geometry geom = readGeometry(wktResources[i]);
-            String testName = wktResources[i];
+        for (String wktResource : wktResources) {
+            Geometry geom = readGeometry(wktResource);
+            String testName = wktResource;
             try {
 
                 runWriteReadTest(geom, false);

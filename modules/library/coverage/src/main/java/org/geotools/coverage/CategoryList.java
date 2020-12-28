@@ -410,8 +410,8 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
     public final NumberRange<?> getRange() {
         if (range == null) {
             NumberRange<?> range = null;
-            for (int i = 0; i < categories.length; i++) {
-                final NumberRange extent = categories[i].getRange();
+            for (Category category : categories) {
+                final NumberRange extent = category.getRange();
                 if (!Double.isNaN(extent.getMinimum()) && !Double.isNaN(extent.getMaximum())) {
                     if (range != null) {
                         range = range.union(extent);

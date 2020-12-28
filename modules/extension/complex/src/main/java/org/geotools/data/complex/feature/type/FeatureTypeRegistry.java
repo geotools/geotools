@@ -540,8 +540,8 @@ public class FeatureTypeRegistry {
 
             XSDElementDeclaration childDecl;
             AttributeDescriptor descriptor;
-            for (Iterator it = children.iterator(); it.hasNext(); ) {
-                childDecl = (XSDElementDeclaration) it.next();
+            for (XSDElementDeclaration child : children) {
+                childDecl = child;
                 try {
                     descriptor = createAttributeDescriptor(complexTypeDef, childDecl, crs);
                 } catch (NoSuchElementException e) {
@@ -694,8 +694,8 @@ public class FeatureTypeRegistry {
 
     @SuppressWarnings("unchecked")
     protected void importSchema(Schema schema) {
-        for (Iterator it = schema.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Entry) it.next();
+        for (Entry<Name, AttributeType> nameAttributeTypeEntry : schema.entrySet()) {
+            Entry entry = (Entry) nameAttributeTypeEntry;
             Name key = (Name) entry.getKey();
             Object value = entry.getValue();
             if (typeRegistry.containsKey(key)) {

@@ -116,8 +116,8 @@ public class ColorBrewer {
         List<BrewerPalette> palettes = new ArrayList<>();
         Object[] entry = this.palettes.keySet().toArray();
 
-        for (int i = 0; i < entry.length; i++) {
-            BrewerPalette pal = getPalette(entry[i].toString());
+        for (Object o : entry) {
+            BrewerPalette pal = getPalette(o.toString());
             boolean match = true;
 
             // filter by number of classes
@@ -143,8 +143,8 @@ public class ColorBrewer {
         List<BrewerPalette> palettes = new ArrayList<>();
         Object[] entry = this.palettes.keySet().toArray();
 
-        for (int i = 0; i < entry.length; i++) {
-            BrewerPalette pal = getPalette(entry[i].toString());
+        for (Object o : entry) {
+            BrewerPalette pal = getPalette(o.toString());
             boolean match = true;
 
             // filter by number of classes
@@ -223,8 +223,8 @@ public class ColorBrewer {
         Set<String> paletteSet = new HashSet<>();
 
         // generate the set of palette names
-        for (int i = 0; i < keys.length; i++) {
-            BrewerPalette thisPalette = palettes.get(keys[i]);
+        for (Object key : keys) {
+            BrewerPalette thisPalette = palettes.get(key);
             int numColors = thisPalette.getMaxColors();
 
             if ((numColors >= minClasses) && (numColors <= maxClasses)) {

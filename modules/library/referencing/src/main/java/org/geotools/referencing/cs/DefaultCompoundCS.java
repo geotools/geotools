@@ -76,13 +76,12 @@ public class DefaultCompoundCS extends AbstractCS {
     /** Returns the axis of all coordinate systems. */
     private static CoordinateSystemAxis[] getAxis(final CoordinateSystem[] cs) {
         int count = 0;
-        for (int i = 0; i < cs.length; i++) {
-            count += cs[i].getDimension();
+        for (CoordinateSystem coordinateSystem : cs) {
+            count += coordinateSystem.getDimension();
         }
         final CoordinateSystemAxis[] axis = new CoordinateSystemAxis[count];
         count = 0;
-        for (int i = 0; i < cs.length; i++) {
-            final CoordinateSystem c = cs[i];
+        for (final CoordinateSystem c : cs) {
             final int dim = c.getDimension();
             for (int j = 0; j < dim; j++) {
                 axis[count++] = c.getAxis(j);
@@ -99,11 +98,11 @@ public class DefaultCompoundCS extends AbstractCS {
      */
     private static String getName(final CoordinateSystem[] cs) {
         final StringBuilder buffer = new StringBuilder();
-        for (int i = 0; i < cs.length; i++) {
+        for (CoordinateSystem c : cs) {
             if (buffer.length() != 0) {
                 buffer.append(" / ");
             }
-            buffer.append(cs[i].getName().getCode());
+            buffer.append(c.getName().getCode());
         }
         return buffer.toString();
     }

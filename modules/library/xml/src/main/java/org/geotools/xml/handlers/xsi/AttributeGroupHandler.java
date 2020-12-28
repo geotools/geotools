@@ -174,7 +174,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
                     if ((ag != null) && (ag.getAttributes() != null)) {
                         Attribute[] aa = ag.getAttributes();
 
-                        for (int j = 0; j < aa.length; j++) h.add(aa[j]);
+                        for (Attribute attribute : aa) h.add(attribute);
                     }
                 }
             }

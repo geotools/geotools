@@ -192,8 +192,8 @@ public class Parser extends MathTransformParser {
         this.crsFactory = crsFactory;
         final AxisDirection[] values = AxisDirection.values();
         directions = new HashMap<>((int) Math.ceil((values.length + 1) / 0.75f), 0.75f);
-        for (int i = 0; i < values.length; i++) {
-            directions.put(values[i].name().trim().toUpperCase(), values[i]);
+        for (AxisDirection value : values) {
+            directions.put(value.name().trim().toUpperCase(), value);
         }
     }
 

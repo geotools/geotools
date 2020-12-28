@@ -85,8 +85,8 @@ public final class XMathTest {
         for (int i = 0; i < 10000; i++) {
             final int[] divisors = divisors(i);
             assertTrue(XArray.isStrictlySorted(divisors));
-            for (int j = 0; j < divisors.length; j++) {
-                assertEquals(0, i % divisors[j]);
+            for (int divisor : divisors) {
+                assertEquals(0, i % divisor);
             }
             if (i == 0) {
                 assertEquals(0, divisors.length);

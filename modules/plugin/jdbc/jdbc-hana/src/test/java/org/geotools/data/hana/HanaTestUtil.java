@@ -53,8 +53,8 @@ public class HanaTestUtil {
 
     public static StringBuilder encodeIdentifiers(StringBuilder sb, String... ids) {
         boolean first = true;
-        for (int i = 0; i < ids.length; ++i) {
-            if (ids[i] == null) {
+        for (String id : ids) {
+            if (id == null) {
                 continue;
             }
             if (first) {
@@ -62,7 +62,7 @@ public class HanaTestUtil {
             } else {
                 sb.append('.');
             }
-            sb.append(HanaUtil.encodeIdentifier(ids[i]));
+            sb.append(HanaUtil.encodeIdentifier(id));
         }
         return sb;
     }
@@ -583,9 +583,9 @@ public class HanaTestUtil {
 
     private void addByteArray(StringBuilder sql, byte[] bin) {
         sql.append("x'");
-        for (int i = 0; i < bin.length; ++i) {
-            sql.append(HEX_CHARS[(bin[i] & 0xF0) >>> 4]);
-            sql.append(HEX_CHARS[bin[i] & 0x0F]);
+        for (byte b : bin) {
+            sql.append(HEX_CHARS[(b & 0xF0) >>> 4]);
+            sql.append(HEX_CHARS[b & 0x0F]);
             ;
         }
         sql.append("'");

@@ -18,7 +18,6 @@ package org.geotools.graph.structure.basic;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import junit.framework.TestCase;
@@ -121,8 +120,8 @@ public class BasicGraphTest extends TestCase {
 
         m_graph.visitNodes(visitor);
 
-        for (Iterator<Node> itr = m_nodes.iterator(); itr.hasNext(); ) {
-            assertTrue(visited.contains(itr.next()));
+        for (Node m_node : m_nodes) {
+            assertTrue(visited.contains(m_node));
         }
     }
 
@@ -138,8 +137,8 @@ public class BasicGraphTest extends TestCase {
 
         m_graph.visitEdges(visitor);
 
-        for (Iterator<Edge> itr = m_edges.iterator(); itr.hasNext(); ) {
-            assertTrue(visited.contains(itr.next()));
+        for (Edge m_edge : m_edges) {
+            assertTrue(visited.contains(m_edge));
         }
     }
 
@@ -182,32 +181,32 @@ public class BasicGraphTest extends TestCase {
     }
 
     public void test_initNodes() {
-        for (Iterator itr = m_nodes.iterator(); itr.hasNext(); ) {
-            BasicNode n = (BasicNode) itr.next();
+        for (Node mNode : m_nodes) {
+            BasicNode n = (BasicNode) mNode;
             n.setVisited(true);
             n.setCount(100);
         }
 
         m_graph.initNodes();
 
-        for (Iterator itr = m_nodes.iterator(); itr.hasNext(); ) {
-            BasicNode n = (BasicNode) itr.next();
+        for (Node m_node : m_nodes) {
+            BasicNode n = (BasicNode) m_node;
             assertTrue(!n.isVisited());
             assertTrue(n.getCount() == 0);
         }
     }
 
     public void test_initEdges() {
-        for (Iterator itr = m_edges.iterator(); itr.hasNext(); ) {
-            BasicEdge e = (BasicEdge) itr.next();
+        for (Edge mEdge : m_edges) {
+            BasicEdge e = (BasicEdge) mEdge;
             e.setVisited(true);
             e.setCount(100);
         }
 
         m_graph.initEdges();
 
-        for (Iterator itr = m_edges.iterator(); itr.hasNext(); ) {
-            BasicEdge e = (BasicEdge) itr.next();
+        for (Edge m_edge : m_edges) {
+            BasicEdge e = (BasicEdge) m_edge;
             assertTrue(!e.isVisited());
             assertTrue(e.getCount() == 0);
         }

@@ -44,8 +44,8 @@ public class PolygonHandler2Test extends org.geotools.data.shapefile.TestCaseSup
         PolygonHandler handler = new PolygonHandler(new GeometryFactory());
         assertTrue(handler.getShapeType() == ShapeType.POLYGON);
 
-        for (int i = 0, ii = c.length; i < ii; i++) {
-            assertTrue(handler.pointInList(c[i], c));
+        for (Coordinate coordinate : c) {
+            assertTrue(handler.pointInList(coordinate, c));
         }
     }
 

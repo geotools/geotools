@@ -817,10 +817,10 @@ public class DbaseFileHeader {
 
             // write all of the header records
             int tempOffset = 0;
-            for (int i = 0; i < fields.length; i++) {
+            for (DbaseField field : fields) {
 
                 // write the field name
-                byte[] fieldNameBytes = fields[i].fieldName.getBytes(charset);
+                byte[] fieldNameBytes = field.fieldName.getBytes(charset);
                 for (int j = 0; j < 11; j++) {
                     if (j < fieldNameBytes.length) {
                         buffer.put(fieldNameBytes[j]);
@@ -830,17 +830,17 @@ public class DbaseFileHeader {
                 }
 
                 // write the field type
-                buffer.put((byte) fields[i].fieldType);
+                buffer.put((byte) field.fieldType);
                 // // write the field data address, offset from the start of the
                 // record.
                 buffer.putInt(tempOffset);
-                tempOffset += fields[i].fieldLength;
+                tempOffset += field.fieldLength;
 
                 // write the length of the field.
-                buffer.put((byte) fields[i].fieldLength);
+                buffer.put((byte) field.fieldLength);
 
                 // write the decimal count.
-                buffer.put((byte) fields[i].decimalCount);
+                buffer.put((byte) field.decimalCount);
 
                 // write the reserved bytes.
                 // for (in j=0; jj<14; j++) out.writeByteLE(0);
@@ -867,8 +867,7 @@ public class DbaseFileHeader {
      */
     public String toString() {
         StringBuffer fs = new StringBuffer();
-        for (int i = 0, ii = fields.length; i < ii; i++) {
-            DbaseField f = fields[i];
+        for (DbaseField f : fields) {
             fs.append(
                     f.fieldName
                             + " "

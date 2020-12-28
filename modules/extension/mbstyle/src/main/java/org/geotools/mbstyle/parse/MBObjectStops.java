@@ -121,6 +121,7 @@ public class MBObjectStops {
      *
      * @return Split layer based on zoom-level stops
      */
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Double> layerStops)
             throws ParseException {
         List<MBLayer> layers = new ArrayList<>();
@@ -149,6 +150,7 @@ public class MBObjectStops {
      *
      * @return List of ranges based on zoom-level stops
      */
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     List<double[]> getStopLevelRanges(List<Double> stops) {
         List<double[]> ranges = new ArrayList<>();
         for (int i = 0; i < stops.size(); i++) {

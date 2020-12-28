@@ -199,24 +199,24 @@ public class StyleFactoryImplTest extends TestCase {
         Mark m;
         String[] names = {"Square", "Circle", "Triangle", "Star", "X", "Cross"};
 
-        for (int i = 0; i < names.length; i++) {
+        for (String name : names) {
             try {
                 Class<?> target = styleFactory.getClass();
 
                 //                LOGGER.finer("About to load get"+names[i]+"Mark");
-                Method method = target.getMethod("get" + names[i] + "Mark", (Class<?>[]) null);
+                Method method = target.getMethod("get" + name + "Mark", (Class<?>[]) null);
 
                 //                LOGGER.finer("got method back " + method.toString());
                 m = (Mark) method.invoke(styleFactory, (Object[]) null);
-                assertNotNull("Failed to get " + names[i] + " mark ", m);
+                assertNotNull("Failed to get " + name + " mark ", m);
 
-                Expression exp = filterFactory.literal(names[i]);
+                Expression exp = filterFactory.literal(name);
                 assertEquals("Wrong sort of mark returned ", exp, m.getWellKnownName());
             } catch (InvocationTargetException ite) {
                 ite.getTargetException().printStackTrace();
                 fail("InvocationTargetException " + ite.getTargetException());
             } catch (Exception e) {
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 fail("Exception " + e.toString());
             }
         }

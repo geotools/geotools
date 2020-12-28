@@ -141,8 +141,8 @@ public abstract class FeatureCollectionTest extends TestCase {
 
         TreeSetFeatureCollection fc = new TreeSetFeatureCollection(null, t);
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(t);
-        for (int i = 0; i < g.length; i++) {
-            b.add(g[i]);
+        for (Geometry geometry : g) {
+            b.add(geometry);
             fc.add(b.buildFeature(null));
         }
         assertEquals(gc.getEnvelopeInternal(), fc.getBounds());

@@ -794,9 +794,7 @@ final class Resampler2D extends GridCoverage2D {
         final GridEnvelope targetGR = targetGG.getGridRange();
         final int[] lower = targetGR.getLow().getCoordinateValues();
         final int[] upper = targetGR.getHigh().getCoordinateValues();
-        for (int i = 0; i < upper.length; i++) {
-            upper[i]++; // Make them exclusive.
-        }
+        offsetUpper(upper);
         lower[targetGG.gridDimensionX] = targetImage.getMinX();
         lower[targetGG.gridDimensionY] = targetImage.getMinY();
         upper[targetGG.gridDimensionX] = targetImage.getMaxX();
@@ -864,6 +862,13 @@ final class Resampler2D extends GridCoverage2D {
         }
 
         return targetCoverage;
+    }
+
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
+    private static void offsetUpper(int[] upper) {
+        for (int i = 0; i < upper.length; i++) {
+            upper[i]++; // Make them exclusive.
+        }
     }
 
     /*

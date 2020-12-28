@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -264,8 +263,8 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
     private void assertPropertyNamesAndTypeNames(
             ComplexType parentType, Map expectedPropertiesAndTypes) throws Exception {
 
-        for (Iterator it = expectedPropertiesAndTypes.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Entry) it.next();
+        for (Object o : expectedPropertiesAndTypes.entrySet()) {
+            Entry entry = (Entry) o;
             Name dName = (Name) entry.getKey();
             Name expectedDescriptorTypeName = (Name) entry.getValue();
 

@@ -89,8 +89,7 @@ public final class ScriptRunner extends Console {
     public static void main(final String[] args) {
         final String lineSeparator = System.getProperty("line.separator", "\r");
         try {
-            for (int i = 0; i < args.length; i++) {
-                final String filename = args[i];
+            for (final String filename : args) {
                 final LineNumberReader in = new LineNumberReader(new FileReader(filename));
                 final ScriptRunner test = new ScriptRunner(in);
                 test.out.write("Running \"");

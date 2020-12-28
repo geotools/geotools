@@ -79,8 +79,8 @@ public class PropertyExamples {
             if (tmp != null) {
                 File list[] = tmp.listFiles();
                 if (list != null) {
-                    for (int i = 0; i < list.length; i++) {
-                        list[i].delete();
+                    for (File file : list) {
+                        file.delete();
                     }
                 }
                 tmp.delete();

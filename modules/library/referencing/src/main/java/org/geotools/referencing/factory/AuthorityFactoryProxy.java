@@ -21,7 +21,9 @@ package org.geotools.referencing.factory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -104,39 +106,40 @@ abstract class AuthorityFactoryProxy {
      * The types that factories can be create. The most specific types must appear first in this
      * list.
      */
-    private static final Class /*<? extends IdentifiedObject>*/[] TYPES = {
-        CoordinateOperation.class,
-        OperationMethod.class,
-        ParameterDescriptor.class,
-        ProjectedCRS.class,
-        GeographicCRS.class,
-        GeocentricCRS.class,
-        ImageCRS.class,
-        DerivedCRS.class,
-        VerticalCRS.class,
-        TemporalCRS.class,
-        EngineeringCRS.class,
-        CompoundCRS.class,
-        CoordinateReferenceSystem.class,
-        CoordinateSystemAxis.class,
-        CartesianCS.class,
-        EllipsoidalCS.class,
-        SphericalCS.class,
-        CylindricalCS.class,
-        PolarCS.class,
-        VerticalCS.class,
-        TimeCS.class,
-        CoordinateSystem.class,
-        PrimeMeridian.class,
-        Ellipsoid.class,
-        GeodeticDatum.class,
-        ImageDatum.class,
-        VerticalDatum.class,
-        TemporalDatum.class,
-        EngineeringDatum.class,
-        Datum.class,
-        IdentifiedObject.class
-    };
+    private static final List<Class<? extends IdentifiedObject>> TYPES =
+            new ArrayList<>(
+                    Arrays.asList(
+                            CoordinateOperation.class,
+                            OperationMethod.class,
+                            ParameterDescriptor.class,
+                            ProjectedCRS.class,
+                            GeographicCRS.class,
+                            GeocentricCRS.class,
+                            ImageCRS.class,
+                            DerivedCRS.class,
+                            VerticalCRS.class,
+                            TemporalCRS.class,
+                            EngineeringCRS.class,
+                            CompoundCRS.class,
+                            CoordinateReferenceSystem.class,
+                            CoordinateSystemAxis.class,
+                            CartesianCS.class,
+                            EllipsoidalCS.class,
+                            SphericalCS.class,
+                            CylindricalCS.class,
+                            PolarCS.class,
+                            VerticalCS.class,
+                            TimeCS.class,
+                            CoordinateSystem.class,
+                            PrimeMeridian.class,
+                            Ellipsoid.class,
+                            GeodeticDatum.class,
+                            ImageDatum.class,
+                            VerticalDatum.class,
+                            TemporalDatum.class,
+                            EngineeringDatum.class,
+                            Datum.class,
+                            IdentifiedObject.class));
 
     /** Creates a new proxy. */
     AuthorityFactoryProxy() {}
@@ -183,9 +186,7 @@ abstract class AuthorityFactoryProxy {
      */
     public static Class<? extends IdentifiedObject> getType(
             final Class<? extends IdentifiedObject> type) throws IllegalArgumentException {
-        for (int i = 0; i < TYPES.length; i++) {
-            @SuppressWarnings("unchecked")
-            final Class<? extends IdentifiedObject> candidate = TYPES[i];
+        for (final Class<? extends IdentifiedObject> candidate : TYPES) {
             if (candidate.isAssignableFrom(type)) {
                 return candidate;
             }
@@ -268,8 +269,7 @@ abstract class AuthorityFactoryProxy {
             this.factory = factory;
             this.type = type;
             final Method[] candidates = factory.getClass().getMethods();
-            for (int i = 0; i < candidates.length; i++) {
-                final Method c = candidates[i];
+            for (final Method c : candidates) {
                 if (c.getName().startsWith("create")
                         && type.equals(c.getReturnType())
                         && Arrays.equals(PARAMETERS, c.getParameterTypes())) {

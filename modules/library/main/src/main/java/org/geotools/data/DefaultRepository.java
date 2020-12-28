@@ -231,14 +231,14 @@ public class DefaultRepository implements Repository {
 
         String[] params = definition.split(",");
         int offset = 0;
-        for (int i = 0; i < params.length; i++) {
-            String[] vals = params[i].split("=");
+        for (String param : params) {
+            String[] vals = param.split("=");
             if (vals.length == 2) {
                 map.put(vals[0].trim(), vals[1].trim());
             } else {
-                throw new ParseException("Could not interpret " + params[i], offset);
+                throw new ParseException("Could not interpret " + param, offset);
             }
-            offset += params[i].length();
+            offset += param.length();
         }
         return map;
     }

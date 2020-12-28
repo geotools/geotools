@@ -154,8 +154,8 @@ public class Toolbox {
         try {
             int countTotal = fcoll.size();
 
-            for (int i = 0; i < dataStores.length; i++) {
-                writers.add(dataStores[i].getFeatureWriter(typeName, Transaction.AUTO_COMMIT));
+            for (DataStore dataStore : dataStores) {
+                writers.add(dataStore.getFeatureWriter(typeName, Transaction.AUTO_COMMIT));
             }
 
             int counter = 0;

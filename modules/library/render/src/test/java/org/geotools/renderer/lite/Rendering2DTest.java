@@ -1008,8 +1008,7 @@ public class Rendering2DTest extends TestCase {
         Geometry clone = g.copy();
         Coordinate[] coords = clone.getCoordinates();
         final int length = coords.length;
-        for (int i = 0; i < length; i++) {
-            Coordinate coord = coords[i];
+        for (Coordinate coord : coords) {
             coord.x += shiftX;
             coord.y += shiftY;
         }

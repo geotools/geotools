@@ -338,8 +338,7 @@ public final class Classes {
          * loops j=[0..n].
          */
         int n = 0;
-        for (int i = 0; i < c2.length; i++) {
-            final Class<?> c = c2[i];
+        for (Class<?> c : c2) {
             if (base.isAssignableFrom(c)) {
                 c2[n++] = c;
             }
@@ -349,8 +348,7 @@ public final class Classes {
          * this interface exists also in the 'c2' array. Order doesn't matter.
          */
         compare:
-        for (int i = 0; i < c1.length; i++) {
-            final Class<?> c = c1[i];
+        for (final Class<?> c : c1) {
             if (base.isAssignableFrom(c)) {
                 for (int j = 0; j < n; j++) {
                     if (c.equals(c2[j])) {

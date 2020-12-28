@@ -53,9 +53,9 @@ public class JoiningAttributeReader implements AttributeReader {
         AttributeDescriptor[] md = new AttributeDescriptor[total];
         int idx = 0;
 
-        for (int i = 0, ii = readers.length; i < ii; i++) {
-            for (int j = 0, jj = readers[i].getAttributeCount(); j < jj; j++) {
-                md[idx] = readers[i].getAttributeType(j);
+        for (AttributeReader reader : readers) {
+            for (int j = 0, jj = reader.getAttributeCount(); j < jj; j++) {
+                md[idx] = reader.getAttributeType(j);
                 idx++;
             }
         }
@@ -66,9 +66,9 @@ public class JoiningAttributeReader implements AttributeReader {
     public void close() throws IOException {
         IOException dse = null;
 
-        for (int i = 0, ii = readers.length; i < ii; i++) {
+        for (AttributeReader reader : readers) {
             try {
-                readers[i].close();
+                reader.close();
             } catch (IOException e) {
                 dse = e;
             }
@@ -80,8 +80,8 @@ public class JoiningAttributeReader implements AttributeReader {
     }
 
     public boolean hasNext() throws IOException {
-        for (int i = 0, ii = readers.length; i < ii; i++) {
-            if (readers[i].hasNext()) {
+        for (AttributeReader reader : readers) {
+            if (reader.hasNext()) {
                 return true;
             }
         }
@@ -90,9 +90,9 @@ public class JoiningAttributeReader implements AttributeReader {
     }
 
     public void next() throws IOException {
-        for (int i = 0, ii = readers.length; i < ii; i++) {
-            if (readers[i].hasNext()) {
-                readers[i].next();
+        for (AttributeReader reader : readers) {
+            if (reader.hasNext()) {
+                reader.next();
             }
         }
     }

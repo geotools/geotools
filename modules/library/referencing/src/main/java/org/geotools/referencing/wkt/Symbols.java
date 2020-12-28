@@ -202,8 +202,8 @@ public class Symbols {
                     }
                     c = wkt.charAt(index);
                 }
-                for (int i = 0; i < openingBrackets.length; i++) {
-                    if (c == openingBrackets[i]) {
+                for (char openingBracket : openingBrackets) {
+                    if (c == openingBracket) {
                         return index;
                     }
                 }

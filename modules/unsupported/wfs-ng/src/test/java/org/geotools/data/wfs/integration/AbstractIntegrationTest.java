@@ -311,8 +311,8 @@ public abstract class AbstractIntegrationTest {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(expected)) {
+        for (Object o : array) {
+            if (o.equals(expected)) {
                 return true;
             }
         }
@@ -347,8 +347,8 @@ public abstract class AbstractIntegrationTest {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (isFeatureEqual((SimpleFeature) array[i], (SimpleFeature) expected)) {
+        for (Object o : array) {
+            if (isFeatureEqual((SimpleFeature) o, (SimpleFeature) expected)) {
                 return true;
             }
         }
@@ -402,8 +402,8 @@ public abstract class AbstractIntegrationTest {
 
         // SimpleFeatureType type = expected.getFeatureType();
 
-        for (int i = 0; i < array.length; i++) {
-            if (match(array[i], expected)) {
+        for (SimpleFeature simpleFeature : array) {
+            if (match(simpleFeature, expected)) {
                 return true;
             }
         }

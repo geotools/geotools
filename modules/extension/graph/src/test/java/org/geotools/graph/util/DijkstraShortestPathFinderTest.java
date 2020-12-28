@@ -16,7 +16,6 @@
  */
 package org.geotools.graph.util;
 
-import java.util.Iterator;
 import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
@@ -57,8 +56,7 @@ public class DijkstraShortestPathFinderTest extends TestCase {
         Path p = pfinder.getPath(ends[1]);
 
         int count = 99;
-        for (Iterator itr = p.iterator(); itr.hasNext(); ) {
-            Node n = (Node) itr.next();
+        for (Node n : p) {
             assertTrue(n.getID() == count--);
         }
     }
@@ -98,16 +96,14 @@ public class DijkstraShortestPathFinderTest extends TestCase {
                 new DijkstraShortestPathFinder(builder().getGraph(), root, costFunction());
         pfinder.calculate();
 
-        for (Iterator itr = builder().getGraph().getNodes().iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
+        for (Node node : builder().getGraph().getNodes()) {
             String id = node.getObject().toString();
 
             if (id2node.get(id + ".0") == null) {
                 Path p = pfinder.getPath(node);
                 assertTrue(p.size() == k + 1);
 
-                for (Iterator pitr = p.iterator(); pitr.hasNext(); ) {
-                    Node n = (Node) pitr.next();
+                for (Node n : p) {
                     assertTrue(n.getObject().toString().equals(id));
                     if (id.length() > 2) id = id.substring(0, id.length() - 2);
                 }

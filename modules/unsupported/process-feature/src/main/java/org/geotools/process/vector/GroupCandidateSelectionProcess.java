@@ -18,7 +18,6 @@ package org.geotools.process.vector;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -169,8 +168,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         List<SortBy> newSorts = new ArrayList<>(groupingAttributes.size());
         List<PropertyName> properties =
                 groupingAttributes.stream().map(s -> ff.property(s)).collect(Collectors.toList());
-        for (int i = 0; i < properties.size(); i++) {
-            PropertyName pn = properties.get(i);
+        for (PropertyName pn : properties) {
             if (!sortByAlreadyExists(sorts, pn))
                 newSorts.add(new SortByImpl(pn, SortOrder.ASCENDING));
         }
@@ -219,8 +217,8 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         Map namespaces = (Map) type.getUserData().get(Types.DECLARED_NAMESPACES_MAP);
         if (namespaces != null) {
             namespaceSupport = new NamespaceSupport();
-            for (Iterator it = namespaces.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) it.next();
+            for (Object o : namespaces.entrySet()) {
+                Map.Entry entry = (Map.Entry) o;
                 String prefix = (String) entry.getKey();
                 String namespace = (String) entry.getValue();
                 namespaceSupport.declarePrefix(prefix, namespace);

@@ -76,8 +76,8 @@ public class TableRow implements VPFRow {
         if (fieldsMap == null) {
             buff.append("null)");
         } else {
-            for (int i = 0; i < fieldsArr.length; i++) {
-                buff.append(fieldsArr[i].toString() + ":");
+            for (RowField rowField : fieldsArr) {
+                buff.append(rowField.toString() + ":");
             }
 
             buff.append(";");
@@ -155,8 +155,8 @@ public class TableRow implements VPFRow {
         if ((fieldsArr == null) || (fieldsArr.length == 0)) {
             code = super.hashCode();
         } else {
-            for (int i = 0; i < fieldsArr.length; i++) {
-                code += fieldsArr[i].hashCode();
+            for (RowField rowField : fieldsArr) {
+                code += rowField.hashCode();
             }
         }
 

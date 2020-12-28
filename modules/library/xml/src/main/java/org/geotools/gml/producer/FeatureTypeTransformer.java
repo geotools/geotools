@@ -231,8 +231,8 @@ public class FeatureTypeTransformer extends TransformerBase {
             try {
                 startSchemaType(type.getTypeName(), type.getName().getNamespaceURI());
 
-                for (int i = 0; i < attributes.size(); i++) {
-                    encode((AttributeDescriptor) attributes.get(i));
+                for (Object attribute : attributes) {
+                    encode((AttributeDescriptor) attribute);
                 }
 
                 endSchemaType();

@@ -18,7 +18,6 @@
 package org.geotools.wps.bindings;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import net.opengis.wps10.ComplexDataType;
@@ -95,8 +94,7 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding {
             data.setEncoding(node.getAttributeValue("encoding").toString());
         }
 
-        for (Iterator i = node.getChildren().iterator(); i.hasNext(); ) {
-            Node c = (Node) i.next();
+        for (Node c : node.getChildren()) {
             data.getData().add(c.getValue());
         }
 

@@ -362,8 +362,8 @@ public class FeatureListenerManager {
 
             event = new FeatureEvent(featureSource, type, bounds);
 
-            for (int l = 0; l < listeners.length; l++) {
-                listeners[l].changed(event);
+            for (FeatureListener listener : listeners) {
+                listener.changed(event);
             }
         }
     }
@@ -384,8 +384,8 @@ public class FeatureListenerManager {
 
             event = new FeatureEvent(featureSource, type, bounds);
 
-            for (int l = 0; l < listeners.length; l++) {
-                listeners[l].changed(event);
+            for (FeatureListener listener : listeners) {
+                listener.changed(event);
             }
         }
     }

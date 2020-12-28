@@ -91,8 +91,8 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     protected void fireChange(SimpleFeature[] features, int type) {
         CollectionEvent cEvent = new CollectionEvent(this, features, type);
 
-        for (int i = 0, ii = listeners.size(); i < ii; i++) {
-            listeners.get(i).collectionChanged(cEvent);
+        for (CollectionListener listener : listeners) {
+            listener.collectionChanged(cEvent);
         }
     }
 

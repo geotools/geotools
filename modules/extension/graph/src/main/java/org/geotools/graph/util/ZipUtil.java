@@ -78,18 +78,17 @@ public class ZipUtil {
             while (entries.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
 
-                for (int i = 0; i < filenames.length; i++) {
-                    if (entry.getName().equals(filenames[i])) {
+                for (String filename : filenames) {
+                    if (entry.getName().equals(filename)) {
                         Utilities.assertNotZipSlipVulnarable(
-                                new File(outdir, filenames[i]), Paths.get(outdir));
+                                new File(outdir, filename), Paths.get(outdir));
                         byte[] buffer = new byte[1024];
                         int len;
 
                         try (InputStream zipin = zipFile.getInputStream(entry);
                                 BufferedOutputStream fileout =
                                         new BufferedOutputStream(
-                                                new FileOutputStream(
-                                                        new File(outdir, filenames[i])))) {
+                                                new FileOutputStream(new File(outdir, filename)))) {
 
                             while ((len = zipin.read(buffer)) >= 0) fileout.write(buffer, 0, len);
 

@@ -189,8 +189,8 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
             final String cellSizeParam =
                     ArcGridFormat.FORCE_CELLSIZE.getName().getCode().toString();
             if (parameters != null) {
-                for (int i = 0; i < parameters.length; i++) {
-                    Parameter param = (Parameter) parameters[i];
+                for (GeneralParameterValue parameter : parameters) {
+                    Parameter param = (Parameter) parameter;
                     String name = param.getDescriptor().getName().toString();
                     if (param.getDescriptor()
                             .getName()

@@ -369,16 +369,16 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         }
 
         FeatureWriter writer = ds.getFeatureWriterAppend("testw", Transaction.AUTO_COMMIT);
-        for (int i = 0; i < features.length; i++) {
+        for (SimpleFeature simpleFeature : features) {
             assertFalse(writer.hasNext());
             SimpleFeature f = (SimpleFeature) writer.next();
-            f.setAttributes(features[i].getAttributes());
+            f.setAttributes(simpleFeature.getAttributes());
             writer.write();
         }
         writer.close();
 
         FeatureReader reader = ds.getFeatureReader(new Query("testw"), null);
-        for (int i = 0; i < features.length; i++) {
+        for (SimpleFeature feature : features) {
             assertTrue(reader.hasNext());
             SimpleFeature f = (SimpleFeature) reader.next();
             for (int j = 0; j < schema.getAttributeCount(); j++) {
@@ -386,10 +386,10 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
                     // this is necessary because geometry equality is
                     // implemented as Geometry.equals(Geometry)
                     Geometry a = (Geometry) f.getAttribute(j);
-                    Geometry b = (Geometry) features[i].getAttribute(j);
+                    Geometry b = (Geometry) feature.getAttribute(j);
                     assertTrue(a.equals(b));
                 } else {
-                    assertEquals(f.getAttribute(j), features[i].getAttribute(j));
+                    assertEquals(f.getAttribute(j), feature.getAttribute(j));
                 }
             }
         }
@@ -971,8 +971,8 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     }
 
     private void cleanFiles(String[] files) {
-        for (int i = 0; i < files.length; i++) {
-            File f = new File(files[i]);
+        for (String file : files) {
+            File f = new File(file);
             if (f.exists()) f.delete();
         }
     }

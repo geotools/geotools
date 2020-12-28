@@ -92,26 +92,24 @@ public class GT30ZipWriterTest extends GT30TestBase {
         File testDir = TestData.file(this, ".");
         File outputFile = new File(testDir.getAbsolutePath(), "test.zip");
 
-        final OutputStream outputStream = new ZipOutputStream(new FileOutputStream(outputFile));
-        GridCoverageWriter writer = null;
-        try {
-            writer = format.getWriter(outputStream);
-            // ATTENTION we do not require to specify that we want compression as we are doing that
-            // on our own
-            writer.write(gc, null);
+        try (OutputStream outputStream = new ZipOutputStream(new FileOutputStream(outputFile))) {
+            GridCoverageWriter writer = null;
+            try {
+                writer = format.getWriter(outputStream);
+                // ATTENTION we do not require to specify that we want compression as we are doing
+                // that
+                // on our own
+                writer.write(gc, null);
+            } finally {
+                if (writer != null) {
+                    writer.dispose();
+                }
+            }
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         } finally {
             // close source GC
             gc.dispose(false);
-
-            // close writer and outputstream
-            if (writer != null) {
-                writer.dispose();
-            }
-            if (outputStream != null) {
-                outputStream.close();
-            }
 
             // delete test file, or at least try to
             outputFile.delete();

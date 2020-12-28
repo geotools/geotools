@@ -81,10 +81,9 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testGetFeatureReader() throws Exception {
-        SimpleFeatureReader reader =
+        try (SimpleFeatureReader reader =
                 (SimpleFeatureReader)
-                        dataStore.getFeatureReader(new Query("ft1"), Transaction.AUTO_COMMIT);
-        try {
+                        dataStore.getFeatureReader(new Query("ft1"), Transaction.AUTO_COMMIT)) {
             for (int i = 0; i < 3; i++) {
                 assertTrue(reader.hasNext());
                 SimpleFeature f = reader.next();
@@ -92,8 +91,6 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
                 assertFeature(f);
             }
             assertFalse(reader.hasNext());
-        } finally {
-            reader.close();
         }
     }
 

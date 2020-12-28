@@ -1214,8 +1214,7 @@ public class DataUtilities {
         if (featureCollection == null) {
             return null;
         }
-        FeatureIterator<F> iter = featureCollection.features();
-        try {
+        try (FeatureIterator<F> iter = featureCollection.features()) {
             while (iter.hasNext()) {
                 F feature = iter.next();
                 if (feature != null) {
@@ -1223,8 +1222,6 @@ public class DataUtilities {
                 }
             }
             return null; // not found!
-        } finally {
-            iter.close();
         }
     }
 
@@ -1445,14 +1442,11 @@ public class DataUtilities {
      */
     public static <F extends Feature> List<F> list(FeatureCollection<?, F> featureCollection) {
         final ArrayList<F> list = new ArrayList<>();
-        FeatureIterator<F> iter = featureCollection.features();
-        try {
+        try (FeatureIterator<F> iter = featureCollection.features()) {
             while (iter.hasNext()) {
                 F feature = iter.next();
                 list.add(feature);
             }
-        } finally {
-            iter.close();
         }
         return list;
     }
@@ -1465,14 +1459,11 @@ public class DataUtilities {
     public static <F extends Feature> List<F> list(
             FeatureCollection<?, F> featureCollection, int maxFeatures) {
         final ArrayList<F> list = new ArrayList<>();
-        FeatureIterator<F> iter = featureCollection.features();
-        try {
+        try (FeatureIterator<F> iter = featureCollection.features()) {
             for (int count = 0; iter.hasNext() && count < maxFeatures; count++) {
                 F feature = iter.next();
                 list.add(feature);
             }
-        } finally {
-            iter.close();
         }
         return list;
     }
@@ -2673,18 +2664,13 @@ public class DataUtilities {
     public static int count(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
         int count = 0;
-        FeatureIterator<? extends Feature> i = collection.features();
-        try {
+        try (FeatureIterator<? extends Feature> i = collection.features()) {
             while (i.hasNext()) {
                 @SuppressWarnings("unused")
                 Feature feature = i.next();
                 count++;
             }
             return count;
-        } finally {
-            if (i != null) {
-                i.close();
-            }
         }
     }
     /**
@@ -2729,8 +2715,7 @@ public class DataUtilities {
      */
     public static ReferencedEnvelope bounds(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
-        FeatureIterator<? extends Feature> i = collection.features();
-        try {
+        try (FeatureIterator<? extends Feature> i = collection.features()) {
             // Implementation taken from DefaultFeatureCollection implementation - thanks IanS
             CoordinateReferenceSystem crs = collection.getSchema().getCoordinateReferenceSystem();
             ReferencedEnvelope bounds = new ReferencedEnvelope(crs);
@@ -2748,10 +2733,6 @@ public class DataUtilities {
                 }
             }
             return bounds;
-        } finally {
-            if (i != null) {
-                i.close();
-            }
         }
     }
 

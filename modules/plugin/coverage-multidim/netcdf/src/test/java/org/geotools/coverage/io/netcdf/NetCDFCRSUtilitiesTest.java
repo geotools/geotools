@@ -36,9 +36,7 @@ public final class NetCDFCRSUtilitiesTest extends Assert {
     public void testBuildVerticalCRS() throws IOException {
         final String url = TestData.url(this, "O3-NO2.nc").toExternalForm();
 
-        NetcdfDataset dataset = null;
-        try {
-            dataset = NetcdfDataset.openDataset(url);
+        try (NetcdfDataset dataset = NetcdfDataset.openDataset(url)) {
             assertNotNull(dataset);
             final List<CoordinateAxis> cvs = dataset.getCoordinateAxes();
             assertNotNull(cvs);
@@ -59,10 +57,6 @@ public final class NetCDFCRSUtilitiesTest extends Assert {
             final VerticalCRS verticalCrs = NetCDFCRSUtilities.buildVerticalCrs(verticalAxis);
             assertNotNull(verticalCrs);
             assertTrue(verticalCrs instanceof DefaultVerticalCRS);
-        } finally {
-            if (dataset != null) {
-                dataset.close();
-            }
         }
     }
 }

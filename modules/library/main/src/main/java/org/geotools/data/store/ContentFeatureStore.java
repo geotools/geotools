@@ -225,14 +225,11 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         // gather up id's
         List<FeatureId> ids = new ArrayList<>(collection.size());
 
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend()) {
             for (Object o : collection) {
                 FeatureId id = addFeature((SimpleFeature) o, writer);
                 ids.add(id);
             }
-        } finally {
-            writer.close();
         }
 
         return ids;
@@ -245,17 +242,13 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         // gather up id's
         List<FeatureId> ids = new ArrayList<>();
 
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
-        FeatureIterator<SimpleFeature> f = featureCollection.features();
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
+                FeatureIterator<SimpleFeature> f = featureCollection.features()) {
             while (f.hasNext()) {
                 SimpleFeature feature = f.next();
                 FeatureId id = addFeature(feature, writer);
                 ids.add(id);
             }
-        } finally {
-            writer.close();
-            f.close();
         }
         return ids;
     }
@@ -321,9 +314,8 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         removeFeatures(Filter.INCLUDE);
 
         // grab a feature writer for insert
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                getWriter(Filter.INCLUDE, WRITER_ADD);
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                getWriter(Filter.INCLUDE, WRITER_ADD)) {
             while (reader.hasNext()) {
                 SimpleFeature feature = reader.next();
 
@@ -340,8 +332,6 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
                 // perform the write
                 writer.write();
             }
-        } finally {
-            writer.close();
         }
     }
 
@@ -371,8 +361,8 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         filter = resolvePropertyNames(filter);
 
         // grab a feature writer
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriter(filter, WRITER_UPDATE);
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                getWriter(filter, WRITER_UPDATE)) {
             while (writer.hasNext()) {
                 SimpleFeature toWrite = writer.next();
 
@@ -382,9 +372,6 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
 
                 writer.write();
             }
-
-        } finally {
-            writer.close();
         }
     }
 
@@ -439,16 +426,13 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         filter = resolvePropertyNames(filter);
 
         // grab a feature writer
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriter(filter, WRITER_UPDATE);
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                getWriter(filter, WRITER_UPDATE)) {
             // remove everything
             while (writer.hasNext()) {
                 writer.next();
                 writer.remove();
             }
-
-        } finally {
-            writer.close();
         }
     }
 }

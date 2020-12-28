@@ -139,10 +139,8 @@ public class OverlapsIntegrity extends RelationIntegrity {
         // SimpleFeatureCollection featureCollection = featureSourceA.getFeatures(filter);
         SimpleFeatureCollection collectionA = featureSourceA.getFeatures();
 
-        SimpleFeatureIterator fr1 = null;
         SimpleFeatureIterator fr2 = null;
-        try {
-            fr1 = collectionA.features();
+        try (SimpleFeatureIterator fr1 = collectionA.features()) {
 
             if (fr1 == null) return success;
 
@@ -200,8 +198,6 @@ public class OverlapsIntegrity extends RelationIntegrity {
                     if (fr2 != null) fr2.close();
                 }
             } // end while 1
-        } finally {
-            if (fr1 != null) fr1.close();
         }
 
         return success;
@@ -253,10 +249,8 @@ public class OverlapsIntegrity extends RelationIntegrity {
             collectionA = featureSourceA.getFeatures(filter);
         } else collectionA = featureSourceA.getFeatures();
 
-        SimpleFeatureIterator fr1 = null;
         SimpleFeatureIterator fr2 = null;
-        try {
-            fr1 = collectionA.features();
+        try (SimpleFeatureIterator fr1 = collectionA.features()) {
             if (fr1 == null) return success;
 
             while (fr1.hasNext()) {
@@ -324,7 +318,6 @@ public class OverlapsIntegrity extends RelationIntegrity {
                 LOGGER.info("########## Validation duration: " + dt);
                 LOGGER.info("########## Validation errors: " + errors);
             }
-            if (fr1 != null) fr1.close();
         }
 
         return success;

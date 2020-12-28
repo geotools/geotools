@@ -115,9 +115,8 @@ public class FeatureLayerHelper extends InfoToolHelper {
             Collection<PropertyDescriptor> descriptors = featureSource.getSchema().getDescriptors();
 
             FeatureCollection queryResult = featureSource.getFeatures(query);
-            FeatureIterator iter = queryResult.features();
 
-            try {
+            try (FeatureIterator iter = queryResult.features()) {
                 while (iter.hasNext()) {
                     Feature f = iter.next();
                     result.newFeature(f.getIdentifier().getID());
@@ -136,9 +135,6 @@ public class FeatureLayerHelper extends InfoToolHelper {
                         }
                     }
                 }
-
-            } finally {
-                iter.close();
             }
         }
 

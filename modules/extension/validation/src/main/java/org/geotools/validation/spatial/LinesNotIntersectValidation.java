@@ -64,9 +64,8 @@ public class LinesNotIntersectValidation extends LineLineAbstractValidation {
         while (it.hasNext()) // for each layer
         {
             SimpleFeatureSource featureSource = (SimpleFeatureSource) it.next();
-            SimpleFeatureIterator features = featureSource.getFeatures().features();
 
-            try {
+            try (SimpleFeatureIterator features = featureSource.getFeatures().features()) {
                 while (features.hasNext()) // for each feature
                 {
                     // check if it intersects any of the previous features
@@ -84,8 +83,6 @@ public class LinesNotIntersectValidation extends LineLineAbstractValidation {
 
                     geoms.add(geom);
                 }
-            } finally {
-                features.close(); // this is an important line
             }
         }
 

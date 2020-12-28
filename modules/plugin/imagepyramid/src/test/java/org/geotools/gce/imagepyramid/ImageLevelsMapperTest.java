@@ -164,11 +164,9 @@ public class ImageLevelsMapperTest extends Assert {
         File propertyFile = new File(mosaicFolder, "multipyramidwithoverviews.properties");
 
         // Test image levels mapping on the newly created pyramid properties file
-        FileInputStream fis = null;
         ImageLevelsMapper mapper = null;
         final double baseRes = 0.4287193d;
-        try {
-            fis = new FileInputStream(propertyFile);
+        try (FileInputStream fis = new FileInputStream(propertyFile)) {
             properties.load(fis);
             mapper = new ImageLevelsMapper(properties);
             assertEquals(5, mapper.getNumOverviews());
@@ -199,13 +197,6 @@ public class ImageLevelsMapperTest extends Assert {
             assertEquals(1, mapper.getImageReaderIndex(5));
 
         } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (Throwable t) {
-                    // Ignore it
-                }
-            }
             mapper.dispose();
         }
     }

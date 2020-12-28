@@ -65,8 +65,7 @@ public class ClippingFeatureCollectionTest extends TestCase {
     @Test
     public void testClipping() {
         ClippingFeatureCollection clipping = new ClippingFeatureCollection(delegate);
-        SimpleFeatureIterator it = clipping.features();
-        try {
+        try (SimpleFeatureIterator it = clipping.features()) {
             int i = 0;
             while (it.hasNext()) {
                 it.next();
@@ -74,8 +73,6 @@ public class ClippingFeatureCollectionTest extends TestCase {
             }
             // first two points have been removed
             assertEquals(8, i);
-        } finally {
-            it.close();
         }
     }
 

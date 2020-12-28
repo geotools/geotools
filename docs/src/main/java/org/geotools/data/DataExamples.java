@@ -161,8 +161,7 @@ public class DataExamples {
 
         SimpleFeatureStore featureStore = (SimpleFeatureStore) dataStore.getFeatureSource(typeName);
 
-        Transaction t = new DefaultTransaction();
-        try {
+        try (Transaction t = new DefaultTransaction()) {
             SimpleFeatureCollection collection = featureSource.getFeatures(); // grab all features
 
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
@@ -190,8 +189,6 @@ public class DataExamples {
                     // rollback failed?
                 }
             }
-        } finally {
-            t.close();
         }
         return dataStore;
     }

@@ -779,8 +779,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         }
 
         // subclass could not handle, resort to manually walkign through
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query)) {
             float size = progress instanceof NullProgressListener ? 0.0f : (float) getCount(query);
             float position = 0;
             progress.started();
@@ -808,7 +807,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             }
         } finally {
             progress.complete();
-            reader.close();
         }
     }
 
@@ -1216,8 +1214,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
         String typeName = getSchema().getTypeName();
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter)) {
             int locked = 0;
             while (reader.hasNext()) {
                 SimpleFeature feature = reader.next();
@@ -1248,8 +1245,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             }
 
             return locked;
-        } finally {
-            reader.close();
         }
     }
 
@@ -1276,8 +1271,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         filter = resolvePropertyNames(filter);
         String typeName = getSchema().getTypeName();
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter)) {
             while (reader.hasNext()) {
                 SimpleFeature feature = reader.next();
                 //
@@ -1291,8 +1285,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                             .unLockFeatureID(typeName, feature.getID(), transaction, lock);
                 }
             }
-        } finally {
-            reader.close();
         }
     }
 

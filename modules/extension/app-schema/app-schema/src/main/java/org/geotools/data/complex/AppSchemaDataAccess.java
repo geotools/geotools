@@ -696,13 +696,10 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             Filter filter = filterFac.id(id);
             FeatureCollection<FeatureType, Feature> fCollection =
                     new MappingFeatureSource(this, mapping.getValue()).getFeatures(filter, hints);
-            FeatureIterator<Feature> iterator = fCollection.features();
-            try {
+            try (FeatureIterator<Feature> iterator = fCollection.features()) {
                 if (iterator.hasNext()) {
                     return iterator.next();
                 }
-            } finally {
-                iterator.close();
             }
         }
         return null;

@@ -1141,8 +1141,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
          * File is a standard file where the categories values are stored in
          * the cats directory.
          */
-        BufferedReader rdr = new BufferedReader(new FileReader(readerGrassEnv.getCATS()));
-        try {
+        try (BufferedReader rdr = new BufferedReader(new FileReader(readerGrassEnv.getCATS()))) {
 
             /* Instantiate attribute table */
             AttributeTable attTable = new AttributeTable();
@@ -1173,14 +1172,11 @@ public class GrassBinaryRasterReadHandler implements Closeable {
             List<String> attrs = new ArrayList<>();
             Enumeration<CellAttribute> categories = attTable.getCategories();
             while (categories.hasMoreElements()) {
-                AttributeTable.CellAttribute object = categories.nextElement();
+                CellAttribute object = categories.nextElement();
                 attrs.add(object.toString());
             }
 
             return attrs;
-
-        } finally {
-            rdr.close();
         }
     }
 

@@ -365,13 +365,10 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             features = source.getFeatures(query);
             features.size();
 
-            SimpleFeatureIterator iterator = features.features();
-            try {
+            try (SimpleFeatureIterator iterator = features.features()) {
                 while (iterator.hasNext()) {
                     iterator.next();
                 }
-            } finally {
-                iterator.close();
             }
         }
 
@@ -411,13 +408,10 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         features = source.getFeatures(query);
         features.size();
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 iterator.next();
             }
-        } finally {
-            iterator.close();
         }
     }
 

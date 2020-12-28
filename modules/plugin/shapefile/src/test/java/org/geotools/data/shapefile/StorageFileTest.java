@@ -86,15 +86,12 @@ public class StorageFileTest implements FileReader {
 
     private void assertCorrectData(ShpFiles files1, ShpFileType type, String writtenToStorageFile)
             throws IOException {
-        ReadableByteChannel channel = files1.getReadChannel(type, this);
-        try {
+        try (ReadableByteChannel channel = files1.getReadChannel(type, this)) {
             ByteBuffer buffer = ByteBuffer.allocate(20);
             channel.read(buffer);
             buffer.flip();
             String data = new String(buffer.array()).trim();
             assertEquals(writtenToStorageFile, data);
-        } finally {
-            channel.close();
         }
     }
 

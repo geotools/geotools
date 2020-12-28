@@ -334,12 +334,9 @@ public class ArcSDEFeatureStoreTest {
         {
             // get a fid
             Query query = new Query(typeName);
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-            try {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
                 fid = reader.next().getID();
-            } finally {
-                reader.close();
             }
 
             final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -397,12 +394,9 @@ public class ArcSDEFeatureStoreTest {
         // was it really removed?
         {
             Query query = new Query(typeName, fidFilter);
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-            try {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
                 assertFalse(reader.hasNext());
-            } finally {
-                reader.close();
             }
         }
     }
@@ -421,10 +415,9 @@ public class ArcSDEFeatureStoreTest {
 
         // get 2 features and build an OR'ed PropertyIsEqualTo filter
         Filter or = CQL.toFilter("INT32_COL = 1 OR INT32_COL = 2");
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                ds.getFeatureWriter(typeName, or, Transaction.AUTO_COMMIT);
 
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                ds.getFeatureWriter(typeName, or, Transaction.AUTO_COMMIT)) {
             assertTrue(writer.hasNext());
 
             SimpleFeature feature = writer.next();
@@ -436,17 +429,12 @@ public class ArcSDEFeatureStoreTest {
             writer.remove();
 
             assertFalse(writer.hasNext());
-        } finally {
-            writer.close();
         }
 
         // was it really removed?
-        FeatureReader<SimpleFeatureType, SimpleFeature> read =
-                ds.getFeatureReader(new Query(typeName, or), Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> read =
+                ds.getFeatureReader(new Query(typeName, or), Transaction.AUTO_COMMIT)) {
             assertFalse(read.hasNext());
-        } finally {
-            read.close();
         }
     }
 
@@ -756,11 +744,8 @@ public class ArcSDEFeatureStoreTest {
         final int initialSize = features.size();
         assertEquals(1, initialSize); // just to not go forward with bad data
         final SimpleFeature originalFeature;
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             originalFeature = iterator.next();
-        } finally {
-            iterator.close();
         }
 
         {
@@ -836,10 +821,9 @@ public class ArcSDEFeatureStoreTest {
         String fid2;
         // insert polygons p1, p2 and grab the fids for later retrieval
         {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                    dataStore.getFeatureWriterAppend(typeName, Transaction.AUTO_COMMIT);
-            SimpleFeature feature;
-            try {
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    dataStore.getFeatureWriterAppend(typeName, Transaction.AUTO_COMMIT)) {
+                SimpleFeature feature;
                 feature = writer.next();
                 // set this attribute as its the only non nillable one
                 feature.setAttribute("INT32_COL", Integer.valueOf(0));
@@ -855,8 +839,6 @@ public class ArcSDEFeatureStoreTest {
                 feature.setAttribute(defaultGeometry.getName(), p2);
                 writer.write();
                 fid2 = feature.getID();
-            } finally {
-                writer.close();
             }
         }
 
@@ -944,21 +926,16 @@ public class ArcSDEFeatureStoreTest {
 
         final int initialCount = fsource.getCount(Query.ALL);
 
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                ds.getFeatureWriterAppend(typeName, Transaction.AUTO_COMMIT);
-
-        SimpleFeature source;
-        SimpleFeature dest;
-
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                ds.getFeatureWriterAppend(typeName, Transaction.AUTO_COMMIT)) {
+            SimpleFeature source;
+            SimpleFeature dest;
             for (SimpleFeatureIterator fi = testFeatures.features(); fi.hasNext(); ) {
                 source = fi.next();
                 dest = writer.next();
                 dest.setAttributes(source.getAttributes());
                 writer.write();
             }
-        } finally {
-            writer.close();
         }
 
         // was the features really inserted?
@@ -1431,16 +1408,13 @@ public class ArcSDEFeatureStoreTest {
                             // System.err.println("worker2 calling getFeartures()");
                             SimpleFeatureCollection collection = fStore.getFeatures();
                             // System.err.println("worker2 opening iterator...");
-                            SimpleFeatureIterator features = collection.features();
-                            try {
+                            try (SimpleFeatureIterator features = collection.features()) {
                                 // System.err.println("worker2 iterating...");
                                 while (features.hasNext()) {
                                     SimpleFeature next = features.next();
                                     // System.out.println("**Got feature " + next.getID());
                                 }
                                 // System.err.println("worker2 closing FeatureCollection");
-                            } finally {
-                                features.close();
                             }
                             // System.err.println("worker2 done.");
                         } catch (Throwable e) {

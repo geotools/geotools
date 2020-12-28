@@ -219,14 +219,12 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                     if (inStreamSpi == null) {
                         throw new IllegalArgumentException("no inputStreamSPI available!");
                     }
-                    ImageInputStream inStream = null;
-                    try {
+                    try (ImageInputStream inStream =
+                            inStreamSpi.createInputStreamInstance(
+                                    granuleUrl,
+                                    ImageIO.getUseCache(),
+                                    ImageIO.getCacheDirectory())) {
                         // Get the ImageInputStream from the SPI
-                        inStream =
-                                inStreamSpi.createInputStreamInstance(
-                                        granuleUrl,
-                                        ImageIO.getUseCache(),
-                                        ImageIO.getCacheDirectory());
                         // Throws an Exception if the ImageInputStream is not present
                         if (inStream == null) {
                             if (LOGGER.isLoggable(Level.WARNING)) {
@@ -239,10 +237,6 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                         // Selection of the ImageReaderSpi from the Stream
                         ImageReaderSpi spi = Utils.getReaderSpiFromStream(null, inStream);
                         configHandler.setCachedReaderSPI(spi);
-                    } finally {
-                        if (inStream != null) {
-                            inStream.close();
-                        }
                     }
                 }
 

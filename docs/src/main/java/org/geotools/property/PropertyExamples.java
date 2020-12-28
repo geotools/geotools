@@ -96,9 +96,8 @@ public class PropertyExamples {
         DataStore datastore = DataStoreFinder.getDataStore(params);
 
         Query query = new Query("example");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                datastore.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                datastore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             int count = 0;
             while (reader.hasNext()) {
                 SimpleFeature feature = reader.next();
@@ -106,8 +105,6 @@ public class PropertyExamples {
                 count++;
             }
             System.out.println("read in " + count + " features");
-        } finally {
-            reader.close();
         }
         // example3 end
         System.out.println("\nexample3 end\n");

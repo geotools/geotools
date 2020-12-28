@@ -81,10 +81,8 @@ class TransformFeatureCollectionWrapper extends AbstractFeatureCollection {
         }
 
         // sigh, fall back to brute force computation
-        SimpleFeatureIterator fi = null;
         ReferencedEnvelope re = null;
-        try {
-            fi = features();
+        try (SimpleFeatureIterator fi = features()) {
             while (fi.hasNext()) {
                 SimpleFeature f = fi.next();
                 BoundingBox bb = f.getBounds();
@@ -99,10 +97,6 @@ class TransformFeatureCollectionWrapper extends AbstractFeatureCollection {
             }
 
             return re;
-        } finally {
-            if (fi != null) {
-                fi.close();
-            }
         }
     }
 }

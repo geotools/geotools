@@ -331,12 +331,8 @@ public class ShapefileDumper {
         // (.cst is not a standard extension)
         sfds.setCharset(charset);
         File charsetFile = new File(targetDirectory, schema.getTypeName() + ".cst");
-        PrintWriter pw = null;
-        try {
-            pw = new PrintWriter(charsetFile);
+        try (PrintWriter pw = new PrintWriter(charsetFile)) {
             pw.write(charset.name());
-        } finally {
-            if (pw != null) pw.close();
         }
 
         // create the shapefile

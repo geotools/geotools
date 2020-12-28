@@ -231,13 +231,10 @@ public class ImageMosaicCogOnlineTest extends TestCase {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(1, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 assertEquals(granuleUrl, f.getAttribute("location"));
-            } finally {
-                fi.close();
             }
 
         } finally {

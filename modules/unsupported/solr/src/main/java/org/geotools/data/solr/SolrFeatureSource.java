@@ -146,14 +146,11 @@ public class SolrFeatureSource extends ContentFeatureSource {
             Filter postFilter = split[1];
             if (postFilter != null && postFilter != Filter.INCLUDE) {
                 // grab a reader
-                FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
-                try {
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query)) {
                     while (reader.hasNext()) {
                         reader.next();
                         count++;
                     }
-                } finally {
-                    reader.close();
                 }
                 return count;
             } else {

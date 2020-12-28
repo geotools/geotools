@@ -128,15 +128,12 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
         Iterator it = collections.iterator();
         while (it.hasNext()) {
             FeatureCollection col = (FeatureCollection) it.next();
-            FeatureIterator it2 = col.features();
-            try {
+            try (FeatureIterator it2 = col.features()) {
                 while (it2.hasNext()) {
                     @SuppressWarnings("unchecked")
                     T next = (T) it.next();
                     list.add(next);
                 }
-            } finally {
-                it2.close();
             }
         }
 

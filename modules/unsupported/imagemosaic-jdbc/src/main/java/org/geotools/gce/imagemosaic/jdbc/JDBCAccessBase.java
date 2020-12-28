@@ -110,10 +110,8 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#initialize()
      */
     public void initialize() throws IOException {
-        Connection con = null;
 
-        try {
-            con = dataSource.getConnection();
+        try (Connection con = dataSource.getConnection()) {
 
             if (con.getAutoCommit()) {
                 con.setAutoCommit(false);
@@ -133,11 +131,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
 
             LOGGER.severe(e.getMessage());
             throw new IOException(e);
-        } finally {
-            try {
-                if (con != null) con.close();
-            } catch (SQLException e1) {
-            }
         }
 
         if (levelInfos.isEmpty()) {

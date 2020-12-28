@@ -668,9 +668,7 @@ public class GeoTiffWriterTest extends Assert {
             assertEquals(ri.getHeight(), i == 0 ? 120 : 12);
             reader.dispose();
 
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(output);
+            try (FileInputStream fis = new FileInputStream(output)) {
 
                 byte[] bytes = new byte[6];
                 fis.read(bytes);
@@ -680,14 +678,6 @@ public class GeoTiffWriterTest extends Assert {
                 } else {
                     // Little Endian Case
                     assertEquals(bytes[4], 43); // 43 is the magic number of BigTiff
-                }
-            } finally {
-                if (fis != null) {
-                    try {
-                        fis.close();
-                    } catch (Throwable t) {
-
-                    }
                 }
             }
             i++;

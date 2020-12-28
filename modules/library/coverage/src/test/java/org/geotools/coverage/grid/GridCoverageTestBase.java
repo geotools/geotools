@@ -411,11 +411,8 @@ public class GridCoverageTestBase extends CoverageTestBase {
          * But we want to test the default GridCoverage2D encoding.
          */
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        final ObjectOutputStream out = new ObjectOutputStream(buffer);
-        try {
+        try (ObjectOutputStream out = new ObjectOutputStream(buffer)) {
             out.writeObject(coverage);
-        } finally {
-            out.close();
         }
         final ObjectInputStream in =
                 new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));

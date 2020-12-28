@@ -102,9 +102,8 @@ public class FeatureLayerHelperTest {
         helper.setMapContent(mapContent);
         helper.setLayer(layer);
 
-        SimpleFeatureIterator iter =
-                ((SimpleFeatureSource) layer.getFeatureSource()).getFeatures().features();
-        try {
+        try (SimpleFeatureIterator iter =
+                ((SimpleFeatureSource) layer.getFeatureSource()).getFeatures().features()) {
             int n = 0;
             while (iter.hasNext() && n < maxFeatures) {
                 SimpleFeature feature = iter.next();
@@ -113,7 +112,6 @@ public class FeatureLayerHelperTest {
             }
 
         } finally {
-            iter.close();
             mapContent.dispose();
         }
     }

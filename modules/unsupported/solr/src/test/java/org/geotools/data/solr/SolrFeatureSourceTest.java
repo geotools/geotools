@@ -223,15 +223,12 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         assertEquals(8, features.size());
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
             SimpleFeature feature = iterator.next();
             assertEquals(2, feature.getAttributeCount());
             String st = (String) feature.getAttribute("standard_ss");
             assertTrue(st.contains("IEEE 802.11b"));
-        } finally {
-            iterator.close();
         }
     }
 
@@ -294,15 +291,12 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         assertEquals(1, features.size());
 
         // check actual iteration
-        SimpleFeatureIterator it = features.features();
-        try {
+        try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             SimpleFeature f = it.next();
             ReferencedEnvelope fe = ReferencedEnvelope.reference(f.getBounds());
             assertEquals(10, Integer.parseInt((String) f.getAttribute("id")));
             assertFalse(it.hasNext());
-        } finally {
-            it.close();
         }
     }
 

@@ -231,23 +231,12 @@ public class ImageIOExt {
 
                 // Stream creation check
                 if (streamCreationCheck) {
-                    ImageInputStream stream = null;
-                    try {
-                        stream =
-                                spi.createInputStreamInstance(
-                                        input, usecache, ImageIO.getCacheDirectory());
+                    try (ImageInputStream stream =
+                            spi.createInputStreamInstance(
+                                    input, usecache, ImageIO.getCacheDirectory())) {
                         break;
                     } catch (IOException e) {
                         return null;
-                    } finally {
-                        // Make sure to close the created stream
-                        if (stream != null) {
-                            try {
-                                stream.close();
-                            } catch (Throwable t) {
-                                // eat exception
-                            }
-                        }
                     }
                 } else {
                     break;

@@ -62,16 +62,13 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 
     public int size() {
         int count = 0;
-        FeatureIterator<F> i = features();
-        try {
+        try (FeatureIterator<F> i = features()) {
             while (i.hasNext()) {
                 count++;
                 i.next();
             }
 
             return count;
-        } finally {
-            i.close();
         }
     }
 
@@ -85,14 +82,11 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 
     public <O> O[] toArray(O[] a) {
         List<F> list = new ArrayList<>();
-        FeatureIterator<F> i = features();
-        try {
+        try (FeatureIterator<F> i = features()) {
             while (i.hasNext()) {
                 list.add(i.next());
             }
             return list.toArray(a);
-        } finally {
-            i.close();
         }
     }
 

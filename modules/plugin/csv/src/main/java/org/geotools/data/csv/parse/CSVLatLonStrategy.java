@@ -74,22 +74,12 @@ public class CSVLatLonStrategy extends CSVStrategy {
     protected SimpleFeatureType buildFeatureType() {
         String[] headers;
         Map<String, Class<?>> typesFromData;
-        CSVReader csvReader = null;
-        try {
-            csvReader = csvFileState.openCSVReader();
+        try (CSVReader csvReader = csvFileState.openCSVReader()) {
             headers = csvFileState.getCSVHeaders();
 
             typesFromData = findMostSpecificTypesFromData(csvReader, headers);
         } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (csvReader != null) {
-                try {
-                    csvReader.close();
-                } catch (IOException e) {
-                    // who cares!
-                }
-            }
         }
         SimpleFeatureTypeBuilder builder = createBuilder(csvFileState, headers, typesFromData);
 
@@ -167,17 +157,14 @@ public class CSVLatLonStrategy extends CSVStrategy {
         }
 
         // Write out header, producing an empty file of the correct type
-        CSVWriter writer =
+        try (CSVWriter writer =
                 new CSVWriter(
                         new FileWriter(this.csvFileState.getFile()),
                         getSeparator(),
                         getQuotechar(),
                         getEscapechar(),
-                        getLineSeparator());
-        try {
+                        getLineSeparator())) {
             writer.writeNext(header.toArray(new String[header.size()]), isQuoteAllFields());
-        } finally {
-            writer.close();
         }
     }
 

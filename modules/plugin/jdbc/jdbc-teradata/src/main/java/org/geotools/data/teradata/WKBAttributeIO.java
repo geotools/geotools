@@ -124,19 +124,13 @@ public class WKBAttributeIO {
         if (blob == null) {
             return null;
         }
-        InputStream is = null;
-        try {
-            is = blob.getBinaryStream();
+        try (InputStream is = blob.getBinaryStream()) {
             if (is == null || is.available() == 0) // ie. its a 0 length column
                 // -> return a null geometry!
                 return null;
             return wkb2Geometry(is);
         } catch (SQLException e) {
             throw new DataSourceException("SQL exception occurred while reading the geometry.", e);
-        } finally {
-            if (is != null) {
-                is.close();
-            }
         }
     }
 

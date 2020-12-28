@@ -134,16 +134,13 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         Statement st = cx.createStatement();
 
         try {
-            ResultSet rs =
+            try (ResultSet rs =
                     st.executeQuery(
                             String.format(
                                     "SELECT * FROM gpkg_contents WHERE"
                                             + " table_name = '%s' AND data_type = '%s'",
-                                    tableName, DataType.Feature.value()));
-            try {
+                                    tableName, DataType.Feature.value()))) {
                 return rs.next();
-            } finally {
-                rs.close();
             }
         } finally {
             dataStore.closeSafe(st);

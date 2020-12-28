@@ -573,8 +573,7 @@ public class JGrassMapEnvironment {
          * File is a standard file where the categories values are stored in
          * the cats directory.
          */
-        BufferedReader rdr = new BufferedReader(new FileReader(getCATS()));
-        try {
+        try (BufferedReader rdr = new BufferedReader(new FileReader(getCATS()))) {
             /* Instantiate attribute table */
             AttributeTable attTable = new AttributeTable();
             /* Ignore first 4 lines. */
@@ -603,11 +602,9 @@ public class JGrassMapEnvironment {
 
             Enumeration<CellAttribute> categories = attTable.getCategories();
             while (categories.hasMoreElements()) {
-                AttributeTable.CellAttribute object = categories.nextElement();
+                CellAttribute object = categories.nextElement();
                 categoriesList.add(object.toString());
             }
-        } finally {
-            rdr.close();
         }
 
         return categoriesList;

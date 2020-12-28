@@ -368,13 +368,10 @@ public class XMLReader {
             for (File file : fileList) {
                 try {
                     if (file.canWrite() && file.isFile()) {
-                        FileReader fr = new FileReader(file);
-                        try {
+                        try (FileReader fr = new FileReader(file)) {
                             TestSuiteDTO dto =
                                     XMLReader.readTestSuite(file.getName(), fr, plugInDTOs);
                             r.put(dto.getName(), dto);
-                        } finally {
-                            fr.close();
                         }
                     }
                 } catch (IOException open) {

@@ -79,14 +79,11 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
 
     public <O> O[] toArray(O[] a) {
         List<F> list = new ArrayList<>();
-        FeatureIterator<F> i = features();
-        try {
+        try (FeatureIterator<F> i = features()) {
             while (i.hasNext()) {
                 list.add(i.next());
             }
             return list.toArray(a);
-        } finally {
-            i.close();
         }
     }
 

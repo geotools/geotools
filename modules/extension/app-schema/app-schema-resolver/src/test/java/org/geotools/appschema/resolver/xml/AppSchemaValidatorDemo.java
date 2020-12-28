@@ -54,7 +54,7 @@ public class AppSchemaValidatorDemo {
      *
      * @param args ignored
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // download and cache schemas using app-schema-cache discovered from resource path
         SchemaCache cache =
                 SchemaCache.buildAutomaticallyConfiguredUsingFileUrl(
@@ -62,21 +62,11 @@ public class AppSchemaValidatorDemo {
         // no classpath resolution of schemas; cached downloads only
         SchemaResolver resolver = new SchemaResolver(null, false, cache);
         AppSchemaValidator validator = AppSchemaValidator.buildValidator(resolver);
-        InputStream input = null;
-        try {
-            input = AppSchemaValidator.class.getResourceAsStream(RESOURCE);
+        try (InputStream input = AppSchemaValidator.class.getResourceAsStream(RESOURCE)) {
             validator.parse(input);
             // validation failures result in an RuntimeException that lists them
             validator.checkForFailures();
             System.err.println("Successful schema-validation of " + RESOURCE);
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    // we tried
-                }
-            }
         }
     }
 }

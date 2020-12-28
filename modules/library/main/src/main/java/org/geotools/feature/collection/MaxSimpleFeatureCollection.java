@@ -95,14 +95,11 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
         List<T> list = new ArrayList<>();
-        SimpleFeatureIterator i = features();
-        try {
+        try (SimpleFeatureIterator i = features()) {
             while (i.hasNext()) {
                 list.add((T) i.next());
             }
             return list.toArray(a);
-        } finally {
-            i.close();
         }
     }
 

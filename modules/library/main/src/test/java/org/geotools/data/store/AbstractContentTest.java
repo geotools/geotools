@@ -117,15 +117,12 @@ public abstract class AbstractContentTest {
         protected int getCountInternal(Query query) throws IOException {
             if (query.getFilter() == Filter.INCLUDE) {
                 int count = 0;
-                FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                        getReaderInternal(query);
-                try {
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                        getReaderInternal(query)) {
                     while (featureReader.hasNext()) {
                         featureReader.next();
                         count++;
                     }
-                } finally {
-                    featureReader.close();
                 }
                 return count;
             }

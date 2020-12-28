@@ -227,8 +227,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 
     public boolean addAll(
             FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature> collection) {
-        FeatureIterator<? extends SimpleFeature> iter = collection.features();
-        try {
+        try (FeatureIterator<? extends SimpleFeature> iter = collection.features()) {
             while (iter.hasNext()) {
                 try {
                     SimpleFeature feature = iter.next();
@@ -237,8 +236,6 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
                 } catch (Throwable t) {
                 }
             }
-        } finally {
-            iter.close();
         }
         return false;
     }

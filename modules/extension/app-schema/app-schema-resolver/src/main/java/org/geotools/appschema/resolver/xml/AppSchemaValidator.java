@@ -205,19 +205,9 @@ public class AppSchemaValidator {
      * @param name resource name of XML instance document
      * @param catalog SchemaCatalog to aide local schema resolution or null
      */
-    public static void validateResource(String name, SchemaCatalog catalog) {
-        InputStream input = null;
-        try {
-            input = AppSchemaValidator.class.getResourceAsStream(name);
+    public static void validateResource(String name, SchemaCatalog catalog) throws IOException {
+        try (InputStream input = AppSchemaValidator.class.getResourceAsStream(name)) {
             validate(input, catalog);
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    // we tried
-                }
-            }
         }
     }
 
@@ -247,18 +237,10 @@ public class AppSchemaValidator {
             // fall back to platform default
             bytes = xml.getBytes();
         }
-        InputStream input = null;
-        try {
-            input = new ByteArrayInputStream(bytes);
+        try (InputStream input = new ByteArrayInputStream(bytes)) {
             validate(input, catalog);
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    // we tried
-                }
-            }
+        } catch (IOException e) {
+            // should not happen
         }
     }
 

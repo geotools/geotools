@@ -22,7 +22,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.StringTokenizer;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -262,9 +261,7 @@ public class PGRasterOnlineTest extends AbstractTest {
     @Override
     public void testDrop() {
 
-        java.sql.Connection con = null;
-        try {
-            con = getDBDialect().getConnection();
+        try (java.sql.Connection con = getDBDialect().getConnection()) {
             con.prepareStatement("DROP TABLE if exists MOSAIC").execute();
             con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable1\"").execute();
             con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable2\"").execute();
@@ -273,12 +270,7 @@ public class PGRasterOnlineTest extends AbstractTest {
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
-        } finally {
-            try {
-                if (con != null) con.close();
-            } catch (SQLException ex) {
-            }
-            ;
+        } finally {;
         }
     }
 

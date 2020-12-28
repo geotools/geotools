@@ -93,19 +93,13 @@ public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
         FeatureCollection features = (FeatureCollection) fc.getFeature().get(0);
         assertEquals(2, features.size());
 
-        FeatureIterator fi = features.features();
-        try {
+        try (FeatureIterator fi = features.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = (SimpleFeature) fi.next();
 
             assertEquals("feature", f.getType().getTypeName());
             assertTrue(f.getDefaultGeometry() instanceof LineString);
             assertEquals("1", f.getAttribute("integer").toString());
-
-        } finally {
-            if (fi != null) {
-                fi.close();
-            }
         }
     }
 }

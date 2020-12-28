@@ -92,16 +92,13 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 
     public int size() {
         int count = 0;
-        SimpleFeatureIterator i = features();
-        try {
+        try (SimpleFeatureIterator i = features()) {
             while (i.hasNext()) {
                 count++;
                 i.next();
             }
 
             return count;
-        } finally {
-            i.close();
         }
     }
 
@@ -115,15 +112,12 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 
     public <T> T[] toArray(T[] a) {
         List<SimpleFeature> list = new ArrayList<>();
-        SimpleFeatureIterator i = features();
-        try {
+        try (SimpleFeatureIterator i = features()) {
             while (i.hasNext()) {
                 list.add(i.next());
             }
 
             return list.toArray(a);
-        } finally {
-            i.close();
         }
     }
 

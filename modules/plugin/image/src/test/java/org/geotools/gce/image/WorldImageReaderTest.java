@@ -404,18 +404,12 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         // prepare to read an overview
         ServiceInfo info = reader.getInfo();
         assertTrue(info instanceof FileServiceInfo);
-        CloseableIterator<FileGroup> iterator = null;
-        try {
-            iterator = ((FileServiceInfo) info).getFiles(null);
+        try (CloseableIterator<FileGroup> iterator = ((FileServiceInfo) info).getFiles(null)) {
             FileGroup group = iterator.next();
             assertTrue(group.getMainFile().getName().endsWith("etopo.tif"));
             List<File> files = group.getSupportFiles();
             assertFalse(files.isEmpty());
             assertEquals(2, files.size());
-        } finally {
-            if (iterator != null) {
-                iterator.close();
-            }
         }
     }
 }

@@ -52,15 +52,10 @@ public class GeometryTypeConverterTest extends TestCase {
         factories = Converters.getConverterFactories(Geometry.class, Geometry.class);
         File testData = TestData.file(this, "converter/tests.txt");
         assertNotNull("Cannot find test file (converter.txt)", testData);
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(testData));
+        try (BufferedReader reader = new BufferedReader(new FileReader(testData))) {
             String line = null;
 
             while ((line = reader.readLine()) != null) tests.add(line);
-
-        } finally {
-            if (reader != null) reader.close();
         }
 
         super.setUp();

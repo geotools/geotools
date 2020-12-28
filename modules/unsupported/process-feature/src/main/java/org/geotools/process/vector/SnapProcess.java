@@ -132,8 +132,7 @@ public class SnapProcess implements VectorProcess {
             double nearestDistance = 9e9;
             double nearestBearing = 0;
             double[] nearestPoint = new double[2];
-            FeatureIterator featureIterator = featureCollection.features();
-            try {
+            try (FeatureIterator featureIterator = featureCollection.features()) {
                 while (featureIterator.hasNext()) {
                     SimpleFeature f = (SimpleFeature) featureIterator.next();
                     if (f.getDefaultGeometryProperty().getValue() == null) continue;
@@ -163,8 +162,6 @@ public class SnapProcess implements VectorProcess {
                     nearestPoint[0] = geo1[0];
                     nearestPoint[1] = geo1[1];
                 }
-            } finally {
-                featureIterator.close();
             }
             if (nearestFeature != null) {
                 nearestDistance = unitConvert.convert(nearestDistance);

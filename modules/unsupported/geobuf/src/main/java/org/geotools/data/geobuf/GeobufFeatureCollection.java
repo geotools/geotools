@@ -75,13 +75,10 @@ public class GeobufFeatureCollection {
             SimpleFeatureCollection featureCollection) {
         Geobuf.Data.FeatureCollection.Builder featureCollectionBuilder =
                 Geobuf.Data.FeatureCollection.newBuilder();
-        SimpleFeatureIterator it = featureCollection.features();
-        try {
+        try (SimpleFeatureIterator it = featureCollection.features()) {
             while (it.hasNext()) {
                 featureCollectionBuilder.addFeatures(geobufFeature.encode(it.next()));
             }
-        } finally {
-            it.close();
         }
         return featureCollectionBuilder.build();
     }

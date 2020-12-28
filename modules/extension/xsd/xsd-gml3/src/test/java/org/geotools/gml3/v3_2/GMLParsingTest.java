@@ -76,8 +76,7 @@ public class GMLParsingTest extends TestCase {
         FeatureCollection features = (FeatureCollection) o;
         assertEquals(3, features.size());
 
-        FeatureIterator fi = features.features();
-        try {
+        try (FeatureIterator fi = features.features()) {
             for (int i = 0; i < 3; i++) {
                 assertTrue(fi.hasNext());
 
@@ -90,8 +89,6 @@ public class GMLParsingTest extends TestCase {
 
                 assertEquals(i, f.getAttribute("count"));
             }
-        } finally {
-            fi.close();
         }
     }
 

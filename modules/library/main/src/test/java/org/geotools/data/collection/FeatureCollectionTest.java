@@ -105,8 +105,7 @@ public abstract class FeatureCollectionTest extends TestCase {
 
     public <F extends Feature> Collection<F> randomPiece(FeatureCollection<?, F> original) {
         LinkedList<F> next = new LinkedList<>();
-        FeatureIterator<F> og = original.features();
-        try {
+        try (FeatureIterator<F> og = original.features()) {
             while (og.hasNext()) {
                 if (Math.random() > .5) {
                     next.add(og.next());
@@ -115,8 +114,6 @@ public abstract class FeatureCollectionTest extends TestCase {
                 }
             }
             return next;
-        } finally {
-            og.close();
         }
     }
 

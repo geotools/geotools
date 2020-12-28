@@ -149,9 +149,8 @@ public class Toolbox {
         DataStore[] dataStores = createDataStores(shapeFile, targetDir, ftype, distanceArray);
 
         SimpleFeatureCollection fcoll = fs.getFeatures();
-        SimpleFeatureIterator it = fcoll.features();
         List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers = new ArrayList<>();
-        try {
+        try (SimpleFeatureIterator it = fcoll.features()) {
             int countTotal = fcoll.size();
 
             for (DataStore dataStore : dataStores) {
@@ -182,7 +181,6 @@ public class Toolbox {
                     // ignore on purpose and move on
                 }
             }
-            it.close();
         }
 
         for (DataStore ds : dataStores) {

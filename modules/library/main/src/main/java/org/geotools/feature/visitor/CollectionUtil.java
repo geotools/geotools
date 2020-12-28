@@ -33,20 +33,16 @@ public class CollectionUtil {
      * @param visitor the visitor which already knows which attributes it wants to meet
      */
     static void accept(SimpleFeatureCollection collection, FeatureVisitor visitor) {
-        SimpleFeatureIterator iterator = collection.features();
-        try {
+        try (SimpleFeatureIterator iterator = collection.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 visitor.visit(feature);
             }
-        } finally {
-            iterator.close();
         }
     }
 
     static void accept(SimpleFeatureCollection collection, FeatureVisitor[] visitors) {
-        SimpleFeatureIterator iterator = collection.features();
-        try {
+        try (SimpleFeatureIterator iterator = collection.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
 
@@ -54,8 +50,6 @@ public class CollectionUtil {
                     visitor.visit(feature);
                 }
             }
-        } finally {
-            iterator.close();
         }
     }
 

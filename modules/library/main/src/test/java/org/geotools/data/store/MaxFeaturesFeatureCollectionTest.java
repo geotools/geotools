@@ -37,39 +37,30 @@ public class MaxFeaturesFeatureCollectionTest extends FeatureCollectionWrapperTe
 
     public void testIteratorMax() throws Exception {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 2);
-        SimpleFeatureIterator i = max.features();
-        try {
+        try (SimpleFeatureIterator i = max.features()) {
             for (int x = 0; x < 2; x++) {
                 assertTrue(i.hasNext());
                 i.next();
             }
             assertFalse(i.hasNext());
-        } finally {
-            i.close();
         }
     }
 
     public void testIteratorSkipMax() throws Exception {
         MaxSimpleFeatureCollection max =
                 new MaxSimpleFeatureCollection(delegate, delegate.size() - 1, 2);
-        SimpleFeatureIterator i = max.features();
-        try {
+        try (SimpleFeatureIterator i = max.features()) {
             assertTrue(i.hasNext());
             i.next();
             assertFalse(i.hasNext());
-        } finally {
-            i.close();
         }
     }
 
     public void testIteratorSkipMoreSize() throws Exception {
         MaxSimpleFeatureCollection max =
                 new MaxSimpleFeatureCollection(delegate, delegate.size() + 1, 2);
-        SimpleFeatureIterator i = max.features();
-        try {
+        try (SimpleFeatureIterator i = max.features()) {
             assertFalse(i.hasNext());
-        } finally {
-            i.close();
         }
     }
 }

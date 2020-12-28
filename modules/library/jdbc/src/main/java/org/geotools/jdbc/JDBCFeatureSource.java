@@ -485,8 +485,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // grab a reader
                 Query q = new Query(query);
                 q.setFilter(postFilter);
-                FeatureReader<SimpleFeatureType, SimpleFeature> i = getReader(q);
-                try {
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> i = getReader(q)) {
                     if (i.hasNext()) {
                         SimpleFeature f = i.next();
                         bounds.init(f.getBounds());
@@ -496,8 +495,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                             bounds.include(f.getBounds());
                         }
                     }
-                } finally {
-                    i.close();
                 }
 
                 return bounds;

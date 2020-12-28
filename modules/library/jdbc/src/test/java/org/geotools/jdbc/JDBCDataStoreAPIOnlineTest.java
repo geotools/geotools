@@ -1352,10 +1352,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
     protected SimpleFeature feature(String typeName, String fid)
             throws NoSuchElementException, IOException, IllegalAttributeException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader(typeName);
-        SimpleFeature f;
 
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader(typeName)) {
+            SimpleFeature f;
             while (reader.hasNext()) {
                 f = reader.next();
 
@@ -1363,8 +1362,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                     return f;
                 }
             }
-        } finally {
-            reader.close();
         }
 
         return null;

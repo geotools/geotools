@@ -114,32 +114,26 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         assertEquals(roads.size(), count);
 
         count = 0;
-        FilteredIterator<SimpleFeature> filteredIterator =
-                new FilteredIterator<>(roads, rd12Filter);
-        try {
+        try (FilteredIterator<SimpleFeature> filteredIterator =
+                new FilteredIterator<>(roads, rd12Filter)) {
             while (filteredIterator.hasNext()) {
                 @SuppressWarnings("unused")
                 SimpleFeature feature = filteredIterator.next();
                 count++;
             }
-        } finally {
-            filteredIterator.close();
         }
         assertEquals(expected(rd12Filter), count);
     }
 
     public void testSubCollection() {
         int count = 0;
-        SimpleFeatureIterator it = roads.features();
-        try {
+        try (SimpleFeatureIterator it = roads.features()) {
             while (it.hasNext()) {
                 SimpleFeature feature = it.next();
                 if (rd12Filter.evaluate(feature)) {
                     count++;
                 }
             }
-        } finally {
-            it.close();
         }
         SimpleFeatureCollection sub = roads.subCollection(rd12Filter);
         assertEquals(count, sub.size());

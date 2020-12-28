@@ -847,11 +847,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ShapefileDataStore sds = createDataStore();
         loadFeatures(sds);
 
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = null;
-        try {
-            writer =
-                    sds.getFeatureWriter(
-                            sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT);
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                sds.getFeatureWriter(
+                        sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
             while (writer.hasNext()) {
                 SimpleFeature feat = writer.next();
                 Integer b = (Integer) feat.getAttribute(1);
@@ -861,21 +859,13 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                     feat.setAttribute(1, Byte.valueOf((byte) -1));
                 }
             }
-        } finally {
-            if (writer != null) writer.close();
         }
         SimpleFeatureCollection fc = loadFeatures(sds);
 
         assertEquals(10, fc.size());
-        SimpleFeatureIterator features = null;
-        try {
-            features = fc.features();
+        try (SimpleFeatureIterator features = fc.features()) {
             for (SimpleFeatureIterator i = features; i.hasNext(); ) {
                 assertEquals(-1, ((Integer) i.next().getAttribute(1)).byteValue());
-            }
-        } finally {
-            if (features != null) {
-                features.close();
             }
         }
         sds.dispose();
@@ -1201,14 +1191,11 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         writeFeatures(s, features);
 
         // read them back
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader()) {
             SimpleFeature f = reader.next();
 
             assertEquals("Float", aFloat, (Double) f.getAttribute("b"), 0.0001);
             assertEquals("Double", aDouble, f.getAttribute("c"));
-        } finally {
-            reader.close();
         }
         s.dispose();
     }
@@ -1239,8 +1226,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         writeFeatures(s, features);
 
         // read them back
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader()) {
             SimpleFeature f = reader.next();
 
             assertEquals(
@@ -1253,8 +1239,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                     bigInteger.longValue(),
                     ((Number) f.getAttribute("c")).longValue(),
                     0.00001);
-        } finally {
-            reader.close();
         }
         s.dispose();
     }
@@ -1288,8 +1272,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         writeFeatures(s, features);
 
         // read them back
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader()) {
             SimpleFeature f = reader.next();
 
             assertEquals(
@@ -1302,8 +1285,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                     bigInteger.longValue(),
                     ((Number) f.getAttribute("c")).longValue(),
                     0.00001);
-        } finally {
-            reader.close();
         }
         s.dispose();
     }
@@ -1335,8 +1316,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         writeFeatures(s, features);
 
         // read them back
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader()) {
             SimpleFeature f = reader.next();
 
             assertEquals(
@@ -1349,8 +1329,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                     bigInteger.longValue(),
                     ((Number) f.getAttribute("c")).longValue(),
                     0.00001);
-        } finally {
-            reader.close();
         }
         s.dispose();
     }
@@ -1471,8 +1449,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ShapefileDataStore store =
                 new ShapefileDataStore(TestData.url(TestCaseSupport.class, STREAM));
         int count = 0;
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader();
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader()) {
             while (reader.hasNext()) {
                 count++;
                 reader.next();
@@ -1541,9 +1518,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             // check SimpleFeatureCollection size
             assertEquals(0, features.size());
             assertTrue(features.isEmpty());
-
-        } finally {
-            reader.close();
         }
         store.dispose();
     }
@@ -1954,11 +1928,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         bounds.expandBy(-bounds.getWidth() / 2.1, -bounds.getHeight() / 2.1);
         query.setFilter(ff.bbox(ff.property(geomName), bounds));
         SimpleFeatureCollection features = featureSource.getFeatures(query);
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             iterator.next();
-        } finally {
-            iterator.close();
         }
     }
 

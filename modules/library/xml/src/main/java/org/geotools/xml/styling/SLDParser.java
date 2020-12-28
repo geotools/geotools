@@ -115,6 +115,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * TODO: This really needs to be container ready
@@ -383,12 +384,8 @@ public class SLDParser {
     public Style[] readXML() {
         try {
             dom = newDocumentBuilder(true).parse(source);
-        } catch (javax.xml.parsers.ParserConfigurationException pce) {
+        } catch (ParserConfigurationException | IOException | SAXException pce) {
             throw new RuntimeException(pce);
-        } catch (org.xml.sax.SAXException se) {
-            throw new RuntimeException(se);
-        } catch (java.io.IOException ie) {
-            throw new RuntimeException(ie);
         } finally {
             disposeInputSource();
         }
@@ -479,12 +476,8 @@ public class SLDParser {
             // one per file
             return sld;
 
-        } catch (javax.xml.parsers.ParserConfigurationException pce) {
+        } catch (ParserConfigurationException | IOException | SAXException pce) {
             throw new RuntimeException(pce);
-        } catch (org.xml.sax.SAXException se) {
-            throw new RuntimeException(se);
-        } catch (java.io.IOException ie) {
-            throw new RuntimeException(ie);
         } finally {
             disposeInputSource();
         }

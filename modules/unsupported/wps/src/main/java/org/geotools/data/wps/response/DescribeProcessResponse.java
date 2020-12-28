@@ -58,9 +58,7 @@ public class DescribeProcessResponse extends Response {
             try {
                 // object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
                 object = parser.parse(inputStream);
-            } catch (SAXException e) {
-                throw (IOException) new IOException().initCause(e);
-            } catch (ParserConfigurationException e) {
+            } catch (SAXException | ParserConfigurationException e) {
                 throw (IOException) new IOException().initCause(e);
             }
 

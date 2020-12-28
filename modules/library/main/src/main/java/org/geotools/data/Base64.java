@@ -27,6 +27,8 @@
  */
 package org.geotools.data;
 
+import java.io.IOException;
+
 /**
  * Encodes and decodes to and from Base64 notation.
  *
@@ -926,14 +928,11 @@ public class Base64 {
 
             obj = ois.readObject();
         } // end try
-        catch (java.io.IOException e) {
+        catch (IOException | ClassNotFoundException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             obj = null;
         } // end catch
-        catch (java.lang.ClassNotFoundException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            obj = null;
-        } // end catch
+        // end catch
         finally {
             try {
                 bais.close();

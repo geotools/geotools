@@ -37,7 +37,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -1341,15 +1340,7 @@ public class Utils {
                     LOGGER.warning("Unable to find sample image for path " + sampleImageFile);
                 return null;
             }
-        } catch (FileNotFoundException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-            return null;
-        } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-            return null;
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | IOException e) {
             if (LOGGER.isLoggable(Level.WARNING))
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
@@ -1782,15 +1773,7 @@ public class Utils {
             try (ObjectInputStream objectStream =
                     new ObjectInputStream(new FileInputStream(file))) {
                 histogram = (Histogram) objectStream.readObject();
-            } catch (FileNotFoundException e) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
-                }
-            } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
-                }
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | IOException e) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
                 }

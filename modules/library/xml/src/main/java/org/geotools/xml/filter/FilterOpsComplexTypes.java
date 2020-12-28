@@ -2187,10 +2187,8 @@ public class FilterOpsComplexTypes {
                 Literal literal = (Literal) value[2];
                 double distance = ((Number) literal.getValue()).doubleValue();
                 return factory.beyond(geometry1, geometry2, distance, null);
-            } catch (ClassCastException wrong) {
+            } catch (ClassCastException | IllegalFilterException wrong) {
                 throw new SAXException(wrong);
-            } catch (IllegalFilterException illegalFilterException) {
-                throw new SAXException(illegalFilterException);
             }
         }
 
@@ -2319,10 +2317,8 @@ public class FilterOpsComplexTypes {
                 Literal literal = (Literal) value[2];
                 double distance = ((Number) literal.getValue()).doubleValue();
                 return factory.dwithin(geometry1, geometry2, distance, null);
-            } catch (ClassCastException wrong) {
+            } catch (ClassCastException | IllegalFilterException wrong) {
                 throw new SAXException(wrong);
-            } catch (IllegalFilterException illegalFilterException) {
-                throw new SAXException(illegalFilterException);
             }
         }
 

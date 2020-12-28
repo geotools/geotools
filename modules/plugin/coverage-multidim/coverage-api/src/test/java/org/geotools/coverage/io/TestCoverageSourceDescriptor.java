@@ -36,7 +36,6 @@ import org.geotools.util.DateRange;
 import org.opengis.feature.type.Name;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.TemporalCRS;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -52,8 +51,6 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
     static {
         try {
             WGS84 = CRS.decode("EPSG:4326", true);
-        } catch (NoSuchAuthorityCodeException e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
         } catch (FactoryException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }

@@ -415,10 +415,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         try {
             session.issue(updateCmd);
             versionHandler.editOperationWritten(updateStream);
-        } catch (NoSuchElementException e) {
-            versionHandler.editOperationFailed(updateStream);
-            throw e;
-        } catch (IOException e) {
+        } catch (NoSuchElementException | IOException e) {
             versionHandler.editOperationFailed(updateStream);
             throw e;
         }

@@ -598,13 +598,10 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
                 }
                 return CRS.parseWKT(crsDescription);
             }
-        } catch (IOException e) {
+        } catch (IOException | FactoryException e) {
             // do nothing and return a default CRS but write down a message
             LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
 
-        } catch (FactoryException e) {
-            // do nothing and return a default CRS but write down a message
-            LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
         } finally {
             if (reader != null)
                 try {

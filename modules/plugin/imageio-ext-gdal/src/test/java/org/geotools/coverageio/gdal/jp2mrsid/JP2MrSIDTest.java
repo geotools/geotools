@@ -18,7 +18,6 @@
 package org.geotools.coverageio.gdal.jp2mrsid;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -80,10 +79,7 @@ public final class JP2MrSIDTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }

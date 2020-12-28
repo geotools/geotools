@@ -30,7 +30,6 @@ import org.geotools.xml.gml.GMLFeatureCollection;
 import org.geotools.xml.gml.GMLSchema;
 import org.geotools.xml.schema.Schema;
 import org.opengis.feature.simple.SimpleFeature;
-import org.xml.sax.SAXException;
 
 /** @author dzwiers www.refractions.net */
 public class GMLParserTest extends TestCase {
@@ -261,11 +260,8 @@ public class GMLParserTest extends TestCase {
             //
             //        assertTrue("file was not created +f",f.exists());
             // System.out.println(f);
-        } catch (SAXException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
         } catch (Throwable e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            java.util.logging.Logger.getGlobal().log(Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -304,11 +300,8 @@ public class GMLParserTest extends TestCase {
             //
             //        assertTrue("file was not created +f",f.exists());
             // System.out.println(f);
-        } catch (SAXException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
         } catch (Throwable e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            java.util.logging.Logger.getGlobal().log(Level.INFO, "", e);
             fail(e.toString());
         }
     }

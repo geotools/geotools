@@ -2593,9 +2593,7 @@ public final class GML extends XSD {
                                                         .resolve(schemaLocationURI)
                                                         .toString();
                                             }
-                                        } catch (URISyntaxException e) {
-                                            throw new RuntimeException(e);
-                                        } catch (MalformedURLException e) {
+                                        } catch (URISyntaxException | MalformedURLException e) {
                                             throw new RuntimeException(e);
                                         }
                                     }

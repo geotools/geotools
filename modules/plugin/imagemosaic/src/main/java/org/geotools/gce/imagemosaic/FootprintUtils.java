@@ -105,12 +105,7 @@ class FootprintUtils {
                 }
             }
             bReader.close();
-        } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
-        } catch (ParseException e) {
-
+        } catch (IOException | ParseException e) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }

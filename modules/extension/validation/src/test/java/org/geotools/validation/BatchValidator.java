@@ -115,8 +115,6 @@ public class BatchValidator {
                 try {
                     validator.featureValidation(
                             typeName, store.getFeatureSource(typeName).getFeatures(), null);
-                } catch (IOException e1) {
-                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
                 } catch (Exception e1) {
                     java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
                 }
@@ -128,8 +126,6 @@ public class BatchValidator {
         /** do the integrity validation dance */
         try {
             validator.integrityValidation(dsm, envelope, null);
-        } catch (IOException e1) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         } catch (Exception e1) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }

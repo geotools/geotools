@@ -128,9 +128,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             ReferencedEnvelope envelope = ReferencedEnvelope.reference(boundaries);
             try {
                 envelope = envelope.transform(targetCrs, true);
-            } catch (TransformException e) {
-                throw new RuntimeException(e);
-            } catch (FactoryException e) {
+            } catch (TransformException | FactoryException e) {
                 throw new RuntimeException(e);
             }
             boundaries = envelope;

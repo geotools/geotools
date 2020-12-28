@@ -306,9 +306,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
         try {
             context = GeoTools.getInitialContext(new Hints(hints));
             source = (DataSource) context.lookup(datasourceName);
-        } catch (IllegalArgumentException exception) {
-            // Fall back on 'return null' below.
-        } catch (NoInitialContextException exception) {
+        } catch (IllegalArgumentException | NoInitialContextException exception) {
             // Fall back on 'return null' below.
         } catch (NamingException exception) {
             registerInto = context;

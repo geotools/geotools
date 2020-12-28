@@ -242,8 +242,6 @@ public final class RasterDatasetInfo {
                 GeneralEnvelope rasterGridRangeInDataSet;
                 try {
                     rasterGridRangeInDataSet = CRS.transform(modelToRaster, rasterEnvelope);
-                } catch (NoninvertibleTransformException e) {
-                    throw new IllegalArgumentException(e);
                 } catch (TransformException e) {
                     throw new IllegalArgumentException(e);
                 }

@@ -1341,12 +1341,9 @@ public class Hints extends RenderingHints {
                         try {
                             type = Class.forName("javax.media.jai.JAI");
                             break;
-                        } catch (ClassNotFoundException e) {
+                        } catch (ClassNotFoundException | NoClassDefFoundError e) {
                             continue;
-                        } catch (NoClassDefFoundError e) {
-                            // May occurs because of indirect JAI dependencies.
-                            continue;
-                        }
+                        } // May occurs because of indirect JAI dependencies.
                     }
                 default:
                     {

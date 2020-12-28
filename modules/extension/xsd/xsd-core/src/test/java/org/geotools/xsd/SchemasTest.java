@@ -251,9 +251,7 @@ public class SchemasTest extends TestCase {
                                 }),
                         3,
                         TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                return null;
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 return null;
             } catch (TimeoutException e) {
                 throw new RuntimeException("Timed out.", e);

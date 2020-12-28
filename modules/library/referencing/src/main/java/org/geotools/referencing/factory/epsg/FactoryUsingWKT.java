@@ -231,9 +231,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
                     return file.toURI().toURL();
                 }
             }
-        } catch (SecurityException exception) {
-            Logging.unexpectedException(LOGGER, exception);
-        } catch (MalformedURLException exception) {
+        } catch (SecurityException | MalformedURLException exception) {
             Logging.unexpectedException(LOGGER, exception);
         }
         return FactoryUsingWKT.class.getResource(FILENAME);

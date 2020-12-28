@@ -25,7 +25,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -632,9 +631,7 @@ public class Utilities {
                 // don't use the source region. Set an empty one
                 sourceRegion.setBounds(new Rectangle(0, 0, Integer.MIN_VALUE, Integer.MIN_VALUE));
             }
-        } catch (TransformException e) {
-            throw new DataSourceException("Unable to create a coverage for this source", e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new DataSourceException("Unable to create a coverage for this source", e);
         }
         return adjustedRequestedEnvelope;
@@ -1271,10 +1268,6 @@ public class Utilities {
         final Properties properties = new Properties();
         try (InputStream openStream = propsURL.openStream()) {
             properties.load(openStream);
-        } catch (FileNotFoundException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            return null;
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.SEVERE))
                 LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);

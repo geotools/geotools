@@ -28,7 +28,6 @@ import javax.imageio.stream.ImageInputStream;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.data.DataSourceException;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
@@ -109,15 +108,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     public AbstractGridCoverage2DReader getReader(Object source, Hints hints) {
         try {
             return new JP2KReader(source, hints);
-        } catch (MismatchedDimensionException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-            return null;
-        } catch (DataSourceException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-            return null;
-        } catch (IOException e) {
+        } catch (MismatchedDimensionException | IOException e) {
             if (LOGGER.isLoggable(Level.WARNING))
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;

@@ -301,9 +301,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
             src2dstCRSTransform = CRS.findMathTransform(sourceCRS, targetCRS, true);
             dst2srcCRSTransform = src2dstCRSTransform.inverse();
-        } catch (FactoryException e) {
-            throw new IllegalArgumentException("Can't create a transform between CRS", e);
-        } catch (NoninvertibleTransformException e) {
+        } catch (FactoryException | NoninvertibleTransformException e) {
             throw new IllegalArgumentException("Can't create a transform between CRS", e);
         }
 

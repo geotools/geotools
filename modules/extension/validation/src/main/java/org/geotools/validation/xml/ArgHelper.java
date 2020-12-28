@@ -290,17 +290,7 @@ public class ArgHelper {
 
             try (StringReader sr = new StringReader(elem)) {
                 value = ReaderUtils.loadConfig(sr);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-
-                return null;
-            } catch (ParserConfigurationException e) {
-                // TODO Auto-generated catch block
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-
-                return null;
-            } catch (SAXException e) {
+            } catch (IOException | SAXException | ParserConfigurationException e) {
                 // TODO Auto-generated catch block
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
@@ -435,17 +425,7 @@ public class ArgHelper {
 
             try (StringReader sr = new StringReader(value)) {
                 elem = ReaderUtils.loadConfig(sr);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-
-                return null;
-            } catch (ParserConfigurationException e) {
-                // TODO Auto-generated catch block
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-
-                return null;
-            } catch (SAXException e) {
+            } catch (IOException | SAXException | ParserConfigurationException e) {
                 // TODO Auto-generated catch block
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 

@@ -127,9 +127,7 @@ public class OvalsTest extends TestBase {
 
             Ovals.createGrid(env, 0, 1.0, builder);
 
-        } catch (FactoryException ex) {
-            throw new IllegalStateException("Error in test code");
-        } catch (MismatchedDimensionException ex) {
+        } catch (FactoryException | MismatchedDimensionException ex) {
             throw new IllegalStateException("Error in test code");
         }
     }

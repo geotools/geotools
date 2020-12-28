@@ -75,7 +75,6 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 
@@ -472,11 +471,7 @@ public class Mosaic extends OperationJAI {
                         GridEnvelope2D gEnv2 = new GridEnvelope2D(rect);
                         // Creation of the new GridGeometry
                         newGG = new GridGeometry2D(gEnv2, inputGG.getEnvelope());
-                    } catch (InvalidGridGeometryException e) {
-                        throw new CoverageProcessingException(e);
-                    } catch (NoninvertibleTransformException e) {
-                        throw new CoverageProcessingException(e);
-                    } catch (TransformException e) {
+                    } catch (InvalidGridGeometryException | TransformException e) {
                         throw new CoverageProcessingException(e);
                     }
                     // Initialization of the nodata value

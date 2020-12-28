@@ -423,9 +423,7 @@ class RasterManager {
         decimationController = new DecimationController();
         try {
             spatialDomainManager = new SpatialDomainManager();
-        } catch (TransformException e) {
-            throw new DataSourceException(e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new DataSourceException(e);
         }
         extractOverviewPolicy();

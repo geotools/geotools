@@ -20,7 +20,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -68,10 +67,7 @@ public class EnviHdrTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }
@@ -182,10 +178,7 @@ public class EnviHdrTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }

@@ -94,9 +94,7 @@ public class Collection_NearestFunction extends FunctionImpl {
                     if (result != null) {
                         match = result;
                     }
-                } catch (IllegalFilterException e) {
-                    LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
-                } catch (IOException e) {
+                } catch (IllegalFilterException | IOException e) {
                     LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
                 }
             }

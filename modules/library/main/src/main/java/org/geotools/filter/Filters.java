@@ -460,17 +460,12 @@ public class Filters {
         try {
             Constructor<T> create = TYPE.getConstructor(new Class[] {String.class});
             return create.newInstance(new Object[] {text});
-        } catch (SecurityException e) {
-            // hates you
-        } catch (NoSuchMethodException e) {
-            // nope
-        } catch (IllegalArgumentException e) {
-            // should not occur
-        } catch (InstantiationException e) {
-            // should not occur, perhaps the class was abstract?
-            // eg. Number.class is a bad idea
-        } catch (IllegalAccessException e) {
-            // hates you
+        } catch (SecurityException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | IllegalArgumentException
+                | InstantiationException e) {
+            // should not occurr, or is meant to be ignored
         } catch (InvocationTargetException e) {
             // should of worked but we got a real problem,
             // an actual problem

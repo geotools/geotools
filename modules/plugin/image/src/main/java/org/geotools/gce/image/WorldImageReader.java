@@ -23,7 +23,6 @@ import java.awt.image.renderable.ParameterBlock;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -69,7 +68,6 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.TransformException;
@@ -252,10 +250,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
 
             // release the stream
             if (closeMe) inStream.close();
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            throw new DataSourceException(e);
-        } catch (TransformException e) {
+        } catch (IOException | TransformException e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             throw new DataSourceException(e);
         }
@@ -522,20 +517,10 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
                     }
                 }
 
-            } catch (IOException e) {
-                // TODO how to handle this?
-                return false;
-
-            } catch (NoSuchAuthorityCodeException e) {
-                // TODO how to handle this?
-                return false;
-            } catch (MismatchedDimensionException e) {
-                // TODO how to handle this?
-                return false;
-            } catch (IndexOutOfBoundsException e) {
-                // TODO how to handle this?
-                return false;
-            } catch (FactoryException e) {
+            } catch (IndexOutOfBoundsException
+                    | MismatchedDimensionException
+                    | IOException
+                    | FactoryException e) {
                 // TODO how to handle this?
                 return false;
             }
@@ -583,15 +568,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
                 try (FileChannel channel = new FileInputStream(prjFile).getChannel();
                         PrjFileReader projReader = new PrjFileReader(channel)) {
                     crs = projReader.getCoordinateReferenceSystem();
-                } catch (FileNotFoundException e) {
-                    // warn about the error but proceed, it is not fatal
-                    // we have at least the default crs to use
-                    LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
-                } catch (IOException e) {
-                    // warn about the error but proceed, it is not fatal
-                    // we have at least the default crs to use
-                    LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
-                } catch (FactoryException e) {
+                } catch (FactoryException | IOException e) {
                     // warn about the error but proceed, it is not fatal
                     // we have at least the default crs to use
                     LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);

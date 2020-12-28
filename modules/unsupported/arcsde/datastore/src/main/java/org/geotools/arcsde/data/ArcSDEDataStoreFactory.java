@@ -409,9 +409,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
 
         try {
             new ArcSDEDataStoreConfig(params);
-        } catch (NullPointerException ex) {
-            canProcess = false;
-        } catch (IllegalArgumentException ex) {
+        } catch (NullPointerException | IllegalArgumentException ex) {
             canProcess = false;
         }
 

@@ -18,7 +18,6 @@ package org.geotools.gce.imagemosaic.jdbc.custom;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -237,15 +236,7 @@ public class JDBCPGRasterConfigurationBuilder {
                         LOGGER.fine("raster2pgsql script is available");
                     }
                     available = true;
-                } catch (BuildException e) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.warning(
-                                "Failed to invoke the raster2pgsql script. This is not a problem "
-                                        + "unless you need to use the raster2pgsql script to automatically configure pgrasters.\n"
-                                        + e.toString());
-                    }
-                    available = false;
-                } catch (IOException e) {
+                } catch (BuildException | IOException e) {
                     if (LOGGER.isLoggable(Level.WARNING)) {
                         LOGGER.warning(
                                 "Failed to invoke the raster2pgsql script. This is not a problem "
@@ -284,10 +275,6 @@ public class JDBCPGRasterConfigurationBuilder {
 
             TEMPLATE = stringBuilder.toString();
 
-        } catch (FileNotFoundException e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(e.getLocalizedMessage());
-            }
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning(e.getLocalizedMessage());

@@ -364,9 +364,7 @@ public class WKTReader2 extends WKTReader {
 
         try {
             type = getNextWord();
-        } catch (IOException e) {
-            return null;
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             return null;
         }
 

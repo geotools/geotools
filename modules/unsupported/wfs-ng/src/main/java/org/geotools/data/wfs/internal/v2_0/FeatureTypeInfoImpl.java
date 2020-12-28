@@ -116,13 +116,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
         ReferencedEnvelope nativeBounds;
         try {
             nativeBounds = wgs84Bounds.transform(crs, true);
-        } catch (TransformException e) {
-            Loggers.MODULE.log(
-                    Level.WARNING,
-                    "Can't transform bounds of " + getName() + " to " + getDefaultSRS(),
-                    e);
-            nativeBounds = new ReferencedEnvelope(crs);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             Loggers.MODULE.log(
                     Level.WARNING,
                     "Can't transform bounds of " + getName() + " to " + getDefaultSRS(),

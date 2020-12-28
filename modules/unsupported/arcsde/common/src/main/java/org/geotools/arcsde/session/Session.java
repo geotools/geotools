@@ -152,10 +152,8 @@ class Session implements ISession {
         connectionCommand = new CreateSeConnectionCommand(config, sessionId);
         try {
             this.connection = issue(connectionCommand);
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             throw e;
-        } catch (RuntimeException shouldntHappen) {
-            throw shouldntHappen;
         }
     }
 

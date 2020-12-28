@@ -5747,9 +5747,7 @@ public class ImageWorker {
                  * TIP: Tests operations here (before the call to 'show()'), if wanted.
                  */
                 worker.show();
-            } catch (FileNotFoundException e) {
-                arguments.printSummary(e);
-            } catch (NoSuchMethodException e) {
+            } catch (FileNotFoundException | NoSuchMethodException e) {
                 arguments.printSummary(e);
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

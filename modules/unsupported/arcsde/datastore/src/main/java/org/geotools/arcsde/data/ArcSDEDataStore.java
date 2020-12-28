@@ -317,12 +317,9 @@ public class ArcSDEDataStore implements DataStore {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         try {
             reader = getFeatureReader(query, featureType, session, versionHandler);
-        } catch (IOException ioe) {
+        } catch (IOException | RuntimeException ioe) {
             session.dispose();
             throw ioe;
-        } catch (RuntimeException re) {
-            session.dispose();
-            throw re;
         }
         return reader;
     }

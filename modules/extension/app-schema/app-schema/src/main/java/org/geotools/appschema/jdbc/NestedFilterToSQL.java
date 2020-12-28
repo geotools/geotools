@@ -211,12 +211,8 @@ public class NestedFilterToSQL extends FilterToSQL {
             }
             return extraData;
 
-        } catch (java.io.IOException ioe) {
+        } catch (IOException | FilterToSQLException | SQLException ioe) {
             throw new RuntimeException("Problem writing filter: ", ioe);
-        } catch (SQLException e) {
-            throw new RuntimeException("Problem writing filter: ", e);
-        } catch (FilterToSQLException e) {
-            throw new RuntimeException("Problem writing filter: ", e);
         }
     }
 

@@ -292,11 +292,10 @@ public class FactoryCreator extends FactoryRegistry {
             } catch (NoSuchMethodException exception) {
                 // No constructor accessible. Do not store the cause (we keep the one above).
             }
-        } catch (IllegalAccessException exception) {
+        } catch (IllegalAccessException | InstantiationException exception) {
             cause = exception; // constructor is not public (should not happen)
-        } catch (InstantiationException exception) {
-            cause = exception; // The class is abstract
-        } catch (InvocationTargetException exception) {
+        } // The class is abstract
+        catch (InvocationTargetException exception) {
             cause = exception.getCause(); // Exception in constructor
             if (cause instanceof FactoryRegistryException) {
                 throw (FactoryRegistryException) cause;

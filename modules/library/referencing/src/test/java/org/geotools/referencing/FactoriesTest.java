@@ -215,10 +215,8 @@ public final class FactoriesTest {
             final MathTransform mt;
             try {
                 mt = mtFactory.createParameterizedTransform(param);
-            } catch (FactoryException e) {
+            } catch (FactoryException | UnsupportedOperationException e) {
                 // Probably not a map projection. This test is mostly about projection, so ignore.
-                continue;
-            } catch (UnsupportedOperationException e) {
                 continue;
             }
             if (mt instanceof MapProjection) {

@@ -63,12 +63,9 @@ public class XMLReader {
 
             try {
                 elem = ReaderUtils.loadConfig(inputSource);
-            } catch (ParserConfigurationException pce) {
+            } catch (ParserConfigurationException | SAXException pce) {
                 throw new ValidationException(
                         "Cannot parse the inputSource: Cannot configure the parser.", pce);
-            } catch (SAXException se) {
-                throw new ValidationException(
-                        "Cannot parse the inputSource: Cannot configure the parser.", se);
             }
 
             try {

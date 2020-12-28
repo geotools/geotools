@@ -61,7 +61,6 @@ import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.operation.CoordinateOperation;
@@ -959,8 +958,6 @@ public final class JTS {
         } else if (srsName != null) {
             try {
                 crs = CRS.decode(srsName);
-            } catch (NoSuchAuthorityCodeException e) {
-                // e.printStackTrace();
             } catch (FactoryException e) {
                 // e.printStackTrace();
             }

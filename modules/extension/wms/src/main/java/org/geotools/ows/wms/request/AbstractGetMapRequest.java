@@ -35,7 +35,6 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
@@ -211,14 +210,6 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
             } else {
                 return CRS.decode("CRS:84");
             }
-        } catch (NoSuchAuthorityCodeException e) {
-            LOGGER.log(
-                    Level.FINE,
-                    "Failed to build a coordiante reference system from "
-                            + srsName
-                            + " with forceXY "
-                            + forceXY,
-                    e);
         } catch (FactoryException e) {
             LOGGER.log(
                     Level.FINE,

@@ -582,31 +582,22 @@ public interface DataAccessFactory extends Factory {
 
             try {
                 constructor = type.getConstructor(new Class[] {String.class});
-            } catch (SecurityException e) {
+            } catch (SecurityException | NoSuchMethodException e) {
                 //  type( String ) constructor is not public
                 throw new IOException("Could not create " + type.getName() + " from text");
-            } catch (NoSuchMethodException e) {
-                // No type( String ) constructor
-                throw new IOException("Could not create " + type.getName() + " from text");
-            }
+            } // No type( String ) constructor
 
             try {
                 return constructor.newInstance(
                         new Object[] {
                             text,
                         });
-            } catch (IllegalArgumentException illegalArgumentException) {
+            } catch (IllegalArgumentException
+                    | IllegalAccessException
+                    | InstantiationException illegalArgumentException) {
                 throw new DataSourceException(
                         "Could not create " + type.getName() + ": from '" + text + "'",
                         illegalArgumentException);
-            } catch (InstantiationException instantiaionException) {
-                throw new DataSourceException(
-                        "Could not create " + type.getName() + ": from '" + text + "'",
-                        instantiaionException);
-            } catch (IllegalAccessException illegalAccessException) {
-                throw new DataSourceException(
-                        "Could not create " + type.getName() + ": from '" + text + "'",
-                        illegalAccessException);
             } catch (InvocationTargetException targetException) {
                 throw targetException.getCause();
             }

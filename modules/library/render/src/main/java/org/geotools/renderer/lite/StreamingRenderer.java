@@ -3323,10 +3323,7 @@ public class StreamingRenderer implements GTRenderer {
             CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem destCRS) {
         try {
             return CRS.findMathTransform(sourceCRS, destCRS, true);
-        } catch (OperationNotFoundException e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-
-        } catch (FactoryException e) {
+        } catch (OperationNotFoundException | FactoryException e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return null;
@@ -3489,13 +3486,9 @@ public class StreamingRenderer implements GTRenderer {
                 } else {
                     return getTransformedShape(g, sa, clone);
                 }
-            } catch (TransformException te) {
+            } catch (TransformException | AssertionError te) {
                 LOGGER.log(Level.FINE, te.getLocalizedMessage(), te);
                 fireErrorEvent(te);
-                return null;
-            } catch (AssertionError ae) {
-                LOGGER.log(Level.FINE, ae.getLocalizedMessage(), ae);
-                fireErrorEvent(ae);
                 return null;
             }
         }

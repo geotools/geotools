@@ -274,10 +274,8 @@ abstract class JDBCAccessBase implements JDBCAccess {
                 imageLevelInfo.setSrsId(getSRSID(imageLevelInfo, con));
                 imageLevelInfo.setCrs(getCRS(imageLevelInfo, con));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             throw (e);
-        } catch (IOException e1) {
-            throw (e1);
         } finally {
             if (res != null) {
                 res.close();

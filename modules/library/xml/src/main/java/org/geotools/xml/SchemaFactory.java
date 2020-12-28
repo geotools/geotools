@@ -144,17 +144,12 @@ public class SchemaFactory {
                                                                 "getInstance", new Class[0])
                                                         .invoke(null, new Object[0]);
                                 schemas.put(s.getTargetNamespace(), s);
-                            } catch (IllegalArgumentException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (SecurityException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (IllegalAccessException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (InvocationTargetException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (NoSuchMethodException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (ClassNotFoundException e1) {
+                            } catch (IllegalArgumentException
+                                    | ClassNotFoundException
+                                    | NoSuchMethodException
+                                    | InvocationTargetException
+                                    | IllegalAccessException
+                                    | SecurityException e1) {
                                 XSISAXHandler.logger.warning(e1.toString());
                             }
                         }
@@ -423,9 +418,7 @@ public class SchemaFactory {
 
             try {
                 parser = spf.newSAXParser();
-            } catch (ParserConfigurationException e) {
-                throw new SAXException(e);
-            } catch (SAXException e) {
+            } catch (ParserConfigurationException | SAXException e) {
                 throw new SAXException(e);
             }
         }

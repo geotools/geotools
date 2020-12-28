@@ -186,9 +186,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
         if (reader.hasNext()) {
             try {
                 next = reader.next();
-            } catch (NoSuchElementException e) {
-                throw new DataSourceException("No more content", e);
-            } catch (IllegalAttributeException e) {
+            } catch (NoSuchElementException | IllegalAttributeException e) {
                 throw new DataSourceException("No more content", e);
             }
 

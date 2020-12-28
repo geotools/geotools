@@ -102,10 +102,7 @@ public class ArcSDEUtilsTest {
             p.flush();
             p.close();
 
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        } catch (PeProjectionException e) {
+        } catch (Exception | PeProjectionException e) {
             // TODO Auto-generated catch block
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }

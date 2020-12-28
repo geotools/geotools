@@ -796,9 +796,7 @@ public class Crop extends Operation2D {
                             new GridCoverage[] {sourceCoverage},
                             properties);
 
-        } catch (TransformException e) {
-            throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP), e);
-        } catch (NoninvertibleTransformException e) {
+        } catch (TransformException | NoninvertibleTransformException e) {
             throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP), e);
         }
     }

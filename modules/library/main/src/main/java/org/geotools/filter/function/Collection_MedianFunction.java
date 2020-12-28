@@ -113,9 +113,7 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
                     if (result != null) {
                         median = result.getValue();
                     }
-                } catch (IllegalFilterException e) {
-                    LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
-                } catch (IOException e) {
+                } catch (IllegalFilterException | IOException e) {
                     LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
                 }
             }

@@ -308,10 +308,6 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
             DocumentFactory.getInstance(document, hints);
 
             // start parsing until buffer part full, then yield();
-        } catch (StopException e) {
-            exception = e;
-            state = STOP;
-            yield();
         } catch (SAXException e) {
             exception = e;
             state = STOP;

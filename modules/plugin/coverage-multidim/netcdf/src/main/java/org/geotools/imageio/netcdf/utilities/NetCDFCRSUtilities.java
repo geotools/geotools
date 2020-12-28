@@ -414,11 +414,7 @@ public class NetCDFCRSUtilities {
                                 .getCRSFactory()
                                 .createTemporalCRS(crsMap, temporalDatum, timeCS);
             }
-        } catch (FactoryException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to parse temporal CRS", e);
-            temporalCRS = null;
-        } catch (ParseException e) {
+        } catch (FactoryException | ParseException e) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, "Unable to parse temporal CRS", e);
             temporalCRS = null;

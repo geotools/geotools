@@ -23,7 +23,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -553,10 +552,6 @@ public final class CoverageUtilities {
         final Properties properties = new Properties();
         try (InputStream stream = new BufferedInputStream(propsURL.openStream())) {
             properties.load(stream);
-        } catch (FileNotFoundException e) {
-            if (FeatureUtilities.LOGGER.isLoggable(Level.SEVERE))
-                FeatureUtilities.LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            return null;
         } catch (IOException e) {
             if (FeatureUtilities.LOGGER.isLoggable(Level.SEVERE))
                 FeatureUtilities.LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);

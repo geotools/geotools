@@ -60,11 +60,7 @@ public final class EnviHdrFormat extends BaseGDALGridFormat implements Format {
     public EnviHdrReader getReader(Object source, Hints hints) {
         try {
             return new EnviHdrReader(source, hints);
-        } catch (MismatchedDimensionException e) {
-            final RuntimeException re = new RuntimeException();
-            re.initCause(e);
-            throw re;
-        } catch (DataSourceException e) {
+        } catch (MismatchedDimensionException | DataSourceException e) {
             final RuntimeException re = new RuntimeException();
             re.initCause(e);
             throw re;

@@ -297,10 +297,8 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
                             sdeMethod,
                             appliedTruth);
             this.sdeSpatialFilters.add(shapeFilter);
-        } catch (IOException ioe) {
+        } catch (IOException | SeException ioe) {
             throw new RuntimeException(ioe);
-        } catch (SeException se) {
-            throw new RuntimeException(se);
         }
     }
 

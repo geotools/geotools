@@ -1641,10 +1641,7 @@ public class RasterManager implements Cloneable {
                             crs,
                             raster2Model,
                             overviewsController);
-        } catch (TransformException e) {
-            throw new IOException(
-                    "Exception occurred while initializing the SpatialDomainManager", e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new IOException(
                     "Exception occurred while initializing the SpatialDomainManager", e);
         }

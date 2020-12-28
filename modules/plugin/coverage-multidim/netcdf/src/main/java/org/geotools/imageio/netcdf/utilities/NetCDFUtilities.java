@@ -759,9 +759,7 @@ public class NetCDFUtilities {
                 if ("featureCollection".equals(reader.getName().getLocalPart())) {
                     return FileFormat.FC;
                 }
-            } catch (XMLStreamException e) {
-
-            } catch (FactoryConfigurationError e) {
+            } catch (XMLStreamException | FactoryConfigurationError e) {
 
             } finally {
                 if (input != null) {

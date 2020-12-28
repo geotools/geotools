@@ -122,8 +122,6 @@ public class RasterUtils {
             GeneralEnvelope requestedPixels;
             try {
                 requestedPixels = CRS.transform(modelToRaster, requestedEnvelope);
-            } catch (NoninvertibleTransformException e) {
-                throw new IllegalArgumentException(e);
             } catch (TransformException e) {
                 throw new IllegalArgumentException(e);
             }

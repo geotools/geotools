@@ -389,11 +389,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         final Integer imageChoice;
         try {
             imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, requestedDim);
-        } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            return null;
-        } catch (TransformException e) {
+        } catch (IOException | TransformException e) {
             if (LOGGER.isLoggable(Level.SEVERE))
                 LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
@@ -610,15 +606,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
                 try (FileChannel channel = new FileInputStream(prjFile).getChannel();
                         PrjFileReader projReader = new PrjFileReader(channel)) {
                     crs = projReader.getCoordinateReferenceSystem();
-                } catch (FileNotFoundException e) {
-                    // warn about the error but proceed, it is not fatal
-                    // we have at least the default crs to use
-                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                } catch (IOException e) {
-                    // warn about the error but proceed, it is not fatal
-                    // we have at least the default crs to use
-                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                } catch (FactoryException e) {
+                } catch (FactoryException | IOException e) {
                     // warn about the error but proceed, it is not fatal
                     // we have at least the default crs to use
                     LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);

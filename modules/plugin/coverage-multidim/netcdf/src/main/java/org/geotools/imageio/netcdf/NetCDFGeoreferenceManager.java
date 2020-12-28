@@ -571,10 +571,8 @@ class NetCDFGeoreferenceManager {
         initCoordinates();
         try {
             initBBox();
-        } catch (IOException ioe) {
+        } catch (IOException | FactoryException ioe) {
             throw new RuntimeException(ioe);
-        } catch (FactoryException fe) {
-            throw new RuntimeException(fe);
         }
     }
 

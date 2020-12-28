@@ -204,9 +204,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
                     return file.toURI().toURL(); // TODO
                 }
             }
-        } catch (SecurityException exception) {
-            Logging.unexpectedException(LOGGER, exception);
-        } catch (MalformedURLException exception) {
+        } catch (SecurityException | MalformedURLException exception) {
             Logging.unexpectedException(LOGGER, exception);
         }
         return this.getClass().getResource(FILENAME);

@@ -153,8 +153,6 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
             parser.nextTag();
             try {
                 parsedValue = parseGeom();
-            } catch (NoSuchAuthorityCodeException e) {
-                throw new DataSourceException(e);
             } catch (FactoryException e) {
                 throw new DataSourceException(e);
             }

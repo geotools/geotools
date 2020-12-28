@@ -93,15 +93,13 @@ public class FeatureTypeTest extends DataTestCase {
         try {
             SimpleFeatureBuilder.build(abstractType, new Object[0], null);
             fail("abstract type allowed create");
-        } catch (IllegalArgumentException iae) {
-        } catch (UnsupportedOperationException uoe) {
+        } catch (IllegalArgumentException | UnsupportedOperationException iae) {
         }
 
         try {
             SimpleFeatureBuilder.build(abstractType2, new Object[0], null);
             fail("abstract type allowed create");
-        } catch (IllegalArgumentException iae) {
-        } catch (UnsupportedOperationException uoe) {
+        } catch (IllegalArgumentException | UnsupportedOperationException iae) {
         }
     }
 

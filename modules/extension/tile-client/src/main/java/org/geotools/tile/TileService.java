@@ -377,9 +377,7 @@ public abstract class TileService {
 
             return _mapExtent.transform(DefaultGeographicCRS.WGS84, true);
 
-        } catch (TransformException e) {
-            throw new RuntimeException(e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new RuntimeException(e);
         }
     }

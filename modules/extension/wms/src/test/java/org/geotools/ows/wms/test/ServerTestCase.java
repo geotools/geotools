@@ -18,7 +18,6 @@ package org.geotools.ows.wms.test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 import junit.framework.TestCase;
@@ -52,13 +51,7 @@ public class ServerTestCase extends TestCase {
     public void runBare() throws Throwable {
         try {
             super.runBare();
-        } catch (ConnectException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        } catch (UnknownHostException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        } catch (NoRouteToHostException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        } catch (FileNotFoundException e) {
+        } catch (UnknownHostException | FileNotFoundException | NoRouteToHostException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (IOException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -68,13 +61,7 @@ public class ServerTestCase extends TestCase {
     protected void runTest() throws Throwable {
         try {
             super.runTest();
-        } catch (ConnectException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        } catch (UnknownHostException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        } catch (NoRouteToHostException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        } catch (FileNotFoundException e) {
+        } catch (UnknownHostException | FileNotFoundException | NoRouteToHostException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (IOException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

@@ -313,11 +313,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
                     if (value.equals(feature)) return true;
                 }
                 return false; // not found
-            } catch (IOException e) {
-                return false; // error seems like no features are available
-            } catch (NoSuchElementException e) {
-                return false; // error seems like no features are available
-            } catch (IllegalAttributeException e) {
+            } catch (IOException | IllegalAttributeException | NoSuchElementException e) {
                 return false; // error seems like no features are available
             }
         } catch (IOException e) {

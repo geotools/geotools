@@ -224,29 +224,14 @@ class RasterLayerResponse {
                         firstGranule = false;
                     }
 
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     if (LOGGER.isLoggable(Level.SEVERE))
                         LOGGER.log(
                                 Level.SEVERE,
                                 "Unable to load the raster for granule " + granuleIndex,
                                 e);
                     continue;
-                } catch (ExecutionException e) {
-                    if (LOGGER.isLoggable(Level.SEVERE))
-                        LOGGER.log(
-                                Level.SEVERE,
-                                "Unable to load the raster for granule " + granuleIndex,
-                                e);
-                    continue;
-                } catch (ImagingException e) {
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine(
-                                "Loading image number "
-                                        + granuleIndex
-                                        + " failed, original request was "
-                                        + request);
-                    continue;
-                } catch (javax.media.jai.util.ImagingException e) {
+                } catch (ImagingException | javax.media.jai.util.ImagingException e) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine(
                                 "Loading image number "
@@ -497,9 +482,7 @@ class RasterLayerResponse {
                         this.rasterManager.getHints());
             }
 
-        } catch (IOException e) {
-            throw new DataSourceException("Unable to create this image", e);
-        } catch (TransformException e) {
+        } catch (IOException | TransformException e) {
             throw new DataSourceException("Unable to create this image", e);
         }
     }

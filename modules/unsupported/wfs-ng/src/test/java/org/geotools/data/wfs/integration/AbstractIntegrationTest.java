@@ -505,8 +505,7 @@ public abstract class AbstractIntegrationTest {
         try {
             reader.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
     }
 
@@ -534,22 +533,19 @@ public abstract class AbstractIntegrationTest {
         try {
             reader1.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
 
         try {
             reader2.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
 
         try {
             reader3.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
 
         reader1.close();

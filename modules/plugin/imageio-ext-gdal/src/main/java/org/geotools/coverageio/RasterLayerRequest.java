@@ -378,15 +378,7 @@ class RasterLayerRequest {
 
                 return;
             }
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            requestedBBox = null;
-            coverageRequestedRasterArea = null;
-        } catch (TransformException e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            requestedBBox = null;
-            coverageRequestedRasterArea = null;
-        } catch (FactoryException e) {
+        } catch (IOException | FactoryException | TransformException e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             requestedBBox = null;
             coverageRequestedRasterArea = null;
@@ -590,9 +582,7 @@ class RasterLayerRequest {
                 }
                 return;
             }
-        } catch (TransformException e) {
-            throw new DataSourceException("Unable to create a coverage for this source", e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new DataSourceException("Unable to create a coverage for this source", e);
         }
 

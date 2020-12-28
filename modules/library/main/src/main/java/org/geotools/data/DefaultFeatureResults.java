@@ -263,10 +263,8 @@ public class DefaultFeatureResults extends DataFeatureCollection {
                 } finally {
                     reader.close();
                 }
-            } catch (IllegalAttributeException e) {
+            } catch (IllegalAttributeException | IOException e) {
                 // throw new DataSourceException("Could not read feature ", e);
-                bounds = new ReferencedEnvelope();
-            } catch (IOException e) {
                 bounds = new ReferencedEnvelope();
             }
         }

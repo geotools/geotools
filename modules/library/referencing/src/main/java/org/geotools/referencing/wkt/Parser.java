@@ -1089,9 +1089,7 @@ public class Parser extends MathTransformParser {
                             toBase.inverse());
             final CoordinateSystem cs = new AbstractCS(properties, axis);
             return crsFactory.createDerivedCRS(properties, base, conversion, cs);
-        } catch (FactoryException exception) {
-            throw element.parseFailed(exception, null);
-        } catch (NoninvertibleTransformException exception) {
+        } catch (FactoryException | NoninvertibleTransformException exception) {
             throw element.parseFailed(exception, null);
         }
     }

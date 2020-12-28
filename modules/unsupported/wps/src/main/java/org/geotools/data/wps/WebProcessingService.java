@@ -345,8 +345,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
 
                 // URL source = getCapabilities().getRequest().getGetCapabilities().getGet();
                 return source.toURI();
-            } catch (NullPointerException huh) {
-            } catch (URISyntaxException e) {
+            } catch (NullPointerException | URISyntaxException huh) {
             }
             try {
                 return serverURL.toURI();

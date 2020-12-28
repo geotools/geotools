@@ -47,10 +47,7 @@ public class CogConfiguration implements URLSourceSPIProvider {
         Utilities.ensureNonNull("CogConfiguration", that);
         try {
             BeanUtils.copyProperties(this, that);
-        } catch (IllegalAccessException e) {
-            final IllegalArgumentException iae = new IllegalArgumentException(e);
-            throw iae;
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             final IllegalArgumentException iae = new IllegalArgumentException(e);
             throw iae;
         }

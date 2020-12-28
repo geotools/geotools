@@ -72,9 +72,7 @@ public class WPSProcess extends AbstractProcess {
         WebProcessingService wps;
         try {
             wps = new WebProcessingService(url);
-        } catch (ServiceException e) {
-            return null;
-        } catch (IOException e) {
+        } catch (ServiceException | IOException e) {
             return null;
         }
 
@@ -118,9 +116,7 @@ public class WPSProcess extends AbstractProcess {
         ExecuteProcessResponse response;
         try {
             response = wps.issueRequest(exeRequest);
-        } catch (ServiceException e) {
-            return null;
-        } catch (IOException e) {
+        } catch (ServiceException | IOException e) {
             return null;
         }
 

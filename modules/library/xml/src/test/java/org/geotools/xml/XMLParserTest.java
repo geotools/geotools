@@ -65,11 +65,8 @@ public class XMLParserTest extends TestCase {
 
             assertNotNull("Document missing", doc);
             // System.out.println(doc);
-        } catch (SAXException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
         } catch (Throwable e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            java.util.logging.Logger.getGlobal().log(Level.INFO, "", e);
             fail(e.toString());
         }
     }

@@ -87,25 +87,13 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
             if (method != null) {
                 return (Boolean) method.invoke(jp2ecwSPI, (Object[]) null);
             }
-        } catch (ClassNotFoundException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
-        } catch (SecurityException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
-        } catch (NoSuchMethodException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
-        } catch (IllegalArgumentException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
-        } catch (IllegalAccessException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
-        } catch (InvocationTargetException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
-        } catch (InstantiationException e) {
+        } catch (ClassNotFoundException
+                | InstantiationException
+                | InvocationTargetException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | NoSuchMethodException
+                | SecurityException e) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
         }
@@ -121,25 +109,13 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
             if (method != null) {
                 return (Boolean) method.invoke(jp2Kak, (Object[]) null);
             }
-        } catch (ClassNotFoundException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
-        } catch (SecurityException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
-        } catch (NoSuchMethodException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
-        } catch (IllegalArgumentException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
-        } catch (IllegalAccessException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
-        } catch (InvocationTargetException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
-        } catch (InstantiationException e) {
+        } catch (ClassNotFoundException
+                | InstantiationException
+                | InvocationTargetException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | NoSuchMethodException
+                | SecurityException e) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
         }
@@ -155,25 +131,13 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
             if (method != null) {
                 return (Boolean) method.invoke(jp2MrSid, (Object[]) null);
             }
-        } catch (ClassNotFoundException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
-        } catch (SecurityException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
-        } catch (NoSuchMethodException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
-        } catch (IllegalArgumentException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
-        } catch (IllegalAccessException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
-        } catch (InvocationTargetException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
-        } catch (InstantiationException e) {
+        } catch (ClassNotFoundException
+                | InstantiationException
+                | InvocationTargetException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | NoSuchMethodException
+                | SecurityException e) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
         }
@@ -189,22 +153,12 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
             if (method != null) {
                 return (Boolean) method.invoke(null, (Object[]) null);
             }
-        } catch (ClassNotFoundException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load kakadu JPEG2000 reader spi", e);
-        } catch (SecurityException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load kakadu JPEG2000 reader spi", e);
-        } catch (NoSuchMethodException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load kakadu JPEG2000 reader spi", e);
-        } catch (IllegalArgumentException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load kakadu JPEG2000 reader spi", e);
-        } catch (IllegalAccessException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to load kakadu JPEG2000 reader spi", e);
-        } catch (InvocationTargetException e) {
+        } catch (ClassNotFoundException
+                | InvocationTargetException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | NoSuchMethodException
+                | SecurityException e) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, "Unable to load kakadu JPEG2000 reader spi", e);
         }

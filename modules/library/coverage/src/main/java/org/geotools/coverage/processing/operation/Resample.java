@@ -252,10 +252,7 @@ public class Resample extends Operation2D {
                     interpolation,
                     (hints instanceof Hints) ? hints : new Hints(hints),
                     bgValues);
-        } catch (FactoryException exception) {
-            throw new CannotReprojectException(
-                    Errors.format(ErrorKeys.CANT_REPROJECT_$1, source.getName()), exception);
-        } catch (TransformException exception) {
+        } catch (FactoryException | TransformException exception) {
             throw new CannotReprojectException(
                     Errors.format(ErrorKeys.CANT_REPROJECT_$1, source.getName()), exception);
         }
@@ -328,13 +325,11 @@ public class Resample extends Operation2D {
                 transformed.intersect(reduced);
                 gridGeometry =
                         new GridGeometry2D(PixelInCell.CELL_CENTER, gridToCRS, transformed, null);
-            } catch (FactoryException exception) {
+            } catch (FactoryException | TransformException exception) {
                 recoverableException("resample", exception);
-            } catch (TransformException exception) {
-                recoverableException("resample", exception);
-                // Will use the grid range from the original geometry,
-                // which will result in keeping the same image size.
-            }
+            } // Will use the grid range from the original geometry,
+            // which will result in keeping the same image size.
+
             gridRange = gridGeometry.getGridRange();
             gridGeometry = new GridGeometry2D(gridRange, target);
         }

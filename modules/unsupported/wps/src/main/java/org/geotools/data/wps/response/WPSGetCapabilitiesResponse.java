@@ -64,10 +64,7 @@ public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesRespon
             try {
                 // object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
                 object = parser.parse(inputStream);
-            } catch (SAXException e) {
-                throw (ServiceException)
-                        new ServiceException("Error while parsing XML.").initCause(e);
-            } catch (ParserConfigurationException e) {
+            } catch (SAXException | ParserConfigurationException e) {
                 throw (ServiceException)
                         new ServiceException("Error while parsing XML.").initCause(e);
             }

@@ -63,10 +63,7 @@ public class CatalogConfigurationBean {
         Utilities.ensureNonNull("CatalogConfigurationBean", that);
         try {
             BeanUtils.copyProperties(this, that);
-        } catch (IllegalAccessException e) {
-            final IllegalArgumentException iae = new IllegalArgumentException(e);
-            throw iae;
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             final IllegalArgumentException iae = new IllegalArgumentException(e);
             throw iae;
         }

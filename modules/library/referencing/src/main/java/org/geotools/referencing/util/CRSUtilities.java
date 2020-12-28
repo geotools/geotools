@@ -462,9 +462,7 @@ public final class CRSUtilities {
                 fmt.format(new Longitude(bounds.getMinX()), buffer, null).append('-');
                 fmt.format(new Longitude(bounds.getMaxX()), buffer, null);
                 return buffer.toString();
-            } catch (TransformException e) {
-                exception = e;
-            } catch (FactoryException e) {
+            } catch (TransformException | FactoryException e) {
                 exception = e;
             }
         buffer.append(Classes.getShortClassName(exception));

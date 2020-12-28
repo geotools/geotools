@@ -388,12 +388,10 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 									} else {
 										return contextUri.resolve(schemaLocationURI).toString();
 									}
-								} catch (URISyntaxException e) {
-									throw new RuntimeException(e);
-								} catch (MalformedURLException e) {
+								} catch (URISyntaxException | MalformedURLException e) {
 									throw new RuntimeException(e);
 								}
-							}
+                            }
 						}));
 			} else {
 				xsdSchema = Schemas.parse(schemaLocation.getAbsolutePath(),

@@ -304,11 +304,9 @@ public class MetadataSource implements AutoCloseable {
             values =
                     (CodeList[])
                             type.getMethod("values", (Class[]) null).invoke(null, (Object[]) null);
-        } catch (NoSuchMethodException exception) {
-            throw new MetadataException("Can't read code list.", exception); // TODO: localize
-        } catch (IllegalAccessException exception) {
-            throw new MetadataException("Can't read code list.", exception); // TODO: localize
-        } catch (InvocationTargetException exception) {
+        } catch (NoSuchMethodException
+                | InvocationTargetException
+                | IllegalAccessException exception) {
             throw new MetadataException("Can't read code list.", exception); // TODO: localize
         }
         CodeList<?> candidate;

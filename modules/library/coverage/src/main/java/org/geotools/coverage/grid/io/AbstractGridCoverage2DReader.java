@@ -776,9 +776,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
                 requestedRes[1] = envelope.getSpan(1) / dim.getHeight();
             }
             return requestedRes;
-        } catch (TransformException e) {
-            throw new DataSourceException("Unable to get resolution", e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new DataSourceException("Unable to get resolution", e);
         }
     }

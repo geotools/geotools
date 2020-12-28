@@ -308,8 +308,7 @@ public class FilterExamples {
 
         String qryStr = null;
 
-        SimpleFeatureIterator it = polygonCollection.features();
-        try {
+        try (SimpleFeatureIterator it = polygonCollection.features()) {
             while (it.hasNext()) {
                 feature = it.next();
                 BoundingBox bounds = feature.getBounds();
@@ -335,8 +334,6 @@ public class FilterExamples {
                     continue;
                 }
             }
-        } finally {
-            it.close();
         }
     }
 

@@ -59,11 +59,8 @@ public class GeobufDataStore extends ContentDataStore {
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         GeobufFeatureType geobufFeatureType = new GeobufFeatureType();
-        FileOutputStream out = new FileOutputStream(file);
-        try {
+        try (FileOutputStream out = new FileOutputStream(file)) {
             geobufFeatureType.encode(featureType, out);
-        } finally {
-            out.close();
         }
     }
 
@@ -93,12 +90,9 @@ public class GeobufDataStore extends ContentDataStore {
 
     protected SimpleFeatureType getFeatureType() throws IOException {
         if (file.exists()) {
-            FileInputStream in = new FileInputStream(file);
-            try {
+            try (FileInputStream in = new FileInputStream(file)) {
                 GeobufFeatureType geobufFeatureType = new GeobufFeatureType(precision, dimension);
                 return geobufFeatureType.decode(createTypeNames().get(0).getLocalPart(), in);
-            } finally {
-                in.close();
             }
         } else {
             return null;

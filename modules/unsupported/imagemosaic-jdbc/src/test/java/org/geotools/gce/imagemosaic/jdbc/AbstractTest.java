@@ -861,13 +861,10 @@ public abstract class AbstractTest extends TestCase {
         File fixtureFile = getFixtureFile();
 
         if ((fixtureFile != null) && fixtureFile.exists()) {
-            InputStream input = new BufferedInputStream(new FileInputStream(fixtureFile));
 
-            try {
+            try (InputStream input = new BufferedInputStream(new FileInputStream(fixtureFile))) {
                 fixture = new Properties();
                 fixture.load(input);
-            } finally {
-                input.close();
             }
         }
     }

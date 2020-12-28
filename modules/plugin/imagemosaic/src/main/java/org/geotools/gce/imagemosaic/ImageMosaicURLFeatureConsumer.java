@@ -139,11 +139,10 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                     if (inStreamSpi == null) {
                         throw new IllegalArgumentException("no inputStreamSPI available!");
                     }
-                    ImageInputStream inStream = null;
-                    try {
+                    try (ImageInputStream inStream =
+                            ((SourceSPIProvider) readerInputObject).getStream()) {
                         // Get the ImageInputStream from the SPI
 
-                        inStream = ((SourceSPIProvider) readerInputObject).getStream();
                         // Throws an Exception if the ImageInputStream is not present
                         if (inStream == null) {
                             if (LOGGER.isLoggable(Level.WARNING)) {
@@ -159,10 +158,6 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                         // set
                         // it inside the indexer properties
                         configHandler.setCachedReaderSPI(spi);
-                    } finally {
-                        if (inStream != null) {
-                            inStream.close();
-                        }
                     }
                 }
 

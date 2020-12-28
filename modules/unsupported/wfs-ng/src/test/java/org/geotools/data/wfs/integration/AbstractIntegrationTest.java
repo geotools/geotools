@@ -653,8 +653,7 @@ public abstract class AbstractIntegrationTest {
 
         SimpleFeature feature;
         int count = 0;
-        SimpleFeatureIterator i = features.features();
-        try {
+        try (SimpleFeatureIterator i = features.features()) {
             while (i.hasNext()) {
                 feature = i.next();
                 if (!containsFeature(array, feature)) {
@@ -662,8 +661,6 @@ public abstract class AbstractIntegrationTest {
                 }
                 count++;
             }
-        } finally {
-            i.close();
         }
         return count == array.length;
     }

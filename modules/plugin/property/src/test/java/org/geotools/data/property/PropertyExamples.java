@@ -219,18 +219,15 @@ public class PropertyExamples {
 
         Transaction t = new DefaultTransaction("transaction");
         try {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                    store.getFeatureWriter("example", Filter.INCLUDE, t);
 
-            SimpleFeature feature;
-            try {
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    store.getFeatureWriter("example", Filter.INCLUDE, t)) {
+                SimpleFeature feature;
                 while (writer.hasNext()) {
                     feature = writer.next();
                     System.out.println("remove " + feature.getID());
                     writer.remove(); // marking contents for removal
                 }
-            } finally {
-                writer.close();
             }
             System.out.println("commit " + t); // only now are the contents
             // removed

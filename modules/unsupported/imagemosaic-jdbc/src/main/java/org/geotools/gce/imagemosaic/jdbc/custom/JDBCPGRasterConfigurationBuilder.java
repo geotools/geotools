@@ -998,18 +998,8 @@ public class JDBCPGRasterConfigurationBuilder {
      * @param content the string to be written
      */
     private static void writeToFile(final File file, final String content) throws IOException {
-        OutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(file);
+        try (OutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(content.getBytes());
-        } finally {
-            if (outputStream != null) {
-                try {
-                    outputStream.close();
-                } catch (Exception ignored) {
-
-                }
-            }
         }
     }
 }

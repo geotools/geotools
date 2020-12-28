@@ -52,13 +52,10 @@ public class GridsHexagonalTest {
         SimpleFeatureSource gridSource = Grids.createHexagonalGrid(BOUNDS, SIDE_LEN);
         assertGridSizeAndIds(gridSource);
 
-        SimpleFeatureIterator iter = gridSource.getFeatures().features();
-        try {
+        try (SimpleFeatureIterator iter = gridSource.getFeatures().features()) {
             SimpleFeature f = iter.next();
             Polygon poly = (Polygon) f.getDefaultGeometry();
             assertEquals(6, poly.getCoordinates().length - 1);
-        } finally {
-            iter.close();
         }
     }
 
@@ -69,13 +66,10 @@ public class GridsHexagonalTest {
                 Grids.createHexagonalGrid(BOUNDS, SIDE_LEN, SIDE_LEN / vertexDensity);
         assertGridSizeAndIds(gridSource);
 
-        SimpleFeatureIterator iter = gridSource.getFeatures().features();
-        try {
+        try (SimpleFeatureIterator iter = gridSource.getFeatures().features()) {
             SimpleFeature f = iter.next();
             Polygon poly = (Polygon) f.getDefaultGeometry();
             assertTrue(poly.getCoordinates().length - 1 >= 6 * vertexDensity);
-        } finally {
-            iter.close();
         }
     }
 
@@ -101,8 +95,7 @@ public class GridsHexagonalTest {
         boolean[] flag = new boolean[expectedNumElements + 1];
         int count = 0;
 
-        SimpleFeatureIterator iter = grid.features();
-        try {
+        try (SimpleFeatureIterator iter = grid.features()) {
             while (iter.hasNext()) {
                 SimpleFeature f = iter.next();
                 int id = (Integer) f.getAttribute("id");
@@ -111,9 +104,6 @@ public class GridsHexagonalTest {
                 flag[id] = true;
                 count++;
             }
-
-        } finally {
-            iter.close();
         }
 
         assertEquals(expectedNumElements, count);

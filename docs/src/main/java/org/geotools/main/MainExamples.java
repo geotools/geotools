@@ -58,14 +58,11 @@ public class MainExamples {
     void exampleIterator() throws Exception {
         SimpleFeatureCollection featureCollection = null;
         // exampleIterator start
-        SimpleFeatureIterator iterator = featureCollection.features();
-        try {
+        try (SimpleFeatureIterator iterator = featureCollection.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 // process feature
             }
-        } finally {
-            iterator.close();
         }
         // exampleIterator end
     }

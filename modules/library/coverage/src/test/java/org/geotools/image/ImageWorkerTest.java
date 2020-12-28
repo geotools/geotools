@@ -604,8 +604,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // and the palette does not get compressed
         InputStream gzippedStream =
                 ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
-        GZIPInputStream is = new GZIPInputStream(gzippedStream);
-        try {
+        try (GZIPInputStream is = new GZIPInputStream(gzippedStream)) {
             ImageInputStream iis = ImageIO.createImageInputStream(is);
             ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
@@ -635,8 +634,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                     "wrong transparent color index", -1, indexColorModel.getTransparentPixel());
             assertEquals("wrong component size", 8, indexColorModel.getComponentSize(0));
             outFile.delete();
-        } finally {
-            is.close();
         }
     }
 

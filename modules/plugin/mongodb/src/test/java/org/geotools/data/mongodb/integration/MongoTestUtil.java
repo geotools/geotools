@@ -65,8 +65,7 @@ public class MongoTestUtil {
 
     @Test
     public void testConnect() throws UnknownHostException {
-        MongoClient mc = new MongoClient("localhost", PORT);
-        try {
+        try (MongoClient mc = new MongoClient("localhost", PORT)) {
             assertThat(mc, is(notNullValue()));
             DB db = mc.getDB("db");
             DBCollection coll = db.getCollection("dbc");
@@ -78,20 +77,15 @@ public class MongoTestUtil {
 
             coll.insert(bdo);
             // System.out.println(coll.findOne());
-        } finally {
-            mc.close();
         }
     }
 
     @Test
     public void testLoad() throws IOException {
-        MongoClient mc = new MongoClient("localhost", PORT);
-        try {
+        try (MongoClient mc = new MongoClient("localhost", PORT)) {
             DBCollection dbc = grabDBCollection(mc, "db", "dbc", true);
             ShapefileDataStore sds = loadShapefile("shapes/statepop.shp");
             loadFeatures(dbc, sds.getFeatureSource().getFeatures());
-        } finally {
-            mc.close();
         }
     }
 

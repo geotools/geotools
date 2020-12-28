@@ -194,11 +194,8 @@ public abstract class TestCaseSupport extends TestCase {
 
     /** Returns the first feature in the given feature collection. */
     protected SimpleFeature firstFeature(FeatureCollection<SimpleFeatureType, SimpleFeature> fc) {
-        FeatureIterator<SimpleFeature> features = fc.features();
-        try {
+        try (FeatureIterator<SimpleFeature> features = fc.features()) {
             return features.next();
-        } finally {
-            features.close();
         }
     }
 

@@ -232,11 +232,8 @@ public class HsqlEpsgDatabase {
     }
 
     static boolean dataExists(javax.sql.DataSource dataSource) throws SQLException {
-        Connection connection = dataSource.getConnection();
-        try {
+        try (Connection connection = dataSource.getConnection()) {
             return dataExists(connection);
-        } finally {
-            connection.close();
         }
     }
 

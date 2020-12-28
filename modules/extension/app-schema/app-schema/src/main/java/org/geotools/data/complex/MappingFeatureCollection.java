@@ -199,8 +199,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      * @see org.geotools.feature.FeatureCollection#getBounds()
      */
     public ReferencedEnvelope getBounds() {
-        FeatureIterator<Feature> features = features();
-        try {
+        try (FeatureIterator<Feature> features = features()) {
             Envelope newBBox = new Envelope();
             Envelope internal;
             Feature feature;
@@ -218,8 +217,6 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
             return ReferencedEnvelope.reference(newBBox);
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred while computing bounds", e);
-        } finally {
-            features.close();
         }
     }
 

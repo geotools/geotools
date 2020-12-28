@@ -201,22 +201,13 @@ public class InterpolationProperties {
                                 + propertiesFile.toString(),
                         e);
             }
-            InputStream stream = null;
-            try {
-                stream = new BufferedInputStream(new FileInputStream(propertiesFile));
+            try (InputStream stream =
+                    new BufferedInputStream(new FileInputStream(propertiesFile))) {
                 LOGGER.info("Loading properties file " + propertiesFile.toString());
                 properties.load(stream);
             } catch (Exception e) {
                 throw new RuntimeException(
                         "Error loading properties file " + propertiesFile.toString(), e);
-            } finally {
-                if (stream != null) {
-                    try {
-                        stream.close();
-                    } catch (Exception e) {
-                        // ignore, we tried
-                    }
-                }
             }
         }
         properties.putAll(System.getProperties());

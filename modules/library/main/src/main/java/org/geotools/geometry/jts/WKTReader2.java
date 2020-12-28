@@ -108,11 +108,8 @@ public class WKTReader2 extends WKTReader {
      * @throws ParseException if a parsing problem occurs
      */
     public Geometry read(String wellKnownText) throws ParseException {
-        StringReader reader = new StringReader(wellKnownText);
-        try {
+        try (StringReader reader = new StringReader(wellKnownText)) {
             return read(reader);
-        } finally {
-            reader.close();
         }
     }
 

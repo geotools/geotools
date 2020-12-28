@@ -69,10 +69,9 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
 
     public void testNormal() throws Exception {
 
-        SimpleFeatureIterator reproject =
-                new ReprojectingFeatureCollection(delegate, target).features();
-        SimpleFeatureIterator reader = delegate.features();
-        try {
+        try (SimpleFeatureIterator reproject =
+                        new ReprojectingFeatureCollection(delegate, target).features();
+                SimpleFeatureIterator reader = delegate.features()) {
             while (reader.hasNext()) {
                 SimpleFeature normal = reader.next();
                 SimpleFeature reprojected = reproject.next();
@@ -95,9 +94,6 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
                     assertNull(l2);
                 }
             }
-        } finally {
-            reproject.close();
-            reader.close();
         }
     }
 

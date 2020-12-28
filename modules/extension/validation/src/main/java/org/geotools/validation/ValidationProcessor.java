@@ -278,8 +278,7 @@ public class ValidationProcessor {
 
         if (tests != null) // if we found some tests to be performed on this FeatureTypeInfo
         {
-            SimpleFeatureIterator features = collection.features();
-            try {
+            try (SimpleFeatureIterator features = collection.features()) {
                 while (features.hasNext()) // iterate through each feature and run the test on it
                 {
                     SimpleFeature feature = features.next();
@@ -294,8 +293,6 @@ public class ValidationProcessor {
                         }
                     }
                 }
-            } finally {
-                features.close();
             }
         }
     }

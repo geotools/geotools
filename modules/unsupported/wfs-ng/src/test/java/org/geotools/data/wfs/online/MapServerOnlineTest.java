@@ -175,14 +175,11 @@ public class MapServerOnlineTest {
         int size = features.size();
         assertEquals(2, size);
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 // System.out.println(feature.getID());
             }
-        } finally {
-            iterator.close();
         }
     }
 
@@ -223,14 +220,11 @@ public class MapServerOnlineTest {
         int size = features.size();
         assertEquals(308, size);
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 // System.out.println(feature.getID());
             }
-        } finally {
-            iterator.close();
         }
     }
 }

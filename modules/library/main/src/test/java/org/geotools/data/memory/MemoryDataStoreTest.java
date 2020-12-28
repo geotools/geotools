@@ -721,10 +721,9 @@ public class MemoryDataStoreTest extends DataTestCase {
 
     /** Test two transactions one removing feature, and one adding a feature. */
     public void testGetFeatureWriterTransaction() throws Exception {
-        Transaction t1 = new DefaultTransaction();
-        Transaction t2 = new DefaultTransaction();
 
-        try {
+        try (Transaction t1 = new DefaultTransaction();
+                Transaction t2 = new DefaultTransaction()) {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 =
                     data.getFeatureWriter("road", rd1Filter, t1);
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 =
@@ -843,9 +842,6 @@ public class MemoryDataStoreTest extends DataTestCase {
             assertTrue(coversLax(reader, FINAL));
             reader = data.getFeatureReader(new Query("road"), t2);
             assertTrue(coversLax(reader, FINAL));
-        } finally {
-            t1.close();
-            t2.close();
         }
     }
 
@@ -1383,9 +1379,8 @@ public class MemoryDataStoreTest extends DataTestCase {
     public void testLockFeatureInteraction() throws IOException {
         FeatureLock lockA = new FeatureLock("LockA", 3600);
         FeatureLock lockB = new FeatureLock("LockB", 3600);
-        Transaction t1 = new DefaultTransaction();
-        Transaction t2 = new DefaultTransaction();
-        try {
+        try (Transaction t1 = new DefaultTransaction();
+                Transaction t2 = new DefaultTransaction()) {
             @SuppressWarnings("unchecked")
             FeatureLocking<SimpleFeatureType, SimpleFeature> road1 =
                     (FeatureLocking<SimpleFeatureType, SimpleFeature>)
@@ -1434,9 +1429,6 @@ public class MemoryDataStoreTest extends DataTestCase {
             assertFalse(isLocked("road", "road.rd1"));
             assertFalse(isLocked("road", "road.rd2"));
             assertFalse(isLocked("road", "road.rd3"));
-        } finally {
-            t1.close();
-            t2.close();
         }
     }
 

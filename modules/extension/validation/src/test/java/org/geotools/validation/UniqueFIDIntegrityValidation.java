@@ -170,8 +170,7 @@ public class UniqueFIDIntegrityValidation implements IntegrityValidation {
         while (it.hasNext()) // for each layer
         {
             SimpleFeatureSource featureSource = it.next();
-            SimpleFeatureIterator features = featureSource.getFeatures().features();
-            try {
+            try (SimpleFeatureIterator features = featureSource.getFeatures().features()) {
 
                 while (features.hasNext()) // for each feature
                 {
@@ -183,8 +182,6 @@ public class UniqueFIDIntegrityValidation implements IntegrityValidation {
                         result = false;
                     } else FIDs.add(fid);
                 }
-            } finally {
-                features.close(); // this is an important line
             }
         }
 

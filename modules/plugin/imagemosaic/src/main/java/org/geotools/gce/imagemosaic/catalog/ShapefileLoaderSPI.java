@@ -48,9 +48,7 @@ public class ShapefileLoaderSPI implements FootprintLoaderSpi {
             File file = new File(pathNoExtension + ".shp");
             if (file.exists()) {
                 ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(file));
-                SimpleFeatureIterator fi = null;
-                try {
-                    fi = ds.getFeatureSource().getFeatures().features();
+                try (SimpleFeatureIterator fi = ds.getFeatureSource().getFeatures().features()) {
                     if (!fi.hasNext()) {
                         return null;
                     } else {
@@ -64,9 +62,6 @@ public class ShapefileLoaderSPI implements FootprintLoaderSpi {
                         return result;
                     }
                 } finally {
-                    if (fi != null) {
-                        fi.close();
-                    }
                     ds.dispose();
                 }
             }

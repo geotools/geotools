@@ -288,11 +288,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         if (crs != null) {
             String s = toSingleLineWKT(crs);
 
-            FileWriter prjWriter = new FileWriter(prjStoragefile.getFile());
-            try {
+            try (FileWriter prjWriter = new FileWriter(prjStoragefile.getFile())) {
                 prjWriter.write(s);
-            } finally {
-                prjWriter.close();
             }
         } else {
             LOGGER.fine("PRJ file not generated for null CoordinateReferenceSystem");
@@ -397,12 +394,9 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
 
         String s = toSingleLineWKT(crs);
         StorageFile storageFile = shpFiles.getStorageFile(PRJ);
-        FileWriter out = new FileWriter(storageFile.getFile());
 
-        try {
+        try (FileWriter out = new FileWriter(storageFile.getFile())) {
             out.write(s);
-        } finally {
-            out.close();
         }
         storageFile.replaceOriginal();
         entries.clear();

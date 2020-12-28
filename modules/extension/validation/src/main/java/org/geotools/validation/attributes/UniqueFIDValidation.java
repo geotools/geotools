@@ -110,9 +110,8 @@ public class UniqueFIDValidation extends DefaultIntegrityValidation {
         while (it.hasNext()) // for each layer
         {
             SimpleFeatureSource featureSource = (SimpleFeatureSource) it.next();
-            SimpleFeatureIterator features = featureSource.getFeatures().features();
 
-            try {
+            try (SimpleFeatureIterator features = featureSource.getFeatures().features()) {
                 while (features.hasNext()) // for each feature
                 {
                     SimpleFeature feature = features.next();
@@ -126,8 +125,6 @@ public class UniqueFIDValidation extends DefaultIntegrityValidation {
                         FIDs.add(fid);
                     }
                 }
-            } finally {
-                features.close(); // this is an important line
             }
         }
 

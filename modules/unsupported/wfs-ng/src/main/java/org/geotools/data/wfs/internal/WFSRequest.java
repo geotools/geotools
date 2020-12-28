@@ -175,11 +175,8 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
     @Override
     public void performPostOutput(OutputStream outputStream) throws IOException {
 
-        InputStream in = strategy.getPostContents(this);
-        try {
+        try (InputStream in = strategy.getPostContents(this)) {
             IOUtils.copy(in, outputStream);
-        } finally {
-            in.close();
         }
     }
 

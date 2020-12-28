@@ -297,17 +297,12 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(idx, countFeatures(loadFeatures(sds, typeName)));
 
         while (idx > 0) {
-            FeatureWriter writer = null;
-            try {
-                writer = sds.getFeatureWriter(typeName, Filter.INCLUDE, Transaction.AUTO_COMMIT);
+            try (FeatureWriter writer =
+                    sds.getFeatureWriter(typeName, Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
                 while (writer.hasNext()) {
                     writer.next();
                 }
                 writer.remove();
-            } finally {
-                if (writer != null) {
-                    writer.close();
-                }
             }
             assertEquals(--idx, countFeatures(loadFeatures(sds, typeName)));
         }
@@ -423,16 +418,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 assertNotNull(f.getDefaultGeometry());
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }
@@ -453,16 +445,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 assertNotNull(f.getDefaultGeometry());
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }
@@ -492,16 +481,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 assertNotNull(f.getDefaultGeometry());
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }
@@ -531,16 +517,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 assertNotNull(f.getDefaultGeometry());
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }
@@ -569,16 +552,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 assertNotNull(f.getDefaultGeometry());
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }
@@ -607,16 +587,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 assertNotNull(f.getDefaultGeometry());
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }
@@ -655,16 +632,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 assertNotNull(f.getDefaultGeometry());
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }
@@ -702,16 +676,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 assertNotNull(f.getDefaultGeometry());
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }
@@ -737,16 +708,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 assertNotNull(f.getDefaultGeometry());
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }
@@ -766,8 +734,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
@@ -775,8 +742,6 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
                 assertNotNull(f.getAttribute("name"));
                 c++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(fc.size(), c);
     }

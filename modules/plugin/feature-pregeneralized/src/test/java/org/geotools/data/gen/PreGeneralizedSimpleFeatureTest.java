@@ -120,8 +120,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             Assert.fail();
         }
 
-        SimpleFeatureIterator it = fCollection.features();
-        try {
+        try (SimpleFeatureIterator it = fCollection.features()) {
             SimpleFeature feature1 = it.next();
 
             SimpleFeature feature2 = it.next();
@@ -173,7 +172,8 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
                     feature1.getProperty("CAT_ID").getValue(), feature1.getAttribute("CAT_ID"));
             assertEquals(
                     feature1.getProperty("the_geom").getValue(), feature1.getAttribute("the_geom"));
-            // assertFalse(feature1.getProperty("CAT_ID").getValue().equals(feature2.getAttribute("CAT_ID"
+            // assertFalse(feature1.getProperty("CAT_ID").getValue().equals(feature2.getAttribute
+            // ("CAT_ID"
             // )));
             assertNotEquals(
                     feature1.getProperty("the_geom").getValue(), feature2.getAttribute("the_geom"));
@@ -194,7 +194,6 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
 
             assertNotNull(feature1.getUserData());
         } finally {
-            it.close();
             ds.dispose();
         }
     }
@@ -215,8 +214,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             Assert.fail();
         }
 
-        SimpleFeatureIterator it = fCollection.features();
-        try {
+        try (SimpleFeatureIterator it = fCollection.features()) {
             SimpleFeature feature1 = it.next();
 
             assertTrue(feature1 instanceof PreGeneralizedSimpleFeature);
@@ -305,7 +303,6 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
                 Assert.fail();
             }
         } finally {
-            it.close();
             ds.dispose();
         }
     }

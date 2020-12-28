@@ -79,15 +79,12 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         if (query.getFilter() == Filter.INCLUDE) { // filtering not implemented
             ReferencedEnvelope bounds =
                     ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
-            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                    getReaderInternal(query);
-            try {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                    getReaderInternal(query)) {
                 while (featureReader.hasNext()) {
                     SimpleFeature feature = featureReader.next();
                     bounds.include(feature.getBounds());
                 }
-            } finally {
-                featureReader.close();
             }
             return bounds;
         }
@@ -98,15 +95,12 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     protected int getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) { // filtering not implemented
             int count = 0;
-            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                    getReaderInternal(query);
-            try {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                    getReaderInternal(query)) {
                 while (featureReader.hasNext()) {
                     featureReader.next();
                     count++;
                 }
-            } finally {
-                featureReader.close();
             }
             return count;
         }
@@ -130,15 +124,12 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     private String property(String key) throws IOException {
         File file = new File(store.dir, typeName + ".properties");
 
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        try {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
                 if (line.startsWith(key + "=")) {
                     return line.substring(key.length() + 1);
                 }
             }
-        } finally {
-            reader.close();
         }
         return null;
     }

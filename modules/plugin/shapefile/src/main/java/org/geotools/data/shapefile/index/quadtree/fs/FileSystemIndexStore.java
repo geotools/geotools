@@ -60,12 +60,9 @@ public class FileSystemIndexStore implements IndexStore {
         tree.trim();
 
         // Open the stream...
-        FileOutputStream fos = null;
-        FileChannel channel = null;
 
-        try {
-            fos = new FileOutputStream(file);
-            channel = fos.getChannel();
+        try (FileOutputStream fos = new FileOutputStream(file);
+                FileChannel channel = fos.getChannel()) {
 
             ByteBuffer buf = ByteBuffer.allocate(8);
 
@@ -92,16 +89,6 @@ public class FileSystemIndexStore implements IndexStore {
             this.writeNode(tree.getRoot(), channel, order);
         } catch (IOException e) {
             throw new StoreException(e);
-        } finally {
-            try {
-                channel.close();
-            } catch (Exception e) {
-            }
-
-            try {
-                fos.close();
-            } catch (Exception e) {
-            }
         }
     }
 

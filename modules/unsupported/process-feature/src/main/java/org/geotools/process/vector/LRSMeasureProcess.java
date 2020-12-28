@@ -131,9 +131,8 @@ public class LRSMeasureProcess implements VectorProcess {
             Feature nearestFeature = null;
             double nearestDistance = 9e9;
             Coordinate[] nearestCoords = null;
-            FeatureIterator<? extends Feature> featureIterator = null;
-            try {
-                featureIterator = featureCollection.features();
+            try (FeatureIterator<? extends Feature> featureIterator =
+                    featureCollection.features()) {
                 while (featureIterator.hasNext()) {
                     SimpleFeature f = (SimpleFeature) featureIterator.next();
                     if (f.getDefaultGeometryProperty().getValue() == null) continue;
@@ -161,8 +160,6 @@ public class LRSMeasureProcess implements VectorProcess {
                     nearestDistance = m.doubleValue();
                     nearestCoords = co;
                 }
-            } finally {
-                if (featureIterator != null) featureIterator.close();
             }
             if (nearestFeature != null) {
                 LengthIndexedLine lengthIndexedLine =

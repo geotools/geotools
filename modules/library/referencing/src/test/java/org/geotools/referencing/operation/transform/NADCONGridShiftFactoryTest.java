@@ -38,22 +38,12 @@ public class NADCONGridShiftFactoryTest {
     }
 
     private void copyFile(File src, File dst) throws IOException {
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
-        try {
-            fis = new FileInputStream(src);
-            fos = new FileOutputStream(dst);
+        try (FileInputStream fis = new FileInputStream(src);
+                FileOutputStream fos = new FileOutputStream(dst)) {
             byte[] buffer = new byte[4096];
             int read = 0;
             while ((read = fis.read(buffer)) > 0) {
                 fos.write(buffer, 0, read);
-            }
-        } finally {
-            if (fis != null) {
-                fis.close();
-            }
-            if (fos != null) {
-                fos.close();
             }
         }
     }

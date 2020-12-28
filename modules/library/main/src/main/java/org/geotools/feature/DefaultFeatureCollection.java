@@ -223,16 +223,13 @@ public class DefaultFeatureCollection
         // TODO check inheritance with FeatureType here!!!
         boolean changed = false;
 
-        FeatureIterator<?> iterator = collection.features();
-        try {
+        try (FeatureIterator<?> iterator = collection.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature f = (SimpleFeature) iterator.next();
                 boolean added = add(f, false);
                 changed |= added;
             }
             return changed;
-        } finally {
-            iterator.close();
         }
     }
 
@@ -508,8 +505,7 @@ public class DefaultFeatureCollection
     public SimpleFeatureCollection collection() throws IOException {
         DefaultFeatureCollection copy = new DefaultFeatureCollection(null, getSchema());
         List<SimpleFeature> list = new ArrayList<>(contents.size());
-        SimpleFeatureIterator iterator = features();
-        try {
+        try (SimpleFeatureIterator iterator = features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 SimpleFeature duplicate;
@@ -520,8 +516,6 @@ public class DefaultFeatureCollection
                 }
                 list.add(duplicate);
             }
-        } finally {
-            iterator.close();
         }
         copy.addAll(list);
         return copy;

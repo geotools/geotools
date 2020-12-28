@@ -162,9 +162,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         assertEquals(DELAWARE_BOUNDS, fc.getBounds());
 
         // and now read for good
-        SimpleFeatureIterator fi = null;
-        try {
-            fi = fc.features();
+        try (SimpleFeatureIterator fi = fc.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
             assertEquals(f.getFeatureType(), transformed.getSchema());
@@ -172,10 +170,6 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
             assertEquals(DELAWARE_BOUNDS, f.getBounds());
             assertEquals("Delaware", f.getAttribute("state_name"));
             assertEquals(666168d, f.getAttribute("persons"));
-        } finally {
-            if (fi != null) {
-                fi.close();
-            }
         }
     }
 
@@ -268,9 +262,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         assertEquals(DELAWARE_BOUNDS, fc.getBounds());
 
         // and now read for good
-        SimpleFeatureIterator fi = null;
-        try {
-            fi = fc.features();
+        try (SimpleFeatureIterator fi = fc.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
             assertEquals(f.getFeatureType(), transformed.getSchema());
@@ -278,10 +270,6 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
             assertEquals(DELAWARE_BOUNDS, f.getBounds());
             assertEquals("Delaware", f.getAttribute("name"));
             assertEquals(666168d, f.getAttribute("people"));
-        } finally {
-            if (fi != null) {
-                fi.close();
-            }
         }
     }
 
@@ -404,9 +392,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         assertEquals(bufferedDelawareBounds, fc.getBounds());
 
         // and now read for good
-        SimpleFeatureIterator fi = null;
-        try {
-            fi = fc.features();
+        try (SimpleFeatureIterator fi = fc.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
             assertEquals(f.getFeatureType(), transformed.getSchema());
@@ -415,10 +401,6 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
             assertEquals("delaware", f.getAttribute("name"));
             assertEquals(666168d, f.getAttribute("total"));
             assertEquals(Math.log(666168), f.getAttribute("logp"));
-        } finally {
-            if (fi != null) {
-                fi.close();
-            }
         }
     }
 

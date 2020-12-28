@@ -45,14 +45,8 @@ public class SchemaCacheTest {
         (new File("target/test/a/b/c")).mkdirs();
         (new File("target/test/a/b/d/e/f")).mkdirs();
         File f = new File("target/test/a/b/d/e/f/temp.txt");
-        PrintWriter printWriter = null;
-        try {
-            printWriter = new PrintWriter(f);
+        try (PrintWriter printWriter = new PrintWriter(f)) {
             printWriter.println("Some text");
-        } finally {
-            if (printWriter != null) {
-                printWriter.close();
-            }
         }
         Assert.assertTrue((new File("target/test/a/b/d/e/f/temp.txt")).exists());
         SchemaCache.delete(new File("target/test/a"));

@@ -275,9 +275,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      * data.
      */
     public boolean isEmpty() {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
-        try {
-            reader = reader();
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader()) {
             try {
                 return !reader.hasNext();
             } catch (IOException e) {
@@ -285,14 +283,6 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
             }
         } catch (IOException e) {
             return true;
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    // return value already set
-                }
-            }
         }
     }
 
@@ -301,9 +291,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         SimpleFeature value = (SimpleFeature) o;
         String ID = value.getID();
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
-        try {
-            reader = reader();
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader()) {
             try {
                 while (reader.hasNext()) {
                     SimpleFeature feature = reader.next();
@@ -318,14 +306,6 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
             }
         } catch (IOException e) {
             return false;
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    // return value already set
-                }
-            }
         }
     }
 

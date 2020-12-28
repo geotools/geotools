@@ -871,13 +871,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         SimpleFeatureCollection features = getFeatureSource(featureTypeName).getFeatures(query);
         if (!features.isEmpty()) {
-            SimpleFeatureIterator fi = features.features();
-            try {
+            try (SimpleFeatureIterator fi = features.features()) {
                 if (fi.hasNext()) {
                     return fi.next();
                 }
-            } finally {
-                fi.close();
             }
         }
 

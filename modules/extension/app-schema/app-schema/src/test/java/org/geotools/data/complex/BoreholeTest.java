@@ -312,13 +312,10 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
         int size = 0;
-        FeatureIterator<Feature> i = features.features();
-        try {
+        try (FeatureIterator<Feature> i = features.features()) {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        } finally {
-            i.close();
         }
         return size;
     }

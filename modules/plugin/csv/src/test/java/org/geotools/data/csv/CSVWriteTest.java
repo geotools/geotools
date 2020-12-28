@@ -240,16 +240,13 @@ public class CSVWriteTest {
 
         Transaction t = new DefaultTransaction("locations");
         try {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                    store.getFeatureWriter("locations", Filter.INCLUDE, t);
 
-            try {
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    store.getFeatureWriter("locations", Filter.INCLUDE, t)) {
                 while (writer.hasNext()) {
                     writer.next();
                     writer.remove(); // marking contents for removal
                 }
-            } finally {
-                writer.close();
             }
 
             // Test the contents have been removed

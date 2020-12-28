@@ -34,13 +34,10 @@ public class DescribeStoredQueriesTypeBindingTest extends WFSTestSupport {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 
-        InputStream is =
+        try (InputStream is =
                 WFS_2_0_0_ParsingTest.class.getResourceAsStream(
-                        "fmi-DescribeStoredQueries_2_0_0.xml");
-        try {
+                        "fmi-DescribeStoredQueries_2_0_0.xml")) {
             document = docFactory.newDocumentBuilder().parse(is);
-        } finally {
-            is.close();
         }
 
         Object o = parse();

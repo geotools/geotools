@@ -342,16 +342,13 @@ public class TestSetup {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 ds.getFeatureWriter(ds.getTypeNames()[0], Transaction.AUTO_COMMIT);
 
-        SimpleFeatureIterator it = fs.getFeatures().features();
-        try {
+        try (SimpleFeatureIterator it = fs.getFeatures().features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 SimpleFeature fNew = writer.next();
                 fNew.setAttributes(f.getAttributes());
                 writer.write();
             }
-        } finally {
-            it.close();
         }
         writer.close();
         ds.dispose();

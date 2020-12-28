@@ -50,11 +50,9 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
         super(null, results.getSchema());
 
         // load features into the index
-        SimpleFeatureIterator reader = null;
         bounds = new Envelope();
         count = 0;
-        try {
-            reader = results.features();
+        try (SimpleFeatureIterator reader = results.features()) {
             SimpleFeature f;
             Envelope env;
             while (reader.hasNext()) {
@@ -64,8 +62,6 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
                 count++;
                 index.insert(env, f);
             }
-        } finally {
-            if (reader != null) reader.close();
         }
     }
 

@@ -250,19 +250,19 @@ public class ArcSDEDataStoreNonSpatialTest {
     public void testFeatureWriter_RowIDSDE_Transaction()
             throws IOException, UnavailableConnectionException {
         final String tableName = seRowidSdeTable;
-        final Transaction transaction = new DefaultTransaction();
-        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                addFeatures(tableName, transaction)) {
+        try (Transaction transaction = new DefaultTransaction();
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                        addFeatures(tableName, transaction)) {
             /*
-             * This one works regardless of the database being MSSQL or not because the table IS being created as versioned by
-             * testData.createTestTable. <http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190>
+             * This one works regardless of the database being MSSQL or not because the table IS
+             * being created as versioned by
+             * testData.createTestTable. <http://support.esri.com/index.cfm?fa=knowledgebase
+             * .techarticles.articleShow&d=32190>
              */
             assertEquals(0, ds.getFeatureSource(tableName).getCount(Query.ALL));
             transaction.commit();
 
             assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
-        } finally {
-            transaction.close();
         }
     }
 
@@ -307,15 +307,16 @@ public class ArcSDEDataStoreNonSpatialTest {
     public void testFeatureWriter_RowID_USER_Transaction()
             throws IOException, UnavailableConnectionException {
         final String tableName = seRowidUserTable;
-        final Transaction transaction = new DefaultTransaction();
-        try {
+        try (Transaction transaction = new DefaultTransaction()) {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
 
             writer = addFeatures(tableName, transaction);
             if (databaseIsMsSqlServer) {
                 /*
-                 * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not versioned. And this one can't be versioned cause it
-                 * has no sde maintained row id < http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190 >
+                 * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not
+                 * versioned. And this one can't be versioned cause it
+                 * has no sde maintained row id < http://support.esri.com/index
+                 * .cfm?fa=knowledgebase.techarticles.articleShow&d=32190 >
                  */
                 assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
             } else {
@@ -324,8 +325,6 @@ public class ArcSDEDataStoreNonSpatialTest {
             transaction.commit();
             writer.close();
             assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
-        } finally {
-            transaction.close();
         }
     }
 
@@ -377,16 +376,13 @@ public class ArcSDEDataStoreNonSpatialTest {
             throws IOException, UnavailableConnectionException {
         String tableName = seRowidSdeTable;
 
-        Transaction transaction = new DefaultTransaction();
-        try {
+        try (Transaction transaction = new DefaultTransaction()) {
             List<FeatureId> fids = testFeatureStore(tableName, transaction);
             assertEquals(1, fids.size());
 
             assertEquals(0, ds.getFeatureSource(tableName).getCount(Query.ALL));
             transaction.commit();
             assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));
-        } finally {
-            transaction.close();
         }
     }
 
@@ -406,15 +402,16 @@ public class ArcSDEDataStoreNonSpatialTest {
             throws IOException, UnavailableConnectionException {
         String tableName = seRowidUserTable;
 
-        Transaction transaction = new DefaultTransaction();
-        try {
+        try (Transaction transaction = new DefaultTransaction()) {
             List<FeatureId> fids = testFeatureStore(tableName, transaction);
             assertEquals(1, fids.size());
 
             if (databaseIsMsSqlServer) {
                 /*
-                 * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not versioned. And this one can't be versioned cause it
-                 * has no sde maintained row id < http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190 >
+                 * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not
+                 * versioned. And this one can't be versioned cause it
+                 * has no sde maintained row id < http://support.esri.com/index
+                 * .cfm?fa=knowledgebase.techarticles.articleShow&d=32190 >
                  */
                 assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));
             } else {
@@ -422,8 +419,6 @@ public class ArcSDEDataStoreNonSpatialTest {
             }
             transaction.commit();
             assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));
-        } finally {
-            transaction.close();
         }
     }
 

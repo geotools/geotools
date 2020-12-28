@@ -385,9 +385,7 @@ public class WFSParsingTest {
         featureCollection = (SimpleFeatureCollection) featureCollections.get(0);
         assertEquals(5, featureCollection.size());
 
-        SimpleFeatureIterator features = featureCollection.features();
-
-        try {
+        try (SimpleFeatureIterator features = featureCollection.features()) {
             assertTrue(features.hasNext());
 
             SimpleFeature f = features.next();
@@ -410,8 +408,6 @@ public class WFSParsingTest {
             assertEquals(Float.valueOf(12765.0f), f.getAttribute("measurand"));
             assertTrue(f.getAttribute("dateProperty") instanceof Date);
             assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));
-        } finally {
-            features.close();
         }
     }
 

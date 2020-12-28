@@ -296,9 +296,7 @@ class Utils {
         // build the .prj file if possible
         if (envelope.getCoordinateReferenceSystem() != null) {
             File prjFile = new File(directory, directory.getName() + ".prj");
-            PrintWriter pw = null;
-            try {
-                pw = new PrintWriter(new FileOutputStream(prjFile));
+            try (PrintWriter pw = new PrintWriter(new FileOutputStream(prjFile))) {
                 pw.print(envelope.getCoordinateReferenceSystem().toString());
             } catch (IOException e) {
                 LOGGER.log(
@@ -306,8 +304,6 @@ class Utils {
                         "We could not write out the projection file " + prjFile.getPath(),
                         e);
                 return null;
-            } finally {
-                if (pw != null) pw.close();
             }
         }
 

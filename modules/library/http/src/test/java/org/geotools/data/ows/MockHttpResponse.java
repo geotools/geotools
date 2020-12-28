@@ -46,7 +46,7 @@ public class MockHttpResponse implements HTTPResponse {
 
     Map<String, String> headers = new HashMap<>();
 
-    String responseCharset;
+    Charset charset = StandardCharsets.UTF_8;
 
     public MockHttpResponse(InputStream stream, String contentType, String... headers) {
         this.stream = stream;
@@ -66,10 +66,21 @@ public class MockHttpResponse implements HTTPResponse {
             }
         }
     }
+    
+    public MockHttpResponse(InputStream stream, String contentType, Charset charset, String... headers) {
+    	this(stream, contentType, headers);
+    	this.charset = charset;
+    }
 
     public MockHttpResponse(File responseFile, String contentType, String... headers)
             throws FileNotFoundException {
         this(new FileInputStream(responseFile), contentType, headers);
+    }
+    
+    public MockHttpResponse(File responseFile, String contentType, Charset charset, String... headers) 
+    		throws FileNotFoundException {
+    	this(responseFile, contentType, headers);
+    	this.charset = charset;
     }
 
     /**
@@ -80,13 +91,24 @@ public class MockHttpResponse implements HTTPResponse {
      * @param headers
      * @throws IOException
      */
-    public MockHttpResponse(URL response, String contentType, String... headers)
-            throws IOException {
+    public MockHttpResponse(URL response, String contentType, String... headers) 
+    		throws IOException {
         this(response.openStream(), contentType, headers);
+    }
+    
+    public MockHttpResponse(URL response, String contentType, Charset charset, String... headers) 
+    		throws IOException{
+    	this(response, contentType, headers);
+    	this.charset = charset;
     }
 
     public MockHttpResponse(String response, String contentType, String... headers) {
         this(response.getBytes(), contentType, headers);
+    }
+    
+    public MockHttpResponse(String response, String contentType, Charset charset, String... headers) {
+    	this(response.getBytes(charset), contentType);
+    	this.charset = charset;
     }
 
     public MockHttpResponse(byte[] response, String contentType, String... headers) {
@@ -119,15 +141,12 @@ public class MockHttpResponse implements HTTPResponse {
      */
     @Override
     public String getResponseCharset() {
-        return responseCharset;
+        return charset.name();
     }
 
     @Override
     public String toString() {
-        Charset charset =
-                (responseCharset != null
-                        ? Charset.forName(responseCharset)
-                        : StandardCharsets.UTF_8);
+
 
         StringBuilder textBuilder = new StringBuilder();
         try {
@@ -149,7 +168,8 @@ public class MockHttpResponse implements HTTPResponse {
         }
     }
 
+    @Deprecated
     public void setResponseCharset(String responseCharset) {
-        this.responseCharset = responseCharset;
+        this.charset = Charset.forName(responseCharset);
     }
 }

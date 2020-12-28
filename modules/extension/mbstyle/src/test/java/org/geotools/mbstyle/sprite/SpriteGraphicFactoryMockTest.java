@@ -45,7 +45,6 @@ public class SpriteGraphicFactoryMockTest {
             try {
                 final MockHttpResponse jsonResponse =
                         new MockHttpResponse(toByteArray(jsonURL), "application/json");
-                jsonResponse.setResponseCharset("UTF-8");
                 expectGet(jsonURL, jsonResponse);
 
                 final MockHttpResponse pngResponse =

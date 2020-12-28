@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
-import org.geotools.data.wfs.WFSTestData.TestWFSClient;
+import org.geotools.data.wfs.TestWFSClient;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.ows.ServiceException;

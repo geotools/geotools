@@ -16,7 +16,6 @@
  */
 package org.geotools.data.wfs.internal.v1_1;
 
-import static org.geotools.data.wfs.WFSTestData.MockHTTPClient;
 import static org.geotools.data.wfs.WFSTestData.createTestProtocol;
 import static org.geotools.data.wfs.WFSTestData.stream;
 import static org.geotools.data.wfs.WFSTestData.url;
@@ -29,10 +28,11 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestHttpResponse;
+import org.geotools.data.wfs.TestWFSClient;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.data.wfs.WFSTestData.TestWFSClient;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.jts.JTS;
@@ -66,7 +66,7 @@ public class AxisOrderTest {
 
         TestWFSClient wfs =
                 createTestProtocol(
-                        "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
+                        "axisorder/GetCapabilities.xml", new TestHttpClient(httpResponse));
 
         // axis order used will be NORTH / EAST
         wfs.setAxisOrderOverride(
@@ -114,7 +114,7 @@ public class AxisOrderTest {
                         stream("axisorder/GetFeaturesByBBox.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
-                        "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
+                        "axisorder/GetCapabilities.xml", new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(url("axisorder/DescribeFeatureType.xsd"));
@@ -157,7 +157,7 @@ public class AxisOrderTest {
                         stream("axisorder/GetFeaturesByBBox.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
-                        "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
+                        "axisorder/GetCapabilities.xml", new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(url("axisorder/DescribeFeatureType.xsd"));
@@ -202,7 +202,7 @@ public class AxisOrderTest {
                         stream("axisorder/GetFeaturesByBBox.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
-                        "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
+                        "axisorder/GetCapabilities.xml", new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(url("axisorder/DescribeFeatureType.xsd"));
@@ -243,7 +243,7 @@ public class AxisOrderTest {
                         stream("axisorder/GetFeatureById4326.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
-                        "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
+                        "axisorder/GetCapabilities.xml", new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(url("axisorder/DescribeFeatureType.xsd"));
@@ -289,7 +289,7 @@ public class AxisOrderTest {
                         stream("axisorder/GetFeatureById.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
-                        "axisorder/GetCapabilities.xml", new MockHTTPClient(httpResponse));
+                        "axisorder/GetCapabilities.xml", new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(url("axisorder/DescribeFeatureType.xsd"));

@@ -34,10 +34,10 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.crs.ReprojectFeatureReader;
+import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestHttpResponse;
+import org.geotools.data.wfs.TestWFSClient;
 import org.geotools.data.wfs.WFSDataStore;
-import org.geotools.data.wfs.WFSTestData.MockHTTPClient;
-import org.geotools.data.wfs.WFSTestData.TestWFSClient;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.ows.ServiceException;
@@ -101,7 +101,7 @@ public class DataStoreTest {
                 new TestHttpResponse("", "UTF-8", CUBEWERX_GOVUNITCE.SCHEMA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
-                        CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
+                        CUBEWERX_GOVUNITCE.CAPABILITIES, new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(CUBEWERX_GOVUNITCE.SCHEMA);
@@ -128,7 +128,7 @@ public class DataStoreTest {
                         stream("CubeWerx_nsdi/1.1.0/gml212.xml"));
         TestWFSClient wfs =
                 createTestProtocol(
-                        CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
+                        CUBEWERX_GOVUNITCE.CAPABILITIES, new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(CUBEWERX_GOVUNITCE.SCHEMA);
@@ -165,7 +165,7 @@ public class DataStoreTest {
                         CUBEWERX_GOVUNITCE.DATA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
-                        CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
+                        CUBEWERX_GOVUNITCE.CAPABILITIES, new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(CUBEWERX_GOVUNITCE.SCHEMA);
@@ -209,7 +209,7 @@ public class DataStoreTest {
                         CUBEWERX_GOVUNITCE.DATA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
-                        CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
+                        CUBEWERX_GOVUNITCE.CAPABILITIES, new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(CUBEWERX_GOVUNITCE.SCHEMA);
@@ -255,7 +255,7 @@ public class DataStoreTest {
                         CUBEWERX_GOVUNITCE.DATA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
-                        CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
+                        CUBEWERX_GOVUNITCE.CAPABILITIES, new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(CUBEWERX_GOVUNITCE.SCHEMA);
@@ -287,7 +287,7 @@ public class DataStoreTest {
                         CUBEWERX_GOVUNITCE.DATA.openStream());
         TestWFSClient wfs =
                 createTestProtocol(
-                        CUBEWERX_GOVUNITCE.CAPABILITIES, new MockHTTPClient(httpResponse));
+                        CUBEWERX_GOVUNITCE.CAPABILITIES, new TestHttpClient(httpResponse));
 
         // override the describe feature type url so it loads from the test resource
         wfs.setDescribeFeatureTypeURLOverride(CUBEWERX_GOVUNITCE.SCHEMA);

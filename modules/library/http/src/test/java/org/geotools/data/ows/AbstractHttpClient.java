@@ -17,7 +17,7 @@
 package org.geotools.data.ows;
 
 /**
- * A base class for HTTPClient
+ * A base class for HTTPClient, that implements everything except the get and post methods.
  *
  * @author Andrea Aime - GeoSolutions
  */

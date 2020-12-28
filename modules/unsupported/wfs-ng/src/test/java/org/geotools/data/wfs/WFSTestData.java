@@ -175,7 +175,7 @@ public class WFSTestData {
      */
     public static TestWFSClient createTestProtocol(String capabilitiesFileName)
             throws ServiceException, FileNotFoundException, IOException {
-        return createTestProtocol(capabilitiesFileName, new TestHttpClient(null));
+        return createTestProtocol(capabilitiesFileName, new TestHttpClient());
     }
 
     /**
@@ -186,7 +186,7 @@ public class WFSTestData {
      */
     public static TestWFSClient createTestProtocol(URL capabilitiesURL)
             throws ServiceException, IOException {
-        return new TestWFSClient(capabilitiesURL, new TestHttpClient(null));
+        return new TestWFSClient(capabilitiesURL, new TestHttpClient());
     }
 
     /**

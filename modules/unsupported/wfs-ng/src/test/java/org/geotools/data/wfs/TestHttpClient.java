@@ -21,12 +21,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import org.apache.commons.io.IOUtils;
-import org.geotools.data.ows.AbstractHttpClient;
 import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.MockHttpClient;
 
-public class TestHttpClient extends AbstractHttpClient {
-
-    private HTTPResponse mockResponse;
+/** HTTPClient that returns a mockResponse for get and post. */
+public class TestHttpClient extends MockHttpClient {
 
     public URL targetUrl;
 
@@ -36,19 +35,27 @@ public class TestHttpClient extends AbstractHttpClient {
 
     public ByteArrayOutputStream postCallbackEncodedRequestBody;
 
-    public TestHttpClient(HTTPResponse mockResponse) {
-        this.mockResponse = mockResponse;
-    }
+    public TestHttpClient() {}
 
+    /**
+     * Keeps the targetUrl.
+     *
+     * @return mockResponse The response set in the constructor
+     */
     @Override
     public HTTPResponse get(final URL baseUrl) throws IOException {
         if (baseUrl.getProtocol().equals("file")) {
             return new TestHttpResponse(baseUrl, "text/xml");
         }
         this.targetUrl = baseUrl;
-        return mockResponse;
+        return super.get(baseUrl);
     }
 
+    /**
+     * Keeps the incoming postContent in public variables.
+     *
+     * @return mockResponse The response set in the contructor
+     */
     @Override
     public HTTPResponse post(
             final URL url, final InputStream postContent, final String postContentType)
@@ -59,6 +66,6 @@ public class TestHttpClient extends AbstractHttpClient {
         IOUtils.copy(postContent, out);
         this.postCallbackEncodedRequestBody = out;
         this.postCallbackContentLength = out.size();
-        return mockResponse;
+        return super.post(url, postContent, postContentType);
     }
 }

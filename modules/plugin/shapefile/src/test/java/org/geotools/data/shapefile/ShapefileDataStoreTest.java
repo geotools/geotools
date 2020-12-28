@@ -2058,8 +2058,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                             gf.createPolygon(
                                     new CoordinateXYZM[] {
                                         new CoordinateXYZM(1, -1, 1, 1),
-                                        new CoordinateXYZM(2, 0, 1, 2),
                                         new CoordinateXYZM(3, 1, 1, 2),
+                                        new CoordinateXYZM(2, 0, 1, 2),
                                         new CoordinateXYZM(1, -1, 1, 1)
                                     })
                         }));

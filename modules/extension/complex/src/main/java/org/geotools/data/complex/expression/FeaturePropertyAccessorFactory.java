@@ -270,7 +270,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                 }
             }
 
-            if (results.size() == 0) {
+            if (results.isEmpty()) {
                 throw new IllegalArgumentException("x-path gives no results.");
             } else if (results.size() == 1) {
                 return (T) results.get(0);

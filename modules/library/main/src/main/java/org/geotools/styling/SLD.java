@@ -1639,10 +1639,10 @@ public class SLD {
             ruleSet.addAll(fts.rules());
         }
 
-        if (ruleSet.size() > 0) {
-            return ruleSet.toArray(new Rule[0]);
-        } else {
+        if (ruleSet.isEmpty()) {
             return new Rule[0];
+        } else {
+            return ruleSet.toArray(new Rule[0]);
         }
     }
 
@@ -1660,10 +1660,10 @@ public class SLD {
             }
         }
 
-        if (symbolizers.size() > 0) {
-            return symbolizers.toArray(new Symbolizer[0]);
-        } else {
+        if (symbolizers.isEmpty()) {
             return new Symbolizer[0];
+        } else {
+            return symbolizers.toArray(new Symbolizer[0]);
         }
     }
 
@@ -1677,10 +1677,10 @@ public class SLD {
         Set<Symbolizer> symbolizers = new HashSet<>();
         symbolizers.addAll(rule.symbolizers());
 
-        if (symbolizers.size() > 0) {
-            return symbolizers.toArray(new Symbolizer[0]);
-        } else {
+        if (symbolizers.isEmpty()) {
             return new Symbolizer[0];
+        } else {
+            return symbolizers.toArray(new Symbolizer[0]);
         }
     }
 
@@ -1702,10 +1702,10 @@ public class SLD {
             }
         }
 
-        if (colorSet.size() > 0) {
-            return colorSet.toArray(new String[0]);
-        } else {
+        if (colorSet.isEmpty()) {
             return new String[0];
+        } else {
+            return colorSet.toArray(new String[0]);
         }
     }
 
@@ -1738,10 +1738,10 @@ public class SLD {
             }
         }
 
-        if (colorSet.size() > 0) {
-            return colorSet.toArray(new String[0]);
-        } else {
+        if (colorSet.isEmpty()) {
             return new String[0];
+        } else {
+            return colorSet.toArray(new String[0]);
         }
     }
 

@@ -2132,7 +2132,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             dialect.initializeConnection(cx);
 
             // if there is any lifecycle listener use it
-            if (connectionLifecycleListeners.size() > 0) {
+            if (!connectionLifecycleListeners.isEmpty()) {
                 List<ConnectionLifecycleListener> locals =
                         new ArrayList<>(connectionLifecycleListeners);
                 return new LifecycleConnection(this, cx, locals);
@@ -2376,7 +2376,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         InProcessLockingManager lm = (InProcessLockingManager) getLockingManager();
         // verify if we have any lock to check
         Map locks = lm.locks(featureType.getTypeName());
-        if (locks.size() != 0) {
+        if (!locks.isEmpty()) {
             // limiting query to only extract locked features
             if (locks.size() <= MAX_IDS_IN_FILTER) {
                 Set<FeatureId> ids = getLockedIds(locks);

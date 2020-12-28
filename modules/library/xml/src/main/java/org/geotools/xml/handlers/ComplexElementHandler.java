@@ -174,7 +174,7 @@ public class ComplexElementHandler extends XMLElementHandler {
      *
      */
     private void validateElementOrder() throws SAXException {
-        if ((elements == null) || (elements.size() == 0)) {
+        if ((elements == null) || (elements.isEmpty())) {
             // TODO ensure we have enough elements
             return;
         }

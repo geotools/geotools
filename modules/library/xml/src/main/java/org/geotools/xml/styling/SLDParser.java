@@ -888,7 +888,7 @@ public class SLDParser {
             }
         }
 
-        if (sti.size() > 0) {
+        if (!sti.isEmpty()) {
             ft.semanticTypeIdentifiers().clear();
             sti.forEach(s -> ft.semanticTypeIdentifiers().add(SemanticType.valueOf(s)));
         }
@@ -1030,7 +1030,10 @@ public class SLDParser {
             } else continue;
         }
 
-        if (translations.size() > 0) {
+        if (translations.isEmpty()) {
+            String simpleText = getFirstChildValue(root);
+            return new SimpleInternationalString(simpleText == null ? "" : simpleText);
+        } else {
             GrowableInternationalString intString =
                     new GrowableInternationalString(text.toString()) {
 
@@ -1043,9 +1046,6 @@ public class SLDParser {
                 intString.add("", "_" + lang, translations.get(lang));
             }
             return intString;
-        } else {
-            String simpleText = getFirstChildValue(root);
-            return new SimpleInternationalString(simpleText == null ? "" : simpleText);
         }
     }
 
@@ -2288,7 +2288,7 @@ public class SLDParser {
             } else continue;
         }
 
-        if (expressions.size() == 0 && LOGGER.isLoggable(Level.FINEST)) {
+        if (expressions.isEmpty() && LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("no children in CssParam");
         }
 
@@ -2296,7 +2296,7 @@ public class SLDParser {
             // remove all leading white spaces, which means, find all
             // string literals, remove the white space ones, eventually
             // remove the leading white space form the first non white space one
-            while (expressions.size() > 0) {
+            while (!expressions.isEmpty()) {
                 Expression ex = expressions.get(0);
 
                 // if it's not a string literal we're done
@@ -2326,7 +2326,7 @@ public class SLDParser {
             }
 
             // remove also all trailing white spaces the same way
-            while (expressions.size() > 0) {
+            while (!expressions.isEmpty()) {
                 final int idx = expressions.size() - 1;
                 Expression ex = expressions.get(idx);
 

@@ -94,7 +94,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                 throw new ProcessException(
                         Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "operationAttribute"));
             }
-            if (groupingAttributes == null || groupingAttributes.size() == 0) {
+            if (groupingAttributes == null || groupingAttributes.isEmpty()) {
                 throw new ProcessException(
                         Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "groupingAttributes"));
             }
@@ -172,7 +172,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             if (!sortByAlreadyExists(sorts, pn))
                 newSorts.add(new SortByImpl(pn, SortOrder.ASCENDING));
         }
-        if (newSorts.size() > 0) {
+        if (!newSorts.isEmpty()) {
             if (sorts == null) return newSorts.toArray(new SortBy[newSorts.size()]);
             else return ArrayUtils.addAll(sorts, newSorts.toArray(new SortBy[newSorts.size()]));
         }
@@ -327,7 +327,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                 Object val = p.evaluate(f);
                 if (val != null) toCompareValues.add(p.evaluate(f));
             }
-            if (toCompareValues.size() == 0) toCompareValues = null;
+            if (toCompareValues.isEmpty()) toCompareValues = null;
             if (groupingValues == null && toCompareValues == null) return true;
             else if (groupingValues != null
                     && toCompareValues != null
@@ -340,7 +340,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                 Object result = p.evaluate(f);
                 groupingValues.add(result);
             }
-            if (groupingValues.size() == 0) return null;
+            if (groupingValues.isEmpty()) return null;
             else return groupingValues;
         }
 

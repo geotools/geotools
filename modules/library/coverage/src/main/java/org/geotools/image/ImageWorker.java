@@ -5030,7 +5030,7 @@ public class ImageWorker {
                 rasterROIs.add(roi);
             }
         }
-        if (vectorReference == null && vectorROIs.size() > 0) {
+        if (vectorReference == null && !vectorROIs.isEmpty()) {
             vectorReference = vectorROIs.remove(0);
         }
         // accumulate the vector ROIs, if any
@@ -5039,7 +5039,7 @@ public class ImageWorker {
         }
 
         // optimization in case we end up with just one ROI, no need to mosaic
-        if (rasterROIs.size() == 0) {
+        if (rasterROIs.isEmpty()) {
             return vectorReference;
         } else if (rasterROIs.size() == 1 && vectorReference == null) {
             return rasterROIs.get(0);

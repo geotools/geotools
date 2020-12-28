@@ -68,7 +68,7 @@ public class QueryTypeBinding extends ComplexEMFBinding {
     public Object getProperty(Object object, QName name) throws Exception {
         if ("aliases".equalsIgnoreCase(name.getLocalPart())) {
             List aliases = ((QueryType) object).getAliases();
-            if (aliases.size() == 0) return null;
+            if (aliases.isEmpty()) return null;
 
             StringBuffer ret = new StringBuffer();
             for (Object o : aliases) {

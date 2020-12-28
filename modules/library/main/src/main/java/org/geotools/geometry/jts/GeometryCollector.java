@@ -149,7 +149,7 @@ public class GeometryCollector {
 
     private Class guessCollectionType() {
         // empty set? then we'll return an empty point collection
-        if (geometries == null || geometries.size() == 0) {
+        if (geometries == null || geometries.isEmpty()) {
             return GeometryCollection.class;
         }
 

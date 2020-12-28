@@ -307,7 +307,7 @@ public class FeatureTypeMapping {
                 candidates.add(mapping);
             }
         }
-        if (candidates.size() == 0
+        if (candidates.isEmpty()
                 && propertyName.toString().equals("@gml:id")
                 && getFeatureIdExpression() != null) {
             Expression idExpression = getFeatureIdExpression();
@@ -320,7 +320,7 @@ public class FeatureTypeMapping {
         // i.e. a client property maps to an xml attribute, and the step list
         // could have been generated from an xpath of the form
         // @attName or propA/propB@attName
-        if (candidates.size() == 0 && propertyName.size() > 0) {
+        if (candidates.isEmpty() && propertyName.size() > 0) {
             XPath.Step clientPropertyStep = propertyName.get(propertyName.size() - 1);
             if (clientPropertyStep.isXmlAttribute()) {
                 Name clientPropertyName = Types.toTypeName(clientPropertyStep.getName());

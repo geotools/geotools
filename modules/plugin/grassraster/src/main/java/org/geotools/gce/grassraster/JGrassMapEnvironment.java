@@ -632,7 +632,7 @@ public class JGrassMapEnvironment {
         double[] dataRange = new double[2];
         JGrassColorTable colorTable = new JGrassColorTable(this, null);
         List<String> rules = colorTable.getColorRules();
-        if (rules.size() == 0) {
+        if (rules.isEmpty()) {
             return null;
         }
         for (int i = 0; i < rules.size(); i++) {

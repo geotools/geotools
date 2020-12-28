@@ -81,7 +81,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
 
     @Override
     public int getCoordinatesDimension() {
-        if (components.size() == 0) {
+        if (components.isEmpty()) {
             return 2;
         }
         int dimension = Integer.MAX_VALUE;
@@ -335,7 +335,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     public String toCurvedText() {
         StringBuilder sb = new StringBuilder("COMPOUNDCURVE ");
 
-        if (components.size() == 0) {
+        if (components.isEmpty()) {
             sb.append("EMPTY");
         } else {
             sb.append("(");

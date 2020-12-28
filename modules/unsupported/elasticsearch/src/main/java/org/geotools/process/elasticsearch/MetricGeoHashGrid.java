@@ -34,7 +34,7 @@ public class MetricGeoHashGrid extends GeoHashGrid {
     @Override
     public void setParams(List<String> params) {
         if (null != params) {
-            if (params.size() >= 1) {
+            if (!params.isEmpty()) {
                 metricKey = params.get(METRIC_KEY_INDEX);
             }
             if (params.size() >= 2) {

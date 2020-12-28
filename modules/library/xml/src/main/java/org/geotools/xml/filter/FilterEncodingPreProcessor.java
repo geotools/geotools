@@ -160,16 +160,16 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
 
         Data data = current.peek();
 
-        if (data.fids.size() > 0) {
+        if (data.fids.isEmpty()) {
+            Set<FeatureId> empty = Collections.emptySet();
+            return ff.id(empty);
+        } else {
             Set<FeatureId> set = new HashSet<>();
             Set<String> fids = data.fids;
             for (String fid : fids) {
                 set.add(ff.featureId(fid));
             }
             return ff.id(set);
-        } else {
-            Set<FeatureId> empty = Collections.emptySet();
-            return ff.id(empty);
         }
     }
 
@@ -355,7 +355,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             current.removeAll(toRemove);
         }
 
-        if (fidSet.size() == 0) {
+        if (fidSet.isEmpty()) {
             return Collections.emptySet();
         }
 

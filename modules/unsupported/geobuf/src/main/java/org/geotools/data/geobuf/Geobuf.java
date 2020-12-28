@@ -851,14 +851,14 @@ public final class Geobuf {
                 for (Value value : values_) {
                     output.writeMessage(13, value);
                 }
-                if (getPropertiesList().size() > 0) {
+                if (!getPropertiesList().isEmpty()) {
                     output.writeUInt32NoTag(114);
                     output.writeUInt32NoTag(propertiesMemoizedSerializedSize);
                 }
                 for (int i = 0; i < properties_.size(); i++) {
                     output.writeUInt32NoTag(properties_.getInt(i));
                 }
-                if (getCustomPropertiesList().size() > 0) {
+                if (!getCustomPropertiesList().isEmpty()) {
                     output.writeUInt32NoTag(122);
                     output.writeUInt32NoTag(customPropertiesMemoizedSerializedSize);
                 }
@@ -2391,14 +2391,14 @@ public final class Geobuf {
                 if (((bitField0_ & 0x00000001) == 0x00000001)) {
                     output.writeEnum(1, type_);
                 }
-                if (getLengthsList().size() > 0) {
+                if (!getLengthsList().isEmpty()) {
                     output.writeUInt32NoTag(18);
                     output.writeUInt32NoTag(lengthsMemoizedSerializedSize);
                 }
                 for (int i = 0; i < lengths_.size(); i++) {
                     output.writeUInt32NoTag(lengths_.getInt(i));
                 }
-                if (getCoordsList().size() > 0) {
+                if (!getCoordsList().isEmpty()) {
                     output.writeUInt32NoTag(26);
                     output.writeUInt32NoTag(coordsMemoizedSerializedSize);
                 }
@@ -2411,7 +2411,7 @@ public final class Geobuf {
                 for (Value value : values_) {
                     output.writeMessage(13, value);
                 }
-                if (getCustomPropertiesList().size() > 0) {
+                if (!getCustomPropertiesList().isEmpty()) {
                     output.writeUInt32NoTag(122);
                     output.writeUInt32NoTag(customPropertiesMemoizedSerializedSize);
                 }
@@ -3534,7 +3534,7 @@ public final class Geobuf {
                 for (Value value : values_) {
                     output.writeMessage(13, value);
                 }
-                if (getCustomPropertiesList().size() > 0) {
+                if (!getCustomPropertiesList().isEmpty()) {
                     output.writeUInt32NoTag(122);
                     output.writeUInt32NoTag(customPropertiesMemoizedSerializedSize);
                 }

@@ -143,7 +143,9 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
         @SuppressWarnings("unchecked")
         List<WGS84BoundingBoxType> bboxList = eType.getWGS84BoundingBox();
-        if (bboxList != null && bboxList.size() > 0) {
+        if (bboxList == null || bboxList.isEmpty()) {
+            return null;
+        } else {
             WGS84BoundingBoxType bboxType = bboxList.get(0);
             @SuppressWarnings("unchecked")
             List<Double> lowerCorner = bboxType.getLowerCorner();
@@ -160,7 +162,6 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
             return latLonBounds;
         }
-        return null;
     }
 
     @SuppressWarnings("unchecked")

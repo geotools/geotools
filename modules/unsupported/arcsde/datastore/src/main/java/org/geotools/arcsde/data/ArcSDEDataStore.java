@@ -775,7 +775,7 @@ public class ArcSDEDataStore implements DataStore {
         verifyUnsupportedSqlConstruct(errors, select.getInto());
         verifyUnsupportedSqlConstruct(errors, select.getJoins());
         verifyUnsupportedSqlConstruct(errors, select.getLimit());
-        if (errors.size() > 0) {
+        if (!errors.isEmpty()) {
             throw new UnsupportedOperationException(
                     "The following constructs are not supported: " + errors);
         }
@@ -786,7 +786,7 @@ public class ArcSDEDataStore implements DataStore {
     private void verifyUnsupportedSqlConstruct(List<Object> errors, Object construct) {
         if (construct instanceof List) {
             List<Object> constructsList = (List<Object>) construct;
-            if (constructsList.size() > 0) {
+            if (!constructsList.isEmpty()) {
                 errors.addAll(constructsList);
             }
         } else if (construct != null) {

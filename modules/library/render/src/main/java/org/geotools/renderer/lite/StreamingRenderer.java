@@ -499,7 +499,7 @@ public class StreamingRenderer implements GTRenderer {
             }
             return;
         }
-        if (renderListeners.size() > 0) {
+        if (!renderListeners.isEmpty()) {
             RenderListener listener;
             for (RenderListener renderListener : renderListeners) {
                 listener = renderListener;
@@ -510,7 +510,7 @@ public class StreamingRenderer implements GTRenderer {
 
     private void fireErrorEvent(Throwable t) {
         LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
-        if (renderListeners.size() > 0) {
+        if (!renderListeners.isEmpty()) {
             Exception e;
             if (t instanceof Exception) {
                 e = (Exception) t;
@@ -1939,7 +1939,7 @@ public class StreamingRenderer implements GTRenderer {
                     filter = filterFactory.or(filter, gfilter);
                 }
 
-                if (bboxes.size() > 0) {
+                if (!bboxes.isEmpty()) {
                     for (int k = 1; k < bboxes.size(); k++) {
                         // filter = filterFactory.or( filter, new FastBBOX(localName, bboxes.get(k),
                         // filterFactory) );

@@ -182,7 +182,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         if (searchIsOver && currentXPath != null && !currentXPath.isEmpty()) {
             StepList lastAttrPath = currentXPath;
             List<Expression> lastAttrExpressions = currentType.findMappingsFor(lastAttrPath, false);
-            if (lastAttrExpressions != null && lastAttrExpressions.size() > 0) {
+            if (lastAttrExpressions != null && !lastAttrExpressions.isEmpty()) {
                 attrDescr.setAttributePath(lastAttrPath);
 
                 // check whether this is a case of feature chaining by reference
@@ -417,7 +417,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
          * @throws IndexOutOfBoundsException if the feature types chain is empty
          */
         public FeatureChainLink getFirstLink() {
-            if (featureChain.size() == 0) {
+            if (featureChain.isEmpty()) {
                 throw new IndexOutOfBoundsException("the list is empty");
             }
             return featureChain.get(0);
@@ -430,7 +430,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
          * @throws IndexOutOfBoundsException if the feature types chain is empty
          */
         public FeatureChainLink getLastLink() {
-            if (featureChain.size() == 0) {
+            if (featureChain.isEmpty()) {
                 throw new IndexOutOfBoundsException("the list is empty");
             }
             return featureChain.get(featureChain.size() - 1);

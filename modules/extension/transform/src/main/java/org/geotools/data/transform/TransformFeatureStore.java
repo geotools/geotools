@@ -61,7 +61,7 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
         }
 
         // check it was possible to invert at least one definition
-        if (inverted.size() == 0) {
+        if (inverted.isEmpty()) {
             throw new IllegalArgumentException(
                     "None of the expressions could be inverted, cannot "
                             + "create a writable transformer");
@@ -72,7 +72,7 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
         for (Definition id : inverted) {
             requiredAttributes.remove(id.getName());
         }
-        if (requiredAttributes.size() > 0) {
+        if (!requiredAttributes.isEmpty()) {
             throw new IllegalArgumentException(
                     "The inverted expressions do not cover some of the required attributes, "
                             + "cannot create a writable transformer. The missing mandatory attributes are: "

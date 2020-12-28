@@ -154,7 +154,7 @@ public class PolygonExtractionProcess implements RasterProcess {
 
         // do we have classification ranges?
         boolean hasClassificationRanges =
-                classificationRanges != null && classificationRanges.size() > 0;
+                classificationRanges != null && !classificationRanges.isEmpty();
 
         // apply the classification by setting 0 as the default value and using 1, ..., numClasses
         // for the other classes.

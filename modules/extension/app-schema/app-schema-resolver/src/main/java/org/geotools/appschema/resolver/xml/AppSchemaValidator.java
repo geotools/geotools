@@ -148,7 +148,7 @@ public class AppSchemaValidator {
      * detail contains the failure messages.
      */
     public void checkForFailures() {
-        if (failures.size() > 0) {
+        if (!failures.isEmpty()) {
             throw new RuntimeException(buildFailureMessage());
         }
     }

@@ -171,7 +171,7 @@ public class Contours {
             if (low.size() == 3 || high.size() == 3) {
                 continue;
             }
-            if (low.size() == 0 || high.size() == 0) {
+            if (low.isEmpty() || high.isEmpty()) {
                 continue;
             }
             QuadEdge[] edges = new QuadEdge[2];

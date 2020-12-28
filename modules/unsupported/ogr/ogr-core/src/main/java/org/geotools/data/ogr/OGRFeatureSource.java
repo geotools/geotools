@@ -208,7 +208,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                     Set<String> extraAttributeSet =
                             new HashSet<>(extraAttributeExtractor.getAttributeNameSet());
                     extraAttributeSet.removeAll(queriedAttributes);
-                    if (extraAttributeSet.size() > 0) {
+                    if (!extraAttributeSet.isEmpty()) {
                         String[] queryProperties =
                                 new String[properties.length + extraAttributeSet.size()];
                         System.arraycopy(properties, 0, queryProperties, 0, properties.length);
@@ -364,7 +364,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                         }
                     }
                 }
-                if (ignoredFields.size() > 0) {
+                if (!ignoredFields.isEmpty()) {
                     String[] ignoredFieldsArr =
                             ignoredFields.toArray(new String[ignoredFields.size()]);
                     ogr.CheckError(ogr.LayerSetIgnoredFields(layer, ignoredFieldsArr));

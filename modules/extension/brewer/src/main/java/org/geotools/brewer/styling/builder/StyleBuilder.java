@@ -82,7 +82,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         }
 
         Style s;
-        if (fts.size() == 0) {
+        if (fts.isEmpty()) {
             s = sf.createNamedStyle();
             s.setName(name);
         } else {

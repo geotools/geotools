@@ -82,9 +82,9 @@ public class DefaultSubmosaicProducerFactory implements SubmosaicProducerFactory
 
                 // Anding all filters together
                 Filter andFilter =
-                        filters.size() > 0
-                                ? FeatureUtilities.DEFAULT_FILTER_FACTORY.and(filters)
-                                : null;
+                        filters.isEmpty()
+                                ? null
+                                : FeatureUtilities.DEFAULT_FILTER_FACTORY.and(filters);
 
                 if (multipleSelectionEntry == null) {
                     // Simpler case... no multiple selections. All filter have already been combined

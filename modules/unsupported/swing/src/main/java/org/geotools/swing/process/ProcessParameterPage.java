@@ -97,7 +97,7 @@ public class ProcessParameterPage extends JPage {
      * running an actual process
      */
     private void createParamMap() {
-        if (fields.size() == 0) {
+        if (fields.isEmpty()) {
             return;
         }
         paramMap = new HashMap<>();

@@ -237,10 +237,10 @@ public class CoverageSlicesCatalog {
                 addTypeName(typeName, false);
             }
 
-            if (this.typeNames.size() > 0) {
-                extractBasicProperties(typeNames.iterator().next());
-            } else {
+            if (this.typeNames.isEmpty()) {
                 extractBasicProperties(typeName);
+            } else {
+                extractBasicProperties(typeNames.iterator().next());
             }
         } catch (Throwable e) {
             try {

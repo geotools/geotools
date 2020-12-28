@@ -119,7 +119,7 @@ public class Validator {
 
             Set<String> dependencies = validationProcessor.getDependencies(typeRef);
             LOGGER.finer("typeRef " + typeRef + " requires " + dependencies);
-            if (dependencies != null && dependencies.size() > 0) typeRefs.addAll(dependencies);
+            if (dependencies != null && !dependencies.isEmpty()) typeRefs.addAll(dependencies);
         }
 
         // Grab a source for each typeName we need to check

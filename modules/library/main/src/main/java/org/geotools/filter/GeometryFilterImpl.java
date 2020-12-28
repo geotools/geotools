@@ -107,7 +107,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
                     list.add(geometry);
                 }
             }
-            return list.size() > 0 ? list : null;
+            return list.isEmpty() ? null : list;
         }
 
         return Converters.convert(o, Geometry.class);

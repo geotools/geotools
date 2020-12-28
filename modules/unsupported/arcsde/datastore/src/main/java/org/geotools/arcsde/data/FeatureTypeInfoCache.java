@@ -289,12 +289,12 @@ final class FeatureTypeInfoCache {
                 cacheLock.readLock().lock();
                 Set<String> added = new TreeSet<>(typeNames);
                 added.removeAll(availableLayerNames);
-                if (added.size() > 0) {
+                if (!added.isEmpty()) {
                     LOGGER.finest("FeatureTypeCache: added the following layers: " + added);
                 }
                 removed = new TreeSet<>(availableLayerNames);
                 removed.removeAll(typeNames);
-                if (removed.size() > 0) {
+                if (!removed.isEmpty()) {
                     LOGGER.finest(
                             "FeatureTypeCache: the following layers are no "
                                     + "longer available: "

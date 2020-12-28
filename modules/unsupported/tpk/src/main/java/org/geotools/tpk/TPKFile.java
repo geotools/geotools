@@ -188,12 +188,11 @@ public class TPKFile {
      */
     public Envelope getBounds() {
         if (bounds == null) {
-            if (zoomLevelMap != null && zoomLevelMap.size() > 0) {
-                // calculate the coverage bounds from the highest zoom level tile set
-                calculateBoundsFromTileset(zoomLevelMap.get(getMaxZoomLevel()));
-            } else {
+            if (zoomLevelMap == null || zoomLevelMap.isEmpty()) {
                 throw new RuntimeException("Can't get bounds, zoomLevelMap not initialized");
             }
+            // calculate the coverage bounds from the highest zoom level tile set
+            calculateBoundsFromTileset(zoomLevelMap.get(getMaxZoomLevel()));
         }
         return bounds;
     }

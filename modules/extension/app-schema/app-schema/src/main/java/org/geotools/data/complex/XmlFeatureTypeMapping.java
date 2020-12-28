@@ -162,7 +162,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         for (AttributeMapping attributeMapping : attributeMappings) {
             attMapping = attributeMapping;
             if (sourceExpression.equals(attMapping.getSourceExpression())) {
-                if (mappings.size() == 0) {
+                if (mappings.isEmpty()) {
                     mappings = new ArrayList<>(2);
                 }
                 mappings.add(attMapping);
@@ -316,7 +316,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
 
     private void addClientProperties(AttributeMapping attMapping, String prefix, String label) {
         Map<Name, Expression> clientProperties = attMapping.getClientProperties();
-        if (clientProperties.size() != 0) {
+        if (!clientProperties.isEmpty()) {
 
             for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
                 Name propName = entry.getKey();

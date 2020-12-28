@@ -306,7 +306,7 @@ public class SLDStyleFactory {
                 sae.visit(symbolizer);
 
                 Set nameSet = sae.getAttributeNameSet();
-                boolean noAttributes = (nameSet == null) || (nameSet.size() == 0);
+                boolean noAttributes = (nameSet == null) || (nameSet.isEmpty());
                 if (noAttributes && !sae.isUsingVolatileFunctions()) {
                     staticSymbolizers.put(key, style);
                 } else {

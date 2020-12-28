@@ -162,7 +162,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             return ff.id(empty);
         }
         Data data = current.peek();
-        if (data.fids.size() > 0) {
+        if (!data.fids.isEmpty()) {
             Set<FeatureId> set = new HashSet<>();
             Set<String> fids = data.fids;
             for (String fid : fids) {
@@ -484,7 +484,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             current.removeAll(toRemove);
         }
 
-        if (fidSet.size() == 0) {
+        if (fidSet.isEmpty()) {
             return Collections.emptySet();
         }
 

@@ -923,7 +923,7 @@ public class DocumentWriter {
 
                 ph.startElement(XSISimpleTypes.NAMESPACE, "union", ai);
 
-                if (childTs.size() > 0) {
+                if (!childTs.isEmpty()) {
                     Iterator i = childTs.iterator();
 
                     while (i.hasNext()) writeSimpleType((SimpleType) i.next(), schema, ph, hints);

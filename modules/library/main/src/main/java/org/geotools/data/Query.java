@@ -946,7 +946,7 @@ public class Query {
 
         returnString.append("\n   [properties: ");
 
-        if ((properties == null) || (properties.size() == 0)) {
+        if ((properties == null) || (properties.isEmpty())) {
             returnString.append(" ALL ]");
         } else {
             for (int i = 0; i < properties.size(); i++) {

@@ -227,7 +227,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
 
         List<XSDParticle> anyElementParticles =
                 new ArrayList<>(Schemas.getAnyElementParticles(element.getTypeDefinition()));
-        if (anyElementParticles.size() > 0) {
+        if (!anyElementParticles.isEmpty()) {
             Collection complexAtts = null;
             if (object instanceof Collection) {
                 // collection of features

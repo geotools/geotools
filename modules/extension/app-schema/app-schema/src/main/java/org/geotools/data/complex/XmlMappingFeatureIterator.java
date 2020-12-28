@@ -321,7 +321,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         // FIXME should set a child Property.. but be careful for things that
         // are smuggled in there internally and don't exist in the schema, like
         // XSDTypeDefinition, CRS etc.
-        if (targetAttributes.size() > 0) {
+        if (!targetAttributes.isEmpty()) {
             target.getUserData().put(Attributes.class, targetAttributes);
         }
         setGeometryUserData(target, targetAttributes);

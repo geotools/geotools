@@ -522,7 +522,7 @@ public abstract class AbstractFilterBuilder {
             // retrieves all part of identifier from result stack
             ArrayList<String> arrayParts = new ArrayList<>();
 
-            while (this.resultStack.size() > 0) {
+            while (!this.resultStack.empty()) {
                 Result r = this.resultStack.peek();
 
                 if (r.getNodeType() != nodeIdentifier) {
@@ -532,7 +532,7 @@ public abstract class AbstractFilterBuilder {
                 part = removeFirstAndLastDoubleQuote(part);
                 arrayParts.add(part);
             }
-            assert arrayParts.size() >= 1
+            assert !arrayParts.isEmpty()
                     : "postcondition: the list of identifier part must have one or more elements ";
 
             // makes the identifier
@@ -553,7 +553,7 @@ public abstract class AbstractFilterBuilder {
             return identifier.toString();
 
         } catch (CQLException e) {
-            throw new CQLException("Fail builing identifier: " + e.getMessage(), this.cqlSource);
+            throw new CQLException("Fail building identifier: " + e.getMessage(), this.cqlSource);
         }
     }
 
@@ -602,7 +602,7 @@ public abstract class AbstractFilterBuilder {
         ArrayList<String> arrayIdentifiers = new ArrayList<>();
 
         // precondition: stack has one or more simple attributes
-        while (this.resultStack.size() > 0) {
+        while (!this.resultStack.empty()) {
             Result r = this.resultStack.peek();
 
             if (r.getNodeType() != nodeSimpleAttr) {

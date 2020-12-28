@@ -837,7 +837,7 @@ public class CssTranslator {
                 if (others.size() == 1) {
                     final CssRule r = deriveWithSelector(rule, others.get(0));
                     result.add(r);
-                } else if (others.size() > 0) {
+                } else if (!others.isEmpty()) {
                     final CssRule r = deriveWithSelector(rule, new Or(others));
                     result.add(r);
                 }

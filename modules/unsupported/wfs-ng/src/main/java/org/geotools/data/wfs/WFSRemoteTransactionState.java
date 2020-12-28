@@ -166,7 +166,7 @@ class WFSRemoteTransactionState implements State {
 
         // Create a single insert element with all the inserts for this type
         final Map<String, SimpleFeature> added = diff.getAdded();
-        if (added.size() > 0) {
+        if (!added.isEmpty()) {
             Insert insert = transactionRequest.createInsert(remoteTypeName);
 
             SimpleFeatureBuilder builder = new SimpleFeatureBuilder(remoteType);

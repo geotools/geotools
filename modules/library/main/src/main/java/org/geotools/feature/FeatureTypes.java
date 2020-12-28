@@ -757,10 +757,6 @@ public class FeatureTypes {
         // null == null handled above
         if (a == null || b == null) return false;
 
-        if (a != null && a.size() == 0 && b == null) return true;
-
-        if (b != null && b.size() == 0 && a == null) return true;
-
         return a.equals(b);
     }
 

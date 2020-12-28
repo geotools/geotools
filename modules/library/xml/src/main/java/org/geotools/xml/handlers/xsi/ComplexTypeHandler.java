@@ -850,7 +850,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                         }
                     }
 
-                    return (l.size() > 0) ? l.toArray(new Element[l.size()]) : null;
+                    return (l.isEmpty()) ? null : l.toArray(new Element[l.size()]);
 
                 case ElementGrouping.ELEMENT:
                     return new Element[] {
@@ -875,7 +875,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                         }
                     }
 
-                    return (l.size() > 0) ? l.toArray(new Element[l.size()]) : null;
+                    return (l.isEmpty()) ? null : l.toArray(new Element[l.size()]);
             }
 
             return null;

@@ -434,7 +434,7 @@ public class XPathUtil {
 
         final List<String> partialSteps = splitPath(expression);
 
-        if (partialSteps.size() == 0) {
+        if (partialSteps.isEmpty()) {
             throw new IllegalArgumentException("no steps provided");
         }
 

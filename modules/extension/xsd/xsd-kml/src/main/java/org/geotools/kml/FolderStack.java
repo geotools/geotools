@@ -35,7 +35,7 @@ public class FolderStack implements Iterable<Folder> {
     }
 
     private boolean elementsExist() {
-        return stack.size() > 0;
+        return !stack.isEmpty();
     }
 
     public Folder pop() {

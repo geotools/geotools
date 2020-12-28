@@ -106,10 +106,10 @@ public class EqualAreaListVisitor implements FeatureCalc {
                 currentBin = new ArrayList<>();
             }
         }
-        if (currentBin.size() > 0) {
-            bins[binIndex] = currentBin;
-        } else {
+        if (currentBin.isEmpty()) {
             binIndex--;
+        } else {
+            bins[binIndex] = currentBin;
         }
 
         // it is possible that we have created less bin than requested

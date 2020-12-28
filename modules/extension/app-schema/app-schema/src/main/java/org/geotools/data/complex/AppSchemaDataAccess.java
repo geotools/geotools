@@ -456,7 +456,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             boolean includeMandatory) {
         List<PropertyName> propNames = new ArrayList<>();
         final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
-        if (requestedProperties != null && requestedProperties.size() > 0) {
+        if (requestedProperties != null && !requestedProperties.isEmpty()) {
             requestedProperties = new ArrayList<>(requestedProperties);
             Set<PropertyName> requestedSurrogateProperties = new HashSet<>();
             // extension point allowing stores to contribute properties

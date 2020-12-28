@@ -67,7 +67,7 @@ public class AttributeNodeIterator implements NodeIterator {
             children = new ArrayList<>(feature.getProperties(name));
         }
 
-        position = children.size() > 0 ? 1 : 0;
+        position = children.isEmpty() ? 0 : 1;
     }
 
     public int getPosition() {

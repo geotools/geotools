@@ -357,6 +357,7 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         }
     }
 
+    @SuppressWarnings("PMD.ReplaceHashtableWithMap")
     protected BufferedImage getStartImage(BufferedImage copyFrom, int width, int height) {
         Hashtable<String, Object> properties = null;
 

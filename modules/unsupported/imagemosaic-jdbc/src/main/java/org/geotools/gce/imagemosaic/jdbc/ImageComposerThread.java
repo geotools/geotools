@@ -93,6 +93,7 @@ public class ImageComposerThread extends Thread {
         return new Dimension(width, height);
     }
 
+    @SuppressWarnings("PMD.ReplaceHashtableWithMap")
     private BufferedImage getStartImage(BufferedImage copyFrom) {
         Dimension dim = getStartDimension();
         Hashtable<String, Object> properties = null;

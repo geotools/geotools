@@ -19,9 +19,9 @@ package org.geotools.data.vpf.readers;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 import org.geotools.data.vpf.VPFFeatureClass;
 import org.geotools.data.vpf.VPFFeatureType;
 import org.geotools.data.vpf.VPFLibrary;
@@ -71,7 +71,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
         Polygon result = null;
         GeometryFactory geometryFactory = new GeometryFactory();
         LinearRing outerRing = null;
-        List<LinearRing> innerRings = new Vector<>();
+        List<LinearRing> innerRings = new ArrayList<>();
 
         // Get face information
         // TODO: turn these column names into constants

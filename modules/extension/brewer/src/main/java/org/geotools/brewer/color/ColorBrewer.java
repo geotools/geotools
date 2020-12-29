@@ -21,10 +21,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -53,7 +55,7 @@ public class ColorBrewer {
     public static final PaletteType QUALITATIVE = new PaletteType(false, true, "QUALITATIVE");
     String name = null;
     String description = null;
-    Hashtable<String, BrewerPalette> palettes = new Hashtable<>();
+    Map<String, BrewerPalette> palettes = new HashMap<>();
 
     /** Creates a new instance of ColorBrewer */
     public ColorBrewer() {}

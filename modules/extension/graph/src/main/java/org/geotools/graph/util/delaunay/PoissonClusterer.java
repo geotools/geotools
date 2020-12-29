@@ -16,9 +16,10 @@
  */
 package org.geotools.graph.util.delaunay;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
@@ -38,8 +39,8 @@ public class PoissonClusterer {
             Graph incoming, Expression base, Expression target, double meanRate, int distance) {
         Collection<Node> nodes = incoming.getNodes();
         Iterator<Node> nodeIt = nodes.iterator();
-        Vector<Node> clusterNodes = new Vector<>();
-        Vector<Edge> clusterEdges = new Vector<>();
+        List<Node> clusterNodes = new ArrayList<>();
+        List<Edge> clusterEdges = new ArrayList<>();
         // System.out.println("x, y, actual, expected, probability");
         while (nodeIt.hasNext()) {
             DelaunayNode next = (DelaunayNode) nodeIt.next();
@@ -64,8 +65,8 @@ public class PoissonClusterer {
             double totalBase = ((Number) baseObj).doubleValue();
             double totalTarget = ((Number) targetObj).doubleValue();
 
-            Collection<Edge> newEdges = new Vector<>();
-            Vector<Node> newNodes = new Vector<>();
+            Collection<Edge> newEdges = new ArrayList<>();
+            List<Node> newNodes = new ArrayList<>();
             newNodes.add(next);
 
             if (distance == 1) {
@@ -73,7 +74,7 @@ public class PoissonClusterer {
                 newEdges = next.getEdges();
                 //                System.out.println("this node has " + newEdges.size() + " edges");
                 Iterator<Edge> edgeIt = newEdges.iterator();
-                Vector<Edge> removals = new Vector<>();
+                List<Edge> removals = new ArrayList<>();
                 while (edgeIt.hasNext()) {
                     DelaunayEdge nextEdge = (DelaunayEdge) edgeIt.next();
                     if (nextEdge.getEuclideanDistance() > 30) {
@@ -115,8 +116,8 @@ public class PoissonClusterer {
             } else {
                 for (int i = 0; i <= distance; i++) {
                     Iterator<Node> nodeIt2 = newNodes.iterator();
-                    Vector<Node> nodesToAdd = new Vector<>();
-                    Vector<Edge> edgesToAdd = new Vector<>();
+                    List<Node> nodesToAdd = new ArrayList<>();
+                    List<Edge> edgesToAdd = new ArrayList<>();
                     while (nodeIt2.hasNext()) {
                         DelaunayNode next2 = (DelaunayNode) nodeIt2.next();
                         //                        System.out.println("expanding from " + next2);

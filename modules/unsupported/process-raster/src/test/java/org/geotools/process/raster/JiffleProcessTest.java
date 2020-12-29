@@ -11,8 +11,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.function.Consumer;
 import javax.media.jai.RenderedOp;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -150,7 +150,7 @@ public class JiffleProcessTest {
 
         // the two coverages have the same grid geometry, no need to resample them via
         // GridCoverage2DRIA
-        Vector sources = ((RenderedOp) result.getRenderedImage()).getSources();
+        List sources = ((RenderedOp) result.getRenderedImage()).getSources();
         assertEquals(c1.getRenderedImage(), sources.get(0));
         assertEquals(c2.getRenderedImage(), sources.get(1));
     }

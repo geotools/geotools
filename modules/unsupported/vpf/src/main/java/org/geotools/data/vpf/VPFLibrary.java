@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.logging.Level;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -105,7 +104,7 @@ public class VPFLibrary extends ContentDataStore {
     /** The name of the library */
     private final String libraryName;
     /** The coverages that are in the library */
-    private final List<VPFCoverage> coverages = new Vector<>();
+    private final List<VPFCoverage> coverages = new ArrayList<>();
     /** The coordinate reference system used through this library */
     private CoordinateReferenceSystem crs;
     /** Signals if an error has already been logged for a CRS related exception */

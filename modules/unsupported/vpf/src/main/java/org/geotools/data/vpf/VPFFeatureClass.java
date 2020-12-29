@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.Vector;
 import java.util.logging.Level;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
@@ -75,7 +74,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     private SimpleFeatureType featureType;
 
     /** The columns that are part of this feature class */
-    private final List<VPFColumn> columns = new Vector<>();
+    private final List<VPFColumn> columns = new ArrayList<>();
 
     private final Map<String, ColumnSet> columnSet = new LinkedHashMap<>();
     private final Map<String, TableRelation> relations = new LinkedHashMap<>();

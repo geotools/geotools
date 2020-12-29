@@ -18,7 +18,8 @@ package org.geotools.xml.styling;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -39,7 +40,7 @@ import org.w3c.dom.NodeList;
 public class SLDInlineFeatureParser {
 
     /** hash table that takes a epsg# to its definition* */
-    private static Hashtable<Integer, CoordinateReferenceSystem> SRSLookup = new Hashtable<>();
+    private static Map<Integer, CoordinateReferenceSystem> SRSLookup = new HashMap<>();
 
     public SimpleFeatureType featureType = null;
     public DataStore dataStore = null;

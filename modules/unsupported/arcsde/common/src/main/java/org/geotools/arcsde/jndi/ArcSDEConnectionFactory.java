@@ -79,6 +79,7 @@ import org.geotools.arcsde.session.SessionPoolFactory;
  * @version $Id$
  * @since 2.5.7
  */
+@SuppressWarnings("PMD.ReplaceHashtableWithMap") // legacy code
 public class ArcSDEConnectionFactory implements ObjectFactory {
 
     private static final Logger LOGGER = Loggers.getLogger("org.geotools.arcsde.jndi");

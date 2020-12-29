@@ -16,7 +16,8 @@
  */
 package org.geotools.renderer.lite;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -24,8 +25,8 @@ import org.opengis.filter.expression.Expression;
 /** @author jfc173 */
 public class GlyphPropertiesList {
 
-    private Vector<GlyphProperty> list = new Vector<>();
-    private Vector<String> names = new Vector<>();
+    private List<GlyphProperty> list = new ArrayList<>();
+    private List<String> names = new ArrayList<>();
     private FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
 
     /** Creates a new instance of GlyphPropertiesList */

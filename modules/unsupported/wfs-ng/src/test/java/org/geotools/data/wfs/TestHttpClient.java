@@ -16,6 +16,7 @@
  */
 package org.geotools.data.wfs;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,14 +29,6 @@ import org.geotools.data.ows.MockHttpClient;
 public class TestHttpClient extends MockHttpClient {
 
     public URL targetUrl;
-
-    public String postCallbackContentType;
-
-    public long postCallbackContentLength = -1;
-
-    public ByteArrayOutputStream postCallbackEncodedRequestBody;
-
-    public TestHttpClient() {}
 
     /**
      * Keeps the targetUrl.
@@ -60,12 +53,20 @@ public class TestHttpClient extends MockHttpClient {
     public HTTPResponse post(
             final URL url, final InputStream postContent, final String postContentType)
             throws IOException {
+
         this.targetUrl = url;
-        this.postCallbackContentType = postContentType;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         IOUtils.copy(postContent, out);
-        this.postCallbackEncodedRequestBody = out;
-        this.postCallbackContentLength = out.size();
-        return super.post(url, postContent, postContentType);
+        String strippedPostContent = out.toString().replaceAll("handle=\"(.*?)\"", "");
+
+        return super.post(
+                url, new ByteArrayInputStream(strippedPostContent.getBytes()), postContentType);
+    }
+
+    @Override
+    public void expectPost(
+            URL url, String postContent, String postContentType, HTTPResponse response) {
+        String strippedPostContent = postContent.toString().replaceAll("handle=\"(.*?)\"", "");
+        super.expectPost(url, strippedPostContent, postContentType, response);
     }
 }

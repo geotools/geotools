@@ -17,8 +17,7 @@
 package org.geotools.data.wfs.internal.v1_1;
 
 import static org.geotools.data.wfs.WFSTestData.CUBEWERX_GOVUNITCE;
-import static org.geotools.data.wfs.WFSTestData.createTestProtocol;
-import static org.geotools.data.wfs.WFSTestData.stream;
+import static org.geotools.data.wfs.WFSTestData.url;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -31,11 +30,11 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import javax.xml.namespace.QName;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.crs.ReprojectFeatureReader;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.TestWFSClient;
@@ -48,6 +47,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -60,6 +60,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 @SuppressWarnings("nls")
 public class DataStoreTest {
+
+    private QName qTypeName =
+            new QName("http://www.fgdc.gov/framework/073004/gubs", "GovernmentalUnitCE", "gubs");
 
     /** Test method for {@link WFS_1_1_0_DataStore#getTypeNames()}. */
     @Test
@@ -82,7 +85,7 @@ public class DataStoreTest {
         };
         List<String> expectedTypeNames = Arrays.asList(expected);
 
-        TestWFSClient wfs = createTestProtocol(CUBEWERX_GOVUNITCE.CAPABILITIES);
+        TestWFSClient wfs = createWFSClient();
 
         WFSDataStore ds = new WFSDataStore(wfs);
 
@@ -99,9 +102,8 @@ public class DataStoreTest {
      */
     @Test
     public void testGetSchema() throws IOException, ServiceException {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse("", "UTF-8", CUBEWERX_GOVUNITCE.SCHEMA.openStream()));
+        TestWFSClient wfs = createWFSClient();
+
         WFSDataStore ds = new WFSDataStore(wfs);
 
         try {
@@ -117,16 +119,11 @@ public class DataStoreTest {
 
     @Test
     public void testGetDefaultOutputFormat() throws IOException, ServiceException {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/2.1.2",
-                                "UTF-8",
-                                stream("CubeWerx_nsdi/1.1.0/gml212.xml")));
+        TestWFSClient wfs = createWFSClient();
+        wfs.setOutputformatOverride("text/xml; subtype=gml/2.1.2");
+        wfs.mockGetFeatureRequest(url("CubeWerx_nsdi/1.1.0/gml212.xml"), qTypeName, Filter.INCLUDE);
 
         WFSDataStore ds = new WFSDataStore(wfs);
-
-        wfs.setOutputformatOverride("text/xml; subtype=gml/2.1.2");
 
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
 
@@ -147,14 +144,10 @@ public class DataStoreTest {
      * DefaultSRS should be done in DefaultSRS and then reprojected.
      */
     @Test
-    public void tesUseDefaultSRS()
+    public void testUseDefaultSRS()
             throws IOException, NoSuchAuthorityCodeException, FactoryException, ServiceException {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                CUBEWERX_GOVUNITCE.DATA.openStream()));
+        TestWFSClient wfs = createWFSClient();
+        wfs.mockGetFeatureRequest(CUBEWERX_GOVUNITCE.DATA, qTypeName, Filter.INCLUDE);
 
         WFSDataStore ds = new WFSDataStore(wfs);
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
@@ -188,12 +181,10 @@ public class DataStoreTest {
     @Test
     public void testUseOtherSRS()
             throws IOException, NoSuchAuthorityCodeException, FactoryException, ServiceException {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                CUBEWERX_GOVUNITCE.DATA.openStream()));
+
+        TestWFSClient wfs = createWFSClient();
+        wfs.mockGetFeatureRequest(CUBEWERX_GOVUNITCE.DATA, qTypeName, Filter.INCLUDE);
+
         WFSDataStore ds = new WFSDataStore(wfs);
         wfs.setUseDefaultSrs(true);
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
@@ -226,15 +217,11 @@ public class DataStoreTest {
      * in a CRS listed in OtherSRS should be done in OtherSRS and not reprojected.
      */
     @Test
-    public void tesUseOtherSRSUsingURN()
+    public void testUseOtherSRSUsingURN()
             throws IOException, NoSuchAuthorityCodeException, FactoryException, ServiceException {
 
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                CUBEWERX_GOVUNITCE.DATA.openStream()));
+        TestWFSClient wfs = createWFSClient();
+        wfs.mockGetFeatureRequest(CUBEWERX_GOVUNITCE.DATA, qTypeName, Filter.INCLUDE);
 
         WFSDataStore ds = new WFSDataStore(wfs);
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
@@ -255,13 +242,9 @@ public class DataStoreTest {
     }
 
     @Test
-    public void tesGetFeatureReader() throws IOException, ServiceException {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                CUBEWERX_GOVUNITCE.DATA.openStream()));
+    public void testGetFeatureReader() throws IOException, ServiceException {
+        TestWFSClient wfs = createWFSClient();
+        wfs.mockGetFeatureRequest(CUBEWERX_GOVUNITCE.DATA, qTypeName, Filter.INCLUDE);
 
         WFSDataStore ds = new WFSDataStore(wfs);
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
@@ -281,19 +264,18 @@ public class DataStoreTest {
         assertFalse(featureReader.hasNext());
     }
 
-    private TestWFSClient createWFSClient(HTTPResponse response)
-            throws IOException, ServiceException {
+    private TestWFSClient createWFSClient() throws IOException, ServiceException {
+        URL capabilitiesUrl =
+                new URL(
+                        "http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework&REQUEST=GetCapabilities&SERVICE=WFS");
+
         TestHttpClient client = new TestHttpClient();
-        client.expectPost(
-                new URL("http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework"),
-                "",
-                "text/xml",
-                response);
+        client.expectGet(
+                capabilitiesUrl, new TestHttpResponse(CUBEWERX_GOVUNITCE.CAPABILITIES, "text/xml"));
 
-        TestWFSClient wfs = createTestProtocol(CUBEWERX_GOVUNITCE.CAPABILITIES, client);
+        TestWFSClient wfs = new TestWFSClient(capabilitiesUrl, client);
 
-        // override the describe feature type url so it loads from the test resource
-        wfs.setDescribeFeatureTypeURLOverride(CUBEWERX_GOVUNITCE.SCHEMA);
+        wfs.mockDescribeFeatureTypeRequest(CUBEWERX_GOVUNITCE.SCHEMA, qTypeName);
 
         return wfs;
     }

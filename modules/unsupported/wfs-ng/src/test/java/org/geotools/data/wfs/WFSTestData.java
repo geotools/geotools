@@ -18,15 +18,10 @@ package org.geotools.data.wfs;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import javax.xml.namespace.QName;
-import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.wfs.internal.WFSConfig;
-import org.geotools.ows.ServiceException;
-import org.geotools.test.TestData;
 
 /** */
 public class WFSTestData {
@@ -163,56 +158,6 @@ public class WFSTestData {
                     new QName("http://www.fgdc.gov/fgdc/gubs", "StatisticalUnit"),
                     "gubs_StatisticalUnit",
                     "EPSG:4269");
-
-    /**
-     * Creates the test {@link #wfs} with a default connection factory that parses the capabilities
-     * object from the test xml file pointed out by {@code capabilitiesFileName}
-     *
-     * <p>Tests methods call this one to set up a protocolHandler to test
-     *
-     * @param capabilitiesFileName the relative path under {@code test-data} for the file containing
-     *     the WFS_Capabilities document.
-     */
-    public static TestWFSClient createTestProtocol(String capabilitiesFileName)
-            throws ServiceException, FileNotFoundException, IOException {
-        return createTestProtocol(capabilitiesFileName, new TestHttpClient());
-    }
-
-    /**
-     * Creates the test {@link #wfs} with the provided connection factory that parses the
-     * capabilities object from the test xml file pointed out by {@code capabilitiesURL}
-     *
-     * <p>Tests methods call this one to set up a protocolHandler to test
-     */
-    public static TestWFSClient createTestProtocol(URL capabilitiesURL)
-            throws ServiceException, IOException {
-        return new TestWFSClient(capabilitiesURL, new TestHttpClient());
-    }
-
-    /**
-     * Creates the test {@link #wfs} with the provided connection factory that parses the
-     * capabilities object from the test xml file pointed out by {@code capabilitiesFileName}
-     *
-     * <p>Tests methods call this one to set up a protocolHandler to test
-     *
-     * @param capabilitiesFileName the relative path under {@code test-data} for the file containing
-     *     the WFS_Capabilities document.
-     */
-    public static TestWFSClient createTestProtocol(String capabilitiesFileName, HTTPClient http)
-            throws ServiceException, FileNotFoundException, IOException {
-        return createTestProtocol(TestData.url(WFSTestData.class, capabilitiesFileName), http);
-    }
-
-    /**
-     * Creates the test {@link #wfs} with the provided connection factory that parses the
-     * capabilities object from the test xml file pointed out by {@code capabilitiesURL}
-     *
-     * <p>Tests methods call this one to set up a protocolHandler to test
-     */
-    public static TestWFSClient createTestProtocol(URL capabilitiesURL, HTTPClient http)
-            throws ServiceException, IOException {
-        return new TestWFSClient(capabilitiesURL, http);
-    }
 
     public static URL url(String resource) {
         URL url = WFSTestData.class.getResource("test-data/" + resource);

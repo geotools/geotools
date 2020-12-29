@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -48,13 +49,17 @@ public class MockHttpClient extends AbstractHttpClient {
         expectedRequests.put(new Request(url), response);
     }
 
+    public void expectPost(URL url, HTTPResponse response) {
+        expectedRequests.put(new Request(url, false), response);
+    }
+
     /** Binds a certain POST request to a response. */
     public void expectPost(
             URL url, String postContent, String postContentType, HTTPResponse response) {
-        expectPOST(url, postContent.getBytes(), postContentType, response);
+        expectPost(url, postContent.getBytes(StandardCharsets.UTF_8), postContentType, response);
     }
 
-    public void expectPOST(
+    public void expectPost(
             URL url, byte[] postContent, String postContentType, HTTPResponse response) {
         expectedRequests.put(new Request(url, postContent, postContentType), response);
     }
@@ -108,7 +113,7 @@ public class MockHttpClient extends AbstractHttpClient {
 
         byte[] postContent;
 
-        public Request(URL url) {
+        public Request(URL url, boolean isGetRequest) {
             this.path = url.getProtocol() + "://" + url.getHost() + url.getPath();
             Map<String, String> parsedQueryString = parseQueryString(url);
             // we use a treemap as it makes it easier to see what's missing when no bound url is
@@ -117,7 +122,16 @@ public class MockHttpClient extends AbstractHttpClient {
             for (Entry<String, String> entry : parsedQueryString.entrySet()) {
                 this.kvp.put(entry.getKey().toUpperCase(), entry.getValue());
             }
-            this.isGetRequest = true;
+            this.isGetRequest = isGetRequest;
+        }
+
+        /**
+         * A Get request
+         *
+         * @param url
+         */
+        public Request(URL url) {
+            this(url, true);
         }
 
         public Map<String, String> parseQueryString(URL url) {
@@ -138,8 +152,7 @@ public class MockHttpClient extends AbstractHttpClient {
         }
 
         public Request(URL url, byte[] postContent, String postContentType) {
-            this(url);
-            this.isGetRequest = false;
+            this(url, false);
             this.postContent = postContent;
             this.contentType = postContentType;
         }
@@ -185,10 +198,12 @@ public class MockHttpClient extends AbstractHttpClient {
                         + path
                         + ", "
                         + kvp
-                        + ", content type "
-                        + contentType
-                        + ", content "
-                        + Arrays.toString(postContent);
+                        + (contentType == null
+                                ? ""
+                                : ", content type "
+                                        + contentType
+                                        + ", content "
+                                        + new String(postContent, StandardCharsets.UTF_8));
             }
         }
     }

@@ -16,8 +16,6 @@
  */
 package org.geotools.data.wfs.internal.v1_1;
 
-import static org.geotools.data.wfs.WFSTestData.createTestProtocol;
-import static org.geotools.data.wfs.WFSTestData.stream;
 import static org.geotools.data.wfs.WFSTestData.url;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -27,8 +25,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
+import javax.xml.namespace.QName;
 import org.geotools.data.Query;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -37,12 +35,14 @@ import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.TestWFSClient;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
+import org.geotools.data.wfs.WFSTestData;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
+import org.geotools.test.TestData;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
@@ -60,14 +60,19 @@ public class AxisOrderTest {
 
     private String typeName = "comuni_comuni11";
 
+    private QName qTypeName = new QName("http://www.tinyows.org/", "comuni11", "comuni");
+
     @Test
     public void testGetFeatureWithNorthEastAxisOrderOutputEPSG4326() throws Exception {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                stream("axisorder/GetFeatureById4326.xml")));
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Set<FeatureId> fids = new HashSet<>();
+        fids.add(new FeatureIdImpl("comuni11.2671"));
+        Query query = new Query(typeName, ff.id(fids));
+
+        TestWFSClient wfs = createWFSClient();
+        wfs.mockGetFeatureRequest(
+                url("axisorder/GetFeatureById4326.xml"), qTypeName, query.getFilter());
 
         // axis order used will be NORTH / EAST
         wfs.setAxisOrderOverride(
@@ -75,13 +80,8 @@ public class AxisOrderTest {
 
         WFSDataStore ds = new WFSDataStore(wfs);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<>();
-        fids.add(new FeatureIdImpl("comuni11.2671"));
-        Query query = new Query(typeName, ff.id(fids));
-
         SimpleFeatureSource source = ds.getFeatureSource(typeName);
-        SimpleFeature feature = iterate(source.getFeatures(query), 1, true);
+        SimpleFeature feature = iterate(source.getFeatures(query), 1);
         Geometry geometry = (Geometry) feature.getDefaultGeometry();
         double x = geometry.getCoordinate().x;
         double y = geometry.getCoordinate().y;
@@ -94,7 +94,7 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         source = ds.getFeatureSource(typeName);
-        feature = iterate(source.getFeatures(query), 1, true);
+        feature = iterate(source.getFeatures(query), 1);
         geometry = (Geometry) feature.getDefaultGeometry();
         x = geometry.getCoordinate().x;
         y = geometry.getCoordinate().y;
@@ -104,12 +104,7 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithEastNorthAxisOrderFilter() throws Exception {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                stream("axisorder/GetFeaturesByBBox.xml")));
+        TestWFSClient wfs = createWFSClient();
 
         WFSDataStore ds = new WFSDataStore(wfs);
 
@@ -119,15 +114,17 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<>();
-        fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query =
                 new Query(
                         typeName,
                         ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857"));
 
-        SimpleFeatureSource source = ds.getFeatureSource(typeName);
-        source.getFeatures(query).features();
+        try {
+            ds.getFeatureSource(typeName).getFeatures(query).features();
+        } catch (IllegalArgumentException ex) {
+            // GetFeature request isn't mocked because it isn't really used
+        }
+
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
         // filter coordinates are NOT inverted
@@ -141,31 +138,28 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithNorthEastAxisOrderFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                stream("axisorder/GetFeaturesByBBox.xml")));
-
-        WFSDataStore ds = new WFSDataStore(wfs);
+        TestWFSClient wfs = createWFSClient();
 
         // axis order used will be NORTH / EAST
         wfs.setAxisOrderOverride(
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT,
                 WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<>();
-        fids.add(new FeatureIdImpl("comuni11.2671"));
+        WFSDataStore ds = new WFSDataStore(wfs);
+
         Query query =
                 new Query(
                         typeName,
                         ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857"));
 
-        SimpleFeatureSource source = ds.getFeatureSource(typeName);
-        source.getFeatures(query).features();
+        try {
+            ds.getFeatureSource(typeName).getFeatures(query).features();
+        } catch (IllegalArgumentException ex) {
+            // GetFeature request isn't mocked.
+        }
+
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
         // filter coordinates ARE inverted (EPSG:3857 is EAST/NORTH, so if we ask for NORTH/EAST,
@@ -181,12 +175,7 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithCompliantAxisOrderFilter() throws Exception {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                stream("axisorder/GetFeaturesByBBox.xml")));
+        TestWFSClient wfs = createWFSClient();
 
         WFSDataStore ds = new WFSDataStore(wfs);
 
@@ -195,15 +184,17 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<>();
-        fids.add(new FeatureIdImpl("comuni11.2671"));
+
         Query query =
                 new Query(
                         typeName,
                         ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857"));
 
-        SimpleFeatureSource source = ds.getFeatureSource(typeName);
-        source.getFeatures(query).features();
+        try {
+            ds.getFeatureSource(typeName).getFeatures(query).features();
+        } catch (IllegalArgumentException ex) {
+            // GetFeature request isn't mocked because we don't actually need the result.
+        }
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
         // filter coordinates are NOT inverted
@@ -217,25 +208,23 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithEastNorthAxisOrderOutputEPSG4326() throws Exception {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                stream("axisorder/GetFeatureById4326.xml")));
-
-        WFSDataStore ds = new WFSDataStore(wfs);
-        // axis order used will be EAST / NORTH
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName, ff.id(fids));
 
+        TestWFSClient wfs = createWFSClient();
+        wfs.mockGetFeatureRequest(
+                url("axisorder/GetFeatureById4326.xml"), qTypeName, query.getFilter());
+
+        WFSDataStore ds = new WFSDataStore(wfs);
+        // axis order used will be EAST / NORTH
+        wfs.setAxisOrderOverride(
+                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+
         SimpleFeatureSource source = ds.getFeatureSource(typeName);
-        SimpleFeature feature = iterate(source.getFeatures(query), 1, true);
+        SimpleFeature feature = iterate(source.getFeatures(query), 1);
         Geometry geometry = (Geometry) feature.getDefaultGeometry();
         double x = geometry.getCoordinate().x;
         double y = geometry.getCoordinate().y;
@@ -248,7 +237,7 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         source = ds.getFeatureSource(typeName);
-        feature = iterate(source.getFeatures(query), 1, true);
+        feature = iterate(source.getFeatures(query), 1);
         geometry = (Geometry) feature.getDefaultGeometry();
         x = geometry.getCoordinate().x;
         y = geometry.getCoordinate().y;
@@ -258,25 +247,23 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithEastNorthAxisOrderOutputEPSG3857() throws Exception {
-        TestWFSClient wfs =
-                createWFSClient(
-                        new TestHttpResponse(
-                                "text/xml; subtype=gml/3.1.1",
-                                "UTF-8",
-                                stream("axisorder/GetFeatureById.xml")));
-
-        WFSDataStore ds = new WFSDataStore(wfs);
-        // axis order used will be EAST / NORTH
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName, ff.id(fids));
 
+        TestWFSClient wfs = createWFSClient();
+        wfs.mockGetFeatureRequest(
+                url("axisorder/GetFeatureById.xml"), qTypeName, query.getFilter());
+
+        WFSDataStore ds = new WFSDataStore(wfs);
+        // axis order used will be EAST / NORTH
+        wfs.setAxisOrderOverride(
+                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+
         SimpleFeatureSource source = ds.getFeatureSource(typeName);
-        SimpleFeature feature = iterate(source.getFeatures(query), 1, true);
+        SimpleFeature feature = iterate(source.getFeatures(query), 1);
         Geometry geometry = (Geometry) feature.getDefaultGeometry();
         double x = geometry.getCoordinate().x;
         double y = geometry.getCoordinate().y;
@@ -289,7 +276,7 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         source = ds.getFeatureSource(typeName);
-        feature = iterate(source.getFeatures(query), 1, true);
+        feature = iterate(source.getFeatures(query), 1);
         geometry = (Geometry) feature.getDefaultGeometry();
         x = geometry.getCoordinate().x;
         y = geometry.getCoordinate().y;
@@ -297,31 +284,29 @@ public class AxisOrderTest {
         assertEquals(819841.0, y, 0);
     }
 
-    private TestWFSClient createWFSClient(HTTPResponse response)
+    private TestWFSClient createWFSClient()
             throws ServiceException, FileNotFoundException, IOException {
+
+        URL capabilitiesUrl =
+                new URL("http://127.0.0.1/cgi-bin/tinyows?REQUEST=GetCapabilities&SERVICE=WFS");
+
         TestHttpClient httpClient = new TestHttpClient();
-        httpClient.expectPost(
-                new URL("http://127.0.0.1/cgi-bin/tinyows"), "", "text/xml", response);
+        httpClient.expectGet(
+                capabilitiesUrl,
+                new TestHttpResponse(
+                        TestData.url(WFSTestData.class, "axisorder/GetCapabilities.xml"),
+                        "text/xml"));
 
-        TestWFSClient wfs = createTestProtocol("axisorder/GetCapabilities.xml", httpClient);
-
-        // override the describe feature type url so it loads from the test resource
-        wfs.setDescribeFeatureTypeURLOverride(url("axisorder/DescribeFeatureType.xsd"));
+        TestWFSClient wfs = new TestWFSClient(capabilitiesUrl, httpClient);
+        wfs.mockDescribeFeatureTypeRequest(
+                url("axisorder/DescribeFeatureType.xsd"),
+                new QName("http://www.tinyows.org/", "comuni11", "comuni"));
 
         return wfs;
     }
 
-    private static SimpleFeature iterate(
-            SimpleFeatureCollection features, int expectedSize, boolean getSize) {
-        int size = -1;
-        if (getSize) {
-            size = features.size();
-            if (size > -1) {
-                assertEquals(expectedSize, size);
-            }
-        }
-
-        size = 0;
+    private static SimpleFeature iterate(SimpleFeatureCollection features, int expectedSize) {
+        int size = 0;
         SimpleFeatureIterator reader = features.features();
         SimpleFeature sf = null;
         try {

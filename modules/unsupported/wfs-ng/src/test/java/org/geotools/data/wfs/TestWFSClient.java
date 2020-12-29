@@ -16,36 +16,74 @@
  */
 package org.geotools.data.wfs;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.namespace.QName;
 import org.geotools.data.wfs.WFSTestData.MutableWFSConfig;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
-import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureResponse;
 import org.geotools.data.wfs.internal.WFSClient;
+import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.ows.ServiceException;
+import org.geotools.util.logging.Logging;
+import org.opengis.filter.Filter;
 
+/**
+ * Test client for WFS
+ *
+ * <p>Gives the possibility to override config settings, and mock up http responses.
+ */
 public class TestWFSClient extends WFSClient {
 
-    private URL describeFeatureTypeUrlOverride;
+    private Logger LOGGER = Logging.getLogger(TestWFSClient.class);
 
     private GetFeatureRequest request;
 
-    public TestWFSClient(URL capabilitiesURL, HTTPClient http)
+    public TestWFSClient(URL capabilitiesUrl, TestHttpClient http)
             throws IOException, ServiceException {
-        super(capabilitiesURL, http, WFSTestData.getGmlCompatibleConfig());
+        super(capabilitiesUrl, http, WFSTestData.getGmlCompatibleConfig());
     }
 
-    /**
-     * Allows to set an overriding url for the {@link #getDescribeFeatureTypeURLGet(String)}
-     * operation, for test purposes so it is not actually needed to download the schema from the
-     * internet but from a resource file
-     */
-    public void setDescribeFeatureTypeURLOverride(URL url) {
-        this.describeFeatureTypeUrlOverride = url;
+    /** Allows to set a response when calling DescribeFeatureType with a certain typeName */
+    public void mockDescribeFeatureTypeRequest(URL responseUrl, QName typeName) {
+        DescribeFeatureTypeRequest request = this.createDescribeFeatureTypeRequest();
+        request.setTypeName(typeName);
+
+        try {
+            mockRequest(responseUrl, request);
+            LOGGER.fine("Added mock response for DescribeFeatureType");
+        } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, "Couldn't create mock response for DescribeFeatureType", ex);
+        }
+    }
+
+    /** Allows to set a response for a given typeName and filter */
+    public void mockGetFeatureRequest(URL responseUrl, QName typeName, Filter filter) {
+        GetFeatureRequest request = this.createGetFeatureRequest();
+        request.setTypeName(typeName);
+        request.setFilter(filter);
+
+        try {
+            mockRequest(responseUrl, request);
+            LOGGER.fine("Added mock response for GetFeature");
+        } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, "Couldn't create mock response for GetFeature", ex);
+        }
+    }
+
+    private void mockRequest(URL responseUrl, WFSRequest request) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        request.performPostOutput(outputStream);
+        ((TestHttpClient) this.getHTTPClient())
+                .expectPost(
+                        request.getFinalURL(),
+                        outputStream.toString(),
+                        request.getPostContentType(),
+                        new TestHttpResponse(responseUrl, "text/xml"));
     }
 
     public void setAxisOrderOverride(String axisOrder, String axisOrderFilter) {
@@ -63,22 +101,6 @@ public class TestWFSClient extends WFSClient {
 
     public void setProtocol(Boolean protocol) {
         ((MutableWFSConfig) config).setProtocol(protocol);
-    }
-
-    @Override
-    public DescribeFeatureTypeResponse issueRequest(DescribeFeatureTypeRequest request)
-            throws IOException {
-        if (describeFeatureTypeUrlOverride == null) {
-            return super.issueRequest(request);
-        }
-        HTTPResponse response =
-                new TestHttpResponse(
-                        request.getOutputFormat(), "UTF-8", describeFeatureTypeUrlOverride);
-        try {
-            return new DescribeFeatureTypeResponse(request, response);
-        } catch (ServiceException e) {
-            throw new IOException(e);
-        }
     }
 
     @Override

@@ -31,6 +31,7 @@ import org.geotools.util.Utilities;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
+@SuppressWarnings("PMD.ReplaceVectorWithList")
 public class DisposeStopper implements RenderedImage {
 
     private RenderedImage adaptee;

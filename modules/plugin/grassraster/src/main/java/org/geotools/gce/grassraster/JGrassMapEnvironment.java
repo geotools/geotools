@@ -26,8 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import org.geotools.gce.grassraster.core.color.AttributeTable;
 import org.geotools.gce.grassraster.core.color.AttributeTable.CellAttribute;
@@ -600,9 +600,9 @@ public class JGrassMapEnvironment {
                 // }
             }
 
-            Enumeration<CellAttribute> categories = attTable.getCategories();
-            while (categories.hasMoreElements()) {
-                CellAttribute object = categories.nextElement();
+            Iterator<CellAttribute> categories = attTable.getCategories();
+            while (categories.hasNext()) {
+                AttributeTable.CellAttribute object = categories.next();
                 categoriesList.add(object.toString());
             }
         }

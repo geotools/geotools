@@ -68,7 +68,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.IIOException;
@@ -4679,7 +4678,7 @@ public class ImageWorker {
             if (localImage instanceof RenderedOp) {
                 String operationName = ((RenderedOp) localImage).getOperationName();
                 if ("BandMerge".equalsIgnoreCase(operationName)) {
-                    Vector<RenderedImage> sources = localImage.getSources();
+                    List<RenderedImage> sources = localImage.getSources();
                     if (!sources.isEmpty()) {
                         localImage = sources.get(0);
                     }
@@ -4984,7 +4983,7 @@ public class ImageWorker {
         return this;
     }
 
-    private ROI mosaicROIs(Vector sources, ROI... roiArray) {
+    private ROI mosaicROIs(List sources, ROI... roiArray) {
         if (roiArray == null) {
             return null;
         }

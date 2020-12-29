@@ -41,7 +41,6 @@ import com.esri.sde.sdk.client.SeVersion;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.logging.Loggers;
@@ -394,7 +393,7 @@ public class Commands {
                 public List<String> execute(final ISession session, final SeConnection connection)
                         throws SeException, IOException {
 
-                    final Vector<SeRasterColumn> rasterColumns = connection.getRasterColumns();
+                    final List<SeRasterColumn> rasterColumns = connection.getRasterColumns();
                     List<String> names = new ArrayList<>(rasterColumns.size());
 
                     for (SeRasterColumn col : rasterColumns) {

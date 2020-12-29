@@ -24,9 +24,9 @@ import static org.geotools.data.vpf.ifc.VPFCoverageIfc.FIELD_LEVEL;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.VPFCoverageIfc;
@@ -44,10 +44,10 @@ public class VPFCoverage {
     private final String description;
 
     /** List of feature classes part of this coverage */
-    private final List<VPFFeatureClass> featureClasses = new Vector<>();
+    private final List<VPFFeatureClass> featureClasses = new ArrayList<>();
 
     /** List of feature types part of this coverage */
-    private final List<VPFFeatureType> featureTypes = new Vector<>(25);
+    private final List<VPFFeatureType> featureTypes = new ArrayList<>(25);
 
     /** The owning library */
     private final VPFLibrary library;

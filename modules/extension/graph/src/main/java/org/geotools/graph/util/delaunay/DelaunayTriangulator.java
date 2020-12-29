@@ -18,8 +18,9 @@ package org.geotools.graph.util.delaunay;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -38,7 +39,7 @@ public class DelaunayTriangulator {
 
     public DelaunayNode temp1, temp2, temp3;
     private DelaunayNode[] nodes;
-    private Vector<Triangle> triangleList;
+    private List<Triangle> triangleList;
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(DelaunayTriangulator.class);
 
@@ -57,7 +58,7 @@ public class DelaunayTriangulator {
         nodes = featuresToNodes(data);
     }
 
-    public Vector<Triangle> getTriangles() {
+    public List<Triangle> getTriangles() {
         return triangleList;
     }
 
@@ -135,7 +136,7 @@ public class DelaunayTriangulator {
         temp3 = tempNodes[nodes.length + 2];
 
         // initialize triangulation to the bounding triangle
-        triangleList = new Vector<>();
+        triangleList = new ArrayList<>();
         DelaunayEdge e1 = new DelaunayEdge(tempNodes[nodes.length], tempNodes[nodes.length + 1]);
         DelaunayEdge e2 = new DelaunayEdge(tempNodes[nodes.length], tempNodes[nodes.length + 2]);
         DelaunayEdge e3 =
@@ -174,11 +175,11 @@ public class DelaunayTriangulator {
         return g;
     }
 
-    public Graph triangleListToGraph(Vector<Triangle> tList) {
+    public Graph triangleListToGraph(List<Triangle> tList) {
         // turn what I've got into a proper GeoTools2 Graph!
         // But don't include the three temporary nodes and all incident edges.
-        Vector<Edge> edgeList = new Vector<>();
-        Vector<Node> nodeList = new Vector<>();
+        List<Edge> edgeList = new ArrayList<>();
+        List<Node> nodeList = new ArrayList<>();
         Iterator<Triangle> triangleIterator = tList.iterator();
         while (triangleIterator.hasNext()) {
             Triangle next = triangleIterator.next();
@@ -207,7 +208,7 @@ public class DelaunayTriangulator {
         return new BasicGraph(nodeList, edgeList);
     }
 
-    public Vector<Triangle> insertNode(DelaunayNode newNode, Vector<Triangle> tList) {
+    public List<Triangle> insertNode(DelaunayNode newNode, List<Triangle> tList) {
         // find triangle containing node or if node is on an edge, the two triangles bordering that
         // edge.
         // this finding-the-triangle section can be given better efficiency using the method on pp.
@@ -379,7 +380,7 @@ public class DelaunayTriangulator {
     }
 
     private void legalizeEdge(
-            Triangle t, DelaunayEdge e, DelaunayNode p, Vector<Triangle> triangleList) {
+            Triangle t, DelaunayEdge e, DelaunayNode p, List<Triangle> triangleList) {
         LOGGER.fine("legalizing " + t + " and " + e.getOtherFace(t));
         if (isIllegal(t, e, p)) {
             Triangle otherFace = e.getOtherFace(t);

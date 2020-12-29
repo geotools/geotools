@@ -16,9 +16,9 @@
  */
 package org.geotools.gml;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -45,7 +45,8 @@ public class SubHandlerMulti extends SubHandler {
 
     /** Remembers the list of all possible sub (base) types for this multi type. */
     private static final Collection<String> BASE_GEOMETRY_TYPES =
-            new Vector<>(java.util.Arrays.asList(new String[] {"Point", "LineString", "Polygon"}));
+            new ArrayList<>(
+                    java.util.Arrays.asList(new String[] {"Point", "LineString", "Polygon"}));
 
     /** Geometry factory to return the multi type. */
     private GeometryFactory geometryFactory = new GeometryFactory();
@@ -57,7 +58,7 @@ public class SubHandlerMulti extends SubHandler {
     private SubHandler currentHandler;
 
     /** Stores list of all sub types. */
-    private List<Geometry> geometries = new Vector<>();
+    private List<Geometry> geometries = new ArrayList<>();
 
     /** Remembers the current sub type (ie. Line, Polygon, Point). */
     private String internalType;

@@ -76,6 +76,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Version;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+@SuppressWarnings({"PMD.UseArrayListInsteadOfVector", "PMD.ReplaceVectorWithList"})
 public class JniOGR implements OGR {
 
     private static final Method GET_FIELD_METHOD;

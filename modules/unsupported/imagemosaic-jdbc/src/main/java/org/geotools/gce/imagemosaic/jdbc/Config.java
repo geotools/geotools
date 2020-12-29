@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,7 +40,7 @@ import org.xml.sax.SAXException;
  * @author mcr
  */
 public class Config {
-    private static Map<String, Config> ConfigMap = new Hashtable<>(); // Hashtable
+    private static Map<String, Config> ConfigMap = new HashMap<>();
 
     // is
     // synchronized

@@ -1307,7 +1307,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
     }
 
     @Override
-    @SuppressWarnings("unchecked") // PlanarImage does not have generics, overrides this method
+    // PlanarImage does not have generics, overrides this method
+    @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
     public Vector<RenderedImage> getSources() {
         return super.getSources();
     }

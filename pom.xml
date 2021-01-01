@@ -116,7 +116,7 @@
     <mssql-jdbc.version>8.4.1.jre8</mssql-jdbc.version>
     <jtds.jdbc.version>1.3.1</jtds.jdbc.version>
     <solrj.version>7.2.1</solrj.version>
-    <elasticsearch.version>7.4.0</elasticsearch.version>
+    <elasticsearch.version>7.10.1</elasticsearch.version>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
     <maven.pmd.plugin.version>3.14.0</maven.pmd.plugin.version>
@@ -689,7 +689,8 @@
         <role>Module Maintainer</role>
         <role>Project Management Committee (PMC) Member</role>
       </roles>
-      <timezone>America/Vancouver</timezone>
+      <!-- America/Vancouver -->
+      <timezone>-8</timezone>
     </developer>
     <developer>
       <name>Justin Deoliveira</name>
@@ -857,6 +858,18 @@
         <role>Module Maintainer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Mark Prins</name>
+      <id>mprins</id>
+      <email>mprins@users.sf.net</email>
+      <organization>B3Partners BV</organization>
+      <timezone>+1</timezone>
+      <organizationUrl>https://b3partners.nl/</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
   </developers>
 
   <contributors>
@@ -1765,6 +1778,14 @@
         <plugin>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>1.3</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>3.0.0-M5</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.1.2</version>
         </plugin>
       </plugins>
     </pluginManagement>

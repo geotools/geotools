@@ -169,6 +169,7 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
                 } else if (dataVal instanceof Long) {
                     builder.set(name, new Date((long) dataVal));
                 } else {
+                    @SuppressWarnings("unchecked")
                     final List<String> validFormats =
                             (List<String>)
                                     descriptor.getUserData().get(ElasticConstants.DATE_FORMAT);

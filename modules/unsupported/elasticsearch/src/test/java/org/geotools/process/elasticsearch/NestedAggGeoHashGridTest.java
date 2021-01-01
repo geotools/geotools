@@ -67,8 +67,8 @@ public class NestedAggGeoHashGridTest {
         assertEquals(NestedAggGeoHashGrid.RASTER_FROM_KEY, geohashGrid.getRasterStrategy());
         Map<String, Integer> termsMap = geohashGrid.getTermsMap();
         assertEquals(2, termsMap.size());
-        assertEquals(new Integer(1), termsMap.get("key1"));
-        assertEquals(new Integer(2), termsMap.get("key2"));
+        assertEquals(Integer.valueOf(1), termsMap.get("key1"));
+        assertEquals(Integer.valueOf(2), termsMap.get("key2"));
     }
 
     @Test

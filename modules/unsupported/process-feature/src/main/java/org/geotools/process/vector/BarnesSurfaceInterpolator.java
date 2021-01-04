@@ -272,7 +272,7 @@ public class BarnesSurfaceInterpolator {
         for (int i = 0; i < inputObs.length; i++) {
             Coordinate dp = inputObs[i];
             float del = (float) refinedDelta(dp.x, dp.y, convergenceFactor);
-            if (!Float.isNaN(del)) estimate[i] = (float) currEst[i] + del;
+            if (!Float.isNaN(del)) estimate[i] = currEst[i] + del;
             else estimate[i] = (float) inputObs[i].getZ();
         }
         return estimate;
@@ -290,7 +290,7 @@ public class BarnesSurfaceInterpolator {
                 double x = trans.x(i);
                 double y = trans.y(j);
 
-                grid[i][j] = (float) noDataValue;
+                grid[i][j] = noDataValue;
                 if (useObservationMask && !isSupportedGridPt(x, y)) continue;
 
                 float est = (float) estimatedValue(x, y);
@@ -328,8 +328,8 @@ public class BarnesSurfaceInterpolator {
 
     private boolean isSupportedGridPt(double x, double y) {
         int count = 0;
-        for (int i = 0; i < inputObs.length; i++) {
-            double dist = distance(x, y, inputObs[i]);
+        for (Coordinate inputOb : inputObs) {
+            double dist = distance(x, y, inputOb);
             if (dist <= maxObservationDistance) count++;
         }
         return count >= minObservationCount;
@@ -354,12 +354,13 @@ public class BarnesSurfaceInterpolator {
         double sumWgtVal = 0;
         double sumWgt = 0;
         int dataCount = 0;
-        for (int i = 0; i < inputObs.length; i++) {
-            double wgt = weight(p, inputObs[i], lengthScale);
+        /** Skip observation if unusable due to too great a distance */
+        for (Coordinate inputOb : inputObs) {
+            double wgt = weight(p, inputOb, lengthScale);
             /** Skip observation if unusable due to too great a distance */
             if (Double.isNaN(wgt)) continue;
 
-            sumWgtVal += wgt * inputObs[i].getZ();
+            sumWgtVal += wgt * inputOb.getZ();
             sumWgt += wgt;
             dataCount++;
         }

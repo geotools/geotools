@@ -74,8 +74,7 @@ public final class RasterDatasetInfo {
 
     private volatile List<GridSampleDimension> gridSampleDimensions;
 
-    private final Map<Integer, ImageTypeSpecifier> renderedImageSpec =
-            new HashMap<Integer, ImageTypeSpecifier>();
+    private final Map<Integer, ImageTypeSpecifier> renderedImageSpec = new HashMap<>();
 
     /** @param rasterTable the rasterTable to set */
     void setRasterTable(String rasterTable) {
@@ -117,7 +116,7 @@ public final class RasterDatasetInfo {
     private List<GridSampleDimension> buildSampleDimensions() {
 
         final int numBands = getNumBands();
-        List<GridSampleDimension> dimensions = new ArrayList<GridSampleDimension>(numBands);
+        List<GridSampleDimension> dimensions = new ArrayList<>(numBands);
 
         final Color transparent = new Color(0, 0, 0, 0);
 
@@ -243,8 +242,6 @@ public final class RasterDatasetInfo {
                 GeneralEnvelope rasterGridRangeInDataSet;
                 try {
                     rasterGridRangeInDataSet = CRS.transform(modelToRaster, rasterEnvelope);
-                } catch (NoninvertibleTransformException e) {
-                    throw new IllegalArgumentException(e);
                 } catch (TransformException e) {
                     throw new IllegalArgumentException(e);
                 }

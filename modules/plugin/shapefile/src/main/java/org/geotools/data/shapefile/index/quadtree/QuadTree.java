@@ -211,9 +211,9 @@ public class QuadTree implements Closeable {
             dummy[i] = node.getSubNode(i);
         }
 
-        for (int i = 0; i < dummy.length; i++) {
-            if (this.trim(dummy[i])) {
-                node.removeSubNode(dummy[i]);
+        for (Node value : dummy) {
+            if (this.trim(value)) {
+                node.removeSubNode(value);
             }
         }
 

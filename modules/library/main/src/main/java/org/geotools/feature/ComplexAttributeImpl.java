@@ -18,7 +18,6 @@ package org.geotools.feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.opengis.feature.ComplexAttribute;
@@ -65,8 +64,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
 
     public Collection<Property> getProperties(Name name) {
         List<Property> matches = new ArrayList<>();
-        for (Iterator p = getValue().iterator(); p.hasNext(); ) {
-            Property property = (Property) p.next();
+        for (Property property : getValue()) {
             if (property.getName().equals(name)) {
                 matches.add(property);
             }
@@ -77,8 +75,8 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
 
     public Collection<Property> getProperties(String name) {
         List<Property> matches = new ArrayList<>();
-        for (Iterator p = properties().iterator(); p.hasNext(); ) {
-            Property property = (Property) p.next();
+        for (Object o : properties()) {
+            Property property = (Property) o;
             if (property.getName().getLocalPart().equals(name)) {
                 matches.add(property);
             }
@@ -88,8 +86,8 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public Property getProperty(Name name) {
-        for (Iterator p = properties().iterator(); p.hasNext(); ) {
-            Property property = (Property) p.next();
+        for (Object o : properties()) {
+            Property property = (Property) o;
             if (property.getName().equals(name)) {
                 return property;
             }
@@ -99,8 +97,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public Property getProperty(String name) {
-        for (Iterator p = getValue().iterator(); p.hasNext(); ) {
-            Property property = (Property) p.next();
+        for (Property property : getValue()) {
             if (property.getName().getLocalPart().equals(name)) {
                 return property;
             }

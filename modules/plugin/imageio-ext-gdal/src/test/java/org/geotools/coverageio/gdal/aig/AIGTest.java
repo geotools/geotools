@@ -19,7 +19,6 @@ package org.geotools.coverageio.gdal.aig;
 
 import java.awt.RenderingHints;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -62,10 +61,7 @@ public final class AIGTest extends GDALTestCase {
         File file;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }
@@ -91,7 +87,7 @@ public final class AIGTest extends GDALTestCase {
         // read once
         //
         // /////////////////////////////////////////////////////////////////////
-        GridCoverage2D gc = (GridCoverage2D) reader.read(null);
+        GridCoverage2D gc = reader.read(null);
         forceDataLoading(gc);
     }
 

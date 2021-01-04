@@ -150,8 +150,8 @@ public class GeneralGridCoordinates implements GridCoordinates, Serializable {
     @Override
     public int hashCode() {
         int code = (int) serialVersionUID;
-        for (int i = 0; i < coordinates.length; i++) {
-            code = code * 37 + coordinates[i];
+        for (int coordinate : coordinates) {
+            code = code * 37 + coordinate;
         }
         return code;
     }

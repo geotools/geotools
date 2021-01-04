@@ -19,7 +19,6 @@ package org.geotools.gml2.simple;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
@@ -364,8 +363,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                 List properties, SimpleFeatureType schema, BindingLoader bindingLoader) {
             ArrayList<AttributeContext> attributes = new ArrayList<>(properties.size());
             List<AttributeDescriptor> attributeDescriptors = schema.getAttributeDescriptors();
-            for (Iterator p = properties.iterator(); p.hasNext(); ) {
-                Object[] o = (Object[]) p.next();
+            for (Object property : properties) {
+                Object[] o = (Object[]) property;
                 XSDParticle particle = (XSDParticle) o[0];
                 XSDElementDeclaration content = (XSDElementDeclaration) particle.getContent();
                 if (content.isElementDeclarationReference()) {

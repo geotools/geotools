@@ -150,7 +150,7 @@ public class ComplexElementHandler extends XMLElementHandler {
         ElementValue[] vals = new ElementValue[elements.size() + (type.isMixed() ? 1 : 0)];
 
         for (int i = 0; i < elements.size(); i++) {
-            XMLElementHandler xeh = (XMLElementHandler) elements.get(i);
+            XMLElementHandler xeh = elements.get(i);
             vals[i] = new DefaultElementValue(xeh.getElement(), xeh.getValue());
         }
 
@@ -174,7 +174,7 @@ public class ComplexElementHandler extends XMLElementHandler {
      *
      */
     private void validateElementOrder() throws SAXException {
-        if ((elements == null) || (elements.size() == 0)) {
+        if ((elements == null) || (elements.isEmpty())) {
             // TODO ensure we have enough elements
             return;
         }
@@ -290,9 +290,7 @@ public class ComplexElementHandler extends XMLElementHandler {
             c = false;
 
             for (int i = 0; i < elems.length; i++) {
-                if (elems[i].getType()
-                        .getName()
-                        .equalsIgnoreCase(((XMLElementHandler) elements.get(head)).getName())) {
+                if (elems[i].getType().getName().equalsIgnoreCase(elements.get(head).getName())) {
                     r[i]++;
                     head++;
                     i = elems.length;
@@ -315,12 +313,7 @@ public class ComplexElementHandler extends XMLElementHandler {
      * @see valid(ElementGrouping)
      */
     private int[] valid(Any any, int index) {
-        if (any.getNamespace()
-                .equals(
-                        ((XMLElementHandler) elements.get(index))
-                                .getElement()
-                                .getType()
-                                .getNamespace())) {
+        if (any.getNamespace().equals(elements.get(index).getElement().getType().getNamespace())) {
             return new int[] {index + 1, 1};
         }
 
@@ -397,7 +390,7 @@ public class ComplexElementHandler extends XMLElementHandler {
 
         XMLElementHandler indexHandler = null;
         if (index < elements.size()) {
-            indexHandler = ((XMLElementHandler) elements.get(index));
+            indexHandler = elements.get(index);
         } else {
             // not found :)
             return new int[] {index, 0};

@@ -117,15 +117,9 @@ class Transformer {
         // by static analysis (we don't use it first since the feature coudl contain null
         // values that result the expression into returning us a null
         SimpleFeature sample = null;
-        SimpleFeatureIterator iterator = null;
-        try {
-            iterator = source.getFeatures().features();
+        try (SimpleFeatureIterator iterator = source.getFeatures().features()) {
             if (iterator.hasNext()) {
                 sample = iterator.next();
-            }
-        } finally {
-            if (iterator != null) {
-                iterator.close();
             }
         }
 

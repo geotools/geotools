@@ -338,7 +338,7 @@ public class FilterFilterTest {
         adapter.parse(requestSource);
 
         assertEquals(1, contentHandler.filters.size());
-        Filter f = (Filter) contentHandler.filters.get(0);
+        Filter f = contentHandler.filters.get(0);
         assertTrue(f instanceof BinaryLogicOperator);
         assertThat(f, instanceOf(Or.class));
 

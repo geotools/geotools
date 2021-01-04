@@ -80,8 +80,7 @@ public class BasicEdge extends BasicGraphable implements Edge {
     public Iterator<Edge> getRelated() {
         ArrayList<Edge> adj = new ArrayList<>();
 
-        for (Iterator<? extends Edge> itr = m_nodeA.getEdges().iterator(); itr.hasNext(); ) {
-            Edge e = itr.next();
+        for (Edge e : m_nodeA.getEdges()) {
             switch (e.compareNodes(this)) {
                 case EQUAL_NODE_ORIENTATION: // same node orientation
                     if (e.equals(this)) continue;
@@ -91,8 +90,7 @@ public class BasicEdge extends BasicGraphable implements Edge {
             }
         }
 
-        for (Iterator<? extends Edge> itr = m_nodeB.getEdges().iterator(); itr.hasNext(); ) {
-            Edge e = itr.next();
+        for (Edge e : m_nodeB.getEdges()) {
             switch (e.compareNodes(this)) {
                 case EQUAL_NODE_ORIENTATION:
                 case OPPOSITE_NODE_ORIENTATION:

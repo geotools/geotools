@@ -24,7 +24,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -154,8 +153,8 @@ public class FunctionExpressionImplTest extends TestCase {
         StringBuffer sb =
                 new StringBuffer("Some function expression implementations violates contract:\n");
         int errorCount = 1;
-        for (Iterator it = errors.iterator(); it.hasNext(); ) {
-            String error = (String) it.next();
+        for (Object o : errors) {
+            String error = (String) o;
             sb.append(errorCount++ + " - ");
             sb.append(error);
             sb.append("\n");
@@ -247,7 +246,7 @@ public class FunctionExpressionImplTest extends TestCase {
                             + ".getParameters() returned a wrong result when parameters were set through setArgs(Expression[])");
         }
 
-        function = (FunctionExpression) function.getClass().getDeclaredConstructor().newInstance();
+        function = function.getClass().getDeclaredConstructor().newInstance();
         function.setParameters(expected);
 
         List<Expression> returnedArgs = function.getParameters();

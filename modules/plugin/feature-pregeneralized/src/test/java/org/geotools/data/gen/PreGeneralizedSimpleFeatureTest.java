@@ -17,8 +17,9 @@
 
 package org.geotools.data.gen;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.data.DataStore;
@@ -34,7 +35,6 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
 import org.junit.Assert;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class PreGeneralizedSimpleFeatureTest extends TestCase {
@@ -120,8 +120,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             Assert.fail();
         }
 
-        SimpleFeatureIterator it = fCollection.features();
-        try {
+        try (SimpleFeatureIterator it = fCollection.features()) {
             SimpleFeature feature1 = it.next();
 
             SimpleFeature feature2 = it.next();
@@ -134,60 +133,50 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
                 Object value2 =
                         feature1.getAttribute(
                                 feature1.getType().getAttributeDescriptors().get(i).getLocalName());
-                assertTrue(value1 == value2);
+                assertSame(value1, value2);
             }
 
             assertNotNull(feature1.getAttribute("CAT_ID"));
             assertNotNull(feature1.getAttribute(new NameImpl("CAT_ID")));
-            assertTrue(feature1.getAttributeCount() == 4);
+            assertEquals(4, feature1.getAttributeCount());
 
-            assertFalse(feature1.equals(feature2));
-            assertTrue(feature1.equals(feature1));
+            assertNotEquals(feature1, feature2);
+            assertEquals(feature1, feature1);
             assertFalse(feature1.hashCode() == feature2.hashCode());
-            assertTrue(feature1.hashCode() == feature1.hashCode());
+            assertEquals(feature1.hashCode(), feature1.hashCode());
 
-            assertFalse(feature1.getID().equals(feature2.getID()));
+            assertNotEquals(feature1.getID(), feature2.getID());
 
-            assertTrue(feature1.getBounds().equals(feature1.getBounds()));
-            assertFalse(feature1.getBounds().equals(feature2.getBounds()));
+            assertEquals(feature1.getBounds(), feature1.getBounds());
+            assertNotEquals(feature1.getBounds(), feature2.getBounds());
 
-            assertTrue(feature1.getDefaultGeometry().equals(feature1.getDefaultGeometry()));
-            assertFalse(feature1.getDefaultGeometry().equals(feature2.getDefaultGeometry()));
+            assertEquals(feature1.getDefaultGeometry(), feature1.getDefaultGeometry());
+            assertNotEquals(feature1.getDefaultGeometry(), feature2.getDefaultGeometry());
 
-            assertTrue(
-                    feature1.getDefaultGeometryProperty()
-                            .getName()
-                            .getLocalPart()
-                            .equals("the_geom"));
-            assertTrue(
-                    feature1.getDefaultGeometryProperty()
-                            .getName()
-                            .equals(feature2.getDefaultGeometryProperty().getName()));
-            assertFalse(
-                    feature1.getDefaultGeometryProperty()
-                            .equals(feature2.getDefaultGeometryProperty()));
+            assertEquals(
+                    "the_geom", feature1.getDefaultGeometryProperty().getName().getLocalPart());
+            assertEquals(
+                    feature1.getDefaultGeometryProperty().getName(),
+                    feature2.getDefaultGeometryProperty().getName());
+            assertNotEquals(
+                    feature1.getDefaultGeometryProperty(), feature2.getDefaultGeometryProperty());
 
-            assertTrue(feature1.getFeatureType().equals(feature2.getFeatureType()));
-            assertTrue(feature2.getFeatureType().getName().getLocalPart().equals("GenStreams"));
+            assertEquals(feature1.getFeatureType(), feature2.getFeatureType());
+            assertEquals("GenStreams", feature2.getFeatureType().getName().getLocalPart());
 
-            assertTrue(feature1.getIdentifier().equals(feature1.getIdentifier()));
-            assertFalse(feature1.getIdentifier().equals(feature2.getIdentifier()));
+            assertEquals(feature1.getIdentifier(), feature1.getIdentifier());
+            assertNotEquals(feature1.getIdentifier(), feature2.getIdentifier());
 
-            assertTrue(feature1.getProperties().size() == 4);
-            assertTrue(
-                    feature1.getProperty("CAT_ID")
-                            .getValue()
-                            .equals(feature1.getAttribute("CAT_ID")));
-            assertTrue(
-                    feature1.getProperty("the_geom")
-                            .getValue()
-                            .equals(feature1.getAttribute("the_geom")));
-            // assertFalse(feature1.getProperty("CAT_ID").getValue().equals(feature2.getAttribute("CAT_ID"
+            assertEquals(4, feature1.getProperties().size());
+            assertEquals(
+                    feature1.getProperty("CAT_ID").getValue(), feature1.getAttribute("CAT_ID"));
+            assertEquals(
+                    feature1.getProperty("the_geom").getValue(), feature1.getAttribute("the_geom"));
+            // assertFalse(feature1.getProperty("CAT_ID").getValue().equals(feature2.getAttribute
+            // ("CAT_ID"
             // )));
-            assertFalse(
-                    feature1.getProperty("the_geom")
-                            .getValue()
-                            .equals(feature2.getAttribute("the_geom")));
+            assertNotEquals(
+                    feature1.getProperty("the_geom").getValue(), feature2.getAttribute("the_geom"));
 
             assertTrue(feature1.getProperties("CAT_ID").contains(feature1.getProperty("CAT_ID")));
             assertFalse(
@@ -200,12 +189,11 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
                     feature2.getProperties(new NameImpl("the_geom"))
                             .contains(feature1.getProperty("the_geom")));
 
-            assertTrue(feature1.getType().equals(fCollection.getSchema()));
-            assertTrue(feature1.getValue().equals(feature1.getProperties()));
+            assertEquals(feature1.getType(), fCollection.getSchema());
+            assertEquals(feature1.getValue(), feature1.getProperties());
 
             assertNotNull(feature1.getUserData());
         } finally {
-            it.close();
             ds.dispose();
         }
     }
@@ -226,8 +214,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             Assert.fail();
         }
 
-        SimpleFeatureIterator it = fCollection.features();
-        try {
+        try (SimpleFeatureIterator it = fCollection.features()) {
             SimpleFeature feature1 = it.next();
 
             assertTrue(feature1 instanceof PreGeneralizedSimpleFeature);
@@ -299,7 +286,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             }
 
             try {
-                feature1.setValue((Collection<Property>) null);
+                feature1.setValue(null);
             } catch (UnsupportedOperationException ex) {
                 error = false;
             }
@@ -316,7 +303,6 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
                 Assert.fail();
             }
         } finally {
-            it.close();
             ds.dispose();
         }
     }

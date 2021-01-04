@@ -108,7 +108,7 @@ class CompositingGroup {
             List<Layer> layers,
             Composite composite) {
         Graphics2D cmcGraphic;
-        if (compositingContents.size() == 0 && !hasAlphaCompositing(layers)) {
+        if (compositingContents.isEmpty() && !hasAlphaCompositing(layers)) {
             cmcGraphic = graphics;
         } else {
             cmcGraphic = new DelayedBackbufferGraphic(graphics, screenSize);
@@ -127,12 +127,12 @@ class CompositingGroup {
         }
         Style styles = layer.getStyle();
         List<FeatureTypeStyle> featureTypeStyles = styles.featureTypeStyles();
-        if (featureTypeStyles.size() > 0) {
+        if (featureTypeStyles.isEmpty()) {
+            return null;
+        } else {
             FeatureTypeStyle firstFts = featureTypeStyles.get(0);
             Composite composite = SLDStyleFactory.getComposite(firstFts.getOptions());
             return composite;
-        } else {
-            return null;
         }
     }
 

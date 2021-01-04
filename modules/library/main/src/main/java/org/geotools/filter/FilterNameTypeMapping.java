@@ -166,7 +166,7 @@ class FilterNameTypeMapping {
     }
 
     public static FilterCapabilities findFunction(String name) {
-        FilterCapabilities filterCapabilities = (FilterCapabilities) functionNameMap.get(name);
+        FilterCapabilities filterCapabilities = functionNameMap.get(name);
         if (filterCapabilities != null) {
             return filterCapabilities;
         }
@@ -182,11 +182,11 @@ class FilterNameTypeMapping {
     public static FilterCapabilities findOperation(String s) {
 
         if (spatialFiltersMap.containsKey(s)) {
-            return (FilterCapabilities) spatialFiltersMap.get(s);
+            return spatialFiltersMap.get(s);
         }
 
         if (comparisonsMap.containsKey(s)) {
-            return (FilterCapabilities) comparisonsMap.get(s);
+            return comparisonsMap.get(s);
         }
 
         return FilterNameTypeMapping.NO_OP_CAPS;

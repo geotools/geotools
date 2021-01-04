@@ -418,7 +418,7 @@ public class RasterLayerResponse {
                     LOGGER.fine("Submosaic producer being called: " + collector.toString());
                 }
                 final List<MosaicElement> preparedMosaic = collector.createMosaic();
-                if (preparedMosaic.size() > 0
+                if (!preparedMosaic.isEmpty()
                         && !preparedMosaic.stream().allMatch(p -> p == null)) {
                     size += preparedMosaic.size();
                     mosaicInputs.addAll(preparedMosaic);

@@ -376,7 +376,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         DbaseFileReader dbfReader = null;
         List<AttributeDescriptor> attributes = readSchema.getAttributeDescriptors();
-        if (attributes.size() < 1
+        if (attributes.isEmpty()
                 || (attributes.size() == 1 && readSchema.getGeometryDescriptor() != null)) {
             LOGGER.fine("The DBF file won't be opened since no attributes will be read from it");
         } else {

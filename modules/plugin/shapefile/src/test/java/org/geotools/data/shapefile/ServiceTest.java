@@ -44,7 +44,7 @@ public class ServiceTest extends TestCaseSupport {
         Iterator<DataStoreFactorySpi> list = DataStoreFinder.getAvailableDataStores();
         boolean found = false;
         while (list.hasNext()) {
-            DataStoreFactorySpi fac = (DataStoreFactorySpi) list.next();
+            DataStoreFactorySpi fac = list.next();
             if (fac instanceof ShapefileDataStoreFactory) {
                 found = true;
                 assertNotNull(fac.getDescription());

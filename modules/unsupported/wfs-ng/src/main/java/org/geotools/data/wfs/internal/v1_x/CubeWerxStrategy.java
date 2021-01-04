@@ -104,9 +104,7 @@ public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
         Document dom;
         try {
             dom = encoder.encodeAsDOM(requestObject, opName);
-        } catch (SAXException e) {
-            throw new IOException(e);
-        } catch (TransformerException e) {
+        } catch (SAXException | TransformerException e) {
             throw new IOException(e);
         }
 

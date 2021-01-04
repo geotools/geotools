@@ -19,7 +19,6 @@ package org.geotools.xml.filter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -162,8 +161,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             Set<FeatureId> empty = Collections.emptySet();
             return ff.id(empty);
         }
-        Data data = (Data) current.peek();
-        if (data.fids.size() > 0) {
+        Data data = current.peek();
+        if (!data.fids.isEmpty()) {
             Set<FeatureId> set = new HashSet<>();
             Set<String> fids = data.fids;
             for (String fid : fids) {
@@ -185,7 +184,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         if (current.isEmpty()) {
             return Filter.EXCLUDE;
         }
-        return ((Data) this.current.peek()).filter;
+        return this.current.peek().filter;
     }
 
     // between
@@ -449,7 +448,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         Set<String> set = new HashSet<>();
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (!data.fids.isEmpty()) {
                 set.addAll(data.fids);
@@ -469,7 +468,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         boolean doRemove = true;
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (data.fids.isEmpty()) {
                 toRemove.add(data);
@@ -485,7 +484,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             current.removeAll(toRemove);
         }
 
-        if (fidSet.size() == 0) {
+        if (fidSet.isEmpty()) {
             return Collections.emptySet();
         }
 
@@ -495,8 +494,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
         HashSet<String> set = new HashSet<>();
 
-        for (int i = 0; i < fidSet.size(); i++) {
-            Set<String> tmp = fidSet.get(i);
+        for (Set<String> tmp : fidSet) {
             for (String fid : tmp) {
                 if (allContain(fid, fidSet)) {
                     set.add(fid);
@@ -531,13 +529,13 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         }
 
         if (current.size() == (startOfFilterStack + 1)) {
-            return (Data) current.pop();
+            return current.pop();
         }
 
         List<Filter> filterList = new ArrayList<>();
 
         while (current.size() > startOfFilterStack) {
-            Data data = (Data) current.pop();
+            Data data = current.pop();
             if (data.filter != Filter.EXCLUDE) {
                 filterList.add(data.filter);
             }
@@ -567,7 +565,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                 }
 
                 for (Filter item : ((And) f).getChildren()) {
-                    org.opengis.filter.Filter filter = (org.opengis.filter.Filter) item;
+                    org.opengis.filter.Filter filter = item;
                     if (filter == Filter.INCLUDE) {
                         continue;
                     }
@@ -624,8 +622,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     }
 
     private boolean contains(BinaryLogicOperator f, org.opengis.filter.Filter toFind) {
-        for (Iterator iter = f.getChildren().iterator(); iter.hasNext(); ) {
-            if (toFind.equals(iter.next())) {
+        for (Filter filter : f.getChildren()) {
+            if (toFind.equals(filter)) {
                 return true;
             }
         }
@@ -636,7 +634,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         if (current.size() > (startOfFilterStack + 1)) {
             throw new UnsupportedFilterException("A not filter cannot have more than one filter");
         } else {
-            Data tmp = (Data) current.pop();
+            Data tmp = current.pop();
 
             Data data = new Data(ff.not(tmp.filter));
 
@@ -698,7 +696,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
     private boolean hasNonFidFilter(int startOfFilterStack) {
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (data.filter != Filter.EXCLUDE) {
                 return true;
@@ -710,7 +708,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
     private boolean hasFidFilter(int startOfFilterStack) {
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (!data.fids.isEmpty()) {
                 return true;

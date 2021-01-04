@@ -52,7 +52,7 @@ public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
 
     @Override
     protected void rescaleOption(Map<String, String> options, String key, double defaultValue) {
-        double scaleFactor = (double) scale.evaluate(null, Double.class);
+        double scaleFactor = scale.evaluate(null, Double.class);
         String value = options.get(key);
         if (value == null) {
             value = String.valueOf(defaultValue);
@@ -65,7 +65,7 @@ public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
 
     @Override
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
-        double scaleFactor = (double) scale.evaluate(null, Double.class);
+        double scaleFactor = scale.evaluate(null, Double.class);
         String value = options.get(key);
         if (value == null) {
             value = String.valueOf(defaultValue);

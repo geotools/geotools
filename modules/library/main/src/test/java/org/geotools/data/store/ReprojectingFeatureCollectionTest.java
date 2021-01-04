@@ -69,13 +69,12 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
 
     public void testNormal() throws Exception {
 
-        SimpleFeatureIterator reproject =
-                new ReprojectingFeatureCollection(delegate, target).features();
-        SimpleFeatureIterator reader = delegate.features();
-        try {
+        try (SimpleFeatureIterator reproject =
+                        new ReprojectingFeatureCollection(delegate, target).features();
+                SimpleFeatureIterator reader = delegate.features()) {
             while (reader.hasNext()) {
-                SimpleFeature normal = (SimpleFeature) reader.next();
-                SimpleFeature reprojected = (SimpleFeature) reproject.next();
+                SimpleFeature normal = reader.next();
+                SimpleFeature reprojected = reproject.next();
 
                 Point p1 = (Point) normal.getAttribute("defaultGeom");
                 Point p2 = (Point) reprojected.getAttribute("defaultGeom");
@@ -95,9 +94,6 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
                     assertNull(l2);
                 }
             }
-        } finally {
-            reproject.close();
-            reader.close();
         }
     }
 

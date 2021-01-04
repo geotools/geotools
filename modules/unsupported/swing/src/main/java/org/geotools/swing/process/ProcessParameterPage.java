@@ -97,12 +97,12 @@ public class ProcessParameterPage extends JPage {
      * running an actual process
      */
     private void createParamMap() {
-        if (fields.size() == 0) {
+        if (fields.isEmpty()) {
             return;
         }
         paramMap = new HashMap<>();
         for (String key : fields.keySet()) {
-            List<ParamField> pws = (List<ParamField>) (fields.get(key));
+            List<ParamField> pws = fields.get(key);
             if (pws.size() > 1) {
                 // param has a list of values from multiple widgets
                 List<Object> values = new ArrayList<>();

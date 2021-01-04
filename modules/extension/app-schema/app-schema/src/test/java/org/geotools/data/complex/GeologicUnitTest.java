@@ -184,24 +184,21 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
 
         FeatureSource cpSource =
                 DataAccessRegistry.getFeatureSource(FeatureChainingTest.COMPOSITION_PART);
-        FeatureCollection cpFeatures = (FeatureCollection) cpSource.getFeatures();
+        FeatureCollection cpFeatures = cpSource.getFeatures();
         assertEquals(4, size(cpFeatures));
 
         FeatureSource cgiSource =
                 DataAccessRegistry.getFeatureSource(FeatureChainingTest.CGI_TERM_VALUE);
-        FeatureCollection cgiFeatures = (FeatureCollection) cgiSource.getFeatures();
+        FeatureCollection cgiFeatures = cgiSource.getFeatures();
         assertEquals(6, size(cgiFeatures));
     }
 
     private int size(FeatureCollection features) {
         int size = 0;
-        FeatureIterator i = features.features();
-        try {
+        try (FeatureIterator i = features.features()) {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        } finally {
-            i.close();
         }
         return size;
     }

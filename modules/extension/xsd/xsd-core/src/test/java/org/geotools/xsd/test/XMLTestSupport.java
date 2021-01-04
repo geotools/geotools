@@ -20,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -202,8 +201,8 @@ public abstract class XMLTestSupport extends TestCase {
 
         // register additional namespaces
         root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        for (Iterator e = namespaceMappings.entrySet().iterator(); e.hasNext(); ) {
-            Map.Entry mapping = (Map.Entry) e.next();
+        for (Map.Entry<String, String> stringStringEntry : namespaceMappings.entrySet()) {
+            Map.Entry mapping = (Map.Entry) stringStringEntry;
             String prefix = (String) mapping.getKey();
             String uri = (String) mapping.getValue();
 
@@ -276,8 +275,8 @@ public abstract class XMLTestSupport extends TestCase {
         Encoder encoder = new Encoder(configuration, schema);
 
         // additional namespaces
-        for (Iterator e = namespaceMappings.entrySet().iterator(); e.hasNext(); ) {
-            Map.Entry mapping = (Map.Entry) e.next();
+        for (Map.Entry<String, String> stringStringEntry : namespaceMappings.entrySet()) {
+            Map.Entry mapping = (Map.Entry) stringStringEntry;
             String prefix = (String) mapping.getKey();
             String uri = (String) mapping.getValue();
 
@@ -348,8 +347,7 @@ public abstract class XMLTestSupport extends TestCase {
         Map<String, String> mappings = new HashMap<>();
 
         try {
-            for (Iterator d = configuration.getXSD().getDependencies().iterator(); d.hasNext(); ) {
-                XSD xsd = (XSD) d.next();
+            for (XSD xsd : configuration.getXSD().getDependencies()) {
                 XSDSchema schema = xsd.getSchema();
 
                 mappings.putAll(schema.getQNamePrefixToNamespaceMap());
@@ -360,8 +358,8 @@ public abstract class XMLTestSupport extends TestCase {
             throw new RuntimeException(e);
         }
 
-        for (Iterator m = mappings.entrySet().iterator(); m.hasNext(); ) {
-            Map.Entry mapping = (Map.Entry) m.next();
+        for (Map.Entry<String, String> stringStringEntry : mappings.entrySet()) {
+            Map.Entry mapping = (Map.Entry) stringStringEntry;
             String key = (String) mapping.getKey();
 
             if (key == null) {

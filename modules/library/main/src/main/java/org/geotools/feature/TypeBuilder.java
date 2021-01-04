@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.geotools.feature.type.Types;
@@ -922,7 +921,7 @@ public class TypeBuilder {
      * @throws IllegalArgumentExcception if class is not bound to a prototype
      */
     public AttributeType getBinding(Class binding) {
-        AttributeType type = (AttributeType) bindings().get(binding);
+        AttributeType type = bindings().get(binding);
         if (type == null) {
             throw new IllegalArgumentException("No type bound to: " + binding);
         }
@@ -1098,8 +1097,8 @@ public class TypeBuilder {
 
     public static boolean contains(Collection collection, PropertyDescriptor descriptor) {
         // check for a descriptor with the same name
-        for (Iterator itr = collection.iterator(); itr.hasNext(); ) {
-            PropertyDescriptor d = (PropertyDescriptor) itr.next();
+        for (Object o : collection) {
+            PropertyDescriptor d = (PropertyDescriptor) o;
             if (d.getName().equals(descriptor.getName())) {
                 return true;
             }

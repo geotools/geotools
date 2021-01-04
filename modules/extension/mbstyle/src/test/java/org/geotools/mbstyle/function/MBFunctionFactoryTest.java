@@ -21,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -118,7 +119,7 @@ public class MBFunctionFactoryTest {
         assertEquals(0, (int) expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential( 5, 0.7, 0,0, 10,100)");
-        assertTrue(50 < (int) expr.evaluate(null, Integer.class));
+        assertTrue(50 < expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential(10, 0.7, 0,0, 10,100)");
         assertEquals(100, (int) expr.evaluate(null, Integer.class));
@@ -130,7 +131,7 @@ public class MBFunctionFactoryTest {
         assertEquals(0, (int) expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential( 5, 1.4, 0,0, 10,100)");
-        assertTrue(50 > (int) expr.evaluate(null, Integer.class));
+        assertTrue(50 > expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential(10, 1.5, 0,0, 10,100)");
         assertEquals(100, (int) expr.evaluate(null, Integer.class));
@@ -312,7 +313,7 @@ public class MBFunctionFactoryTest {
         assertEquals("SoMeString", f.evaluate(null, String.class));
 
         f = ff.function("StringTransform", ff.literal(null), ff.literal(null));
-        assertTrue(null == f.evaluate(null, String.class));
+        assertNull(f.evaluate(null, String.class));
     }
 
     @Test

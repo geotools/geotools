@@ -108,17 +108,18 @@ public abstract class FeatureWrapper {
                     if (!path.equals("")) {
                         String[] steps = path.split("/");
 
-                        for (int i = 0; i < steps.length; i++) {
+                        for (String step : steps) {
                             if (targetAttribute == null) {
                                 throw new InvalidClassException(
                                         String.format(
-                                                "Unable to wrap attribute in class '%s'. Reference to %s could not be found in the attribute.",
+                                                "Unable to wrap attribute in class '%s'. "
+                                                        + "Reference to %s could not be found in "
+                                                        + "the attribute.",
                                                 clazz, xsdMapping.local()));
                             }
 
                             // Dig through the attribute to get to the end node.
-                            targetAttribute =
-                                    (ComplexAttribute) targetAttribute.getProperty(steps[i]);
+                            targetAttribute = (ComplexAttribute) targetAttribute.getProperty(step);
                         }
                     }
 

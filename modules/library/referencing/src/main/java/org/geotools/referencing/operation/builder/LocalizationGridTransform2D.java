@@ -387,13 +387,10 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
             Point2D geoCoord = transform(index, null);
             geoCoord = tr.inverseTransform(geoCoord, geoCoord);
             return geoCoord.distance(index);
-        } catch (TransformException exception) {
+        } catch (TransformException | NoninvertibleTransformException exception) {
             // Should not happen
             throw new AssertionError(exception);
-        } catch (NoninvertibleTransformException exception) {
-            // Not impossible. What should we do? Open question...
-            throw new AssertionError(exception);
-        }
+        } // Not impossible. What should we do? Open question...
     }
 
     /**

@@ -16,6 +16,10 @@
  */
 package org.geotools.graph.traverse.standard;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.fail;
+
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
@@ -58,7 +62,7 @@ public class NoBifurcationIteratorTest extends TestCase {
                         element.setCount(getCount() - 1);
 
                         // nodes should be visited in order
-                        assertTrue(element.getID() == getCount() - 1);
+                        assertEquals(element.getID(), getCount() - 1);
                         return (GraphTraversal.CONTINUE);
                     }
                 };
@@ -72,7 +76,7 @@ public class NoBifurcationIteratorTest extends TestCase {
         traversal.traverse();
 
         // every node should have been visited
-        assertTrue(walker.getCount() == builder().getGraph().getNodes().size());
+        assertEquals(walker.getCount(), builder().getGraph().getNodes().size());
     }
 
     /**
@@ -103,7 +107,7 @@ public class NoBifurcationIteratorTest extends TestCase {
                             }
                         } else if (m_mode == 1) {
                             // check first node after continue
-                            assertTrue(element.getID() == suspend + 1);
+                            assertEquals(element.getID(), suspend + 1);
                             m_mode++;
                         }
                         return (GraphTraversal.CONTINUE);
@@ -123,12 +127,12 @@ public class NoBifurcationIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component.getID() <= suspend) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        else assertFalse(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - suspend + 1);
+        assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         traversal.traverse();
 
@@ -141,7 +145,7 @@ public class NoBifurcationIteratorTest extends TestCase {
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -170,7 +174,7 @@ public class NoBifurcationIteratorTest extends TestCase {
                             }
                         } else if (m_mode == 1) {
                             // should never get here
-                            assertTrue(false);
+                            fail();
                         }
                         return (GraphTraversal.CONTINUE);
                     }
@@ -189,12 +193,12 @@ public class NoBifurcationIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component.getID() <= kill) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        else assertFalse(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - kill + 1);
+        assertEquals(walker.getCount(), nnodes - kill + 1);
 
         // continue, no more nodes should be visited
         traversal.traverse();
@@ -226,14 +230,14 @@ public class NoBifurcationIteratorTest extends TestCase {
                         if (component.getID() < bif) {
                             assertTrue(component.isVisited());
                         } else if (component.getID() >= bif) {
-                            assertTrue(!component.isVisited());
+                            assertFalse(component.isVisited());
                         }
 
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - bif);
+        assertEquals(walker.getCount(), nnodes - bif);
     }
 
     /**
@@ -251,7 +255,7 @@ public class NoBifurcationIteratorTest extends TestCase {
                         return (Graph.FAIL_QUERY);
                     }
                 };
-        Node source = (Node) builder().getGraph().queryNodes(visitor).get(0);
+        Node source = builder().getGraph().queryNodes(visitor).get(0);
 
         CountingWalker walker = new CountingWalker();
         NoBifurcationIterator iterator = createIterator();
@@ -273,7 +277,7 @@ public class NoBifurcationIteratorTest extends TestCase {
 
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     protected GraphBuilder createBuilder() {

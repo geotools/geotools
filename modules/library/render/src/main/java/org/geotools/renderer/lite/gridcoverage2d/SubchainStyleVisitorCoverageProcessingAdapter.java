@@ -76,7 +76,7 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter
         if (node == null) return;
         // dispose the sources
         final List<CoverageProcessingNode> sources = node.getSources();
-        if (sources != null && sources.size() > 0) {
+        if (sources != null && !sources.isEmpty()) {
             for (CoverageProcessingNode source : sources) dispose(source, force);
         }
 

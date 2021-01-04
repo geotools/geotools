@@ -461,7 +461,7 @@ public class SpatialRequestHelper {
         final ReferencedEnvelope cropBBOXInRequestCRS =
                 Utils.reprojectEnvelope(computedBBox, requestCRS, requestedBBox);
         // make sure it falls within the requested envelope
-        cropBBOXInRequestCRS.intersection((org.locationtech.jts.geom.Envelope) requestedBBox);
+        cropBBOXInRequestCRS.intersection(requestedBBox);
 
         // now go back to raster space
         Rectangle computedRasterArea =

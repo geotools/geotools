@@ -648,7 +648,7 @@ public enum ContrastEnhancementType {
             double min, double max, byte newMin, byte newMax) {
         final byte[] lut = new byte[256];
         for (int i = 1; i < lut.length; i++) {
-            lut[i] = i < min ? (byte) newMin : (i > max ? (byte) newMax : (byte) i);
+            lut[i] = i < min ? newMin : (i > max ? newMax : (byte) i);
         }
         return lut;
     }
@@ -657,17 +657,17 @@ public enum ContrastEnhancementType {
     private static double getMaxValue(int dataType) {
         switch (dataType) {
             case DataBuffer.TYPE_BYTE:
-                return (double) MAX_BYTE;
+                return MAX_BYTE;
             case DataBuffer.TYPE_SHORT:
-                return (double) Short.MAX_VALUE;
+                return Short.MAX_VALUE;
             case DataBuffer.TYPE_USHORT:
                 return 65535.0;
             case DataBuffer.TYPE_INT:
-                return (double) Integer.MAX_VALUE;
+                return Integer.MAX_VALUE;
             case DataBuffer.TYPE_FLOAT:
-                return (double) Float.MAX_VALUE;
+                return Float.MAX_VALUE;
             case DataBuffer.TYPE_DOUBLE:
-                return (double) Double.MAX_VALUE;
+                return Double.MAX_VALUE;
         }
         return Double.NaN;
     }

@@ -18,7 +18,6 @@
 
 package org.geotools.wcs.bindings;
 
-import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import net.opengis.wcs20.DescribeEOCoverageSetType;
@@ -61,8 +60,8 @@ public class SectionsBinding extends AbstractComplexEMFBinding {
         List sections = node.getChildren("Section");
 
         if (null != sections) {
-            for (Iterator iterator = sections.iterator(); iterator.hasNext(); ) {
-                Node child = (Node) iterator.next();
+            for (Object section : sections) {
+                Node child = (Node) section;
                 child.setValue(Section.get((String) child.getValue()));
             }
         }

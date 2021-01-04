@@ -16,7 +16,6 @@
  */
 package org.geotools.ml.bindings;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
@@ -81,8 +80,8 @@ public class MLAttachmentTypeBinding extends AbstractComplexBinding {
         List contentList = node.getChildValues("content");
         StringBuffer content = new StringBuffer();
 
-        for (Iterator itr = contentList.iterator(); itr.hasNext(); ) {
-            content.append((String) itr.next());
+        for (Object o : contentList) {
+            content.append((String) o);
         }
 
         return new Attachment(name, mimeType, content.toString());

@@ -978,8 +978,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setExtendedColors(colorMap.getExtendedColors());
         ColorMapEntry[] entries = colorMap.getColorMapEntries();
         if (entries != null) {
-            for (int i = 0; i < entries.length; i++) {
-                ColorMapEntry entry = entries[i];
+            for (ColorMapEntry entry : entries) {
                 copy.addColorMapEntry(copy(entry));
             }
         }

@@ -17,7 +17,6 @@
 package org.geotools.graph.util.geom;
 
 import java.util.Collection;
-import java.util.Iterator;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -197,8 +196,8 @@ public class GeometryUtil {
     public static double averageDistance(LineString to, Collection from) {
         double avg = 0;
         int n = 0;
-        for (Iterator itr = from.iterator(); itr.hasNext(); ) {
-            LineString ls = (LineString) itr.next();
+        for (Object o : from) {
+            LineString ls = (LineString) o;
             n += ls.getNumPoints();
             for (int i = 0; i < ls.getNumPoints(); i++) {
                 avg += ls.getPointN(i).distance(to);
@@ -218,8 +217,8 @@ public class GeometryUtil {
             y += c.y;
         }
 
-        x /= (double) n;
-        y /= (double) n;
+        x /= n;
+        y /= n;
 
         LineString simple =
                 gf().createLineString(

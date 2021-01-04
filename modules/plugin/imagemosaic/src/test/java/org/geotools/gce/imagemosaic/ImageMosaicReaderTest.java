@@ -250,7 +250,7 @@ public class ImageMosaicReaderTest {
 
     private URL imposedEnvelopeURL;
 
-    private static final String H2_SAMPLE_PROPERTIES =
+    static final String H2_SAMPLE_PROPERTIES =
             "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
                     + "dbtype=h2\n"
                     + "Loose\\ bbox=true #important for performances\n"
@@ -1241,8 +1241,7 @@ public class ImageMosaicReaderTest {
 
     /** Simple test method to test emptyMosaic creation support followed by harvesting. dataset */
     @Test
-    // @Ignore
-    public void testEmpytMosaic() throws Exception {
+    public void testEmptyMosaic() throws Exception {
 
         final File workDir = new File(TestData.file(this, "."), "emptyMosaic");
         if (!workDir.mkdir()) {
@@ -1306,8 +1305,7 @@ public class ImageMosaicReaderTest {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(1, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 String expected =
@@ -1317,8 +1315,6 @@ public class ImageMosaicReaderTest {
                 assertEquals(
                         "2008-11-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
 
         } finally {
@@ -1421,8 +1417,7 @@ public class ImageMosaicReaderTest {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(1, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 String expected =
@@ -1432,8 +1427,6 @@ public class ImageMosaicReaderTest {
                 assertEquals(
                         "2008-10-31T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
 
         } finally {
@@ -2717,8 +2710,7 @@ public class ImageMosaicReaderTest {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(2, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 assertEquals("world.200402.3x5400x2700.tiff", f.getAttribute("location"));
@@ -2733,8 +2725,6 @@ public class ImageMosaicReaderTest {
                 assertEquals(
                         "2004-05-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
 
         } finally {
@@ -2919,8 +2909,7 @@ public class ImageMosaicReaderTest {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(2, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 assertEquals("passA2006128194218.tiff", f.getAttribute("location"));
@@ -2929,8 +2918,6 @@ public class ImageMosaicReaderTest {
                         "../singleHarvestRGBA2/passA2006128211927.tiff"
                                 .replace('/', File.separatorChar);
                 assertEquals(expected, f.getAttribute("location"));
-            } finally {
-                fi.close();
             }
         } finally {
             reader.dispose();
@@ -3444,8 +3431,7 @@ public class ImageMosaicReaderTest {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(2, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
 
@@ -3458,8 +3444,6 @@ public class ImageMosaicReaderTest {
                 assertEquals(
                         "2004-05-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
         } finally {
             reader.dispose();
@@ -3795,8 +3779,7 @@ public class ImageMosaicReaderTest {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(2, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 assertEquals("world.200402.3x5400x2700.tiff", f.getAttribute("location"));
@@ -3811,8 +3794,6 @@ public class ImageMosaicReaderTest {
                 assertEquals(
                         "2004-05-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
 
         } finally {
@@ -4501,7 +4482,7 @@ public class ImageMosaicReaderTest {
         assertNotNull(fileLocation);
         assertTrue(fileLocation instanceof String);
         String path = (String) fileLocation;
-        assertTrue(!path.isEmpty());
+        assertFalse(path.isEmpty());
         assertTrue(path.endsWith(".ovr"));
         reader.dispose();
     }

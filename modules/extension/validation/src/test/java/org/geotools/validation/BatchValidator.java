@@ -111,12 +111,10 @@ public class BatchValidator {
             }
             // HACK: get ALL feature types and smash through their features
             // this is really really slow and will be fixed
-            for (int p = 0; p < typeNames.length; p++) {
+            for (String typeName : typeNames) {
                 try {
                     validator.featureValidation(
-                            typeNames[p], store.getFeatureSource(typeNames[p]).getFeatures(), null);
-                } catch (IOException e1) {
-                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
+                            typeName, store.getFeatureSource(typeName).getFeatures(), null);
                 } catch (Exception e1) {
                     java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
                 }
@@ -128,8 +126,6 @@ public class BatchValidator {
         /** do the integrity validation dance */
         try {
             validator.integrityValidation(dsm, envelope, null);
-        } catch (IOException e1) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         } catch (Exception e1) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }
@@ -403,8 +399,8 @@ public class BatchValidator {
             String tmp = dataStoreProp.getProperty(ids[i] + ".Params");
             String[] params = tmp.split(",");
 
-            for (int j = 0; j < params.length; j++) {
-                String[] vals = params[j].split("=");
+            for (String param : params) {
+                String[] vals = param.split("=");
 
                 if (vals.length == 2) {
                     m.put(vals[0].trim(), vals[1].trim());
@@ -650,7 +646,7 @@ class BatchValidatorProcessor extends ValidationProcessor {
             Iterator j = dto.getTests().keySet().iterator();
             // go through each test plugIn
             while (j.hasNext()) {
-                TestDTO tdto = (TestDTO) dto.getTests().get(j.next());
+                TestDTO tdto = dto.getTests().get(j.next());
                 plugInNames.add(tdto.getPlugIn().getName());
             }
         }
@@ -710,12 +706,12 @@ class BatchValidatorProcessor extends ValidationProcessor {
 
         // for each TEST SUITE
         while (suiteNames.hasNext()) {
-            TestSuiteDTO tdto = (TestSuiteDTO) testSuites.get(suiteNames.next());
+            TestSuiteDTO tdto = testSuites.get(suiteNames.next());
             Iterator j = tdto.getTests().keySet().iterator();
 
             // for each TEST in the test suite
             while (j.hasNext()) {
-                TestDTO dto = (TestDTO) tdto.getTests().get(j.next());
+                TestDTO dto = tdto.getTests().get(j.next());
 
                 // deal with test
                 @SuppressWarnings("unchecked")
@@ -736,9 +732,7 @@ class BatchValidatorProcessor extends ValidationProcessor {
                 }
 
                 try {
-                    PlugIn plugIn =
-                            (org.geotools.validation.PlugIn)
-                                    defaultPlugIns.get(dto.getPlugIn().getName());
+                    PlugIn plugIn = defaultPlugIns.get(dto.getPlugIn().getName());
                     Validation validation =
                             plugIn.createValidation(dto.getName(), dto.getDescription(), testArgs);
 

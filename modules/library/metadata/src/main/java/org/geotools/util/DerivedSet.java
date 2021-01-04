@@ -107,10 +107,10 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E>
      *
      * @return the number of elements in this set.
      */
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public int size() {
         int count = 0;
-        for (final Iterator it = iterator(); it.hasNext(); ) {
-            it.next();
+        for (E e : this) {
             count++;
         }
         return count;

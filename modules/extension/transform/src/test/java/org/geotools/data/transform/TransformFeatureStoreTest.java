@@ -276,13 +276,10 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         assertEquals(1, rfc.size());
 
         // double check the features themselves
-        SimpleFeatureIterator fi = rfc.features();
-        try {
+        try (SimpleFeatureIterator fi = rfc.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature sf = fi.next();
             assertEquals("Illinois", sf.getAttribute("state_name"));
-        } finally {
-            fi.close();
         }
     }
 
@@ -300,13 +297,10 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         assertEquals(1, rfc.size());
 
         // double check the features themselves
-        SimpleFeatureIterator fi = rfc.features();
-        try {
+        try (SimpleFeatureIterator fi = rfc.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature sf = fi.next();
             assertEquals("Illinois", sf.getAttribute("name"));
-        } finally {
-            fi.close();
         }
     }
 
@@ -324,13 +318,10 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         assertEquals(1, rfc.size());
 
         // double check the features themselves
-        SimpleFeatureIterator fi = rfc.features();
-        try {
+        try (SimpleFeatureIterator fi = rfc.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature sf = fi.next();
             assertEquals("illinois", sf.getAttribute("name"));
-        } finally {
-            fi.close();
         }
     }
 }

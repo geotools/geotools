@@ -23,7 +23,6 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -118,8 +117,6 @@ public class CRSEnvelope implements Envelope {
                     } else {
                         crs = AbstractGetMapRequest.toServerCRS(srsName, forceXY);
                     }
-                } catch (NoSuchAuthorityCodeException e) {
-                    crs = DefaultEngineeringCRS.CARTESIAN_2D;
                 } catch (FactoryException e) {
                     crs = DefaultEngineeringCRS.CARTESIAN_2D;
                 }

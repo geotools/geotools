@@ -199,7 +199,7 @@ public class QueryTypeBinding extends AbstractComplexEMFBinding {
         } else if ("SortBy".equals(name.getLocalPart())) {
             QueryType query = (QueryType) object;
             List sortBy = query.getSortBy();
-            if (sortBy != null && sortBy.size() == 0) {
+            if (sortBy != null && sortBy.isEmpty()) {
                 return null;
             }
         }

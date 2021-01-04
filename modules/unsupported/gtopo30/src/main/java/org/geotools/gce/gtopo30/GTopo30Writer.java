@@ -232,9 +232,8 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
         GeoToolsWriteParams gtParams = null;
         if (params != null) {
             Parameter<?> param;
-            final int length = params.length;
-            for (int i = 0; i < length; i++) {
-                param = (Parameter<?>) params[i];
+            for (GeneralParameterValue generalParameterValue : params) {
+                param = (Parameter<?>) generalParameterValue;
                 if (param.getDescriptor()
                         .getName()
                         .getCode()
@@ -410,7 +409,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
             return image;
         }
 
-        final GridSampleDimension visibleSD = ((GridSampleDimension) gc2D.getSampleDimension(0));
+        final GridSampleDimension visibleSD = gc2D.getSampleDimension(0);
 
         // getting categories
         final List oldCategories = visibleSD.getCategories();

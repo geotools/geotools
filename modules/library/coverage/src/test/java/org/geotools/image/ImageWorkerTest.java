@@ -29,6 +29,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
@@ -506,7 +507,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         } else {
             try {
                 worker.writeJPEG(outFile, "JPEG-LS", 0.75f, true);
-                assertFalse(true);
+                fail();
             } catch (Exception e) {
                 // TODO: handle exception
             }
@@ -603,8 +604,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // and the palette does not get compressed
         InputStream gzippedStream =
                 ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
-        GZIPInputStream is = new GZIPInputStream(gzippedStream);
-        try {
+        try (GZIPInputStream is = new GZIPInputStream(gzippedStream)) {
             ImageInputStream iis = ImageIO.createImageInputStream(is);
             ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
@@ -634,8 +634,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                     "wrong transparent color index", -1, indexColorModel.getTransparentPixel());
             assertEquals("wrong component size", 8, indexColorModel.getComponentSize(0));
             outFile.delete();
-        } finally {
-            is.close();
         }
     }
 
@@ -877,10 +875,10 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         final ImageWorker test1I = new ImageWorker(test1).rescaleToBytes();
         Assert.assertEquals("Format", test1I.getRenderedOperation().getOperationName());
         final double[] maximums1 = test1I.getMaximums();
-        Assert.assertTrue(maximums1.length == 1);
+        assertEquals(1, maximums1.length);
         Assert.assertEquals(255.0, maximums1[0], 1E-10);
         final double[] minimums1 = test1I.getMinimums();
-        Assert.assertTrue(minimums1.length == 1);
+        assertEquals(1, minimums1.length);
         Assert.assertEquals(255.0, minimums1[0], 1E-10);
         assertNoData(test1I, null);
 
@@ -888,10 +886,10 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         final ImageWorker test2I = new ImageWorker(test2).rescaleToBytes();
         Assert.assertEquals("Format", test2I.getRenderedOperation().getOperationName());
         final double[] maximums2 = test1I.getMaximums();
-        Assert.assertTrue(maximums2.length == 1);
+        assertEquals(1, maximums2.length);
         Assert.assertEquals(255.0, maximums2[0], 1E-10);
         final double[] minimums2 = test1I.getMinimums();
-        Assert.assertTrue(minimums2.length == 1);
+        assertEquals(1, minimums2.length);
         Assert.assertEquals(255.0, minimums2[0], 1E-10);
         assertNoData(test2I, null);
 
@@ -1040,7 +1038,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue(image.getColorModel() instanceof IndexColorModel);
         IndexColorModel iColorModel = (IndexColorModel) image.getColorModel();
         int transparentColor = iColorModel.getRGB(worker.getTransparentPixel()) & 0x00ffffff;
-        assertTrue(transparentColor == 0);
+        assertEquals(0, transparentColor);
         assertNoData(image, null);
 
         // INDEX TO INDEX-ALPHA
@@ -1057,7 +1055,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue(image.getColorModel() instanceof IndexColorModel);
         iColorModel = (IndexColorModel) image.getColorModel();
         transparentColor = iColorModel.getRGB(worker.getTransparentPixel()) & 0x00ffffff;
-        assertTrue(transparentColor == (Color.WHITE.getRGB() & 0x00ffffff));
+        assertEquals(transparentColor, (Color.WHITE.getRGB() & 0x00ffffff));
         assertNoData(image, null);
 
         // RGB TO RGBA
@@ -1202,7 +1200,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage image = worker.getRenderedImage();
         assertNoData(image, null);
         assertTrue(image.getColorModel() instanceof ComponentColorModel);
-        assertTrue(!image.getColorModel().hasAlpha());
+        assertFalse(image.getColorModel().hasAlpha());
         int sample = image.getTile(0, 0).getSample(0, 0, 2);
         assertEquals(0, sample);
 
@@ -1218,7 +1216,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         image = worker.getRenderedImage();
         assertNoData(image, null);
         assertTrue(image.getColorModel() instanceof IndexColorModel);
-        assertTrue(!image.getColorModel().hasAlpha());
+        assertFalse(image.getColorModel().hasAlpha());
 
         assertFalse(worker.isColorSpaceYCbCr());
         worker.forceColorSpaceYCbCr();
@@ -1232,7 +1230,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         image = worker.getRenderedImage();
         assertNoData(image, null);
         assertTrue(image.getColorModel() instanceof DirectColorModel);
-        assertTrue(!image.getColorModel().hasAlpha());
+        assertFalse(image.getColorModel().hasAlpha());
         sample = image.getTile(0, 0).getSample(0, 0, 2);
         assertEquals(0, sample);
 
@@ -2450,6 +2448,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         double[] maximums = iw.getMaximums();
         Histogram histogram = iw.getHistogram(new int[] {1}, minimums, maximums);
         Histogram histogram2 = iw.getHistogram(new int[] {1}, minimums, maximums);
-        assertTrue(histogram.getBins(0)[0] == histogram2.getBins(0)[0]);
+        assertEquals(histogram.getBins(0)[0], histogram2.getBins(0)[0]);
     }
 }

@@ -26,7 +26,6 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.PlanarImage;
-import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -249,12 +248,11 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
                                 name, // The grid coverage name
                                 image, // The underlying data
                                 gg2D,
-                                (GridSampleDimension[])
-                                        (asPhotographicStrategy
-                                                ? null
-                                                : sourceCoverage
-                                                        .getSampleDimensions()
-                                                        .clone()), // The sample dimensions
+                                asPhotographicStrategy
+                                        ? null
+                                        : sourceCoverage
+                                                .getSampleDimensions()
+                                                .clone(), // The sample dimensions
                                 sources, // The source grid coverage.
                                 properties); // Properties
 

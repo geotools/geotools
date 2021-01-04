@@ -473,9 +473,7 @@ class RasterLayerRequest {
                                 CRS.transform(
                                         tempTransform, new GeneralEnvelope(requestedRasterArea)));
 
-            } catch (MismatchedDimensionException e) {
-                throw new DataSourceException("Unable to inspect request CRS", e);
-            } catch (TransformException e) {
+            } catch (MismatchedDimensionException | TransformException e) {
                 throw new DataSourceException("Unable to inspect request CRS", e);
             }
 
@@ -574,9 +572,7 @@ class RasterLayerRequest {
                                         PixelInCell.CELL_CORNER,
                                         false)
                                 .toRectangle();
-            } catch (IllegalStateException e) {
-                throw new DataSourceException(e);
-            } catch (TransformException e) {
+            } catch (IllegalStateException | TransformException e) {
                 throw new DataSourceException(e);
             }
         } else {
@@ -602,8 +598,6 @@ class RasterLayerRequest {
                 // the requested raster area
                 XRectangle2D.intersect(
                         destinationRasterArea, requestedRasterArea, destinationRasterArea);
-            } catch (NoninvertibleTransformException e) {
-                throw new DataSourceException(e);
             } catch (TransformException e) {
                 throw new DataSourceException(e);
             }
@@ -816,8 +810,7 @@ class RasterLayerRequest {
             //
             // intersect the requested area with the bounds of this
             // layer in native crs
-            if (!cropBBox.intersects(
-                    (BoundingBox) rasterManager.spatialDomainManager.coverageBBox)) {
+            if (!cropBBox.intersects(rasterManager.spatialDomainManager.coverageBBox)) {
                 cropBBox = null;
                 empty = true;
                 return;
@@ -831,14 +824,10 @@ class RasterLayerRequest {
                             rasterManager.spatialDomainManager.coverageCRS2D);
 
             return;
-        } catch (TransformException te) {
+        } catch (TransformException | FactoryException te) {
             // something bad happened while trying to transform this
             // envelope. let's try with wgs84
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, te.getLocalizedMessage(), te);
-        } catch (FactoryException fe) {
-            // something bad happened while trying to transform this
-            // envelope. let's try with wgs84
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, fe.getLocalizedMessage(), fe);
         }
 
         try {
@@ -891,14 +880,10 @@ class RasterLayerRequest {
                     rasterManager.spatialDomainManager.coverageCRS2D);
             cropBBox = new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);
 
-        } catch (TransformException te) {
+        } catch (TransformException | FactoryException te) {
             // something bad happened while trying to transform this
             // envelope. let's try with wgs84
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, te.getLocalizedMessage(), te);
-        } catch (FactoryException fe) {
-            // something bad happened while trying to transform this
-            // envelope. let's try with wgs84
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, fe.getLocalizedMessage(), fe);
         }
 
         LOGGER.log(

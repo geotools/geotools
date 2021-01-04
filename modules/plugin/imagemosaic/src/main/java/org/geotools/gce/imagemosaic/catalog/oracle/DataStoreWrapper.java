@@ -20,7 +20,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -165,10 +164,6 @@ public abstract class DataStoreWrapper implements DataStore {
         File propertiesFileP = new File(propertiesFile);
         try (InputStream inStream = new BufferedInputStream(new FileInputStream(propertiesFileP))) {
             properties.load(inStream);
-        } catch (FileNotFoundException e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("Unable to store the mapping " + e.getLocalizedMessage());
-            }
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning("Unable to store the mapping " + e.getLocalizedMessage());
@@ -228,10 +223,6 @@ public abstract class DataStoreWrapper implements DataStore {
         try (OutputStream outStream =
                 new BufferedOutputStream(new FileOutputStream(new File(propertiesPath)))) {
             properties.store(outStream, null);
-        } catch (FileNotFoundException e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("Unable to store the mapping " + e.getLocalizedMessage());
-            }
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning("Unable to store the mapping " + e.getLocalizedMessage());
@@ -296,9 +287,7 @@ public abstract class DataStoreWrapper implements DataStore {
 
     @Override
     public String[] getTypeNames() throws IOException {
-        return typeNames != null
-                ? (String[]) typeNames.toArray(new String[typeNames.size()])
-                : null;
+        return typeNames != null ? typeNames.toArray(new String[typeNames.size()]) : null;
     }
 
     @Override

@@ -19,6 +19,7 @@ package org.geotools.data;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -28,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -115,7 +115,7 @@ public class DataUtilitiesTest extends DataTestCase {
 
     public void testSimpleType() throws DataSourceException {
         SimpleFeatureType simpleFeatureType = DataUtilities.simple(FakeTypes.Mine.MINETYPE_TYPE);
-        assertEquals(null, simpleFeatureType.getGeometryDescriptor());
+        assertNull(simpleFeatureType.getGeometryDescriptor());
     }
 
     public void testDataStore() throws IOException {
@@ -391,26 +391,22 @@ public class DataUtilitiesTest extends DataTestCase {
                 DataUtilities.createType("road", "id:0,geom:LineString,name:String,uuid:String");
 
         // different binding mismatch when strict flg set
-        assertEquals(
-                false,
+        assertFalse(
                 DataUtilities.isMatch(
                         roadType.getDescriptor("uuid"), roadType1.getDescriptor("uuid")));
 
         // different binding match when strict flg not set
-        assertEquals(
-                true,
+        assertTrue(
                 DataUtilities.isMatch(
                         roadType.getDescriptor("uuid"), roadType1.getDescriptor("uuid"), false));
 
         // different names mismatch in both cases
         SimpleFeatureType roadType2 =
                 DataUtilities.createType("road", "id:0,the_geom:LineString,name:String,uuid:UUID");
-        assertEquals(
-                false,
+        assertFalse(
                 DataUtilities.isMatch(
                         roadType.getDescriptor("geom"), roadType2.getDescriptor("the_geom")));
-        assertEquals(
-                false,
+        assertFalse(
                 DataUtilities.isMatch(
                         roadType.getDescriptor("geom"),
                         roadType2.getDescriptor("the_geom"),
@@ -420,14 +416,12 @@ public class DataUtilitiesTest extends DataTestCase {
                 DataUtilities.createType(
                         "road", "id:0,the_geom:LineString,geom:String,name:String,uuid:UUID");
         // same names different descriptors mismatch when strict flg set
-        assertEquals(
-                false,
+        assertFalse(
                 DataUtilities.isMatch(
                         roadType.getDescriptor("geom"), roadType3.getDescriptor("geom")));
 
         // same names different descriptors match when strict flg not set
-        assertEquals(
-                true,
+        assertTrue(
                 DataUtilities.isMatch(
                         roadType.getDescriptor("geom"), roadType3.getDescriptor("geom"), false));
     }
@@ -448,7 +442,7 @@ public class DataUtilitiesTest extends DataTestCase {
 
         SimpleFeature rd3 = DataUtilities.reType(subRoadType, rd1);
 
-        assertFalse(rd1.equals(rd3));
+        assertNotEquals(rd1, rd3);
         assertEquals(2, rd3.getAttributeCount());
         assertEquals(rd1.getID(), rd3.getID());
         assertEquals(rd1.getAttribute("id"), rd3.getAttribute("id"));
@@ -470,7 +464,7 @@ public class DataUtilitiesTest extends DataTestCase {
 
         SimpleFeature rv3 = DataUtilities.reType(subRiverType, rv1);
 
-        assertFalse(rv1.equals(rv3));
+        assertNotEquals(rv1, rv3);
         assertEquals(2, rv3.getAttributeCount());
         assertEquals(rv1.getID(), rv3.getID());
         assertEquals(rv1.getAttribute("name"), rv3.getAttribute("name"));
@@ -799,8 +793,7 @@ public class DataUtilitiesTest extends DataTestCase {
         BinaryLogicOperator f = (BinaryLogicOperator) mixedFilter;
 
         assertTrue(f instanceof And);
-        for (Iterator fit = f.getChildren().iterator(); fit.hasNext(); ) {
-            Filter subFilter = (Filter) fit.next();
+        for (Filter subFilter : f.getChildren()) {
             assertTrue(filter1.equals(subFilter) || filter2.equals(subFilter));
         }
 
@@ -910,9 +903,9 @@ public class DataUtilitiesTest extends DataTestCase {
 
         assertNotNull(view);
         List<AttributeDescriptor> desc = view.getSchema().getAttributeDescriptors();
-        assertTrue(desc.size() == propNames.length);
-        assertTrue(desc.get(0).getLocalName().equals(propNames[0]));
-        assertTrue(desc.get(1).getLocalName().equals(propNames[1]));
+        assertEquals(desc.size(), propNames.length);
+        assertEquals(desc.get(0).getLocalName(), propNames[0]);
+        assertEquals(desc.get(1).getLocalName(), propNames[1]);
     }
 
     public void testAddMandatoryProperties() {
@@ -956,7 +949,7 @@ public class DataUtilitiesTest extends DataTestCase {
         List<PropertyName> list2 = DataUtilities.addMandatoryProperties(type, list);
 
         assertTrue(list2.contains(propName1)); // in original list, not mandatory
-        assertTrue(!list2.contains(propName2)); // not in original list and not mandatory
+        assertFalse(list2.contains(propName2)); // not in original list and not mandatory
         assertTrue(list2.contains(propName3)); // mandatory
         assertTrue(list2.contains(propName4)); // mandatory and in list
         assertEquals(3, list2.size());

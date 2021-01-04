@@ -61,7 +61,7 @@ public class AppSchemaAttributeBuilder extends AttributeBuilder {
             final String id, final Object value, final Name name, final AttributeType type) {
         // existence check
         AttributeDescriptor descriptor = attributeDescriptor(name);
-        AttributeType declaredType = (AttributeType) descriptor.getType();
+        AttributeType declaredType = descriptor.getType();
         if (!declaredType.equals(type)) {
             boolean argIsSubType = Types.isSuperType(type, declaredType);
             if (!argIsSubType) {

@@ -59,9 +59,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (int i = 0; i < children.size(); i++) {
-            Node child = (Node) children.get(i);
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 return true;
             }
@@ -75,9 +73,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (int i = 0; i < children.size(); i++) {
-            Node child = (Node) children.get(i);
-
+        for (Node child : children) {
             if (child.getValue() == null) {
                 continue;
             }
@@ -147,9 +143,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 return child;
             }
@@ -163,9 +157,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (child.getValue() == null) {
                 continue;
             }
@@ -183,9 +175,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -203,9 +193,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (name.equals(att.getComponent().getName())) {
                 return true;
             }
@@ -247,9 +235,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (name.equals(att.getComponent().getName())) {
                 return att;
             }
@@ -263,9 +249,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -293,9 +277,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator a = attributes.iterator(); a.hasNext(); ) {
-            Node att = (Node) a.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -315,9 +297,7 @@ public class NodeImpl implements Node {
             return matches;
         }
 
-        for (Iterator a = attributes.iterator(); a.hasNext(); ) {
-            Node att = (Node) a.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -335,7 +315,7 @@ public class NodeImpl implements Node {
     }
 
     public Object getChildValue(int index) {
-        return ((Node) children.get(index)).getValue();
+        return children.get(index).getValue();
     }
 
     public Object getChildValue(String name) {
@@ -365,9 +345,7 @@ public class NodeImpl implements Node {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 matches.add(child.getValue());
             }
@@ -383,8 +361,7 @@ public class NodeImpl implements Node {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
+        for (Node child : children) {
             Object parsed = child.getValue();
 
             if (parsed == null) {
@@ -487,7 +464,7 @@ public class NodeImpl implements Node {
 
     public void collapseWhitespace() {
         // leading whitespace
-        for (Iterator<Node> it = ((List<Node>) children).iterator(); it.hasNext(); ) {
+        for (Iterator<Node> it = children.iterator(); it.hasNext(); ) {
             Text t = text(it.next());
             if (t == null) break;
 
@@ -501,7 +478,7 @@ public class NodeImpl implements Node {
 
         // trailing whitespace
         for (int i = children.size() - 1; i > -1; i--) {
-            Text t = text((Node) children.get(i));
+            Text t = text(children.get(i));
             if (t == null) break;
 
             if (t.isWhitespace()) {
@@ -514,7 +491,7 @@ public class NodeImpl implements Node {
 
         // inner whitespace
         boolean remove = false;
-        for (Iterator<Node> it = ((List<Node>) children).iterator(); it.hasNext(); ) {
+        for (Iterator<Node> it = children.iterator(); it.hasNext(); ) {
             Text t = text(it.next());
             if (t == null) continue;
 

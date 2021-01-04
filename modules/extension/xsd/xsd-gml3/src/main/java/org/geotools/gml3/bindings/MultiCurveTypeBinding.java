@@ -97,8 +97,7 @@ public class MultiCurveTypeBinding extends AbstractComplexBinding {
         // &lt;element minOccurs="0" ref="gml:curveMembers"/&gt;
         if (node.hasChild(MultiLineString[].class)) {
             // this is a hack but we map curve itself to multi line string
-            MultiLineString[] lines =
-                    (MultiLineString[]) node.getChildValue(MultiLineString[].class);
+            MultiLineString[] lines = node.getChildValue(MultiLineString[].class);
             for (MultiLineString mline : lines) {
                 if (mline.getNumGeometries() == 1) {
                     curves.add((LineString) mline.getGeometryN(0));
@@ -110,8 +109,7 @@ public class MultiCurveTypeBinding extends AbstractComplexBinding {
             }
         }
 
-        return gf.createMultiLineString(
-                (LineString[]) curves.toArray(new LineString[curves.size()]));
+        return gf.createMultiLineString(curves.toArray(new LineString[curves.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

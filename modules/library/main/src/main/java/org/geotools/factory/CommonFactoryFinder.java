@@ -95,7 +95,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static StyleFactory getStyleFactory(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return (StyleFactory) lookup(StyleFactory.class, hints, Hints.STYLE_FACTORY);
+        return lookup(StyleFactory.class, hints, Hints.STYLE_FACTORY);
     }
     /**
      * Returns the first implementation of {@link StyleFactory}. If no implementation matches, a new
@@ -176,7 +176,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
-        return (FeatureFactory) lookup(FeatureFactory.class, hints, Hints.FEATURE_FACTORY);
+        return lookup(FeatureFactory.class, hints, Hints.FEATURE_FACTORY);
     }
 
     /**
@@ -191,8 +191,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static FeatureTypeFactory getFeatureTypeFactory(Hints hints) {
         hints = mergeSystemHints(hints);
-        return (FeatureTypeFactory)
-                lookup(FeatureTypeFactory.class, hints, Hints.FEATURE_TYPE_FACTORY);
+        return lookup(FeatureTypeFactory.class, hints, Hints.FEATURE_TYPE_FACTORY);
     }
 
     /**
@@ -207,7 +206,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static FilterFactory getFilterFactory(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return (FilterFactory) lookup(FilterFactory.class, hints, Hints.FILTER_FACTORY);
+        return lookup(FilterFactory.class, hints, Hints.FILTER_FACTORY);
     }
 
     /**

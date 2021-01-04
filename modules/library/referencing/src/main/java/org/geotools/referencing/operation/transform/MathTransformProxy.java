@@ -115,7 +115,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
             final int dstOff,
             final int numPts)
             throws TransformException {
-        ((AbstractMathTransform) transform).transform(srcPts, srcOff, dstPts, dstOff, numPts);
+        transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
 
     /**
@@ -131,7 +131,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
             final int dstOff,
             final int numPts)
             throws TransformException {
-        ((AbstractMathTransform) transform).transform(srcPts, srcOff, dstPts, dstOff, numPts);
+        transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
 
     /** Gets the derivative of this transform at a point. */

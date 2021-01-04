@@ -64,7 +64,7 @@ public class PartialIndexQueryManagerTest extends IndexesTest {
             // Check expected indexOnlyFilter:
             List<Filter> filters = Arrays.asList(totallyIndexedFilter(), totallyIndexedFilter2());
             Filter expectedFilter = ff.and(filters);
-            assertTrue(expectedFilter.equals(indexQuery.getFilter()));
+            assertEquals(expectedFilter, indexQuery.getFilter());
 
             // check build new combined query:
             Query combQuery = piqm.buildCombinedQuery(indexFeatureCollection());

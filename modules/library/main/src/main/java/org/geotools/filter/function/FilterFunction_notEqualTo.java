@@ -42,7 +42,7 @@ public class FilterFunction_notEqualTo extends FunctionExpressionImpl {
         Object arg1;
 
         try { // attempt to get value and perform conversion
-            arg0 = (Object) getExpression(0).evaluate(feature);
+            arg0 = getExpression(0).evaluate(feature);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -50,7 +50,7 @@ public class FilterFunction_notEqualTo extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = (Object) getExpression(1).evaluate(feature);
+            arg1 = getExpression(1).evaluate(feature);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

@@ -141,9 +141,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
 
             try {
                 peek = reader.next();
-            } catch (NoSuchElementException e) {
-                throw new DataSourceException("Could not aquire the next Feature", e);
-            } catch (IllegalAttributeException e) {
+            } catch (NoSuchElementException | IllegalAttributeException e) {
                 throw new DataSourceException("Could not aquire the next Feature", e);
             }
 
@@ -196,7 +194,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
 
     protected void querySpatialIndex() {
         while (spatialIndexIterator.hasNext() && next == null) {
-            F f = (F) spatialIndexIterator.next();
+            F f = spatialIndexIterator.next();
             if (encounteredFids.contains(f.getIdentifier().getID()) || !filter.evaluate(f)) {
                 continue;
             }
@@ -206,7 +204,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
 
     protected void queryAdded() {
         while (addedIterator.hasNext() && next == null) {
-            next = (F) addedIterator.next();
+            next = addedIterator.next();
             if (encounteredFids.contains(next.getIdentifier().getID()) || !filter.evaluate(next)) {
                 next = null;
             }
@@ -215,7 +213,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
 
     protected void queryModified() {
         while (modifiedIterator.hasNext() && next == null) {
-            next = (F) modifiedIterator.next();
+            next = modifiedIterator.next();
             if (next == Diff.NULL
                     || encounteredFids.contains(next.getIdentifier().getID())
                     || !filter.evaluate(next)) {

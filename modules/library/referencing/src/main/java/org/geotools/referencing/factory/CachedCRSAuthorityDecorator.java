@@ -107,7 +107,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
             CRSAuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
-        crsAuthority = (CRSAuthorityFactory) factory;
+        crsAuthority = factory;
         this.delegate = (AbstractAuthorityFactory) factory;
     }
 

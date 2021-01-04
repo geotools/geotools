@@ -253,7 +253,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         } catch (IllegalArgumentException e) {
             caught = true;
         }
-        assertTrue("Streams are  supported now", !caught);
+        assertFalse("Streams are  supported now", caught);
 
         // testing writer
         assertNotNull(

@@ -46,7 +46,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
@@ -214,34 +213,21 @@ public class FilterTest extends TestCase {
     }
 
     public void testLikeToSQL() {
-        assertTrue(
-                "BroadWay%"
-                        .equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "BroadWay*")));
-        assertTrue(
-                "broad#ay".equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad#ay")));
-        assertTrue(
-                "broadway".equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway")));
+        assertEquals("BroadWay%", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "BroadWay*"));
+        assertEquals("broad#ay", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad#ay"));
+        assertEquals("broadway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway"));
 
-        assertTrue(
-                "broad_ay".equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad.ay")));
-        assertTrue(
-                "broad.ay".equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad!.ay")));
+        assertEquals("broad_ay", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad.ay"));
+        assertEquals("broad.ay", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad!.ay"));
 
-        assertTrue(
-                "broa''dway"
-                        .equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa'dway")));
-        assertTrue(
-                "broa''''dway"
-                        .equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa''dway")));
+        assertEquals("broa''dway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa'dway"));
+        assertEquals(
+                "broa''''dway",
+                LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa" + "''dway"));
 
-        assertTrue(
-                "broadway_"
-                        .equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway.")));
-        assertTrue(
-                "broadway".equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway!")));
-        assertTrue(
-                "broadway!"
-                        .equals(LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway!!")));
+        assertEquals("broadway_", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway."));
+        assertEquals("broadway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway!"));
+        assertEquals("broadway!", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway!!"));
     }
 
     /**
@@ -312,7 +298,7 @@ public class FilterTest extends TestCase {
         testLiteral = new LiteralExpressionImpl("incorrect test string data");
         filter = compare(PropertyIsEqualTo.class, testAttribute, testLiteral);
 
-        assertTrue(!filter.evaluate(testFeature));
+        assertFalse(filter.evaluate(testFeature));
 
         // Test for false positive.
         testLiteral = new LiteralExpressionImpl("zebra");
@@ -321,7 +307,7 @@ public class FilterTest extends TestCase {
 
         testLiteral = new LiteralExpressionImpl("blorg");
         filter = compare(PropertyIsLessThan.class, testAttribute, testLiteral);
-        assertTrue(!filter.evaluate(testFeature));
+        assertFalse(filter.evaluate(testFeature));
     }
 
     /**
@@ -617,7 +603,7 @@ public class FilterTest extends TestCase {
         PropertyIsEqualTo compareFilter = fac.equals(testAttribute, fac.literal(10));
 
         testFeature.setAttribute("testInteger", null);
-        assertEquals(false, compareFilter.evaluate(testFeature));
+        assertFalse(compareFilter.evaluate(testFeature));
 
         assertTrue(nullFilter.evaluate(testFeature));
         assertFalse(notNullFilter.evaluate(testFeature));
@@ -872,14 +858,14 @@ public class FilterTest extends TestCase {
 
         LOGGER.finer(disjoint.toString());
         LOGGER.finer("contains feature: " + disjoint.evaluate(testFeature));
-        assertTrue(!disjoint.evaluate(testFeature));
+        assertFalse(disjoint.evaluate(testFeature));
 
         expr2 = new LiteralExpressionImpl(null);
         disjoint = fac.disjoint(expr1, expr2);
 
         LOGGER.finer(disjoint.toString());
         LOGGER.finer("contains feature: " + disjoint.evaluate(testFeature));
-        assertTrue(!disjoint.evaluate(testFeature));
+        assertFalse(disjoint.evaluate(testFeature));
     }
 
     public void testIntersects() throws Exception {
@@ -924,14 +910,14 @@ public class FilterTest extends TestCase {
 
         LOGGER.finer(intersects.toString());
         LOGGER.finer("contains feature: " + intersects.evaluate(testFeature));
-        assertTrue(!intersects.evaluate(testFeature));
+        assertFalse(intersects.evaluate(testFeature));
 
         expr2 = new LiteralExpressionImpl(null);
         intersects = fac.intersects(expr1, expr2);
 
         LOGGER.finer(intersects.toString());
         LOGGER.finer("contains feature: " + intersects.evaluate(testFeature));
-        assertTrue(!intersects.evaluate(testFeature));
+        assertFalse(intersects.evaluate(testFeature));
     }
 
     /**
@@ -953,7 +939,7 @@ public class FilterTest extends TestCase {
 
         LOGGER.finer(bbox.toString());
         LOGGER.finer("contains feature: " + bbox.evaluate(testFeature));
-        assertTrue(!bbox.evaluate(testFeature));
+        assertFalse(bbox.evaluate(testFeature));
 
         bbox = fac.bbox(left, 0, 0, 10, 10, "EPSG:4326");
 
@@ -1108,14 +1094,14 @@ public class FilterTest extends TestCase {
 
         LOGGER.finer(filter.toString());
         LOGGER.finer("contains feature: " + filter.evaluate(testFeature));
-        assertTrue(!filter.evaluate(testFeature));
+        assertFalse(filter.evaluate(testFeature));
 
         // Test AND for false positives
         filter = fac.and(filterTrue, filterFalse);
 
         LOGGER.finer(filter.toString());
         LOGGER.finer("contains feature: " + filter.evaluate(testFeature));
-        assertTrue(!filter.evaluate(testFeature));
+        assertFalse(filter.evaluate(testFeature));
 
         // Test AND for false positives
         filter = fac.and(filterTrue, filterTrue);
@@ -1131,33 +1117,33 @@ public class FilterTest extends TestCase {
         LiteralExpressionImpl literal;
         literal = new LiteralExpressionImpl(1.0D);
         assertEquals(ExpressionType.LITERAL_DOUBLE, Filters.getExpressionType(literal));
-        assertEquals(Double.valueOf(1.0D), literal.evaluate((Feature) null));
+        assertEquals(Double.valueOf(1.0D), literal.evaluate(null));
 
         GeometryFactory gf = new GeometryFactory();
         literal = new LiteralExpressionImpl(gf.createPoint(new Coordinate(0, 0)));
         assertEquals(ExpressionType.LITERAL_GEOMETRY, Filters.getExpressionType(literal));
-        Geometry value = (Geometry) literal.evaluate((Feature) null);
+        Geometry value = (Geometry) literal.evaluate(null);
         assertTrue(gf.createPoint(new Coordinate(0, 0)).equalsExact(value));
 
         literal = new LiteralExpressionImpl(1);
         assertEquals(ExpressionType.LITERAL_INTEGER, Filters.getExpressionType(literal));
-        assertEquals(Integer.valueOf(1), literal.evaluate((Feature) null));
+        assertEquals(Integer.valueOf(1), literal.evaluate(null));
 
         literal = new LiteralExpressionImpl(1L);
         assertEquals(ExpressionType.LITERAL_LONG, Filters.getExpressionType(literal));
-        assertEquals(Long.valueOf(1), literal.evaluate((Feature) null));
+        assertEquals(Long.valueOf(1), literal.evaluate(null));
 
         literal = new LiteralExpressionImpl("string value");
         assertEquals(ExpressionType.LITERAL_STRING, Filters.getExpressionType(literal));
-        assertEquals("string value", literal.evaluate((Feature) null));
+        assertEquals("string value", literal.evaluate(null));
 
         literal = new LiteralExpressionImpl(new Date(0));
         assertEquals(ExpressionType.LITERAL_UNDECLARED, Filters.getExpressionType(literal));
-        assertEquals(new Date(0), literal.evaluate((Feature) null));
+        assertEquals(new Date(0), literal.evaluate(null));
 
         literal = new LiteralExpressionImpl(null);
         assertEquals(ExpressionType.LITERAL_UNDECLARED, Filters.getExpressionType(literal));
-        assertNull(literal.evaluate((Feature) null));
+        assertNull(literal.evaluate(null));
     }
 
     /**
@@ -1304,22 +1290,22 @@ public class FilterTest extends TestCase {
         Filter f1 = fac.less(fac.property("ATR"), fac.literal("32"));
         Filter f2 = fac.notEqual(fac.property("ATR2"), fac.literal("1"));
 
-        Assert.assertTrue(f1.equals(f1));
-        Assert.assertFalse(f1.equals(f2));
-        Assert.assertFalse(f2.equals(f1));
+        Assert.assertEquals(f1, f1);
+        Assert.assertNotEquals(f1, f2);
+        Assert.assertNotEquals(f2, f1);
 
         Filter f4 = fac.notEqual(fac.property("BBB"), fac.literal("2"));
-        Assert.assertFalse(f2.equals(f4));
-        Assert.assertFalse(f4.equals(f2));
+        Assert.assertNotEquals(f2, f4);
+        Assert.assertNotEquals(f4, f2);
 
         Filter f3 = fac.less(fac.property("ATR"), fac.literal("40"));
-        Assert.assertFalse(f1.equals(f3));
-        Assert.assertFalse(f3.equals(f1));
+        Assert.assertNotEquals(f1, f3);
+        Assert.assertNotEquals(f3, f1);
 
         Expression l32 = fac.literal("32");
         Expression l40 = fac.literal("40");
-        Assert.assertFalse(l32.equals(l40));
-        Assert.assertFalse(l40.equals(l32));
+        Assert.assertNotEquals(l32, l40);
+        Assert.assertNotEquals(l40, l32);
     }
 
     public void testNullBetween() {

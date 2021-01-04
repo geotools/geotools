@@ -16,7 +16,6 @@
  */
 package org.geotools.graph.util;
 
-import java.util.Iterator;
 import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
@@ -57,9 +56,8 @@ public class DijkstraShortestPathFinderTest extends TestCase {
         Path p = pfinder.getPath(ends[1]);
 
         int count = 99;
-        for (Iterator itr = p.iterator(); itr.hasNext(); ) {
-            Node n = (Node) itr.next();
-            assertTrue(n.getID() == count--);
+        for (Node n : p) {
+            assertEquals(n.getID(), count--);
         }
     }
 
@@ -78,9 +76,9 @@ public class DijkstraShortestPathFinderTest extends TestCase {
         pfinder.calculate();
         Path p = pfinder.getPath(ends[1]);
 
-        assertTrue(p.size() == 2);
-        assertTrue(p.get(0) == ends[1]);
-        assertTrue(p.get(1) == ends[0]);
+        assertEquals(2, p.size());
+        assertSame(p.get(0), ends[1]);
+        assertSame(p.get(1), ends[0]);
     }
 
     /**
@@ -98,17 +96,15 @@ public class DijkstraShortestPathFinderTest extends TestCase {
                 new DijkstraShortestPathFinder(builder().getGraph(), root, costFunction());
         pfinder.calculate();
 
-        for (Iterator itr = builder().getGraph().getNodes().iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
+        for (Node node : builder().getGraph().getNodes()) {
             String id = node.getObject().toString();
 
             if (id2node.get(id + ".0") == null) {
                 Path p = pfinder.getPath(node);
-                assertTrue(p.size() == k + 1);
+                assertEquals(p.size(), k + 1);
 
-                for (Iterator pitr = p.iterator(); pitr.hasNext(); ) {
-                    Node n = (Node) pitr.next();
-                    assertTrue(n.getObject().toString().equals(id));
+                for (Node n : p) {
+                    assertEquals(n.getObject().toString(), id);
                     if (id.length() > 2) id = id.substring(0, id.length() - 2);
                 }
             }

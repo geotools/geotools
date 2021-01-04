@@ -174,8 +174,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
                     .setNumberColorMapEntries(cmEntries.length)
                     .setColorForValuesToPreserve(new Color(0, 0, 0, 0))
                     .setGapsColor(new Color(0, 0, 0, 0));
-            for (int i = 0; i < cmEntries.length; i++) {
-                builder.addColorMapEntry(cmEntries[i]);
+            for (ColorMapEntry cmEntry : cmEntries) {
+                builder.addColorMapEntry(cmEntry);
             }
 
             // /////////////////////////////////////////////////////////////////////

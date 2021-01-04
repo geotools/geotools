@@ -232,13 +232,10 @@ public class TransformProcess implements VectorProcess {
             SimpleFeatureCollection delegate, List<Definition> definitionList) {
 
         SimpleFeature sample = null;
-        SimpleFeatureIterator iterator = delegate.features();
-        try {
+        try (SimpleFeatureIterator iterator = delegate.features()) {
             if (iterator.hasNext()) {
                 sample = iterator.next();
             }
-        } finally {
-            iterator.close(); // good bye
         }
 
         SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();

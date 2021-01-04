@@ -179,7 +179,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         query.setProperties(selectedProperties);
 
-        FeatureSource fSource = DataAccessRegistry.getFeatureSource((Name) featureTypeName);
+        FeatureSource fSource = DataAccessRegistry.getFeatureSource(featureTypeName);
 
         if (fSource == null) {
             throw new IOException("Internal error: Source could not be found");
@@ -314,7 +314,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
         @SuppressWarnings("PMD.CloseResource") // not managed here (field, closed later)
         DataAccessMappingFeatureIterator featureIterator =
-                instance.featureIterators.get((Name) featureTypeName);
+                instance.featureIterators.get(featureTypeName);
         if (featureIterator == null) {
             featureIterator =
                     initSourceFeatures(
@@ -327,8 +327,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                             null,
                             transaction);
         }
-        Expression nestedSourceExpression =
-                instance.nestedSourceExpressions.get((Name) featureTypeName);
+        Expression nestedSourceExpression = instance.nestedSourceExpressions.get(featureTypeName);
         if (nestedSourceExpression == null) {
             throw new IllegalArgumentException(
                     "Internal error: nested source expression expected but found "
@@ -407,7 +406,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
         @SuppressWarnings("PMD.CloseResource") // not managed here, closed later
         DataAccessMappingFeatureIterator featureIterator =
-                instance.featureIterators.get((Name) featureTypeName);
+                instance.featureIterators.get(featureTypeName);
         if (featureIterator == null) {
             featureIterator =
                     initSourceFeatures(
@@ -420,8 +419,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                             resolveTimeOut,
                             transaction);
         }
-        Expression nestedSourceExpression =
-                instance.nestedSourceExpressions.get((Name) featureTypeName);
+        Expression nestedSourceExpression = instance.nestedSourceExpressions.get(featureTypeName);
         if (nestedSourceExpression == null) {
             throw new IllegalArgumentException(
                     "Internal error: nested source expression expected but found "

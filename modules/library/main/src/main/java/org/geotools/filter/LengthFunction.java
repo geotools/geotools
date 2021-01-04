@@ -43,8 +43,8 @@ public class LengthFunction extends FunctionExpressionImpl {
      * @see org.geotools.filter.Expression#getValue(org.geotools.feature.Feature)
      */
     public Object evaluate(Object feature) {
-        Expression ae = (Expression) getParameters().get(0);
-        String value = (String) ae.evaluate(feature, String.class);
+        Expression ae = getParameters().get(0);
+        String value = ae.evaluate(feature, String.class);
         return Integer.valueOf(value == null ? 0 : value.length());
     }
 }

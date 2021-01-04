@@ -762,7 +762,7 @@ public class ProjectionHandler {
                     }
                 }
 
-                if (elements.size() == 0) {
+                if (elements.isEmpty()) {
                     return null;
                 }
 

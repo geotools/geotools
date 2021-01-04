@@ -19,6 +19,7 @@ package org.geotools.mbstyle;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
@@ -233,9 +234,8 @@ public class SymbolMBLayerTest {
     @Test
     public void testTextFont() {
         // check the json
-        MBLayer fontLayer = (SymbolMBLayer) fontStyle.layer("text-font");
-        assertEquals(
-                true, ((JSONObject) fontLayer.getLayout().get("text-font")).containsKey("stops"));
+        MBLayer fontLayer = fontStyle.layer("text-font");
+        assertTrue(((JSONObject) fontLayer.getLayout().get("text-font")).containsKey("stops"));
         JSONArray stops =
                 (JSONArray) ((JSONObject) fontLayer.getLayout().get("text-font")).get("stops");
         assertEquals("Apple-Chancery", ((JSONArray) ((JSONArray) stops.get(0)).get(1)).get(0));

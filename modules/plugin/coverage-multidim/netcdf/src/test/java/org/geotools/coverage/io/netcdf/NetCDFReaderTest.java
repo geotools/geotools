@@ -257,8 +257,7 @@ public class NetCDFReaderTest extends Assert {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -404,8 +403,7 @@ public class NetCDFReaderTest extends Assert {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -514,8 +512,7 @@ public class NetCDFReaderTest extends Assert {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -665,8 +662,7 @@ public class NetCDFReaderTest extends Assert {
                 new File(mosaic, "O3NO2-noZ.xml").getAbsolutePath()); // impose def
 
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -804,8 +800,7 @@ public class NetCDFReaderTest extends Assert {
         hints.add(new Hints(Utils.EXCLUDE_MOSAIC, true));
 
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -910,8 +905,7 @@ public class NetCDFReaderTest extends Assert {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -964,8 +958,7 @@ public class NetCDFReaderTest extends Assert {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -1107,8 +1100,7 @@ public class NetCDFReaderTest extends Assert {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -1151,8 +1143,7 @@ public class NetCDFReaderTest extends Assert {
         File file = new File(workDir, "climatological.nc");
 
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), null);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), null);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), null);
 
         assertNotNull(format);
@@ -1264,8 +1255,7 @@ public class NetCDFReaderTest extends Assert {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -1314,8 +1304,7 @@ public class NetCDFReaderTest extends Assert {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(testURL, hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(testURL, hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(testURL, hints);
         assertNotNull(format);
         assertNotNull(reader);

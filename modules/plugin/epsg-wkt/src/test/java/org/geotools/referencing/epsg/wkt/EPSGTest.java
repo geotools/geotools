@@ -18,7 +18,6 @@ package org.geotools.referencing.epsg.wkt;
 
 // J2SE dependencies
 
-import java.util.Iterator;
 import java.util.Set;
 import junit.framework.TestCase;
 import org.geotools.metadata.iso.citation.Citations;
@@ -106,9 +105,9 @@ public class EPSGTest extends TestCase {
         int total = codes.size();
         int count = 0;
 
-        for (Iterator i = codes.iterator(); i.hasNext(); ) {
+        for (Object o : codes) {
             CoordinateReferenceSystem crs;
-            String code = (String) i.next();
+            String code = (String) o;
             try {
                 crs = (CoordinateReferenceSystem) factory.createObject(code);
             } catch (Exception e) {

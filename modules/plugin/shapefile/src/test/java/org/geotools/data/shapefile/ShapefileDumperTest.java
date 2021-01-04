@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -414,9 +415,8 @@ public class ShapefileDumperTest {
                     if (Geometry.class.isAssignableFrom(attrValue.getClass()))
                         assertFalse("Empty geometry", ((Geometry) attrValue).isEmpty());
                     else
-                        assertFalse(
-                                "Empty value for attribute",
-                                attrValue.toString().trim().equals(""));
+                        assertNotEquals(
+                                "Empty value for attribute", "", attrValue.toString().trim());
                 }
             }
         }
@@ -446,8 +446,8 @@ public class ShapefileDumperTest {
         SimpleFeatureCollection polygon = getFeaturesFromShapefile(EMPTYGEOMS + "Polygon");
         assertEquals(2, polygon.size());
         List<SimpleFeature> polygonFeatures = DataUtilities.list(polygon);
-        assertNull((Geometry) polygonFeatures.get(0).getDefaultGeometry());
-        assertNull((Geometry) polygonFeatures.get(1).getDefaultGeometry());
+        assertNull(polygonFeatures.get(0).getDefaultGeometry());
+        assertNull(polygonFeatures.get(1).getDefaultGeometry());
         checkTypeStructure(polygon.getSchema(), MultiPolygon.class, "name");
         assertCst(EMPTYGEOMS + "Polygon", "ISO-8859-1");
 
@@ -455,8 +455,8 @@ public class ShapefileDumperTest {
         SimpleFeatureCollection line = getFeaturesFromShapefile(EMPTYGEOMS + "Line");
         assertEquals(2, line.size());
         List<SimpleFeature> lineFeatures = DataUtilities.list(polygon);
-        assertNull((Geometry) lineFeatures.get(0).getDefaultGeometry());
-        assertNull((Geometry) lineFeatures.get(1).getDefaultGeometry());
+        assertNull(lineFeatures.get(0).getDefaultGeometry());
+        assertNull(lineFeatures.get(1).getDefaultGeometry());
         checkTypeStructure(line.getSchema(), MultiLineString.class, "name");
         assertCst(EMPTYGEOMS + "Line", "ISO-8859-1");
     }

@@ -47,7 +47,7 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
             Map<String, Parameter<?>> parameters,
             RenderingProcess process,
             Literal fallbackValue) {
-        super(processName, inputExpressions, parameters, (Process) process, fallbackValue);
+        super(processName, inputExpressions, parameters, process, fallbackValue);
     }
 
     public Query invertQuery(Query targetQuery, GridGeometry gridGeometry) {

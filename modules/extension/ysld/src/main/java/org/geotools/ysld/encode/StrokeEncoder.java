@@ -51,8 +51,8 @@ public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < arr.length; i++) {
-            sb.append(arr[i]).append(" ");
+        for (float v : arr) {
+            sb.append(v).append(" ");
         }
         sb.setLength(sb.length() - 1);
         return sb.toString();

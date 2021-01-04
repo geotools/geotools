@@ -199,7 +199,7 @@ public class CoordinateVariableTest extends Assert {
             NetcdfDataset dataset, CoordinateAxis coordinateAxis, String units) {
         CoordinateAxis1DUnitWrapper wrapper =
                 new CoordinateAxis1DUnitWrapper(dataset, (CoordinateAxis1D) coordinateAxis, units);
-        return CoordinateVariable.create((CoordinateAxis1D) wrapper);
+        return CoordinateVariable.create(wrapper);
     }
 
     @Test
@@ -224,10 +224,10 @@ public class CoordinateVariableTest extends Assert {
         CoordinateAxis coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
         assertNotNull(coordinateAxis);
         assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        Class<?> binding = CoordinateVariable.suggestBinding((CoordinateAxis1D) coordinateAxis);
+        Class<?> binding = CoordinateVariable.suggestBinding(coordinateAxis);
         assertNotNull(binding);
         assertSame(Date.class, binding);
-        CoordinateVariable<?> cv = CoordinateVariable.create((CoordinateAxis1D) coordinateAxis);
+        CoordinateVariable<?> cv = CoordinateVariable.create(coordinateAxis);
         assertSame(Date.class, cv.getType());
 
         List<?> list = cv.read();
@@ -259,11 +259,11 @@ public class CoordinateVariableTest extends Assert {
         coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
         assertNotNull(coordinateAxis);
         assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding((CoordinateAxis1D) coordinateAxis);
+        binding = CoordinateVariable.suggestBinding(coordinateAxis);
         assertNotNull(binding);
         assertSame(Float.class, binding);
 
-        cv = CoordinateVariable.create((CoordinateAxis1D) coordinateAxis);
+        cv = CoordinateVariable.create(coordinateAxis);
         list = cv.read();
         assertNotNull(list);
         assertEquals(2, list.size());
@@ -311,10 +311,10 @@ public class CoordinateVariableTest extends Assert {
         CoordinateAxis coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
         assertNotNull(coordinateAxis);
         assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        Class<?> binding = CoordinateVariable.suggestBinding((CoordinateAxis1D) coordinateAxis);
+        Class<?> binding = CoordinateVariable.suggestBinding(coordinateAxis);
         assertNotNull(binding);
         assertSame(Short.class, binding);
-        CoordinateVariable<?> cv = CoordinateVariable.create((CoordinateAxis1D) coordinateAxis);
+        CoordinateVariable<?> cv = CoordinateVariable.create(coordinateAxis);
         assertSame(Short.class, cv.getType());
         assertEquals((short) 0, cv.getMinimum());
         assertEquals((short) 2, cv.getMaximum());
@@ -332,10 +332,10 @@ public class CoordinateVariableTest extends Assert {
         coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
         assertNotNull(coordinateAxis);
         assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding((CoordinateAxis1D) coordinateAxis);
+        binding = CoordinateVariable.suggestBinding(coordinateAxis);
         assertNotNull(binding);
         assertSame(Float.class, binding);
-        cv = CoordinateVariable.create((CoordinateAxis1D) coordinateAxis);
+        cv = CoordinateVariable.create(coordinateAxis);
         assertNotNull(cv);
         assertSame(Float.class, cv.getType());
         assertEquals(-77.327934f, cv.getMinimum());
@@ -357,10 +357,10 @@ public class CoordinateVariableTest extends Assert {
         coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
         assertNotNull(coordinateAxis);
         assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding((CoordinateAxis1D) coordinateAxis);
+        binding = CoordinateVariable.suggestBinding(coordinateAxis);
         assertNotNull(binding);
         assertSame(Float.class, binding);
-        cv = CoordinateVariable.create((CoordinateAxis1D) coordinateAxis);
+        cv = CoordinateVariable.create(coordinateAxis);
         assertNotNull(cv);
         assertEquals("degrees_east", cv.getUnit());
 
@@ -375,10 +375,10 @@ public class CoordinateVariableTest extends Assert {
         coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
         assertNotNull(coordinateAxis);
         assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding((CoordinateAxis1D) coordinateAxis);
+        binding = CoordinateVariable.suggestBinding(coordinateAxis);
         assertNotNull(binding);
         assertSame(Double.class, binding);
-        cv = CoordinateVariable.create((CoordinateAxis1D) coordinateAxis);
+        cv = CoordinateVariable.create(coordinateAxis);
         assertNotNull(cv);
         assertEquals("Pa", cv.getUnit());
 
@@ -393,10 +393,10 @@ public class CoordinateVariableTest extends Assert {
         coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
         assertNotNull(coordinateAxis);
         assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding((CoordinateAxis1D) coordinateAxis);
+        binding = CoordinateVariable.suggestBinding(coordinateAxis);
         assertNotNull(binding);
         assertSame(Double.class, binding);
-        cv = CoordinateVariable.create((CoordinateAxis1D) coordinateAxis);
+        cv = CoordinateVariable.create(coordinateAxis);
         assertNotNull(cv);
         assertEquals("Pa", cv.getUnit());
 

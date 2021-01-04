@@ -41,8 +41,8 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
 
     public void testAdd() {
         MemoryFeatureCollection rivers = new MemoryFeatureCollection(riverType);
-        for (int i = 0; i < riverFeatures.length; i++) {
-            rivers.add(riverFeatures[i]);
+        for (SimpleFeature riverFeature : riverFeatures) {
+            rivers.add(riverFeature);
         }
         assertEquals(riverFeatures.length, rivers.size());
     }
@@ -87,9 +87,9 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
     public void testBounds() {
         MemoryFeatureCollection rivers = new MemoryFeatureCollection(riverType);
         ReferencedEnvelope expected = new ReferencedEnvelope();
-        for (int i = 0; i < riverFeatures.length; i++) {
-            rivers.add(riverFeatures[i]);
-            expected.include(riverFeatures[i].getBounds());
+        for (SimpleFeature riverFeature : riverFeatures) {
+            rivers.add(riverFeature);
+            expected.include(riverFeature.getBounds());
         }
         assertEquals(riverFeatures.length, rivers.size());
 
@@ -114,32 +114,26 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         assertEquals(roads.size(), count);
 
         count = 0;
-        FilteredIterator<SimpleFeature> filteredIterator =
-                new FilteredIterator<>(roads, rd12Filter);
-        try {
+        try (FilteredIterator<SimpleFeature> filteredIterator =
+                new FilteredIterator<>(roads, rd12Filter)) {
             while (filteredIterator.hasNext()) {
                 @SuppressWarnings("unused")
                 SimpleFeature feature = filteredIterator.next();
                 count++;
             }
-        } finally {
-            filteredIterator.close();
         }
         assertEquals(expected(rd12Filter), count);
     }
 
     public void testSubCollection() {
         int count = 0;
-        SimpleFeatureIterator it = roads.features();
-        try {
+        try (SimpleFeatureIterator it = roads.features()) {
             while (it.hasNext()) {
                 SimpleFeature feature = it.next();
                 if (rd12Filter.evaluate(feature)) {
                     count++;
                 }
             }
-        } finally {
-            it.close();
         }
         SimpleFeatureCollection sub = roads.subCollection(rd12Filter);
         assertEquals(count, sub.size());

@@ -94,13 +94,13 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
         }
 
         if (node.hasChild(Geometry[].class)) {
-            Geometry[] g = (Geometry[]) node.getChildValue(Geometry[].class);
+            Geometry[] g = node.getChildValue(Geometry[].class);
 
-            for (int i = 0; i < g.length; i++) geometries.add(g[i]);
+            for (Geometry geometry : g) geometries.add(geometry);
         }
 
         return factory.createGeometryCollection(
-                (Geometry[]) geometries.toArray(new Geometry[geometries.size()]));
+                geometries.toArray(new Geometry[geometries.size()]));
     }
 
     @Override
@@ -110,7 +110,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
             Geometry[] members = new Geometry[multiGeometry.getNumGeometries()];
 
             for (int i = 0; i < members.length; i++) {
-                members[i] = (Geometry) multiGeometry.getGeometryN(i);
+                members[i] = multiGeometry.getGeometryN(i);
             }
 
             GML3EncodingUtils.setChildIDs(multiGeometry);

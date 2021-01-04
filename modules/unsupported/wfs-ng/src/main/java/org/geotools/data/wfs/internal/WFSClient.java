@@ -62,7 +62,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
 
     public WFSClient(URL capabilitiesURL, HTTPClient httpClient, WFSConfig config)
             throws IOException, ServiceException {
-        this(capabilitiesURL, httpClient, config, (WFSGetCapabilities) null);
+        this(capabilitiesURL, httpClient, config, null);
     }
 
     public WFSClient(

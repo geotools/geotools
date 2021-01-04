@@ -58,8 +58,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     /** Constructor which takes {@link org.opengis.filter.identity.Identifier}, not String. */
     protected FidFilterImpl(Set<? extends Identifier> fids) {
         // check these are really identifiers
-        for (Iterator it = fids.iterator(); it.hasNext(); ) {
-            Object next = it.next();
+        for (Object next : fids) {
             if (!(next instanceof Identifier))
                 throw new ClassCastException(
                         "Fids must implement Identifier, " + next.getClass() + " does not");
@@ -119,8 +118,8 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     public void addAllFids(Collection fidsToAdd) {
         if (fidsToAdd == null) return;
 
-        for (Iterator i = fidsToAdd.iterator(); i.hasNext(); ) {
-            String fid = (String) i.next();
+        for (Object o : fidsToAdd) {
+            String fid = (String) o;
             addFid(fid);
         }
     }
@@ -152,8 +151,8 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     public void removeAllFids(Collection fidsToRemove) {
         if (fidsToRemove == null) return;
 
-        for (Iterator f = fidsToRemove.iterator(); f.hasNext(); ) {
-            String fid = (String) f.next();
+        for (Object o : fidsToRemove) {
+            String fid = (String) o;
             removeFid(fid);
         }
     }

@@ -163,8 +163,8 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
                     bursaWolf = null;
                 } else {
                     final Set<BursaWolfParameters> s = new LinkedHashSet<>();
-                    for (int i = 0; i < bursaWolf.length; i++) {
-                        s.add(bursaWolf[i].clone());
+                    for (BursaWolfParameters bursaWolfParameters : bursaWolf) {
+                        s.add(bursaWolfParameters.clone());
                     }
                     bursaWolf = s.toArray(new BursaWolfParameters[s.size()]);
                 }
@@ -206,8 +206,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
      */
     public BursaWolfParameters getBursaWolfParameters(final GeodeticDatum target) {
         if (bursaWolf != null) {
-            for (int i = 0; i < bursaWolf.length; i++) {
-                final BursaWolfParameters candidate = bursaWolf[i];
+            for (final BursaWolfParameters candidate : bursaWolf) {
                 if (equals(target, candidate.targetDatum, false)) {
                     return candidate.clone();
                 }
@@ -248,8 +247,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
         if (source instanceof DefaultGeodeticDatum) {
             final BursaWolfParameters[] bursaWolf = ((DefaultGeodeticDatum) source).bursaWolf;
             if (bursaWolf != null) {
-                for (int i = 0; i < bursaWolf.length; i++) {
-                    final BursaWolfParameters transformation = bursaWolf[i];
+                for (final BursaWolfParameters transformation : bursaWolf) {
                     if (equals(target, transformation.targetDatum, false)) {
                         return transformation.getAffineTransform();
                     }
@@ -263,8 +261,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
         if (target instanceof DefaultGeodeticDatum) {
             final BursaWolfParameters[] bursaWolf = ((DefaultGeodeticDatum) target).bursaWolf;
             if (bursaWolf != null) {
-                for (int i = 0; i < bursaWolf.length; i++) {
-                    final BursaWolfParameters transformation = bursaWolf[i];
+                for (final BursaWolfParameters transformation : bursaWolf) {
                     if (equals(source, transformation.targetDatum, false)) {
                         final XMatrix matrix = transformation.getAffineTransform();
                         matrix.invert();
@@ -287,10 +284,10 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
             if (sourceParam != null && targetParam != null) {
                 GeodeticDatum sourceStep;
                 GeodeticDatum targetStep;
-                for (int i = 0; i < sourceParam.length; i++) {
-                    sourceStep = sourceParam[i].targetDatum;
-                    for (int j = 0; j < targetParam.length; j++) {
-                        targetStep = targetParam[j].targetDatum;
+                for (BursaWolfParameters wolfParameters : sourceParam) {
+                    sourceStep = wolfParameters.targetDatum;
+                    for (BursaWolfParameters bursaWolfParameters : targetParam) {
+                        targetStep = bursaWolfParameters.targetDatum;
                         if (equals(sourceStep, targetStep, false)) {
                             final XMatrix step1, step2;
                             if (exclusion == null) {
@@ -407,8 +404,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
         // horizontal datum do not write the datum type.
         formatter.append(ellipsoid);
         if (bursaWolf != null) {
-            for (int i = 0; i < bursaWolf.length; i++) {
-                final BursaWolfParameters transformation = bursaWolf[i];
+            for (final BursaWolfParameters transformation : bursaWolf) {
                 if (isWGS84(transformation.targetDatum)) {
                     formatter.append(transformation);
                     break;

@@ -18,7 +18,6 @@ package org.geotools.filter.function.math;
 
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -45,7 +44,7 @@ public class FilterFunction_Test extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        ff = (FilterFactoryImpl) CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory2(null);
 
         literal_1 = ff.literal("1");
         literal_m1 = ff.literal("-1");
@@ -87,7 +86,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sin of (1.0):",
-                        (double) Math.sin(1.0),
+                        Math.sin(1.0),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -101,7 +100,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sin of (-1.0):",
-                        (double) Math.sin(-1.0),
+                        Math.sin(-1.0),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -114,7 +113,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sin of (2.0):",
-                        (double) Math.sin(2.0),
+                        Math.sin(2.0),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -128,7 +127,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sin of (-2.0):",
-                        (double) Math.sin(-2.0),
+                        Math.sin(-2.0),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -142,7 +141,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sin of (3.141592653589793):",
-                        (double) Math.sin(3.141592653589793),
+                        Math.sin(3.141592653589793),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -156,13 +155,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sin of (1.5707963267948966):",
-                        (double) Math.sin(1.5707963267948966),
+                        Math.sin(1.5707963267948966),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             sinFunction = ff.function("sin", literal_null);
-            assertNull((Double) sinFunction.evaluate(null));
+            assertNull(sinFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -188,7 +187,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "cos of (1.0):",
-                        (double) Math.cos(1.0),
+                        Math.cos(1.0),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -202,7 +201,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "cos of (-1.0):",
-                        (double) Math.cos(-1.0),
+                        Math.cos(-1.0),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -216,7 +215,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "cos of (2.0):",
-                        (double) Math.cos(2.0),
+                        Math.cos(2.0),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -230,7 +229,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "cos of (-2.0):",
-                        (double) Math.cos(-2.0),
+                        Math.cos(-2.0),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -244,7 +243,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "cos of (3.141592653589793):",
-                        (double) Math.cos(3.141592653589793),
+                        Math.cos(3.141592653589793),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -258,13 +257,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "cos of (1.5707963267948966):",
-                        (double) Math.cos(1.5707963267948966),
+                        Math.cos(1.5707963267948966),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             cosFunction = ff.function("cos", literal_null);
-            assertNull((Double) cosFunction.evaluate(null));
+            assertNull(cosFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -290,7 +289,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "tan of (1.0):",
-                        (double) Math.tan(1.0),
+                        Math.tan(1.0),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -304,7 +303,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "tan of (-1.0):",
-                        (double) Math.tan(-1.0),
+                        Math.tan(-1.0),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -318,7 +317,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "tan of (2.0):",
-                        (double) Math.tan(2.0),
+                        Math.tan(2.0),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -332,7 +331,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "tan of (-2.0):",
-                        (double) Math.tan(-2.0),
+                        Math.tan(-2.0),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -346,7 +345,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "tan of (3.141592653589793):",
-                        (double) Math.tan(3.141592653589793),
+                        Math.tan(3.141592653589793),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -360,13 +359,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "tan of (1.5707963267948966):",
-                        (double) Math.tan(1.5707963267948966),
+                        Math.tan(1.5707963267948966),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             tanFunction = ff.function("tan", literal_null);
-            assertNull((Double) tanFunction.evaluate(null));
+            assertNull(tanFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -394,7 +393,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan2 of (1.0,-1.0):",
-                        (double) Math.atan2(1.0, -1.0),
+                        Math.atan2(1.0, -1.0),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -408,7 +407,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan2 of (-1.0,2.0):",
-                        (double) Math.atan2(-1.0, 2.0),
+                        Math.atan2(-1.0, 2.0),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -422,7 +421,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan2 of (2.0,-2.0):",
-                        (double) Math.atan2(2.0, -2.0),
+                        Math.atan2(2.0, -2.0),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -436,7 +435,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan2 of (-2.0,3.141592653589793):",
-                        (double) Math.atan2(-2.0, 3.141592653589793),
+                        Math.atan2(-2.0, 3.141592653589793),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -450,7 +449,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan2 of (3.141592653589793,1.5707963267948966):",
-                        (double) Math.atan2(3.141592653589793, 1.5707963267948966),
+                        Math.atan2(3.141592653589793, 1.5707963267948966),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -464,19 +463,19 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan2 of (1.5707963267948966,1.0):",
-                        (double) Math.atan2(1.5707963267948966, 1.0),
+                        Math.atan2(1.5707963267948966, 1.0),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             atan2Function = ff.function("atan2", literal_null, literal_1);
-            assertNull((Double) atan2Function.evaluate(null));
+            assertNull(atan2Function.evaluate(null));
 
             atan2Function = ff.function("atan2", literal_1, literal_null);
-            assertNull((Double) atan2Function.evaluate(null));
+            assertNull(atan2Function.evaluate(null));
 
             atan2Function = ff.function("atan2", literal_null, literal_null);
-            assertNull((Double) atan2Function.evaluate(null));
+            assertNull(atan2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -501,7 +500,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sqrt of (1.0):",
-                        (double) Math.sqrt(1.0),
+                        Math.sqrt(1.0),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -515,7 +514,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sqrt of (-1.0):",
-                        (double) Math.sqrt(-1.0),
+                        Math.sqrt(-1.0),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -529,7 +528,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sqrt of (2.0):",
-                        (double) Math.sqrt(2.0),
+                        Math.sqrt(2.0),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -543,7 +542,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sqrt of (-2.0):",
-                        (double) Math.sqrt(-2.0),
+                        Math.sqrt(-2.0),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -557,7 +556,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sqrt of (3.141592653589793):",
-                        (double) Math.sqrt(3.141592653589793),
+                        Math.sqrt(3.141592653589793),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -571,13 +570,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "sqrt of (1.5707963267948966):",
-                        (double) Math.sqrt(1.5707963267948966),
+                        Math.sqrt(1.5707963267948966),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             sqrtFunction = ff.function("sqrt", literal_null);
-            assertNull((Double) sqrtFunction.evaluate(null));
+            assertNull(sqrtFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -605,7 +604,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "pow of (1.0,-1.0):",
-                        (double) Math.pow(1.0, -1.0),
+                        Math.pow(1.0, -1.0),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -619,7 +618,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "pow of (-1.0,2.0):",
-                        (double) Math.pow(-1.0, 2.0),
+                        Math.pow(-1.0, 2.0),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -633,7 +632,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "pow of (2.0,-2.0):",
-                        (double) Math.pow(2.0, -2.0),
+                        Math.pow(2.0, -2.0),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -647,7 +646,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "pow of (-2.0,3.141592653589793):",
-                        (double) Math.pow(-2.0, 3.141592653589793),
+                        Math.pow(-2.0, 3.141592653589793),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -661,7 +660,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "pow of (3.141592653589793,1.5707963267948966):",
-                        (double) Math.pow(3.141592653589793, 1.5707963267948966),
+                        Math.pow(3.141592653589793, 1.5707963267948966),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -675,19 +674,19 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "pow of (1.5707963267948966,1.0):",
-                        (double) Math.pow(1.5707963267948966, 1.0),
+                        Math.pow(1.5707963267948966, 1.0),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             powFunction = ff.function("pow", literal_null, literal_1);
-            assertNull((Double) powFunction.evaluate(null));
+            assertNull(powFunction.evaluate(null));
 
             powFunction = ff.function("pow", literal_1, literal_null);
-            assertNull((Double) powFunction.evaluate(null));
+            assertNull(powFunction.evaluate(null));
 
             powFunction = ff.function("pow", literal_null, literal_null);
-            assertNull((Double) powFunction.evaluate(null));
+            assertNull(powFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -746,13 +745,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             min_4Function = ff.function("min_4", literal_null, literal_1);
-            assertNull((Long) min_4Function.evaluate(null));
+            assertNull(min_4Function.evaluate(null));
 
             min_4Function = ff.function("min_4", literal_1, literal_null);
-            assertNull((Long) min_4Function.evaluate(null));
+            assertNull(min_4Function.evaluate(null));
 
             min_4Function = ff.function("min_4", literal_null, literal_null);
-            assertNull((Long) min_4Function.evaluate(null));
+            assertNull(min_4Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -811,13 +810,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             min_2Function = ff.function("min_2", literal_null, literal_1);
-            assertNull((Long) min_2Function.evaluate(null));
+            assertNull(min_2Function.evaluate(null));
 
             min_2Function = ff.function("min_2", literal_1, literal_null);
-            assertNull((Long) min_2Function.evaluate(null));
+            assertNull(min_2Function.evaluate(null));
 
             min_2Function = ff.function("min_2", literal_null, literal_null);
-            assertNull((Long) min_2Function.evaluate(null));
+            assertNull(min_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -876,13 +875,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             min_3Function = ff.function("min_3", literal_null, literal_1);
-            assertNull((Float) min_3Function.evaluate(null));
+            assertNull(min_3Function.evaluate(null));
 
             min_3Function = ff.function("min_3", literal_1, literal_null);
-            assertNull((Float) min_3Function.evaluate(null));
+            assertNull(min_3Function.evaluate(null));
 
             min_3Function = ff.function("min_3", literal_null, literal_null);
-            assertNull((Float) min_3Function.evaluate(null));
+            assertNull(min_3Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -901,53 +900,53 @@ public class FilterFunction_Test extends TestCase {
             Function minFunction = ff.function("min", literal_1, literal_m1);
             assertEquals(
                     "min of (1.0,-1.0):",
-                    (double) Math.min(1.0, -1.0),
+                    Math.min(1.0, -1.0),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_m1, literal_2);
             assertEquals(
                     "min of (-1.0,2.0):",
-                    (double) Math.min(-1.0, 2.0),
+                    Math.min(-1.0, 2.0),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_2, literal_m2);
             assertEquals(
                     "min of (2.0,-2.0):",
-                    (double) Math.min(2.0, -2.0),
+                    Math.min(2.0, -2.0),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_m2, literal_pi);
             assertEquals(
                     "min of (-2.0,3.141592653589793):",
-                    (double) Math.min(-2.0, 3.141592653589793),
+                    Math.min(-2.0, 3.141592653589793),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_pi, literal_05pi);
             assertEquals(
                     "min of (3.141592653589793,1.5707963267948966):",
-                    (double) Math.min(3.141592653589793, 1.5707963267948966),
+                    Math.min(3.141592653589793, 1.5707963267948966),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_05pi, literal_1);
             assertEquals(
                     "min of (1.5707963267948966,1.0):",
-                    (double) Math.min(1.5707963267948966, 1.0),
+                    Math.min(1.5707963267948966, 1.0),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_null, literal_1);
-            assertNull((Double) minFunction.evaluate(null));
+            assertNull(minFunction.evaluate(null));
 
             minFunction = ff.function("min", literal_1, literal_null);
-            assertNull((Double) minFunction.evaluate(null));
+            assertNull(minFunction.evaluate(null));
 
             minFunction = ff.function("min", literal_null, literal_null);
-            assertNull((Double) minFunction.evaluate(null));
+            assertNull(minFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1006,13 +1005,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             max_4Function = ff.function("max_4", literal_null, literal_1);
-            assertNull((Integer) max_4Function.evaluate(null));
+            assertNull(max_4Function.evaluate(null));
 
             max_4Function = ff.function("max_4", literal_1, literal_null);
-            assertNull((Integer) max_4Function.evaluate(null));
+            assertNull(max_4Function.evaluate(null));
 
             max_4Function = ff.function("max_4", literal_null, literal_null);
-            assertNull((Integer) max_4Function.evaluate(null));
+            assertNull(max_4Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1071,13 +1070,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             max_2Function = ff.function("max_2", literal_null, literal_1);
-            assertNull((Long) max_2Function.evaluate(null));
+            assertNull(max_2Function.evaluate(null));
 
             max_2Function = ff.function("max_2", literal_1, literal_null);
-            assertNull((Long) max_2Function.evaluate(null));
+            assertNull(max_2Function.evaluate(null));
 
             max_2Function = ff.function("max_2", literal_null, literal_null);
-            assertNull((Long) max_2Function.evaluate(null));
+            assertNull(max_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1136,13 +1135,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             max_3Function = ff.function("max_3", literal_null, literal_1);
-            assertNull((Float) max_3Function.evaluate(null));
+            assertNull(max_3Function.evaluate(null));
 
             max_3Function = ff.function("max_3", literal_1, literal_null);
-            assertNull((Float) max_3Function.evaluate(null));
+            assertNull(max_3Function.evaluate(null));
 
             max_3Function = ff.function("max_3", literal_null, literal_null);
-            assertNull((Float) max_3Function.evaluate(null));
+            assertNull(max_3Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1161,53 +1160,53 @@ public class FilterFunction_Test extends TestCase {
             Function maxFunction = ff.function("max", literal_1, literal_m1);
             assertEquals(
                     "max of (1.0,-1.0):",
-                    (double) Math.max(1.0, -1.0),
+                    Math.max(1.0, -1.0),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_m1, literal_2);
             assertEquals(
                     "max of (-1.0,2.0):",
-                    (double) Math.max(-1.0, 2.0),
+                    Math.max(-1.0, 2.0),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_2, literal_m2);
             assertEquals(
                     "max of (2.0,-2.0):",
-                    (double) Math.max(2.0, -2.0),
+                    Math.max(2.0, -2.0),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_m2, literal_pi);
             assertEquals(
                     "max of (-2.0,3.141592653589793):",
-                    (double) Math.max(-2.0, 3.141592653589793),
+                    Math.max(-2.0, 3.141592653589793),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_pi, literal_05pi);
             assertEquals(
                     "max of (3.141592653589793,1.5707963267948966):",
-                    (double) Math.max(3.141592653589793, 1.5707963267948966),
+                    Math.max(3.141592653589793, 1.5707963267948966),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_05pi, literal_1);
             assertEquals(
                     "max of (1.5707963267948966,1.0):",
-                    (double) Math.max(1.5707963267948966, 1.0),
+                    Math.max(1.5707963267948966, 1.0),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_null, literal_1);
-            assertNull((Integer) maxFunction.evaluate(null));
+            assertNull(maxFunction.evaluate(null));
 
             maxFunction = ff.function("max", literal_1, literal_null);
-            assertNull((Integer) maxFunction.evaluate(null));
+            assertNull(maxFunction.evaluate(null));
 
             maxFunction = ff.function("max", literal_null, literal_null);
-            assertNull((Integer) maxFunction.evaluate(null));
+            assertNull(maxFunction.evaluate(null));
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -1265,7 +1264,7 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             absFunction = ff.function("abs", literal_null);
-            assertNull((Integer) absFunction.evaluate(null));
+            assertNull(absFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1284,47 +1283,47 @@ public class FilterFunction_Test extends TestCase {
             Function abs_4Function = ff.function("abs_4", literal_1);
             assertEquals(
                     "abs_4 of (1.0):",
-                    (double) Math.abs(1.0),
+                    Math.abs(1.0),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_m1);
             assertEquals(
                     "abs_4 of (-1.0):",
-                    (double) Math.abs(-1.0),
+                    Math.abs(-1.0),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_2);
             assertEquals(
                     "abs_4 of (2.0):",
-                    (double) Math.abs(2.0),
+                    Math.abs(2.0),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_m2);
             assertEquals(
                     "abs_4 of (-2.0):",
-                    (double) Math.abs(-2.0),
+                    Math.abs(-2.0),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_pi);
             assertEquals(
                     "abs_4 of (3.141592653589793):",
-                    (double) Math.abs(3.141592653589793),
+                    Math.abs(3.141592653589793),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_05pi);
             assertEquals(
                     "abs_4 of (1.5707963267948966):",
-                    (double) Math.abs(1.5707963267948966),
+                    Math.abs(1.5707963267948966),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_null);
-            assertNull((Double) abs_4Function.evaluate(null));
+            assertNull(abs_4Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1383,7 +1382,7 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             abs_3Function = ff.function("abs_3", literal_null);
-            assertNull((Float) abs_3Function.evaluate(null));
+            assertNull(abs_3Function.evaluate(null));
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -1441,7 +1440,7 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             abs_2Function = ff.function("abs_2", literal_null);
-            assertNull((Long) abs_2Function.evaluate(null));
+            assertNull(abs_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1471,7 +1470,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "IEEEremainder of (1.0,-1.0):",
-                        (double) Math.IEEEremainder(1.0, -1.0),
+                        Math.IEEEremainder(1.0, -1.0),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1486,7 +1485,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "IEEEremainder of (-1.0,2.0):",
-                        (double) Math.IEEEremainder(-1.0, 2.0),
+                        Math.IEEEremainder(-1.0, 2.0),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1501,7 +1500,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "IEEEremainder of (2.0,-2.0):",
-                        (double) Math.IEEEremainder(2.0, -2.0),
+                        Math.IEEEremainder(2.0, -2.0),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1516,7 +1515,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "IEEEremainder of (-2.0,3.141592653589793):",
-                        (double) Math.IEEEremainder(-2.0, 3.141592653589793),
+                        Math.IEEEremainder(-2.0, 3.141592653589793),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1531,7 +1530,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "IEEEremainder of (3.141592653589793,1.5707963267948966):",
-                        (double) Math.IEEEremainder(3.141592653589793, 1.5707963267948966),
+                        Math.IEEEremainder(3.141592653589793, 1.5707963267948966),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1546,19 +1545,19 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "IEEEremainder of (1.5707963267948966,1.0):",
-                        (double) Math.IEEEremainder(1.5707963267948966, 1.0),
+                        Math.IEEEremainder(1.5707963267948966, 1.0),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             IEEEremainderFunction = ff.function("IEEEremainder", literal_null, literal_1);
-            assertNull((Double) IEEEremainderFunction.evaluate(null));
+            assertNull(IEEEremainderFunction.evaluate(null));
 
             IEEEremainderFunction = ff.function("IEEEremainder", literal_1, literal_null);
-            assertNull((Double) IEEEremainderFunction.evaluate(null));
+            assertNull(IEEEremainderFunction.evaluate(null));
 
             IEEEremainderFunction = ff.function("IEEEremainder", literal_null, literal_null);
-            assertNull((Double) IEEEremainderFunction.evaluate(null));
+            assertNull(IEEEremainderFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1583,7 +1582,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "acos of (1.0):",
-                        (double) Math.acos(1.0),
+                        Math.acos(1.0),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1597,7 +1596,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "acos of (-1.0):",
-                        (double) Math.acos(-1.0),
+                        Math.acos(-1.0),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1611,7 +1610,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "acos of (2.0):",
-                        (double) Math.acos(2.0),
+                        Math.acos(2.0),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1625,7 +1624,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "acos of (-2.0):",
-                        (double) Math.acos(-2.0),
+                        Math.acos(-2.0),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1639,7 +1638,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "acos of (3.141592653589793):",
-                        (double) Math.acos(3.141592653589793),
+                        Math.acos(3.141592653589793),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1653,13 +1652,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "acos of (1.5707963267948966):",
-                        (double) Math.acos(1.5707963267948966),
+                        Math.acos(1.5707963267948966),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             acosFunction = ff.function("acos", literal_null);
-            assertNull((Double) acosFunction.evaluate(null));
+            assertNull(acosFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1684,7 +1683,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "asin of (1.0):",
-                        (double) Math.asin(1.0),
+                        Math.asin(1.0),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1698,7 +1697,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "asin of (-1.0):",
-                        (double) Math.asin(-1.0),
+                        Math.asin(-1.0),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1712,7 +1711,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "asin of (2.0):",
-                        (double) Math.asin(2.0),
+                        Math.asin(2.0),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1726,7 +1725,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "asin of (-2.0):",
-                        (double) Math.asin(-2.0),
+                        Math.asin(-2.0),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1740,7 +1739,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "asin of (3.141592653589793):",
-                        (double) Math.asin(3.141592653589793),
+                        Math.asin(3.141592653589793),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1754,13 +1753,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "asin of (1.5707963267948966):",
-                        (double) Math.asin(1.5707963267948966),
+                        Math.asin(1.5707963267948966),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             asinFunction = ff.function("asin", literal_null);
-            assertNull((Double) asinFunction.evaluate(null));
+            assertNull(asinFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1785,7 +1784,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan of (1.0):",
-                        (double) Math.atan(1.0),
+                        Math.atan(1.0),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1799,7 +1798,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan of (-1.0):",
-                        (double) Math.atan(-1.0),
+                        Math.atan(-1.0),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1813,7 +1812,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan of (2.0):",
-                        (double) Math.atan(2.0),
+                        Math.atan(2.0),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1827,7 +1826,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan of (-2.0):",
-                        (double) Math.atan(-2.0),
+                        Math.atan(-2.0),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1841,7 +1840,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan of (3.141592653589793):",
-                        (double) Math.atan(3.141592653589793),
+                        Math.atan(3.141592653589793),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1855,13 +1854,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "atan of (1.5707963267948966):",
-                        (double) Math.atan(1.5707963267948966),
+                        Math.atan(1.5707963267948966),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             atanFunction = ff.function("atan", literal_null);
-            assertNull((Double) atanFunction.evaluate(null));
+            assertNull(atanFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1886,7 +1885,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "ceil of (1.0):",
-                        (double) Math.ceil(1.0),
+                        Math.ceil(1.0),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1900,7 +1899,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "ceil of (-1.0):",
-                        (double) Math.ceil(-1.0),
+                        Math.ceil(-1.0),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1914,7 +1913,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "ceil of (2.0):",
-                        (double) Math.ceil(2.0),
+                        Math.ceil(2.0),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1928,7 +1927,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "ceil of (-2.0):",
-                        (double) Math.ceil(-2.0),
+                        Math.ceil(-2.0),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1942,7 +1941,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "ceil of (3.141592653589793):",
-                        (double) Math.ceil(3.141592653589793),
+                        Math.ceil(3.141592653589793),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -1956,13 +1955,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "ceil of (1.5707963267948966):",
-                        (double) Math.ceil(1.5707963267948966),
+                        Math.ceil(1.5707963267948966),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             ceilFunction = ff.function("ceil", literal_null);
-            assertNull((Double) ceilFunction.evaluate(null));
+            assertNull(ceilFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1987,7 +1986,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "exp of (1.0):",
-                        (double) Math.exp(1.0),
+                        Math.exp(1.0),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2001,7 +2000,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "exp of (-1.0):",
-                        (double) Math.exp(-1.0),
+                        Math.exp(-1.0),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2015,7 +2014,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "exp of (2.0):",
-                        (double) Math.exp(2.0),
+                        Math.exp(2.0),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2029,7 +2028,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "exp of (-2.0):",
-                        (double) Math.exp(-2.0),
+                        Math.exp(-2.0),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2043,7 +2042,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "exp of (3.141592653589793):",
-                        (double) Math.exp(3.141592653589793),
+                        Math.exp(3.141592653589793),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2057,13 +2056,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "exp of (1.5707963267948966):",
-                        (double) Math.exp(1.5707963267948966),
+                        Math.exp(1.5707963267948966),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             expFunction = ff.function("exp", literal_null);
-            assertNull((Double) expFunction.evaluate(null));
+            assertNull(expFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -2088,7 +2087,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "floor of (1.0):",
-                        (double) Math.floor(1.0),
+                        Math.floor(1.0),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2102,7 +2101,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "floor of (-1.0):",
-                        (double) Math.floor(-1.0),
+                        Math.floor(-1.0),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2116,7 +2115,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "floor of (2.0):",
-                        (double) Math.floor(2.0),
+                        Math.floor(2.0),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2130,7 +2129,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "floor of (-2.0):",
-                        (double) Math.floor(-2.0),
+                        Math.floor(-2.0),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2144,7 +2143,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "floor of (3.141592653589793):",
-                        (double) Math.floor(3.141592653589793),
+                        Math.floor(3.141592653589793),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2158,13 +2157,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "floor of (1.5707963267948966):",
-                        (double) Math.floor(1.5707963267948966),
+                        Math.floor(1.5707963267948966),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             floorFunction = ff.function("floor", literal_null);
-            assertNull((Double) floorFunction.evaluate(null));
+            assertNull(floorFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -2189,7 +2188,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "log of (1.0):",
-                        (double) Math.log(1.0),
+                        Math.log(1.0),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2203,7 +2202,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "log of (-1.0):",
-                        (double) Math.log(-1.0),
+                        Math.log(-1.0),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2217,7 +2216,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "log of (2.0):",
-                        (double) Math.log(2.0),
+                        Math.log(2.0),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2231,7 +2230,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "log of (-2.0):",
-                        (double) Math.log(-2.0),
+                        Math.log(-2.0),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2245,7 +2244,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "log of (3.141592653589793):",
-                        (double) Math.log(3.141592653589793),
+                        Math.log(3.141592653589793),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2259,13 +2258,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "log of (1.5707963267948966):",
-                        (double) Math.log(1.5707963267948966),
+                        Math.log(1.5707963267948966),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             logFunction = ff.function("log", literal_null);
-            assertNull((Double) logFunction.evaluate(null));
+            assertNull(logFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -2307,7 +2306,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "rint of (1.0):",
-                        (double) Math.rint(1.0),
+                        Math.rint(1.0),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2321,7 +2320,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "rint of (-1.0):",
-                        (double) Math.rint(-1.0),
+                        Math.rint(-1.0),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2335,7 +2334,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "rint of (2.0):",
-                        (double) Math.rint(2.0),
+                        Math.rint(2.0),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2349,7 +2348,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "rint of (-2.0):",
-                        (double) Math.rint(-2.0),
+                        Math.rint(-2.0),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2363,7 +2362,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "rint of (3.141592653589793):",
-                        (double) Math.rint(3.141592653589793),
+                        Math.rint(3.141592653589793),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2377,13 +2376,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "rint of (1.5707963267948966):",
-                        (double) Math.rint(1.5707963267948966),
+                        Math.rint(1.5707963267948966),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             rintFunction = ff.function("rint", literal_null);
-            assertNull((Double) rintFunction.evaluate(null));
+            assertNull(rintFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -2442,7 +2441,7 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             roundFunction = ff.function("round", literal_null);
-            assertNull((Integer) roundFunction.evaluate(null));
+            assertNull(roundFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -2461,47 +2460,47 @@ public class FilterFunction_Test extends TestCase {
             Function round_2Function = ff.function("round_2", literal_1);
             assertEquals(
                     "round_2 of (1.0):",
-                    (long) Math.round(1.0),
+                    Math.round(1.0),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_m1);
             assertEquals(
                     "round_2 of (-1.0):",
-                    (long) Math.round(-1.0),
+                    Math.round(-1.0),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_2);
             assertEquals(
                     "round_2 of (2.0):",
-                    (long) Math.round(2.0),
+                    Math.round(2.0),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_m2);
             assertEquals(
                     "round_2 of (-2.0):",
-                    (long) Math.round(-2.0),
+                    Math.round(-2.0),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_pi);
             assertEquals(
                     "round_2 of (3.141592653589793):",
-                    (long) Math.round(3.141592653589793),
+                    Math.round(3.141592653589793),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_05pi);
             assertEquals(
                     "round_2 of (1.5707963267948966):",
-                    (long) Math.round(1.5707963267948966),
+                    Math.round(1.5707963267948966),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_null);
-            assertNull((Long) round_2Function.evaluate(null));
+            assertNull(round_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -2527,7 +2526,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toDegrees of (1.0):",
-                        (double) Math.toDegrees(1.0),
+                        Math.toDegrees(1.0),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2541,7 +2540,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toDegrees of (-1.0):",
-                        (double) Math.toDegrees(-1.0),
+                        Math.toDegrees(-1.0),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2555,7 +2554,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toDegrees of (2.0):",
-                        (double) Math.toDegrees(2.0),
+                        Math.toDegrees(2.0),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2569,7 +2568,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toDegrees of (-2.0):",
-                        (double) Math.toDegrees(-2.0),
+                        Math.toDegrees(-2.0),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2583,7 +2582,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toDegrees of (3.141592653589793):",
-                        (double) Math.toDegrees(3.141592653589793),
+                        Math.toDegrees(3.141592653589793),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2597,13 +2596,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toDegrees of (1.5707963267948966):",
-                        (double) Math.toDegrees(1.5707963267948966),
+                        Math.toDegrees(1.5707963267948966),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             toDegreesFunction = ff.function("toDegrees", literal_null);
-            assertNull((Double) toDegreesFunction.evaluate(null));
+            assertNull(toDegreesFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -2629,7 +2628,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toRadians of (1.0):",
-                        (double) Math.toRadians(1.0),
+                        Math.toRadians(1.0),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2643,7 +2642,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toRadians of (-1.0):",
-                        (double) Math.toRadians(-1.0),
+                        Math.toRadians(-1.0),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2657,7 +2656,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toRadians of (2.0):",
-                        (double) Math.toRadians(2.0),
+                        Math.toRadians(2.0),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2671,7 +2670,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toRadians of (-2.0):",
-                        (double) Math.toRadians(-2.0),
+                        Math.toRadians(-2.0),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2685,7 +2684,7 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toRadians of (3.141592653589793):",
-                        (double) Math.toRadians(3.141592653589793),
+                        Math.toRadians(3.141592653589793),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
@@ -2699,13 +2698,13 @@ public class FilterFunction_Test extends TestCase {
             } else {
                 assertEquals(
                         "toRadians of (1.5707963267948966):",
-                        (double) Math.toRadians(1.5707963267948966),
+                        Math.toRadians(1.5707963267948966),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
 
             toRadiansFunction = ff.function("toRadians", literal_null);
-            assertNull((Double) toRadiansFunction.evaluate(null));
+            assertNull(toRadiansFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

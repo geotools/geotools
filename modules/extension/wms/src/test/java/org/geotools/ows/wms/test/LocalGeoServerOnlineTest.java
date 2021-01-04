@@ -414,7 +414,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
         IOUtils.copy(stream, writer, "UTF-8");
 
         String info = writer.toString();
-        assertTrue("response available", !info.isEmpty());
+        assertFalse("response available", info.isEmpty());
         assertTrue("html", info.contains("<html") || info.contains("<HTML"));
         boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         String context = "srs=" + srs + " forceXY=" + forceXY + " Version=" + version;

@@ -37,7 +37,7 @@ public class ScreenMapTest extends TestCase {
 
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                assertEquals(false, map.get(x, y));
+                assertFalse(map.get(x, y));
             }
         }
 
@@ -58,7 +58,7 @@ public class ScreenMapTest extends TestCase {
                 if ((x == xconst) && (y == yconst)) {
                     assertEquals("x=" + x + " y=" + y, bool, map.get(x, y));
                 } else {
-                    assertEquals("x=" + x + " y=" + y, false, map.get(x, y));
+                    assertFalse("x=" + x + " y=" + y, map.get(x, y));
                 }
             }
         }

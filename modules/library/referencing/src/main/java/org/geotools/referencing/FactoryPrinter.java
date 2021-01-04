@@ -89,11 +89,10 @@ final class FactoryPrinter implements Comparator<Class<?>> {
         table.nextLine(TableWriter.DOUBLE_HORIZONTAL_LINE);
         final StringBuilder vendors = new StringBuilder();
         final StringBuilder implementations = new StringBuilder();
-        for (final Iterator<Class<?>> it = categories.iterator(); it.hasNext(); ) {
+        for (final Class<?> category : categories) {
             /*
              * Writes the category name (CRSFactory, DatumFactory, etc.)
              */
-            final Class<?> category = it.next();
             table.write(Classes.getShortName(category));
             table.nextColumn();
             /*

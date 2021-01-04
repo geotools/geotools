@@ -49,7 +49,7 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
         try {
             dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
             try (Connection con = dataStore.getDataSource().getConnection()) {
-                assertTrue(con != null);
+                assertNotNull(con);
                 assertFalse(con.isClosed());
             }
         } finally {

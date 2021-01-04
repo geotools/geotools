@@ -93,15 +93,13 @@ public class FeatureTypeTest extends DataTestCase {
         try {
             SimpleFeatureBuilder.build(abstractType, new Object[0], null);
             fail("abstract type allowed create");
-        } catch (IllegalArgumentException iae) {
-        } catch (UnsupportedOperationException uoe) {
+        } catch (IllegalArgumentException | UnsupportedOperationException iae) {
         }
 
         try {
             SimpleFeatureBuilder.build(abstractType2, new Object[0], null);
             fail("abstract type allowed create");
-        } catch (IllegalArgumentException iae) {
-        } catch (UnsupportedOperationException uoe) {
+        } catch (IllegalArgumentException | UnsupportedOperationException iae) {
         }
     }
 
@@ -121,13 +119,13 @@ public class FeatureTypeTest extends DataTestCase {
         assertEquals(ft, ft2);
 
         tb.setName("Thingee");
-        assertTrue(!ft.equals(tb.buildFeatureType()));
+        assertFalse(ft.equals(tb.buildFeatureType()));
 
         tb.init(ft);
         tb.setNamespaceURI("http://www.somewhereelse.net");
 
-        assertTrue(!ft.equals(tb.buildFeatureType()));
-        assertTrue(!ft.equals(null));
+        assertFalse(ft.equals(tb.buildFeatureType()));
+        assertFalse(ft.equals(null));
     }
 
     public void testCopyFeature() throws Exception {

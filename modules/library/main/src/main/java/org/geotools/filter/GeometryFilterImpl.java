@@ -102,12 +102,12 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
             @SuppressWarnings("unchecked")
             Collection<Object> cast = (Collection<Object>) o;
             for (Object item : cast) {
-                Geometry geometry = (Geometry) Converters.convert(item, Geometry.class);
+                Geometry geometry = Converters.convert(item, Geometry.class);
                 if (geometry != null) {
                     list.add(geometry);
                 }
             }
-            return list.size() > 0 ? list : null;
+            return list.isEmpty() ? null : list;
         }
 
         return Converters.convert(o, Geometry.class);

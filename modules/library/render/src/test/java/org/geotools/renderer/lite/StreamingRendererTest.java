@@ -103,7 +103,6 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
-import org.opengis.style.GraphicLegend;
 
 /**
  * Test the inner workings of StreamingRenderer.
@@ -228,7 +227,7 @@ public class StreamingRendererTest {
         shape = ArgumentCaptor.forClass(Shape.class);
         Mockito.verify(graphics).draw(shape.capture());
         drawnShape = (LiteShape2) shape.getValue();
-        assertTrue(drawnShape.getGeometry().getCoordinates().length == 2);
+        assertEquals(2, drawnShape.getGeometry().getCoordinates().length);
         graphics.dispose();
     }
 
@@ -546,9 +545,10 @@ public class StreamingRendererTest {
         sr.setMapContent(map);
         sr.paint(image.createGraphics(), screen, map.getMaxBounds(), worldToScreen);
         assertTrue("Pixel should be drawn at 0,0 ", image.getRGB(0, 0) != 0);
-        assertTrue(
+        assertEquals(
                 "Pixel should not be drawn in image centre ",
-                image.getRGB(screen.width / 2, screen.height / 2) == 0);
+                0,
+                image.getRGB(screen.width / 2, screen.height / 2));
         assertTrue(
                 "Pixel should be drawn at image max corner ",
                 image.getRGB(screen.width - 1, screen.height - 1) != 0);
@@ -692,7 +692,7 @@ public class StreamingRendererTest {
                 sf.createRule(
                         new Symbolizer[0],
                         new DescriptionImpl(),
-                        (GraphicLegend) null,
+                        null,
                         "bbox",
                         bbox,
                         false,
@@ -776,7 +776,7 @@ public class StreamingRendererTest {
         sr.paint(graphics, paintArea, referencedEnvelope);
         mc.dispose();
 
-        assertTrue(errors == 0);
+        assertEquals(0, errors);
     }
 
     @Test

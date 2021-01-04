@@ -111,7 +111,7 @@ public class SLDShadedReliefBinding extends AbstractComplexBinding {
 
         if (node.hasChild("ReliefFactor")) {
             Double d = (Double) node.getChildValue("ReliefFactor");
-            reliefFactor = (Expression) filterFactory.literal(d.doubleValue());
+            reliefFactor = filterFactory.literal(d.doubleValue());
         }
 
         ShadedRelief shadedRelief = styleFactory.createShadedRelief(reliefFactor);

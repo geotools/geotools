@@ -129,11 +129,11 @@ public class DiffTransactionState implements Transaction.State {
         Throwable cause = null;
         try {
             while (writer.hasNext()) {
-                feature = (SimpleFeature) writer.next();
+                feature = writer.next();
                 String fid = feature.getID();
 
                 if (diff.getModified().containsKey(fid)) {
-                    update = (SimpleFeature) diff.getModified().get(fid);
+                    update = diff.getModified().get(fid);
 
                     if (update == Diff.NULL) {
                         writer.remove();
@@ -157,7 +157,7 @@ public class DiffTransactionState implements Transaction.State {
                 for (String fid : diff.getAddedOrder()) {
                     addedFeature = diff.getAdded().get(fid);
 
-                    nextFeature = (SimpleFeature) writer.next();
+                    nextFeature = writer.next();
 
                     if (nextFeature == null) {
                         throw new DataSourceException("Could not add " + fid);
@@ -185,10 +185,7 @@ public class DiffTransactionState implements Transaction.State {
                     }
                 }
             }
-        } catch (IOException e) {
-            cause = e;
-            throw e;
-        } catch (RuntimeException e) {
+        } catch (IOException | RuntimeException e) {
             cause = e;
             throw e;
         } finally {
@@ -196,12 +193,7 @@ public class DiffTransactionState implements Transaction.State {
                 writer.close();
                 state.fireBatchFeatureEvent(true);
                 diff.clear();
-            } catch (IOException e) {
-                if (cause != null) {
-                    e.initCause(cause);
-                }
-                throw e;
-            } catch (RuntimeException e) {
+            } catch (IOException | RuntimeException e) {
                 if (cause != null) {
                     e.initCause(cause);
                 }

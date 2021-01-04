@@ -95,7 +95,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
     /** FeatureCollection schema will be defined by the first added feature. */
     public TreeSetFeatureCollection() {
-        this((String) null, (SimpleFeatureType) null);
+        this(null, null);
     }
 
     /**
@@ -134,8 +134,8 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         if (bounds == null) {
             bounds = new ReferencedEnvelope();
 
-            for (Iterator i = contents.values().iterator(); i.hasNext(); ) {
-                BoundingBox geomBounds = ((SimpleFeature) i.next()).getBounds();
+            for (SimpleFeature simpleFeature : contents.values()) {
+                BoundingBox geomBounds = simpleFeature.getBounds();
                 // IanS - as of 1.3, JTS expandToInclude ignores "null" Envelope
                 // and simply adds the new bounds...
                 // This check ensures this behavior does not occur.
@@ -176,7 +176,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         if (this.schema == null) {
             this.schema = feature.getFeatureType();
         }
-        SimpleFeatureType childType = (SimpleFeatureType) getSchema();
+        SimpleFeatureType childType = getSchema();
         // if ( childType==null ){
         // //this.childType=
         // }else{
@@ -208,7 +208,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         try {
             List featuresAdded = new ArrayList(collection.size());
             while (iterator.hasNext()) {
-                SimpleFeature f = (SimpleFeature) iterator.next();
+                SimpleFeature f = iterator.next();
                 boolean added = add(f);
                 changed |= added;
 
@@ -225,8 +225,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         // TODO check inheritance with FeatureType here!!!
         boolean changed = false;
 
-        FeatureIterator<?> iterator = collection.features();
-        try {
+        try (FeatureIterator<?> iterator = collection.features()) {
             List<SimpleFeature> featuresAdded = new ArrayList<>(collection.size());
             while (iterator.hasNext()) {
                 SimpleFeature f = (SimpleFeature) iterator.next();
@@ -236,8 +235,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
                 if (added) featuresAdded.add(f);
             }
             return changed;
-        } finally {
-            iterator.close();
         }
     }
 
@@ -249,7 +246,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         if (contents.isEmpty()) return;
 
         SimpleFeature[] oldFeatures = new SimpleFeature[contents.size()];
-        oldFeatures = (SimpleFeature[]) contents.values().toArray(oldFeatures);
+        oldFeatures = contents.values().toArray(oldFeatures);
 
         contents.clear();
         // fireChange(oldFeatures, CollectionEvent.FEATURES_REMOVED);
@@ -322,7 +319,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
             }
 
             public SimpleFeature next() {
-                currFeature = (SimpleFeature) iterator.next();
+                currFeature = iterator.next();
                 return currFeature;
             }
 
@@ -528,8 +525,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     public SimpleFeatureCollection collection() throws IOException {
         TreeSetFeatureCollection copy = new TreeSetFeatureCollection(null, getSchema());
         List<SimpleFeature> list = new ArrayList<>(contents.size());
-        SimpleFeatureIterator iterator = features();
-        try {
+        try (SimpleFeatureIterator iterator = features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 SimpleFeature duplicate;
@@ -540,8 +536,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
                 }
                 list.add(duplicate);
             }
-        } finally {
-            iterator.close();
         }
         copy.addAll(list);
         return copy;

@@ -40,7 +40,7 @@ public class FilterFunction_endAngle extends FunctionExpressionImpl {
         LineString ls;
 
         try { // attempt to get value and perform conversion
-            ls = (LineString) getExpression(0).evaluate(feature, LineString.class);
+            ls = getExpression(0).evaluate(feature, LineString.class);
         } catch (Exception e) {
             // probably a type error
             throw new IllegalArgumentException(

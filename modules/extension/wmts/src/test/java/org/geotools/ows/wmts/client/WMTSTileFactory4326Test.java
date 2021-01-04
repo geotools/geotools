@@ -114,11 +114,10 @@ public class WMTSTileFactory4326Test {
             for (int i1 = 0; i1 < 1; i1++) {
                 WMTSTileService service = services[i1];
                 int offset = 0;
-                if (((WMTSTileService) service).getType().equals(WMTSServiceType.REST)) {
+                if (service.getType().equals(WMTSServiceType.REST)) {
                     offset = 1; // extra level (e.g. mapproxy wrt to geoserver)
                 }
-                WMTSZoomLevel zoomLevel =
-                        ((WMTSTileService) service).getZoomLevel(tp.zoomlevel + offset);
+                WMTSZoomLevel zoomLevel = service.getZoomLevel(tp.zoomlevel + offset);
 
                 Tile mtile = factory.findTileAtCoordinate(tp.lon, tp.lat, zoomLevel, service);
                 Tile ltile = factory.constrainToUpperLeftTile(mtile, zoomLevel, service);

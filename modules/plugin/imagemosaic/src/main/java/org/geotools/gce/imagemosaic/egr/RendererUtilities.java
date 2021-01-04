@@ -81,15 +81,12 @@ public final class RendererUtilities {
         // Get the transform
         //
         // //
-        final GridToEnvelopeMapper m = (GridToEnvelopeMapper) gridToEnvelopeMappers.get();
+        final GridToEnvelopeMapper m = gridToEnvelopeMappers.get();
         try {
             m.setGridRange(new GridEnvelope2D(paintArea));
             m.setEnvelope(genvelope);
             return m.createAffineTransform().createInverse();
-        } catch (MismatchedDimensionException e) {
-            LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-            return null;
-        } catch (NoninvertibleTransformException e) {
+        } catch (MismatchedDimensionException | NoninvertibleTransformException e) {
             LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }

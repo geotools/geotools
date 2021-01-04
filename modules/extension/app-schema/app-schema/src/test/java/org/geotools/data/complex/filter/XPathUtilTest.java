@@ -18,9 +18,8 @@
 package org.geotools.data.complex.filter;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
@@ -68,8 +67,7 @@ public class XPathUtilTest {
 
         xpath = "/";
         assertEquals(1, XPathUtil.steps(descriptor, xpath, namespaces).size());
-        XPathUtil.Step step =
-                (XPathUtil.Step) XPathUtil.steps(descriptor, xpath, namespaces).get(0);
+        XPathUtil.Step step = XPathUtil.steps(descriptor, xpath, namespaces).get(0);
         QName rootQName = new QName(name.getNamespaceURI(), name.getLocalPart());
         assertEquals(rootQName, step.getName());
 
@@ -158,13 +156,13 @@ public class XPathUtilTest {
         XPathUtil.Step step4 = new XPathUtil.Step(XLINK.HREF, 1, true);
         XPathUtil.Step step5 = new XPathUtil.Step(XLINK.HREF, 2, false);
 
-        assertFalse(step1.equals(null));
-        assertFalse(step1.equals(new Object()));
-        assertFalse(step1.equals(step2));
+        assertNotEquals(null, step1);
+        assertNotEquals(step1, new Object());
+        assertNotEquals(step1, step2);
 
-        assertTrue(step2.equals(step3));
-        assertFalse(step2.equals(step4));
-        assertFalse(step2.equals(step5));
+        assertEquals(step2, step3);
+        assertNotEquals(step2, step4);
+        assertNotEquals(step2, step5);
     }
 
     /** Test that the {@link StepList} for the root element is properly formed. */

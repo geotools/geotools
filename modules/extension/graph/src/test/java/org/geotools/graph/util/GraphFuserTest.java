@@ -17,7 +17,6 @@
 package org.geotools.graph.util;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
@@ -60,8 +59,8 @@ public class GraphFuserTest extends TestCase {
                         generator().getGraph(), generator().getGraphBuilder(), createEdgeMerger());
         assertTrue(fuser.fuse());
 
-        assertTrue(generator().getGraph().getNodes().size() == 2);
-        assertTrue(generator().getGraph().getEdges().size() == 1);
+        assertEquals(2, generator().getGraph().getNodes().size());
+        assertEquals(1, generator().getGraph().getEdges().size());
 
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -112,8 +111,8 @@ public class GraphFuserTest extends TestCase {
                         generator().getGraph(), generator().getGraphBuilder(), createEdgeMerger());
         assertTrue(fuser.fuse());
 
-        assertTrue(generator().getGraph().getNodes().size() == 4);
-        assertTrue(generator().getGraph().getEdges().size() == 4);
+        assertEquals(4, generator().getGraph().getNodes().size());
+        assertEquals(4, generator().getGraph().getEdges().size());
 
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -174,8 +173,8 @@ public class GraphFuserTest extends TestCase {
                         generator().getGraph(), generator().getGraphBuilder(), createEdgeMerger());
         assertTrue(fuser.fuse());
 
-        assertTrue(generator().getGraph().getNodes().size() == 4);
-        assertTrue(generator().getGraph().getEdges().size() == 4);
+        assertEquals(4, generator().getGraph().getNodes().size());
+        assertEquals(4, generator().getGraph().getEdges().size());
 
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -231,8 +230,8 @@ public class GraphFuserTest extends TestCase {
                         generator().getGraph(), generator().getGraphBuilder(), createEdgeMerger());
         assertTrue(fuser.fuse());
 
-        assertTrue(generator().getGraph().getNodes().size() == 1);
-        assertTrue(generator().getGraph().getEdges().size() == 1);
+        assertEquals(1, generator().getGraph().getNodes().size());
+        assertEquals(1, generator().getGraph().getEdges().size());
     }
 
     protected GraphGenerator createGenerator() {
@@ -247,8 +246,7 @@ public class GraphFuserTest extends TestCase {
         return (new GraphFuser.EdgeMerger() {
             public Object merge(List<Edge> edges) {
                 List<Edge> ends = new ArrayList<>();
-                for (Iterator itr = edges.iterator(); itr.hasNext(); ) {
-                    Edge edge = (Edge) itr.next();
+                for (Edge edge : edges) {
                     if (edge.getNodeA().getDegree() != 2 || edge.getNodeB().getDegree() != 2)
                         ends.add(edge);
                 }
@@ -256,8 +254,8 @@ public class GraphFuserTest extends TestCase {
                 Object[] obj = new Object[2];
 
                 if (ends.size() == 2) {
-                    Edge end0 = (Edge) ends.get(0);
-                    Edge end1 = (Edge) ends.get(1);
+                    Edge end0 = ends.get(0);
+                    Edge end1 = ends.get(1);
 
                     obj[0] =
                             end0.getNodeA().getDegree() == 2
@@ -268,8 +266,8 @@ public class GraphFuserTest extends TestCase {
                                     ? end1.getNodeB().getObject()
                                     : end1.getNodeA().getObject();
                 } else if (ends.size() == 0) {
-                    obj[0] = ((Edge) edges.get(0)).getNodeA().getObject();
-                    obj[1] = ((Edge) edges.get(0)).getNodeA().getObject();
+                    obj[0] = edges.get(0).getNodeA().getObject();
+                    obj[1] = edges.get(0).getNodeA().getObject();
                 } else throw new IllegalStateException("Found " + ends.size() + " ends.");
 
                 return (obj);

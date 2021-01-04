@@ -175,6 +175,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                             pc = domsw.toString();
                         }
                     }
+                    in.close();
                     in = new ByteArrayInputStream(pc.getBytes());
                 }
             } catch (SAXException

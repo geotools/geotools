@@ -30,7 +30,6 @@ import org.geotools.xml.gml.GMLFeatureCollection;
 import org.geotools.xml.gml.GMLSchema;
 import org.geotools.xml.schema.Schema;
 import org.opengis.feature.simple.SimpleFeature;
-import org.xml.sax.SAXException;
 
 /** @author dzwiers www.refractions.net */
 public class GMLParserTest extends TestCase {
@@ -161,70 +160,58 @@ public class GMLParserTest extends TestCase {
         }
     }
 
-    public void testFMERoadsFeatures() {
-        try {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setNamespaceAware(true);
-            spf.setValidating(false);
+    public void testFMERoadsFeatures() throws Exception {
+        SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
+        spf.setValidating(false);
 
-            SAXParser parser = spf.newSAXParser();
+        SAXParser parser = spf.newSAXParser();
 
-            String path = "xml/fme/roads/roads.xml";
-            File f = TestData.copy(this, path);
-            TestData.copy(this, "xml/fme/roads/roads.xsd");
-            URI u = f.toURI();
+        String path = "xml/fme/roads/roads.xml";
+        File f = TestData.copy(this, path);
+        TestData.copy(this, "xml/fme/roads/roads.xsd");
+        URI u = f.toURI();
 
-            XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u, null);
-            XMLSAXHandler.setLogLevel(Level.WARNING);
-            XSISAXHandler.setLogLevel(Level.WARNING);
-            XMLElementHandler.setLogLevel(Level.WARNING);
-            XSIElementHandler.setLogLevel(Level.WARNING);
+        XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u, null);
+        XMLSAXHandler.setLogLevel(Level.WARNING);
+        XSISAXHandler.setLogLevel(Level.WARNING);
+        XMLElementHandler.setLogLevel(Level.WARNING);
+        XSIElementHandler.setLogLevel(Level.WARNING);
 
-            parser.parse(f, xmlContentHandler);
+        parser.parse(f, xmlContentHandler);
 
-            Object doc = xmlContentHandler.getDocument();
-            assertNotNull("Document missing", doc);
-            //            System.out.println(doc);
+        Object doc = xmlContentHandler.getDocument();
+        assertNotNull("Document missing", doc);
+        //            System.out.println(doc);
 
-            checkFeatureCollection((SimpleFeatureCollection) doc);
-
-        } catch (Throwable e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
-        }
+        checkFeatureCollection((SimpleFeatureCollection) doc);
     }
 
-    public void testFMELakesFeatures() {
-        try {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setNamespaceAware(true);
-            spf.setValidating(false);
+    public void testFMELakesFeatures() throws Exception {
+        SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
+        spf.setValidating(false);
 
-            SAXParser parser = spf.newSAXParser();
+        SAXParser parser = spf.newSAXParser();
 
-            String path = "xml/fme/lakes/lakes.xml";
-            File f = TestData.copy(this, path);
-            TestData.copy(this, "xml/fme/lakes/lakes.xsd");
-            URI u = f.toURI();
+        String path = "xml/fme/lakes/lakes.xml";
+        File f = TestData.copy(this, path);
+        TestData.copy(this, "xml/fme/lakes/lakes.xsd");
+        URI u = f.toURI();
 
-            XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u, null);
-            XMLSAXHandler.setLogLevel(Level.WARNING);
-            XSISAXHandler.setLogLevel(Level.WARNING);
-            XMLElementHandler.setLogLevel(Level.WARNING);
-            XSIElementHandler.setLogLevel(Level.WARNING);
+        XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u, null);
+        XMLSAXHandler.setLogLevel(Level.WARNING);
+        XSISAXHandler.setLogLevel(Level.WARNING);
+        XMLElementHandler.setLogLevel(Level.WARNING);
+        XSIElementHandler.setLogLevel(Level.WARNING);
 
-            parser.parse(f, xmlContentHandler);
+        parser.parse(f, xmlContentHandler);
 
-            Object doc = xmlContentHandler.getDocument();
-            assertNotNull("Document missing", doc);
-            //            System.out.println(doc);
+        Object doc = xmlContentHandler.getDocument();
+        assertNotNull("Document missing", doc);
+        //            System.out.println(doc);
 
-            checkFeatureCollection((SimpleFeatureCollection) doc);
-
-        } catch (Throwable e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
-        }
+        checkFeatureCollection((SimpleFeatureCollection) doc);
     }
 
     private void checkFeatureCollection(SimpleFeatureCollection doc) {
@@ -273,11 +260,8 @@ public class GMLParserTest extends TestCase {
             //
             //        assertTrue("file was not created +f",f.exists());
             // System.out.println(f);
-        } catch (SAXException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
         } catch (Throwable e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            java.util.logging.Logger.getGlobal().log(Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -316,11 +300,8 @@ public class GMLParserTest extends TestCase {
             //
             //        assertTrue("file was not created +f",f.exists());
             // System.out.println(f);
-        } catch (SAXException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
         } catch (Throwable e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            java.util.logging.Logger.getGlobal().log(Level.INFO, "", e);
             fail(e.toString());
         }
     }

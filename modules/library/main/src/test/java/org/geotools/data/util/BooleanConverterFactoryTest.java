@@ -39,8 +39,7 @@ public class BooleanConverterFactoryTest extends TestCase {
     }
 
     Boolean convert(Object value) throws Exception {
-        return (Boolean)
-                factory.createConverter(value.getClass(), Boolean.class, null)
-                        .convert(value, Boolean.class);
+        return factory.createConverter(value.getClass(), Boolean.class, null)
+                .convert(value, Boolean.class);
     }
 }

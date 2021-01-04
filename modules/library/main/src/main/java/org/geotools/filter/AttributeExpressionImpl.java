@@ -215,8 +215,8 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
                     PropertyAccessors.findPropertyAccessors(obj, attPath, target, hints);
             List<Exception> exceptions = null;
             if (accessors != null) {
-                for (int i = 0; i < accessors.size(); i++) {
-                    accessor = accessors.get(i);
+                for (PropertyAccessor propertyAccessor : accessors) {
+                    accessor = propertyAccessor;
                     try {
                         value = accessor.get(obj, attPath, target);
                         success = true;

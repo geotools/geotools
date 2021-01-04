@@ -23,7 +23,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -212,7 +211,7 @@ public abstract class MathTransformBuilder {
     private static DirectPosition[] getPoints(List<MappedPosition> positions, boolean target) {
         final DirectPosition[] points = new DirectPosition[positions.size()];
         for (int i = 0; i < points.length; i++) {
-            final MappedPosition mp = (MappedPosition) positions.get(i);
+            final MappedPosition mp = positions.get(i);
             points[i] = target ? mp.getTarget() : mp.getSource();
         }
         return points;
@@ -346,9 +345,7 @@ public abstract class MathTransformBuilder {
                  */
             }
             table.setAlignment(TableWriter.ALIGN_RIGHT);
-            for (final Iterator<MappedPosition> it = getMappedPositions().iterator();
-                    it.hasNext(); ) {
-                final MappedPosition mp = (MappedPosition) it.next();
+            for (final MappedPosition mp : getMappedPositions()) {
                 DirectPosition point = mp.getSource();
                 int dimension = point.getDimension();
                 for (int i = 0; i < dimension; i++) {
@@ -490,8 +487,7 @@ public abstract class MathTransformBuilder {
     private GeneralEnvelope getEnvelope(final boolean target) {
         GeneralEnvelope envelope = null;
         CoordinateReferenceSystem crs = null;
-        for (final Iterator<MappedPosition> it = getMappedPositions().iterator(); it.hasNext(); ) {
-            final MappedPosition mp = (MappedPosition) it.next();
+        for (final MappedPosition mp : getMappedPositions()) {
             final DirectPosition point = target ? mp.getTarget() : mp.getSource();
             if (point != null) {
                 if (envelope == null) {
@@ -630,8 +626,7 @@ public abstract class MathTransformBuilder {
         final MathTransform mt = getMathTransform();
         final Statistics stats = new Statistics();
         final DirectPosition buffer = new GeneralDirectPosition(getDimension());
-        for (final Iterator<MappedPosition> it = getMappedPositions().iterator(); it.hasNext(); ) {
-            final MappedPosition mp = (MappedPosition) it.next();
+        for (final MappedPosition mp : getMappedPositions()) {
             /*
              * Transforms the source point using the math transform calculated by this class.
              * If the transform can't be applied, then we consider this failure as if it was

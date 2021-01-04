@@ -27,7 +27,6 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.swing.Icon;
@@ -352,8 +351,8 @@ class RandomFillBuilder {
                 Geometry cbTransformed = JTS.transform(conflictBounds, tx2d);
                 transformedConflictBounds.add(cbTransformed);
                 List results = qt.query(cbTransformed.getEnvelopeInternal());
-                for (Iterator it = results.iterator(); it.hasNext(); ) {
-                    Geometry candidate = (Geometry) it.next();
+                for (Object result : results) {
+                    Geometry candidate = (Geometry) result;
                     if (candidate.intersects(cbTransformed)) {
                         // location conflict
                         conflict = true;

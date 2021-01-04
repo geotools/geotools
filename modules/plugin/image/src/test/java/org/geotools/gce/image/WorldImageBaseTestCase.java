@@ -53,7 +53,7 @@ public abstract class WorldImageBaseTestCase extends TestCase {
             if (extensions != null) {
                 this.extensions.clear();
 
-                for (int i = 0; i < extensions.length; i++) this.extensions.add(extensions[i]);
+                for (String extension : extensions) this.extensions.add(extension);
             }
         }
 

@@ -17,7 +17,6 @@
 package org.geotools.referencing.factory.epsg.hsql;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -163,9 +162,9 @@ public class OperationFactoryTest extends TestCase {
         // Should contains exactly one transformations and an arbitrary number of conversions.
         assertTrue(operation instanceof ConcatenatedOperation);
         int count = 0;
-        for (final Iterator it = ((ConcatenatedOperation) operation).getOperations().iterator();
-                it.hasNext(); ) {
-            final CoordinateOperation op = (CoordinateOperation) it.next();
+        for (org.opengis.referencing.operation.SingleOperation singleOperation :
+                ((ConcatenatedOperation) operation).getOperations()) {
+            final CoordinateOperation op = (CoordinateOperation) singleOperation;
             if (op instanceof Transformation) {
                 count++;
             } else {
@@ -277,7 +276,7 @@ public class OperationFactoryTest extends TestCase {
         String expectedText = "AUTHORITY[\"EPSG\",\"19986\"]";
 
         Set<CoordinateOperation> operations = findOperations(source, target);
-        assertTrue(operations.size() == 1); // same datum, exactly one operation expected
+        assertEquals(1, operations.size()); // same datum, exactly one operation expected
         assertOperationContained(operations, expectedText);
     }
 

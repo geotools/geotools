@@ -145,9 +145,8 @@ public class SimpleTypeGT implements SimpleType {
         ElementValue[] valss = new ElementValue[1];
         valss[0] = value;
 
-        for (int i = 0; i < parents.length; i++) {
-            Object o = parents[0].getValue(element, valss, attrs, hints);
-
+        for (SimpleType parent : parents) {
+            Object o = parent.getValue(element, valss, attrs, hints);
             if (o != null) {
                 return o;
             }
@@ -170,8 +169,8 @@ public class SimpleTypeGT implements SimpleType {
         List<Object> l = new LinkedList<>();
         ElementValueGT[] valss = new ElementValueGT[1];
 
-        for (int i = 0; i < vals.length; i++) {
-            valss[0] = new ElementValueGT(value.getElement(), vals[i]);
+        for (String val : vals) {
+            valss[0] = new ElementValueGT(value.getElement(), val);
             l.add(parents[0].getValue(element, valss, attrs, hints));
         }
 
@@ -204,8 +203,8 @@ public class SimpleTypeGT implements SimpleType {
         String val = (String) value.getValue();
 
         if (val != null && constraints[0].getFacetType() == Facet.ENUMERATION) {
-            for (int i = 0; i < constraints.length; i++) {
-                if (val.equalsIgnoreCase(constraints[i].getValue())) {
+            for (Facet constraint : constraints) {
+                if (val.equalsIgnoreCase(constraint.getValue())) {
                     ElementValue[] t = new ElementValue[1];
                     t[0] = value;
 
@@ -233,8 +232,8 @@ public class SimpleTypeGT implements SimpleType {
         }
 
         // check each constraint
-        for (int i = 0; i < constraints.length; i++) {
-            switch (constraints[i].getFacetType()) {
+        for (Facet constraint : constraints) {
+            switch (constraint.getFacetType()) {
                 case Facet.ENUMERATION:
                     /*throw new SAXException(
                     "cannot have enumerations mixed with other facets.");*/
@@ -242,7 +241,7 @@ public class SimpleTypeGT implements SimpleType {
 
                 case Facet.FRACTIONDIGITS:
                     int decimals = val.length() - val.indexOf(".");
-                    int maxDec = Integer.parseInt(constraints[i].getValue());
+                    int maxDec = Integer.parseInt(constraint.getValue());
 
                     if (decimals > maxDec) {
                         throw new SAXException("Too many decimal places");
@@ -251,7 +250,7 @@ public class SimpleTypeGT implements SimpleType {
                     break;
 
                 case Facet.LENGTH:
-                    int maxLength = Integer.parseInt(constraints[i].getValue());
+                    int maxLength = Integer.parseInt(constraint.getValue());
 
                     if (val.length() != maxLength) {
                         throw new SAXException("Too long places");
@@ -261,7 +260,7 @@ public class SimpleTypeGT implements SimpleType {
 
                 case Facet.MAXEXCLUSIVE:
                     if (nval != null) {
-                        Double max = Double.valueOf(constraints[i].getValue());
+                        Double max = Double.valueOf(constraint.getValue());
 
                         if (nval.doubleValue() > max.doubleValue()) {
                             throw new SAXException("Too large a value");
@@ -272,7 +271,7 @@ public class SimpleTypeGT implements SimpleType {
                         Date max;
 
                         try {
-                            max = DateFormat.getDateTimeInstance().parse(constraints[i].getValue());
+                            max = DateFormat.getDateTimeInstance().parse(constraint.getValue());
                         } catch (ParseException e) {
                             throw new SAXException(e);
                         }
@@ -286,7 +285,7 @@ public class SimpleTypeGT implements SimpleType {
 
                 case Facet.MAXINCLUSIVE:
                     if (nval != null) {
-                        Double max = Double.valueOf(constraints[i].getValue());
+                        Double max = Double.valueOf(constraint.getValue());
 
                         if (nval.doubleValue() >= max.doubleValue()) {
                             throw new SAXException("Too large a value");
@@ -297,7 +296,7 @@ public class SimpleTypeGT implements SimpleType {
                         Date max;
 
                         try {
-                            max = DateFormat.getDateTimeInstance().parse(constraints[i].getValue());
+                            max = DateFormat.getDateTimeInstance().parse(constraint.getValue());
                         } catch (ParseException e) {
                             throw new SAXException(e);
                         }
@@ -308,7 +307,7 @@ public class SimpleTypeGT implements SimpleType {
                     }
 
                 case Facet.MAXLENGTH:
-                    maxLength = Integer.parseInt(constraints[i].getValue());
+                    maxLength = Integer.parseInt(constraint.getValue());
 
                     if (val.length() > maxLength) {
                         throw new SAXException("Too long places");
@@ -318,7 +317,7 @@ public class SimpleTypeGT implements SimpleType {
 
                 case Facet.MINEXCLUSIVE:
                     if (nval != null) {
-                        Double max = Double.valueOf(constraints[i].getValue());
+                        Double max = Double.valueOf(constraint.getValue());
 
                         if (nval.doubleValue() < max.doubleValue()) {
                             throw new SAXException("Too large a value");
@@ -329,7 +328,7 @@ public class SimpleTypeGT implements SimpleType {
                         Date max;
 
                         try {
-                            max = DateFormat.getDateTimeInstance().parse(constraints[i].getValue());
+                            max = DateFormat.getDateTimeInstance().parse(constraint.getValue());
                         } catch (ParseException e) {
                             throw new SAXException(e);
                         }
@@ -341,7 +340,7 @@ public class SimpleTypeGT implements SimpleType {
 
                 case Facet.MININCLUSIVE:
                     if (nval != null) {
-                        Double max = Double.valueOf(constraints[i].getValue());
+                        Double max = Double.valueOf(constraint.getValue());
 
                         if (nval.doubleValue() <= max.doubleValue()) {
                             throw new SAXException("Too large a value");
@@ -352,7 +351,7 @@ public class SimpleTypeGT implements SimpleType {
                         Date max;
 
                         try {
-                            max = DateFormat.getDateTimeInstance().parse(constraints[i].getValue());
+                            max = DateFormat.getDateTimeInstance().parse(constraint.getValue());
                         } catch (ParseException e) {
                             throw new SAXException(e);
                         }
@@ -363,7 +362,7 @@ public class SimpleTypeGT implements SimpleType {
                     }
 
                 case Facet.MINLENGTH:
-                    maxLength = Integer.parseInt(constraints[i].getValue());
+                    maxLength = Integer.parseInt(constraint.getValue());
 
                     if (val.length() < maxLength) {
                         throw new SAXException("Too short places");
@@ -372,14 +371,14 @@ public class SimpleTypeGT implements SimpleType {
                     break;
 
                 case Facet.PATTERN:
-                    if (val.split(constraints[i].getValue()).length != 0) {
+                    if (val.split(constraint.getValue()).length != 0) {
                         throw new SAXException("Does not match pattern");
                     }
 
                     break;
 
                 case Facet.TOTALDIGITS:
-                    maxLength = Integer.parseInt(constraints[i].getValue()) + 1;
+                    maxLength = Integer.parseInt(constraint.getValue()) + 1;
 
                     if (val.length() > maxLength) {
                         throw new SAXException("Too many digits");
@@ -413,12 +412,12 @@ public class SimpleTypeGT implements SimpleType {
         }
 
         if (type == UNION) {
-            for (int i = 0; i < parents.length; i++) {
+            for (SimpleType parent : parents) {
                 // finds first that works
                 // TODO check that 'equals' works here
-                if (parents[i].equals(attribute.getSimpleType())
-                        && parents[i].canCreateAttributes(attribute, value, hints)) {
-                    return parents[i].toAttribute(attribute, value, hints);
+                if (parent.equals(attribute.getSimpleType())
+                        && parent.canCreateAttributes(attribute, value, hints)) {
+                    return parent.toAttribute(attribute, value, hints);
                 }
             }
 
@@ -458,11 +457,11 @@ public class SimpleTypeGT implements SimpleType {
         }
 
         if (type == UNION) {
-            for (int i = 0; i < parents.length; i++) {
+            for (SimpleType parent : parents) {
                 // finds first that works
                 // TODO check that 'equals' works here
-                if (parents[i].equals(attribute.getSimpleType())
-                        && parents[i].canCreateAttributes(attribute, value, hints)) {
+                if (parent.equals(attribute.getSimpleType())
+                        && parent.canCreateAttributes(attribute, value, hints)) {
                     return true;
                 }
             }
@@ -487,11 +486,10 @@ public class SimpleTypeGT implements SimpleType {
         }
 
         if (type == UNION) {
-            for (int i = 0; i < parents.length; i++) {
+            for (SimpleType parent : parents) {
                 // finds first that works
                 // TODO check that 'equals' works here
-                if (parents[i].equals(element.getType())
-                        && parents[i].canEncode(element, value, hints)) {
+                if (parent.equals(element.getType()) && parent.canEncode(element, value, hints)) {
                     return true;
                 }
             }
@@ -518,12 +516,11 @@ public class SimpleTypeGT implements SimpleType {
         }
 
         if (type == UNION) {
-            for (int i = 0; i < parents.length; i++) {
+            for (SimpleType parent : parents) {
                 // finds first that works
                 // TODO check that 'equals' works here
-                if (parents[i].equals(element.getType())
-                        && parents[i].canEncode(element, value, hints)) {
-                    parents[i].encode(element, value, output, hints);
+                if (parent.equals(element.getType()) && parent.canEncode(element, value, hints)) {
+                    parent.encode(element, value, output, hints);
                 }
 
                 return;

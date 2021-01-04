@@ -321,7 +321,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         // FIXME should set a child Property.. but be careful for things that
         // are smuggled in there internally and don't exist in the schema, like
         // XSDTypeDefinition, CRS etc.
-        if (targetAttributes.size() > 0) {
+        if (!targetAttributes.isEmpty()) {
             target.getUserData().put(Attributes.class, targetAttributes);
         }
         setGeometryUserData(target, targetAttributes);
@@ -353,8 +353,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
 
             List<Pair> ls = elements.get(attMapping.getParentLabel());
             if (ls != null) {
-                for (int i = 0; i < ls.size(); i++) {
-                    Pair parentAttribute = ls.get(i);
+                for (Pair parentAttribute : ls) {
                     String countXpath = parentAttribute.getXpath();
                     // if instance path not set, then only count the root node
                     if (attMapping.getInstanceXpath() != null) {

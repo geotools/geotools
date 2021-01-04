@@ -122,8 +122,6 @@ public class RasterUtils {
             GeneralEnvelope requestedPixels;
             try {
                 requestedPixels = CRS.transform(modelToRaster, requestedEnvelope);
-            } catch (NoninvertibleTransformException e) {
-                throw new IllegalArgumentException(e);
             } catch (TransformException e) {
                 throw new IllegalArgumentException(e);
             }
@@ -494,7 +492,7 @@ public class RasterUtils {
             final OverviewPolicy overviewPolicy) {
 
         final int numRasters = rasterInfo.getNumRasters();
-        List<RasterQueryInfo> matchingRasters = new ArrayList<RasterQueryInfo>(numRasters);
+        List<RasterQueryInfo> matchingRasters = new ArrayList<>(numRasters);
 
         int optimalPyramidLevel;
         GeneralEnvelope gridEnvelope;

@@ -35,18 +35,18 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
                 dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT)) {
             assertTrue(writer.hasNext());
             final SimpleFeature feature = (SimpleFeature) writer.next();
-            assertTrue(feature.getAttribute(0).toString().equals("POINT (0 0)"));
-            assertTrue((Integer) feature.getAttribute(1) == 0);
-            assertTrue((Double) feature.getAttribute(2) == 0.0);
-            assertTrue(((String) feature.getAttribute(3)).equals("zero"));
+            assertEquals("POINT (0 0)", feature.getAttribute(0).toString());
+            assertEquals(0, (int) (Integer) feature.getAttribute(1));
+            assertEquals(0.0, (Double) feature.getAttribute(2));
+            assertEquals("zero", feature.getAttribute(3));
         }
         try (FeatureWriter writer =
                 dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT)) {
             assertTrue(writer.hasNext());
             final SimpleFeature feature = (SimpleFeature) writer.next();
             final List<Object> attributes = feature.getAttributes();
-            for (int k = 0; k < attributes.size(); k++) {
-                assertTrue(attributes.get(k) != null);
+            for (Object attribute : attributes) {
+                assertNotNull(attribute);
             }
         }
     }

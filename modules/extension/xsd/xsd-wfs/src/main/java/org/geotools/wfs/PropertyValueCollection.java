@@ -122,7 +122,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
             if (values.isEmpty()) {
                 Object value = null;
                 while (it.hasNext()) {
-                    Feature f = (Feature) it.next();
+                    Feature f = it.next();
                     value = propertyName.evaluate(f);
                     if (value != null
                             && !(value instanceof Collection && ((Collection) value).isEmpty())) {
@@ -186,9 +186,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
             if (value instanceof ComplexAttribute) {
                 result =
                         factory.createComplexAttribute(
-                                Collections.<Property>singletonList((Property) value),
-                                newDescriptor,
-                                null);
+                                Collections.singletonList((Property) value), newDescriptor, null);
             } else {
                 value = value instanceof Attribute ? ((Attribute) value).getValue() : value;
                 result = factory.createAttribute(value, newDescriptor, null);

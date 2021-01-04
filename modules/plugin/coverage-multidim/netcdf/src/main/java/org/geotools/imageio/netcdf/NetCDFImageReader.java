@@ -196,14 +196,13 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      * @param input the input object.
      * @return the dataset or <code>null</code>.
      */
+    @SuppressWarnings("PMD.CloseResource")
     private NetcdfDataset extractDataset(Object input) throws IOException {
         NetcdfDataset dataset = null;
         if (input instanceof URIImageInputStream) {
-            @SuppressWarnings("PMD.CloseResource") // not managed here
             URIImageInputStream uriInStream = (URIImageInputStream) input;
             dataset = NetCDFUtilities.acquireDataset(uriInStream.getUri());
-        }
-        if (input instanceof URL) {
+        } else if (input instanceof URL) {
             final URL tempURL = (URL) input;
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("dods")) {
@@ -630,6 +629,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     /** @see javax.imageio.ImageReader#read(int, javax.imageio.ImageReadParam) */
     @Override
+    @SuppressWarnings("PMD.ReplaceHashtableWithMap") // needed for BufferedImageConstructor
     public BufferedImage read(int imageIndex, ImageReadParam param) throws IOException {
         clearAbortRequest();
 
@@ -767,10 +767,12 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         final ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
 
         final WritableRaster raster = Raster.createWritableRaster(sampleModel, new Point(0, 0));
-        Hashtable<String, Object> properties = getNoDataProperties(wrapper);
         final BufferedImage image =
                 new BufferedImage(
-                        colorModel, raster, colorModel.isAlphaPremultiplied(), properties);
+                        colorModel,
+                        raster,
+                        colorModel.isAlphaPremultiplied(),
+                        getNoDataProperties(wrapper));
 
         CoordinateSystem cs = wrapper.variableDS.getCoordinateSystems().get(0);
         CoordinateAxis axis = georeferencing.isLonLat() ? cs.getLatAxis() : cs.getYaxis();
@@ -946,6 +948,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         return flipYAxis;
     }
 
+    @SuppressWarnings("PMD.ReplaceHashtableWithMap")
     private Hashtable<String, Object> getNoDataProperties(VariableAdapter wrapper) {
         RangeType range = wrapper.getRangeType();
         if (range != null) {

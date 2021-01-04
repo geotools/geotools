@@ -494,7 +494,7 @@ public class Rendering2DTest extends TestCase {
         // Set the new AOI
         //
         // //
-        final ReferencedEnvelope env = (ReferencedEnvelope) map.getMaxBounds();
+        final ReferencedEnvelope env = map.getMaxBounds();
         final ReferencedEnvelope bounds =
                 new ReferencedEnvelope(JTS.transform(env, null, t, 10), crs);
 
@@ -997,7 +997,7 @@ public class Rendering2DTest extends TestCase {
     private LinearRing makeSampleLinearRing(final GeometryFactory geomFac) {
         try {
             Polygon polyg = (Polygon) buildShiftedGeometry(makeSamplePolygon(geomFac), 0, 100);
-            return (LinearRing) polyg.getExteriorRing();
+            return polyg.getExteriorRing();
         } catch (TopologyException te) {
             fail("Error creating sample polygon for testing " + te);
         }
@@ -1008,8 +1008,7 @@ public class Rendering2DTest extends TestCase {
         Geometry clone = g.copy();
         Coordinate[] coords = clone.getCoordinates();
         final int length = coords.length;
-        for (int i = 0; i < length; i++) {
-            Coordinate coord = coords[i];
+        for (Coordinate coord : coords) {
             coord.x += shiftX;
             coord.y += shiftY;
         }
@@ -1078,9 +1077,7 @@ public class Rendering2DTest extends TestCase {
                 DataUtilities.createType("emptyPolygon", "geom:MultiPolygon,name:String");
         SimpleFeature f =
                 SimpleFeatureBuilder.build(
-                        pointType,
-                        new Object[] {gf.createMultiPolygon((Polygon[]) null), "name"},
-                        null);
+                        pointType, new Object[] {gf.createMultiPolygon(null), "name"}, null);
         Style style = sb.createStyle(sb.createPolygonSymbolizer());
 
         renderEmptyGeometry(f, style);

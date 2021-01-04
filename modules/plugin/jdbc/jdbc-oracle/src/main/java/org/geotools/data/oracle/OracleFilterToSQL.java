@@ -256,7 +256,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
         try {
             List<PrimaryKeyColumn> pkColumns = getPrimaryKey().getColumns();
-            if (pkColumns == null || pkColumns.size() == 0) {
+            if (pkColumns == null || pkColumns.isEmpty()) {
                 throw new UnsupportedOperationException(
                         "Unsupported usage of SDO_NN Oracle function: table with no primary key");
             }
@@ -388,7 +388,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             boolean swapped,
             Object extraData) {
         return visitBinarySpatialOperator(
-                filter, (Expression) property, (Expression) geometry, swapped, extraData);
+                filter, property, (Expression) geometry, swapped, extraData);
     }
 
     @Override

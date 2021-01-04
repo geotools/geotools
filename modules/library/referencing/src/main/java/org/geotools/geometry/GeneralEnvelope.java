@@ -714,8 +714,8 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @since 2.2
      */
     public boolean isInfinite() {
-        for (int i = 0; i < ordinates.length; i++) {
-            if (Double.isInfinite(ordinates[i])) {
+        for (double ordinate : ordinates) {
+            if (Double.isInfinite(ordinate)) {
                 return true;
             }
         }
@@ -762,8 +762,8 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     /** Check if the ordinates indicate a "nil" envelope. */
     private static boolean isNilCoordinates(final double[] ordinates)
             throws IllegalArgumentException {
-        for (int i = 0; i < ordinates.length; i++) {
-            if (!Double.isNaN(ordinates[i])) {
+        for (double ordinate : ordinates) {
+            if (!Double.isNaN(ordinate)) {
                 return false;
             }
         }

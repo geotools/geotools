@@ -158,7 +158,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         if (scalar == null || !scalar.hasLogicalOperators()) {
             return false;
         }
-        return (Boolean) filter.getFilter().accept(this, null);
+        return filter.getFilter().accept(this, null);
     }
 
     public Object visit(Or filter, Object extraData) {

@@ -228,16 +228,16 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
         // could cashe this info if it is time consuming to filter
         if (clazz.getName().equalsIgnoreCase(CoordinateReferenceSystem.class.getName())) {
             Set<String> all = new java.util.TreeSet<>();
-            for (java.util.Iterator i = epsg.keySet().iterator(); i.hasNext(); ) {
-                String code = (String) i.next();
+            for (Object o : epsg.keySet()) {
+                String code = (String) o;
                 all.add(AUTHORITY_PREFIX + code);
             }
             return all;
         } else if (clazz.getName().equalsIgnoreCase(GeographicCRS.class.getName())) {
             Set<Object> all = epsg.keySet();
             Set<String> geoCRS = new java.util.TreeSet<>();
-            for (java.util.Iterator i = all.iterator(); i.hasNext(); ) {
-                String code = (String) i.next();
+            for (Object o : all) {
+                String code = (String) o;
                 String wkt = epsg.getProperty(code);
                 if (wkt.startsWith("GEOGCS")) {
                     geoCRS.add(AUTHORITY_PREFIX + code);
@@ -248,8 +248,8 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
         } else if (clazz.getName().equalsIgnoreCase(ProjectedCRS.class.getName())) {
             Set<Object> all = epsg.keySet();
             Set<String> projCRS = new java.util.TreeSet<>();
-            for (java.util.Iterator i = all.iterator(); i.hasNext(); ) {
-                String code = (String) i.next();
+            for (Object o : all) {
+                String code = (String) o;
                 String wkt = epsg.getProperty(code);
                 if (wkt.startsWith("PROJCS")) {
                     projCRS.add(AUTHORITY_PREFIX + code);

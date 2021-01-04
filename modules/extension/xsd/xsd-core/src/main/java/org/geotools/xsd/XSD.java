@@ -19,7 +19,6 @@ package org.geotools.xsd;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -164,7 +163,7 @@ public abstract class XSD {
         stack.addAll(getDependencies());
 
         while (!stack.isEmpty()) {
-            XSD xsd = (XSD) stack.pop();
+            XSD xsd = stack.pop();
 
             if (!equals(xsd) && !unpacked.contains(xsd)) {
                 unpacked.addFirst(xsd);
@@ -203,8 +202,7 @@ public abstract class XSD {
         List<XSDSchemaLocator> locators = new ArrayList<>();
         List<XSDSchemaLocationResolver> resolvers = new ArrayList<>();
 
-        for (Iterator d = allDependencies().iterator(); d.hasNext(); ) {
-            XSD dependency = (XSD) d.next();
+        for (XSD dependency : allDependencies()) {
             SchemaLocator locator = dependency.createSchemaLocator();
 
             if (locator != null) {

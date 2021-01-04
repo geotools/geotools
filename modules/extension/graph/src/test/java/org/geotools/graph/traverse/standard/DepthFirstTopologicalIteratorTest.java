@@ -16,7 +16,8 @@
  */
 package org.geotools.graph.traverse.standard;
 
-import java.util.Iterator;
+import static junit.framework.TestCase.assertFalse;
+
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
@@ -63,22 +64,20 @@ public class DepthFirstTopologicalIteratorTest extends TestCase {
         traversal.init();
         traversal.traverse();
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
 
         boolean flip = false;
 
-        for (Iterator itr = builder().getGraph().getNodes().iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
+        for (Node node : builder().getGraph().getNodes()) {
             if (node.getID() == 0 && node.getCount() != 0) {
                 flip = true;
                 break;
             }
         }
 
-        for (Iterator itr = builder().getGraph().getNodes().iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
-            if (flip) assertTrue(node.getCount() == 100 - 1 - node.getID());
-            else assertTrue(node.getCount() == node.getID());
+        for (Node node : builder().getGraph().getNodes()) {
+            if (flip) assertEquals(node.getCount(), 100 - 1 - node.getID());
+            else assertEquals(node.getCount(), node.getID());
         }
     }
 
@@ -102,13 +101,13 @@ public class DepthFirstTopologicalIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(!component.isVisited());
+                        assertFalse(component.isVisited());
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == 0);
+        assertEquals(0, walker.getCount());
     }
 
     protected GraphBuilder createBuilder() {

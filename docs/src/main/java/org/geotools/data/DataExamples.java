@@ -161,8 +161,7 @@ public class DataExamples {
 
         SimpleFeatureStore featureStore = (SimpleFeatureStore) dataStore.getFeatureSource(typeName);
 
-        Transaction t = new DefaultTransaction();
-        try {
+        try (Transaction t = new DefaultTransaction()) {
             SimpleFeatureCollection collection = featureSource.getFeatures(); // grab all features
 
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
@@ -175,7 +174,7 @@ public class DataExamples {
                     feature = iterator.next();
 
                     // Step1: create a new empty feature on each call to next
-                    SimpleFeature aNewFeature = (SimpleFeature) writer.next();
+                    SimpleFeature aNewFeature = writer.next();
                     // Step2: copy the values in
                     aNewFeature.setAttributes(feature.getAttributes());
                     // Step3: write out the feature
@@ -190,8 +189,6 @@ public class DataExamples {
                     // rollback failed?
                 }
             }
-        } finally {
-            t.close();
         }
         return dataStore;
     }

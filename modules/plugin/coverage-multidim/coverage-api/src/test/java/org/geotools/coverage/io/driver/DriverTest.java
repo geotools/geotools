@@ -38,7 +38,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class DriverTest extends Assert {
@@ -53,8 +52,6 @@ public class DriverTest extends Assert {
     static {
         try {
             WGS84 = CRS.decode("EPSG:4326", true);
-        } catch (NoSuchAuthorityCodeException e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
         } catch (FactoryException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }

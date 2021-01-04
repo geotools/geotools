@@ -51,53 +51,53 @@ public class CalcResultTest extends TestCase {
     public void testInt() {
         // int --> int
         result.setValue(val1);
-        assertEquals((int) 4, result.toInt());
+        assertEquals(4, result.toInt());
 
         // long --> int
         result.setValue(val2);
-        assertEquals((int) 5, result.toInt());
+        assertEquals(5, result.toInt());
 
         // float --> int
         result.setValue(val3);
-        assertEquals((int) 6, result.toInt());
+        assertEquals(6, result.toInt());
 
         // double --> int
         result.setValue(val4);
-        assertEquals((int) 7, result.toInt());
+        assertEquals(7, result.toInt());
 
         // string --> int (a string that looks like a number, should we add this functionality?)
         result.setValue(val5);
-        assertEquals((int) 0, result.toInt());
+        assertEquals(0, result.toInt());
 
         // string --> int (a real string which clearly isn't an int, so we expect nothing good)
         result.setValue(val6);
-        assertEquals((int) 0, result.toInt());
+        assertEquals(0, result.toInt());
     }
 
     public void testLong() {
         // int --> long
         result.setValue(val1);
-        assertEquals((long) 4, result.toLong());
+        assertEquals(4, result.toLong());
 
         // long --> long
         result.setValue(val2);
-        assertEquals((long) 5, result.toLong());
+        assertEquals(5, result.toLong());
 
         // float --> long
         result.setValue(val3);
-        assertEquals((long) 6, result.toLong());
+        assertEquals(6, result.toLong());
 
         // double --> long
         result.setValue(val4);
-        assertEquals((long) 7, result.toLong());
+        assertEquals(7, result.toLong());
 
         // string --> long (a string that looks like a number, should we add this functionality?)
         result.setValue(val5);
-        assertEquals((long) 0, result.toLong());
+        assertEquals(0, result.toLong());
 
         // string --> long (a real string which clearly isn't an int, so we expect nothing good)
         result.setValue(val6);
-        assertEquals((long) 0, result.toLong());
+        assertEquals(0, result.toLong());
     }
 
     public void testFloat() {
@@ -129,27 +129,27 @@ public class CalcResultTest extends TestCase {
     public void testDouble() {
         // int --> double
         result.setValue(val1);
-        assertEquals((double) 4, result.toDouble(), 0);
+        assertEquals(4, result.toDouble(), 0);
 
         // long --> double
         result.setValue(val2);
-        assertEquals((double) 5, result.toDouble(), 0);
+        assertEquals(5, result.toDouble(), 0);
 
         // float --> double
         result.setValue(val3);
-        assertEquals((double) 6, result.toDouble(), 0);
+        assertEquals(6, result.toDouble(), 0);
 
         // double --> double
         result.setValue(val4);
-        assertEquals((double) 7, result.toDouble(), 0);
+        assertEquals(7, result.toDouble(), 0);
 
         // string --> double (a string that looks like a number, should we add this functionality?)
         result.setValue(val5);
-        assertEquals((double) 0, result.toDouble(), 0);
+        assertEquals(0, result.toDouble(), 0);
 
         // string --> double (a real string which clearly isn't an int, so we expect nothing good)
         result.setValue(val6);
-        assertEquals((double) 0, result.toDouble(), 0);
+        assertEquals(0, result.toDouble(), 0);
     }
 
     public void testString() {

@@ -483,10 +483,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
                 }
                 actions.add(action);
             }
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             throw e;
-        } catch (RuntimeException re) {
-            throw re;
         } catch (Exception other) {
             throw new RuntimeException(other);
         }

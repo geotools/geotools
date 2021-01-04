@@ -162,7 +162,7 @@ public class ArcSDEFeatureSourceTest {
             reader.close();
         }
 
-        assertTrue(queriedAttributeCount == resultSchema.getAttributeCount());
+        assertEquals(queriedAttributeCount, resultSchema.getAttributeCount());
 
         for (int i = 0; i < queriedAttributeCount; i++) {
             assertEquals(queryAtts[i], resultSchema.getDescriptor(i).getLocalName());
@@ -230,11 +230,8 @@ public class ArcSDEFeatureSourceTest {
         assertEquals("SHAPE", resultSchema.getDescriptor(0).getLocalName());
 
         Feature feature = null;
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             feature = iterator.next();
-        } finally {
-            iterator.close();
         }
 
         assertEquals(resultSchema, feature.getType());
@@ -354,7 +351,7 @@ public class ArcSDEFeatureSourceTest {
         SimpleFeatureSource fSource = ds.getFeatureSource(testData.getTempTableName());
         SimpleFeatureType type = fSource.getSchema();
         Query attOnlyQuery = new Query(type.getTypeName());
-        List<String> propNames = new ArrayList<String>(type.getAttributeCount() - 1);
+        List<String> propNames = new ArrayList<>(type.getAttributeCount() - 1);
 
         for (int i = 0; i < type.getAttributeCount(); i++) {
             if (type.getDescriptor(i) instanceof GeometryDescriptor) {
@@ -403,7 +400,7 @@ public class ArcSDEFeatureSourceTest {
         // grab some fids
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 ds.getFeatureReader(new Query(typeName), Transaction.AUTO_COMMIT);
-        List<FeatureId> fids = new ArrayList<FeatureId>();
+        List<FeatureId> fids = new ArrayList<>();
 
         while (reader.hasNext()) {
             fids.add(ff.featureId(reader.next().getID()));
@@ -416,23 +413,20 @@ public class ArcSDEFeatureSourceTest {
 
         reader.close();
 
-        Id filter = ff.id(new HashSet<FeatureId>(fids));
+        Id filter = ff.id(new HashSet<>(fids));
 
         SimpleFeatureSource source = ds.getFeatureSource(typeName);
         Query query = new Query(typeName, filter);
         SimpleFeatureCollection results = source.getFeatures(query);
 
         assertEquals(fids.size(), results.size());
-        SimpleFeatureIterator iterator = results.features();
-        try {
+        try (SimpleFeatureIterator iterator = results.features()) {
             while (iterator.hasNext()) {
                 String fid = iterator.next().getID();
                 assertTrue(
                         "a fid not included in query was returned: " + fid,
                         fids.contains(ff.featureId(fid)));
             }
-        } finally {
-            iterator.close();
         }
     }
 
@@ -454,7 +448,7 @@ public class ArcSDEFeatureSourceTest {
 
         final String idTemplate;
         Set<FeatureId> fids =
-                new TreeSet<FeatureId>(
+                new TreeSet<>(
                         new Comparator<FeatureId>() {
                             public int compare(FeatureId o1, FeatureId o2) {
                                 return o1.getID().compareTo(o2.getID());
@@ -481,16 +475,13 @@ public class ArcSDEFeatureSourceTest {
         SimpleFeatureCollection results = source.getFeatures(query);
 
         assertEquals(1, results.size());
-        SimpleFeatureIterator iterator = results.features();
-        try {
+        try (SimpleFeatureIterator iterator = results.features()) {
             while (iterator.hasNext()) {
                 String fid = iterator.next().getID();
                 assertTrue(
                         "a fid not included in query was returned: " + fid,
                         fids.contains(ff.featureId(fid)));
             }
-        } finally {
-            iterator.close();
         }
     }
 
@@ -541,16 +532,13 @@ public class ArcSDEFeatureSourceTest {
                         schema.getCoordinateReferenceSystem().getName().getCode());
 
         int expected = 0;
-        SimpleFeatureIterator features = fs.getFeatures().features();
-        try {
+        try (SimpleFeatureIterator features = fs.getFeatures().features()) {
             while (features.hasNext()) {
                 SimpleFeature next = features.next();
                 if (bboxFilter.evaluate(next)) {
                     expected++;
                 }
             }
-        } finally {
-            features.close();
         }
         assertTrue(expected > 0);
         testFilter(bboxFilter, fs, expected);
@@ -701,11 +689,8 @@ public class ArcSDEFeatureSourceTest {
         SimpleFeatureCollection features;
         features = source.getFeatures(emptyAttNameFilter);
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
-        } finally {
-            iterator.close();
         }
     }
 
@@ -766,8 +751,7 @@ public class ArcSDEFeatureSourceTest {
             throws IOException {
         SimpleFeatureCollection fc = fsource.getFeatures(filter);
 
-        SimpleFeatureIterator fi = fc.features();
-        try {
+        try (SimpleFeatureIterator fi = fc.features()) {
             int numFeat = 0;
             while (fi.hasNext()) {
                 fi.next();
@@ -777,8 +761,6 @@ public class ArcSDEFeatureSourceTest {
             String failMsg =
                     "Fully fetched features size and estimated num features count does not match";
             assertEquals(failMsg, expected, numFeat);
-        } finally {
-            fi.close();
         }
     }
 }

@@ -472,7 +472,7 @@ public class NetCDFProjection {
         for (final CRSAuthorityFactory factory :
                 ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
             // Retrieve the registered custom factory
-            final CRSAuthorityFactory f = (CRSAuthorityFactory) factory;
+            final CRSAuthorityFactory f = factory;
 
             // There may be multiple factories. Let take them in prioritized order
             // using the linkedList

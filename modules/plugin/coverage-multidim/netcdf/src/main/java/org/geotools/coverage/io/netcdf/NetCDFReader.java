@@ -152,10 +152,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
         // getting access to the source
         try {
-            access =
-                    (NetCDFAccess)
-                            DRIVER.process(
-                                    DriverCapabilities.CONNECT, sourceURL, null, uHints, null);
+            access = DRIVER.process(DriverCapabilities.CONNECT, sourceURL, null, uHints, null);
         } catch (IOException e) {
             throw new DataSourceException("Unable to connect", e);
         }
@@ -335,7 +332,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     @Override
     public String[] getGridCoverageNames() {
-        return (String[]) setNames.toArray(new String[setNames.size()]);
+        return setNames.toArray(new String[setNames.size()]);
     }
 
     @Override
@@ -471,11 +468,11 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
      * @return TODO: improve that to deal with multiple types
      */
     private String buildElementsList(Set<Object> elements) {
-        Iterator<Object> iterator = (Iterator<Object>) elements.iterator();
+        Iterator<Object> iterator = elements.iterator();
         LinkedHashSet<String> ranges = new LinkedHashSet<>();
 
         while (iterator.hasNext()) {
-            Object value = (Object) iterator.next();
+            Object value = iterator.next();
             ranges.add(ConvertersHack.convert(value, String.class));
         }
         return buildResultsString(ranges);
@@ -704,7 +701,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     /** Build a String containing comma separated values from the result set */
     private String buildResultsString(Set<String> result) {
-        if (result.size() <= 0) {
+        if (result.isEmpty()) {
             return "";
         }
 
@@ -934,7 +931,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     @Override
     public List<DimensionDescriptor> getDimensionDescriptors(String coverageName)
             throws IOException {
-        final CoverageSource source = (CoverageSource) getGridCoverageSource(coverageName);
+        final CoverageSource source = getGridCoverageSource(coverageName);
         return source.getDimensionDescriptors();
     }
 

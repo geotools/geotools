@@ -79,12 +79,12 @@ public class PolygonCoveredByPolygonValidation extends PolygonPolygonAbstractVal
             return false;
         }
 
-        for (int i = 0; i < poly2.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) poly2[i];
+        for (Object value : poly2) {
+            SimpleFeature tmp = (SimpleFeature) value;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
-            for (int j = 0; j < poly1.length; j++) {
-                SimpleFeature tmp2 = (SimpleFeature) poly1[j];
+            for (Object o : poly1) {
+                SimpleFeature tmp2 = (SimpleFeature) o;
                 Geometry gt2 = (Geometry) tmp2.getDefaultGeometry();
 
                 if (gt2.within(gt)) {

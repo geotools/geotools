@@ -174,11 +174,11 @@ public class CycleSchemaClassTemplate
             }
 
             String[] lines = writer.getBuffer().toString().split("\n");
-            for (int i = 0; i < lines.length; i++) {
+            for (String line : lines) {
 
-    stringBuffer.append(TEXT_8);
-    stringBuffer.append(lines[i].replaceAll("<","&lt;").replaceAll(">","&gt;"));
-    
+                stringBuffer.append(TEXT_8);
+                stringBuffer.append(line.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+
             }
 
     stringBuffer.append(TEXT_9);
@@ -330,7 +330,7 @@ public class CycleSchemaClassTemplate
                     String pdTypeName = pdType.getName().getLocalPart().toUpperCase() + 
                         "_TYPE";
                     if (ns2import.containsKey(pdType.getName().getNamespaceURI())) {
-                        String importClassName = (String) ns2import.get(pdType.getName().getNamespaceURI());
+                        String importClassName = ns2import.get(pdType.getName().getNamespaceURI());
                         pdTypeName = importClassName + "." + pdTypeName;
                     }
                     String pdName = "new NameImpl(\"" + pd.getName().getNamespaceURI() + 

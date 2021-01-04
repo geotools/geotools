@@ -51,8 +51,7 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
 
     // this is the list of spatial operations that we can merge upon (that is, it's not the full
     // list)
-    static final Set<Class<? extends BinarySpatialOperator>> SPATIAL_OPERATIONS =
-            new HashSet<Class<? extends BinarySpatialOperator>>();
+    static final Set<Class<? extends BinarySpatialOperator>> SPATIAL_OPERATIONS = new HashSet<>();
 
     static {
         SPATIAL_OPERATIONS.add(BBOX.class);
@@ -78,9 +77,8 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
         // is it still an Or filter?
         if (simplified instanceof Or) {
             // collect spatial filters so that they are separated per attribute
-            Map<String, List<SpatialOperation>> spatialOps =
-                    new HashMap<String, List<SpatialOperation>>();
-            List<Filter> otherFilters = new ArrayList<Filter>();
+            Map<String, List<SpatialOperation>> spatialOps = new HashMap<>();
+            List<Filter> otherFilters = new ArrayList<>();
             List<Filter> children = ((Or) simplified).getChildren();
             for (Filter child : children) {
                 // we know how to merge only bbox and intersects for the moment
@@ -107,7 +105,7 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
                         // collect into the specific geometry list
                         List<SpatialOperation> list = spatialOps.get(name);
                         if (list == null) {
-                            list = new ArrayList<ArcSdeSimplifyingFilterVisitor.SpatialOperation>();
+                            list = new ArrayList<>();
                             spatialOps.put(name, list);
                         }
                         list.add(so);
@@ -122,15 +120,15 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
 
             // try to merge all filters that work agains the same attribute and perform the same
             // (or similar enough) operation
-            List<Filter> mergedFilters = new ArrayList<Filter>();
+            List<Filter> mergedFilters = new ArrayList<>();
             for (String property : spatialOps.keySet()) {
                 List<SpatialOperation> propertyFilters = spatialOps.get(property);
 
                 // we perform a reduction on the list of filters, trying to find groups that can be
                 // merged
-                while (propertyFilters.size() > 0) {
+                while (!propertyFilters.isEmpty()) {
                     SpatialOperation main = propertyFilters.get(0);
-                    List<SpatialOperation> toMerge = new ArrayList<SpatialOperation>();
+                    List<SpatialOperation> toMerge = new ArrayList<>();
                     toMerge.add(main);
                     for (int j = 1; j < propertyFilters.size(); ) {
                         SpatialOperation secondary = propertyFilters.get(j);
@@ -167,10 +165,10 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
             }
 
             // did we manage to squash anything?
-            if (mergedFilters.size() == 1 && otherFilters.size() == 0) {
+            if (mergedFilters.size() == 1 && otherFilters.isEmpty()) {
                 simplified = mergedFilters.get(0);
-            } else if (mergedFilters.size() > 0) {
-                List<Filter> full = new ArrayList<Filter>();
+            } else if (!mergedFilters.isEmpty()) {
+                List<Filter> full = new ArrayList<>();
                 full.addAll(mergedFilters);
                 full.addAll(otherFilters);
                 simplified = FF.or(full);

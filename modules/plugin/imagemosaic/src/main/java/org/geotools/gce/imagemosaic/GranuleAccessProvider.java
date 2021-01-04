@@ -70,4 +70,7 @@ public interface GranuleAccessProvider {
     ImageInputStream getImageInputStream() throws IOException;
 
     ImageReader getImageReader() throws IOException;
+
+    /** Get a copy of this GranuleAccessProviders with same SPIs, factories and config */
+    GranuleAccessProvider copyProviders();
 }

@@ -18,7 +18,6 @@
 package org.geotools.coverageio.gdal.jp2mrsid;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -80,22 +79,18 @@ public final class JP2MrSIDTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }
 
         final JP2MrSIDReader reader = new JP2MrSIDReader(file);
         final ParameterValue gg =
-                (ParameterValue)
-                        ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
         gg.setValue(new GridGeometry2D(reader.getOriginalGridRange(), oldEnvelope));
 
-        final GridCoverage2D gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
+        final GridCoverage2D gc = reader.read(new GeneralParameterValue[] {gg});
 
         Assert.assertNotNull(gc);
 

@@ -140,8 +140,8 @@ public class FilterAttributeExtractorTest extends TestCase {
         assertNotNull(attNames);
         assertEquals(attNames.size(), names.length);
 
-        for (int i = 0; i < names.length; i++) {
-            assertTrue(attNames.contains(names[i]));
+        for (String name : names) {
+            assertTrue(attNames.contains(name));
         }
 
         // make sure the property name set is aligned
@@ -259,11 +259,7 @@ public class FilterAttributeExtractorTest extends TestCase {
                 fac.equals(testAttribute, fac.literal("incorrect test string data"));
 
         // Test OR for false negatives
-        Or filter =
-                fac.or(
-                        Arrays.asList(
-                                (org.opengis.filter.Filter) filterFalse,
-                                (org.opengis.filter.Filter) filterTrue));
+        Or filter = fac.or(Arrays.asList(filterFalse, filterTrue));
 
         assertAttributeName(filter, "testString");
     }

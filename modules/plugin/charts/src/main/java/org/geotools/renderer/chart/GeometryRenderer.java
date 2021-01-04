@@ -198,14 +198,7 @@ public class GeometryRenderer extends AbstractXYItemRenderer {
             }
         } else if (g instanceof Point) {
             drawCoordinate(
-                    ((Point) g).getCoordinate(),
-                    g2,
-                    series,
-                    item,
-                    dataArea,
-                    plot,
-                    domainAxis,
-                    rangeAxis);
+                    g.getCoordinate(), g2, series, item, dataArea, plot, domainAxis, rangeAxis);
         } else if (g instanceof LineString) {
             g2.draw(new TranslatedLiteShape(g, dataArea, plot, domainAxis, rangeAxis));
         } else {

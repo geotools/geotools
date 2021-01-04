@@ -121,8 +121,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
                 // Getting a reader to retrieve that number.
                 File file = new File(path);
                 AbstractGridFormat format =
-                        (AbstractGridFormat)
-                                GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
+                        GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
                 reader = format.getReader(file);
                 DatasetLayout layout = reader.getDatasetLayout();
                 int extOv = layout.getNumExternalOverviews();

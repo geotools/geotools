@@ -71,9 +71,7 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
         // replace granule/att with values
         Filter localFilter = (Filter) filter.accept(new GranuleFilterVisitor(feature), null);
         SimpleFeatureCollection fc = featureSource.getFeatures(localFilter);
-        SimpleFeatureIterator fi = null;
-        try {
-            fi = fc.features();
+        try (SimpleFeatureIterator fi = fc.features()) {
             // no match? a bit weird, but possible, people might want to add footprints only
             // to the files that do have a significant one (e.g., not the bbox of the granule)
             Geometry result = null;
@@ -84,7 +82,8 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
                     throw new IOException(
                             "The filter "
                                     + localFilter
-                                    + " matched more than one footprint record, in particular, it matched "
+                                    + " matched more than one footprint record, in particular, it"
+                                    + " matched "
                                     + fc.size()
                                     + ", the first match is: "
                                     + sf);
@@ -96,10 +95,6 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
             }
 
             return result;
-        } finally {
-            if (fi != null) {
-                fi.close();
-            }
         }
     }
 

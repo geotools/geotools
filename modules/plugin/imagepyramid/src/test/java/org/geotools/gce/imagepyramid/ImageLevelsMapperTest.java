@@ -99,7 +99,7 @@ public class ImageLevelsMapperTest extends Assert {
         //
         // Get the coverage
         //
-        GridCoverage2D coverage = (GridCoverage2D) reader.read(coverageNames[0], null);
+        GridCoverage2D coverage = reader.read(coverageNames[0], null);
         assertNotNull(coverage);
         RenderedImage renderedImage = coverage.getRenderedImage();
         int colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();
@@ -116,12 +116,12 @@ public class ImageLevelsMapperTest extends Assert {
                 new GridEnvelope2D(((GridEnvelope2D) reader.getOriginalGridRange()).getBounds());
         final Dimension dim = new Dimension();
         dim.setSize(gridRange.getSpan(0) / 16.0, gridRange.getSpan(1) / 16.0);
-        Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+        Rectangle rasterArea = gridRange;
         rasterArea.setSize(dim);
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
 
-        coverage = (GridCoverage2D) reader.read(coverageNames[1], new GeneralParameterValue[] {gg});
+        coverage = reader.read(coverageNames[1], new GeneralParameterValue[] {gg});
         assertNotNull(coverage);
         renderedImage = coverage.getRenderedImage();
         colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();
@@ -150,8 +150,7 @@ public class ImageLevelsMapperTest extends Assert {
         range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(doubleRange, doubleEnvelope));
 
-        coverage =
-                ((GridCoverage2D) reader.read(coverageNames[1], new GeneralParameterValue[] {gg}));
+        coverage = reader.read(coverageNames[1], new GeneralParameterValue[] {gg});
 
         assertNotNull(coverage);
         renderedImage = coverage.getRenderedImage();
@@ -165,11 +164,9 @@ public class ImageLevelsMapperTest extends Assert {
         File propertyFile = new File(mosaicFolder, "multipyramidwithoverviews.properties");
 
         // Test image levels mapping on the newly created pyramid properties file
-        FileInputStream fis = null;
         ImageLevelsMapper mapper = null;
         final double baseRes = 0.4287193d;
-        try {
-            fis = new FileInputStream(propertyFile);
+        try (FileInputStream fis = new FileInputStream(propertyFile)) {
             properties.load(fis);
             mapper = new ImageLevelsMapper(properties);
             assertEquals(5, mapper.getNumOverviews());
@@ -200,13 +197,6 @@ public class ImageLevelsMapperTest extends Assert {
             assertEquals(1, mapper.getImageReaderIndex(5));
 
         } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (Throwable t) {
-                    // Ignore it
-                }
-            }
             mapper.dispose();
         }
     }

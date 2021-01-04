@@ -1088,12 +1088,12 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
         delta[4] = getMinimum(2) - other.getMinimum(2);
         delta[5] = getMaximum(2) - other.getMaximum(2);
 
-        for (int i = 0; i < delta.length; i++) {
+        for (double v : delta) {
             /*
              * As per Envelope2D#boundsEquals we use ! here to
              * catch any NaN values
              */
-            if (!(Math.abs(delta[i]) <= eps)) {
+            if (!(Math.abs(v) <= eps)) {
                 return false;
             }
         }

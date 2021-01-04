@@ -121,7 +121,7 @@ public class ToPointFunction implements Function {
             CoordinateReferenceSystem crs = null;
             String srsName = parameters.get(1).evaluate(object, String.class);
             try {
-                crs = CRS.decode((String) srsName);
+                crs = CRS.decode(srsName);
             } catch (NoSuchAuthorityCodeException e) {
                 throw new IllegalArgumentException(
                         "Invalid or unsupported SRS name detected for toPoint function: "

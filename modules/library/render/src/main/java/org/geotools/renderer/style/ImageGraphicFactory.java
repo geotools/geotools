@@ -78,7 +78,7 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
 
         // if scaling is needed, perform it
         if (size > 0 && image.getHeight() != size) {
-            double dsize = (double) size;
+            double dsize = size;
 
             double scaleY = dsize / image.getHeight(); // >1 if you're magnifying
             double scaleX = scaleY; // keep aspect ratio!

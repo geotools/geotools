@@ -56,12 +56,12 @@ public class GraphPartitionerTest extends TestCase {
 
         List partitions = partitioner.getPartitions();
 
-        assertTrue(partitions.size() == 1);
+        assertEquals(1, partitions.size());
 
         // ensure every node in the original graph is in the new graph
         final Graph g = (Graph) partitions.get(0);
-        assertTrue(g.getNodes().size() == builder().getGraph().getNodes().size());
-        assertTrue(g.getEdges().size() == builder().getGraph().getEdges().size());
+        assertEquals(g.getNodes().size(), builder().getGraph().getNodes().size());
+        assertEquals(g.getEdges().size(), builder().getGraph().getEdges().size());
 
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -108,10 +108,10 @@ public class GraphPartitionerTest extends TestCase {
         assertTrue(left.getNodes().contains(lc));
         assertTrue(right.getNodes().contains(rc));
 
-        assertTrue(left.getNodes().size() == Math.pow(2, k) - 1);
-        assertTrue(left.getEdges().size() == Math.pow(2, k) - 2);
-        assertTrue(right.getNodes().size() == Math.pow(2, k) - 1);
-        assertTrue(right.getEdges().size() == Math.pow(2, k) - 2);
+        assertEquals(left.getNodes().size(), (int) Math.pow(2, k) - 1);
+        assertEquals(left.getEdges().size(), (int) Math.pow(2, k) - 2);
+        assertEquals(right.getNodes().size(), (int) Math.pow(2, k) - 1);
+        assertEquals(right.getEdges().size(), (int) Math.pow(2, k) - 2);
 
         GraphVisitor visitor =
                 new GraphVisitor() {

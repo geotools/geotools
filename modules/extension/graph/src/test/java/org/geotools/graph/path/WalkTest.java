@@ -50,8 +50,8 @@ public class WalkTest extends TestCase {
 
         walk.add(n);
 
-        assertTrue(walk.size() == 1);
-        assertTrue(walk.get(0).equals(n));
+        assertEquals(1, walk.size());
+        assertEquals(walk.get(0), n);
     }
 
     public void test_remove() {
@@ -59,7 +59,7 @@ public class WalkTest extends TestCase {
         Walk walk = new Walk();
 
         walk.add(n);
-        assertTrue(!walk.isEmpty());
+        assertFalse(walk.isEmpty());
 
         walk.remove(n);
         assertTrue(walk.isEmpty());
@@ -76,21 +76,20 @@ public class WalkTest extends TestCase {
         }
 
         Iterator itr = walk.iterator();
-        for (int i = 0; i < nodes.size(); i++) {
-            Node n1 = (Node) nodes.get(i);
+        for (Node n1 : nodes) {
             Node n2 = (Node) itr.next();
 
-            assertTrue(n1 == n2);
+            assertSame(n1, n2);
         }
 
         walk.reverse();
         itr = walk.iterator();
 
         for (int i = nodes.size() - 1; i >= 0; i--) {
-            Node n1 = (Node) nodes.get(i);
+            Node n1 = nodes.get(i);
             Node n2 = (Node) itr.next();
 
-            assertTrue(n1 == n2);
+            assertSame(n1, n2);
         }
     }
 
@@ -116,7 +115,7 @@ public class WalkTest extends TestCase {
         traversal.init();
         traversal.traverse();
 
-        assertTrue(walk.size() == builder().getGraph().getNodes().size());
+        assertEquals(walk.size(), builder().getGraph().getNodes().size());
         assertTrue(walk.isValid() && !walk.isClosed());
 
         // create a new edges in the graph making the graph a cycle
@@ -149,7 +148,7 @@ public class WalkTest extends TestCase {
         traversal.init();
         traversal.traverse();
 
-        assertTrue(walk.getEdges() != null);
+        assertNotNull(walk.getEdges());
         assertTrue(walk.isValid());
     }
 
@@ -206,7 +205,7 @@ public class WalkTest extends TestCase {
 
         int size = walk.size();
         walk.truncate(size / 2);
-        assertTrue(walk.size() == size / 2);
+        assertEquals(walk.size(), size / 2);
     }
 
     public void test_truncate_2() {
@@ -235,7 +234,7 @@ public class WalkTest extends TestCase {
 
         int size = walk.size();
         walk.truncate(size / 2);
-        assertTrue(walk.size() == size / 2);
+        assertEquals(walk.size(), size / 2);
     }
 
     protected GraphBuilder createBuilder() {

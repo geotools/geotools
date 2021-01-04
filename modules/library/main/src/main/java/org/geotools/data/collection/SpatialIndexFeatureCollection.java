@@ -101,8 +101,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
             return;
         }
         CollectionEvent event = new CollectionEvent(this, features, eventType);
-        CollectionListener[] notify =
-                (CollectionListener[]) listeners.toArray(new CollectionListener[listeners.size()]);
+        CollectionListener[] notify = listeners.toArray(new CollectionListener[listeners.size()]);
         for (CollectionListener listener : notify) {
             try {
                 listener.collectionChanged(event);
@@ -228,8 +227,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 
     public boolean addAll(
             FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature> collection) {
-        FeatureIterator<? extends SimpleFeature> iter = collection.features();
-        try {
+        try (FeatureIterator<? extends SimpleFeature> iter = collection.features()) {
             while (iter.hasNext()) {
                 try {
                     SimpleFeature feature = iter.next();
@@ -238,8 +236,6 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
                 } catch (Throwable t) {
                 }
             }
-        } finally {
-            iter.close();
         }
         return false;
     }
@@ -260,9 +256,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         if (obj instanceof SimpleFeature) {
             SimpleFeature feature = (SimpleFeature) obj;
             ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
-            for (Iterator<SimpleFeature> iter = (Iterator<SimpleFeature>) index.query(bounds);
-                    iter.hasNext(); ) {
-                SimpleFeature sample = iter.next();
+            for (SimpleFeature sample : (List<SimpleFeature>) index.query(bounds)) {
                 if (sample == feature) {
                     return true;
                 }
@@ -310,7 +304,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
                         Double.NEGATIVE_INFINITY,
                         Double.POSITIVE_INFINITY);
         final List<SimpleFeature> list = (List<SimpleFeature>) index.query(everything);
-        return (Iterator<SimpleFeature>) list.iterator();
+        return list.iterator();
     }
 
     public void purge() {}

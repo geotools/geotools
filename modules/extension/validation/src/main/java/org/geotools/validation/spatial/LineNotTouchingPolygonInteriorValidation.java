@@ -65,8 +65,7 @@ public class LineNotTouchingPolygonInteriorValidation extends LinePolygonAbstrac
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
         try (SimpleFeatureIterator fLine = fcLine.features()) {
 
-            SimpleFeatureSource fsPoly =
-                    (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+            SimpleFeatureSource fsPoly = layers.get(getRestrictedPolygonTypeRef());
             if (fsPoly == null) return true;
             ListFeatureCollection fcPoly = new ListFeatureCollection(fsPoly.getFeatures());
 

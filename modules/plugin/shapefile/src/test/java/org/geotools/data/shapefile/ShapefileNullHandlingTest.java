@@ -59,7 +59,7 @@ public class ShapefileNullHandlingTest extends TestCaseSupport {
         fs.addFeatures(collection);
 
         // read it back
-        SimpleFeature[] readfc = (SimpleFeature[]) fs.getFeatures().toArray(new SimpleFeature[0]);
+        SimpleFeature[] readfc = fs.getFeatures().toArray(new SimpleFeature[0]);
         assertEquals(features.length, readfc.length);
 
         // check the first geometry

@@ -66,6 +66,6 @@ public class ListFunctionsTest {
                         "lapply", ff.property("."), ff.multiply(ff.property("."), ff.literal(2)));
         Object value = exp.evaluate(list);
         assertTrue(value instanceof List);
-        assertEquals(Lists.newArrayList(2.0, 4.0, 6.0, 8.0), ((List<?>) value));
+        assertEquals(Lists.newArrayList(2.0, 4.0, 6.0, 8.0), value);
     }
 }

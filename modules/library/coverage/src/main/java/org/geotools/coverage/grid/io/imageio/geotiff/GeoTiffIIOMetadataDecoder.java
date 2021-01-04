@@ -358,8 +358,8 @@ public final class GeoTiffIIOMetadataDecoder {
             return false;
         } else {
             final double[] values = pixelScale.getValues();
-            for (int i = 0; i < values.length; i++) {
-                if (Double.isInfinite(values[i]) || Double.isNaN(values[i])) {
+            for (double value : values) {
+                if (Double.isInfinite(value) || Double.isNaN(value)) {
                     return false;
                 }
             }

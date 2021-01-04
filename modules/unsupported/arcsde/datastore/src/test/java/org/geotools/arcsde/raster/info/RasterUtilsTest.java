@@ -240,7 +240,7 @@ public class RasterUtilsTest {
             RasterCellType expectedTargetCellType,
             Number... noData) {
 
-        List<Number> noDataValues = new ArrayList<Number>();
+        List<Number> noDataValues = new ArrayList<>();
         for (Number bandNNoData : noData) {
             noDataValues.add(bandNNoData);
         }

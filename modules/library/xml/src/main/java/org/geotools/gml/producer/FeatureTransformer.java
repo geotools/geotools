@@ -337,7 +337,7 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         public String findPrefix(FeatureType type) {
-            String pre = (String) lookup.get(type);
+            String pre = lookup.get(type);
 
             if (pre == null) {
                 pre = defaultPrefix;
@@ -539,6 +539,7 @@ public class FeatureTransformer extends TransformerBase {
             return types;
         }
 
+        @SuppressWarnings("unchecked")
         public void encode(Object o) throws IllegalArgumentException {
             try {
                 if (o instanceof FeatureCollection) {
@@ -551,8 +552,8 @@ public class FeatureTransformer extends TransformerBase {
                     startFeatureCollection();
                     if (collectionBounding) {
                         ReferencedEnvelope bounds = null;
-                        for (int i = 0; i < results.length; i++) {
-                            ReferencedEnvelope more = results[i].getBounds();
+                        for (FeatureCollection result : results) {
+                            ReferencedEnvelope more = result.getBounds();
                             if (bounds == null) {
                                 bounds = new ReferencedEnvelope(more);
                             } else {
@@ -564,9 +565,7 @@ public class FeatureTransformer extends TransformerBase {
                         writeNullBounds();
                     }
 
-                    for (int i = 0; i < results.length; i++) {
-                        @SuppressWarnings("unchecked")
-                        FeatureCollection<SimpleFeatureType, SimpleFeature> result = results[i];
+                    for (FeatureCollection<SimpleFeatureType, SimpleFeature> result : results) {
                         handleFeatureIterator(DataUtilities.simple(result).features());
                     }
                     endFeatureCollection();

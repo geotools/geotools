@@ -142,7 +142,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
         //	 &lt;xsd:element ref="sld:ElseFilter"/&gt;
         // &lt;/xsd:choice&gt;
         if (node.hasChild(Filter.class)) {
-            rule.setFilter((Filter) node.getChildValue(Filter.class));
+            rule.setFilter(node.getChildValue(Filter.class));
         } else if (node.hasChild("ElseFilter")) {
             rule.setElseFilter(true);
         }

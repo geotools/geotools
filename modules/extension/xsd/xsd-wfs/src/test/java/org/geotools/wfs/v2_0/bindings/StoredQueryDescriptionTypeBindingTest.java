@@ -95,11 +95,11 @@ public class StoredQueryDescriptionTypeBindingTest extends WFSTestSupport {
         assertEquals("wfs:StoredQueryDescription", dom.getDocumentElement().getNodeName());
         assertEquals(1, dom.getElementsByTagName("wfs:QueryExpressionText").getLength());
 
-        assertTrue(
+        assertEquals(
+                "wfs:Query",
                 dom.getElementsByTagName("wfs:QueryExpressionText")
                         .item(0)
                         .getFirstChild()
-                        .getNodeName()
-                        .equals("wfs:Query"));
+                        .getNodeName());
     }
 }

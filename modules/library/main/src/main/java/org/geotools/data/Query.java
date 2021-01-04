@@ -153,7 +153,7 @@ public class Query {
      *
      * <p>Note the query will still return a result - limited to FeatureIDs.
      */
-    public static final List<PropertyName> NO_PROPERTIES = Collections.<PropertyName>emptyList();
+    public static final List<PropertyName> NO_PROPERTIES = Collections.emptyList();
 
     /**
      * A constant (value {@code null}) that can be used with {@linkplain
@@ -411,8 +411,7 @@ public class Query {
 
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         properties = new ArrayList<>(propNames.length);
-        for (int i = 0; i < propNames.length; i++) {
-            String xpath = propNames[i];
+        for (String xpath : propNames) {
             if (xpath != null) {
                 properties.add(ff.property(xpath));
             }
@@ -430,7 +429,7 @@ public class Query {
         if (properties == ALL_PROPERTIES) {
             return ALL_PROPERTIES;
         }
-        return Collections.<PropertyName>unmodifiableList(properties);
+        return Collections.unmodifiableList(properties);
     }
 
     /**
@@ -477,8 +476,7 @@ public class Query {
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         properties = new ArrayList<>(propNames.size());
-        for (int i = 0; i < propNames.size(); i++) {
-            String xpath = propNames.get(i);
+        for (String xpath : propNames) {
             if (xpath != null) {
                 properties.add(ff.property(xpath));
             }
@@ -948,7 +946,7 @@ public class Query {
 
         returnString.append("\n   [properties: ");
 
-        if ((properties == null) || (properties.size() == 0)) {
+        if ((properties == null) || (properties.isEmpty())) {
             returnString.append(" ALL ]");
         } else {
             for (int i = 0; i < properties.size(); i++) {

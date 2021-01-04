@@ -62,9 +62,8 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
                 getTargetSchema((SimpleFeatureType) features.getSchema(), input);
         DefaultFeatureCollection result = new DefaultFeatureCollection(null, targetSchema);
 
-        SimpleFeatureBuilder fb = new SimpleFeatureBuilder((SimpleFeatureType) result.getSchema());
-        FeatureIterator fi = features.features();
-        try {
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(result.getSchema());
+        try (FeatureIterator fi = features.features()) {
             int counter = 0;
             while (fi.hasNext()) {
                 // copy the feature
@@ -81,8 +80,6 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
                 monitor.progress(scale * counter++);
                 result.add(feature);
             }
-        } finally {
-            fi.close();
         }
         monitor.complete();
 

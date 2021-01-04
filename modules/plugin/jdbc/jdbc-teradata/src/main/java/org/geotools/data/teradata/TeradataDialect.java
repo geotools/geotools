@@ -181,11 +181,8 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             LOGGER.fine(sql);
         }
 
-        Statement st = cx.createStatement();
-        try {
+        try (Statement st = cx.createStatement()) {
             st.execute(sql);
-        } finally {
-            st.close();
         }
         //        String sql = "SET QUERY_BAND=? FOR SESSION";
         //        String qb = QueryBand.APPLICATION + "=GeoTools;";
@@ -293,11 +290,8 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             if (clob == null) {
                 return null;
             }
-            InputStream in = clob.getAsciiStream();
-            try {
+            try (InputStream in = clob.getAsciiStream()) {
                 return new WKTReader(factory).read(new InputStreamReader(in));
-            } finally {
-                if (in != null) in.close();
             }
         } catch (ParseException e) {
             throw (IOException) new IOException("Error parsing geometry").initCause(e);

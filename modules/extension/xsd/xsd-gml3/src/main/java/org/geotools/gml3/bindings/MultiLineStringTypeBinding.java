@@ -88,8 +88,7 @@ public class MultiLineStringTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<LineString> lines = node.getChildValues(LineString.class);
 
-        return gFactory.createMultiLineString(
-                (LineString[]) lines.toArray(new LineString[lines.size()]));
+        return gFactory.createMultiLineString(lines.toArray(new LineString[lines.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

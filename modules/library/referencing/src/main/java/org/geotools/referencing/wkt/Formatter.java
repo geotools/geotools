@@ -649,8 +649,8 @@ public class Formatter {
 
     /** Tells if an {@code "AUTHORITY"} element is allowed for the specified object. */
     private static boolean authorityAllowed(final IdentifiedObject info) {
-        for (int i = 0; i < AUTHORITY_EXCLUDE.length; i++) {
-            if (AUTHORITY_EXCLUDE[i].isInstance(info)) {
+        for (Class<? extends IdentifiedObject> aClass : AUTHORITY_EXCLUDE) {
+            if (aClass.isInstance(info)) {
                 return false;
             }
         }

@@ -19,6 +19,7 @@ package org.geotools.renderer.lite;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -831,7 +832,7 @@ public class GridCoverageRendererTest {
         assertTrue(property instanceof GridCoverage2D);
         GridCoverage2D propertyCoverage = (GridCoverage2D) property;
         CoordinateReferenceSystem targetCrs = propertyCoverage.getCoordinateReferenceSystem();
-        assertTrue(targetCrs.getName().equals(crs.getName()));
+        assertEquals(targetCrs.getName(), crs.getName());
     }
 
     @Test
@@ -1634,7 +1635,7 @@ public class GridCoverageRendererTest {
         symbolizer.setChannelSelection(chSel);
         symbolizer.setOpacity(sldBuilder.literalExpression(1.0));
 
-        Graphics2D graphics = ((BufferedImage) TestMultiBandReader.image).createGraphics();
+        Graphics2D graphics = TestMultiBandReader.image.createGraphics();
         renderer.paint(
                 graphics,
                 reader,
@@ -1935,7 +1936,7 @@ public class GridCoverageRendererTest {
     /** Checks the pixel i/j is fully transparent */
     protected void assertPixelIsTransparent(BufferedImage image, int i, int j) {
         int pixel = image.getRGB(i, j);
-        assertEquals(true, (pixel >> 24) == 0x00);
+        assertTrue((pixel >> 24) == 0x00);
     }
 
     private RasterSymbolizer buildChannelSelectingSymbolizer(int band) {
@@ -1945,8 +1946,7 @@ public class GridCoverageRendererTest {
         symbolizer.setChannelSelection(
                 sf.createChannelSelection(
                         new SelectedChannelType[] {
-                            sf.createSelectedChannelType(
-                                    String.valueOf(band), (ContrastEnhancement) null)
+                            sf.createSelectedChannelType(String.valueOf(band), null)
                         }));
         return symbolizer;
     }
@@ -2156,10 +2156,8 @@ public class GridCoverageRendererTest {
                 throws IllegalArgumentException, IOException {
             for (GeneralParameterValue parameter : parameters) {
                 if ("Bands".equals(parameter.getDescriptor().getName().toString())) {
-                    assertTrue(
-                            Arrays.equals(
-                                    expectedBands,
-                                    (int[]) ((ParameterValue) parameter).getValue()));
+                    assertArrayEquals(
+                            expectedBands, (int[]) ((ParameterValue) parameter).getValue());
                 }
             }
 

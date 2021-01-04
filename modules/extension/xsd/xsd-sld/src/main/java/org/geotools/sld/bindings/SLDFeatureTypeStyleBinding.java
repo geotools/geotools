@@ -167,7 +167,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
         }
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
-        for (CssParameter param : (List<CssParameter>) node.getChildValues(CssParameter.class)) {
+        for (CssParameter param : node.getChildValues(CssParameter.class)) {
             featureTypeStyle
                     .getOptions()
                     .put(param.getName(), param.getExpression().evaluate(null, String.class));

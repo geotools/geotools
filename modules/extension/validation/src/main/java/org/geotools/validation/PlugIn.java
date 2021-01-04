@@ -101,8 +101,8 @@ public class PlugIn {
         PropertyDescriptor[] properties = info.getPropertyDescriptors();
         Map<String, PropertyDescriptor> lookup = new HashMap<>(properties.length);
 
-        for (int i = 0; i < properties.length; i++) {
-            lookup.put(properties[i].getName(), properties[i]);
+        for (PropertyDescriptor property : properties) {
+            lookup.put(property.getName(), property);
         }
 
         return lookup;
@@ -127,13 +127,7 @@ public class PlugIn {
 
         try {
             create = type.getConstructor(new Class[0]);
-        } catch (SecurityException e) {
-            throw new ValidationException(
-                    "Could not create '" + plugInName + "' as " + type.getName(), e);
-        } catch (NoSuchMethodException e) {
-            throw new ValidationException(
-                    "Could not create '" + plugInName + "' as " + type.getName(), e);
-        } catch (IllegalArgumentException e) {
+        } catch (SecurityException | IllegalArgumentException | NoSuchMethodException e) {
             throw new ValidationException(
                     "Could not create '" + plugInName + "' as " + type.getName(), e);
         }
@@ -142,13 +136,7 @@ public class PlugIn {
 
         try {
             validate = (Validation) create.newInstance(new Object[0]);
-        } catch (InstantiationException e) {
-            throw new ValidationException(
-                    "Could not create '" + name + "' as plugIn " + plugInName, e);
-        } catch (IllegalAccessException e) {
-            throw new ValidationException(
-                    "Could not create '" + name + "' as plugIn " + plugInName, e);
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             throw new ValidationException(
                     "Could not create '" + name + "' as plugIn " + plugInName, e);
         }
@@ -162,14 +150,14 @@ public class PlugIn {
     }
 
     protected void configure(Object bean, Map config) throws ValidationException {
-        if ((config == null) || (config.size() == 0)) {
+        if ((config == null) || (config.isEmpty())) {
             return;
         }
 
         PropertyDescriptor property;
 
-        for (Iterator i = config.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) i.next();
+        for (Object o : config.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
             property = propertyInfo((String) entry.getKey());
 
             if (property == null) {
@@ -179,17 +167,9 @@ public class PlugIn {
 
             try {
                 property.getWriteMethod().invoke(bean, new Object[] {entry.getValue()});
-            } catch (IllegalArgumentException e) {
-                String val = entry.getValue() == null ? entry.getValue().toString() : "null";
-                throw new ValidationException(
-                        "test failed to configure " + plugInName + " " + entry.getKey() + " " + val,
-                        e);
-            } catch (IllegalAccessException e) {
-                String val = entry.getValue() == null ? entry.getValue().toString() : "null";
-                throw new ValidationException(
-                        "test failed to configure " + plugInName + " " + entry.getKey() + " " + val,
-                        e);
-            } catch (InvocationTargetException e) {
+            } catch (IllegalArgumentException
+                    | InvocationTargetException
+                    | IllegalAccessException e) {
                 String val = entry.getValue() == null ? entry.getValue().toString() : "null";
                 throw new ValidationException(
                         "test failed to configure " + plugInName + " " + entry.getKey() + " " + val,

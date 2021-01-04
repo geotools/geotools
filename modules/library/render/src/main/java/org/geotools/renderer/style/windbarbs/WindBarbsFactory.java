@@ -349,7 +349,7 @@ public class WindBarbsFactory implements MarkFactory {
     /** @return a {@link WindBarbDefinition} for the provided params */
     private WindBarbDefinition parseWindBarbsDefinition(Map<String, String> params) {
         final WindBarbDefinition retValue = WindBarb.DEFAULT_WINDBARB_DEFINITION;
-        if (params == null || params.size() <= 0) {
+        if (params == null || params.isEmpty()) {
             return retValue;
         }
 

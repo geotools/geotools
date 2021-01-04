@@ -47,7 +47,7 @@ public class PropertyExistsFunction extends FunctionExpressionImpl {
     }
 
     private String getPropertyName() {
-        Expression expr = (Expression) getParameters().get(0);
+        Expression expr = getParameters().get(0);
 
         return getPropertyName(expr);
     }

@@ -464,10 +464,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     protected synchronized Set<String> generateAuthorityCodes(final Class type)
             throws FactoryException {
         Set<String> result = new HashSet<>();
-        for (int i = 0; i < TABLES_INFO.length; i++) {
-            final TableInfo table = TABLES_INFO[i];
+        for (final TableInfo table : TABLES_INFO) {
             if (table.isTypeOf(type)) {
-                final AuthorityCodeSet codes = new AuthorityCodeSet(TABLES_INFO[i], type);
+                final AuthorityCodeSet codes = new AuthorityCodeSet(table, type);
                 result.addAll(codes);
             }
         }
@@ -1278,8 +1277,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             sort(codes);
             bwInfos.clear();
             final Set<String> added = new HashSet<>();
-            for (int i = 0; i < codes.length; i++) {
-                final BursaWolfInfo candidate = codes[i];
+            for (final BursaWolfInfo candidate : codes) {
                 if (added.add(candidate.target)) {
                     bwInfos.add(candidate);
                 }
@@ -2321,7 +2319,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      */
     final synchronized boolean isProjection(final String code) throws SQLException {
         final PreparedStatement stmt;
-        Boolean projection = (Boolean) codeProjection.get(code);
+        Boolean projection = codeProjection.get(code);
         if (projection == null) {
             stmt =
                     prepareStatement(

@@ -17,7 +17,6 @@
 package org.geotools.referencing.factory.epsg;
 
 import java.sql.Connection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.sql.DataSource;
@@ -191,8 +190,8 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
      */
     protected String adaptSQL(final String statement) {
         final StringBuilder modified = new StringBuilder(statement);
-        for (final Iterator it = map.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
+            final Map.Entry entry = (Map.Entry) stringStringEntry;
             final String oldName = (String) entry.getKey();
             final String newName = (String) entry.getValue();
             /*

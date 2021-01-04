@@ -16,7 +16,11 @@
  */
 package org.geotools.graph.traverse.standard;
 
-import java.util.Iterator;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertSame;
+import static junit.framework.TestCase.fail;
+
 import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
@@ -60,7 +64,7 @@ public class BreadthFirstIteratorTest extends TestCase {
                         super.visit(element, traversal);
 
                         // nodes should be visited in order
-                        assertTrue(element.getID() == getCount() - 1);
+                        assertEquals(element.getID(), getCount() - 1);
                         return (GraphTraversal.CONTINUE);
                     }
                 };
@@ -74,10 +78,10 @@ public class BreadthFirstIteratorTest extends TestCase {
         traversal.traverse();
 
         // every node should have been visited
-        assertTrue(walker.getCount() == builder().getGraph().getNodes().size());
+        assertEquals(walker.getCount(), builder().getGraph().getNodes().size());
 
         // ensure nodes only visited once
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -107,7 +111,7 @@ public class BreadthFirstIteratorTest extends TestCase {
                             }
                         } else if (m_mode == 1) {
                             // check first node after continue
-                            assertTrue(element.getID() == suspend + 1);
+                            assertEquals(element.getID(), suspend + 1);
                             m_mode++;
                         }
                         return (GraphTraversal.CONTINUE);
@@ -123,14 +127,14 @@ public class BreadthFirstIteratorTest extends TestCase {
         traversal.traverse();
 
         // ensure nodes only visited once
-        assertTrue(walker.getCount() == nnodes - suspend + 1);
+        assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         // stopping node should be visited and nodes with greater id should not
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component.getID() <= suspend) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        else assertFalse(component.isVisited());
                         return (0);
                     }
                 };
@@ -149,7 +153,7 @@ public class BreadthFirstIteratorTest extends TestCase {
         builder().getGraph().visitNodes(visitor);
 
         // ensure nodes only visited once
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -178,7 +182,7 @@ public class BreadthFirstIteratorTest extends TestCase {
                             }
                         } else if (m_mode == 1) {
                             // should never get here
-                            assertTrue(false);
+                            fail();
                         }
                         return (GraphTraversal.CONTINUE);
                     }
@@ -197,21 +201,21 @@ public class BreadthFirstIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component.getID() <= kill) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        else assertFalse(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
         // ensure nodes only visited once
-        assertTrue(walker.getCount() == nnodes - kill + 1);
+        assertEquals(walker.getCount(), nnodes - kill + 1);
 
         // continue, no more nodes should be visited
 
         traversal.traverse();
 
         // ensure nodes only visited once
-        assertTrue(walker.getCount() == nnodes - kill + 1);
+        assertEquals(walker.getCount(), nnodes - kill + 1);
     }
 
     /**
@@ -259,9 +263,7 @@ public class BreadthFirstIteratorTest extends TestCase {
                         int level = component.getObject().toString().length();
 
                         // check all nodes that are at a lower level in the tree
-                        for (Iterator itr = builder().getGraph().getNodes().iterator();
-                                itr.hasNext(); ) {
-                            Node other = (Node) itr.next();
+                        for (Node other : builder().getGraph().getNodes()) {
                             if (other.getObject().toString().length() > level)
                                 assertTrue(other.getCount() > component.getCount());
                         }
@@ -272,7 +274,7 @@ public class BreadthFirstIteratorTest extends TestCase {
         builder().getGraph().visitNodes(visitor);
 
         // ensure nodes visited once
-        assertTrue(walker.getCount() == Math.pow(2, k + 1) - 1);
+        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -306,8 +308,8 @@ public class BreadthFirstIteratorTest extends TestCase {
                             }
                         } else if (m_mode == 1) {
                             String eid = element.getObject().toString();
-                            if (ln.isVisited()) assertTrue(element == rn);
-                            else assertTrue(element == ln);
+                            if (ln.isVisited()) assertSame(element, rn);
+                            else assertSame(element, ln);
 
                             m_mode++;
                         }
@@ -332,7 +334,7 @@ public class BreadthFirstIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component != root && component != ln && component != rn) {
-                            assertTrue(!component.isVisited());
+                            assertFalse(component.isVisited());
                         }
                         return (0);
                     }
@@ -340,7 +342,7 @@ public class BreadthFirstIteratorTest extends TestCase {
         builder().getGraph().visitNodes(visitor);
 
         // ensure nodes only visited once
-        assertTrue(walker.getCount() == 2);
+        assertEquals(2, walker.getCount());
 
         traversal.traverse();
 
@@ -357,7 +359,7 @@ public class BreadthFirstIteratorTest extends TestCase {
 
         // ensure nodes visited once
         // ensure nodes only visited once
-        assertTrue(walker.getCount() == (int) Math.pow(2, k + 1) - 1);
+        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -420,7 +422,7 @@ public class BreadthFirstIteratorTest extends TestCase {
                     public int visit(Graphable component) {
                         String eid = component.getObject().toString();
                         if (eid.length() <= id.length()) assertTrue(component.isVisited());
-                        else if (eid.startsWith(id)) assertTrue(!component.isVisited());
+                        else if (eid.startsWith(id)) assertFalse(component.isVisited());
                         else assertTrue(component.isVisited());
 
                         return (0);
@@ -429,13 +431,13 @@ public class BreadthFirstIteratorTest extends TestCase {
         builder().getGraph().visitNodes(visitor);
 
         // ensure that nodes only visited once
-        assertTrue(walker.getCount() == (int) Math.pow(2, k) + 1);
+        assertEquals(walker.getCount(), (int) Math.pow(2, k) + 1);
         traversal.traverse();
 
         builder().getGraph().visitNodes(visitor);
 
         // ensure that nodes only visited once
-        assertTrue(walker.getCount() == (int) Math.pow(2, k) + 1);
+        assertEquals(walker.getCount(), (int) Math.pow(2, k) + 1);
     }
 
     /**
@@ -452,7 +454,7 @@ public class BreadthFirstIteratorTest extends TestCase {
                         return (Graph.FAIL_QUERY);
                     }
                 };
-        Node source = (Node) builder().getGraph().queryNodes(visitor).get(0);
+        Node source = builder().getGraph().queryNodes(visitor).get(0);
 
         CountingWalker walker = new CountingWalker();
         BreadthFirstIterator iterator = createIterator();
@@ -476,7 +478,7 @@ public class BreadthFirstIteratorTest extends TestCase {
         builder().getGraph().visitNodes(visitor);
 
         // ensure all nodes only visitied once
-        assertTrue(walker.getCount() == builder().getGraph().getNodes().size());
+        assertEquals(walker.getCount(), builder().getGraph().getNodes().size());
     }
 
     protected GraphBuilder createBuilder() {

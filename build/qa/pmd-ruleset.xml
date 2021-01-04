@@ -19,13 +19,7 @@ under the License.
 -->
 <ruleset xmlns="http://pmd.sourceforge.net/ruleset/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Default Maven PMD Plugin Ruleset" xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
   <description>
-The default ruleset used by the Maven PMD Plugin, when no other ruleset is specified.
-It contains the rules of the old (pre PMD 6.0.0) rulesets java-basic, java-empty, java-imports,
-java-unnecessary, java-unusedcode.
-
-This ruleset might be used as a starting point for an own customized ruleset [0].
-
-[0] https://pmd.github.io/latest/pmd_userdocs_understanding_rulesets.html
+GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_rulesets.html
 </description>
   <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP"/>
   <rule ref="category/java/bestpractices.xml/CheckResultSet"/>
@@ -35,6 +29,15 @@ This ruleset might be used as a starting point for an own customized ruleset [0]
   <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
   <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod"/>
   <rule ref="category/java/bestpractices.xml/SystemPrintln"/>
+  <rule ref="category/java/bestpractices.xml/ForLoopCanBeForeach" />
+  <rule ref="category/java/bestpractices.xml/UseAssertEqualsInsteadOfAssertTrue" />
+  <rule ref="category/java/bestpractices.xml/UseAssertNullInsteadOfAssertTrue" />
+  <rule ref="category/java/bestpractices.xml/UseAssertSameInsteadOfAssertTrue" />
+  <rule ref="category/java/bestpractices.xml/UseTryWithResources" />
+  <rule ref="category/java/bestpractices.xml/ReplaceHashtableWithMap" />
+  <rule ref="category/java/bestpractices.xml/ReplaceVectorWithList" />
+  <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector" />
+
   <rule ref="category/java/codestyle.xml/DontImportJavaLang"/>
   <rule ref="category/java/codestyle.xml/DuplicateImports"/>
   <rule ref="category/java/codestyle.xml/ExtendsObject"/>
@@ -42,9 +45,12 @@ This ruleset might be used as a starting point for an own customized ruleset [0]
   <!--rule ref="category/java/codestyle.xml/TooManyStaticImports" / -->
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName"/>
   <!-- rule ref="category/java/codestyle.xml/UnnecessaryModifier" / -->
+  <rule ref="category/java/codestyle.xml/UseDiamondOperator" />
   <rule ref="category/java/codestyle.xml/UnnecessaryReturn"/>
   <rule ref="category/java/codestyle.xml/UselessParentheses"/>
   <rule ref="category/java/codestyle.xml/UselessQualifiedThis"/>
+  <rule ref="category/java/codestyle.xml/UnnecessaryCast" />
+  <rule ref="category/java/codestyle.xml/IdenticalCatchBranches" />
   <!-- rule ref="category/java/design.xml/CollapsibleIfStatements" / -->
   <!-- rule ref="category/java/design.xml/SimplifiedTernary" / -->
   <!-- rule ref="category/java/design.xml/UselessOverridingMethod" / -->
@@ -78,6 +84,7 @@ This ruleset might be used as a starting point for an own customized ruleset [0]
   <rule ref="category/java/errorprone.xml/UnusedNullCheckInEquals"/>
   <rule ref="category/java/errorprone.xml/UselessOperationOnImmutable"/>
   <rule ref="category/java/errorprone.xml/CloseResource">
+
     <properties>
       <!-- When calling the store to close, PMD wants the full prefix before the call to the method to match, so let's try to use common var names for store ... -->
       <property name="closeTargets" value="releaseConnection,store.releaseConnection,closeQuietly,closeConnection,closeSafe,store.closeSafe,dataStore.closeSafe,getDataStore().closeSafe,close,closeResultSet,closeStmt"/>
@@ -107,4 +114,5 @@ This ruleset might be used as a starting point for an own customized ruleset [0]
       </property>
     </properties>
   </rule>
+  <rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty" />
 </ruleset>

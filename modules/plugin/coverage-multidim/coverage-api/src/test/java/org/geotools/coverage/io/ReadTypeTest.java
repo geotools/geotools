@@ -71,9 +71,8 @@ public class ReadTypeTest {
     public void testJAIReadType() throws IOException {
         // Definition of the reader
         ImageReader reader = new TIFFImageReaderSpi().createReaderInstance();
-        FileImageInputStream in = new FileImageInputStream(URLs.urlToFile(granuleUrl));
 
-        try {
+        try (FileImageInputStream in = new FileImageInputStream(URLs.urlToFile(granuleUrl))) {
             reader.setInput(in);
 
             // Definition of the read type
@@ -139,9 +138,6 @@ public class ReadTypeTest {
             assertEquals(output.getWidth(), sourceRegion.width);
             assertEquals(output.getHeight(), sourceRegion.height);
         } finally {
-            if (in != null) {
-                in.close();
-            }
             if (reader != null) {
                 reader.dispose();
             }

@@ -397,15 +397,12 @@ public class SDEJavaApiJoinTest {
         int fcCount = fc.size();
         int itCount = 0;
         final int expectedCount = 7;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = (SimpleFeature) it.next();
                 assertNotNull(f);
                 itCount++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(expectedCount, fcCount);
         assertEquals(expectedCount, itCount);
@@ -427,15 +424,12 @@ public class SDEJavaApiJoinTest {
         int fcCount = fc.size();
         int itCount = 0;
         final int expectedCount = 3;
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertNotNull(f);
                 itCount++;
             }
-        } finally {
-            it.close();
         }
         assertEquals(expectedCount, fcCount);
         assertEquals(expectedCount, itCount);

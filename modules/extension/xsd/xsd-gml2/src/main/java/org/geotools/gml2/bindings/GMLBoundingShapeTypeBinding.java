@@ -83,7 +83,7 @@ public class GMLBoundingShapeTypeBinding extends AbstractComplexBinding {
         }
 
         // has to be a valid bounding box
-        return (Envelope) node.getChildValue(0);
+        return node.getChildValue(0);
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

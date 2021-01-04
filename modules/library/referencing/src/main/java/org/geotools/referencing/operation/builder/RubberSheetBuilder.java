@@ -75,7 +75,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
         // Get the DirectPositions (In Java 1.4 we fail hard on this cast.)
         DirectPosition[] ddpp = new DirectPosition[4];
         for (int i = 0; i < vertices.size(); i++) {
-            ddpp[i] = (DirectPosition) vertices.get(i);
+            ddpp[i] = vertices.get(i);
         }
 
         // Check they have a common crs;
@@ -170,7 +170,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
             for (int i = 1; i <= 3; i++) {
                 pts.add(
                         new MappedPosition(
-                                ((TINTriangle) a.getKey()).getPoints()[i],
+                                a.getKey().getPoints()[i],
                                 ((TINTriangle) a.getValue()).getPoints()[i]));
             }
 

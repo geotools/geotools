@@ -870,7 +870,7 @@ public abstract class TransformerBase {
         }
 
         public String getSchemaLocation(String nsURI) {
-            String uri = (String) locations.get(nsURI);
+            String uri = locations.get(nsURI);
 
             if (uri == null) {
                 return "";

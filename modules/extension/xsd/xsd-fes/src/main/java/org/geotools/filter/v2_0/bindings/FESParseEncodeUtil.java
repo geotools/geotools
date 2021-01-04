@@ -41,7 +41,7 @@ public class FESParseEncodeUtil {
 
     /** Parses the two operands for a binary temporal filter. */
     static Expression[] temporal(Node node, FilterFactory factory) {
-        PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
+        PropertyName name = node.getChildValue(PropertyName.class);
         Object other = null;
         for (Object o : node.getChildValues(Object.class)) {
             if (o == name) {

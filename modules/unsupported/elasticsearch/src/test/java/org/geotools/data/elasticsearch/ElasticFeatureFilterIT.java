@@ -192,7 +192,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         SimpleFeatureIterator iterator = features.features();
         while (iterator.hasNext()) {
             SimpleFeature f = iterator.next();
-            assertTrue(!f.getAttribute("vendor_s").equals("D-Link"));
+            assertFalse(f.getAttribute("vendor_s").equals("D-Link"));
         }
     }
 
@@ -704,7 +704,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         SimpleFeatureIterator it = featureSource.getFeatures(q).features();
         assertTrue(it.hasNext());
         it.next();
-        assertTrue(!it.hasNext());
+        assertFalse(it.hasNext());
         it.next();
     }
 

@@ -121,10 +121,10 @@ public class GeometryCollector {
         // build the final collection
         Class collectionClass = guessCollectionType();
         if (collectionClass == MultiPoint.class) {
-            Point[] array = (Point[]) geometries.toArray(new Point[geometries.size()]);
+            Point[] array = geometries.toArray(new Point[geometries.size()]);
             return gf.createMultiPoint(array);
         } else if (collectionClass == MultiPolygon.class) {
-            Polygon[] array = (Polygon[]) geometries.toArray(new Polygon[geometries.size()]);
+            Polygon[] array = geometries.toArray(new Polygon[geometries.size()]);
             MultiPolygon mp = gf.createMultiPolygon(array);
 
             // a collection of valid polygon does not necessarily make up a valid multipolygon
@@ -139,18 +139,17 @@ public class GeometryCollector {
                 return mp;
             }
         } else if (collectionClass == MultiLineString.class) {
-            LineString[] array =
-                    (LineString[]) geometries.toArray(new LineString[geometries.size()]);
+            LineString[] array = geometries.toArray(new LineString[geometries.size()]);
             return gf.createMultiLineString(array);
         } else {
-            Geometry[] array = (Geometry[]) geometries.toArray(new Geometry[geometries.size()]);
+            Geometry[] array = geometries.toArray(new Geometry[geometries.size()]);
             return gf.createGeometryCollection(array);
         }
     }
 
     private Class guessCollectionType() {
         // empty set? then we'll return an empty point collection
-        if (geometries == null || geometries.size() == 0) {
+        if (geometries == null || geometries.isEmpty()) {
             return GeometryCollection.class;
         }
 

@@ -113,9 +113,10 @@ public class FilterComplexTypes {
 
             FilterCapabilities caps = new FilterCapabilities();
 
-            for (int i = 0; i < value.length; i++) {
-                String name = value[i].getElement().getName();
-                if (name.equals("Functions")) caps.addAll((FilterCapabilities) value[i].getValue());
+            for (ElementValue elementValue : value) {
+                String name = elementValue.getElement().getName();
+                if (name.equals("Functions"))
+                    caps.addAll((FilterCapabilities) elementValue.getValue());
                 else caps.addAll(FilterCapabilities.findOperation(name));
             }
 
@@ -199,8 +200,8 @@ public class FilterComplexTypes {
 
             FilterCapabilities caps = new FilterCapabilities();
 
-            for (int i = 0; i < value.length; i++) {
-                caps.addAll(FilterCapabilities.findOperation(value[i].getElement().getName()));
+            for (ElementValue elementValue : value) {
+                caps.addAll(FilterCapabilities.findOperation(elementValue.getElement().getName()));
             }
 
             return caps;
@@ -347,8 +348,8 @@ public class FilterComplexTypes {
                 Attributes attrs,
                 Map<String, Object> hints) {
             FilterCapabilities caps = new FilterCapabilities();
-            for (int i = 0; i < value.length; i++) {
-                caps.addAll((FilterCapabilities) value[i].getValue());
+            for (ElementValue elementValue : value) {
+                caps.addAll((FilterCapabilities) elementValue.getValue());
             }
             return caps;
         }
@@ -418,7 +419,7 @@ public class FilterComplexTypes {
             }
 
             if (elements[0].getName().equals(value[0].getElement().getName())) {
-                return (FilterCapabilities) value[0].getValue();
+                return value[0].getValue();
             }
 
             throw new SAXException("Invalid child element: " + value[0].getElement().getName());
@@ -606,22 +607,23 @@ public class FilterComplexTypes {
 
             FilterCapabilities caps = new FilterCapabilities();
 
-            for (int i = 0; i < value.length; i++) {
-                if (elements[0].getName().equals(value[i].getElement().getName())) {
+            for (ElementValue elementValue : value) {
+                if (elements[0].getName().equals(elementValue.getElement().getName())) {
                     // logical ops
                     caps.addType(FilterCapabilities.LOGICAL);
                 } else {
-                    if (elements[1].getName().equals(value[i].getElement().getName())) {
+                    if (elements[1].getName().equals(elementValue.getElement().getName())) {
                         // comparison ops
-                        caps.addAll((FilterCapabilities) value[i].getValue());
+                        caps.addAll((FilterCapabilities) elementValue.getValue());
                     } else {
-                        if (elements[2].getName().equals(value[i].getElement().getName())) {
+                        if (elements[2].getName().equals(elementValue.getElement().getName())) {
                             // arithmetic ops
-                            caps.addAll((FilterCapabilities) value[i].getValue());
+                            caps.addAll((FilterCapabilities) elementValue.getValue());
                         } else {
                             // error
                             throw new SAXException(
-                                    "Invalid child element: " + value[i].getElement().getName());
+                                    "Invalid child element: "
+                                            + elementValue.getElement().getName());
                         }
                     }
                 }
@@ -694,7 +696,7 @@ public class FilterComplexTypes {
             }
 
             if (elements[0].getName().equals(value[0].getElement().getName())) {
-                return (FilterCapabilities) value[0].getValue();
+                return value[0].getValue();
             }
 
             throw new SAXException("Invalid child element: " + value[0].getElement().getName());
@@ -784,8 +786,8 @@ public class FilterComplexTypes {
 
             FilterCapabilities caps = new FilterCapabilities();
 
-            for (int i = 0; i < value.length; i++) {
-                caps.addAll(FilterCapabilities.findOperation(value[i].getElement().getName()));
+            for (ElementValue elementValue : value) {
+                caps.addAll(FilterCapabilities.findOperation(elementValue.getElement().getName()));
             }
 
             return caps;
@@ -1893,8 +1895,8 @@ public class FilterComplexTypes {
                 }
             }
             output.startElement(element.getNamespace(), element.getName(), ai);
-            for (int i = 0; i < pns.length; i++) {
-                elems[0].getType().encode(elems[0], pns[i], output, hints);
+            for (PropertyName pn : pns) {
+                elems[0].getType().encode(elems[0], pn, output, hints);
             }
             output.endElement(element.getNamespace(), element.getName());
         }

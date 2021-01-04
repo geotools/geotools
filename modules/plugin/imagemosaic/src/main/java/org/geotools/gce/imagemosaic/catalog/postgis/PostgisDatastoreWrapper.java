@@ -74,9 +74,8 @@ public class PostgisDatastoreWrapper extends DataStoreWrapper {
             return transformedSource;
         } else {
             transformedSource =
-                    (SimpleFeatureSource)
-                            new PostgisTransformFeatureStore(
-                                    store, mapper.getName(), mapper.getDefinitions(), datastore);
+                    new PostgisTransformFeatureStore(
+                            store, mapper.getName(), mapper.getDefinitions(), datastore);
             ((PostgisFeatureTypeMapper) mapper).setSimpleFeatureSource(transformedSource);
             return transformedSource;
         }

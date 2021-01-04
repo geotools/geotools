@@ -337,9 +337,8 @@ public class GeometryBuilder {
         }
         setCoordinateReferenceSystem(position.getDirectPosition().getCoordinateReferenceSystem());
         DirectPosition copy =
-                (DirectPosition)
-                        getPositionFactory()
-                                .createDirectPosition(position.getDirectPosition().getCoordinate());
+                getPositionFactory()
+                        .createDirectPosition(position.getDirectPosition().getCoordinate());
         return getPrimitiveFactory().createPoint(copy);
     }
 

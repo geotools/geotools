@@ -175,9 +175,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             }
 
             // sigh, fall back to brute force computation
-            SimpleFeatureIterator fi = null;
-            try {
-                fi = source.getFeatures(query).features();
+            try (SimpleFeatureIterator fi = source.getFeatures(query).features()) {
                 while (fi.hasNext()) {
                     SimpleFeature f = fi.next();
                     BoundingBox bb = f.getBounds();
@@ -192,10 +190,6 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
                 }
 
                 return re;
-            } finally {
-                if (fi != null) {
-                    fi.close();
-                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

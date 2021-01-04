@@ -588,8 +588,7 @@ public class Encoder {
         }
         // so let's see if the nested type is a reference
         for (XSDParticle childParticle :
-                (List<XSDParticle>)
-                        Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
+                Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
             XSDElementDeclaration childElement = (XSDElementDeclaration) childParticle.getContent();
             if (childElement.isElementDeclarationReference()) {
                 childElement = childElement.getResolvedElementDeclaration();
@@ -635,9 +634,9 @@ public class Encoder {
                     }
                     serializer.startPrefixMapping(prefix, uri);
                 }
-                for (Iterator itr = schema.getQNamePrefixToNamespaceMap().entrySet().iterator();
-                        itr.hasNext(); ) {
-                    Map.Entry entry = (Map.Entry) itr.next();
+                for (Map.Entry<String, String> stringStringEntry :
+                        schema.getQNamePrefixToNamespaceMap().entrySet()) {
+                    Map.Entry entry = (Map.Entry) stringStringEntry;
                     String pre = (String) entry.getKey();
                     String ns = (String) entry.getValue();
 
@@ -710,12 +709,12 @@ public class Encoder {
             encoded.add(new EncodingEntry(object, root, null));
 
             while (!encoded.isEmpty()) {
-                EncodingEntry entry = (EncodingEntry) encoded.peek();
+                EncodingEntry entry = encoded.peek();
 
                 if (entry.encoding != null) {
                     // element has been started, get the next child
                     if (!entry.children.isEmpty()) {
-                        Object[] child = (Object[]) entry.children.get(0);
+                        Object[] child = entry.children.get(0);
                         XSDElementDeclaration element =
                                 ((XSDElementDeclaration) child[0]).getResolvedElementDeclaration();
                         Iterator itr = (Iterator) child[1];
@@ -775,12 +774,12 @@ public class Encoder {
                         // ConcurrentModificationException
                         List sub = safeCopy(entry.element.getSubstitutionGroup());
 
-                        if (sub.size() > 0) {
+                        if (!sub.isEmpty()) {
                             // match up by type
                             List<Object[]> matches = new ArrayList<>();
 
-                            for (Iterator s = sub.iterator(); s.hasNext(); ) {
-                                XSDElementDeclaration e = (XSDElementDeclaration) s.next();
+                            for (Object o : sub) {
+                                XSDElementDeclaration e = (XSDElementDeclaration) o;
 
                                 if (e == null || e.equals(entry.element)) {
                                     continue;
@@ -833,19 +832,18 @@ public class Encoder {
 
                             // if one, we are gold
                             if (matches.size() == 1) {
-                                entry.element =
-                                        (XSDElementDeclaration) ((Object[]) matches.get(0))[0];
+                                entry.element = (XSDElementDeclaration) matches.get(0)[0];
                             }
                             // if multiple we have a problem
-                            else if (matches.size() > 0) {
+                            else if (!matches.isEmpty()) {
                                 if (logger.isLoggable(Level.FINE)) {
                                     StringBuffer msg =
                                             new StringBuffer(
                                                     "Found multiple non-abstract bindings for ");
                                     msg.append(entry.element.getName()).append(": ");
 
-                                    for (Iterator m = matches.iterator(); m.hasNext(); ) {
-                                        msg.append(m.next().getClass().getName());
+                                    for (Object[] match : matches) {
+                                        msg.append(match.getClass().getName());
                                         msg.append(", ");
                                     }
 
@@ -856,9 +854,8 @@ public class Encoder {
                                 Collections.sort(matches, new MatchComparator());
                             }
 
-                            if (matches.size() > 0) {
-                                entry.element =
-                                        (XSDElementDeclaration) ((Object[]) matches.get(0))[0];
+                            if (!matches.isEmpty()) {
+                                entry.element = (XSDElementDeclaration) matches.get(0)[0];
                             }
 
                             // if zero, just use the abstract element
@@ -881,8 +878,8 @@ public class Encoder {
                     // add any more attributes
                     List attributes = index.getAttributes(entry.element);
 
-                    for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-                        XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) itr.next();
+                    for (Object value : attributes) {
+                        XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) value;
 
                         // do not encode the attribute if it has already been
                         // encoded by the parent
@@ -949,15 +946,13 @@ public class Encoder {
                     // TODO: this method of getting at properties won't maintain order very well,
                     // need
                     // to come up with a better system that is capable of handling feature types
-                    for (Iterator pe = propertyExtractors.iterator(); pe.hasNext(); ) {
-                        PropertyExtractor propertyExtractor = (PropertyExtractor) pe.next();
-
+                    for (PropertyExtractor propertyExtractor : propertyExtractors) {
                         if (propertyExtractor.canHandle(entry.object)) {
                             List extracted =
                                     propertyExtractor.properties(entry.object, entry.element);
                             O:
-                            for (Iterator e = extracted.iterator(); e.hasNext(); ) {
-                                Object[] tuple = (Object[]) e.next();
+                            for (Object o : extracted) {
+                                Object[] tuple = (Object[]) o;
                                 XSDParticle particle = (XSDParticle) tuple[0];
                                 XSDElementDeclaration child =
                                         (XSDElementDeclaration) particle.getContent();
@@ -1094,9 +1089,9 @@ public class Encoder {
             // case
             if (encoded != null) {
                 while (!encoded.isEmpty()) {
-                    EncodingEntry entry = (EncodingEntry) encoded.pop();
+                    EncodingEntry entry = encoded.pop();
                     if (!entry.children.isEmpty()) {
-                        Object[] child = (Object[]) entry.children.get(0);
+                        Object[] child = entry.children.get(0);
                         Iterator itr = (Iterator) child[1];
                         try {
                             closeIterator(itr, child[2]);

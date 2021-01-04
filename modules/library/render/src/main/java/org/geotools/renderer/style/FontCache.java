@@ -211,9 +211,9 @@ public class FontCache {
     /** Lazily loads up the system fonts cache */
     private Set<String> getSystemFonts() {
         // make sure we load the known font families once.
-        if (systemFonts.size() == 0) {
+        if (systemFonts.isEmpty()) {
             synchronized (systemFonts) {
-                if (systemFonts.size() == 0) {
+                if (systemFonts.isEmpty()) {
                     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
                     Set<String> fontset = new HashSet<>();
 

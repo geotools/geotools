@@ -1150,16 +1150,16 @@ public class YsldParseTest {
 
         replay(finder, context);
 
-        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), (ResourceLocator) null);
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), null);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         fs.rules().get(0).getMaxScaleDenominator();
         assertThat(
                 (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
-                                Matchers.<Rule>hasProperty(
+                                Matchers.hasProperty(
                                         "maxScaleDenominator", Matchers.closeTo(64, 0.0000001d)),
-                                Matchers.<Rule>hasProperty(
+                                Matchers.hasProperty(
                                         "minScaleDenominator", Matchers.closeTo(42, 0.0000001d)))));
 
         verify(finder, context);
@@ -1181,7 +1181,7 @@ public class YsldParseTest {
 
         replay(finder);
 
-        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), (ResourceLocator) null);
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), null);
         doTestForGoogleMercator(
                 sld); // The additional finder doesn't have a WebMercator context and so should not
         // interfere.
@@ -1209,16 +1209,16 @@ public class YsldParseTest {
 
         replay(finder, context);
 
-        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), (ResourceLocator) null);
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), null);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         fs.rules().get(0).getMaxScaleDenominator();
         assertThat(
                 (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
-                                Matchers.<Rule>hasProperty(
+                                Matchers.hasProperty(
                                         "maxScaleDenominator", Matchers.closeTo(64, 0.0000001d)),
-                                Matchers.<Rule>hasProperty(
+                                Matchers.hasProperty(
                                         "minScaleDenominator", Matchers.closeTo(42, 0.0000001d)))));
 
         verify(finder, context);
@@ -2012,8 +2012,7 @@ public class YsldParseTest {
 
         replay(locator);
 
-        StyledLayerDescriptor sld =
-                Ysld.parse(yaml, Collections.<ZoomContextFinder>emptyList(), locator);
+        StyledLayerDescriptor sld = Ysld.parse(yaml, Collections.emptyList(), locator);
 
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
 
@@ -2045,7 +2044,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
         assertThat(p, hasProperty("stroke", hasProperty("lineJoin", literal("miter"))));
     }
 
@@ -2055,7 +2054,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
         assertThat(p, hasProperty("stroke", hasProperty("lineJoin", literal("bevel"))));
     }
 
@@ -2065,7 +2064,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
         assertThat(p, hasProperty("stroke", hasProperty("lineJoin", literal("mitre"))));
     }
 
@@ -2099,7 +2098,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("options", hasEntry("composite", "multiply")));
     }
@@ -2122,7 +2121,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("options", hasEntry("composite-base", "true")));
     }
@@ -2142,7 +2141,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("stroke", hasProperty("graphicStroke")));
         Graphic g = p.getStroke().getGraphicStroke();
@@ -2150,15 +2149,13 @@ public class YsldParseTest {
         ((Mark) symbols.get(0)).getFill().getColor();
         assertThat(
                 symbols,
-                (Matcher)
-                        hasItems(
-                                allOf(
-                                        instanceOf(Mark.class),
-                                        hasProperty("wellKnownName", literal("circle")),
-                                        hasProperty(
-                                                "fill",
-                                                hasProperty(
-                                                        "color", literal(isColor("995555")))))));
+                hasItems(
+                        allOf(
+                                instanceOf(Mark.class),
+                                hasProperty("wellKnownName", literal("circle")),
+                                hasProperty(
+                                        "fill",
+                                        hasProperty("color", literal(isColor("995555")))))));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -2176,7 +2173,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("stroke", hasProperty("graphicFill")));
         Graphic g = p.getStroke().getGraphicFill();
@@ -2184,15 +2181,13 @@ public class YsldParseTest {
         ((Mark) symbols.get(0)).getFill().getColor();
         assertThat(
                 symbols,
-                (Matcher)
-                        hasItems(
-                                allOf(
-                                        instanceOf(Mark.class),
-                                        hasProperty("wellKnownName", literal("circle")),
-                                        hasProperty(
-                                                "fill",
-                                                hasProperty(
-                                                        "color", literal(isColor("995555")))))));
+                hasItems(
+                        allOf(
+                                instanceOf(Mark.class),
+                                hasProperty("wellKnownName", literal("circle")),
+                                hasProperty(
+                                        "fill",
+                                        hasProperty("color", literal(isColor("995555")))))));
     }
 
     @Test
@@ -2202,7 +2197,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
     }
@@ -2214,7 +2209,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.FOOT.getUnit())));
     }
@@ -2226,7 +2221,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.PIXEL.getUnit())));
     }
@@ -2238,7 +2233,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
     }
@@ -2250,7 +2245,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.FOOT.getUnit())));
     }
@@ -2262,7 +2257,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
+        LineSymbolizer p = SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
     }

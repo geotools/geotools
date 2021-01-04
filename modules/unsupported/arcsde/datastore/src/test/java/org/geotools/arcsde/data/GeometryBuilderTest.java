@@ -222,8 +222,8 @@ public class GeometryBuilderTest {
         final GeometryFactory geometryFactory =
                 new GeometryFactory(new LiteCoordinateSequenceFactory());
         Geometry[] geoms = buildJTSgeometriesFromShapes(testData, geometryFactory);
-        for (int i = 0; i < geoms.length; i++) {
-            Assert.assertSame(geometryFactory, geoms[i].getFactory());
+        for (Geometry geom : geoms) {
+            Assert.assertSame(geometryFactory, geom.getFactory());
         }
     }
 
@@ -315,8 +315,8 @@ public class GeometryBuilderTest {
      * </code>
      */
     private static void testBuildSeShapes(Geometry[] geometries) throws Exception {
-        for (int i = 0; i < geometries.length; i++) {
-            testConstructShape(geometries[i]);
+        for (Geometry geometry : geometries) {
+            testConstructShape(geometry);
         }
     }
 
@@ -459,7 +459,7 @@ public class GeometryBuilderTest {
             gcol = new GeometryFactory().createGeometryCollection(geoms);
         }
 
-        List<SDEPoint> allPoints = new ArrayList<SDEPoint>();
+        List<SDEPoint> allPoints = new ArrayList<>();
         numParts = gcol.getNumGeometries();
 
         int[] partOffsets = new int[numParts];
@@ -471,8 +471,7 @@ public class GeometryBuilderTest {
 
             Coordinate[] coords = geom.getCoordinates();
 
-            for (int i = 0; i < coords.length; i++) {
-                Coordinate c = coords[i];
+            for (Coordinate c : coords) {
                 SDEPoint p = new SDEPoint(c.x, c.y);
                 allPoints.add(p);
             }

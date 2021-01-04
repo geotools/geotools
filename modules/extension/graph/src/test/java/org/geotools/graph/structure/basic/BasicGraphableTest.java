@@ -46,7 +46,7 @@ public class BasicGraphableTest extends TestCase {
      * Expected: Visited flag should be set.
      */
     public void test_setVisited() {
-        assertTrue(!m_graphable.isVisited());
+        assertFalse(m_graphable.isVisited());
         m_graphable.setVisited(true);
         assertTrue(m_graphable.isVisited());
     }
@@ -60,10 +60,10 @@ public class BasicGraphableTest extends TestCase {
     public void test_setObject() {
         Object obj = Integer.valueOf(1);
 
-        assertTrue(m_graphable.getObject() == null);
+        assertNull(m_graphable.getObject());
         m_graphable.setObject(obj);
 
-        assertTrue(m_graphable.getObject() == obj);
+        assertSame(m_graphable.getObject(), obj);
     }
 
     /**

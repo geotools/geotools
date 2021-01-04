@@ -387,7 +387,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
         final LinkedHashMap<Integer, String> mutableColumns = getUpdatableColumnNames();
         final String[] rowColumnNames =
-                new ArrayList<String>(mutableColumns.values()).toArray(new String[0]);
+                new ArrayList<>(mutableColumns.values()).toArray(new String[0]);
         final String typeName = featureType.getTypeName();
         final String fid = modifiedFeature.getID();
         final long numericFid = ArcSDEAdapter.getNumericFid(fid);
@@ -415,10 +415,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         try {
             session.issue(updateCmd);
             versionHandler.editOperationWritten(updateStream);
-        } catch (NoSuchElementException e) {
-            versionHandler.editOperationFailed(updateStream);
-            throw e;
-        } catch (IOException e) {
+        } catch (NoSuchElementException | IOException e) {
             versionHandler.editOperationFailed(updateStream);
             throw e;
         }
@@ -470,8 +467,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
                                 }
                             }
                             String[] rowColumnNames =
-                                    new ArrayList<String>(insertColumns.values())
-                                            .toArray(new String[0]);
+                                    new ArrayList<>(insertColumns.values()).toArray(new String[0]);
                             String typeName = featureType.getTypeName();
                             insertStream.intoTable(typeName, rowColumnNames);
                             insertStream.setWriteMode(true);
@@ -718,13 +714,13 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             }
 
             // use LinkedHashMap to respect column order
-            LinkedHashMap<Integer, String> columnList = new LinkedHashMap<Integer, String>();
+            LinkedHashMap<Integer, String> columnList = new LinkedHashMap<>();
 
             SeColumnDefinition columnDefinition;
             String columnName;
             int usedIndex = 0;
-            for (int actualIndex = 0; actualIndex < columnDefinitions.length; actualIndex++) {
-                columnDefinition = columnDefinitions[actualIndex];
+            for (SeColumnDefinition definition : columnDefinitions) {
+                columnDefinition = definition;
                 columnName = columnDefinition.getName();
                 // this is an attribute added to the featuretype
                 // solely to support FIDs. It isn't an actual attribute
@@ -768,13 +764,13 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             final SeColumnDefinition[] columnDefinitions = session.describe(typeName);
 
             // use LinkedHashMap to respect column order
-            LinkedHashMap<Integer, String> columnList = new LinkedHashMap<Integer, String>();
+            LinkedHashMap<Integer, String> columnList = new LinkedHashMap<>();
 
             SeColumnDefinition columnDefinition;
             String columnName;
             int usedIndex = 0;
-            for (int actualIndex = 0; actualIndex < columnDefinitions.length; actualIndex++) {
-                columnDefinition = columnDefinitions[actualIndex];
+            for (SeColumnDefinition definition : columnDefinitions) {
+                columnDefinition = definition;
                 columnName = columnDefinition.getName();
 
                 if (fidReader instanceof FIDReader.SdeManagedFidReader) {

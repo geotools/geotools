@@ -122,22 +122,12 @@ public class VocabFunction implements Function {
         properties = new Properties();
         File file = new File(urn);
         if (file.exists()) {
-            InputStream input = null;
-            try {
-                input = new BufferedInputStream(new FileInputStream(file));
+            try (InputStream input = new BufferedInputStream(new FileInputStream(file))) {
                 properties.load(input);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException("Could not find file for lookup table " + urn);
             } catch (IOException e) {
                 throw new RuntimeException("Difficulty parsing lookup table " + urn);
-            } finally {
-                if (input != null) {
-                    try {
-                        input.close();
-                    } catch (IOException e) {
-                        // we tried;
-                    }
-                }
             }
         } else {
             cache.put(urn, null); // don't check again and waste our time

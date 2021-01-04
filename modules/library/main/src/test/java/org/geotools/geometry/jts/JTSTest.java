@@ -317,7 +317,7 @@ public class JTSTest extends JTSTestBase {
         Geometry geom = gf.createPolygon(gf.createLinearRing(coords), null);
 
         ReferencedEnvelope refEnv = JTS.toEnvelope(geom);
-        assertTrue(geom.getEnvelopeInternal().equals(refEnv));
+        assertEquals(geom.getEnvelopeInternal(), refEnv);
     }
 
     @Test

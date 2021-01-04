@@ -84,8 +84,7 @@ public class PolygonExtractionProcessTest {
         SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null);
         assertEquals(3, fc.size());
 
-        FeatureIterator iter = fc.features();
-        try {
+        try (FeatureIterator iter = fc.features()) {
             while (iter.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) iter.next();
                 Polygon poly = (Polygon) feature.getDefaultGeometry();
@@ -93,8 +92,6 @@ public class PolygonExtractionProcessTest {
                 assertEquals(perimeters[value - 1], (int) (poly.getBoundary().getLength() + 0.5));
                 assertEquals(areas[value - 1], (int) (poly.getArea() + 0.5));
             }
-        } finally {
-            iter.close();
         }
     }
 
@@ -135,15 +132,11 @@ public class PolygonExtractionProcessTest {
         SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null);
         assertEquals(NUM_POLYS, fc.size());
 
-        SimpleFeatureIterator iter = fc.features();
-        try {
+        try (SimpleFeatureIterator iter = fc.features()) {
             while (iter.hasNext()) {
                 Polygon poly = (Polygon) iter.next().getDefaultGeometry();
                 assertEquals(1, poly.getNumInteriorRing());
             }
-
-        } finally {
-            iter.close();
         }
     }
 
@@ -449,8 +442,7 @@ public class PolygonExtractionProcessTest {
         List<Integer> expectedValues = new ArrayList<>();
         expectedValues.addAll(Arrays.asList(1, 2, 3));
 
-        SimpleFeatureIterator iter = fc.features();
-        try {
+        try (SimpleFeatureIterator iter = fc.features()) {
             while (iter.hasNext()) {
                 SimpleFeature feature = iter.next();
                 Integer value = ((Number) feature.getAttribute("value")).intValue();
@@ -461,8 +453,6 @@ public class PolygonExtractionProcessTest {
                 // System.out.println(poly.toText());
                 assertEquals(areas[value - 1], poly.getArea(), TOL);
             }
-        } finally {
-            iter.close();
         }
     }
 

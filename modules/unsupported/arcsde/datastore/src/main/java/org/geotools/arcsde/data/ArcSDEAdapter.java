@@ -79,11 +79,10 @@ public class ArcSDEAdapter {
     private static final Logger LOGGER = Logging.getLogger(ArcSDEAdapter.class);
 
     /** mappings of SDE attribute's types to Java ones */
-    private static final Map<Integer, Class<?>> sde2JavaTypes = new HashMap<Integer, Class<?>>();
+    private static final Map<Integer, Class<?>> sde2JavaTypes = new HashMap<>();
 
     /** inverse of sdeTypes, maps Java types to SDE ones */
-    private static final Map<Class<?>, SdeTypeDef> java2SDETypes =
-            new HashMap<Class<?>, SdeTypeDef>();
+    private static final Map<Class<?>, SdeTypeDef> java2SDETypes = new HashMap<>();
 
     static {
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_NSTRING), String.class);
@@ -412,13 +411,11 @@ public class ArcSDEAdapter {
         CoordinateReferenceSystem metadata = null;
 
         final int nCols = seColumns.length;
-        List<AttributeDescriptor> attDescriptors = new ArrayList<AttributeDescriptor>(nCols);
+        List<AttributeDescriptor> attDescriptors = new ArrayList<>(nCols);
 
         Class<?> typeClass = null;
 
-        for (int i = 0; i < nCols; i++) {
-            SeColumnDefinition colDef = seColumns[i];
-
+        for (SeColumnDefinition colDef : seColumns) {
             // didn't found in the ArcSDE Java API the way of knowing
             // if an SeColumnDefinition is nillable
             attName = colDef.getName();
@@ -531,8 +528,7 @@ public class ArcSDEAdapter {
         builder.setName(typeName);
         builder.setNamespaceURI(namespace);
 
-        for (Iterator<AttributeDescriptor> it = properties.iterator(); it.hasNext(); ) {
-            AttributeDescriptor attType = it.next();
+        for (AttributeDescriptor attType : properties) {
             builder.add(attType);
         }
 
@@ -981,9 +977,8 @@ public class ArcSDEAdapter {
                                     featureType.getAttributeDescriptors();
                             AttributeDescriptor currAtt;
 
-                            for (Iterator<AttributeDescriptor> it = atts.iterator();
-                                    it.hasNext(); ) {
-                                currAtt = it.next();
+                            for (AttributeDescriptor att : atts) {
+                                currAtt = att;
 
                                 if (currAtt instanceof GeometryDescriptor) {
                                     GeometryDescriptor geometryAtt = (GeometryDescriptor) currAtt;

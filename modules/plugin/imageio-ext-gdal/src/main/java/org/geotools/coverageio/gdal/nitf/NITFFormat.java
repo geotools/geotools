@@ -59,11 +59,7 @@ public final class NITFFormat extends BaseGDALGridFormat implements Format {
     public NITFReader getReader(Object source, Hints hints) {
         try {
             return new NITFReader(source, hints);
-        } catch (MismatchedDimensionException e) {
-            final RuntimeException re = new RuntimeException();
-            re.initCause(e);
-            throw re;
-        } catch (DataSourceException e) {
+        } catch (MismatchedDimensionException | DataSourceException e) {
             final RuntimeException re = new RuntimeException();
             re.initCause(e);
             throw re;

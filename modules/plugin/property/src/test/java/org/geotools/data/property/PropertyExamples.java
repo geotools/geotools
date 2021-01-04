@@ -91,9 +91,9 @@ public class PropertyExamples {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             File list[] = tmp.listFiles();
-            for (int i = 0; i < list.length; i++) {
-                list[i].delete();
-                System.out.println("remove " + list[i]);
+            for (File file : list) {
+                file.delete();
+                System.out.println("remove " + file);
             }
             tmp.delete();
             System.out.println("remove " + tmp);
@@ -219,18 +219,15 @@ public class PropertyExamples {
 
         Transaction t = new DefaultTransaction("transaction");
         try {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                    store.getFeatureWriter("example", Filter.INCLUDE, t);
 
-            SimpleFeature feature;
-            try {
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    store.getFeatureWriter("example", Filter.INCLUDE, t)) {
+                SimpleFeature feature;
                 while (writer.hasNext()) {
                     feature = writer.next();
                     System.out.println("remove " + feature.getID());
                     writer.remove(); // marking contents for removal
                 }
-            } finally {
-                writer.close();
             }
             System.out.println("commit " + t); // only now are the contents
             // removed

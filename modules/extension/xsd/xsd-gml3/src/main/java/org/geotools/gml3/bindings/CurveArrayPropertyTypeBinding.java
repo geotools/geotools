@@ -84,7 +84,7 @@ public class CurveArrayPropertyTypeBinding extends AbstractComplexBinding {
         List<MultiLineString> curves = node.getChildValues(MultiLineString.class);
 
         // pick up any regular line strings as well
-        for (LineString l : (List<LineString>) node.getChildValues(LineString.class)) {
+        for (LineString l : node.getChildValues(LineString.class)) {
             curves.add(gf.createMultiLineString(new LineString[] {l}));
         }
         return curves.toArray(new MultiLineString[curves.size()]);

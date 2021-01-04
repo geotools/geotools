@@ -20,7 +20,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 import javax.swing.JPanel;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
@@ -51,7 +51,7 @@ public class GraphViewer extends JPanel {
                 Color.DARK_GRAY,
                 Color.BLACK
             };
-    Vector shortEdges, longEdges, otherEdges;
+    List shortEdges, longEdges, otherEdges;
 
     /** Creates a new instance of GraphViewer */
     public GraphViewer() {}
@@ -97,15 +97,15 @@ public class GraphViewer extends JPanel {
         colorEdges = b;
     }
 
-    public void setShortEdges(Vector l) {
+    public void setShortEdges(List l) {
         shortEdges = l;
     }
 
-    public void setLongEdges(Vector l) {
+    public void setLongEdges(List l) {
         longEdges = l;
     }
 
-    public void setOtherEdges(Vector l) {
+    public void setOtherEdges(List l) {
         otherEdges = l;
     }
 

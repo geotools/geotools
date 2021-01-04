@@ -83,7 +83,7 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
         LinkedHashMap<String, Param> map = new LinkedHashMap<>();
         setupParameters(map);
 
-        return (Param[]) map.values().toArray(new Param[map.size()]);
+        return map.values().toArray(new Param[map.size()]);
     }
 
     protected void setupParameters(Map<String, Param> parameters) {

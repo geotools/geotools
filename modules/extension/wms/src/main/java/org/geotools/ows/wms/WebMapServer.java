@@ -57,7 +57,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -166,8 +165,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
             try {
                 URL source = getCapabilities().getRequest().getGetCapabilities().getGet();
                 return source.toURI();
-            } catch (NullPointerException huh) {
-            } catch (URISyntaxException e) {
+            } catch (NullPointerException | URISyntaxException huh) {
             }
             try {
                 return serverURL.toURI();
@@ -227,9 +225,6 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
                                     bbox.getMinY(),
                                     bbox.getMaxY(),
                                     crs);
-                } catch (NoSuchAuthorityCodeException e) {
-                    crs = DefaultGeographicCRS.WGS84;
-                    env = layer.getEnvelope(crs);
                 } catch (FactoryException e) {
                     crs = DefaultGeographicCRS.WGS84;
                     env = layer.getEnvelope(crs);
@@ -431,7 +426,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     }
 
     protected ResourceInfo createInfo(Layer layer) {
-        return new LayerInfo((Layer) layer);
+        return new LayerInfo(layer);
     }
 
     public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)
@@ -475,7 +470,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @return a WMSCapabilities object, representing the Capabilities of the server
      */
     public WMSCapabilities getCapabilities() {
-        return (WMSCapabilities) capabilities;
+        return capabilities;
     }
 
     private WMSSpecification getSpecification() {
@@ -497,7 +492,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     public GetMapRequest createGetMapRequest() {
         URL onlineResource = findURL(getCapabilities().getRequest().getGetMap());
 
-        return (GetMapRequest) getSpecification().createGetMapRequest(onlineResource);
+        return getSpecification().createGetMapRequest(onlineResource);
     }
 
     /**

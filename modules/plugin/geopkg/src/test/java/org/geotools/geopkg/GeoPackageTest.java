@@ -217,28 +217,19 @@ public class GeoPackageTest {
 
     boolean doesEntryExists(String table, Entry entry) throws Exception {
         boolean exists = false;
-        Connection cx = geopkg.getDataSource().getConnection();
-        try {
+        try (Connection cx = geopkg.getDataSource().getConnection()) {
             String sql = String.format("SELECT * FROM %s WHERE table_name = ?", table);
             SqlUtil.PreparedStatementBuilder psb =
                     SqlUtil.prepare(cx, sql).set(entry.getTableName());
-            PreparedStatement ps = psb.log(Level.FINE).statement();
-            try {
-                ResultSet rs = ps.executeQuery();
-                try {
+            try (PreparedStatement ps = psb.log(Level.FINE).statement()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         exists = true;
                     }
-                } finally {
-                    rs.close();
                 }
-            } finally {
-                ps.close();
             }
         } catch (Exception e) {
             fail(e.getMessage());
-        } finally {
-            cx.close();
         }
         return exists;
     }
@@ -258,17 +249,11 @@ public class GeoPackageTest {
                     String.format(
                             "SELECT srs_name FROM %s WHERE srs_id = ?", GeoPackage.SPATIAL_REF_SYS);
             SqlUtil.PreparedStatementBuilder psb = SqlUtil.prepare(cx, sql).set(2000);
-            PreparedStatement ps = psb.log(Level.FINE).statement();
-            try {
-                ResultSet rs = ps.executeQuery();
-                try {
+            try (PreparedStatement ps = psb.log(Level.FINE).statement()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     assertTrue(rs.next());
                     assertEquals("epsg:2000", rs.getString(1));
-                } finally {
-                    rs.close();
                 }
-            } finally {
-                ps.close();
             }
         } catch (Exception e) {
             fail(e.getMessage());
@@ -851,8 +836,7 @@ public class GeoPackageTest {
     }
 
     void assertContentEntry(Entry entry) throws Exception {
-        Connection cx = geopkg.getDataSource().getConnection();
-        try {
+        try (Connection cx = geopkg.getDataSource().getConnection()) {
             PreparedStatement ps =
                     cx.prepareStatement("SELECT * FROM gpkg_contents WHERE table_name = ?");
             ps.setString(1, entry.getTableName());
@@ -871,16 +855,13 @@ public class GeoPackageTest {
 
             rs.close();
             ps.close();
-        } finally {
-            cx.close();
         }
     }
 
     void assertFeatureEntry(FeatureEntry entry) throws Exception {
         assertContentEntry(entry);
 
-        Connection cx = geopkg.getDataSource().getConnection();
-        try {
+        try (Connection cx = geopkg.getDataSource().getConnection()) {
             PreparedStatement ps =
                     cx.prepareStatement("SELECT * FROM gpkg_geometry_columns WHERE table_name = ?");
             ps.setString(1, entry.getTableName());
@@ -898,16 +879,13 @@ public class GeoPackageTest {
 
             rs.close();
             ps.close();
-        } finally {
-            cx.close();
         }
     }
 
     void assertTileEntry(TileEntry entry) throws Exception {
         assertContentEntry(entry);
 
-        Connection cx = geopkg.getDataSource().getConnection();
-        try {
+        try (Connection cx = geopkg.getDataSource().getConnection()) {
             PreparedStatement ps =
                     cx.prepareStatement(
                             "SELECT count(*) from gpkg_tile_matrix WHERE table_name = ?");
@@ -943,8 +921,6 @@ public class GeoPackageTest {
 
             rs.close();
             ps.close();
-        } finally {
-            cx.close();
         }
     }
 

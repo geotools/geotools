@@ -680,8 +680,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             return candidate;
         }
         Set<String> result = Collections.emptySet();
-        for (int i = 0; i < TABLES_INFO.length; i++) {
-            final TableInfo table = TABLES_INFO[i];
+        for (final TableInfo table : TABLES_INFO) {
             /*
              * We test 'isAssignableFrom' in the two ways, which may seems strange but try
              * to catch the following use cases:
@@ -704,7 +703,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                  * type computed by AuthorityCodes itself.
                  */
                 final AuthorityCodes codes;
-                codes = new AuthorityCodes(TABLES_INFO[i], type, this);
+                codes = new AuthorityCodes(table, type, this);
                 reference = authorityCodes.get(codes.type);
                 candidate = (reference != null) ? reference.get() : null;
                 final boolean cache;
@@ -749,8 +748,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         final String primaryKey = trimAuthority(code);
-        for (int i = 0; i < TABLES_INFO.length; i++) {
-            final Set<String> codes = getAuthorityCodes0(TABLES_INFO[i].type);
+        for (TableInfo tableInfo : TABLES_INFO) {
+            final Set<String> codes = getAuthorityCodes0(tableInfo.type);
             if (codes instanceof AuthorityCodes) {
                 final String text = ((AuthorityCodes) codes).asMap().get(primaryKey);
                 if (text != null) {
@@ -1577,8 +1576,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             sort(codes);
             bwInfos.clear();
             final Set<String> added = new HashSet<>();
-            for (int i = 0; i < codes.length; i++) {
-                final BursaWolfInfo candidate = codes[i];
+            for (final BursaWolfInfo candidate : codes) {
                 if (added.add(candidate.target)) {
                     bwInfos.add(candidate);
                 }
@@ -2592,8 +2590,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     private static final int putAll(final GenericName[] names, final Map<String, GenericName> map) {
         int ignored = 0;
-        for (int i = 0; i < names.length; i++) {
-            final GenericName name = names[i];
+        for (final GenericName name : names) {
             final GenericName scoped = name.toFullyQualifiedName();
             final String key = toCaseless(scoped.toString());
             final GenericName old = map.put(key, name);

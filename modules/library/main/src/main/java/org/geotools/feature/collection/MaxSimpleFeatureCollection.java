@@ -19,7 +19,6 @@ package org.geotools.feature.collection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -96,20 +95,17 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
         List<T> list = new ArrayList<>();
-        SimpleFeatureIterator i = features();
-        try {
+        try (SimpleFeatureIterator i = features()) {
             while (i.hasNext()) {
                 list.add((T) i.next());
             }
             return list.toArray(a);
-        } finally {
-            i.close();
         }
     }
 
     public boolean containsAll(Collection<?> c) {
-        for (Iterator<?> i = c.iterator(); i.hasNext(); ) {
-            if (!contains(i.next())) {
+        for (Object o : c) {
+            if (!contains(o)) {
                 return false;
             }
         }

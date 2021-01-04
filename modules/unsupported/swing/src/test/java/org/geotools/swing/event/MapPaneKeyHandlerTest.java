@@ -75,7 +75,7 @@ public class MapPaneKeyHandlerTest extends GraphicsTestBase<FrameFixture, Frame,
                         });
 
         windowFixture = new FrameFixture(frame);
-        ((FrameFixture) windowFixture).show(new Dimension(WIDTH, HEIGHT));
+        windowFixture.show(new Dimension(WIDTH, HEIGHT));
     }
 
     @Test

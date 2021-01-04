@@ -21,7 +21,6 @@ package org.geotools.filter.function;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -141,8 +140,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
         Map<Name, FunctionDescriptor> functionMap = new HashMap<>();
 
         Set<Function> functions = CommonFactoryFinder.getFunctions(null);
-        for (Iterator<Function> i = functions.iterator(); i.hasNext(); ) {
-            Function function = (Function) i.next();
+        for (Function function : functions) {
             FunctionName functionName = getFunctionName(function);
             Name name = functionName.getFunctionName();
 

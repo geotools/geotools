@@ -80,8 +80,8 @@ public final class LookupTableFactory {
          * Argument check. Null values are legal but can't be processed by this method.
          */
         final int nbands = transforms.length;
-        for (int i = 0; i < nbands; i++) {
-            if (transforms[i] == null) {
+        for (MathTransform1D transform : transforms) {
+            if (transform == null) {
                 return null;
             }
         }

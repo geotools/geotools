@@ -19,6 +19,7 @@ package org.geotools.grid;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
@@ -56,12 +57,9 @@ public class GridsSquareTest extends TestBase {
         SimpleFeatureSource gridSource = Grids.createSquareGrid(bounds, sideLen);
         assertGridSizeAndIds(gridSource);
 
-        SimpleFeatureIterator iter = gridSource.getFeatures().features();
-        try {
+        try (SimpleFeatureIterator iter = gridSource.getFeatures().features()) {
             Polygon poly = (Polygon) iter.next().getAttribute("element");
             assertEquals(5, poly.getCoordinates().length);
-        } finally {
-            iter.close();
         }
     }
 
@@ -72,12 +70,9 @@ public class GridsSquareTest extends TestBase {
                 Grids.createSquareGrid(bounds, sideLen, sideLen / vertexDensity);
         assertGridSizeAndIds(gridSource);
 
-        SimpleFeatureIterator iter = gridSource.getFeatures().features();
-        try {
+        try (SimpleFeatureIterator iter = gridSource.getFeatures().features()) {
             Polygon poly = (Polygon) iter.next().getAttribute("element");
             assertTrue(poly.getCoordinates().length - 1 >= 4 * vertexDensity);
-        } finally {
-            iter.close();
         }
     }
 
@@ -126,19 +121,15 @@ public class GridsSquareTest extends TestBase {
         boolean[] flag = new boolean[expectedNumElements + 1];
         int count = 0;
 
-        SimpleFeatureIterator iter = grid.features();
-        try {
+        try (SimpleFeatureIterator iter = grid.features()) {
             while (iter.hasNext()) {
                 SimpleFeature f = iter.next();
                 int id = (Integer) f.getAttribute("id");
-                assertFalse(id == 0);
+                assertNotEquals(0, id);
                 assertFalse(flag[id]);
                 flag[id] = true;
                 count++;
             }
-
-        } finally {
-            iter.close();
         }
 
         assertEquals(expectedNumElements, count);

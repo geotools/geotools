@@ -97,8 +97,8 @@ public class CSVWriteTest {
     public void removeTemporaryLocations() throws IOException {
         File list[] = tmp.listFiles();
         if (list != null) {
-            for (int i = 0; i < list.length; i++) {
-                list[i].delete();
+            for (File file : list) {
+                file.delete();
             }
         }
         tmp.delete();
@@ -108,8 +108,8 @@ public class CSVWriteTest {
     public boolean cleanedup() {
         File list[] = tmp.listFiles((dir, name) -> name.endsWith(".csv"));
         if (list != null) {
-            for (int i = 0; i < list.length; i++) {
-                if (list[i].getName().equalsIgnoreCase("locations.csv")) {
+            for (File file : list) {
+                if (file.getName().equalsIgnoreCase("locations.csv")) {
                     continue;
                 }
                 return false;
@@ -240,16 +240,13 @@ public class CSVWriteTest {
 
         Transaction t = new DefaultTransaction("locations");
         try {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                    store.getFeatureWriter("locations", Filter.INCLUDE, t);
 
-            try {
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    store.getFeatureWriter("locations", Filter.INCLUDE, t)) {
                 while (writer.hasNext()) {
                     writer.next();
                     writer.remove(); // marking contents for removal
                 }
-            } finally {
-                writer.close();
             }
 
             // Test the contents have been removed

@@ -104,8 +104,8 @@ class LabelSplitter {
             map.put(TextAttribute.FONT, fonts[0]);
 
             // accumulate the lines
-            for (int i = 0; i < splitted.length; i++) {
-                String lineText = checkForEmptyLine(splitted[i]);
+            for (String s : splitted) {
+                String lineText = checkForEmptyLine(s);
 
                 // build the line break iterator that will split lines at word
                 // boundaries when the wrapping length is exceeded
@@ -361,8 +361,7 @@ class LabelSplitter {
                 boolean foundFont = false;
                 while (start < chars.length && !foundFont) {
                     char curr = chars[start];
-                    for (int i = 0; i < fonts.length; i++) {
-                        Font font = fonts[i];
+                    for (Font font : fonts) {
                         if (font.canDisplay(curr)) {
                             foundFont = true;
                             result.add(new FontRange(text, base, start, fonts[0]));

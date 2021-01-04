@@ -148,7 +148,7 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
             Text text = null;
 
             for (int i = 0; i < encoding.getChildNodes().getLength(); i++) {
-                Node node = (Node) encoding.getChildNodes().item(i);
+                Node node = encoding.getChildNodes().item(i);
 
                 if (node instanceof Text) {
                     text = (Text) node;

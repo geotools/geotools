@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing;
 
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 import org.geotools.geometry.DirectPosition2D;
@@ -148,7 +147,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             assertEquals(Integer.valueOf(4230), CRS.lookupEpsgCode(crs, false));
         } else {
             assertNull("Should not find the CRS without a scan.", CRS.lookupIdentifier(crs, false));
-            assertEquals(null, CRS.lookupEpsgCode(crs, false));
+            assertNull(CRS.lookupEpsgCode(crs, false));
         }
 
         assertEquals(
@@ -352,9 +351,9 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
         int total = codes.size();
         int count = 0;
-        for (Iterator i = codes.iterator(); i.hasNext(); ) {
+        for (Object o : codes) {
             CoordinateReferenceSystem crs;
-            String code = (String) i.next();
+            String code = (String) o;
             try {
                 crs = factory.createCoordinateReferenceSystem(code);
                 assertNotNull(crs);

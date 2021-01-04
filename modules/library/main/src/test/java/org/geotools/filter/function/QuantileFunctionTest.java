@@ -121,12 +121,12 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertEquals(5, range.getSize());
 
         for (int i = 0; i < 5; i++) {
-            assertTrue(i + 1 == ((Number) range.getMin(i)).doubleValue());
+            assertEquals(i + 1d, ((Number) range.getMin(i)).doubleValue());
             if (i != 4) {
-                assertTrue(i + 2 == ((Number) range.getMax(i)).doubleValue());
+                assertEquals(i + 2d, ((Number) range.getMax(i)).doubleValue());
                 assertEquals((i + 1) + ".." + (i + 2), range.getTitle(i));
             } else {
-                assertTrue(i + 1 == ((Number) range.getMax(i)).doubleValue());
+                assertEquals(i + 1d, ((Number) range.getMax(i)).doubleValue());
                 assertEquals((i + 1) + ".." + (i + 1), range.getTitle(i));
             }
         }
@@ -160,11 +160,10 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         Classifier classifier = (Classifier) function.evaluate(featureCollection);
         assertNotNull(classifier);
 
-        Classifier classifier2 =
-                (Classifier) function.evaluate(featureCollection, Classifier.class);
+        Classifier classifier2 = function.evaluate(featureCollection, Classifier.class);
         assertNotNull(classifier2);
 
-        Integer number = (Integer) function.evaluate(featureCollection, Integer.class);
+        Integer number = function.evaluate(featureCollection, Integer.class);
         assertNull(number);
     }
 
@@ -276,8 +275,8 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         Classifier ranged2 = (Classifier) value2;
         double[] percentages2 = ranged2.getPercentages();
         assertEquals(percentages2.length, 6);
-        for (int i = 0; i < percentages2.length; i++) {
-            assertEquals(Math.floor(percentages2[i]), 16.0);
+        for (double v : percentages2) {
+            assertEquals(Math.floor(v), 16.0);
         }
     }
 
@@ -320,8 +319,8 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         RangedClassifier ranged = (RangedClassifier) value;
         double[] percentages = ranged.getPercentages();
         assertEquals(percentages.length, 8);
-        for (int i = 0; i < percentages.length; i++) {
-            assertTrue(percentages[i] == 12.5);
+        for (double percentage : percentages) {
+            assertEquals(12.5, percentage);
         }
     }
 }

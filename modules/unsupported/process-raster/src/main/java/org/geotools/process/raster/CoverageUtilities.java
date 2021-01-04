@@ -95,11 +95,9 @@ public class CoverageUtilities {
         Geometry rasterSpaceGeometry;
         try {
             rasterSpaceGeometry = JTS.transform(roi, new AffineTransform2D(mt2d.createInverse()));
-        } catch (MismatchedDimensionException e) {
-            throw new ProcessException(e);
-        } catch (TransformException e) {
-            throw new ProcessException(e);
-        } catch (NoninvertibleTransformException e) {
+        } catch (MismatchedDimensionException
+                | NoninvertibleTransformException
+                | TransformException e) {
             throw new ProcessException(e);
         }
         // System.out.println(rasterSpaceGeometry);

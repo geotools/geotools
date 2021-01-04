@@ -206,12 +206,12 @@ public class sldComplexTypes {
                 throws OperationNotSupportedException, SAXException {
             ContrastEnhancement symbol = new ContrastEnhancementImpl();
 
-            for (int i = 0; i < value.length; i++) {
-                if ((value[i] == null) || value[i].getElement() == null) {
+            for (ElementValue elementValue : value) {
+                if ((elementValue == null) || elementValue.getElement() == null) {
                     continue;
                 }
 
-                Element e = value[i].getElement();
+                Element e = elementValue.getElement();
                 if (elems[NORMALIZE].getName().equals(e.getName()))
                     symbol.setMethod(ContrastMethod.NORMALIZE); // (Graphic)value[i].getValue()
 
@@ -220,7 +220,8 @@ public class sldComplexTypes {
 
                 if (elems[GAMMAVALUE].getName().equals(e.getName())) {
                     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-                    symbol.setGammaValue(ff.literal(((Double) value[i].getValue()).doubleValue()));
+                    symbol.setGammaValue(
+                            ff.literal(((Double) elementValue.getValue()).doubleValue()));
                 }
             }
 
@@ -759,26 +760,26 @@ public class sldComplexTypes {
                 throws OperationNotSupportedException {
             Graphic symbol = CommonFactoryFinder.getStyleFactory().getDefaultGraphic();
 
-            for (int i = 0; i < value.length; i++) {
-                if ((value[i] == null) || value[i].getElement() == null) {
+            for (ElementValue elementValue : value) {
+                if ((elementValue == null) || elementValue.getElement() == null) {
                     continue;
                 }
 
-                Element e = value[i].getElement();
+                Element e = elementValue.getElement();
                 if (elems[EXTERNALGRAPHIC].getName().equals(e.getName()))
-                    symbol.graphicalSymbols().add((ExternalGraphic) value[i].getValue());
+                    symbol.graphicalSymbols().add((ExternalGraphic) elementValue.getValue());
 
                 if (elems[MARK].getName().equals(e.getName()))
-                    symbol.graphicalSymbols().add((Mark) value[i].getValue());
+                    symbol.graphicalSymbols().add((Mark) elementValue.getValue());
 
                 if (elems[OPACITY].getName().equals(e.getName()))
-                    symbol.setOpacity((Expression) value[i].getValue());
+                    symbol.setOpacity((Expression) elementValue.getValue());
 
                 if (elems[SIZE].getName().equals(e.getName()))
-                    symbol.setSize((Expression) value[i].getValue());
+                    symbol.setSize((Expression) elementValue.getValue());
 
                 if (elems[ROTATION].getName().equals(e.getName()))
-                    symbol.setRotation((Expression) value[i].getValue());
+                    symbol.setRotation((Expression) elementValue.getValue());
             }
 
             return symbol;
@@ -944,14 +945,14 @@ public class sldComplexTypes {
                 throws OperationNotSupportedException {
             Stroke symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
 
-            for (int i = 0; i < value.length; i++) {
-                if ((value[i] == null) || value[i].getElement() == null) {
+            for (ElementValue elementValue : value) {
+                if ((elementValue == null) || elementValue.getElement() == null) {
                     continue;
                 }
 
-                Element e = value[i].getElement();
+                Element e = elementValue.getElement();
                 if (elems[GRAPHICFILL].getName().equals(e.getName()))
-                    symbol.setGraphicFill((Graphic) value[i].getValue());
+                    symbol.setGraphicFill((Graphic) elementValue.getValue());
 
                 //                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
                 //                    // TODO apply the css

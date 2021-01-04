@@ -41,7 +41,7 @@ public class VPFDate {
      * @param date a <code>byte[]</code> value
      */
     public VPFDate(byte[] date) {
-        dateBin = (byte[]) date.clone();
+        dateBin = date.clone();
         initialize();
     }
 
@@ -93,8 +93,8 @@ public class VPFDate {
     public String toString() {
         StringBuffer sb = new StringBuffer(dateBin.length);
 
-        for (int i = 0; i < dateBin.length; i++) {
-            sb.append((char) dateBin[i]);
+        for (byte b : dateBin) {
+            sb.append((char) b);
         }
 
         return sb.toString();

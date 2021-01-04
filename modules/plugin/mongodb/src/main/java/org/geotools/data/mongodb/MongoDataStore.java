@@ -215,14 +215,7 @@ public class MongoDataStore extends ContentDataStore {
         if (schemaStoreURI.startsWith("file:")) {
             try {
                 return new MongoSchemaFileStore(schemaStoreURI);
-            } catch (URISyntaxException e) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        "Unable to create file-based schema store with URI \""
-                                + schemaStoreURI
-                                + "\"",
-                        e);
-            } catch (IOException e) {
+            } catch (URISyntaxException | IOException e) {
                 LOGGER.log(
                         Level.SEVERE,
                         "Unable to create file-based schema store with URI \""
@@ -273,14 +266,7 @@ public class MongoDataStore extends ContentDataStore {
         } else {
             try {
                 return new MongoSchemaFileStore("file:" + schemaStoreURI);
-            } catch (URISyntaxException e) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        "Unable to create file-based schema store with URI \""
-                                + schemaStoreURI
-                                + "\"",
-                        e);
-            } catch (IOException e) {
+            } catch (URISyntaxException | IOException e) {
                 LOGGER.log(
                         Level.SEVERE,
                         "Unable to create file-based schema store with URI \""

@@ -648,8 +648,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
                 // be specified explicitly through a hint (e.g. Hints.CRS_AUTHORITY_FACTORY).
                 return false;
             }
-            return Citations.identifierMatches(
-                    ((AuthorityFactory) provider).getAuthority(), authority);
+            return Citations.identifierMatches(provider.getAuthority(), authority);
         }
     }
 

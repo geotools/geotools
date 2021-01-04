@@ -52,7 +52,7 @@ public class FilterFunction_if_then_else extends FunctionExpressionImpl {
         }
         if (select) {
             try { // attempt to get value and perform conversion
-                arg1 = (Object) getExpression(1).evaluate(feature);
+                arg1 = getExpression(1).evaluate(feature);
                 return arg1;
             } catch (Exception e) // probably a type error
             {
@@ -61,7 +61,7 @@ public class FilterFunction_if_then_else extends FunctionExpressionImpl {
             }
         } else {
             try { // attempt to get value and perform conversion
-                arg2 = (Object) getExpression(2).evaluate(feature);
+                arg2 = getExpression(2).evaluate(feature);
                 return arg2;
             } catch (Exception e) // probably a type error
             {

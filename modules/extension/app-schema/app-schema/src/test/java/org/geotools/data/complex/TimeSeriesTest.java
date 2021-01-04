@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -264,8 +263,8 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
     private void assertPropertyNamesAndTypeNames(
             ComplexType parentType, Map expectedPropertiesAndTypes) throws Exception {
 
-        for (Iterator it = expectedPropertiesAndTypes.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Entry) it.next();
+        for (Object o : expectedPropertiesAndTypes.entrySet()) {
+            Entry entry = (Entry) o;
             Name dName = (Name) entry.getKey();
             Name expectedDescriptorTypeName = (Name) entry.getValue();
 
@@ -273,12 +272,9 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
             assertNotNull("Descriptor " + dName + " not found for type " + parentType.getName(), d);
             AttributeType type;
             try {
-                type = (AttributeType) d.getType();
+                type = d.getType();
             } catch (Exception e) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        "type not parsed for " + ((AttributeDescriptor) d).getName(),
-                        e);
+                LOGGER.log(Level.SEVERE, "type not parsed for " + d.getName(), e);
                 throw e;
             }
             assertNotNull(type);
@@ -424,7 +420,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
                 "aw:relatedObservation/aw:PhenomenonTimeSeries/om:observedProperty/swe:Phenomenon/gml:name";
         FeatureIterator it = features.features();
         for (; it.hasNext(); ) {
-            feature = (Feature) it.next();
+            feature = it.next();
             count++;
             {
                 PropertyName gmlName = ffac.property("gml:name");
@@ -469,7 +465,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
         FeatureIterator<? extends Feature> simpleIterator =
                 ((AbstractMappingFeatureIterator) features.features()).getSourceFeatureIterator();
         for (; simpleIterator.hasNext(); ) {
-            feature = (Feature) simpleIterator.next();
+            feature = simpleIterator.next();
             count++;
 
             if (count == 22) {

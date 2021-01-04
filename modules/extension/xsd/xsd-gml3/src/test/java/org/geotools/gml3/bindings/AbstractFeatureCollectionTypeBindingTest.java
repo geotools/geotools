@@ -55,15 +55,12 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
 
         assertEquals(2, fc.size());
 
-        SimpleFeatureIterator i = fc.features();
-        try {
-            SimpleFeature f = (SimpleFeature) i.next();
+        try (SimpleFeatureIterator i = fc.features()) {
+            SimpleFeature f = i.next();
             assertEquals("fid.1", f.getID());
 
-            f = (SimpleFeature) i.next();
+            f = i.next();
             assertEquals("fid.2", f.getID());
-        } finally {
-            i.close();
         }
     }
 
@@ -85,15 +82,12 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
 
         assertEquals(2, fc.size());
 
-        SimpleFeatureIterator i = fc.features();
-        try {
-            SimpleFeature f = (SimpleFeature) i.next();
+        try (SimpleFeatureIterator i = fc.features()) {
+            SimpleFeature f = i.next();
             assertEquals("fid.1", f.getID());
 
-            f = (SimpleFeature) i.next();
+            f = i.next();
             assertEquals("fid.2", f.getID());
-        } finally {
-            i.close();
         }
     }
 }

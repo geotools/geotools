@@ -19,7 +19,6 @@ package org.geotools.referencing.factory.gridshift;
 import au.com.objectix.jgridshift.GridShiftFile;
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -150,12 +149,9 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
             }
 
             return true; // No exception thrown => valid file.
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | IOException e) {
             // This usually means resource is not a valid NTv2 file.
             // Let exception message describe the cause.
-            LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-            return false;
-        } catch (IOException e) {
             LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return false;
         }
@@ -177,9 +173,6 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
             grid.loadGridShiftFile(in, false); // Load full grid in memory
             in.close();
             return grid;
-        } catch (FileNotFoundException e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            return null;
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;

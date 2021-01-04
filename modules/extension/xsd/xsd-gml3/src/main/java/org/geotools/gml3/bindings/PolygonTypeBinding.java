@@ -95,7 +95,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
         if (node.hasChild("interior")) {
             @SuppressWarnings("unchecked")
             List<LinearRing> list = node.getChildValues("interior");
-            interior = (LinearRing[]) list.toArray(new LinearRing[list.size()]);
+            interior = list.toArray(new LinearRing[list.size()]);
         }
 
         return gFactory.createPolygon(exterior, interior);

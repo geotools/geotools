@@ -125,7 +125,7 @@ public class XSISAXHandler extends DefaultHandler {
         XSIElementHandler peek = null;
         try {
             if ((text != null) && !"".equals(text.trim())) {
-                peek = (XSIElementHandler) handlers.peek();
+                peek = handlers.peek();
                 peek.characters(text);
             }
         } catch (SAXException e) {
@@ -146,7 +146,7 @@ public class XSISAXHandler extends DefaultHandler {
         logger.fine("END: " + qName);
 
         try {
-            XSIElementHandler element = (XSIElementHandler) handlers.pop();
+            XSIElementHandler element = handlers.pop();
             element.endElement(namespaceURI, localName);
         } catch (SAXException e) {
             logger.warning(e.toString());
@@ -166,10 +166,8 @@ public class XSISAXHandler extends DefaultHandler {
         logger.fine("START: " + qName);
 
         try {
-            XSIElementHandler eh =
-                    ((XSIElementHandler) handlers.peek()).getHandler(namespaceURI, localName);
-            logger.finest(
-                    "Parent Node = " + ((XSIElementHandler) handlers.peek()).getClass().getName());
+            XSIElementHandler eh = handlers.peek().getHandler(namespaceURI, localName);
+            logger.finest("Parent Node = " + handlers.peek().getClass().getName());
 
             if (eh == null) {
                 eh = new IgnoreHandler();

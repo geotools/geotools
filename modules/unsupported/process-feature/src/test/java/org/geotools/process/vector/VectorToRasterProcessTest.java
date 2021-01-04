@@ -139,9 +139,8 @@ public class VectorToRasterProcessTest {
         GridCoverage2D cov =
                 VectorToRasterProcess.process(features, "value", gridDim, bounds, covName, monitor);
 
-        SimpleFeatureIterator iter = features.features();
-        int[] covValues = new int[1];
-        try {
+        try (SimpleFeatureIterator iter = features.features()) {
+            int[] covValues = new int[1];
             while (iter.hasNext()) {
                 SimpleFeature feature = iter.next();
                 Coordinate coord = ((Geometry) feature.getDefaultGeometry()).getCoordinate();
@@ -151,8 +150,6 @@ public class VectorToRasterProcessTest {
                 cov.evaluate(worldPos, covValues);
                 assertEquals(value, covValues[0]);
             }
-        } finally {
-            iter.close();
         }
     }
 

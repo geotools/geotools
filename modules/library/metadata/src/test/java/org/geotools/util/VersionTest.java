@@ -42,7 +42,7 @@ public final class VersionTest {
         assertSame(version.getRevision(), version.getComponent(2));
         assertNull(version.getComponent(3));
 
-        assertTrue(version.compareTo(new Version("6.11.2")) == 0);
+        assertEquals(0, version.compareTo(new Version("6.11.2")));
         assertTrue(version.compareTo(new Version("6.8")) > 0);
         assertTrue(version.compareTo(new Version("6.12.0")) < 0);
         assertTrue(version.compareTo(new Version("6.11")) > 0);
@@ -59,7 +59,7 @@ public final class VersionTest {
         assertSame(version.getRevision(), version.getComponent(2));
         assertNull(version.getComponent(3));
 
-        assertTrue(version.compareTo(new Version("1.6.b2")) == 0);
+        assertEquals(0, version.compareTo(new Version("1.6.b2")));
         assertTrue(version.compareTo(new Version("1.6.b1")) > 0);
         assertTrue(version.compareTo(new Version("1.07.b1")) < 0);
     }

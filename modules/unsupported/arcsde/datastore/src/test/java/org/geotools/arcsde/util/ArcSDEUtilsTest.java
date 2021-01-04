@@ -75,7 +75,7 @@ public class ArcSDEUtilsTest {
         try {
             int[] projcsCodelist = PeFactory.projcsCodelist();
             int[] geogtranCodelist = PeFactory.geogcsCodelist();
-            Map<Integer, String> coordsystems = new TreeMap<Integer, String>();
+            Map<Integer, String> coordsystems = new TreeMap<>();
             for (int i : projcsCodelist) {
                 PeProjectedCS coordsys = PeFactory.projcs(i);
                 if (coordsys != null) {
@@ -102,10 +102,7 @@ public class ArcSDEUtilsTest {
             p.flush();
             p.close();
 
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        } catch (PeProjectionException e) {
+        } catch (Exception | PeProjectionException e) {
             // TODO Auto-generated catch block
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }

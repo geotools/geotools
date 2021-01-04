@@ -193,7 +193,7 @@ public class GribTest extends Assert {
             throws MalformedURLException, IOException {
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
 
         assertTrue(format.accepts(inputFile));
 
@@ -214,7 +214,7 @@ public class GribTest extends Assert {
             // value is not a NaN
             float[] result = new float[1];
             grid.evaluate(validPoint, result);
-            Assert.assertTrue(!Float.isNaN(result[0]));
+            Assert.assertFalse(Float.isNaN(result[0]));
             // Selection of one coordinate from the Coverage and check if the
             // value is NaN
             float[] result_2 = new float[1];
@@ -239,7 +239,7 @@ public class GribTest extends Assert {
         final File inputFile = TestData.file(this, "sampleGrib.grb2");
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
         assertTrue(format.accepts(inputFile));
         AbstractGridCoverage2DReader reader = null;
         assertNotNull(format);
@@ -297,7 +297,7 @@ public class GribTest extends Assert {
         final File inputFile = TestData.file(this, "tpcprblty.2019100912.incremental.grib2");
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
         assertTrue(format.accepts(inputFile));
         AbstractGridCoverage2DReader reader = null;
         assertNotNull(format);

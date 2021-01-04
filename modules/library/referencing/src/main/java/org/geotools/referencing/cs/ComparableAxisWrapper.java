@@ -52,7 +52,7 @@ final class ComparableAxisWrapper implements Comparable<ComparableAxisWrapper> {
      * Compares with the specified object. See class javadoc for a description of the sorting order.
      */
     public int compareTo(final ComparableAxisWrapper other) {
-        final ComparableAxisWrapper that = (ComparableAxisWrapper) other;
+        final ComparableAxisWrapper that = other;
         final AxisDirection d1 = this.axis.getDirection();
         final AxisDirection d2 = that.axis.getDirection();
         final int compass = DefaultCoordinateSystemAxis.getCompassAngle(d2, d1);

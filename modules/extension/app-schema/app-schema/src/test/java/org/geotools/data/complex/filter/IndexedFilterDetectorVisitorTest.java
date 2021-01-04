@@ -17,7 +17,6 @@
 package org.geotools.data.complex.filter;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,8 +46,8 @@ public class IndexedFilterDetectorVisitorTest extends AppSchemaTestSupport {
                     new IndexedFilterDetectorVisitor(fsource.getMappedSource().getMapping());
             Filter filter = partialIndexedFilter();
             filter.accept(visitor, null);
-            assertTrue(visitor.getIndexedFilters().get(0).equals(totallyIndexedFilter()));
-            assertTrue(visitor.getParentLogicOperator().equals(partialIndexedFilter()));
+            assertEquals(visitor.getIndexedFilters().get(0), totallyIndexedFilter());
+            assertEquals(visitor.getParentLogicOperator(), partialIndexedFilter());
         }
     }
 
@@ -65,9 +64,8 @@ public class IndexedFilterDetectorVisitorTest extends AppSchemaTestSupport {
             Filter filter = partialIndexedFilter_2idxfilterResults();
             filter.accept(visitor, null);
             assertEquals(2, visitor.getIndexedFilters().size());
-            assertTrue(
-                    visitor.getParentLogicOperator()
-                            .equals(partialIndexedFilter_2idxfilterResults()));
+            assertEquals(
+                    visitor.getParentLogicOperator(), partialIndexedFilter_2idxfilterResults());
         }
     }
 

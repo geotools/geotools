@@ -191,7 +191,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         Map<String, Feature> guMap = new HashMap<>();
         Feature guFeature;
         while (guIterator.hasNext()) {
-            guFeature = (Feature) guIterator.next();
+            guFeature = guIterator.next();
             String guId = guFeature.getIdentifier().getID();
             if (!guMap.containsKey(guId)) {
                 guMap.put(guId, guFeature);
@@ -203,7 +203,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         Map<String, Feature> cpMap = new HashMap<>();
         Feature cpFeature;
         while (cpIterator.hasNext()) {
-            cpFeature = (Feature) cpIterator.next();
+            cpFeature = cpIterator.next();
             String cpId = cpFeature.getIdentifier().getID();
             if (!cpMap.containsKey(cpId)) {
                 cpMap.put(cpId, cpFeature);
@@ -217,12 +217,12 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         Collection<Property> nestedCpFeatures;
         String cpId;
         while (mfIterator.hasNext()) {
-            mfFeature = (Feature) mfIterator.next();
+            mfFeature = mfIterator.next();
             String mfId = mfFeature.getIdentifier().toString();
             String[] guIds = this.mfToGuMap.get(mfId).split(";");
 
             // make sure we have the right number of nested features
-            nestedGuFeatures = (Collection<Property>) mfFeature.getProperties(NESTED_LINK);
+            nestedGuFeatures = mfFeature.getProperties(NESTED_LINK);
             assertEquals(guIds.length, nestedGuFeatures.size());
 
             ArrayList<String> nestedGuIds = new ArrayList<>();
@@ -249,7 +249,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
                 /** Test compositional part */
                 // make sure the right number of nested features are there
                 String[] cpIds = this.guToCpMap.get(guId).split(";");
-                nestedCpFeatures = (Collection<Property>) guFeature.getProperties("composition");
+                nestedCpFeatures = guFeature.getProperties("composition");
                 assertEquals(cpIds.length, nestedCpFeatures.size());
 
                 ArrayList<String> nestedCpIds = new ArrayList<>();
@@ -310,7 +310,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
         FeatureIterator<Feature> cpIterator = cpFeatures.features();
         while (cpIterator.hasNext()) {
-            Feature cpFeature = (Feature) cpIterator.next();
+            Feature cpFeature = cpIterator.next();
             Collection<Property> lithologies = cpFeature.getProperties(LITHOLOGY);
             if (cpFeature.getIdentifier().toString().equals("cp.167775491936278812")) {
                 // see ControlledConcept.properties file:
@@ -319,7 +319,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
                 // cc.1=name_b|cp.167775491936278812
                 // cc.1=name_c|cp.167775491936278812
                 // cc.2=name_2|cp.167775491936278812
-                assertEquals(2, ((Collection) lithologies).size());
+                assertEquals(2, lithologies.size());
                 Collection<String> lithologyIds = new ArrayList<>();
                 for (Property lithologyProperty : lithologies) {
                     Feature nestedFeature =
@@ -350,13 +350,12 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         final String EXPOSURE_COLOR = "exposureColor";
         final String OUTCROP_CHARACTER = "outcropCharacter";
         while (guIterator.hasNext()) {
-            guFeature = (Feature) guIterator.next();
+            guFeature = guIterator.next();
             String guId = guFeature.getIdentifier().toString();
             List<Object> realValues = new ArrayList<>();
 
             /** Test exposure color */
-            Collection<Property> nestedTermValues =
-                    (Collection<Property>) guFeature.getProperties(EXPOSURE_COLOR);
+            Collection<Property> nestedTermValues = guFeature.getProperties(EXPOSURE_COLOR);
             // get exposure color property values from geological unit feature
             for (Property property : nestedTermValues) {
                 Object value = property.getValue();
@@ -378,7 +377,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
             assertTrue(realValues.containsAll(Arrays.asList(values)));
 
             /** Test outcrop character */
-            nestedTermValues = (Collection<Property>) guFeature.getProperties(OUTCROP_CHARACTER);
+            nestedTermValues = guFeature.getProperties(OUTCROP_CHARACTER);
             realValues.clear();
             // get nested outcrop character values from geological unit feature
             for (Property property : nestedTermValues) {
@@ -495,7 +494,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         feature = filteredResults.features().next();
         assertEquals("gu.25678", feature.getIdentifier().toString());
         Collection<Property> properties = feature.getProperties(Types.typeName(GMLNS, "name"));
-        assertTrue(properties.size() == 3);
+        assertEquals(3, properties.size());
         Iterator<Property> propIterator = properties.iterator();
         ComplexAttribute complexAttribute;
         Collection<? extends Property> values;
@@ -525,7 +524,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         // ensure it's the right feature
         assertEquals("gu.25678", feature.getIdentifier().toString());
         properties = feature.getProperties(Types.typeName(GSMLNS, "exposureColor"));
-        assertTrue(properties.size() == 2);
+        assertEquals(2, properties.size());
         propIterator = properties.iterator();
         values = (Collection) propIterator.next().getValue();
         assertEquals(1, values.size());
@@ -565,8 +564,8 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         FeatureType featureType = dataAccess.getSchema(typeName);
         assertNotNull(featureType);
 
-        FeatureSource fSource = (FeatureSource) dataAccess.getFeatureSource(typeName);
-        FeatureCollection features = (FeatureCollection) fSource.getFeatures();
+        FeatureSource fSource = dataAccess.getFeatureSource(typeName);
+        FeatureCollection features = fSource.getFeatures();
 
         assertEquals(5, size(features));
 
@@ -611,8 +610,8 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         featureType = dataAccess.getSchema(typeName);
         assertNotNull(featureType);
 
-        fSource = (FeatureSource) dataAccess.getFeatureSource(typeName);
-        features = (FeatureCollection) fSource.getFeatures();
+        fSource = dataAccess.getFeatureSource(typeName);
+        features = fSource.getFeatures();
 
         assertEquals(5, size(features));
 
@@ -663,7 +662,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
         FeatureIterator<Feature> guIterator = guFeatures.features();
         while (guIterator.hasNext()) {
-            Feature guFeature = (Feature) guIterator.next();
+            Feature guFeature = guIterator.next();
             String guId = guFeature.getIdentifier().toString();
             String[] mfIds = guToOccurrenceMap.get(guId).split(";");
             Collection<Property> properties = guFeature.getProperties(OCCURENCE);

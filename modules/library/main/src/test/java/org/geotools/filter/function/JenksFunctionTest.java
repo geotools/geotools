@@ -143,7 +143,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
         assertEquals(5, range.getSize());
 
         for (int i = 0; i < 5; i++) {
-            assertTrue(i + 1 == ((Number) range.getMin(i)).doubleValue());
+            assertEquals(i + 1d, ((Number) range.getMin(i)).doubleValue());
             if (i != 4) {
                 assertEquals("wrong value for max", i + 2, ((Number) range.getMax(i)).intValue());
                 assertEquals("bad title", (i + 1) + ".." + (i + 2), range.getTitle(i));

@@ -1561,14 +1561,11 @@ public class StyleBuilder {
         double[] values = new double[fc.size()];
         int count = 0;
 
-        SimpleFeatureIterator it = fc.features();
-        try {
+        try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
-                SimpleFeature f = (SimpleFeature) it.next();
+                SimpleFeature f = it.next();
                 values[count++] = ((Number) f.getAttribute(name)).doubleValue();
             }
-        } finally {
-            it.close();
         }
 
         // pass to classification algorithm

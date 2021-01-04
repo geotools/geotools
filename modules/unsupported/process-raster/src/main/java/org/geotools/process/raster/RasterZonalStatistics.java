@@ -28,7 +28,6 @@ import javax.media.jai.ROI;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.GridCoverage2DRIA;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -228,12 +227,12 @@ public class RasterZonalStatistics implements RasterProcess {
         }
 
         public boolean hasNext() {
-            return features.size() > 0 || zones.hasNext();
+            return !features.isEmpty() || zones.hasNext();
         }
 
         public SimpleFeature next() throws NoSuchElementException {
             // build the next set of features if necessary
-            if (features.size() == 0) {
+            if (features.isEmpty()) {
                 // grab the current zone
                 SimpleFeature zone = zones.next();
 
@@ -302,7 +301,8 @@ public class RasterZonalStatistics implements RasterProcess {
             final AffineTransform dataG2WCorrected =
                     new AffineTransform(
                             (AffineTransform)
-                                    ((GridGeometry2D) dataCoverage.getGridGeometry())
+                                    dataCoverage
+                                            .getGridGeometry()
                                             .getGridToCRS2D(PixelOrientation.UPPER_LEFT));
             final MathTransform w2gTransform;
             try {

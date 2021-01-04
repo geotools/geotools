@@ -17,7 +17,7 @@
 package org.geotools.referencing.cs;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
@@ -86,6 +86,6 @@ public final class DirectionAlongMeridianTest {
         assertEquals(-90, m2.getAngle(m1), EPS);
         assertEquals(-1, m1.compareTo(m2));
         assertEquals(+1, m2.compareTo(m1));
-        assertFalse(m1.equals(m2));
+        assertNotEquals(m1, m2);
     }
 }

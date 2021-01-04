@@ -158,7 +158,7 @@ public class FeatureListenerManager {
                 }
 
                 listenerList = (EventListenerList) entry.getValue();
-                listeners = (FeatureListener[]) listenerList.getListeners(FeatureListener.class);
+                listeners = listenerList.getListeners(FeatureListener.class);
 
                 if (listeners.length != 0) {
                     map.put(featureSource, listeners);
@@ -362,8 +362,8 @@ public class FeatureListenerManager {
 
             event = new FeatureEvent(featureSource, type, bounds);
 
-            for (int l = 0; l < listeners.length; l++) {
-                listeners[l].changed(event);
+            for (FeatureListener listener : listeners) {
+                listener.changed(event);
             }
         }
     }
@@ -380,12 +380,12 @@ public class FeatureListenerManager {
 
         for (Map.Entry<SimpleFeatureSource, FeatureListener[]> entry : map.entrySet()) {
             featureSource = entry.getKey();
-            listeners = (FeatureListener[]) entry.getValue();
+            listeners = entry.getValue();
 
             event = new FeatureEvent(featureSource, type, bounds);
 
-            for (int l = 0; l < listeners.length; l++) {
-                listeners[l].changed(event);
+            for (FeatureListener listener : listeners) {
+                listener.changed(event);
             }
         }
     }

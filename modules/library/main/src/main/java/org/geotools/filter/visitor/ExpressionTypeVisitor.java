@@ -51,7 +51,7 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
                     put(
                             Byte.class,
                             Arrays.asList(
-                                    (Class<?>) Byte.class,
+                                    Byte.class,
                                     Short.class,
                                     Integer.class,
                                     Long.class,
@@ -62,7 +62,7 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
                     put(
                             Short.class,
                             Arrays.asList(
-                                    (Class<?>) Short.class,
+                                    Short.class,
                                     Integer.class,
                                     Long.class,
                                     Float.class,
@@ -72,7 +72,7 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
                     put(
                             Integer.class,
                             Arrays.asList(
-                                    (Class<?>) Integer.class,
+                                    Integer.class,
                                     Long.class,
                                     Float.class,
                                     Double.class,
@@ -81,17 +81,10 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
                     put(
                             Long.class,
                             Arrays.asList(
-                                    (Class<?>) Long.class,
-                                    Double.class,
-                                    BigInteger.class,
-                                    BigDecimal.class));
-                    put(
-                            Float.class,
-                            Arrays.asList((Class<?>) Float.class, Double.class, BigDecimal.class));
-                    put(Double.class, Arrays.asList((Class<?>) Double.class, BigDecimal.class));
-                    put(
-                            BigInteger.class,
-                            Arrays.asList((Class<?>) BigInteger.class, BigDecimal.class));
+                                    Long.class, Double.class, BigInteger.class, BigDecimal.class));
+                    put(Float.class, Arrays.asList(Float.class, Double.class, BigDecimal.class));
+                    put(Double.class, Arrays.asList(Double.class, BigDecimal.class));
+                    put(BigInteger.class, Arrays.asList(BigInteger.class, BigDecimal.class));
                 }
             };
 

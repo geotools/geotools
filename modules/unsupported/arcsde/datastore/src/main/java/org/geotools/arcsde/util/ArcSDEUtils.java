@@ -46,7 +46,7 @@ public final class ArcSDEUtils {
     public static final Logger LOGGER = Logging.getLogger(ArcSDEUtils.class);
 
     private static final WeakHashMap<String, CoordinateReferenceSystem> PE_CS_TO_EPSG =
-            new WeakHashMap<String, CoordinateReferenceSystem>();
+            new WeakHashMap<>();
 
     private ArcSDEUtils() {
         // private default constructor to stress the pure utility nature of this class
@@ -121,9 +121,9 @@ public final class ArcSDEUtils {
             }
             int seEpsgCode;
             PeCoordinateSystem candidate;
-            for (int i = 0; i < seEpsgCodes.length; i++) {
+            for (int code : seEpsgCodes) {
                 try {
-                    seEpsgCode = seEpsgCodes[i];
+                    seEpsgCode = code;
                     candidate = (PeCoordinateSystem) PeFactory.factory(seEpsgCode);
                     // in ArcSDE 9.2, if the PeFactory doesn't support a projection it claimed to
                     // support, it returns 'null'. So check for it.

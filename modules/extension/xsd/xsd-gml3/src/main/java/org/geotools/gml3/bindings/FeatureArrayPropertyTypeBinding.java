@@ -73,7 +73,7 @@ public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
      */
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        FeatureCollection fc = (FeatureCollection) node.getChildValue(FeatureCollection.class);
+        FeatureCollection fc = node.getChildValue(FeatureCollection.class);
         if (fc != null) {
             return fc;
         }

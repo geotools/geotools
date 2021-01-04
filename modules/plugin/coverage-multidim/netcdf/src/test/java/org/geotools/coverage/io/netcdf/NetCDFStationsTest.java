@@ -139,10 +139,10 @@ public final class NetCDFStationsTest {
 
     /** Checks that arrayA contains arrayB. */
     private void checkArrayContainsArray(int[] arrayA, int[] arrayB) {
-        for (int i = 0; i < arrayB.length; i++) {
+        for (int j : arrayB) {
             boolean found = false;
-            for (int j = 0; j < arrayA.length; j++) {
-                if (arrayB[i] == arrayA[j]) {
+            for (int k : arrayA) {
+                if (j == k) {
                     found = true;
                 }
             }

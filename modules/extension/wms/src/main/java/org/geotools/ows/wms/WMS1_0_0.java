@@ -21,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.AbstractRequest;
@@ -158,8 +157,8 @@ public class WMS1_0_0 extends WMSSpecification {
     }
 
     private static final String getParameterValue(String mimeType, Map map) {
-        for (Iterator i = map.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) i.next();
+        for (Object o : map.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
 
             if (mimeType.equals(entry.getValue())) {
                 return (String) entry.getKey();

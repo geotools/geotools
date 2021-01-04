@@ -48,7 +48,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
 
         SimpleBinding strategy = (SimpleBinding) stratagy(qname);
         Date parsed = (Date) strategy.parse(element(toParse, qname), toParse);
-        assertTrue(toEncode.getClass().equals(parsed.getClass()));
+        assertEquals(toEncode.getClass(), parsed.getClass());
 
         assertEquals(parsed.getClass().getName(), toEncode, parsed);
 
@@ -98,7 +98,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
     }
 
     public void testTime() throws Exception {
-        Integer nil = (Integer) null;
+        Integer nil = null;
         java.sql.Time expected;
 
         expected = new java.sql.Time(timestamp(nil, nil, nil, 10, 53, 24));

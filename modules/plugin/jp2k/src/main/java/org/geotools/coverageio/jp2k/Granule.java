@@ -216,11 +216,9 @@ class Granule {
                     Integer.valueOf(0),
                     new Level(1, 1, originalDimension.width, originalDimension.height));
 
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | IOException e) {
             throw new IllegalArgumentException(e);
 
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
         } finally {
             try {
                 if (inStream != null) inStream.close();
@@ -437,28 +435,7 @@ class Granule {
                 worker.affine(finalRaster2Model, nearest, null);
                 return worker.getRenderedImage();
             }
-
-        } catch (IllegalStateException e) {
-            if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
-                LOGGER.log(
-                        java.util.logging.Level.WARNING,
-                        "Unable to load raster for granule "
-                                + this.toString()
-                                + " with request "
-                                + request.toString(),
-                        e);
-            return null;
-        } catch (org.opengis.referencing.operation.NoninvertibleTransformException e) {
-            if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
-                LOGGER.log(
-                        java.util.logging.Level.WARNING,
-                        "Unable to load raster for granule "
-                                + this.toString()
-                                + " with request "
-                                + request.toString(),
-                        e);
-            return null;
-        } catch (TransformException e) {
+        } catch (IllegalStateException | TransformException e) {
             if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
                 LOGGER.log(
                         java.util.logging.Level.WARNING,
@@ -518,11 +495,9 @@ class Granule {
                     this.granuleLevels.put(Integer.valueOf(index), newLevel);
                     return newLevel;
 
-                } catch (IllegalStateException e) {
+                } catch (IllegalStateException | IOException e) {
                     throw new IllegalArgumentException(e);
 
-                } catch (IOException e) {
-                    throw new IllegalArgumentException(e);
                 } finally {
                     try {
                         if (inStream != null) inStream.close();

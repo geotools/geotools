@@ -82,9 +82,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
      */
     public void initialize() throws IOException {
 
-        Connection con = null;
-        try {
-            con = getConnection();
+        try (Connection con = getConnection()) {
 
             if (con.getAutoCommit()) {
                 con.setAutoCommit(false);
@@ -100,9 +98,12 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             */
             populateStatementsMap(getConfig().getCoverageName(), con);
             /*
-            TODO nat changes - GEOT-4525. I am  not sure if this is the best place for the next statement, as
-            if configurations have been already defined and were not recalculated, we will be just overwriting
-            existing configuration, albeit with the same values. But for simplicity sake, it is probably better
+            TODO nat changes - GEOT-4525. I am  not sure if this is the best place for the next
+             statement, as
+            if configurations have been already defined and were not recalculated, we will be
+            just overwriting
+            existing configuration, albeit with the same values. But for simplicity sake, it is
+            probably better
              to leave it here...
              */
             con.commit();
@@ -115,13 +116,8 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
             LOGGER.severe(e.getMessage());
             throw new IOException(e);
-        } finally {
-            try {
-                // con.rollback();
-                if (con != null) con.close();
-            } catch (SQLException e1) {
-            }
         }
+        // con.rollback();
 
         if (getLevelInfos().isEmpty()) {
             String msg = "No level available for " + getConfig().getCoverageName();

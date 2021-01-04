@@ -52,20 +52,19 @@ public class GazetteerNameValidationBeanInfoTest extends TestCase {
             PropertyDescriptor[] pd = bi.getPropertyDescriptors();
             PropertyDescriptor url, name;
             url = name = null;
-            for (int i = 0; i < pd.length; i++) {
-                if ("name".equals(pd[i].getName())) {
-                    name = pd[i];
+            for (PropertyDescriptor propertyDescriptor : pd) {
+                if ("name".equals(propertyDescriptor.getName())) {
+                    name = propertyDescriptor;
                 }
-                if ("gazetteer".equals(pd[i].getName())) {
-                    url = pd[i];
+                if ("gazetteer".equals(propertyDescriptor.getName())) {
+                    url = propertyDescriptor;
                 }
             }
             assertNotNull(url);
             assertNotNull(name);
-            assertTrue("test".equals(name.getReadMethod().invoke(gnv, null)));
-            assertTrue(
-                    (new URL("http://http://hydra/time/"))
-                            .equals(url.getReadMethod().invoke(gnv, null)));
+            assertEquals("test", name.getReadMethod().invoke(gnv, null));
+            assertEquals(
+                    (new URL("http://http://hydra/time/")), url.getReadMethod().invoke(gnv, null));
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());

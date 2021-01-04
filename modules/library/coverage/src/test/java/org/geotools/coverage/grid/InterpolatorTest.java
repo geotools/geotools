@@ -89,8 +89,7 @@ public final class InterpolatorTest extends GridCoverageTestBase {
         GridCoverage2D coverage = getRandomCoverage();
         final double PIXEL_SIZE =
                 XAffineTransform.getScale(
-                        (AffineTransform)
-                                ((GridGeometry2D) coverage.getGridGeometry()).getGridToCRS());
+                        (AffineTransform) coverage.getGridGeometry().getGridToCRS());
         final Interpolation interpolation =
                 Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
         coverage = Interpolator2D.create(coverage, new Interpolation[] {interpolation});
@@ -166,8 +165,7 @@ public final class InterpolatorTest extends GridCoverageTestBase {
                         properties);
         final double PIXEL_SIZE =
                 XAffineTransform.getScale(
-                        (AffineTransform)
-                                ((GridGeometry2D) coverage.getGridGeometry()).getGridToCRS());
+                        (AffineTransform) coverage.getGridGeometry().getGridToCRS());
         final Interpolation interpolation = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
         coverage = Interpolator2D.create(coverage, new Interpolation[] {interpolation});
         final int band = 0; // Band to test.

@@ -179,9 +179,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             } else if (dataSource instanceof DBCPDataSource) {
                 try {
                     username =
-                            ((BasicDataSource)
-                                            ((DBCPDataSource) dataSource).unwrap(DataSource.class))
-                                    .getUsername();
+                            ((BasicDataSource) dataSource.unwrap(DataSource.class)).getUsername();
                 } catch (SQLException e) {
                     throw (IOException) new IOException().initCause(e);
                 }

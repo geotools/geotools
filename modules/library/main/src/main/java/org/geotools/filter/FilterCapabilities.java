@@ -18,7 +18,6 @@ package org.geotools.filter;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import org.opengis.filter.And;
@@ -220,16 +219,16 @@ public class FilterCapabilities {
 
         ops = ops | type;
         // the type can be a mask signifying multiple filter types, we have to add them all
-        for (Iterator it = intTypeToOpenGisTypeMap.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) it.next();
+        for (Map.Entry<Long, Object> longObjectEntry : intTypeToOpenGisTypeMap.entrySet()) {
+            Map.Entry entry = (Map.Entry) longObjectEntry;
             long key = ((Long) entry.getKey()).longValue();
             if ((key & type) != 0) {
                 Object filter = entry.getValue();
                 if (filter != null) {
                     if (filter instanceof Class[]) {
                         Class[] filters = (Class[]) filter;
-                        for (int i = 0; i < filters.length; i++) {
-                            addType(filters[i], false);
+                        for (Class aClass : filters) {
+                            addType(aClass, false);
                         }
                     } else {
                         addType((Class) filter, false);

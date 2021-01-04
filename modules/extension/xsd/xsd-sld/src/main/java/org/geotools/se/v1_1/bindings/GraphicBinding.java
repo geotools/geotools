@@ -62,10 +62,10 @@ public class GraphicBinding extends SLDGraphicBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Graphic g = (Graphic) super.parse(instance, node, value);
         if (node.hasChild(AnchorPoint.class)) {
-            g.setAnchorPoint((AnchorPoint) node.getChildValue(AnchorPoint.class));
+            g.setAnchorPoint(node.getChildValue(AnchorPoint.class));
         }
         if (node.hasChild(Displacement.class)) {
-            g.setDisplacement((Displacement) node.getChildValue(Displacement.class));
+            g.setDisplacement(node.getChildValue(Displacement.class));
         }
         return g;
     }

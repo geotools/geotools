@@ -378,15 +378,7 @@ class RasterLayerRequest {
 
                 return;
             }
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            requestedBBox = null;
-            coverageRequestedRasterArea = null;
-        } catch (TransformException e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            requestedBBox = null;
-            coverageRequestedRasterArea = null;
-        } catch (FactoryException e) {
+        } catch (IOException | FactoryException | TransformException e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             requestedBBox = null;
             coverageRequestedRasterArea = null;
@@ -590,9 +582,7 @@ class RasterLayerRequest {
                 }
                 return;
             }
-        } catch (TransformException e) {
-            throw new DataSourceException("Unable to create a coverage for this source", e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new DataSourceException("Unable to create a coverage for this source", e);
         }
 
@@ -619,8 +609,7 @@ class RasterLayerRequest {
         coverageCRS2D = CRS.getHorizontalCRS(coverageCRS);
         assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
         if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
-            final MathTransform transform =
-                    CRS.findMathTransform(coverageCRS, (CoordinateReferenceSystem) coverageCRS2D);
+            final MathTransform transform = CRS.findMathTransform(coverageCRS, coverageCRS2D);
             final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
             bbox.setCoordinateReferenceSystem(coverageCRS2D);
             coverageBBox = new ReferencedEnvelope(bbox);
@@ -731,7 +720,7 @@ class RasterLayerRequest {
             ////
             // intersect the requested area with the bounds of this
             // layer in native crs
-            if (!requestedBBox.intersects((BoundingBox) coverageBBox)) {
+            if (!requestedBBox.intersects(coverageBBox)) {
                 requestedBBox = null;
                 return;
             }

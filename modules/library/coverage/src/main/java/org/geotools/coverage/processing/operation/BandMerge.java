@@ -372,11 +372,7 @@ public class BandMerge extends OperationJAI {
         ParameterBlockJAI block;
         try {
             block = prepareParameters(parameters, sources, tr, crsToGrid);
-        } catch (MismatchedDimensionException e) {
-            throw new CoverageProcessingException(e);
-        } catch (ParameterNotFoundException e) {
-            throw new CoverageProcessingException(e);
-        } catch (TransformException e) {
+        } catch (MismatchedDimensionException | TransformException | ParameterNotFoundException e) {
             throw new CoverageProcessingException(e);
         }
         /*

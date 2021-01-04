@@ -72,8 +72,7 @@ public class SubstitutionGroupLeakPreventer implements Adapter {
             synchronized (e) {
                 ArrayList<Integer> toremove = new ArrayList<>();
                 for (int i = 0; i < e.getSubstitutionGroup().size(); i++) {
-                    XSDElementDeclaration se =
-                            (XSDElementDeclaration) e.getSubstitutionGroup().get(i);
+                    XSDElementDeclaration se = e.getSubstitutionGroup().get(i);
                     if (se == null
                             || (Utilities.equals(el.getTargetNamespace(), se.getTargetNamespace())
                                     && Utilities.equals(el.getName(), se.getName()))) {

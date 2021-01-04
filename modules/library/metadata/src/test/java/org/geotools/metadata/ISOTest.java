@@ -175,8 +175,7 @@ public final class ISOTest {
     /** Ensures that the {@link #TEST} array do not contains code list. */
     @Test
     public void testNoCodeList() {
-        for (int i = 0; i < TEST.length; i++) {
-            final Class type = TEST[i];
+        for (final Class type : TEST) {
             assertFalse(type.getName(), CodeList.class.isAssignableFrom(type));
         }
     }
@@ -187,8 +186,7 @@ public final class ISOTest {
         assertNull(getImplementation(Number.class));
         assertSame(MetaDataImpl.class, getImplementation(MetaData.class));
         final Set<Class<?>> done = new HashSet<>();
-        for (int i = 0; i < TEST.length; i++) {
-            final Class<?> type = TEST[i];
+        for (final Class<?> type : TEST) {
             final Class<?> impl = getImplementation(type);
             if (impl == null) {
                 if (isImplemented(type)) {
@@ -296,8 +294,8 @@ public final class ISOTest {
      * Returns {@code true} if the specified type is not in the list of known unimplemented types.
      */
     private static boolean isImplemented(final Class<?> type) {
-        for (int i = 0; i < UNIMPLEMENTED.length; i++) {
-            if (type.equals(UNIMPLEMENTED[i])) {
+        for (Class<?> aClass : UNIMPLEMENTED) {
+            if (type.equals(aClass)) {
                 return false;
             }
         }

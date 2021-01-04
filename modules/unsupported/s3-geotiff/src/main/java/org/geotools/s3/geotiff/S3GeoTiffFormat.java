@@ -47,8 +47,7 @@ public class S3GeoTiffFormat extends GeoTiffFormat {
     private static final Logger LOGGER = Logger.getLogger(S3GeoTiffFormat.class.getName());
 
     private static final DefaultParameterDescriptor<String> AWS_REGION =
-            new DefaultParameterDescriptor<>(
-                    "AwsRegion", String.class, (String[]) null, "US_EAST_1");
+            new DefaultParameterDescriptor<>("AwsRegion", String.class, null, "US_EAST_1");
 
     public S3GeoTiffFormat() {
         writeParameters = null;

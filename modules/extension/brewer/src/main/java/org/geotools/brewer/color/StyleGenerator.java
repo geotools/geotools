@@ -162,7 +162,7 @@ public class StyleGenerator {
 
             // for each class
             for (int i = 0; i < explicit.getSize(); i++) {
-                Set value = (Set) explicit.getValues(i);
+                Set value = explicit.getValues(i);
                 Rule rule =
                         createRuleExplicit(
                                 explicit,
@@ -471,7 +471,7 @@ public class StyleGenerator {
 
     public static String toStyleExpression(Filter filter) {
         if (filter instanceof And) { // looks like a ranged filter
-            return toRangedStyleExpression((And) filter);
+            return toRangedStyleExpression(filter);
         } else { // it's probably a filter with explicitly defined values
             return toExplicitStyleExpression(filter);
         }

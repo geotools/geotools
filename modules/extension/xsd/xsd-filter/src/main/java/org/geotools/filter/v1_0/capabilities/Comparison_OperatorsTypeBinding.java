@@ -105,8 +105,7 @@ public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
             comparisons.add(factory.operator("NullCheck"));
         }
 
-        return factory.comparisonOperators(
-                (Operator[]) comparisons.toArray(new Operator[comparisons.size()]));
+        return factory.comparisonOperators(comparisons.toArray(new Operator[comparisons.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

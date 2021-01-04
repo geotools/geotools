@@ -125,12 +125,10 @@ public class CRSTest extends TestCase {
     }
 
     public void testManditoryTranform() throws Exception {
-        CoordinateReferenceSystem WGS84 =
-                (CoordinateReferenceSystem) CRS.decode("EPSG:4326"); // latlong
-        CoordinateReferenceSystem NAD83 = (CoordinateReferenceSystem) CRS.decode("EPSG:4269");
-        CoordinateReferenceSystem NAD83_UTM10 =
-                (CoordinateReferenceSystem) CRS.decode("EPSG:26910");
-        CoordinateReferenceSystem BC_ALBERS = (CoordinateReferenceSystem) CRS.decode("EPSG:42102");
+        CoordinateReferenceSystem WGS84 = CRS.decode("EPSG:4326"); // latlong
+        CoordinateReferenceSystem NAD83 = CRS.decode("EPSG:4269");
+        CoordinateReferenceSystem NAD83_UTM10 = CRS.decode("EPSG:26910");
+        CoordinateReferenceSystem BC_ALBERS = CRS.decode("EPSG:42102");
 
         CoordinateOperation op =
                 ReferencingFactoryFinder.getCoordinateOperationFactory(null)
@@ -187,9 +185,8 @@ public class CRSTest extends TestCase {
                     -123.47009555832284, 48.543261561072285
                 };
 
-        CoordinateReferenceSystem WGS84 =
-                (CoordinateReferenceSystem) CRS.decode("EPSG:4326"); // latlong
-        CoordinateReferenceSystem BC_ALBERS = (CoordinateReferenceSystem) CRS.decode("EPSG:42102");
+        CoordinateReferenceSystem WGS84 = CRS.decode("EPSG:4326"); // latlong
+        CoordinateReferenceSystem BC_ALBERS = CRS.decode("EPSG:42102");
 
         MathTransform transform = CRS.findMathTransform(BC_ALBERS, WGS84);
 
@@ -219,7 +216,7 @@ public class CRSTest extends TestCase {
                 };
 
         CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
-        CoordinateReferenceSystem BC_ALBERS = (CoordinateReferenceSystem) CRS.decode("EPSG:42102");
+        CoordinateReferenceSystem BC_ALBERS = CRS.decode("EPSG:42102");
 
         MathTransform transform = CRS.findMathTransform(BC_ALBERS, WGS84);
         double[] polyAfter = new double[poly1.length];

@@ -46,7 +46,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -787,7 +786,7 @@ public class HeterogenousCRSTest {
         assertEquals(1, imageReads.size());
         RenderedOp unwarpedImage = imageReads.iterator().next();
         final ParameterBlock block = unwarpedImage.getParameterBlock();
-        Vector<Object> paramValues = block.getParameters();
+        List<Object> paramValues = block.getParameters();
         // The green.tif is the image with native CRS = 32632 so the only one not being reprojected
         assertTrue(
                 ((FileImageInputStreamExtImpl) paramValues.get(0))
@@ -798,7 +797,7 @@ public class HeterogenousCRSTest {
     }
 
     private void removeImagesBeingWarped(RenderedOp image, Set<RenderedOp> imageReads) {
-        Vector sources = image.getSources();
+        List sources = image.getSources();
         Iterator it = sources.iterator();
         while (it.hasNext()) {
             Object source = it.next();
@@ -825,7 +824,7 @@ public class HeterogenousCRSTest {
             }
             set.add(op);
             operationsSet.put(opName, set);
-            Vector sources = op.getSources();
+            List sources = op.getSources();
             Iterator it = sources.iterator();
             while (it.hasNext()) {
                 Object source = it.next();

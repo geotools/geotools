@@ -107,8 +107,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         // TODO: crs?
-        FeatureReader<SimpleFeatureType, SimpleFeature> r = getReader(query);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> r = getReader(query)) {
             ReferencedEnvelope e = new ReferencedEnvelope();
             if (r.hasNext()) {
                 e.init(r.next().getBounds());
@@ -117,8 +116,6 @@ public class MongoFeatureSource extends ContentFeatureSource {
                 e.include(r.next().getBounds());
             }
             return e;
-        } finally {
-            r.close();
         }
     }
 
@@ -143,6 +140,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // r is re-assigned, but also wrapped
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
 

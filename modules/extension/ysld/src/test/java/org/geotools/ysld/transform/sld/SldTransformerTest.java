@@ -1988,7 +1988,7 @@ public class SldTransformerTest {
     }
 
     YamlMap yaml(SldTransformer transformer) throws Exception {
-        String yaml = ((StringWriter) transformer.context().output()).toString();
+        String yaml = transformer.context().output().toString();
         return new YamlMap(YamlUtil.getSafeYaml().load(yaml));
     }
 

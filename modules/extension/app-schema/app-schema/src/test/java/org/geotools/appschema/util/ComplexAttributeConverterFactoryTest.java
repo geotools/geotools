@@ -67,7 +67,7 @@ public class ComplexAttributeConverterFactoryTest extends TestCase {
                         1,
                         1,
                         true,
-                        (Object) null);
+                        null);
         attributes.add(new AttributeImpl("rini", descriptor, null));
         ComplexAttribute gmlName =
                 new ComplexAttributeImpl(attributes, GMLSchema.CODETYPE_TYPE, null);
@@ -85,7 +85,7 @@ public class ComplexAttributeConverterFactoryTest extends TestCase {
                         1,
                         1,
                         true,
-                        (Object) null);
+                        null);
         attributes.add(new AttributeImpl("rini", descriptor, null));
         ComplexAttribute gmlName =
                 new ComplexAttributeImpl(attributes, GMLSchema.CODETYPE_TYPE, null);
@@ -133,7 +133,7 @@ public class ComplexAttributeConverterFactoryTest extends TestCase {
                                 null),
                         null);
         Geometry geometry2 = Converters.convert(geoatt, Geometry.class);
-        assertTrue(geometry == geometry2);
+        assertSame(geometry, geometry2);
     }
 
     /** Checks that an attribute value is correctly converted to the expected type. */

@@ -91,8 +91,8 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     protected void fireChange(SimpleFeature[] features, int type) {
         CollectionEvent cEvent = new CollectionEvent(this, features, type);
 
-        for (int i = 0, ii = listeners.size(); i < ii; i++) {
-            ((CollectionListener) listeners.get(i)).collectionChanged(cEvent);
+        for (CollectionListener listener : listeners) {
+            listener.collectionChanged(cEvent);
         }
     }
 
@@ -275,9 +275,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      * data.
      */
     public boolean isEmpty() {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
-        try {
-            reader = reader();
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader()) {
             try {
                 return !reader.hasNext();
             } catch (IOException e) {
@@ -285,14 +283,6 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
             }
         } catch (IOException e) {
             return true;
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    // return value already set
-                }
-            }
         }
     }
 
@@ -301,9 +291,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         SimpleFeature value = (SimpleFeature) o;
         String ID = value.getID();
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
-        try {
-            reader = reader();
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader()) {
             try {
                 while (reader.hasNext()) {
                     SimpleFeature feature = reader.next();
@@ -313,23 +301,11 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
                     if (value.equals(feature)) return true;
                 }
                 return false; // not found
-            } catch (IOException e) {
-                return false; // error seems like no features are available
-            } catch (NoSuchElementException e) {
-                return false; // error seems like no features are available
-            } catch (IllegalAttributeException e) {
+            } catch (IOException | IllegalAttributeException | NoSuchElementException e) {
                 return false; // error seems like no features are available
             }
         } catch (IOException e) {
             return false;
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    // return value already set
-                }
-            }
         }
     }
 

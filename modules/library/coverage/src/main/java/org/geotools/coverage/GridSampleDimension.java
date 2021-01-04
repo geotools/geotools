@@ -125,7 +125,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @since 2.3
      */
     public GridSampleDimension(final CharSequence description) {
-        this(description, (CategoryList) null, 1, 0);
+        this(description, null, 1, 0);
     }
 
     /**
@@ -833,8 +833,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     public double getMinimumValue() {
         if (categories != null && !categories.isEmpty()) {
-            for (int i = 0; i < categories.size(); i++) {
-                Category cat = categories.get(i);
+            for (Category cat : categories) {
                 if (!Category.NODATA.getName().equals(cat.getName())) {
                     // Exclude the value of the NODATA category
                     // which can be retrieved with getNoDataValues
@@ -897,8 +896,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     private static boolean rangeContains(
             final double lower, final double upper, final double[] values) {
         if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                final double v = values[i];
+            for (final double v : values) {
                 if (v >= lower && v < upper) {
                     return true;
                 }

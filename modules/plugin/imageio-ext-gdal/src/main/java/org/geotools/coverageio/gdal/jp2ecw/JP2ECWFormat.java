@@ -60,11 +60,7 @@ public final class JP2ECWFormat extends BaseGDALGridFormat implements Format {
     public JP2ECWReader getReader(Object source, Hints hints) {
         try {
             return new JP2ECWReader(source, hints);
-        } catch (MismatchedDimensionException e) {
-            final RuntimeException re = new RuntimeException();
-            re.initCause(e);
-            throw re;
-        } catch (DataSourceException e) {
+        } catch (MismatchedDimensionException | DataSourceException e) {
             final RuntimeException re = new RuntimeException();
             re.initCause(e);
             throw re;

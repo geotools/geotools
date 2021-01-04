@@ -29,7 +29,6 @@ import org.geotools.filter.function.ClassificationFunction;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
 /** @author James Macgill */
 public class PaletteFunction extends FunctionExpressionImpl {
@@ -62,7 +61,7 @@ public class PaletteFunction extends FunctionExpressionImpl {
     public void setParameters(List<Expression> args) {
         super.setParameters(args);
         classifier = (ClassificationFunction) getExpression(0);
-        paletteName = ((Literal) getExpression(1)).evaluate(null, String.class);
+        paletteName = getExpression(1).evaluate(null, String.class);
     }
 
     public Expression getEvaluationExpression() {

@@ -206,8 +206,8 @@ public class MemoryDataStoreTest extends DataTestCase {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(expected)) {
+        for (Object o : array) {
+            if (o.equals(expected)) {
                 return true;
             }
         }
@@ -221,8 +221,8 @@ public class MemoryDataStoreTest extends DataTestCase {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (match(array[i], expected)) {
+        for (SimpleFeature simpleFeature : array) {
+            if (match(simpleFeature, expected)) {
                 return true;
             }
         }
@@ -276,7 +276,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 data.getFeatureSource("road").getReader();
         assertCovered(roadFeatures, reader);
-        assertEquals(false, reader.hasNext());
+        assertFalse(reader.hasNext());
     }
 
     public void testGetFeatureReaderMutability() throws IOException {
@@ -285,7 +285,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature feature;
 
         while (reader.hasNext()) {
-            feature = (SimpleFeature) reader.next();
+            feature = reader.next();
             feature.setAttribute("name", null);
         }
 
@@ -294,7 +294,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         reader = data.getFeatureSource("road").getReader();
 
         while (reader.hasNext()) {
-            feature = (SimpleFeature) reader.next();
+            feature = reader.next();
             assertNotNull(feature.getAttribute("name"));
         }
 
@@ -657,11 +657,11 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature feature;
 
         while (writer.hasNext()) {
-            feature = (SimpleFeature) writer.next();
+            feature = writer.next();
         }
 
         assertFalse(writer.hasNext());
-        feature = (SimpleFeature) writer.next();
+        feature = writer.next();
         feature.setAttributes(newRoad.getAttributes());
         writer.write();
         assertFalse(writer.hasNext());
@@ -721,10 +721,9 @@ public class MemoryDataStoreTest extends DataTestCase {
 
     /** Test two transactions one removing feature, and one adding a feature. */
     public void testGetFeatureWriterTransaction() throws Exception {
-        Transaction t1 = new DefaultTransaction();
-        Transaction t2 = new DefaultTransaction();
 
-        try {
+        try (Transaction t1 = new DefaultTransaction();
+                Transaction t2 = new DefaultTransaction()) {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 =
                     data.getFeatureWriter("road", rd1Filter, t1);
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 =
@@ -769,7 +768,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             // -------------------------------
             // - tests transaction independence from DataStore
             while (writer1.hasNext()) {
-                feature = (SimpleFeature) writer1.next();
+                feature = writer1.next();
                 assertEquals("road.rd1", feature.getID());
                 writer1.remove();
             }
@@ -794,7 +793,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             // writer 2 adds road.rd4 on t2
             // ----------------------------
             // - tests transaction independence from each other
-            feature = (SimpleFeature) writer2.next();
+            feature = writer2.next();
             feature.setAttributes(newRoad.getAttributes());
             writer2.write();
 
@@ -843,9 +842,6 @@ public class MemoryDataStoreTest extends DataTestCase {
             assertTrue(coversLax(reader, FINAL));
             reader = data.getFeatureReader(new Query("road"), t2);
             assertTrue(coversLax(reader, FINAL));
-        } finally {
-            t1.close();
-            t2.close();
         }
     }
 
@@ -1263,7 +1259,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             }
 
             FeatureEvent getEvent(int i) {
-                return (FeatureEvent) events.get(i);
+                return events.get(i);
             }
 
             public String toString() {
@@ -1383,9 +1379,8 @@ public class MemoryDataStoreTest extends DataTestCase {
     public void testLockFeatureInteraction() throws IOException {
         FeatureLock lockA = new FeatureLock("LockA", 3600);
         FeatureLock lockB = new FeatureLock("LockB", 3600);
-        Transaction t1 = new DefaultTransaction();
-        Transaction t2 = new DefaultTransaction();
-        try {
+        try (Transaction t1 = new DefaultTransaction();
+                Transaction t2 = new DefaultTransaction()) {
             @SuppressWarnings("unchecked")
             FeatureLocking<SimpleFeatureType, SimpleFeature> road1 =
                     (FeatureLocking<SimpleFeatureType, SimpleFeature>)
@@ -1434,9 +1429,6 @@ public class MemoryDataStoreTest extends DataTestCase {
             assertFalse(isLocked("road", "road.rd1"));
             assertFalse(isLocked("road", "road.rd2"));
             assertFalse(isLocked("road", "road.rd3"));
-        } finally {
-            t1.close();
-            t2.close();
         }
     }
 

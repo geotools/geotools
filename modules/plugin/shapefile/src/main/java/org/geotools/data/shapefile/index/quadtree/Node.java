@@ -88,7 +88,7 @@ public class Node {
      * @return A Node
      */
     public Node getSubNode(int pos) throws StoreException {
-        return (Node) this.subNodes.get(pos);
+        return this.subNodes.get(pos);
     }
 
     /** Add a shape id */
@@ -131,8 +131,8 @@ public class Node {
             this.shapesId = ids;
             this.numShapesId = 0;
 
-            for (int i = 0; i < ids.length; i++) {
-                if (ids[i] == -1) {
+            for (int id : ids) {
+                if (id == -1) {
                     break;
                 }
 

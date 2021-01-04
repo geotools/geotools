@@ -194,11 +194,11 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
             FeatureType boreholeType = mappingDataStore.getSchema(typeName);
             assertNotNull(boreholeType);
 
-            FeatureSource fSource = (FeatureSource) mappingDataStore.getFeatureSource(typeName);
+            FeatureSource fSource = mappingDataStore.getFeatureSource(typeName);
 
             final int EXPECTED_RESULT_COUNT = 2;
 
-            FeatureCollection features = (FeatureCollection) fSource.getFeatures();
+            FeatureCollection features = fSource.getFeatures();
 
             int resultCount = getCount(features);
             assertEquals(EXPECTED_RESULT_COUNT, resultCount);
@@ -207,7 +207,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
             int count = 0;
             FeatureIterator it = features.features();
             for (; it.hasNext(); ) {
-                feature = (Feature) it.next();
+                feature = it.next();
                 count++;
             }
             it.close();
@@ -274,13 +274,10 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
         int size = 0;
-        FeatureIterator<Feature> i = features.features();
-        try {
+        try (FeatureIterator<Feature> i = features.features()) {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        } finally {
-            i.close();
         }
         return size;
     }

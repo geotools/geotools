@@ -127,7 +127,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      */
     public boolean addAuthorityCode(final String code) {
         final boolean already = objects.containsKey(code);
-        final IdentifiedObject old = (IdentifiedObject) objects.put(code, null);
+        final IdentifiedObject old = objects.put(code, null);
         if (old != null) {
             // A fully created object was already there. Keep it.
             objects.put(code, old);
@@ -155,7 +155,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * @throws BackingStoreException if the object creation failed.
      */
     private IdentifiedObject get(final String code) throws BackingStoreException {
-        IdentifiedObject object = (IdentifiedObject) objects.get(code);
+        IdentifiedObject object = objects.get(code);
         if (object == null && objects.containsKey(code)) {
             try {
                 object = createObject(code);
@@ -197,8 +197,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      */
     public boolean removeAll(final Collection collection) {
         boolean modified = false;
-        for (final Iterator it = collection.iterator(); it.hasNext(); ) {
-            if (remove(it.next())) {
+        for (Object o : collection) {
+            if (remove(o)) {
                 modified = true;
             }
         }
@@ -226,11 +226,11 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      *     {@linkplain #size set's size}, then the creation of all objects is garantee successful.
      * @throws FactoryException if an {@linkplain #createObject object creation} failed.
      */
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void resolve(int n) throws FactoryException {
         if (n > 0)
             try {
-                for (final Iterator it = iterator(); it.hasNext(); ) {
-                    it.next();
+                for (Object o : this) {
                     if (--n == 0) {
                         break;
                     }
@@ -273,9 +273,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     public void setAuthorityCodes(final String[] codes) {
         final Map<String, IdentifiedObject> copy = new HashMap<>(objects);
         objects.clear();
-        for (int i = 0; i < codes.length; i++) {
-            final String code = codes[i];
-            objects.put(code, (IdentifiedObject) copy.get(code));
+        for (final String code : codes) {
+            objects.put(code, copy.get(code));
         }
     }
 

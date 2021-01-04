@@ -83,14 +83,11 @@ public class SubFeatureCollection extends BaseSimpleFeatureCollection {
 
     public int size() {
         int count = 0;
-        SimpleFeatureIterator i = features();
-        try {
+        try (SimpleFeatureIterator i = features()) {
             while (i.hasNext()) {
                 i.next();
                 count++;
             }
-        } finally {
-            i.close();
         }
         return count;
     }

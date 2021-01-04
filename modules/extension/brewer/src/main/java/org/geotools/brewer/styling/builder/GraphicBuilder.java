@@ -138,7 +138,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.opengis.style.Graph
         if (unset) {
             return null;
         }
-        if (symbols.size() == 0) {
+        if (symbols.isEmpty()) {
             // add the default mark
             mark();
         }

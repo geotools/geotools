@@ -75,8 +75,8 @@ public class SortPropertyTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
-        SortOrder order = (SortOrder) node.getChildValue(SortOrder.class);
+        PropertyName name = node.getChildValue(PropertyName.class);
+        SortOrder order = node.getChildValue(SortOrder.class);
 
         if (order == null) {
             order = SortOrder.ASCENDING;

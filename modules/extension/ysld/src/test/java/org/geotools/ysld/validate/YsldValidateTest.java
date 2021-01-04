@@ -99,8 +99,8 @@ public class YsldValidateTest {
         return Matchers.describedAs(
                 "Problem at Line %0 Column %1",
                 allOf(
-                        Matchers.<Mark>hasProperty("line", is(line - 1)),
-                        Matchers.<Mark>hasProperty("column", is(column - 1))),
+                        Matchers.hasProperty("line", is(line - 1)),
+                        Matchers.hasProperty("column", is(column - 1))),
                 line,
                 column);
     }
@@ -109,7 +109,7 @@ public class YsldValidateTest {
     Matcher<Mark> problemOn(int line) {
         return Matchers.describedAs(
                 "Problem somewhere on Line %0",
-                allOf(Matchers.<Mark>hasProperty("line", is(line - 1))), line);
+                allOf(Matchers.hasProperty("line", is(line - 1))), line);
     }
 
     static final String[] EXPRESSION_KEYS = {
@@ -614,7 +614,7 @@ public class YsldValidateTest {
 
     List<MarkedYAMLException> validate(String ysld) throws IOException {
         // return dump(Ysld.validate(ysld));
-        return this.validate(ysld, Collections.<ZoomContextFinder>emptyList());
+        return this.validate(ysld, Collections.emptyList());
     }
 
     List<MarkedYAMLException> validate(String ysld, List<ZoomContextFinder> ctxts)

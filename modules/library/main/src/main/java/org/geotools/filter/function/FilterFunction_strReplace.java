@@ -46,7 +46,7 @@ public class FilterFunction_strReplace extends FunctionExpressionImpl {
         Boolean arg3 = null;
 
         try { // attempt to get value and perform conversion
-            arg0 = (String) getExpression(0).evaluate(feature, String.class); // extra
+            arg0 = getExpression(0).evaluate(feature, String.class); // extra
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -54,7 +54,7 @@ public class FilterFunction_strReplace extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = (String) getExpression(1).evaluate(feature, String.class); // extra
+            arg1 = getExpression(1).evaluate(feature, String.class); // extra
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -62,7 +62,7 @@ public class FilterFunction_strReplace extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg2 = (String) getExpression(2).evaluate(feature, String.class); // extra
+            arg2 = getExpression(2).evaluate(feature, String.class); // extra
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -70,7 +70,7 @@ public class FilterFunction_strReplace extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg3 = (Boolean) getExpression(3).evaluate(feature, Boolean.class); // extra
+            arg3 = getExpression(3).evaluate(feature, Boolean.class); // extra
         } catch (Exception e) // probably a type error
         {
         }

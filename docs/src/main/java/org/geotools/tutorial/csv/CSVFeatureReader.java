@@ -56,7 +56,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
     /** Access FeatureType (documenting available attributes) */
     public SimpleFeatureType getFeatureType() {
-        return (SimpleFeatureType) state.getFeatureType();
+        return state.getFeatureType();
     }
     // class definition end
 

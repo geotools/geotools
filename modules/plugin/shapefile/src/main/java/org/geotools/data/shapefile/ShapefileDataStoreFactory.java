@@ -279,9 +279,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
                     String[] vpfTables = {"LAT", "LHT", "DHT", "lat", "lht", "dht"};
 
-                    for (int itab = 0; itab < vpfTables.length; itab++) {
-
-                        String tabFilename = vpfTables[itab];
+                    for (String tabFilename : vpfTables) {
 
                         String pathTab = dirPath.concat(File.separator).concat(tabFilename);
 

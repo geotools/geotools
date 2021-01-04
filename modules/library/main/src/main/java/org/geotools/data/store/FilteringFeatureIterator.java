@@ -46,7 +46,7 @@ public class FilteringFeatureIterator<F extends Feature> implements FeatureItera
         }
 
         while (delegate.hasNext()) {
-            F peek = (F) delegate.next();
+            F peek = delegate.next();
             if (filter.evaluate(peek)) {
                 next = peek;
                 break;

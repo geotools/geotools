@@ -70,7 +70,7 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
         dsParams.put("url", url.toExternalForm());
         dataAccess = DataAccessFinder.getDataStore(dsParams);
 
-        fSource = (FeatureSource<FeatureType, Feature>) dataAccess.getFeatureSource(FEATURE_TYPE);
+        fSource = dataAccess.getFeatureSource(FEATURE_TYPE);
     }
 
     @Test
@@ -119,8 +119,7 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
         PropertyName positionalAccuracy =
                 ff.property("gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue");
 
-        FeatureIterator<Feature> iterator = features.features();
-        try {
+        try (FeatureIterator<Feature> iterator = features.features()) {
 
             Feature f = iterator.next();
             Property val = (Property) positionalAccuracy.evaluate(f);
@@ -130,9 +129,6 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
             assertTrue(arithmeticDivideFilter.evaluate(f));
             assertTrue(arithmeticAdditionFilter.evaluate(f));
             assertTrue(arithmeticSubtractionFilter.evaluate(f));
-
-        } finally {
-            iterator.close();
         }
     }
 }

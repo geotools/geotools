@@ -94,8 +94,8 @@ public class DataDefinition {
 
         Field field = null;
 
-        for (int i = 0; i < this.fields.size(); i++) {
-            field = (Field) this.fields.get(i);
+        for (Field value : this.fields) {
+            field = value;
             len += field.getLen();
         }
 
@@ -111,8 +111,8 @@ public class DataDefinition {
 
         Field field = null;
 
-        for (int i = 0; i < this.fields.size(); i++) {
-            field = (Field) this.fields.get(i);
+        for (Field value : this.fields) {
+            field = value;
             len += field.getEncodedLen();
         }
 

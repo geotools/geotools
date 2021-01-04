@@ -131,7 +131,7 @@ public class GeobufGeometry {
                 builder.addLengths(polygon.getExteriorRing().getCoordinates().length);
                 addCoords(builder, polygon.getExteriorRing().getCoordinates());
                 for (int j = 0; j < polygon.getNumInteriorRing(); j++) {
-                    LinearRing ring = (LinearRing) polygon.getInteriorRingN(j);
+                    LinearRing ring = polygon.getInteriorRingN(j);
                     builder.addLengths(ring.getCoordinates().length);
                     addCoords(builder, ring.getCoordinates());
                 }
@@ -230,7 +230,7 @@ public class GeobufGeometry {
     }
 
     protected List<Geometry> getGeometries(Geobuf.Data.Geometry g) {
-        List<Geometry> geometries = new ArrayList<Geometry>();
+        List<Geometry> geometries = new ArrayList<>();
         getGeometries(geometries, g);
         return geometries;
     }
@@ -275,7 +275,7 @@ public class GeobufGeometry {
     }
 
     protected List<Coordinate[]> getCoordinates(Geobuf.Data.Geometry g) {
-        List<Coordinate[]> listOfCoordinates = new ArrayList<Coordinate[]>();
+        List<Coordinate[]> listOfCoordinates = new ArrayList<>();
         int numberOfLengths = g.getLengthsCount();
         if (numberOfLengths == 0) {
             listOfCoordinates.add(getAllCoordinates(g));

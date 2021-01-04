@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FunctionImpl;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
@@ -38,7 +37,7 @@ public class StringInFunctionTest extends TestCase {
                         ff.literal("foo"),
                         ff.literal("bar"),
                         ff.literal("baz"));
-        ((FunctionImpl) f).setParameters(params);
+        f.setParameters(params);
 
         assertEquals(Boolean.TRUE, f.evaluate(null));
 
@@ -49,7 +48,7 @@ public class StringInFunctionTest extends TestCase {
                         ff.literal("FOO"),
                         ff.literal("bar"),
                         ff.literal("baz"));
-        ((FunctionImpl) f).setParameters(params);
+        f.setParameters(params);
         assertEquals(Boolean.FALSE, f.evaluate(null));
     }
 
@@ -57,7 +56,7 @@ public class StringInFunctionTest extends TestCase {
         StringInFunction f = new StringInFunction();
 
         List<Expression> params = Arrays.asList(ff.literal("foo"), ff.literal(true));
-        ((FunctionImpl) f).setParameters(params);
+        f.setParameters(params);
 
         try {
             f.evaluate(null);

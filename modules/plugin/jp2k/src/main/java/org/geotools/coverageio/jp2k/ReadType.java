@@ -55,10 +55,8 @@ enum ReadType {
             //
             // Using ImageReader to load the data directly
             //
-            ImageInputStream inStream = null;
             ImageReader reader = null;
-            try {
-                inStream = Utils.getInputStream(rasterFile);
+            try (ImageInputStream inStream = Utils.getInputStream(rasterFile)) {
                 if (inStream == null) return null;
 
                 reader = spi.createReaderInstance();
@@ -97,12 +95,8 @@ enum ReadType {
                     // swallow the exception, we are just trying to close as much stuff as possible
                 }
 
-                try {
-                    // instream
-                    inStream.close();
-                } catch (Throwable t) {
-                    // swallow the exception, we are just trying to close as much stuff as possible
-                }
+                // instream
+                // swallow the exception, we are just trying to close as much stuff as possible
             }
         }
     },
@@ -121,11 +115,9 @@ enum ReadType {
             ///
             // Using ImageReader to load the data directly
             //
-            ImageInputStream inStream = null;
             ImageReader reader = null;
-            try {
+            try (ImageInputStream inStream = Utils.getInputStream(rasterFile)) {
                 // get stream
-                inStream = Utils.getInputStream(rasterFile);
                 if (inStream == null) return null;
                 // get a reader
                 reader = spi.createReaderInstance();
@@ -159,12 +151,8 @@ enum ReadType {
                     // swallow the exception, we are just trying to close as much stuff as possible
                 }
 
-                try {
-                    // instream
-                    if (inStream != null) inStream.close();
-                } catch (Throwable t) {
-                    // swallow the exception, we are just trying to close as much stuff as possible
-                }
+                // instream
+                // swallow the exception, we are just trying to close as much stuff as possible
             }
 
             // read data
@@ -209,11 +197,9 @@ enum ReadType {
             ///
             // Using ImageReader to load the data directly
             //
-            ImageInputStream inStream = null;
             ImageReader reader = null;
-            try {
+            try (ImageInputStream inStream = Utils.getInputStream(rasterFile)) {
                 // get stream
-                inStream = Utils.getInputStream(rasterFile);
                 if (inStream == null) return null;
                 // get a reader
                 reader = spi.createReaderInstance();
@@ -247,12 +233,8 @@ enum ReadType {
                     // swallow the exception, we are just trying to close as much stuff as possible
                 }
 
-                try {
-                    // instream
-                    if (inStream != null) inStream.close();
-                } catch (Throwable t) {
-                    // swallow the exception, we are just trying to close as much stuff as possible
-                }
+                // instream
+                // swallow the exception, we are just trying to close as much stuff as possible
             }
 
             // read data

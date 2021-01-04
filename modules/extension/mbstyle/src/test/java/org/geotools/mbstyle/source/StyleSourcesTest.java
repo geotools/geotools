@@ -133,7 +133,7 @@ public class StyleSourcesTest {
         assertTrue(sourceMap.get("vector-tiles") instanceof VectorMBSource);
         VectorMBSource vector = (VectorMBSource) sourceMap.get("vector-tiles");
         assertEquals("vector", vector.getType());
-        assertEquals(null, vector.getUrl());
+        assertNull(vector.getUrl());
         assertEquals(10, vector.getMinZoom().intValue());
         assertEquals(14, vector.getMaxZoom().intValue());
         assertEquals(

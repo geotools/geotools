@@ -52,7 +52,7 @@ public class WMSInvalidSchemaLocationTest extends TestCase {
 
         WMSCapabilities capabilities = (WMSCapabilities) object;
 
-        Layer Layer_with_Abstract_in_Style = (Layer) capabilities.getLayerList().get(1);
+        Layer Layer_with_Abstract_in_Style = capabilities.getLayerList().get(1);
         assertEquals(Layer_with_Abstract_in_Style.getName(), "states");
         assertEquals(Layer_with_Abstract_in_Style.getTitle(), "states");
     }

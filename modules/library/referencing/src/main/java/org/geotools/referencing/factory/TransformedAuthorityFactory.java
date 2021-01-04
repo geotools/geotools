@@ -239,7 +239,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
             axis =
                     csFactory.createCoordinateSystemAxis(
                             properties, axis.getAbbreviation(), newDirection, newUnits);
-            axis = (CoordinateSystemAxis) pool.unique(axis);
+            axis = pool.unique(axis);
         }
         return axis;
     }
@@ -269,7 +269,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                 CoordinateSystem modified = createCS(cs.getClass(), getProperties(cs), orderedAxis);
                 assert Classes.sameInterfaces(
                         cs.getClass(), modified.getClass(), CoordinateSystem.class);
-                modified = (CoordinateSystem) pool.unique(modified);
+                modified = pool.unique(modified);
                 return modified;
             }
         }
@@ -385,7 +385,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                 final CoordinateReferenceSystem[] m =
                         new CoordinateReferenceSystem[elements.size()];
                 for (int i = 0; i < m.length; i++) {
-                    m[i] = replace((CoordinateReferenceSystem) elements.get(i));
+                    m[i] = replace(elements.get(i));
                 }
                 modified = crsFactory.createCompoundCRS(properties, m);
             } else {
@@ -393,7 +393,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                         Errors.format(ErrorKeys.UNSUPPORTED_CRS_$1, crs.getName().getCode()));
             }
         }
-        modified = (CoordinateReferenceSystem) pool.unique(modified);
+        modified = pool.unique(modified);
         return modified;
     }
 
@@ -422,7 +422,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
         }
         CoordinateOperation modified;
         modified = opFactory.createOperation(sourceCRS, targetCRS);
-        modified = (CoordinateOperation) pool.unique(modified);
+        modified = pool.unique(modified);
         return modified;
     }
 
@@ -523,6 +523,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * invokes the same method from the {@linkplain #operationFactory underlying operation factory},
      * and next invokes {@link #replace(CoordinateOperation) replace} for each operations.
      */
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
         final Set<CoordinateOperation> operations, modified;
@@ -531,7 +532,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
         for (final Iterator<CoordinateOperation> it = operations.iterator(); it.hasNext(); ) {
             final CoordinateOperation operation;
             try {
-                operation = (CoordinateOperation) it.next();
+                operation = it.next();
             } catch (BackingStoreException exception) {
                 final Throwable cause = exception.getCause();
                 if (cause instanceof FactoryException) {

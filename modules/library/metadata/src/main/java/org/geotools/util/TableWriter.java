@@ -290,9 +290,9 @@ public class TableWriter extends FilterWriter {
          */
         int boxCount = 0;
         final char[][] box = new char[BOX.length][];
-        for (int i = 0; i < BOX.length; i++) {
-            if (BOX[i][9] == horizontalChar) {
-                box[boxCount++] = BOX[i];
+        for (char[] chars : BOX) {
+            if (chars[9] == horizontalChar) {
+                box[boxCount++] = chars;
             }
         }
         /*
@@ -929,8 +929,8 @@ public class TableWriter extends FilterWriter {
                 nextColumn();
             }
             int capacity = 2; // Room for EOL.
-            for (int i = 0; i < width.length; i++) {
-                capacity += width[i];
+            for (int j : width) {
+                capacity += j;
             }
             capacity *= getRowCount();
             final StringWriter writer;

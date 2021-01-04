@@ -16,9 +16,10 @@
  */
 package org.geotools.graph.util.delaunay;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.graph.structure.Edge;
@@ -35,17 +36,17 @@ public class AutoClustUtils {
     /** Creates a new instance of AutoClustUtils */
     public AutoClustUtils() {}
 
-    public static Vector<Graph> findConnectedComponents(
+    public static List<Graph> findConnectedComponents(
             final Collection<Node> nodes, final Collection<Edge> edges) {
-        Vector<Graph> components = new Vector<>();
-        Vector<Node> nodesVisited = new Vector<>();
+        List<Graph> components = new ArrayList<>();
+        List<Node> nodesVisited = new ArrayList<>();
 
         Iterator<Node> nodesIt = nodes.iterator();
         while (nodesIt.hasNext()) {
-            Node next = (Node) nodesIt.next();
+            Node next = nodesIt.next();
             if (!(nodesVisited.contains(next))) {
-                Vector<Node> componentNodes = new Vector<>();
-                Vector<Edge> componentEdges = new Vector<>();
+                List<Node> componentNodes = new ArrayList<>();
+                List<Edge> componentEdges = new ArrayList<>();
                 expandComponent(next, edges, componentNodes, componentEdges);
                 nodesVisited.addAll(componentNodes);
                 Graph component = new BasicGraph(componentNodes, componentEdges);
@@ -64,18 +65,17 @@ public class AutoClustUtils {
         if (!componentNodes.contains(node)) {
             componentNodes.add(node);
             //            LOGGER.finer("Adding " + node + " to component");
-            Vector<Edge> adjacentEdges =
+            List<Edge> adjacentEdges =
                     findAdjacentEdges(
                             node,
                             edges); // yes, I know node.getEdges() should do this, but this method
             // could be out of data by the time I use this in AutoClust
-            adjacentEdges.trimToSize();
             componentEdges.addAll(adjacentEdges);
             //            LOGGER.finer("Adding " + adjacentEdges + " to component");
 
             Iterator<Edge> aeIt = adjacentEdges.iterator();
             while (aeIt.hasNext()) {
-                Edge next = (Edge) aeIt.next();
+                Edge next = aeIt.next();
                 //                LOGGER.finer("looking at edge " + next);
                 Node additionalNode = next.getOtherNode(node);
                 //                LOGGER.finer("its other node is " + additionalNode);
@@ -92,8 +92,8 @@ public class AutoClustUtils {
         }
     }
 
-    public static Vector<Edge> findAdjacentEdges(final Node node, final Collection<Edge> edges) {
-        Vector<Edge> ret = new Vector<>();
+    public static List<Edge> findAdjacentEdges(final Node node, final Collection<Edge> edges) {
+        List<Edge> ret = new ArrayList<>();
         Iterator<Edge> it = edges.iterator();
         while (it.hasNext()) {
             Edge next = it.next();

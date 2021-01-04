@@ -128,8 +128,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         if (median != null) {
             // median was overwritten by an optimization
             return new MedianResult(median);
-        } else if (list.size() < 1) {
-            // no items in the list
+        } else if (list.isEmpty()) {
             return CalcResult.NULL_RESULT;
         } else {
             // we have a list; create a CalcResult containing the list
@@ -218,7 +217,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 for (int k = 0; k < size; k++) {
                     if (values[k].getClass() != bestClass)
                         values[k] = (Comparable) CalcUtil.convert(values[k], bestClass);
-                    newList.add((Comparable) values[k]);
+                    newList.add(values[k]);
                 }
                 return new MedianResult(newList);
             } else {
@@ -239,14 +238,14 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
      */
     @SuppressWarnings("unchecked") // tried various ways to make this work, failed
     private static Object findMedian(List<Comparable> list) {
-        if (list.size() < 1) {
+        if (list.isEmpty()) {
             return null;
         }
         Object median;
         Collections.sort(list);
 
         int index = -1;
-        index = (int) list.size() / 2;
+        index = list.size() / 2;
 
         if ((list.size() % 2) == 0) {
             // even number of elements, so we must average the 2 middle ones, or

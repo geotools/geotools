@@ -221,8 +221,8 @@ final class DurationUtil {
      * @return true if has some greater than or equal 0
      */
     private static boolean isNull(int[] durDate) {
-        for (int i = 0; i < durDate.length; i++) {
-            if (durDate[i] >= 0) {
+        for (int j : durDate) {
+            if (j >= 0) {
                 return false;
             }
         }

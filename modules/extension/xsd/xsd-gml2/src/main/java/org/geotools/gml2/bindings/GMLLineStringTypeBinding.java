@@ -122,7 +122,7 @@ public class GMLLineStringTypeBinding extends AbstractComplexBinding {
         }
 
         if (node.getChild("coordinates") != null) {
-            Node cnode = (Node) node.getChild("coordinates");
+            Node cnode = node.getChild("coordinates");
             CoordinateSequence lineSeq = (CoordinateSequence) cnode.getValue();
 
             return gFactory.createLineString(lineSeq);

@@ -76,9 +76,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertNotNull(factory.createConverter(Calendar.class, Date.class, null));
 
         Date date =
-                (Date)
-                        factory.createConverter(Calendar.class, Date.class, null)
-                                .convert(calendar, Date.class);
+                factory.createConverter(Calendar.class, Date.class, null)
+                        .convert(calendar, Date.class);
         assertNotNull(date);
         assertEquals(calendar.getTime(), date);
     }
@@ -94,9 +93,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertNotNull(factory.createConverter(Calendar.class, Date.class, null));
 
         Date date =
-                (Date)
-                        factory.createConverter(Calendar.class, Date.class, null)
-                                .convert(calendar, Date.class);
+                factory.createConverter(Calendar.class, Date.class, null)
+                        .convert(calendar, Date.class);
         assertNotNull(date);
 
         assertEquals(calendar.getTime(), date);
@@ -112,9 +110,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertNotNull(factory.createConverter(Calendar.class, Time.class, null));
 
         Time time =
-                (Time)
-                        factory.createConverter(Calendar.class, Time.class, null)
-                                .convert(calendar, Time.class);
+                factory.createConverter(Calendar.class, Time.class, null)
+                        .convert(calendar, Time.class);
         assertNotNull(time);
         // need to remove the date part
         Calendar cal = (Calendar) calendar.clone();
@@ -129,9 +126,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertNotNull(factory.createConverter(Calendar.class, Timestamp.class, null));
 
         Timestamp timeStamp =
-                (Timestamp)
-                        factory.createConverter(Calendar.class, Timestamp.class, null)
-                                .convert(calendar, Timestamp.class);
+                factory.createConverter(Calendar.class, Timestamp.class, null)
+                        .convert(calendar, Timestamp.class);
         assertNotNull(timeStamp);
         assertEquals(new Timestamp(calendar.getTime().getTime()), timeStamp);
     }
@@ -146,9 +142,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         Calendar calWithMs = (Calendar) calendar.clone();
 
         Timestamp timeStamp =
-                (Timestamp)
-                        factory.createConverter(Calendar.class, Timestamp.class, null)
-                                .convert(calendar, Timestamp.class);
+                factory.createConverter(Calendar.class, Timestamp.class, null)
+                        .convert(calendar, Timestamp.class);
         assertNotNull(timeStamp);
         assertEquals(new Timestamp(calWithMs.getTime().getTime()), timeStamp);
         assertEquals(new Timestamp(calendar.getTime().getTime()), timeStamp);
@@ -159,9 +154,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertNotNull(factory.createConverter(Date.class, Calendar.class, null));
 
         Calendar calendar =
-                (Calendar)
-                        factory.createConverter(Date.class, Calendar.class, null)
-                                .convert(date, Calendar.class);
+                factory.createConverter(Date.class, Calendar.class, null)
+                        .convert(date, Calendar.class);
         assertNotNull(calendar);
         assertEquals(date, calendar.getTime());
     }
@@ -170,10 +164,7 @@ public class TemporalConverterFactoryTest extends TestCase {
         Date date = new Date();
         assertNotNull(factory.createConverter(Date.class, Time.class, null));
 
-        Time time =
-                (Time)
-                        factory.createConverter(Date.class, Time.class, null)
-                                .convert(date, Time.class);
+        Time time = factory.createConverter(Date.class, Time.class, null).convert(date, Time.class);
         assertNotNull(time);
         // need to remove the date part
         Calendar cal = Calendar.getInstance(/*TimeZone.getTimeZone("GMT")*/ );
@@ -189,9 +180,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertNotNull(factory.createConverter(Date.class, Timestamp.class, null));
 
         Timestamp timeStamp =
-                (Timestamp)
-                        factory.createConverter(Date.class, Timestamp.class, null)
-                                .convert(date, Timestamp.class);
+                factory.createConverter(Date.class, Timestamp.class, null)
+                        .convert(date, Timestamp.class);
         assertNotNull(timeStamp);
         assertEquals(new Timestamp(date.getTime()), timeStamp);
 
@@ -208,9 +198,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertNotNull(factory.createConverter(Time.class, Calendar.class, null));
 
         Calendar calendar =
-                (Calendar)
-                        factory.createConverter(Time.class, Calendar.class, null)
-                                .convert(time, Calendar.class);
+                factory.createConverter(Time.class, Calendar.class, null)
+                        .convert(time, Calendar.class);
         assertNotNull(calendar);
         assertEquals(time, new Time(calendar.getTime().getTime()));
     }
@@ -220,9 +209,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertNotNull(factory.createConverter(Timestamp.class, Calendar.class, null));
 
         Calendar calendar =
-                (Calendar)
-                        factory.createConverter(Timestamp.class, Calendar.class, null)
-                                .convert(timeStamp, Calendar.class);
+                factory.createConverter(Timestamp.class, Calendar.class, null)
+                        .convert(timeStamp, Calendar.class);
         assertNotNull(calendar);
         assertEquals(timeStamp, new Timestamp(calendar.getTime().getTime()));
     }
@@ -233,9 +221,8 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertNotNull(factory.createConverter(XMLGregorianCalendar.class, Calendar.class, null));
 
         Calendar calendar =
-                (Calendar)
-                        factory.createConverter(XMLGregorianCalendar.class, Calendar.class, null)
-                                .convert(gc, Calendar.class);
+                factory.createConverter(XMLGregorianCalendar.class, Calendar.class, null)
+                        .convert(gc, Calendar.class);
         assertNotNull(calendar);
 
         assertEquals(1981, calendar.get(Calendar.YEAR));

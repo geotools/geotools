@@ -90,7 +90,7 @@ public class ValidationProcessorTest extends DataTestCase {
         // test the correct roads
         processor.runFeatureTests(
                 "dataStoreId", DataUtilities.collection(this.roadFeatures), results);
-        assertTrue(results.getFailedMessages().length == 0);
+        assertEquals(0, results.getFailedMessages().length);
 
         // test the broken road
         // make an incorrect line
@@ -113,8 +113,7 @@ public class ValidationProcessorTest extends DataTestCase {
         // make a map of FeatureSources
         Map<String, SimpleFeatureSource> map = new HashMap<>();
         String[] typeNames = this.store.getTypeNames();
-        for (int i = 0; i < typeNames.length; i++)
-            map.put(typeNames[i], this.store.getFeatureSource(typeNames[i]));
+        for (String typeName : typeNames) map.put(typeName, this.store.getFeatureSource(typeName));
         map.put("newThing", this.store.getFeatureSource(typeNames[0]));
 
         processor.runIntegrityTests(null, map, null, results);

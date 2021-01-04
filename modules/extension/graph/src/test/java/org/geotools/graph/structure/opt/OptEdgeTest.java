@@ -241,7 +241,7 @@ public class OptEdgeTest extends TestCase {
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         // nodes share multiple edges (same direction)
         addSame();
@@ -292,7 +292,7 @@ public class OptEdgeTest extends TestCase {
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_same));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         // nodes share multiple edges (differnt direction)
         addOpp();
@@ -343,7 +343,7 @@ public class OptEdgeTest extends TestCase {
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_opp));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         // loop on one of nodes
         addLoopA();
@@ -392,7 +392,7 @@ public class OptEdgeTest extends TestCase {
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopA));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         // loop on other node
         addLoopB();
@@ -441,7 +441,7 @@ public class OptEdgeTest extends TestCase {
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
 
         // loop on both
         addLoopAB();
@@ -505,15 +505,15 @@ public class OptEdgeTest extends TestCase {
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
 
-        assertTrue(!itr.hasNext());
+        assertFalse(itr.hasNext());
     }
 
     public void test_compareTo() {
         OptEdge same = new OptEdge(m_nodeA, m_nodeB);
         OptEdge opp = new OptEdge(m_nodeB, m_nodeA);
 
-        assertTrue(m_edge.compareNodes(same) == Edge.EQUAL_NODE_ORIENTATION);
-        assertTrue(m_edge.compareNodes(opp) == Edge.OPPOSITE_NODE_ORIENTATION);
-        assertTrue(m_edge.compareNodes(m_other1) == Edge.UNEQUAL_NODE_ORIENTATION);
+        assertEquals(m_edge.compareNodes(same), Edge.EQUAL_NODE_ORIENTATION);
+        assertEquals(m_edge.compareNodes(opp), Edge.OPPOSITE_NODE_ORIENTATION);
+        assertEquals(m_edge.compareNodes(m_other1), Edge.UNEQUAL_NODE_ORIENTATION);
     }
 }

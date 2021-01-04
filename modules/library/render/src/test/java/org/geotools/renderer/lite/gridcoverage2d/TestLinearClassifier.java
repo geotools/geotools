@@ -409,8 +409,8 @@ public class TestLinearClassifier extends Assert {
             final LinearColorMapElement c1c =
                     LinearColorMapElement.create(
                             "c2", Color.yellow, RangeFactory.create(0.3, false, 0.6, true), 1);
-            assertFalse(c1.equals(c1b));
-            assertTrue(c1.equals(c1c));
+            assertNotEquals(c1, c1b);
+            assertEquals(c1, c1c);
 
             final LinearColorMapElement c3 =
                     LinearColorMapElement.create(
@@ -603,7 +603,7 @@ public class TestLinearClassifier extends Assert {
             double testNum = Math.random();
             try {
                 assertEquals(list.transform(testNum), testNum, 0.0);
-                assertTrue(false);
+                fail();
             } catch (Exception e) {
                 // TODO: handle exception
             }

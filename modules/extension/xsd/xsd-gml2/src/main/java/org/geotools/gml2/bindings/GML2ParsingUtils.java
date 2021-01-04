@@ -20,7 +20,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -204,8 +203,7 @@ public class GML2ParsingUtils {
         }
 
         // application schema defined attributes
-        for (Iterator c = node.getChildren().iterator(); c.hasNext(); ) {
-            Node child = (Node) c.next();
+        for (Node child : node.getChildren()) {
             String name = child.getComponent().getName();
             Object value = child.getValue();
 
@@ -254,8 +252,8 @@ public class GML2ParsingUtils {
         // actual xml schema type
         List children = Schemas.getChildElementParticles(element.getType(), true);
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            XSDParticle particle = (XSDParticle) itr.next();
+        for (Object child : children) {
+            XSDParticle particle = (XSDParticle) child;
             XSDElementDeclaration property = (XSDElementDeclaration) particle.getContent();
 
             if (property.isElementDeclarationReference()) {
@@ -282,7 +280,7 @@ public class GML2ParsingUtils {
             }
 
             // get the last binding in the chain to execute
-            Binding last = ((Binding) bindings.get(bindings.size() - 1));
+            Binding last = bindings.get(bindings.size() - 1);
             Class theClass = last.getType();
 
             if (theClass == null) {
@@ -428,9 +426,7 @@ public class GML2ParsingUtils {
         // extended by multi geometries, dont reference members by element name
         List<Geometry> geoms = new ArrayList<>();
 
-        for (Iterator itr = node.getChildren().iterator(); itr.hasNext(); ) {
-            Node cnode = (Node) itr.next();
-
+        for (Node cnode : node.getChildren()) {
             if (cnode.getValue() instanceof Geometry) {
                 geoms.add((Geometry) cnode.getValue());
             }
@@ -439,17 +435,13 @@ public class GML2ParsingUtils {
         GeometryCollection gc = null;
 
         if (MultiPoint.class.isAssignableFrom(clazz)) {
-            gc = gFactory.createMultiPoint((Point[]) geoms.toArray(new Point[geoms.size()]));
+            gc = gFactory.createMultiPoint(geoms.toArray(new Point[geoms.size()]));
         } else if (MultiLineString.class.isAssignableFrom(clazz)) {
-            gc =
-                    gFactory.createMultiLineString(
-                            (LineString[]) geoms.toArray(new LineString[geoms.size()]));
+            gc = gFactory.createMultiLineString(geoms.toArray(new LineString[geoms.size()]));
         } else if (MultiPolygon.class.isAssignableFrom(clazz)) {
-            gc = gFactory.createMultiPolygon((Polygon[]) geoms.toArray(new Polygon[geoms.size()]));
+            gc = gFactory.createMultiPolygon(geoms.toArray(new Polygon[geoms.size()]));
         } else {
-            gc =
-                    gFactory.createGeometryCollection(
-                            (Geometry[]) geoms.toArray(new Geometry[geoms.size()]));
+            gc = gFactory.createGeometryCollection(geoms.toArray(new Geometry[geoms.size()]));
         }
 
         // set an srs if there is one

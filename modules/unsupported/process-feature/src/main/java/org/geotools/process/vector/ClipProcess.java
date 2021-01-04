@@ -323,8 +323,7 @@ public class ClipProcess implements VectorProcess {
 
         protected boolean hasElevations(CoordinateSequence seq) {
             return (seq instanceof CoordinateArraySequence
-                            && !Double.isNaN(
-                                    ((CoordinateArraySequence) seq).getCoordinate(0).getZ()))
+                            && !Double.isNaN(seq.getCoordinate(0).getZ()))
                     || (!(seq instanceof CoordinateArraySequence) && seq.getDimension() > 2);
         }
 
@@ -385,7 +384,7 @@ public class ClipProcess implements VectorProcess {
                             }
                         });
 
-                if (results.size() == 0) {
+                if (results.isEmpty()) {
                     return null;
                 } else {
                     return results;

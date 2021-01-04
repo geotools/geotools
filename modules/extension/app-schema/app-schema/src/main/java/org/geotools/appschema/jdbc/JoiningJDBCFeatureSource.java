@@ -155,17 +155,17 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             Set<String> orderByFields,
             StringBuffer sql)
             throws IOException, SQLException {
-        for (int i = 0; i < sort.length; i++) {
-            if (SortBy.NATURAL_ORDER.equals(sort[i]) || SortBy.REVERSE_ORDER.equals(sort[i])) {
+        for (SortBy sortBy : sort) {
+            if (SortBy.NATURAL_ORDER.equals(sortBy) || SortBy.REVERSE_ORDER.equals(sortBy)) {
                 throw new IOException("Cannot do natural order in joining queries");
             } else {
                 StringBuffer mySql = new StringBuffer();
                 if (alias != null) {
                     encodeColumnName2(
-                            sort[i].getPropertyName().getPropertyName(), alias, mySql, null);
+                            sortBy.getPropertyName().getPropertyName(), alias, mySql, null);
                 } else {
                     encodeColumnName(
-                            sort[i].getPropertyName().getPropertyName(), typeName, mySql, null);
+                            sortBy.getPropertyName().getPropertyName(), typeName, mySql, null);
                 }
                 if (!mySql.toString().isEmpty() && orderByFields.add(mySql.toString())) {
                     // if it's not already in ORDER BY (because you can't have duplicate column
@@ -176,7 +176,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     }
                     sql.append(mySql);
 
-                    if (sort[i].getSortOrder() == SortOrder.DESCENDING) {
+                    if (sortBy.getSortOrder() == SortOrder.DESCENDING) {
                         sql.append(" DESC");
                     } else {
                         sql.append(" ASC");
@@ -339,8 +339,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     protected FilterToSQL createFilterToSQL(
             SimpleFeatureType ft, boolean usePreparedStatementParameters) {
         if (getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
-            PreparedFilterToSQL pfsql =
-                    (PreparedFilterToSQL) getDataStore().createPreparedFilterToSQL(ft);
+            PreparedFilterToSQL pfsql = getDataStore().createPreparedFilterToSQL(ft);
             pfsql.setPrepareEnabled(usePreparedStatementParameters);
             return pfsql;
         } else {

@@ -43,6 +43,7 @@ import javax.measure.MetricPrefix;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.referencing.wkt.Formatter;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.parameter.InvalidParameterCardinalityException;
 import org.opengis.parameter.InvalidParameterNameException;
@@ -294,7 +295,7 @@ public final class ParametersTest {
         serialize(parameter);
 
         parameter = Parameter.create("Test", 3, SI.METRE);
-        descriptor = (ParameterDescriptor) parameter.getDescriptor();
+        descriptor = parameter.getDescriptor();
         assertEquals("intValue", 3, parameter.intValue());
         assertEquals("doubleValue", 3, parameter.doubleValue(), 0);
         assertEquals("doubleValue", 300, parameter.doubleValue(MetricPrefix.CENTI(SI.METRE)), 0);
@@ -314,7 +315,7 @@ public final class ParametersTest {
         serialize(parameter);
 
         parameter = Parameter.create("Test", AxisDirection.class, AxisDirection.NORTH);
-        descriptor = (ParameterDescriptor) parameter.getDescriptor();
+        descriptor = parameter.getDescriptor();
         validValues = descriptor.getValidValues();
         assertEquals("value", AxisDirection.NORTH, parameter.getValue());
         assertEquals("name", "Test", descriptor.getName().getCode());
@@ -772,10 +773,8 @@ public final class ParametersTest {
                 GeneralMatrix copy = matrix.clone();
                 copy.setSize(height, width);
                 parameters.setMatrix(copy);
-                assertEquals(
-                        "height", height, ((Parameter) parameters.parameter("num_row")).intValue());
-                assertEquals(
-                        "width", width, ((Parameter) parameters.parameter("num_col")).intValue());
+                assertEquals("height", height, parameters.parameter("num_row").intValue());
+                assertEquals("width", width, parameters.parameter("num_col").intValue());
                 assertTrue("equals", copy.equals(parameters.getMatrix(), 0));
                 assertEquals("equals", parameters, parameters.clone());
             }
@@ -804,6 +803,6 @@ public final class ParametersTest {
         assertNotNull(message, o1);
         assertNotNull(message, o2);
         assertNotSame(message, o1, o2);
-        assertFalse(message, o1.equals(o2));
+        Assert.assertNotEquals(message, o1, o2);
     }
 }

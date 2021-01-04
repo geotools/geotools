@@ -125,9 +125,9 @@ class Session implements ISession {
 
     private boolean isPassivated;
 
-    private Map<String, SeTable> cachedTables = new WeakHashMap<String, SeTable>();
+    private Map<String, SeTable> cachedTables = new WeakHashMap<>();
 
-    private Map<String, SeLayer> cachedLayers = new WeakHashMap<String, SeLayer>();
+    private Map<String, SeLayer> cachedLayers = new WeakHashMap<>();
 
     /**
      * Keeps track of the number of references to this session (ie, how many times it has been
@@ -152,10 +152,8 @@ class Session implements ISession {
         connectionCommand = new CreateSeConnectionCommand(config, sessionId);
         try {
             this.connection = issue(connectionCommand);
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             throw e;
-        } catch (RuntimeException shouldntHappen) {
-            throw shouldntHappen;
         }
     }
 
@@ -286,7 +284,7 @@ class Session implements ISession {
             }
         }
 
-        SeTable seTable = (SeTable) cachedTables.get(tableName);
+        SeTable seTable = cachedTables.get(tableName);
 
         return seTable;
     }

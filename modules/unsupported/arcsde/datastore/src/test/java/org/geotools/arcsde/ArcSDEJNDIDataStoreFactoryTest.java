@@ -126,7 +126,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
     @Ignore // TODO: revisit
     public void testCreateDataStore_MapParams() throws IOException {
         String jndiRef = "MyArcSdeResource";
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ArcSDEJNDIDataStoreFactory.JNDI_REFNAME.key, jndiRef);
 
         Map<String, Serializable> config = testData.getConProps();
@@ -155,7 +155,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
     @Ignore // TODO: revisit
     public void testCreateDataStore_SessionPool() throws IOException {
         String jndiRef = "MyArcSdeResource_SessionPool";
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ArcSDEJNDIDataStoreFactory.JNDI_REFNAME.key, jndiRef);
 
         try (ISessionPool pool = testData.getConnectionPool()) {
@@ -178,7 +178,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
     @Test
     public void testCanProcess() {
         assertFalse(factory.canProcess(null));
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         assertFalse(factory.canProcess(params));
         String jndiRef = "java:comp/env/MyArcSdeResource";
         params.put(ArcSDEJNDIDataStoreFactory.JNDI_REFNAME.key, jndiRef);

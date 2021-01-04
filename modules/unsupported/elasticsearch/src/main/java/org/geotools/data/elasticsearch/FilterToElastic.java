@@ -1195,6 +1195,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
     private void updateDateFormatter(AttributeDescriptor attType) {
         if (attType != null) {
+            @SuppressWarnings("unchecked")
             final List<String> validFormats =
                     (List<String>) attType.getUserData().get(ElasticConstants.DATE_FORMAT);
             if (validFormats != null) {

@@ -829,7 +829,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             case Types.TIME:
                 // HANA cannot deal with time instances where the date part is before 1970.
                 // We re-create the time with a proper date part.
-                Time time = Time.valueOf(((Time) convert(value, Time.class)).toString());
+                Time time = Time.valueOf(convert(value, Time.class).toString());
                 ps.setTime(column, time);
                 break;
             default:
@@ -899,8 +899,8 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     private void encodeIdentifiers(StringBuffer sb, String... ids) {
         boolean first = true;
-        for (int i = 0; i < ids.length; ++i) {
-            if (ids[i] == null) {
+        for (String id : ids) {
+            if (id == null) {
                 continue;
             }
             if (first) {
@@ -908,7 +908,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             } else {
                 sb.append('.');
             }
-            sb.append(HanaUtil.encodeIdentifier(ids[i]));
+            sb.append(HanaUtil.encodeIdentifier(id));
         }
     }
 

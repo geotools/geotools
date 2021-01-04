@@ -772,7 +772,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
                 source = ((RenderedImageAdapter) source).getWrappedImage();
             }
             if (source instanceof SerializableRenderedImage) {
-                serializedImage = (SerializableRenderedImage) source;
+                serializedImage = source;
             } else {
                 if (tileEncoding == null) {
                     tileEncoding = "gzip";

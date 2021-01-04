@@ -162,7 +162,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         if (unset) {
             return null;
         }
-        if (symbolizerBuilder == null && symbolizers.size() == 0) {
+        if (symbolizerBuilder == null && symbolizers.isEmpty()) {
             symbolizerBuilder = new PointSymbolizerBuilder();
         }
         if (symbolizerBuilder != null) {

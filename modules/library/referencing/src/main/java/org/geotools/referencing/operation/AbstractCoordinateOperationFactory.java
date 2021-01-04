@@ -298,7 +298,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
                                 : PositionalAccuracyImpl.DATUM_SHIFT_OMITTED
                     });
         } else {
-            properties = Collections.singletonMap(NAME_KEY, (Object) name);
+            properties = Collections.singletonMap(NAME_KEY, name);
         }
         return properties;
     }
@@ -711,8 +711,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         if (object != null) {
             Class type = object.getClass();
             final Class[] interfaces = type.getInterfaces();
-            for (int i = 0; i < interfaces.length; i++) {
-                final Class candidate = interfaces[i];
+            for (final Class candidate : interfaces) {
                 if (candidate.getName().startsWith("org.opengis.referencing.")) {
                     type = candidate;
                     break;

@@ -137,8 +137,8 @@ public class DefaultPassThroughOperation extends DefaultSingleOperation
         final String name = super.formatWKT(formatter);
         try {
             final int[] ordinates = getModifiedCoordinates();
-            for (int i = 0; i < ordinates.length; i++) {
-                formatter.append(ordinates[i]);
+            for (int ordinate : ordinates) {
+                formatter.append(ordinate);
             }
         } catch (UnsupportedOperationException exception) {
             // Ignore: no indices will be formatted.

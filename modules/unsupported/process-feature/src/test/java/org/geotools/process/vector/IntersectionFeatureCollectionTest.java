@@ -209,7 +209,7 @@ public class IntersectionFeatureCollectionTest {
         assertNotNull(output2.getSchema().getDescriptor("areaA"));
         assertNotNull(output2.getSchema().getDescriptor("areaB"));
         assertNotNull(output2.getSchema().getDescriptor("INTERSECTION_ID"));
-        assertTrue(output2.getSchema().getAttributeCount() == 8);
+        assertEquals(8, output2.getSchema().getAttributeCount());
         SimpleFeatureIterator sfTemp2 = output2.features();
         sfTemp2.hasNext();
         SimpleFeature sf = sfTemp2.next();
@@ -222,7 +222,7 @@ public class IntersectionFeatureCollectionTest {
         assertNotNull(sf.getAttribute("percentageB"));
         assertNotNull(sf.getAttribute("areaA"));
         assertNotNull(sf.getAttribute("areaB"));
-        assertTrue(sf.getAttributeCount() == 8);
+        assertEquals(8, sf.getAttributeCount());
 
         // test without area and percentageAttributes
         SimpleFeatureCollection output3 =
@@ -240,7 +240,7 @@ public class IntersectionFeatureCollectionTest {
         assertNotNull(sf2.getAttribute("the_geom"));
         assertNotNull(sf2.getAttribute("zones_str1"));
         assertNotNull(sf2.getAttribute("features_str2"));
-        assertTrue(sf2.getAttributeCount() == 4);
+        assertEquals(4, sf2.getAttributeCount());
     }
 
     @Test
@@ -293,7 +293,7 @@ public class IntersectionFeatureCollectionTest {
         SimpleFeatureCollection output3 =
                 process.execute(features, secondFeatures, null, null, null, false, false);
 
-        assertTrue(output3.size() == 1);
+        assertEquals(1, output3.size());
         SimpleFeatureIterator iterator = output3.features();
 
         GeometryCollection firstCollection = null;
@@ -302,10 +302,7 @@ public class IntersectionFeatureCollectionTest {
         secondCollection = new GeometryCollection(secondArrayGeometry, new GeometryFactory());
         for (int i = 0; i < firstCollection.getNumGeometries() && iterator.hasNext(); i++) {
             Geometry expected =
-                    (Geometry)
-                            firstCollection
-                                    .getGeometryN(i)
-                                    .intersection(secondCollection.getGeometryN(i));
+                    firstCollection.getGeometryN(i).intersection(secondCollection.getGeometryN(i));
             SimpleFeature sf = iterator.next();
             assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
         }

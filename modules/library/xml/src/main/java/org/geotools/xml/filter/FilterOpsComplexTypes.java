@@ -857,9 +857,8 @@ public class FilterOpsComplexTypes {
                 List<org.opengis.filter.Filter> filters = new ArrayList<>();
                 Set<Identifier> ids = new HashSet<>();
                 boolean isOnlyFids = true;
-                for (int i = 0; i < value.length; i++) {
-                    org.opengis.filter.Filter value2 =
-                            (org.opengis.filter.Filter) value[i].getValue();
+                for (ElementValue elementValue : value) {
+                    Filter value2 = (Filter) elementValue.getValue();
                     if (value2 == Filter.EXCLUDE) continue;
                     if (value2 instanceof Id) {
                         Id idFilter = (Id) value2;
@@ -1654,7 +1653,7 @@ public class FilterOpsComplexTypes {
                 ElementValue[] value,
                 Attributes attrs,
                 Map<String, Object> hints) {
-            return (Expression) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
@@ -1737,7 +1736,7 @@ public class FilterOpsComplexTypes {
                 ElementValue[] value,
                 Attributes attrs,
                 Map<String, Object> hints) {
-            return (Expression) value[0].getValue();
+            return value[0].getValue();
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
@@ -1839,7 +1838,7 @@ public class FilterOpsComplexTypes {
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
 
             try {
-                short type = (short) SpatialOpsType.findFilterType(element.getName());
+                short type = SpatialOpsType.findFilterType(element.getName());
 
                 Expression geometry1 = (Expression) value[0].getValue();
                 Expression geometry2 = (Expression) value[1].getValue();
@@ -2188,10 +2187,8 @@ public class FilterOpsComplexTypes {
                 Literal literal = (Literal) value[2];
                 double distance = ((Number) literal.getValue()).doubleValue();
                 return factory.beyond(geometry1, geometry2, distance, null);
-            } catch (ClassCastException wrong) {
+            } catch (ClassCastException | IllegalFilterException wrong) {
                 throw new SAXException(wrong);
-            } catch (IllegalFilterException illegalFilterException) {
-                throw new SAXException(illegalFilterException);
             }
         }
 
@@ -2320,10 +2317,8 @@ public class FilterOpsComplexTypes {
                 Literal literal = (Literal) value[2];
                 double distance = ((Number) literal.getValue()).doubleValue();
                 return factory.dwithin(geometry1, geometry2, distance, null);
-            } catch (ClassCastException wrong) {
+            } catch (ClassCastException | IllegalFilterException wrong) {
                 throw new SAXException(wrong);
-            } catch (IllegalFilterException illegalFilterException) {
-                throw new SAXException(illegalFilterException);
             }
         }
 
@@ -2463,8 +2458,8 @@ public class FilterOpsComplexTypes {
                 boolean fidOnly = true;
 
                 // LogicFilter filter = factory.createLogicFilter( type );
-                for (int i = 0; i < value.length; i++) {
-                    Filter filter = (Filter) value[i];
+                for (ElementValue elementValue : value) {
+                    Filter filter = (Filter) elementValue;
                     if (filter instanceof Id) {
                         Id id = (Id) filter;
                         ids.addAll(id.getIdentifiers());

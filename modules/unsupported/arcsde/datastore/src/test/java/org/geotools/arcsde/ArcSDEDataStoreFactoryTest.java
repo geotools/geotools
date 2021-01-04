@@ -85,10 +85,10 @@ public class ArcSDEDataStoreFactoryTest {
 
         workingParams = testData.getConProps();
 
-        nonWorkingParams = new HashMap<String, Serializable>(workingParams);
+        nonWorkingParams = new HashMap<>(workingParams);
         nonWorkingParams.put(ArcSDEConnectionConfig.SERVER_NAME_PARAM_NAME, "non-existent-server");
 
-        illegalParams = new HashMap<String, Serializable>(workingParams);
+        illegalParams = new HashMap<>(workingParams);
         illegalParams.put(ArcSDEDataStoreConfig.DBTYPE_PARAM_NAME, "non-existent-db-type");
 
         dsFactory = new ArcSDEDataStoreFactory();
@@ -189,8 +189,7 @@ public class ArcSDEDataStoreFactoryTest {
             session.dispose();
         }
 
-        Map<String, Serializable> workingParamsWithSqlView =
-                new HashMap<String, Serializable>(workingParams);
+        Map<String, Serializable> workingParamsWithSqlView = new HashMap<>(workingParams);
         workingParamsWithSqlView.putAll(InProcessViewSupportTestData.registerViewParams);
 
         DataStore store = dsFactory.createDataStore(workingParamsWithSqlView);
@@ -213,8 +212,7 @@ public class ArcSDEDataStoreFactoryTest {
             session.dispose();
         }
 
-        Map<String, Serializable> paramsWithVersion =
-                new HashMap<String, Serializable>(workingParams);
+        Map<String, Serializable> paramsWithVersion = new HashMap<>(workingParams);
         try {
             paramsWithVersion.put(VERSION_PARAM_NAME, "Non existent version name");
             dsFactory.createDataStore(paramsWithVersion);
@@ -236,8 +234,7 @@ public class ArcSDEDataStoreFactoryTest {
             session.dispose();
         }
 
-        Map<String, Serializable> paramsWithVersion =
-                new HashMap<String, Serializable>(workingParams);
+        Map<String, Serializable> paramsWithVersion = new HashMap<>(workingParams);
         paramsWithVersion.put(VERSION_PARAM_NAME, versionName);
         DataStore ds = dsFactory.createDataStore(paramsWithVersion);
         assertNotNull(ds);

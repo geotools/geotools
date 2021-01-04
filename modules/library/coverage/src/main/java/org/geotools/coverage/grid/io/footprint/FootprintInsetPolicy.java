@@ -95,7 +95,7 @@ public enum FootprintInsetPolicy {
             } else if (polygons.size() == 1) {
                 return polygons.get(0);
             } else {
-                Polygon[] array = (Polygon[]) polygons.toArray(new Polygon[polygons.size()]);
+                Polygon[] array = polygons.toArray(new Polygon[polygons.size()]);
                 return array[0].getFactory().createMultiPolygon(array);
             }
         }
@@ -163,8 +163,8 @@ public enum FootprintInsetPolicy {
         FootprintInsetPolicy[] values = FootprintInsetPolicy.values();
         List<String> names = new ArrayList<>(values.length);
 
-        for (int i = 0; i < values.length; i++) {
-            names.add(values[i].name());
+        for (FootprintInsetPolicy value : values) {
+            names.add(value.name());
         }
 
         return names;

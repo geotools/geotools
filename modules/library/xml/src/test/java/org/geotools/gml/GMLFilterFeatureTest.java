@@ -16,7 +16,7 @@
  */
 package org.geotools.gml;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -96,25 +96,25 @@ public class GMLFilterFeatureTest {
         final XMLReader reader = parser.getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(new InputSource(new StringReader(gml)));
-        assertTrue(featureCollection.size() == 2);
+        assertEquals(2, featureCollection.size());
         final Iterator<SimpleFeature> it = featureCollection.iterator();
         {
             final SimpleFeature feature = it.next();
             final Polygon polygon = (Polygon) feature.getAttribute("geometry");
             final String a = polygon.toString();
             final String b = polygonA().toString();
-            assertTrue(a.equals(b));
+            assertEquals(a, b);
             final String value = (String) feature.getAttribute("my_string_attribute");
-            assertTrue(value.equals(helloWorldA));
+            assertEquals(value, helloWorldA);
         }
         {
             final SimpleFeature feature = it.next();
             final Polygon polygon = (Polygon) feature.getAttribute("geometry");
             final String a = polygon.toString();
             final String b = polygonB().toString();
-            assertTrue(a.equals(b));
+            assertEquals(a, b);
             final String value = (String) feature.getAttribute("my_string_attribute");
-            assertTrue(value.equals(helloWorldB));
+            assertEquals(value, helloWorldB);
         }
     }
 

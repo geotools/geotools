@@ -108,11 +108,8 @@ public class WKTReader2 extends WKTReader {
      * @throws ParseException if a parsing problem occurs
      */
     public Geometry read(String wellKnownText) throws ParseException {
-        StringReader reader = new StringReader(wellKnownText);
-        try {
+        try (StringReader reader = new StringReader(wellKnownText)) {
             return read(reader);
-        } finally {
-            reader.close();
         }
     }
 
@@ -364,9 +361,7 @@ public class WKTReader2 extends WKTReader {
 
         try {
             type = getNextWord();
-        } catch (IOException e) {
-            return null;
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             return null;
         }
 
@@ -475,7 +470,7 @@ public class WKTReader2 extends WKTReader {
     /** Creates a <code>LineString</code> using the next token in the stream. */
     private LineString readCircularStringText() throws IOException, ParseException {
         List<Coordinate> coordinates = getCoordinateList(true);
-        if (coordinates.size() == 0) {
+        if (coordinates.isEmpty()) {
             return geometryFactory.createCurvedGeometry(
                     new LiteCoordinateSequence(new Coordinate[0]));
         } else if (coordinates.size() < 3) {
@@ -643,8 +638,8 @@ public class WKTReader2 extends WKTReader {
      */
     private Point[] toPoints(Coordinate[] coordinates) {
         ArrayList<Point> points = new ArrayList<>();
-        for (int i = 0; i < coordinates.length; i++) {
-            points.add(geometryFactory.createPoint(coordinates[i]));
+        for (Coordinate coordinate : coordinates) {
+            points.add(geometryFactory.createPoint(coordinate));
         }
         return points.toArray(new Point[points.size()]);
     }

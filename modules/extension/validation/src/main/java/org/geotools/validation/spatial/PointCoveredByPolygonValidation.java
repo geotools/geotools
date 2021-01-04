@@ -59,9 +59,8 @@ public class PointCoveredByPolygonValidation extends PointPolygonAbstractValidat
     public boolean validate(
             Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource pointSource = (SimpleFeatureSource) layers.get(getPointTypeRef());
-        SimpleFeatureSource polySource =
-                (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+        SimpleFeatureSource pointSource = layers.get(getPointTypeRef());
+        SimpleFeatureSource polySource = layers.get(getRestrictedPolygonTypeRef());
 
         Object[] polys = polySource.getFeatures().toArray();
         Object[] points = pointSource.getFeatures().toArray();
@@ -82,8 +81,8 @@ public class PointCoveredByPolygonValidation extends PointPolygonAbstractValidat
             return false;
         }
 
-        for (int i = 0; i < points.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) points[i];
+        for (Object point : points) {
+            SimpleFeature tmp = (SimpleFeature) point;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
             if (gt instanceof Polygon) {

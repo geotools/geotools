@@ -22,7 +22,6 @@ package org.geotools.referencing.operation;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
@@ -415,8 +414,8 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
         double accuracy = Double.NaN;
         if (operation instanceof ConcatenatedOperation) {
             final Collection components = ((ConcatenatedOperation) operation).getOperations();
-            for (final Iterator it = components.iterator(); it.hasNext(); ) {
-                final double candidate = Math.abs(getAccuracy((CoordinateOperation) it.next()));
+            for (Object component : components) {
+                final double candidate = Math.abs(getAccuracy((CoordinateOperation) component));
                 if (!Double.isNaN(candidate)) {
                     if (Double.isNaN(accuracy)) {
                         accuracy = candidate;

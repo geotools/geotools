@@ -60,8 +60,7 @@ public class GrassRasterReaderWriterTest extends TestCase {
 
     public void test() throws Exception {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cell/pit");
-        AbstractGridFormat format =
-                (AbstractGridFormat) new GrassCoverageFormatFactory().createFormat();
+        AbstractGridFormat format = new GrassCoverageFormatFactory().createFormat();
         File pitFile = URLs.urlToFile(pitUrl);
         assertTrue(format.accepts(pitFile));
 
@@ -79,8 +78,7 @@ public class GrassRasterReaderWriterTest extends TestCase {
 
     public void testFormatAccepts() throws Exception {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cellhd/pit");
-        AbstractGridFormat format =
-                (AbstractGridFormat) new GrassCoverageFormatFactory().createFormat();
+        AbstractGridFormat format = new GrassCoverageFormatFactory().createFormat();
         File pitFile = URLs.urlToFile(pitUrl);
         assertFalse(format.accepts(pitFile));
     }
@@ -88,7 +86,7 @@ public class GrassRasterReaderWriterTest extends TestCase {
     private GridCoverage2D readGc(AbstractGridFormat format, File fileToRead) throws IOException {
         GridCoverageReader reader = format.getReader(fileToRead);
         GridCoverage2D gc = ((GridCoverage2D) reader.read(null));
-        assertTrue(gc != null);
+        assertNotNull(gc);
 
         checkMatrixEqual(gc.getRenderedImage(), mapData, 0);
 

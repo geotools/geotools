@@ -1026,8 +1026,8 @@ public class GMLSchema implements Schema {
         }
 
         private boolean contains(String[] enumeration, String text) {
-            for (int i = 0; i < enumeration.length; i++) {
-                if (enumeration[i].equalsIgnoreCase(text)) return true;
+            for (String s : enumeration) {
+                if (s.equalsIgnoreCase(text)) return true;
             }
             return false;
         }

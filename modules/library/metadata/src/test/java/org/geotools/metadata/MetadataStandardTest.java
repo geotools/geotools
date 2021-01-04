@@ -18,6 +18,7 @@ package org.geotools.metadata;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -99,8 +100,8 @@ public final class MetadataStandardTest {
 
         map.remove("identifiers");
         final int newHashCode = citation.hashCode();
-        assertFalse(map.equals(copy));
-        assertFalse(hashCode == newHashCode);
+        assertNotEquals(map, copy);
+        assertNotEquals(hashCode, newHashCode);
         assertEquals(newHashCode, new HashSet<>(map.values()).hashCode());
     }
 }

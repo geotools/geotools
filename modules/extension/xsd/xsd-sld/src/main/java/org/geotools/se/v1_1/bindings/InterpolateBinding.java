@@ -16,7 +16,6 @@
  */
 package org.geotools.se.v1_1.bindings;
 
-import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.styling.ColorMap;
@@ -102,7 +101,7 @@ public class InterpolateBinding extends AbstractComplexBinding {
 
         ColorMap map = styleFactory.createColorMap();
 
-        for (ColorMapEntry e : (List<ColorMapEntry>) node.getChildValues(ColorMapEntry.class)) {
+        for (ColorMapEntry e : node.getChildValues(ColorMapEntry.class)) {
             map.addColorMapEntry(e);
         }
 

@@ -19,6 +19,7 @@ package org.geotools.referencing.operation.projection;
 import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.SEMI_MAJOR;
 import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.SEMI_MINOR;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -74,8 +75,8 @@ public final class MapProjectionTest {
         for (int i = 0; i < PROJECTED.length / 2; i++) {
             Point2D src = new Point2D.Double(GEOGRAPHIC[i * 2 + 0], GEOGRAPHIC[i * 2 + 1]);
             Point2D target = new Point2D.Double(PROJECTED[i * 2 + 0], PROJECTED[i * 2 + 1]);
-            assertEquals(true, mt.checkReciprocal(src, target, false));
-            assertEquals(true, mt.checkReciprocal(target, src, true));
+            assertTrue(mt.checkReciprocal(src, target, false));
+            assertTrue(mt.checkReciprocal(target, src, true));
         }
 
         mt.inverse().transform(PROJECTED, 0, dst, 0, PROJECTED.length / 2);

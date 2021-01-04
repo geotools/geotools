@@ -102,8 +102,8 @@ public final class GridCoverageTest extends GridCoverageTestBase {
         reader.setReadParams("geotools_coverage", null, readP, requestedEnvelope, requestedDim);
         assertNotNull(readP);
         // 1 means no subsampling and no pixel skipping
-        assertTrue(readP.getSourceXSubsampling() == 1);
-        assertTrue(readP.getSourceYSubsampling() == 1);
+        assertEquals(1, readP.getSourceXSubsampling());
+        assertEquals(1, readP.getSourceYSubsampling());
 
         // MOCK ZOOMOUT TO FORCE SUBSAMPLING
         GeneralEnvelope requestedEnvelopeZoomOut = coverage.gridGeometry.envelope.clone();

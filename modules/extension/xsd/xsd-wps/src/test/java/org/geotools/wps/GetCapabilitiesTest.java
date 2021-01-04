@@ -18,7 +18,6 @@ package org.geotools.wps;
 
 import junit.framework.TestCase;
 import net.opengis.ows11.AddressType;
-import net.opengis.ows11.CodeType;
 import net.opengis.ows11.ContactType;
 import net.opengis.ows11.DCPType;
 import net.opengis.ows11.HTTPType;
@@ -208,7 +207,7 @@ public class GetCapabilitiesTest extends TestCase {
 
         ProcessBriefType pb = (ProcessBriefType) po.getProcess().get(0);
         assertNotNull(pb.getIdentifier());
-        assertEquals("buffer", ((CodeType) pb.getIdentifier()).getValue());
+        assertEquals("buffer", pb.getIdentifier().getValue());
 
         assertNotNull(pb.getTitle());
         assertEquals("Buffer a polygon feature", pb.getTitle().getValue());

@@ -58,11 +58,7 @@ public final class SRPFormat extends BaseGDALGridFormat implements Format {
     public SRPReader getReader(Object source, Hints hints) {
         try {
             return new SRPReader(source, hints);
-        } catch (MismatchedDimensionException e) {
-            final RuntimeException re = new RuntimeException();
-            re.initCause(e);
-            throw re;
-        } catch (DataSourceException e) {
+        } catch (MismatchedDimensionException | DataSourceException e) {
             final RuntimeException re = new RuntimeException();
             re.initCause(e);
             throw re;

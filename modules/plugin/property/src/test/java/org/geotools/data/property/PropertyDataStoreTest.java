@@ -18,6 +18,7 @@ package org.geotools.data.property;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertNotEquals;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -171,8 +172,8 @@ public class PropertyDataStoreTest extends TestCase {
 
         File dir = new File("propertyTestData");
         File list[] = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File file : list) {
+            file.delete();
         }
         dir.delete();
         super.tearDown();
@@ -479,10 +480,10 @@ public class PropertyDataStoreTest extends TestCase {
         int count = road.getCount(Query.ALL);
         assertEquals(5, count);
 
-        assertTrue(!road.getBounds(Query.ALL).isNull());
+        assertFalse(road.getBounds(Query.ALL).isNull());
         assertEquals(5, features.size());
 
-        assertTrue(!features.getBounds().isNull());
+        assertFalse(features.getBounds().isNull());
         assertEquals(5, features.size());
     }
 
@@ -641,8 +642,8 @@ public class PropertyDataStoreTest extends TestCase {
         ReferencedEnvelope bounds = roadAuto.getFeatures().getBounds();
         ReferencedEnvelope client1Bounds = roadFromClient1.getFeatures().getBounds();
         ReferencedEnvelope client2Bounds = roadFromClient2.getFeatures().getBounds();
-        assertTrue("client 1 before", bounds.equals(client1Bounds));
-        assertTrue("client 2 before", bounds.equals(client2Bounds));
+        assertEquals("client 1 before", bounds, client1Bounds);
+        assertEquals("client 2 before", bounds, client2Bounds);
 
         // Remove Feature with Fid1
         roadFromClient1.removeFeatures(selectFid1); // road1 removes fid1 on t1
@@ -660,8 +661,8 @@ public class PropertyDataStoreTest extends TestCase {
         bounds = roadAuto.getFeatures().getBounds();
         client1Bounds = roadFromClient1.getFeatures().getBounds();
         client2Bounds = roadFromClient2.getFeatures().getBounds();
-        assertFalse("client 1 after client 1 removes fid1", bounds.equals(client1Bounds));
-        assertTrue("client 2 after client 1 removes fid1", bounds.equals(client2Bounds));
+        assertNotEquals("client 1 after client 1 removes fid1", bounds, client1Bounds);
+        assertEquals("client 2 after client 1 removes fid1", bounds, client2Bounds);
 
         roadFromClient2.addFeatures(
                 DataUtilities.collection(chrisFeature)); // road2 adds fid5 on t2
@@ -681,12 +682,14 @@ public class PropertyDataStoreTest extends TestCase {
         bounds = roadAuto.getFeatures().getBounds();
         client1Bounds = roadFromClient1.getFeatures().getBounds();
         client2Bounds = roadFromClient2.getFeatures().getBounds();
-        assertFalse(
+        assertNotEquals(
                 "client 1 after client 1 removes fid1 and client 2 adds fid5",
-                bounds.equals(client1Bounds));
-        assertFalse(
+                bounds,
+                client1Bounds);
+        assertNotEquals(
                 "client 2 after client 1 removes fid1 and client 2 adds fid5",
-                bounds.equals(client2Bounds));
+                bounds,
+                client2Bounds);
 
         transaction1.commit();
         assertEquals(
@@ -705,12 +708,14 @@ public class PropertyDataStoreTest extends TestCase {
         bounds = roadAuto.getFeatures().getBounds();
         client1Bounds = roadFromClient1.getFeatures().getBounds();
         client2Bounds = roadFromClient2.getFeatures().getBounds();
-        assertTrue(
+        assertEquals(
                 "client 1 after commiting removal of fid1 (client 2 has added fid5)",
-                bounds.equals(client1Bounds));
-        assertFalse(
-                "client 2 after client 1 commits removal of fid1 (client 2 has added fid5)",
-                bounds.equals(client2Bounds));
+                bounds,
+                client1Bounds);
+        assertNotEquals(
+                "client 2 after client 1 commits removal of fid1 (client 2 has added " + "fid5)",
+                bounds,
+                client2Bounds);
 
         transaction2.commit();
         assertEquals(
@@ -729,12 +734,14 @@ public class PropertyDataStoreTest extends TestCase {
         bounds = roadAuto.getFeatures().getBounds();
         client1Bounds = roadFromClient1.getFeatures().getBounds();
         client2Bounds = roadFromClient2.getFeatures().getBounds();
-        assertTrue(
+        assertEquals(
                 "client 1 after commiting addition of fid5 (fid1 previously removed)",
-                bounds.equals(client1Bounds));
-        assertTrue(
+                bounds,
+                client1Bounds);
+        assertEquals(
                 "client 2 after commiting addition of fid5 (fid1 previously removed)",
-                bounds.equals(client2Bounds));
+                bounds,
+                client2Bounds);
     }
 
     public void testUseExistingFid() throws Exception {

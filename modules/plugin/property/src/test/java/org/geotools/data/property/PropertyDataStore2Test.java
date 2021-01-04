@@ -121,22 +121,22 @@ public class PropertyDataStore2Test extends TestCase {
     protected void tearDown() throws Exception {
         File dir = new File(TARGET_DIR, "propertyTestData");
         File list[] = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File item : list) {
+            item.delete();
         }
         dir.delete();
 
         dir = new File(TARGET_DIR, "propertyTestData2");
         list = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File value : list) {
+            value.delete();
         }
         dir.delete();
 
         dir = new File(TARGET_DIR, "propertyTestData3");
         list = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File file : list) {
+            file.delete();
         }
         dir.delete();
 
@@ -235,13 +235,13 @@ public class PropertyDataStore2Test extends TestCase {
 
     public void testGetFeaturesFilterSize() throws Exception {
         Filter f = CQL.toFilter("name = 'brent'");
-        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+        SimpleFeatureSource features = store.getFeatureSource("road");
         assertEquals(1, features.getFeatures(f).size());
     }
 
     public void testGetFeaturesFilterBounds() throws Exception {
         Filter f = CQL.toFilter("name = 'brent'");
-        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+        SimpleFeatureSource features = store.getFeatureSource("road");
         ReferencedEnvelope envelope = new ReferencedEnvelope(20, 30, 20, 30, null);
         assertEquals(envelope, features.getFeatures(f).getBounds());
     }
@@ -251,7 +251,7 @@ public class PropertyDataStore2Test extends TestCase {
     public void testOffset() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);
         query.setStartIndex(3);
-        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+        SimpleFeatureSource features = store.getFeatureSource("road");
 
         SimpleFeatureCollection matches = features.getFeatures(query);
 
@@ -264,7 +264,7 @@ public class PropertyDataStore2Test extends TestCase {
     public void testLimit() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);
         query.setMaxFeatures(3);
-        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+        SimpleFeatureSource features = store.getFeatureSource("road");
 
         SimpleFeatureCollection matches = features.getFeatures(query);
 
@@ -278,7 +278,7 @@ public class PropertyDataStore2Test extends TestCase {
         Query query = new Query(Query.ALL);
         query.setMaxFeatures(3);
         query.setStartIndex(3);
-        SimpleFeatureSource features = (SimpleFeatureSource) store.getFeatureSource("road");
+        SimpleFeatureSource features = store.getFeatureSource("road");
 
         SimpleFeatureCollection matches = features.getFeatures(query);
 

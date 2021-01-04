@@ -537,8 +537,8 @@ public final class ImageUtilities {
             int minYL = result.getMinY(source);
             int maxXL = result.getWidth(source) + minXL;
             int maxYL = result.getHeight(source) + minYL;
-            for (int i = 0; i < n; i++) {
-                source = sources.get(i);
+            for (RenderedImage renderedImage : sources) {
+                source = renderedImage;
                 final int minX = source.getMinX();
                 final int minY = source.getMinY();
                 final int maxX = source.getWidth() + minX;
@@ -1164,7 +1164,7 @@ public final class ImageUtilities {
                 break;
             case DataBuffer.TYPE_INT:
                 values = new Integer[numBands];
-                if (backgroundValues == null) Arrays.fill(values, Integer.valueOf((int) 0));
+                if (backgroundValues == null) Arrays.fill(values, Integer.valueOf(0));
                 else {
                     // we have background values available
                     for (int i = 0; i < values.length; i++)
@@ -1194,8 +1194,8 @@ public final class ImageUtilities {
                     for (int i = 0; i < values.length; i++)
                         values[i] =
                                 i >= backgroundValues.length
-                                        ? Double.valueOf((Double) backgroundValues[0])
-                                        : Double.valueOf((Double) backgroundValues[i]);
+                                        ? Double.valueOf(backgroundValues[0])
+                                        : Double.valueOf(backgroundValues[i]);
                 }
                 break;
         }

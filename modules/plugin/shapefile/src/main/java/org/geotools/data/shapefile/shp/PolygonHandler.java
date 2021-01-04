@@ -254,12 +254,12 @@ public class PolygonHandler implements ShapeHandler {
         // quick optimization: if there's only one shell no need to check
         // for holes inclusion
         if (shells.size() == 1) {
-            return createMulti((LinearRing) shells.get(0), holes);
+            return createMulti(shells.get(0), holes);
         }
         // if for some reason, there is only one hole, we just reverse it and
         // carry on.
-        else if (holes.size() == 1 && shells.size() == 0) {
-            return createMulti((LinearRing) holes.get(0));
+        else if (holes.size() == 1 && shells.isEmpty()) {
+            return createMulti(holes.get(0));
         } else {
 
             // build an association between shells and holes
@@ -326,11 +326,11 @@ public class PolygonHandler implements ShapeHandler {
         Polygon[] polygons;
 
         // if we have shells, lets use them
-        if (shells.size() > 0) {
-            polygons = new Polygon[shells.size()];
+        if (shells.isEmpty()) {
             // oh, this is a bad record with only holes
-        } else {
             polygons = new Polygon[holes.size()];
+        } else {
+            polygons = new Polygon[shells.size()];
         }
 
         // this will do nothing for the "only holes case"
@@ -344,9 +344,9 @@ public class PolygonHandler implements ShapeHandler {
 
         // this will take care of the "only holes case"
         // we just reverse each hole
-        if (shells.size() == 0) {
+        if (shells.isEmpty()) {
             for (int i = 0, ii = holes.size(); i < ii; i++) {
-                LinearRing hole = (LinearRing) holes.get(i);
+                LinearRing hole = holes.get(i);
                 polygons[i] = geometryFactory.createPolygon(hole, null);
             }
         }
@@ -359,22 +359,18 @@ public class PolygonHandler implements ShapeHandler {
     /** <b>Package private for testing</b> */
     List<List<LinearRing>> assignHolesToShells(
             final ArrayList<LinearRing> shells, final ArrayList<LinearRing> holes) {
-        List<List<LinearRing>> holesForShells = new ArrayList<>(shells.size());
-        for (int i = 0; i < shells.size(); i++) {
-            holesForShells.add(new ArrayList<>());
-        }
+        List<List<LinearRing>> holesForShells = getListOfLists(shells.size());
 
         // find homes
-        for (int i = 0; i < holes.size(); i++) {
-            LinearRing testRing = (LinearRing) holes.get(i);
+        for (LinearRing testRing : holes) {
             LinearRing minShell = null;
             Envelope minEnv = null;
             Envelope testEnv = testRing.getEnvelopeInternal();
             Coordinate testPt = testRing.getCoordinateN(0);
             LinearRing tryRing;
 
-            for (int j = 0; j < shells.size(); j++) {
-                tryRing = shells.get(j);
+            for (LinearRing shell : shells) {
+                tryRing = shell;
 
                 Envelope tryEnv = tryRing.getEnvelopeInternal();
                 if (minShell != null) {
@@ -408,6 +404,15 @@ public class PolygonHandler implements ShapeHandler {
             }
         }
 
+        return holesForShells;
+    }
+
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
+    private List<List<LinearRing>> getListOfLists(int size) {
+        List<List<LinearRing>> holesForShells = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            holesForShells.add(new ArrayList<>());
+        }
         return holesForShells;
     }
 

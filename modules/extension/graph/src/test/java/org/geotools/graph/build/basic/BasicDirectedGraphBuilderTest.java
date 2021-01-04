@@ -39,7 +39,7 @@ public class BasicDirectedGraphBuilderTest extends TestCase {
 
     public void test_buildNode() {
         DirectedNode dn = (DirectedNode) m_builder.buildNode();
-        assertTrue(dn != null);
+        assertNotNull(dn);
     }
 
     public void test_buildEdge() {
@@ -48,9 +48,9 @@ public class BasicDirectedGraphBuilderTest extends TestCase {
 
         DirectedEdge de = (DirectedEdge) m_builder.buildEdge(n1, n2);
 
-        assertTrue(de != null);
-        assertTrue(de.getInNode() == n1);
-        assertTrue(de.getOutNode() == n2);
+        assertNotNull(de);
+        assertSame(de.getInNode(), n1);
+        assertSame(de.getOutNode(), n2);
     }
 
     public void test_addEdge_0() {
@@ -74,13 +74,13 @@ public class BasicDirectedGraphBuilderTest extends TestCase {
         m_builder.addNode(n1);
         m_builder.addEdge(e);
 
-        assertTrue(n1.getInEdges().size() == 1);
-        assertTrue(n1.getOutEdges().size() == 1);
-        assertTrue(n1.getEdges().size() == 2);
+        assertEquals(1, n1.getInEdges().size());
+        assertEquals(1, n1.getOutEdges().size());
+        assertEquals(2, n1.getEdges().size());
 
-        assertTrue(n1.getInDegree() == 1);
-        assertTrue(n1.getOutDegree() == 1);
-        assertTrue(n1.getDegree() == 2);
+        assertEquals(1, n1.getInDegree());
+        assertEquals(1, n1.getOutDegree());
+        assertEquals(2, n1.getDegree());
     }
 
     public void test_getGraph() {

@@ -81,11 +81,10 @@ public abstract class ArcSDEGeometryBuilder {
     private static final Logger LOGGER = Logging.getLogger(ArcSDEGeometryBuilder.class);
 
     /** lookup specialized geometry builders classes by it's geometry type */
-    private static final Map<Class<?>, ArcSDEGeometryBuilder> builders =
-            new HashMap<Class<?>, ArcSDEGeometryBuilder>();
+    private static final Map<Class<?>, ArcSDEGeometryBuilder> builders = new HashMap<>();
 
     /** Look up "empty" geometry instances based on geometry class */
-    private static final Map<Class<?>, Geometry> nullGeometries = new HashMap<Class<?>, Geometry>();
+    private static final Map<Class<?>, Geometry> nullGeometries = new HashMap<>();
 
     static {
         builders.put(Geometry.class, GenericGeometryBuilder.getInstance());
@@ -182,7 +181,7 @@ public abstract class ArcSDEGeometryBuilder {
             gcol = new GeometryFactory().createGeometryCollection(geoms);
         }
 
-        List<SDEPoint> allPoints = new ArrayList<SDEPoint>();
+        List<SDEPoint> allPoints = new ArrayList<>();
         numParts = gcol.getNumGeometries();
 
         int[] partOffsets = new int[numParts];
@@ -196,8 +195,8 @@ public abstract class ArcSDEGeometryBuilder {
 
             coords = geom.getCoordinates();
 
-            for (int i = 0; i < coords.length; i++) {
-                c = coords[i];
+            for (Coordinate coord : coords) {
+                c = coord;
                 allPoints.add(new SDEPoint(c.x, c.y));
             }
         }
@@ -306,7 +305,7 @@ public abstract class ArcSDEGeometryBuilder {
      */
     public static ArcSDEGeometryBuilder builderFor(Class<? extends Geometry> jtsGeometryClass)
             throws IllegalArgumentException {
-        ArcSDEGeometryBuilder builder = (ArcSDEGeometryBuilder) builders.get(jtsGeometryClass);
+        ArcSDEGeometryBuilder builder = builders.get(jtsGeometryClass);
 
         if (builder == null) {
             String msg =
@@ -325,7 +324,7 @@ public abstract class ArcSDEGeometryBuilder {
             throw new NullPointerException("got null geometry class");
         }
 
-        Geometry emptyGeom = (Geometry) nullGeometries.get(geoClass);
+        Geometry emptyGeom = nullGeometries.get(geoClass);
 
         return emptyGeom;
     }

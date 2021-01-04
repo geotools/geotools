@@ -130,11 +130,7 @@ class NetCDFRequest extends CoverageReadRequest {
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(bbox);
         try {
             wgs84Envelope = wgs84Envelope.transform(DefaultGeographicCRS.WGS84, true);
-        } catch (TransformException e) {
-            IOException ioe = new IOException();
-            ioe.initCause(e);
-            throw ioe;
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             IOException ioe = new IOException();
             ioe.initCause(e);
             throw ioe;

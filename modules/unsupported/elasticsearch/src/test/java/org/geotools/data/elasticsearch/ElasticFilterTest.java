@@ -16,11 +16,11 @@
  */
 package org.geotools.data.elasticsearch;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIn.isOneOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -201,7 +201,7 @@ public class ElasticFilterTest {
         dateAttBuilder.setName("dateAttrWithFormat");
         dateAttBuilder.setBinding(Date.class);
         dateAtt = dateAttBuilder.buildDescriptor("dateAttrWithFormat", dateAttBuilder.buildType());
-        List<String> validFormats = new ArrayList<String>();
+        List<String> validFormats = new ArrayList<>();
         validFormats.add(format);
         dateAtt.getUserData().put(ElasticConstants.DATE_FORMAT, validFormats);
         typeBuilder.add(dateAtt);

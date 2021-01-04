@@ -689,34 +689,31 @@ public class PostGISDialect extends BasicSQLDialect {
             throws SQLException {
 
         // first attempt, try with the geometry metadata
-        Statement statement = null;
-        ResultSet result = null;
         Integer srid = null;
-        try {
+        try (Statement statement = cx.createStatement()) {
             if (schemaName == null) schemaName = "public";
 
             // try geography_columns
             if (supportsGeography(cx)) {
-                try {
-                    // first look for an entry in geography_columns, if there return 4326
-                    String sqlStatement =
-                            "SELECT SRID FROM GEOGRAPHY_COLUMNS WHERE " //
-                                    + "F_TABLE_SCHEMA = '"
-                                    + schemaName
-                                    + "' " //
-                                    + "AND F_TABLE_NAME = '"
-                                    + tableName
-                                    + "' " //
-                                    + "AND F_GEOGRAPHY_COLUMN = '"
-                                    + columnName
-                                    + "'";
-                    LOGGER.log(Level.FINE, "Geography srid check; {0} ", sqlStatement);
-                    statement = cx.createStatement();
-                    result = statement.executeQuery(sqlStatement);
+                // first look for an entry in geography_columns, if there return 4326
+                String sqlStatement =
+                        "SELECT SRID FROM GEOGRAPHY_COLUMNS WHERE " //
+                                + "F_TABLE_SCHEMA = '"
+                                + schemaName
+                                + "' " //
+                                + "AND F_TABLE_NAME = '"
+                                + tableName
+                                + "' " //
+                                + "AND F_GEOGRAPHY_COLUMN = '"
+                                + columnName
+                                + "'";
+                LOGGER.log(Level.FINE, "Geography srid check; {0} ", sqlStatement);
+                try (ResultSet result = statement.executeQuery(sqlStatement)) {
 
                     if (result.next()) {
                         return 4326;
                     }
+
                 } catch (SQLException e) {
                     LOGGER.log(
                             Level.WARNING,
@@ -728,28 +725,25 @@ public class PostGISDialect extends BasicSQLDialect {
                                     + columnName
                                     + " from the geometry_columns table, checking geometry_columns instead",
                             e);
-                } finally {
-                    dataStore.closeSafe(result);
                 }
             }
 
             // try geometry_columns
-            try {
-                String sqlStatement =
-                        "SELECT SRID FROM GEOMETRY_COLUMNS WHERE " //
-                                + "F_TABLE_SCHEMA = '"
-                                + schemaName
-                                + "' " //
-                                + "AND F_TABLE_NAME = '"
-                                + tableName
-                                + "' " //
-                                + "AND F_GEOMETRY_COLUMN = '"
-                                + columnName
-                                + "'";
 
-                LOGGER.log(Level.FINE, "Geometry srid check; {0} ", sqlStatement);
-                statement = cx.createStatement();
-                result = statement.executeQuery(sqlStatement);
+            String sqlStatement =
+                    "SELECT SRID FROM GEOMETRY_COLUMNS WHERE " //
+                            + "F_TABLE_SCHEMA = '"
+                            + schemaName
+                            + "' " //
+                            + "AND F_TABLE_NAME = '"
+                            + tableName
+                            + "' " //
+                            + "AND F_GEOMETRY_COLUMN = '"
+                            + columnName
+                            + "'";
+
+            LOGGER.log(Level.FINE, "Geometry srid check; {0} ", sqlStatement);
+            try (ResultSet result = statement.executeQuery(sqlStatement)) {
 
                 if (result.next()) {
                     srid = result.getInt(1);
@@ -765,8 +759,6 @@ public class PostGISDialect extends BasicSQLDialect {
                                 + columnName
                                 + " from the geometry_columns table, checking the first geometry instead",
                         e);
-            } finally {
-                dataStore.closeSafe(result);
             }
 
             // fall back on inspection of the first geometry, assuming uniform srid (fair assumption
@@ -776,7 +768,7 @@ public class PostGISDialect extends BasicSQLDialect {
             // that to mean unset
 
             if (srid == null || (getVersion(cx).compareTo(V_2_0_0) >= 0 && srid == 0)) {
-                String sqlStatement =
+                String sql =
                         "SELECT ST_SRID("
                                 + escapeName(columnName)
                                 + ") "
@@ -789,14 +781,12 @@ public class PostGISDialect extends BasicSQLDialect {
                                 + escapeName(columnName)
                                 + " IS NOT NULL "
                                 + "LIMIT 1";
-                result = statement.executeQuery(sqlStatement);
-                if (result.next()) {
-                    srid = result.getInt(1);
+                try (ResultSet result = statement.executeQuery(sql)) {
+                    if (result.next()) {
+                        srid = result.getInt(1);
+                    }
                 }
             }
-        } finally {
-            dataStore.closeSafe(result);
-            dataStore.closeSafe(statement);
         }
 
         return srid;
@@ -807,30 +797,26 @@ public class PostGISDialect extends BasicSQLDialect {
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         // first attempt, try with the geometry metadata
-        Statement statement = null;
-        ResultSet result = null;
         Integer dimension = null;
-        try {
+        try (Statement statement = cx.createStatement()) {
             if (schemaName == null) schemaName = "public";
 
             // try geography_columns
             if (supportsGeography(cx)) {
-                try {
-                    // first look for an entry in geography_columns
-                    String sqlStatement =
-                            "SELECT COORD_DIMENSION FROM GEOGRAPHY_COLUMNS WHERE " //
-                                    + "F_TABLE_SCHEMA = '"
-                                    + schemaName
-                                    + "' " //
-                                    + "AND F_TABLE_NAME = '"
-                                    + tableName
-                                    + "' " //
-                                    + "AND F_GEOGRAPHY_COLUMN = '"
-                                    + columnName
-                                    + "'";
-                    LOGGER.log(Level.FINE, "Geography srid check; {0} ", sqlStatement);
-                    statement = cx.createStatement();
-                    result = statement.executeQuery(sqlStatement);
+                // first look for an entry in geography_columns
+                String sqlStatement =
+                        "SELECT COORD_DIMENSION FROM GEOGRAPHY_COLUMNS WHERE " //
+                                + "F_TABLE_SCHEMA = '"
+                                + schemaName
+                                + "' " //
+                                + "AND F_TABLE_NAME = '"
+                                + tableName
+                                + "' " //
+                                + "AND F_GEOGRAPHY_COLUMN = '"
+                                + columnName
+                                + "'";
+                LOGGER.log(Level.FINE, "Geography srid check; {0} ", sqlStatement);
+                try (ResultSet result = statement.executeQuery(sqlStatement)) {
 
                     if (result.next()) {
                         return result.getInt(1);
@@ -846,29 +832,24 @@ public class PostGISDialect extends BasicSQLDialect {
                                     + columnName
                                     + " from the geography_columns table, checking geometry_columns instead",
                             e);
-                } finally {
-                    dataStore.closeSafe(result);
                 }
             }
 
             // try geometry_columns
-            try {
-                String sqlStatement =
-                        "SELECT COORD_DIMENSION FROM GEOMETRY_COLUMNS WHERE " //
-                                + "F_TABLE_SCHEMA = '"
-                                + schemaName
-                                + "' " //
-                                + "AND F_TABLE_NAME = '"
-                                + tableName
-                                + "' " //
-                                + "AND F_GEOMETRY_COLUMN = '"
-                                + columnName
-                                + "'";
+            String sqlStatement =
+                    "SELECT COORD_DIMENSION FROM GEOMETRY_COLUMNS WHERE " //
+                            + "F_TABLE_SCHEMA = '"
+                            + schemaName
+                            + "' " //
+                            + "AND F_TABLE_NAME = '"
+                            + tableName
+                            + "' " //
+                            + "AND F_GEOMETRY_COLUMN = '"
+                            + columnName
+                            + "'";
 
-                LOGGER.log(Level.FINE, "Geometry srid check; {0} ", sqlStatement);
-                statement = cx.createStatement();
-                result = statement.executeQuery(sqlStatement);
-
+            LOGGER.log(Level.FINE, "Geometry srid check; {0} ", sqlStatement);
+            try (ResultSet result = statement.executeQuery(sqlStatement)) {
                 if (result.next()) {
                     dimension = result.getInt(1);
                 }
@@ -883,12 +864,7 @@ public class PostGISDialect extends BasicSQLDialect {
                                 + columnName
                                 + " from the geometry_columns table, checking the first geometry instead",
                         e);
-            } finally {
-                dataStore.closeSafe(result);
             }
-        } finally {
-            dataStore.closeSafe(result);
-            dataStore.closeSafe(statement);
         }
 
         // fall back on inspection of the first geometry, assuming uniform srid (fair assumption
@@ -1420,8 +1396,8 @@ public class PostGISDialect extends BasicSQLDialect {
 
     void encodeByteArrayAsHex(byte[] input, StringBuffer sql) {
         StringBuffer sb = new StringBuffer("\\x");
-        for (int i = 0; i < input.length; i++) {
-            sb.append(String.format("%02x", input[i]));
+        for (byte b : input) {
+            sb.append(String.format("%02x", b));
         }
         super.encodeValue(sb.toString(), String.class, sql);
     }
@@ -1429,8 +1405,7 @@ public class PostGISDialect extends BasicSQLDialect {
     void encodeByteArrayAsEscape(byte[] input, StringBuffer sql) {
         // escape the into bytea representation
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < input.length; i++) {
-            byte b = input[i];
+        for (byte b : input) {
             if (b == 0) {
                 sb.append("\\\\000");
             } else if (b == 39) {
@@ -1577,5 +1552,10 @@ public class PostGISDialect extends BasicSQLDialect {
             return duplicated;
         }
         return expression;
+    }
+
+    @Override
+    public String[] getDesiredTablesType() {
+        return new String[] {"TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM", "PARTITIONED TABLE"};
     }
 }

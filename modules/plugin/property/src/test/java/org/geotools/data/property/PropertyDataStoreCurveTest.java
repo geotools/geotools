@@ -83,8 +83,8 @@ public class PropertyDataStoreCurveTest extends TestCase {
     protected void tearDown() throws Exception {
         File dir = new File("propertyCurveTestData");
         File list[] = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File file : list) {
+            file.delete();
         }
         dir.delete();
         super.tearDown();
@@ -95,9 +95,8 @@ public class PropertyDataStoreCurveTest extends TestCase {
         assertEquals(1, names.length);
         assertEquals("curvelines", names[0]);
         Query query = new Query("curvelines");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertTrue(reader.hasNext());
             Object geom = reader.next().getDefaultGeometry();
             assertTrue(geom instanceof CompoundRing);
@@ -115,8 +114,6 @@ public class PropertyDataStoreCurveTest extends TestCase {
             assertTrue(geom instanceof CircularString);
             curved = (CurvedGeometry<?>) geom;
             assertEquals(Double.MAX_VALUE, curved.getTolerance());
-        } finally {
-            reader.close();
         }
     }
 
@@ -158,9 +155,8 @@ public class PropertyDataStoreCurveTest extends TestCase {
         assertEquals("curvelines", names[0]);
         Query query = new Query("curvelines");
         query.getHints().put(Hints.LINEARIZATION_TOLERANCE, 0.1);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             int count = 0;
             while (reader.hasNext()) {
                 Object geom = reader.next().getDefaultGeometry();
@@ -168,8 +164,6 @@ public class PropertyDataStoreCurveTest extends TestCase {
                 CurvedGeometry<?> curved = (CurvedGeometry<?>) geom;
                 assertEquals(0.1, curved.getTolerance(), 0d);
             }
-        } finally {
-            reader.close();
         }
     }
 }

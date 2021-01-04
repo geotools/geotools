@@ -36,7 +36,7 @@ public class ScaleRange extends Selector {
             }
         }
 
-        return new ScaleRange((Range<Double>) range);
+        return new ScaleRange(range);
     }
 
     public Range<Double> range;

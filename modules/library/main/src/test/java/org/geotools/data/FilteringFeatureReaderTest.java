@@ -98,11 +98,11 @@ public class FilteringFeatureReaderTest extends DataTestCase {
         SimpleFeature feature;
         int count = 0;
         try {
-            for (int i = 0; i < expected.length; i++) {
+            for (SimpleFeature simpleFeature : expected) {
                 assertTrue(reader.hasNext());
                 feature = reader.next();
                 assertNotNull(feature);
-                assertEquals(expected[i], feature);
+                assertEquals(simpleFeature, feature);
                 count++;
             }
             assertFalse(reader.hasNext());

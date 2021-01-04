@@ -16,7 +16,8 @@
  */
 package org.geotools.graph.traverse.standard;
 
-import java.util.Iterator;
+import static junit.framework.TestCase.assertFalse;
+
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
@@ -68,11 +69,10 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
         traversal.init();
         traversal.traverse();
 
-        assertTrue(walker.getCount() == nnodes);
+        assertEquals(walker.getCount(), nnodes);
 
         boolean flip = false;
-        for (Iterator itr = builder().getGraph().getNodes().iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
+        for (Node node : builder().getGraph().getNodes()) {
             if (node.getID() == 0 && node.getCount() != 0) {
                 flip = true;
                 break;
@@ -80,13 +80,12 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
         }
         final int size = builder().getGraph().getNodes().size();
 
-        for (Iterator itr = builder().getGraph().getNodes().iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
+        for (Node node : builder().getGraph().getNodes()) {
             int id = node.getID();
             int expected = -1;
 
-            if (id == (int) size / 2) expected = size - 1;
-            else if (id < (int) size / 2) {
+            if (id == size / 2) expected = size - 1;
+            else if (id < size / 2) {
                 if (!flip) {
                     expected = id * 2;
                 } else {
@@ -100,7 +99,7 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
                 }
             }
 
-            assertTrue(expected == node.getCount());
+            assertEquals(expected, node.getCount());
         }
         ;
     }
@@ -136,9 +135,7 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
                     public int visit(Graphable component) {
                         String id = component.getObject().toString();
 
-                        for (Iterator itr = builder().getGraph().getNodes().iterator();
-                                itr.hasNext(); ) {
-                            Node other = (Node) itr.next();
+                        for (Node other : builder().getGraph().getNodes()) {
                             if (other.getObject().toString().length() < id.length()) {
                                 assertTrue(other.getCount() > component.getCount());
                             }
@@ -148,7 +145,7 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == Math.pow(2, k + 1) - 1);
+        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -171,13 +168,13 @@ public class BreadthFirstTopologicalIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(!component.isVisited());
+                        assertFalse(component.isVisited());
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == 0);
+        assertEquals(0, walker.getCount());
     }
 
     protected GraphBuilder createBuilder() {

@@ -158,10 +158,10 @@ public class Extrema extends BaseStatisticsOperationJAI {
                         (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MINIMUM);
                 Object property = result.getProperty(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS);
                 if ((property instanceof List[]))
-                    synthProp.put(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS, (List<int[]>[]) property);
+                    synthProp.put(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS, property);
                 property = result.getProperty(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS);
                 if ((property instanceof List[]))
-                    synthProp.put(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS, (List<int[]>[]) property);
+                    synthProp.put(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS, property);
 
                 // return the map
                 synthProp.put(GT_SYNTHETIC_PROPERTY_MINIMUM, minimums);

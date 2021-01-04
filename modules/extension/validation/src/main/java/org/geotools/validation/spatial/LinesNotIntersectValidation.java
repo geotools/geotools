@@ -64,19 +64,18 @@ public class LinesNotIntersectValidation extends LineLineAbstractValidation {
         while (it.hasNext()) // for each layer
         {
             SimpleFeatureSource featureSource = (SimpleFeatureSource) it.next();
-            SimpleFeatureIterator features = featureSource.getFeatures().features();
 
-            try {
+            try (SimpleFeatureIterator features = featureSource.getFeatures().features()) {
                 while (features.hasNext()) // for each feature
                 {
                     // check if it intersects any of the previous features
                     SimpleFeature feature = features.next();
                     Geometry geom = (Geometry) feature.getDefaultGeometry();
 
-                    for (int i = 0; i < geoms.size(); i++) // for each existing geometry
-                    {
+                    // for each existing geometry
+                    for (Geometry geometry : geoms) {
                         // I don't trust this thing to work correctly
-                        if (geom.crosses((Geometry) geoms.get(i))) {
+                        if (geom.crosses(geometry)) {
                             results.error(feature, "Lines cross when they shouldn't.");
                             result = false;
                         }
@@ -84,8 +83,6 @@ public class LinesNotIntersectValidation extends LineLineAbstractValidation {
 
                     geoms.add(geom);
                 }
-            } finally {
-                features.close(); // this is an important line
             }
         }
 

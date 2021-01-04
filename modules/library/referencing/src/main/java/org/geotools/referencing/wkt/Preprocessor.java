@@ -24,7 +24,6 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -182,7 +181,7 @@ public class Preprocessor extends Format {
     public Object parseObject(String text, final Class<?> type)
             throws ParseException, FactoryException {
         Object value;
-        final Definition def = (Definition) definitions.get(text);
+        final Definition def = definitions.get(text);
         if (def != null) {
             value = def.asObject;
             if (type.isAssignableFrom(value.getClass())) {
@@ -253,8 +252,8 @@ public class Preprocessor extends Format {
         Replacement last;
         replacements = last = new Replacement(0, 0, offset);
         StringBuilder buffer = null;
-        for (final Iterator it = definitions.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (Map.Entry<String, Definition> stringDefinitionEntry : definitions.entrySet()) {
+            final Map.Entry entry = (Map.Entry) stringDefinitionEntry;
             final String name = (String) entry.getKey();
             final Definition def = (Definition) entry.getValue();
             int index = (buffer != null) ? buffer.indexOf(name) : text.indexOf(name);
@@ -265,8 +264,7 @@ public class Preprocessor extends Format {
                  * search is "WGS84", do not accept "TOWGS84").
                  */
                 final int upper = index + name.length();
-                final CharSequence cs =
-                        (buffer != null) ? (CharSequence) buffer : (CharSequence) text;
+                final CharSequence cs = (buffer != null) ? buffer : text;
                 if ((index == 0 || !Character.isJavaIdentifierPart(cs.charAt(index - 1)))
                         && (upper == cs.length()
                                 || !Character.isJavaIdentifierPart(cs.charAt(upper)))) {
@@ -381,8 +379,8 @@ public class Preprocessor extends Format {
         table.write(resources.getString(VocabularyKeys.DESCRIPTION));
         table.nextLine();
         table.writeHorizontalSeparator();
-        for (final Iterator it = definitions.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (Map.Entry<String, Definition> stringDefinitionEntry : definitions.entrySet()) {
+            final Map.Entry entry = (Map.Entry) stringDefinitionEntry;
             final Object object = ((Definition) entry.getValue()).asObject;
             table.write(String.valueOf(entry.getKey()));
             table.nextColumn();

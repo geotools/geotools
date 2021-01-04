@@ -20,6 +20,7 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.referencing.CRS;
@@ -153,7 +154,7 @@ public class GeometryCoordinateSequenceTransformerTest {
         Geometry g2 = gcsTransInv.transform(gTrans);
 
         // result better be a different geometry
-        assertTrue(g != g2);
+        assertNotSame(g, g2);
         assertTrue(hasSameValuesAndStructure(g, g2));
     }
 

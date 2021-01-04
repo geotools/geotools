@@ -150,11 +150,8 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
     @SuppressWarnings("resource")
     private static void copyFile(File storage, URL url, File dest)
             throws FileNotFoundException, IOException {
-        FileChannel in = null;
-        FileChannel out = null;
-        try {
-            in = new FileInputStream(storage).getChannel();
-            out = new FileOutputStream(dest).getChannel();
+        try (FileChannel in = new FileInputStream(storage).getChannel();
+                FileChannel out = new FileOutputStream(dest).getChannel()) {
 
             // magic number for Windows, 64Mb - 32Kb)
             int maxCount = (64 * 1024 * 1024) - (32 * 1024);
@@ -162,13 +159,6 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
             long position = 0;
             while (position < size) {
                 position += in.transferTo(position, maxCount, out);
-            }
-        } finally {
-            if (in != null) {
-                in.close();
-            }
-            if (out != null) {
-                out.close();
             }
         }
     }

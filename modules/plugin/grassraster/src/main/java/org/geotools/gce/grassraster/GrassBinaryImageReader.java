@@ -59,8 +59,8 @@ public class GrassBinaryImageReader extends ImageReader {
             boolean found = false;
             if (originatingProvider != null) {
                 Class<?>[] classes = originatingProvider.getInputTypes();
-                for (int i = 0; i < classes.length; i++) {
-                    if (classes[i].isInstance(input)) {
+                for (Class<?> aClass : classes) {
+                    if (aClass.isInstance(input)) {
                         found = true;
                         break;
                     }

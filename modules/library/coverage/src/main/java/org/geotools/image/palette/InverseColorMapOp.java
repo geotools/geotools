@@ -70,8 +70,7 @@ public final class InverseColorMapOp implements BufferedImageOp {
 
     public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel destCM) {
         if (!(destCM instanceof IndexColorModel)
-                || ((IndexColorModel) destCM).getTransparency() == Transparency.TRANSLUCENT)
-            return null;
+                || destCM.getTransparency() == Transparency.TRANSLUCENT) return null;
         return new BufferedImage(
                 src.getWidth(),
                 src.getHeight(),
@@ -86,8 +85,8 @@ public final class InverseColorMapOp implements BufferedImageOp {
                             src.getWidth(), src.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, icm);
         else {
             if (!(dest.getColorModel() instanceof IndexColorModel)
-                    || ((IndexColorModel) dest.getColorModel()).getTransparency()
-                            != this.transparencyIndex) throw new IllegalArgumentException();
+                    || dest.getColorModel().getTransparency() != this.transparencyIndex)
+                throw new IllegalArgumentException();
             if (((IndexColorModel) dest.getColorModel()).getTransparentPixel()
                     != this.transparencyIndex) throw new IllegalArgumentException();
         }

@@ -19,9 +19,9 @@ package org.geotools.data.vpf.readers;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 import org.geotools.data.vpf.VPFFeatureClass;
 import org.geotools.data.vpf.VPFFeatureType;
 import org.geotools.data.vpf.VPFLibrary;
@@ -71,7 +71,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
         Polygon result = null;
         GeometryFactory geometryFactory = new GeometryFactory();
         LinearRing outerRing = null;
-        List<LinearRing> innerRings = new Vector<>();
+        List<LinearRing> innerRings = new ArrayList<>();
 
         // Get face information
         // TODO: turn these column names into constants
@@ -87,7 +87,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                     Short.valueOf(Short.parseShort(values.getAttribute("tile_id").toString()));
 
             VPFLibrary vpf = featureClass.getCoverage().getLibrary();
-            String tileName = (String) vpf.getTileMap().get(tileId);
+            String tileName = vpf.getTileMap().get(tileId);
 
             if (tileName != null) {
 
@@ -268,7 +268,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                 Coordinate[] coordinateArray = new Coordinate[coordinates.size()];
 
                 for (int cnx = 0; cnx < coordinates.size(); cnx++) {
-                    coordinateArray[cnx] = (Coordinate) coordinates.get(cnx);
+                    coordinateArray[cnx] = coordinates.get(cnx);
                 }
 
                 LinearRing ring = null;
@@ -297,7 +297,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
             LinearRing[] ringArray = new LinearRing[innerRings.size()];
 
             for (int cnx = 0; cnx < innerRings.size(); cnx++) {
-                ringArray[cnx] = (LinearRing) innerRings.get(cnx);
+                ringArray[cnx] = innerRings.get(cnx);
             }
 
             result = geometryFactory.createPolygon(outerRing, ringArray);

@@ -93,7 +93,7 @@ public class SLDParserNamespaceTest extends TestCase {
         expr = s.getGeometry();
         assert (expr instanceof PropertyName);
         ns = ((PropertyName) expr).getNamespaceContext();
-        assertEquals(ns.getURI("xlink"), null);
+        assertNull(ns.getURI("xlink"));
         assertEquals(ns.getURI("gml"), "http://www.opengis.net/gml");
         assertEquals(ns.getURI("gsml"), "urn:cgi:xmlns:CGI:GeoSciML:2.0");
     }

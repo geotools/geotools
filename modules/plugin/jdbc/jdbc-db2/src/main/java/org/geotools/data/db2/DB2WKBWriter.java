@@ -78,8 +78,7 @@ public class DB2WKBWriter {
 
     public static String bytesToHex(byte[] bytes) {
         StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < bytes.length; i++) {
-            byte b = bytes[i];
+        for (byte b : bytes) {
             buf.append(toHexDigit((b >> 4) & 0x0F));
             buf.append(toHexDigit(b & 0x0F));
         }

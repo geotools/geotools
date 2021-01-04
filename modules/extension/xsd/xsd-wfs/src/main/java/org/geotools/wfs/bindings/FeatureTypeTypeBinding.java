@@ -161,8 +161,8 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
             if (value instanceof String) {
                 String[] split = ((String) value).split(",");
                 KeywordsType kwd = Ows10Factory.eINSTANCE.createKeywordsType();
-                for (int i = 0; i < split.length; i++) {
-                    String kw = split[i].trim();
+                for (String s : split) {
+                    String kw = s.trim();
                     kwd.getKeyword().add(kw);
                 }
                 ((FeatureTypeType) eObject).getKeywords().add(kwd);

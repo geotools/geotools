@@ -200,6 +200,11 @@
     </profile>
     <profile>
       <id>arcgis-rest</id>
+      <activation>
+        <property>
+          <name>all</name>
+        </property>
+      </activation>
       <modules>
         <module>arcgis-rest</module>
       </modules>
@@ -233,7 +238,7 @@
     <module>ogcapi-client</module>
     <module>tpk</module>
     <module>imagemosaic-jdbc</module>
-      <module>cql-json</module>
+    <module>cql-json</module>
   </modules>
 </project>
 

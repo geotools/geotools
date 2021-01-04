@@ -16,6 +16,8 @@
  */
 package org.geotools.data.store;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataStore;
@@ -33,9 +35,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class DecoratingDataStoreTest extends DataTestCase {
-    public DecoratingDataStoreTest(String name) {
-        super(name);
-    }
 
     public static class MyDecoratingDataStore extends DecoratingDataStore {
         public MyDecoratingDataStore(DataStore delegate) {
@@ -51,8 +50,8 @@ public class DecoratingDataStoreTest extends DataTestCase {
     MemoryDataStore data;
     MyDecoratingDataStore decorator;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void init() throws Exception {
+        super.init();
         data = new MemoryDataStore();
         data.addFeatures(roadFeatures);
 
@@ -69,7 +68,7 @@ public class DecoratingDataStoreTest extends DataTestCase {
         decorator = new MyDecoratingDataStore(data);
     }
 
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         defaultTransaction.close();
         data = null;
         super.tearDown();

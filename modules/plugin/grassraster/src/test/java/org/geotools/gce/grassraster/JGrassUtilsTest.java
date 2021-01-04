@@ -20,9 +20,10 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
-import junit.framework.TestCase;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.referencing.CRS;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -33,8 +34,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @SuppressWarnings("nls")
-public class JGrassUtilsTest extends TestCase {
+public class JGrassUtilsTest {
 
+    @Test
     public void testScaling() throws IOException, NoSuchAuthorityCodeException, FactoryException {
         double[][] mapData =
                 new double[][] { //
@@ -114,9 +116,9 @@ public class JGrassUtilsTest extends TestCase {
                 double value = rectIter.getSampleDouble();
                 double expectedResult = matrix[y][x];
                 if (Double.isNaN(value)) {
-                    assertTrue(x + " " + y, Double.isNaN(expectedResult));
+                    Assert.assertTrue(x + " " + y, Double.isNaN(expectedResult));
                 } else {
-                    assertEquals(x + " " + y, expectedResult, value, delta);
+                    Assert.assertEquals(x + " " + y, expectedResult, value, delta);
                 }
                 x++;
             } while (!rectIter.nextPixelDone());

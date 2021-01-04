@@ -20,6 +20,7 @@ import org.geotools.data.Query;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.referencing.FactoryException;
@@ -37,10 +38,12 @@ public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         return new GeoPkgTestSetup();
     }
 
+    @Test
     public void testGetFeaturesWithArithmeticOpFilter() throws Exception {
         // seems there are rounding issues here - consider new test
     }
 
+    @Test
     public void testConversionFilter() throws Exception {
         // seems there are rounding issues here - consider new test
     }

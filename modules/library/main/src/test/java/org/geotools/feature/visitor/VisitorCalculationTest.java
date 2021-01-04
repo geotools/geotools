@@ -16,6 +16,13 @@
  */
 package org.geotools.feature.visitor;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -39,6 +46,7 @@ import org.geotools.feature.visitor.MedianVisitor.MedianResult;
 import org.geotools.feature.visitor.MinVisitor.MinResult;
 import org.geotools.feature.visitor.UniqueVisitor.UniqueResult;
 import org.geotools.filter.IllegalFilterException;
+import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -67,12 +75,8 @@ public class VisitorCalculationTest extends DataTestCase {
     SimpleFeatureCollection fc6;
     SimpleFeatureType ft6;
 
-    public VisitorCalculationTest(String arg0) {
-        super(arg0);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void init() throws Exception {
+        super.init();
         empty = new DefaultFeatureCollection();
         fc = DataUtilities.collection(roadFeatures);
         invfc = new TreeSetFeatureCollection(fc).sort(SortBy.REVERSE_ORDER);
@@ -102,6 +106,7 @@ public class VisitorCalculationTest extends DataTestCase {
     }
 
     // test only the visitor functions themselves, and try the merge operation
+    @Test
     public void testMin() throws IllegalFilterException, IOException {
         // index 0 is the id field, so the data isn't terribly exciting (1,2,3).
         MinVisitor minVisitor = new MinVisitor(0, ft);
@@ -149,6 +154,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(minResult2, minResult2.merge(minVisitor.getResult()));
     }
 
+    @Test
     public void testMax() throws IllegalFilterException, IOException {
         // index 0 is the id field, so the data isn't terribly exciting
         MaxVisitor maxVisitor = new MaxVisitor(0, ft);
@@ -196,6 +202,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(maxResult2, maxResult2.merge(maxVisitor.getResult()));
     }
 
+    @Test
     public void testMedian() throws IllegalFilterException, IOException {
         MedianVisitor medianVisitor1 = new MedianVisitor(0, ft);
         fc.accepts(medianVisitor1, null); // 1,2,3
@@ -236,6 +243,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(medianResult2, medianResult2.merge(medianVisitor1.getResult()));
     }
 
+    @Test
     public void testSum() throws IllegalFilterException, IOException {
         SumVisitor sumVisitor = new SumVisitor(0, ft);
         fc.accepts(sumVisitor, null); // 1,2,3
@@ -269,6 +277,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(sumResult2, sumResult2.merge(sumVisitor.getResult()));
     }
 
+    @Test
     public void testArea() throws IllegalFilterException, IOException {
         SumAreaVisitor areaVisitor = new SumAreaVisitor(1, ft4);
         fc4.accepts(areaVisitor, null);
@@ -277,10 +286,10 @@ public class VisitorCalculationTest extends DataTestCase {
         fc5.accepts(areaVisitor2, null);
 
         double value1 = areaVisitor.getResult().toDouble();
-        assertEquals(10.0, value1);
+        assertEquals(10.0, value1, 0d);
 
         double value2 = areaVisitor2.getResult().toDouble();
-        assertEquals(12.0, value2);
+        assertEquals(12.0, value2, 0d);
 
         CalcResult areaResult1 = areaVisitor.getResult();
         CalcResult areaResult2 = areaVisitor2.getResult();
@@ -288,13 +297,15 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(22.0, areaResult3.toDouble(), 0);
     }
 
+    @Test
     public void testAreaInvalidPolygon() throws IllegalFilterException, IOException {
         SumAreaVisitor areaVisitor = new SumAreaVisitor(1, ft6);
         fc6.accepts(areaVisitor, null);
         double value1 = areaVisitor.getResult().toDouble();
-        assertEquals(0.0, value1);
+        assertEquals(0.0, value1, 0d);
     }
 
+    @Test
     public void testCount() throws IllegalFilterException, IOException {
         CountVisitor countVisitor = new CountVisitor();
         fc.accepts(countVisitor, null);
@@ -329,6 +340,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(countResult2, countResult2.merge(countVisitor.getResult()));
     }
 
+    @Test
     public void testAverage() throws IllegalFilterException, IOException {
         AverageVisitor averageVisitor = new AverageVisitor(0, ft);
         fc.accepts(averageVisitor, null); // 1,2,3
@@ -378,6 +390,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(averageResult2, averageResult2.merge(averageVisitor.getResult()));
     }
 
+    @Test
     public void testUniquePreserveOrder() throws IOException {
         UniqueVisitor uniqueVisitor = new UniqueVisitor(0, ft);
         uniqueVisitor.setPreserveOrder(true);
@@ -391,6 +404,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(3, value1.iterator().next());
     }
 
+    @Test
     public void testUniquePagination() throws IOException {
         UniqueVisitor uniqueVisitor = new UniqueVisitor(0, ft);
         uniqueVisitor.setPreserveOrder(true);
@@ -426,6 +440,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertNull(value1);
     }
 
+    @Test
     public void testUnique() throws IllegalFilterException, IOException {
         UniqueVisitor uniqueVisitor = new UniqueVisitor(0, ft);
         fc.accepts(uniqueVisitor, null);
@@ -476,6 +491,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(uniqueResult2, uniqueResult2.merge(uniqueVisitor.getResult()));
     }
 
+    @Test
     public void testBounds() throws IOException {
         BoundsVisitor boundsVisitor1 = new BoundsVisitor();
         fc.accepts(boundsVisitor1, null);
@@ -499,6 +515,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(boundsResult2, boundsResult2.merge(boundsVisitor1.getResult()));
     }
 
+    @Test
     public void testQuantileList() throws Exception {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         Expression expr = factory.property(ft.getDescriptor(0).getLocalName());
@@ -518,6 +535,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(result, result.merge(emptyVisitor.getResult()));
     }
 
+    @Test
     public void testStandardDeviation() throws Exception {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         Expression expr = factory.property(ft3.getDescriptor(0).getLocalName());
@@ -543,6 +561,7 @@ public class VisitorCalculationTest extends DataTestCase {
     }
 
     // try merging a count and sum to get an average, both count+sum and sum+count
+    @Test
     public void testCountSumMerge() throws IllegalFilterException, IOException {
         CountVisitor countVisitor = new CountVisitor();
         fc2.accepts(countVisitor, null); // count = 2
@@ -561,6 +580,7 @@ public class VisitorCalculationTest extends DataTestCase {
     }
 
     // try merging 2 incompatible CalcResults and check for the exception
+    @Test
     public void testBadMerge() throws IllegalFilterException, IOException {
         // count + max = boom!
         CountVisitor countVisitor = new CountVisitor();
@@ -577,6 +597,7 @@ public class VisitorCalculationTest extends DataTestCase {
         }
     }
 
+    @Test
     public void testNearest() throws Exception {
         SimpleFeatureType type =
                 DataUtilities.createType(

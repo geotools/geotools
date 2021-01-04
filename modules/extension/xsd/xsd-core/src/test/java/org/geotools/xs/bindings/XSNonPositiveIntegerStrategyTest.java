@@ -16,10 +16,13 @@
  */
 package org.geotools.xs.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import java.math.BigInteger;
 import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
+import org.junit.Test;
 
 public class XSNonPositiveIntegerStrategyTest extends TestSchema {
     /**
@@ -55,14 +58,17 @@ public class XSNonPositiveIntegerStrategyTest extends TestSchema {
     /*
      * Test method for 'org.geotools.xml.strategies.xs.XSNonPositiveIntegerStrategy.parse(Element, Node[], Object)'
      */
+    @Test
     public void testNegativeOne() throws Exception {
         validateValues("-1", number("-1"));
     }
 
+    @Test
     public void testZero() throws Exception {
         validateValues("0", number("0"));
     }
 
+    @Test
     public void testLargePositiveNumber() throws Exception {
         try {
             validateValues("-12678967543233", new BigInteger("-12678967543233"));
@@ -71,6 +77,7 @@ public class XSNonPositiveIntegerStrategyTest extends TestSchema {
         }
     }
 
+    @Test
     public void testNegativeNumber() throws Exception {
         validateValues("-100000", Integer.valueOf("-100000"));
     }

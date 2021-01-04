@@ -17,6 +17,8 @@
 
 package org.geotools.data.store;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -26,6 +28,7 @@ import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -40,7 +43,8 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
     FeatureVisitor lastVisitor = null;
     private ListFeatureCollection visitorCollection;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         SimpleFeatureType schema =
                 DataUtilities.createType(
@@ -63,18 +67,21 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
                 };
     }
 
+    @Test
     public void testNext() {
         Filter filter = ff.equal(ff.property("someAtt"), ff.literal("1"), false);
         SimpleFeatureCollection collection = new FilteringSimpleFeatureCollection(delegate, filter);
         assertNotNull(collection.features().next());
     }
 
+    @Test
     public void testCount() {
         Filter filter = ff.equal(ff.property("someAtt"), ff.literal("1"), false);
         SimpleFeatureCollection collection = new FilteringSimpleFeatureCollection(delegate, filter);
         assertEquals(1, collection.size());
     }
 
+    @Test
     public void testVisitor() throws IOException {
         Filter filter = ff.equal(ff.property("someAtt"), ff.literal("1"), false);
         SimpleFeatureCollection collection = new FilteringSimpleFeatureCollection(delegate, filter);

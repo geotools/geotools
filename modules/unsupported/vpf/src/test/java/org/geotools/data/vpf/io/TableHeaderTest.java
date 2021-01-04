@@ -28,10 +28,13 @@ package org.geotools.data.vpf.io;
 
 import java.io.File;
 import java.io.IOException;
-import junit.framework.TestCase;
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 import org.geotools.data.vpf.ifc.VPFHeader;
 import org.geotools.test.TestData;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 // TODO TableInputStream was deprecated in 2.0.x and has been removed
 // in 2.2.x. This file needs to be updated and tests re-enabled.
@@ -70,20 +73,16 @@ import org.geotools.test.TestData;
  *
  * @source $URL$
  */
-public class TableHeaderTest extends TestCase {
+public class TableHeaderTest {
     /** Instance of tested class. */
     protected VPFHeader varTableHeader;
-
-    /** Public constructor for creating testing class. */
-    public TableHeaderTest(String name) {
-        super(name);
-    } // end of TableHeaderTest(String name)
 
     /**
      * This method is called every time before particular test execution. It creates new instance of
      * tested class and it can perform some more actions which are necessary for performs tests.
      */
-    protected void setUp() throws IOException {
+    @Before
+    public void setUp() throws IOException {
         File dht = TestData.file(this, "dnc13/dht");
         VPFInputStream tis =
                 new VariableIndexInputStream(
@@ -93,6 +92,7 @@ public class TableHeaderTest extends TestCase {
     } // end of setUp()
 
     /** Method for testing original source method: char getByteOrder() from tested class */
+    @Test
     public void testGetByteOrder() {
         // assertEquals("Checking byte order detection.", 'L', varTableHeader.getByteOrder());
     } // end of testGetByteOrder()
@@ -100,7 +100,9 @@ public class TableHeaderTest extends TestCase {
     /**
      * Method for testing original source method: java.util.List getColumnDefs() from tested class
      */
-    public void XtestGetColumnDefs() {
+    @Test
+    @Ignore
+    public void testGetColumnDefs() {
         //        assertEquals("Checking number of detected column definitions.", 20, varTableHeader
         //                .getColumnDefs().size());
     } // end of testGetColumnDefs()
@@ -109,21 +111,27 @@ public class TableHeaderTest extends TestCase {
      * Method for testing original source method: java.lang.String getDescription() from tested
      * class
      */
-    public void XtestGetDescription() {
+    @Test
+    @Ignore
+    public void testGetDescription() {
         //        assertEquals("Cheking description detection.", "Database Header Table",
         //                varTableHeader.getDescription());
     } // end of testGetDescription()
 
     /** Method for testing original source method: int getLength() from tested class */
-    public void XtestGetLength() {
-        assertEquals("Cheking header length detection.", 1261, varTableHeader.getLength());
+    @Test
+    @Ignore
+    public void testGetLength() {
+        Assert.assertEquals("Cheking header length detection.", 1261, varTableHeader.getLength());
     } // end of testGetLength()
 
     /**
      * Method for testing original source method: java.lang.String getNarrativeTable() from tested
      * class
      */
-    public void XtestGetNarrativeTable() {
+    @Test
+    @Ignore
+    public void testGetNarrativeTable() {
         //        assertNull("Cheking narrative table name detection.",
         // varTableHeader.getNarrativeTable());
     } // end of testGetNarrativeTable()

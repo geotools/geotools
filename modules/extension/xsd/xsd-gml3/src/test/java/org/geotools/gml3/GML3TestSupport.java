@@ -16,6 +16,9 @@
  */
 package org.geotools.gml3;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
@@ -72,7 +75,7 @@ import org.w3c.dom.NodeList;
 public abstract class GML3TestSupport extends XMLTestSupport {
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         Map<String, String> namespaces = new HashMap<>();

@@ -16,9 +16,14 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
@@ -36,7 +41,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coords;
     MutablePicoContainer container;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         ring = createElement(GML.NAMESPACE, "myLineString", GML.LinearRingType, null);
@@ -54,6 +59,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
         container.registerComponentImplementation(GMLLinearRingTypeBinding.class);
     }
 
+    @Test
     public void testCoordFour() throws Exception {
         Node node =
                 createNode(
@@ -85,6 +91,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
         assertEquals(linearRing.getPointN(3).getY(), 2d, 0);
     }
 
+    @Test
     public void testCoordLessThanFour() throws Exception {
         Node node =
                 createNode(
@@ -110,6 +117,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
         }
     }
 
+    @Test
     public void testCoordMoreThanFour() throws Exception {
         Node node =
                 createNode(
@@ -144,6 +152,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
         assertEquals(linearRing.getPointN(4).getY(), 2d, 0);
     }
 
+    @Test
     public void testCoordinatesFour() throws Exception {
         Node node =
                 createNode(
@@ -178,6 +187,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
         assertEquals(linearRing.getPointN(3).getY(), 2d, 0);
     }
 
+    @Test
     public void testCoordinatesLessThanFour() throws Exception {
         Node node =
                 createNode(
@@ -208,6 +218,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
         }
     }
 
+    @Test
     public void testCoordinatesMoreThanFour() throws Exception {
         Node node =
                 createNode(

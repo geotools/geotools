@@ -16,6 +16,12 @@
  */
 package org.geotools.data.memory;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import org.geotools.data.DataTestCase;
@@ -24,21 +30,19 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.FilteredIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class MemoryFeatureCollectionTest extends DataTestCase {
     private MemoryFeatureCollection roads;
 
-    public MemoryFeatureCollectionTest(String test) {
-        super(test);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void init() throws Exception {
+        super.init();
         roads = new MemoryFeatureCollection(roadType);
         roads.addAll(Arrays.asList(roadFeatures));
     }
 
+    @Test
     public void testAdd() {
         MemoryFeatureCollection rivers = new MemoryFeatureCollection(riverType);
         for (SimpleFeature riverFeature : riverFeatures) {
@@ -47,15 +51,18 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         assertEquals(riverFeatures.length, rivers.size());
     }
 
+    @Test
     public void testAddAll() {
         MemoryFeatureCollection rivers = new MemoryFeatureCollection(riverType);
         rivers.addAll(Arrays.asList(riverFeatures));
     }
 
+    @Test
     public void testSize() {
         assertEquals(roadFeatures.length, roads.size());
     }
 
+    @Test
     public void testResources() {
         Object[] array = roads.toArray();
         assertEquals(roads.size(), array.length);
@@ -84,6 +91,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         }
     }
 
+    @Test
     public void testBounds() {
         MemoryFeatureCollection rivers = new MemoryFeatureCollection(riverType);
         ReferencedEnvelope expected = new ReferencedEnvelope();
@@ -99,6 +107,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
     }
 
     /** This feature collection is still implementing Collection so we best check it works */
+    @Test
     public void testIterator() throws Exception {
         int count = 0;
         Iterator<SimpleFeature> it = roads.iterator();
@@ -125,6 +134,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         assertEquals(expected(rd12Filter), count);
     }
 
+    @Test
     public void testSubCollection() {
         int count = 0;
         try (SimpleFeatureIterator it = roads.features()) {
@@ -139,6 +149,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         assertEquals(count, sub.size());
     }
 
+    @Test
     public void testSubSubCollection() {
         SimpleFeatureCollection sub = roads.subCollection(rd12Filter);
         SimpleFeatureCollection subsub = sub.subCollection(rd1Filter);

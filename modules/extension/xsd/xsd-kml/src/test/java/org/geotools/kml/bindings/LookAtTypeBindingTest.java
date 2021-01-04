@@ -16,22 +16,27 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 
 public class LookAtTypeBindingTest extends KMLTestSupport {
-
+    @Test
     public void testType() {
         assertEquals(Point.class, binding(KML.LookAtType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.LookAtType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<LookAt>"

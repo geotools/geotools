@@ -16,20 +16,26 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.MultiLineString;
 import org.w3c.dom.Document;
 
 public class GMLMultiLineStringTypeBinding2Test extends GMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(MultiLineString.class, binding(GML.MultiLineStringType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(GML.MultiLineStringType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         GML2MockData.multiLineString(document, document);
 
@@ -37,6 +43,7 @@ public class GMLMultiLineStringTypeBinding2Test extends GMLTestSupport {
         assertEquals(2, mp.getNumGeometries());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.multiLineString(), GML.MultiLineString);
 

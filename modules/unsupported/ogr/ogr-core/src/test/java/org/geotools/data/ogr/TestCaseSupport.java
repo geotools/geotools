@@ -23,14 +23,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
 import org.geotools.TestData;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.util.URLs;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -48,7 +48,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Ian Schneider
  * @author Martin Desruisseaux
  */
-public abstract class TestCaseSupport extends TestCase {
+public abstract class TestCaseSupport {
     static final String STATE_POP = "shapes/statepop.shp";
 
     static final String MIXED = "mif/mixed.MIF";
@@ -86,21 +86,6 @@ public abstract class TestCaseSupport extends TestCase {
         }
     }
 
-    /** Override which checks if the fixture is available. If not the test is not executed. */
-    @Override
-    public void run(TestResult result) {
-        if (gdalAvailable()) {
-            super.run(result);
-        } else {
-            System.out.println(
-                    "Skipping test "
-                            + getClass().getSimpleName()
-                            + " "
-                            + getName()
-                            + " since GDAL is not available");
-        }
-    }
-
     private boolean gdalAvailable() {
         if (AVAILABLE == null) {
             try {
@@ -114,8 +99,9 @@ public abstract class TestCaseSupport extends TestCase {
         return AVAILABLE;
     }
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
+        Assume.assumeTrue("Skipping test, GDAL is not available", gdalAvailable());
         dataStoreFactory = createDataStoreFactory();
         ogr = dataStoreFactory.createOGR();
     }
@@ -124,7 +110,8 @@ public abstract class TestCaseSupport extends TestCase {
      * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run
      * after each test.
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         // it seems that not all files marked as temp will get erased, perhaps
         // this is because they have been rewritten? Don't know, don't _really_
         // care, so I'll just delete everything
@@ -143,7 +130,6 @@ public abstract class TestCaseSupport extends TestCase {
 
             f.remove();
         }
-        super.tearDown();
     }
 
     private void dieDieDIE(File file) {
@@ -207,7 +193,7 @@ public abstract class TestCaseSupport extends TestCase {
      */
     protected File getTempFile(String filePrefix, String extension) throws IOException {
         File tmpFile = File.createTempFile(filePrefix, extension, new File("./target"));
-        assertTrue(tmpFile.isFile());
+        Assert.assertTrue(tmpFile.isFile());
 
         // keep track of all temp files so we can delete them
         markTempFile(tmpFile);
@@ -226,11 +212,11 @@ public abstract class TestCaseSupport extends TestCase {
     protected void copy(final String name, String[] requiredExtensions, String[] optionalExtensions)
             throws IOException {
         for (String requiredExtension : requiredExtensions) {
-            assertTrue(TestData.copy(this, sibling(name, requiredExtension)).canRead());
+            Assert.assertTrue(TestData.copy(this, sibling(name, requiredExtension)).canRead());
         }
         for (String optionalExtension : optionalExtensions) {
             try {
-                assertTrue(TestData.copy(this, sibling(name, optionalExtension)).canRead());
+                Assert.assertTrue(TestData.copy(this, sibling(name, optionalExtension)).canRead());
             } catch (FileNotFoundException e) {
                 // Ignore: this file is optional.
             }
@@ -247,11 +233,6 @@ public abstract class TestCaseSupport extends TestCase {
             copy(testData, new String[] {"tab", "dat", "id", "map"}, new String[0]);
         File f = URLs.urlToFile(TestData.url(this, testData));
         return f.getAbsolutePath();
-    }
-
-    /** Returns the test suite for the given class. */
-    public static Test suite(Class c) {
-        return new TestSuite(c);
     }
 
     /** True if OGR supports the specified format */

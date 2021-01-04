@@ -29,7 +29,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import junit.framework.TestCase;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -41,15 +40,19 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.geotools.xs.XS;
 import org.geotools.xsd.impl.HTTPURIHandler;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /** Tests for {@link org.geotools.xsd.Schemas}. */
-public class SchemasTest extends TestCase {
+public class SchemasTest {
 
     File tmp, sub;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         tmp = File.createTempFile("schemas", "xsd");
         tmp.delete();
@@ -118,8 +121,8 @@ public class SchemasTest extends TestCase {
         w.close();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
 
         new File(tmp, "root.xsd").delete();
         new File(tmp, "import1.xsd").delete();
@@ -135,10 +138,11 @@ public class SchemasTest extends TestCase {
         executorService.shutdown();
     }
 
+    @Test
     public void testValidateImportsIncludes() throws Exception {
         String location = new File(tmp, "root.xsd").getAbsolutePath();
         List errors = Schemas.validateImportsIncludes(location);
-        assertEquals(2, errors.size());
+        Assert.assertEquals(2, errors.size());
 
         SchemaLocationResolver resolver1 =
                 new SchemaLocationResolver(XS.getInstance()) {
@@ -176,45 +180,47 @@ public class SchemasTest extends TestCase {
         errors =
                 Schemas.validateImportsIncludes(
                         location, null, new XSDSchemaLocationResolver[] {resolver1, resolver2});
-        assertEquals(0, errors.size());
+        Assert.assertEquals(0, errors.size());
     }
 
     /**
      * Tests that element declarations and type definitions from imported schemas are parsed, even
      * if the importing schema itself contains no element nor type.
      */
+    @Test
     public void testImportsOnly() throws IOException {
         XSDSchema schema =
                 Schemas.parse(Schemas.class.getResource("importFacetsEmpty.xsd").toString());
-        assertNotNull(schema);
+        Assert.assertNotNull(schema);
 
         boolean elFound = hasElement(schema, "collapsedString");
-        assertTrue(elFound);
+        Assert.assertTrue(elFound);
     }
 
     /**
      * Tests that system property "org.geotools.xml.forceSchemaImport" is properly taken into
      * account.
      */
+    @Test
     public void testForcedSchemaImport() throws IOException {
         XSDSchema schema =
                 Schemas.parse(Schemas.class.getResource("importFacetsNotEmpty.xsd").toString());
-        assertNotNull(schema);
+        Assert.assertNotNull(schema);
 
         // importing schema is not empty and system property "org.geotools.xml.forceSchemaImport" is
         // false:
         // elements defined in imported schema should not be found
         boolean elFound = hasElement(schema, "collapsedString");
-        assertFalse(elFound);
+        Assert.assertFalse(elFound);
 
         // force import of external schemas in any case
         System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "true");
 
         schema = Schemas.parse(Schemas.class.getResource("importFacetsNotEmpty.xsd").toString());
-        assertNotNull(schema);
+        Assert.assertNotNull(schema);
 
         elFound = hasElement(schema, "collapsedString");
-        assertTrue(elFound);
+        Assert.assertTrue(elFound);
     }
 
     private boolean hasElement(XSDSchema schema, String elQName) {
@@ -265,6 +271,7 @@ public class SchemasTest extends TestCase {
      * instance, because schema consumer and schema server both synchronized on same {@link
      * org.geotools.xsd.Schemas} class instance.
      */
+    @Test
     public void testParseRemoteDoesNotBlock() throws IOException {
         URIConverter converter =
                 new ExtensibleURIConverterImpl(
@@ -274,6 +281,6 @@ public class SchemasTest extends TestCase {
         resourceSet.setURIConverter(converter);
         XSDSchema schema =
                 Schemas.parse("http://www.foo.bar/remoteSchemaLocation.xsd", resourceSet);
-        assertNotNull(schema);
+        Assert.assertNotNull(schema);
     }
 }

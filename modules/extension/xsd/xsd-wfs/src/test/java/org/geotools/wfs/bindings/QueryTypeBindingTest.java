@@ -16,6 +16,11 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.Collections;
@@ -29,6 +34,7 @@ import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
@@ -38,19 +44,12 @@ import org.opengis.filter.sort.SortOrder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Unit test suite for {@link QueryTypeBinding}
- *
- * @author Justin Deoliveira
- * @author Gabriel Roldan
- * @version $Id$
- * @since 2.5.x
- */
 public class QueryTypeBindingTest extends WFSTestSupport {
     public QueryTypeBindingTest() {
         super(WFS.QueryType, QueryType.class, Binding.OVERRIDE);
     }
 
+    @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "QueryTypeBindingTest.xml");
         buildDocument(resource);
@@ -104,6 +103,7 @@ public class QueryTypeBindingTest extends WFSTestSupport {
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testEncode() throws Exception {
         final QueryType query = buildTestQuery();
 

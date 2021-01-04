@@ -16,9 +16,12 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.Operator;
 import org.w3c.dom.Document;
 
@@ -49,14 +52,17 @@ import org.w3c.dom.Document;
  * @generated
  */
 public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
+    @Test
     public void testType() {
         assertEquals(Operator.class, binding(OGC.ComparisonOperatorType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.ComparisonOperatorType).getExecutionMode());
     }
 
+    @Test
     public void testParse1() throws Exception {
         FilterMockData.comparisonOperator(document, document, "LessThan");
 
@@ -65,6 +71,7 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("LessThan", op.getName());
     }
 
+    @Test
     public void testParse2() throws Exception {
         FilterMockData.comparisonOperator(document, document, "LessThanOrEqualTo");
 
@@ -73,6 +80,7 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("LessThanOrEqualTo", op.getName());
     }
 
+    @Test
     public void testParse3() throws Exception {
         FilterMockData.comparisonOperator(document, document, "GreaterThan");
 
@@ -81,6 +89,7 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("GreaterThan", op.getName());
     }
 
+    @Test
     public void testParse4() throws Exception {
         FilterMockData.comparisonOperator(document, document, "GreaterThanOrEqualTo");
 
@@ -89,6 +98,7 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("GreaterThanOrEqualTo", op.getName());
     }
 
+    @Test
     public void testParse5() throws Exception {
         FilterMockData.comparisonOperator(document, document, "EqualTo");
 
@@ -97,6 +107,7 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("EqualTo", op.getName());
     }
 
+    @Test
     public void testParse6() throws Exception {
         FilterMockData.comparisonOperator(document, document, "NotEqualTo");
 
@@ -105,6 +116,7 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("NotEqualTo", op.getName());
     }
 
+    @Test
     public void testParse7() throws Exception {
         FilterMockData.comparisonOperator(document, document, "Like");
 
@@ -113,6 +125,7 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("Like", op.getName());
     }
 
+    @Test
     public void testParse8() throws Exception {
         FilterMockData.comparisonOperator(document, document, "Between");
 
@@ -121,6 +134,7 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("Between", op.getName());
     }
 
+    @Test
     public void testParse9() throws Exception {
         FilterMockData.comparisonOperator(document, document, "NullCheck");
 
@@ -129,6 +143,7 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("NullCheck", op.getName());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom =
                 encode(

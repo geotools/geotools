@@ -16,26 +16,28 @@
  */
 package org.geotools.filter.function;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.expression.Function;
 
 public class GeometryFunctionTest extends FunctionTestSupport {
 
-    public GeometryFunctionTest(String testName) {
-        super(testName);
-    }
-
+    @Test
     public void testNull() {
         Function geometry = ff.function("geometry");
         assertNull(geometry.evaluate(null));
     }
 
+    @Test
     public void testNonFeature() {
         Function geometry = ff.function("geometry");
         assertNull(geometry.evaluate(Integer.valueOf(10)));
     }
 
+    @Test
     public void testSimpleFeature() throws ParseException {
         Function geometry = ff.function("geometry");
         assertEquals(new WKTReader().read("POINT(4 4)"), geometry.evaluate(testFeatures[0]));

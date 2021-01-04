@@ -1,13 +1,11 @@
 package org.geotools.filter.spatial;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
+import org.junit.Assert;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -22,12 +20,9 @@ import org.opengis.geometry.BoundingBox3D;
  *
  * @author Niels Charlier
  */
-public class BBOX3DImplTest extends TestCase {
+public class BBOX3DImplTest {
 
-    public static Test suite() {
-        return new TestSuite(BBOX3DImplTest.class);
-    }
-
+    @org.junit.Test
     public void testBbox3D() {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
@@ -57,9 +52,9 @@ public class BBOX3DImplTest extends TestCase {
         BoundingBox3D envelope2 = new ReferencedEnvelope3D(0, 50, 0, 50, 50, 100, null);
         Filter bbox2 = ff.bbox(ff.property("geom"), envelope2);
 
-        assertTrue(bbox1.evaluate(f1));
-        assertFalse(bbox1.evaluate(f2));
-        assertFalse(bbox2.evaluate(f1));
-        assertTrue(bbox2.evaluate(f2));
+        Assert.assertTrue(bbox1.evaluate(f1));
+        Assert.assertFalse(bbox1.evaluate(f2));
+        Assert.assertFalse(bbox2.evaluate(f1));
+        Assert.assertTrue(bbox2.evaluate(f2));
     }
 }

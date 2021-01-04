@@ -16,8 +16,9 @@
  */
 package org.geotools.styling;
 
-import junit.framework.TestCase;
 import org.geotools.feature.NameImpl;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.style.SemanticType;
 
 /**
@@ -25,9 +26,10 @@ import org.opengis.style.SemanticType;
  *
  * @author Burkhard Strauss
  */
-public class FeatureTypeStyleImplTest extends TestCase {
+public class FeatureTypeStyleImplTest {
 
     /** Checks if clone method works. */
+    @Test
     public void testCloneMethod() throws Exception {
 
         final StyleBuilder sb = new StyleBuilder();
@@ -35,41 +37,44 @@ public class FeatureTypeStyleImplTest extends TestCase {
         final Rule rule = sb.createRule(symbolizer);
 
         final FeatureTypeStyleImpl original = new FeatureTypeStyleImpl(new Rule[] {rule});
-        assertNotNull("orig: rules must not be null", original.rules());
-        assertEquals("orig: one rule expected", 1, original.rules().size());
+        Assert.assertNotNull("orig: rules must not be null", original.rules());
+        Assert.assertEquals("orig: one rule expected", 1, original.rules().size());
         original.featureTypeNames().add(new NameImpl("MyFeatureType1"));
         original.featureTypeNames().add(new NameImpl("MyFeatureType2"));
-        assertNotNull("orig: featureTypeNames must not be null", original.featureTypeNames());
-        assertEquals("orig: two featureTypeNames expected", 2, original.featureTypeNames().size());
+        Assert.assertNotNull(
+                "orig: featureTypeNames must not be null", original.featureTypeNames());
+        Assert.assertEquals(
+                "orig: two featureTypeNames expected", 2, original.featureTypeNames().size());
         original.semanticTypeIdentifiers().add(SemanticType.POINT);
         original.semanticTypeIdentifiers().add(SemanticType.LINE);
         original.semanticTypeIdentifiers().add(SemanticType.POLYGON);
-        assertNotNull(
+        Assert.assertNotNull(
                 "orig: semanticTypeIdentifiers must not be null",
                 original.semanticTypeIdentifiers());
-        assertEquals(
+        Assert.assertEquals(
                 "orig: three semanticTypeIdentifiers expected",
                 3,
                 original.semanticTypeIdentifiers().size());
 
         final FeatureTypeStyle clone = (FeatureTypeStyle) original.clone();
-        assertNotNull("clone: rules must not be null", clone.rules());
-        assertEquals("clone: one rule expected", 1, clone.rules().size());
-        assertNotSame(
+        Assert.assertNotNull("clone: rules must not be null", clone.rules());
+        Assert.assertEquals("clone: one rule expected", 1, clone.rules().size());
+        Assert.assertNotSame(
                 "clone: rules collection should have been cloned", clone.rules(), original.rules());
-        assertNotNull("clone: featureTypeNames must not be null", clone.featureTypeNames());
-        assertEquals("clone: two featureTypeNames expected", 2, clone.featureTypeNames().size());
-        assertNotSame(
+        Assert.assertNotNull("clone: featureTypeNames must not be null", clone.featureTypeNames());
+        Assert.assertEquals(
+                "clone: two featureTypeNames expected", 2, clone.featureTypeNames().size());
+        Assert.assertNotSame(
                 "clone: semanticTypeIdentifiers collection should have been cloned",
                 clone.featureTypeNames(),
                 original.featureTypeNames());
-        assertNotNull(
+        Assert.assertNotNull(
                 "clone: semanticTypeIdentifiers must not be null", clone.semanticTypeIdentifiers());
-        assertEquals(
+        Assert.assertEquals(
                 "clone: three semanticTypeIdentifiers expected",
                 3,
                 clone.semanticTypeIdentifiers().size());
-        assertNotSame(
+        Assert.assertNotSame(
                 "clone: semanticTypeIdentifiers collection should have been cloned",
                 clone.semanticTypeIdentifiers(),
                 original.semanticTypeIdentifiers());

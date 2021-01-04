@@ -16,6 +16,11 @@
  */
 package org.geotools.filter.function;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -37,19 +42,8 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
     private static final org.opengis.filter.FilterFactory ff =
             CommonFactoryFinder.getFilterFactory(null);
 
-    public EqualIntervalFunctionTest(String testName) {
-        super(testName);
-    }
-
-    protected void tearDown() throws java.lang.Exception {}
-
-    public static junit.framework.Test suite() {
-        junit.framework.TestSuite suite =
-                new junit.framework.TestSuite(EqualIntervalFunctionTest.class);
-        return suite;
-    }
-
     /** Test of getName method, of class org.geotools.filter.functions.EqualIntervalFunction. */
+    @Test
     public void testInstance() {
         Function equInt =
                 ff.function("EqualInterval", org.opengis.filter.expression.Expression.NIL);
@@ -61,6 +55,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
      * Test of setNumberOfClasses method, of class
      * org.geotools.filter.functions.EqualIntervalFunction.
      */
+    @Test
     public void testSetClasses() throws Exception {
         PropertyName property = ff.property("foo");
         Literal literal = ff.literal(3);
@@ -73,6 +68,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         assertEquals(12, func.getClasses());
     }
 
+    @Test
     public void testEvaluateWithExpressions() throws Exception {
         Literal classes = ff.literal(3);
         PropertyName name = ff.property("foo");
@@ -104,6 +100,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
     }
 
     /** FIXME: Please for the love on binpop */
+    @Test
     public void testEvaulateWithStrings() throws Exception {
         org.opengis.filter.expression.Expression function =
                 ff.function("EqualInterval", ff.property("group"), ff.literal(5));
@@ -117,6 +114,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         assertNull(number);
     }
 
+    @Test
     public void testUpgradeExample() {
         Function function = ff.function("equalInterval", ff.property("foo"), ff.literal(12));
         Object value = function.evaluate(featureCollection);
@@ -130,6 +128,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
                 "Feature was placed in wrong bin", Integer.valueOf(2), classify.evaluate(victim));
     }
 
+    @Test
     public void testConstantValuesNumeric() {
         Function function = ff.function("equalInterval", ff.property("v"), ff.literal(12));
         RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
@@ -139,6 +138,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         assertEquals(123.123, (Double) classifier.getMax(0), 0d);
     }
 
+    @Test
     public void testConstantValuesString() {
         Function function = ff.function("equalInterval", ff.property("s"), ff.literal(12));
         RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
@@ -159,9 +159,9 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         RangedClassifier ranged = (RangedClassifier) classifier;
         double[] percentages = ranged.getPercentages();
         assertEquals(3, percentages.length);
-        assertEquals(62.5, percentages[0]);
-        assertEquals(25.0, percentages[1]);
-        assertEquals(12.5, percentages[2]);
+        assertEquals(62.5, percentages[0], 0d);
+        assertEquals(25.0, percentages[1], 0d);
+        assertEquals(12.5, percentages[2], 0d);
     }
 
     @Test
@@ -194,9 +194,9 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         RangedClassifier ranged = (RangedClassifier) classifier;
         double[] percentages = ranged.getPercentages();
         assertEquals(3, percentages.length);
-        assertEquals(33.0, Math.floor(percentages[0]));
-        assertEquals(26.0, Math.floor(percentages[1]));
-        assertEquals(39.0, Math.floor(percentages[2]));
+        assertEquals(33.0, Math.floor(percentages[0]), 0d);
+        assertEquals(26.0, Math.floor(percentages[1]), 0d);
+        assertEquals(39.0, Math.floor(percentages[2]), 0d);
     }
 
     @Test
@@ -210,8 +210,8 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         RangedClassifier ranged = (RangedClassifier) classifier;
         double[] percentages = ranged.getPercentages();
         assertEquals(3, percentages.length);
-        assertEquals(62.5, percentages[0]);
-        assertEquals(25.0, percentages[1]);
-        assertEquals(12.5, percentages[2]);
+        assertEquals(62.5, percentages[0], 0d);
+        assertEquals(25.0, percentages[1], 0d);
+        assertEquals(12.5, percentages[2], 0d);
     }
 }

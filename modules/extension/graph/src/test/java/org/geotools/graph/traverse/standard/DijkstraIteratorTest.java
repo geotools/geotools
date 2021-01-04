@@ -16,14 +16,9 @@
  */
 package org.geotools.graph.traverse.standard;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNull;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
-import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
@@ -35,18 +30,17 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.CountingWalker;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class DijkstraIteratorTest extends TestCase {
+public class DijkstraIteratorTest {
 
     public GraphBuilder m_builder;
     public GraphBuilder m_directed_builder;
 
-    public DijkstraIteratorTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
         m_directed_builder = createDirectedBuilder();
@@ -58,6 +52,7 @@ public class DijkstraIteratorTest extends TestCase {
      * Expected: 1. Every node should be visited in order. 2. Every node should have a cost
      * associated with == id 3. Every node should havea parent with id node id + 1
      */
+    @Test
     public void test_0() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -75,11 +70,13 @@ public class DijkstraIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
-                        assertEquals(iterator.getCost(component), (double) component.getID());
-                        if (component.getID() == 0) assertNull(iterator.getParent(component));
+                        Assert.assertTrue(component.isVisited());
+                        Assert.assertEquals(
+                                iterator.getCost(component), (double) component.getID(), 0d);
+                        if (component.getID() == 0)
+                            Assert.assertNull(iterator.getParent(component));
                         else
-                            assertEquals(
+                            Assert.assertEquals(
                                     iterator.getParent(component).getID(), component.getID() - 1);
 
                         return 0;
@@ -87,7 +84,7 @@ public class DijkstraIteratorTest extends TestCase {
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -99,6 +96,7 @@ public class DijkstraIteratorTest extends TestCase {
      * <p>After resume: 1. Next node visited should have id suspend node id + 1 2. Every node should
      * have a cost associated with it == id 3. Every node should have a parent with id node id + 1
      */
+    @Test
     public void test_1() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -116,7 +114,7 @@ public class DijkstraIteratorTest extends TestCase {
                                 return (GraphTraversal.SUSPEND);
                             }
                         } else if (m_mode == 1) {
-                            assertEquals(element.getID(), suspend + 1);
+                            Assert.assertEquals(element.getID(), suspend + 1);
                             m_mode++;
                         }
                         return (GraphTraversal.CONTINUE);
@@ -134,13 +132,13 @@ public class DijkstraIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        if (component.getID() <= suspend) assertTrue(component.isVisited());
-                        else assertFalse(component.isVisited());
+                        if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
+                        else Assert.assertFalse(component.isVisited());
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), nnodes - suspend + 1);
+        Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         // resume
         traversal.traverse();
@@ -148,18 +146,20 @@ public class DijkstraIteratorTest extends TestCase {
         visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
-                        assertEquals(iterator.getCost(component), (double) component.getID());
-                        if (component.getID() == 0) assertNull(iterator.getParent(component));
+                        Assert.assertTrue(component.isVisited());
+                        Assert.assertEquals(
+                                iterator.getCost(component), (double) component.getID(), 0d);
+                        if (component.getID() == 0)
+                            Assert.assertNull(iterator.getParent(component));
                         else
-                            assertEquals(
+                            Assert.assertEquals(
                                     iterator.getParent(component).getID(), component.getID() - 1);
 
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -168,6 +168,7 @@ public class DijkstraIteratorTest extends TestCase {
      * <br>
      * Expected: After kill branch: 1. Traversal ends After resume: 2. No more nodes visited.
      */
+    @Test
     public void test_2() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -201,19 +202,19 @@ public class DijkstraIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        if (component.getID() <= kill) assertTrue(component.isVisited());
-                        else assertFalse(component.isVisited());
+                        if (component.getID() <= kill) Assert.assertTrue(component.isVisited());
+                        else Assert.assertFalse(component.isVisited());
 
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), nnodes - kill + 1);
+        Assert.assertEquals(walker.getCount(), nnodes - kill + 1);
 
         // resume
         traversal.traverse();
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), nnodes - kill + 1);
+        Assert.assertEquals(walker.getCount(), nnodes - kill + 1);
     }
 
     /**
@@ -222,6 +223,7 @@ public class DijkstraIteratorTest extends TestCase {
      * Expected: 1. Every node should be visited. 2. The dijsktra parent of each node should be the
      * same as the parent of the tree. 3. The cost of each node should be equal to its depth.
      */
+    @Test
     public void test_3() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -239,14 +241,15 @@ public class DijkstraIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
                         String id = component.getObject().toString();
                         StringTokenizer st = new StringTokenizer(id, ".");
 
-                        assertEquals(iterator.getCost(component), (double) st.countTokens() - 1);
+                        Assert.assertEquals(
+                                iterator.getCost(component), (double) st.countTokens() - 1, 0d);
                         if (component != root) {
                             String parentid = id.substring(0, id.length() - 2);
-                            assertEquals(
+                            Assert.assertEquals(
                                     iterator.getParent(component).getObject().toString(), parentid);
                         }
 
@@ -254,7 +257,7 @@ public class DijkstraIteratorTest extends TestCase {
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
+        Assert.assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -264,6 +267,7 @@ public class DijkstraIteratorTest extends TestCase {
      * Expected: After suspend: 1. Not every node should be visited After resume: 1. Every node
      * should be visited.
      */
+    @Test
     public void test_4() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -301,7 +305,7 @@ public class DijkstraIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component != root && component != lc && component != rc)
-                            assertFalse(component.isVisited());
+                            Assert.assertFalse(component.isVisited());
 
                         return 0;
                     }
@@ -314,12 +318,12 @@ public class DijkstraIteratorTest extends TestCase {
         visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
+        Assert.assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -329,6 +333,7 @@ public class DijkstraIteratorTest extends TestCase {
      * Expected: 1. Every node in left subtree should be visited 2. Every node in right substree
      * (minus right child of root) should not be visited
      */
+    @Test
     public void test_5() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -366,11 +371,11 @@ public class DijkstraIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component == root || component == lc || component == rc)
-                            assertTrue(component.isVisited());
+                            Assert.assertTrue(component.isVisited());
                         else {
                             String id = component.getObject().toString();
-                            if (id.startsWith("0.1.")) assertFalse(component.isVisited());
-                            else assertTrue(component.isVisited());
+                            if (id.startsWith("0.1.")) Assert.assertFalse(component.isVisited());
+                            else Assert.assertTrue(component.isVisited());
                         }
 
                         return 0;
@@ -378,7 +383,7 @@ public class DijkstraIteratorTest extends TestCase {
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertEquals(walker.getCount(), (int) Math.pow(2, k) + 1);
+        Assert.assertEquals(walker.getCount(), (int) Math.pow(2, k) + 1);
     }
 
     /**
@@ -388,6 +393,7 @@ public class DijkstraIteratorTest extends TestCase {
      * 1 b. cost == id 2. For nodes with id > (total # of nodes) / 2; a. parent should be node with
      * id + 1 b. cost == total # of nodes - id
      */
+    @Test
     public void test_6() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildCircular(builder(), nnodes);
@@ -407,18 +413,21 @@ public class DijkstraIteratorTest extends TestCase {
                     public int visit(Graphable component) {
                         Graphable parent = iterator.getParent(component);
                         if (component.getID() < 50 && component.getID() > 0) {
-                            assertEquals(iterator.getCost(component), (double) component.getID());
-                            assertEquals(parent.getID(), component.getID() - 1);
+                            Assert.assertEquals(
+                                    iterator.getCost(component), (double) component.getID(), 0d);
+                            Assert.assertEquals(parent.getID(), component.getID() - 1, 0d);
                         } else if (component.getID() > 50 && component.getID() < 99) {
-                            assertEquals(
-                                    iterator.getCost(component), (double) 100 - component.getID());
-                            assertEquals(parent.getID(), component.getID() + 1);
+                            Assert.assertEquals(
+                                    iterator.getCost(component),
+                                    (double) 100 - component.getID(),
+                                    0d);
+                            Assert.assertEquals(parent.getID(), component.getID() + 1, 0d);
                         } else if (component.getID() == 0) {
-                            assertNull(parent);
-                            assertEquals(0d, iterator.getCost(component));
+                            Assert.assertNull(parent);
+                            Assert.assertEquals(0d, iterator.getCost(component), 0d);
                         } else if (component.getID() == 99) {
-                            assertEquals(0, parent.getID());
-                            assertEquals(1d, iterator.getCost(component));
+                            Assert.assertEquals(0, parent.getID());
+                            Assert.assertEquals(1d, iterator.getCost(component), 0d);
                         }
 
                         return (0);
@@ -426,7 +435,7 @@ public class DijkstraIteratorTest extends TestCase {
                 };
 
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     protected DijkstraIterator createIterator() {
@@ -447,6 +456,7 @@ public class DijkstraIteratorTest extends TestCase {
      * have two related nodes 3. Related nodes should have an id one greater or one less than the
      * current node
      */
+    @Test
     public void test_7() {
         final int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -473,19 +483,19 @@ public class DijkstraIteratorTest extends TestCase {
                         }
                         while (related.hasNext()) {
                             Graphable relatedComponent = (Graphable) related.next();
-                            assertTrue(
+                            Assert.assertTrue(
                                     component.getID() == relatedComponent.getID() - 1
                                             || component.getID() == relatedComponent.getID() + 1);
                             count++;
                         }
-                        assertEquals(expectedCount, count);
+                        Assert.assertEquals(expectedCount, count);
 
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -495,6 +505,7 @@ public class DijkstraIteratorTest extends TestCase {
      * Expected: 1. The last node should have no related nodes 2. All other nodes should have one
      * related node 3. Related nodes should have an id one greater than the current node
      */
+    @Test
     public void test_8() {
         final int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(directedBuilder(), nnodes);
@@ -521,17 +532,17 @@ public class DijkstraIteratorTest extends TestCase {
                         }
                         while (related.hasNext()) {
                             Graphable relatedComponent = (Graphable) related.next();
-                            assertEquals(component.getID(), relatedComponent.getID() - 1);
+                            Assert.assertEquals(component.getID(), relatedComponent.getID() - 1);
                             count++;
                         }
-                        assertEquals(expectedCount, count);
+                        Assert.assertEquals(expectedCount, count);
 
                         return 0;
                     }
                 };
         directedBuilder().getGraph().visitNodes(visitor);
 
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     protected GraphBuilder createBuilder() {

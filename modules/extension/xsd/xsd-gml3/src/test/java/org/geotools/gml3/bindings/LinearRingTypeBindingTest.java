@@ -16,12 +16,17 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LinearRing;
 
 public class LinearRingTypeBindingTest extends GML3TestSupport {
-
+    @Test
     public void testPos() throws Exception {
         document.appendChild(GML3MockData.linearRingWithPos(document, null));
 
@@ -34,6 +39,7 @@ public class LinearRingTypeBindingTest extends GML3TestSupport {
         assertEquals(new Coordinate(1d, 2d), line.getPointN(3).getCoordinate());
     }
 
+    @Test
     public void testPosList() throws Exception {
         document.appendChild(GML3MockData.linearRingWithPosList(document, null));
 
@@ -46,6 +52,7 @@ public class LinearRingTypeBindingTest extends GML3TestSupport {
         assertEquals(new Coordinate(1d, 2d), line.getPointN(3).getCoordinate());
     }
 
+    @Test
     public void testPos3D() throws Exception {
         document.appendChild(GML3MockData.linearRingWithPos3D(document, null, true));
 
@@ -58,6 +65,7 @@ public class LinearRingTypeBindingTest extends GML3TestSupport {
         assertTrue(new Coordinate(1d, 2d, 10d).equals3D(line.getPointN(3).getCoordinate()));
     }
 
+    @Test
     public void testPosList3D() throws Exception {
         document.appendChild(GML3MockData.linearRingWithPosList3D(document, null, true));
 

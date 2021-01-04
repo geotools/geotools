@@ -16,15 +16,20 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
 public class PointTypeBindingTest extends GML3TestSupport {
-
+    @Test
     public void testPos() throws Exception {
         GML3MockData.point(document, document);
 
@@ -35,6 +40,7 @@ public class PointTypeBindingTest extends GML3TestSupport {
         assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
     }
 
+    @Test
     public void testPos3D() throws Exception {
         GML3MockData.point3D(document, document);
 
@@ -45,6 +51,7 @@ public class PointTypeBindingTest extends GML3TestSupport {
         assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Point p = GML3MockData.point();
         Document dom = encode(p, GML.Point);
@@ -56,6 +63,7 @@ public class PointTypeBindingTest extends GML3TestSupport {
                 "urn:x-ogc:def:crs:EPSG:4326", dom.getDocumentElement().getAttribute("srsName"));
     }
 
+    @Test
     public void testEncode2D() throws Exception {
         Point point = GML3MockData.pointLite2D();
         Document doc = encode(point, GML.Point);
@@ -64,6 +72,7 @@ public class PointTypeBindingTest extends GML3TestSupport {
         checkPosOrdinates(doc, 2);
     }
 
+    @Test
     public void testEncode3D() throws Exception {
         Point point = GML3MockData.pointLite3D();
         Document doc = encode(point, GML.Point);

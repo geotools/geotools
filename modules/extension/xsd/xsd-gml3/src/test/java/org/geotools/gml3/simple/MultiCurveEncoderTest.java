@@ -17,13 +17,16 @@
 
 package org.geotools.gml3.simple;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
 
 public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
-
+    @Test
     public void testEncodeMultiCompound() throws Exception {
         MultiLineStringEncoder encoder =
                 new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
@@ -69,6 +72,7 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
                         doc));
     }
 
+    @Test
     public void testEncodeMultiCurve() throws Exception {
         MultiLineStringEncoder encoder =
                 new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
@@ -103,6 +107,7 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
                         doc));
     }
 
+    @Test
     public void testEncodeMultiLineString() throws Exception {
         MultiLineStringEncoder encoder =
                 new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, false);

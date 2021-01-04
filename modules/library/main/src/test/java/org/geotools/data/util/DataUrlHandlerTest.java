@@ -20,12 +20,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import junit.framework.TestCase;
 import org.geotools.util.Converters;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** Test the handling/decoding of data uris. */
-public class DataUrlHandlerTest extends TestCase {
+public class DataUrlHandlerTest {
 
+    @Test
     public void testDataUriDecoding() throws Exception {
         URL url = new URL(null, "data:,YQo=", new DataUrlHandler());
         checkDataUrlContent(url);
@@ -35,19 +37,21 @@ public class DataUrlHandlerTest extends TestCase {
         InputStreamReader in = new InputStreamReader(url.openStream());
         BufferedReader reader = new BufferedReader(in);
         String data = reader.readLine();
-        assertEquals("a", data);
+        Assert.assertEquals("a", data);
     }
 
+    @Test
     public void testDataUrlConverter() throws Exception {
         String datasUrl = "data:,YQo=";
         URL url = Converters.convert(datasUrl, URL.class);
-        assertNotNull(url);
+        Assert.assertNotNull(url);
         checkDataUrlContent(url);
     }
 
+    @Test
     public void testDataUrlConverterFail() throws Exception {
         String wrongUrl = "wkt://Polygon (1 1, 1 0, 0 3)";
         URL url = Converters.convert(wrongUrl, URL.class);
-        assertNull(url);
+        Assert.assertNull(url);
     }
 }

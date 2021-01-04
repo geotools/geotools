@@ -16,7 +16,8 @@
  */
 package org.geotools.feature.visitor;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 /*
   So far CalcResult contains the following conversion methods which call
@@ -39,7 +40,7 @@ import junit.framework.TestCase;
 // TODO: add more tests as needed
 
 /** Purpose: these tests ensure that the output of CalcResult converts as expected. */
-public class CalcResultTest extends TestCase {
+public class CalcResultTest {
     MockCalcResult result = new MockCalcResult();
     Integer val1 = Integer.valueOf(4);
     Long val2 = Long.valueOf(5);
@@ -48,134 +49,139 @@ public class CalcResultTest extends TestCase {
     String val5 = new String("8");
     String val6 = new String("Random text of arbitrary complexity.");
 
+    @Test
     public void testInt() {
         // int --> int
         result.setValue(val1);
-        assertEquals(4, result.toInt());
+        Assert.assertEquals(4, result.toInt());
 
         // long --> int
         result.setValue(val2);
-        assertEquals(5, result.toInt());
+        Assert.assertEquals(5, result.toInt());
 
         // float --> int
         result.setValue(val3);
-        assertEquals(6, result.toInt());
+        Assert.assertEquals(6, result.toInt());
 
         // double --> int
         result.setValue(val4);
-        assertEquals(7, result.toInt());
+        Assert.assertEquals(7, result.toInt());
 
         // string --> int (a string that looks like a number, should we add this functionality?)
         result.setValue(val5);
-        assertEquals(0, result.toInt());
+        Assert.assertEquals(0, result.toInt());
 
         // string --> int (a real string which clearly isn't an int, so we expect nothing good)
         result.setValue(val6);
-        assertEquals(0, result.toInt());
+        Assert.assertEquals(0, result.toInt());
     }
 
+    @Test
     public void testLong() {
         // int --> long
         result.setValue(val1);
-        assertEquals(4, result.toLong());
+        Assert.assertEquals(4, result.toLong());
 
         // long --> long
         result.setValue(val2);
-        assertEquals(5, result.toLong());
+        Assert.assertEquals(5, result.toLong());
 
         // float --> long
         result.setValue(val3);
-        assertEquals(6, result.toLong());
+        Assert.assertEquals(6, result.toLong());
 
         // double --> long
         result.setValue(val4);
-        assertEquals(7, result.toLong());
+        Assert.assertEquals(7, result.toLong());
 
         // string --> long (a string that looks like a number, should we add this functionality?)
         result.setValue(val5);
-        assertEquals(0, result.toLong());
+        Assert.assertEquals(0, result.toLong());
 
         // string --> long (a real string which clearly isn't an int, so we expect nothing good)
         result.setValue(val6);
-        assertEquals(0, result.toLong());
+        Assert.assertEquals(0, result.toLong());
     }
 
+    @Test
     public void testFloat() {
         // int --> float
         result.setValue(val1);
-        assertEquals((float) 4, result.toFloat(), 0);
+        Assert.assertEquals((float) 4, result.toFloat(), 0);
 
         // long --> float
         result.setValue(val2);
-        assertEquals((float) 5, result.toFloat(), 0);
+        Assert.assertEquals((float) 5, result.toFloat(), 0);
 
         // float --> float
         result.setValue(val3);
-        assertEquals((float) 6, result.toFloat(), 0);
+        Assert.assertEquals((float) 6, result.toFloat(), 0);
 
         // double --> float
         result.setValue(val4);
-        assertEquals((float) 7, result.toFloat(), 0);
+        Assert.assertEquals((float) 7, result.toFloat(), 0);
 
         // string --> float (a string that looks like a number, should we add this functionality?)
         result.setValue(val5);
-        assertEquals((float) 0, result.toFloat(), 0);
+        Assert.assertEquals((float) 0, result.toFloat(), 0);
 
         // string --> float (a real string which clearly isn't an int, so we expect nothing good)
         result.setValue(val6);
-        assertEquals((float) 0, result.toFloat(), 0);
+        Assert.assertEquals((float) 0, result.toFloat(), 0);
     }
 
+    @Test
     public void testDouble() {
         // int --> double
         result.setValue(val1);
-        assertEquals(4, result.toDouble(), 0);
+        Assert.assertEquals(4, result.toDouble(), 0);
 
         // long --> double
         result.setValue(val2);
-        assertEquals(5, result.toDouble(), 0);
+        Assert.assertEquals(5, result.toDouble(), 0);
 
         // float --> double
         result.setValue(val3);
-        assertEquals(6, result.toDouble(), 0);
+        Assert.assertEquals(6, result.toDouble(), 0);
 
         // double --> double
         result.setValue(val4);
-        assertEquals(7, result.toDouble(), 0);
+        Assert.assertEquals(7, result.toDouble(), 0);
 
         // string --> double (a string that looks like a number, should we add this functionality?)
         result.setValue(val5);
-        assertEquals(0, result.toDouble(), 0);
+        Assert.assertEquals(0, result.toDouble(), 0);
 
         // string --> double (a real string which clearly isn't an int, so we expect nothing good)
         result.setValue(val6);
-        assertEquals(0, result.toDouble(), 0);
+        Assert.assertEquals(0, result.toDouble(), 0);
     }
 
+    @Test
     public void testString() {
         // int --> string
         result.setValue(val1);
-        assertEquals("4", result.toString());
+        Assert.assertEquals("4", result.toString());
 
         // long --> string
         result.setValue(val2);
-        assertEquals("5", result.toString());
+        Assert.assertEquals("5", result.toString());
 
         // float --> string
         result.setValue(val3);
-        assertEquals("6.0", result.toString());
+        Assert.assertEquals("6.0", result.toString());
 
         // double --> string
         result.setValue(val4);
-        assertEquals("7.0", result.toString());
+        Assert.assertEquals("7.0", result.toString());
 
         // string --> string
         result.setValue(val5);
-        assertEquals("8", result.toString());
+        Assert.assertEquals("8", result.toString());
 
         // string --> string
         result.setValue(val6);
-        assertEquals("Random text of arbitrary complexity.", result.toString());
+        Assert.assertEquals("Random text of arbitrary complexity.", result.toString());
     }
 
     /** A simple results set which allows us to test the AbstractCalcResult type conversions */

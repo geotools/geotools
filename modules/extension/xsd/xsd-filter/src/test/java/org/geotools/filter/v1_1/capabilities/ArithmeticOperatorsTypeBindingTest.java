@@ -16,9 +16,16 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.ArithmeticOperators;
 import org.w3c.dom.Document;
 
@@ -42,14 +49,18 @@ import org.w3c.dom.Document;
  * @generated
  */
 public class ArithmeticOperatorsTypeBindingTest extends OGCTestSupport {
+
+    @Test
     public void testType() {
         assertEquals(ArithmeticOperators.class, binding(OGC.ArithmeticOperatorsType).getType());
     }
 
+    @Test
     public void testExectionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.ArithmeticOperatorsType).getExecutionMode());
     }
 
+    @Test
     public void testParse1() throws Exception {
         FilterMockData.arithmetic(document, document);
 
@@ -59,6 +70,7 @@ public class ArithmeticOperatorsTypeBindingTest extends OGCTestSupport {
         assertNotNull(arithmetic.getFunctions());
     }
 
+    @Test
     public void testParse2() throws Exception {
         FilterMockData.arithmetic(document, document, false);
 
@@ -68,6 +80,7 @@ public class ArithmeticOperatorsTypeBindingTest extends OGCTestSupport {
         assertNotNull(arithmetic.getFunctions());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom =
                 encode(

@@ -1,13 +1,18 @@
 package org.geotools.filter.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.filter.v2_0.FESTestSupport;
+import org.junit.Test;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.temporal.During;
 import org.opengis.temporal.Period;
 
 public class DuringBindingTest extends FESTestSupport {
-
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<fes:Filter "

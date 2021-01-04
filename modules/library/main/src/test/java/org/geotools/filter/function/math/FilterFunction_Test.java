@@ -16,15 +16,18 @@
  */
 package org.geotools.filter.function.math;
 
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.FactoryRegistryException;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-public class FilterFunction_Test extends TestCase {
+public class FilterFunction_Test {
 
     private Literal literal_1 = null;
 
@@ -42,8 +45,8 @@ public class FilterFunction_Test extends TestCase {
 
     private FilterFactory ff;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         ff = CommonFactoryFinder.getFilterFactory2(null);
 
         literal_1 = ff.literal("1");
@@ -53,38 +56,39 @@ public class FilterFunction_Test extends TestCase {
         literal_pi = ff.literal(String.valueOf(Math.PI));
         literal_05pi = ff.literal(String.valueOf(0.5 * Math.PI));
         literal_null = ff.literal(null);
-        assertEquals(
+        Assert.assertEquals(
                 "Literal Expression 0.0",
                 Double.valueOf(1.0),
                 literal_1.evaluate(null, Double.class));
-        assertEquals(
+        Assert.assertEquals(
                 "Literal Expression pi",
                 Double.valueOf(Math.PI),
                 literal_pi.evaluate(null, Double.class));
-        assertEquals(
+        Assert.assertEquals(
                 "Literal Expression 05pi",
                 Double.valueOf(0.5 * Math.PI),
                 literal_05pi.evaluate(null, Double.class));
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
+    @After
+    public void tearDown() throws Exception {}
 
+    @Test
     public void testsin() {
         try {
             FilterFunction_sin sin = (FilterFunction_sin) ff.function("sin", Expression.NIL);
-            assertEquals("Name is, ", "sin", sin.getName());
-            assertEquals("Number of arguments, ", 1, sin.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "sin", sin.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, sin.getFunctionName().getArgumentCount());
 
             Function sinFunction = ff.function("sin", literal_1);
             double good0 = Math.sin(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sin of (1.0):",
                         Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sin of (1.0):",
                         Math.sin(1.0),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
@@ -94,11 +98,11 @@ public class FilterFunction_Test extends TestCase {
             sinFunction = ff.function("sin", literal_m1);
             double good1 = Math.sin(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sin of (-1.0):",
                         Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sin of (-1.0):",
                         Math.sin(-1.0),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
@@ -107,11 +111,11 @@ public class FilterFunction_Test extends TestCase {
             sinFunction = ff.function("sin", literal_2);
             double good2 = Math.sin(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sin of (2.0):",
                         Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sin of (2.0):",
                         Math.sin(2.0),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
@@ -121,11 +125,11 @@ public class FilterFunction_Test extends TestCase {
             sinFunction = ff.function("sin", literal_m2);
             double good3 = Math.sin(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sin of (-2.0):",
                         Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sin of (-2.0):",
                         Math.sin(-2.0),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
@@ -135,11 +139,11 @@ public class FilterFunction_Test extends TestCase {
             sinFunction = ff.function("sin", literal_pi);
             double good4 = Math.sin(3.141592653589793);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sin of (3.141592653589793):",
                         Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sin of (3.141592653589793):",
                         Math.sin(3.141592653589793),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
@@ -149,11 +153,11 @@ public class FilterFunction_Test extends TestCase {
             sinFunction = ff.function("sin", literal_05pi);
             double good5 = Math.sin(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sin of (1.5707963267948966):",
                         Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sin of (1.5707963267948966):",
                         Math.sin(1.5707963267948966),
                         ((Double) sinFunction.evaluate(null)).doubleValue(),
@@ -161,31 +165,33 @@ public class FilterFunction_Test extends TestCase {
             }
 
             sinFunction = ff.function("sin", literal_null);
-            assertNull(sinFunction.evaluate(null));
+            Assert.assertNull(sinFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testcos() {
         try {
 
             FilterFunction_cos cos =
                     (FilterFunction_cos)
                             ff.function("cos", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "cos", cos.getName());
-            assertEquals("Number of arguments, ", 1, cos.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "cos", cos.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, cos.getFunctionName().getArgumentCount());
 
             Function cosFunction = ff.function("cos", literal_1);
             double good0 = Math.cos(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "cos of (1.0):",
                         Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "cos of (1.0):",
                         Math.cos(1.0),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
@@ -195,11 +201,11 @@ public class FilterFunction_Test extends TestCase {
             cosFunction = ff.function("cos", literal_m1);
             double good1 = Math.cos(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "cos of (-1.0):",
                         Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "cos of (-1.0):",
                         Math.cos(-1.0),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
@@ -209,11 +215,11 @@ public class FilterFunction_Test extends TestCase {
             cosFunction = ff.function("cos", literal_2);
             double good2 = Math.cos(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "cos of (2.0):",
                         Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "cos of (2.0):",
                         Math.cos(2.0),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
@@ -223,11 +229,11 @@ public class FilterFunction_Test extends TestCase {
             cosFunction = ff.function("cos", literal_m2);
             double good3 = Math.cos(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "cos of (-2.0):",
                         Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "cos of (-2.0):",
                         Math.cos(-2.0),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
@@ -237,11 +243,11 @@ public class FilterFunction_Test extends TestCase {
             cosFunction = ff.function("cos", literal_pi);
             double good4 = Math.cos(3.141592653589793);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "cos of (3.141592653589793):",
                         Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "cos of (3.141592653589793):",
                         Math.cos(3.141592653589793),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
@@ -251,11 +257,11 @@ public class FilterFunction_Test extends TestCase {
             cosFunction = ff.function("cos", literal_05pi);
             double good5 = Math.cos(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "cos of (1.5707963267948966):",
                         Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "cos of (1.5707963267948966):",
                         Math.cos(1.5707963267948966),
                         ((Double) cosFunction.evaluate(null)).doubleValue(),
@@ -263,31 +269,33 @@ public class FilterFunction_Test extends TestCase {
             }
 
             cosFunction = ff.function("cos", literal_null);
-            assertNull(cosFunction.evaluate(null));
+            Assert.assertNull(cosFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testtan() {
         try {
 
             FilterFunction_tan tan =
                     (FilterFunction_tan)
                             ff.function("tan", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "tan", tan.getName());
-            assertEquals("Number of arguments, ", 1, tan.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "tan", tan.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, tan.getFunctionName().getArgumentCount());
 
             Function tanFunction = ff.function("tan", literal_1);
             double good0 = Math.tan(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "tan of (1.0):",
                         Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "tan of (1.0):",
                         Math.tan(1.0),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
@@ -297,11 +305,11 @@ public class FilterFunction_Test extends TestCase {
             tanFunction = ff.function("tan", literal_m1);
             double good1 = Math.tan(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "tan of (-1.0):",
                         Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "tan of (-1.0):",
                         Math.tan(-1.0),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
@@ -311,11 +319,11 @@ public class FilterFunction_Test extends TestCase {
             tanFunction = ff.function("tan", literal_2);
             double good2 = Math.tan(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "tan of (2.0):",
                         Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "tan of (2.0):",
                         Math.tan(2.0),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
@@ -325,11 +333,11 @@ public class FilterFunction_Test extends TestCase {
             tanFunction = ff.function("tan", literal_m2);
             double good3 = Math.tan(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "tan of (-2.0):",
                         Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "tan of (-2.0):",
                         Math.tan(-2.0),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
@@ -339,11 +347,11 @@ public class FilterFunction_Test extends TestCase {
             tanFunction = ff.function("tan", literal_pi);
             double good4 = Math.tan(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "tan of (3.141592653589793):",
                         Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "tan of (3.141592653589793):",
                         Math.tan(3.141592653589793),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
@@ -353,11 +361,11 @@ public class FilterFunction_Test extends TestCase {
             tanFunction = ff.function("tan", literal_05pi);
             double good5 = Math.tan(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "tan of (1.5707963267948966):",
                         Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "tan of (1.5707963267948966):",
                         Math.tan(1.5707963267948966),
                         ((Double) tanFunction.evaluate(null)).doubleValue(),
@@ -365,14 +373,15 @@ public class FilterFunction_Test extends TestCase {
             }
 
             tanFunction = ff.function("tan", literal_null);
-            assertNull(tanFunction.evaluate(null));
+            Assert.assertNull(tanFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testatan2() {
         try {
             FilterFunction_atan2 atan2 =
@@ -381,17 +390,18 @@ public class FilterFunction_Test extends TestCase {
                                     "atan2",
                                     org.opengis.filter.expression.Expression.NIL,
                                     org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "atan2", atan2.getName());
-            assertEquals("Number of arguments, ", 2, atan2.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "atan2", atan2.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, atan2.getFunctionName().getArgumentCount());
 
             Function atan2Function = ff.function("atan2", literal_1, literal_m1);
             double good0 = Math.atan2(1.0, -1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan2 of (1.0,-1.0):",
                         Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan2 of (1.0,-1.0):",
                         Math.atan2(1.0, -1.0),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
@@ -401,11 +411,11 @@ public class FilterFunction_Test extends TestCase {
             atan2Function = ff.function("atan2", literal_m1, literal_2);
             double good1 = Math.atan2(-1.0, 2.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan2 of (-1.0,2.0):",
                         Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan2 of (-1.0,2.0):",
                         Math.atan2(-1.0, 2.0),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
@@ -415,11 +425,11 @@ public class FilterFunction_Test extends TestCase {
             atan2Function = ff.function("atan2", literal_2, literal_m2);
             double good2 = Math.atan2(2.0, -2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan2 of (2.0,-2.0):",
                         Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan2 of (2.0,-2.0):",
                         Math.atan2(2.0, -2.0),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
@@ -429,11 +439,11 @@ public class FilterFunction_Test extends TestCase {
             atan2Function = ff.function("atan2", literal_m2, literal_pi);
             double good3 = Math.atan2(-2.0, 3.141592653589793);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan2 of (-2.0,3.141592653589793):",
                         Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan2 of (-2.0,3.141592653589793):",
                         Math.atan2(-2.0, 3.141592653589793),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
@@ -443,11 +453,11 @@ public class FilterFunction_Test extends TestCase {
             atan2Function = ff.function("atan2", literal_pi, literal_05pi);
             double good4 = Math.atan2(3.141592653589793, 1.5707963267948966);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan2 of (3.141592653589793,1.5707963267948966):",
                         Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan2 of (3.141592653589793,1.5707963267948966):",
                         Math.atan2(3.141592653589793, 1.5707963267948966),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
@@ -457,11 +467,11 @@ public class FilterFunction_Test extends TestCase {
             atan2Function = ff.function("atan2", literal_05pi, literal_1);
             double good5 = Math.atan2(1.5707963267948966, 1.0);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan2 of (1.5707963267948966,1.0):",
                         Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan2 of (1.5707963267948966,1.0):",
                         Math.atan2(1.5707963267948966, 1.0),
                         ((Double) atan2Function.evaluate(null)).doubleValue(),
@@ -469,36 +479,38 @@ public class FilterFunction_Test extends TestCase {
             }
 
             atan2Function = ff.function("atan2", literal_null, literal_1);
-            assertNull(atan2Function.evaluate(null));
+            Assert.assertNull(atan2Function.evaluate(null));
 
             atan2Function = ff.function("atan2", literal_1, literal_null);
-            assertNull(atan2Function.evaluate(null));
+            Assert.assertNull(atan2Function.evaluate(null));
 
             atan2Function = ff.function("atan2", literal_null, literal_null);
-            assertNull(atan2Function.evaluate(null));
+            Assert.assertNull(atan2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testsqrt() {
         try {
             FilterFunction_sqrt sqrt =
                     (FilterFunction_sqrt)
                             ff.function("sqrt", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "sqrt", sqrt.getName());
-            assertEquals("Number of arguments, ", 1, sqrt.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "sqrt", sqrt.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, sqrt.getFunctionName().getArgumentCount());
 
             Function sqrtFunction = ff.function("sqrt", literal_1);
             double good0 = Math.sqrt(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sqrt of (1.0):",
                         Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sqrt of (1.0):",
                         Math.sqrt(1.0),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
@@ -508,11 +520,11 @@ public class FilterFunction_Test extends TestCase {
             sqrtFunction = ff.function("sqrt", literal_m1);
             double good1 = Math.sqrt(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sqrt of (-1.0):",
                         Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sqrt of (-1.0):",
                         Math.sqrt(-1.0),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
@@ -522,11 +534,11 @@ public class FilterFunction_Test extends TestCase {
             sqrtFunction = ff.function("sqrt", literal_2);
             double good2 = Math.sqrt(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sqrt of (2.0):",
                         Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sqrt of (2.0):",
                         Math.sqrt(2.0),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
@@ -536,11 +548,11 @@ public class FilterFunction_Test extends TestCase {
             sqrtFunction = ff.function("sqrt", literal_m2);
             double good3 = Math.sqrt(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sqrt of (-2.0):",
                         Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sqrt of (-2.0):",
                         Math.sqrt(-2.0),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
@@ -550,11 +562,11 @@ public class FilterFunction_Test extends TestCase {
             sqrtFunction = ff.function("sqrt", literal_pi);
             double good4 = Math.sqrt(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sqrt of (3.141592653589793):",
                         Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sqrt of (3.141592653589793):",
                         Math.sqrt(3.141592653589793),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
@@ -564,11 +576,11 @@ public class FilterFunction_Test extends TestCase {
             sqrtFunction = ff.function("sqrt", literal_05pi);
             double good5 = Math.sqrt(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "sqrt of (1.5707963267948966):",
                         Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "sqrt of (1.5707963267948966):",
                         Math.sqrt(1.5707963267948966),
                         ((Double) sqrtFunction.evaluate(null)).doubleValue(),
@@ -576,14 +588,15 @@ public class FilterFunction_Test extends TestCase {
             }
 
             sqrtFunction = ff.function("sqrt", literal_null);
-            assertNull(sqrtFunction.evaluate(null));
+            Assert.assertNull(sqrtFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testpow() {
         try {
             FilterFunction_pow pow =
@@ -592,17 +605,18 @@ public class FilterFunction_Test extends TestCase {
                                     "pow",
                                     org.opengis.filter.expression.Expression.NIL,
                                     org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "pow", pow.getName());
-            assertEquals("Number of arguments, ", 2, pow.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "pow", pow.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, pow.getFunctionName().getArgumentCount());
 
             Function powFunction = ff.function("pow", literal_1, literal_m1);
             double good0 = Math.pow(1.0, -1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "pow of (1.0,-1.0):",
                         Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "pow of (1.0,-1.0):",
                         Math.pow(1.0, -1.0),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
@@ -612,11 +626,11 @@ public class FilterFunction_Test extends TestCase {
             powFunction = ff.function("pow", literal_m1, literal_2);
             double good1 = Math.pow(-1.0, 2.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "pow of (-1.0,2.0):",
                         Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "pow of (-1.0,2.0):",
                         Math.pow(-1.0, 2.0),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
@@ -626,11 +640,11 @@ public class FilterFunction_Test extends TestCase {
             powFunction = ff.function("pow", literal_2, literal_m2);
             double good2 = Math.pow(2.0, -2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "pow of (2.0,-2.0):",
                         Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "pow of (2.0,-2.0):",
                         Math.pow(2.0, -2.0),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
@@ -640,11 +654,11 @@ public class FilterFunction_Test extends TestCase {
             powFunction = ff.function("pow", literal_m2, literal_pi);
             double good3 = Math.pow(-2.0, 3.141592653589793);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "pow of (-2.0,3.141592653589793):",
                         Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "pow of (-2.0,3.141592653589793):",
                         Math.pow(-2.0, 3.141592653589793),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
@@ -654,11 +668,11 @@ public class FilterFunction_Test extends TestCase {
             powFunction = ff.function("pow", literal_pi, literal_05pi);
             double good4 = Math.pow(3.141592653589793, 1.5707963267948966);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "pow of (3.141592653589793,1.5707963267948966):",
                         Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "pow of (3.141592653589793,1.5707963267948966):",
                         Math.pow(3.141592653589793, 1.5707963267948966),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
@@ -668,11 +682,11 @@ public class FilterFunction_Test extends TestCase {
             powFunction = ff.function("pow", literal_05pi, literal_1);
             double good5 = Math.pow(1.5707963267948966, 1.0);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "pow of (1.5707963267948966,1.0):",
                         Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "pow of (1.5707963267948966,1.0):",
                         Math.pow(1.5707963267948966, 1.0),
                         ((Double) powFunction.evaluate(null)).doubleValue(),
@@ -680,774 +694,799 @@ public class FilterFunction_Test extends TestCase {
             }
 
             powFunction = ff.function("pow", literal_null, literal_1);
-            assertNull(powFunction.evaluate(null));
+            Assert.assertNull(powFunction.evaluate(null));
 
             powFunction = ff.function("pow", literal_1, literal_null);
-            assertNull(powFunction.evaluate(null));
+            Assert.assertNull(powFunction.evaluate(null));
 
             powFunction = ff.function("pow", literal_null, literal_null);
-            assertNull(powFunction.evaluate(null));
+            Assert.assertNull(powFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testmin_4() {
         try {
             FilterFunction_min_4 min_4 =
                     (FilterFunction_min_4)
                             ff.function("min_4", new org.opengis.filter.expression.Expression[2]);
-            assertEquals("Name is, ", "min_4", min_4.getName());
-            assertEquals("Number of arguments, ", 2, min_4.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "min_4", min_4.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, min_4.getFunctionName().getArgumentCount());
 
             Function min_4Function = ff.function("min_4", literal_1, literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (1.0,-1.0):",
                     (long) Math.min(1.0, -1.0),
                     ((Integer) min_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             min_4Function = ff.function("min_4", literal_m1, literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (-1.0,2.0):",
                     (long) Math.min(-1.0, 2.0),
                     ((Integer) min_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             min_4Function = ff.function("min_4", literal_2, literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (2.0,-2.0):",
                     (long) Math.min(2.0, -2.0),
                     ((Integer) min_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             min_4Function = ff.function("min_4", literal_m2, literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (-2.0,3.141592653589793):",
                     (long) Math.min(-2.0, 3.141592653589793),
                     ((Integer) min_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             min_4Function = ff.function("min_4", literal_pi, literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (3.141592653589793,1.5707963267948966):",
                     (long) Math.min(3.141592653589793, 1.5707963267948966),
                     ((Integer) min_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             min_4Function = ff.function("min_4", literal_05pi, literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (1.5707963267948966,1.0):",
                     (long) Math.min(1.5707963267948966, 1.0),
                     ((Integer) min_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             min_4Function = ff.function("min_4", literal_null, literal_1);
-            assertNull(min_4Function.evaluate(null));
+            Assert.assertNull(min_4Function.evaluate(null));
 
             min_4Function = ff.function("min_4", literal_1, literal_null);
-            assertNull(min_4Function.evaluate(null));
+            Assert.assertNull(min_4Function.evaluate(null));
 
             min_4Function = ff.function("min_4", literal_null, literal_null);
-            assertNull(min_4Function.evaluate(null));
+            Assert.assertNull(min_4Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testmin_2() {
         try {
             FilterFunction_min_2 min_2 =
                     (FilterFunction_min_2)
                             ff.function("min_2", new org.opengis.filter.expression.Expression[2]);
-            assertEquals("Name is, ", "min_2", min_2.getName());
-            assertEquals("Number of arguments, ", 2, min_2.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "min_2", min_2.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, min_2.getFunctionName().getArgumentCount());
 
             Function min_2Function = ff.function("min_2", literal_1, literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (1.0,-1.0):",
                     (long) Math.min(1.0, -1.0),
                     ((Long) min_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             min_2Function = ff.function("min_2", literal_m1, literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (-1.0,2.0):",
                     (long) Math.min(-1.0, 2.0),
                     ((Long) min_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             min_2Function = ff.function("min_2", literal_2, literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (2.0,-2.0):",
                     (long) Math.min(2.0, -2.0),
                     ((Long) min_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             min_2Function = ff.function("min_2", literal_m2, literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (-2.0,3.141592653589793):",
                     (long) Math.min(-2.0, 3.141592653589793),
                     ((Long) min_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             min_2Function = ff.function("min_2", literal_pi, literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (3.141592653589793,1.5707963267948966):",
                     (long) Math.min(3.141592653589793, 1.5707963267948966),
                     ((Long) min_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             min_2Function = ff.function("min_2", literal_05pi, literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (1.5707963267948966,1.0):",
                     (long) Math.min(1.5707963267948966, 1.0),
                     ((Long) min_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             min_2Function = ff.function("min_2", literal_null, literal_1);
-            assertNull(min_2Function.evaluate(null));
+            Assert.assertNull(min_2Function.evaluate(null));
 
             min_2Function = ff.function("min_2", literal_1, literal_null);
-            assertNull(min_2Function.evaluate(null));
+            Assert.assertNull(min_2Function.evaluate(null));
 
             min_2Function = ff.function("min_2", literal_null, literal_null);
-            assertNull(min_2Function.evaluate(null));
+            Assert.assertNull(min_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testmin_3() {
         try {
             FilterFunction_min_3 min_3 =
                     (FilterFunction_min_3)
                             ff.function("min_3", new org.opengis.filter.expression.Expression[2]);
-            assertEquals("Name is, ", "min_3", min_3.getName());
-            assertEquals("Number of arguments, ", 2, min_3.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "min_3", min_3.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, min_3.getFunctionName().getArgumentCount());
 
             Function min_3Function = ff.function("min_3", literal_1, literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (1.0,-1.0):",
                     (float) Math.min(1.0, -1.0),
                     ((Float) min_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             min_3Function = ff.function("min_3", literal_m1, literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (-1.0,2.0):",
                     (float) Math.min(-1.0, 2.0),
                     ((Float) min_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             min_3Function = ff.function("min_3", literal_2, literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (2.0,-2.0):",
                     (float) Math.min(2.0, -2.0),
                     ((Float) min_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             min_3Function = ff.function("min_3", literal_m2, literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (-2.0,3.141592653589793):",
                     (float) Math.min(-2.0, 3.141592653589793),
                     ((Float) min_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             min_3Function = ff.function("min_3", literal_pi, literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (3.141592653589793,1.5707963267948966):",
                     (float) Math.min(3.141592653589793, 1.5707963267948966),
                     ((Float) min_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             min_3Function = ff.function("min_3", literal_05pi, literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (1.5707963267948966,1.0):",
                     (float) Math.min(1.5707963267948966, 1.0),
                     ((Float) min_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             min_3Function = ff.function("min_3", literal_null, literal_1);
-            assertNull(min_3Function.evaluate(null));
+            Assert.assertNull(min_3Function.evaluate(null));
 
             min_3Function = ff.function("min_3", literal_1, literal_null);
-            assertNull(min_3Function.evaluate(null));
+            Assert.assertNull(min_3Function.evaluate(null));
 
             min_3Function = ff.function("min_3", literal_null, literal_null);
-            assertNull(min_3Function.evaluate(null));
+            Assert.assertNull(min_3Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testmin() {
         try {
             FilterFunction_min min =
                     (FilterFunction_min)
                             ff.function("min", new org.opengis.filter.expression.Expression[2]);
-            assertEquals("Name is, ", "min", min.getName());
-            assertEquals("Number of arguments, ", 2, min.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "min", min.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, min.getFunctionName().getArgumentCount());
 
             Function minFunction = ff.function("min", literal_1, literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (1.0,-1.0):",
                     Math.min(1.0, -1.0),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_m1, literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (-1.0,2.0):",
                     Math.min(-1.0, 2.0),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_2, literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (2.0,-2.0):",
                     Math.min(2.0, -2.0),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_m2, literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (-2.0,3.141592653589793):",
                     Math.min(-2.0, 3.141592653589793),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_pi, literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (3.141592653589793,1.5707963267948966):",
                     Math.min(3.141592653589793, 1.5707963267948966),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_05pi, literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "min of (1.5707963267948966,1.0):",
                     Math.min(1.5707963267948966, 1.0),
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             minFunction = ff.function("min", literal_null, literal_1);
-            assertNull(minFunction.evaluate(null));
+            Assert.assertNull(minFunction.evaluate(null));
 
             minFunction = ff.function("min", literal_1, literal_null);
-            assertNull(minFunction.evaluate(null));
+            Assert.assertNull(minFunction.evaluate(null));
 
             minFunction = ff.function("min", literal_null, literal_null);
-            assertNull(minFunction.evaluate(null));
+            Assert.assertNull(minFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testmax_4() {
         try {
             FilterFunction_max_4 max_4 =
                     (FilterFunction_max_4)
                             ff.function("max_4", new org.opengis.filter.expression.Expression[2]);
-            assertEquals("Name is, ", "max_4", max_4.getName());
-            assertEquals("Number of arguments, ", 2, max_4.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "max_4", max_4.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, max_4.getFunctionName().getArgumentCount());
 
             Function max_4Function = ff.function("max_4", literal_1, literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "max_4 of (1.0,-1.0):",
                     (int) Math.max(1.0, -1.0),
                     ((Integer) max_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             max_4Function = ff.function("max_4", literal_m1, literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "max_4 of (-1.0,2.0):",
                     (int) Math.max(-1.0, 2.0),
                     ((Integer) max_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             max_4Function = ff.function("max_4", literal_2, literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "max_4 of (2.0,-2.0):",
                     (int) Math.max(2.0, -2.0),
                     ((Integer) max_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             max_4Function = ff.function("max_4", literal_m2, literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "max_4 of (-2.0,3.141592653589793):",
                     (int) Math.max(-2.0, 3.141592653589793),
                     ((Integer) max_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             max_4Function = ff.function("max_4", literal_pi, literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "max_4 of (3.141592653589793,1.5707963267948966):",
                     (int) Math.max(3.141592653589793, 1.5707963267948966),
                     ((Integer) max_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             max_4Function = ff.function("max_4", literal_05pi, literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "max_4 of (1.5707963267948966,1.0):",
                     (int) Math.max(1.5707963267948966, 1.0),
                     ((Integer) max_4Function.evaluate(null)).intValue(),
                     0.00001);
 
             max_4Function = ff.function("max_4", literal_null, literal_1);
-            assertNull(max_4Function.evaluate(null));
+            Assert.assertNull(max_4Function.evaluate(null));
 
             max_4Function = ff.function("max_4", literal_1, literal_null);
-            assertNull(max_4Function.evaluate(null));
+            Assert.assertNull(max_4Function.evaluate(null));
 
             max_4Function = ff.function("max_4", literal_null, literal_null);
-            assertNull(max_4Function.evaluate(null));
+            Assert.assertNull(max_4Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testmax_2() {
         try {
             FilterFunction_max_2 max_2 =
                     (FilterFunction_max_2)
                             ff.function("max_2", new org.opengis.filter.expression.Expression[2]);
-            assertEquals("Name is, ", "max_2", max_2.getName());
-            assertEquals("Number of arguments, ", 2, max_2.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "max_2", max_2.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, max_2.getFunctionName().getArgumentCount());
 
             Function max_2Function = ff.function("max_2", literal_1, literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "max_2 of (1.0,-1.0):",
                     (long) Math.max(1.0, -1.0),
                     ((Long) max_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             max_2Function = ff.function("max_2", literal_m1, literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "max_2 of (-1.0,2.0):",
                     (long) Math.max(-1.0, 2.0),
                     ((Long) max_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             max_2Function = ff.function("max_2", literal_2, literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "max_2 of (2.0,-2.0):",
                     (long) Math.max(2.0, -2.0),
                     ((Long) max_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             max_2Function = ff.function("max_2", literal_m2, literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "max_2 of (-2.0,3.141592653589793):",
                     (long) Math.max(-2.0, 3.141592653589793),
                     ((Long) max_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             max_2Function = ff.function("max_2", literal_pi, literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "max_2 of (3.141592653589793,1.5707963267948966):",
                     (long) Math.max(3.141592653589793, 1.5707963267948966),
                     ((Long) max_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             max_2Function = ff.function("max_2", literal_05pi, literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "max_2 of (1.5707963267948966,1.0):",
                     (long) Math.max(1.5707963267948966, 1.0),
                     ((Long) max_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             max_2Function = ff.function("max_2", literal_null, literal_1);
-            assertNull(max_2Function.evaluate(null));
+            Assert.assertNull(max_2Function.evaluate(null));
 
             max_2Function = ff.function("max_2", literal_1, literal_null);
-            assertNull(max_2Function.evaluate(null));
+            Assert.assertNull(max_2Function.evaluate(null));
 
             max_2Function = ff.function("max_2", literal_null, literal_null);
-            assertNull(max_2Function.evaluate(null));
+            Assert.assertNull(max_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testmax_3() {
         try {
             FilterFunction_max_3 max_3 =
                     (FilterFunction_max_3)
                             ff.function("max_3", new org.opengis.filter.expression.Expression[2]);
-            assertEquals("Name is, ", "max_3", max_3.getName());
-            assertEquals("Number of arguments, ", 2, max_3.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "max_3", max_3.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, max_3.getFunctionName().getArgumentCount());
 
             Function max_3Function = ff.function("max_3", literal_1, literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "max_3 of (1.0,-1.0):",
                     (float) Math.max(1.0, -1.0),
                     ((Float) max_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             max_3Function = ff.function("max_3", literal_m1, literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "max_3 of (-1.0,2.0):",
                     (float) Math.max(-1.0, 2.0),
                     ((Float) max_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             max_3Function = ff.function("max_3", literal_2, literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "max_3 of (2.0,-2.0):",
                     (float) Math.max(2.0, -2.0),
                     ((Float) max_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             max_3Function = ff.function("max_3", literal_m2, literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "max_3 of (-2.0,3.141592653589793):",
                     (float) Math.max(-2.0, 3.141592653589793),
                     ((Float) max_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             max_3Function = ff.function("max_3", literal_pi, literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "max_3 of (3.141592653589793,1.5707963267948966):",
                     (float) Math.max(3.141592653589793, 1.5707963267948966),
                     ((Float) max_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             max_3Function = ff.function("max_3", literal_05pi, literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "max_3 of (1.5707963267948966,1.0):",
                     (float) Math.max(1.5707963267948966, 1.0),
                     ((Float) max_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             max_3Function = ff.function("max_3", literal_null, literal_1);
-            assertNull(max_3Function.evaluate(null));
+            Assert.assertNull(max_3Function.evaluate(null));
 
             max_3Function = ff.function("max_3", literal_1, literal_null);
-            assertNull(max_3Function.evaluate(null));
+            Assert.assertNull(max_3Function.evaluate(null));
 
             max_3Function = ff.function("max_3", literal_null, literal_null);
-            assertNull(max_3Function.evaluate(null));
+            Assert.assertNull(max_3Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testmax() {
         try {
             FilterFunction_max max =
                     (FilterFunction_max)
                             ff.function("max", new org.opengis.filter.expression.Expression[2]);
-            assertEquals("Name is, ", "max", max.getName());
-            assertEquals("Number of arguments, ", 2, max.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "max", max.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 2, max.getFunctionName().getArgumentCount());
 
             Function maxFunction = ff.function("max", literal_1, literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "max of (1.0,-1.0):",
                     Math.max(1.0, -1.0),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_m1, literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "max of (-1.0,2.0):",
                     Math.max(-1.0, 2.0),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_2, literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "max of (2.0,-2.0):",
                     Math.max(2.0, -2.0),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_m2, literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "max of (-2.0,3.141592653589793):",
                     Math.max(-2.0, 3.141592653589793),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_pi, literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "max of (3.141592653589793,1.5707963267948966):",
                     Math.max(3.141592653589793, 1.5707963267948966),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_05pi, literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "max of (1.5707963267948966,1.0):",
                     Math.max(1.5707963267948966, 1.0),
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
             maxFunction = ff.function("max", literal_null, literal_1);
-            assertNull(maxFunction.evaluate(null));
+            Assert.assertNull(maxFunction.evaluate(null));
 
             maxFunction = ff.function("max", literal_1, literal_null);
-            assertNull(maxFunction.evaluate(null));
+            Assert.assertNull(maxFunction.evaluate(null));
 
             maxFunction = ff.function("max", literal_null, literal_null);
-            assertNull(maxFunction.evaluate(null));
+            Assert.assertNull(maxFunction.evaluate(null));
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testabs() {
         try {
             FilterFunction_abs abs =
                     (FilterFunction_abs)
                             ff.function("abs", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "abs", abs.getName());
-            assertEquals("Number of arguments, ", 1, abs.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "abs", abs.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, abs.getFunctionName().getArgumentCount());
 
             Function absFunction = ff.function("abs", literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "abs of (1.0):",
                     (int) Math.abs(1.0),
                     ((Integer) absFunction.evaluate(null)).intValue(),
                     0.00001);
 
             absFunction = ff.function("abs", literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "abs of (-1.0):",
                     (int) Math.abs(-1.0),
                     ((Integer) absFunction.evaluate(null)).intValue(),
                     0.00001);
 
             absFunction = ff.function("abs", literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "abs of (2.0):",
                     (int) Math.abs(2.0),
                     ((Integer) absFunction.evaluate(null)).intValue(),
                     0.00001);
 
             absFunction = ff.function("abs", literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "abs of (-2.0):",
                     (int) Math.abs(-2.0),
                     ((Integer) absFunction.evaluate(null)).intValue(),
                     0.00001);
 
             absFunction = ff.function("abs", literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "abs of (3.141592653589793):",
                     (int) Math.abs(3.141592653589793),
                     ((Integer) absFunction.evaluate(null)).intValue(),
                     0.00001);
 
             absFunction = ff.function("abs", literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "abs of (1.5707963267948966):",
                     (int) Math.abs(1.5707963267948966),
                     ((Integer) absFunction.evaluate(null)).intValue(),
                     0.00001);
 
             absFunction = ff.function("abs", literal_null);
-            assertNull(absFunction.evaluate(null));
+            Assert.assertNull(absFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testabs_4() {
         try {
             FilterFunction_abs_4 abs_4 =
                     (FilterFunction_abs_4)
                             ff.function("abs_4", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "abs_4", abs_4.getName());
-            assertEquals("Number of arguments, ", 1, abs_4.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "abs_4", abs_4.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, abs_4.getFunctionName().getArgumentCount());
 
             Function abs_4Function = ff.function("abs_4", literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_4 of (1.0):",
                     Math.abs(1.0),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_4 of (-1.0):",
                     Math.abs(-1.0),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_4 of (2.0):",
                     Math.abs(2.0),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_4 of (-2.0):",
                     Math.abs(-2.0),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_4 of (3.141592653589793):",
                     Math.abs(3.141592653589793),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_4 of (1.5707963267948966):",
                     Math.abs(1.5707963267948966),
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_null);
-            assertNull(abs_4Function.evaluate(null));
+            Assert.assertNull(abs_4Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testabs_3() {
         try {
             FilterFunction_abs_3 abs_3 =
                     (FilterFunction_abs_3)
                             ff.function("abs_3", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "abs_3", abs_3.getName());
-            assertEquals("Number of arguments, ", 1, abs_3.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "abs_3", abs_3.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, abs_3.getFunctionName().getArgumentCount());
 
             Function abs_3Function = ff.function("abs_3", literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_3 of (1.0):",
                     (float) Math.abs(1.0),
                     ((Float) abs_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             abs_3Function = ff.function("abs_3", literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_3 of (-1.0):",
                     (float) Math.abs(-1.0),
                     ((Float) abs_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             abs_3Function = ff.function("abs_3", literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_3 of (2.0):",
                     (float) Math.abs(2.0),
                     ((Float) abs_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             abs_3Function = ff.function("abs_3", literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_3 of (-2.0):",
                     (float) Math.abs(-2.0),
                     ((Float) abs_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             abs_3Function = ff.function("abs_3", literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_3 of (3.141592653589793):",
                     (float) Math.abs(3.141592653589793),
                     ((Float) abs_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             abs_3Function = ff.function("abs_3", literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_3 of (1.5707963267948966):",
                     (float) Math.abs(1.5707963267948966),
                     ((Float) abs_3Function.evaluate(null)).floatValue(),
                     0.00001);
 
             abs_3Function = ff.function("abs_3", literal_null);
-            assertNull(abs_3Function.evaluate(null));
+            Assert.assertNull(abs_3Function.evaluate(null));
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testabs_2() {
         try {
             FilterFunction_abs_2 abs_2 =
                     (FilterFunction_abs_2)
                             ff.function("abs_2", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "abs_2", abs_2.getName());
-            assertEquals("Number of arguments, ", 1, abs_2.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "abs_2", abs_2.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, abs_2.getFunctionName().getArgumentCount());
 
             Function abs_2Function = ff.function("abs_2", literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_2 of (1.0):",
                     (long) Math.abs(1.0),
                     ((Long) abs_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             abs_2Function = ff.function("abs_2", literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_2 of (-1.0):",
                     (long) Math.abs(-1.0),
                     ((Long) abs_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             abs_2Function = ff.function("abs_2", literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_2 of (2.0):",
                     (long) Math.abs(2.0),
                     ((Long) abs_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             abs_2Function = ff.function("abs_2", literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_2 of (-2.0):",
                     (long) Math.abs(-2.0),
                     ((Long) abs_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             abs_2Function = ff.function("abs_2", literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_2 of (3.141592653589793):",
                     (long) Math.abs(3.141592653589793),
                     ((Long) abs_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             abs_2Function = ff.function("abs_2", literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "abs_2 of (1.5707963267948966):",
                     (long) Math.abs(1.5707963267948966),
                     ((Long) abs_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             abs_2Function = ff.function("abs_2", literal_null);
-            assertNull(abs_2Function.evaluate(null));
+            Assert.assertNull(abs_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testIEEEremainder() {
         try {
             FilterFunction_IEEEremainder IEEEremainder =
@@ -1456,19 +1495,19 @@ public class FilterFunction_Test extends TestCase {
                                     "IEEEremainder",
                                     org.opengis.filter.expression.Expression.NIL,
                                     org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "IEEEremainder", IEEEremainder.getName());
-            assertEquals(
+            Assert.assertEquals("Name is, ", "IEEEremainder", IEEEremainder.getName());
+            Assert.assertEquals(
                     "Number of arguments, ", 2, IEEEremainder.getFunctionName().getArgumentCount());
 
             Function IEEEremainderFunction = ff.function("IEEEremainder", literal_1, literal_m1);
             double good0 = Math.IEEEremainder(1.0, -1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "IEEEremainder of (1.0,-1.0):",
                         Double.isNaN(
                                 ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "IEEEremainder of (1.0,-1.0):",
                         Math.IEEEremainder(1.0, -1.0),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
@@ -1478,12 +1517,12 @@ public class FilterFunction_Test extends TestCase {
             IEEEremainderFunction = ff.function("IEEEremainder", literal_m1, literal_2);
             double good1 = Math.IEEEremainder(-1.0, 2.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "IEEEremainder of (-1.0,2.0):",
                         Double.isNaN(
                                 ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "IEEEremainder of (-1.0,2.0):",
                         Math.IEEEremainder(-1.0, 2.0),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
@@ -1493,12 +1532,12 @@ public class FilterFunction_Test extends TestCase {
             IEEEremainderFunction = ff.function("IEEEremainder", literal_2, literal_m2);
             double good2 = Math.IEEEremainder(2.0, -2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "IEEEremainder of (2.0,-2.0):",
                         Double.isNaN(
                                 ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "IEEEremainder of (2.0,-2.0):",
                         Math.IEEEremainder(2.0, -2.0),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
@@ -1508,12 +1547,12 @@ public class FilterFunction_Test extends TestCase {
             IEEEremainderFunction = ff.function("IEEEremainder", literal_m2, literal_pi);
             double good3 = Math.IEEEremainder(-2.0, 3.141592653589793);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "IEEEremainder of (-2.0,3.141592653589793):",
                         Double.isNaN(
                                 ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "IEEEremainder of (-2.0,3.141592653589793):",
                         Math.IEEEremainder(-2.0, 3.141592653589793),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
@@ -1523,12 +1562,12 @@ public class FilterFunction_Test extends TestCase {
             IEEEremainderFunction = ff.function("IEEEremainder", literal_pi, literal_05pi);
             double good4 = Math.IEEEremainder(3.141592653589793, 1.5707963267948966);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "IEEEremainder of (3.141592653589793,1.5707963267948966):",
                         Double.isNaN(
                                 ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "IEEEremainder of (3.141592653589793,1.5707963267948966):",
                         Math.IEEEremainder(3.141592653589793, 1.5707963267948966),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
@@ -1538,12 +1577,12 @@ public class FilterFunction_Test extends TestCase {
             IEEEremainderFunction = ff.function("IEEEremainder", literal_05pi, literal_1);
             double good5 = Math.IEEEremainder(1.5707963267948966, 1.0);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "IEEEremainder of (1.5707963267948966,1.0):",
                         Double.isNaN(
                                 ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "IEEEremainder of (1.5707963267948966,1.0):",
                         Math.IEEEremainder(1.5707963267948966, 1.0),
                         ((Double) IEEEremainderFunction.evaluate(null)).doubleValue(),
@@ -1551,36 +1590,38 @@ public class FilterFunction_Test extends TestCase {
             }
 
             IEEEremainderFunction = ff.function("IEEEremainder", literal_null, literal_1);
-            assertNull(IEEEremainderFunction.evaluate(null));
+            Assert.assertNull(IEEEremainderFunction.evaluate(null));
 
             IEEEremainderFunction = ff.function("IEEEremainder", literal_1, literal_null);
-            assertNull(IEEEremainderFunction.evaluate(null));
+            Assert.assertNull(IEEEremainderFunction.evaluate(null));
 
             IEEEremainderFunction = ff.function("IEEEremainder", literal_null, literal_null);
-            assertNull(IEEEremainderFunction.evaluate(null));
+            Assert.assertNull(IEEEremainderFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testacos() {
         try {
             FilterFunction_acos acos =
                     (FilterFunction_acos)
                             ff.function("acos", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "acos", acos.getName());
-            assertEquals("Number of arguments, ", 1, acos.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "acos", acos.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, acos.getFunctionName().getArgumentCount());
 
             Function acosFunction = ff.function("acos", literal_1);
             double good0 = Math.acos(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "acos of (1.0):",
                         Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "acos of (1.0):",
                         Math.acos(1.0),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
@@ -1590,11 +1631,11 @@ public class FilterFunction_Test extends TestCase {
             acosFunction = ff.function("acos", literal_m1);
             double good1 = Math.acos(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "acos of (-1.0):",
                         Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "acos of (-1.0):",
                         Math.acos(-1.0),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
@@ -1604,11 +1645,11 @@ public class FilterFunction_Test extends TestCase {
             acosFunction = ff.function("acos", literal_2);
             double good2 = Math.acos(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "acos of (2.0):",
                         Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "acos of (2.0):",
                         Math.acos(2.0),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
@@ -1618,11 +1659,11 @@ public class FilterFunction_Test extends TestCase {
             acosFunction = ff.function("acos", literal_m2);
             double good3 = Math.acos(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "acos of (-2.0):",
                         Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "acos of (-2.0):",
                         Math.acos(-2.0),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
@@ -1632,11 +1673,11 @@ public class FilterFunction_Test extends TestCase {
             acosFunction = ff.function("acos", literal_pi);
             double good4 = Math.acos(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "acos of (3.141592653589793):",
                         Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "acos of (3.141592653589793):",
                         Math.acos(3.141592653589793),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
@@ -1646,11 +1687,11 @@ public class FilterFunction_Test extends TestCase {
             acosFunction = ff.function("acos", literal_05pi);
             double good5 = Math.acos(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "acos of (1.5707963267948966):",
                         Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "acos of (1.5707963267948966):",
                         Math.acos(1.5707963267948966),
                         ((Double) acosFunction.evaluate(null)).doubleValue(),
@@ -1658,30 +1699,32 @@ public class FilterFunction_Test extends TestCase {
             }
 
             acosFunction = ff.function("acos", literal_null);
-            assertNull(acosFunction.evaluate(null));
+            Assert.assertNull(acosFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testasin() {
         try {
             FilterFunction_asin asin =
                     (FilterFunction_asin)
                             ff.function("asin", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "asin", asin.getName());
-            assertEquals("Number of arguments, ", 1, asin.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "asin", asin.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, asin.getFunctionName().getArgumentCount());
 
             Function asinFunction = ff.function("asin", literal_1);
             double good0 = Math.asin(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "asin of (1.0):",
                         Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "asin of (1.0):",
                         Math.asin(1.0),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
@@ -1691,11 +1734,11 @@ public class FilterFunction_Test extends TestCase {
             asinFunction = ff.function("asin", literal_m1);
             double good1 = Math.asin(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "asin of (-1.0):",
                         Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "asin of (-1.0):",
                         Math.asin(-1.0),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
@@ -1705,11 +1748,11 @@ public class FilterFunction_Test extends TestCase {
             asinFunction = ff.function("asin", literal_2);
             double good2 = Math.asin(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "asin of (2.0):",
                         Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "asin of (2.0):",
                         Math.asin(2.0),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
@@ -1719,11 +1762,11 @@ public class FilterFunction_Test extends TestCase {
             asinFunction = ff.function("asin", literal_m2);
             double good3 = Math.asin(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "asin of (-2.0):",
                         Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "asin of (-2.0):",
                         Math.asin(-2.0),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
@@ -1733,11 +1776,11 @@ public class FilterFunction_Test extends TestCase {
             asinFunction = ff.function("asin", literal_pi);
             double good4 = Math.asin(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "asin of (3.141592653589793):",
                         Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "asin of (3.141592653589793):",
                         Math.asin(3.141592653589793),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
@@ -1747,11 +1790,11 @@ public class FilterFunction_Test extends TestCase {
             asinFunction = ff.function("asin", literal_05pi);
             double good5 = Math.asin(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "asin of (1.5707963267948966):",
                         Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "asin of (1.5707963267948966):",
                         Math.asin(1.5707963267948966),
                         ((Double) asinFunction.evaluate(null)).doubleValue(),
@@ -1759,30 +1802,32 @@ public class FilterFunction_Test extends TestCase {
             }
 
             asinFunction = ff.function("asin", literal_null);
-            assertNull(asinFunction.evaluate(null));
+            Assert.assertNull(asinFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testatan() {
         try {
             FilterFunction_atan atan =
                     (FilterFunction_atan)
                             ff.function("atan", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "atan", atan.getName());
-            assertEquals("Number of arguments, ", 1, atan.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "atan", atan.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, atan.getFunctionName().getArgumentCount());
 
             Function atanFunction = ff.function("atan", literal_1);
             double good0 = Math.atan(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan of (1.0):",
                         Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan of (1.0):",
                         Math.atan(1.0),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
@@ -1792,11 +1837,11 @@ public class FilterFunction_Test extends TestCase {
             atanFunction = ff.function("atan", literal_m1);
             double good1 = Math.atan(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan of (-1.0):",
                         Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan of (-1.0):",
                         Math.atan(-1.0),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
@@ -1806,11 +1851,11 @@ public class FilterFunction_Test extends TestCase {
             atanFunction = ff.function("atan", literal_2);
             double good2 = Math.atan(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan of (2.0):",
                         Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan of (2.0):",
                         Math.atan(2.0),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
@@ -1820,11 +1865,11 @@ public class FilterFunction_Test extends TestCase {
             atanFunction = ff.function("atan", literal_m2);
             double good3 = Math.atan(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan of (-2.0):",
                         Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan of (-2.0):",
                         Math.atan(-2.0),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
@@ -1834,11 +1879,11 @@ public class FilterFunction_Test extends TestCase {
             atanFunction = ff.function("atan", literal_pi);
             double good4 = Math.atan(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan of (3.141592653589793):",
                         Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan of (3.141592653589793):",
                         Math.atan(3.141592653589793),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
@@ -1848,11 +1893,11 @@ public class FilterFunction_Test extends TestCase {
             atanFunction = ff.function("atan", literal_05pi);
             double good5 = Math.atan(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "atan of (1.5707963267948966):",
                         Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "atan of (1.5707963267948966):",
                         Math.atan(1.5707963267948966),
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
@@ -1860,30 +1905,32 @@ public class FilterFunction_Test extends TestCase {
             }
 
             atanFunction = ff.function("atan", literal_null);
-            assertNull(atanFunction.evaluate(null));
+            Assert.assertNull(atanFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testceil() {
         try {
             FilterFunction_ceil ceil =
                     (FilterFunction_ceil)
                             ff.function("ceil", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "ceil", ceil.getName());
-            assertEquals("Number of arguments, ", 1, ceil.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "ceil", ceil.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, ceil.getFunctionName().getArgumentCount());
 
             Function ceilFunction = ff.function("ceil", literal_1);
             double good0 = Math.ceil(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "ceil of (1.0):",
                         Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "ceil of (1.0):",
                         Math.ceil(1.0),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
@@ -1893,11 +1940,11 @@ public class FilterFunction_Test extends TestCase {
             ceilFunction = ff.function("ceil", literal_m1);
             double good1 = Math.ceil(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "ceil of (-1.0):",
                         Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "ceil of (-1.0):",
                         Math.ceil(-1.0),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
@@ -1907,11 +1954,11 @@ public class FilterFunction_Test extends TestCase {
             ceilFunction = ff.function("ceil", literal_2);
             double good2 = Math.ceil(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "ceil of (2.0):",
                         Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "ceil of (2.0):",
                         Math.ceil(2.0),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
@@ -1921,11 +1968,11 @@ public class FilterFunction_Test extends TestCase {
             ceilFunction = ff.function("ceil", literal_m2);
             double good3 = Math.ceil(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "ceil of (-2.0):",
                         Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "ceil of (-2.0):",
                         Math.ceil(-2.0),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
@@ -1935,11 +1982,11 @@ public class FilterFunction_Test extends TestCase {
             ceilFunction = ff.function("ceil", literal_pi);
             double good4 = Math.ceil(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "ceil of (3.141592653589793):",
                         Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "ceil of (3.141592653589793):",
                         Math.ceil(3.141592653589793),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
@@ -1949,11 +1996,11 @@ public class FilterFunction_Test extends TestCase {
             ceilFunction = ff.function("ceil", literal_05pi);
             double good5 = Math.ceil(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "ceil of (1.5707963267948966):",
                         Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "ceil of (1.5707963267948966):",
                         Math.ceil(1.5707963267948966),
                         ((Double) ceilFunction.evaluate(null)).doubleValue(),
@@ -1961,30 +2008,32 @@ public class FilterFunction_Test extends TestCase {
             }
 
             ceilFunction = ff.function("ceil", literal_null);
-            assertNull(ceilFunction.evaluate(null));
+            Assert.assertNull(ceilFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testexp() {
         try {
             FilterFunction_exp exp =
                     (FilterFunction_exp)
                             ff.function("exp", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "exp", exp.getName());
-            assertEquals("Number of arguments, ", 1, exp.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "exp", exp.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, exp.getFunctionName().getArgumentCount());
 
             Function expFunction = ff.function("exp", literal_1);
             double good0 = Math.exp(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "exp of (1.0):",
                         Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "exp of (1.0):",
                         Math.exp(1.0),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
@@ -1994,11 +2043,11 @@ public class FilterFunction_Test extends TestCase {
             expFunction = ff.function("exp", literal_m1);
             double good1 = Math.exp(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "exp of (-1.0):",
                         Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "exp of (-1.0):",
                         Math.exp(-1.0),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
@@ -2008,11 +2057,11 @@ public class FilterFunction_Test extends TestCase {
             expFunction = ff.function("exp", literal_2);
             double good2 = Math.exp(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "exp of (2.0):",
                         Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "exp of (2.0):",
                         Math.exp(2.0),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
@@ -2022,11 +2071,11 @@ public class FilterFunction_Test extends TestCase {
             expFunction = ff.function("exp", literal_m2);
             double good3 = Math.exp(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "exp of (-2.0):",
                         Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "exp of (-2.0):",
                         Math.exp(-2.0),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
@@ -2036,11 +2085,11 @@ public class FilterFunction_Test extends TestCase {
             expFunction = ff.function("exp", literal_pi);
             double good4 = Math.exp(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "exp of (3.141592653589793):",
                         Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "exp of (3.141592653589793):",
                         Math.exp(3.141592653589793),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
@@ -2050,11 +2099,11 @@ public class FilterFunction_Test extends TestCase {
             expFunction = ff.function("exp", literal_05pi);
             double good5 = Math.exp(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "exp of (1.5707963267948966):",
                         Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "exp of (1.5707963267948966):",
                         Math.exp(1.5707963267948966),
                         ((Double) expFunction.evaluate(null)).doubleValue(),
@@ -2062,30 +2111,32 @@ public class FilterFunction_Test extends TestCase {
             }
 
             expFunction = ff.function("exp", literal_null);
-            assertNull(expFunction.evaluate(null));
+            Assert.assertNull(expFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testfloor() {
         try {
             FilterFunction_floor floor =
                     (FilterFunction_floor)
                             ff.function("floor", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "floor", floor.getName());
-            assertEquals("Number of arguments, ", 1, floor.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "floor", floor.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, floor.getFunctionName().getArgumentCount());
 
             Function floorFunction = ff.function("floor", literal_1);
             double good0 = Math.floor(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "floor of (1.0):",
                         Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "floor of (1.0):",
                         Math.floor(1.0),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
@@ -2095,11 +2146,11 @@ public class FilterFunction_Test extends TestCase {
             floorFunction = ff.function("floor", literal_m1);
             double good1 = Math.floor(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "floor of (-1.0):",
                         Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "floor of (-1.0):",
                         Math.floor(-1.0),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
@@ -2109,11 +2160,11 @@ public class FilterFunction_Test extends TestCase {
             floorFunction = ff.function("floor", literal_2);
             double good2 = Math.floor(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "floor of (2.0):",
                         Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "floor of (2.0):",
                         Math.floor(2.0),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
@@ -2123,11 +2174,11 @@ public class FilterFunction_Test extends TestCase {
             floorFunction = ff.function("floor", literal_m2);
             double good3 = Math.floor(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "floor of (-2.0):",
                         Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "floor of (-2.0):",
                         Math.floor(-2.0),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
@@ -2137,11 +2188,11 @@ public class FilterFunction_Test extends TestCase {
             floorFunction = ff.function("floor", literal_pi);
             double good4 = Math.floor(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "floor of (3.141592653589793):",
                         Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "floor of (3.141592653589793):",
                         Math.floor(3.141592653589793),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
@@ -2151,11 +2202,11 @@ public class FilterFunction_Test extends TestCase {
             floorFunction = ff.function("floor", literal_05pi);
             double good5 = Math.floor(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "floor of (1.5707963267948966):",
                         Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "floor of (1.5707963267948966):",
                         Math.floor(1.5707963267948966),
                         ((Double) floorFunction.evaluate(null)).doubleValue(),
@@ -2163,30 +2214,32 @@ public class FilterFunction_Test extends TestCase {
             }
 
             floorFunction = ff.function("floor", literal_null);
-            assertNull(floorFunction.evaluate(null));
+            Assert.assertNull(floorFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testlog() {
         try {
             FilterFunction_log log =
                     (FilterFunction_log)
                             ff.function("log", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "log", log.getName());
-            assertEquals("Number of arguments, ", 1, log.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "log", log.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, log.getFunctionName().getArgumentCount());
 
             Function logFunction = ff.function("log", literal_1);
             double good0 = Math.log(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "log of (1.0):",
                         Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "log of (1.0):",
                         Math.log(1.0),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
@@ -2196,11 +2249,11 @@ public class FilterFunction_Test extends TestCase {
             logFunction = ff.function("log", literal_m1);
             double good1 = Math.log(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "log of (-1.0):",
                         Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "log of (-1.0):",
                         Math.log(-1.0),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
@@ -2210,11 +2263,11 @@ public class FilterFunction_Test extends TestCase {
             logFunction = ff.function("log", literal_2);
             double good2 = Math.log(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "log of (2.0):",
                         Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "log of (2.0):",
                         Math.log(2.0),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
@@ -2224,11 +2277,11 @@ public class FilterFunction_Test extends TestCase {
             logFunction = ff.function("log", literal_m2);
             double good3 = Math.log(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "log of (-2.0):",
                         Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "log of (-2.0):",
                         Math.log(-2.0),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
@@ -2238,11 +2291,11 @@ public class FilterFunction_Test extends TestCase {
             logFunction = ff.function("log", literal_pi);
             double good4 = Math.log(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "log of (3.141592653589793):",
                         Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "log of (3.141592653589793):",
                         Math.log(3.141592653589793),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
@@ -2252,11 +2305,11 @@ public class FilterFunction_Test extends TestCase {
             logFunction = ff.function("log", literal_05pi);
             double good5 = Math.log(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "log of (1.5707963267948966):",
                         Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "log of (1.5707963267948966):",
                         Math.log(1.5707963267948966),
                         ((Double) logFunction.evaluate(null)).doubleValue(),
@@ -2264,47 +2317,50 @@ public class FilterFunction_Test extends TestCase {
             }
 
             logFunction = ff.function("log", literal_null);
-            assertNull(logFunction.evaluate(null));
+            Assert.assertNull(logFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testrandom() {
         try {
 
             FilterFunction_random randomFunction =
                     (FilterFunction_random)
                             ff.function("random", new org.opengis.filter.expression.Expression[0]);
-            assertEquals("Name is, ", "random", randomFunction.getName());
-            assertEquals(
+            Assert.assertEquals("Name is, ", "random", randomFunction.getName());
+            Assert.assertEquals(
                     "Number of arguments, ",
                     0,
                     randomFunction.getFunctionName().getArgumentCount());
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testrint() {
         try {
             FilterFunction_rint rint =
                     (FilterFunction_rint)
                             ff.function("rint", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "rint", rint.getName());
-            assertEquals("Number of arguments, ", 1, rint.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "rint", rint.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, rint.getFunctionName().getArgumentCount());
 
             Function rintFunction = ff.function("rint", literal_1);
             double good0 = Math.rint(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "rint of (1.0):",
                         Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "rint of (1.0):",
                         Math.rint(1.0),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
@@ -2314,11 +2370,11 @@ public class FilterFunction_Test extends TestCase {
             rintFunction = ff.function("rint", literal_m1);
             double good1 = Math.rint(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "rint of (-1.0):",
                         Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "rint of (-1.0):",
                         Math.rint(-1.0),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
@@ -2328,11 +2384,11 @@ public class FilterFunction_Test extends TestCase {
             rintFunction = ff.function("rint", literal_2);
             double good2 = Math.rint(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "rint of (2.0):",
                         Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "rint of (2.0):",
                         Math.rint(2.0),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
@@ -2342,11 +2398,11 @@ public class FilterFunction_Test extends TestCase {
             rintFunction = ff.function("rint", literal_m2);
             double good3 = Math.rint(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "rint of (-2.0):",
                         Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "rint of (-2.0):",
                         Math.rint(-2.0),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
@@ -2356,11 +2412,11 @@ public class FilterFunction_Test extends TestCase {
             rintFunction = ff.function("rint", literal_pi);
             double good4 = Math.rint(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "rint of (3.141592653589793):",
                         Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "rint of (3.141592653589793):",
                         Math.rint(3.141592653589793),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
@@ -2370,11 +2426,11 @@ public class FilterFunction_Test extends TestCase {
             rintFunction = ff.function("rint", literal_05pi);
             double good5 = Math.rint(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "rint of (1.5707963267948966):",
                         Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "rint of (1.5707963267948966):",
                         Math.rint(1.5707963267948966),
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
@@ -2382,149 +2438,154 @@ public class FilterFunction_Test extends TestCase {
             }
 
             rintFunction = ff.function("rint", literal_null);
-            assertNull(rintFunction.evaluate(null));
+            Assert.assertNull(rintFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testround() {
         try {
             FilterFunction_round round =
                     (FilterFunction_round)
                             ff.function("round", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "round", round.getName());
-            assertEquals("Number of arguments, ", 1, round.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "round", round.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, round.getFunctionName().getArgumentCount());
 
             Function roundFunction = ff.function("round", literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "round of (1.0):",
                     (int) Math.round(1.0),
                     ((Integer) roundFunction.evaluate(null)).intValue(),
                     0.00001);
 
             roundFunction = ff.function("round", literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "round of (-1.0):",
                     (int) Math.round(-1.0),
                     ((Integer) roundFunction.evaluate(null)).intValue(),
                     0.00001);
 
             roundFunction = ff.function("round", literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "round of (2.0):",
                     (int) Math.round(2.0),
                     ((Integer) roundFunction.evaluate(null)).intValue(),
                     0.00001);
 
             roundFunction = ff.function("round", literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "round of (-2.0):",
                     (int) Math.round(-2.0),
                     ((Integer) roundFunction.evaluate(null)).intValue(),
                     0.00001);
 
             roundFunction = ff.function("round", literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "round of (3.141592653589793):",
                     (int) Math.round(3.141592653589793),
                     ((Integer) roundFunction.evaluate(null)).intValue(),
                     0.00001);
 
             roundFunction = ff.function("round", literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "round of (1.5707963267948966):",
                     (int) Math.round(1.5707963267948966),
                     ((Integer) roundFunction.evaluate(null)).intValue(),
                     0.00001);
 
             roundFunction = ff.function("round", literal_null);
-            assertNull(roundFunction.evaluate(null));
+            Assert.assertNull(roundFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testround_2() {
         try {
             FilterFunction_round_2 round_2 =
                     (FilterFunction_round_2)
                             ff.function("round_2", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "round_2", round_2.getName());
-            assertEquals("Number of arguments, ", 1, round_2.getFunctionName().getArgumentCount());
+            Assert.assertEquals("Name is, ", "round_2", round_2.getName());
+            Assert.assertEquals(
+                    "Number of arguments, ", 1, round_2.getFunctionName().getArgumentCount());
 
             Function round_2Function = ff.function("round_2", literal_1);
-            assertEquals(
+            Assert.assertEquals(
                     "round_2 of (1.0):",
                     Math.round(1.0),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_m1);
-            assertEquals(
+            Assert.assertEquals(
                     "round_2 of (-1.0):",
                     Math.round(-1.0),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_2);
-            assertEquals(
+            Assert.assertEquals(
                     "round_2 of (2.0):",
                     Math.round(2.0),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_m2);
-            assertEquals(
+            Assert.assertEquals(
                     "round_2 of (-2.0):",
                     Math.round(-2.0),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_pi);
-            assertEquals(
+            Assert.assertEquals(
                     "round_2 of (3.141592653589793):",
                     Math.round(3.141592653589793),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_05pi);
-            assertEquals(
+            Assert.assertEquals(
                     "round_2 of (1.5707963267948966):",
                     Math.round(1.5707963267948966),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
 
             round_2Function = ff.function("round_2", literal_null);
-            assertNull(round_2Function.evaluate(null));
+            Assert.assertNull(round_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testtoDegrees() {
         try {
             FilterFunction_toDegrees toDegrees =
                     (FilterFunction_toDegrees)
                             ff.function("toDegrees", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "toDegrees", toDegrees.getName());
-            assertEquals(
+            Assert.assertEquals("Name is, ", "toDegrees", toDegrees.getName());
+            Assert.assertEquals(
                     "Number of arguments, ", 1, toDegrees.getFunctionName().getArgumentCount());
 
             Function toDegreesFunction = ff.function("toDegrees", literal_1);
             double good0 = Math.toDegrees(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toDegrees of (1.0):",
                         Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toDegrees of (1.0):",
                         Math.toDegrees(1.0),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
@@ -2534,11 +2595,11 @@ public class FilterFunction_Test extends TestCase {
             toDegreesFunction = ff.function("toDegrees", literal_m1);
             double good1 = Math.toDegrees(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toDegrees of (-1.0):",
                         Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toDegrees of (-1.0):",
                         Math.toDegrees(-1.0),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
@@ -2548,11 +2609,11 @@ public class FilterFunction_Test extends TestCase {
             toDegreesFunction = ff.function("toDegrees", literal_2);
             double good2 = Math.toDegrees(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toDegrees of (2.0):",
                         Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toDegrees of (2.0):",
                         Math.toDegrees(2.0),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
@@ -2562,11 +2623,11 @@ public class FilterFunction_Test extends TestCase {
             toDegreesFunction = ff.function("toDegrees", literal_m2);
             double good3 = Math.toDegrees(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toDegrees of (-2.0):",
                         Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toDegrees of (-2.0):",
                         Math.toDegrees(-2.0),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
@@ -2576,11 +2637,11 @@ public class FilterFunction_Test extends TestCase {
             toDegreesFunction = ff.function("toDegrees", literal_pi);
             double good4 = Math.toDegrees(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toDegrees of (3.141592653589793):",
                         Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toDegrees of (3.141592653589793):",
                         Math.toDegrees(3.141592653589793),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
@@ -2590,11 +2651,11 @@ public class FilterFunction_Test extends TestCase {
             toDegreesFunction = ff.function("toDegrees", literal_05pi);
             double good5 = Math.toDegrees(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toDegrees of (1.5707963267948966):",
                         Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toDegrees of (1.5707963267948966):",
                         Math.toDegrees(1.5707963267948966),
                         ((Double) toDegreesFunction.evaluate(null)).doubleValue(),
@@ -2602,31 +2663,32 @@ public class FilterFunction_Test extends TestCase {
             }
 
             toDegreesFunction = ff.function("toDegrees", literal_null);
-            assertNull(toDegreesFunction.evaluate(null));
+            Assert.assertNull(toDegreesFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testtoRadians() {
         try {
             FilterFunction_toRadians toRadians =
                     (FilterFunction_toRadians)
                             ff.function("toRadians", org.opengis.filter.expression.Expression.NIL);
-            assertEquals("Name is, ", "toRadians", toRadians.getName());
-            assertEquals(
+            Assert.assertEquals("Name is, ", "toRadians", toRadians.getName());
+            Assert.assertEquals(
                     "Number of arguments, ", 1, toRadians.getFunctionName().getArgumentCount());
 
             Function toRadiansFunction = ff.function("toRadians", literal_1);
             double good0 = Math.toRadians(1.0);
             if (Double.isNaN(good0)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toRadians of (1.0):",
                         Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toRadians of (1.0):",
                         Math.toRadians(1.0),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
@@ -2636,11 +2698,11 @@ public class FilterFunction_Test extends TestCase {
             toRadiansFunction = ff.function("toRadians", literal_m1);
             double good1 = Math.toRadians(-1.0);
             if (Double.isNaN(good1)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toRadians of (-1.0):",
                         Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toRadians of (-1.0):",
                         Math.toRadians(-1.0),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
@@ -2650,11 +2712,11 @@ public class FilterFunction_Test extends TestCase {
             toRadiansFunction = ff.function("toRadians", literal_2);
             double good2 = Math.toRadians(2.0);
             if (Double.isNaN(good2)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toRadians of (2.0):",
                         Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toRadians of (2.0):",
                         Math.toRadians(2.0),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
@@ -2664,11 +2726,11 @@ public class FilterFunction_Test extends TestCase {
             toRadiansFunction = ff.function("toRadians", literal_m2);
             double good3 = Math.toRadians(-2.0);
             if (Double.isNaN(good3)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toRadians of (-2.0):",
                         Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toRadians of (-2.0):",
                         Math.toRadians(-2.0),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
@@ -2678,11 +2740,11 @@ public class FilterFunction_Test extends TestCase {
             toRadiansFunction = ff.function("toRadians", literal_pi);
             double good4 = Math.toRadians(Math.PI);
             if (Double.isNaN(good4)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toRadians of (3.141592653589793):",
                         Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toRadians of (3.141592653589793):",
                         Math.toRadians(3.141592653589793),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
@@ -2692,11 +2754,11 @@ public class FilterFunction_Test extends TestCase {
             toRadiansFunction = ff.function("toRadians", literal_05pi);
             double good5 = Math.toRadians(1.5707963267948966);
             if (Double.isNaN(good5)) {
-                assertTrue(
+                Assert.assertTrue(
                         "toRadians of (1.5707963267948966):",
                         Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
             } else {
-                assertEquals(
+                Assert.assertEquals(
                         "toRadians of (1.5707963267948966):",
                         Math.toRadians(1.5707963267948966),
                         ((Double) toRadiansFunction.evaluate(null)).doubleValue(),
@@ -2704,23 +2766,25 @@ public class FilterFunction_Test extends TestCase {
             }
 
             toRadiansFunction = ff.function("toRadians", literal_null);
-            assertNull(toRadiansFunction.evaluate(null));
+            Assert.assertNull(toRadiansFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Unexpected exception: " + e.getMessage());
+            Assert.fail("Unexpected exception: " + e.getMessage());
         }
     }
 
+    @Test
     public void testToLowerCase() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Function f = ff.function("strToLowerCase", ff.literal("UPCASE"));
-        assertEquals("upcase", f.evaluate(null));
+        Assert.assertEquals("upcase", f.evaluate(null));
     }
 
+    @Test
     public void testToUpperCase() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Function f = ff.function("strToUpperCase", ff.literal("lowcase"));
-        assertEquals("LOWCASE", f.evaluate(null));
+        Assert.assertEquals("LOWCASE", f.evaluate(null));
     }
 }

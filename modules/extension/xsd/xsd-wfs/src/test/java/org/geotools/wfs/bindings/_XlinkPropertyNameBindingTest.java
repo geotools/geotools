@@ -16,26 +16,24 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigInteger;
 import net.opengis.wfs.XlinkPropertyNameType;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Unit test suite for {@link _XlinkPropertyNameBinding}
- *
- * @author Gabriel Roldan (TOPP)
- * @version $Id$
- * @since 2.5.x
- */
 public class _XlinkPropertyNameBindingTest extends WFSTestSupport {
     public _XlinkPropertyNameBindingTest() {
         super(WFS._XlinkPropertyName, XlinkPropertyNameType.class, Binding.OVERRIDE);
     }
 
+    @Test
     public void testEncode() throws Exception {
         XlinkPropertyNameType xlink = factory.createXlinkPropertyNameType();
         xlink.setTraverseXlinkDepth("1");
@@ -51,6 +49,7 @@ public class _XlinkPropertyNameBindingTest extends WFSTestSupport {
         assertEquals("gt:propertyC/gt:propertyD", root.getFirstChild().getNodeValue());
     }
 
+    @Test
     public void testParse() throws Exception {
         final String xml =
                 "<XlinkPropertyName traverseXlinkDepth=\"1\" "

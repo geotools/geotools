@@ -16,10 +16,15 @@
  */
 package org.geotools.filter.v1_1;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
 import org.opengis.filter.expression.PropertyName;
 import org.w3c.dom.Document;
 
 public class PropertyNameTypeBindingTest extends FilterTestSupport {
+    @Test
     public void testParse() throws Exception {
         FilterMockData.propertyName(document, document);
 
@@ -30,6 +35,7 @@ public class PropertyNameTypeBindingTest extends FilterTestSupport {
         assertNotNull(propertyName.getNamespaceContext());
     }
 
+    @Test
     public void testParseWithPrefix() throws Exception {
         FilterMockData.propertyName("bar:foo", document, document);
 
@@ -40,6 +46,7 @@ public class PropertyNameTypeBindingTest extends FilterTestSupport {
         assertNotNull(propertyName.getNamespaceContext());
     }
 
+    @Test
     public void testEncode() throws Exception {
         PropertyName propertyName = FilterMockData.propertyName("foo");
         Document dom = encode(propertyName, OGC.PropertyName);

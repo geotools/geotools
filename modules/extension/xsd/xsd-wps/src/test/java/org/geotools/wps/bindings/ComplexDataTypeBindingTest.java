@@ -16,6 +16,9 @@
  */
 package org.geotools.wps.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.Reader;
 import java.io.StringReader;
 import net.opengis.wfs.FeatureCollectionType;
@@ -27,6 +30,7 @@ import org.geotools.wps.WPSConfiguration;
 import org.geotools.wps.WPSTestSupport;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.EncoderDelegate;
+import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -36,7 +40,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
 public class ComplexDataTypeBindingTest extends WPSTestSupport {
-
+    @Test
     public void testParsePolygon() throws Exception {
         String xml =
                 "<wps:ComplexData xmlns:wps='http://www.opengis.net/wps/1.0.0'>"
@@ -59,6 +63,7 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
         assertTrue(data.getData().get(0) instanceof Polygon);
     }
 
+    @Test
     public void testParseFeatureCollection() throws Exception {
         String xml =
                 "<wps:ComplexData xmlns:wps='http://www.opengis.net/wps/1.0.0'>"
@@ -100,6 +105,7 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testEncodeCData() throws Exception {
         Wps10Factory factory = Wps10Factory.eINSTANCE;
         ComplexDataType complexData = factory.createComplexDataType();
@@ -140,6 +146,7 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testEncodeXML() throws Exception {
         Wps10Factory factory = Wps10Factory.eINSTANCE;
         ComplexDataType complexData = factory.createComplexDataType();

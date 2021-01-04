@@ -17,13 +17,15 @@
 package org.geotools.gml2;
 
 import java.net.URI;
-import junit.framework.TestCase;
 import org.geotools.gml2.bindings.GML2ParsingUtils;
 import org.geotools.xsd.impl.AttributeImpl;
 import org.geotools.xsd.impl.NodeImpl;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class GML2ParsingUtilsTest extends TestCase {
+public class GML2ParsingUtilsTest {
+    @Test
     public void testCRS() throws Exception {
         NodeImpl node = new NodeImpl(null);
 
@@ -35,10 +37,10 @@ public class GML2ParsingUtilsTest extends TestCase {
         node.addAttribute(attNode);
 
         CoordinateReferenceSystem crs = GML2ParsingUtils.crs(node);
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
 
         attNode.setValue(new URI("http://www.opengis.net/gml/srs/epsg.xml#4326"));
         crs = GML2ParsingUtils.crs(node);
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
 }

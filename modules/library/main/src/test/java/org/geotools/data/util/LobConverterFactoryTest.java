@@ -23,18 +23,22 @@ import java.io.StringReader;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.SQLFeatureNotSupportedException;
-import junit.framework.TestCase;
 import org.easymock.EasyMock;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /** @author Stefan Uhrig, SAP SE */
-public class LobConverterFactoryTest extends TestCase {
+public class LobConverterFactoryTest {
 
     private LobConverterFactory factory;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         factory = new LobConverterFactory();
     }
 
+    @Test
     public void testBlobConversionDirect() throws Exception {
         byte[] expected = {1, 2, 3};
 
@@ -47,24 +51,27 @@ public class LobConverterFactoryTest extends TestCase {
         assertArrayEquals(expected, actual);
     }
 
+    @Test
     public void testEmptyBlobConversion() throws Exception {
         Blob blob = EasyMock.createMock(Blob.class);
         EasyMock.expect(blob.length()).andReturn((long) 0);
         EasyMock.replay(blob);
 
         byte[] actual = convert(blob);
-        assertEquals(0, actual.length);
+        Assert.assertEquals(0, actual.length);
     }
 
+    @Test
     public void testTooLargeBlobConversion() throws Exception {
         Blob blob = EasyMock.createMock(Blob.class);
         EasyMock.expect(blob.length()).andReturn((long) Integer.MAX_VALUE + 1);
         EasyMock.replay(blob);
 
         byte[] actual = convert(blob);
-        assertNull(actual);
+        Assert.assertNull(actual);
     }
 
+    @Test
     public void testBlobConversionChunkwise() throws Exception {
         byte[] expected = {1, 2, 3};
         ByteArrayInputStream is = new ByteArrayInputStream(expected);
@@ -78,6 +85,7 @@ public class LobConverterFactoryTest extends TestCase {
         assertArrayEquals(expected, actual);
     }
 
+    @Test
     public void testClobConversionDirect() throws Exception {
         String expected = "abc";
 
@@ -87,27 +95,30 @@ public class LobConverterFactoryTest extends TestCase {
         EasyMock.replay(clob);
 
         String actual = convert(clob);
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testEmptyClobConversion() throws Exception {
         Clob clob = EasyMock.createMock(Clob.class);
         EasyMock.expect(clob.length()).andReturn((long) 0);
         EasyMock.replay(clob);
 
         String actual = convert(clob);
-        assertEquals("", actual);
+        Assert.assertEquals("", actual);
     }
 
+    @Test
     public void testTooLargeClobConversion() throws Exception {
         Clob clob = EasyMock.createMock(Clob.class);
         EasyMock.expect(clob.length()).andReturn((long) Integer.MAX_VALUE + 1);
         EasyMock.replay(clob);
 
         String actual = convert(clob);
-        assertNull(actual);
+        Assert.assertNull(actual);
     }
 
+    @Test
     public void testClobConversionChunkwise() throws Exception {
         String expected = "abc";
         StringReader reader = new StringReader(expected);
@@ -118,7 +129,7 @@ public class LobConverterFactoryTest extends TestCase {
         EasyMock.replay(clob);
 
         String actual = convert(clob);
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
     private byte[] convert(Blob blob) throws Exception {

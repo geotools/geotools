@@ -22,6 +22,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.*;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -34,6 +35,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
@@ -53,9 +56,9 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
-
         target = CRS.decode("EPSG:3005");
 
         MathTransform2D tx =
@@ -67,6 +70,7 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         transformer.setMathTransform(tx);
     }
 
+    @Test
     public void testNormal() throws Exception {
 
         try (SimpleFeatureIterator reproject =
@@ -97,6 +101,7 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         }
     }
 
+    @Test
     public void testBounds() throws Exception {
         ReprojectingFeatureCollection rfc = new ReprojectingFeatureCollection(delegate, target);
         ReferencedEnvelope bounds = delegate.getBounds();
@@ -108,6 +113,7 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         assertEquals(target, rfc.getBounds().getCoordinateReferenceSystem());
     }
 
+    @Test
     public void testFilter() throws Exception {
         ReprojectingFeatureCollection rfc = new ReprojectingFeatureCollection(delegate, target);
         ReferencedEnvelope bounds = delegate.getBounds();
@@ -133,6 +139,7 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         assertEquals(delegate.subCollection(filter).size(), rfc.subCollection(rfilter).size());
     }
 
+    @Test
     public void testLenient() throws Exception {
         CoordinateReferenceSystem lenientTarget;
 
@@ -145,6 +152,7 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         reproject.close();
     }
 
+    @Test
     public void testDelegateAccepts() throws Exception {
         SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
         stb.setName("test");
@@ -179,6 +187,7 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         verify(delegate);
     }
 
+    @Test
     public void testPreserveUserData() {
         SimpleFeatureCollection reproject = new ReprojectingFeatureCollection(delegate, target);
         SimpleFeature first = DataUtilities.first(reproject);

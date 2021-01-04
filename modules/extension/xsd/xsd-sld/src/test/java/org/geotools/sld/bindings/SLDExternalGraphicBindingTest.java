@@ -16,15 +16,21 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.xlink.XLINK;
+import org.junit.Test;
 import org.w3c.dom.Element;
 
 public class SLDExternalGraphicBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(ExternalGraphic.class, new SLDExternalGraphicBinding(null, null).getType());
     }
 
+    @Test
     public void testNormal() throws Exception {
         document.appendChild(document.createElementNS(SLD.NAMESPACE, "ExternalGraphic"));
 
@@ -44,6 +50,7 @@ public class SLDExternalGraphicBindingTest extends SLDTestSupport {
         assertEquals("image/png", externalGraphic.getFormat());
     }
 
+    @Test
     public void testUnknownProtocol() throws Exception {
         document.appendChild(document.createElementNS(SLD.NAMESPACE, "ExternalGraphic"));
 

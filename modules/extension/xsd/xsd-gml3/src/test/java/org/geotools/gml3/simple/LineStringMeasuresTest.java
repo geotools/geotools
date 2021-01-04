@@ -16,10 +16,13 @@
  */
 package org.geotools.gml3.simple;
 
+import static org.junit.Assert.assertEquals;
+
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.XpathEngine;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml3.GML;
+import org.junit.Test;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
@@ -27,7 +30,7 @@ import org.w3c.dom.Document;
 
 /** Test that linestring containing coordinates with measurements are correctly encoded. */
 public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
-
+    @Test
     public void testEncodeLineMFromLiteCS() throws Exception {
         // create a linestring with M values and encode it in GML
         LiteCoordinateSequence cs =
@@ -40,6 +43,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         assertEquals("0 1 -1.5 3 4 -2.5", xpath.evaluate("//gml:posList", document));
     }
 
+    @Test
     public void testEncodeLineMFromLiteCSNoMeasuresEncoded() throws Exception {
         // create a linestring with M values and encode it in GML
         LiteCoordinateSequence cs =
@@ -52,6 +56,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         assertEquals("0 1 3 4", xpath.evaluate("//gml:posList", document));
     }
 
+    @Test
     public void testEncodePointMFromLiteCS() throws Exception {
         // create a point with M values and encode it in GML
         LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 1, -1.5}, 3, 1);
@@ -64,6 +69,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         assertEquals("0 1 -1.5", xpath.evaluate("//gml:pos", document));
     }
 
+    @Test
     public void testEncodePointMFromLiteCSNoMeasuresEncoded() throws Exception {
         // create a point with M values and encode it in GML
         LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 1, -1.5}, 3, 1);
@@ -76,6 +82,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         assertEquals("0 1", xpath.evaluate("//gml:pos", document));
     }
 
+    @Test
     public void testEncodeLineZMFromLiteCS() throws Exception {
         // create a linestring with ZM values and encode it in GML 3.1
         LiteCoordinateSequence cs =
@@ -88,6 +95,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         assertEquals("0 1 10 -1.5 3 4 15 -2.5", xpath.evaluate("//gml:posList", document));
     }
 
+    @Test
     public void testEncodeLineZMFromLiteCSNoMeasuresEncoded() throws Exception {
         // create a linestring with ZM values and encode it in GML 3.1
         LiteCoordinateSequence cs =
@@ -100,6 +108,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         assertEquals("0 1 10 3 4 15", xpath.evaluate("//gml:posList", document));
     }
 
+    @Test
     public void testEncodePointZMFromLiteCS() throws Exception {
         // create a point with ZM values and encode it in GML
         LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 1, 10, -1.5}, 4, 1);
@@ -112,6 +121,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         assertEquals("0 1 10 -1.5", xpath.evaluate("//gml:pos", document));
     }
 
+    @Test
     public void testEncodePointZMFromLiteCSNoMeasuresEncoded() throws Exception {
         // create a point with M values and encode it in GML
         LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 1, 10, -1.5}, 4, 1);

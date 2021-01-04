@@ -16,20 +16,26 @@
  */
 package org.geotools.filter.v1_0.capabilities;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.xml.namespace.QName;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.FunctionName;
 import org.w3c.dom.Document;
 
 public class Function_NameTypeBindingTest extends FilterCapabilitiesTestSupport {
+    @Test
     public void testType() {
         assertEquals(FunctionName.class, binding(OGC.Function_NameType).getType());
     }
 
+    @Test
     public void testExectionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.Function_NameType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.functionName(document, document);
 
@@ -38,6 +44,7 @@ public class Function_NameTypeBindingTest extends FilterCapabilitiesTestSupport 
         assertEquals(2, function.getArgumentCount());
     }
 
+    @Test
     public void testEncode() throws Exception {
         FunctionName function = FilterMockData.functionName();
         Document dom =

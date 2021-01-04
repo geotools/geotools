@@ -13,7 +13,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
@@ -22,7 +21,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-public class TemporalFilterTestSupport extends TestCase {
+public class TemporalFilterTestSupport {
 
     protected static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 

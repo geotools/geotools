@@ -16,6 +16,9 @@
  */
 package org.geotools.ows.v1_1.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 import net.opengis.ows11.BoundingBoxType;
@@ -23,18 +26,22 @@ import net.opengis.ows11.Ows11Factory;
 import org.geotools.ows.v1_1.OWS;
 import org.geotools.ows.v1_1.OWSTestSupport_1_1;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class BoundingBoxTypeBindingTest extends OWSTestSupport_1_1 {
+    @Test
     public void testType() throws Exception {
         assertEquals(BoundingBoxType.class, binding(OWS.BoundingBoxType).getType());
     }
 
+    @Test
     public void testExecutionMode() throws Exception {
         assertEquals(Binding.OVERRIDE, binding(OWS.BoundingBoxType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<ows:BoundingBox dimensions=\"2\" crs=\"EPSG:4326\" xmlns:ows=\"http://www.opengis.net/ows\" version=\"1.1.0\">\n"
@@ -53,6 +60,7 @@ public class BoundingBoxTypeBindingTest extends OWSTestSupport_1_1 {
         assertEquals(Arrays.asList(180.0, 90.0), box.getUpperCorner());
     }
 
+    @Test
     public void testEncode() throws Exception {
         BoundingBoxType bbox = Ows11Factory.eINSTANCE.createBoundingBoxType();
         bbox.setLowerCorner(Arrays.asList(-180.0, -90.0));

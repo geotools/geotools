@@ -16,11 +16,16 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class MultiSurfacePropertyTypeBindingTest extends GML3TestSupport {
+
+    @Test
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiPolygon(), GML.multiSurfaceProperty);
         assertEquals(

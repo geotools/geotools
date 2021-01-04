@@ -16,14 +16,20 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Locale;
 import org.geotools.styling.Rule;
+import org.junit.Test;
 
 public class SLDRuleBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(Rule.class, new SLDRuleBinding(null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.rule(document, document);
 
@@ -40,6 +46,7 @@ public class SLDRuleBindingTest extends SLDTestSupport {
         assertEquals(5, rule.symbolizers().size());
     }
 
+    @Test
     public void testLocalized() throws Exception {
         SLDMockData.localizedRule(document, document);
 

@@ -15,7 +15,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 
-/** Tests for checking {@link PropertyIsNullTypeBinding} on FES 2.0 configuration. */
 public class PropertyIsNullTypeBindingTest {
 
     private static final String PROP = "prop";

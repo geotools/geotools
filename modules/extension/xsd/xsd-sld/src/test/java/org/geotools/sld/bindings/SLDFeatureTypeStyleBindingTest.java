@@ -16,13 +16,20 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.FeatureTypeStyle;
+import org.junit.Test;
 
 public class SLDFeatureTypeStyleBindingTest extends SLDTestSupport {
+
+    @Test
     public void testType() throws Exception {
         assertEquals(FeatureTypeStyle.class, new SLDFeatureTypeStyleBinding(null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.featureTypeStyle(document, document);
 

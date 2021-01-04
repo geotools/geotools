@@ -1,5 +1,9 @@
 package org.geotools.ows.v1_1;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import net.opengis.ows11.Ows11Factory;
 import net.opengis.ows11.RangeClosureType;
 import net.opengis.ows11.RangeType;

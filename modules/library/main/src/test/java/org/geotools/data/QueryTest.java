@@ -25,10 +25,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
@@ -36,57 +35,51 @@ import org.opengis.filter.sort.SortBy;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /** @author jamesm */
-public class QueryTest extends TestCase {
+public class QueryTest {
 
-    public QueryTest(java.lang.String testName) {
-        super(testName);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite(QueryTest.class);
-        return suite;
-    }
-
+    @Test
     public void testFullConstructor() {
         Query query = new Query("mytype", Filter.INCLUDE, 10, new String[] {"foo"}, "myquery");
-        assertNotNull(query);
+        Assert.assertNotNull(query);
     }
 
     /** Test of getPropertyNames method, of class org.geotools.data.Query. */
+    @Test
     public void testPropertyNames() {
         // System.out.println("testPropertyNames");
         Query query = new Query();
-        assertNull(query.getPropertyNames());
+        Assert.assertNull(query.getPropertyNames());
         query.setPropertyNames(new String[] {"foo", "bar"});
         String names[] = query.getPropertyNames();
-        assertNotNull(names);
-        assertEquals("foo", names[0]);
+        Assert.assertNotNull(names);
+        Assert.assertEquals("foo", names[0]);
         List<String> list = Arrays.asList(names);
         query.setPropertyNames(list);
         names = query.getPropertyNames();
 
-        assertEquals("bar", names[1]);
+        Assert.assertEquals("bar", names[1]);
 
         // test compatibility with getProperties method
         List<PropertyName> properties2 = query.getProperties();
-        assertNotNull(properties2);
-        assertEquals("foo", properties2.get(0).getPropertyName());
-        assertEquals("bar", properties2.get(1).getPropertyName());
+        Assert.assertNotNull(properties2);
+        Assert.assertEquals("foo", properties2.get(0).getPropertyName());
+        Assert.assertEquals("bar", properties2.get(1).getPropertyName());
 
         query.setPropertyNames(Query.ALL_NAMES);
-        assertNull(query.getPropertyNames());
+        Assert.assertNull(query.getPropertyNames());
 
         query = new Query("Test", Filter.INCLUDE, new String[] {"foo", "wibble"});
-        assertNotNull(query.getPropertyNames());
+        Assert.assertNotNull(query.getPropertyNames());
     }
 
     /** Test of set/getProperties method, of class org.geotools.data.Query. */
+    @Test
     public void testProperties() {
         final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
         // System.out.println("testProperties");
         Query query = new Query();
-        assertNull(query.getProperties());
+        Assert.assertNull(query.getProperties());
         List<PropertyName> properties = new ArrayList<>();
 
         NamespaceSupport nsContext = new NamespaceSupport();
@@ -100,115 +93,123 @@ public class QueryTest extends TestCase {
         query.setProperties(properties);
 
         List<PropertyName> properties2 = query.getProperties();
-        assertNotNull(properties);
-        assertEquals(fooProp, properties2.get(0));
-        assertEquals(barProp, properties2.get(1));
-        assertEquals(nsContext, properties2.get(0).getNamespaceContext());
+        Assert.assertNotNull(properties);
+        Assert.assertEquals(fooProp, properties2.get(0));
+        Assert.assertEquals(barProp, properties2.get(1));
+        Assert.assertEquals(nsContext, properties2.get(0).getNamespaceContext());
 
         // test compatibility with getPropertyNames method
         String[] names = query.getPropertyNames();
-        assertEquals("foo", names[0]);
-        assertEquals("bar", names[1]);
+        Assert.assertEquals("foo", names[0]);
+        Assert.assertEquals("bar", names[1]);
 
         query.setProperties(Query.ALL_PROPERTIES);
-        assertNull(query.getProperties());
+        Assert.assertNull(query.getProperties());
 
         query = new Query("Test", Filter.INCLUDE, properties);
-        assertNotNull(query.getProperties());
+        Assert.assertNotNull(query.getProperties());
     }
 
     /** Test of retrieveAllProperties method, of class org.geotools.data.Query. */
+    @Test
     public void testRetrieveAllProperties() {
         // System.out.println("testRetrieveAllProperties");
 
         Query query = new Query();
-        assertTrue(query.retrieveAllProperties());
+        Assert.assertTrue(query.retrieveAllProperties());
 
         query.setPropertyNames(new String[] {"foo", "bar"});
-        assertFalse(query.retrieveAllProperties());
+        Assert.assertFalse(query.retrieveAllProperties());
 
         query.setPropertyNames(Query.ALL_NAMES);
-        assertTrue(query.retrieveAllProperties());
+        Assert.assertTrue(query.retrieveAllProperties());
 
         query.setProperties(Query.ALL_PROPERTIES);
-        assertTrue(query.retrieveAllProperties());
+        Assert.assertTrue(query.retrieveAllProperties());
 
         query.setPropertyNames(new String[] {"foo", "bar"});
         query.setProperties(Query.ALL_PROPERTIES);
-        assertTrue(query.retrieveAllProperties());
+        Assert.assertTrue(query.retrieveAllProperties());
     }
 
     /** Test of getMaxFeatures method, of class org.geotools.data.Query. */
+    @Test
     public void testMaxFeatures() {
         // System.out.println("testMaxFeatures");
         Query query = new Query();
-        assertEquals(Query.DEFAULT_MAX, query.getMaxFeatures());
+        Assert.assertEquals(Query.DEFAULT_MAX, query.getMaxFeatures());
 
         query.setMaxFeatures(5);
-        assertEquals(5, query.getMaxFeatures());
+        Assert.assertEquals(5, query.getMaxFeatures());
     }
 
     /** Test of getFilter method, of class org.geotools.data.Query. */
+    @Test
     public void testFilter() {
         // System.out.println("testGetFilter");
         Query query = new Query();
         query.setFilter(Filter.EXCLUDE);
-        assertEquals(Filter.EXCLUDE, query.getFilter());
+        Assert.assertEquals(Filter.EXCLUDE, query.getFilter());
 
         query = new Query("test", Filter.INCLUDE);
-        assertEquals(Filter.INCLUDE, query.getFilter());
+        Assert.assertEquals(Filter.INCLUDE, query.getFilter());
     }
 
     /** Test of getTypeName method, of class org.geotools.data.Query. */
+    @Test
     public void testTypeName() {
         Query query = new Query();
-        assertNull(query.getTypeName());
+        Assert.assertNull(query.getTypeName());
 
         query.setTypeName("foobar");
-        assertEquals("foobar", query.getTypeName());
+        Assert.assertEquals("foobar", query.getTypeName());
 
         query = new Query("mytype", Filter.EXCLUDE);
-        assertEquals("mytype", query.getTypeName());
+        Assert.assertEquals("mytype", query.getTypeName());
     }
 
     /** Test of getHandle method, of class org.geotools.data.Query. */
+    @Test
     public void testHandle() {
         // System.out.println("testGetHandle");
         Query query = new Query();
-        assertNull(query.getHandle());
+        Assert.assertNull(query.getHandle());
         query.setHandle("myquery");
-        assertEquals("myquery", query.getHandle());
+        Assert.assertEquals("myquery", query.getHandle());
     }
 
     /** Test of getVersion method, of class org.geotools.data.Query. */
+    @Test
     public void testVersion() {
         // System.out.println("testGetVersion");
         Query query = new Query();
-        assertNull(query.getVersion());
+        Assert.assertNull(query.getVersion());
     }
 
     /** Test of toString method, of class org.geotools.data.Query. */
+    @Test
     public void testToString() {
         // System.out.println("testToString");
         Query query = new Query();
-        assertNotNull(query.toString());
+        Assert.assertNotNull(query.toString());
 
         query.setHandle("myquery");
-        assertNotNull(query.toString());
+        Assert.assertNotNull(query.toString());
 
         query.setFilter(Filter.EXCLUDE);
-        assertNotNull(query.toString());
+        Assert.assertNotNull(query.toString());
 
         query.setPropertyNames(new String[] {"foo", "bar"});
-        assertNotNull(query.toString());
+        Assert.assertNotNull(query.toString());
 
         query = new Query();
         query.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
-        assertTrue(query.toString().contains("[sort by: NATURAL]"));
+        Assert.assertTrue(query.toString().contains("[sort by: NATURAL]"));
         query.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
-        assertTrue(query.toString().contains("[sort by: REVERSE]"));
+        Assert.assertTrue(query.toString().contains("[sort by: REVERSE]"));
     }
 
+    @Test
     public void testSortByEquality() {
         Query q1 = new Query();
 

@@ -16,17 +16,23 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.DirectPosition3D;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.geometry.DirectPosition;
 import org.w3c.dom.Document;
 
 public class DirectPositionListTypeBindingTest extends GML3TestSupport {
+    @Test
     public void test1D() throws Exception {
         GML3MockData.element(GML.posList, document, document);
         document.getDocumentElement().setAttribute("srsDimension", "1");
@@ -44,6 +50,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         assertEquals(2d, dps[1].getOrdinate(0), 0d);
     }
 
+    @Test
     public void test2D() throws Exception {
         GML3MockData.element(GML.posList, document, document);
         document.getDocumentElement().setAttribute("srsDimension", "2");
@@ -60,6 +67,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         assertEquals(2d, dps[0].getOrdinate(1), 0d);
     }
 
+    @Test
     public void test3D() throws Exception {
         GML3MockData.element(GML.posList, document, document);
         document.getDocumentElement().setAttribute("srsDimension", "3");
@@ -81,6 +89,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         assertEquals(5d, dps[1].getOrdinate(2), 0d);
     }
 
+    @Test
     public void testEncode2D() throws Exception {
         LineString line = GML3MockData.lineStringLite2D();
         CoordinateSequence seq = line.getCoordinateSequence();
@@ -88,6 +97,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         checkPosListOrdinates(doc, 2 * line.getNumPoints());
     }
 
+    @Test
     public void testEncode3D() throws Exception {
         LineString line = GML3MockData.lineStringLite3D();
         CoordinateSequence seq = line.getCoordinateSequence();

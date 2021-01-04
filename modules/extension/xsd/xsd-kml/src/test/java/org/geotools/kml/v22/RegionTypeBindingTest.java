@@ -16,23 +16,26 @@
  */
 package org.geotools.kml.v22;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LinearRing;
 
-/**
- * Test 2.2 Region/LanLonAltBox bindings (i.e. using v22 {@link KMLConfiguration} by extending v22
- * {@link KMLTestSupport})
- */
 public class RegionTypeBindingTest extends KMLTestSupport {
+
+    @Test
     public void testType() {
         assertEquals(LinearRing.class, binding(KML.RegionType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.RegionType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<Region>"
@@ -56,6 +59,7 @@ public class RegionTypeBindingTest extends KMLTestSupport {
         assertEquals("Last and first coordinates should be equal", coordinates[0], coordinates[4]);
     }
 
+    @Test
     public void testParseWithUnparsedElements() throws Exception {
         String xml =
                 "<Region>"

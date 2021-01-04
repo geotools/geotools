@@ -20,19 +20,22 @@ import static org.geotools.data.solr.SolrDataStoreFactory.FIELD;
 import static org.geotools.data.solr.SolrDataStoreFactory.LAYER_MAPPER;
 import static org.geotools.data.solr.SolrDataStoreFactory.URL;
 
-import junit.framework.TestCase;
 import org.geotools.data.solr.SolrLayerMapper.Type;
 import org.geotools.util.KVP;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class SolrDataStoreFactoryTest extends TestCase {
+public class SolrDataStoreFactoryTest {
 
     SolrDataStoreFactory dataStoreFactory;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         dataStoreFactory = new SolrDataStoreFactory();
     }
 
+    @Test
     public void testDefaultMapper() throws Exception {
         SolrDataStore dataStore =
                 (SolrDataStore)
@@ -42,9 +45,10 @@ public class SolrDataStoreFactoryTest extends TestCase {
                                         "http://localhost:8080/solr/geotools",
                                         FIELD.key,
                                         "foo"));
-        assertTrue(dataStore.getLayerMapper() instanceof FieldLayerMapper);
+        Assert.assertTrue(dataStore.getLayerMapper() instanceof FieldLayerMapper);
     }
 
+    @Test
     public void testSingleLayerMapper() throws Exception {
         SolrDataStore dataStore =
                 (SolrDataStore)
@@ -54,6 +58,6 @@ public class SolrDataStoreFactoryTest extends TestCase {
                                         "http://localhost:8080/solr/geotools",
                                         LAYER_MAPPER.key,
                                         Type.SINGLE.name()));
-        assertTrue(dataStore.getLayerMapper() instanceof SingleLayerMapper);
+        Assert.assertTrue(dataStore.getLayerMapper() instanceof SingleLayerMapper);
     }
 }

@@ -17,14 +17,18 @@
 
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml3.ComplexAttributeTestSupport;
 import org.geotools.gml3.GML;
 import org.geotools.measure.Measure;
+import org.junit.Test;
 import org.opengis.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 
 public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
-
+    @Test
     public void testParser() throws Exception {
         GML3MockData.element(GML.measure, document, document);
         document.getDocumentElement().setAttribute("uom", "http://someuri");
@@ -36,6 +40,7 @@ public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
         assertEquals("http://someuri", measure.getUnit().getSymbol());
     }
 
+    @Test
     public void testEncode() throws Exception {
         ComplexAttribute myCode = gmlMeasureType(GML.measure, "12", "m");
         Document dom = encode(myCode, GML.measure);

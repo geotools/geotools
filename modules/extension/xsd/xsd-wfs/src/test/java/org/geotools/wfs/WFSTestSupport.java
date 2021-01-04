@@ -16,6 +16,8 @@
  */
 package org.geotools.wfs;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,6 +32,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -66,14 +69,17 @@ public abstract class WFSTestSupport extends XMLTestSupport {
         return new org.geotools.wfs.v1_1.WFSConfiguration();
     }
 
+    @Test
     public void testTarget() {
         assertEquals(qname, binding.getTarget());
     }
 
+    @Test
     public void testType() throws Exception {
         assertEquals(bindingTargetClass, binding.getType());
     }
 
+    @Test
     public void testExecutionMode() throws Exception {
         assertEquals(toExModeString(executionMode), executionMode, binding.getExecutionMode());
     }

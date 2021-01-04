@@ -17,7 +17,6 @@
 package org.geotools.graph.util;
 
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
@@ -26,17 +25,16 @@ import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class DijkstraShortestPathFinderTest extends TestCase {
+public class DijkstraShortestPathFinderTest {
 
     private GraphBuilder m_builder;
 
-    public DijkstraShortestPathFinderTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
     }
@@ -46,6 +44,7 @@ public class DijkstraShortestPathFinderTest extends TestCase {
      * <br>
      * Expected: 1. Path should contain every node in graph in order.
      */
+    @Test
     public void test_0() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -57,7 +56,7 @@ public class DijkstraShortestPathFinderTest extends TestCase {
 
         int count = 99;
         for (Node n : p) {
-            assertEquals(n.getID(), count--);
+            Assert.assertEquals(n.getID(), count--);
         }
     }
 
@@ -66,6 +65,7 @@ public class DijkstraShortestPathFinderTest extends TestCase {
      * <br>
      * Expected: 1. Path should just contain end nodes.
      */
+    @Test
     public void test_1() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildCircular(builder(), nnodes);
@@ -76,9 +76,9 @@ public class DijkstraShortestPathFinderTest extends TestCase {
         pfinder.calculate();
         Path p = pfinder.getPath(ends[1]);
 
-        assertEquals(2, p.size());
-        assertSame(p.get(0), ends[1]);
-        assertSame(p.get(1), ends[0]);
+        Assert.assertEquals(2, p.size());
+        Assert.assertSame(p.get(0), ends[1]);
+        Assert.assertSame(p.get(1), ends[0]);
     }
 
     /**
@@ -86,6 +86,7 @@ public class DijkstraShortestPathFinderTest extends TestCase {
      * <br>
      * Expected 1. Path should be links from leaf to root.
      */
+    @Test
     public void test_2() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -101,10 +102,10 @@ public class DijkstraShortestPathFinderTest extends TestCase {
 
             if (id2node.get(id + ".0") == null) {
                 Path p = pfinder.getPath(node);
-                assertEquals(p.size(), k + 1);
+                Assert.assertEquals(p.size(), k + 1);
 
                 for (Node n : p) {
-                    assertEquals(n.getObject().toString(), id);
+                    Assert.assertEquals(n.getObject().toString(), id);
                     if (id.length() > 2) id = id.substring(0, id.length() - 2);
                 }
             }

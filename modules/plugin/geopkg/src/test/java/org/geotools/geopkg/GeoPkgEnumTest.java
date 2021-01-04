@@ -31,6 +31,7 @@ import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.geotools.referencing.CRS;
 import org.hamcrest.Matchers;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -76,6 +77,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         return builder.buildFeatureType();
     }
 
+    @Test
     public void testCreateSchemaWithEnum() throws Exception {
         createEnumFeatureType();
 
@@ -147,6 +149,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals("enumProperty", ft3Enum.getColumnName());
     }
 
+    @Test
     public void testCreateSchemaWithCustomEnum() throws Exception {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("ft2"));
@@ -206,6 +209,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals("three", mapper.fromInteger(2));
     }
 
+    @Test
     public void testCreateSchemaWithSharedContraint() throws Exception {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("ft2"));
@@ -280,6 +284,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals(dcc2, dcc);
     }
 
+    @Test
     public void testWriteEnums() throws Exception {
         writeEnumeratedFeatures();
 
@@ -322,6 +327,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         return new ListFeatureCollection(schema, new SimpleFeature[] {f1, f2, f3, f4});
     }
 
+    @Test
     public void testReadEnums() throws Exception {
         // write some features
         writeEnumeratedFeatures();
@@ -339,6 +345,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals("three", features.get(3).getAttribute("enumProperty"));
     }
 
+    @Test
     public void testFilterOnEnumsPropValue() throws Exception {
         // write some features
         writeEnumeratedFeatures();
@@ -353,6 +360,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals("one", features.get(0).getAttribute("enumProperty"));
     }
 
+    @Test
     public void testFilterOnEnumsValueProp() throws Exception {
         // write some features
         writeEnumeratedFeatures();
@@ -367,6 +375,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals("one", features.get(0).getAttribute("enumProperty"));
     }
 
+    @Test
     public void testFilterOnEnumsNull() throws Exception {
         // write some features
         writeEnumeratedFeatures();
@@ -382,6 +391,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals(4, features.get(0).getAttribute("intProperty"));
     }
 
+    @Test
     public void testUpdateAllEnums() throws Exception {
         // write some features
         writeEnumeratedFeatures();
@@ -402,6 +412,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals("one", features.get(3).getAttribute("enumProperty"));
     }
 
+    @Test
     public void testCreateFeatureEntryEnumExclusive() throws Exception {
         // custom configuration optimizing write performance for a straigth GeoPackage creation,
         // e.g., the use case of the GeoPackage WPS process in GeoServer
@@ -521,6 +532,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         return new ListFeatureCollection(schema, new SimpleFeature[] {f1, f2, f3, f4});
     }
 
+    @Test
     public void testWriteArraysAndEnumsLowLevel() throws Exception {
         writeEnumeratedArrayFeatures();
 
@@ -550,6 +562,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testWriteArraysAndEnumsHighLevel() throws Exception {
         writeEnumeratedArrayFeatures();
 

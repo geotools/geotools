@@ -18,15 +18,17 @@ package org.geotools.filter.function.string;
 
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
-public class StringInFunctionTest extends TestCase {
+public class StringInFunctionTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
+    @Test
     public void test() throws Exception {
         StringInFunction f = new StringInFunction();
 
@@ -39,7 +41,7 @@ public class StringInFunctionTest extends TestCase {
                         ff.literal("baz"));
         f.setParameters(params);
 
-        assertEquals(Boolean.TRUE, f.evaluate(null));
+        Assert.assertEquals(Boolean.TRUE, f.evaluate(null));
 
         params =
                 Arrays.asList(
@@ -49,9 +51,10 @@ public class StringInFunctionTest extends TestCase {
                         ff.literal("bar"),
                         ff.literal("baz"));
         f.setParameters(params);
-        assertEquals(Boolean.FALSE, f.evaluate(null));
+        Assert.assertEquals(Boolean.FALSE, f.evaluate(null));
     }
 
+    @Test
     public void testTooFewArguments() throws Exception {
         StringInFunction f = new StringInFunction();
 
@@ -60,7 +63,7 @@ public class StringInFunctionTest extends TestCase {
 
         try {
             f.evaluate(null);
-            fail();
+            Assert.fail();
         } catch (IllegalArgumentException e) {
         }
     }

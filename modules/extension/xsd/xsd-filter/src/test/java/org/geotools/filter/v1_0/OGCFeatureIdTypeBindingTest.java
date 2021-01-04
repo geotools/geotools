@@ -16,19 +16,26 @@
  */
 package org.geotools.filter.v1_0;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.identity.FeatureId;
 import org.w3c.dom.Document;
 
 public class OGCFeatureIdTypeBindingTest extends FilterTestSupport {
+
+    @Test
     public void testType() {
         assertEquals(FeatureId.class, binding(OGC.FeatureIdType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.FeatureIdType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.featureId(document, document);
 
@@ -36,6 +43,7 @@ public class OGCFeatureIdTypeBindingTest extends FilterTestSupport {
         assertEquals("foo", featureId.getID());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.featureId(), OGC.FeatureId);
         assertEquals("foo", doc.getDocumentElement().getAttribute("fid"));

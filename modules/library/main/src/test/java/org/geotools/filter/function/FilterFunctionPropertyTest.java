@@ -1,5 +1,9 @@
 package org.geotools.filter.function;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,10 +25,6 @@ public class FilterFunctionPropertyTest extends DataTestCase {
 
     private static final int LOOPS = 5000;
     static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
-
-    public FilterFunctionPropertyTest() {
-        super(FilterFunctionPropertyTest.class.getName());
-    }
 
     @After
     public void teardown() {

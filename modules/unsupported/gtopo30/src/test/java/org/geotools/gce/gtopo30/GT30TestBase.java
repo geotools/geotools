@@ -19,12 +19,15 @@ package org.geotools.gce.gtopo30;
 
 import java.io.File;
 import java.util.logging.Logger;
-import junit.framework.TestCase;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.test.TestData;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /** @author Simone Giannecchini */
-public abstract class GT30TestBase extends TestCase {
+public abstract class GT30TestBase {
 
     protected GridCoverage2D gc;
 
@@ -35,23 +38,14 @@ public abstract class GT30TestBase extends TestCase {
 
     protected String fileName = "W002N52";
 
-    /** */
-    public GT30TestBase() {
-        super();
-    }
-
-    /** @param arg0 */
-    public GT30TestBase(String arg0) {
-        super(arg0);
-    }
-
+    @Test
     public abstract void test() throws Exception;
 
     /** Unpack the gtopo files from the supplied zip file. */
     protected void unpackGTOPO() throws Exception {
         // check that it exisits
         File file = TestData.file(this, fileName + ".zip");
-        assertTrue(file.exists());
+        Assert.assertTrue(file.exists());
 
         // unzip it
         TestData.unzipFile(this, fileName + ".zip");
@@ -78,16 +72,16 @@ public abstract class GT30TestBase extends TestCase {
         }
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         this.unpackGTOPO();
     }
 
     /*
      * @see TestCase#tearDown()
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         deleteAll(TestData.file(this, ""));
-        super.tearDown();
     }
 }

@@ -19,12 +19,12 @@ package org.geotools.geojson;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.util.Converters;
+import org.junit.Assert;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
-public abstract class GeoJSONTestSupport extends TestCase {
+public abstract class GeoJSONTestSupport {
 
     protected StringReader reader(String json) throws IOException {
         return new StringReader(json);
@@ -45,32 +45,33 @@ public abstract class GeoJSONTestSupport extends TestCase {
     }
 
     protected void assertEqualsLax(SimpleFeature f1, SimpleFeature f2) {
-        assertEquals(f1.getID(), f1.getID());
-        assertEquals(f1.getAttributeCount(), f2.getAttributeCount());
+        Assert.assertEquals(f1.getID(), f1.getID());
+        Assert.assertEquals(f1.getAttributeCount(), f2.getAttributeCount());
 
         for (int i = 0; i < f1.getAttributeCount(); i++) {
             Object o1 = f1.getAttribute(i);
             Object o2 = f2.getAttribute(i);
 
             if (o1 instanceof Geometry) {
-                assertTrue(((Geometry) o1).equals((Geometry) o2));
+                Assert.assertTrue(((Geometry) o1).equals((Geometry) o2));
             } else {
                 if (o1 instanceof Number) {
                     if (o1 instanceof Integer || o1 instanceof Long) {
-                        assertTrue(o2 instanceof Integer || o2 instanceof Long);
-                        assertEquals(((Number) o1).intValue(), ((Number) o2).intValue());
+                        Assert.assertTrue(o2 instanceof Integer || o2 instanceof Long);
+                        Assert.assertEquals(((Number) o1).intValue(), ((Number) o2).intValue());
                     } else if (o1 instanceof Float || o1 instanceof Double) {
-                        assertTrue(o2 instanceof Float || o2 instanceof Double);
-                        assertEquals(((Number) o1).doubleValue(), ((Number) o2).doubleValue());
+                        Assert.assertTrue(o2 instanceof Float || o2 instanceof Double);
+                        Assert.assertEquals(
+                                ((Number) o1).doubleValue(), ((Number) o2).doubleValue(), 0d);
                     } else {
-                        fail();
+                        Assert.fail();
                     }
                 } else if (o1 != null && o1.getClass().isArray()) {
                     List c1 = Converters.convert(o1, List.class);
                     List c2 = Converters.convert(o2, List.class);
-                    assertEquals(c1, c2);
+                    Assert.assertEquals(c1, c2);
                 } else {
-                    assertEquals(o1, o2);
+                    Assert.assertEquals(o1, o2);
                 }
             }
         }

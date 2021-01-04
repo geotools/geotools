@@ -20,13 +20,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.math.FilterFunction_random;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor.FIDValidator;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
@@ -41,7 +44,7 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.Identifier;
 
-public class SimplifyingFilterVisitorTest extends TestCase {
+public class SimplifyingFilterVisitorTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     Id emptyFid;
@@ -49,8 +52,8 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     SimplifyingFilterVisitor complexVisitor;
     PropertyIsEqualTo property;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         emptyFid = ff.id(new HashSet<>());
         property = ff.equal(ff.property("test"), ff.literal("oneTwoThree"), false);
         // visitor assuming simple features
@@ -65,76 +68,90 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         complexVisitor = new SimplifyingFilterVisitor();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         EnvFunction.clearLocalValues();
     }
 
+    @Test
     public void testIncludeAndInclude() {
         Filter result = (Filter) ff.and(Filter.INCLUDE, Filter.INCLUDE).accept(simpleVisitor, null);
-        assertEquals(Filter.INCLUDE, result);
+        Assert.assertEquals(Filter.INCLUDE, result);
     }
 
+    @Test
     public void testIncludeAndExclude() {
         Filter result = (Filter) ff.and(Filter.INCLUDE, Filter.EXCLUDE).accept(simpleVisitor, null);
-        assertEquals(Filter.EXCLUDE, result);
+        Assert.assertEquals(Filter.EXCLUDE, result);
     }
 
+    @Test
     public void testExcludeAndExclude() {
         Filter result = (Filter) ff.and(Filter.EXCLUDE, Filter.EXCLUDE).accept(simpleVisitor, null);
-        assertEquals(Filter.EXCLUDE, result);
+        Assert.assertEquals(Filter.EXCLUDE, result);
     }
 
+    @Test
     public void testIncludeAndProperty() {
         Filter result = (Filter) ff.and(Filter.INCLUDE, property).accept(simpleVisitor, null);
-        assertEquals(property, result);
+        Assert.assertEquals(property, result);
     }
 
+    @Test
     public void testExcludeAndProperty() {
         Filter result = (Filter) ff.or(Filter.EXCLUDE, property).accept(simpleVisitor, null);
-        assertEquals(property, result);
+        Assert.assertEquals(property, result);
     }
 
+    @Test
     public void testIncludeOrInclude() {
         Filter result = (Filter) ff.or(Filter.INCLUDE, Filter.INCLUDE).accept(simpleVisitor, null);
-        assertEquals(Filter.INCLUDE, result);
+        Assert.assertEquals(Filter.INCLUDE, result);
     }
 
+    @Test
     public void testIncludeOrExclude() {
         Filter result = (Filter) ff.or(Filter.INCLUDE, Filter.EXCLUDE).accept(simpleVisitor, null);
-        assertEquals(Filter.INCLUDE, result);
+        Assert.assertEquals(Filter.INCLUDE, result);
     }
 
+    @Test
     public void testExcludeOrExclude() {
         Filter result = (Filter) ff.or(Filter.EXCLUDE, Filter.EXCLUDE).accept(simpleVisitor, null);
-        assertEquals(Filter.EXCLUDE, result);
+        Assert.assertEquals(Filter.EXCLUDE, result);
     }
 
+    @Test
     public void testIncludeOrProperty() {
         Filter result = (Filter) ff.or(Filter.INCLUDE, property).accept(simpleVisitor, null);
-        assertEquals(Filter.INCLUDE, result);
+        Assert.assertEquals(Filter.INCLUDE, result);
     }
 
+    @Test
     public void testExcludeOrProperty() {
         Filter result = (Filter) ff.or(Filter.EXCLUDE, property).accept(simpleVisitor, null);
-        assertEquals(property, result);
+        Assert.assertEquals(property, result);
     }
 
+    @Test
     public void testEmptyFid() {
         Filter result = (Filter) emptyFid.accept(simpleVisitor, null);
-        assertEquals(Filter.EXCLUDE, result);
+        Assert.assertEquals(Filter.EXCLUDE, result);
     }
 
+    @Test
     public void testRecurseAnd() {
         Filter test = ff.and(Filter.INCLUDE, ff.or(property, Filter.EXCLUDE));
-        assertEquals(property, test.accept(simpleVisitor, null));
+        Assert.assertEquals(property, test.accept(simpleVisitor, null));
     }
 
+    @Test
     public void testRecurseOr() {
         Filter test = ff.or(Filter.EXCLUDE, ff.and(property, Filter.INCLUDE));
-        assertEquals(property, test.accept(simpleVisitor, null));
+        Assert.assertEquals(property, test.accept(simpleVisitor, null));
     }
 
+    @Test
     public void testFidValidity() {
         simpleVisitor.setFIDValidator(
                 new SimplifyingFilterVisitor.FIDValidator() {
@@ -147,7 +164,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         ids.add(ff.featureId("notPass"));
         Id filter = ff.id(ids);
 
-        assertEquals(Filter.EXCLUDE, filter.accept(simpleVisitor, null));
+        Assert.assertEquals(Filter.EXCLUDE, filter.accept(simpleVisitor, null));
 
         ids.add(ff.featureId("pass1"));
         ids.add(ff.featureId("pass2"));
@@ -157,9 +174,10 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         validIds.add(ff.featureId("pass2"));
         validIds.add(ff.featureId("pass1"));
         Filter expected = ff.id(validIds);
-        assertEquals(expected, filter.accept(simpleVisitor, null));
+        Assert.assertEquals(expected, filter.accept(simpleVisitor, null));
     }
 
+    @Test
     public void testRegExFIDValidator() {
         FIDValidator validator = new SimplifyingFilterVisitor.RegExFIDValidator("abc\\.\\d+");
         simpleVisitor.setFIDValidator(validator);
@@ -173,9 +191,10 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter result = (Filter) filter.accept(simpleVisitor, null);
         Filter expected = ff.id(Collections.singleton(ff.featureId("abc.123")));
 
-        assertEquals(expected, result);
+        Assert.assertEquals(expected, result);
     }
 
+    @Test
     public void testTypeNameDotNumberValidator() {
         final String typeName = "states";
         FIDValidator validator;
@@ -191,65 +210,72 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter result = (Filter) filter.accept(simpleVisitor, null);
         Filter expected = ff.id(Collections.singleton(ff.featureId("states.123")));
 
-        assertEquals(expected, result);
+        Assert.assertEquals(expected, result);
     }
 
+    @Test
     public void testNegateEquals() {
         Filter f = ff.not(ff.equals(ff.property("prop"), ff.literal(10)));
         Filter result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(ff.notEqual(ff.property("prop"), ff.literal(10)), result);
+        Assert.assertEquals(ff.notEqual(ff.property("prop"), ff.literal(10)), result);
         // not simplified for complex features
         result = (Filter) f.accept(complexVisitor, null);
-        assertEquals(f, result);
+        Assert.assertEquals(f, result);
     }
 
+    @Test
     public void testNegateGreater() {
         Filter f = ff.not(ff.greater(ff.property("prop"), ff.literal(10)));
         Filter result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(ff.lessOrEqual(ff.property("prop"), ff.literal(10)), result);
+        Assert.assertEquals(ff.lessOrEqual(ff.property("prop"), ff.literal(10)), result);
         // not simplified for complex features
         result = (Filter) f.accept(complexVisitor, null);
-        assertEquals(f, result);
+        Assert.assertEquals(f, result);
     }
 
+    @Test
     public void testNegateGreaterOrEqual() {
         Filter f = ff.not(ff.greaterOrEqual(ff.property("prop"), ff.literal(10)));
         Filter result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(ff.less(ff.property("prop"), ff.literal(10)), result);
+        Assert.assertEquals(ff.less(ff.property("prop"), ff.literal(10)), result);
         // not simplified for complex features
         result = (Filter) f.accept(complexVisitor, null);
-        assertEquals(f, result);
+        Assert.assertEquals(f, result);
     }
 
+    @Test
     public void testNegateLess() {
         Filter f = ff.not(ff.less(ff.property("prop"), ff.literal(10)));
         Filter result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(ff.greaterOrEqual(ff.property("prop"), ff.literal(10)), result);
+        Assert.assertEquals(ff.greaterOrEqual(ff.property("prop"), ff.literal(10)), result);
         // not simplified for complex features
         result = (Filter) f.accept(complexVisitor, null);
-        assertEquals(f, result);
+        Assert.assertEquals(f, result);
     }
 
+    @Test
     public void testNegateLessOrEqual() {
         Filter f = ff.not(ff.lessOrEqual(ff.property("prop"), ff.literal(10)));
         Filter result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(ff.greater(ff.property("prop"), ff.literal(10)), result);
+        Assert.assertEquals(ff.greater(ff.property("prop"), ff.literal(10)), result);
         // not simplified for complex features
         result = (Filter) f.accept(complexVisitor, null);
-        assertEquals(f, result);
+        Assert.assertEquals(f, result);
     }
 
+    @Test
     public void testNegateBetween() {
         PropertyName prop = ff.property("prop");
         Literal l10 = ff.literal(10);
         Literal l20 = ff.literal(20);
         Filter f = ff.not(ff.between(prop, l10, l20));
         Filter result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(
+        Assert.assertEquals(
                 ff.or(Arrays.asList(ff.less(prop, l10), ff.greater(prop, l20), ff.isNull(prop))),
                 result);
     }
 
+    @Test
     public void testNegateBetweenWithNullability() {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.nillable(true);
@@ -264,7 +290,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Literal l20 = ff.literal(20);
         Filter f = ff.not(ff.between(prop, l10, l20));
         Filter result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(
+        Assert.assertEquals(
                 ff.or(Arrays.asList(ff.less(prop, l10), ff.greater(prop, l20), ff.isNull(prop))),
                 result);
 
@@ -273,7 +299,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         prop = ff.property("prop");
         f = ff.not(ff.between(prop, l10, l20));
         result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(
+        Assert.assertEquals(
                 ff.or(Arrays.asList(ff.less(prop, l10), ff.greater(prop, l20), ff.isNull(prop))),
                 result);
 
@@ -281,39 +307,45 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         prop = ff.property("prop2");
         f = ff.not(ff.between(prop, l10, l20));
         result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(ff.or(Arrays.asList(ff.less(prop, l10), ff.greater(prop, l20))), result);
+        Assert.assertEquals(
+                ff.or(Arrays.asList(ff.less(prop, l10), ff.greater(prop, l20))), result);
     }
 
+    @Test
     public void testDoubleNegation() {
         PropertyIsEqualTo equal = ff.equals(ff.property("prop"), ff.literal(10));
         Filter f = ff.not(ff.not(equal));
         Filter result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(equal, result);
+        Assert.assertEquals(equal, result);
     }
 
+    @Test
     public void testTripleNegation() {
         PropertyIsEqualTo equal = ff.equals(ff.property("prop"), ff.literal(10));
         Filter f = ff.not(ff.not(ff.not(equal)));
         Filter result = (Filter) f.accept(simpleVisitor, null);
-        assertEquals(ff.notEqual(ff.property("prop"), ff.literal(10)), result);
+        Assert.assertEquals(ff.notEqual(ff.property("prop"), ff.literal(10)), result);
     }
 
+    @Test
     public void testStableFunction() {
         EnvFunction.setLocalValue("var", "123");
         Function f = ff.function("env", ff.literal("var"));
 
         Expression result = (Expression) f.accept(simpleVisitor, null);
-        assertTrue(result instanceof Literal);
-        assertEquals("123", result.evaluate(null, String.class));
+        Assert.assertTrue(result instanceof Literal);
+        Assert.assertEquals("123", result.evaluate(null, String.class));
     }
 
+    @Test
     public void testVolatileFunction() {
         Function f = ff.function("random");
 
         Expression result = (Expression) f.accept(simpleVisitor, null);
-        assertTrue(result instanceof FilterFunction_random);
+        Assert.assertTrue(result instanceof FilterFunction_random);
     }
 
+    @Test
     public void testNestedVolatile() {
         EnvFunction.setLocalValue("power", 3);
         Function f =
@@ -321,50 +353,56 @@ public class SimplifyingFilterVisitorTest extends TestCase {
 
         Function result = (Function) f.accept(simpleVisitor, null);
         // main function not simplified out
-        assertEquals("pow", result.getName());
+        Assert.assertEquals("pow", result.getName());
         // first argument not simplified out
         Function param1 = (Function) result.getParameters().get(0);
-        assertEquals("random", param1.getName());
+        Assert.assertEquals("random", param1.getName());
         // second argument simplified out
         Expression param2 = result.getParameters().get(1);
-        assertTrue(param2 instanceof Literal);
-        assertEquals(Integer.valueOf(3), param2.evaluate(null, Integer.class));
+        Assert.assertTrue(param2 instanceof Literal);
+        Assert.assertEquals(Integer.valueOf(3), param2.evaluate(null, Integer.class));
     }
 
+    @Test
     public void testCompareFunctionNull() {
         Function f = ff.function("env", ff.literal("var"));
         PropertyIsEqualTo filter = ff.equal(f, ff.literal("test"), false);
 
         Filter simplified = (Filter) filter.accept(simpleVisitor, null);
-        assertEquals(Filter.EXCLUDE, simplified);
+        Assert.assertEquals(Filter.EXCLUDE, simplified);
     }
 
+    @Test
     public void testCompareConstantFunction() {
         EnvFunction.setLocalValue("var", "test");
         Function f = ff.function("env", ff.literal("var"));
         PropertyIsEqualTo filter = ff.equal(f, ff.literal("test"), false);
 
         Filter simplified = (Filter) filter.accept(simpleVisitor, null);
-        assertEquals(Filter.INCLUDE, simplified);
+        Assert.assertEquals(Filter.INCLUDE, simplified);
     }
 
+    @Test
     public void testSimplifyStaticExclude() {
-        assertEquals(Filter.EXCLUDE, simplify(ff.greater(ff.literal(3), ff.literal(5))));
-        assertEquals(Filter.EXCLUDE, simplify(ff.greaterOrEqual(ff.literal(3), ff.literal(5))));
-        assertEquals(Filter.EXCLUDE, simplify(ff.less(ff.literal(5), ff.literal(3))));
-        assertEquals(Filter.EXCLUDE, simplify(ff.lessOrEqual(ff.literal(5), ff.literal(3))));
-        assertEquals(Filter.EXCLUDE, simplify(ff.equal(ff.literal(5), ff.literal(3), true)));
-        assertEquals(
+        Assert.assertEquals(Filter.EXCLUDE, simplify(ff.greater(ff.literal(3), ff.literal(5))));
+        Assert.assertEquals(
+                Filter.EXCLUDE, simplify(ff.greaterOrEqual(ff.literal(3), ff.literal(5))));
+        Assert.assertEquals(Filter.EXCLUDE, simplify(ff.less(ff.literal(5), ff.literal(3))));
+        Assert.assertEquals(Filter.EXCLUDE, simplify(ff.lessOrEqual(ff.literal(5), ff.literal(3))));
+        Assert.assertEquals(Filter.EXCLUDE, simplify(ff.equal(ff.literal(5), ff.literal(3), true)));
+        Assert.assertEquals(
                 Filter.EXCLUDE, simplify(ff.between(ff.literal(3), ff.literal(1), ff.literal(2))));
     }
 
+    @Test
     public void testSimplifyStaticInclude() {
-        assertEquals(Filter.INCLUDE, simplify(ff.less(ff.literal(3), ff.literal(5))));
-        assertEquals(Filter.INCLUDE, simplify(ff.lessOrEqual(ff.literal(3), ff.literal(5))));
-        assertEquals(Filter.INCLUDE, simplify(ff.greater(ff.literal(5), ff.literal(3))));
-        assertEquals(Filter.INCLUDE, simplify(ff.greaterOrEqual(ff.literal(5), ff.literal(3))));
-        assertEquals(Filter.INCLUDE, simplify(ff.equal(ff.literal(5), ff.literal(5), true)));
-        assertEquals(
+        Assert.assertEquals(Filter.INCLUDE, simplify(ff.less(ff.literal(3), ff.literal(5))));
+        Assert.assertEquals(Filter.INCLUDE, simplify(ff.lessOrEqual(ff.literal(3), ff.literal(5))));
+        Assert.assertEquals(Filter.INCLUDE, simplify(ff.greater(ff.literal(5), ff.literal(3))));
+        Assert.assertEquals(
+                Filter.INCLUDE, simplify(ff.greaterOrEqual(ff.literal(5), ff.literal(3))));
+        Assert.assertEquals(Filter.INCLUDE, simplify(ff.equal(ff.literal(5), ff.literal(5), true)));
+        Assert.assertEquals(
                 Filter.INCLUDE, simplify(ff.between(ff.literal(3), ff.literal(1), ff.literal(4))));
     }
 
@@ -372,6 +410,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         return (Filter) filter.accept(new SimplifyingFilterVisitor(), null);
     }
 
+    @Test
     public void testCoalesheNestedAnd() {
         Filter eq = ff.equal(ff.property("A"), ff.literal("3"), true);
         Filter gt = ff.greater(ff.property("b"), ff.literal("3"));
@@ -379,10 +418,11 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         And nested = ff.and(Arrays.asList(ff.and(Arrays.asList(eq, gt)), lt));
 
         And simplified = (And) nested.accept(simpleVisitor, null);
-        assertEquals(3, simplified.getChildren().size());
-        assertEquals(ff.and(Arrays.asList(eq, gt, lt)), simplified);
+        Assert.assertEquals(3, simplified.getChildren().size());
+        Assert.assertEquals(ff.and(Arrays.asList(eq, gt, lt)), simplified);
     }
 
+    @Test
     public void testCoalesheNestedOr() {
         Filter eq = ff.equal(ff.property("A"), ff.literal("3"), true);
         Filter gt = ff.greater(ff.property("b"), ff.literal("3"));
@@ -390,70 +430,76 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Or nested = ff.or(Arrays.asList(ff.or(Arrays.asList(eq, gt)), lt));
 
         Or simplified = (Or) nested.accept(simpleVisitor, null);
-        assertEquals(3, simplified.getChildren().size());
-        assertEquals(ff.or(Arrays.asList(eq, gt, lt)), simplified);
+        Assert.assertEquals(3, simplified.getChildren().size());
+        Assert.assertEquals(ff.or(Arrays.asList(eq, gt, lt)), simplified);
     }
 
+    @Test
     public void testDualFilterOr() {
         Or or =
                 ff.or(
                         Arrays.asList(
                                 ff.not(ff.equal(ff.property("a"), ff.literal(3), true)),
                                 ff.equal(ff.property("a"), ff.literal(3), true)));
-        assertEquals(Filter.INCLUDE, or.accept(simpleVisitor, null));
+        Assert.assertEquals(Filter.INCLUDE, or.accept(simpleVisitor, null));
     }
 
+    @Test
     public void testDualFilterAnd() {
         Filter original =
                 ff.and(
                         Arrays.asList(
                                 ff.not(ff.equal(ff.property("a"), ff.literal(3), true)),
                                 ff.equal(ff.property("a"), ff.literal(3), true)));
-        assertEquals(Filter.EXCLUDE, original.accept(simpleVisitor, null));
+        Assert.assertEquals(Filter.EXCLUDE, original.accept(simpleVisitor, null));
     }
 
+    @Test
     public void testDualFilterNullAnd() {
         Filter original =
                 ff.and(
                         Arrays.asList(
                                 ff.not(ff.isNull(ff.property("a"))), ff.isNull(ff.property("a"))));
-        assertEquals(Filter.EXCLUDE, original.accept(simpleVisitor, null));
+        Assert.assertEquals(Filter.EXCLUDE, original.accept(simpleVisitor, null));
     }
 
+    @Test
     public void testDualFilterNullOr() {
         Filter original =
                 ff.or(
                         Arrays.asList(
                                 ff.not(ff.isNull(ff.property("a"))), ff.isNull(ff.property("a"))));
-        assertEquals(Filter.INCLUDE, original.accept(simpleVisitor, null));
+        Assert.assertEquals(Filter.INCLUDE, original.accept(simpleVisitor, null));
     }
 
+    @Test
     public void testRepeatedFilter() {
         Filter f1 = ff.equal(ff.property("a"), ff.literal(3), false);
         Filter f2 = ff.equal(ff.property("a"), ff.literal(3), false);
 
         Filter s1 = (Filter) ff.and(f1, f2).accept(simpleVisitor, null);
-        assertEquals(f1, s1);
+        Assert.assertEquals(f1, s1);
         Filter s2 = (Filter) ff.or(f1, f2).accept(simpleVisitor, null);
-        assertEquals(f1, s2);
+        Assert.assertEquals(f1, s2);
 
         Filter f3 = ff.greater(ff.property("a"), ff.property("b"));
 
         Filter s3 = (Filter) ff.and(Arrays.asList(f1, f2, f3)).accept(simpleVisitor, null);
-        assertEquals(ff.and(Arrays.asList(f1, f3)), s3);
+        Assert.assertEquals(ff.and(Arrays.asList(f1, f3)), s3);
         Filter s4 = (Filter) ff.and(Arrays.asList(f3, f1, f2)).accept(simpleVisitor, null);
-        assertEquals(ff.and(Arrays.asList(f3, f1)), s4);
+        Assert.assertEquals(ff.and(Arrays.asList(f3, f1)), s4);
         Filter s5 = (Filter) ff.and(Arrays.asList(f1, f3, f2)).accept(simpleVisitor, null);
-        assertEquals(ff.and(Arrays.asList(f1, f3)), s5);
+        Assert.assertEquals(ff.and(Arrays.asList(f1, f3)), s5);
 
         Filter s6 = (Filter) ff.or(Arrays.asList(f1, f2, f3)).accept(simpleVisitor, null);
-        assertEquals(ff.or(Arrays.asList(f1, f3)), s6);
+        Assert.assertEquals(ff.or(Arrays.asList(f1, f3)), s6);
         Filter s7 = (Filter) ff.or(Arrays.asList(f3, f1, f2)).accept(simpleVisitor, null);
-        assertEquals(ff.or(Arrays.asList(f3, f1)), s7);
+        Assert.assertEquals(ff.or(Arrays.asList(f3, f1)), s7);
         Filter s8 = (Filter) ff.or(Arrays.asList(f1, f3, f2)).accept(simpleVisitor, null);
-        assertEquals(ff.or(Arrays.asList(f1, f3)), s8);
+        Assert.assertEquals(ff.or(Arrays.asList(f1, f3)), s8);
     }
 
+    @Test
     public void testAndDisjointRanges() throws Exception {
         testAndDisjointRanges(Integer.class, 10, 5);
         testAndDisjointRanges(Byte.class, (byte) 10, (byte) 5);
@@ -473,13 +519,14 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                         ff.greater(ff.property("a"), ff.literal(max)),
                         ff.less(ff.property("a"), ff.literal(min)));
         Filter simplified = (Filter) original.accept(visitor, null);
-        assertEquals(original, simplified);
+        Assert.assertEquals(original, simplified);
 
         visitor.setFeatureType(schema);
         Filter simplified2 = (Filter) original.accept(visitor, null);
-        assertEquals(Filter.EXCLUDE, simplified2);
+        Assert.assertEquals(Filter.EXCLUDE, simplified2);
     }
 
+    @Test
     public void testOrDisjointRanges() throws Exception {
         testOrDisjointRanges(Integer.class, 10, 5);
         testOrDisjointRanges(Byte.class, (byte) 10, (byte) 5);
@@ -499,9 +546,10 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                         ff.greater(ff.property("a"), ff.literal(max)),
                         ff.less(ff.property("a"), ff.literal(min)));
         Filter simplified = (Filter) original.accept(visitor, null);
-        assertEquals(original, simplified);
+        Assert.assertEquals(original, simplified);
     }
 
+    @Test
     public void testAndTouchingRanges() throws Exception {
         testAndTouchingRanges(Integer.class, 10);
         testAndTouchingRanges(Byte.class, (byte) 10);
@@ -522,9 +570,10 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                         ff.greaterOrEqual(ff.property("a"), ff.literal(value)),
                         ff.lessOrEqual(ff.property("a"), ff.literal(value)));
         Filter simplified = (Filter) original.accept(visitor, null);
-        assertEquals(ff.equal(ff.property("a"), ff.literal(value), false), simplified);
+        Assert.assertEquals(ff.equal(ff.property("a"), ff.literal(value), false), simplified);
     }
 
+    @Test
     public void testOrTouchingRanges() throws Exception {
         testOrTouchingRanges(Integer.class, 10);
         testOrTouchingRanges(Byte.class, (byte) 10);
@@ -545,9 +594,10 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                         ff.greaterOrEqual(ff.property("a"), ff.literal(value)),
                         ff.lessOrEqual(ff.property("a"), ff.literal(value)));
         Filter simplified = (Filter) original.accept(visitor, null);
-        assertEquals(Filter.INCLUDE, simplified);
+        Assert.assertEquals(Filter.INCLUDE, simplified);
     }
 
+    @Test
     public void testAndOverlappingRanges() throws Exception {
         testAndOverlappingRanges(Integer.class, 5, 7, 10);
         testAndOverlappingRanges(Byte.class, (byte) 5, (byte) 7, (byte) 10);
@@ -572,13 +622,14 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                                 ff.less(ff.property("a"), ff.literal(mid))));
 
         Filter simplified = (Filter) original.accept(visitor, null);
-        assertEquals(
+        Assert.assertEquals(
                 ff.and(
                         ff.greater(ff.property("a"), ff.literal(min)), //
                         ff.less(ff.property("a"), ff.literal(mid))),
                 simplified);
     }
 
+    @Test
     public void testOrOverlappingRanges() throws Exception {
         testOrOverlappingRanges(Integer.class, 5, 10);
         testOrOverlappingRanges(Byte.class, (byte) 5, (byte) 10);
@@ -602,9 +653,10 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                                 ff.greater(ff.property("a"), ff.literal(max))));
 
         Filter simplified = (Filter) original.accept(visitor, null);
-        assertEquals(ff.greater(ff.property("a"), ff.literal(min)), simplified);
+        Assert.assertEquals(ff.greater(ff.property("a"), ff.literal(min)), simplified);
     }
 
+    @Test
     public void testAndOverlappingRangesToBetween() throws Exception {
         testAndOverlappingRangesToBetween(Integer.class, 5, 7, 10);
         testAndOverlappingRangesToBetween(Byte.class, (byte) 5, (byte) 7, (byte) 10);
@@ -630,9 +682,11 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                                 ff.lessOrEqual(ff.property("a"), ff.literal(mid))));
 
         Filter simplified = (Filter) original.accept(visitor, null);
-        assertEquals(ff.between(ff.property("a"), ff.literal(min), ff.literal(mid)), simplified);
+        Assert.assertEquals(
+                ff.between(ff.property("a"), ff.literal(min), ff.literal(mid)), simplified);
     }
 
+    @Test
     public void testOrPseudoBetween() throws Exception {
         testOrPseudoBetween(Integer.class, 5, 10);
         testOrPseudoBetween(Byte.class, (byte) 5, (byte) 10);
@@ -658,9 +712,10 @@ public class SimplifyingFilterVisitorTest extends TestCase {
                                 ff.lessOrEqual(ff.property("a"), ff.literal(min))));
 
         Filter simplified = (Filter) original.accept(visitor, null);
-        assertEquals(ff.lessOrEqual(ff.property("a"), ff.literal(max)), simplified);
+        Assert.assertEquals(ff.lessOrEqual(ff.property("a"), ff.literal(max)), simplified);
     }
 
+    @Test
     public void testRangeExpression() throws Exception {
         SimpleFeatureType schema = DataUtilities.createType("test", "pop:String");
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
@@ -672,9 +727,10 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter or = ff.or(f1, f2);
 
         Filter simplified = (Filter) or.accept(visitor, null);
-        assertEquals(ff.lessOrEqual(func, ff.literal(50000)), simplified);
+        Assert.assertEquals(ff.lessOrEqual(func, ff.literal(50000)), simplified);
     }
 
+    @Test
     public void testSimplifyNegateImpossible() throws Exception {
         PropertyIsEqualTo propertyIsEqualTo = ff.equal(ff.literal("a"), ff.literal("b"), true);
         Not negated = ff.not(propertyIsEqualTo);
@@ -683,6 +739,6 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         SimpleFeatureType schema = DataUtilities.createType("test", "pop:String");
         visitor.setFeatureType(schema);
         Filter simplified = (Filter) negated.accept(visitor, null);
-        assertEquals(Filter.INCLUDE, simplified);
+        Assert.assertEquals(Filter.INCLUDE, simplified);
     }
 }

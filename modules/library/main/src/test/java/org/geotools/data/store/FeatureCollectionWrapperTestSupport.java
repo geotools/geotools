@@ -16,11 +16,11 @@
  */
 package org.geotools.data.store;
 
-import junit.framework.TestCase;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
+import org.junit.Before;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -28,14 +28,15 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class FeatureCollectionWrapperTestSupport extends TestCase {
+public abstract class FeatureCollectionWrapperTestSupport {
 
     protected static final String TEST_VALUE = "test_value";
     protected static final String TEST_KEY = "test_key";
     protected CoordinateReferenceSystem crs;
     protected DefaultFeatureCollection delegate;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         crs =
                 CRS.parseWKT(
                         "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]");

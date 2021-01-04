@@ -2,13 +2,15 @@ package org.geotools.xsd;
 
 import java.math.BigInteger;
 import java.util.Calendar;
-import junit.framework.TestCase;
 import org.geotools.ml.Envelope;
 import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.Mail;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class EncoderTest extends TestCase {
+public class EncoderTest {
 
+    @Test
     public void testIndent() throws Exception {
         Mail ml =
                 new Mail(
@@ -25,20 +27,22 @@ public class EncoderTest extends TestCase {
     }
 
     /** Tests for {@link org.geotools.xsd.Encoder#setOmitXMLDeclaration(boolean)} */
+    @Test
     public void testSetOmitXMLDeclaration() {
         Encoder encoder = new Encoder(new MLConfiguration());
         encoder.setOmitXMLDeclaration(false);
-        assertFalse(encoder.isOmitXMLDeclaration());
+        Assert.assertFalse(encoder.isOmitXMLDeclaration());
         encoder.setOmitXMLDeclaration(true);
-        assertTrue(encoder.isOmitXMLDeclaration());
+        Assert.assertTrue(encoder.isOmitXMLDeclaration());
     }
 
     /** Tests for {@link org.geotools.xsd.Encoder#setIndenting(boolean)} */
+    @Test
     public void testSetIndenting() {
         Encoder encoder = new Encoder(new MLConfiguration());
         encoder.setIndenting(false);
-        assertFalse(encoder.isIndenting());
+        Assert.assertFalse(encoder.isIndenting());
         encoder.setIndenting(true);
-        assertTrue(encoder.isIndenting());
+        Assert.assertTrue(encoder.isIndenting());
     }
 }

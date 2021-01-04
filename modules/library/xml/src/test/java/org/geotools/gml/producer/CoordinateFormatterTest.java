@@ -16,33 +16,38 @@
  */
 package org.geotools.gml.producer;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class CoordinateFormatterTest extends TestCase {
+public class CoordinateFormatterTest {
+    @Test
     public void testFormatScientific() {
         CoordinateFormatter formatter = new CoordinateFormatter(3);
         formatter.setForcedDecimal(false);
-        assertEquals("2.1396814969E7", formatter.format(21396814.969));
+        Assert.assertEquals("2.1396814969E7", formatter.format(21396814.969));
     }
 
+    @Test
     public void testFormatDecimals() {
         CoordinateFormatter formatter = new CoordinateFormatter(3);
         formatter.setForcedDecimal(true);
-        assertEquals("21396814.969", formatter.format(21396814.969));
+        Assert.assertEquals("21396814.969", formatter.format(21396814.969));
     }
 
+    @Test
     public void testFormatNumDecimals() {
         CoordinateFormatter formatter = new CoordinateFormatter(2);
         formatter.setForcedDecimal(true);
-        assertEquals("21396814.97", formatter.format(21396814.969));
+        Assert.assertEquals("21396814.97", formatter.format(21396814.969));
     }
 
+    @Test
     public void testFormatDecimalsZeroPadded() {
         CoordinateFormatter formatter = new CoordinateFormatter(4);
         formatter.setForcedDecimal(true);
         formatter.setPadWithZeros(true);
-        assertEquals("21396814.9690", formatter.format(21396814.969));
-        assertEquals("21396814.0000", formatter.format(21396814));
-        assertEquals("21396814.9691", formatter.format(21396814.96912));
+        Assert.assertEquals("21396814.9690", formatter.format(21396814.969));
+        Assert.assertEquals("21396814.0000", formatter.format(21396814));
+        Assert.assertEquals("21396814.9691", formatter.format(21396814.96912));
     }
 }

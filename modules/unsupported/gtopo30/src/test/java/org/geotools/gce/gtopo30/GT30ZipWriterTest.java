@@ -17,6 +17,9 @@
  */
 package org.geotools.gce.gtopo30;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -25,6 +28,7 @@ import java.util.zip.ZipOutputStream;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.test.TestData;
+import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterValue;
@@ -37,12 +41,9 @@ import org.opengis.parameter.ParameterValueGroup;
  * @author Simone Giannecchini
  */
 public class GT30ZipWriterTest extends GT30TestBase {
-    /** @param name */
-    public GT30ZipWriterTest(String name) {
-        super(name);
-    }
 
     /** Testing zipped-package writing capabilites. */
+    @Test
     public void test() throws Exception {
         final URL statURL = TestData.getResource(this, this.fileName + ".DEM");
         final AbstractGridFormat format = new GTopo30FormatFactory().createFormat();
@@ -74,6 +75,7 @@ public class GT30ZipWriterTest extends GT30TestBase {
     }
 
     /** Testing zipped-package writing capabilites. */
+    @Test
     public void testExternalZIP() throws Exception {
         final URL sourceURL = TestData.getResource(this, this.fileName + ".DEM");
         final AbstractGridFormat format = new GTopo30FormatFactory().createFormat();
@@ -114,9 +116,5 @@ public class GT30ZipWriterTest extends GT30TestBase {
             // delete test file, or at least try to
             outputFile.delete();
         }
-    }
-
-    public static final void main(String[] args) throws Exception {
-        junit.textui.TestRunner.run((GT30ZipWriterTest.class));
     }
 }

@@ -17,13 +17,16 @@
 
 package org.geotools.gml3.simple;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
 public class CurveEncoderTest extends GeometryEncoderTestSupport {
-
+    @Test
     public void testEncodeCircle() throws Exception {
         CurveEncoder encoder = new CurveEncoder(gtEncoder, "gml", GML.NAMESPACE);
         LineString geometry =
@@ -45,6 +48,7 @@ public class CurveEncoderTest extends GeometryEncoderTestSupport {
         assertEquals("circle.abc", xpath.evaluate("//gml:Curve/@gml:id", doc));
     }
 
+    @Test
     public void testEncodeCompound() throws Exception {
         CurveEncoder encoder = new CurveEncoder(gtEncoder, "gml", GML.NAMESPACE);
         LineString geometry =

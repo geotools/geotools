@@ -50,7 +50,7 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
     protected XpathEngine xpath;
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         this.gtEncoder = new Encoder(createConfiguration());
         this.xpath = XMLUnit.newXpathEngine();

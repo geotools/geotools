@@ -17,21 +17,17 @@
 package org.geotools.gce.imagemosaic.jdbc;
 
 import java.util.Iterator;
-import junit.framework.TestCase;
-import junit.textui.TestRunner;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** @author Simone Giannecchini */
-public class ImageMosaicJDBCServiceTest extends TestCase {
+public class ImageMosaicJDBCServiceTest {
     /** */
     public ImageMosaicJDBCServiceTest() {}
 
-    /** @param args */
-    public static void main(String[] args) {
-        TestRunner.run(ImageMosaicJDBCServiceTest.class);
-    }
-
+    @Test
     public void testIsAvailable() {
         Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
@@ -46,6 +42,6 @@ public class ImageMosaicJDBCServiceTest extends TestCase {
             }
         }
 
-        assertTrue("ImageMosaicJDBCFormatFactorySpi not registered", found);
+        Assert.assertTrue("ImageMosaicJDBCFormatFactorySpi not registered", found);
     }
 }

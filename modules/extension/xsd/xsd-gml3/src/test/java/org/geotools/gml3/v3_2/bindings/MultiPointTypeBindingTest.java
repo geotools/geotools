@@ -16,9 +16,12 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class MultiPointTypeBindingTest extends GML32TestSupport {
@@ -30,7 +33,7 @@ public class MultiPointTypeBindingTest extends GML32TestSupport {
     //
     //        assertEquals(4, multiPoint.getNumPoints());
     //    }
-
+    @Test
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiPoint(), GML.MultiPoint);
         // print(dom);

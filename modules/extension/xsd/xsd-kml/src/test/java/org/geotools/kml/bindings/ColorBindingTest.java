@@ -16,20 +16,26 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import java.awt.Color;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 
 public class ColorBindingTest extends KMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(Color.class, binding(KML.color).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.color).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         buildDocument("<color>ffff0000</color>");
 

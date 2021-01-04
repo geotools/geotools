@@ -16,20 +16,26 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
 public class GMLLineStringTypeBinding2Test extends GMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(LineString.class, binding(GML.LineStringType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.BEFORE, binding(GML.LineStringType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         GML2MockData.lineString(document, document);
 
@@ -38,6 +44,7 @@ public class GMLLineStringTypeBinding2Test extends GMLTestSupport {
         assertEquals(2, l.getCoordinates().length);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.lineString(), GML.LineString);
 

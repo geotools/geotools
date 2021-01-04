@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import junit.framework.TestCase;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wms.WMSCapabilities;
@@ -32,9 +31,12 @@ import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.handlers.DocumentHandler;
 import org.geotools.xml.schema.Schema;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class LayerInheritanceTest extends TestCase {
+public class LayerInheritanceTest {
 
+    @Test
     public void testInheritCapabilities() throws Exception {
 
         File getCaps = TestData.file(this, "inheritCap.xml");
@@ -47,51 +49,51 @@ public class LayerInheritanceTest extends TestCase {
         Schema schema = WMSSchema.getInstance();
         SchemaFactory.getInstance(WMSSchema.NAMESPACE);
 
-        assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
+        Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
 
         WMSCapabilities capabilities = (WMSCapabilities) object;
 
         // Get first test layer
         Layer layer = capabilities.getLayerList().get(0);
-        assertNotNull(layer);
-        assertEquals(3, layer.getDimensions().size());
-        assertEquals("ISO8601", layer.getDimension("time").getUnits());
+        Assert.assertNotNull(layer);
+        Assert.assertEquals(3, layer.getDimensions().size());
+        Assert.assertEquals("ISO8601", layer.getDimension("time").getUnits());
 
         // Get next test layer, it's nested 3 deep
         List<Layer> allLayers = capabilities.getLayerList();
 
         layer = allLayers.get(2);
-        assertNotNull(layer);
-        assertNotNull(layer.getParent());
-        assertEquals(3, layer.getDimensions().size());
+        Assert.assertNotNull(layer);
+        Assert.assertNotNull(layer.getParent());
+        Assert.assertEquals(3, layer.getDimensions().size());
 
         // Should be false by default since not specified in layer or ancestors
-        assertFalse(layer.isQueryable());
-        assertEquals(layer.getTitle(), "Coastlines");
+        Assert.assertFalse(layer.isQueryable());
+        Assert.assertEquals(layer.getTitle(), "Coastlines");
 
         // Should be 5 total after accumulating all ancestors
-        assertEquals(5, layer.getSrs().size());
-        assertTrue(layer.getSrs().contains("EPSG:26906"));
-        assertTrue(layer.getSrs().contains("EPSG:26905"));
-        assertTrue(layer.getSrs().contains("EPSG:4326"));
-        assertTrue(layer.getSrs().contains("AUTO:42003"));
-        assertTrue(layer.getSrs().contains("AUTO:42005"));
+        Assert.assertEquals(5, layer.getSrs().size());
+        Assert.assertTrue(layer.getSrs().contains("EPSG:26906"));
+        Assert.assertTrue(layer.getSrs().contains("EPSG:26905"));
+        Assert.assertTrue(layer.getSrs().contains("EPSG:4326"));
+        Assert.assertTrue(layer.getSrs().contains("AUTO:42003"));
+        Assert.assertTrue(layer.getSrs().contains("AUTO:42005"));
 
         // 2 total, this layer plus top most layer
-        assertEquals(layer.getStyles().size(), 2);
-        assertTrue(layer.getStyles().contains(new StyleImpl("TestStyle")));
-        assertTrue(layer.getStyles().contains(new StyleImpl("default")));
+        Assert.assertEquals(layer.getStyles().size(), 2);
+        Assert.assertTrue(layer.getStyles().contains(new StyleImpl("TestStyle")));
+        Assert.assertTrue(layer.getStyles().contains(new StyleImpl("default")));
 
         // Next test layer, nested 3 deep but different path
         layer = capabilities.getLayerList().get(4);
-        assertNotNull(layer);
-        assertNotNull(layer.getParent());
-        assertEquals(3, layer.getDimensions().size());
-        assertEquals(1, layer.getExtents().size());
-        assertEquals(layer.getExtent("time").getName(), "time");
+        Assert.assertNotNull(layer);
+        Assert.assertNotNull(layer.getParent());
+        Assert.assertEquals(3, layer.getDimensions().size());
+        Assert.assertEquals(1, layer.getExtents().size());
+        Assert.assertEquals(layer.getExtent("time").getName(), "time");
 
         // Should be true by default since inherited from parent
-        assertEquals(layer.getName(), "RTOPO");
-        assertTrue(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "RTOPO");
+        Assert.assertTrue(layer.isQueryable());
     }
 }

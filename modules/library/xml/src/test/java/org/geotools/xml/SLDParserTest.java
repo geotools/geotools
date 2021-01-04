@@ -24,11 +24,12 @@ import java.util.logging.Level;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.TestCase;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
-public class SLDParserTest extends TestCase {
+public class SLDParserTest {
 
+    @Test
     public void testRemoteSLD()
             throws ParserConfigurationException, SAXException, URISyntaxException, IOException {
         URL example = new URL("http://schemas.opengis.net/sld/1.0.20/example-sld.xml");

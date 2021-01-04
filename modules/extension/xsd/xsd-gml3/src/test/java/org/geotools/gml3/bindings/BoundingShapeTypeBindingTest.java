@@ -16,16 +16,20 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class BoundingShapeTypeBindingTest extends GML3TestSupport {
-
+    @Test
     public void testEncode() throws Exception {
         Envelope e = new Envelope(-180, -90, 180, 90);
 
@@ -34,6 +38,7 @@ public class BoundingShapeTypeBindingTest extends GML3TestSupport {
         assertEquals("gml:Envelope", dom.getDocumentElement().getFirstChild().getNodeName());
     }
 
+    @Test
     public void testEncodeWithCRS() throws Exception {
         Envelope e = new ReferencedEnvelope(-180, -90, 180, 90, CRS.decode("EPSG:4326"));
         Document dom = encode(e, GML.boundedBy);
@@ -44,6 +49,7 @@ public class BoundingShapeTypeBindingTest extends GML3TestSupport {
                         .endsWith("4326"));
     }
 
+    @Test
     public void testEncodeAsNull() throws Exception {
         Envelope e = new Envelope();
         e.setToNull();

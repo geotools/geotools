@@ -37,7 +37,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @author ian */
 public class DottedNamesTest {
 
     private DataStore gpkg;

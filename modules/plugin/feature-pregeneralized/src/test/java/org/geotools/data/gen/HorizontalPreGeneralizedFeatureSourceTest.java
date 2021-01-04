@@ -17,55 +17,69 @@
 
 package org.geotools.data.gen;
 
+import org.junit.Test;
+
 public class HorizontalPreGeneralizedFeatureSourceTest
         extends AbstractPreGeneralizedFeatureSourceTest {
 
     static final String ConfigName = "src/test/resources/geninfo_horizontal.xml";
 
+    @Test
     public void testGetCount() {
         testGetCount(ConfigName);
     }
 
+    @Test
     public void testPropertySelection() {
         testPropertySelection(ConfigName);
     }
 
+    @Test
     public void testGetBounds() {
         testGetBounds(ConfigName);
     }
 
+    @Test
     public void testFeatureReader() {
         testFeatureReader(ConfigName);
     }
 
+    @Test
     public void testFeatureReaderWithoutGeom() {
         testFeatureReaderWithoutGeom(ConfigName);
     }
 
+    @Test
     public void testGetFeatures() {
         testGetFeatures(ConfigName);
     }
 
+    @Test
     public void testGetFeatures2() {
         testGetFeatures2(ConfigName);
     }
 
+    @Test
     public void testGetFeatures3() {
         testGetFeatures3(ConfigName);
     }
 
+    @Test
     public void testGetDataStore() {
         testGetDataStore(ConfigName);
     }
 
+    @Test
     public void testGetNameAndInfo() {
         testNameAndInfo(ConfigName);
     }
 
+    @Test
     public void testQueryCapabilities() {
         testQueryCapabilities(ConfigName, false);
     }
 
+    @Test
     public void testGetSchema() {
         testGetSchema(ConfigName);
     }

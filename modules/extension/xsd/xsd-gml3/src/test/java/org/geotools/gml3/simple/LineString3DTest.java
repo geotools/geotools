@@ -16,15 +16,18 @@
  */
 package org.geotools.gml3.simple;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
+import org.junit.Test;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
 public class LineString3DTest extends GeometryEncoderTestSupport {
-
+    @Test
     public void testEncode3DLine() throws Exception {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         LineString geometry = (LineString) new WKTReader2().read("LINESTRING(0 0 50, 120 0 100)");
@@ -34,6 +37,7 @@ public class LineString3DTest extends GeometryEncoderTestSupport {
         assertEquals("threed", xpath.evaluate("//gml:LineString/@gml:id", doc));
     }
 
+    @Test
     public void testEncode3DLineFromLiteCS() throws Exception {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         LiteCoordinateSequence cs =

@@ -16,24 +16,22 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import net.opengis.wfs.GetCapabilitiesType;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
-/**
- * Unit test suite for {@link GetCapabilitiesTypeBinding}
- *
- * @author Gabriel Roldan
- * @version $Id: GetCapabilitiesTypeBindingTest.java 27749 2007-11-05 09:51:33Z groldan $
- * @since 2.5.x
- */
 public class GetCapabilitiesTypeBindingTest extends WFSTestSupport {
     public GetCapabilitiesTypeBindingTest() {
         super(WFS.GetCapabilitiesType, GetCapabilitiesType.class, Binding.OVERRIDE);
     }
 
+    @Test
     public void testEncode() throws Exception {
         GetCapabilitiesType getCaps = factory.createGetCapabilitiesType();
         Document dom = encode(getCaps, WFS.GetCapabilities);
@@ -42,6 +40,7 @@ public class GetCapabilitiesTypeBindingTest extends WFSTestSupport {
         assertEquals("WFS", dom.getDocumentElement().getAttribute("service"));
     }
 
+    @Test
     public void testParse() throws Exception {
         // throw new UnsupportedOperationException("Not yet implemented");
         // temporarilly force pass to not break the build

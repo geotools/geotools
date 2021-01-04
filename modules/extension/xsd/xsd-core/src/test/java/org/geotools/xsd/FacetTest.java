@@ -19,11 +19,13 @@ package org.geotools.xsd;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.TestCase;
 import org.geotools.xs.XSConfiguration;
+import org.junit.Assert;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
-public class FacetTest extends TestCase {
+public class FacetTest {
+    @Test
     public void testList() throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -42,16 +44,17 @@ public class FacetTest extends TestCase {
 
         DOMParser parser = new DOMParser(new XSConfiguration(), doc);
         Object o = parser.parse();
-        assertTrue(o instanceof List);
+        Assert.assertTrue(o instanceof List);
 
         List list = (List) o;
-        assertEquals(3, list.size());
+        Assert.assertEquals(3, list.size());
 
-        assertEquals(Integer.valueOf(1), list.get(0));
-        assertEquals(Integer.valueOf(2), list.get(1));
-        assertEquals(Integer.valueOf(3), list.get(2));
+        Assert.assertEquals(Integer.valueOf(1), list.get(0));
+        Assert.assertEquals(Integer.valueOf(2), list.get(1));
+        Assert.assertEquals(Integer.valueOf(3), list.get(2));
     }
 
+    @Test
     public void testWhitespace() throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -71,9 +74,10 @@ public class FacetTest extends TestCase {
         DOMParser parser = new DOMParser(new XSConfiguration(), doc);
         String s = (String) parser.parse();
 
-        assertEquals("this is a normal string with some whitespace and some new lines", s);
+        Assert.assertEquals("this is a normal string with some whitespace and some new lines", s);
     }
 
+    @Test
     public void testCDATAWhitespace() throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -93,7 +97,7 @@ public class FacetTest extends TestCase {
         DOMParser parser = new DOMParser(new XSConfiguration(), doc);
         String s = (String) parser.parse();
 
-        assertEquals(
+        Assert.assertEquals(
                 " this is a \n"
                         + " normal string \n"
                         + " with some whitespace and \n"

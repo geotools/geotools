@@ -16,9 +16,14 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -33,15 +38,17 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.w3c.dom.Document;
 
 public class MultiGeometryTypeBindingTest extends KMLTestSupport {
-
+    @Test
     public void testType() {
         assertEquals(GeometryCollection.class, binding(KML.MultiGeometryType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.MultiGeometryType).getExecutionMode());
     }
 
+    @Test
     public void testParseMultiPoint() throws Exception {
         String xml =
                 "<MultiGeometry>"
@@ -55,6 +62,7 @@ public class MultiGeometryTypeBindingTest extends KMLTestSupport {
         assertEquals(2, mp.getNumPoints());
     }
 
+    @Test
     public void testEncodeMultiPoint() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         MultiPoint mp =
@@ -65,6 +73,7 @@ public class MultiGeometryTypeBindingTest extends KMLTestSupport {
         assertEquals(2, getElementsByQName(dom, KML.Point).getLength());
     }
 
+    @Test
     public void testParseMultiLineString() throws Exception {
         String xml =
                 "<MultiGeometry>"
@@ -78,6 +87,7 @@ public class MultiGeometryTypeBindingTest extends KMLTestSupport {
         assertEquals(2, ml.getNumGeometries());
     }
 
+    @Test
     public void testEncodeMultiLineString() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         MultiLineString ml =
@@ -92,6 +102,7 @@ public class MultiGeometryTypeBindingTest extends KMLTestSupport {
         assertEquals(2, getElementsByQName(dom, KML.LineString).getLength());
     }
 
+    @Test
     public void testParseMultiPolygon() throws Exception {
         String xml =
                 "<MultiGeometry>"
@@ -107,6 +118,7 @@ public class MultiGeometryTypeBindingTest extends KMLTestSupport {
         assertEquals(2, ml.getNumGeometries());
     }
 
+    @Test
     public void testEncodeMultiPolygon() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         Polygon p =
@@ -126,6 +138,7 @@ public class MultiGeometryTypeBindingTest extends KMLTestSupport {
         assertEquals(2, getElementsByQName(dom, KML.Polygon).getLength());
     }
 
+    @Test
     public void testParseMultiGeometry() throws Exception {
         String xml =
                 "<MultiGeometry>"
@@ -143,6 +156,7 @@ public class MultiGeometryTypeBindingTest extends KMLTestSupport {
         assertTrue(gc.getGeometryN(2) instanceof Polygon);
     }
 
+    @Test
     public void testEncodeMultiGeometry() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         GeometryCollection gc =

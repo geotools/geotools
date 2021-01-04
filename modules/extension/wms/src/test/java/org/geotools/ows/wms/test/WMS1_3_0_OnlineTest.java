@@ -16,6 +16,8 @@
  */
 package org.geotools.ows.wms.test;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,6 +33,7 @@ import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetFeatureInfoRequest;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.response.GetFeatureInfoResponse;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 /** @author rgould */
@@ -51,6 +54,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                         "http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?CONFIG=main&REQUEST=GetCapabilities&VERSION=1.3.0");
     }
 
+    @Test
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.3.0");
     }
@@ -61,6 +65,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         assertEquals(properties.get("SERVICE"), "WMS");
     }
 
+    @Test
     public void testCreateParser() throws Exception {
         try {
             WMSCapabilities capabilities = createCapabilities("1.3.0Capabilities.xml");
@@ -190,6 +195,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }
     }
 
+    @Test
     public void testGEOT4706() {
         try {
             WMSCapabilities capabilities = createCapabilities("envitia-OGC.xml");
@@ -211,6 +217,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }
     }
 
+    @Test
     public void testCreateGetMapRequest() throws Exception {
         WebMapServer wms = new WebMapServer(server2);
         GetMapRequest request = wms.createGetMapRequest();
@@ -220,6 +227,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         assertTrue(request.getFinalURL().toExternalForm().indexOf("image%2Fjpeg") >= 0);
     }
 
+    @Test
     public void testCreateGetFeatureInfoRequest() throws Exception {
         try {
             URL featureURL =
@@ -290,6 +298,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }
     }
 
+    @Test
     public void testCreateDescribeLayerRequest() throws Exception {
         /*try{
 
@@ -330,6 +339,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                 }*/
     }
 
+    @Test
     public void testCreateGetLegendGraphicRequest() throws Exception {
         /*try{
             WebMapServer wms = new CustomWMS(server2);
@@ -374,6 +384,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }*/
     }
 
+    @Test
     public void testParamEncoding() throws Exception {
         // this request does not work because it is encoded properly
         // Let's make sure that this doesn't happen again.

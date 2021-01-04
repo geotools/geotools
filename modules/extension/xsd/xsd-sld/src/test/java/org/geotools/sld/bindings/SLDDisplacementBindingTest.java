@@ -16,14 +16,19 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.filter.Filters;
 import org.geotools.styling.Displacement;
+import org.junit.Test;
 
 public class SLDDisplacementBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(Displacement.class, new SLDDisplacementBinding(null).getType());
     }
 
+    @Test
     public void testNormal() throws Exception {
         SLDMockData.displacement(document, document);
 

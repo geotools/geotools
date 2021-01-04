@@ -16,10 +16,13 @@
  */
 package org.geotools.data.oracle;
 
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Contains;
@@ -28,7 +31,7 @@ import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 
-public class OracleFilterToSqlTest extends TestCase {
+public class OracleFilterToSqlTest {
 
     OracleFilterToSQL encoder;
 
@@ -36,50 +39,56 @@ public class OracleFilterToSqlTest extends TestCase {
 
     GeometryFactory gf;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         encoder = new OracleFilterToSQL(null);
         ff = CommonFactoryFinder.getFilterFactory2(null);
         gf = new GeometryFactory();
     }
 
+    @Test
     public void testIncludeEncoding() throws Exception {
         // nothing to filter, no WHERE clause
-        assertEquals("WHERE 1 = 1", encoder.encodeToString(org.opengis.filter.Filter.INCLUDE));
+        Assert.assertEquals("WHERE 1 = 1", encoder.encodeToString(Filter.INCLUDE));
     }
 
+    @Test
     public void testExcludeEncoding() throws Exception {
-        assertEquals("WHERE 0 = 1", encoder.encodeToString(org.opengis.filter.Filter.EXCLUDE));
+        Assert.assertEquals("WHERE 0 = 1", encoder.encodeToString(Filter.EXCLUDE));
     }
 
+    @Test
     public void testBboxFilter() throws Exception {
         BBOX bbox = ff.bbox("GEOM", -180, -90, 180, 90, "EPSG:4326");
         String encoded = encoder.encodeToString(bbox);
-        assertEquals(
+        Assert.assertEquals(
                 "WHERE SDO_RELATE(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
                 encoded);
     }
 
+    @Test
     public void testLooseBboxFilter() throws Exception {
         BBOX bbox = ff.bbox("GEOM", -180, -90, 180, 90, "EPSG:4326");
         encoder.setLooseBBOXEnabled(true);
         String encoded = encoder.encodeToString(bbox);
-        assertEquals(
+        Assert.assertEquals(
                 "WHERE SDO_FILTER(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
                 encoded);
     }
 
+    @Test
     public void testContainsFilter() throws Exception {
         Contains contains =
                 ff.contains(
                         ff.property("SHAPE"),
                         ff.literal(gf.createPoint(new Coordinate(10.0, -10.0))));
         String encoded = encoder.encodeToString(contains);
-        assertEquals(
+        Assert.assertEquals(
                 "WHERE SDO_RELATE(\"SHAPE\", ?, 'mask=contains querytype=WINDOW') = 'TRUE' ",
                 encoded);
     }
 
+    @Test
     public void testCrossesFilter() throws Exception {
         Crosses crosses =
                 ff.crosses(
@@ -90,11 +99,12 @@ public class OracleFilterToSqlTest extends TestCase {
                                             new Coordinate(-10.0d, -10.0d), new Coordinate(10d, 10d)
                                         })));
         String encoded = encoder.encodeToString(crosses);
-        assertEquals(
+        Assert.assertEquals(
                 "WHERE SDO_RELATE(\"GEOM\", ?, 'mask=overlapbdydisjoint querytype=WINDOW') = 'TRUE' ",
                 encoded);
     }
 
+    @Test
     public void testIntersectsFilter() throws Exception {
         Intersects intersects =
                 ff.intersects(
@@ -105,11 +115,12 @@ public class OracleFilterToSqlTest extends TestCase {
                                             new Coordinate(-10.0d, -10.0d), new Coordinate(10d, 10d)
                                         })));
         String encoded = encoder.encodeToString(intersects);
-        assertEquals(
+        Assert.assertEquals(
                 "WHERE SDO_RELATE(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
                 encoded);
     }
 
+    @Test
     public void testOverlapsFilter() throws Exception {
         Overlaps overlaps =
                 ff.overlaps(
@@ -120,11 +131,12 @@ public class OracleFilterToSqlTest extends TestCase {
                                             new Coordinate(-10.0d, -10.0d), new Coordinate(10d, 10d)
                                         })));
         String encoded = encoder.encodeToString(overlaps);
-        assertEquals(
+        Assert.assertEquals(
                 "WHERE SDO_RELATE(\"GEOM\", ?, 'mask=overlapbdyintersect querytype=WINDOW') = 'TRUE' ",
                 encoded);
     }
 
+    @Test
     public void testDWithinFilterWithUnit() throws Exception {
         Coordinate coordinate = new Coordinate();
         DWithin dwithin =
@@ -134,16 +146,18 @@ public class OracleFilterToSqlTest extends TestCase {
                         10.0,
                         "kilometers");
         String encoded = encoder.encodeToString(dwithin);
-        assertEquals(
+        Assert.assertEquals(
                 "WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=km') = 'TRUE' ", encoded);
     }
 
+    @Test
     public void testDWithinFilterWithoutUnit() throws Exception {
         Coordinate coordinate = new Coordinate();
         DWithin dwithin =
                 ff.dwithin(ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, null);
         String encoded = encoder.encodeToString(dwithin);
-        assertEquals("WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0') = 'TRUE' ", encoded);
+        Assert.assertEquals(
+                "WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0') = 'TRUE' ", encoded);
     }
 
     // THIS ONE WON'T PASS RIGHT NOW, BUT WE NEED TO PUT A TEST LIKE THIS

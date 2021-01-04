@@ -17,7 +17,7 @@
  */
 package org.geotools.data.postgis;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;

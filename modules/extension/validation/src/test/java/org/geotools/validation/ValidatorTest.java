@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import junit.framework.TestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -29,6 +28,10 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
@@ -50,45 +53,47 @@ import org.opengis.filter.Filter;
  *     <p><b>Usage:</b><br>
  *     <p>
  */
-public class ValidatorTest extends TestCase {
+public class ValidatorTest {
     TestFixture fixture;
 
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         fixture = new TestFixture();
     }
 
     /*
      * @see TestCase#tearDown()
      */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         fixture = null;
     }
 
+    @Test
     public void testRepositoryGeneration() throws Exception {
         // DefaultRepository dataRepository = new DefaultRepository();
-        assertNotNull(fixture.repository.datastore("LAKES"));
-        assertNotNull(fixture.repository.datastore("STREAMS"));
-        assertNotNull(fixture.repository.datastore("SWAMPS"));
-        assertNotNull(fixture.repository.datastore("RIVERS"));
+        Assert.assertNotNull(fixture.repository.datastore("LAKES"));
+        Assert.assertNotNull(fixture.repository.datastore("STREAMS"));
+        Assert.assertNotNull(fixture.repository.datastore("SWAMPS"));
+        Assert.assertNotNull(fixture.repository.datastore("RIVERS"));
 
-        assertNotNull(fixture.repository.source("LAKES", "lakes"));
-        assertNotNull(fixture.repository.source("STREAMS", "streams"));
-        assertNotNull(fixture.repository.source("SWAMPS", "swamps"));
-        assertNotNull(fixture.repository.source("RIVERS", "rivers"));
+        Assert.assertNotNull(fixture.repository.source("LAKES", "lakes"));
+        Assert.assertNotNull(fixture.repository.source("STREAMS", "streams"));
+        Assert.assertNotNull(fixture.repository.source("SWAMPS", "swamps"));
+        Assert.assertNotNull(fixture.repository.source("RIVERS", "rivers"));
     }
 
+    @Test
     public void testFeatureValidation() throws Exception {
         SimpleFeatureSource lakes = fixture.repository.source("LAKES", "lakes");
         SimpleFeatureCollection features = lakes.getFeatures();
         DefaultFeatureResults results = new DefaultFeatureResults();
         fixture.processor.runFeatureTests("LAKES", features, results);
 
-        assertEquals("lakes test", 0, results.error.size());
+        Assert.assertEquals("lakes test", 0, results.error.size());
     }
 
     public SimpleFeature createInvalidLake() throws Exception {
@@ -130,6 +135,7 @@ public class ValidatorTest extends TestCase {
         return SimpleFeatureBuilder.build(LAKE, array, "splash");
     }
 
+    @Test
     public void testFeatureValidation2() throws Exception {
         SimpleFeatureSource lakes = fixture.repository.source("LAKES", "lakes");
         SimpleFeature newFeature = createInvalidLake();
@@ -143,9 +149,10 @@ public class ValidatorTest extends TestCase {
         DefaultFeatureResults results = new DefaultFeatureResults();
         fixture.processor.runFeatureTests("LAKES", add, results);
 
-        assertEquals("lakes test", 2, results.error.size());
+        Assert.assertEquals("lakes test", 2, results.error.size());
     }
 
+    @Test
     public void testIntegrityValidation() throws Exception {
         DefaultFeatureResults results = new DefaultFeatureResults();
         Set<Name> set = fixture.repository.getNames();
@@ -160,9 +167,10 @@ public class ValidatorTest extends TestCase {
             }
         }
         fixture.processor.runIntegrityTests(set, map, null, results);
-        assertEquals("integrity test", 0, results.error.size());
+        Assert.assertEquals("integrity test", 0, results.error.size());
     }
 
+    @Test
     public void testValidator() throws Exception {
         Validator validator = new Validator(fixture.repository, fixture.processor);
 
@@ -171,9 +179,10 @@ public class ValidatorTest extends TestCase {
         DefaultFeatureResults results = new DefaultFeatureResults();
         validator.featureValidation("LAKES", features, results);
 
-        assertEquals(0, results.error.size());
+        Assert.assertEquals(0, results.error.size());
     }
 
+    @Test
     public void testValidator2() throws Exception {
         Validator validator = new Validator(fixture.repository, fixture.processor);
 
@@ -189,13 +198,14 @@ public class ValidatorTest extends TestCase {
         fixture.processor.runFeatureTests("LAKES", add, results);
 
         // System.out.println(results.error);
-        assertEquals("lakes test", 2, results.error.size());
+        Assert.assertEquals("lakes test", 2, results.error.size());
 
         // results = new DefaultFeatureResults();
         validator.featureValidation("LAKES", add, results);
-        assertEquals("lakes test2", 5, results.error.size());
+        Assert.assertEquals("lakes test2", 5, results.error.size());
     }
 
+    @Test
     public void testIntegrityValidator() throws Exception {
         Validator validator = new Validator(fixture.repository, fixture.processor);
 
@@ -212,9 +222,10 @@ public class ValidatorTest extends TestCase {
             }
         }
         validator.integrityValidation(map, null, results);
-        assertEquals("integrity test", 0, results.error.size());
+        Assert.assertEquals("integrity test", 0, results.error.size());
     }
 
+    @Test
     public void testIntegrityValidator2() throws Exception {
         Validator validator = new Validator(fixture.repository, fixture.processor);
 
@@ -225,6 +236,6 @@ public class ValidatorTest extends TestCase {
         map.put(new NameImpl("RIVERS", "rivers"), fixture.repository.source("RIVERS", "rivers"));
 
         validator.integrityValidation(map, null, results);
-        assertEquals("integrity test", 0, results.error.size());
+        Assert.assertEquals("integrity test", 0, results.error.size());
     }
 }

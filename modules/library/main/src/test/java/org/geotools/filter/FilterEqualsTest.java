@@ -20,9 +20,6 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.Collections;
 import java.util.logging.Logger;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -30,6 +27,9 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.expression.AddImpl;
 import org.geotools.filter.expression.SubtractImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -52,7 +52,7 @@ import org.opengis.filter.spatial.Disjoint;
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
  */
-public class FilterEqualsTest extends TestCase {
+public class FilterEqualsTest {
 
     /** Standard logging instance */
     private static final Logger LOGGER =
@@ -74,35 +74,14 @@ public class FilterEqualsTest extends TestCase {
 
     boolean set = false;
 
-    /** Constructor with test name. */
-    public FilterEqualsTest(String testName) {
-        super(testName);
-    }
-
-    /** Main for test runner. */
-    public static void main(String[] args) {
-        org.geotools.util.logging.Logging.GEOTOOLS.forceMonolineConsoleOutput();
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /**
-     * Required suite builder.
-     *
-     * @return A test suite for this unit test.
-     */
-    public static Test suite() {
-
-        TestSuite suite = new TestSuite(FilterEqualsTest.class);
-        return suite;
-    }
-
     /**
      * Sets up a schema and a test feature.
      *
      * @throws SchemaException If there is a problem setting up the schema.
      * @throws IllegalAttributeException If problem setting up the feature.
      */
-    protected void setUp() throws SchemaException, IllegalAttributeException {
+    @Before
+    public void setUp() throws SchemaException, IllegalAttributeException {
         if (set) {
             return;
         }
@@ -153,11 +132,12 @@ public class FilterEqualsTest extends TestCase {
         // LOGGER.finer("...flat feature created");
     }
 
+    @Test
     public void testLiteralExpressionImplEquals() {
         try {
             Literal testString1 = new LiteralExpressionImpl("test literal");
             Literal testString2 = new LiteralExpressionImpl("test literal");
-            assertEquals(testString1, testString2);
+            Assert.assertEquals(testString1, testString2);
 
             Literal testOtherString = new LiteralExpressionImpl("not test literal");
             assertNotEquals(testString1, testOtherString);
@@ -166,27 +146,29 @@ public class FilterEqualsTest extends TestCase {
             assertNotEquals(testString1, testNumber34);
 
             Literal testOtherNumber34 = new LiteralExpressionImpl(Integer.valueOf(34));
-            assertEquals(testNumber34, testOtherNumber34);
+            Assert.assertEquals(testNumber34, testOtherNumber34);
         } catch (IllegalFilterException e) {
             LOGGER.warning("bad filter " + e.getMessage());
         }
     }
 
+    @Test
     public void testFidFilter() {
         FidFilterImpl ff = new FidFilterImpl(Collections.singleton(new FeatureIdImpl("1")));
 
         FidFilterImpl ff2 = new FidFilterImpl(Collections.singleton(new FeatureIdImpl("1")));
-        assertNotNull(ff2);
-        assertEquals(ff, ff2);
-        assertFalse(ff.equals(null));
-        assertFalse(ff.equals("a string not even a filter"));
+        Assert.assertNotNull(ff2);
+        Assert.assertEquals(ff, ff2);
+        Assert.assertFalse(ff.equals(null));
+        Assert.assertFalse(ff.equals("a string not even a filter"));
         ff2.addFid("2");
-        assertFalse(ff.equals(ff2));
+        Assert.assertFalse(ff.equals(ff2));
 
         ff.addFid("2");
-        assertEquals(ff, ff2);
+        Assert.assertEquals(ff, ff2);
     }
 
+    @Test
     public void testExpressionMath() {
         try {
             MathExpressionImpl testMath1;
@@ -199,23 +181,24 @@ public class FilterEqualsTest extends TestCase {
             testMath2 = new AddImpl(null, null);
             testMath2.setExpression1(testExp2);
             testMath2.setExpression2(testExp1);
-            assertEquals(testMath1, testMath2);
+            Assert.assertEquals(testMath1, testMath2);
             testExp3 = new LiteralExpressionImpl(Integer.valueOf(4));
             testExp4 = new LiteralExpressionImpl(Integer.valueOf(4));
             testMath2.setExpression1(testExp3);
-            assertFalse(testMath1.equals(testMath2));
+            Assert.assertFalse(testMath1.equals(testMath2));
             testMath1.setExpression1(testExp4);
-            assertEquals(testMath1, testMath2);
+            Assert.assertEquals(testMath1, testMath2);
             testMath1 = new SubtractImpl(null, null);
             testMath1.setExpression1(testExp4);
             testMath1.setExpression1(testExp2);
-            assertFalse(testMath1.equals(testMath2));
-            assertFalse(testMath1.equals("Random Object that happens to be a string"));
+            Assert.assertFalse(testMath1.equals(testMath2));
+            Assert.assertFalse(testMath1.equals("Random Object that happens to be a string"));
         } catch (IllegalFilterException e) {
             LOGGER.warning("bad filter: " + e.getMessage());
         }
     }
 
+    @Test
     public void testExpressionAttribute() throws IllegalFilterException, SchemaException {
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.add("testBoolean", Boolean.class);
@@ -226,17 +209,18 @@ public class FilterEqualsTest extends TestCase {
         // FeatureType testSchema2 = feaTypeFactory.getFeatureType();
         testExp1 = new AttributeExpressionImpl(testSchema, "testBoolean");
         testExp2 = new AttributeExpressionImpl(testSchema, "testBoolean");
-        assertEquals(testExp1, testExp2);
+        Assert.assertEquals(testExp1, testExp2);
         testExp3 = new AttributeExpressionImpl(testSchema, "testString");
-        assertFalse(testExp1.equals(testExp3));
+        Assert.assertFalse(testExp1.equals(testExp3));
 
         testExp4 = new AttributeExpressionImpl(testSchema2, "testBoolean");
-        assertFalse(testExp1.equals(testExp4));
+        Assert.assertFalse(testExp1.equals(testExp4));
 
         testExp1 = new AttributeExpressionImpl(testSchema2, "testBoolean");
-        assertEquals(testExp1, testExp4);
+        Assert.assertEquals(testExp1, testExp4);
     }
 
+    @Test
     public void testCompareFilter() throws IllegalFilterException {
         testExp1 = new LiteralExpressionImpl(Integer.valueOf(45));
         testExp2 = new LiteralExpressionImpl(Integer.valueOf(45));
@@ -244,16 +228,17 @@ public class FilterEqualsTest extends TestCase {
         testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
         PropertyIsEqualTo cFilter1 = ff.equals(testExp1, testExp3);
         PropertyIsEqualTo cFilter2 = ff.equals(testExp1, testExp3);
-        assertEquals(cFilter1, cFilter2);
+        Assert.assertEquals(cFilter1, cFilter2);
         cFilter2 = ff.equals(testExp2, testExp4);
-        assertEquals(cFilter1, cFilter2);
+        Assert.assertEquals(cFilter1, cFilter2);
         // see if converters make this work
         cFilter2 = ff.equals(ff.literal(Double.valueOf(45.0)), testExp3);
-        assertEquals(cFilter1, cFilter2);
+        Assert.assertEquals(cFilter1, cFilter2);
         tFilter1 = ff.between(testExp1, testExp2, testExp3);
-        assertFalse(cFilter1.equals(tFilter1));
+        Assert.assertFalse(cFilter1.equals(tFilter1));
     }
 
+    @Test
     public void testBetweenFilter() throws IllegalFilterException {
         IsBetweenImpl bFilter1 = new IsBetweenImpl(null, null, null);
         IsBetweenImpl bFilter2 = new IsBetweenImpl(null, null, null);
@@ -269,16 +254,17 @@ public class FilterEqualsTest extends TestCase {
         bFilter2.setExpression(testExp4);
         bFilter1.setExpression2(testLit1);
         bFilter2.setExpression2(testLit2);
-        assertEquals(bFilter2, bFilter1);
+        Assert.assertEquals(bFilter2, bFilter1);
         tFilter1 =
                 ff.equals(
                         org.opengis.filter.expression.Expression.NIL,
                         org.opengis.filter.expression.Expression.NIL);
-        assertFalse(bFilter2.equals(tFilter1));
+        Assert.assertFalse(bFilter2.equals(tFilter1));
         bFilter2.setExpression2(new LiteralExpressionImpl(Integer.valueOf(65)));
-        assertFalse(bFilter2.equals(bFilter1));
+        Assert.assertFalse(bFilter2.equals(bFilter1));
     }
 
+    @Test
     public void testLikeFilter() throws IllegalFilterException {
         LikeFilterImpl lFilter1 = new LikeFilterImpl();
         LikeFilterImpl lFilter2 = new LikeFilterImpl();
@@ -301,22 +287,23 @@ public class FilterEqualsTest extends TestCase {
         lFilter2.setWildCard(wcMulti);
         lFilter2.setSingleChar(wcSingle);
         lFilter2.setEscape(escape);
-        assertEquals(lFilter1, lFilter2);
+        Assert.assertEquals(lFilter1, lFilter2);
 
         lFilter2.setLiteral("te__t!");
         lFilter2.setWildCard(wcMulti);
         lFilter2.setSingleChar(wcSingle);
         lFilter2.setEscape(escape);
-        assertFalse(lFilter1.equals(lFilter2));
+        Assert.assertFalse(lFilter1.equals(lFilter2));
 
         lFilter2.setLiteral(pattern);
         lFilter2.setWildCard(wcMulti);
         lFilter2.setSingleChar(wcSingle);
         lFilter2.setEscape(escape);
         lFilter2.setExpression(testExp2);
-        assertFalse(lFilter1.equals(lFilter2));
+        Assert.assertFalse(lFilter1.equals(lFilter2));
     }
 
+    @Test
     public void testLogicFilter() throws IllegalFilterException {
         testExp1 = new LiteralExpressionImpl(Integer.valueOf(45));
         testExp2 = new LiteralExpressionImpl(Integer.valueOf(45));
@@ -327,27 +314,28 @@ public class FilterEqualsTest extends TestCase {
 
         org.opengis.filter.Filter logFilter1 = ff.and(cFilter1, cFilter2);
         org.opengis.filter.Filter logFilter2 = ff.and(cFilter1, cFilter2);
-        assertEquals(logFilter1, logFilter2);
+        Assert.assertEquals(logFilter1, logFilter2);
 
         logFilter1 = ff.not(cFilter2);
-        assertFalse(logFilter1.equals(logFilter2));
+        Assert.assertFalse(logFilter1.equals(logFilter2));
         cFilter1 = ff.equals(testExp1, testExp3);
         logFilter2 = ff.not(cFilter1);
-        assertEquals(logFilter1, logFilter2);
-        assertFalse(logFilter1.equals(ff.between(testExp1, testExp2, testExp3)));
+        Assert.assertEquals(logFilter1, logFilter2);
+        Assert.assertFalse(logFilter1.equals(ff.between(testExp1, testExp2, testExp3)));
         Or logFilter3 = ff.or(logFilter1, logFilter2);
         Or logFilter4 = ff.or(logFilter1, logFilter2);
-        assertEquals(logFilter3, logFilter4);
+        Assert.assertEquals(logFilter3, logFilter4);
 
         // Questionable behavior.  Is this what we want?
         Or logFilter5 = ff.or(cFilter1, logFilter3);
         // does not change structure of logFilter3
         Or logFilter6 = ff.or(logFilter4, cFilter1);
         // different structure, but same result
-        assertEquals(logFilter5, logFilter6); // do we want these equal?
-        assertEquals(logFilter4, logFilter3); // shouldn't they be equal?
+        Assert.assertEquals(logFilter5, logFilter6); // do we want these equal?
+        Assert.assertEquals(logFilter4, logFilter3); // shouldn't they be equal?
     }
 
+    @Test
     public void testNullFilter() throws IllegalFilterException {
         testExp1 = new AttributeExpressionImpl(testSchema, "testDouble");
         testExp2 = new AttributeExpressionImpl(testSchema, "testDouble");
@@ -356,19 +344,20 @@ public class FilterEqualsTest extends TestCase {
         NullFilterImpl nullFilter2 = new NullFilterImpl(Expression.NIL);
         nullFilter1.setExpression(testExp1);
         nullFilter2.setExpression(testExp2);
-        assertEquals(nullFilter1, nullFilter2);
+        Assert.assertEquals(nullFilter1, nullFilter2);
         nullFilter1.setExpression(testExp3);
-        assertFalse(nullFilter1.equals(nullFilter2));
-        assertFalse(nullFilter1.equals(new IsBetweenImpl(null, null, null)));
+        Assert.assertFalse(nullFilter1.equals(nullFilter2));
+        Assert.assertFalse(nullFilter1.equals(new IsBetweenImpl(null, null, null)));
     }
 
+    @Test
     public void testGeometryFilter() throws IllegalFilterException {
         Disjoint geomFilter1 = ff.disjoint(testExp1, testExp4);
         Disjoint geomFilter2 = ff.disjoint(testExp2, testExp4);
-        assertEquals(geomFilter1, geomFilter2);
+        Assert.assertEquals(geomFilter1, geomFilter2);
         geomFilter2 = ff.disjoint(testExp2, new LiteralExpressionImpl(Double.valueOf(45)));
-        assertFalse(geomFilter1.equals(geomFilter2));
+        Assert.assertFalse(geomFilter1.equals(geomFilter2));
         tFilter1 = ff.between(ff.literal(1), ff.literal(-1), ff.literal(3));
-        assertFalse(geomFilter1.equals(tFilter1));
+        Assert.assertFalse(geomFilter1.equals(tFilter1));
     }
 }

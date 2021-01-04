@@ -16,12 +16,15 @@
  */
 package org.geotools.validation.relate;
 
-import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.validation.ValidationResults;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -38,7 +41,7 @@ import org.opengis.filter.FilterFactory;
  * @version <br>
  *     <b>Puropse:</b><br>
  */
-public class SpatialTestCase extends TestCase {
+public class SpatialTestCase {
     protected GeometryFactory gf;
     protected SimpleFeatureType lineType;
     protected SimpleFeature[] lineFeatures;
@@ -51,10 +54,7 @@ public class SpatialTestCase extends TestCase {
     MemoryDataStore mds; // assumes a consistant data type
     ValidationResults vr;
 
-    /** Constructor for OverlapsIntegrityTest. */
-    public SpatialTestCase(String arg0) {
-        super(arg0);
-    }
+    @Rule public TestName testName = new TestName();
 
     /**
      * @see junit.framework.TestCase#setUp() <code><pre>
@@ -77,10 +77,11 @@ public class SpatialTestCase extends TestCase {
      *
      * </pre></code>
      */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         gf = new GeometryFactory();
         mds = new MemoryDataStore();
-        namespace = getName();
+        namespace = testName.getMethodName();
         vr = new TempFeatureResults();
 
         lineFeatures = new SimpleFeature[4];
@@ -139,7 +140,8 @@ public class SpatialTestCase extends TestCase {
         mds.addFeature(lineFeatures[3]);
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         gf = null;
         lineType = null;
         lineFeatures = null;

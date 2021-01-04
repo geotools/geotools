@@ -16,12 +16,15 @@
  */
 package org.geotools.data.collection;
 
+import static org.junit.Assert.*;
+
 import java.util.Comparator;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.FeatureCollectionWrapperTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.SortedSimpleFeatureCollection;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
@@ -31,18 +34,21 @@ public class SortedFeatureCollectionTest extends FeatureCollectionWrapperTestSup
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
+    @Test
     public void testNaturalSort() throws Exception {
         SortedSimpleFeatureCollection sorted =
                 new SortedSimpleFeatureCollection(delegate, new SortBy[] {SortBy.NATURAL_ORDER});
         checkSorted(sorted, DataUtilities.sortComparator(SortBy.NATURAL_ORDER));
     }
 
+    @Test
     public void testReverseSort() throws Exception {
         SortedSimpleFeatureCollection sorted =
                 new SortedSimpleFeatureCollection(delegate, new SortBy[] {SortBy.REVERSE_ORDER});
         checkSorted(sorted, DataUtilities.sortComparator(SortBy.REVERSE_ORDER));
     }
 
+    @Test
     public void testSortAttribute() throws Exception {
         SortBy sort = ff.sort("someAtt", SortOrder.ASCENDING);
         SortedSimpleFeatureCollection sorted =
@@ -50,6 +56,7 @@ public class SortedFeatureCollectionTest extends FeatureCollectionWrapperTestSup
         checkSorted(sorted, DataUtilities.sortComparator(sort));
     }
 
+    @Test
     public void testSortAttributeDescending() throws Exception {
         SortBy sort = ff.sort("someAtt", SortOrder.DESCENDING);
         SortedSimpleFeatureCollection sorted =

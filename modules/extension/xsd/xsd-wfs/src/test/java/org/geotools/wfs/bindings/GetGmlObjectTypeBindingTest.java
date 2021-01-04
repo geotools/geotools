@@ -16,6 +16,10 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigInteger;
 import java.net.URL;
 import net.opengis.wfs.GetGmlObjectType;
@@ -25,17 +29,11 @@ import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.identity.GmlObjectId;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Unit test suite for {@link GetGmlObjectTypeBinding}
- *
- * @author Gabriel Roldan (TOPP)
- * @version $Id$
- * @since 2.5.x
- */
 public class GetGmlObjectTypeBindingTest extends WFSTestSupport {
 
     public GetGmlObjectTypeBindingTest() {
@@ -43,6 +41,7 @@ public class GetGmlObjectTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @Test
     public void testEncode() throws Exception {
         GetGmlObjectType req = factory.createGetGmlObjectType();
         {
@@ -71,6 +70,7 @@ public class GetGmlObjectTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "GetGmlObjectTypeBindingTest.xml");
         buildDocument(resource);

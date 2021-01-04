@@ -16,14 +16,9 @@
  */
 package org.geotools.graph.traverse.standard;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.fail;
-
 import java.util.ArrayDeque;
 import java.util.Map;
 import java.util.Queue;
-import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
@@ -34,18 +29,16 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.CountingWalker;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class DepthFirstIteratorTest extends TestCase {
+public class DepthFirstIteratorTest {
 
     private GraphBuilder m_builder;
 
-    public DepthFirstIteratorTest(String name) {
-        super(name);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
     }
@@ -55,6 +48,7 @@ public class DepthFirstIteratorTest extends TestCase {
      * <br>
      * Expected: 1. Every node should be visited. 2. Nodes should be visited in order.
      */
+    @Test
     public void test_0() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -67,7 +61,7 @@ public class DepthFirstIteratorTest extends TestCase {
                         element.setCount(getCount() - 1);
 
                         // nodes should be visited in order
-                        assertEquals(element.getID(), getCount() - 1);
+                        Assert.assertEquals(element.getID(), getCount() - 1);
                         return (GraphTraversal.CONTINUE);
                     }
                 };
@@ -82,10 +76,10 @@ public class DepthFirstIteratorTest extends TestCase {
         traversal.traverse();
 
         // every node should have been visited
-        assertEquals(walker.getCount(), builder().getGraph().getNodes().size());
+        Assert.assertEquals(walker.getCount(), builder().getGraph().getNodes().size());
 
         // ensure nodes visited only once
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -96,6 +90,7 @@ public class DepthFirstIteratorTest extends TestCase {
      * node should not be visited. After continue: 1. First node visited after continue should have
      * id = id + suspend node + 1 2. Every node should be visited.
      */
+    @Test
     public void test_1() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -117,7 +112,7 @@ public class DepthFirstIteratorTest extends TestCase {
                             }
                         } else if (m_mode == 1) {
                             // check first node after continue
-                            assertEquals(element.getID(), suspend + 1);
+                            Assert.assertEquals(element.getID(), suspend + 1);
                             m_mode++;
                         }
                         return (GraphTraversal.CONTINUE);
@@ -137,15 +132,15 @@ public class DepthFirstIteratorTest extends TestCase {
                 new GraphVisitor() {
                     @Override
                     public int visit(Graphable component) {
-                        if (component.getID() <= suspend) assertTrue(component.isVisited());
-                        else assertFalse(component.isVisited());
+                        if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
+                        else Assert.assertFalse(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
         // ensure nodes only visited once
-        assertEquals(walker.getCount(), nnodes - suspend + 1);
+        Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         traversal.traverse();
 
@@ -154,14 +149,14 @@ public class DepthFirstIteratorTest extends TestCase {
                 new GraphVisitor() {
                     @Override
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
         // ensure nodes only visited once
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -171,6 +166,7 @@ public class DepthFirstIteratorTest extends TestCase {
      * <p>Expected: After kill: 1. Every node of with an id greater than the id of the killing node
      * should not be visited. After continue: 2. No more nodes should be visited.
      */
+    @Test
     public void test_2() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -191,7 +187,7 @@ public class DepthFirstIteratorTest extends TestCase {
                             }
                         } else if (m_mode == 1) {
                             // should never get here
-                            fail();
+                            Assert.fail();
                         }
                         return (GraphTraversal.CONTINUE);
                     }
@@ -210,15 +206,15 @@ public class DepthFirstIteratorTest extends TestCase {
                 new GraphVisitor() {
                     @Override
                     public int visit(Graphable component) {
-                        if (component.getID() <= kill) assertTrue(component.isVisited());
-                        else assertFalse(component.isVisited());
+                        if (component.getID() <= kill) Assert.assertTrue(component.isVisited());
+                        else Assert.assertFalse(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
         // ensure nodes only visited once
-        assertEquals(walker.getCount(), nnodes - kill + 1);
+        Assert.assertEquals(walker.getCount(), nnodes - kill + 1);
 
         // continue, no more nodes should be visited
         traversal.traverse();
@@ -230,6 +226,7 @@ public class DepthFirstIteratorTest extends TestCase {
      * Expected: 1. Every node should be visited. 2. For each node, every node in one of its two
      * subtrees should have been visited before every node in the other subtree.
      */
+    @Test
     public void test_3() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -267,7 +264,7 @@ public class DepthFirstIteratorTest extends TestCase {
                     @Override
                     public int visit(Graphable component) {
                         // ensure component visited
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
 
                         Node ln = (Node) obj2node.get(component.getObject().toString() + ".0");
                         Node rn = (Node) obj2node.get(component.getObject().toString() + ".1");
@@ -292,8 +289,8 @@ public class DepthFirstIteratorTest extends TestCase {
 
                                 if (ln == null) continue;
 
-                                assertTrue(ln.getCount() < n2.getCount());
-                                assertTrue(rn.getCount() < n2.getCount());
+                                Assert.assertTrue(ln.getCount() < n2.getCount());
+                                Assert.assertTrue(rn.getCount() < n2.getCount());
 
                                 queue.add(ln);
                                 queue.add(rn);
@@ -306,7 +303,7 @@ public class DepthFirstIteratorTest extends TestCase {
         builder().getGraph().visitNodes(visitor);
 
         // ensure nodes only visited once
-        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
+        Assert.assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -318,6 +315,7 @@ public class DepthFirstIteratorTest extends TestCase {
      * <p>After continue: 1. First node visited should be child of suspending node. 2. Every node
      * should be visited.
      */
+    @Test
     public void test_4() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -342,11 +340,11 @@ public class DepthFirstIteratorTest extends TestCase {
                         } else if (m_mode == 1) {
                             String eid = element.getObject().toString();
                             if (ln.isVisited()) {
-                                assertTrue(
+                                Assert.assertTrue(
                                         eid.equals(ln.getObject().toString() + ".0")
                                                 || eid.equals(ln.getObject().toString() + ".1"));
                             } else {
-                                assertTrue(
+                                Assert.assertTrue(
                                         eid.equals(rn.getObject().toString() + ".0")
                                                 || eid.equals(rn.getObject().toString() + ".1"));
                             }
@@ -366,16 +364,17 @@ public class DepthFirstIteratorTest extends TestCase {
         traversal.traverse();
 
         // ensure that only root and one of children is visited
-        assertTrue(root.isVisited());
-        assertTrue((rn.isVisited() && !ln.isVisited()) || (!rn.isVisited() && ln.isVisited()));
-        assertEquals(2, walker.getCount());
+        Assert.assertTrue(root.isVisited());
+        Assert.assertTrue(
+                (rn.isVisited() && !ln.isVisited()) || (!rn.isVisited() && ln.isVisited()));
+        Assert.assertEquals(2, walker.getCount());
 
         GraphVisitor visitor =
                 new GraphVisitor() {
                     @Override
                     public int visit(Graphable component) {
                         if (component != root && component != ln && component != rn) {
-                            assertFalse(component.isVisited());
+                            Assert.assertFalse(component.isVisited());
                         }
                         return (0);
                     }
@@ -389,14 +388,14 @@ public class DepthFirstIteratorTest extends TestCase {
                 new GraphVisitor() {
                     @Override
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
                         return (0);
                     }
                 };
 
         builder().getGraph().visitNodes(visitor);
 
-        assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
+        Assert.assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
     }
 
     /**
@@ -409,6 +408,7 @@ public class DepthFirstIteratorTest extends TestCase {
      *
      * <p>After continue: 1. Same as after kill.
      */
+    @Test
     public void test_5() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -432,7 +432,7 @@ public class DepthFirstIteratorTest extends TestCase {
                                 return (GraphTraversal.KILL_BRANCH);
                             }
                         } else if (m_mode == 1) {
-                            assertTrue(
+                            Assert.assertTrue(
                                     (ln.isVisited() && element == rn)
                                             || (rn.isVisited() && element == ln));
                             m_mode++;
@@ -461,20 +461,20 @@ public class DepthFirstIteratorTest extends TestCase {
                     @Override
                     public int visit(Graphable component) {
                         String eid = component.getObject().toString();
-                        if (eid.length() <= id.length()) assertTrue(component.isVisited());
-                        else if (eid.startsWith(id)) assertFalse(component.isVisited());
-                        else assertTrue(component.isVisited());
+                        if (eid.length() <= id.length()) Assert.assertTrue(component.isVisited());
+                        else if (eid.startsWith(id)) Assert.assertFalse(component.isVisited());
+                        else Assert.assertTrue(component.isVisited());
 
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), (int) Math.pow(2, k) + 1);
+        Assert.assertEquals(walker.getCount(), (int) Math.pow(2, k) + 1);
 
         traversal.traverse();
 
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), (int) Math.pow(2, k) + 1);
+        Assert.assertEquals(walker.getCount(), (int) Math.pow(2, k) + 1);
     }
 
     /**
@@ -482,6 +482,7 @@ public class DepthFirstIteratorTest extends TestCase {
      * <br>
      * Expected: 1. All nodes visited.
      */
+    @Test
     public void test_6() {
         int nnodes = 100;
         GraphTestUtil.buildCircular(builder(), nnodes);
@@ -510,13 +511,13 @@ public class DepthFirstIteratorTest extends TestCase {
                 new GraphVisitor() {
                     @Override
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     protected DepthFirstIterator createIterator() {

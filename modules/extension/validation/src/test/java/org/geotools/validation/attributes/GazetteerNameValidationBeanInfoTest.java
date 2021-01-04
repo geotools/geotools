@@ -20,7 +20,8 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.net.URL;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * GazetteerNameValidationBeanInfoTest purpose.
@@ -31,18 +32,12 @@ import junit.framework.TestCase;
  * @author $Author: sploreg $ (last modification)
  * @version $Id$
  */
-public class GazetteerNameValidationBeanInfoTest extends TestCase {
+public class GazetteerNameValidationBeanInfoTest {
 
-    public GazetteerNameValidationBeanInfoTest() {
-        super("");
-    }
-
-    public GazetteerNameValidationBeanInfoTest(String s) {
-        super(s);
-    }
     /*
      * Class to test for PropertyDescriptor[] getPropertyDescriptors()
      */
+    @Test
     public void testGetPropertyDescriptors() {
         try {
             GazetteerNameValidation gnv = new GazetteerNameValidation();
@@ -60,14 +55,14 @@ public class GazetteerNameValidationBeanInfoTest extends TestCase {
                     url = propertyDescriptor;
                 }
             }
-            assertNotNull(url);
-            assertNotNull(name);
-            assertEquals("test", name.getReadMethod().invoke(gnv, null));
-            assertEquals(
+            Assert.assertNotNull(url);
+            Assert.assertNotNull(name);
+            Assert.assertEquals("test", name.getReadMethod().invoke(gnv, null));
+            Assert.assertEquals(
                     (new URL("http://http://hydra/time/")), url.getReadMethod().invoke(gnv, null));
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
     }
 }

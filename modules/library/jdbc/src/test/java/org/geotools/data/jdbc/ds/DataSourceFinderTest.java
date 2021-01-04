@@ -20,14 +20,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
-import junit.framework.TestCase;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.jdbc.datasource.DBCPDataSourceFactory;
 import org.geotools.data.jdbc.datasource.DataSourceFinder;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class DataSourceFinderTest extends TestCase {
+public class DataSourceFinderTest {
+    @Test
     public void testDbcpFactory() throws IOException {
-        assertTrue(new DBCPDataSourceFactory().isAvailable());
+        Assert.assertTrue(new DBCPDataSourceFactory().isAvailable());
         DataSourceFinder.scanForPlugins();
 
         Map<String, Object> map = new HashMap<>();
@@ -40,8 +42,8 @@ public class DataSourceFinderTest extends TestCase {
         map.put(DBCPDataSourceFactory.MAXIDLE.key, Integer.valueOf(0));
 
         DataSource source = DataSourceFinder.getDataSource(map);
-        assertNotNull(source);
-        assertTrue(source instanceof BasicDataSource);
+        Assert.assertNotNull(source);
+        Assert.assertTrue(source instanceof BasicDataSource);
     }
 
     //    public void testJNDIFactory() throws Exception {

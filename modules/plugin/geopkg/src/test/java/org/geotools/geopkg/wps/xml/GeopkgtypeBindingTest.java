@@ -16,76 +16,31 @@
  */
 package org.geotools.geopkg.wps.xml;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.Color;
 import javax.xml.namespace.QName;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * Binding test case for http://www.opengis.net/gpkg:geopkgtype.
- *
- * <p>
- *
- * <pre>
- *   <code>
- *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;xs:complexType name="geopkgtype" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
- *      &lt;xs:sequence&gt;
- *        &lt;xs:element maxOccurs="unbounded" minOccurs="0" name="features"&gt;
- *          &lt;xs:complexType name="geopkgtype_features"&gt;
- *            &lt;xs:complexContent&gt;
- *              &lt;xs:extension base="layertype"&gt;
- *                &lt;xs:sequence&gt;
- *                  &lt;xs:element name="featuretype" type="xs:string"/&gt;
- *                  &lt;xs:element minOccurs="0" name="propertynames" type="xs:string"/&gt;
- *                  &lt;xs:element minOccurs="0" name="filter" type="fes:FilterType"/&gt;
- *                &lt;/xs:sequence&gt;
- *              &lt;/xs:extension&gt;
- *            &lt;/xs:complexContent&gt;
- *          &lt;/xs:complexType&gt;
- *        &lt;/xs:element&gt;
- *        &lt;xs:element maxOccurs="unbounded" minOccurs="0" name="tiles"&gt;
- *          &lt;xs:complexType name="geopkgtype_tiles"&gt;
- *            &lt;xs:complexContent&gt;
- *              &lt;xs:extension base="layertype"&gt;
- *                &lt;xs:sequence&gt;
- *                  &lt;xs:element name="layers" type="xs:string"/&gt;
- *                  &lt;xs:choice&gt;
- *                    &lt;xs:element name="styles" type="xs:string"/&gt;
- *                    &lt;xs:element name="sld" type="xs:string"/&gt;
- *                    &lt;xs:element name="sldbody" type="xs:string"/&gt;
- *                  &lt;/xs:choice&gt;
- *                  &lt;xs:element name="format" type="xs:string"/&gt;
- *                  &lt;xs:element name="bgcolor" type="xs:string"/&gt;
- *                  &lt;xs:element name="transparent" type="xs:boolean"/&gt;
- *                  &lt;xs:element name="gridset" type="gridsettype"/&gt;
- *                  &lt;xs:element name="coverage" type="coveragetype"/&gt;
- *                &lt;/xs:sequence&gt;
- *              &lt;/xs:extension&gt;
- *            &lt;/xs:complexContent&gt;
- *          &lt;/xs:complexType&gt;
- *        &lt;/xs:element&gt;
- *      &lt;/xs:sequence&gt;
- *      &lt;xs:attribute name="name" use="required"/&gt;
- *    &lt;/xs:complexType&gt;
- *
- *    </code>
- *   </pre>
- *
- * @generated
- */
 public class GeopkgtypeBindingTest extends GPKGTestSupport {
-
+    @Test
     public void testType() {
         assertEquals(GeoPackageProcessRequest.class, binding(GPKG.geopkgtype).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(GPKG.geopkgtype).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         buildDocument(
                 "<geopackage name='mygeopackage' path='file://test' remove='true'>"

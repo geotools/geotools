@@ -17,9 +17,10 @@
 
 package org.geotools.appschema.resolver.data;
 
-import junit.framework.TestCase;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
@@ -30,17 +31,18 @@ import org.opengis.feature.type.FeatureType;
  * @version $Id$
  * @since 2.6
  */
-public class SampleDataAccessFactoryTest extends TestCase {
+public class SampleDataAccessFactoryTest {
 
     /**
      * Test that {@link org.geotools.data.DataAccessFinder} can find {@link
      * org.geotools.appschema.resolver.data.SampleDataAccessFactory} and use it to create a {@link
      * org.geotools.appschema.resolver.data.SampleDataAccess}.
      */
-    public static void testFindSamplesDataAccessFactory() throws Exception {
+    @Test
+    public void testFindSamplesDataAccessFactory() throws Exception {
         DataAccess<FeatureType, Feature> dataAccess =
                 DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
-        assertNotNull(dataAccess);
-        assertEquals(SampleDataAccess.class, dataAccess.getClass());
+        Assert.assertNotNull(dataAccess);
+        Assert.assertEquals(SampleDataAccess.class, dataAccess.getClass());
     }
 }

@@ -16,19 +16,25 @@
  */
 package org.geotools.filter.v1_0;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.expression.Function;
 import org.w3c.dom.Document;
 
 public class OGCFunctionTypeBindingTest extends FilterTestSupport {
+    @Test
     public void testType() {
         assertEquals(Function.class, binding(OGC.FunctionType).getType());
     }
 
+    @Test
     public void testExectionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.FunctionType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.function(document, document);
 
@@ -38,6 +44,7 @@ public class OGCFunctionTypeBindingTest extends FilterTestSupport {
         assertEquals(2, function.getParameters().size());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.function(), OGC.Function);
 

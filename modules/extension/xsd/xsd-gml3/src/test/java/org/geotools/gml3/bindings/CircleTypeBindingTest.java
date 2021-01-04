@@ -16,7 +16,10 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 
 /** @author Erik van de Pol */
@@ -27,6 +30,7 @@ public class CircleTypeBindingTest extends GML3TestSupport {
         return true;
     }
 
+    @Test
     public void testParse() throws Exception {
         GML3MockData.circleWithPosList(document, document);
         LineString lineString = (LineString) parse();

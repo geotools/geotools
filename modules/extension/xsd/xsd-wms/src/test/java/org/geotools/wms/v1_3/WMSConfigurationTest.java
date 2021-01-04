@@ -1,6 +1,6 @@
 package org.geotools.wms.v1_3;
 
-import static junit.framework.TestCase.fail;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;

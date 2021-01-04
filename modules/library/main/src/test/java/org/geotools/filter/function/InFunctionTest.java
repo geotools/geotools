@@ -17,6 +17,9 @@
 
 package org.geotools.filter.function;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -33,17 +36,14 @@ public class InFunctionTest extends FunctionTestSupport {
 
     private SimpleFeature feature;
 
-    public InFunctionTest(String testName) {
-        super(testName);
-    }
-
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         feature = featureCollection.features().next();
     }
 
+    @Test
     public void testIntPresent() {
         PropertyName exp = ff.property("foo");
         Function func =
@@ -52,6 +52,7 @@ public class InFunctionTest extends FunctionTestSupport {
         assertEquals(true, result);
     }
 
+    @Test
     public void testIntMissing() {
         PropertyName exp = ff.property("foo");
         Function func = ff.function(FUNCTION_NAME, exp, ff.literal(1), ff.literal(2));
@@ -59,6 +60,7 @@ public class InFunctionTest extends FunctionTestSupport {
         assertEquals(false, result);
     }
 
+    @Test
     public void testDoublePresent() {
         PropertyName exp = ff.property("bar");
         Function func =
@@ -67,6 +69,7 @@ public class InFunctionTest extends FunctionTestSupport {
         assertEquals(true, result);
     }
 
+    @Test
     public void testDoubleMissing() {
         PropertyName exp = ff.property("bar");
         Function func =
@@ -80,6 +83,7 @@ public class InFunctionTest extends FunctionTestSupport {
         assertEquals(false, result);
     }
 
+    @Test
     public void testStringPresent() {
         PropertyName exp = ff.property("group");
         Function func = ff.function(FUNCTION_NAME, exp, ff.literal("Group0"), ff.literal("Group1"));
@@ -87,6 +91,7 @@ public class InFunctionTest extends FunctionTestSupport {
         assertEquals(true, result);
     }
 
+    @Test
     public void testStringMissing() {
         PropertyName exp = ff.property("group");
         Function func =
@@ -100,6 +105,7 @@ public class InFunctionTest extends FunctionTestSupport {
         assertEquals(false, result);
     }
 
+    @Test
     public void testMixedType() {
         PropertyName exp = ff.property("group");
         Expression[] args =
@@ -123,6 +129,7 @@ public class InFunctionTest extends FunctionTestSupport {
         assertEquals(true, result);
     }
 
+    @Test
     public void testLongList() {
         final int NUM_ARGS = 500;
         PropertyName exp = ff.property("group");
@@ -143,6 +150,7 @@ public class InFunctionTest extends FunctionTestSupport {
         assertEquals(true, result);
     }
 
+    @Test
     public void testNullComparison() {
         PropertyName exp = ff.property("not_there");
         Function func = ff.function(FUNCTION_NAME, exp, ff.literal(1), ff.literal(null));
@@ -154,6 +162,7 @@ public class InFunctionTest extends FunctionTestSupport {
         assertEquals(false, result);
     }
 
+    @Test
     public void testTypelessComparison() {
         PropertyName exp = ff.property("foo");
         Function func = ff.function(FUNCTION_NAME, exp, ff.literal("4"));

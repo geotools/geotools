@@ -16,9 +16,13 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.w3c.dom.Document;
 
@@ -42,14 +46,17 @@ import org.w3c.dom.Document;
  * @generated
  */
 public class Spatial_CapabilitiesTypeBindingTest extends OGCTestSupport {
+    @Test
     public void testType() {
         assertEquals(SpatialCapabilities.class, binding(OGC.Spatial_CapabilitiesType).getType());
     }
 
+    @Test
     public void testExectionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.Spatial_CapabilitiesType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.spatialCapabilities(document, document);
 
@@ -58,6 +65,7 @@ public class Spatial_CapabilitiesTypeBindingTest extends OGCTestSupport {
         assertNotNull(scalar.getSpatialOperators());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom =
                 encode(

@@ -22,8 +22,9 @@ import java.net.URI;
 import java.util.logging.Level;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.TestCase;
 import org.geotools.test.TestData;
+import org.junit.Assert;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 /**
@@ -31,11 +32,13 @@ import org.xml.sax.SAXException;
  *
  * @author dzwiers www.refractions.net
  */
-public class GMLParser2Test extends TestCase {
+public class GMLParser2Test {
+    @Test
     public void testBlank() {
         // blank test ... lets it sit in the repository
     }
 
+    @Test
     public void testFMEPostalFeatures() throws SAXException, IOException {
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -57,11 +60,11 @@ public class GMLParser2Test extends TestCase {
             parser.parse(f, xmlContentHandler);
 
             Object doc = xmlContentHandler.getDocument();
-            assertNotNull("Document missing", doc);
+            Assert.assertNotNull("Document missing", doc);
             // System.out.println(doc);
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
     }
 

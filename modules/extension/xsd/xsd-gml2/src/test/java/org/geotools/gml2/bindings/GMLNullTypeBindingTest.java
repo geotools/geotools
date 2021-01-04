@@ -16,18 +16,22 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 
 public class GMLNullTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance nul;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         nul = createElement(GML.NAMESPACE, "myNull", GML.NullType, null);
     }
 
+    @Test
     public void testAllowable() throws Exception {
         Node node = createNode(nul, null, null, null, null);
 

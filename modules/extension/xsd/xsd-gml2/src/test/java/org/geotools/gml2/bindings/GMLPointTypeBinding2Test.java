@@ -16,20 +16,26 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 
 public class GMLPointTypeBinding2Test extends GMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(Point.class, binding(GML.PointType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.BEFORE, binding(GML.PointType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         GML2MockData.point(document, document);
 
@@ -39,6 +45,7 @@ public class GMLPointTypeBinding2Test extends GMLTestSupport {
         assertEquals(2.0, p.getY(), 0.0);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.point(), GML.Point);
 

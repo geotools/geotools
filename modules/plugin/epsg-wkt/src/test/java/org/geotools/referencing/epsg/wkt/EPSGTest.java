@@ -19,11 +19,13 @@ package org.geotools.referencing.epsg.wkt;
 // J2SE dependencies
 
 import java.util.Set;
-import junit.framework.TestCase;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.test.TestData;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -34,67 +36,75 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @since 2.1.M3
  * @version 2.1.M3
  */
-public class EPSGTest extends TestCase {
+public class EPSGTest {
     EPSGCRSAuthorityFactory factory;
     /*
      * @see junit.framework.TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         factory = new EPSGCRSAuthorityFactory();
     }
 
+    @Test
     public void testAuthority() {
         Citation authority = factory.getAuthority();
 
-        assertNotNull(authority);
-        assertEquals("European Petroleum Survey Group", authority.getTitle().toString());
-        assertTrue(Citations.identifierMatches(authority, "EPSG"));
+        Assert.assertNotNull(authority);
+        Assert.assertEquals("European Petroleum Survey Group", authority.getTitle().toString());
+        Assert.assertTrue(Citations.identifierMatches(authority, "EPSG"));
     }
 
+    @Test
     public void testVendor() {
         Citation vendor = factory.getVendor();
-        assertNotNull(vendor);
-        assertEquals("Geotools", vendor.getTitle().toString());
+        Assert.assertNotNull(vendor);
+        Assert.assertEquals("Geotools", vendor.getTitle().toString());
     }
 
+    @Test
     public void testCodes() throws Exception {
         Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
 
-        assertNotNull(codes);
-        assertEquals(6588, codes.size());
+        Assert.assertNotNull(codes);
+        Assert.assertEquals(6588, codes.size());
     }
 
     /** A random CRS for fun. */
+    @Test
     public void test26910() throws Exception {
         CoordinateReferenceSystem crs =
                 (CoordinateReferenceSystem) factory.createObject("EPSG:26910");
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
 
     /** UDIG requires this to work */
+    @Test
     public void test4326() throws Exception {
         CoordinateReferenceSystem crs =
                 (CoordinateReferenceSystem) factory.createObject("EPSG:4326");
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
     /** UDIG requires this to work */
+    @Test
     public void test4269() throws Exception {
         CoordinateReferenceSystem crs =
                 (CoordinateReferenceSystem) factory.createObject("EPSG:4269");
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
     /** UDIG requires this to work */
+    @Test
     public void test42102() throws Exception {
         CoordinateReferenceSystem crs =
                 (CoordinateReferenceSystem) factory.createObject("EPSG:42102");
-        assertNotNull(crs);
-        assertNotNull(crs.getIdentifiers());
-        assertTrue(crs.getIdentifiers().size() > 0);
+        Assert.assertNotNull(crs);
+        Assert.assertNotNull(crs.getIdentifiers());
+        Assert.assertTrue(crs.getIdentifiers().size() > 0);
         NamedIdentifier expected = new NamedIdentifier(Citations.EPSG, "42102");
-        assertTrue(crs.getIdentifiers().contains(expected));
+        Assert.assertTrue(crs.getIdentifiers().contains(expected));
     }
 
+    @Test
     public void testDecodeAll() throws Exception {
         // this test is heavy, only enable with extensive tests
         if (!TestData.isExtensiveTest()) {
@@ -112,50 +122,57 @@ public class EPSGTest extends TestCase {
                 crs = (CoordinateReferenceSystem) factory.createObject(code);
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-                fail("Failed to decode " + code + " with error: " + e.getMessage());
+                Assert.fail("Failed to decode " + code + " with error: " + e.getMessage());
             }
         }
     }
 
     /** A random CRS for fun. */
+    @Test
     public void test26910Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:26910");
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
 
     /** A random CRS for fun. */
+    @Test
     public void test26986Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:26986");
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
 
     /** wfs requires this to work */
+    @Test
     public void test4326Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:4326");
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
     /** wfs requires this to work */
+    @Test
     public void test26742Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:26742");
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
     /** wfs requires this to work */
+    @Test
     public void test4269Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:4269");
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
     /** wfs requires this to work */
+    @Test
     public void test42304Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:42304");
-        assertNotNull(crs);
+        Assert.assertNotNull(crs);
     }
     /** wfs requires this to work */
+    @Test
     public void test42102Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:42102");
-        assertNotNull(crs);
-        assertNotNull(crs.getIdentifiers());
-        assertTrue(crs.getIdentifiers().size() > 0);
+        Assert.assertNotNull(crs);
+        Assert.assertNotNull(crs.getIdentifiers());
+        Assert.assertTrue(crs.getIdentifiers().size() > 0);
         NamedIdentifier expected = new NamedIdentifier(Citations.EPSG, "42102");
-        assertTrue(crs.getIdentifiers().contains(expected));
+        Assert.assertTrue(crs.getIdentifiers().contains(expected));
     }
 }

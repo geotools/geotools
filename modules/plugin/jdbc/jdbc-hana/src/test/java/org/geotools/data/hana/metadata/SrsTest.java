@@ -16,16 +16,18 @@
  */
 package org.geotools.data.hana.metadata;
 
-import junit.framework.TestCase;
 import org.geotools.data.hana.metadata.Srs.Type;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** @author Stefan Uhrig, SAP SE */
-public class SrsTest extends TestCase {
+public class SrsTest {
 
     private static final String WGS84_WKT =
             "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]";
     private static final String WGS84_PROJ4 = "+proj=longlat +datum=WGS84 +no_defs";
 
+    @Test
     public void testValidGeographicSrs() {
         Srs srs =
                 new Srs(
@@ -45,24 +47,25 @@ public class SrsTest extends TestCase {
                         180.0,
                         -90.0,
                         90.0);
-        assertEquals("WGS 84", srs.getName());
-        assertEquals(4326, srs.getSrid());
-        assertEquals("EPSG", srs.getOrganization());
-        assertEquals(4326, srs.getOrganizationId());
-        assertEquals(WGS84_WKT, srs.getWkt());
-        assertEquals(WGS84_PROJ4, srs.getProj4());
-        assertEquals("meter", srs.getLinearUom());
-        assertEquals("degree", srs.getAngularUom());
-        assertEquals(Type.GEOGRAPHIC, srs.getType());
-        assertEquals(6378137.0, srs.getMajorAxis());
-        assertNull(srs.getMinorAxis());
-        assertEquals(298.257223563, srs.getInverseFlattening());
-        assertEquals(-180.0, srs.getMinX());
-        assertEquals(180.0, srs.getMaxX());
-        assertEquals(-90.0, srs.getMinY());
-        assertEquals(90.0, srs.getMaxY());
+        Assert.assertEquals("WGS 84", srs.getName());
+        Assert.assertEquals(4326, srs.getSrid());
+        Assert.assertEquals("EPSG", srs.getOrganization());
+        Assert.assertEquals(4326, srs.getOrganizationId());
+        Assert.assertEquals(WGS84_WKT, srs.getWkt());
+        Assert.assertEquals(WGS84_PROJ4, srs.getProj4());
+        Assert.assertEquals("meter", srs.getLinearUom());
+        Assert.assertEquals("degree", srs.getAngularUom());
+        Assert.assertEquals(Type.GEOGRAPHIC, srs.getType());
+        Assert.assertEquals(6378137.0, srs.getMajorAxis(), 0d);
+        Assert.assertNull(srs.getMinorAxis());
+        Assert.assertEquals(298.257223563, srs.getInverseFlattening(), 0d);
+        Assert.assertEquals(-180.0, srs.getMinX(), 0d);
+        Assert.assertEquals(180.0, srs.getMaxX(), 0d);
+        Assert.assertEquals(-90.0, srs.getMinY(), 0d);
+        Assert.assertEquals(90.0, srs.getMaxY(), 0d);
     }
 
+    @Test
     public void testValidFlatSrs() {
         Srs srs =
                 new Srs(
@@ -82,24 +85,25 @@ public class SrsTest extends TestCase {
                         180.0,
                         -90.0,
                         90.0);
-        assertEquals("WGS 84 (planar)", srs.getName());
-        assertEquals(1000004326, srs.getSrid());
-        assertEquals("EPSG", srs.getOrganization());
-        assertEquals(4326, srs.getOrganizationId());
-        assertEquals(WGS84_WKT, srs.getWkt());
-        assertEquals(WGS84_PROJ4, srs.getProj4());
-        assertEquals("meter", srs.getLinearUom());
-        assertEquals("degree", srs.getAngularUom());
-        assertEquals(Type.GEOGRAPHIC, srs.getType());
-        assertEquals(6378137.0, srs.getMajorAxis());
-        assertNull(srs.getMinorAxis());
-        assertEquals(298.257223563, srs.getInverseFlattening());
-        assertEquals(-180.0, srs.getMinX());
-        assertEquals(180.0, srs.getMaxX());
-        assertEquals(-90.0, srs.getMinY());
-        assertEquals(90.0, srs.getMaxY());
+        Assert.assertEquals("WGS 84 (planar)", srs.getName());
+        Assert.assertEquals(1000004326, srs.getSrid());
+        Assert.assertEquals("EPSG", srs.getOrganization());
+        Assert.assertEquals(4326, srs.getOrganizationId());
+        Assert.assertEquals(WGS84_WKT, srs.getWkt());
+        Assert.assertEquals(WGS84_PROJ4, srs.getProj4());
+        Assert.assertEquals("meter", srs.getLinearUom());
+        Assert.assertEquals("degree", srs.getAngularUom());
+        Assert.assertEquals(Type.GEOGRAPHIC, srs.getType());
+        Assert.assertEquals(6378137.0, srs.getMajorAxis(), 0d);
+        Assert.assertNull(srs.getMinorAxis());
+        Assert.assertEquals(298.257223563, srs.getInverseFlattening(), 0d);
+        Assert.assertEquals(-180.0, srs.getMinX(), 0d);
+        Assert.assertEquals(180.0, srs.getMaxX(), 0d);
+        Assert.assertEquals(-90.0, srs.getMinY(), 0d);
+        Assert.assertEquals(90.0, srs.getMaxY(), 0d);
     }
 
+    @Test
     public void testValidProjectedSrs() {
         String wkt =
                 "PROJCS[\"WGS 84 / Pseudo-Mercator\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs\"],AUTHORITY[\"EPSG\",\"3857\"]]";
@@ -124,24 +128,25 @@ public class SrsTest extends TestCase {
                         20037508.342789248,
                         -20048966.104014635,
                         20048966.104014624);
-        assertEquals("WGS 84 / Pseudo-Mercator", srs.getName());
-        assertEquals(3857, srs.getSrid());
-        assertEquals("EPSG", srs.getOrganization());
-        assertEquals(3857, srs.getOrganizationId());
-        assertEquals(wkt, srs.getWkt());
-        assertEquals(proj4, srs.getProj4());
-        assertEquals("meter", srs.getLinearUom());
-        assertNull(srs.getAngularUom());
-        assertEquals(Type.PROJECTED, srs.getType());
-        assertEquals(6378137.0, srs.getMajorAxis());
-        assertNull(srs.getMinorAxis());
-        assertEquals(298.257223563, srs.getInverseFlattening());
-        assertEquals(-20037508.342789248, srs.getMinX());
-        assertEquals(20037508.342789248, srs.getMaxX());
-        assertEquals(-20048966.104014635, srs.getMinY());
-        assertEquals(20048966.104014624, srs.getMaxY());
+        Assert.assertEquals("WGS 84 / Pseudo-Mercator", srs.getName());
+        Assert.assertEquals(3857, srs.getSrid());
+        Assert.assertEquals("EPSG", srs.getOrganization());
+        Assert.assertEquals(3857, srs.getOrganizationId());
+        Assert.assertEquals(wkt, srs.getWkt());
+        Assert.assertEquals(proj4, srs.getProj4());
+        Assert.assertEquals("meter", srs.getLinearUom());
+        Assert.assertNull(srs.getAngularUom());
+        Assert.assertEquals(Type.PROJECTED, srs.getType());
+        Assert.assertEquals(6378137.0, srs.getMajorAxis(), 0d);
+        Assert.assertNull(srs.getMinorAxis());
+        Assert.assertEquals(298.257223563, srs.getInverseFlattening(), 0d);
+        Assert.assertEquals(-20037508.342789248, srs.getMinX(), 0d);
+        Assert.assertEquals(20037508.342789248, srs.getMaxX(), 0d);
+        Assert.assertEquals(-20048966.104014635, srs.getMinY(), 0d);
+        Assert.assertEquals(20048966.104014624, srs.getMaxY(), 0d);
     }
 
+    @Test
     public void testNoName() {
         try {
             new Srs(
@@ -161,7 +166,7 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected NullPointerException");
+            Assert.fail("Expected NullPointerException");
         } catch (NullPointerException e) {
         }
         try {
@@ -182,11 +187,12 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
     }
 
+    @Test
     public void testNegativeSrid() {
         try {
             new Srs(
@@ -206,11 +212,12 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
     }
 
+    @Test
     public void testNegativeOrganizationId() {
         try {
             new Srs(
@@ -230,11 +237,12 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
     }
 
+    @Test
     public void testNullType() {
         try {
             new Srs(
@@ -254,11 +262,12 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected NullPointerException");
+            Assert.fail("Expected NullPointerException");
         } catch (NullPointerException e) {
         }
     }
 
+    @Test
     public void testMissingAngularUom() {
         try {
             new Srs(
@@ -278,7 +287,7 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected NullPointerException");
+            Assert.fail("Expected NullPointerException");
         } catch (NullPointerException e) {
         }
         try {
@@ -299,11 +308,12 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
     }
 
+    @Test
     public void testMissingMajorAxis() {
         try {
             new Srs(
@@ -323,11 +333,12 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected NullPointerException");
+            Assert.fail("Expected NullPointerException");
         } catch (NullPointerException e) {
         }
     }
 
+    @Test
     public void testMissingMinorAxisAndInvFlattening() {
         try {
             new Srs(
@@ -347,11 +358,12 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected NullPointerException");
+            Assert.fail("Expected NullPointerException");
         } catch (NullPointerException e) {
         }
     }
 
+    @Test
     public void testMinorAxisAndInvFlatteningBothGiven() {
         try {
             new Srs(
@@ -371,11 +383,12 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
     }
 
+    @Test
     public void testZeroAxesFlattening() {
         try {
             new Srs(
@@ -395,7 +408,7 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
         try {
@@ -416,7 +429,7 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
         try {
@@ -437,11 +450,12 @@ public class SrsTest extends TestCase {
                     180.0,
                     -90.0,
                     90.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
     }
 
+    @Test
     public void testProjectedWithFlatteningNoMajorAxis() {
         String wkt =
                 "PROJCS[\"WGS 84 / Pseudo-Mercator\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs\"],AUTHORITY[\"EPSG\",\"3857\"]]";
@@ -466,7 +480,7 @@ public class SrsTest extends TestCase {
                     20037508.342789248,
                     -20048966.104014635,
                     20048966.104014624);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
     }

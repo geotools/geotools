@@ -16,21 +16,29 @@
  */
 package org.geotools.filter.v1_0.capabilities;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.ByteArrayInputStream;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Parser;
+import org.junit.Test;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.w3c.dom.Document;
 
 public class _Filter_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {
+
+    @Test
     public void testType() {
         assertEquals(FilterCapabilities.class, binding(OGC._Filter_Capabilities).getType());
     }
 
+    @Test
     public void testExectionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC._Filter_Capabilities).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.capabilities(document, document);
 
@@ -43,6 +51,7 @@ public class _Filter_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestS
         assertNotNull(caps.getSpatialCapabilities());
     }
 
+    @Test
     public void testParseWithParser() throws Exception {
         String xml =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
@@ -90,6 +99,7 @@ public class _Filter_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestS
         assertNotNull(caps.getSpatialCapabilities());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom = encode(FilterMockData.capabilities(), OGC.Filter_Capabilities);
 

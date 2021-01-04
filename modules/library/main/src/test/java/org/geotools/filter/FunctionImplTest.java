@@ -18,15 +18,17 @@ package org.geotools.filter;
 
 import java.util.Collections;
 import java.util.Date;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.parameter.Parameter;
 
-public class FunctionImplTest extends TestCase {
+public class FunctionImplTest {
 
+    @Test
     public void testFunctionName() throws Exception {
         FunctionName fn =
                 FunctionImpl.functionName(
@@ -37,7 +39,7 @@ public class FunctionImplTest extends TestCase {
                         "y:MultiPolygon",
                         "z:java.util.Date:1,");
 
-        assertEquals("foo", fn.getName());
+        Assert.assertEquals("foo", fn.getName());
         check(fn.getReturn(), "bar", Integer.class, 1, 1);
         check(fn.getArguments().get(0), "a", Object.class, 1, 1);
         check(fn.getArguments().get(1), "x", String.class, 1, 1);
@@ -52,6 +54,7 @@ public class FunctionImplTest extends TestCase {
         check(fn.getArguments().get(0), "geom", Geometry.class, -1, -1);
     }
 
+    @Test
     public void testToString() throws Exception {
         FunctionImpl func = new FunctionImpl();
         Expression param = new LiteralExpressionImpl(42);
@@ -59,13 +62,13 @@ public class FunctionImplTest extends TestCase {
         func.setParameters(Collections.singletonList(param));
 
         String result = func.toString();
-        assertEquals("TestFunction([42])", result);
+        Assert.assertEquals("TestFunction([42])", result);
     }
 
     void check(Parameter p, String name, Class type, int min, int max) {
-        assertEquals(name, p.getName());
-        assertEquals(type, p.getType());
-        assertEquals(min, p.getMinOccurs());
-        assertEquals(max, p.getMaxOccurs());
+        Assert.assertEquals(name, p.getName());
+        Assert.assertEquals(type, p.getType());
+        Assert.assertEquals(min, p.getMinOccurs());
+        Assert.assertEquals(max, p.getMaxOccurs());
     }
 }

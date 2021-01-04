@@ -1,5 +1,7 @@
 package org.geotools.geojson;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,6 +9,8 @@ import java.util.Date;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.feature.FeatureJSON;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -19,10 +23,8 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
     SimpleFeatureType featureType;
     SimpleFeatureBuilder fb;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUp() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("feature");
         tb.setSRS("EPSG:4326");
@@ -38,6 +40,7 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
         fb = new SimpleFeatureBuilder(featureType);
     }
 
+    @Test
     public void testFeatureWrite() throws Exception {
         StringWriter writer = new StringWriter();
         fjson.writeFeature(feature(1), writer);
@@ -45,25 +48,28 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
         assertEquals(strip(featureText(1)), writer.toString());
     }
 
+    @Test
     public void testFeatureRead() throws Exception {
         SimpleFeature f1 = feature(1);
         SimpleFeature f2 = fjson.readFeature(reader(strip(featureText(1))));
         assertEqualsLax(f1, f2);
     }
 
+    @Test
     public void testFeatureReadMismatched() throws Exception {
         SimpleFeature f1 = feature(1, true);
         SimpleFeature f2 = fjson.readFeature(reader(strip(featureText(1, true))));
         assertEqualsLax(f1, f2);
     }
 
-    public void testFeatureWriteMismatched() throws Exception {
+    public @Test void testFeatureWriteMismatched() throws Exception {
         StringWriter writer = new StringWriter();
         fjson.writeFeature(feature(1, true), writer);
 
         assertEquals(strip(featureText(1, true, false)), writer.toString());
     }
 
+    @Test
     public void testFeatureWriteMismatchedWithNullProperties() throws Exception {
         StringWriter writer = new StringWriter();
         fjson.setEncodeNullValues(true);

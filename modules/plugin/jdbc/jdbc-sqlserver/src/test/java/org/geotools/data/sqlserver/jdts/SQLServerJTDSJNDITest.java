@@ -16,7 +16,7 @@
  */
 package org.geotools.data.sqlserver.jdts;
 
-import static junit.framework.TestCase.fail;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Properties;

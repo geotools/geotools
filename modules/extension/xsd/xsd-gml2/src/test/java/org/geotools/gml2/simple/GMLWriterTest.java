@@ -16,6 +16,8 @@
  */
 package org.geotools.gml2.simple;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,6 +43,7 @@ import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.bindings.GMLTestSupport;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -56,7 +59,7 @@ public class GMLWriterTest extends GMLTestSupport {
     protected XpathEngine xpath;
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         Map<String, String> namespaces = new HashMap<>();
         namespaces.put("xs", "http://www.w3.org/2001/XMLSchema");
         namespaces.put("xsd", "http://www.w3.org/2001/XMLSchema");
@@ -68,6 +71,7 @@ public class GMLWriterTest extends GMLTestSupport {
         this.xpath = XMLUnit.newXpathEngine();
     }
 
+    @Test
     public void testGeometryCollectionEncoder() throws Exception {
         GeometryCollectionEncoder gce = new GeometryCollectionEncoder(gtEncoder, "gml");
         GeometryCollection geometry =
@@ -83,6 +87,7 @@ public class GMLWriterTest extends GMLTestSupport {
         assertEquals(3, xpath.getMatchingNodes("//gml:coordinates", doc).getLength());
     }
 
+    @Test
     public void testEncode3DLine() throws Exception {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml");
         LineString geometry = (LineString) new WKTReader2().read("LINESTRING(0 0 50, 120 0 100)");
@@ -91,6 +96,7 @@ public class GMLWriterTest extends GMLTestSupport {
         assertEquals("0,0,50 120,0,100", xpath.evaluate("//gml:coordinates", doc));
     }
 
+    @Test
     public void testEncode3DLineFromLiteCS() throws Exception {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml");
         LiteCoordinateSequence cs =
@@ -101,6 +107,7 @@ public class GMLWriterTest extends GMLTestSupport {
         assertEquals("0,0,50 120,0,100", xpath.evaluate("//gml:coordinates", doc));
     }
 
+    @Test
     public void testEncode3DPoint() throws Exception {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml");
         Point geometry = (Point) new WKTReader2().read("POINT(0 0 50)");
@@ -109,6 +116,7 @@ public class GMLWriterTest extends GMLTestSupport {
         assertEquals("0,0,50", xpath.evaluate("//gml:coordinates", doc));
     }
 
+    @Test
     public void testCoordinatesFormatting() throws Exception {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml");
         Point geometry = (Point) new WKTReader2().read("POINT(21396814.969 0 50)");

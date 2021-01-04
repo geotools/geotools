@@ -16,19 +16,25 @@
  */
 package org.geotools.filter.v1_1;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.sort.SortBy;
 import org.w3c.dom.Document;
 
 public class SortByTypeBindingTest extends FilterTestSupport {
+    @Test
     public void testType() {
         assertEquals(SortBy[].class, binding(OGC.SortByType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.SortByType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.sortBy(document, document);
 
@@ -37,6 +43,7 @@ public class SortByTypeBindingTest extends FilterTestSupport {
         assertEquals(2, sortBy.length);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.sortBy(), OGC.SortBy);
         assertEquals(2, doc.getElementsByTagNameNS(OGC.NAMESPACE, "SortProperty").getLength());

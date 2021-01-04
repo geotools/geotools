@@ -17,13 +17,16 @@
 
 package org.geotools.gml3.simple;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
+import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
 public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
-
+    @Test
     public void testCircle() throws Exception {
         PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Polygon geometry =
@@ -46,6 +49,7 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
                 xpath.evaluate(ext1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList", doc));
     }
 
+    @Test
     public void testDonut() throws Exception {
         PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Polygon geometry =
@@ -76,6 +80,7 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
                 xpath.evaluate(int1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList", doc));
     }
 
+    @Test
     public void testComplex() throws Exception {
         PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Polygon geometry =

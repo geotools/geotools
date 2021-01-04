@@ -16,6 +16,8 @@
  */
 package org.geotools.data.collection;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

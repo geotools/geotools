@@ -27,6 +27,7 @@ import org.geotools.jdbc.JDBCFeatureStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -58,6 +59,7 @@ public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
         // same table
     }
 
+    @Test
     public void testScreenMapSkip() throws Exception {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("ft1"));
         assertTrue(fs.getSupportedHints().contains(Hints.SCREENMAP));

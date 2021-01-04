@@ -19,7 +19,6 @@ package org.geotools.gml2.bindings;
 import java.io.IOException;
 import java.util.List;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
@@ -37,6 +36,8 @@ import org.geotools.xsd.Node;
 import org.geotools.xsd.impl.AttributeImpl;
 import org.geotools.xsd.impl.ElementImpl;
 import org.geotools.xsd.impl.NodeImpl;
+import org.junit.After;
+import org.junit.Before;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -46,12 +47,13 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-public class AbstractGMLBindingTest extends TestCase {
+public class AbstractGMLBindingTest {
     XSDSchema schema;
     MutablePicoContainer container;
     SimpleFeatureTypeBuilder ftBuilder;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         String loc = GMLConfiguration.class.getResource("feature.xsd").toString();
 
         GMLConfiguration configuration = new GMLConfiguration();
@@ -69,7 +71,8 @@ public class AbstractGMLBindingTest extends TestCase {
         ftBuilder = new SimpleFeatureTypeBuilder();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         container.dispose();
     }
 

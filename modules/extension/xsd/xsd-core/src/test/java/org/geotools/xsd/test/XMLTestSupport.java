@@ -30,7 +30,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import junit.framework.TestCase;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
@@ -43,6 +42,7 @@ import org.geotools.xsd.impl.BindingLoader;
 import org.geotools.xsd.impl.BindingWalkerFactoryImpl;
 import org.geotools.xsd.impl.NamespaceSupportWrapper;
 import org.geotools.xsd.impl.SchemaIndexImpl;
+import org.junit.Before;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Document;
@@ -139,7 +139,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-public abstract class XMLTestSupport extends TestCase {
+public abstract class XMLTestSupport {
     /** Logging instance */
     protected static Logger logger =
             org.geotools.util.logging.Logging.getLogger(XMLTestSupport.class);
@@ -149,8 +149,10 @@ public abstract class XMLTestSupport extends TestCase {
 
     /** additional namespace mappings */
     protected Map<String, String> namespaceMappings;
+
     /** Creates an empty xml document. */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 

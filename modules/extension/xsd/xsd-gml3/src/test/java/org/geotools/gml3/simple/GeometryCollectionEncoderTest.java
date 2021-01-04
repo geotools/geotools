@@ -16,8 +16,11 @@
  */
 package org.geotools.gml3.simple;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
+import org.junit.Test;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.io.ParseException;
 import org.w3c.dom.Document;
@@ -28,7 +31,7 @@ import org.w3c.dom.Document;
  * @author
  */
 public class GeometryCollectionEncoderTest extends GeometryEncoderTestSupport {
-
+    @Test
     public void testGeometryCollectionEncoder() throws ParseException, Exception {
         GeometryCollectionEncoder gce =
                 new GeometryCollectionEncoder(gtEncoder, "gml", GML.NAMESPACE);

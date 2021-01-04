@@ -16,14 +16,20 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.Color;
 import org.geotools.styling.Fill;
+import org.junit.Test;
 
 public class SLDFillBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(Fill.class, new SLDFillBinding(null, null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.fill(document, document);
 

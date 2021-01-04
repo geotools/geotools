@@ -16,15 +16,21 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.Color;
 import org.geotools.filter.Filters;
 import org.geotools.styling.ColorMapEntry;
+import org.junit.Test;
 
 public class SLDColorMapEntryBindingTest extends SLDTestSupport {
+    @Test
     public void testType() {
         assertEquals(ColorMapEntry.class, new SLDColorMapEntryBinding(null, null).getType());
     }
 
+    @Test
     public void testNormal() throws Exception {
         document.appendChild(document.createElementNS(SLD.NAMESPACE, "ColorMapEntry"));
 

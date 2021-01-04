@@ -16,7 +16,8 @@
  */
 package org.geotools.gml.producer;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
@@ -32,9 +33,10 @@ import org.xml.sax.SAXException;
  *
  * @author Jody
  */
-public class CoordinateWriterTest extends TestCase {
+public class CoordinateWriterTest {
 
     /** Test normal 2D output */
+    @Test
     public void test2DCoordSeq() throws Exception {
         CoordinateSequence coords =
                 new CoordinateArraySequence(coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1}));
@@ -46,14 +48,15 @@ public class CoordinateWriterTest extends TestCase {
         writer.writeCoordinates(coords, output);
         output.endDocument();
 
-        assertEquals("<coordinates>1,1 4,4 0,4 1,1</coordinates>", output.received);
+        Assert.assertEquals("<coordinates>1,1 4,4 0,4 1,1</coordinates>", output.received);
     }
 
     /** Test normal 2D output */
+    @Test
     public void test2D() throws Exception {
         Coordinate[] coords = coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1});
-        assertNotNull(coords);
-        assertEquals(4, coords.length);
+        Assert.assertNotNull(coords);
+        Assert.assertEquals(4, coords.length);
 
         CoordinateWriter writer = new CoordinateWriter(4);
         CoordinateHandler output = new CoordinateHandler();
@@ -62,14 +65,15 @@ public class CoordinateWriterTest extends TestCase {
         writer.writeCoordinates(new CoordinateArraySequence(coords), output);
         output.endDocument();
 
-        assertEquals("<coordinates>1,1 4,4 0,4 1,1</coordinates>", output.received);
+        Assert.assertEquals("<coordinates>1,1 4,4 0,4 1,1</coordinates>", output.received);
         // System.out.println(output.received);
     }
 
+    @Test
     public void test2DWithDummyZ() throws Exception {
         Coordinate[] coords = coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1});
-        assertNotNull(coords);
-        assertEquals(4, coords.length);
+        Assert.assertNotNull(coords);
+        Assert.assertEquals(4, coords.length);
 
         final boolean useDummyZ = true;
         final double zValue = 0.0;
@@ -81,9 +85,10 @@ public class CoordinateWriterTest extends TestCase {
         output.endDocument();
 
         // System.out.println(output.received);
-        assertEquals("<coordinates>1,1,0 4,4,0 0,4,0 1,1,0</coordinates>", output.received);
+        Assert.assertEquals("<coordinates>1,1,0 4,4,0 0,4,0 1,1,0</coordinates>", output.received);
     }
 
+    @Test
     public void test2DWithDummyZCoordSeq() throws Exception {
         CoordinateSequence coords =
                 new CoordinateArraySequence(coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1}));
@@ -97,13 +102,14 @@ public class CoordinateWriterTest extends TestCase {
         writer.writeCoordinates(coords, output);
         output.endDocument();
 
-        assertEquals("<coordinates>1,1,0 4,4,0 0,4,0 1,1,0</coordinates>", output.received);
+        Assert.assertEquals("<coordinates>1,1,0 4,4,0 0,4,0 1,1,0</coordinates>", output.received);
     }
 
+    @Test
     public void test3D() throws Exception {
         Coordinate[] coords = coords3D(new int[] {1, 1, 3, 4, 4, 2, 0, 4, 2, 1, 1, 3});
-        assertNotNull(coords);
-        assertEquals(4, coords.length);
+        Assert.assertNotNull(coords);
+        Assert.assertEquals(4, coords.length);
 
         CoordinateWriter writer = new CoordinateWriter(4, false, true, " ", ",", true, 0.0, 3);
         CoordinateHandler output = new CoordinateHandler();
@@ -112,10 +118,11 @@ public class CoordinateWriterTest extends TestCase {
         writer.writeCoordinates(new CoordinateArraySequence(coords), output);
         output.endDocument();
 
-        assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);
+        Assert.assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);
         // System.out.println(output.received);
     }
 
+    @Test
     public void test3DCoordSeq() throws Exception {
         CoordinateSequence coords =
                 new CoordinateArraySequence(
@@ -129,9 +136,10 @@ public class CoordinateWriterTest extends TestCase {
         output.endDocument();
 
         // System.out.println(output.received);
-        assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);
+        Assert.assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);
     }
 
+    @Test
     public void test3DCoordSeqEvenWithWrongDimension() throws Exception {
         CoordinateSequence coords =
                 new CoordinateArraySequence(
@@ -144,9 +152,10 @@ public class CoordinateWriterTest extends TestCase {
         writer.writeCoordinates(coords, output);
         output.endDocument();
 
-        assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);
+        Assert.assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);
     }
 
+    @Test
     public void testFormatting() throws Exception {
         CoordinateSequence coords =
                 new CoordinateArraySequence(
@@ -159,8 +168,9 @@ public class CoordinateWriterTest extends TestCase {
         writer.writeCoordinates(coords, output);
         output.endDocument();
 
-        assertEquals(
-                "<coordinates>1.00,1.00,3.00 4.50,4.00,2.00 0.00,4.00,2.00 1.00,1.00,3.58</coordinates>",
+        Assert.assertEquals(
+                "<coordinates>1.00,1.00,3.00 4.50,4.00,2.00 0.00,4.00,2.00 1.00,1.00,3"
+                        + ".58</coordinates>",
                 output.received);
     }
 

@@ -16,6 +16,12 @@
  */
 package org.geotools.ows.wms.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -27,6 +33,7 @@ import org.geotools.ows.wms.WMS1_1_0;
 import org.geotools.ows.wms.WMSCapabilities;
 import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetMapRequest;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 /**
@@ -44,6 +51,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
         spec = new WMS1_1_0();
     }
 
+    @Test
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.1.0");
     }
@@ -57,6 +65,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
         assertEquals(properties.get("SERVICE"), "WMS");
     }
 
+    @Test
     public void testCreateDescribeLayerRequest() throws Exception {
         /* TODO FIX
                 try{
@@ -95,6 +104,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
         */
     }
 
+    @Test
     public void testCreateGetLegendGraphicRequest() throws Exception {
         /* TODO FIX
                 try{
@@ -147,8 +157,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
     //        GetStylesRequest request = wms.createGetStylesRequest();
     //        assertNotNull(request);
     //
-    //    }
-
+    //    }@Test
     public void testCreateParser() throws Exception {
         WMSCapabilities capabilities = createCapabilities("1.1.0Capabilities.xml");
         try {
@@ -267,6 +276,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
         }
     }
 
+    @Test
     public void testCreateGetMapRequest() throws Exception {
         try {
             WebMapServer wms = new WebMapServer(server);

@@ -17,8 +17,9 @@
 package org.geotools.styling;
 
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -29,11 +30,12 @@ import org.opengis.style.ContrastMethod;
  *
  * @author Jared Erickson
  */
-public class ContrastEnhancementImplTest extends TestCase {
+public class ContrastEnhancementImplTest {
 
     private static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     /** Test of getGammaValue method, of class ContrastEnhancementImpl. */
+    @Test
     public void testGetSetGammaValue() {
         // System.out.println("getGammaValue");
         ContrastEnhancementImpl contrastEnhancementImpl = new ContrastEnhancementImpl();
@@ -42,27 +44,29 @@ public class ContrastEnhancementImplTest extends TestCase {
         double actual =
                 ((Double) ((Literal) contrastEnhancementImpl.getGammaValue()).getValue())
                         .doubleValue();
-        assertEquals(expected, actual, 0.1);
+        Assert.assertEquals(expected, actual, 0.1);
     }
 
     /** Test of setMethod method, of class ContrastEnhancementImpl. */
+    @Test
     public void testGetSetMethod() {
         // System.out.println("setMethod");
         ContrastMethod expected = ContrastMethod.HISTOGRAM;
         ContrastEnhancementImpl contrastEnhancementImpl = new ContrastEnhancementImpl();
         contrastEnhancementImpl.setMethod(expected);
         ContrastMethod actual = contrastEnhancementImpl.getMethod();
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testNormalize() {
         NormalizeContrastMethodStrategy normalize = new NormalizeContrastMethodStrategy();
         normalize.setAlgorithm(filterFactory.literal("ClipToMinimumMaximum"));
         Map<String, Expression> params = normalize.getParameters();
-        assertNotNull("Null parameters returned by Normalize", params);
+        Assert.assertNotNull("Null parameters returned by Normalize", params);
         normalize.addParameter("min", filterFactory.literal(45.9));
         params = normalize.getParameters();
-        assertEquals("Wrong number of parameters returned", 1, params.size());
+        Assert.assertEquals("Wrong number of parameters returned", 1, params.size());
         normalize.addParameter(
                 "max",
                 filterFactory.function(
@@ -70,6 +74,7 @@ public class ContrastEnhancementImplTest extends TestCase {
         params = normalize.getParameters();
 
         Expression max = params.get("max");
-        assertEquals("mangled the function in normalize", "env([arg1], [arg2])", max.toString());
+        Assert.assertEquals(
+                "mangled the function in normalize", "env([arg1], [arg2])", max.toString());
     }
 }

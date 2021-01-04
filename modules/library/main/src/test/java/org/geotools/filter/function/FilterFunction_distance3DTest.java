@@ -1,10 +1,11 @@
 package org.geotools.filter.function;
 
-import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.FilterFactoryImpl;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -18,8 +19,9 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Martin Davis
  */
-public class FilterFunction_distance3DTest extends TestCase {
+public class FilterFunction_distance3DTest {
 
+    @Test
     public void testDistance3D() {
         FilterFactoryImpl ff = new FilterFactoryImpl();
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
@@ -40,7 +42,7 @@ public class FilterFunction_distance3DTest extends TestCase {
 
         Function exp = ff.function("distance3D", ff.property("geom"), literal_geom);
         Object value = exp.evaluate(f);
-        assertTrue(value instanceof Double);
-        assertEquals(14.142135623730951, (Double) value, 0.00001);
+        Assert.assertTrue(value instanceof Double);
+        Assert.assertEquals(14.142135623730951, (Double) value, 0.00001);
     }
 }

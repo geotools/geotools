@@ -16,22 +16,24 @@
  */
 package org.geotools.feature.collection;
 
-import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class MaxSimpleFeatureCollectionTest extends TestCase {
+public class MaxSimpleFeatureCollectionTest {
 
     DefaultFeatureCollection delegate;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("foo");
         tb.add("geom", Point.class);
@@ -49,38 +51,41 @@ public class MaxSimpleFeatureCollectionTest extends TestCase {
         }
     }
 
+    @Test
     public void testSize() {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 5);
-        assertEquals(5, max.size());
+        Assert.assertEquals(5, max.size());
 
         max = new MaxSimpleFeatureCollection(delegate, 7, 5);
-        assertEquals(3, max.size());
+        Assert.assertEquals(3, max.size());
     }
 
+    @Test
     public void testIsEmpty() {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 5);
-        assertFalse(max.isEmpty());
+        Assert.assertFalse(max.isEmpty());
 
         max = new MaxSimpleFeatureCollection(delegate, 9, 5);
-        assertFalse(max.isEmpty());
+        Assert.assertFalse(max.isEmpty());
 
         max = new MaxSimpleFeatureCollection(delegate, 10, 5);
-        assertTrue(max.isEmpty());
+        Assert.assertTrue(max.isEmpty());
 
         max = new MaxSimpleFeatureCollection(delegate, 0, 0);
-        assertTrue(max.isEmpty());
+        Assert.assertTrue(max.isEmpty());
     }
 
+    @Test
     public void testIterator() {
 
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 5);
         SimpleFeatureIterator it = max.features();
         try {
             for (int i = 0; i < 5; i++) {
-                assertTrue(it.hasNext());
-                assertNotNull(it.next());
+                Assert.assertTrue(it.hasNext());
+                Assert.assertNotNull(it.next());
             }
-            assertFalse(it.hasNext());
+            Assert.assertFalse(it.hasNext());
         } finally {
             it.close();
         }
@@ -89,10 +94,10 @@ public class MaxSimpleFeatureCollectionTest extends TestCase {
         it = max.features();
         try {
             for (int i = 0; i < 3; i++) {
-                assertTrue(it.hasNext());
-                assertNotNull(it.next());
+                Assert.assertTrue(it.hasNext());
+                Assert.assertNotNull(it.next());
             }
-            assertFalse(it.hasNext());
+            Assert.assertFalse(it.hasNext());
         } finally {
             it.close();
         }

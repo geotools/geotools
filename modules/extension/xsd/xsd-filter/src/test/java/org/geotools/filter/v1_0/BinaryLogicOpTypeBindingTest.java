@@ -16,7 +16,11 @@
  */
 package org.geotools.filter.v1_0;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.FilterFactory;
@@ -28,18 +32,23 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
+
+    @Test
     public void testBinaryLogicOpType() {
         assertEquals(BinaryLogicOperator.class, binding(OGC.BinaryLogicOpType).getType());
     }
 
+    @Test
     public void testAndType() {
         assertEquals(And.class, binding(OGC.And).getType());
     }
 
+    @Test
     public void testAndExecutionMode() {
         assertEquals(Binding.AFTER, binding(OGC.And).getExecutionMode());
     }
 
+    @Test
     public void testAndParse() throws Exception {
         FilterMockData.and(document, document);
 
@@ -48,6 +57,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
         assertEquals(2, and.getChildren().size());
     }
 
+    @Test
     public void testAndEncode() throws Exception {
         Document dom = encode(FilterMockData.and(), OGC.And);
         assertEquals(
@@ -60,14 +70,17 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
     }
 
+    @Test
     public void testOrType() {
         assertEquals(Or.class, binding(OGC.Or).getType());
     }
 
+    @Test
     public void testOrExecutionMode() {
         assertEquals(Binding.AFTER, binding(OGC.Or).getExecutionMode());
     }
 
+    @Test
     public void testOrParse() throws Exception {
         FilterMockData.or(document, document);
 
@@ -76,6 +89,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
         assertEquals(2, or.getChildren().size());
     }
 
+    @Test
     public void testOrEncode() throws Exception {
         Document dom = encode(FilterMockData.or(), OGC.Or);
         assertEquals(
@@ -88,6 +102,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
     }
 
+    @Test
     public void testAndWithLikeParse() throws Exception {
         Element e = FilterMockData.and(document, document, true);
         FilterMockData.propertyIsLike(document, e);
@@ -99,6 +114,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
         assertTrue(and.getChildren().get(1) instanceof PropertyIsLike);
     }
 
+    @Test
     public void testAndWithLikeEncode() throws Exception {
         FilterFactory f = FilterMockData.f;
         And and = f.and(FilterMockData.propertyIsLike(), FilterMockData.propertyIsLike());
@@ -107,6 +123,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
         assertEquals(2, getElementsByQName(dom, OGC.PropertyIsLike).getLength());
     }
 
+    @Test
     public void testAndWithNullParse() throws Exception {
         Element e = FilterMockData.and(document, document, true);
         FilterMockData.propertyisNull(document, e);
@@ -118,6 +135,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
         assertTrue(and.getChildren().get(1) instanceof PropertyIsNull);
     }
 
+    @Test
     public void testAndWithNullEncode() throws Exception {
         FilterFactory f = FilterMockData.f;
         And and = f.and(FilterMockData.propertyIsNull(), FilterMockData.propertyIsNull());
@@ -126,6 +144,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
         assertEquals(2, getElementsByQName(dom, OGC.PropertyIsNull).getLength());
     }
 
+    @Test
     public void testAndWithBetweenParse() throws Exception {
         Element e = FilterMockData.and(document, document, true);
         FilterMockData.propertyIsBetween(document, e);
@@ -137,6 +156,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
         assertTrue(and.getChildren().get(1) instanceof PropertyIsBetween);
     }
 
+    @Test
     public void testAndWithBetweenEncode() throws Exception {
         FilterFactory f = FilterMockData.f;
         And and = f.and(FilterMockData.propertyIsBetween(), FilterMockData.propertyIsBetween());

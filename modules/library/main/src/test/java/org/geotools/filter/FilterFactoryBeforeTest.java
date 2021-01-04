@@ -16,16 +16,18 @@
  */
 package org.geotools.filter;
 
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.expression.Expression;
 
-public class FilterFactoryBeforeTest extends TestCase {
+public class FilterFactoryBeforeTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
+    @Test
     public void testAfter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -34,7 +36,7 @@ public class FilterFactoryBeforeTest extends TestCase {
 
         PropertyIsGreaterThan filter = ff.greater(left, right);
 
-        assertTrue(filter.evaluate(null));
-        assertTrue(filter instanceof PropertyIsGreaterThan);
+        Assert.assertTrue(filter.evaluate(null));
+        Assert.assertTrue(filter instanceof PropertyIsGreaterThan);
     }
 }

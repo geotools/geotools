@@ -18,22 +18,20 @@ package org.geotools.graph.io.standard;
 
 import java.io.File;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.opt.OptGraphBuilder;
 import org.geotools.graph.structure.Graph;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class OptGraphSerializerTest extends TestCase {
+public class OptGraphSerializerTest {
     private OptGraphBuilder m_builder;
     private OptGraphBuilder m_rebuilder;
     private SerializedReaderWriter m_serializer;
 
-    public OptGraphSerializerTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
         m_rebuilder = createBuilder();
@@ -46,6 +44,7 @@ public class OptGraphSerializerTest extends TestCase {
      * <br>
      * Expected: 1. before and after graph should have same structure.
      */
+    @Test
     public void test_0() {
         final int nnodes = 100;
         Object[] obj = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -65,16 +64,16 @@ public class OptGraphSerializerTest extends TestCase {
             Graph after = serializer().read();
 
             // ensure same number of nodes and edges
-            assertEquals(before.getNodes().size(), after.getNodes().size());
-            assertEquals(before.getEdges().size(), after.getEdges().size());
+            Assert.assertEquals(before.getNodes().size(), after.getNodes().size());
+            Assert.assertEquals(before.getEdges().size(), after.getEdges().size());
 
             // ensure two nodes of degree 1, and nnodes-2 nodes of degree 2
-            assertEquals(2, after.getNodesOfDegree(1).size());
-            assertEquals(after.getNodesOfDegree(2).size(), nnodes - 2);
+            Assert.assertEquals(2, after.getNodesOfDegree(1).size());
+            Assert.assertEquals(after.getNodesOfDegree(2).size(), nnodes - 2);
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail();
+            Assert.fail();
         }
     }
 
@@ -83,6 +82,7 @@ public class OptGraphSerializerTest extends TestCase {
      * <br>
      * Expected: 1. Same structure before and after.
      */
+    @Test
     public void test_1() {
         final int k = 5;
         GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -97,9 +97,10 @@ public class OptGraphSerializerTest extends TestCase {
             Graph before = builder().getGraph();
             Graph after = serializer().read();
 
-            assertEquals(1, after.getNodesOfDegree(2).size()); // root
-            assertEquals(after.getNodesOfDegree(3).size(), (int) Math.pow(2, k) - 2); // internal
-            assertEquals(after.getNodesOfDegree(1).size(), (int) Math.pow(2, k)); // leaves
+            Assert.assertEquals(1, after.getNodesOfDegree(2).size()); // root
+            Assert.assertEquals(
+                    after.getNodesOfDegree(3).size(), (int) Math.pow(2, k) - 2); // internal
+            Assert.assertEquals(after.getNodesOfDegree(1).size(), (int) Math.pow(2, k)); // leaves
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }

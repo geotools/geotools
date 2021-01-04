@@ -16,15 +16,21 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import net.opengis.wfs20.CreateStoredQueryType;
 import net.opengis.wfs20.ParameterExpressionType;
 import net.opengis.wfs20.QueryExpressionTextType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 
 public class DropStoredQueryTypeBindingTest extends WFSTestSupport {
-
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<wfs:CreateStoredQuery "

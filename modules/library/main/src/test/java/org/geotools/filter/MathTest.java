@@ -18,9 +18,10 @@
  */
 package org.geotools.filter;
 
-import junit.framework.TestCase;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -32,12 +33,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author James
  */
-public class MathTest extends TestCase {
+public class MathTest {
     SimpleFeatureType schema = null;
-
-    public MathTest(java.lang.String testName) {
-        super(testName);
-    }
 
     public SimpleFeature[] sampleFeatures() throws Exception {
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
@@ -74,6 +71,7 @@ public class MathTest extends TestCase {
         return f;
     }
 
+    @Test
     public void testTypeMissmatch() throws Exception {
         SimpleFeature[] f = sampleFeatures();
 
@@ -88,7 +86,7 @@ public class MathTest extends TestCase {
             pass = true;
         }
 
-        assertTrue("String expresion returned an Integer", pass);
+        Assert.assertTrue("String expresion returned an Integer", pass);
         pass = false;
 
         value = e2.evaluate(f[0]);
@@ -97,9 +95,10 @@ public class MathTest extends TestCase {
             pass = true;
         }
 
-        assertTrue("Integer expresion returned a String", pass);
+        Assert.assertTrue("Integer expresion returned a String", pass);
     }
 
+    @Test
     public void testSetupAndExtraction() throws Exception {
         // this should move out to a more configurable system run from scripts
         // but we can start with a set of hard coded tests
@@ -108,10 +107,10 @@ public class MathTest extends TestCase {
         AttributeExpressionImpl e1 = new AttributeExpressionImpl(schema, "value");
         AttributeExpressionImpl e2 = new AttributeExpressionImpl(schema, "name");
 
-        assertEquals(12d, ((Integer) e1.evaluate(f[0])).doubleValue(), 0);
-        assertEquals(3d, ((Integer) e1.evaluate(f[1])).doubleValue(), 0);
-        assertEquals(15d, ((Integer) e1.evaluate(f[2])).doubleValue(), 0);
-        assertEquals("first", (String) e2.evaluate(f[0]));
-        assertEquals("second", (String) e2.evaluate(f[1]));
+        Assert.assertEquals(12d, ((Integer) e1.evaluate(f[0])).doubleValue(), 0);
+        Assert.assertEquals(3d, ((Integer) e1.evaluate(f[1])).doubleValue(), 0);
+        Assert.assertEquals(15d, ((Integer) e1.evaluate(f[2])).doubleValue(), 0);
+        Assert.assertEquals("first", (String) e2.evaluate(f[0]));
+        Assert.assertEquals("second", (String) e2.evaluate(f[1]));
     }
 }

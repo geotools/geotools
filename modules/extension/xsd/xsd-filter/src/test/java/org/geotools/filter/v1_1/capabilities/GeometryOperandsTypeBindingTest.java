@@ -16,9 +16,12 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.GeometryOperand;
 import org.w3c.dom.Document;
 
@@ -41,14 +44,17 @@ import org.w3c.dom.Document;
  * @generated
  */
 public class GeometryOperandsTypeBindingTest extends OGCTestSupport {
+    @Test
     public void testType() {
         assertEquals(GeometryOperand[].class, binding(OGC.GeometryOperandsType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.GeometryOperandsType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.geometryOperands(document, document);
 
@@ -56,6 +62,7 @@ public class GeometryOperandsTypeBindingTest extends OGCTestSupport {
         assertEquals(2, operands.length);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom =
                 encode(

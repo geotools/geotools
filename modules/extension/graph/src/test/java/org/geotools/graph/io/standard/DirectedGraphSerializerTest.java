@@ -16,8 +16,10 @@
  */
 package org.geotools.graph.io.standard;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.HashSet;
@@ -34,18 +36,16 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
+import org.junit.Test;
 
 public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
-
-    public DirectedGraphSerializerTest(String name) {
-        super(name);
-    }
 
     /**
      * Create a simple graph with no bifurcations and serialize, then deserialize <br>
      * <br>
      * Expected: 1. before and after graph should have same structure.
      */
+    @Test
     public void test_0() {
         final int nnodes = 100;
         GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -113,6 +113,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
      * <br>
      * Expected: 1. Same structure before and after.
      */
+    @Test
     public void test_1() {
         final int k = 5;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -212,6 +213,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
      * <br>
      * Exepcted: 1. Same graph structure.
      */
+    @Test
     public void test_2() {
         final int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);

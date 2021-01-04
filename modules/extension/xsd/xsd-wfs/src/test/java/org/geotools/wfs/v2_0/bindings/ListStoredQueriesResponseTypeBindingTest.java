@@ -1,5 +1,8 @@
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.ListStoredQueriesResponseType;
 import net.opengis.wfs20.StoredQueryListItemType;
@@ -7,11 +10,13 @@ import net.opengis.wfs20.TitleType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class ListStoredQueriesResponseTypeBindingTest extends WFSTestSupport {
 
+    @Test
     public void testEncode() throws Exception {
         Wfs20Factory factory = Wfs20Factory.eINSTANCE;
 

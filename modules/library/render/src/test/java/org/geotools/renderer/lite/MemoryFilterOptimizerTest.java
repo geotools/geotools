@@ -16,6 +16,8 @@
  */
 package org.geotools.renderer.lite;
 
+import static org.junit.Assert.*;
+
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +31,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.InFunction;
 import org.geotools.renderer.lite.MemoryFilterOptimizer.IndexPropertyName;
+import org.junit.Test;
 import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -48,8 +51,8 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
     private PropertyIsEqualTo equalId;
     private And and;
 
-    public void setUp() throws Exception {
-        super.setUp();
+    public void init() throws Exception {
+        super.init();
 
         name = ff.property("name");
         equalName = ff.equal(name, ff.literal("r1"), false);
@@ -58,6 +61,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         and = ff.and(equalName, equalId);
     }
 
+    @Test
     public void testDuplicateWithoutTargets() {
         MemoryFilterOptimizer optimizer =
                 new MemoryFilterOptimizer(roadType, Collections.emptySet());
@@ -88,6 +92,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertEquals(id, indexedId.delegate);
     }
 
+    @Test
     public void testDuplicateAndMemoize() {
         MemoryFilterOptimizer optimizer =
                 new MemoryFilterOptimizer(
@@ -105,6 +110,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         checkPropertiesIndexed(equalNameCopy, equalIdCopy);
     }
 
+    @Test
     public void testMemoizeDefaultGeometry() {
         PropertyName property = ff.property("");
 
@@ -120,6 +126,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         Mockito.verify(spy, Mockito.times(1)).getDefaultGeometry();
     }
 
+    @Test
     public void testMemoizeNonExistingProperty() {
         // Property accessors would return null instead of an exception, check this behavior has
         // been replicated
@@ -131,6 +138,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertNull(memoized.evaluate(roadFeatures[0]));
     }
 
+    @Test
     public void testEqualFeatureTypes() throws Exception {
         String name = "name";
         PropertyName property = ff.property(name);
@@ -152,6 +160,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         Mockito.verify(spy, Mockito.times(1)).getAttribute(0);
     }
 
+    @Test
     public void testInFunctionOptimizer() throws Exception {
         String name = "name";
         PropertyName property = ff.property(name);
@@ -183,6 +192,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertTrue(inLiterals.contains("r3"));
     }
 
+    @Test
     public void testInFunctionOptimizerNotUsed() throws Exception {
         String name = "name";
         PropertyName property = ff.property(name);
@@ -199,6 +209,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertTrue(object instanceof Or);
     }
 
+    @Test
     public void testInFunctionOptimizerNotUsedOtherFilter() throws Exception {
         String name = "name";
         PropertyName property = ff.property(name);
@@ -214,6 +225,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertTrue(object instanceof Or);
     }
 
+    @Test
     public void testInFunctionOptimizerExpression() throws Exception {
         String name = "name";
         PropertyName property = ff.property(name);

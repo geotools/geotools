@@ -1,6 +1,5 @@
 package org.geotools.data.hana.wkb;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +11,7 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
 @RunWith(Parameterized.class)
-public class HanaWKBTest extends TestCase {
+public class HanaWKBTest {
 
     private static class Parameter {
 

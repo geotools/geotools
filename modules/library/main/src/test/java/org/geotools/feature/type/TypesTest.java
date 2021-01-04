@@ -16,11 +16,12 @@
  */
 package org.geotools.feature.type;
 
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -31,8 +32,9 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
 /** Test classes used to create and build {@link FeatureType} data structure. */
-public class TypesTest extends TestCase {
+public class TypesTest {
 
+    @Test
     public void testAttributeBuilder() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         AttributeTypeBuilder builder = new AttributeTypeBuilder();
@@ -52,14 +54,15 @@ public class TypesTest extends TestCase {
 
         AttributeDescriptor a = builder.buildDescriptor("a", PERCENT);
 
-        assertSame(a.getType(), PERCENT);
-        assertEquals(a.getDefaultValue(), 0);
+        Assert.assertSame(a.getType(), PERCENT);
+        Assert.assertEquals(a.getDefaultValue(), 0);
 
         Filter restrictions = ff.and(PERCENT.getRestrictions());
-        assertTrue(restrictions.evaluate(50));
-        assertFalse(restrictions.evaluate(150));
+        Assert.assertTrue(restrictions.evaluate(50));
+        Assert.assertFalse(restrictions.evaluate(150));
     }
 
+    @Test
     public void testWithoutRestriction() {
         // used to prevent warning
         FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
@@ -73,9 +76,10 @@ public class TypesTest extends TestCase {
         SimpleFeature feature =
                 SimpleFeatureBuilder.build(featureType, new Object[] {"Value"}, null);
 
-        assertNotNull(feature);
+        Assert.assertNotNull(feature);
     }
     /** This utility class is used by Types to prevent attribute modification. */
+    @Test
     public void testRestrictionCheck() {
         FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
 
@@ -90,9 +94,10 @@ public class TypesTest extends TestCase {
         SimpleFeature feature =
                 SimpleFeatureBuilder.build(featureType, new Object[] {"Value"}, null);
 
-        assertNotNull(feature);
+        Assert.assertNotNull(feature);
     }
 
+    @Test
     public void testAssertNamedAssignable() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("Test");
@@ -119,7 +124,7 @@ public class TypesTest extends TestCase {
         Types.assertNameAssignable(test2, test);
         try {
             Types.assertNameAssignable(test, test3);
-            fail("Expected assertNameAssignable to fail as age is not covered");
+            Assert.fail("Expected assertNameAssignable to fail as age is not covered");
         } catch (IllegalArgumentException expected) {
         }
 

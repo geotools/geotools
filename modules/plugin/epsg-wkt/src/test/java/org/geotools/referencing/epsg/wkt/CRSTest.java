@@ -18,13 +18,14 @@ package org.geotools.referencing.epsg.wkt;
 
 import static org.junit.Assert.assertArrayEquals;
 
-import junit.framework.TestCase;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -36,25 +37,28 @@ import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.MathTransform;
 
 /** @author Jody Garnett */
-public class CRSTest extends TestCase {
+public class CRSTest {
     /** Makes sure that the transform between two EPSG:4326 is the identity transform. */
+    @Test
     public void testFindMathTransformIdentity() throws FactoryException {
         CoordinateReferenceSystem crs1default = CRS.decode("EPSG:4326", false);
         CoordinateReferenceSystem crs2default = CRS.decode("EPSG:4326", false);
         MathTransform tDefault = CRS.findMathTransform(crs1default, crs2default);
-        assertTrue("WSG84 transformed to WSG84 should be Identity", tDefault.isIdentity());
+        Assert.assertTrue("WSG84 transformed to WSG84 should be Identity", tDefault.isIdentity());
 
         CoordinateReferenceSystem crs1force = CRS.decode("EPSG:4326", true);
         CoordinateReferenceSystem crs2force = CRS.decode("EPSG:4326", true);
         MathTransform tForce = CRS.findMathTransform(crs1force, crs2force);
-        assertTrue("WSG84 transformed to WSG84 should be Identity", tForce.isIdentity());
+        Assert.assertTrue("WSG84 transformed to WSG84 should be Identity", tForce.isIdentity());
     }
 
+    @Test
     public void testEPSG42102() throws Exception {
         CoordinateReferenceSystem bc = CRS.decode("EPSG:42102");
-        assertNotNull("bc", bc);
+        Assert.assertNotNull("bc", bc);
     }
 
+    @Test
     public void testEPSG28992toWGS84() throws Exception {
         /*
          * Unit test to accompany the fix for https://osgeo-org.atlassian.net/browse/GEOT-5077
@@ -107,23 +111,26 @@ public class CRSTest extends TestCase {
         assertArrayEquals(expectedTransformedCoords, transformedCoords, 0.000003);
     }
 
+    @Test
     public void testAUTO4200() throws Exception {
         CoordinateReferenceSystem utm = CRS.decode("AUTO:42001,0.0,0.0");
-        assertNotNull("auto-utm", utm);
+        Assert.assertNotNull("auto-utm", utm);
     }
 
+    @Test
     public void test4269() throws Exception {
         CoordinateReferenceSystem latlong = CRS.decode("EPSG:4269");
-        assertNotNull("latlong", latlong);
+        Assert.assertNotNull("latlong", latlong);
         try {
             latlong = CRS.decode("4269");
-            fail("Shoudl not be able to decode 4269 without EPSG authority");
+            Assert.fail("Shoudl not be able to decode 4269 without EPSG authority");
         } catch (NoSuchAuthorityCodeException e) {
             // expected
         }
-        assertNotNull("latlong", latlong);
+        Assert.assertNotNull("latlong", latlong);
     }
 
+    @Test
     public void testManditoryTranform() throws Exception {
         CoordinateReferenceSystem WGS84 = CRS.decode("EPSG:4326"); // latlong
         CoordinateReferenceSystem NAD83 = CRS.decode("EPSG:4269");
@@ -137,7 +144,7 @@ public class CRSTest extends TestCase {
 
         DirectPosition pt1 = new GeneralDirectPosition(0.0, 0.0);
         DirectPosition pt2 = math.transform(pt1, null);
-        assertNotNull(pt2);
+        Assert.assertNotNull(pt2);
 
         double pts[] =
                 new double[] {
@@ -147,9 +154,10 @@ public class CRSTest extends TestCase {
                 };
         double tst[] = new double[pts.length];
         math.transform(pts, 0, new double[pts.length], 0, pts.length / 2);
-        for (int i = 0; i < pts.length; i++) assertTrue("pts[" + i + "]", pts[i] != tst[i]);
+        for (int i = 0; i < pts.length; i++) Assert.assertTrue("pts[" + i + "]", pts[i] != tst[i]);
     }
     /** Taken from empty udig map calculation of scale. */
+    @Test
     public void testSamplePixel() throws Exception {
         Hints global = new Hints();
         GeoTools.init(global);
@@ -166,6 +174,7 @@ public class CRSTest extends TestCase {
         assertArrayEquals(result, pixelBounds, 0);
     }
 
+    @Test
     public void testReprojection() throws Exception {
         // origional bc alberts
         double[] poly1 =
@@ -196,6 +205,7 @@ public class CRSTest extends TestCase {
         assertArrayEquals(poly3, polyAfter, 0.00000000000001);
     }
 
+    @Test
     public void testReprojectionDefault() throws Exception {
         // origional bc alberts
         double[] poly1 =
@@ -230,9 +240,9 @@ public class CRSTest extends TestCase {
         Envelope aEnv = a.getEnvelopeInternal();
         Envelope bEnv = b.getEnvelopeInternal();
 
-        assertEquals(aEnv.getMinX(), bEnv.getMinX(), tolerance);
-        assertEquals(aEnv.getMaxX(), bEnv.getMaxX(), tolerance);
-        assertEquals(aEnv.getMinY(), bEnv.getMinY(), tolerance);
-        assertEquals(aEnv.getMaxY(), bEnv.getMaxY(), tolerance);
+        Assert.assertEquals(aEnv.getMinX(), bEnv.getMinX(), tolerance);
+        Assert.assertEquals(aEnv.getMaxX(), bEnv.getMaxX(), tolerance);
+        Assert.assertEquals(aEnv.getMinY(), bEnv.getMinY(), tolerance);
+        Assert.assertEquals(aEnv.getMaxY(), bEnv.getMaxY(), tolerance);
     }
 }

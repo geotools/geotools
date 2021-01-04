@@ -1,5 +1,8 @@
 package org.geotools.data.ogr;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.WKTReader;
@@ -12,14 +15,17 @@ public abstract class GeometryMapperTest extends TestCaseSupport {
         super(dataStoreFactoryClass);
     }
 
+    @Test
     public void testLine() throws Exception {
         checkRoundTrip("LINESTRING(0 0, 10 10)");
     }
 
+    @Test
     public void testPolygon() throws Exception {
         checkRoundTrip("POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))");
     }
 
+    @Test
     public void testPoint() throws Exception {
         checkRoundTrip("POINT(0 0)");
     }

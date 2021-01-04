@@ -16,6 +16,10 @@
  */
 package org.geotools.data.ogr;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
@@ -23,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
@@ -31,6 +36,7 @@ public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
         super(dataStoreFactoryClass);
     }
 
+    @Test
     public void testLookup() throws Exception {
         Map<String, Serializable> map = new HashMap<>();
         map.put(OGRDataStoreFactory.OGR_NAME.key, getAbsolutePath(STATE_POP));
@@ -50,6 +56,7 @@ public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
         }
     }
 
+    @Test
     public void testNamespace() throws Exception {
         Map<String, Serializable> map = new HashMap<>();
         URI namespace = new URI("http://jesse.com");
@@ -68,6 +75,7 @@ public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
         }
     }
 
+    @Test
     public void testNames() throws Exception {
         Set<String> drivers = dataStoreFactory.getAvailableDrivers();
         assertTrue(drivers.size() > 0);

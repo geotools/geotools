@@ -16,23 +16,30 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.w3c.dom.Document;
 
 public class LinearRingTypeBindingTest extends KMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(LinearRing.class, binding(KML.LinearRingType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.LinearRingType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         buildDocument("<LinearRing><coordinates>1,1 2,2 3,3 1,1</coordinates></LinearRing>");
 
@@ -44,6 +51,7 @@ public class LinearRingTypeBindingTest extends KMLTestSupport {
         assertEquals(new Coordinate(1, 1), l.getCoordinateN(3));
     }
 
+    @Test
     public void testParseInvalidNonClosedPolygon_parsesAndClosesAnyway() throws Exception {
         buildDocument("<LinearRing><coordinates>1,1 2,2 3,3 4,4</coordinates></LinearRing>");
 
@@ -55,6 +63,7 @@ public class LinearRingTypeBindingTest extends KMLTestSupport {
         assertEquals(new Coordinate(4, 4), l.getCoordinateN(3));
     }
 
+    @Test
     public void testEncode() throws Exception {
         LinearRing l =
                 new GeometryFactory()

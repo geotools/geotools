@@ -21,14 +21,16 @@ import java.net.URI;
 import java.util.logging.Level;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.TestCase;
 import org.geotools.TestData;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
-public class GMLInheritanceTest extends TestCase {
+public class GMLInheritanceTest {
 
+    @Test
     public void testNestedFeature() throws Throwable {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -50,12 +52,13 @@ public class GMLInheritanceTest extends TestCase {
         parser.parse(f, xmlContentHandler);
 
         Object doc = xmlContentHandler.getDocument();
-        assertNotNull("Document missing", doc);
+        Assert.assertNotNull("Document missing", doc);
         //            System.out.println(doc);
 
         checkFeatureCollection((SimpleFeatureCollection) doc);
     }
 
+    @Test
     public void testMultiInheritance() throws Throwable {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -77,7 +80,7 @@ public class GMLInheritanceTest extends TestCase {
         parser.parse(f, xmlContentHandler);
 
         Object doc = xmlContentHandler.getDocument();
-        assertNotNull("Document missing", doc);
+        Assert.assertNotNull("Document missing", doc);
         //            System.out.println(doc);
 
         checkFeatureCollection((SimpleFeatureCollection) doc);
@@ -86,18 +89,18 @@ public class GMLInheritanceTest extends TestCase {
     private void checkFeatureCollection(SimpleFeatureCollection doc) {
 
         // remaining slot (s) should be feature(s)
-        assertTrue("Requires atleast one feature", doc.size() > 0); // bbox + feature
+        Assert.assertTrue("Requires atleast one feature", doc.size() > 0); // bbox + feature
         SimpleFeatureIterator i = doc.features();
         int j = 1;
         while (i.hasNext()) {
             SimpleFeature ft = i.next();
-            assertNotNull("Feature #" + j + " is null", ft);
+            Assert.assertNotNull("Feature #" + j + " is null", ft);
             //            assertNotNull("Feature #"+j+" missing crs
             // ",ft.getFeatureType().getDefaultGeometry().getCoordinateSystem());
             //            System.out.println("Feature "+j+" : "+ft);
             j++;
         }
-        assertEquals(2, j);
+        Assert.assertEquals(2, j);
         // System.out.println("Found "+j+" Features");
     }
 }

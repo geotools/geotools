@@ -16,15 +16,21 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.filter.Filters;
 import org.geotools.styling.ContrastEnhancement;
+import org.junit.Test;
 
 public class SLDContrastEnhancementBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(
                 ContrastEnhancement.class, new SLDContrastEnhancementBinding(null, null).getType());
     }
 
+    @Test
     public void testHistogram() throws Exception {
         SLDMockData.contrastEnhancement(document, document);
 
@@ -38,6 +44,7 @@ public class SLDContrastEnhancementBindingTest extends SLDTestSupport {
         assertEquals("histogram", ce.getMethod().name().toLowerCase());
     }
 
+    @Test
     public void testExpressionGammaValue() throws Exception {
         SLDMockData.contrastEnhancementExpressionGammaValue(document, document);
 

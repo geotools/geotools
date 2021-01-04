@@ -18,6 +18,8 @@
  */
 package org.geotools.feature;
 
+import static org.junit.Assert.*;
+
 import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.ArrayList;
@@ -27,13 +29,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -49,20 +50,7 @@ import org.opengis.feature.type.FeatureType;
  * @author jgarnett
  */
 public class FeatureTypeTest extends DataTestCase {
-
-    public FeatureTypeTest(String testName) {
-        super(testName);
-    }
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite(FeatureTypeTest.class);
-        return suite;
-    }
-
+    @Test
     public void testAbstractType() throws Exception {
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -103,6 +91,7 @@ public class FeatureTypeTest extends DataTestCase {
         }
     }
 
+    @Test
     public void testEquals() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("Thing");
@@ -128,6 +117,7 @@ public class FeatureTypeTest extends DataTestCase {
         assertFalse(ft.equals(null));
     }
 
+    @Test
     public void testCopyFeature() throws Exception {
         SimpleFeature feature = lakeFeatures[0];
         assertDuplicate("feature", feature, SimpleFeatureBuilder.copy(feature));
@@ -140,6 +130,7 @@ public class FeatureTypeTest extends DataTestCase {
      * <p>UML type hierarchy of test types: Feature <|-- A <|-- B <|-- C
      */
     @SuppressWarnings("serial")
+    @Test
     public void testAncestors() throws Exception {
         URI uri = new URI("http://www.geotools.org/example");
         SimpleFeatureTypeBuilder tb;
@@ -200,6 +191,7 @@ public class FeatureTypeTest extends DataTestCase {
                 FeatureTypes.getAncestors(typeC));
     }
 
+    @Test
     public void testDeepCopy() throws Exception {
         // primative
         String str = "FooBar";

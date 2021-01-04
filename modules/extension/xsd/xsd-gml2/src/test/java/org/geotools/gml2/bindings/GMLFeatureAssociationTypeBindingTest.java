@@ -16,15 +16,18 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertNull;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 
 public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance featureAssociation;
     ElementInstance feature;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         featureAssociation =
@@ -50,6 +53,7 @@ public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest
     //		assertNotNull(f1);
     //		assertEquals(f1,f);
     //	}
+    @Test
     public void testWithoutFeature() throws Exception {
         Node node = createNode(featureAssociation, null, null, null, null);
 

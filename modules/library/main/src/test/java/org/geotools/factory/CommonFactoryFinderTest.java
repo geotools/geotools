@@ -16,37 +16,43 @@
  */
 package org.geotools.factory;
 
-import junit.framework.TestCase;
 import org.geotools.feature.AbstractFeatureFactoryImpl;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.feature.FeatureFactory;
 
-public class CommonFactoryFinderTest extends TestCase {
+public class CommonFactoryFinderTest {
 
+    @Test
     public void testGetFeatureFactory() {
-        assertNotNull(CommonFactoryFinder.getFeatureFactory(null));
+        Assert.assertNotNull(CommonFactoryFinder.getFeatureFactory(null));
     }
 
+    @Test
     public void testGetStyleFactory() {
-        assertNotNull(CommonFactoryFinder.getStyleFactories(GeoTools.getDefaultHints()));
+        Assert.assertNotNull(CommonFactoryFinder.getStyleFactories(GeoTools.getDefaultHints()));
     }
 
+    @Test
     public void testGetFilterFactory() {
-        assertNotNull(CommonFactoryFinder.getFilterFactory(null));
+        Assert.assertNotNull(CommonFactoryFinder.getFilterFactory(null));
     }
 
+    @Test
     public void testGetDefaultFeatureFactory() {
         FeatureFactory featureFactory = CommonFactoryFinder.getFeatureFactory(null);
-        assertNotNull(featureFactory);
-        assertTrue(featureFactory instanceof AbstractFeatureFactoryImpl);
+        Assert.assertNotNull(featureFactory);
+        Assert.assertTrue(featureFactory instanceof AbstractFeatureFactoryImpl);
     }
 
+    @Test
     public void testGetValidatingFeatureFactory() {
         Hints hints = new Hints(Hints.FEATURE_FACTORY, ValidatingFeatureFactoryImpl.class);
         FeatureFactory featureFactory = CommonFactoryFinder.getFeatureFactory(hints);
-        assertNotNull(featureFactory);
-        assertTrue(featureFactory instanceof ValidatingFeatureFactoryImpl);
+        Assert.assertNotNull(featureFactory);
+        Assert.assertTrue(featureFactory instanceof ValidatingFeatureFactoryImpl);
     }
 }

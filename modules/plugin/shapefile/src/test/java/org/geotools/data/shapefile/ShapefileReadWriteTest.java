@@ -259,9 +259,4 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
             }
         }
     }
-
-    public static final void main(String[] args) throws Exception {
-        // verbose = true;
-        junit.textui.TestRunner.run(suite(ShapefileReadWriteTest.class));
-    }
 }

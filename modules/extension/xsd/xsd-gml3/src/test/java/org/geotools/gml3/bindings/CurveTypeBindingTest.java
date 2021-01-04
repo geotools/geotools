@@ -16,8 +16,11 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class CurveTypeBindingTest extends GML3TestSupport {
@@ -27,6 +30,7 @@ public class CurveTypeBindingTest extends GML3TestSupport {
         return true;
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.compoundCurve(), GML._Curve);
         // print(dom);

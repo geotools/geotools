@@ -13,10 +13,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import junit.framework.TestCase;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
@@ -24,8 +25,9 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.temporal.Period;
 import org.w3c.dom.Document;
 
-public class GML3ParsingTest extends TestCase {
+public class GML3ParsingTest {
 
+    @Test
     public void testWithoutSchema() throws Exception {
         InputStream in = getClass().getResourceAsStream("states.xml");
         GMLConfiguration gml = new GMLConfiguration();
@@ -35,14 +37,15 @@ public class GML3ParsingTest extends TestCase {
         SimpleFeature f = null;
         while ((f = (SimpleFeature) parser.parse()) != null) {
             nfeatures++;
-            assertNotNull(f.getAttribute("STATE_NAME"));
-            assertNotNull(f.getAttribute("STATE_ABBR"));
-            assertTrue(f.getAttribute("SAMP_POP") instanceof String);
+            Assert.assertNotNull(f.getAttribute("STATE_NAME"));
+            Assert.assertNotNull(f.getAttribute("STATE_ABBR"));
+            Assert.assertTrue(f.getAttribute("SAMP_POP") instanceof String);
         }
 
-        assertEquals(49, nfeatures);
+        Assert.assertEquals(49, nfeatures);
     }
 
+    @Test
     public void testWithSchema() throws Exception {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
@@ -71,28 +74,30 @@ public class GML3ParsingTest extends TestCase {
         SimpleFeature f = null;
         while ((f = (SimpleFeature) parser.parse()) != null) {
             nfeatures++;
-            assertNotNull(f.getAttribute("STATE_NAME"));
-            assertNotNull(f.getAttribute("STATE_ABBR"));
-            assertTrue(f.getAttribute("SAMP_POP") instanceof Double);
+            Assert.assertNotNull(f.getAttribute("STATE_NAME"));
+            Assert.assertNotNull(f.getAttribute("STATE_ABBR"));
+            Assert.assertTrue(f.getAttribute("SAMP_POP") instanceof Double);
         }
 
-        assertEquals(49, nfeatures);
+        Assert.assertEquals(49, nfeatures);
     }
 
+    @Test
     public void testParse3D() throws Exception {
         Parser p = new Parser(new GMLConfiguration());
         Object g = p.parse(GML3ParsingTest.class.getResourceAsStream("polygon3d.xml"));
         assertThat(g, instanceOf(Polygon.class));
 
         Polygon polygon = (Polygon) g;
-        assertEquals(3, CoordinateSequences.coordinateDimension(polygon));
+        Assert.assertEquals(3, CoordinateSequences.coordinateDimension(polygon));
         Geometry expected =
                 new WKTReader()
                         .read(
                                 "POLYGON((94000 471000 10, 94001 471000 11, 94001 471001 12, 94000 471001 13, 94000 471000 10))");
-        assertTrue(CoordinateSequences.equalsND(expected, polygon));
+        Assert.assertTrue(CoordinateSequences.equalsND(expected, polygon));
     }
 
+    @Test
     public void testParseTimePeriodByPosition() throws Exception {
         Parser p = new Parser(new GMLConfiguration());
         Object g = p.parse(GML3ParsingTest.class.getResourceAsStream("timePeriodByPosition.xml"));
@@ -103,8 +108,8 @@ public class GML3ParsingTest extends TestCase {
         java.util.Calendar calendar = java.util.Calendar.getInstance(gmt);
         calendar.clear();
         calendar.set(2006, 5, 28, 4, 8, 0);
-        assertEquals(calendar.getTime(), period.getBeginning().getPosition().getDate());
+        Assert.assertEquals(calendar.getTime(), period.getBeginning().getPosition().getDate());
         calendar.set(2009, 5, 28, 6, 8, 0);
-        assertEquals(calendar.getTime(), period.getEnding().getPosition().getDate());
+        Assert.assertEquals(calendar.getTime(), period.getEnding().getPosition().getDate());
     }
 }

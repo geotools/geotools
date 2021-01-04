@@ -15,7 +15,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 
-/** Tests for checking {@link NotBinding} encoding. */
 public class NotBindingTest {
 
     /** Test checking correct encoding for Not operator */

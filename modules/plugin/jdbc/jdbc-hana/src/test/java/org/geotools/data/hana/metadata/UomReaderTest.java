@@ -19,11 +19,13 @@ package org.geotools.data.hana.metadata;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** @author Stefan Uhrig, SAP SE */
-public class UomReaderTest extends TestCase {
+public class UomReaderTest {
 
+    @Test
     public void testUomReading() throws IOException {
         String csv = "meter,linear,1.0\ndegree,angular,0.017453292519943278";
         InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
@@ -31,39 +33,41 @@ public class UomReaderTest extends TestCase {
         Uom uom;
 
         uom = reader.readNextUom();
-        assertNotNull(uom);
-        assertEquals("meter", uom.getName());
-        assertEquals(Uom.Type.LINEAR, uom.getType());
-        assertEquals(1.0, uom.getFactor());
+        Assert.assertNotNull(uom);
+        Assert.assertEquals("meter", uom.getName());
+        Assert.assertEquals(Uom.Type.LINEAR, uom.getType());
+        Assert.assertEquals(1.0, uom.getFactor(), 0d);
 
         uom = reader.readNextUom();
-        assertNotNull(uom);
-        assertEquals("degree", uom.getName());
-        assertEquals(Uom.Type.ANGULAR, uom.getType());
-        assertEquals(0.017453292519943278, uom.getFactor());
+        Assert.assertNotNull(uom);
+        Assert.assertEquals("degree", uom.getName());
+        Assert.assertEquals(Uom.Type.ANGULAR, uom.getType());
+        Assert.assertEquals(0.017453292519943278, uom.getFactor(), 0d);
 
         uom = reader.readNextUom();
-        assertNull(uom);
+        Assert.assertNull(uom);
     }
 
+    @Test
     public void testWrongEntryCount() throws IOException {
         String csv = "meter,linear";
         InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
         UomReader reader = new UomReader(is);
         try {
             reader.readNextUom();
-            fail("Expected RuntimeException");
+            Assert.fail("Expected RuntimeException");
         } catch (RuntimeException e) {
         }
     }
 
+    @Test
     public void testInvalidType() throws IOException {
         String csv = "meter,lin,1.0";
         InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
         UomReader reader = new UomReader(is);
         try {
             reader.readNextUom();
-            fail("Expected RuntimeException");
+            Assert.fail("Expected RuntimeException");
         } catch (RuntimeException e) {
         }
     }

@@ -16,11 +16,15 @@
  */
 package org.geotools.data.store;
 
+import static org.junit.Assert.*;
+
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.MaxSimpleFeatureCollection;
+import org.junit.Test;
 
 public class MaxFeaturesFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
+    @Test
     public void testSize() throws Exception {
         // in the common case it's as big as the max
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 2);
@@ -35,6 +39,7 @@ public class MaxFeaturesFeatureCollectionTest extends FeatureCollectionWrapperTe
         assertEquals(0, max.size());
     }
 
+    @Test
     public void testIteratorMax() throws Exception {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 2);
         try (SimpleFeatureIterator i = max.features()) {
@@ -46,6 +51,7 @@ public class MaxFeaturesFeatureCollectionTest extends FeatureCollectionWrapperTe
         }
     }
 
+    @Test
     public void testIteratorSkipMax() throws Exception {
         MaxSimpleFeatureCollection max =
                 new MaxSimpleFeatureCollection(delegate, delegate.size() - 1, 2);
@@ -56,6 +62,7 @@ public class MaxFeaturesFeatureCollectionTest extends FeatureCollectionWrapperTe
         }
     }
 
+    @Test
     public void testIteratorSkipMoreSize() throws Exception {
         MaxSimpleFeatureCollection max =
                 new MaxSimpleFeatureCollection(delegate, delegate.size() + 1, 2);

@@ -16,8 +16,12 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.w3c.dom.Document;
 
@@ -42,14 +46,17 @@ import org.w3c.dom.Document;
  * @generated
  */
 public class _Filter_CapabilitiesTypeBindingTest extends OGCTestSupport {
+    @Test
     public void testType() {
         assertEquals(FilterCapabilities.class, binding(OGC._Filter_Capabilities).getType());
     }
 
+    @Test
     public void testExectionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC._Filter_Capabilities).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.capabilities(document, document);
 
@@ -61,6 +68,7 @@ public class _Filter_CapabilitiesTypeBindingTest extends OGCTestSupport {
         assertNotNull(caps.getIdCapabilities());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom = encode(FilterMockData.capabilities(), OGC.Filter_Capabilities);
 

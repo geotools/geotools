@@ -1,5 +1,9 @@
 package org.geotools.wps.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import net.opengis.wfs.GetFeatureType;
 import net.opengis.wps10.ExecuteType;
 import net.opengis.wps10.InputReferenceType;
@@ -7,17 +11,10 @@ import net.opengis.wps10.InputType;
 import net.opengis.wps10.MethodType;
 import org.geotools.wps.WPS;
 import org.geotools.wps.WPSTestSupport;
+import org.junit.Test;
 
-/**
- * This actually tests other bindings as well, since there are few elements declared in WPS and the
- * parser ends up confusing snippets of Execute for something else (think Reference, which is
- * declared in OWS as an element, or Input, same). Se we need to have the parsing start from a root
- * that can be found in the WPS schema (and in that alone)
- *
- * @author Andrea Aime
- */
 public class ExecuteBindingTest extends WPSTestSupport {
-
+    @Test
     public void testParseCData() throws Exception {
         String body =
                 "<wfs:GetFeature service=\"WFS\" version=\"1.0.0\"\n"
@@ -76,6 +73,7 @@ public class ExecuteBindingTest extends WPSTestSupport {
         // assertNull(ref.getContentElement());
     }
 
+    @Test
     public void testParseFull() throws Exception {
         String body =
                 "<wfs:GetFeature service=\"WFS\" version=\"1.0.0\"\n"

@@ -19,12 +19,12 @@ package org.geotools.xsd;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.TimeZone;
-import junit.framework.TestCase;
 import org.geotools.util.factory.Hints;
 import org.geotools.xml.XmlConverterFactory;
 import org.geotools.xs.bindings.XSDateBinding;
 import org.geotools.xs.bindings.XSDateTimeBinding;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ import org.junit.Test;
  *
  * @author awaterme
  */
-public class DateConversionTimezoneTest extends TestCase {
+public class DateConversionTimezoneTest {
 
     // "Systems under Test"
     private XmlConverterFactory sut1 = new XmlConverterFactory();
@@ -122,8 +122,8 @@ public class DateConversionTimezoneTest extends TestCase {
         Calendar calendar = calendarOf(year, month, day, hour, timezoneId);
         java.util.Date utilDate = calendar.getTime();
         Date date = new Date(utilDate.getTime());
-        assertEquals(expected, sut1Convert(date));
-        assertEquals(expected, sut2Convert(date));
+        Assert.assertEquals(expected, sut1Convert(date));
+        Assert.assertEquals(expected, sut2Convert(date));
     }
 
     private Calendar calendarOf(int year, int month, int day, int hour, String timezoneId) {
@@ -144,7 +144,7 @@ public class DateConversionTimezoneTest extends TestCase {
         Calendar calendar = calendarOf(year, month, day, hour, timezoneId);
         java.util.Date utilDate = calendar.getTime();
         Date date = new Date(utilDate.getTime());
-        assertEquals(expected, sut3Convert(date));
+        Assert.assertEquals(expected, sut3Convert(date));
     }
 
     /** Save & restore system time zone, so later tests are not affected. */

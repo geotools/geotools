@@ -16,47 +16,52 @@
  */
 package org.geotools.filter;
 
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Expression;
 
-public class IsNotEqualToImpltest extends TestCase {
+public class IsNotEqualToImpltest {
 
     org.opengis.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
+    @Test
     public void testOperandsSameType() {
         Expression e1 = filterFactory.literal(1);
         Expression e2 = filterFactory.literal(2);
 
         PropertyIsNotEqualTo notEqual = filterFactory.notEqual(e1, e2, true);
-        assertTrue(notEqual.evaluate(null));
+        Assert.assertTrue(notEqual.evaluate(null));
     }
 
+    @Test
     public void testOperandsDifferentType() {
         Expression e1 = filterFactory.literal(1);
         Expression e2 = filterFactory.literal("2");
 
         PropertyIsNotEqualTo notEqual = filterFactory.notEqual(e1, e2, true);
-        assertTrue(notEqual.evaluate(null));
+        Assert.assertTrue(notEqual.evaluate(null));
     }
 
+    @Test
     public void testOperandsIntDouble() {
         Expression e1 = filterFactory.literal(1);
         Expression e2 = filterFactory.literal("1.0");
 
         PropertyIsNotEqualTo notEqual = filterFactory.notEqual(e1, e2, true);
-        assertFalse(notEqual.evaluate(null));
+        Assert.assertFalse(notEqual.evaluate(null));
     }
 
+    @Test
     public void testCaseSensitivity() {
         Expression e1 = filterFactory.literal("foo");
         Expression e2 = filterFactory.literal("FoO");
 
         PropertyIsNotEqualTo caseSensitive = filterFactory.notEqual(e1, e2, true);
-        assertTrue(caseSensitive.evaluate(null));
+        Assert.assertTrue(caseSensitive.evaluate(null));
 
         PropertyIsNotEqualTo caseInsensitive = filterFactory.notEqual(e1, e2, false);
-        assertFalse(caseInsensitive.evaluate(null));
+        Assert.assertFalse(caseInsensitive.evaluate(null));
     }
 }

@@ -64,7 +64,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     // property?
     protected static CoordinateReferenceSystem SPATIALCRS;
 
-    protected static Map<String, Class> EsriJavaMapping = new HashMap<String, Class>();
+    protected static final Map<String, Class> EsriJavaMapping = new HashMap<String, Class>();
 
     static {
         EsriJavaMapping.put("esriFieldTypeBlob", java.lang.Object.class);
@@ -81,7 +81,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         EsriJavaMapping.put("esriFieldTypeXML", java.lang.String.class);
     }
 
-    protected static Map<String, Class> EsriJTSMapping = new HashMap<String, Class>();
+    protected static final Map<String, Class> EsriJTSMapping = new HashMap<String, Class>();
 
     static {
         EsriJTSMapping.put("esriGeometryPoint", org.locationtech.jts.geom.Point.class);
@@ -150,7 +150,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             throw new IOException(e.getMessage());
         }
 
-        this.resInfo.setKeywords(new HashSet(ds.getKeyword()));
+        this.resInfo.setKeywords(new HashSet<String>(ds.getKeyword()));
 
         // FIXME: the abstract of the feature type is not set
         this.resInfo.setDescription(ds.getDescription());

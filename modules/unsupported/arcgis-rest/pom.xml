@@ -39,8 +39,7 @@
     </developers>
 
     <properties>
-        <powermock.version>1.6.6</powermock.version>
-        <mockito.version>1.10.19</mockito.version>
+        <powermock.version>2.0.9</powermock.version>
     </properties>
 
     <repositories>
@@ -93,14 +92,7 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -111,7 +103,7 @@
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
+            <artifactId>powermock-api-mockito2</artifactId>
             <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
@@ -120,6 +112,11 @@
             <artifactId>gt-cql</artifactId>
             <version>23-SNAPSHOT</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.ws</groupId>
+            <artifactId>jaxws-api</artifactId>
+            <version>2.3.1</version>
         </dependency>
     </dependencies>
     <profiles>

@@ -53,9 +53,10 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         q.setFilter(filter);
         ContentFeatureCollection features = featureSource.getFeatures(q);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.12");
+        }
     }
 
     @Test
@@ -72,9 +73,10 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         q.setFilter(filter);
         ContentFeatureCollection features = featureSource.getFeatures(q);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.12");
+        }
     }
 
     @Test
@@ -98,11 +100,12 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         q.setFilter(filter);
         ContentFeatureCollection features = featureSource.getFeatures(q);
         assertEquals(2, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getAttribute("modem_b"), false);
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getAttribute("modem_b"), false);
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getAttribute("modem_b"), false);
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getAttribute("modem_b"), false);
+        }
     }
 
     @Test
@@ -120,8 +123,9 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         q.setHints(hints);
         ContentFeatureCollection features = featureSource.getFeatures(q);
         assertFalse(features.isEmpty());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertNotNull(fsi.next().getAttribute("_aggregation"));
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertNotNull(fsi.next().getAttribute("_aggregation"));
+        }
     }
 }

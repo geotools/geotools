@@ -125,7 +125,7 @@ public class ParserTest {
         config.getContext().registerComponentInstance(delegate);
 
         Parser parser = new Parser(config);
-        Object o = parser.parse(ParserTest.class.getResourceAsStream("parserDelegate.xml"));
+        parser.parse(ParserTest.class.getResourceAsStream("parserDelegate.xml"));
 
         Assert.assertTrue(delegate.foo);
         Assert.assertTrue(delegate.bar);

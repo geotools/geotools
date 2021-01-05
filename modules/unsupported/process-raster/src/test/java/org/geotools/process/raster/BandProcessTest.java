@@ -52,7 +52,6 @@ import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -260,14 +259,6 @@ public class BandProcessTest {
         // Ensure they have the same dimensions
         assertEqualImageDim(mergedImg, selected1.getRenderedImage());
         assertEqualImageDim(mergedImg, selected2.getRenderedImage());
-
-        // Ensure equal images inside ROI. This requires cropping the images
-
-        // World to grid transform for mapping the ROI in the Raster apsce
-        MathTransform2D tr =
-                coverage1.getGridGeometry().getCRSToGrid2D(PixelOrientation.UPPER_LEFT);
-        // ROI object inthe Raster Space
-        ROI roi = new ROIGeometry(JTS.transform(geo, tr));
 
         // Coverage Crop for the final coverages
         CropCoverage crop = new CropCoverage();

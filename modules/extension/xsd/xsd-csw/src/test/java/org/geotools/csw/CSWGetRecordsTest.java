@@ -2,6 +2,7 @@ package org.geotools.csw;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -130,6 +131,6 @@ public class CSWGetRecordsTest {
         assertNotNull(response);
         EList<AbstractRecordType> records = response.getAbstractRecord();
         assertEquals(1, records.size());
-        RecordType record = (RecordType) records.get(0);
+        assertTrue(records.get(0) instanceof RecordType);
     }
 }

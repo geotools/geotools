@@ -18,8 +18,16 @@ package org.geotools.data;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -528,9 +536,6 @@ public class DataUtilitiesTest extends DataTestCase {
         SimpleFeature feature1 =
                 DataUtilities.createFeature(
                         featureType, "fid1=1|Jody Garnett\\nSteering Committee|POINT (1 2)");
-        SimpleFeature feature2 =
-                DataUtilities.createFeature(
-                        featureType, "2|John Hudson\\|Hapless Victim|POINT (6 2)");
 
         String spec = DataUtilities.encodeType(featureType);
         Assert.assertEquals("id:Integer,party:String,geom:Geometry:srid=4326", spec);
@@ -645,8 +650,10 @@ public class DataUtilitiesTest extends DataTestCase {
 
     @Test
     public void testReaderFeatureArray() throws Exception {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(roadFeatures);
-        Assert.assertEquals(roadFeatures.length, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                DataUtilities.reader(roadFeatures)) {
+            Assert.assertEquals(roadFeatures.length, count(reader));
+        }
     }
 
     @Test
@@ -654,8 +661,10 @@ public class DataUtilitiesTest extends DataTestCase {
         SimpleFeatureCollection collection = DataUtilities.collection(roadFeatures);
         Assert.assertEquals(roadFeatures.length, collection.size());
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(collection);
-        Assert.assertEquals(roadFeatures.length, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                DataUtilities.reader(collection)) {
+            Assert.assertEquals(roadFeatures.length, count(reader));
+        }
     }
 
     @Test
@@ -795,10 +804,6 @@ public class DataUtilitiesTest extends DataTestCase {
         Filter filter1 = null;
         Filter filter2 = null;
         FilterFactory ffac = CommonFactoryFinder.getFilterFactory(null);
-
-        String typeSpec = "geom:Point,att1:String,att2:String,att3:String,att4:String";
-        SimpleFeatureType testType = DataUtilities.createType("testType", typeSpec);
-        // System.err.println("created test type: " + testType);
 
         filter1 = ffac.equals(ffac.property("att1"), ffac.literal("val1"));
         filter2 = ffac.equals(ffac.property("att2"), ffac.literal("val2"));

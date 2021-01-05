@@ -23,13 +23,11 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import javax.media.jai.iterator.RectIter;
-import javax.media.jai.iterator.RectIterFactory;
+import java.util.logging.Logger;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -45,6 +43,7 @@ import org.geotools.process.Process;
 import org.geotools.process.Processors;
 import org.geotools.process.feature.AbstractFeatureCollectionProcessFactory;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.util.logging.Logging;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -68,6 +67,8 @@ import org.opengis.util.ProgressListener;
  * @author Michael Bedward
  */
 public class VectorToRasterProcessTest {
+
+    static final Logger LOGGER = Logging.getLogger(VectorToRasterProcessTest.class);
 
     @Test
     public void testCreateProcess() throws Exception {
@@ -96,12 +97,13 @@ public class VectorToRasterProcessTest {
          * the larger rectangle (value 2)
          */
         Map<Integer, Envelope> rects = new HashMap<>();
-        SimpleFeatureIterator iter = features.features();
-        while (iter.hasNext()) {
-            SimpleFeature sf = iter.next();
-            rects.put(
-                    (Integer) sf.getAttribute("value"),
-                    ((Geometry) sf.getDefaultGeometry()).getEnvelopeInternal());
+        try (SimpleFeatureIterator iter = features.features()) {
+            while (iter.hasNext()) {
+                SimpleFeature sf = iter.next();
+                rects.put(
+                        (Integer) sf.getAttribute("value"),
+                        ((Geometry) sf.getDefaultGeometry()).getEnvelopeInternal());
+            }
         }
 
         try {
@@ -182,19 +184,20 @@ public class VectorToRasterProcessTest {
         /*
          * Verify each vertex is the correct value
          */
-        SimpleFeatureIterator iter = features.features();
-        float[] covValue = new float[1];
-        GridCoordinates2D gridP = new GridCoordinates2D();
-        while (iter.hasNext()) {
-            SimpleFeature feature = iter.next();
-            Coordinate[] coords = ((Geometry) feature.getDefaultGeometry()).getCoordinates();
-            for (Coordinate coord : coords) {
-                gridP.x = coord.x == gridDim.width ? (int) coord.x - 1 : (int) coord.x;
-                gridP.y = coord.y == gridDim.height ? (int) coord.y - 1 : (int) coord.y;
+        try (SimpleFeatureIterator iter = features.features()) {
+            float[] covValue = new float[1];
+            GridCoordinates2D gridP = new GridCoordinates2D();
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                Coordinate[] coords = ((Geometry) feature.getDefaultGeometry()).getCoordinates();
+                for (Coordinate coord : coords) {
+                    gridP.x = coord.x == gridDim.width ? (int) coord.x - 1 : (int) coord.x;
+                    gridP.y = coord.y == gridDim.height ? (int) coord.y - 1 : (int) coord.y;
 
-                cov.evaluate(gridP, covValue);
-                Float value = (Float) feature.getAttribute("value");
-                assertEquals(value.floatValue(), covValue[0], .01);
+                    cov.evaluate(gridP, covValue);
+                    Float value = (Float) feature.getAttribute("value");
+                    assertEquals(value.floatValue(), covValue[0], .01);
+                }
             }
         }
     }
@@ -230,19 +233,20 @@ public class VectorToRasterProcessTest {
         /*
          * Verify each vertex is the correct value
          */
-        SimpleFeatureIterator iter = features.features();
-        int[] covValue = new int[1];
-        GridCoordinates2D gridP = new GridCoordinates2D();
-        while (iter.hasNext()) {
-            SimpleFeature feature = iter.next();
-            Coordinate[] coords = ((Geometry) feature.getDefaultGeometry()).getCoordinates();
-            for (Coordinate coord : coords) {
-                gridP.x = coord.x == gridDim.width ? (int) coord.x - 1 : (int) coord.x;
-                gridP.y = coord.y == gridDim.height ? (int) coord.y - 1 : (int) coord.y;
+        try (SimpleFeatureIterator iter = features.features()) {
+            int[] covValue = new int[1];
+            GridCoordinates2D gridP = new GridCoordinates2D();
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                Coordinate[] coords = ((Geometry) feature.getDefaultGeometry()).getCoordinates();
+                for (Coordinate coord : coords) {
+                    gridP.x = coord.x == gridDim.width ? (int) coord.x - 1 : (int) coord.x;
+                    gridP.y = coord.y == gridDim.height ? (int) coord.y - 1 : (int) coord.y;
 
-                cov.evaluate(gridP, covValue);
-                int value = Integer.valueOf((String) feature.getAttribute("value"));
-                assertEquals(covValue[0], value);
+                    cov.evaluate(gridP, covValue);
+                    int value = Integer.valueOf((String) feature.getAttribute("value"));
+                    assertEquals(covValue[0], value);
+                }
             }
         }
     }
@@ -316,8 +320,6 @@ public class VectorToRasterProcessTest {
             throws Exception {
 
         final double PROB_POINT = 0.25;
-        final double xres = bounds.getWidth() / gridDim.width;
-        final double yres = bounds.getHeight() / gridDim.height;
 
         final GridGeometry2D gridGeom =
                 new GridGeometry2D(new GridEnvelope2D(0, 0, gridDim.width, gridDim.height), bounds);
@@ -467,42 +469,5 @@ public class VectorToRasterProcessTest {
         } catch (ParseException pex) {
             throw new RuntimeException("Error in the wkt: " + wkt);
         }
-    }
-
-    /** Dump the float values in a (small) grid coverage to the console */
-    private void textPrintFloat(GridCoverage2D cov) {
-        RenderedImage img = cov.getRenderedImage();
-        int nb = img.getSampleModel().getNumBands();
-        RectIter iter = RectIterFactory.create(img, null);
-        float[] pixel = new float[nb];
-        do {
-            do {
-                iter.getPixel(pixel);
-                for (int i = 0; i < nb; i++) {
-                    // System.out.print(pixel[i]);
-                }
-            } while (!iter.nextPixelDone());
-            iter.startPixels();
-            // System.out.println();
-        } while (!iter.nextLineDone());
-    }
-
-    /** Dump the int values in a (small) grid coverage to the console */
-    private void textPrint(GridCoverage2D cov) {
-        RenderedImage img = cov.getRenderedImage();
-        int nb = img.getSampleModel().getNumBands();
-        RectIter iter = RectIterFactory.create(img, null);
-        int[] pixel = new int[nb];
-        int w = img.getWidth();
-        do {
-            do {
-                iter.getPixel(pixel);
-                for (int i = 0; i < nb; i++) {
-                    // System.out.print(pixel[i]);
-                }
-            } while (!iter.nextPixelDone());
-            iter.startPixels();
-            // System.out.println();
-        } while (!iter.nextLineDone());
     }
 }

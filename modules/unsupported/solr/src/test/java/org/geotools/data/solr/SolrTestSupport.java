@@ -86,9 +86,10 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         TestsSolrUtils.createWktField(this.solrClient, "geo2");
         TestsSolrUtils.createBboxField(this.solrClient, "geo3");
         // get Solr documents from the test data
-        InputStream documents = TestsSolrUtils.resourceToStream("/wifiAccessPoint.xml");
-        // add the documents to the Solr core, letting Solr infer the rest of the schema
-        TestsSolrUtils.runUpdateRequest(this.solrClient, documents);
+        try (InputStream documents = TestsSolrUtils.resourceToStream("/wifiAccessPoint.xml")) {
+            // add the documents to the Solr core, letting Solr infer the rest of the schema
+            TestsSolrUtils.runUpdateRequest(this.solrClient, documents);
+        }
     }
 
     @Override

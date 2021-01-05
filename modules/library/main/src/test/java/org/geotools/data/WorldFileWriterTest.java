@@ -18,14 +18,15 @@ public class WorldFileWriterTest {
         File tmp = File.createTempFile("write", "wld", new File("target"));
         new WorldFileWriter(tmp, at);
 
-        BufferedReader r = new BufferedReader(new FileReader(tmp));
-        assertEquals(42.34, Double.parseDouble(r.readLine()), 0.1);
-        assertEquals(0, Double.parseDouble(r.readLine()), 0.1);
-        assertEquals(0, Double.parseDouble(r.readLine()), 0.1);
-        assertEquals(-42.34, Double.parseDouble(r.readLine()), 0.1);
-        assertEquals(347671.10, Double.parseDouble(r.readLine()), 0.1);
-        assertEquals(5196940.18, Double.parseDouble(r.readLine()), 0.1);
+        try (BufferedReader r = new BufferedReader(new FileReader(tmp))) {
+            assertEquals(42.34, Double.parseDouble(r.readLine()), 0.1);
+            assertEquals(0, Double.parseDouble(r.readLine()), 0.1);
+            assertEquals(0, Double.parseDouble(r.readLine()), 0.1);
+            assertEquals(-42.34, Double.parseDouble(r.readLine()), 0.1);
+            assertEquals(347671.10, Double.parseDouble(r.readLine()), 0.1);
+            assertEquals(5196940.18, Double.parseDouble(r.readLine()), 0.1);
 
-        assertNull(r.readLine());
+            assertNull(r.readLine());
+        }
     }
 }

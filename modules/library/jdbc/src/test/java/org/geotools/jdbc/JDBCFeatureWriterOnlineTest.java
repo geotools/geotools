@@ -27,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Burkhard Strauss
  * @see GEOT-6264
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
 
     public void testNext() throws Exception {

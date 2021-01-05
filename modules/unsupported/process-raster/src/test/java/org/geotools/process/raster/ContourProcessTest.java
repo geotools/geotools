@@ -185,17 +185,17 @@ public class ContourProcessTest {
 
             SimpleFeatureCollection fc =
                     process.execute(coverage, 0, levels, null, null, null, null, null);
-            SimpleFeatureIterator features = fc.features();
-
-            while (features.hasNext()) {
-                // Apply a set of transformations to the feature geometries to make sure
-                // no exceptions are thrown. (This would happen when dealing with invalid
-                // lineStrings, resulting into IllegalArgumentException)
-                SimpleFeature feature = features.next();
-                Geometry geometry = (Geometry) feature.getDefaultGeometry();
-                ReferencedEnvelope ge =
-                        new ReferencedEnvelope(geometry.getEnvelopeInternal(), wgs84);
-                JTS.toGeometry((Envelope) ge);
+            try (SimpleFeatureIterator features = fc.features()) {
+                while (features.hasNext()) {
+                    // Apply a set of transformations to the feature geometries to make sure
+                    // no exceptions are thrown. (This would happen when dealing with invalid
+                    // lineStrings, resulting into IllegalArgumentException)
+                    SimpleFeature feature = features.next();
+                    Geometry geometry = (Geometry) feature.getDefaultGeometry();
+                    ReferencedEnvelope ge =
+                            new ReferencedEnvelope(geometry.getEnvelopeInternal(), wgs84);
+                    JTS.toGeometry((Envelope) ge);
+                }
             }
         } catch (IllegalArgumentException iae) {
             success = false;

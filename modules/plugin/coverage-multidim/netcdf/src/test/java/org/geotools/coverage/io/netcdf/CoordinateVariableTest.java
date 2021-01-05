@@ -79,42 +79,52 @@ public class CoordinateVariableTest extends Assert {
     @Test
     public void timeUnitsTest() throws Exception {
 
-        final NetcdfDataset dataset =
-                NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm());
-        Dimension dim = dataset.findDimension("time");
+        try (NetcdfDataset dataset =
+                NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm())) {
+            Dimension dim = dataset.findDimension("time");
 
-        // check type
-        CoordinateAxis coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
+            // check type
+            CoordinateAxis coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
 
-        final int year = 2012;
-        final int month = 4;
-        final int day = 1;
-        final int hour = 0;
-        final int minute = 0;
-        final int second = 0;
-        final String refTime =
-                year
-                        + "-"
-                        + (month < 10 ? ("0" + month) : month)
-                        + "-"
-                        + (day < 10 ? ("0" + day) : day)
-                        + " "
-                        + (hour < 10 ? ("0" + hour) : hour)
-                        + ":"
-                        + (minute < 10 ? ("0" + minute) : minute)
-                        + ":"
-                        + (second < 10 ? ("0" + second) : second);
-        // //
-        // Plural form units check
-        // //
-        checkTimes(dataset, coordinateAxis, refTime, year, month, day, hour, minute, second, false);
+            final int year = 2012;
+            final int month = 4;
+            final int day = 1;
+            final int hour = 0;
+            final int minute = 0;
+            final int second = 0;
+            final String refTime =
+                    year
+                            + "-"
+                            + (month < 10 ? ("0" + month) : month)
+                            + "-"
+                            + (day < 10 ? ("0" + day) : day)
+                            + " "
+                            + (hour < 10 ? ("0" + hour) : hour)
+                            + ":"
+                            + (minute < 10 ? ("0" + minute) : minute)
+                            + ":"
+                            + (second < 10 ? ("0" + second) : second);
+            // //
+            // Plural form units check
+            // //
+            checkTimes(
+                    dataset,
+                    coordinateAxis,
+                    refTime,
+                    year,
+                    month,
+                    day,
+                    hour,
+                    minute,
+                    second,
+                    false);
 
-        // //
-        // Singular form units check
-        // //
-        checkTimes(dataset, coordinateAxis, refTime, year, month, day, hour, minute, second, true);
-
-        dataset.close();
+            // //
+            // Singular form units check
+            // //
+            checkTimes(
+                    dataset, coordinateAxis, refTime, year, month, day, hour, minute, second, true);
+        }
     }
 
     private void checkTimes(
@@ -195,6 +205,7 @@ public class CoordinateVariableTest extends Assert {
         return cal;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // NetcdfDataset is wrapped and returned
     private CoordinateVariable<?> getCoordinateVariable(
             NetcdfDataset dataset, CoordinateAxis coordinateAxis, String units) {
         CoordinateAxis1DUnitWrapper wrapper =
@@ -206,81 +217,80 @@ public class CoordinateVariableTest extends Assert {
     public void polyphemus() throws Exception {
 
         // acquire dataset
-        final NetcdfDataset dataset =
-                NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm());
-        assertNotNull(dataset);
-        final List<CoordinateAxis> cvs = dataset.getCoordinateAxes();
-        assertNotNull(cvs);
-        assertSame(4, cvs.size());
+        try (NetcdfDataset dataset =
+                NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm())) {
+            assertNotNull(dataset);
+            final List<CoordinateAxis> cvs = dataset.getCoordinateAxes();
+            assertNotNull(cvs);
+            assertSame(4, cvs.size());
 
-        //
-        // cloud_formations is short
-        //
-        Dimension dim = dataset.findDimension("time");
-        assertNotNull(dim);
-        assertEquals("time", dim.getShortName());
+            //
+            // cloud_formations is short
+            //
+            Dimension dim = dataset.findDimension("time");
+            assertNotNull(dim);
+            assertEquals("time", dim.getShortName());
 
-        // check type
-        CoordinateAxis coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
-        assertNotNull(coordinateAxis);
-        assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        Class<?> binding = CoordinateVariable.suggestBinding(coordinateAxis);
-        assertNotNull(binding);
-        assertSame(Date.class, binding);
-        CoordinateVariable<?> cv = CoordinateVariable.create(coordinateAxis);
-        assertSame(Date.class, cv.getType());
+            // check type
+            CoordinateAxis coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
+            assertNotNull(coordinateAxis);
+            assertTrue(coordinateAxis instanceof CoordinateAxis1D);
+            Class<?> binding = CoordinateVariable.suggestBinding(coordinateAxis);
+            assertNotNull(binding);
+            assertSame(Date.class, binding);
+            CoordinateVariable<?> cv = CoordinateVariable.create(coordinateAxis);
+            assertSame(Date.class, cv.getType());
 
-        List<?> list = cv.read();
-        assertNotNull(list);
-        assertEquals(2, list.size());
+            List<?> list = cv.read();
+            assertNotNull(list);
+            assertEquals(2, list.size());
 
-        final GregorianCalendar cal = new GregorianCalendar(NetCDFTimeUtilities.UTC_TIMEZONE);
-        cal.set(2012, 3, 1, 0, 0, 0);
-        cal.set(GregorianCalendar.MILLISECOND, 0);
-        assertEquals(cal.getTime(), cv.getMinimum());
-        assertEquals(list.get(0), cv.getMinimum());
+            final GregorianCalendar cal = new GregorianCalendar(NetCDFTimeUtilities.UTC_TIMEZONE);
+            cal.set(2012, 3, 1, 0, 0, 0);
+            cal.set(GregorianCalendar.MILLISECOND, 0);
+            assertEquals(cal.getTime(), cv.getMinimum());
+            assertEquals(list.get(0), cv.getMinimum());
 
-        cal.set(2012, 3, 1, 1, 0, 0);
-        assertEquals(cal.getTime(), cv.getMaximum());
-        assertEquals(list.get(1), cv.getMaximum());
-        assertEquals(2, cv.getSize());
-        assertEquals("hours since 2012-04-01 0:00:00", cv.getUnit());
-        CoordinateReferenceSystem crs = cv.getCoordinateReferenceSystem();
-        assertNotNull(crs);
-        assertTrue(crs instanceof TemporalCRS);
-        //
-        // lat is float
-        //
-        dim = dataset.findDimension("z");
-        assertNotNull(dim);
-        assertEquals("z", dim.getShortName());
+            cal.set(2012, 3, 1, 1, 0, 0);
+            assertEquals(cal.getTime(), cv.getMaximum());
+            assertEquals(list.get(1), cv.getMaximum());
+            assertEquals(2, cv.getSize());
+            assertEquals("hours since 2012-04-01 0:00:00", cv.getUnit());
+            CoordinateReferenceSystem crs = cv.getCoordinateReferenceSystem();
+            assertNotNull(crs);
+            assertTrue(crs instanceof TemporalCRS);
+            //
+            // lat is float
+            //
+            dim = dataset.findDimension("z");
+            assertNotNull(dim);
+            assertEquals("z", dim.getShortName());
 
-        // check type
-        coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
-        assertNotNull(coordinateAxis);
-        assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding(coordinateAxis);
-        assertNotNull(binding);
-        assertSame(Float.class, binding);
+            // check type
+            coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
+            assertNotNull(coordinateAxis);
+            assertTrue(coordinateAxis instanceof CoordinateAxis1D);
+            binding = CoordinateVariable.suggestBinding(coordinateAxis);
+            assertNotNull(binding);
+            assertSame(Float.class, binding);
 
-        cv = CoordinateVariable.create(coordinateAxis);
-        list = cv.read();
-        assertNotNull(list);
-        assertEquals(2, list.size());
+            cv = CoordinateVariable.create(coordinateAxis);
+            list = cv.read();
+            assertNotNull(list);
+            assertEquals(2, list.size());
 
-        assertSame(Float.class, cv.getType());
-        assertEquals(10f, cv.getMinimum());
-        assertEquals(450f, cv.getMaximum());
-        assertEquals(list.get(0), cv.getMinimum());
-        assertEquals(list.get(1), cv.getMaximum());
-        assertEquals(2, cv.getSize());
-        assertEquals("meters", cv.getUnit());
+            assertSame(Float.class, cv.getType());
+            assertEquals(10f, cv.getMinimum());
+            assertEquals(450f, cv.getMaximum());
+            assertEquals(list.get(0), cv.getMinimum());
+            assertEquals(list.get(1), cv.getMaximum());
+            assertEquals(2, cv.getSize());
+            assertEquals("meters", cv.getUnit());
 
-        crs = cv.getCoordinateReferenceSystem();
-        assertNotNull(crs);
-        assertTrue(crs instanceof VerticalCRS);
-
-        dataset.close();
+            crs = cv.getCoordinateReferenceSystem();
+            assertNotNull(crs);
+            assertTrue(crs instanceof VerticalCRS);
+        }
     }
 
     @Test
@@ -291,116 +301,115 @@ public class CoordinateVariableTest extends Assert {
         //
 
         // acquire dataset
-        final NetcdfDataset dataset =
+        try (final NetcdfDataset dataset =
                 NetcdfDataset.openDataset(
                         TestData.url(this, "IASI_C_EUMP_20121120062959_31590_eps_o_l2.nc")
-                                .toExternalForm());
-        assertNotNull(dataset);
-        final List<CoordinateAxis> cvs = dataset.getCoordinateAxes();
-        assertNotNull(cvs);
-        assertSame(8, cvs.size());
+                                .toExternalForm())) {
+            assertNotNull(dataset);
+            final List<CoordinateAxis> cvs = dataset.getCoordinateAxes();
+            assertNotNull(cvs);
+            assertSame(8, cvs.size());
 
-        //
-        // cloud_formations is short
-        //
-        Dimension dim = dataset.findDimension("cloud_formations");
-        assertNotNull(dim);
-        assertEquals("cloud_formations", dim.getShortName());
+            //
+            // cloud_formations is short
+            //
+            Dimension dim = dataset.findDimension("cloud_formations");
+            assertNotNull(dim);
+            assertEquals("cloud_formations", dim.getShortName());
 
-        // check type
-        CoordinateAxis coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
-        assertNotNull(coordinateAxis);
-        assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        Class<?> binding = CoordinateVariable.suggestBinding(coordinateAxis);
-        assertNotNull(binding);
-        assertSame(Short.class, binding);
-        CoordinateVariable<?> cv = CoordinateVariable.create(coordinateAxis);
-        assertSame(Short.class, cv.getType());
-        assertEquals((short) 0, cv.getMinimum());
-        assertEquals((short) 2, cv.getMaximum());
-        assertEquals(3, cv.getSize());
-        assertEquals("level", cv.getUnit());
+            // check type
+            CoordinateAxis coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
+            assertNotNull(coordinateAxis);
+            assertTrue(coordinateAxis instanceof CoordinateAxis1D);
+            Class<?> binding = CoordinateVariable.suggestBinding(coordinateAxis);
+            assertNotNull(binding);
+            assertSame(Short.class, binding);
+            CoordinateVariable<?> cv = CoordinateVariable.create(coordinateAxis);
+            assertSame(Short.class, cv.getType());
+            assertEquals((short) 0, cv.getMinimum());
+            assertEquals((short) 2, cv.getMaximum());
+            assertEquals(3, cv.getSize());
+            assertEquals("level", cv.getUnit());
 
-        //
-        // lat is float
-        //
-        dim = dataset.findDimension("lat");
-        assertNotNull(dim);
-        assertEquals("lat", dim.getShortName());
+            //
+            // lat is float
+            //
+            dim = dataset.findDimension("lat");
+            assertNotNull(dim);
+            assertEquals("lat", dim.getShortName());
 
-        // check type
-        coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
-        assertNotNull(coordinateAxis);
-        assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding(coordinateAxis);
-        assertNotNull(binding);
-        assertSame(Float.class, binding);
-        cv = CoordinateVariable.create(coordinateAxis);
-        assertNotNull(cv);
-        assertSame(Float.class, cv.getType());
-        assertEquals(-77.327934f, cv.getMinimum());
-        assertEquals(89.781555f, cv.getMaximum());
-        assertEquals(766, cv.getSize());
-        assertEquals("degrees_north", cv.getUnit());
-        assertTrue(cv.isRegular());
-        assertEquals(cv.getMinimum(), cv.getStart());
-        assertEquals(0.2184437770469516, cv.getIncrement(), 0d);
+            // check type
+            coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
+            assertNotNull(coordinateAxis);
+            assertTrue(coordinateAxis instanceof CoordinateAxis1D);
+            binding = CoordinateVariable.suggestBinding(coordinateAxis);
+            assertNotNull(binding);
+            assertSame(Float.class, binding);
+            cv = CoordinateVariable.create(coordinateAxis);
+            assertNotNull(cv);
+            assertSame(Float.class, cv.getType());
+            assertEquals(-77.327934f, cv.getMinimum());
+            assertEquals(89.781555f, cv.getMaximum());
+            assertEquals(766, cv.getSize());
+            assertEquals("degrees_north", cv.getUnit());
+            assertTrue(cv.isRegular());
+            assertEquals(cv.getMinimum(), cv.getStart());
+            assertEquals(0.2184437770469516, cv.getIncrement(), 0d);
 
-        //
-        // lon is float
-        //
-        dim = dataset.findDimension("lon");
-        assertNotNull(dim);
-        assertEquals("lon", dim.getShortName());
+            //
+            // lon is float
+            //
+            dim = dataset.findDimension("lon");
+            assertNotNull(dim);
+            assertEquals("lon", dim.getShortName());
 
-        // check type
-        coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
-        assertNotNull(coordinateAxis);
-        assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding(coordinateAxis);
-        assertNotNull(binding);
-        assertSame(Float.class, binding);
-        cv = CoordinateVariable.create(coordinateAxis);
-        assertNotNull(cv);
-        assertEquals("degrees_east", cv.getUnit());
+            // check type
+            coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
+            assertNotNull(coordinateAxis);
+            assertTrue(coordinateAxis instanceof CoordinateAxis1D);
+            binding = CoordinateVariable.suggestBinding(coordinateAxis);
+            assertNotNull(binding);
+            assertSame(Float.class, binding);
+            cv = CoordinateVariable.create(coordinateAxis);
+            assertNotNull(cv);
+            assertEquals("degrees_east", cv.getUnit());
 
-        //
-        // pressure_levels_ozone is Double
-        //
-        dim = dataset.findDimension("nlo");
-        assertNotNull(dim);
-        assertEquals("nlo", dim.getShortName());
+            //
+            // pressure_levels_ozone is Double
+            //
+            dim = dataset.findDimension("nlo");
+            assertNotNull(dim);
+            assertEquals("nlo", dim.getShortName());
 
-        // check type
-        coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
-        assertNotNull(coordinateAxis);
-        assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding(coordinateAxis);
-        assertNotNull(binding);
-        assertSame(Double.class, binding);
-        cv = CoordinateVariable.create(coordinateAxis);
-        assertNotNull(cv);
-        assertEquals("Pa", cv.getUnit());
+            // check type
+            coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
+            assertNotNull(coordinateAxis);
+            assertTrue(coordinateAxis instanceof CoordinateAxis1D);
+            binding = CoordinateVariable.suggestBinding(coordinateAxis);
+            assertNotNull(binding);
+            assertSame(Double.class, binding);
+            cv = CoordinateVariable.create(coordinateAxis);
+            assertNotNull(cv);
+            assertEquals("Pa", cv.getUnit());
 
-        //
-        // pressure_levels_ozone is Double
-        //
-        dim = dataset.findDimension("nlt");
-        assertNotNull(dim);
-        assertEquals("nlt", dim.getShortName());
+            //
+            // pressure_levels_ozone is Double
+            //
+            dim = dataset.findDimension("nlt");
+            assertNotNull(dim);
+            assertEquals("nlt", dim.getShortName());
 
-        // check type
-        coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
-        assertNotNull(coordinateAxis);
-        assertTrue(coordinateAxis instanceof CoordinateAxis1D);
-        binding = CoordinateVariable.suggestBinding(coordinateAxis);
-        assertNotNull(binding);
-        assertSame(Double.class, binding);
-        cv = CoordinateVariable.create(coordinateAxis);
-        assertNotNull(cv);
-        assertEquals("Pa", cv.getUnit());
-
-        dataset.close();
+            // check type
+            coordinateAxis = dataset.findCoordinateAxis(dim.getShortName());
+            assertNotNull(coordinateAxis);
+            assertTrue(coordinateAxis instanceof CoordinateAxis1D);
+            binding = CoordinateVariable.suggestBinding(coordinateAxis);
+            assertNotNull(binding);
+            assertSame(Double.class, binding);
+            cv = CoordinateVariable.create(coordinateAxis);
+            assertNotNull(cv);
+            assertEquals("Pa", cv.getUnit());
+        }
     }
 
     @Test

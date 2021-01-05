@@ -14,7 +14,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.filter.And;
-import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
@@ -122,14 +121,6 @@ public class FiltersTest {
         assertEquals("#0000ff", Filters.puts(Color.BLUE));
     }
 
-    private int count(Filter filter) {
-        if (filter instanceof BinaryLogicOperator) {
-            BinaryLogicOperator logic = (BinaryLogicOperator) filter;
-            return logic.getChildren() != null ? logic.getChildren().size() : -1;
-        }
-        return -1;
-    }
-
     @Test
     public void testRemoveFilter() {
         Filter results = Filters.removeFilter(null, a);
@@ -188,7 +179,7 @@ public class FiltersTest {
         String results = Filters.findPropertyName(b);
         assertEquals("suburb", results);
 
-        Filter f = ff.equals(ff.literal("bar"), ff.literal("foo"));
+        ff.equals(ff.literal("bar"), ff.literal("foo"));
     }
 
     @Test
@@ -196,7 +187,6 @@ public class FiltersTest {
         assertNull(Filters.findPropertyName(null));
 
         Filter f = ff.equals(ff.literal("bar"), ff.literal("foo"));
-        String results = Filters.findPropertyName(b);
         assertNull(Filters.findPropertyName(f));
     }
 

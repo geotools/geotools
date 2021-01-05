@@ -37,14 +37,15 @@ import org.geotools.feature.SchemaException;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.test.OnlineTestCase;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not a JUnit4 test yet
 public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
 
     private static final String CREATE_DROP_TESTDB = "gt2_create_drop_testdb";
 
     @Override
+    @SuppressWarnings("PMD.SystemPrintln")
     protected boolean isOnline() throws Exception {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
-        JDBCDataStore closer = new JDBCDataStore();
         Class.forName(factory.getDriverClassName());
 
         // get host and port
@@ -54,48 +55,49 @@ public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
         String password = fixture.getProperty(PASSWD.key);
         String url = "jdbc:postgresql" + "://" + host + ":" + port + "/template1";
 
-        Connection cx = null;
-        Statement st = null;
-        ResultSet rs = null;
-        try {
-            cx = DriverManager.getConnection(url, user, password);
-            st = cx.createStatement();
-            rs =
+        try (Connection cx = DriverManager.getConnection(url, user, password);
+                Statement st = cx.createStatement()) {
+            try (ResultSet rs =
                     st.executeQuery(
-                            "select rolcreatedb from pg_authid where rolname = '" + user + "'");
-            boolean canCreate = false;
-            if (rs.next()) {
-                canCreate = rs.getBoolean(1);
-            }
-            rs.close();
+                            "select rolcreatedb from pg_authid where rolname = '" + user + "'")) {
+                boolean canCreate = false;
+                if (rs.next()) {
+                    canCreate = rs.getBoolean(1);
+                }
 
-            if (!canCreate) {
-                System.out.println(
-                        "User " + user + " has no database creation options, skipping test");
-                return false;
+                if (!canCreate) {
+                    System.out.println(
+                            "User " + user + " has no database creation options, skipping test");
+                    return false;
+                }
             }
 
             // creation options available, let's check if we have the postgis extension available
             // then
-            rs = st.executeQuery("select * from pg_available_extensions where name = 'postgis'");
-            boolean hasPostgisExtension = false;
-            if (rs.next()) {
-                hasPostgisExtension = true;
-            }
-            rs.close();
+            try (ResultSet rs =
+                    st.executeQuery(
+                            "select * from pg_available_extensions where name = 'postgis'")) {
+                boolean hasPostgisExtension = false;
+                if (rs.next()) {
+                    hasPostgisExtension = true;
+                }
 
-            if (!hasPostgisExtension) {
-                System.out.println(
-                        "This version of postgresql has no postgis extension available (as in, one that can be used by the \"create extension\" command, skipping it");
-                return false;
+                if (!hasPostgisExtension) {
+                    System.out.println(
+                            "This version of postgresql has no postgis extension available (as in, one that can be used by the \"create extension\" command, skipping it");
+                    return false;
+                }
             }
 
             // drop the database if available
-            rs = st.executeQuery("select * from pg_database where datname = 'create_drop_testdb'");
-            boolean databaseExists = rs.next();
-            rs.close();
-            if (databaseExists) {
-                st.execute("drop database " + CREATE_DROP_TESTDB);
+            try (ResultSet rs =
+                    st.executeQuery(
+                            "select * from pg_database where datname = 'create_drop_testdb'")) {
+                boolean databaseExists = rs.next();
+
+                if (databaseExists) {
+                    st.execute("drop database " + CREATE_DROP_TESTDB);
+                }
             }
 
             return true;
@@ -104,10 +106,6 @@ public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
                     "Failed to check if the user has database creation privileges and postgis is an available extension");
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
-        } finally {
-            closer.closeSafe(rs);
-            closer.closeSafe(cx);
-            closer.closeSafe(st);
         }
     }
 

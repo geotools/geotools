@@ -73,18 +73,18 @@ public class GroupCandidateSelectionProcessTest {
         FeatureCollection features =
                 new GroupCandidateSelectionProcess()
                         .execute(collection, "MIN", "numericVal", props);
-        FeatureIterator it = features.features();
-        List<Integer> numericResults = new ArrayList<>(6);
-        while (it.hasNext()) {
-            numericResults.add((Integer) pn.evaluate(it.next()));
+        try (FeatureIterator it = features.features()) {
+            List<Integer> numericResults = new ArrayList<>(6);
+            while (it.hasNext()) {
+                numericResults.add((Integer) pn.evaluate(it.next()));
+            }
+            assertEquals(2, numericResults.get(0).intValue());
+            assertEquals(43, numericResults.get(1).intValue());
+            assertEquals(11, numericResults.get(2).intValue());
+            assertEquals(65, numericResults.get(3).intValue());
+            assertEquals(47, numericResults.get(4).intValue());
+            assertEquals(90, numericResults.get(5).intValue());
         }
-        it.close();
-        assertEquals(2, numericResults.get(0).intValue());
-        assertEquals(43, numericResults.get(1).intValue());
-        assertEquals(11, numericResults.get(2).intValue());
-        assertEquals(65, numericResults.get(3).intValue());
-        assertEquals(47, numericResults.get(4).intValue());
-        assertEquals(90, numericResults.get(5).intValue());
     }
 
     @Test
@@ -105,18 +105,18 @@ public class GroupCandidateSelectionProcessTest {
         FeatureCollection features =
                 new GroupCandidateSelectionProcess()
                         .execute(collection, "MAX", "numericVal", props);
-        FeatureIterator it = features.features();
-        List<Integer> numericResults = new ArrayList<>(6);
-        while (it.hasNext()) {
-            numericResults.add((Integer) pn.evaluate(it.next()));
+        try (FeatureIterator it = features.features()) {
+            List<Integer> numericResults = new ArrayList<>(6);
+            while (it.hasNext()) {
+                numericResults.add((Integer) pn.evaluate(it.next()));
+            }
+            assertEquals(40, numericResults.get(0).intValue());
+            assertEquals(50, numericResults.get(1).intValue());
+            assertEquals(22, numericResults.get(2).intValue());
+            assertEquals(80, numericResults.get(3).intValue());
+            assertEquals(57, numericResults.get(4).intValue());
+            assertEquals(91, numericResults.get(5).intValue());
         }
-        it.close();
-        assertEquals(40, numericResults.get(0).intValue());
-        assertEquals(50, numericResults.get(1).intValue());
-        assertEquals(22, numericResults.get(2).intValue());
-        assertEquals(80, numericResults.get(3).intValue());
-        assertEquals(57, numericResults.get(4).intValue());
-        assertEquals(91, numericResults.get(5).intValue());
     }
 
     @Test
@@ -137,18 +137,18 @@ public class GroupCandidateSelectionProcessTest {
         FeatureCollection features =
                 new GroupCandidateSelectionProcess()
                         .execute(collection, "MIN", "numericVal", props);
-        FeatureIterator it = features.features();
-        List<Integer> numericResults = new ArrayList<>(6);
-        while (it.hasNext()) {
-            numericResults.add((Integer) pn.evaluate(it.next()));
+        try (FeatureIterator it = features.features()) {
+            List<Integer> numericResults = new ArrayList<>(6);
+            while (it.hasNext()) {
+                numericResults.add((Integer) pn.evaluate(it.next()));
+            }
+            assertEquals(40, numericResults.get(0).intValue());
+            assertEquals(43, numericResults.get(1).intValue());
+            assertEquals(22, numericResults.get(2).intValue());
+            assertEquals(65, numericResults.get(3).intValue());
+            assertEquals(47, numericResults.get(4).intValue());
+            assertEquals(91, numericResults.get(5).intValue());
         }
-        it.close();
-        assertEquals(40, numericResults.get(0).intValue());
-        assertEquals(43, numericResults.get(1).intValue());
-        assertEquals(22, numericResults.get(2).intValue());
-        assertEquals(65, numericResults.get(3).intValue());
-        assertEquals(47, numericResults.get(4).intValue());
-        assertEquals(91, numericResults.get(5).intValue());
     }
 
     @Test
@@ -169,17 +169,17 @@ public class GroupCandidateSelectionProcessTest {
         FeatureCollection features =
                 new GroupCandidateSelectionProcess()
                         .execute(collection, "MIN", "numericVal", props);
-        FeatureIterator it = features.features();
-        List<Integer> numericResults = new ArrayList<>(6);
-        while (it.hasNext()) {
-            numericResults.add((Integer) pn.evaluate(it.next()));
+        try (FeatureIterator it = features.features()) {
+            List<Integer> numericResults = new ArrayList<>(6);
+            while (it.hasNext()) {
+                numericResults.add((Integer) pn.evaluate(it.next()));
+            }
+            assertEquals(40, numericResults.get(0).intValue());
+            assertEquals(43, numericResults.get(1).intValue());
+            assertNull(numericResults.get(2));
+            assertEquals(65, numericResults.get(3).intValue());
+            assertEquals(47, numericResults.get(4).intValue());
+            assertEquals(91, numericResults.get(5).intValue());
         }
-        it.close();
-        assertEquals(40, numericResults.get(0).intValue());
-        assertEquals(43, numericResults.get(1).intValue());
-        assertNull(numericResults.get(2));
-        assertEquals(65, numericResults.get(3).intValue());
-        assertEquals(47, numericResults.get(4).intValue());
-        assertEquals(91, numericResults.get(5).intValue());
     }
 }

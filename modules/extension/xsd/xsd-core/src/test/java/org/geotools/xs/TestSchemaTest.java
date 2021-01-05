@@ -95,11 +95,7 @@ public class TestSchemaTest extends TestSchema {
             }
 
             QName name = (QName) field.get(null);
-            XSDSimpleTypeDefinition aXsd = xsdSimple(name.getLocalPart());
-
-            if (aXsd == null) {
-                // System.out.println( "Could not find binding for " + name.getLocalPart() );
-            }
+            xsdSimple(name.getLocalPart());
         }
     }
 

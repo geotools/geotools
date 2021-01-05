@@ -112,12 +112,6 @@ public final class ImagingParametersTest {
         final ImagingParameters copy = values.clone();
         assertNotSame("clone", values, copy);
         assertNotSame("clone", values.parameters, copy.parameters);
-        if (false) {
-            // NOTE: As of J2SE 1.5 and JAI 1.1, ParameterBlockJAI
-            //       doesn't implements the 'equals' method.
-            assertEquals("clone", values.parameters, copy.parameters);
-            assertEquals("clone", values, copy);
-        }
     }
 
     /**

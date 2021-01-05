@@ -45,16 +45,16 @@ public class FilterFunction_minimumDiameterTest {
         // Test the Function
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         Function exp = ff.function("minimumdiameter", ff.property("geom"));
-        SimpleFeatureIterator iter = featureCollection.features();
-        while (iter.hasNext()) {
-            SimpleFeature feature = iter.next();
-            Geometry geom = (Geometry) feature.getDefaultGeometry();
-            Geometry minimumDiameter = new MinimumDiameter(geom).getDiameter();
-            Object value = exp.evaluate(feature);
-            assertTrue(value instanceof LineString);
-            assertTrue(minimumDiameter.equalsExact((Geometry) value, 0.1));
+        try (SimpleFeatureIterator iter = featureCollection.features()) {
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                Geometry geom = (Geometry) feature.getDefaultGeometry();
+                Geometry minimumDiameter = new MinimumDiameter(geom).getDiameter();
+                Object value = exp.evaluate(feature);
+                assertTrue(value instanceof LineString);
+                assertTrue(minimumDiameter.equalsExact((Geometry) value, 0.1));
+            }
         }
-        iter.close();
 
         // Check for null safeness
         assertNull(exp.evaluate(null));

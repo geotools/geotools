@@ -16,8 +16,6 @@
  */
 package org.geotools.feature;
 
-import java.util.logging.Logger;
-import junit.framework.TestSuite;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Assert;
@@ -35,14 +33,8 @@ import org.opengis.feature.type.AttributeDescriptor;
 
 public class FeatureFlatTest {
 
-    /** The logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FeatureFlatTest.class);
-
     /** Feature on which to preform tests */
     private SimpleFeature testFeature = null;
-
-    TestSuite suite = null;
 
     @Before
     public void setUp() {
@@ -59,7 +51,7 @@ public class FeatureFlatTest {
         Assert.assertEquals(
                 "boolean retrieval and match",
                 testFeature.getAttribute("testBoolean"),
-                Boolean.valueOf(true));
+                Boolean.TRUE);
         Assert.assertEquals(
                 "character retrieval and match",
                 testFeature.getAttribute("testCharacter"),
@@ -167,7 +159,7 @@ public class FeatureFlatTest {
     public void testToStringWontThrow() throws IllegalAttributeException {
         SimpleFeature f = SampleFeatureFixtures.createFeature();
         f.setAttributes(new Object[f.getAttributeCount()]);
-        String s = f.toString();
+        f.toString();
     }
 
     static AttributeDescriptor newAtt(String name, Class c) {

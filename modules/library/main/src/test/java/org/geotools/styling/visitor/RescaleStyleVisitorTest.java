@@ -99,7 +99,6 @@ public class RescaleStyleVisitorTest {
         style.featureTypeStyles().add(fts2);
 
         style.accept(visitor);
-        Style copy = (Style) visitor.getCopy();
 
         Style notEq = sf.getDefaultStyle();
 

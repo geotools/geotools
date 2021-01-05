@@ -42,9 +42,7 @@ public class DirectoryTestSupport {
             if (f.isDirectory()) {
                 deleteDirectory(f);
             } else {
-                if (!f.delete()) {
-                    // System.out.println("Couldn't delete " + f.getAbsolutePath());
-                }
+                f.delete();
             }
         }
         directory.delete();

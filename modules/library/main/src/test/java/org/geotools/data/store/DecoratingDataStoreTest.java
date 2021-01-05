@@ -16,7 +16,10 @@
  */
 package org.geotools.data.store;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import org.geotools.data.DataAccess;
@@ -30,6 +33,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.junit.After;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -68,6 +72,7 @@ public class DecoratingDataStoreTest extends DataTestCase {
         decorator = new MyDecoratingDataStore(data);
     }
 
+    @After
     public void tearDown() throws Exception {
         defaultTransaction.close();
         data = null;

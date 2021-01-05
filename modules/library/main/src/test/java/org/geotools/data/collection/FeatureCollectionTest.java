@@ -207,10 +207,11 @@ public abstract class FeatureCollectionTest {
         for (int i = 0; i < f1.length; i++) {
             Assert.assertSame(f1[i], f2[i]);
         }
-        SimpleFeatureIterator copyIterator = copy.features();
-        SimpleFeatureIterator featuresIterator = features.features();
-        while (copyIterator.hasNext() && featuresIterator.hasNext()) {
-            Assert.assertEquals(copyIterator.next(), featuresIterator.next());
+        try (SimpleFeatureIterator copyIterator = copy.features();
+                SimpleFeatureIterator featuresIterator = features.features()) {
+            while (copyIterator.hasNext() && featuresIterator.hasNext()) {
+                Assert.assertEquals(copyIterator.next(), featuresIterator.next());
+            }
         }
     }
 

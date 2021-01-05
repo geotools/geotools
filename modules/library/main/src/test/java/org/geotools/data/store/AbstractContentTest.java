@@ -209,7 +209,7 @@ public abstract class AbstractContentTest {
         @Override
         public void remove() throws IOException {
             if (index > 0 && index <= FEATURES.size()) {
-                SimpleFeature feature = FEATURES.remove(index - 1);
+                FEATURES.remove(index - 1);
             }
         }
 

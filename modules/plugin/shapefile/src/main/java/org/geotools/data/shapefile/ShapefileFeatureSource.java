@@ -372,6 +372,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
         // setup the feature readers
         ShapefileSetManager shpManager = getDataStore().shpManager;
+        @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         ShapefileReader shapeReader = shpManager.openShapeReader(geometryFactory, goodRecs != null);
         @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         DbaseFileReader dbfReader = null;

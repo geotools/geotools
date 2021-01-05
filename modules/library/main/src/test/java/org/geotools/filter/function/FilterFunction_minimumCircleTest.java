@@ -45,16 +45,16 @@ public class FilterFunction_minimumCircleTest {
         // Test the Function
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         Function exp = ff.function("mincircle", ff.property("geom"));
-        SimpleFeatureIterator iter = featureCollection.features();
-        while (iter.hasNext()) {
-            SimpleFeature feature = iter.next();
-            Geometry geom = (Geometry) feature.getDefaultGeometry();
-            Geometry circle = new MinimumBoundingCircle(geom).getCircle();
-            Object value = exp.evaluate(feature);
-            assertTrue(value instanceof Polygon);
-            assertTrue(circle.equals((Geometry) value));
+        try (SimpleFeatureIterator iter = featureCollection.features()) {
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                Geometry geom = (Geometry) feature.getDefaultGeometry();
+                Geometry circle = new MinimumBoundingCircle(geom).getCircle();
+                Object value = exp.evaluate(feature);
+                assertTrue(value instanceof Polygon);
+                assertEquals(circle, value);
+            }
         }
-        iter.close();
 
         // Check for null safeness
         assertNull(exp.evaluate(null));

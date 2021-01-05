@@ -67,17 +67,17 @@ public class DefaultViewTest {
 
     @Test
     public void testGetFeatures() throws Exception {
-
         SimpleFeatureSource view = getView();
 
-        SimpleFeatureIterator features = view.getFeatures().features();
-        int count = 0;
-        while (features.hasNext()) {
-            count++;
-            features.next();
-        }
+        try (SimpleFeatureIterator features = view.getFeatures().features()) {
+            int count = 0;
+            while (features.hasNext()) {
+                count++;
+                features.next();
+            }
 
-        Assert.assertEquals(2, count);
+            Assert.assertEquals(2, count);
+        }
     }
 
     @Test
@@ -85,14 +85,15 @@ public class DefaultViewTest {
 
         SimpleFeatureSource view = getView();
 
-        SimpleFeatureIterator features = view.getFeatures(getQuery()).features();
-        int count = 0;
-        while (features.hasNext()) {
-            count++;
-            features.next();
-        }
+        try (SimpleFeatureIterator features = view.getFeatures(getQuery()).features()) {
+            int count = 0;
+            while (features.hasNext()) {
+                count++;
+                features.next();
+            }
 
-        Assert.assertEquals(1, count);
+            Assert.assertEquals(1, count);
+        }
     }
 
     @Test
@@ -100,14 +101,14 @@ public class DefaultViewTest {
 
         SimpleFeatureSource view = getView();
         Filter f = getFilter();
-        SimpleFeatureIterator features = view.getFeatures(f).features();
-        int count = 0;
-        while (features.hasNext()) {
-            count++;
-            features.next();
+        try (SimpleFeatureIterator features = view.getFeatures(f).features()) {
+            int count = 0;
+            while (features.hasNext()) {
+                count++;
+                features.next();
+            }
+            Assert.assertEquals(1, count);
         }
-
-        Assert.assertEquals(1, count);
     }
 
     @Test

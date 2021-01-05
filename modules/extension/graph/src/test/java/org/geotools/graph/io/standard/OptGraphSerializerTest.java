@@ -17,7 +17,6 @@
 package org.geotools.graph.io.standard;
 
 import java.io.File;
-import java.util.Map;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.opt.OptGraphBuilder;
 import org.geotools.graph.structure.Graph;
@@ -47,10 +46,7 @@ public class OptGraphSerializerTest {
     @Test
     public void test_0() {
         final int nnodes = 100;
-        Object[] obj = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
-
-        final Map node2id = (Map) obj[2];
-        final Map edge2id = (Map) obj[3];
+        GraphTestUtil.buildNoBifurcations(builder(), nnodes);
 
         try {
             File victim = File.createTempFile("graph", null);
@@ -94,7 +90,6 @@ public class OptGraphSerializerTest {
 
             serializer().write(builder().getGraph());
 
-            Graph before = builder().getGraph();
             Graph after = serializer().read();
 
             Assert.assertEquals(1, after.getNodesOfDegree(2).size()); // root

@@ -56,9 +56,9 @@ public class ExpressionTypeVisitorTest {
         assertEquals(Short.class, add.accept(visitor, null));
         Multiply mul = ff.multiply(ff.property("l"), ff.property("s"));
         assertEquals(Long.class, mul.accept(visitor, null));
-        Divide div = ff.divide(ff.literal(new BigInteger("10")), ff.property("s"));
+        Divide div = ff.divide(ff.literal(BigInteger.valueOf(10)), ff.property("s"));
         assertEquals(BigInteger.class, div.accept(visitor, null));
-        Subtract sub = ff.subtract(ff.literal(new BigInteger("10")), ff.property("d"));
+        Subtract sub = ff.subtract(ff.literal(BigInteger.valueOf(10)), ff.property("d"));
         assertEquals(BigDecimal.class, sub.accept(visitor, null));
     }
 

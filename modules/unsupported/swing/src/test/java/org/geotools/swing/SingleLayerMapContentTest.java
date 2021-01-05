@@ -40,7 +40,7 @@ public class SingleLayerMapContentTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void nullArgToCtorThrowsException() {
-        MapContent mc = new SingleLayerMapContent(null);
+        new SingleLayerMapContent(null);
     }
 
     @Test(expected = UnsupportedOperationException.class)

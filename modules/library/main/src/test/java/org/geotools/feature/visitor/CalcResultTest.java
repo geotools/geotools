@@ -46,8 +46,8 @@ public class CalcResultTest {
     Long val2 = Long.valueOf(5);
     Float val3 = Float.valueOf(6f);
     Double val4 = Double.valueOf(7.0);
-    String val5 = new String("8");
-    String val6 = new String("Random text of arbitrary complexity.");
+    String val5 = "8";
+    String val6 = "Random text of arbitrary complexity.";
 
     @Test
     public void testInt() {

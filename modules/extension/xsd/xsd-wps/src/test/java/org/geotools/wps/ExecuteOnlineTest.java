@@ -21,13 +21,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
+import org.geotools.util.logging.Logging;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
 public class ExecuteOnlineTest {
+
+    static final Logger LOGGER = Logging.getLogger(ExecuteOnlineTest.class);
 
     /*
      * Try doing an execute request from the example xsd and parse it
@@ -37,15 +41,13 @@ public class ExecuteOnlineTest {
         URL url =
                 new URL(
                         "http://schemas.opengis.net/wps/1.0.0/examples/51_wpsExecute_request_ResponseDocument.xml");
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
             Parser parser = new Parser(new WPSConfiguration());
             Object obj = parser.parse(in);
             Assert.assertNotNull(obj);
         } catch (UnknownHostException notFound) {
-            System.out.println(
-                    "WARNING " + notFound.getClass().getName() + ":" + notFound.getMessage());
-            System.out.println(
+            LOGGER.warning(notFound.getClass().getName() + ":" + notFound.getMessage());
+            LOGGER.warning(
                     "the server was not found - you may be running"
                             + "in offline mode - or behind a firewall?"
                             + "in anycase this represents a failure of network"

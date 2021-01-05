@@ -102,11 +102,11 @@ public class DB2OnlineTest extends AbstractTest {
         return dialect;
     }
 
+    @org.junit.Test
     public void testGetConnection() {
         super.testGetConnection();
 
-        try {
-            CallableStatement s = Connection.prepareCall(" {call db2gse.ST_enable_db(?,?,?) }");
+        try (CallableStatement s = Connection.prepareCall(" {call db2gse.ST_enable_db(?,?,?) }")) {
             s.registerOutParameter(2, Types.INTEGER);
             s.registerOutParameter(3, Types.CHAR);
             s.setNull(1, Types.CHAR);
@@ -120,18 +120,20 @@ public class DB2OnlineTest extends AbstractTest {
 
     void executeRegister(String stmt) throws SQLException {
         String s = "{" + stmt + "}";
-        CallableStatement ps = Connection.prepareCall(s);
-        ps.registerOutParameter(1, Types.INTEGER);
-        ps.registerOutParameter(2, Types.CHAR);
-        ps.executeUpdate();
+        try (CallableStatement ps = Connection.prepareCall(s)) {
+            ps.registerOutParameter(1, Types.INTEGER);
+            ps.registerOutParameter(2, Types.CHAR);
+            ps.executeUpdate();
+        }
     }
 
     void executeUnRegister(String stmt) throws SQLException {
         String s = "{" + stmt + "}";
-        CallableStatement ps = Connection.prepareCall(s);
-        ps.registerOutParameter(1, Types.INTEGER);
-        ps.registerOutParameter(2, Types.CHAR);
-        ps.executeUpdate();
+        try (CallableStatement ps = Connection.prepareCall(s)) {
+            ps.registerOutParameter(1, Types.INTEGER);
+            ps.registerOutParameter(2, Types.CHAR);
+            ps.executeUpdate();
+        }
     }
 
     protected String getXMLConnectFragmentName() {

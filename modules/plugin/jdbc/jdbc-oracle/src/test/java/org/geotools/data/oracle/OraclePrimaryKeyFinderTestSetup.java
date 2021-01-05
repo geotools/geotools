@@ -20,6 +20,7 @@ import java.util.Optional;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class OraclePrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     protected OraclePrimaryKeyFinderTestSetup() {

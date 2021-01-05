@@ -88,7 +88,7 @@ public abstract class FilterTestSupport {
         // Builds the test feature
         Object[] attributes = new Object[10];
         attributes[0] = geomFac.createLineString(coords);
-        attributes[1] = Boolean.valueOf(true);
+        attributes[1] = Boolean.TRUE;
         attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");

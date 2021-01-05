@@ -164,9 +164,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(-2.5, 51.37),
                 new DirectPosition2D(-278298.73, 5718482.24),
@@ -195,9 +192,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(3900000.0);
         params.parameter("false_northing").setValue(900000.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(120.0, -3.0),
                 new DirectPosition2D(5009726.58, 569150.82),
@@ -211,9 +205,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(-75.0, 35.0),
                 new DirectPosition2D(1.8325957, 0.6528366),
@@ -227,9 +218,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(-123.1, 49.2166666666),
                 new DirectPosition2D(-13688089.02443480, 6304639.84599441),
@@ -244,9 +232,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(4.999999999999999, 26.996561536844165),
                 new DirectPosition2D(173029.94823812644, 2448819.342941506),
@@ -267,9 +252,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(53.0, 53.0),
                 new DirectPosition2D(165704.29, 5171848.07),
@@ -284,9 +266,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(-500000.0);
         params.parameter("false_northing").setValue(-1000000.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(-123.1, 49.2166666666),
                 new DirectPosition2D(2663494.1734, 2152319.9230),
@@ -359,9 +338,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(250000.0);
         params.parameter("false_northing").setValue(150000.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(-76.943683333, 17.932166666),
                 new DirectPosition2D(255966.58, 142493.51),
@@ -376,9 +352,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(500000.0);
         params.parameter("false_northing").setValue(1000000.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform.toString());
-        }
         doTransform(
                 new DirectPosition2D(151.283333333, -33.916666666),
                 new DirectPosition2D(4232963.1816, 2287639.9866),
@@ -401,9 +374,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(609601.218); // metres
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(-96.0, 28.5),
                 new DirectPosition2D(903277.7965, 77650.94219),
@@ -419,9 +389,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(139.733333333, 35.6833333333),
                 new DirectPosition2D(-6789805.6471, 7107623.6859),
@@ -437,9 +404,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(100000.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(18.45, -33.9166666666),
                 new DirectPosition2D(1803288.3324, 1616657.7846),
@@ -462,9 +426,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(150000.01);
         params.parameter("false_northing").setValue(5400088.44);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(5.807370277, 50.6795725),
                 new DirectPosition2D(251763.20, 153034.13),
@@ -493,9 +454,6 @@ public final class DirectCreationTest {
         params.parameter("pseudo_standard_parallel_1").setValue(78.5);
         params.parameter("scale_factor").setValue(0.9999);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(14.370530947, 50.071153856),
                 new DirectPosition2D(-746742.6075, -1044389.4516),
@@ -527,9 +485,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0);
         params.parameter("false_northing").setValue(0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         doTransform(
                 new DirectPosition2D(-121.33955, 39.1012523), // 121°20'22.38"W 39°6'4.508"N
                 new DirectPosition2D(-2529570, -5341800),
@@ -547,9 +502,6 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0);
         params.parameter("false_northing").setValue(0);
         transform = mtFactory.createParameterizedTransform(params);
-        if (VERBOSE) {
-            // System.out.println(transform);
-        }
         final double[] tolerance = new double[] {0.1, 0.1};
         doTransform(
                 new DirectPosition2D(10, -85),

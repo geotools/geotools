@@ -121,8 +121,7 @@ public class ContourProcessTest {
     public void testLevels() {
         ContourProcess cp = new ContourProcess();
 
-        ArrayList<Double> levels = new ArrayList<Double>();
-        int i = 0;
+        ArrayList<Double> levels = new ArrayList<>();
         for (int cc = 0; cc < 250; cc += 10) {
             levels.add((double) cc);
         }

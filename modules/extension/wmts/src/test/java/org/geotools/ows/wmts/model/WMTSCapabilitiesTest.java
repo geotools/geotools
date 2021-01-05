@@ -20,16 +20,20 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 import org.geotools.data.ows.OperationType;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wmts.WMTSSpecification;
 import org.geotools.ows.wmts.WebMapTileServer;
+import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.metadata.citation.Address;
 import org.xml.sax.SAXException;
 
 public class WMTSCapabilitiesTest {
+
+    static final Logger LOGGER = Logging.getLogger(WMTSCapabilitiesTest.class);
 
     protected WMTSSpecification spec;
 
@@ -102,7 +106,7 @@ public class WMTSCapabilitiesTest {
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + e);
+                LOGGER.warning("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -171,7 +175,7 @@ public class WMTSCapabilitiesTest {
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + e);
+                LOGGER.warning("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -223,7 +227,7 @@ public class WMTSCapabilitiesTest {
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + e);
+                LOGGER.warning("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -250,7 +254,7 @@ public class WMTSCapabilitiesTest {
         } catch (Exception e) {
             // a standard catch block shared with the other tests
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + e);
+                LOGGER.warning("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -285,7 +289,7 @@ public class WMTSCapabilitiesTest {
         } catch (Exception e) {
             // a standard catch block shared with the other tests
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + e);
+                LOGGER.warning("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }

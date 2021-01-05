@@ -24,6 +24,7 @@ import org.geotools.util.Version;
  *
  * @author Lorenzo Pini (lorenzo.pini@geo-solutions.it)
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseAfterAnnotation") // not a test by itself
 public class PostGISFeatureStoreTestSetup extends PostGISTestSetup {
 
     @Override

@@ -18,6 +18,8 @@ package org.geotools.referencing.epsg.wkt;
 
 // J2SE dependencies
 
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Set;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
@@ -50,7 +52,7 @@ public class EPSGTest {
     public void testAuthority() {
         Citation authority = factory.getAuthority();
 
-        Assert.assertNotNull(authority);
+        assertNotNull(authority);
         Assert.assertEquals("European Petroleum Survey Group", authority.getTitle().toString());
         Assert.assertTrue(Citations.identifierMatches(authority, "EPSG"));
     }
@@ -58,7 +60,7 @@ public class EPSGTest {
     @Test
     public void testVendor() {
         Citation vendor = factory.getVendor();
-        Assert.assertNotNull(vendor);
+        assertNotNull(vendor);
         Assert.assertEquals("Geotools", vendor.getTitle().toString());
     }
 
@@ -66,7 +68,7 @@ public class EPSGTest {
     public void testCodes() throws Exception {
         Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
 
-        Assert.assertNotNull(codes);
+        assertNotNull(codes);
         Assert.assertEquals(6588, codes.size());
     }
 
@@ -75,7 +77,7 @@ public class EPSGTest {
     public void test26910() throws Exception {
         CoordinateReferenceSystem crs =
                 (CoordinateReferenceSystem) factory.createObject("EPSG:26910");
-        Assert.assertNotNull(crs);
+        assertNotNull(crs);
     }
 
     /** UDIG requires this to work */
@@ -83,22 +85,22 @@ public class EPSGTest {
     public void test4326() throws Exception {
         CoordinateReferenceSystem crs =
                 (CoordinateReferenceSystem) factory.createObject("EPSG:4326");
-        Assert.assertNotNull(crs);
+        assertNotNull(crs);
     }
     /** UDIG requires this to work */
     @Test
     public void test4269() throws Exception {
         CoordinateReferenceSystem crs =
                 (CoordinateReferenceSystem) factory.createObject("EPSG:4269");
-        Assert.assertNotNull(crs);
+        assertNotNull(crs);
     }
     /** UDIG requires this to work */
     @Test
     public void test42102() throws Exception {
         CoordinateReferenceSystem crs =
                 (CoordinateReferenceSystem) factory.createObject("EPSG:42102");
-        Assert.assertNotNull(crs);
-        Assert.assertNotNull(crs.getIdentifiers());
+        assertNotNull(crs);
+        assertNotNull(crs.getIdentifiers());
         Assert.assertTrue(crs.getIdentifiers().size() > 0);
         NamedIdentifier expected = new NamedIdentifier(Citations.EPSG, "42102");
         Assert.assertTrue(crs.getIdentifiers().contains(expected));
@@ -112,14 +114,11 @@ public class EPSGTest {
         }
 
         Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
-        int total = codes.size();
-        int count = 0;
 
         for (Object o : codes) {
-            CoordinateReferenceSystem crs;
             String code = (String) o;
             try {
-                crs = (CoordinateReferenceSystem) factory.createObject(code);
+                assertNotNull(factory.createObject(code));
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 Assert.fail("Failed to decode " + code + " with error: " + e.getMessage());
@@ -131,46 +130,46 @@ public class EPSGTest {
     @Test
     public void test26910Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:26910");
-        Assert.assertNotNull(crs);
+        assertNotNull(crs);
     }
 
     /** A random CRS for fun. */
     @Test
     public void test26986Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:26986");
-        Assert.assertNotNull(crs);
+        assertNotNull(crs);
     }
 
     /** wfs requires this to work */
     @Test
     public void test4326Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:4326");
-        Assert.assertNotNull(crs);
+        assertNotNull(crs);
     }
     /** wfs requires this to work */
     @Test
     public void test26742Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:26742");
-        Assert.assertNotNull(crs);
+        assertNotNull(crs);
     }
     /** wfs requires this to work */
     @Test
     public void test4269Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:4269");
-        Assert.assertNotNull(crs);
+        assertNotNull(crs);
     }
     /** wfs requires this to work */
     @Test
     public void test42304Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:42304");
-        Assert.assertNotNull(crs);
+        assertNotNull(crs);
     }
     /** wfs requires this to work */
     @Test
     public void test42102Lower() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("epsg:42102");
-        Assert.assertNotNull(crs);
-        Assert.assertNotNull(crs.getIdentifiers());
+        assertNotNull(crs);
+        assertNotNull(crs.getIdentifiers());
         Assert.assertTrue(crs.getIdentifiers().size() > 0);
         NamedIdentifier expected = new NamedIdentifier(Citations.EPSG, "42102");
         Assert.assertTrue(crs.getIdentifiers().contains(expected));

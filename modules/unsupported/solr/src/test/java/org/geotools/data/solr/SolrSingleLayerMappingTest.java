@@ -68,12 +68,13 @@ public class SolrSingleLayerMappingTest extends SolrTestSupport {
         assertEquals(13, featureSource.getCount(Query.ALL));
 
         SimpleFeatureCollection features = featureSource.getFeatures(Query.ALL);
-        SimpleFeatureIterator it = features.features();
-        while (it.hasNext()) {
-            SimpleFeature f = it.next();
-            assertTrue(f.getAttribute("geo") instanceof Geometry);
-            assertTrue(f.getAttribute("geo2") instanceof Geometry);
-            assertTrue(f.getAttribute("geo3") instanceof Geometry);
+        try (SimpleFeatureIterator it = features.features()) {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertTrue(f.getAttribute("geo") instanceof Geometry);
+                assertTrue(f.getAttribute("geo2") instanceof Geometry);
+                assertTrue(f.getAttribute("geo3") instanceof Geometry);
+            }
         }
     }
 

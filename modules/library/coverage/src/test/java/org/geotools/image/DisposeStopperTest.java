@@ -40,18 +40,18 @@ public class DisposeStopperTest {
     public void testDispose() throws FileNotFoundException, IOException {
         final File tiff = TestData.file(MosaicTest.class, "sample0.tif");
 
+        boolean readSuccess = true;
         final TIFFImageReader reader =
                 (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader)
                         new TIFFImageReaderSpi().createReaderInstance();
-        final ImageInputStream stream = ImageIO.createImageInputStream(tiff);
-        reader.setInput(stream);
-        RenderedImage image =
-                ImageReadDescriptor.create(
-                        stream, 0, false, false, false, null, null, null, reader, null);
+        try (ImageInputStream stream = ImageIO.createImageInputStream(tiff)) {
+            reader.setInput(stream);
+            RenderedImage image =
+                    ImageReadDescriptor.create(
+                            stream, 0, false, false, false, null, null, null, reader, null);
 
-        DisposeStopper stopper = new DisposeStopper(image);
-        boolean readSuccess = true;
-        try {
+            DisposeStopper stopper = new DisposeStopper(image);
+
             // Try to dispose. It shouldn't since we are using the wrapper.
             ImageUtilities.disposeImage(stopper);
             assertNotNull(image);
@@ -66,13 +66,6 @@ public class DisposeStopperTest {
             // should have successfully disposed so the read can't success
             readSuccess = false;
         } finally {
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (Throwable t) {
-
-                }
-            }
             if (reader != null) {
                 try {
                     reader.dispose();

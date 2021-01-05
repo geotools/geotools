@@ -223,13 +223,10 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
         SimpleFeatureSource featureSource = newDataStore.getFeatureSource(typeName);
 
         SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-        Transaction transaction = new DefaultTransaction("create");
-        featureStore.setTransaction(transaction);
-        try {
+        try (Transaction transaction = new DefaultTransaction("create")) {
+            featureStore.setTransaction(transaction);
             featureStore.addFeatures(collection);
             transaction.commit();
-        } finally {
-            transaction.close();
         }
     }
 

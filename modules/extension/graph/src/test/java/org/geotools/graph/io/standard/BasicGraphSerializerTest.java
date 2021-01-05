@@ -119,7 +119,6 @@ public class BasicGraphSerializerTest {
     public void test_1() {
         final int k = 5;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
-        final Node root = (Node) obj[0];
         final Map obj2node = (Map) obj[1];
 
         try {

@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.TransformException;
 
 /** @author jamesm,iant */
 public class LiteShapeTest {
-    private java.net.URL base = getClass().getResource("testData/");
 
     @Test
     public void testLineShape() throws TransformException, FactoryException {
@@ -123,21 +122,19 @@ public class LiteShapeTest {
 
         LineString ls = geomFac.createLineString(cs);
         LineString copy = (LineString) ls.copy();
-        LiteShape2 ltCloning =
-                new LiteShape2(
-                        ls,
-                        ProjectiveTransform.create(AffineTransform.getScaleInstance(10, 10)),
-                        new Decimator(4, 4),
-                        true);
+        new LiteShape2(
+                ls,
+                ProjectiveTransform.create(AffineTransform.getScaleInstance(10, 10)),
+                new Decimator(4, 4),
+                true);
         Assert.assertTrue(ls.equalsExact(copy));
 
-        LiteShape2 ltNotCloning =
-                new LiteShape2(
-                        ls,
-                        ProjectiveTransform.create(AffineTransform.getScaleInstance(10, 10)),
-                        new Decimator(4, 4),
-                        true,
-                        false);
+        new LiteShape2(
+                ls,
+                ProjectiveTransform.create(AffineTransform.getScaleInstance(10, 10)),
+                new Decimator(4, 4),
+                true,
+                false);
         Assert.assertFalse(ls.equalsExact(copy));
     }
 

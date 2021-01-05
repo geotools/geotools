@@ -27,6 +27,7 @@ import org.geotools.jdbc.JDBCTestSupport;
 /** @author Stefan Uhrig, SAP SE */
 public class MetadataImportTest extends JDBCTestSupport {
 
+    @SuppressWarnings("PMD.CloseResource") // no actual need to close the PrintStream
     public void testMetadataImport() throws Exception {
         List<String> args = new ArrayList<>();
         args.add(fixture.getProperty("user"));

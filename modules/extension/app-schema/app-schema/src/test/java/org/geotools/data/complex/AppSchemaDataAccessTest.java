@@ -189,14 +189,14 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         FeatureCollection<FeatureType, Feature> reader = access.getFeatures();
         assertNotNull(reader);
 
-        FeatureIterator<Feature> features = reader.features();
-        assertTrue(features.hasNext());
+        Feature complexFeature;
+        try (FeatureIterator<Feature> features = reader.features()) {
+            assertTrue(features.hasNext());
 
-        Feature complexFeature = features.next();
-        assertNotNull(complexFeature);
-        assertEquals(targetType, complexFeature.getType());
-
-        features.close();
+            complexFeature = features.next();
+            assertNotNull(complexFeature);
+            assertEquals(targetType, complexFeature.getType());
+        }
 
         org.opengis.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyName expr;
@@ -261,29 +261,29 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         FeatureSource<FeatureType, Feature> complexSource = dataStore.getFeatureSource(targetName);
         FeatureCollection<FeatureType, Feature> features = complexSource.getFeatures(filter);
 
-        FeatureIterator<Feature> reader = features.features();
+        try (FeatureIterator<Feature> reader = features.features()) {
+            PropertyIsEqualTo equivalentSourceFilter =
+                    ff.equals(ff.property("ph"), ff.literal(Integer.valueOf(3)));
+            FeatureCollection<?, ?> collection =
+                    mapping.getSource().getFeatures(equivalentSourceFilter);
 
-        PropertyIsEqualTo equivalentSourceFilter =
-                ff.equals(ff.property("ph"), ff.literal(Integer.valueOf(3)));
-        FeatureCollection<?, ?> collection =
-                mapping.getSource().getFeatures(equivalentSourceFilter);
+            int count = 0;
+            int expectedCount = collection.size();
 
-        int count = 0;
-        int expectedCount = collection.size();
+            Filter badFilter =
+                    ff.greater(
+                            ff.property("sample/measurement[1]/value"),
+                            ff.literal(Integer.valueOf(3)));
 
-        Filter badFilter =
-                ff.greater(
-                        ff.property("sample/measurement[1]/value"), ff.literal(Integer.valueOf(3)));
-
-        while (reader.hasNext()) {
-            Feature f = reader.next();
-            assertNotNull(f);
-            assertTrue(filter.evaluate(f));
-            assertFalse(badFilter.evaluate(f));
-            count++;
+            while (reader.hasNext()) {
+                Feature f = reader.next();
+                assertNotNull(f);
+                assertTrue(filter.evaluate(f));
+                assertFalse(badFilter.evaluate(f));
+                count++;
+            }
+            assertEquals(expectedCount, count);
         }
-        reader.close();
-        assertEquals(expectedCount, count);
     }
 
     /**
@@ -337,14 +337,6 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         assertEquals(Point.class, toNode.getType().getBinding());
 
         // test to see if the mapping can successfully substitute a valid narrower type
-        Name subName = Types.typeName(nsUri, "broadTypeEl");
-
-        descriptor = (AttributeDescriptor) Types.descriptor(type, subName);
-
-        ComplexType subbedType = (ComplexType) descriptor.getType();
-
-        AttributeDescriptor sub = (AttributeDescriptor) Types.descriptor(subbedType, subName);
-
         FeatureCollection<FeatureType, Feature> content = source.getFeatures();
         FeatureIterator<Feature> features = content.features();
         int count = 0;

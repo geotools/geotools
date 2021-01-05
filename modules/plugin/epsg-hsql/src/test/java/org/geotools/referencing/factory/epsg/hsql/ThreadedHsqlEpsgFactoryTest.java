@@ -82,6 +82,7 @@ public class ThreadedHsqlEpsgFactoryTest {
         assertEquals(original, afterCorruption);
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     private void corruptConnection() throws Exception {
         java.lang.reflect.Field field =
                 org.geotools.referencing.factory.BufferedAuthorityFactory.class.getDeclaredField(

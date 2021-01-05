@@ -121,29 +121,30 @@ public abstract class TestSchema {
     public ElementInstance element(String text, QName original, String name) {
         try {
             File temp = File.createTempFile("name", "xsd");
-            FileWriter file = new FileWriter(temp);
-            BufferedWriter buff = new BufferedWriter(file);
-            PrintWriter print = new PrintWriter(buff);
-            print.println(
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                            + "  <xsd:schema xmlns:my=\"http://mails/refractions/net\""
-                            + "              xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
-                            + "              targetNamespace=\"http://localhost//test\">"
-                            + "  <xsd:element name=\""
-                            + name
-                            + "\" type=\"xsd:"
-                            + original.getLocalPart()
-                            + "\"/>"
-                            + "</xsd:schema>");
+            try (FileWriter file = new FileWriter(temp);
+                    BufferedWriter buff = new BufferedWriter(file);
+                    PrintWriter print = new PrintWriter(buff)) {
+                print.println(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                                + "  <xsd:schema xmlns:my=\"http://mails/refractions/net\""
+                                + "              xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
+                                + "              targetNamespace=\"http://localhost//test\">"
+                                + "  <xsd:element name=\""
+                                + name
+                                + "\" type=\"xsd:"
+                                + original.getLocalPart()
+                                + "\"/>"
+                                + "</xsd:schema>");
 
-            URL url = URLs.fileToUrl(temp);
-            XSDParser parser = new XSDParser(Collections.emptyMap());
-            parser.parse(url.toString());
+                URL url = URLs.fileToUrl(temp);
+                XSDParser parser = new XSDParser(Collections.emptyMap());
+                parser.parse(url.toString());
 
-            XSDSchema schema = parser.getSchema();
-            Map map = schema.getSimpleTypeIdMap();
+                XSDSchema schema = parser.getSchema();
+                Map map = schema.getSimpleTypeIdMap();
 
-            return (ElementInstance) map.get(name);
+                return (ElementInstance) map.get(name);
+            }
         } catch (Throwable t) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
 

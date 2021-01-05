@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
@@ -62,18 +61,11 @@ import org.opengis.feature.type.Name;
  * @since 2.4
  */
 public class GeoSciMLTest extends AppSchemaTestSupport {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoSciMLTest.class);
-
     private static final String GSMLNS = "http://www.cgi-iugs.org/xml/GeoSciML/2";
-
-    private static final String GMLNS = "http://www.opengis.net/gml";
 
     private static final String schemaBase = "/test-data/";
 
     private static EmfComplexFeatureReader reader;
-
-    private FeatureSource source;
 
     private static DataAccess<FeatureType, Feature> mappingDataStore;
 
@@ -203,14 +195,13 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
             int resultCount = getCount(features);
             assertEquals(EXPECTED_RESULT_COUNT, resultCount);
 
-            Feature feature;
             int count = 0;
-            FeatureIterator it = features.features();
-            for (; it.hasNext(); ) {
-                feature = it.next();
-                count++;
+            try (FeatureIterator it = features.features()) {
+                while (it.hasNext()) {
+                    it.next();
+                    count++;
+                }
             }
-            it.close();
 
             assertEquals(EXPECTED_RESULT_COUNT, count);
         } catch (Exception e) {

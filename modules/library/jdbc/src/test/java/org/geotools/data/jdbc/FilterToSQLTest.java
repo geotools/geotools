@@ -19,7 +19,12 @@ package org.geotools.data.jdbc;
 import static org.geotools.util.Converters.convert;
 
 import java.io.StringWriter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -244,7 +249,7 @@ public class FilterToSQLTest {
 
     @Test
     public void testEscapeQuoteFancy() throws FilterToSQLException {
-        org.opengis.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Object fancyLiteral =
                 new Object() {
 

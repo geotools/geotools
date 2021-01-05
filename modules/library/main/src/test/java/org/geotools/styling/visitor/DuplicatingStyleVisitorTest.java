@@ -16,6 +16,8 @@
  */
 package org.geotools.styling.visitor;
 
+import static org.junit.Assert.assertEquals;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -103,7 +105,7 @@ public class DuplicatingStyleVisitorTest {
 
         // compare it
         Assert.assertNotNull(copy);
-        Assert.assertEquals(original, copy);
+        assertEquals(original, copy);
     }
 
     @Test
@@ -123,8 +125,7 @@ public class DuplicatingStyleVisitorTest {
 
         // compare it
         Assert.assertNotNull(newStyle);
-        Assert.assertEquals(
-                2, newStyle.featureTypeStyles().get(0).semanticTypeIdentifiers().size());
+        assertEquals(2, newStyle.featureTypeStyles().get(0).semanticTypeIdentifiers().size());
     }
 
     @Test
@@ -252,7 +253,7 @@ public class DuplicatingStyleVisitorTest {
         rasterSymb.accept(visitor);
         RasterSymbolizer clone = (RasterSymbolizer) visitor.getCopy();
 
-        Assert.assertEquals(clone.getUnitOfMeasure(), rasterSymb.getUnitOfMeasure());
+        assertEquals(clone.getUnitOfMeasure(), rasterSymb.getUnitOfMeasure());
 
         RasterSymbolizer notEq = sf.createRasterSymbolizer();
 
@@ -267,7 +268,7 @@ public class DuplicatingStyleVisitorTest {
         rasterSymb1.accept(visitor);
         RasterSymbolizer clone1 = (RasterSymbolizer) visitor.getCopy();
 
-        Assert.assertEquals(clone1.getOverlapBehavior(), rasterSymb1.getOverlapBehavior());
+        assertEquals(clone1.getOverlapBehavior(), rasterSymb1.getOverlapBehavior());
 
         // Try literal expression
         RasterSymbolizer rasterSymbLiteral = sf.createRasterSymbolizer();
@@ -275,9 +276,8 @@ public class DuplicatingStyleVisitorTest {
         rasterSymbLiteral.accept(visitor);
         RasterSymbolizer cloneLiteral = (RasterSymbolizer) visitor.getCopy();
 
-        Assert.assertEquals(
-                cloneLiteral.getOverlapBehavior(), rasterSymbLiteral.getOverlapBehavior());
-        Assert.assertEquals(cloneLiteral.getOverlap(), rasterSymbLiteral.getOverlap());
+        assertEquals(cloneLiteral.getOverlapBehavior(), rasterSymbLiteral.getOverlapBehavior());
+        assertEquals(cloneLiteral.getOverlap(), rasterSymbLiteral.getOverlap());
 
         // Try with invalid expression string
         RasterSymbolizer rasterSymb3 = sf.createRasterSymbolizer();
@@ -339,8 +339,8 @@ public class DuplicatingStyleVisitorTest {
         assertCopy(textSymb, clone);
         assertEqualsContract(textSymb, clone);
 
-        Assert.assertEquals(1, clone.getOptions().size());
-        Assert.assertEquals("100", clone.getOptions().get("autoWrap"));
+        assertEquals(1, clone.getOptions().size());
+        assertEquals("100", clone.getOptions().get("autoWrap"));
     }
 
     @Test
@@ -411,7 +411,6 @@ public class DuplicatingStyleVisitorTest {
 
         linePlacement.accept(visitor);
         LinePlacement clone = (LinePlacement) visitor.getCopy();
-        ;
 
         assertCopy(linePlacement, clone);
 
@@ -520,7 +519,7 @@ public class DuplicatingStyleVisitorTest {
         Graphic clone = visitor.copy(graphic);
         assertCopy(graphic, clone);
         assertEqualsContract(clone, graphic);
-        Assert.assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
+        assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
 
         Graphic notEq = sf.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);
@@ -594,10 +593,9 @@ public class DuplicatingStyleVisitorTest {
         assertCopy(mark, clone);
         assertCopy(mark.getExternalMark(), clone.getExternalMark());
         ExternalMark emCopy = clone.getExternalMark();
-        Assert.assertEquals("ttf", emCopy.getFormat());
-        Assert.assertEquals(
-                "ttf://wingdings", emCopy.getOnlineResource().getLinkage().toASCIIString());
-        Assert.assertEquals(15, emCopy.getMarkIndex());
+        assertEquals("ttf", emCopy.getFormat());
+        assertEquals("ttf://wingdings", emCopy.getOnlineResource().getLinkage().toASCIIString());
+        assertEquals(15, emCopy.getMarkIndex());
     }
 
     @Test
@@ -640,11 +638,11 @@ public class DuplicatingStyleVisitorTest {
         Assert.assertNotNull(test);
 
         // check reflexivity
-        Assert.assertEquals("Reflexivity test failed", test, test);
+        assertEquals("Reflexivity test failed", test, test);
 
         // check symmetric
-        Assert.assertEquals("Symmetry test failed", controlEqual, test);
-        Assert.assertEquals("Symmetry test failed", test, controlEqual);
+        assertEquals("Symmetry test failed", controlEqual, test);
+        assertEquals("Symmetry test failed", test, controlEqual);
         Assert.assertFalse("Symmetry test failed", test.equals(controlNe));
         Assert.assertFalse("Symmetry test failed", controlNe.equals(test));
 
@@ -656,13 +654,6 @@ public class DuplicatingStyleVisitorTest {
 
         // check non-null
         Assert.assertFalse("Non-null test failed", test.equals(null));
-
-        // assertHashcode equality
-        int controlEqHash = controlEqual.hashCode();
-        int testHash = test.hashCode();
-        if (controlEqHash != testHash) {
-            // System.out.println("Warning  - Equal objects should return equal hashcodes");
-        }
     }
 
     private static void assertEqualsContract(Object controlEqual, Object test) {
@@ -670,11 +661,11 @@ public class DuplicatingStyleVisitorTest {
         Assert.assertNotNull(test);
 
         // check reflexivity
-        Assert.assertEquals("Reflexivity test failed", test, test);
+        assertEquals("Reflexivity test failed", test, test);
 
         // check symmetric
-        Assert.assertEquals("Symmetry test failed", controlEqual, test);
-        Assert.assertEquals("Symmetry test failed", test, controlEqual);
+        assertEquals("Symmetry test failed", controlEqual, test);
+        assertEquals("Symmetry test failed", test, controlEqual);
 
         // check non-null
         Assert.assertFalse("Non-null test failed", test.equals(null));
@@ -682,7 +673,7 @@ public class DuplicatingStyleVisitorTest {
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();
         int testHash = test.hashCode();
-        Assert.assertEquals("Equal objects should return equal hashcodes", controlEqHash, testHash);
+        assertEquals("Equal objects should return equal hashcodes", controlEqHash, testHash);
     }
 
     @Test
@@ -695,11 +686,11 @@ public class DuplicatingStyleVisitorTest {
         ce.accept(visitor);
         ContrastEnhancement ce2 = (ContrastEnhancement) visitor.getCopy();
 
-        Assert.assertEquals(
+        assertEquals(
                 "Gamma value incorrest after duplication",
                 ((Literal) ce.getGammaValue()).getValue(),
                 ((Literal) ce2.getGammaValue()).getValue());
-        Assert.assertEquals(
+        assertEquals(
                 "ContrastMethod must be equal after duplication ", ce.getMethod(), ce2.getMethod());
     }
 
@@ -716,19 +707,19 @@ public class DuplicatingStyleVisitorTest {
 
         ColorMapEntry cme2 = (ColorMapEntry) visitor.getCopy();
 
-        Assert.assertEquals(
+        assertEquals(
                 "Colormaps LABEL must be equal after duplication ",
                 cme.getLabel(),
                 cme2.getLabel());
-        Assert.assertEquals(
+        assertEquals(
                 "Colormaps QUANTITY must be equal after duplication ",
                 cme.getQuantity(),
                 cme2.getQuantity());
-        Assert.assertEquals(
+        assertEquals(
                 "Colormaps COLOR must be equal after duplication ",
                 cme.getColor(),
                 cme2.getColor());
-        Assert.assertEquals(
+        assertEquals(
                 "Colormaps OPACITY must be equal after duplication ",
                 cme.getOpacity(),
                 cme2.getOpacity());
@@ -748,7 +739,7 @@ public class DuplicatingStyleVisitorTest {
         pointSymb.accept(visitor);
         PointSymbolizer copy = (PointSymbolizer) visitor.getCopy();
 
-        Assert.assertEquals(
+        assertEquals(
                 "Any Expression set as Geometry must be correctly replicated",
                 geomFunc,
                 copy.getGeometry());
@@ -768,7 +759,7 @@ public class DuplicatingStyleVisitorTest {
         RasterSymbolizer copy = (RasterSymbolizer) visitor.getCopy();
 
         // compare it
-        Assert.assertEquals(
+        assertEquals(
                 "Any Expression set as Geometry must be correctly replicated",
                 geomFunc,
                 copy.getGeometry());
@@ -785,7 +776,7 @@ public class DuplicatingStyleVisitorTest {
         LineSymbolizer copy = (LineSymbolizer) visitor.copy(lineSymb);
 
         // compare it
-        Assert.assertEquals(
+        assertEquals(
                 "Any Expression set as Geometry must be correctly replicated",
                 geomFunc,
                 copy.getGeometry());
@@ -802,7 +793,7 @@ public class DuplicatingStyleVisitorTest {
         PolygonSymbolizer copy = (PolygonSymbolizer) visitor.copy(symb);
 
         // compare it
-        Assert.assertEquals(
+        assertEquals(
                 "Any Expression set as Geometry must be correctly replicated",
                 geomFunc,
                 copy.getGeometry());
@@ -819,7 +810,7 @@ public class DuplicatingStyleVisitorTest {
         TextSymbolizer copy = (TextSymbolizer) visitor.copy(symb);
 
         // compare it
-        Assert.assertEquals(
+        assertEquals(
                 "Any Expression set as Geometry must be correctly replicated",
                 geomFunc,
                 copy.getGeometry());
@@ -852,31 +843,31 @@ public class DuplicatingStyleVisitorTest {
         TextSymbolizer2 copy = (TextSymbolizer2) visitor.copy(symb);
 
         // compare it
-        Assert.assertEquals(
+        assertEquals(
                 "Graphic of TextSymbolizer2 has not been correctly duplicated",
                 gr,
                 copy.getGraphic());
-        Assert.assertEquals(
+        assertEquals(
                 "Graphic of TextSymbolizer2 has not been correctly duplicated",
                 gr.getOpacity(),
                 copy.getGraphic().getOpacity());
-        Assert.assertEquals(
+        assertEquals(
                 "Graphic of TextSymbolizer2 has not been correctly duplicated",
                 gr.getSize(),
                 copy.getGraphic().getSize());
-        Assert.assertEquals(
+        assertEquals(
                 "Snippet of TextSymbolizer2 has not been correctly duplicated",
                 snippet,
                 copy.getSnippet());
-        Assert.assertEquals(
+        assertEquals(
                 "FeatureDescription of TextSymbolizer2 has not been correctly duplicated",
                 fD,
                 copy.getFeatureDescription());
-        Assert.assertEquals(
+        assertEquals(
                 "OtherText of TextSymbolizer2 has not been correctly duplicated",
                 otherText.getTarget(),
                 copy.getOtherText().getTarget());
-        Assert.assertEquals(
+        assertEquals(
                 "OtherText of TextSymbolizer2 has not been correctly duplicated",
                 otherText.getText(),
                 copy.getOtherText().getText());
@@ -894,7 +885,7 @@ public class DuplicatingStyleVisitorTest {
         LineSymbolizer copy = (LineSymbolizer) visitor.copy(ls);
 
         // compare
-        Assert.assertEquals(
+        assertEquals(
                 "PerpendicularOffset of LineSymbolizer has not been correctly duplicated",
                 ls.getPerpendicularOffset(),
                 copy.getPerpendicularOffset());
@@ -912,6 +903,6 @@ public class DuplicatingStyleVisitorTest {
         sct.accept(visitor);
         SelectedChannelType clone = (SelectedChannelType) visitor.getCopy();
 
-        Assert.assertEquals(sct, clone);
+        assertEquals(sct, clone);
     }
 }

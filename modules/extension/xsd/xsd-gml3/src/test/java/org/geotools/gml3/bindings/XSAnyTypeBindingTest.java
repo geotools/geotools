@@ -35,6 +35,7 @@ import org.geotools.xs.XSSchema;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaLocator;
 import org.geotools.xsd.XSD;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Property;
@@ -106,6 +107,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         registerNamespaceMapping("test", "http://www.geotools.org/anytypetest");
@@ -119,7 +121,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     @Test
     public void testEncode() throws Exception {
         QName observation = ANYTYPETEST.OBSERVATION;
-        ComplexAttribute myCode = testAnyTypeTest(observation, SAMPLE_CLASS_VALUE);
+        ComplexAttribute myCode = checkAnyTypeTest(observation, SAMPLE_CLASS_VALUE);
         Document dom = encode(myCode, observation);
         // print(dom);
         assertEquals("test:Observation", dom.getDocumentElement().getNodeName());
@@ -148,7 +150,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         assertEquals(SAMPLE_UNRESTRICTED_VALUE, dom.getDocumentElement().getTextContent());
     }
 
-    public ComplexAttribute testAnyTypeTest(QName typeName, String classValue) {
+    public ComplexAttribute checkAnyTypeTest(QName typeName, String classValue) {
         Name myType = new NameImpl(typeName.getNamespaceURI(), typeName.getLocalPart());
 
         List<Property> properties = new ArrayList<>();

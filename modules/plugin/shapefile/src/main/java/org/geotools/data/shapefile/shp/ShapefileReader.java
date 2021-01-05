@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -62,7 +63,7 @@ import org.locationtech.jts.geom.Polygon;
  * @author aaime
  * @author Ian Schneider
  */
-public class ShapefileReader implements FileReader {
+public class ShapefileReader implements FileReader, Closeable {
     private static final Logger LOGGER = Logging.getLogger(ShapefileReader.class);
 
     /**

@@ -204,7 +204,7 @@ public class VectorFillTest {
                 "wktcomposite", "wkt://MULTILINESTRING((-0.5 -0.5, 0.5 0.5), (0 -0.5, 0 0.5))");
     }
 
-    public void testParametricMark(String fileName, final String markName) throws Exception {
+    protected void testParametricMark(String fileName, final String markName) throws Exception {
         Style slashStyle = RendererBaseTest.loadStyle(this, "fillSlash.sld");
         final DuplicatingStyleVisitor markReplacer =
                 new DuplicatingStyleVisitor() {

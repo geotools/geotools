@@ -416,9 +416,6 @@ public class SDOCreateTest {
         }
 
         boolean isEqual = actual.equalsNorm(expected);
-        if (!isEqual) {
-            // System.out.println("Expected " + expected + ", actual " + actual);
-        }
         assertTrue(isEqual);
     }
 

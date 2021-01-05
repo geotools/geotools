@@ -422,7 +422,7 @@ public class StyleBuilderTest {
         symb.stroke().color(Color.BLUE).width(1).opacity(0.5);
         symb.fill().color(Color.CYAN).opacity(0.5);
 
-        Style style = sb.build();
+        sb.build();
 
         // now what do we test :-)
     }

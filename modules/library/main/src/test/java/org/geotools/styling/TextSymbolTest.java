@@ -19,7 +19,6 @@
 package org.geotools.styling;
 
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -28,8 +27,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Test for text symbols.
@@ -38,8 +35,6 @@ import org.opengis.filter.expression.PropertyName;
  * @task REVISIT: redo the Map stuff - I commented it out since DefaultMap is deprecated - cholmes.
  */
 public class TextSymbolTest {
-    private static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
-
     String dataFolder;
 
     public TextSymbolTest() {
@@ -101,8 +96,6 @@ public class TextSymbolTest {
         // org.geotools.map.Map map = new DefaultMap();
         // The following is complex, and should be built from
         // an SLD document and not by hand
-
-        PropertyName symbExpr = filterFactory.property("symbol");
         Mark textMark = new MarkImpl("square");
 
         GraphicImpl graphic = new GraphicImpl();

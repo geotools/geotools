@@ -29,20 +29,20 @@ public class GML3ParsingTest {
 
     @Test
     public void testWithoutSchema() throws Exception {
-        InputStream in = getClass().getResourceAsStream("states.xml");
-        GMLConfiguration gml = new GMLConfiguration();
-        StreamingParser parser = new StreamingParser(gml, in, SimpleFeature.class);
+        try (InputStream in = getClass().getResourceAsStream("states.xml")) {
+            GMLConfiguration gml = new GMLConfiguration();
+            StreamingParser parser = new StreamingParser(gml, in, SimpleFeature.class);
 
-        int nfeatures = 0;
-        SimpleFeature f = null;
-        while ((f = (SimpleFeature) parser.parse()) != null) {
-            nfeatures++;
-            Assert.assertNotNull(f.getAttribute("STATE_NAME"));
-            Assert.assertNotNull(f.getAttribute("STATE_ABBR"));
-            Assert.assertTrue(f.getAttribute("SAMP_POP") instanceof String);
+            int nfeatures = 0;
+            SimpleFeature f = null;
+            while ((f = (SimpleFeature) parser.parse()) != null) {
+                nfeatures++;
+                Assert.assertNotNull(f.getAttribute("STATE_NAME"));
+                Assert.assertNotNull(f.getAttribute("STATE_ABBR"));
+                Assert.assertTrue(f.getAttribute("SAMP_POP") instanceof String);
+            }
+            Assert.assertEquals(49, nfeatures);
         }
-
-        Assert.assertEquals(49, nfeatures);
     }
 
     @Test
@@ -66,20 +66,21 @@ public class GML3ParsingTest {
         // xml.deleteOnExit();
         tx.transform(new DOMSource(instance), new StreamResult(xml));
 
-        InputStream in = new FileInputStream(xml);
-        GMLConfiguration gml = new GMLConfiguration();
-        StreamingParser parser = new StreamingParser(gml, in, SimpleFeature.class);
+        try (InputStream in = new FileInputStream(xml)) {
+            GMLConfiguration gml = new GMLConfiguration();
+            StreamingParser parser = new StreamingParser(gml, in, SimpleFeature.class);
 
-        int nfeatures = 0;
-        SimpleFeature f = null;
-        while ((f = (SimpleFeature) parser.parse()) != null) {
-            nfeatures++;
-            Assert.assertNotNull(f.getAttribute("STATE_NAME"));
-            Assert.assertNotNull(f.getAttribute("STATE_ABBR"));
-            Assert.assertTrue(f.getAttribute("SAMP_POP") instanceof Double);
+            int nfeatures = 0;
+            SimpleFeature f = null;
+            while ((f = (SimpleFeature) parser.parse()) != null) {
+                nfeatures++;
+                Assert.assertNotNull(f.getAttribute("STATE_NAME"));
+                Assert.assertNotNull(f.getAttribute("STATE_ABBR"));
+                Assert.assertTrue(f.getAttribute("SAMP_POP") instanceof Double);
+            }
+
+            Assert.assertEquals(49, nfeatures);
         }
-
-        Assert.assertEquals(49, nfeatures);
     }
 
     @Test

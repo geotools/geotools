@@ -18,7 +18,6 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.Color;
 import javax.media.jai.PlanarImage;
-import junit.framework.TestCase;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -29,11 +28,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * {@link TestCase} subclass for {@link BaseCoverageProcessingNode} .
- *
- * @author Simone Giannecchini, GeoSlutions.
- */
 public class BaseCoverageProcessingNodeTest {
 
     private BaseCoverageProcessingNode testedObject;

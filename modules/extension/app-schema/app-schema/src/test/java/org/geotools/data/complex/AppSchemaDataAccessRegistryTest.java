@@ -267,7 +267,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         dataAccess.dispose();
         boolean notFound = false;
         try {
-            FeatureTypeMapping mapping = AppSchemaDataAccessRegistry.getMappingByElement(typeName);
+            AppSchemaDataAccessRegistry.getMappingByElement(typeName);
         } catch (DataSourceException e) {
             notFound = true;
             assertTrue(e.getMessage().startsWith("Feature type " + typeName + " not found"));
@@ -278,7 +278,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         }
         notFound = false;
         try {
-            FeatureSource source = AppSchemaDataAccessRegistry.getSimpleFeatureSource(typeName);
+            AppSchemaDataAccessRegistry.getSimpleFeatureSource(typeName);
         } catch (DataSourceException e) {
             notFound = true;
             assertTrue(e.getMessage().startsWith("Feature type " + typeName + " not found"));
@@ -307,8 +307,8 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         mappings.add(duplicate);
         config.setTypeMappings(mappings);
         try {
-            AppSchemaDataAccess da =
-                    new AppSchemaDataAccess(AppSchemaDataAccessConfigurator.buildMappings(config));
+
+            new AppSchemaDataAccess(AppSchemaDataAccessConfigurator.buildMappings(config));
         } catch (DataSourceException e) {
             assertTrue(
                     e.getMessage()
@@ -331,8 +331,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         // make sure the above operation didn't fail
         assertTrue(config.getTypeMappings().containsAll(mappings));
         try {
-            AppSchemaDataAccess da =
-                    new AppSchemaDataAccess(AppSchemaDataAccessConfigurator.buildMappings(config));
+            new AppSchemaDataAccess(AppSchemaDataAccessConfigurator.buildMappings(config));
         } catch (DataSourceException e) {
             assertTrue(
                     e.getMessage()
@@ -353,8 +352,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         config.setTypeMappings(mappings);
         assertTrue(config.getTypeMappings().containsAll(mappings));
         try {
-            AppSchemaDataAccess da =
-                    new AppSchemaDataAccess(AppSchemaDataAccessConfigurator.buildMappings(config));
+            new AppSchemaDataAccess(AppSchemaDataAccessConfigurator.buildMappings(config));
         } catch (DataSourceException e) {
             assertTrue(
                     e.getMessage()

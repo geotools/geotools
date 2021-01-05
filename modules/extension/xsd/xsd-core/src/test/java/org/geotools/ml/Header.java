@@ -18,7 +18,7 @@ package org.geotools.ml;
 
 public class Header {
     String value;
-    private String name;
+    String name;
 
     public Header(String name, String value) {
         this.name = name;

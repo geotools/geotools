@@ -87,14 +87,15 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     @Test
     public void testFidTransformation() throws Exception {
         SimpleFeatureSource transformedSource = transformWithSelection();
-        SimpleFeatureIterator transformedIt = transformedSource.getFeatures().features();
-        SimpleFeatureIterator originalIt = STATES.getFeatures().features();
-        while (transformedIt.hasNext()) {
-            SimpleFeature original = originalIt.next();
-            String originalName = original.getName().getLocalPart();
-            String originalId = original.getID().substring(originalName.length() + 1);
-            SimpleFeature transformed = transformedIt.next();
-            assertEquals("states_mini." + originalId, transformed.getID());
+        try (SimpleFeatureIterator transformedIt = transformedSource.getFeatures().features();
+                SimpleFeatureIterator originalIt = STATES.getFeatures().features()) {
+            while (transformedIt.hasNext()) {
+                SimpleFeature original = originalIt.next();
+                String originalName = original.getName().getLocalPart();
+                String originalId = original.getID().substring(originalName.length() + 1);
+                SimpleFeature transformed = transformedIt.next();
+                assertEquals("states_mini." + originalId, transformed.getID());
+            }
         }
     }
 

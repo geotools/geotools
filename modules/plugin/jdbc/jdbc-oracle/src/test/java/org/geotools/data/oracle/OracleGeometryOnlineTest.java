@@ -17,7 +17,6 @@
 package org.geotools.data.oracle;
 
 import java.util.ArrayList;
-import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
@@ -40,7 +39,6 @@ import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.identity.FeatureId;
 
 public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
 
@@ -80,29 +78,26 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
         FeatureCollection<SimpleFeatureType, SimpleFeature> collection =
                 DataUtilities.collection(list);
         SimpleFeatureStore store = (SimpleFeatureStore) source;
-        Transaction transaction = new DefaultTransaction("create");
-        store.setTransaction(transaction);
 
-        try {
+        try (Transaction transaction = new DefaultTransaction("create")) {
+            store.setTransaction(transaction);
             // GEOT-724 https://osgeo-org.atlassian.net/browse/GEOT-724
             // throws exception here
-            List<FeatureId> ids = store.addFeatures(collection);
+            store.addFeatures(collection);
 
             transaction.commit();
-        } finally {
-            transaction.close();
         }
     }
 
     public void testComplexGeometryFallback() throws Exception {
-        SimpleFeatureIterator fi =
-                dataStore.getFeatureSource("COLA_MARKETS_CS").getFeatures().features();
-        assertTrue(fi.hasNext());
-        SimpleFeature sf = fi.next();
-        assertNotNull(sf.getDefaultGeometry());
-        Geometry expected = new WKTReader().read("POLYGON((6 4, 12 4, 12 12, 6 12, 6 4))");
-        assertTrue(expected.equalsTopo((Geometry) sf.getDefaultGeometry()));
-        fi.close();
+        try (SimpleFeatureIterator fi =
+                dataStore.getFeatureSource("COLA_MARKETS_CS").getFeatures().features()) {
+            assertTrue(fi.hasNext());
+            SimpleFeature sf = fi.next();
+            assertNotNull(sf.getDefaultGeometry());
+            Geometry expected = new WKTReader().read("POLYGON((6 4, 12 4, 12 12, 6 12, 6 4))");
+            assertTrue(expected.equalsTopo((Geometry) sf.getDefaultGeometry()));
+        }
     }
 
     public void testGeometryMetadataTable() throws Exception {

@@ -60,9 +60,6 @@ public class MarkAlongLineTest {
         lineFS = ds.getFeatureSource("markAlongLine");
         assertNotNull(lineFS);
 
-        File propertyPolygon =
-                new File(TestData.getResource(this, "markAlongLinePolygon.properties").toURI());
-        PropertyDataStore ds2 = new PropertyDataStore(propertyPolygon.getParentFile());
         polygonFS = ds.getFeatureSource("markAlongLinePolygon");
         assertNotNull(polygonFS);
 

@@ -251,6 +251,7 @@ public class Viewer extends JPanel {
      * @param args The command-line arguments.
      * @throws IOException if an error occured while reading an image.
      */
+    @SuppressWarnings("PMD.CloseResource")
     public static void main(String[] args) throws IOException {
         final Arguments arguments = new Arguments(args);
         final PrintWriter out = arguments.out;

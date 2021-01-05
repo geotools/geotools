@@ -54,7 +54,7 @@ import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
-import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -83,7 +83,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         super(dataStoreFactoryClass);
     }
 
-    @Before
+    @After
     public void tearDown() throws Exception {
         for (OGRDataStore store : stores) {
             store.dispose();
@@ -202,25 +202,24 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertFeatureTypeEquals(sds.getSchema(), ods.getSchema(sds.getSchema().getTypeName()));
 
         Query query = new Query(sds.getSchema().getTypeName());
-        FeatureReader sfr = sds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        FeatureReader ofr = ods.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        SimpleFeature sf = null;
-        SimpleFeature of = null;
-        while (true) {
-            if (!sfr.hasNext()) {
-                assertFalse(ofr.hasNext());
-                break;
-            }
-            sf = (SimpleFeature) sfr.next();
-            of = (SimpleFeature) ofr.next();
-            for (int i = 0; i < sds.getSchema().getAttributeCount(); i++) {
-                Object shapeAtt = sf.getAttribute(i);
-                Object ogrAtt = of.getAttribute(i);
-                assertEquals(shapeAtt, ogrAtt);
+        try (FeatureReader sfr = sds.getFeatureReader(query, Transaction.AUTO_COMMIT);
+                FeatureReader ofr = ods.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            SimpleFeature sf = null;
+            SimpleFeature of = null;
+            while (true) {
+                if (!sfr.hasNext()) {
+                    assertFalse(ofr.hasNext());
+                    break;
+                }
+                sf = (SimpleFeature) sfr.next();
+                of = (SimpleFeature) ofr.next();
+                for (int i = 0; i < sds.getSchema().getAttributeCount(); i++) {
+                    Object shapeAtt = sf.getAttribute(i);
+                    Object ogrAtt = of.getAttribute(i);
+                    assertEquals(shapeAtt, ogrAtt);
+                }
             }
         }
-        sfr.close();
-        ofr.close();
         sds.dispose();
         ods.dispose();
     }
@@ -241,9 +240,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(MultiPolygon.class, schema.getGeometryDescriptor().getType().getBinding());
 
         // get one feature, check it
-        SimpleFeatureIterator fi = fc.features();
-        SimpleFeature feature = fi.next();
-        fi.close();
+        SimpleFeature feature = DataUtilities.first(fc);
         schema = feature.getFeatureType();
         assertEquals(1, schema.getDescriptors().size());
         assertEquals(MultiPolygon.class, schema.getGeometryDescriptor().getType().getBinding());
@@ -384,33 +381,33 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
                             null);
         }
 
-        FeatureWriter writer = ds.getFeatureWriterAppend("testw", Transaction.AUTO_COMMIT);
-        for (SimpleFeature simpleFeature : features) {
-            assertFalse(writer.hasNext());
-            SimpleFeature f = (SimpleFeature) writer.next();
-            f.setAttributes(simpleFeature.getAttributes());
-            writer.write();
-        }
-        writer.close();
-
-        FeatureReader reader = ds.getFeatureReader(new Query("testw"), null);
-        for (SimpleFeature feature : features) {
-            assertTrue(reader.hasNext());
-            SimpleFeature f = (SimpleFeature) reader.next();
-            for (int j = 0; j < schema.getAttributeCount(); j++) {
-                if (f.getAttribute(j) instanceof Geometry) {
-                    // this is necessary because geometry equality is
-                    // implemented as Geometry.equals(Geometry)
-                    Geometry a = (Geometry) f.getAttribute(j);
-                    Geometry b = (Geometry) feature.getAttribute(j);
-                    assertTrue(a.equals(b));
-                } else {
-                    assertEquals(f.getAttribute(j), feature.getAttribute(j));
-                }
+        try (FeatureWriter writer = ds.getFeatureWriterAppend("testw", Transaction.AUTO_COMMIT)) {
+            for (SimpleFeature simpleFeature : features) {
+                assertFalse(writer.hasNext());
+                SimpleFeature f = (SimpleFeature) writer.next();
+                f.setAttributes(simpleFeature.getAttributes());
+                writer.write();
             }
         }
-        assertFalse(reader.hasNext());
-        reader.close();
+
+        try (FeatureReader reader = ds.getFeatureReader(new Query("testw"), null)) {
+            for (SimpleFeature feature : features) {
+                assertTrue(reader.hasNext());
+                SimpleFeature f = (SimpleFeature) reader.next();
+                for (int j = 0; j < schema.getAttributeCount(); j++) {
+                    if (f.getAttribute(j) instanceof Geometry) {
+                        // this is necessary because geometry equality is
+                        // implemented as Geometry.equals(Geometry)
+                        Geometry a = (Geometry) f.getAttribute(j);
+                        Geometry b = (Geometry) feature.getAttribute(j);
+                        assertEquals(a, b);
+                    } else {
+                        assertEquals(f.getAttribute(j), feature.getAttribute(j));
+                    }
+                }
+            }
+            assertFalse(reader.hasNext());
+        }
     }
 
     @Test
@@ -922,7 +919,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
                                 Float.valueOf(i),
                                 new String(i + " "),
                                 new Date(i),
-                                Boolean.valueOf(true),
+                                Boolean.TRUE,
                                 Integer.valueOf(22),
                                 Long.valueOf(1234567890123456789L),
                                 new BigDecimal(new BigInteger("12345678901234567890123456789"), 2),
@@ -936,15 +933,14 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
             throws Exception {
         SimpleFeatureType schema = fc.getSchema();
         s.createSchema(schema);
-        FeatureWriter fw = s.getFeatureWriter(s.getTypeNames()[0], Transaction.AUTO_COMMIT);
-        FeatureIterator it = fc.features();
-        while (it.hasNext()) {
-            SimpleFeature sf = (SimpleFeature) it.next();
-            ((SimpleFeature) fw.next()).setAttributes(sf.getAttributes());
-            fw.write();
+        try (FeatureWriter fw = s.getFeatureWriter(s.getTypeNames()[0], Transaction.AUTO_COMMIT);
+                FeatureIterator it = fc.features()) {
+            while (it.hasNext()) {
+                SimpleFeature sf = (SimpleFeature) it.next();
+                ((SimpleFeature) fw.next()).setAttributes(sf.getAttributes());
+                fw.write();
+            }
         }
-        it.close();
-        fw.close();
     }
 
     private OGRDataStore createDataStore(File f) throws Exception {

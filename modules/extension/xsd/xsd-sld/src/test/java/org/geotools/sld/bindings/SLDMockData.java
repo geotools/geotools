@@ -227,7 +227,7 @@ public class SLDMockData {
 
         Element channel = element(SLD.REDCHANNEL, document, channelSelection);
         Element sourceChannelName = element(SLD.SOURCECHANNELNAME, document, channel);
-        Element expression = envFuntionfilter(document, sourceChannelName);
+        envFuntionfilter(document, sourceChannelName);
 
         channel = element(SLD.GREENCHANNEL, document, channelSelection);
         sourceChannelName = element(SLD.SOURCECHANNELNAME, document, channel);
@@ -273,8 +273,7 @@ public class SLDMockData {
 
         Element gammaValue = element(SLD.GAMMAVALUE, document, contrastEnhancement);
         gammaValue.appendChild(document.createTextNode("1.23"));
-
-        Element histogram = element(SLD.HISTOGRAM, document, contrastEnhancement);
+        element(SLD.HISTOGRAM, document, contrastEnhancement);
 
         return contrastEnhancement;
     }

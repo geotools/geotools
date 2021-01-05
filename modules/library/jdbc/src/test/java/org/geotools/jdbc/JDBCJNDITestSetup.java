@@ -28,6 +28,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.util.factory.GeoTools;
 import org.mockito.Mockito;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseAfterAnnotation")
 public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
 
     private BasicDataSource dataSource;
@@ -83,6 +84,7 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
             MockInitialDirContextFactory.dataSource = dataSource;
         }
 
+        @SuppressWarnings("PMD.ReplaceHashtableWithMap") // JDK API, we cannot do anything about it
         public Context getInitialContext(Hashtable environment) throws NamingException {
             mockContext = Mockito.mock(Context.class);
             Mockito.when(mockContext.lookup("ds")).thenReturn(dataSource);

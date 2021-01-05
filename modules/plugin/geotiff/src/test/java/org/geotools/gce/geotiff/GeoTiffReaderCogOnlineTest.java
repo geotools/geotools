@@ -106,6 +106,7 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
         CogImageReader imageReader = (CogImageReader) image.getProperty("JAI.ImageReader");
         Object input = imageReader.getInput();
         assertTrue(input instanceof DefaultCogImageInputStream);
+        @SuppressWarnings("PMD.CloseResource") // closed elsewhere
         DefaultCogImageInputStream inputStream = (DefaultCogImageInputStream) input;
         String url = inputStream.getUrl();
 

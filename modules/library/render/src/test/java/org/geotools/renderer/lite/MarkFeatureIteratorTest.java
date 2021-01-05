@@ -58,9 +58,10 @@ public class MarkFeatureIteratorTest {
     public void testCanceled() throws Exception {
         DefaultProgressListener listener = new DefaultProgressListener();
         listener.setCanceled(true);
-        MarkFeatureIterator iterator =
-                MarkFeatureIterator.create(zroads.getFeatures(), 1000, listener);
-        assertNull(iterator);
+        try (MarkFeatureIterator iterator =
+                MarkFeatureIterator.create(zroads.getFeatures(), 1000, listener)) {
+            assertNull(iterator);
+        }
     }
 
     private void testReset(int limit) throws IOException {

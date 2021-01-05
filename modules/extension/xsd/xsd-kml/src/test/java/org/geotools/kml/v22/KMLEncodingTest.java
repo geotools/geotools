@@ -133,6 +133,6 @@ public class KMLEncodingTest extends KMLTestSupport {
         // when parsed as XML (extra text XML elements)
         // encoder.setIndenting(true);
         // this will throw a NPE without GEOT-6122 fix
-        Document kmlDoc = encoder.encodeAsDOM(collection, KML.kml);
+        encoder.encodeAsDOM(collection, KML.kml);
     }
 }

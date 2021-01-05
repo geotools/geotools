@@ -72,16 +72,17 @@ public class GeoTiffSkipExternalTest extends org.junit.Assert {
         CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
 
         final File prj = TestData.file(GeoTiffSkipExternalTest.class, "override/sample.prj");
-        final FileInputStream fis = new FileInputStream(prj);
-        final CoordinateReferenceSystem crs_ =
-                new PrjFileReader(fis.getChannel()).getCoordinateReferenceSystem();
-        // Check External PRJ isn't found due to SKIP external files flag
-        assertFalse(CRS.equalsIgnoreMetadata(crs, crs_));
-        GridCoverage2D coverage = reader.read(null);
-        assertFalse(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), crs_));
+        try (FileInputStream fis = new FileInputStream(prj)) {
+            CoordinateReferenceSystem crs_ =
+                    new PrjFileReader(fis.getChannel()).getCoordinateReferenceSystem();
 
-        fis.close();
-        coverage.dispose(true);
+            // Check External PRJ isn't found due to SKIP external files flag
+            assertFalse(CRS.equalsIgnoreMetadata(crs, crs_));
+            GridCoverage2D coverage = reader.read(null);
+            assertFalse(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), crs_));
+            coverage.dispose(true);
+        }
+
         reader.dispose();
     }
 

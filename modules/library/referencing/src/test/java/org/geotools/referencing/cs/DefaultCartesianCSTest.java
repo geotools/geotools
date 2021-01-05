@@ -36,57 +36,49 @@ public final class DefaultCartesianCSTest {
     /** Tests the creation of a cartesian CS with legal and illegal axis. */
     @Test
     public void testAxis() {
-        DefaultCartesianCS cs;
         try {
-            cs =
-                    new DefaultCartesianCS(
-                            "Test",
-                            DefaultCoordinateSystemAxis.LONGITUDE,
-                            DefaultCoordinateSystemAxis.LATITUDE);
+            new DefaultCartesianCS(
+                    "Test",
+                    DefaultCoordinateSystemAxis.LONGITUDE,
+                    DefaultCoordinateSystemAxis.LATITUDE);
             fail("Angular units should not be accepted.");
         } catch (IllegalArgumentException e) {
             // Expected exception: illegal angular units.
         }
 
         // Legal CS (the most usual one).
-        cs =
-                new DefaultCartesianCS(
-                        "Test",
-                        DefaultCoordinateSystemAxis.EASTING,
-                        DefaultCoordinateSystemAxis.NORTHING);
+        new DefaultCartesianCS(
+                "Test", DefaultCoordinateSystemAxis.EASTING, DefaultCoordinateSystemAxis.NORTHING);
 
         try {
-            cs =
-                    new DefaultCartesianCS(
-                            "Test",
-                            DefaultCoordinateSystemAxis.SOUTHING,
-                            DefaultCoordinateSystemAxis.NORTHING);
+            new DefaultCartesianCS(
+                    "Test",
+                    DefaultCoordinateSystemAxis.SOUTHING,
+                    DefaultCoordinateSystemAxis.NORTHING);
             fail("Colinear units should not be accepted.");
         } catch (IllegalArgumentException e) {
             // Expected exception: colinear axis.
         }
 
         // Legal CS rotated 45°
-        cs = create(AxisDirection.NORTH_EAST, AxisDirection.SOUTH_EAST);
+        create(AxisDirection.NORTH_EAST, AxisDirection.SOUTH_EAST);
 
         try {
-            cs = create(AxisDirection.NORTH_EAST, AxisDirection.EAST);
+            create(AxisDirection.NORTH_EAST, AxisDirection.EAST);
             fail("Non-perpendicular axis should not be accepted.");
         } catch (IllegalArgumentException e) {
             // Expected exception: non-perpendicular axis.
         }
 
         // Legal CS, but no perpendicularity check.
-        cs = create(AxisDirection.NORTH_EAST, AxisDirection.UP);
+        create(AxisDirection.NORTH_EAST, AxisDirection.UP);
 
         // Inconsistent axis direction.
         try {
-            cs =
-                    new DefaultCartesianCS(
-                            "Test",
-                            DefaultCoordinateSystemAxis.EASTING,
-                            new DefaultCoordinateSystemAxis(
-                                    "Northing", AxisDirection.SOUTH, SI.METRE));
+            new DefaultCartesianCS(
+                    "Test",
+                    DefaultCoordinateSystemAxis.EASTING,
+                    new DefaultCoordinateSystemAxis("Northing", AxisDirection.SOUTH, SI.METRE));
         } catch (IllegalArgumentException e) {
             // Expected exception: inconsistent direction.
         }

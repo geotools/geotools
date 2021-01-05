@@ -53,22 +53,22 @@ public class OblongTest extends TestBase {
 
     @Test(expected = IllegalArgumentException.class)
     public void negativeWidth() {
-        PolygonElement oblong = new OblongImpl(0, 0, -1, HEIGHT, null);
+        new OblongImpl(0, 0, -1, HEIGHT, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void zeroWidth() {
-        PolygonElement oblong = new OblongImpl(0, 0, 0, HEIGHT, null);
+        new OblongImpl(0, 0, 0, HEIGHT, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void negativeHeight() {
-        PolygonElement oblong = new OblongImpl(0, 0, WIDTH, -1, null);
+        new OblongImpl(0, 0, WIDTH, -1, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void zeroHeight() {
-        PolygonElement oblong = new OblongImpl(0, 0, WIDTH, 0, null);
+        new OblongImpl(0, 0, WIDTH, 0, null);
     }
 
     @Test

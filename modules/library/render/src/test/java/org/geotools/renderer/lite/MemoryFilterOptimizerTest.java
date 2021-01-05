@@ -16,7 +16,11 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
@@ -145,7 +149,6 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
         SimpleFeatureType subtype2 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
 
-        Filter nameR1 = ff.equal(ff.property(name), ff.literal("r1"), false);
         MemoryFilterOptimizer optimizer =
                 new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
         PropertyName memoized = (PropertyName) property.accept(optimizer, null);

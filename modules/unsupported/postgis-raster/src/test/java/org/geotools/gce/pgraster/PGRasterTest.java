@@ -18,6 +18,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.parameter.Parameter;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
+import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 
 public class PGRasterTest extends OnlineTestCase {
@@ -45,26 +46,26 @@ public class PGRasterTest extends OnlineTestCase {
     @Override
     protected boolean isOnline() throws Exception {
         Class.forName(fixture.getProperty("driver"));
-        Connection cx =
+        try (Connection cx =
                 DriverManager.getConnection(
                         url(fixture),
                         fixture.getProperty("username"),
-                        fixture.getProperty("password"));
+                        fixture.getProperty("password"))) {
 
-        String schema = fixture.getProperty("schema");
-        String table = "gray";
+            String schema = fixture.getProperty("schema");
+            String table = "gray";
 
-        SQL sql = new SQL("SELECT * FROM ");
-        if (schema != null) {
-            sql.name(schema).append(".");
+            SQL sql = new SQL("SELECT * FROM ");
+            if (schema != null) {
+                sql.name(schema).append(".");
+            }
+            sql.name(table);
+            sql.append(" WHERE 1 = 0");
+
+            try (Statement st = cx.createStatement()) {
+                st.execute(sql.toString());
+            }
         }
-        sql.name(table);
-        sql.append(" WHERE 1 = 0");
-
-        try (Statement st = cx.createStatement()) {
-            st.execute(sql.toString());
-        }
-        cx.close();
         return true;
     }
 
@@ -100,6 +101,7 @@ public class PGRasterTest extends OnlineTestCase {
                 + f.getProperty("database");
     }
 
+    @Test
     public void testGray() throws Exception {
         config.table = "gray";
 
@@ -110,6 +112,7 @@ public class PGRasterTest extends OnlineTestCase {
         show(rast);
     }
 
+    @Test
     public void testRGB() throws Exception {
         config.table = "world";
 
@@ -120,6 +123,7 @@ public class PGRasterTest extends OnlineTestCase {
         show(rast);
     }
 
+    @Test
     public void testTime() throws Exception {
         config.table = "world_with_time";
 

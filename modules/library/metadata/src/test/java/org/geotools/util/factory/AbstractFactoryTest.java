@@ -47,7 +47,6 @@ public final class AbstractFactoryTest {
     public void testEquals() {
         final Key key1 = new Key(1);
         final Key key2 = new Key(2);
-        final Key key3 = new Key(3);
         final Key key3_reference_f1 = new Key(31);
         final Key key2_reference_f3 = new Key(23);
         final Key key1_reference_f2 = new Key(12);

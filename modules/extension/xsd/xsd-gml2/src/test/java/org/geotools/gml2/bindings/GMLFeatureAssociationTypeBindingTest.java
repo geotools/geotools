@@ -21,12 +21,14 @@ import static org.junit.Assert.assertNull;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Before;
 import org.junit.Test;
 
 public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance featureAssociation;
     ElementInstance feature;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 

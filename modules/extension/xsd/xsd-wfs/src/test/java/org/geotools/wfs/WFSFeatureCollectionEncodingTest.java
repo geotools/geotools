@@ -16,8 +16,6 @@
  */
 package org.geotools.wfs;
 
-import static org.junit.Assert.*;
-
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
 import org.geotools.feature.DefaultFeatureCollection;

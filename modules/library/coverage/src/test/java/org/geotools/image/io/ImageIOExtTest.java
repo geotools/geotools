@@ -83,10 +83,10 @@ public class ImageIOExtTest {
         OutputStream os = new ByteArrayOutputStream();
         RenderedImage image = getTestRenderedImage(50, 50, 1);
 
-        ImageOutputStream iosExt = ImageIOExt.createImageOutputStream(image, os);
-        ImageOutputStream iosStd = ImageIO.createImageOutputStream(os);
-
-        assertEquals(iosExt.getClass(), iosStd.getClass());
+        try (ImageOutputStream iosExt = ImageIOExt.createImageOutputStream(image, os);
+                ImageOutputStream iosStd = ImageIO.createImageOutputStream(os)) {
+            assertEquals(iosExt.getClass(), iosStd.getClass());
+        }
     }
 
     RenderedImage getTestRenderedImage(int width, int height, int bands) {

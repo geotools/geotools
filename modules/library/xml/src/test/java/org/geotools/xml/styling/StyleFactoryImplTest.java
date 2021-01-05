@@ -365,8 +365,6 @@ public class StyleFactoryImplTest {
 
         DuplicatingStyleVisitor duplicator = new DuplicatingStyleVisitor();
         namedStyle.accept(duplicator);
-        Style namedStyle2 = (Style) duplicator.getCopy();
-
         SLDTransformer writer = new SLDTransformer();
         String out = writer.transform(style);
 

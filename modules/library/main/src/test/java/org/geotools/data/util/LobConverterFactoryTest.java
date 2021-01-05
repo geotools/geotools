@@ -121,15 +121,16 @@ public class LobConverterFactoryTest {
     @Test
     public void testClobConversionChunkwise() throws Exception {
         String expected = "abc";
-        StringReader reader = new StringReader(expected);
+        try (StringReader reader = new StringReader(expected)) {
 
-        Clob clob = EasyMock.createMock(Clob.class);
-        EasyMock.expect(clob.length()).andThrow(new SQLFeatureNotSupportedException());
-        EasyMock.expect(clob.getCharacterStream()).andReturn(reader);
-        EasyMock.replay(clob);
+            Clob clob = EasyMock.createMock(Clob.class);
+            EasyMock.expect(clob.length()).andThrow(new SQLFeatureNotSupportedException());
+            EasyMock.expect(clob.getCharacterStream()).andReturn(reader);
+            EasyMock.replay(clob);
 
-        String actual = convert(clob);
-        Assert.assertEquals(expected, actual);
+            String actual = convert(clob);
+            Assert.assertEquals(expected, actual);
+        }
     }
 
     private byte[] convert(Blob blob) throws Exception {

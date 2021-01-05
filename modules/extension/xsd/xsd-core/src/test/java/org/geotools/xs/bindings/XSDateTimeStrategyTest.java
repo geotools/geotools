@@ -42,7 +42,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         return null;
     }
 
-    public void testParseEncode(
+    public void checkParseEncode(
             final QName qname,
             final String toParse,
             final Date toEncode,
@@ -98,7 +98,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         java.sql.Date expected;
 
         expected = new java.sql.Date(timestamp(2011, 9, 24));
-        testParseEncode(XS.DATE, "2011-10-24Z", expected, "2011-10-24Z");
+        checkParseEncode(XS.DATE, "2011-10-24Z", expected, "2011-10-24Z");
     }
 
     @Test
@@ -107,18 +107,18 @@ public class XSDateTimeStrategyTest extends TestSchema {
         java.sql.Time expected;
 
         expected = new java.sql.Time(timestamp(nil, nil, nil, 10, 53, 24));
-        testParseEncode(XS.TIME, "10:53:24Z", expected, "10:53:24Z");
+        checkParseEncode(XS.TIME, "10:53:24Z", expected, "10:53:24Z");
 
         expected =
                 new java.sql.Time(
                         timestamp(TimeZone.getTimeZone("GMT-3:00"), nil, nil, nil, 10, 53, 24));
-        testParseEncode(XS.TIME, "10:53:24-03:00", expected, "13:53:24Z");
+        checkParseEncode(XS.TIME, "10:53:24-03:00", expected, "13:53:24Z");
 
         expected =
                 new java.sql.Time(
                         timestamp(
                                 TimeZone.getTimeZone("GMT+3:00"), nil, nil, nil, 10, 53, 24, 255));
-        testParseEncode(XS.TIME, "10:53:24.255+03:00", expected, "07:53:24.255Z");
+        checkParseEncode(XS.TIME, "10:53:24.255+03:00", expected, "07:53:24.255Z");
     }
 
     @Test
@@ -126,26 +126,26 @@ public class XSDateTimeStrategyTest extends TestSchema {
         java.sql.Timestamp expected;
 
         expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 24));
-        testParseEncode(XS.DATETIME, "2011-10-24T10:53:24Z", expected, "2011-10-24T10:53:24Z");
+        checkParseEncode(XS.DATETIME, "2011-10-24T10:53:24Z", expected, "2011-10-24T10:53:24Z");
 
         expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 24, 200));
-        testParseEncode(
+        checkParseEncode(
                 XS.DATETIME, "2011-10-24T10:53:24.200Z", expected, "2011-10-24T10:53:24.200Z");
 
         expected =
                 new java.sql.Timestamp(
                         timestamp(TimeZone.getTimeZone("GMT+3:00"), 2011, 9, 24, 0, 00, 00, 200));
-        testParseEncode(
+        checkParseEncode(
                 XS.DATETIME, "2011-10-24T00:00:00.200+03:00", expected, "2011-10-23T21:00:00.200Z");
 
         expected =
                 new java.sql.Timestamp(
                         timestamp(TimeZone.getTimeZone("GMT-3:00"), 2011, 9, 24, 0, 00, 00, 200));
-        testParseEncode(
+        checkParseEncode(
                 XS.DATETIME, "2011-10-24T00:00:00.200-03:00", expected, "2011-10-24T03:00:00.200Z");
 
         expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 00));
-        testParseEncode(XS.DATETIME, "2011-10-24T10:53Z", expected, "2011-10-24T10:53:00Z");
+        checkParseEncode(XS.DATETIME, "2011-10-24T10:53Z", expected, "2011-10-24T10:53:00Z");
     }
 
     @Test

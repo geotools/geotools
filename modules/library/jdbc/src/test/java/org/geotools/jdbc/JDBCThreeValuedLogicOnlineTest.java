@@ -10,6 +10,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Not;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
 
     protected static final String ABC = "abc";

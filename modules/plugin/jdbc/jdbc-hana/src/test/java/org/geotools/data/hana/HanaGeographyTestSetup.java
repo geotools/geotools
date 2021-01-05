@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCGeographyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaGeographyTestSetup extends JDBCGeographyTestSetup {
 
     private static final String POINT_TABLE = "geopoint";

@@ -23,13 +23,11 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.ScriptRunner;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
@@ -46,7 +44,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
 
 /**
  * Tests the WKT {@link Parser} implementation.
@@ -331,7 +328,6 @@ public final class ParserTest {
 
     @Test
     public void testCylindricalEqualAreaStandardParallel() throws FactoryException {
-        MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
         CylindricalEqualArea.LambertCylindricalEqualAreaProvider
                 lambertCylindricalEqualAreaProvider =
                         new CylindricalEqualArea.LambertCylindricalEqualAreaProvider();
@@ -378,63 +374,62 @@ public final class ParserTest {
      */
     private void testParsing(final AbstractParser parser, final String filename)
             throws IOException, ParseException {
-        final BufferedReader reader = TestData.openReader(ScriptRunner.class, filename);
-        if (reader == null) {
-            throw new FileNotFoundException(filename);
+        try (BufferedReader reader = TestData.openReader(ScriptRunner.class, filename)) {
+            final Collection<Object> pool = new HashSet<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.length() == 0 || line.startsWith("#")) {
+                    continue;
+                }
+                /*
+                 * Parses a line. If the parse fails, then dump the WKT and rethrow the exception.
+                 */
+                final Object parsed;
+                try {
+                    parsed = parser.parseObject(line);
+                } catch (ParseException exception) {
+                    // System.err.println();
+                    // System.err.println("-----------------------------");
+                    // System.err.println("Parse failed. Dump WKT below.");
+                    // System.err.println("-----------------------------");
+                    // System.err.println(line);
+                    // System.err.println();
+                    throw exception;
+                }
+                assertNotNull("Parsing returns null.", parsed);
+                assertEquals("Inconsistent equals method", parsed, parsed);
+                assertSame(
+                        "Parsing twice returns different objects.",
+                        parsed,
+                        parser.parseObject(line));
+                assertTrue("An identical object already exists.", pool.add(parsed));
+                assertTrue("Inconsistent hashCode or equals method.", pool.contains(parsed));
+                /*
+                 * Formats the object and parse it again.
+                 * Ensures that the result is consistent.
+                 */
+                String formatted = parser.format(parsed);
+                final Object again;
+                try {
+                    again = parser.parseObject(formatted);
+                } catch (ParseException exception) {
+                    // System.err.println();
+                    // System.err.println("------------------------------------");
+                    // System.err.println("Second parse failed. Dump WKT below.");
+                    // System.err.println("------------------------------------");
+                    // System.err.println(line);
+                    // System.err.println();
+                    // System.err.println("------ Reformatted WKT below -------");
+                    // System.err.println();
+                    // System.err.println(formatted);
+                    // System.err.println();
+                    throw exception;
+                }
+                assertEquals("Second parsing produced different objects", parsed, again);
+                assertTrue("Inconsistent hashCode or equals method.", pool.contains(again));
+            }
         }
-        final Collection<Object> pool = new HashSet<>();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            line = line.trim();
-            if (line.length() == 0 || line.startsWith("#")) {
-                continue;
-            }
-            /*
-             * Parses a line. If the parse fails, then dump the WKT and rethrow the exception.
-             */
-            final Object parsed;
-            try {
-                parsed = parser.parseObject(line);
-            } catch (ParseException exception) {
-                // System.err.println();
-                // System.err.println("-----------------------------");
-                // System.err.println("Parse failed. Dump WKT below.");
-                // System.err.println("-----------------------------");
-                // System.err.println(line);
-                // System.err.println();
-                throw exception;
-            }
-            assertNotNull("Parsing returns null.", parsed);
-            assertEquals("Inconsistent equals method", parsed, parsed);
-            assertSame(
-                    "Parsing twice returns different objects.", parsed, parser.parseObject(line));
-            assertTrue("An identical object already exists.", pool.add(parsed));
-            assertTrue("Inconsistent hashCode or equals method.", pool.contains(parsed));
-            /*
-             * Formats the object and parse it again.
-             * Ensures that the result is consistent.
-             */
-            String formatted = parser.format(parsed);
-            final Object again;
-            try {
-                again = parser.parseObject(formatted);
-            } catch (ParseException exception) {
-                // System.err.println();
-                // System.err.println("------------------------------------");
-                // System.err.println("Second parse failed. Dump WKT below.");
-                // System.err.println("------------------------------------");
-                // System.err.println(line);
-                // System.err.println();
-                // System.err.println("------ Reformatted WKT below -------");
-                // System.err.println();
-                // System.err.println(formatted);
-                // System.err.println();
-                throw exception;
-            }
-            assertEquals("Second parsing produced different objects", parsed, again);
-            assertTrue("Inconsistent hashCode or equals method.", pool.contains(again));
-        }
-        reader.close();
     }
 
     /** Test if the parser handles string and number coded Authority code-values. */

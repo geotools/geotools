@@ -63,17 +63,17 @@ public class PropertyDataStoreCurveTest {
         if (file.exists()) {
             file.delete();
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write("_=geom:LineString:4326,name:String");
-        writer.newLine();
-        writer.write(
-                "cp.1=COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))|Compound");
-        writer.newLine();
-        writer.write("cp.2=CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)|Circle ");
-        writer.newLine();
-        writer.write("cp.3=CIRCULARSTRING(-7 -8, -5 -6, -3 -8, -1 -10, 1 -8))|Wave");
-        writer.newLine();
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("_=geom:LineString:4326,name:String");
+            writer.newLine();
+            writer.write(
+                    "cp.1=COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))|Compound");
+            writer.newLine();
+            writer.write("cp.2=CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)|Circle ");
+            writer.newLine();
+            writer.write("cp.3=CIRCULARSTRING(-7 -8, -5 -6, -3 -8, -1 -10, 1 -8))|Wave");
+            writer.newLine();
+        }
 
         store = new PropertyDataStore(dir);
     }
@@ -158,7 +158,6 @@ public class PropertyDataStoreCurveTest {
         query.getHints().put(Hints.LINEARIZATION_TOLERANCE, 0.1);
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 store.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
-            int count = 0;
             while (reader.hasNext()) {
                 Object geom = reader.next().getDefaultGeometry();
                 Assert.assertTrue(geom instanceof CurvedGeometry);

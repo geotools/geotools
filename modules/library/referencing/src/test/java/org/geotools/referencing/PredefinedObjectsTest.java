@@ -52,6 +52,8 @@ import si.uom.SI;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
+// code is using equals with extra parameters and semantics compared to the built-in equals
+@SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
 public final class PredefinedObjectsTest {
     /** Tests {@link DefaultCoordinateSystemAxis} constants. */
     @Test

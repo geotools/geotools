@@ -32,7 +32,6 @@ import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.SortByImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -90,7 +89,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
             double[] distances = new double[] {1, 5, 10, 20, 25};
 
             for (double distance : distances) {
-                System.out.println(distance);
+                // System.out.println(distance);
                 // subset of the properties, and out of order
                 Query query =
                         new Query(
@@ -222,68 +221,77 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
 
             for (Query q : queries) {
 
-                FeatureReader<SimpleFeatureType, SimpleFeature> reader;
                 String typeName;
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 1.0);
-                reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
-                typeName = reader.getFeatureType().getTypeName();
-                Assert.assertEquals("GenStreams", typeName);
-                Assert.assertEquals(
-                        "the_geom", reader.getFeatureType().getGeometryDescriptor().getLocalName());
-                while (reader.hasNext()) {
-                    SimpleFeature f = reader.next();
-                    checkPoints(f, 0.0);
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        ds.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+                    typeName = reader.getFeatureType().getTypeName();
+                    Assert.assertEquals("GenStreams", typeName);
+                    Assert.assertEquals(
+                            "the_geom",
+                            reader.getFeatureType().getGeometryDescriptor().getLocalName());
+                    while (reader.hasNext()) {
+                        SimpleFeature f = reader.next();
+                        checkPoints(f, 0.0);
+                    }
                 }
-                reader.close();
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 5.0);
-                reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
-                typeName = reader.getFeatureType().getTypeName();
-                Assert.assertEquals("GenStreams", typeName);
-                Assert.assertEquals(
-                        "the_geom", reader.getFeatureType().getGeometryDescriptor().getLocalName());
-                while (reader.hasNext()) {
-                    SimpleFeature f = reader.next();
-                    checkPoints(f, 5.0);
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        ds.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+                    typeName = reader.getFeatureType().getTypeName();
+                    Assert.assertEquals("GenStreams", typeName);
+                    Assert.assertEquals(
+                            "the_geom",
+                            reader.getFeatureType().getGeometryDescriptor().getLocalName());
+                    while (reader.hasNext()) {
+                        SimpleFeature f = reader.next();
+                        checkPoints(f, 5.0);
+                    }
                 }
-                reader.close();
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 10.0);
-                reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
-                typeName = reader.getFeatureType().getTypeName();
-                Assert.assertEquals("GenStreams", typeName);
-                Assert.assertEquals(
-                        "the_geom", reader.getFeatureType().getGeometryDescriptor().getLocalName());
-                while (reader.hasNext()) {
-                    SimpleFeature f = reader.next();
-                    checkPoints(f, 10.0);
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        ds.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+                    typeName = reader.getFeatureType().getTypeName();
+                    Assert.assertEquals("GenStreams", typeName);
+                    Assert.assertEquals(
+                            "the_geom",
+                            reader.getFeatureType().getGeometryDescriptor().getLocalName());
+                    while (reader.hasNext()) {
+                        SimpleFeature f = reader.next();
+                        checkPoints(f, 10.0);
+                    }
                 }
-                reader.close();
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 20.0);
-                reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
-                typeName = reader.getFeatureType().getTypeName();
-                Assert.assertEquals("GenStreams", typeName);
-                Assert.assertEquals(
-                        "the_geom", reader.getFeatureType().getGeometryDescriptor().getLocalName());
-                while (reader.hasNext()) {
-                    SimpleFeature f = reader.next();
-                    checkPoints(f, 20.0);
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        ds.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+                    typeName = reader.getFeatureType().getTypeName();
+                    Assert.assertEquals("GenStreams", typeName);
+                    Assert.assertEquals(
+                            "the_geom",
+                            reader.getFeatureType().getGeometryDescriptor().getLocalName());
+                    while (reader.hasNext()) {
+                        SimpleFeature f = reader.next();
+                        checkPoints(f, 20.0);
+                    }
                 }
-                reader.close();
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 50.0);
-                reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
-                typeName = reader.getFeatureType().getTypeName();
-                Assert.assertEquals("GenStreams", typeName);
-                Assert.assertEquals(
-                        "the_geom", reader.getFeatureType().getGeometryDescriptor().getLocalName());
-                while (reader.hasNext()) {
-                    SimpleFeature f = reader.next();
-                    checkPoints(f, 50.0);
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        ds.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+                    typeName = reader.getFeatureType().getTypeName();
+                    Assert.assertEquals("GenStreams", typeName);
+                    Assert.assertEquals(
+                            "the_geom",
+                            reader.getFeatureType().getGeometryDescriptor().getLocalName());
+                    while (reader.hasNext()) {
+                        SimpleFeature f = reader.next();
+                        checkPoints(f, 50.0);
+                    }
                 }
-                reader.close();
             }
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
@@ -304,14 +312,12 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
             Query q = new Query("GenStreams", filter, new String[] {"CAT_ID"});
 
             for (Double distance : new Double[] {1.0, 5.0, 10.0, 20.0, 50.0}) {
-                FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-                String typeName;
-
-                q.getHints().put(Hints.GEOMETRY_DISTANCE, 1.0);
-                reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
-                typeName = reader.getFeatureType().getTypeName();
-                Assert.assertEquals("GenStreams", typeName);
-                reader.close();
+                q.getHints().put(Hints.GEOMETRY_DISTANCE, distance);
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        ds.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+                    String typeName = reader.getFeatureType().getTypeName();
+                    Assert.assertEquals("GenStreams", typeName);
+                }
             }
 
         } catch (Exception ex) {
@@ -519,33 +525,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
             Assert.assertEquals(fCollection.size(), subCollection.size());
             Assert.assertTrue(subCollection.contains(array[0]));
 
-            // subCollection = fCollection.subCollection(Filter.EXCLUDE);
-            // typeName=subCollection.getSchema().getTypeName();
-            // assertTrue("GenStreams".equals(typeName));
-            // assertTrue(subCollection.size()==0);
-            // assertFalse(subCollection.contains(array[0]));
-
-            // SortBy2 sortBy = new SortByImpl(new
-            // AttributeExpressionImpl("CAT_ID"),SortOrder.ASCENDING);
-            SortBy sortBy =
-                    new SortBy() {
-                        public PropertyName getPropertyName() {
-                            return new AttributeExpressionImpl("CAT_ID");
-                        }
-
-                        public SortOrder getSortOrder() {
-                            return SortOrder.ASCENDING;
-                        }
-                    };
-            SimpleFeatureCollection sortedCollection = fCollection.sort(sortBy);
-            // null here
-
-            // /typeName=sortedCollection.getSchema().getTypeName();
-            // assertTrue("GenStreams".equals(typeName))
-            // assertTrue(fCollection.size()==sortedCollection.size());
-
             final List<Long> catIds = new ArrayList<>();
-
             FeatureVisitor checkSortVisitor =
                     new FeatureVisitor() {
 

@@ -22,7 +22,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -77,6 +77,7 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
 
         vis = new UniqueVisitor("baz");
 
+        @SuppressWarnings("PMD.CloseResource")
         SimpleFeatureIterator it = createNiceMock(SimpleFeatureIterator.class);
         replay(it);
 
@@ -115,6 +116,7 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
 
         vis = new NearestVisitor(ff.property("baz"), "abc");
 
+        @SuppressWarnings("PMD.CloseResource")
         SimpleFeatureIterator it = createNiceMock(SimpleFeatureIterator.class);
         replay(it);
 

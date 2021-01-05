@@ -16,7 +16,7 @@
  */
 package org.geotools.data.collection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Comparator;
 import org.geotools.data.DataUtilities;
@@ -66,15 +66,17 @@ public class SortedFeatureCollectionTest extends FeatureCollectionWrapperTestSup
 
     private void checkSorted(
             SortedSimpleFeatureCollection sorted, Comparator<SimpleFeature> comparator) {
-        SimpleFeatureIterator fi = sorted.features();
-        SimpleFeature prev = null;
-        while (fi.hasNext()) {
-            SimpleFeature curr = fi.next();
-            if (prev != null) {
-                assertTrue("Failed on " + prev + " / " + curr, comparator.compare(prev, curr) <= 0);
+        try (SimpleFeatureIterator fi = sorted.features()) {
+            SimpleFeature prev = null;
+            while (fi.hasNext()) {
+                SimpleFeature curr = fi.next();
+                if (prev != null) {
+                    assertTrue(
+                            "Failed on " + prev + " / " + curr,
+                            comparator.compare(prev, curr) <= 0);
+                }
+                prev = curr;
             }
-            prev = curr;
         }
-        fi.close();
     }
 }

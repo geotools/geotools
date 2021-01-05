@@ -17,6 +17,7 @@
 package org.geotools.data.ogr;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -78,7 +79,7 @@ public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
     @Test
     public void testNames() throws Exception {
         Set<String> drivers = dataStoreFactory.getAvailableDrivers();
-        assertTrue(drivers.size() > 0);
+        assertFalse(drivers.isEmpty());
         assertTrue(drivers.contains("ESRI Shapefile"));
     }
 }

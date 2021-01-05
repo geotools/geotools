@@ -52,12 +52,12 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test(expected = IllegalArgumentException.class)
     public void badSideLen() throws Exception {
-        PolygonElement h = new HexagonImpl(0.0, 0.0, 0.0, HexagonOrientation.FLAT, null);
+        new HexagonImpl(0.0, 0.0, 0.0, HexagonOrientation.FLAT, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void badOrientation() throws Exception {
-        PolygonElement h = new HexagonImpl(0.0, 0.0, SIDE_LEN, null, null);
+        new HexagonImpl(0.0, 0.0, SIDE_LEN, null, null);
     }
 
     @Test

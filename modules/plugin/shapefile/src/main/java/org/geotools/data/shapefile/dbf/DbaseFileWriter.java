@@ -21,6 +21,7 @@ package org.geotools.data.shapefile.dbf;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -54,7 +55,7 @@ import org.geotools.util.NIOUtilities;
  *
  * @author Ian Schneider
  */
-public class DbaseFileWriter {
+public class DbaseFileWriter implements Closeable {
     private DbaseFileHeader header;
     private DbaseFileWriter.FieldFormatter formatter;
     WritableByteChannel channel;

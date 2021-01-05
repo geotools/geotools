@@ -179,7 +179,7 @@ public final class NetCDFBasicTest extends Assert {
         dataStore.dispose();
     }
 
-    public void testImageReaderPolyphemusSimple(Consumer<NetCDFImageReader> readerCustomizer)
+    protected void testImageReaderPolyphemusSimple(Consumer<NetCDFImageReader> readerCustomizer)
             throws Exception {
         final File file = TestData.file(this, "O3-NO2.nc");
         final NetCDFImageReaderSpi unidataImageReaderSpi = new NetCDFImageReaderSpi();
@@ -251,25 +251,24 @@ public final class NetCDFBasicTest extends Assert {
     @Test
     public void testNoValid2DVariable() throws Exception {
         final File file = TestData.file(this, "noVars.nc");
-        NetcdfDataset dataset = NetcdfDataset.acquireDataset(file.getAbsolutePath(), null);
-        List<Variable> variables = dataset.getVariables();
-        boolean speedVariableIsPresent = false;
-        String speedVariableName = "";
-
-        for (Variable variable : variables) {
-            if (variable.getShortName().equals("spd")) {
-                speedVariableIsPresent = true;
-                speedVariableName = variable.getFullName();
-                break;
-            }
-        }
-
-        assertTrue(speedVariableIsPresent);
-
-        final NetCDFImageReaderSpi unidataImageReaderSpi = new NetCDFImageReaderSpi();
-        assertTrue(unidataImageReaderSpi.canDecodeInput(file));
         NetCDFImageReader reader = null;
-        try {
+        try (NetcdfDataset dataset = NetcdfDataset.acquireDataset(file.getAbsolutePath(), null)) {
+            List<Variable> variables = dataset.getVariables();
+            boolean speedVariableIsPresent = false;
+            String speedVariableName = "";
+
+            for (Variable variable : variables) {
+                if (variable.getShortName().equals("spd")) {
+                    speedVariableIsPresent = true;
+                    speedVariableName = variable.getFullName();
+                    break;
+                }
+            }
+
+            assertTrue(speedVariableIsPresent);
+
+            final NetCDFImageReaderSpi unidataImageReaderSpi = new NetCDFImageReaderSpi();
+            assertTrue(unidataImageReaderSpi.canDecodeInput(file));
 
             // sample dataset containing a water_speed variable having
             // only time, depth dimensions. No lon/lat dims are present
@@ -288,10 +287,6 @@ public final class NetCDFBasicTest extends Assert {
             // Checking that only "mask" variable is found
             assertFalse(isSpeedCoverageAvailable);
         } finally {
-            if (dataset != null) {
-                dataset.close();
-            }
-
             if (reader != null) {
                 try {
                     reader.dispose();

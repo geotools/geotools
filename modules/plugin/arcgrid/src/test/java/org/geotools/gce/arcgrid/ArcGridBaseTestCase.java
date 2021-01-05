@@ -60,7 +60,6 @@ public abstract class ArcGridBaseTestCase {
     @After
     public void tearDown() throws Exception {
         final File[] fileList = TestData.file(this, "").listFiles();
-        final int length = fileList.length;
         for (File file : fileList) {
             if (file.isDirectory()) {
                 file.delete();
@@ -76,9 +75,7 @@ public abstract class ArcGridBaseTestCase {
 
     @Test
     public void testAll() throws Exception {
-
         final StringBuilder errors = new StringBuilder();
-        final int length = testFiles.length;
         for (File testFile : testFiles) {
 
             try {

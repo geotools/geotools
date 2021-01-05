@@ -26,6 +26,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_geometryType;
 import org.geotools.filter.function.JsonPointerFunction;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
@@ -45,6 +46,7 @@ public class PostPreProcessFilterSplittingVisitorTest
     private FilterCapabilities simpleLogicalCaps = new FilterCapabilities();
     private PostPreProcessFilterSplittingVisitor visitor;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         simpleLogicalCaps.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
@@ -54,7 +56,6 @@ public class PostPreProcessFilterSplittingVisitorTest
     @Test
     public void testVisitBetweenFilter() throws Exception {
         PropertyIsBetween filter = ff.between(ff.literal(0), ff.property(numAtt), ff.literal(4));
-
         FilterCapabilities caps = new FilterCapabilities(PropertyIsBetween.class);
         runTest(filter, caps, numAtt);
     }

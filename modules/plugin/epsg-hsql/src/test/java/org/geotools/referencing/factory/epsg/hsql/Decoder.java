@@ -24,6 +24,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+@SuppressWarnings("PMD.SystemPrintln")
 public class Decoder {
 
     public static void main(String[] args) throws FactoryException {

@@ -163,9 +163,6 @@ public final class ECQLTest {
      */
     @Test
     public void booleanPredicate() throws Exception {
-
-        Filter filter;
-
         // and sample
         assertFilter("ATTR1 < 10 AND ATTR2 < 2", And.class);
 

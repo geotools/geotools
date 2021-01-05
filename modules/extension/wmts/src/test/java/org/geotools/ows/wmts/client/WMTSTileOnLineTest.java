@@ -17,16 +17,11 @@
 package org.geotools.ows.wmts.client;
 
 import org.geotools.test.OnlineTestCase;
-import org.geotools.tile.Tile;
 import org.junit.Ignore;
 import org.junit.Test;
 
 /** @author ian */
 public class WMTSTileOnLineTest extends OnlineTestCase {
-
-    private Tile restTile;
-
-    private Tile kvpTile;
 
     @Test
     @Ignore

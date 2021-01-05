@@ -50,6 +50,7 @@ import org.opengis.filter.spatial.Within;
  *
  * @author Andrea Aime - OpenGeo
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     TestData td;

@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import javax.imageio.stream.FileImageInputStream;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.image.test.ImageAssert;
@@ -82,10 +81,6 @@ public class S3GenericGeoTiffReaderTest {
                     int fileBytesRead = fileIn.read(fileBuffer, 0, (int) readSize);
                     int s3BytesRead = in.read(s3Buffer, 0, (int) readSize);
 
-                    if (!Arrays.equals(fileBuffer, s3Buffer)) {
-                        // System.out.println("Arrays aren't equal");
-                    }
-
                     assertEquals(
                             "Bytes read expected to be equal. File stream is at pos: "
                                     + (fileIn.getStreamPosition() - 1),
@@ -105,21 +100,19 @@ public class S3GenericGeoTiffReaderTest {
 
     @Test
     public void testImageInputStream() throws IOException, URISyntaxException {
-        S3ImageInputStreamImpl in = new S3ImageInputStreamImpl("main://test/salinity.tif");
-        FileImageInputStream fileIn = new FileImageInputStream(getSalinityTestFile());
-        int fileResult;
-        int s3Result;
-        while ((fileResult = fileIn.read()) > -1) {
-            s3Result = in.read();
-            assertEquals(
-                    "S3 result must equal file result at stream position: "
-                            + (fileIn.getStreamPosition() - 1),
-                    fileResult,
-                    s3Result);
+        try (S3ImageInputStreamImpl in = new S3ImageInputStreamImpl("main://test/salinity.tif");
+                FileImageInputStream fileIn = new FileImageInputStream(getSalinityTestFile())) {
+            int fileResult;
+            int s3Result;
+            while ((fileResult = fileIn.read()) > -1) {
+                s3Result = in.read();
+                assertEquals(
+                        "S3 result must equal file result at stream position: "
+                                + (fileIn.getStreamPosition() - 1),
+                        fileResult,
+                        s3Result);
+            }
         }
-
-        fileIn.close();
-        in.close();
     }
 
     @Test

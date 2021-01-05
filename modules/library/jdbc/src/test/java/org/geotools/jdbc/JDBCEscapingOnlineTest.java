@@ -8,6 +8,7 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCEscapingOnlineTest extends JDBCTestSupport {
 
     protected SimpleFeatureType escapingSchema;

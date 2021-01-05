@@ -200,13 +200,13 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         FeatureCollection results = mapping.getSource().getFeatures(unrolled);
         assertEquals(1, getCount(results));
 
-        FeatureIterator features = results.features();
-        Feature unmappedFeature = features.next();
-        features.close();
+        try (FeatureIterator features = results.features()) {
+            Feature unmappedFeature = features.next();
 
-        assertNotNull(unmappedFeature);
-        Object object = unmappedFeature.getProperty("station_no").getValue();
-        assertEquals(fid, object);
+            assertNotNull(unmappedFeature);
+            Object object = unmappedFeature.getProperty("station_no").getValue();
+            assertEquals(fid, object);
+        }
     }
 
     /**
@@ -233,14 +233,13 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         FeatureCollection results = mapping.getSource().getFeatures(unrolled);
         assertEquals(1, getCount(results));
 
-        FeatureIterator features = results.features();
-        Feature unmappedFeature = features.next();
+        try (FeatureIterator features = results.features()) {
+            Feature unmappedFeature = features.next();
 
-        features.close();
-
-        assertNotNull(unmappedFeature);
-        Object object = unmappedFeature.getProperty("station_no").getValue();
-        assertEquals(fid1, object);
+            assertNotNull(unmappedFeature);
+            Object object = unmappedFeature.getProperty("station_no").getValue();
+            assertEquals(fid1, object);
+        }
     }
 
     private int getCount(FeatureCollection<?, ?> features) {
@@ -770,6 +769,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
     public void testBBox3D() throws Exception {
         BBOX bbox = ff.bbox("location", new ReferencedEnvelope3D(0, 10, 20, 50, 60, 70, null));
 

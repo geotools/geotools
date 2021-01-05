@@ -81,11 +81,11 @@ import org.opengis.referencing.operation.TransformException;
  * @author Andrea Antonello, Hydrologis
  * @author Daniele Romagnoli, GeoSolutions
  */
-public class ZonalStasTest {
+public class ZonalStatsTest {
 
     static final double DELTA = 10E-4;
 
-    private static final Logger LOGGER = Logging.getLogger(ZonalStasTest.class);
+    private static final Logger LOGGER = Logging.getLogger(ZonalStatsTest.class);
 
     static ListFeatureCollection testPolygons;
 
@@ -324,12 +324,12 @@ public class ZonalStasTest {
                                 null);
 
         List<SimpleFeature> polygonList = new ArrayList<>();
-        FeatureIterator<SimpleFeature> featureIterator = testPolygons.features();
-        while (featureIterator.hasNext()) {
-            SimpleFeature feature = featureIterator.next();
-            polygonList.add(feature);
+        try (FeatureIterator<SimpleFeature> featureIterator = testPolygons.features()) {
+            while (featureIterator.hasNext()) {
+                SimpleFeature feature = featureIterator.next();
+                polygonList.add(feature);
+            }
         }
-        featureIterator.close();
 
         // choose the stats
         Set<Statistic> statsSet = new LinkedHashSet<>();
@@ -448,12 +448,12 @@ public class ZonalStasTest {
                                 null);
 
         List<SimpleFeature> polygonList = new ArrayList<>();
-        FeatureIterator<SimpleFeature> featureIterator = testPolygons.features();
-        while (featureIterator.hasNext()) {
-            SimpleFeature feature = featureIterator.next();
-            polygonList.add(feature);
+        try (FeatureIterator<SimpleFeature> featureIterator = testPolygons.features()) {
+            while (featureIterator.hasNext()) {
+                SimpleFeature feature = featureIterator.next();
+                polygonList.add(feature);
+            }
         }
-        featureIterator.close();
 
         // choose the stats
         Set<Statistic> statsSet = new LinkedHashSet<>();

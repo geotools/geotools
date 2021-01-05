@@ -27,7 +27,6 @@ public class BBOX3DImplTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
 
-        ;
         SimpleFeatureType type = null;
         try {
             type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");

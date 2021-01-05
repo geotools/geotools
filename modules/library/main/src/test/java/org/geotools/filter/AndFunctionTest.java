@@ -50,20 +50,16 @@ public class AndFunctionTest {
 
     @Test
     public void testAndFunction3() throws IllegalFilterException {
-        Throwable exception =
-                assertThrows(
-                        IllegalArgumentException.class,
-                        () -> {
-                            FilterFactoryImpl ff = new FilterFactoryImpl();
-                            Function abs_left = ff.function("abs", ff.literal(-12));
-                            Function equalsTo_right =
-                                    ff.function(
-                                            "equalTo",
-                                            ff.literal("string1"),
-                                            ff.literal("string2"));
-                            Function andFunction = ff.function("and", abs_left, equalsTo_right);
-                            andFunction.evaluate(new Object());
-                        });
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    FilterFactoryImpl ff = new FilterFactoryImpl();
+                    Function abs_left = ff.function("abs", ff.literal(-12));
+                    Function equalsTo_right =
+                            ff.function("equalTo", ff.literal("string1"), ff.literal("string2"));
+                    Function andFunction = ff.function("and", abs_left, equalsTo_right);
+                    andFunction.evaluate(new Object());
+                });
     }
 
     @Test

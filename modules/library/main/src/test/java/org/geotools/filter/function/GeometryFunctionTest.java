@@ -16,7 +16,8 @@
  */
 package org.geotools.filter.function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 import org.locationtech.jts.io.ParseException;

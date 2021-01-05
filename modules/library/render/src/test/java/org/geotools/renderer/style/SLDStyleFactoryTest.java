@@ -454,11 +454,11 @@ public class SLDStyleFactoryTest {
         Mark myMark = sf.createMark();
         myMark.setWellKnownName(ff.literal("square"));
         symb.getGraphic().graphicalSymbols().add(myMark);
-        MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
+        sld.createPointStyle(feature, symb, range);
         Assert.assertFalse(MarkStyle2D.isMaxMarkSizeEnabled());
 
         MarkStyle2D.setMaxMarkSizeEnabled(true);
-        ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
+        sld.createPointStyle(feature, symb, range);
         Assert.assertTrue(MarkStyle2D.isMaxMarkSizeEnabled());
     }
 

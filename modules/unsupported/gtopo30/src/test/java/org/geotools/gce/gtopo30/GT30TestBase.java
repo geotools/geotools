@@ -57,7 +57,6 @@ public abstract class GT30TestBase {
      */
     protected void deleteAll(File file) {
         final File[] fileList = file.listFiles();
-        final int length = fileList.length;
         for (File value : fileList) {
             if (value.isDirectory()) {
                 deleteAll(value);

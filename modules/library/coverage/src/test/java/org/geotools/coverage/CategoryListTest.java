@@ -36,12 +36,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Martin Desruisseaux (IRD)
  */
 public final class CategoryListTest {
-    /** Set to {@code true} in order to print diagnostic messages. */
-    private static final boolean VERBOSE = false;
-
-    /** Small value for comparaisons. */
-    private static final double EPS = 1E-9;
-
     /** Random number generator for this test. */
     private static final Random random = new Random(1471753385855374101L);
 
@@ -103,19 +97,13 @@ public final class CategoryListTest {
             new CategoryList(categories, null);
             fail("Argument check");
         } catch (IllegalArgumentException exception) {
-            if (VERBOSE) {
-                // System.out.println(exception.getLocalizedMessage());
-                // This is the expected exception.
-            }
+            // expected
         }
         try {
             new CategoryList(categories, null);
             fail("Argument check");
         } catch (IllegalArgumentException exception) {
-            if (VERBOSE) {
-                // System.out.println(exception.getLocalizedMessage());
-                // This is the expected exception.
-            }
+            // expected
         }
         // Removes the wrong category. Now, construction should succed.
         categories = XArray.resize(categories, categories.length - 1);

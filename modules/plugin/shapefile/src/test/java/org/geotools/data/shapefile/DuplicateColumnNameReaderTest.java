@@ -39,12 +39,12 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
         SimpleFeatureSource source = store.getFeatureSource();
 
         // read the first feature
-        SimpleFeatureIterator iter = source.getFeatures().features();
-        SimpleFeature feature = iter.next();
-        iter.close();
+        try (SimpleFeatureIterator iter = source.getFeatures().features()) {
+            SimpleFeature feature = iter.next();
 
-        // get the value of the duplicate column & compare it against expectation
-        assertEquals(expectedValue, feature.getAttribute(testColumn));
+            // get the value of the duplicate column & compare it against expectation
+            assertEquals(expectedValue, feature.getAttribute(testColumn));
+        }
 
         // cleanup
         store.dispose();
@@ -60,28 +60,28 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
         ShapefileDataStore indexedstore = new ShapefileDataStore(shpFile.toURI().toURL());
 
         // get a random feature id from one of the stores
-        SimpleFeatureIterator it = indexedstore.getFeatureSource().getFeatures().features();
-        FeatureId fid = it.next().getIdentifier();
-        it.close();
+        try (SimpleFeatureIterator it = indexedstore.getFeatureSource().getFeatures().features()) {
+            FeatureId fid = it.next().getIdentifier();
 
-        // query the datastore
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Filter idFilter = ff.id(Collections.singleton(fid));
-        final Query query =
-                new Query(
-                        indexedstore.getSchema().getName().getLocalPart(),
-                        idFilter,
-                        new String[] {testColumn});
-        final SimpleFeatureCollection indexedfeatures =
-                indexedstore.getFeatureSource().getFeatures(query);
+            // query the datastore
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+            Filter idFilter = ff.id(Collections.singleton(fid));
+            final Query query =
+                    new Query(
+                            indexedstore.getSchema().getName().getLocalPart(),
+                            idFilter,
+                            new String[] {testColumn});
+            final SimpleFeatureCollection indexedfeatures =
+                    indexedstore.getFeatureSource().getFeatures(query);
 
-        // compare the results
-        SimpleFeatureIterator indexIterator = indexedfeatures.features();
-        SimpleFeature indexedFeature = indexIterator.next();
-        indexIterator.close();
+            // compare the results
+            try (SimpleFeatureIterator indexIterator = indexedfeatures.features()) {
+                SimpleFeature indexedFeature = indexIterator.next();
 
-        // get the value of the duplicate column & compare it against expectation
-        assertEquals(expectedValue, indexedFeature.getAttribute(testColumn));
+                // get the value of the duplicate column & compare it against expectation
+                assertEquals(expectedValue, indexedFeature.getAttribute(testColumn));
+            }
+        }
 
         // cleanup
         indexedstore.dispose();

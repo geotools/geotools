@@ -26,7 +26,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.*;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureWriter;
+import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
@@ -46,6 +49,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
     public void testGetNames() throws IOException {
         String[] typeNames = dataStore.getTypeNames();
@@ -128,7 +132,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         SimpleFeatureType featureType = builder.buildFeatureType();
         dataStore.createSchema(featureType);
 
-        SimpleFeatureType ft2 = dataStore.getSchema(tname("ft2"));
+        dataStore.getSchema(tname("ft2"));
         // assertEquals(ft2, featureType);
 
         // grab a writer
@@ -413,8 +417,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
                 dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             for (int i = 0; i < 1; i++) {
                 assertTrue(reader.hasNext());
-
-                SimpleFeature feature = reader.next();
+                reader.next();
             }
 
             assertFalse(reader.hasNext());

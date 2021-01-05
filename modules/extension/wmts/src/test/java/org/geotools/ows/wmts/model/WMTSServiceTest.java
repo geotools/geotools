@@ -19,12 +19,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.logging.Logger;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.logging.Logging;
 import org.junit.Test;
 import org.opengis.metadata.citation.Contact;
 import org.opengis.metadata.citation.ResponsibleParty;
 
 public class WMTSServiceTest {
+
+    static final Logger LOGGER = Logging.getLogger(WMTSServiceTest.class);
 
     public WMTSServiceTest() {}
 
@@ -87,7 +91,7 @@ public class WMTSServiceTest {
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + e);
+                LOGGER.warning("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }

@@ -77,7 +77,7 @@ public class RenderingTransformationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDownClass() {
         Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
     }
 
@@ -390,7 +390,6 @@ public class RenderingTransformationTest {
 
     @Test
     public void testRenderingTransformHighOversample() throws Exception {
-        File file = TestData.copy(this, "arcgrid/arcgrid.zip");
         TestData.unzipFile(this, "arcgrid/arcgrid.zip");
         URL rainURL =
                 GridCoverageRendererTest.class.getResource("test-data/arcgrid/precip30min.asc");

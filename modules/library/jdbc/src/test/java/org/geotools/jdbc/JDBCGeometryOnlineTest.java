@@ -35,6 +35,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * need to override some of the tests method to fix the expectations for specific geometry class
  * types.
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
 
     @Override

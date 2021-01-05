@@ -119,25 +119,24 @@ public class GridCoverageProgressAdapterTest extends Assert {
         // listener
         final GridCoverageReaderProgressAdapter readerAdapter =
                 new GridCoverageReaderProgressAdapter(myListener);
-        final InputStream input = TestData.openStream(GridCoverage2D.class, "CHL01195.png");
+        try (InputStream input = TestData.openStream(GridCoverage2D.class, "CHL01195.png")) {
+            ImageReader reader = ImageIO.getImageReadersByFormatName("png").next();
+            reader.setInput(ImageIOExt.createImageInputStream(input));
+            reader.addIIOReadProgressListener(readerAdapter);
+            reader.addIIOReadUpdateListener(readerAdapter);
+            TimerTask task =
+                    new TimerTask() {
 
-        ImageReader reader = ImageIO.getImageReadersByFormatName("png").next();
-        reader.setInput(ImageIOExt.createImageInputStream(input));
-        reader.addIIOReadProgressListener(readerAdapter);
-        reader.addIIOReadUpdateListener(readerAdapter);
-        TimerTask task =
-                new TimerTask() {
-
-                    @Override
-                    public void run() {
-                        readerAdapter.monitor.setCanceled(true);
-                    }
-                };
-        new Timer().schedule(task, 1500);
-        BufferedImage image = reader.read(0);
-        reader.dispose();
-        image.flush();
-        image = null;
+                        @Override
+                        public void run() {
+                            readerAdapter.monitor.setCanceled(true);
+                        }
+                    };
+            new Timer().schedule(task, 1500);
+            BufferedImage image = reader.read(0);
+            reader.dispose();
+            image.flush();
+        }
 
         if (!PackageUtil.isCodecLibAvailable()) {
             assertFalse(adaptee.isCompleted());
@@ -217,16 +216,16 @@ public class GridCoverageProgressAdapterTest extends Assert {
         // listener
         final GridCoverageReaderProgressAdapter readerAdapter =
                 new GridCoverageReaderProgressAdapter(myListener);
-        final InputStream input = TestData.openStream(GridCoverage2D.class, "CHL01195.png");
+        try (InputStream input = TestData.openStream(GridCoverage2D.class, "CHL01195.png")) {
 
-        ImageReader reader = ImageIO.getImageReadersByFormatName("png").next();
-        reader.setInput(ImageIOExt.createImageInputStream(input));
-        reader.addIIOReadProgressListener(readerAdapter);
-        reader.addIIOReadUpdateListener(readerAdapter);
-        BufferedImage image = reader.read(0);
-        reader.dispose();
-        image.flush();
-        image = null;
+            ImageReader reader = ImageIO.getImageReadersByFormatName("png").next();
+            reader.setInput(ImageIOExt.createImageInputStream(input));
+            reader.addIIOReadProgressListener(readerAdapter);
+            reader.addIIOReadUpdateListener(readerAdapter);
+            BufferedImage image = reader.read(0);
+            reader.dispose();
+            image.flush();
+        }
 
         assertTrue(adaptee.isCompleted());
         assertTrue(adaptee.isStarted());
@@ -300,17 +299,18 @@ public class GridCoverageProgressAdapterTest extends Assert {
         // listener
         final GridCoverageWriterProgressAdapter writerAdapter =
                 new GridCoverageWriterProgressAdapter(myListener);
-        final InputStream input = TestData.openStream(GridCoverage2D.class, "CHL01195.png");
-        final BufferedImage image = ImageIO.read(input);
+        try (InputStream input = TestData.openStream(GridCoverage2D.class, "CHL01195.png")) {
+            final BufferedImage image = ImageIO.read(input);
 
-        ImageWriter writer = ImageIO.getImageWritersByFormatName("tiff").next();
-        writer.setOutput(
-                ImageIOExt.createImageOutputStream(
-                        image, TestData.temp(ImageWorkerTest.class, "CHL01195.tif")));
-        writer.addIIOWriteProgressListener(writerAdapter);
-        writer.addIIOWriteWarningListener(writerAdapter);
-        writer.write(image);
-        writer.dispose();
+            ImageWriter writer = ImageIO.getImageWritersByFormatName("tiff").next();
+            writer.setOutput(
+                    ImageIOExt.createImageOutputStream(
+                            image, TestData.temp(ImageWorkerTest.class, "CHL01195.tif")));
+            writer.addIIOWriteProgressListener(writerAdapter);
+            writer.addIIOWriteWarningListener(writerAdapter);
+            writer.write(image);
+            writer.dispose();
+        }
 
         assertTrue(adaptee.isCompleted());
         assertTrue(adaptee.isStarted());
@@ -395,26 +395,27 @@ public class GridCoverageProgressAdapterTest extends Assert {
         // listener
         final GridCoverageWriterProgressAdapter writerAdapter =
                 new GridCoverageWriterProgressAdapter(myListener);
-        final InputStream input = TestData.openStream(GridCoverage2D.class, "CHL01195.png");
-        final BufferedImage image = ImageIO.read(input);
+        try (InputStream input = TestData.openStream(GridCoverage2D.class, "CHL01195.png")) {
+            final BufferedImage image = ImageIO.read(input);
 
-        ImageWriter writer = ImageIO.getImageWritersByFormatName("tiff").next();
-        writer.setOutput(
-                ImageIOExt.createImageOutputStream(
-                        image, TestData.temp(ImageWorkerTest.class, "CHL01195.tif")));
-        writer.addIIOWriteProgressListener(writerAdapter);
-        writer.addIIOWriteWarningListener(writerAdapter);
-        TimerTask task =
-                new TimerTask() {
+            ImageWriter writer = ImageIO.getImageWritersByFormatName("tiff").next();
+            writer.setOutput(
+                    ImageIOExt.createImageOutputStream(
+                            image, TestData.temp(ImageWorkerTest.class, "CHL01195.tif")));
+            writer.addIIOWriteProgressListener(writerAdapter);
+            writer.addIIOWriteWarningListener(writerAdapter);
+            TimerTask task =
+                    new TimerTask() {
 
-                    @Override
-                    public void run() {
-                        writerAdapter.monitor.setCanceled(true);
-                    }
-                };
-        new Timer().schedule(task, 1000);
-        writer.write(image);
-        writer.dispose();
+                        @Override
+                        public void run() {
+                            writerAdapter.monitor.setCanceled(true);
+                        }
+                    };
+            new Timer().schedule(task, 1000);
+            writer.write(image);
+            writer.dispose();
+        }
 
         assertFalse(adaptee.isCompleted());
         assertTrue(adaptee.isStarted());

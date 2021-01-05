@@ -17,7 +17,6 @@
 package org.geotools.filter;
 
 import java.util.logging.Logger;
-import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,12 +49,6 @@ public class FilterCapabilitiesTest {
     private org.opengis.filter.Filter logFilter;
     private FilterCapabilities capabilities;
     private FilterFactory2 fact = CommonFactoryFinder.getFilterFactory2();
-
-    /** Test suite for this test case */
-    TestSuite suite = null;
-
-    /** Constructor with test name. */
-    String dataFolder = "";
 
     boolean setup = false;
 

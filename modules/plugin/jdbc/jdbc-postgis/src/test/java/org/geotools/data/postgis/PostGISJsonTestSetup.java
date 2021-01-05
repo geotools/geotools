@@ -22,6 +22,7 @@ import java.sql.Statement;
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
 import org.geotools.util.Version;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostGISJsonTestSetup extends JDBCDelegatingTestSetup {
 
     protected PostGISJsonTestSetup() {

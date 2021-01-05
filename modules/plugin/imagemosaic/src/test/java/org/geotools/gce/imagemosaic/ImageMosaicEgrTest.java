@@ -182,7 +182,7 @@ public class ImageMosaicEgrTest {
         testAllImages(sample);
     }
 
-    public void testAllImages(File expectedOutput) throws Exception {
+    private void testAllImages(File expectedOutput) throws Exception {
         ImageMosaicReader reader = new ImageMosaicReader(testMosaicUrl, hints);
 
         // test with no EGR
@@ -250,7 +250,7 @@ public class ImageMosaicEgrTest {
         testRedCoversAll(sample);
     }
 
-    public void testRedCoversAll(File expectedOutput) throws Exception {
+    private void testRedCoversAll(File expectedOutput) throws Exception {
         ImageMosaicReader reader = new ImageMosaicReader(testMosaicUrl, hints);
 
         // test with no EGR
@@ -304,7 +304,7 @@ public class ImageMosaicEgrTest {
         testLeftRightOnTop(sample);
     }
 
-    public void testLeftRightOnTop(File expectedOutput) throws Exception {
+    private void testLeftRightOnTop(File expectedOutput) throws Exception {
         ImageMosaicReader reader = new ImageMosaicReader(testMosaicUrl, hints);
 
         // filter out the large granule, the left and right ones will still cover the mid one
@@ -348,7 +348,7 @@ public class ImageMosaicEgrTest {
         File sample =
                 new File(
                         "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-rect.png");
-        testSingle(sample);
+        checkSingle(sample);
     }
 
     @Test
@@ -357,10 +357,10 @@ public class ImageMosaicEgrTest {
         File sample =
                 new File(
                         "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-rect.png");
-        testSingle(sample);
+        checkSingle(sample);
     }
 
-    public void testSingle(File expectedOutput) throws Exception {
+    public void checkSingle(File expectedOutput) throws Exception {
         ImageMosaicReader reader = new ImageMosaicReader(testMosaicUrl, hints);
 
         // read a small grid geometry that will only catch one feature

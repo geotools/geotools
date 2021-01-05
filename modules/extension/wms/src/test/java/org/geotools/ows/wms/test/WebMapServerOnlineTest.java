@@ -113,7 +113,7 @@ public class WebMapServerOnlineTest {
 
             List styles = layer.getStyles();
 
-            if (styles.size() == 0) {
+            if (styles.isEmpty()) {
                 request.addLayer(layer);
                 continue;
             }
@@ -288,17 +288,13 @@ public class WebMapServerOnlineTest {
         Assert.assertEquals(envelope.getMaximum(1), 89.8254, 0.0);
     }
 
-    @Test
+    @Test(expected = ServiceException.class)
     public void testServiceExceptions() throws Exception {
         WebMapServer wms = new WebMapServer(featureURL);
         GetMapRequest request = wms.createGetMapRequest();
         request.addLayer("NoLayer", "NoStyle");
-        try {
-            // System.out.println(request.getFinalURL());
-            GetMapResponse response = wms.issueRequest(request);
-            Assert.fail();
-        } catch (ServiceException e) {
-            // e.printStackTrace();
-        }
+        // System.out.println(request.getFinalURL());
+        wms.issueRequest(request);
+        Assert.fail("Should have failed with an exception");
     }
 }

@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -36,6 +37,7 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coord;
     ElementInstance coords;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -108,7 +110,7 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
                         container.getComponentInstanceOfType(GMLPointTypeBinding.class);
 
         try {
-            Point p = (Point) strategy.parse(point, node, null);
+            strategy.parse(point, node, null);
             fail("Should have thrown an exception");
         } catch (RuntimeException e) {
             // ok

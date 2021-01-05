@@ -43,9 +43,8 @@ public class WaitingViewport extends MapViewport {
 
         } catch (InterruptedException ex) {
             // do nothing
-        } finally {
-            return result;
         }
+        return result;
     }
 
     @Override

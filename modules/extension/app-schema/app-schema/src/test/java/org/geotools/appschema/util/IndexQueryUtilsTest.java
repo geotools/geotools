@@ -65,24 +65,6 @@ public class IndexQueryUtilsTest {
         }
     }
 
-    private Filter totallyIndexedFilter() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter filter =
-                ff.and(
-                        ff.equals(ff.property("ID"), ff.literal("st.1")),
-                        ff.like(ff.property("NAME"), "*fer*"));
-        return filter;
-    }
-
-    private Filter partialIndexedFilter() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter filter =
-                ff.and(
-                        ff.equals(ff.property("ID"), ff.literal("st.1")),
-                        ff.like(ff.property("LOCATION_NAME"), "*fer*"));
-        return filter;
-    }
-
     private Filter totallyIndexedFilterXpath() {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Filter filter =

@@ -309,8 +309,6 @@ public class PointStackerProcessTest {
                 inBounds.getCoordinateReferenceSystem(),
                 result.getBounds().getCoordinateReferenceSystem());
         checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2, null, null);
-
-        return;
     }
 
     /** Get the stacked point closest to the provided coordinate */
@@ -320,17 +318,19 @@ public class PointStackerProcessTest {
 
         // find nearest result to testPt
         SimpleFeature closest = null;
-        for (SimpleFeatureIterator it = result.features(); it.hasNext(); ) {
-            SimpleFeature f = it.next();
-            Coordinate outPt = ((Point) f.getDefaultGeometry()).getCoordinate();
-            double dist = outPt.distance(testPt);
-            if (dist < minDist) {
-                closest = f;
-                minDist = dist;
+        try (SimpleFeatureIterator it = result.features()) {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                Coordinate outPt = ((Point) f.getDefaultGeometry()).getCoordinate();
+                double dist = outPt.distance(testPt);
+                if (dist < minDist) {
+                    closest = f;
+                    minDist = dist;
+                }
             }
-        }
 
-        return closest;
+            return closest;
+        }
     }
 
     /**

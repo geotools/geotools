@@ -19,6 +19,7 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCNativeFilterTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public final class H2NativeFilterTestSetup extends JDBCNativeFilterTestSetup {
 
     public H2NativeFilterTestSetup(JDBCTestSetup delegate) {

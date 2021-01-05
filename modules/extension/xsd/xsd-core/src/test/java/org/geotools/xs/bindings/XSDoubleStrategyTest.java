@@ -16,7 +16,7 @@
  */
 package org.geotools.xs.bindings;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;

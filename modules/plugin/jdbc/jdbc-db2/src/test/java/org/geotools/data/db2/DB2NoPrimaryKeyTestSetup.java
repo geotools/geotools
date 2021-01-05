@@ -17,9 +17,9 @@
 package org.geotools.data.db2;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2NoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected DB2NoPrimaryKeyTestSetup() {
@@ -28,35 +28,30 @@ public class DB2NoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected void createLakeTable() throws Exception {
 
-        Connection con = getDataSource().getConnection();
-        con.prepareStatement(
-                        "create table "
-                                + DB2TestUtil.SCHEMA_QUOTED
-                                + ".\"lake\" (\"id\" int  , \"geom\" DB2GSE.ST_POLYGON , \"name\" varchar(255))")
-                .execute();
-        DB2Util.executeRegister(DB2TestUtil.SCHEMA, "lake", "geom", DB2TestUtil.SRSNAME, con);
+        try (Connection con = getDataSource().getConnection()) {
+            con.prepareStatement(
+                            "create table "
+                                    + DB2TestUtil.SCHEMA_QUOTED
+                                    + ".\"lake\" (\"id\" int  , \"geom\" DB2GSE.ST_POLYGON , \"name\" varchar(255))")
+                    .execute();
+            DB2Util.executeRegister(DB2TestUtil.SCHEMA, "lake", "geom", DB2TestUtil.SRSNAME, con);
 
-        con.prepareStatement(
-                        "INSERT INTO "
-                                + DB2TestUtil.SCHEMA_QUOTED
-                                + ".\"lake\" VALUES (0,"
-                                + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"
-                                + DB2TestUtil.SRID
-                                + "),'muddy')")
-                .execute();
-        con.close();
+            con.prepareStatement(
+                            "INSERT INTO "
+                                    + DB2TestUtil.SCHEMA_QUOTED
+                                    + ".\"lake\" VALUES (0,"
+                                    + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"
+                                    + DB2TestUtil.SRID
+                                    + "),'muddy')")
+                    .execute();
+        }
     }
 
     @Override
     protected void dropLakeTable() throws Exception {
-
-        Connection con = getDataSource().getConnection();
-        try {
+        try (Connection con = getDataSource().getConnection()) {
             DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, "lake", "goem", con);
             DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "lake", con);
-        } catch (SQLException e) {
         }
-
-        con.close();
     }
 }

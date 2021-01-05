@@ -98,7 +98,6 @@ public class BreadthFirstTopologicalIteratorTest {
 
             Assert.assertEquals(expected, node.getCount());
         }
-        ;
     }
 
     /**

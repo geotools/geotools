@@ -42,7 +42,6 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     public void testSDOGeomMetadataBounds() throws Exception {
         // enable fast bounds retrieval from SDO_GEOM_METADATA table
         ((OracleDialect) dataStore.getSQLDialect()).setMetadataBboxEnabled(true);
-        ;
 
         ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds();
         assertEquals(-180l, Math.round(bounds.getMinX()));

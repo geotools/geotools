@@ -22,6 +22,7 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     private static final String LAKE_TABLE = "lake";

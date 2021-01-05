@@ -29,13 +29,14 @@ public class GMLGeometryStreamingTest {
     @Test
     public void testStreamByXpath() throws Exception {
         Configuration configuration = new GMLConfiguration();
-        InputStream input = getClass().getResourceAsStream("geometry.xml");
-        String xpath = "/pointMember | /lineStringMember | /polygonMember";
+        try (InputStream input = getClass().getResourceAsStream("geometry.xml")) {
+            String xpath = "/pointMember | /lineStringMember | /polygonMember";
 
-        // String xpath = "/child::*";
-        StreamingParser parser = new StreamingParser(configuration, input, xpath);
+            // String xpath = "/child::*";
+            StreamingParser parser = new StreamingParser(configuration, input, xpath);
 
-        makeAssertions(parser);
+            makeAssertions(parser);
+        }
     }
 
     //    public void testStreamByType() throws Exception {

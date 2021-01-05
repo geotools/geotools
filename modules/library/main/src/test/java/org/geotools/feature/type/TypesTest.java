@@ -64,9 +64,6 @@ public class TypesTest {
 
     @Test
     public void testWithoutRestriction() {
-        // used to prevent warning
-        FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
-
         String attributeName = "string";
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder(); // $NON-NLS-1$
         builder.setName("test");

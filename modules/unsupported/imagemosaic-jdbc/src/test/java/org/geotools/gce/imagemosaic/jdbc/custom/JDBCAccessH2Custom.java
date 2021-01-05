@@ -46,52 +46,49 @@ public class JDBCAccessH2Custom extends JDBCAccessCustom {
      */
     @Override
     public void initialize() throws SQLException, IOException {
-        Connection con = getConnection();
+        try (Connection con = getConnection()) {
+            Envelope extent = getExtent(con);
+            CoordinateReferenceSystem crs = getCRS();
 
-        Envelope extent = getExtent(con);
-        CoordinateReferenceSystem crs = getCRS();
-
-        String stmt = "select RESX,RESY from oek order by level";
-        PreparedStatement ps = con.prepareStatement(stmt);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            ImageLevelInfo li = new ImageLevelInfo();
-            getLevelInfos().add(li);
-            li.setResX(rs.getDouble(1));
-            li.setResY(rs.getDouble(2) * -1);
-            li.setExtentMinX(extent.getMinX());
-            li.setExtentMaxX(extent.getMaxX());
-            li.setExtentMinY(extent.getMinY());
-            li.setExtentMaxY(extent.getMaxY());
-            li.setCrs(crs);
+            String stmt = "select RESX,RESY from oek order by level";
+            try (PreparedStatement ps = con.prepareStatement(stmt);
+                    ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ImageLevelInfo li = new ImageLevelInfo();
+                    getLevelInfos().add(li);
+                    li.setResX(rs.getDouble(1));
+                    li.setResY(rs.getDouble(2) * -1);
+                    li.setExtentMinX(extent.getMinX());
+                    li.setExtentMaxX(extent.getMaxX());
+                    li.setExtentMinY(extent.getMinY());
+                    li.setExtentMaxY(extent.getMaxY());
+                    li.setCrs(crs);
+                }
+            }
         }
-        rs.close();
-        ps.close();
     }
 
     Envelope getExtent(Connection con) throws SQLException, IOException {
-
         String stmt = "select RESX,RESY,ULX,ULY,DATA from OEK where level = 0";
-        PreparedStatement ps = con.prepareStatement(stmt);
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        double resX = rs.getDouble(1);
-        double resY = rs.getDouble(2);
-        double ulx = rs.getDouble(3);
-        double uly = rs.getDouble(4);
-        byte[] bytes = rs.getBytes(5);
+        try (PreparedStatement ps = con.prepareStatement(stmt);
+                ResultSet rs = ps.executeQuery()) {
+            rs.next();
+            double resX = rs.getDouble(1);
+            double resY = rs.getDouble(2);
+            double ulx = rs.getDouble(3);
+            double uly = rs.getDouble(4);
+            byte[] bytes = rs.getBytes(5);
 
-        BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
+            BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
 
-        double minx = ulx;
-        double maxx = ulx + img.getWidth() * resX;
-        double miny = uly + img.getHeight() * resY;
-        double maxy = uly;
-        Envelope result = new Envelope(minx, maxx, miny, maxy);
+            double minx = ulx;
+            double maxx = ulx + img.getWidth() * resX;
+            double miny = uly + img.getHeight() * resY;
+            double maxy = uly;
+            Envelope result = new Envelope(minx, maxx, miny, maxy);
 
-        rs.close();
-        ps.close();
-        return result;
+            return result;
+        }
     }
 
     /* (non-Javadoc)
@@ -105,17 +102,14 @@ public class JDBCAccessH2Custom extends JDBCAccessCustom {
             LinkedBlockingQueue<TileQueueElement> tileQueue,
             GridCoverageFactory coverageFactory)
             throws IOException {
-        try {
-            Connection con = getConnection();
+        try (Connection con = getConnection()) {
             int level = getLevelInfos().indexOf(info);
             BufferedImage img = getBufferedImage(level, con);
             GeneralEnvelope genv = new GeneralEnvelope(info.getCrs());
             genv.setRange(0, info.getExtentMinX(), info.getExtentMaxX());
             genv.setRange(1, info.getExtentMinY(), info.getExtentMaxY());
             TileQueueElement tqElem = new TileQueueElement("oek", img, genv);
-            ;
             tileQueue.add(tqElem);
-            con.close();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -124,15 +118,12 @@ public class JDBCAccessH2Custom extends JDBCAccessCustom {
 
     BufferedImage getBufferedImage(int level, Connection con) throws SQLException, IOException {
         String stmt = "select DATA from OEK where level = " + level;
-        PreparedStatement ps = con.prepareStatement(stmt);
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        byte[] bytes = rs.getBytes(1);
+        try (PreparedStatement ps = con.prepareStatement(stmt);
+                ResultSet rs = ps.executeQuery()) {
+            rs.next();
+            byte[] bytes = rs.getBytes(1);
 
-        BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
-
-        rs.close();
-        ps.close();
-        return img;
+            return ImageIO.read(new ByteArrayInputStream(bytes));
+        }
     }
 }

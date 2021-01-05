@@ -141,7 +141,6 @@ public final class FactoriesTest {
         out.println("create Coodinate Reference System....6: ");
         out.println(geogCRS.toWKT());
 
-        final MathTransform p;
         final ParameterValueGroup param = mtFactory.getDefaultParameters("Transverse_Mercator");
         param.parameter("semi_major").setValue(airy1830.getSemiMajorAxis());
         param.parameter("semi_minor").setValue(airy1830.getSemiMinorAxis());

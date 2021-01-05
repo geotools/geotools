@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v1_1.FilterMockData;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
@@ -30,7 +29,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -308,8 +306,6 @@ public class FilterTypeBindingTest extends FESTestSupport {
 
     @Test
     public void testParseExtendedOperator() throws Exception {
-        final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-
         String xml =
                 "<fes:Filter "
                         + "xmlns:fes='http://www.opengis.net/fes/2.0' xmlns:myops='http://www.someserver.com/myops/1.0'> "

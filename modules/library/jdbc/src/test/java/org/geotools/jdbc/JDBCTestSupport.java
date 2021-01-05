@@ -52,6 +52,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
+@SuppressWarnings({
+    "PMD.JUnit4TestShouldUseTestAnnotations", // not yet junit 4
+    "PMD.EmptyInitializer"
+})
 public abstract class JDBCTestSupport extends OnlineTestCase {
 
     static final Logger LOGGER = Logging.getLogger(JDBCTestSupport.class);
@@ -99,13 +103,9 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         JDBCTestSetup setup = createTestSetup();
         setup.setFixture(fixture);
 
-        try {
-            DataSource dataSource = setup.getDataSource();
-            Connection cx = dataSource.getConnection();
-            cx.close();
+        DataSource dataSource = setup.getDataSource();
+        try (Connection cx = dataSource.getConnection()) {
             return true;
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
         } finally {
             try {
                 setup.tearDown();
@@ -329,7 +329,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
             int numberExpected,
             final Iterator<F> iterator,
             FeatureAssertion<F> assertion) {
-        FeatureIterator<F> adapter =
+        try (FeatureIterator<F> adapter =
                 new FeatureIterator<F>() {
                     public boolean hasNext() {
                         return iterator.hasNext();
@@ -340,8 +340,9 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                     }
 
                     public void close() {}
-                };
-        assertFeatureIterator(startIndex, numberExpected, adapter, assertion);
+                }) {
+            assertFeatureIterator(startIndex, numberExpected, adapter, assertion);
+        }
     }
 
     protected <FT extends FeatureType, F extends Feature> void assertFeatureReader(
@@ -350,7 +351,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
             final FeatureReader<FT, F> reader,
             FeatureAssertion<F> assertion)
             throws IOException {
-        FeatureIterator<F> iter =
+        try (FeatureIterator<F> iter =
                 new FeatureIterator<F>() {
 
                     public boolean hasNext() {
@@ -376,8 +377,8 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                             throw new AssertionError(e);
                         }
                     }
-                };
-
-        assertFeatureIterator(startIndex, numberExpected, iter, assertion);
+                }) {
+            assertFeatureIterator(startIndex, numberExpected, iter, assertion);
+        }
     }
 }

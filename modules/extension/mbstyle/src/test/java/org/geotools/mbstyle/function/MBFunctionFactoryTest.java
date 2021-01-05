@@ -356,7 +356,6 @@ public class MBFunctionFactoryTest {
                 StreamingRendererTest.class
                         .getResource("/org/geotools/renderer/lite/test-data/" + fontName)
                         .toExternalForm();
-        System.out.println(url);
         return FontCache.loadFromUrl(url);
     }
 }

@@ -139,15 +139,6 @@ public class DirectedLineGraphGeneratorTest {
 
         Assert.assertEquals(built.getEdges().size(), n + 1);
         Assert.assertEquals(built.getNodes().size(), n + 1);
-
-        GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        DirectedNode node = (DirectedNode) component;
-                        Assert.assertTrue(node.getInDegree() == 1 && node.getOutDegree() == 1);
-                        return 0;
-                    }
-                };
     }
 
     protected BasicDirectedLineGraphGenerator createGenerator() {

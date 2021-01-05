@@ -98,9 +98,10 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         Crosses f = ff.crosses(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.12");
+        }
     }
 
     @Test
@@ -125,9 +126,10 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         Equals f = ff.equal(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.13");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.13");
+        }
     }
 
     @Test
@@ -140,11 +142,12 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         Disjoint f = ff.disjoint(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(2, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.12");
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.13");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.12");
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.13");
+        }
     }
 
     @Test
@@ -157,9 +160,10 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         Touches f = ff.touches(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.12");
+        }
     }
 
     @Test
@@ -172,9 +176,10 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         Within f = ff.within(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.12");
+        }
     }
 
     @Test
@@ -188,9 +193,10 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         Overlaps f = ff.overlaps(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.13");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.13");
+        }
     }
 
     @Test
@@ -203,9 +209,10 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         Intersects f = ff.intersects(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.13");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.13");
+        }
     }
 
     @Test
@@ -218,9 +225,10 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         Contains f = ff.contains(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.12");
+        }
     }
 
     @Test
@@ -233,11 +241,12 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         DWithin f = ff.dwithin(ff.property("geo"), ff.literal(ls), 3, "m");
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(2, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.01");
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.10");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.01");
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.10");
+        }
     }
 
     @Test
@@ -264,9 +273,10 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         BBOX bbox = ff.bbox("geo2", 6.5, 23.5, 7.5, 24.5, "EPSG:4326");
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.09");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.09");
+        }
     }
 
     @Test
@@ -279,11 +289,12 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
 
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        SimpleFeature feature = fsi.next();
-        assertEquals(feature.getID(), "active.13");
-        assertNotNull(feature.getDefaultGeometry());
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            SimpleFeature feature = fsi.next();
+            assertEquals(feature.getID(), "active.13");
+            assertNotNull(feature.getDefaultGeometry());
+        }
     }
 
     @Test
@@ -296,15 +307,16 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         DWithin f = ff.dwithin(ff.property("geo5"), ff.literal(ls), 3, "m");
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(2, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        SimpleFeature feature = fsi.next();
-        assertEquals(feature.getID(), "active.01");
-        assertNotNull(feature.getDefaultGeometry());
-        assertTrue(fsi.hasNext());
-        feature = fsi.next();
-        assertEquals(feature.getID(), "active.10");
-        assertNotNull(feature.getDefaultGeometry());
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            SimpleFeature feature = fsi.next();
+            assertEquals(feature.getID(), "active.01");
+            assertNotNull(feature.getDefaultGeometry());
+            assertTrue(fsi.hasNext());
+            feature = fsi.next();
+            assertEquals(feature.getID(), "active.10");
+            assertNotNull(feature.getDefaultGeometry());
+        }
     }
 
     @Test
@@ -339,10 +351,10 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         Crosses f = ff.crosses(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.12");
-
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.12");
+        }
         sf = new PackedCoordinateSequenceFactory();
         ls = gf.createLineString(sf.create(new double[] {0, 0, 1, 1}, 2));
         f = ff.crosses(ff.property("geo5"), ff.literal(ls));

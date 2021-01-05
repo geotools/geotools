@@ -326,8 +326,6 @@ public class NumericConverterFactory implements ConverterFactory {
      * @return integral component of decimal representation
      */
     static String toIntegral(String s) {
-        // NumberFormat format = NumberFormat.getInstance();
-
         int radex = -1; // last non numeric character to account for "." vs "," seperators
         for (int i = s.length() - 1; i > 0; i--) {
             char ch = s.charAt(i);

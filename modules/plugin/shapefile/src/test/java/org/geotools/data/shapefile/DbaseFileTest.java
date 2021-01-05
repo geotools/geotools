@@ -14,9 +14,9 @@
 package org.geotools.data.shapefile;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -84,18 +84,18 @@ public class DbaseFileTest extends TestCaseSupport {
     @Test
     public void testRowVsEntry() throws Exception {
         Object[] attrs = new Object[dbf.getHeader().getNumFields()];
-        DbaseFileReader dbf2 =
-                new DbaseFileReader(shpFiles, false, ShapefileDataStore.DEFAULT_STRING_CHARSET);
-        while (dbf.hasNext()) {
-            dbf.readEntry(attrs);
-            DbaseFileReader.Row r = dbf2.readRow();
-            for (int i = 0, ii = attrs.length; i < ii; i++) {
-                assertNotNull(attrs[i]);
-                assertNotNull(r.read(i));
-                assertEquals(attrs[i], r.read(i));
+        try (DbaseFileReader dbf2 =
+                new DbaseFileReader(shpFiles, false, ShapefileDataStore.DEFAULT_STRING_CHARSET)) {
+            while (dbf.hasNext()) {
+                dbf.readEntry(attrs);
+                DbaseFileReader.Row r = dbf2.readRow();
+                for (int i = 0, ii = attrs.length; i < ii; i++) {
+                    assertNotNull(attrs[i]);
+                    assertNotNull(r.read(i));
+                    assertEquals(attrs[i], r.read(i));
+                }
             }
         }
-        dbf2.close();
     }
 
     @Test
@@ -114,7 +114,7 @@ public class DbaseFileTest extends TestCaseSupport {
             header.addColumn("emptyDate", 'D', 20, 0);
             int length = header.getRecordLength();
             header.removeColumn("emptyDate");
-            assertTrue(length != header.getRecordLength());
+            assertNotEquals(length, header.getRecordLength());
             header.addColumn("emptyDate", 'D', 20, 0);
             assertEquals(length, header.getRecordLength());
             header.removeColumn("billy");
@@ -156,9 +156,11 @@ public class DbaseFileTest extends TestCaseSupport {
         header.setNumRecords(20);
         File f = new File(System.getProperty("java.io.tmpdir"), "scratchDBF.dbf");
         f.deleteOnExit();
-        try (FileOutputStream fout = new FileOutputStream(f)) {
-            DbaseFileWriter dbf =
-                    new DbaseFileWriter(header, fout.getChannel(), Charset.defaultCharset());
+        try (FileOutputStream fout = new FileOutputStream(f);
+                DbaseFileWriter dbf =
+                        new DbaseFileWriter(
+                                header, fout.getChannel(), Charset.defaultCharset()); ) {
+
             for (int i = 0; i < header.getNumRecords(); i++) {
                 dbf.write(new Object[6]);
             }

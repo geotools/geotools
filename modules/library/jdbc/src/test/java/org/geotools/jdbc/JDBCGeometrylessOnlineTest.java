@@ -31,6 +31,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Andrea Aime - OpenGeo
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
 
     protected SimpleFeatureType personSchema;
@@ -67,9 +68,9 @@ public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
         assertEquals(2, fc.size());
         try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
-            SimpleFeature f = fr.next();
+            fr.next();
             assertTrue(fr.hasNext());
-            f = fr.next();
+            fr.next();
             assertFalse(fr.hasNext());
         }
     }

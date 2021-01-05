@@ -51,8 +51,9 @@ public class PartialIndexedMappingFeatureIteratorTest extends IndexesTest {
             FeatureCollection<FeatureType, Feature> fcoll =
                     fsource.getMappedSource()
                             .getFeatures(this.partialIndexedFilter_2idxfilterResults());
-            FeatureIterator<Feature> iterator = fcoll.features();
-            assertTrue(iterator instanceof PartialIndexedMappingFeatureIterator);
+            try (FeatureIterator<Feature> iterator = fcoll.features()) {
+                assertTrue(iterator instanceof PartialIndexedMappingFeatureIterator);
+            }
             List<Feature> features =
                     FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
             assertEquals(features.size(), 6);

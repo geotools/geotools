@@ -96,14 +96,14 @@ public class XSUnsignedBindingsTest {
     }
 
     void copy(InputStream in, File to) throws IOException {
-        FileOutputStream fout = new FileOutputStream(to);
-        byte[] buffer = new byte[1024];
-        int n = 0;
+        try (FileOutputStream fout = new FileOutputStream(to)) {
+            byte[] buffer = new byte[1024];
+            int n = 0;
 
-        while ((n = in.read(buffer)) > 0) {
-            fout.write(buffer, 0, n);
+            while ((n = in.read(buffer)) > 0) {
+                fout.write(buffer, 0, n);
+            }
+            fout.flush();
         }
-        fout.flush();
-        fout.close();
     }
 }

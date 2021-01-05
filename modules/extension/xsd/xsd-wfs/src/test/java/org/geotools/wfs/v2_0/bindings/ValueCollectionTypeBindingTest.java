@@ -36,6 +36,7 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.wfs.PropertyValueCollection;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
@@ -51,6 +52,7 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
     private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2();
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 

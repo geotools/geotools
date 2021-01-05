@@ -17,15 +17,20 @@
 package org.geotools.data.ogr;
 
 import java.net.URL;
+import java.util.logging.Logger;
 import org.geotools.TestData;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
+import org.junit.Before;
 import org.junit.Test;
 
 public abstract class OGRPeformanceTest extends TestCaseSupport {
+
+    static final Logger LOGGER = Logging.getLogger(OGRPeformanceTest.class);
 
     static final String STATE_POP = "shapes/statepop.shp";
 
@@ -33,6 +38,7 @@ public abstract class OGRPeformanceTest extends TestCaseSupport {
         super(dataStoreFactoryClass);
     }
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         CRS.decode("EPSG:4326");
@@ -47,11 +53,11 @@ public abstract class OGRPeformanceTest extends TestCaseSupport {
         // System.out.println("OGR schema: " + (end - start) / 1000.0);
         Query query = new Query(ods.getTypeNames()[0]);
         start = System.currentTimeMillis();
-        FeatureReader ofr = ods.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        while (ofr.hasNext()) ofr.next();
-        ofr.close();
+        try (FeatureReader ofr = ods.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            while (ofr.hasNext()) ofr.next();
+        }
         end = System.currentTimeMillis();
-        // System.out.println("OGR: " + (end - start) / 1000.0);
+        LOGGER.info("OGR: " + (end - start) / 1000.0);
     }
 
     @Test
@@ -61,15 +67,15 @@ public abstract class OGRPeformanceTest extends TestCaseSupport {
         long start = System.currentTimeMillis();
         sds.getSchema();
         long end = System.currentTimeMillis();
-        // System.out.println("SDS schema: " + (end - start) / 1000.0);
+        LOGGER.info("SDS schema: " + (end - start) / 1000.0);
 
         Query query = new Query(sds.getTypeNames()[0]);
         start = System.currentTimeMillis();
-        FeatureReader sfr = sds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        while (sfr.hasNext()) sfr.next();
-        sfr.close();
+        try (FeatureReader sfr = sds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            while (sfr.hasNext()) sfr.next();
+        }
         end = System.currentTimeMillis();
-        // System.out.println("SDS: " + (end - start) / 1000.0);
+        LOGGER.info("SDS: " + (end - start) / 1000.0);
 
         // System.out.println("Attribute count: " + sds.getSchema().getAttributeCount());
         // System.out.println(

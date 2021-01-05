@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /** @author r0bb3n */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCTypeNamesOnlineTest extends JDBCTestSupport {
 
     @Override

@@ -37,6 +37,8 @@ import org.junit.Test;
  * @author Martin Desruisseaux
  * @author mprins
  */
+// it's testing the Utilities.equals in many places
+@SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
 public final class UtilitiesTest {
 
     /** Tests {@link Utilities#ensureNonNull}. */

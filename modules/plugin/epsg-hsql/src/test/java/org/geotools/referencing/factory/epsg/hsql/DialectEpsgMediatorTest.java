@@ -16,9 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg.hsql;
 
-import java.sql.Connection;
 import java.util.Set;
-import javax.sql.DataSource;
 import org.geotools.TestData;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -42,8 +40,6 @@ public class DialectEpsgMediatorTest {
     @Before
     public void setUp() throws Exception {
         if (factory == null) {
-            DataSource datasource = HsqlEpsgDatabase.createDataSource();
-            Connection connection = datasource.getConnection();
             Hints hints = new Hints(Hints.CACHE_POLICY, "default");
             factory = new HsqlDialectEpsgMediator(hints);
         }

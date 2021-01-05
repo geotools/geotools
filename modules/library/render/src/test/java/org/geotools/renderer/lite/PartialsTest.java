@@ -47,7 +47,6 @@ import org.junit.Test;
 /** Created by Michaël on 17/12/13. */
 public class PartialsTest {
 
-    private static final long TIME = 10000;
     SimpleFeatureSource fs_point;
     SimpleFeatureSource fs_line;
     SimpleFeatureSource fs_area;

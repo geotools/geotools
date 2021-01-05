@@ -133,9 +133,6 @@ public class CRSTest {
     @Test
     public void testManditoryTranform() throws Exception {
         CoordinateReferenceSystem WGS84 = CRS.decode("EPSG:4326"); // latlong
-        CoordinateReferenceSystem NAD83 = CRS.decode("EPSG:4269");
-        CoordinateReferenceSystem NAD83_UTM10 = CRS.decode("EPSG:26910");
-        CoordinateReferenceSystem BC_ALBERS = CRS.decode("EPSG:42102");
 
         CoordinateOperation op =
                 ReferencingFactoryFinder.getCoordinateOperationFactory(null)

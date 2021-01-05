@@ -277,9 +277,9 @@ public abstract class RendererBaseTest {
                 }
 
                 if (styles != null) {
-                    for (int j = 0; j < styles.length; i++) {
-                        if (!(styles[j] instanceof NamedStyle)) {
-                            return styles[j];
+                    for (Style s : styles) {
+                        if (!(s instanceof NamedStyle)) {
+                            return s;
                         }
                     }
                 }

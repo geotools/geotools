@@ -199,7 +199,7 @@ public class WFSFeatureCollectionEncodingTest {
         // prepare empty result
         net.opengis.wfs20.FeatureCollectionType fc =
                 Wfs20Factory.eINSTANCE.createFeatureCollectionType();
-        fc.setNumberReturned(new BigInteger("0"));
+        fc.setNumberReturned(BigInteger.valueOf(0));
 
         Encoder e = encoder();
 

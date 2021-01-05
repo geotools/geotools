@@ -51,8 +51,6 @@ import org.opengis.referencing.operation.TransformException;
 /** @author Simone Giannecchini, GeoSolutions. */
 public class TestPiecewise {
 
-    private static final String LOGGER = null;
-
     /** Testing {@link DefaultConstantPiecewiseTransformElement}. */
     @Test
     public void linearTransform() throws IOException, TransformException, TransformationException {

@@ -52,6 +52,7 @@ import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -149,25 +150,24 @@ public abstract class AbstractTest extends TestCase {
     protected void createTargetResourceDir(File targetResourcedir) throws Exception {
         targetResourcedir.mkdir();
 
-        ZipFile zipFile = new ZipFile(RESOURCE_ZIP);
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        try (ZipFile zipFile = new ZipFile(RESOURCE_ZIP)) {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
 
-            if (entry.isDirectory()) {
-                File dir = new File(OUTPUTDIR_RESOURCES + entry.getName());
-                dir.mkdir();
-            } else {
-                InputStream in = zipFile.getInputStream(entry);
-                FileOutputStream out = new FileOutputStream(OUTPUTDIR_RESOURCES + entry.getName());
-                byte[] buff = new byte[4096];
-                int count;
-
-                while ((count = in.read(buff)) > 0) out.write(buff, 0, count);
-
-                in.close();
-                out.close();
+                if (entry.isDirectory()) {
+                    File dir = new File(OUTPUTDIR_RESOURCES + entry.getName());
+                    dir.mkdir();
+                } else {
+                    try (InputStream in = zipFile.getInputStream(entry);
+                            FileOutputStream out =
+                                    new FileOutputStream(OUTPUTDIR_RESOURCES + entry.getName())) {
+                        byte[] buff = new byte[4096];
+                        int count;
+                        while ((count = in.read(buff)) > 0) out.write(buff, 0, count);
+                    }
+                }
             }
         }
     }
@@ -193,7 +193,8 @@ public abstract class AbstractTest extends TestCase {
         }
     }
 
-    public void testDrop() {
+    @Test
+    public void testDrop() throws Exception {
         try {
             Connection.commit();
         } catch (SQLException e) {
@@ -212,11 +213,7 @@ public abstract class AbstractTest extends TestCase {
                 Connection.rollback();
             } catch (SQLException ex) {
             }
-
-            ;
         }
-
-        ;
 
         for (String tn : getTileTableNames()) {
             try {
@@ -227,8 +224,6 @@ public abstract class AbstractTest extends TestCase {
                     Connection.rollback();
                 } catch (SQLException ex) {
                 }
-
-                ;
             }
         }
 
@@ -241,17 +236,12 @@ public abstract class AbstractTest extends TestCase {
                 } catch (SQLException ex) {
                 }
 
-                ;
             } catch (SQLException e) {
                 try {
                     Connection.rollback();
                 } catch (SQLException ex) {
                 }
-
-                ;
             }
-
-            ;
         }
 
         for (String tn : getSpatialTableNames()) {
@@ -270,11 +260,7 @@ public abstract class AbstractTest extends TestCase {
                     Connection.rollback();
                 } catch (SQLException ex) {
                 }
-
-                ;
             }
-
-            ;
         }
 
         try {
@@ -284,6 +270,7 @@ public abstract class AbstractTest extends TestCase {
         }
     }
 
+    @Test
     public void testScripts() {
         DDLGenerator gen =
                 new DDLGenerator(
@@ -302,6 +289,7 @@ public abstract class AbstractTest extends TestCase {
         }
     }
 
+    @Test
     public void testCreate() {
         try {
             // createXMLConnectFragment();
@@ -389,6 +377,7 @@ public abstract class AbstractTest extends TestCase {
         return JDBCAccessFactory.JDBCAccessMap.get(getConfigUrl().toString());
     }
 
+    @Test
     public void testImportParamList() throws Exception {
 
         URL shapeFileUrl = null, csvFileUrl = null, dirFileUrl = null;
@@ -474,12 +463,14 @@ public abstract class AbstractTest extends TestCase {
     }
 
     /** Unit test for {{@link #isSameFile(String, String)}. */
+    @Test
     public void testIsSameFile() throws Exception {
         assertTrue(isSameFile("foo", "./foo"));
         assertTrue(isSameFile("foo", "bar/../foo"));
         assertFalse(isSameFile("foo", "bar"));
     }
 
+    @Test
     public void testCreateJoined() {
         JDBCAccess access = getJDBCAccess();
 
@@ -638,66 +629,82 @@ public abstract class AbstractTest extends TestCase {
 
     protected abstract DBDialect getDBDialect();
 
+    @Test
     public void testImage1() {
         doTestImage1("image1");
     }
 
+    @Test
     public void testImage1Joined() {
         doTestImage1("image1_joined");
     }
 
+    @Test
     public void testImage2() {
         doTestImage2("image2");
     }
 
+    @Test
     public void testImage2Joined() {
         doTestImage2("image2_joined");
     }
 
+    @Test
     public void testImage3() {
         doTestImage3("image3");
     }
 
+    @Test
     public void testImage3Joined() {
         doTestImage3("image3_joined");
     }
 
+    @Test
     public void testFullExtent() {
         doFullExtent("fullExtent");
     }
 
+    @Test
     public void testFullExtentJoined() {
         doFullExtent("fullExtentJoined");
     }
 
+    @Test
     public void testNoData() {
         doNoData("nodData");
     }
 
+    @Test
     public void testNoDataJoined() {
         doNoData("noDataJoined");
     }
 
+    @Test
     public void testPartial() {
         doPartial("partial");
     }
 
+    @Test
     public void testPartialJoined() {
         doPartial("partialJoined");
     }
 
+    @Test
     public void testVienna() {
         doVienna("vienna");
     }
 
+    @Test
     public void testViennaJoined() {
         doVienna("viennaJoined");
     }
 
+    @Test
     public void testViennaEnv() {
         doViennaEnv("viennaEnv");
     }
 
+    @Test
     public void testViennaEnvJoined() {
         doViennaEnv("viennaEnvJoined");
     }
@@ -905,21 +912,22 @@ public abstract class AbstractTest extends TestCase {
             password = password.trim();
         }
 
-        PrintWriter w =
+        try (PrintWriter w =
                 new PrintWriter(
-                        new FileOutputStream(OUTPUTDIR_RESOURCES + getXMLConnectFragmentName()));
-        w.println("<connect>");
-        w.println("     <dstype value=\"DBCP\"/>");
-        w.println("     <username value=\"" + user + "\"/>");
-        w.println("     <password value=\"" + password + "\"/>");
-        w.println("     <jdbcUrl value=\"" + getJDBCUrl(host, port, dbName) + "\"/>");
-        w.println("     <driverClassName value=\"" + getDriverClassName() + "\"/>");
-        w.println("     <maxActive value=\"10\"/>");
-        w.println("     <maxIdle value=\"0\"/>");
-        w.println("</connect>");
-        w.close();
+                        new FileOutputStream(OUTPUTDIR_RESOURCES + getXMLConnectFragmentName()))) {
+            w.println("<connect>");
+            w.println("     <dstype value=\"DBCP\"/>");
+            w.println("     <username value=\"" + user + "\"/>");
+            w.println("     <password value=\"" + password + "\"/>");
+            w.println("     <jdbcUrl value=\"" + getJDBCUrl(host, port, dbName) + "\"/>");
+            w.println("     <driverClassName value=\"" + getDriverClassName() + "\"/>");
+            w.println("     <maxActive value=\"10\"/>");
+            w.println("     <maxIdle value=\"0\"/>");
+            w.println("</connect>");
+        }
     }
 
+    @Test
     public void testGetConnection() {
         Connection = null;
 
@@ -931,6 +939,7 @@ public abstract class AbstractTest extends TestCase {
         }
     }
 
+    @Test
     public void testCloseConnection() {
         if (Connection != null) {
             try {
@@ -961,6 +970,7 @@ public abstract class AbstractTest extends TestCase {
      */
     protected abstract String getJDBCUrl(String host, Integer port, String dbName);
 
+    @Test
     public void testOutputTransparentColor() {
         JDBCAccess access = getJDBCAccess();
         ImageLevelInfo li = access.getLevelInfo(access.getNumOverviews());
@@ -979,6 +989,7 @@ public abstract class AbstractTest extends TestCase {
         }
     }
 
+    @Test
     public void testOutputTransparentColor2() {
         JDBCAccess access = getJDBCAccess();
         ImageLevelInfo li = access.getLevelInfo(access.getNumOverviews());

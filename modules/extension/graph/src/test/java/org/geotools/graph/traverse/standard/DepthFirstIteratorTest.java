@@ -95,7 +95,6 @@ public class DepthFirstIteratorTest {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
         final int suspend = 50;
-        ;
 
         CountingWalker walker =
                 new CountingWalker() {
@@ -232,15 +231,6 @@ public class DepthFirstIteratorTest {
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
         Node root = (Node) obj[0];
         final Map obj2node = (Map) obj[1];
-
-        GraphVisitor initializer =
-                new GraphVisitor() {
-                    @Override
-                    public int visit(Graphable component) {
-                        component.setCount(-1);
-                        return 0;
-                    }
-                };
 
         CountingWalker walker =
                 new CountingWalker() {

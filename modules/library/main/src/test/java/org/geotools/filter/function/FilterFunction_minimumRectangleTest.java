@@ -45,16 +45,16 @@ public class FilterFunction_minimumRectangleTest {
         // Test the Function
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         Function exp = ff.function("minrectangle", ff.property("geom"));
-        SimpleFeatureIterator iter = featureCollection.features();
-        while (iter.hasNext()) {
-            SimpleFeature feature = iter.next();
-            Geometry geom = (Geometry) feature.getDefaultGeometry();
-            Geometry rectangle = new MinimumDiameter(geom).getMinimumRectangle();
-            Object value = exp.evaluate(feature);
-            assertTrue(value instanceof Polygon);
-            assertTrue(rectangle.equals((Geometry) value));
+        try (SimpleFeatureIterator iter = featureCollection.features()) {
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                Geometry geom = (Geometry) feature.getDefaultGeometry();
+                Geometry rectangle = new MinimumDiameter(geom).getMinimumRectangle();
+                Object value = exp.evaluate(feature);
+                assertTrue(value instanceof Polygon);
+                assertEquals(rectangle, value);
+            }
         }
-        iter.close();
 
         // Check for null safeness
         assertNull(exp.evaluate(null));

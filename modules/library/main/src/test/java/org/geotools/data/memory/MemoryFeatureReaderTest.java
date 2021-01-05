@@ -49,20 +49,21 @@ public class MemoryFeatureReaderTest extends DataTestCase {
         int expectedFeatureCount = roadFeatures.length;
         int currentFeatureCount = 0;
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
                 memoryDataStore.getFeatureReader(
-                        new Query(roadType.getTypeName(), Filter.INCLUDE), transaction);
+                        new Query(roadType.getTypeName(), Filter.INCLUDE), transaction)) {
 
-        // start iterating through content
-        if (featureReader.hasNext()) {
-            featureReader.next();
-            currentFeatureCount++;
+            // start iterating through content
+            if (featureReader.hasNext()) {
+                featureReader.next();
+                currentFeatureCount++;
+            }
+            SimpleFeature newFeature = SimpleFeatureBuilder.template(roadType, null);
+
+            memoryDataStore.addFeature(newFeature);
+
+            assertReaderHasFeatureCount(expectedFeatureCount, currentFeatureCount, featureReader);
         }
-        SimpleFeature newFeature = SimpleFeatureBuilder.template(roadType, null);
-
-        memoryDataStore.addFeature(newFeature);
-
-        assertReaderHasFeatureCount(expectedFeatureCount, currentFeatureCount, featureReader);
     }
 
     @Test
@@ -71,29 +72,32 @@ public class MemoryFeatureReaderTest extends DataTestCase {
         int expectedFeatureCount = roadFeatures.length;
         int currentFeatureCount = 0;
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
                 memoryDataStore.getFeatureReader(
-                        new Query(roadType.getTypeName(), Filter.INCLUDE), transaction);
+                        new Query(roadType.getTypeName(), Filter.INCLUDE), transaction)) {
 
-        // start iterating through content
-        if (featureReader.hasNext()) {
-            featureReader.next();
-            currentFeatureCount++;
+            // start iterating through content
+            if (featureReader.hasNext()) {
+                featureReader.next();
+                currentFeatureCount++;
+            }
+
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> featureWriter =
+                    memoryDataStore.getFeatureWriter(roadType.getTypeName(), transaction)) {
+
+                while (featureWriter.hasNext()) {
+                    featureWriter.next();
+                }
+
+                SimpleFeature newFeature = featureWriter.next();
+                assertNotNull(newFeature);
+
+                transaction.commit();
+
+                assertReaderHasFeatureCount(
+                        expectedFeatureCount, currentFeatureCount, featureReader);
+            }
         }
-
-        FeatureWriter<SimpleFeatureType, SimpleFeature> featureWriter =
-                memoryDataStore.getFeatureWriter(roadType.getTypeName(), transaction);
-
-        while (featureWriter.hasNext()) {
-            featureWriter.next();
-        }
-
-        SimpleFeature newFeature = featureWriter.next();
-        assertNotNull(newFeature);
-
-        transaction.commit();
-
-        assertReaderHasFeatureCount(expectedFeatureCount, currentFeatureCount, featureReader);
     }
 
     public void shutDown() throws IOException {

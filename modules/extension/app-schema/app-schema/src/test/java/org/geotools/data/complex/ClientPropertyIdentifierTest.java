@@ -56,8 +56,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class ClientPropertyIdentifierTest {
 
-    private FilterFactory2 ff;
-
     private NamespaceSupport namespaces = new NamespaceSupport();
 
     private FeatureSource obsSource;
@@ -67,7 +65,6 @@ public class ClientPropertyIdentifierTest {
         namespaces.declarePrefix("swe", SWE_NS);
         namespaces.declarePrefix("gml", GML_NS);
         namespaces.declarePrefix("xlink", XLINK_NS);
-        ff = new FilterFactoryImplNamespaceAware(namespaces);
     }
 
     /** Load all the data accesses. */

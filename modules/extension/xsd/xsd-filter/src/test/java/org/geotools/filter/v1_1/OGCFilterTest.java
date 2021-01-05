@@ -48,12 +48,12 @@ public class OGCFilterTest {
         File file = File.createTempFile("filter", "xml");
         file.deleteOnExit();
 
-        OutputStream output = new BufferedOutputStream(new FileOutputStream(file));
-        Encoder encoder = new Encoder(new OGCConfiguration());
+        try (OutputStream output = new BufferedOutputStream(new FileOutputStream(file))) {
+            Encoder encoder = new Encoder(new OGCConfiguration());
 
-        encoder.encode(filter, OGC.PropertyIsEqualTo, output);
-        output.flush();
-        output.close();
+            encoder.encode(filter, OGC.PropertyIsEqualTo, output);
+            output.flush();
+        }
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
@@ -74,27 +74,29 @@ public class OGCFilterTest {
     @Test
     public void testParse() throws Exception {
         Parser parser = new Parser(new OGCConfiguration());
-        InputStream in = getClass().getResourceAsStream("test1.xml");
+        try (InputStream in = getClass().getResourceAsStream("test1.xml")) {
 
-        if (in == null) {
-            throw new FileNotFoundException(getClass().getResource("test1.xml").toExternalForm());
+            if (in == null) {
+                throw new FileNotFoundException(
+                        getClass().getResource("test1.xml").toExternalForm());
+            }
+
+            Object thing = parser.parse(in);
+            Assert.assertEquals(0, parser.getValidationErrors().size());
+
+            Assert.assertNotNull(thing);
+            Assert.assertTrue(thing instanceof PropertyIsEqualTo);
+
+            PropertyIsEqualTo equal = (PropertyIsEqualTo) thing;
+            Assert.assertTrue(equal.getExpression1() instanceof PropertyName);
+            Assert.assertTrue(equal.getExpression2() instanceof Literal);
+
+            PropertyName name = (PropertyName) equal.getExpression1();
+            Assert.assertEquals("testString", name.getPropertyName());
+
+            Literal literal = (Literal) equal.getExpression2();
+            Assert.assertEquals("2", literal.toString());
         }
-
-        Object thing = parser.parse(in);
-        Assert.assertEquals(0, parser.getValidationErrors().size());
-
-        Assert.assertNotNull(thing);
-        Assert.assertTrue(thing instanceof PropertyIsEqualTo);
-
-        PropertyIsEqualTo equal = (PropertyIsEqualTo) thing;
-        Assert.assertTrue(equal.getExpression1() instanceof PropertyName);
-        Assert.assertTrue(equal.getExpression2() instanceof Literal);
-
-        PropertyName name = (PropertyName) equal.getExpression1();
-        Assert.assertEquals("testString", name.getPropertyName());
-
-        Literal literal = (Literal) equal.getExpression2();
-        Assert.assertEquals("2", literal.toString());
     }
 
     @Test

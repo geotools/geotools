@@ -96,7 +96,7 @@ public class NetCDFCRSTest {
 
     /** Sets up the custom definitions */
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUpClass() throws Exception {
         String netcdfPropertiesPath =
                 TestData.file(NetCDFCRSTest.class, "netcdf.projections.properties")
                         .getCanonicalPath();

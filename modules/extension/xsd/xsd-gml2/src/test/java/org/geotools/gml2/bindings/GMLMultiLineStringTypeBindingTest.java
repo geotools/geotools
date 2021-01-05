@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -35,6 +36,7 @@ public class GMLMultiLineStringTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance line2;
     GeometryFactory gf;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 

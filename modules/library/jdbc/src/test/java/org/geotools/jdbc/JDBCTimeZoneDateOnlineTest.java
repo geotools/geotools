@@ -26,6 +26,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
 /** Base class for online tests of JDBC time zone handling. */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCTimeZoneDateOnlineTest extends JDBCTestSupport {
 
     @Override

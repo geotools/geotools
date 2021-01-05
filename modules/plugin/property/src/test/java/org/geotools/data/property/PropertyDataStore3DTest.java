@@ -67,17 +67,17 @@ public class PropertyDataStore3DTest {
         if (file.exists()) {
             file.delete();
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write("_=name:String,geom:Geometry:srid=7415");
-        writer.newLine();
-        writer.write(
-                "full3d.poly=poly|POLYGON((94000 471000 12, 94001 471000 12, 94001 471001 12, 94000 471001 12, 94000 471000 12))");
-        writer.newLine();
-        writer.write("full3d.point=point|POINT(94330 471816 16)");
-        writer.newLine();
-        writer.write("full3d.ls=line|LINESTRING(94330 471816 16, 194319 471814 17)");
-        writer.newLine();
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("_=name:String,geom:Geometry:srid=7415");
+            writer.newLine();
+            writer.write(
+                    "full3d.poly=poly|POLYGON((94000 471000 12, 94001 471000 12, 94001 471001 12, 94000 471001 12, 94000 471000 12))");
+            writer.newLine();
+            writer.write("full3d.point=point|POINT(94330 471816 16)");
+            writer.newLine();
+            writer.write("full3d.ls=line|LINESTRING(94330 471816 16, 194319 471814 17)");
+            writer.newLine();
+        }
 
         store = new PropertyDataStore(dir);
     }

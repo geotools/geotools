@@ -64,18 +64,17 @@ public class StyleGeneratorTest extends DataTestCase {
                             + "\" contains "
                             + filteredCollection.size()
                             + " element(s) (";
-            SimpleFeatureIterator it = filteredCollection.features();
+            try (SimpleFeatureIterator it = filteredCollection.features()) {
 
-            while (it.hasNext()) {
-                SimpleFeature feature = it.next();
-                filterInfo += ("'" + feature.getAttribute(attribName) + "'");
+                while (it.hasNext()) {
+                    SimpleFeature feature = it.next();
+                    filterInfo += ("'" + feature.getAttribute(attribName) + "'");
 
-                if (it.hasNext()) {
-                    filterInfo += ", ";
+                    if (it.hasNext()) {
+                        filterInfo += ", ";
+                    }
                 }
             }
-
-            it.close();
             // System.out.println(filterInfo + ")");
         }
     }
@@ -148,7 +147,6 @@ public class StyleGeneratorTest extends DataTestCase {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Expression expr = null;
 
-        SimpleFeatureType type = riverType;
         final String attribName = "river";
         SimpleFeatureCollection fc = DataUtilities.collection(riverFeatures);
 

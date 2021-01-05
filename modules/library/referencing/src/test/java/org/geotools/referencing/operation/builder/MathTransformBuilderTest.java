@@ -218,6 +218,7 @@ public final class MathTransformBuilderTest {
             super(pts);
         }
 
+        @Test
         public void testLSM() {
             // fill Matrix by calculateLSM()
             this.calculateLSM();

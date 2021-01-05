@@ -41,7 +41,6 @@ import org.junit.runner.RunWith;
 public class JCRSStatusBarItemTest extends GraphicsTestBase {
 
     private MapPane mapPane;
-    private JCRSStatusBarItem item;
 
     @Before
     public void setup() {
@@ -72,7 +71,7 @@ public class JCRSStatusBarItemTest extends GraphicsTestBase {
                 new GuiTask() {
                     @Override
                     protected void executeInEDT() throws Throwable {
-                        item = new JCRSStatusBarItem(mapPane);
+                        new JCRSStatusBarItem(mapPane);
                     }
                 });
     }

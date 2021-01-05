@@ -19,6 +19,7 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCUuidTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostGISUuidTestSetup extends JDBCUuidTestSetup {
 
     public PostGISUuidTestSetup(JDBCTestSetup delegate) {

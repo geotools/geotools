@@ -98,8 +98,8 @@ public class GeoPkgDatetimeTest {
                 SimpleFeature f = itr.next();
                 assertNotNull(f);
 
-                Timestamp datetime = (Timestamp) f.getAttribute("datetime");
-                Date date = (Date) f.getAttribute("date");
+                assertThat(f.getAttribute("datetime"), CoreMatchers.instanceOf(Timestamp.class));
+                assertThat(f.getAttribute("date"), CoreMatchers.instanceOf(Date.class));
             }
         }
     }

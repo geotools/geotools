@@ -32,6 +32,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.parse.ZoomContext;
@@ -43,6 +45,8 @@ import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 
 public class YsldValidateTest {
+
+    static final Logger LOGGER = Logging.getLogger(YsldValidateTest.class);
 
     @Test
     public void testMalformed() throws Exception {
@@ -218,13 +222,6 @@ public class YsldValidateTest {
         assertThat(errors.get(0).getProblemMark(), problemOn(2));
 
         verify(finder, zctxt);
-    }
-
-    List<MarkedYAMLException> dump(List<MarkedYAMLException> errors) {
-        for (MarkedYAMLException e : errors) {
-            // System.out.println(e.toString());
-        }
-        return errors;
     }
 
     @SuppressWarnings("unchecked")
@@ -613,13 +610,11 @@ public class YsldValidateTest {
     }
 
     List<MarkedYAMLException> validate(String ysld) throws IOException {
-        // return dump(Ysld.validate(ysld));
         return this.validate(ysld, Collections.emptyList());
     }
 
     List<MarkedYAMLException> validate(String ysld, List<ZoomContextFinder> ctxts)
             throws IOException {
-        // return dump(Ysld.validate(ysld));
         return Ysld.validate(ysld, ctxts, new UomMapper());
     }
 

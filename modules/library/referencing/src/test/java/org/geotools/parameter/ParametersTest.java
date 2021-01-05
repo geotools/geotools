@@ -206,7 +206,6 @@ public final class ParametersTest {
     @Test
     public void testParameterDescriptor() {
         ParameterDescriptor<Double> dDescriptor;
-        ParameterDescriptor<Integer> iDescriptor;
         ParameterValue<Double> parameter;
 
         dDescriptor = DefaultParameterDescriptor.create("Test", 12, 4, 20, SI.METRE);
@@ -246,14 +245,14 @@ public final class ParametersTest {
             assertEquals("value", i / 100, parameter.doubleValue(SI.METRE), 0);
         }
         try {
-            iDescriptor = DefaultParameterDescriptor.create("Test", 3, 4, 20);
+            DefaultParameterDescriptor.create("Test", 3, 4, 20);
             fail("setValue(< min)");
         } catch (InvalidParameterValueException exception) {
             // This is the expected exception.
             assertEquals("Test", exception.getParameterName());
         }
         try {
-            iDescriptor = DefaultParameterDescriptor.create("Test", 12, 20, 4);
+            DefaultParameterDescriptor.create("Test", 12, 20, 4);
             fail("ParameterDescriptor(min > max)");
         } catch (IllegalArgumentException exception) {
             // This is the expected exception.
@@ -756,6 +755,8 @@ public final class ParametersTest {
 
     /** Tests the storage of matrix parameters. */
     @Test
+    // code is using equals with extra parameters and semantics compared to the built-in equals
+    @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
     public void testMatrixEdit() {
         final int size = 8;
         final Random random = new Random(47821365);

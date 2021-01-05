@@ -56,10 +56,10 @@ public class PreGeneralizedDataStoreTest {
             Assert.assertEquals("GenStreams", typeName);
             Query query = new Query(typeName);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-            Assert.assertNotNull(reader);
-            reader.close();
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+                Assert.assertNotNull(reader);
+            }
 
             SimpleFeatureSource fsource = ds.getFeatureSource(typeName);
             Assert.assertNotNull(fsource);

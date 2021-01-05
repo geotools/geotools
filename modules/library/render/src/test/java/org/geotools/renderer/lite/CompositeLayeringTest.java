@@ -22,8 +22,6 @@ import org.junit.Test;
 
 public class CompositeLayeringTest {
 
-    private static final long TIME = 40000;
-
     SimpleFeatureSource fs;
 
     SimpleFeatureSource bfs;

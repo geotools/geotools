@@ -110,7 +110,7 @@ public class SpatialFilterTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDownClass() {
         Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
     }
 

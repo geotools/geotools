@@ -20,7 +20,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
@@ -28,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Andrea Aime - OpenGeo
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCSkipColumnOnlineTest extends JDBCTestSupport {
 
     protected static final String SKIPCOLUMN = "skipcolumn";
@@ -58,7 +58,7 @@ public abstract class JDBCSkipColumnOnlineTest extends JDBCTestSupport {
         assertEquals(1, fc.size());
         try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
-            SimpleFeature f = fr.next();
+            fr.next();
             assertFalse(fr.hasNext());
         }
     }

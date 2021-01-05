@@ -141,18 +141,15 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
         ShpFileType[] types = ShpFileType.values();
         for (ShpFileType shpFileType : types) {
             String read = "";
-            InputStream in = files.getInputStream(shpFileType, this);
-            InputStreamReader reader = new InputStreamReader(in);
-            assertEquals(1, files.numberOfLocks());
-            try {
+            try (InputStream in = files.getInputStream(shpFileType, this);
+                    InputStreamReader reader = new InputStreamReader(in)) {
+                assertEquals(1, files.numberOfLocks());
                 int current = reader.read();
                 while (current != -1) {
                     read += (char) current;
                     current = reader.read();
                 }
             } finally {
-                reader.close();
-                in.close();
                 assertEquals(0, files.numberOfLocks());
             }
             assertEquals(shpFileType.name(), read);
@@ -185,21 +182,21 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
     }
 
     @Test
+    @SuppressWarnings("PMD.UnusedVariable") // really want to just open and close
     public void testGetReadChannelURL() throws IOException {
         URL url = TestData.url("shapes/statepop.shp");
         ShpFiles files = new ShpFiles(url);
 
         assertFalse(files.isLocal());
 
-        ReadableByteChannel read = files.getReadChannel(SHP, this);
-
-        assertEquals(1, files.numberOfLocks());
-
-        read.close();
+        try (ReadableByteChannel read = files.getReadChannel(SHP, this)) {
+            assertEquals(1, files.numberOfLocks());
+        }
 
         assertEquals(0, files.numberOfLocks());
     }
 
+    @SuppressWarnings("PMD.CloseResource") // manual handling to try double close
     private void doRead(ShpFileType shpFileType) throws IOException {
         ReadableByteChannel in = files.getReadChannel(shpFileType, this);
         assertEquals(1, files.numberOfLocks());
@@ -223,6 +220,7 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
         assertEquals(shpFileType.name(), read);
     }
 
+    @SuppressWarnings("PMD.CloseResource") // manual handling to try double close
     private void doWrite(ShpFileType shpFileType) throws IOException {
         WritableByteChannel out = files.getWriteChannel(shpFileType, this);
         assertEquals(1, files.numberOfLocks());

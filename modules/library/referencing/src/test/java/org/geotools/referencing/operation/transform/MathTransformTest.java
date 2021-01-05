@@ -590,7 +590,6 @@ public final class MathTransformTest {
                         + " AXIS[\"Ellipsoidal height\", UP], "
                         + " AUTHORITY[\"EPSG\",\"4939\"]]";
         CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
-        CoordinateReferenceSystem world = DefaultGeographicCRS.WGS84;
 
         MathTransform toWgs84_3d = CRS.findMathTransform(gda94, DefaultGeographicCRS.WGS84_3D);
         MathTransform toWgs84_2d =

@@ -30,7 +30,6 @@ import org.geotools.test.TestData;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.handlers.DocumentHandler;
-import org.geotools.xml.schema.Schema;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -46,7 +45,6 @@ public class LayerInheritanceTest {
         hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
         Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
-        Schema schema = WMSSchema.getInstance();
         SchemaFactory.getInstance(WMSSchema.NAMESPACE);
 
         Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);

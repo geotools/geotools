@@ -19,6 +19,7 @@ package org.geotools.filter.function;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
@@ -37,6 +38,7 @@ public class InFunctionTest extends FunctionTestSupport {
     private SimpleFeature feature;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 

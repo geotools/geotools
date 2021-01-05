@@ -16,7 +16,8 @@
  */
 package org.geotools.filter.function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.logging.Logger;
 import java.util.stream.DoubleStream;
@@ -91,47 +92,48 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         Function classify = ff.function("classify", exp, ff.literal(classifer));
         assertNotNull("step 2 - classify function", classify);
 
-        SimpleFeatureIterator list = featureCollection.features();
+        try (SimpleFeatureIterator it = featureCollection.features()) {
 
-        // feature 1
-        SimpleFeature f = list.next();
-        Integer slot = classify.evaluate(f, Integer.class);
-        assertEquals("value " + f.getAttribute("foo"), 1, slot.intValue());
+            // feature 1
+            SimpleFeature f = it.next();
+            Integer slot = classify.evaluate(f, Integer.class);
+            assertEquals("value " + f.getAttribute("foo"), 1, slot.intValue());
 
-        // feature 2
-        f = list.next();
-        slot = classify.evaluate(f, Integer.class);
-        assertEquals("value " + f.getAttribute("foo"), 4, slot.intValue());
+            // feature 2
+            f = it.next();
+            slot = classify.evaluate(f, Integer.class);
+            assertEquals("value " + f.getAttribute("foo"), 4, slot.intValue());
 
-        // feature 3
-        f = list.next();
-        slot = classify.evaluate(f, Integer.class);
-        assertEquals("value " + f.getAttribute("foo"), 2, slot.intValue());
+            // feature 3
+            f = it.next();
+            slot = classify.evaluate(f, Integer.class);
+            assertEquals("value " + f.getAttribute("foo"), 2, slot.intValue());
 
-        // feature 4
-        f = list.next();
-        slot = classify.evaluate(f, Integer.class);
-        assertEquals("value " + f.getAttribute("foo"), 2, slot.intValue());
+            // feature 4
+            f = it.next();
+            slot = classify.evaluate(f, Integer.class);
+            assertEquals("value " + f.getAttribute("foo"), 2, slot.intValue());
 
-        // feature 5
-        f = list.next();
-        slot = classify.evaluate(f, Integer.class);
-        assertEquals("value " + f.getAttribute("foo"), 2, slot.intValue());
+            // feature 5
+            f = it.next();
+            slot = classify.evaluate(f, Integer.class);
+            assertEquals("value " + f.getAttribute("foo"), 2, slot.intValue());
 
-        // feature 6
-        f = list.next();
-        slot = classify.evaluate(f, Integer.class);
-        assertEquals("value " + f.getAttribute("foo"), 3, slot.intValue());
+            // feature 6
+            f = it.next();
+            slot = classify.evaluate(f, Integer.class);
+            assertEquals("value " + f.getAttribute("foo"), 3, slot.intValue());
 
-        // feature 7
-        f = list.next();
-        slot = classify.evaluate(f, Integer.class);
-        assertEquals("value " + f.getAttribute("foo"), 1, slot.intValue());
+            // feature 7
+            f = it.next();
+            slot = classify.evaluate(f, Integer.class);
+            assertEquals("value " + f.getAttribute("foo"), 1, slot.intValue());
 
-        // feature 8
-        f = list.next();
-        slot = classify.evaluate(f, Integer.class);
-        assertEquals("value " + f.getAttribute("foo"), 1, slot.intValue());
+            // feature 8
+            f = it.next();
+            slot = classify.evaluate(f, Integer.class);
+            assertEquals("value " + f.getAttribute("foo"), 1, slot.intValue());
+        }
     }
 
     @Test

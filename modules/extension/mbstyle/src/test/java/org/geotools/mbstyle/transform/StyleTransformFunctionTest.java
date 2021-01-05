@@ -19,7 +19,6 @@ package org.geotools.mbstyle.transform;
 import java.io.IOException;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
@@ -37,7 +36,7 @@ public class StyleTransformFunctionTest {
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transformed = mbStyle.transform();
+        mbStyle.transform();
     }
 
     @Test
@@ -46,7 +45,7 @@ public class StyleTransformFunctionTest {
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transform = mbStyle.transform();
+        mbStyle.transform();
     }
 
     @Test
@@ -55,7 +54,7 @@ public class StyleTransformFunctionTest {
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transformed = mbStyle.transform();
+        mbStyle.transform();
     }
 
     @Test
@@ -64,7 +63,7 @@ public class StyleTransformFunctionTest {
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transformed = mbStyle.transform();
+        mbStyle.transform();
     }
 
     @Test
@@ -74,6 +73,6 @@ public class StyleTransformFunctionTest {
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transformed = mbStyle.transform();
+        mbStyle.transform();
     }
 }

@@ -76,20 +76,21 @@ public class DbaseNullSupportTest {
             header.addColumn("" + types[i], types[i], sizes[i], decimals[i]);
         }
         header.setNumRecords(values.length);
-        FileOutputStream fos = new FileOutputStream(tmp);
-        WritableByteChannel channel = fos.getChannel();
-        tmp.deleteOnExit();
-        DbaseFileWriter writer = new DbaseFileWriter(header, channel, cs, tz);
-        // write records such that the i-th row has nulls in every column except the i-th column
-        for (int row = 0; row < values.length; row++) {
-            Object[] current = new Object[values.length];
-            Arrays.fill(current, null);
-            current[row] = values[row];
-            writer.write(current);
+        try (FileOutputStream fos = new FileOutputStream(tmp);
+                WritableByteChannel channel = fos.getChannel();
+                DbaseFileWriter writer = new DbaseFileWriter(header, channel, cs, tz)) {
+
+            tmp.deleteOnExit();
+
+            // write records such that the i-th row has nulls in every column except the i-th column
+            for (int row = 0; row < values.length; row++) {
+                Object[] current = new Object[values.length];
+                Arrays.fill(current, null);
+                current[row] = values[row];
+                writer.write(current);
+            }
+            fos.flush();
         }
-        writer.close();
-        fos.flush();
-        fos.close();
         try (FileInputStream in = new FileInputStream(tmp);
                 DbaseFileReader reader = new DbaseFileReader(in.getChannel(), false, cs, tz)) {
             assertEquals(

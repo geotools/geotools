@@ -50,7 +50,7 @@ public class FunctionFactoryTest {
     static FactoryIteratorProvider ffIteratorProvider;
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUpClass() {
         ffIteratorProvider =
                 new FactoryIteratorProvider() {
 
@@ -103,7 +103,7 @@ public class FunctionFactoryTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDownClass() {
         GeoTools.removeFactoryIteratorProvider(ffIteratorProvider);
     }
 

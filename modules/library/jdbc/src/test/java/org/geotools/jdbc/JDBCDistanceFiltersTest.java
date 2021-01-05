@@ -14,6 +14,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.DWithin;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCDistanceFiltersTest extends JDBCTestSupport {
 
     // a point far away from all others (100+ km)

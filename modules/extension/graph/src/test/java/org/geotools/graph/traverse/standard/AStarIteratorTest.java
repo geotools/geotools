@@ -163,7 +163,10 @@ public class AStarIteratorTest {
      * node or depth difference between target node and current node otherwise.
      */
     @Test
-    @SuppressWarnings("unchecked") // refusing to clean up this unholy mess
+    @SuppressWarnings({
+        "unchecked",
+        "PMD.AvoidUsingHardCodedIP"
+    }) // refusing to clean up this unholy mess
     public void test_3() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);

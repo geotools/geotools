@@ -125,6 +125,7 @@ public class PGRasterOnlineTest extends AbstractTest {
     }
 
     @Override
+    @org.junit.Test
     public void testCreate() {
         executeCreate(
                 Connection,
@@ -132,6 +133,7 @@ public class PGRasterOnlineTest extends AbstractTest {
                 true);
     }
 
+    @org.junit.Test
     public void testCreate2() {
         executeCreate(
                 Connection,
@@ -153,17 +155,18 @@ public class PGRasterOnlineTest extends AbstractTest {
 
             con.prepareStatement(createMasterStatement).execute();
 
-            PreparedStatement ps =
-                    con.prepareStatement("insert into MOSAIC(NAME,TileTable) values (?,?)");
-            ps.setString(1, "oek");
-            ps.setString(2, "rtable1");
-            ps.execute();
-            ps.setString(1, "oek");
-            ps.setString(2, "rtable2");
-            ps.execute();
-            ps.setString(1, "oek");
-            ps.setString(2, "rtable3");
-            ps.execute();
+            try (PreparedStatement ps =
+                    con.prepareStatement("insert into MOSAIC(NAME,TileTable) values (?,?)")) {
+                ps.setString(1, "oek");
+                ps.setString(2, "rtable1");
+                ps.execute();
+                ps.setString(1, "oek");
+                ps.setString(2, "rtable2");
+                ps.execute();
+                ps.setString(1, "oek");
+                ps.setString(2, "rtable3");
+                ps.execute();
+            }
 
             con.prepareStatement(
                             "CREATE TABLE \"public\".\"rtable1\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)")
@@ -205,24 +208,25 @@ public class PGRasterOnlineTest extends AbstractTest {
             // enforce_srid_rast").execute();
             //            con.prepareStatement("alter table raster3 drop constraint
             // enforce_srid_rast").execute();
-
             for (String scriptName : scriptNames) {
-                InputStream scriptIn = new URL("file:target/resources/" + scriptName).openStream();
-                final char[] buffer = new char[0x10000];
-                StringBuilder out = new StringBuilder();
-                Reader in = new InputStreamReader(scriptIn, "UTF-8");
-                int read;
-                do {
-                    read = in.read(buffer, 0, buffer.length);
-                    if (read > 0) {
-                        out.append(buffer, 0, read);
-                    }
-                } while (read >= 0);
+                try (InputStream scriptIn =
+                                new URL("file:target/resources/" + scriptName).openStream();
+                        Reader in = new InputStreamReader(scriptIn, "UTF-8")) {
+                    final char[] buffer = new char[0x10000];
+                    StringBuilder out = new StringBuilder();
+                    int read;
+                    do {
+                        read = in.read(buffer, 0, buffer.length);
+                        if (read > 0) {
+                            out.append(buffer, 0, read);
+                        }
+                    } while (read >= 0);
 
-                StringTokenizer tok = new StringTokenizer(out.toString(), ";");
-                while (tok.hasMoreTokens()) {
-                    String statement = tok.nextToken();
-                    con.prepareStatement(statement).execute();
+                    StringTokenizer tok = new StringTokenizer(out.toString(), ";");
+                    while (tok.hasMoreTokens()) {
+                        String statement = tok.nextToken();
+                        con.prepareStatement(statement).execute();
+                    }
                 }
             }
 
@@ -259,6 +263,7 @@ public class PGRasterOnlineTest extends AbstractTest {
     }
 
     @Override
+    @org.junit.Test
     public void testDrop() {
 
         try (java.sql.Connection con = getDBDialect().getConnection()) {
@@ -270,7 +275,6 @@ public class PGRasterOnlineTest extends AbstractTest {
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
-        } finally {;
         }
     }
 

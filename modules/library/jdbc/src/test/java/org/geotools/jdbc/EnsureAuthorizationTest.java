@@ -203,6 +203,7 @@ public class EnsureAuthorizationTest {
                         new FeatureLock(SAMPLE_FEATURE_ID, 10000000L));
     }
 
+    @SuppressWarnings("PMD.CloseResource") // they are mocks
     private void configureMetadata() throws SQLException {
         ((MockDatabaseMetaData) cx.getMetaData()).setSearchStringEscape("");
 

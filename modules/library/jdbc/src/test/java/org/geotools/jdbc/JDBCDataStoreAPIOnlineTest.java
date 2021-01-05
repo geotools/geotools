@@ -16,6 +16,8 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collections;
@@ -63,6 +65,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     private static final int LOCK_DURATION = 3600 * 1000; // one hour
     protected TestData td;
@@ -270,7 +273,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     public void testGetFeatureReaderFilterWithAttributesNotRequested() throws Exception {
         // this is here to avoid http://jira.codehaus.org/browse/GEOT-1069
         // to come up again
-        SimpleFeatureType type = dataStore.getSchema(tname("river"));
+        dataStore.getSchema(tname("river"));
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property(aname("flow")), ff.literal(4.5));
 
@@ -290,7 +293,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     public void testGetFeatureReaderFilterWithAttributesNotRequested2() throws Exception {
-        SimpleFeatureType type = dataStore.getSchema(tname("river"));
+        dataStore.getSchema(tname("river"));
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         FilterFunction_ceil ceil = new FilterFunction_ceil();
@@ -550,9 +553,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
     public void testGetFeatureWriterRemoveAll() throws IOException {
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer = writer(tname("road"))) {
-            SimpleFeature feature;
             while (writer.hasNext()) {
-                feature = writer.next();
+                writer.next();
                 writer.remove();
             }
         }
@@ -563,14 +565,13 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     public void testGetFeaturesWriterAdd() throws IOException {
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 dataStore.getFeatureWriter(tname("road"), Transaction.AUTO_COMMIT)) {
-            SimpleFeature feature;
             while (writer.hasNext()) {
-                feature = writer.next();
+                writer.next();
             }
 
             assertFalse(writer.hasNext());
 
-            feature = writer.next();
+            SimpleFeature feature = writer.next();
             feature.setAttributes(td.newRoad.getAttributes());
             writer.write();
 
@@ -861,7 +862,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                         dataStore.getFeatureWriter(tname("road"), td.rd1Filter, t1)) {
             assertTrue(writer1.hasNext());
             SimpleFeature f1 = writer1.next();
-            f1.setAttribute("name", new String("r1_"));
+            f1.setAttribute("name", "r1_");
             writer1.write();
 
             try (Transaction t2 = new DefaultTransaction();
@@ -869,7 +870,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                             dataStore.getFeatureWriter(tname("road"), td.rd1Filter, t2)) {
                 assertTrue(writer2.hasNext());
                 SimpleFeature f2 = writer2.next();
-                f2.setAttribute("name", new String("r1__"));
+                f2.setAttribute("name", "r1__");
 
                 try {
                     writer2.write(); // this will either lock up or toss chunks
@@ -1049,32 +1050,33 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     public void testGetFeatureStoreAddFeatures() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 DataUtilities.reader(
                         new SimpleFeature[] {
                             td.newRoad,
-                        });
-        SimpleFeatureStore road = (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
+                        })) {
+            SimpleFeatureStore road =
+                    (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
 
-        road.addFeatures(DataUtilities.collection(reader));
-        assertEquals(td.roadFeatures.length + 1, count(tname("road")));
+            road.addFeatures(DataUtilities.collection(reader));
+            assertEquals(td.roadFeatures.length + 1, count(tname("road")));
+        }
     }
 
     public void testGetFeatureStoreSetFeatures()
             throws NoSuchElementException, IOException, IllegalAttributeException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 DataUtilities.reader(
                         new SimpleFeature[] {
                             td.newRoad,
-                        });
+                        })) {
 
-        SimpleFeatureStore road = (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
-
-        assertEquals(3, count(tname("road")));
-
-        road.setFeatures(reader);
-
-        assertEquals(1, count(tname("road")));
+            SimpleFeatureStore road =
+                    (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
+            assertEquals(3, count(tname("road")));
+            road.setFeatures(reader);
+            assertEquals(1, count(tname("road")));
+        }
     }
 
     boolean isLocked(String typeName, String fid) {
@@ -1266,27 +1268,28 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeature f;
         SimpleFeature g;
 
-        SimpleFeatureIterator i = null;
-        for (i = c1.features(); i.hasNext(); ) {
-            f = i.next();
+        try (SimpleFeatureIterator i = c1.features()) {
+            while (i.hasNext()) {
+                f = i.next();
 
-            boolean found = false;
+                boolean found = false;
 
-            SimpleFeatureIterator j = null;
-            for (j = c2.features(); j.hasNext() && !found; ) {
-                g = j.next();
-                found = f.getID().equals(g.getID());
+                try (SimpleFeatureIterator j = c2.features()) {
+                    while (j.hasNext() && !found) {
+                        g = j.next();
+                        found = f.getID().equals(g.getID());
+                    }
+                    j.close();
+
+                    assertTrue(msg + " " + f.getID(), found);
+                }
             }
-            j.close();
-
-            assertTrue(msg + " " + f.getID(), found);
         }
-        i.close();
     }
 
     void assertContains(SimpleFeature[] array, SimpleFeature expected) {
         assertNotNull(array);
-        assertFalse(array.length == 0);
+        assertNotEquals(0, array.length);
         assertNotNull(expected);
 
         for (SimpleFeature simpleFeature : array) {
@@ -1443,8 +1446,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             return false;
         }
 
-        SimpleFeatureType type = expected.getFeatureType();
-
+        expected.getFeatureType();
         for (SimpleFeature simpleFeature : array) {
             if (simpleFeature.getID().equals(expected.getID())) {
                 return true;
@@ -1531,9 +1533,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
     void assertMatch(SimpleFeature[] array, SimpleFeature feature) {
         assertNotNull(array);
-        assertTrue(array.length != 0);
-
-        SimpleFeatureType schema = feature.getFeatureType();
+        assertNotEquals(array.length, 0);
 
         for (SimpleFeature simpleFeature : array) {
             if (simpleFeature.getID().equals(feature.getID())) {
@@ -1546,11 +1546,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         }
 
         // System.out.println("not found:" + feature);
-
-        for (int i = 0; i < array.length; i++) {
-            // System.out.println(i + ":" + array[i]);
-        }
-
         fail("array has no match for " + feature);
     }
 

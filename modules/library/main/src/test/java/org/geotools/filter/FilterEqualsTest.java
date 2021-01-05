@@ -22,20 +22,12 @@ import java.util.Collections;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.expression.AddImpl;
 import org.geotools.filter.expression.SubtractImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -64,73 +56,9 @@ public class FilterEqualsTest {
     private Expression testExp3;
     private Expression testExp4;
     private Filter tFilter1;
-    private Filter tFilter2;
-
-    /** Feature on which to preform tests */
-    private static SimpleFeature testFeature = null;
 
     /** Schema on which to preform tests */
     private static SimpleFeatureType testSchema = null;
-
-    boolean set = false;
-
-    /**
-     * Sets up a schema and a test feature.
-     *
-     * @throws SchemaException If there is a problem setting up the schema.
-     * @throws IllegalAttributeException If problem setting up the feature.
-     */
-    @Before
-    public void setUp() throws SchemaException, IllegalAttributeException {
-        if (set) {
-            return;
-        }
-
-        set = true;
-
-        SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
-        ftb.setCRS(null);
-        ftb.add("testGeometry", LineString.class);
-        ftb.add("testBoolean", Boolean.class);
-        ftb.add("testCharacter", Character.class);
-        ftb.add("testByte", Byte.class);
-        ftb.add("testShort", Short.class);
-        ftb.add("testInteger", Integer.class);
-        ftb.add("testLong", Long.class);
-        ftb.add("testFloat", Float.class);
-        ftb.add("testDouble", Double.class);
-        ftb.add("testString", String.class);
-        ftb.add("testZeroDouble", Double.class);
-        ftb.setName("testSchema");
-        testSchema = ftb.buildFeatureType();
-
-        // LOGGER.finer("added string to feature type");
-        // Creates coordinates for the linestring
-        Coordinate[] coords = new Coordinate[3];
-        coords[0] = new Coordinate(1, 2);
-        coords[1] = new Coordinate(3, 4);
-        coords[2] = new Coordinate(5, 6);
-
-        // Builds the test feature
-        Object[] attributes = new Object[11];
-        GeometryFactory gf = new GeometryFactory(new PrecisionModel());
-        attributes[0] = gf.createLineString(coords);
-        attributes[1] = Boolean.valueOf(true);
-        attributes[2] = Character.valueOf('t');
-        attributes[3] = Byte.valueOf("10");
-        attributes[4] = Short.valueOf("101");
-        attributes[5] = Integer.valueOf(1002);
-        attributes[6] = Long.valueOf(10003);
-        attributes[7] = Float.valueOf(10000.4f);
-        attributes[8] = Double.valueOf(100000.5);
-        attributes[9] = "test string data";
-        attributes[10] = "0.0";
-
-        // Creates the feature itself
-        // FlatFeatureFactory factory = new FlatFeatureFactory(testSchema);
-        testFeature = SimpleFeatureBuilder.build(testSchema, attributes, null);
-        // LOGGER.finer("...flat feature created");
-    }
 
     @Test
     public void testLiteralExpressionImplEquals() {

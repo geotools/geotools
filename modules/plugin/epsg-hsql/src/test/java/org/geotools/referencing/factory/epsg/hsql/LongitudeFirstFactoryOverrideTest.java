@@ -49,7 +49,7 @@ public class LongitudeFirstFactoryOverrideTest {
 
     /** @throws java.lang.Exception */
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUpClass() throws Exception {
         // force longitude first mode
         System.setProperty("org.geotools.referencing.forceXY", "true");
 
@@ -63,7 +63,7 @@ public class LongitudeFirstFactoryOverrideTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDownClass() {
         // unset axis ordering hint
         System.clearProperty("org.geotools.referencing.forceXY");
         Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);

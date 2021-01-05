@@ -19,6 +19,7 @@ package org.geotools.data.db2;
 import java.sql.Connection;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2EmptyTestSetup extends JDBCEmptyTestSetup {
     public DB2EmptyTestSetup() {
         super(new DB2TestSetup());
@@ -26,22 +27,22 @@ public class DB2EmptyTestSetup extends JDBCEmptyTestSetup {
 
     @Override
     protected void createEmptyTable() throws Exception {
-        Connection con = getDataSource().getConnection();
-        con.prepareStatement(
-                        "CREATE TABLE "
-                                + DB2TestUtil.SCHEMA_QUOTED
-                                + ".\"empty\"(\"id\" int  PRIMARY KEY not null GENERATED ALWAYS AS IDENTITY,  "
-                                + "\"geom\" db2gse.ST_POLYGON) ")
-                .execute();
-        DB2Util.executeRegister(DB2TestUtil.SCHEMA, "empty", "geom", DB2TestUtil.SRSNAME, con);
-        con.close();
+        try (Connection con = getDataSource().getConnection()) {
+            con.prepareStatement(
+                            "CREATE TABLE "
+                                    + DB2TestUtil.SCHEMA_QUOTED
+                                    + ".\"empty\"(\"id\" int  PRIMARY KEY not null GENERATED ALWAYS AS IDENTITY,  "
+                                    + "\"geom\" db2gse.ST_POLYGON) ")
+                    .execute();
+            DB2Util.executeRegister(DB2TestUtil.SCHEMA, "empty", "geom", DB2TestUtil.SRSNAME, con);
+        }
     }
 
     @Override
     protected void dropEmptyTable() throws Exception {
-        Connection con = getDataSource().getConnection();
-        DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, "empty", "geom", con);
-        DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "empty", con);
-        con.close();
+        try (Connection con = getDataSource().getConnection()) {
+            DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, "empty", "geom", con);
+            DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "empty", con);
+        }
     }
 }

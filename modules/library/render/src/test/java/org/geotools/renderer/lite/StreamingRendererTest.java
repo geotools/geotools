@@ -23,6 +23,7 @@ import static org.easymock.EasyMock.replay;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -404,6 +405,7 @@ public class StreamingRendererTest {
                 new RuntimeException("This is the one that should be thrown in hasNext()");
 
         // setup the mock necessary to have the renderer hit into the exception in hasNext()
+        @SuppressWarnings("PMD.CloseResource") // just a mock
         SimpleFeatureIterator it2 = createNiceMock(SimpleFeatureIterator.class);
         expect(it2.hasNext()).andThrow(sentinel).anyTimes();
         replay(it2);
@@ -544,14 +546,15 @@ public class StreamingRendererTest {
         final StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(map);
         sr.paint(image.createGraphics(), screen, map.getMaxBounds(), worldToScreen);
-        assertTrue("Pixel should be drawn at 0,0 ", image.getRGB(0, 0) != 0);
+        assertNotEquals("Pixel should be drawn at 0,0 ", image.getRGB(0, 0), 0);
         assertEquals(
                 "Pixel should not be drawn in image centre ",
                 0,
                 image.getRGB(screen.width / 2, screen.height / 2));
-        assertTrue(
+        assertNotEquals(
                 "Pixel should be drawn at image max corner ",
-                image.getRGB(screen.width - 1, screen.height - 1) != 0);
+                image.getRGB(screen.width - 1, screen.height - 1),
+                0);
     }
 
     @Test
@@ -894,7 +897,6 @@ public class StreamingRendererTest {
 
     @Test
     public void testNPEOutsideValidArea() throws Exception {
-        StreamingRendererTester tester = new StreamingRendererTester();
         String wkt =
                 "PROJCS[\"Homolosine\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563 ] ], PRIMEM[\"Greenwich\",0.0], UNIT[\"degree\",0.01745329251994328 ]],PROJECTION[\"Goode_Homolosine\"],UNIT[\"m\",1.0] ]";
         CoordinateReferenceSystem homolosine = CRS.parseWKT(wkt);

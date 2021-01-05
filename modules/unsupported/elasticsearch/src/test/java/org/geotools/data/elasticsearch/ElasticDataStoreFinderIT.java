@@ -30,7 +30,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.Node;
@@ -38,9 +37,6 @@ import org.geotools.data.DataStore;
 import org.junit.Test;
 
 public class ElasticDataStoreFinderIT extends ElasticTestSupport {
-
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ElasticDataStoreFinderIT.class);
 
     @Test
     public void testFactoryDefaults() throws IOException {

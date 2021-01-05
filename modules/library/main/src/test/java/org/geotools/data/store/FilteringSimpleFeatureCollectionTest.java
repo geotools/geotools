@@ -17,7 +17,9 @@
 
 package org.geotools.data.store;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import java.io.IOException;
 import org.geotools.data.DataUtilities;

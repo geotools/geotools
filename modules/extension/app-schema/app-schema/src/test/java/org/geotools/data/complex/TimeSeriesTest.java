@@ -97,8 +97,6 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
 
     EmfComplexFeatureReader reader;
 
-    private FeatureSource<FeatureType, Feature> source;
-
     /** */
     @Before
     public void setUp() throws Exception {
@@ -418,94 +416,95 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
 
         final String phenomNamePath =
                 "aw:relatedObservation/aw:PhenomenonTimeSeries/om:observedProperty/swe:Phenomenon/gml:name";
-        FeatureIterator it = features.features();
-        for (; it.hasNext(); ) {
-            feature = it.next();
-            count++;
-            {
-                PropertyName gmlName = ffac.property("gml:name");
-                PropertyName phenomName = ffac.property(phenomNamePath);
+        try (FeatureIterator it = features.features()) {
+            while (it.hasNext()) {
+                feature = it.next();
+                count++;
+                {
+                    PropertyName gmlName = ffac.property("gml:name");
+                    PropertyName phenomName = ffac.property(phenomNamePath);
 
-                Object nameVal = gmlName.evaluate(feature, String.class);
-                assertNotNull("gml:name evaluated to null", nameVal);
+                    Object nameVal = gmlName.evaluate(feature, String.class);
+                    assertNotNull("gml:name evaluated to null", nameVal);
 
-                Object phenomNameVal = phenomName.evaluate(feature, String.class);
-                assertNotNull(phenomNamePath + " evaluated to null", phenomNameVal);
-            }
-            {
-                PropertyName sampledFeatureName = ffac.property("sa:sampledFeature");
-                Attribute sampledFeatureVal = (Attribute) sampledFeatureName.evaluate(feature);
-                assertNotNull("sa:sampledFeature evaluated to null", sampledFeatureVal);
-                assertEquals(0, ((Collection) sampledFeatureVal.getValue()).size());
-                Map attributes = (Map) sampledFeatureVal.getUserData().get(Attributes.class);
-                assertNotNull(attributes);
-                Name xlinkTitle = name(XLINK.NAMESPACE, "title");
-                assertTrue(attributes.containsKey(xlinkTitle));
-                assertNotNull(attributes.get(xlinkTitle));
+                    Object phenomNameVal = phenomName.evaluate(feature, String.class);
+                    assertNotNull(phenomNamePath + " evaluated to null", phenomNameVal);
+                }
+                {
+                    PropertyName sampledFeatureName = ffac.property("sa:sampledFeature");
+                    Attribute sampledFeatureVal = (Attribute) sampledFeatureName.evaluate(feature);
+                    assertNotNull("sa:sampledFeature evaluated to null", sampledFeatureVal);
+                    assertEquals(0, ((Collection) sampledFeatureVal.getValue()).size());
+                    Map attributes = (Map) sampledFeatureVal.getUserData().get(Attributes.class);
+                    assertNotNull(attributes);
+                    Name xlinkTitle = name(XLINK.NAMESPACE, "title");
+                    assertTrue(attributes.containsKey(xlinkTitle));
+                    assertNotNull(attributes.get(xlinkTitle));
 
-                Name xlinkHref = name(XLINK.NAMESPACE, "href");
-                assertTrue(attributes.containsKey(xlinkHref));
-                assertNotNull(attributes.get(xlinkHref));
-            }
+                    Name xlinkHref = name(XLINK.NAMESPACE, "href");
+                    assertTrue(attributes.containsKey(xlinkHref));
+                    assertNotNull(attributes.get(xlinkHref));
+                }
 
-            {
-                final String elementPath =
-                        "aw:relatedObservation/aw:PhenomenonTimeSeries/om:result/cv:CompactDiscreteTimeCoverage";
-                PropertyName elementName = ffac.property(elementPath);
-                Object timeCovVal = elementName.evaluate(feature);
-                assertNotNull(elementPath, timeCovVal);
-                assertTrue(timeCovVal instanceof Feature);
-                final List elements = (List) ((Feature) timeCovVal).getValue();
-                assertEquals(1, elements.size());
+                {
+                    final String elementPath =
+                            "aw:relatedObservation/aw:PhenomenonTimeSeries/om:result/cv:CompactDiscreteTimeCoverage";
+                    PropertyName elementName = ffac.property(elementPath);
+                    Object timeCovVal = elementName.evaluate(feature);
+                    assertNotNull(elementPath, timeCovVal);
+                    assertTrue(timeCovVal instanceof Feature);
+                    final List elements = (List) ((Feature) timeCovVal).getValue();
+                    assertEquals(1, elements.size());
+                }
             }
         }
-        it.close();
 
         count = 0;
-        FeatureIterator<? extends Feature> simpleIterator =
-                ((AbstractMappingFeatureIterator) features.features()).getSourceFeatureIterator();
-        for (; simpleIterator.hasNext(); ) {
-            feature = simpleIterator.next();
-            count++;
+        try (FeatureIterator<? extends Feature> simpleIterator =
+                ((AbstractMappingFeatureIterator) features.features()).getSourceFeatureIterator()) {
+            while (simpleIterator.hasNext()) {
+                feature = simpleIterator.next();
+                count++;
 
-            if (count == 22) {
-                String compactTimeValuePairName = "result";
-                String geomName = "sample_time_position";
+                if (count == 22) {
+                    String compactTimeValuePairName = "result";
+                    String geomName = "sample_time_position";
 
-                Collection compactTimes = feature.getProperties(compactTimeValuePairName);
-                assertNotNull(compactTimes);
-                assertEquals(1, compactTimes.size());
+                    Collection compactTimes = feature.getProperties(compactTimeValuePairName);
+                    assertNotNull(compactTimes);
+                    assertEquals(1, compactTimes.size());
 
-                Attribute value = (Attribute) compactTimes.iterator().next();
-                assertNotNull(value.getValue());
+                    Attribute value = (Attribute) compactTimes.iterator().next();
+                    assertNotNull(value.getValue());
 
-                Collection geomProperties = feature.getProperties(geomName);
-                assertNotNull(geomProperties);
-                assertEquals(1, geomProperties.size());
+                    Collection geomProperties = feature.getProperties(geomName);
+                    assertNotNull(geomProperties);
+                    assertEquals(1, geomProperties.size());
 
-                Attribute geom = (Attribute) geomProperties.iterator().next();
-                assertNotNull(geom.getValue());
+                    Attribute geom = (Attribute) geomProperties.iterator().next();
+                    assertNotNull(geom.getValue());
 
-                Object valueContent = geom.getValue();
-                Date sampleTimePosition = (Date) valueContent;
-                Calendar cal = Calendar.getInstance();
-                // property file dates appear to be parsed as being in UTC
-                cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-                cal.setTime(sampleTimePosition);
-                // see row TS2.22
-                assertEquals(2007, cal.get(Calendar.YEAR));
-                assertEquals(Calendar.JANUARY, cal.get(Calendar.MONTH));
-                assertEquals(21, cal.get(Calendar.DAY_OF_MONTH));
-                // sanity (timezone handling has been bungled one time too many)
-                assertEquals(0, cal.get(Calendar.HOUR_OF_DAY));
-                assertEquals(0, cal.get(Calendar.MINUTE));
-                assertEquals(0, cal.get(Calendar.SECOND));
+                    Object valueContent = geom.getValue();
+                    Date sampleTimePosition = (Date) valueContent;
+                    Calendar cal = Calendar.getInstance();
+                    // property file dates appear to be parsed as being in UTC
+                    cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    cal.setTime(sampleTimePosition);
+                    // see row TS2.22
+                    assertEquals(2007, cal.get(Calendar.YEAR));
+                    assertEquals(Calendar.JANUARY, cal.get(Calendar.MONTH));
+                    assertEquals(21, cal.get(Calendar.DAY_OF_MONTH));
+                    // sanity (timezone handling has been bungled one time too many)
+                    assertEquals(0, cal.get(Calendar.HOUR_OF_DAY));
+                    assertEquals(0, cal.get(Calendar.MINUTE));
+                    assertEquals(0, cal.get(Calendar.SECOND));
+                }
             }
+
+            mappingDataStore.dispose();
+
+            assertEquals(EXPECTED_SIMPLE_FEATURE_COUNT, count);
         }
-
-        mappingDataStore.dispose();
-
-        assertEquals(EXPECTED_SIMPLE_FEATURE_COUNT, count);
     }
 
     private int getCount(FeatureCollection features) {

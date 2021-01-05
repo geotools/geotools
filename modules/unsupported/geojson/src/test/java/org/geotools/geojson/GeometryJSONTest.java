@@ -643,8 +643,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     public void testPointOrderParsing() throws Exception {
         String input1 = "{\n" + "  \"type\": \"Point\",\n" + "  \"coordinates\": [10, 10]\n" + "}";
         String input2 = "{\n" + "  \"coordinates\": [10, 10],\n" + "  \"type\": \"Point\"\n" + "}";
-        org.geotools.geojson.geom.GeometryJSON geometryJSON =
-                new org.geotools.geojson.geom.GeometryJSON();
+        GeometryJSON geometryJSON = new GeometryJSON();
         Point p1 = geometryJSON.readPoint(input1);
         assertEquals(10, p1.getX(), 0d);
         assertEquals(10, p1.getY(), 0d);
@@ -689,8 +688,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
 
         Point expectedLastPoint = gf.createPoint(new Coordinate(100.0, 1.0));
 
-        org.geotools.geojson.geom.GeometryJSON geometryJSON =
-                new org.geotools.geojson.geom.GeometryJSON();
+        GeometryJSON geometryJSON = new GeometryJSON();
 
         /* test input 1 */
         GeometryCollection collection = geometryJSON.readGeometryCollection(input1);

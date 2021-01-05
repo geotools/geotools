@@ -34,8 +34,7 @@ public final class DefaultObjectCacheTest {
     public void testSimple() {
         Integer key1 = 1;
         Integer key2 = 2;
-        String value1 = new String("value 1");
-        String value2 = new String("value 2");
+        String value1 = "value 1";
 
         ObjectCache<Integer, String> cache = new DefaultObjectCache<>();
         assertNotNull(cache);
@@ -57,9 +56,7 @@ public final class DefaultObjectCacheTest {
     @Test
     public void testRemove() {
         Integer key1 = 1;
-        Integer key2 = 2;
-        String value1 = new String("value 1");
-        String value2 = new String("value 2");
+        String value1 = "value 1";
 
         ObjectCache<Integer, String> cache = new DefaultObjectCache<>();
         assertNotNull(cache);

@@ -78,7 +78,6 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         Query q = new Query("ft1", f);
 
         assertEquals(1, source.getCount(q));
-        ReferencedEnvelope e = source.getBounds();
         assertEquals(
                 new ReferencedEnvelope(2d, 0d, 2d, 0d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
@@ -315,18 +314,19 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         q.setSortBy(sorts);
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        List<Double> doubleValues = new ArrayList<>(3);
-        while (it.hasNext()) {
-            SimpleFeature feature = it.next();
-            doubleValues.add((Double) feature.getAttribute("properties.doubleProperty"));
+        try (SimpleFeatureIterator it = features.features()) {
+            List<Double> doubleValues = new ArrayList<>(3);
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                doubleValues.add((Double) feature.getAttribute("properties.doubleProperty"));
+            }
+            assertEquals(doubleValues.size(), 3);
+            Double first = doubleValues.get(0);
+            Double second = doubleValues.get(1);
+            Double third = doubleValues.get(2);
+            assertTrue(first > second);
+            assertTrue(second > third);
         }
-        assertEquals(doubleValues.size(), 3);
-        Double first = doubleValues.get(0);
-        Double second = doubleValues.get(1);
-        Double third = doubleValues.get(2);
-        assertTrue(first > second);
-        assertTrue(second > third);
     }
 
     public void testTwoSortBy() throws Exception {
@@ -346,23 +346,24 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         q.setSortBy(sorts);
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        List<Date> dates = new ArrayList<>(3);
-        List<String> stringAttributes = new ArrayList<>(3);
-        while (it.hasNext()) {
-            SimpleFeature feature = it.next();
-            dates.add((Date) feature.getAttribute("properties.dateProperty"));
-            stringAttributes.add((String) feature.getAttribute("properties.stringProperty2"));
+        try (SimpleFeatureIterator it = features.features()) {
+            List<Date> dates = new ArrayList<>(3);
+            List<String> stringAttributes = new ArrayList<>(3);
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                dates.add((Date) feature.getAttribute("properties.dateProperty"));
+                stringAttributes.add((String) feature.getAttribute("properties.stringProperty2"));
+            }
+            assertEquals(stringAttributes.get(0), "b");
+            assertEquals(stringAttributes.get(1), "b");
+            assertEquals(stringAttributes.get(2), "a");
+            assertEquals(dates.size(), 3);
+            Date first = dates.get(0);
+            Date second = dates.get(1);
+            Date third = dates.get(2);
+            assertTrue(first.before(second));
+            assertTrue(second.after(third));
         }
-        assertEquals(stringAttributes.get(0), "b");
-        assertEquals(stringAttributes.get(1), "b");
-        assertEquals(stringAttributes.get(2), "a");
-        assertEquals(dates.size(), 3);
-        Date first = dates.get(0);
-        Date second = dates.get(1);
-        Date third = dates.get(2);
-        assertTrue(first.before(second));
-        assertTrue(second.after(third));
     }
 
     public void testTwoSortByWithNullableAttribute() throws Exception {
@@ -380,22 +381,22 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         q.setSortBy(sorts);
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        List<Date> dates = new ArrayList<>(3);
-        while (it.hasNext()) {
-            SimpleFeature feature = it.next();
-            dates.add((Date) feature.getAttribute("properties.dateProperty"));
+        try (SimpleFeatureIterator it = features.features()) {
+            List<Date> dates = new ArrayList<>(3);
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                dates.add((Date) feature.getAttribute("properties.dateProperty"));
+            }
+            assertEquals(dates.size(), 3);
+            Date first = dates.get(0);
+            Date second = dates.get(1);
+            Date third = dates.get(2);
+            assertTrue(first.before(second));
+            assertTrue(second.before(third));
         }
-        assertEquals(dates.size(), 3);
-        Date first = dates.get(0);
-        Date second = dates.get(1);
-        Date third = dates.get(2);
-        assertTrue(first.before(second));
-        assertTrue(second.before(third));
     }
 
     public void testNullSortBy() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         SortBy[] sorts = new SortBy[] {SortBy.NATURAL_ORDER};
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
@@ -403,13 +404,14 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         q.setSortBy(sorts);
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        List<Double> doubleValues = new ArrayList<>(3);
-        while (it.hasNext()) {
-            SimpleFeature feature = it.next();
-            doubleValues.add((Double) feature.getAttribute("properties.doubleProperty"));
+        try (SimpleFeatureIterator it = features.features()) {
+            List<Double> doubleValues = new ArrayList<>(3);
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                doubleValues.add((Double) feature.getAttribute("properties.doubleProperty"));
+            }
+            assertEquals(doubleValues.size(), 3);
         }
-        assertEquals(doubleValues.size(), 3);
     }
 
     private void checkBinaryLogicOperatorFilterSplitting(BinaryLogicOperator filter)

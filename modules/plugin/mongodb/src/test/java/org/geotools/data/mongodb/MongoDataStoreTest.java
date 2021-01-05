@@ -106,19 +106,19 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testGetAppendFeatureWriter() throws Exception {
-        FeatureWriter w = dataStore.getFeatureWriterAppend("ft1", Transaction.AUTO_COMMIT);
-        SimpleFeature f = (SimpleFeature) w.next();
+        try (FeatureWriter w = dataStore.getFeatureWriterAppend("ft1", Transaction.AUTO_COMMIT)) {
+            SimpleFeature f = (SimpleFeature) w.next();
 
-        GeometryBuilder gb = new GeometryBuilder();
-        f.setDefaultGeometry(gb.point(3, 3));
-        f.setAttribute("properties.intProperty", 3);
-        f.setAttribute("properties.doubleProperty", 3.3);
-        f.setAttribute("properties.stringProperty", "three");
-        f.setAttribute(
-                "properties.dateProperty",
-                MongoTestSetup.parseDate("2015-01-24T14:28:16.000+01:00"));
-        w.write();
-        w.close();
+            GeometryBuilder gb = new GeometryBuilder();
+            f.setDefaultGeometry(gb.point(3, 3));
+            f.setAttribute("properties.intProperty", 3);
+            f.setAttribute("properties.doubleProperty", 3.3);
+            f.setAttribute("properties.stringProperty", "three");
+            f.setAttribute(
+                    "properties.dateProperty",
+                    MongoTestSetup.parseDate("2015-01-24T14:28:16.000+01:00"));
+            w.write();
+        }
     }
 
     public void testCreateSchema() throws Exception {
@@ -142,14 +142,15 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft2");
         assertEquals(0, source.getCount(new Query("ft2")));
 
-        FeatureWriter w = dataStore.getFeatureWriterAppend("ft2", Transaction.AUTO_COMMIT);
-        SimpleFeature f = (SimpleFeature) w.next();
-        f.setDefaultGeometry(new GeometryBuilder().point(1, 1));
-        f.setAttribute("intProperty", 1);
-        w.write();
+        try (FeatureWriter w = dataStore.getFeatureWriterAppend("ft2", Transaction.AUTO_COMMIT)) {
+            SimpleFeature f = (SimpleFeature) w.next();
+            f.setDefaultGeometry(new GeometryBuilder().point(1, 1));
+            f.setAttribute("intProperty", 1);
+            w.write();
 
-        source = dataStore.getFeatureSource("ft2");
-        assertEquals(1, source.getCount(new Query("ft2")));
+            source = dataStore.getFeatureSource("ft2");
+            assertEquals(1, source.getCount(new Query("ft2")));
+        }
     }
 
     public void testRebuildSchemaWithId() throws Exception {
@@ -228,17 +229,18 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         q.setSortBy(new SortBy[] {f});
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        List<Date> dates = new ArrayList<>(3);
-        while (it.hasNext()) {
-            dates.add((Date) it.next().getAttribute("properties.dateProperty"));
+        try (SimpleFeatureIterator it = features.features()) {
+            List<Date> dates = new ArrayList<>(3);
+            while (it.hasNext()) {
+                dates.add((Date) it.next().getAttribute("properties.dateProperty"));
+            }
+            assertEquals(dates.size(), 3);
+            Date first = dates.get(0);
+            Date second = dates.get(1);
+            Date third = dates.get(2);
+            assertTrue(first.before(second));
+            assertTrue(second.before(third));
         }
-        assertEquals(dates.size(), 3);
-        Date first = dates.get(0);
-        Date second = dates.get(1);
-        Date third = dates.get(2);
-        assertTrue(first.before(second));
-        assertTrue(second.before(third));
     }
 
     public void testIsNullFilter() throws Exception {
@@ -249,10 +251,11 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         SimpleFeatureCollection features = source.getFeatures(q);
         assertEquals(features.size(), 2);
-        SimpleFeatureIterator it = features.features();
-        while (it.hasNext()) {
-            SimpleFeature f = it.next();
-            assertNull(pn.evaluate(f));
+        try (SimpleFeatureIterator it = features.features()) {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNull(pn.evaluate(f));
+            }
         }
     }
 
@@ -264,10 +267,11 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", not);
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        while (it.hasNext()) {
-            SimpleFeature f = it.next();
-            assertNotEquals("one", pn.evaluate(f));
+        try (SimpleFeatureIterator it = features.features()) {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotEquals("one", pn.evaluate(f));
+            }
         }
     }
 
@@ -360,11 +364,12 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", not);
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        assertEquals(2, features.size());
-        while (it.hasNext()) {
-            SimpleFeature f = it.next();
-            assertNotEquals("zero", pn.evaluate(f));
+        try (SimpleFeatureIterator it = features.features()) {
+            assertEquals(2, features.size());
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                assertNotEquals("zero", pn.evaluate(f));
+            }
         }
     }
 
@@ -374,10 +379,11 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", intersects);
-        FeatureReader reader = dataStore.getFeatureReader(q, null);
-        // check type if the filter isn't fully supported we would have got
-        // a FilteringFeatureReader
-        assertTrue(reader instanceof MongoFeatureReader);
+        try (FeatureReader reader = dataStore.getFeatureReader(q, null)) {
+            // check type if the filter isn't fully supported we would have got
+            // a FilteringFeatureReader
+            assertTrue(reader instanceof MongoFeatureReader);
+        }
         SimpleFeatureCollection features = source.getFeatures(q);
         assertEquals(2, features.size());
     }
@@ -387,10 +393,11 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         Intersects intersects = getIntersectsFilter("jsonSelectAll");
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", intersects);
-        FeatureReader reader = dataStore.getFeatureReader(q, null);
-        // check type if the filter isn't fully supported we would have got
-        // a FilteringFeatureReader
-        assertTrue(reader instanceof MongoFeatureReader);
+        try (FeatureReader reader = dataStore.getFeatureReader(q, null)) {
+            // check type if the filter isn't fully supported we would have got
+            // a FilteringFeatureReader
+            assertTrue(reader instanceof MongoFeatureReader);
+        }
         SimpleFeatureCollection features = source.getFeatures(q);
         assertEquals(2, features.size());
     }

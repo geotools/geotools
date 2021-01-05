@@ -60,15 +60,17 @@ public class BufferFeatureCollectionTest {
         SimpleFeatureCollection output = process.execute(features, distance, null);
         Assert.assertEquals(2, output.size());
 
-        SimpleFeatureIterator iterator = output.features();
-        for (int i = 0; i < 2; i++) {
-            Geometry expected = gf.createPoint(new Coordinate(i, i)).buffer(distance);
-            SimpleFeature sf = iterator.next();
-            Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
-        }
+        try (SimpleFeatureIterator iterator = output.features()) {
+            for (int i = 0; i < 2; i++) {
+                Geometry expected = gf.createPoint(new Coordinate(i, i)).buffer(distance);
+                SimpleFeature sf = iterator.next();
+                Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
+            }
 
-        Assert.assertEquals(new ReferencedEnvelope(-500, 501, -500, 501, null), output.getBounds());
-        Assert.assertEquals(2, output.size());
+            Assert.assertEquals(
+                    new ReferencedEnvelope(-500, 501, -500, 501, null), output.getBounds());
+            Assert.assertEquals(2, output.size());
+        }
     }
 
     @Test
@@ -97,21 +99,23 @@ public class BufferFeatureCollectionTest {
         BufferFeatureCollection process = new BufferFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, distance, null);
         Assert.assertEquals(5, output.size());
-        SimpleFeatureIterator iterator = output.features();
-        for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
-            Coordinate[] array = new Coordinate[4];
-            int j = 0;
-            for (int i = 0 + numFeatures; i < 4 + numFeatures; i++) {
-                array[j] = new Coordinate(i, i);
-                j++;
+        try (SimpleFeatureIterator iterator = output.features()) {
+            for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
+                Coordinate[] array = new Coordinate[4];
+                int j = 0;
+                for (int i = 0 + numFeatures; i < 4 + numFeatures; i++) {
+                    array[j] = new Coordinate(i, i);
+                    j++;
+                }
+                Geometry expected = gf.createLineString(array).buffer(distance);
+                SimpleFeature sf = iterator.next();
+                Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
             }
-            Geometry expected = gf.createLineString(array).buffer(distance);
-            SimpleFeature sf = iterator.next();
-            Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
-        }
 
-        Assert.assertEquals(new ReferencedEnvelope(-500, 507, -500, 507, null), output.getBounds());
-        Assert.assertEquals(5, output.size());
+            Assert.assertEquals(
+                    new ReferencedEnvelope(-500, 507, -500, 507, null), output.getBounds());
+            Assert.assertEquals(5, output.size());
+        }
     }
 
     @Test
@@ -142,24 +146,26 @@ public class BufferFeatureCollectionTest {
         BufferFeatureCollection process = new BufferFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, distance, null);
         Assert.assertEquals(5, output.size());
-        SimpleFeatureIterator iterator = output.features();
-        for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
-            Coordinate[] array = new Coordinate[4];
-            int j = 0;
-            for (int i = 0 + numFeatures; i < 3 + numFeatures; i++) {
-                array[j] = new Coordinate(i, i);
-                j++;
+        try (SimpleFeatureIterator iterator = output.features()) {
+            for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
+                Coordinate[] array = new Coordinate[4];
+                int j = 0;
+                for (int i = 0 + numFeatures; i < 3 + numFeatures; i++) {
+                    array[j] = new Coordinate(i, i);
+                    j++;
+                }
+                array[3] = new Coordinate(numFeatures, numFeatures);
+                LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
+                Geometry expected = gf.createPolygon(shell, null).buffer(distance);
+
+                SimpleFeature sf = iterator.next();
+                Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
             }
-            array[3] = new Coordinate(numFeatures, numFeatures);
-            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
-            Geometry expected = gf.createPolygon(shell, null).buffer(distance);
 
-            SimpleFeature sf = iterator.next();
-            Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
+            Assert.assertEquals(
+                    new ReferencedEnvelope(-500, 506, -500, 506, null), output.getBounds());
+            Assert.assertEquals(5, output.size());
         }
-
-        Assert.assertEquals(new ReferencedEnvelope(-500, 506, -500, 506, null), output.getBounds());
-        Assert.assertEquals(5, output.size());
     }
 
     @Test
@@ -192,26 +198,27 @@ public class BufferFeatureCollectionTest {
         BufferFeatureCollection process = new BufferFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, null, "buffer");
         Assert.assertEquals(5, output.size());
-        SimpleFeatureIterator iterator = output.features();
-        ReferencedEnvelope expectedBounds =
-                new ReferencedEnvelope(output.getSchema().getCoordinateReferenceSystem());
-        for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
-            Coordinate[] array = new Coordinate[4];
-            int j = 0;
-            for (int i = 0 + numFeatures; i < 3 + numFeatures; i++) {
-                array[j] = new Coordinate(i, i);
-                j++;
+        try (SimpleFeatureIterator iterator = output.features()) {
+            ReferencedEnvelope expectedBounds =
+                    new ReferencedEnvelope(output.getSchema().getCoordinateReferenceSystem());
+            for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
+                Coordinate[] array = new Coordinate[4];
+                int j = 0;
+                for (int i = 0 + numFeatures; i < 3 + numFeatures; i++) {
+                    array[j] = new Coordinate(i, i);
+                    j++;
+                }
+                array[3] = new Coordinate(numFeatures, numFeatures);
+                LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
+                Geometry expected = gf.createPolygon(shell, null).buffer(numFeatures + 1);
+                expectedBounds.expandToInclude(expected.getEnvelopeInternal());
+
+                SimpleFeature sf = iterator.next();
+                Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
             }
-            array[3] = new Coordinate(numFeatures, numFeatures);
-            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
-            Geometry expected = gf.createPolygon(shell, null).buffer(numFeatures + 1);
-            expectedBounds.expandToInclude(expected.getEnvelopeInternal());
 
-            SimpleFeature sf = iterator.next();
-            Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
+            Assert.assertEquals(expectedBounds, output.getBounds());
+            Assert.assertEquals(5, output.size());
         }
-
-        Assert.assertEquals(expectedBounds, output.getBounds());
-        Assert.assertEquals(5, output.size());
     }
 }

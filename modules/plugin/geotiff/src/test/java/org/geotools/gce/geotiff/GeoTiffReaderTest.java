@@ -21,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
@@ -166,11 +167,11 @@ public class GeoTiffReaderTest {
         // getting a reader
         GeoTiffReader reader = new GeoTiffReader(noCrs);
 
-        if (TestData.isInteractiveTest()) {
-            IIOMetadataDumper iIOMetadataDumper =
-                    new IIOMetadataDumper(reader.getMetadata().getRootNode());
-            // System.out.println(iIOMetadataDumper.getMetadata());
-        }
+        //        if (TestData.isInteractiveTest()) {
+        //            IIOMetadataDumper iIOMetadataDumper =
+        //                    new IIOMetadataDumper(reader.getMetadata().getRootNode());
+        //            // System.out.println(iIOMetadataDumper.getMetadata());
+        //        }
         // reading the coverage
         GridCoverage2D coverage1 = reader.read(null);
 
@@ -567,9 +568,9 @@ public class GeoTiffReaderTest {
         // Should be > 0
         position.setLocation(-87.005, 26.336);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
         // Should be 0
         position.setLocation(-87.891, 26.159);
         results = coverage.evaluate(position, results);
@@ -579,9 +580,9 @@ public class GeoTiffReaderTest {
         // Should be > 0
         position.setLocation(-86.401, 26.297);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
         // Should be 0
         position.setLocation(-87.411, 27.289);
         results = coverage.evaluate(position, results);
@@ -696,9 +697,9 @@ public class GeoTiffReaderTest {
         // Should be > 0
         position.setLocation(-87.005, 26.336);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
         // Should be 0
         position.setLocation(-87.891, 26.159);
         results = coverage.evaluate(position, results);
@@ -708,9 +709,9 @@ public class GeoTiffReaderTest {
         // Should be > 0
         position.setLocation(-86.401, 26.297);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
         // Should be 0
         position.setLocation(-87.411, 27.289);
         results = coverage.evaluate(position, results);
@@ -885,9 +886,9 @@ public class GeoTiffReaderTest {
         // Should be > 0
         position.setLocation(-87.005, 26.336);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
         // Should be 0
         position.setLocation(-87.891, 26.159);
         results = coverage.evaluate(position, results);
@@ -897,9 +898,9 @@ public class GeoTiffReaderTest {
         // Should be > 0
         position.setLocation(-86.401, 26.297);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
         // Should be 0
         position.setLocation(-87.411, 27.289);
         results = coverage.evaluate(position, results);
@@ -1137,7 +1138,7 @@ public class GeoTiffReaderTest {
         file.setReadable(false);
 
         try {
-            GeoTiffReader reader = new GeoTiffReader(file);
+            new GeoTiffReader(file);
         } catch (DataSourceException e) {
             if (e.getCause() instanceof IOException) {
                 IOException ioException = (IOException) e.getCause();
@@ -1161,7 +1162,7 @@ public class GeoTiffReaderTest {
         file.setReadable(false);
 
         try {
-            GeoTiffReader reader = new GeoTiffReader(file);
+            new GeoTiffReader(file);
         } catch (DataSourceException e) {
             // Throw the inner exception
             throw e.getCause();

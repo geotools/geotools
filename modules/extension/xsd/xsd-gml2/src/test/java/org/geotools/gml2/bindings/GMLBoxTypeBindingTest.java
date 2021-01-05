@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -34,6 +35,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coord3;
     ElementInstance coords;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -76,7 +78,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
 
         try {
-            Envelope e = (Envelope) s.parse(box, node, null);
+            s.parse(box, node, null);
             fail("< 2 coordinate envelope should have thrown exception");
         } catch (Exception e) {
             // ok
@@ -100,7 +102,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
 
         try {
-            Envelope e = (Envelope) s.parse(box, node, null);
+            s.parse(box, node, null);
             fail("> 2 coordinate envelope should have thrown exception");
         } catch (Exception e) {
             // ok
@@ -142,7 +144,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
 
         try {
-            Envelope e = (Envelope) s.parse(box, node, null);
+            s.parse(box, node, null);
             fail("< 2 coordinate envelope should have thrown exception");
         } catch (Exception e) {
             // ok
@@ -169,7 +171,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
 
         try {
-            Envelope e = (Envelope) s.parse(box, node, null);
+            s.parse(box, node, null);
             fail("> 2 coordinate envelope should have thrown exception");
         } catch (Exception e) {
             // ok

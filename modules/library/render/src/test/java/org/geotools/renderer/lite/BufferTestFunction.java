@@ -53,13 +53,13 @@ public class BufferTestFunction extends FunctionExpressionImpl {
         // compute the output features
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
         ListFeatureCollection result = new ListFeatureCollection(schema);
-        SimpleFeatureIterator fi = fc.features();
-        while (fi.hasNext()) {
-            SimpleFeature f = fi.next();
-            fb.add(((Geometry) f.getDefaultGeometry()).buffer(distance));
-            result.add(fb.buildFeature(null));
+        try (SimpleFeatureIterator fi = fc.features()) {
+            while (fi.hasNext()) {
+                SimpleFeature f = fi.next();
+                fb.add(((Geometry) f.getDefaultGeometry()).buffer(distance));
+                result.add(fb.buildFeature(null));
+            }
+            return result;
         }
-
-        return result;
     }
 }

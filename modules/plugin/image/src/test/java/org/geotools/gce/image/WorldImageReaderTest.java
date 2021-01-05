@@ -17,7 +17,10 @@
  */
 package org.geotools.gce.image;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -68,7 +71,6 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         // checking test data directory for all kind of inputs
         final File test_data_dir = TestData.file(this, null);
         final String[] fileList = test_data_dir.list(new MyFileFilter());
-        final int length = fileList.length;
         for (String s : fileList) {
             // file
             in = TestData.file(this, s);

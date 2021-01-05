@@ -75,29 +75,30 @@ public class GeobufFeatureCollectionTest {
         featureStore.addFeatures(collection);
 
         GeobufFeatureCollection geobufFeatureCollection = new GeobufFeatureCollection();
-        OutputStream out = new FileOutputStream(file);
-        geobufFeatureCollection.encode(collection, out);
-        out.close();
-        InputStream inputStream = new FileInputStream(file);
-        SimpleFeatureCollection decodedFeatureCollection =
-                geobufFeatureCollection.decode(inputStream);
-        inputStream.close();
-
-        assertEquals(2, decodedFeatureCollection.size());
-        try (SimpleFeatureIterator it = decodedFeatureCollection.features()) {
-            int c = 0;
-            while (it.hasNext()) {
-                SimpleFeature f = it.next();
-                if (c == 0) {
-                    assertEquals("POINT (-8.349609 14.349548)", f.getDefaultGeometry().toString());
-                    assertEquals(1, f.getAttribute("id"));
-                    assertEquals("ABC", f.getAttribute("name"));
-                } else if (c == 1) {
-                    assertEquals("POINT (-18.349609 24.349548)", f.getDefaultGeometry().toString());
-                    assertEquals(2, f.getAttribute("id"));
-                    assertEquals("DEF", f.getAttribute("name"));
+        try (OutputStream out = new FileOutputStream(file)) {
+            geobufFeatureCollection.encode(collection, out);
+        }
+        try (InputStream inputStream = new FileInputStream(file)) {
+            SimpleFeatureCollection decodedFeatureCollection =
+                    geobufFeatureCollection.decode(inputStream);
+            assertEquals(2, decodedFeatureCollection.size());
+            try (SimpleFeatureIterator it = decodedFeatureCollection.features()) {
+                int c = 0;
+                while (it.hasNext()) {
+                    SimpleFeature f = it.next();
+                    if (c == 0) {
+                        assertEquals(
+                                "POINT (-8.349609 14.349548)", f.getDefaultGeometry().toString());
+                        assertEquals(1, f.getAttribute("id"));
+                        assertEquals("ABC", f.getAttribute("name"));
+                    } else if (c == 1) {
+                        assertEquals(
+                                "POINT (-18.349609 24.349548)", f.getDefaultGeometry().toString());
+                        assertEquals(2, f.getAttribute("id"));
+                        assertEquals("DEF", f.getAttribute("name"));
+                    }
+                    c++;
                 }
-                c++;
             }
         }
     }

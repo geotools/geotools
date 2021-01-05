@@ -54,8 +54,6 @@ public class AbstractGMLBindingTest {
 
     @Before
     public void setUp() throws Exception {
-        String loc = GMLConfiguration.class.getResource("feature.xsd").toString();
-
         GMLConfiguration configuration = new GMLConfiguration();
         XSDSchema result;
         try {

@@ -99,47 +99,27 @@ public class EsriExtensionTest {
     }
 
     /** Tests an EPSG code. */
-    @org.junit.Test
+    @org.junit.Test(expected = NoSuchAuthorityCodeException.class)
     public void test26910() throws FactoryException {
-        try {
-            CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("26910");
-            Assert.fail();
-        } catch (NoSuchAuthorityCodeException e) {
-            // This is the expected exception.
-        }
+        factory.createCoordinateReferenceSystem("26910");
     }
 
     /** Tests an EPSG code. */
-    @org.junit.Test
+    @org.junit.Test(expected = NoSuchAuthorityCodeException.class)
     public void test4326() throws FactoryException {
-        try {
-            CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("4326");
-            Assert.fail();
-        } catch (NoSuchAuthorityCodeException e) {
-            // This is the expected exception.
-        }
+        factory.createCoordinateReferenceSystem("4326");
     }
 
     /** Tests an EPSG code. */
-    @org.junit.Test
+    @org.junit.Test(expected = NoSuchAuthorityCodeException.class)
     public void test4269() throws FactoryException {
-        try {
-            CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("4269");
-            Assert.fail();
-        } catch (NoSuchAuthorityCodeException e) {
-            // This is the expected exception.
-        }
+        factory.createCoordinateReferenceSystem("4269");
     }
 
     /** Tests an extra code (neither EPSG or ESRI). */
-    @org.junit.Test
+    @org.junit.Test(expected = NoSuchAuthorityCodeException.class)
     public void test42333() throws FactoryException {
-        try {
-            CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("42333");
-            Assert.fail();
-        } catch (NoSuchAuthorityCodeException e) {
-            // This is the expected exception.
-        }
+        factory.createCoordinateReferenceSystem("42333");
     }
 
     /** Tests an ESRI code. */

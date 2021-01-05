@@ -16,13 +16,15 @@
  */
 package org.geotools.gml3.bindings;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xsd.Configuration;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Element;
@@ -33,6 +35,7 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
     }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         registerNamespaceMapping("test", TEST.NAMESPACE);

@@ -92,9 +92,10 @@ public class SolrGeometryTest extends SolrTestSupport {
         Crosses f = ff.crosses(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "not-active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "not-active.12");
+        }
     }
 
     public void testNotCrossesFilter() throws Exception {
@@ -117,9 +118,10 @@ public class SolrGeometryTest extends SolrTestSupport {
         Equals f = ff.equal(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "not-active.13");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "not-active.13");
+        }
     }
 
     public void testDisjointFilter() throws Exception {
@@ -157,9 +159,10 @@ public class SolrGeometryTest extends SolrTestSupport {
         Touches f = ff.touches(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "not-active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "not-active.12");
+        }
     }
 
     public void testWithinFilter() throws Exception {
@@ -171,9 +174,10 @@ public class SolrGeometryTest extends SolrTestSupport {
         Within f = ff.within(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "not-active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "not-active.12");
+        }
     }
 
     public void testOverlapsFilter() throws Exception {
@@ -186,9 +190,10 @@ public class SolrGeometryTest extends SolrTestSupport {
         Overlaps f = ff.overlaps(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "not-active.13");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "not-active.13");
+        }
     }
 
     public void testIntersectsFilter() throws Exception {
@@ -200,9 +205,10 @@ public class SolrGeometryTest extends SolrTestSupport {
         Intersects f = ff.intersects(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "not-active.13");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "not-active.13");
+        }
     }
 
     public void testContainsFilter() throws Exception {
@@ -214,9 +220,10 @@ public class SolrGeometryTest extends SolrTestSupport {
         Contains f = ff.contains(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "not-active.12");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "not-active.12");
+        }
     }
 
     public void testDWithinFilter() throws Exception {
@@ -270,8 +277,9 @@ public class SolrGeometryTest extends SolrTestSupport {
         BBOX bbox = ff.bbox("geo2", 6.5, 23.5, 7.5, 24.5, "EPSG:4326");
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(1, features.size());
-        SimpleFeatureIterator fsi = features.features();
-        assertTrue(fsi.hasNext());
-        assertEquals(fsi.next().getID(), "active.9");
+        try (SimpleFeatureIterator fsi = features.features()) {
+            assertTrue(fsi.hasNext());
+            assertEquals(fsi.next().getID(), "active.9");
+        }
     }
 }

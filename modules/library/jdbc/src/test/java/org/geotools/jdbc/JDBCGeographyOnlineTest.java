@@ -22,6 +22,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.DWithin;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
@@ -31,6 +32,7 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
     @Override
     protected abstract JDBCGeographyTestSetup createTestSetup();
 
+    @SuppressWarnings("PMD.SystemPrintln")
     protected boolean isGeographySupportAvailable() throws Exception {
         boolean available = ((JDBCGeographyTestSetup) setup).isGeographySupportAvailable();
         if (!available) {

@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.TestSuite;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -63,11 +62,6 @@ import org.w3c.dom.NodeList;
  * @author Chris Holmes, TOPP
  */
 public class DOMParserTest extends FilterTestSupport {
-    /** Feature on which to preform tests */
-    private Filter filter = null;
-
-    /** Test suite for this test case */
-    TestSuite suite = null;
 
     /** Constructor with test name. */
     String dataFolder = "";
@@ -107,7 +101,7 @@ public class DOMParserTest extends FilterTestSupport {
         // Builds the test feature
         Object[] attributes = new Object[11];
         attributes[0] = geomFac.createLineString(coords);
-        attributes[1] = Boolean.valueOf(true);
+        attributes[1] = Boolean.TRUE;
         attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");

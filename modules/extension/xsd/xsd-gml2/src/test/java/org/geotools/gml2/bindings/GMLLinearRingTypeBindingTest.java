@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -41,6 +42,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coords;
     MutablePicoContainer container;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -110,7 +112,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
                         container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
 
         try {
-            LinearRing linearRing = (LinearRing) s.parse(ring, node, null);
+            s.parse(ring, node, null);
             fail("Should have thrown an exception");
         } catch (Exception e) {
             // ok
@@ -208,10 +210,8 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
                 (GMLLinearRingTypeBinding)
                         container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
 
-        LinearRing linearRing;
-
         try {
-            linearRing = (LinearRing) s.parse(ring, node, null);
+            s.parse(ring, node, null);
             fail("Should have thrown an exception with less then 4 points");
         } catch (Exception e) {
             // ok

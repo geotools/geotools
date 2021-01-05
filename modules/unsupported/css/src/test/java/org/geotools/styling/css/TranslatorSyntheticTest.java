@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -1149,7 +1150,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         // printStyle(style);
     }
 
-    private void printStyle(Style style) throws TransformerException {
+    void printStyle(Style style) throws TransformerException {
         SLDTransformer transformer = new SLDTransformer();
         String xml = transformer.transform(style);
         LOGGER.info(xml);
@@ -1668,7 +1669,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Function f = (Function) expression;
         assertEquals("parameter", f.getName());
         final List<Expression> parameters = f.getParameters();
-        assertTrue("At least one parameter, the key", parameters.size() > 0);
+        assertFalse("At least one parameter, the key", parameters.isEmpty());
         assertEquals(expectedKey, parameters.get(0).evaluate(null));
         assertEquals(expectedValueCount, parameters.size() - 1);
         return f;
@@ -1678,7 +1679,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     public void testNone() {
         String css = "* { fill: none }";
         try {
-            Style style = translate(css);
+            translate(css);
             fail("Translation should have failed");
         } catch (IllegalArgumentException e) {
             assertThat(

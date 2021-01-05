@@ -27,7 +27,6 @@ import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import javax.media.jai.JAI;
 import org.apache.commons.logging.LogFactory;
@@ -118,7 +117,6 @@ public final class GeoToolsTest {
         // this should always be generated during a maven or ide build
         Manifest metadata = GeoTools.getManifest(GeoTools.class);
         assertFalse("manifest metadata", metadata.getMainAttributes().isEmpty());
-        Attributes attributes = metadata.getAttributes("Project-Version");
         assertEquals(
                 GeoTools.getVersion().toString(),
                 metadata.getMainAttributes().getValue("Project-Version"));

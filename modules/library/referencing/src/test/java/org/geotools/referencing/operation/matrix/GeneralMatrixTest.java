@@ -34,6 +34,8 @@ import org.junit.Test;
  * @version $Id$
  * @author James Hughes
  */
+// code is using equals with extra parameters and semantics compared to the built-in equals
+@SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
 public class GeneralMatrixTest {
 
     private static double EPSILON_TOLERANCE = 0.000001;

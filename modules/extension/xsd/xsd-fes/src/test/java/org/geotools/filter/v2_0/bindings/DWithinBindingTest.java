@@ -5,13 +5,12 @@ import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.junit.Test;
 import org.opengis.filter.spatial.DWithin;
-import org.w3c.dom.Document;
 
 public class DWithinBindingTest extends FESTestSupport {
     @Test
     public void testEncode() throws Exception {
         DWithin dwithin = FilterMockData.dwithin();
-        Document dom = encode(dwithin, FES.DWithin);
+        encode(dwithin, FES.DWithin);
         // print(dom);
     }
 }

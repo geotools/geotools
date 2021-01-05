@@ -18,7 +18,6 @@ package org.geotools.filter;
 
 import java.util.Arrays;
 import java.util.logging.Logger;
-import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -54,8 +53,6 @@ public class AreaFunctionTest {
     private static SimpleFeatureType testSchema = null;
 
     boolean setup = false;
-    /** Test suite for this test case */
-    TestSuite suite = null;
 
     /**
      * Sets up a schema and a test feature.
@@ -112,7 +109,7 @@ public class AreaFunctionTest {
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         LinearRing ring = gf.createLinearRing(coords);
         attributes[0] = gf.createPolygon(ring, null);
-        attributes[1] = Boolean.valueOf(true);
+        attributes[1] = Boolean.TRUE;
         attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");

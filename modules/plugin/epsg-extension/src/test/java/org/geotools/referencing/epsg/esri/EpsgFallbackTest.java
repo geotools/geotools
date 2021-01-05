@@ -16,6 +16,8 @@
  */
 package org.geotools.referencing.epsg.esri;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
@@ -48,7 +50,7 @@ public class EpsgFallbackTest {
         final String code = "EPSG:26910";
         final CoordinateReferenceSystem crs = CRS.decode(code);
         Assert.assertNotNull(crs);
-        Assert.assertTrue(crs instanceof ProjectedCRS);
+        assertTrue(crs instanceof ProjectedCRS);
         Assert.assertFalse(CRS.equalsIgnoreMetadata(crs, CRS.decode(code, true)));
     }
 
@@ -61,7 +63,7 @@ public class EpsgFallbackTest {
         final String code = "EPSG:4326";
         final CoordinateReferenceSystem crs = CRS.decode(code);
         Assert.assertNotNull(crs);
-        Assert.assertTrue(crs instanceof GeographicCRS);
+        assertTrue(crs instanceof GeographicCRS);
         Assert.assertFalse(CRS.equalsIgnoreMetadata(crs, CRS.decode(code, true)));
     }
 
@@ -74,7 +76,7 @@ public class EpsgFallbackTest {
         final String code = "EPSG:4269";
         final CoordinateReferenceSystem crs = CRS.decode(code);
         Assert.assertNotNull(crs);
-        Assert.assertTrue(crs instanceof GeographicCRS);
+        assertTrue(crs instanceof GeographicCRS);
         Assert.assertFalse(CRS.equalsIgnoreMetadata(crs, CRS.decode(code, true)));
     }
 
@@ -84,7 +86,7 @@ public class EpsgFallbackTest {
         final String code = "EPSG:42102";
         final CoordinateReferenceSystem crs = CRS.decode(code);
         Assert.assertNotNull(crs);
-        Assert.assertTrue(crs instanceof ProjectedCRS);
+        assertTrue(crs instanceof ProjectedCRS);
         Assert.assertSame(crs, CRS.decode(code, true));
 
         // Checks identifier
@@ -92,7 +94,7 @@ public class EpsgFallbackTest {
         Assert.assertNotNull(identifiers);
         Assert.assertFalse(identifiers.isEmpty());
         NamedIdentifier expected = new NamedIdentifier(Citations.EPSG, "42102");
-        Assert.assertTrue(identifiers.contains(expected));
+        assertTrue(identifiers.contains(expected));
     }
 
     /**
@@ -104,7 +106,7 @@ public class EpsgFallbackTest {
         final String code = "epsg:26910";
         final CoordinateReferenceSystem crs = CRS.decode(code);
         Assert.assertNotNull(crs);
-        Assert.assertTrue(crs instanceof ProjectedCRS);
+        assertTrue(crs instanceof ProjectedCRS);
         Assert.assertFalse(CRS.equalsIgnoreMetadata(crs, CRS.decode(code, true)));
     }
 
@@ -117,7 +119,7 @@ public class EpsgFallbackTest {
         final String code = "epsg:26986";
         final CoordinateReferenceSystem crs = CRS.decode(code);
         Assert.assertNotNull(crs);
-        Assert.assertTrue(crs instanceof ProjectedCRS);
+        assertTrue(crs instanceof ProjectedCRS);
         Assert.assertFalse(CRS.equalsIgnoreMetadata(crs, CRS.decode(code, true)));
     }
 
@@ -130,7 +132,7 @@ public class EpsgFallbackTest {
         final String code = "epsg:4326";
         final CoordinateReferenceSystem crs = CRS.decode(code);
         Assert.assertNotNull(crs);
-        Assert.assertTrue(crs instanceof GeographicCRS);
+        assertTrue(crs instanceof GeographicCRS);
         Assert.assertFalse(CRS.equalsIgnoreMetadata(crs, CRS.decode(code, true)));
     }
 
@@ -143,7 +145,7 @@ public class EpsgFallbackTest {
         final String code = "epsg:26742";
         final CoordinateReferenceSystem crs = CRS.decode(code);
         Assert.assertNotNull(crs);
-        Assert.assertTrue(crs instanceof ProjectedCRS);
+        assertTrue(crs instanceof ProjectedCRS);
         Assert.assertFalse(CRS.equalsIgnoreMetadata(crs, CRS.decode(code, true)));
     }
 
@@ -156,7 +158,7 @@ public class EpsgFallbackTest {
         final String code = "epsg:4269";
         final CoordinateReferenceSystem crs = CRS.decode(code);
         Assert.assertNotNull(crs);
-        Assert.assertTrue(crs instanceof GeographicCRS);
+        assertTrue(crs instanceof GeographicCRS);
         Assert.assertFalse(CRS.equalsIgnoreMetadata(crs, CRS.decode(code, true)));
     }
 
@@ -182,7 +184,7 @@ public class EpsgFallbackTest {
         Assert.assertNotNull(identifiers);
         Assert.assertFalse(identifiers.isEmpty());
         NamedIdentifier expected = new NamedIdentifier(Citations.EPSG, "42102");
-        Assert.assertTrue(identifiers.contains(expected));
+        assertTrue(identifiers.contains(expected));
     }
 
     /** This CRS is defined in {@code esri.properties}. */
@@ -196,11 +198,11 @@ public class EpsgFallbackTest {
         Assert.assertEquals("World_Mercator", String.valueOf(factory.getDescriptionText(code)));
 
         // Equivalent standard ESPG
-        final CoordinateReferenceSystem standard =
-                factory.createCoordinateReferenceSystem("EPSG:3395");
         Assert.assertEquals(
                 "WGS 84 / World Mercator", String.valueOf(factory.getDescriptionText("EPSG:3395")));
         // TODO: enable if we implement more intelligent 'equalsIgnoreMetadata'
+        // final CoordinateReferenceSystem standard =
+        // factory.createCoordinateReferenceSystem("EPSG:3395");
         // assertTrue(CRS.equalsIgnoreMetadata(crs, standard));
     }
 
@@ -209,15 +211,15 @@ public class EpsgFallbackTest {
     public void testCodes() throws FactoryException {
         final CRSAuthorityFactory factory = CRS.getAuthorityFactory(false);
         final Collection codes = factory.getAuthorityCodes(ProjectedCRS.class);
-        Assert.assertTrue(codes.contains("EPSG:3395")); // Defined in EPSG database
-        Assert.assertTrue(codes.contains("EPSG:54004")); // Defined in ESRI database
+        assertTrue(codes.contains("EPSG:3395")); // Defined in EPSG database
+        assertTrue(codes.contains("EPSG:54004")); // Defined in ESRI database
         Assert.assertFalse(codes.contains("ESRI:54004"));
-        Assert.assertTrue(codes.contains("EPSG:42304")); // Defined in unnamed database
-        Assert.assertTrue(codes.contains("EPSG:26742")); // Defined in EPSG database
-        Assert.assertTrue(codes.contains("EPSG:42102")); // Defined in unnamed database
+        assertTrue(codes.contains("EPSG:42304")); // Defined in unnamed database
+        assertTrue(codes.contains("EPSG:26742")); // Defined in EPSG database
+        assertTrue(codes.contains("EPSG:42102")); // Defined in unnamed database
         Assert.assertFalse(codes.contains("EPSG:4326")); // This is a GeographicCRS, not a
         // ProjectedCRS
-        Assert.assertTrue(codes.contains("EPSG:100002")); // Defined in unnamed database
+        assertTrue(codes.contains("EPSG:100002")); // Defined in unnamed database
         Assert.assertFalse(
                 codes.contains("EPSG:100001")); // This is a GeographicCRS, not a ProjectedCRS
     }

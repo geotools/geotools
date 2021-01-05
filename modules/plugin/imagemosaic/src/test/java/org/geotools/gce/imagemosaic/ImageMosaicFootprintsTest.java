@@ -966,7 +966,6 @@ public class ImageMosaicFootprintsTest {
         params[2] = gg2DParam;
 
         coverage = reader.read(params);
-        MathTransform tr = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         reader.dispose();
         assertNotNull(coverage);
 
@@ -1053,7 +1052,6 @@ public class ImageMosaicFootprintsTest {
         params[2] = gg2DParam;
 
         coverage = reader.read(params);
-        MathTransform tr = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         reader.dispose();
         assertNotNull(coverage);
 
@@ -1166,22 +1164,22 @@ public class ImageMosaicFootprintsTest {
         // Blue
         assertEquals(0, result[0]);
         assertEquals(0, result[1]);
-        assertTrue(0 != result[2]);
-        assertTrue(0 != result[3]);
+        assertNotEquals(0, result[2]);
+        assertNotEquals(0, result[3]);
         reader.dispose();
     }
 
     @Test
     public void testFootprintRGB() throws FileNotFoundException, IOException {
-        testFootprint(TestData.file(this, "footprint_rgb"));
+        checkFootprint(TestData.file(this, "footprint_rgb"));
     }
 
     @Test
     public void testFootprintRGBA() throws FileNotFoundException, IOException {
-        testFootprint(TestData.file(this, "footprint_rgba"));
+        checkFootprint(TestData.file(this, "footprint_rgba"));
     }
 
-    public void testFootprint(File mosaic) throws IOException {
+    public void checkFootprint(File mosaic) throws IOException {
         ImageMosaicReader reader =
                 (ImageMosaicReader) new ImageMosaicFormatFactory().createFormat().getReader(mosaic);
 
@@ -1199,10 +1197,10 @@ public class ImageMosaicFootprintsTest {
         coverage.evaluate(position, result);
 
         // Red
-        assertTrue(0 != result[0]);
+        assertNotEquals(0, result[0]);
         assertEquals(0, result[1]);
         assertEquals(0, result[2]);
-        assertTrue(0 != result[3]);
+        assertNotEquals(0, result[3]);
 
         position = new DirectPosition2D();
         position.setLocation(-1, -1);
@@ -1211,8 +1209,8 @@ public class ImageMosaicFootprintsTest {
         // Blue
         assertEquals(0, result[0]);
         assertEquals(0, result[1]);
-        assertTrue(0 != result[2]);
-        assertTrue(0 != result[3]);
+        assertNotEquals(0, result[2]);
+        assertNotEquals(0, result[3]);
 
         reader.dispose();
     }
@@ -1240,10 +1238,10 @@ public class ImageMosaicFootprintsTest {
         // Should be > 0
         position.setLocation(-86.252, 27.7984);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be 0
         position.setLocation(-87.937, 26.144);
         results = coverage.evaluate(position, results);
@@ -1254,10 +1252,10 @@ public class ImageMosaicFootprintsTest {
         // Should be > 0
         position.setLocation(-89.084, 27.133);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be 0
         position.setLocation(-89.763, 25.167);
         results = coverage.evaluate(position, results);
@@ -1321,10 +1319,10 @@ public class ImageMosaicFootprintsTest {
         // Should be > 0
         position.setLocation(-86.252, 27.7984);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be 0
         position.setLocation(-87.937, 26.144);
         results = coverage.evaluate(position, results);
@@ -1335,10 +1333,10 @@ public class ImageMosaicFootprintsTest {
         // Should be > 0
         position.setLocation(-89.084, 27.133);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be 0
         position.setLocation(-89.763, 25.167);
         results = coverage.evaluate(position, results);
@@ -1366,32 +1364,32 @@ public class ImageMosaicFootprintsTest {
         // final pixel is not masked
         position.setLocation(-86.724, 25.085);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be > 0
         position.setLocation(-86.252, 27.7984);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be  0 but since the mask is subsampled, it may happen that the
         // final pixel is not masked
         position.setLocation(-87.937, 26.144);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be > 0
         position.setLocation(-89.084, 27.133);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be 0
         position.setLocation(-89.763, 25.167);
         results = coverage.evaluate(position, results);
@@ -1425,10 +1423,10 @@ public class ImageMosaicFootprintsTest {
         // Should be > 0
         position.setLocation(-86.252, 27.7984);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be  0
         position.setLocation(-87.937, 26.144);
         results = coverage.evaluate(position, results);
@@ -1439,10 +1437,10 @@ public class ImageMosaicFootprintsTest {
         // Should be > 0
         position.setLocation(-89.084, 27.133);
         results = coverage.evaluate(position, results);
-        assertTrue(results[0] != 0);
-        assertTrue(results[1] != 0);
-        assertTrue(results[2] != 0);
-        assertTrue(results[3] != 0);
+        assertNotEquals(results[0], 0);
+        assertNotEquals(results[1], 0);
+        assertNotEquals(results[2], 0);
+        assertNotEquals(results[3], 0);
         // Should be 0
         position.setLocation(-89.763, 25.167);
         results = coverage.evaluate(position, results);

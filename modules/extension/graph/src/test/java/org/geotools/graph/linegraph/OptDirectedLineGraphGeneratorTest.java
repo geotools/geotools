@@ -49,14 +49,11 @@ public class OptDirectedLineGraphGeneratorTest {
         final int n = 5;
 
         for (int i = 1; i <= n; i++) {
-            Edge e =
-                    (Edge)
-                            generator()
-                                    .add(
-                                            new LineSegment(
-                                                    new Coordinate(
-                                                            base.x + (i - 1), base.y + (i - 1)),
-                                                    new Coordinate(base.x + i, base.y + i)));
+            generator()
+                    .add(
+                            new LineSegment(
+                                    new Coordinate(base.x + (i - 1), base.y + (i - 1)),
+                                    new Coordinate(base.x + i, base.y + i)));
         }
 
         generator().generate();
@@ -96,14 +93,11 @@ public class OptDirectedLineGraphGeneratorTest {
         final Coordinate base = new Coordinate(0d, 0d);
         final int n = 100;
         for (int i = 1; i <= n; i++) {
-            Edge e =
-                    (Edge)
-                            generator()
-                                    .add(
-                                            new LineSegment(
-                                                    new Coordinate(
-                                                            base.x + (i - 1), base.y + (i - 1)),
-                                                    new Coordinate(base.x + i, base.y + i)));
+            generator()
+                    .add(
+                            new LineSegment(
+                                    new Coordinate(base.x + (i - 1), base.y + (i - 1)),
+                                    new Coordinate(base.x + i, base.y + i)));
         }
 
         // complete the circle

@@ -22,7 +22,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -32,6 +31,7 @@ import org.opengis.filter.PropertyIsEqualTo;
  *
  * @author Andrea Aime - OpenGeo
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFeatureStoreExposePkOnlineTest extends JDBCFeatureStoreOnlineTest {
 
     @Override
@@ -41,7 +41,6 @@ public abstract class JDBCFeatureStoreExposePkOnlineTest extends JDBCFeatureStor
     }
 
     public void testModifyExposedPk() throws IOException {
-        SimpleFeatureType t = featureStore.getSchema();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsEqualTo filter =
                 ff.equal(ff.property(aname("stringProperty")), ff.literal("zero"), false);

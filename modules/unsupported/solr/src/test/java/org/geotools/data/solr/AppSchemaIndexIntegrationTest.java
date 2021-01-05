@@ -16,15 +16,9 @@
  */
 package org.geotools.data.solr;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.geotools.data.Query;
-import org.geotools.data.complex.PartialIndexedMappingFeatureIterator;
 import org.geotools.data.complex.TotalIndexedMappingFeatureIterator;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.util.FeatureStreams;
@@ -63,45 +57,12 @@ public class AppSchemaIndexIntegrationTest extends AppSchemaOnlineTestSupport {
                 this.mappingDataStore
                         .getFeatureSource(this.mappedTypeName)
                         .getFeatures(totalIndexedFilterCase());
-        FeatureIterator<Feature> iterator = fcoll.features();
-        assertTrue(iterator instanceof TotalIndexedMappingFeatureIterator);
+        try (FeatureIterator<Feature> iterator = fcoll.features()) {
+            assertTrue(iterator instanceof TotalIndexedMappingFeatureIterator);
+        }
         List<Feature> features = FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
         assertEquals(features.size(), 1);
         assertEquals(features.get(0).getIdentifier().getID(), "13");
-    }
-
-    private void partialindexCase() throws IOException {
-        FeatureCollection<FeatureType, Feature> fcoll =
-                this.mappingDataStore
-                        .getFeatureSource(this.mappedTypeName)
-                        .getFeatures(partialIndexedFilter());
-        FeatureIterator<Feature> iterator = fcoll.features();
-        assertTrue(iterator instanceof PartialIndexedMappingFeatureIterator);
-        List<Feature> features = FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
-        assertEquals(features.size(), 6);
-        assertEquals(features.get(0).getIdentifier().getID(), "1");
-        assertEquals(features.get(1).getIdentifier().getID(), "2");
-        assertEquals(features.get(2).getIdentifier().getID(), "5");
-        assertEquals(features.get(3).getIdentifier().getID(), "6");
-        assertEquals(features.get(4).getIdentifier().getID(), "10");
-        assertEquals(features.get(5).getIdentifier().getID(), "11");
-    }
-
-    private void partialindexPaginationCase() throws IOException {
-        // build query with limits and sort
-        Query q1 = new Query(this.mappedTypeName.getLocalPart(), partialIndexedFilter());
-        q1.setStartIndex(2);
-        q1.setMaxFeatures(3);
-        // AppSchema seems have a bug with sort?
-        // q1.setSortBy(new SortBy[] {ff.sort(this.attId, SortOrder.ASCENDING)});
-        // retrieve features:
-        FeatureCollection<FeatureType, Feature> fcoll =
-                this.mappingDataStore.getFeatureSource(this.mappedTypeName).getFeatures(q1);
-        List<Feature> features = FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
-        assertEquals(3, features.size());
-        assertEquals(features.get(0).getIdentifier().getID(), "5");
-        assertEquals(features.get(1).getIdentifier().getID(), "6");
-        assertEquals(features.get(2).getIdentifier().getID(), "10");
     }
 
     @Override
@@ -112,44 +73,10 @@ public class AppSchemaIndexIntegrationTest extends AppSchemaOnlineTestSupport {
         this.testData = "/test-data/appschema-indexes/stations_complex/";
     }
 
-    /** Should returns 1, 2, 5, 6, 10, 12(11 on index) */
-    private Filter partialIndexedFilter() {
-        List<Filter> filters =
-                Arrays.asList(
-                        ff.like(ff.property(attObservationDesc), "*sky*") // ,
-                        //                        ff.or(
-                        //                                ff.equals(ff.property(this.attName),
-                        // ff.literal("station11")),
-                        //                                ff.equals(ff.property(this.attId),
-                        // ff.literal("1"))),
-                        //                        ff.or(
-                        //                                ff.equals(ff.property(this.attName),
-                        // ff.literal("station10")),
-                        //                                ff.equals(ff.property(this.attId),
-                        // ff.literal("2")))
-                        );
-        Filter filter = ff.or(filters);
-        return filter;
-    }
-
     /** Should returns 1, 2, 10, 12(11 on index) */
     private Filter totalIndexedFilterCase() {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        List<Filter> filters =
-                Arrays.asList(
-                        ff.like(ff.property(attObservationDesc), "*sky*")
-                        //                        ff.or(
-                        //                                ff.equals(ff.property(this.attName),
-                        // ff.literal("station11")),
-                        //                                ff.equals(ff.property(this.attId),
-                        // ff.literal("1"))),
-                        //                        ff.or(
-                        //                                ff.equals(ff.property(this.attName),
-                        // ff.literal("station10")),
-                        //                                ff.equals(ff.property(this.attId),
-                        // ff.literal("2")))
-                        );
-        Filter filter = ff.like(ff.property(attObservationDesc), "*sky*"); // ff.or(filters);
+        Filter filter = ff.like(ff.property(attObservationDesc), "*sky*");
         return filter;
     }
 
@@ -162,14 +89,6 @@ public class AppSchemaIndexIntegrationTest extends AppSchemaOnlineTestSupport {
 
     @Override
     protected void solrDataSetup() {}
-
-    private void loadPostgresSetup() {
-        String url =
-                "jdbc:postgresql://localhost/test"
-                        + fixture.getProperty(AppSchemaOnlineTestSupport.PG_HOST_KEY)
-                        + "/"
-                        + fixture.getProperty(AppSchemaOnlineTestSupport.PG_PORT_KEY);
-    }
 
     /** appschema_index.properties file required */
     @Override

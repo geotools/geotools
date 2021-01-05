@@ -51,8 +51,6 @@ import org.opengis.util.CodeList;
  *     enough; we should provide an explicit list of metadata interface.
  */
 public final class ISOTest {
-    /** {@code true} for displaying debugging informations. */
-    private static final boolean VERBOSE = false;
 
     /** Root package for interfaces, with trailing dot. */
     private static final String INTERFACE_PACKAGE = "org.opengis.metadata.";
@@ -195,9 +193,6 @@ public final class ISOTest {
                 continue;
             }
             assertSetters(new PropertyAccessor(impl, type), done);
-        }
-        if (VERBOSE) {
-            // System.out.println(done);
         }
     }
 

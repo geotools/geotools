@@ -43,6 +43,7 @@ import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.bindings.GMLTestSupport;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -59,6 +60,7 @@ public class GMLWriterTest extends GMLTestSupport {
     protected XpathEngine xpath;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         Map<String, String> namespaces = new HashMap<>();
         namespaces.put("xs", "http://www.w3.org/2001/XMLSchema");

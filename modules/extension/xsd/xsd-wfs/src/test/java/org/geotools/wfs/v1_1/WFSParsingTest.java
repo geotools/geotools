@@ -264,105 +264,110 @@ public class WFSParsingTest {
         File tmp = File.createTempFile("geoserver-DescribeFeatureType", "xml");
         tmp.deleteOnExit();
 
-        InputStream in = getClass().getResourceAsStream("geoserver-DescribeFeatureType.xml");
-        copy(in, tmp);
+        try (InputStream in = getClass().getResourceAsStream("geoserver-DescribeFeatureType.xml")) {
+            copy(in, tmp);
+        }
 
-        in = getClass().getResourceAsStream("geoserver-GetFeature.xml");
+        try (InputStream in = getClass().getResourceAsStream("geoserver-GetFeature.xml")) {
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
 
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(in);
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(in);
 
-        // http://cite.opengeospatial.org/gmlsf
-        // http://localhost:8080/geoserver/wfs?service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;typeName=sf:PrimitiveGeoFeature
-        String schemaLocation =
-                doc.getDocumentElement()
-                        .getAttributeNS(
-                                "http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
-        String absolutePath = URLs.fileToUrl(tmp).toExternalForm();
+            // http://cite.opengeospatial.org/gmlsf
+            // http://localhost:8080/geoserver/wfs?service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;typeName=sf:PrimitiveGeoFeature
+            String schemaLocation =
+                    doc.getDocumentElement()
+                            .getAttributeNS(
+                                    "http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
+            String absolutePath = URLs.fileToUrl(tmp).toExternalForm();
 
-        schemaLocation =
-                schemaLocation.replaceAll(
-                        "http://cite.opengeospatial.org/gmlsf .*",
-                        "http://cite.opengeospatial.org/gmlsf " + absolutePath);
-        doc.getDocumentElement()
-                .setAttributeNS(
-                        "http://www.w3.org/2001/XMLSchema-instance",
-                        "schemaLocation",
-                        schemaLocation);
+            schemaLocation =
+                    schemaLocation.replaceAll(
+                            "http://cite.opengeospatial.org/gmlsf .*",
+                            "http://cite.opengeospatial.org/gmlsf " + absolutePath);
+            doc.getDocumentElement()
+                    .setAttributeNS(
+                            "http://www.w3.org/2001/XMLSchema-instance",
+                            "schemaLocation",
+                            schemaLocation);
 
-        tmp = File.createTempFile("geoserver-GetFeature", "xml");
-        tmp.deleteOnExit();
+            tmp = File.createTempFile("geoserver-GetFeature", "xml");
+            tmp.deleteOnExit();
 
-        Transformer tx = TransformerFactory.newInstance().newTransformer();
-        tx.transform(new DOMSource(doc), new StreamResult(tmp));
+            Transformer tx = TransformerFactory.newInstance().newTransformer();
+            tx.transform(new DOMSource(doc), new StreamResult(tmp));
+        }
 
-        in = new FileInputStream(tmp);
+        try (InputStream in = new FileInputStream(tmp)) {
 
-        Parser parser = new Parser(configuration);
-        FeatureCollectionType fc = (FeatureCollectionType) parser.parse(in);
-        assertNotNull(fc);
+            Parser parser = new Parser(configuration);
+            FeatureCollectionType fc = (FeatureCollectionType) parser.parse(in);
+            assertNotNull(fc);
 
-        List featureCollections = fc.getFeature();
-        assertEquals(1, featureCollections.size());
+            List featureCollections = fc.getFeature();
+            assertEquals(1, featureCollections.size());
 
-        SimpleFeatureCollection featureCollection;
-        featureCollection = (SimpleFeatureCollection) featureCollections.get(0);
-        assertEquals(5, featureCollection.size());
-        assertNotNull(featureCollection.getBounds().getCoordinateReferenceSystem());
+            SimpleFeatureCollection featureCollection;
+            featureCollection = (SimpleFeatureCollection) featureCollections.get(0);
+            assertEquals(5, featureCollection.size());
+            assertNotNull(featureCollection.getBounds().getCoordinateReferenceSystem());
 
-        try (SimpleFeatureIterator features = featureCollection.features()) {
-            assertTrue(features.hasNext());
+            try (SimpleFeatureIterator features = featureCollection.features()) {
+                assertTrue(features.hasNext());
 
-            SimpleFeature f = features.next();
+                SimpleFeature f = features.next();
 
-            assertEquals("PrimitiveGeoFeature.f001", f.getID());
-            assertNull(f.getDefaultGeometry());
+                assertEquals("PrimitiveGeoFeature.f001", f.getID());
+                assertNull(f.getDefaultGeometry());
 
-            assertNotNull(f.getAttribute("pointProperty"));
-            Point p = (Point) f.getAttribute("pointProperty");
+                assertNotNull(f.getAttribute("pointProperty"));
+                Point p = (Point) f.getAttribute("pointProperty");
 
-            assertEquals(39.73245, p.getX(), 0.1);
-            assertEquals(2.00342, p.getY(), 0.1);
+                assertEquals(39.73245, p.getX(), 0.1);
+                assertEquals(2.00342, p.getY(), 0.1);
 
-            Object intProperty = f.getAttribute("intProperty");
-            assertNotNull(intProperty);
-            assertTrue(intProperty.getClass().getName(), intProperty instanceof BigInteger);
+                Object intProperty = f.getAttribute("intProperty");
+                assertNotNull(intProperty);
+                assertTrue(intProperty.getClass().getName(), intProperty instanceof BigInteger);
 
-            assertEquals(BigInteger.valueOf(155), intProperty);
-            assertEquals(new URI("http://www.opengeospatial.org/"), f.getAttribute("uriProperty"));
-            assertEquals(Float.valueOf(12765.0f), f.getAttribute("measurand"));
-            assertTrue(f.getAttribute("dateProperty") instanceof Date);
-            assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));
+                assertEquals(BigInteger.valueOf(155), intProperty);
+                assertEquals(
+                        new URI("http://www.opengeospatial.org/"), f.getAttribute("uriProperty"));
+                assertEquals(Float.valueOf(12765.0f), f.getAttribute("measurand"));
+                assertTrue(f.getAttribute("dateProperty") instanceof Date);
+                assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));
+            }
         }
     }
 
     void copy(InputStream in, File to) throws Exception {
-        Writer writer = new BufferedWriter(new FileWriter(to));
-        InputStreamReader reader = new InputStreamReader(in);
+        try (Writer writer = new BufferedWriter(new FileWriter(to))) {
+            InputStreamReader reader = new InputStreamReader(in);
 
-        int b = -1;
+            int b = -1;
 
-        while ((b = reader.read()) != -1) {
-            writer.write(b);
+            while ((b = reader.read()) != -1) {
+                writer.write(b);
+            }
+
+            writer.flush();
         }
-
-        writer.flush();
-        writer.close();
     }
 
     @Test
     public void testParseGetFeatureStreaming() throws Exception {
-        InputStream in = getClass().getResourceAsStream("geoserver-GetFeature.xml");
-        StreamingParser parser = new StreamingParser(configuration, in, SimpleFeature.class);
+        try (InputStream in = getClass().getResourceAsStream("geoserver-GetFeature.xml")) {
+            StreamingParser parser = new StreamingParser(configuration, in, SimpleFeature.class);
 
-        int n = 0;
+            int n = 0;
 
-        while (parser.parse() != null) n++;
+            while (parser.parse() != null) n++;
 
-        assertEquals(5, n);
+            assertEquals(5, n);
+        }
     }
 
     @Test

@@ -1073,7 +1073,6 @@ public class YsldEncodeTest {
 
     @Test
     public void testScale() throws Exception {
-        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -1124,7 +1123,6 @@ public class YsldEncodeTest {
 
     @Test
     public void testScaleMinMaxKeywords() throws Exception {
-        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -1542,17 +1540,16 @@ public class YsldEncodeTest {
         LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
-        YamlMap result =
-                obj.seq("feature-styles")
-                        .map(0)
-                        .seq("rules")
-                        .map(0)
-                        .seq("symbolizers")
-                        .map(0)
-                        .map("point")
-                        .seq("symbols")
-                        .map(0)
-                        .map("mark");
+        obj.seq("feature-styles")
+                .map(0)
+                .seq("rules")
+                .map(0)
+                .seq("symbolizers")
+                .map(0)
+                .map("point")
+                .seq("symbols")
+                .map(0)
+                .map("mark");
 
         assertThat(
                 kvpLine(out.toString(), "fill-opacity"),
@@ -1578,17 +1575,16 @@ public class YsldEncodeTest {
         LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
-        YamlMap result =
-                obj.seq("feature-styles")
-                        .map(0)
-                        .seq("rules")
-                        .map(0)
-                        .seq("symbolizers")
-                        .map(0)
-                        .map("point")
-                        .seq("symbols")
-                        .map(0)
-                        .map("mark");
+        obj.seq("feature-styles")
+                .map(0)
+                .seq("rules")
+                .map(0)
+                .seq("symbolizers")
+                .map(0)
+                .map("point")
+                .seq("symbols")
+                .map(0)
+                .map("mark");
 
         assertThat(kvpLine(out.toString(), "fill-color"), equalTo("'#ABCDEF'"));
     }
@@ -1612,17 +1608,16 @@ public class YsldEncodeTest {
         LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
-        YamlMap result =
-                obj.seq("feature-styles")
-                        .map(0)
-                        .seq("rules")
-                        .map(0)
-                        .seq("symbolizers")
-                        .map(0)
-                        .map("point")
-                        .seq("symbols")
-                        .map(0)
-                        .map("mark");
+        obj.seq("feature-styles")
+                .map(0)
+                .seq("rules")
+                .map(0)
+                .seq("symbolizers")
+                .map(0)
+                .map("point")
+                .seq("symbols")
+                .map(0)
+                .map("mark");
 
         assertThat(kvpLine(out.toString(), "fill-color"), equalTo("'#FF0000'"));
     }

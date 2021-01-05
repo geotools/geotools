@@ -23,6 +23,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.xsd.Configuration;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -45,6 +47,8 @@ public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
     }
 
     @Override
+    @Test
+    @Ignore
     public void testParseWfs200Gml32() throws Exception {
         // parser is not supporting wfs 2.0.0/gml 3.2 so this impl is empty
     }

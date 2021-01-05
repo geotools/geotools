@@ -103,7 +103,7 @@ public class Rendering2DTest {
     protected static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     {
-        rendererHints.put("optimizedDataLoadingEnabled", Boolean.valueOf(true));
+        rendererHints.put("optimizedDataLoadingEnabled", Boolean.TRUE);
     }
 
     Style loadTestStyle() throws IOException {
@@ -180,19 +180,6 @@ public class Rendering2DTest {
         polysym.setFill(myFill);
         myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#0000ff"));
-        myStroke.setWidth(filterFactory.literal(Integer.valueOf(2)));
-        polysym.setStroke(myStroke);
-        return polysym;
-    }
-
-    private PolygonSymbolizer polysym1(StyleFactory sFac) throws IllegalFilterException {
-        Stroke myStroke;
-        PolygonSymbolizer polysym = sFac.createPolygonSymbolizer();
-        Fill myFill = sFac.getDefaultFill();
-        myFill.setColor(filterFactory.literal("#00ff00"));
-        polysym.setFill(myFill);
-        myStroke = sFac.getDefaultStroke();
-        myStroke.setColor(filterFactory.literal("#00ff00"));
         myStroke.setWidth(filterFactory.literal(Integer.valueOf(2)));
         polysym.setStroke(myStroke);
         return polysym;
@@ -845,92 +832,6 @@ public class Rendering2DTest {
 
     }
 
-    private SimpleFeatureCollection createTestDefQueryFeatureCollection() throws Exception {
-        MemoryDataStore data = new MemoryDataStore();
-        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        builder.setName("querytest");
-        builder.add("id", String.class);
-        builder.add("point", Point.class);
-        builder.add("line", LineString.class);
-        builder.add("polygon", Polygon.class);
-        SimpleFeatureType type = builder.buildFeatureType();
-
-        GeometryFactory gf = new GeometryFactory();
-        SimpleFeature f;
-        LineString l;
-        Polygon p;
-
-        l = line(gf, new int[] {20, 20, 100, 20, 100, 100});
-        p = (Polygon) l.convexHull();
-        f =
-                SimpleFeatureBuilder.build(
-                        type, new Object[] {"ft1", point(gf, 20, 20), l, p}, "test.1");
-        data.addFeature(f);
-
-        l = line(gf, new int[] {130, 130, 110, 110, 110, 130, 30, 130});
-        p = (Polygon) l.convexHull();
-        f =
-                SimpleFeatureBuilder.build(
-                        type, new Object[] {"ft2", point(gf, 130, 130), l, p}, "test.2");
-        data.addFeature(f);
-
-        l = line(gf, new int[] {150, 150, 190, 140, 190, 190});
-        p = (Polygon) l.convexHull();
-        f =
-                SimpleFeatureBuilder.build(
-                        type, new Object[] {"ft3", point(gf, 150, 150), l, p}, "test.3");
-        data.addFeature(f);
-
-        String typeName = type.getTypeName();
-        return data.getFeatureSource(typeName).getFeatures();
-    }
-
-    private Style createDefQueryTestStyle() throws IllegalFilterException {
-        StyleFactory sFac = CommonFactoryFinder.getStyleFactory();
-
-        PointSymbolizer pointsym = sFac.createPointSymbolizer();
-        pointsym.setGraphic(sFac.getDefaultGraphic());
-        pointsym.setGeometryPropertyName("point");
-
-        Rule rulep = sFac.createRule();
-        rulep.symbolizers().add(pointsym);
-        FeatureTypeStyle ftsP = sFac.createFeatureTypeStyle();
-        ftsP.rules().add(rulep);
-        ftsP.featureTypeNames().add(new NameImpl("querytest"));
-
-        LineSymbolizer linesym = sFac.createLineSymbolizer();
-        linesym.setGeometryPropertyName("line");
-
-        Stroke myStroke = sFac.getDefaultStroke();
-        myStroke.setColor(filterFactory.literal("#0000ff"));
-        myStroke.setWidth(filterFactory.literal(Integer.valueOf(3)));
-        LOGGER.info("got new Stroke " + myStroke);
-        linesym.setStroke(myStroke);
-
-        Rule rule2 = sFac.createRule();
-        rule2.symbolizers().add(linesym);
-        FeatureTypeStyle ftsL = sFac.createFeatureTypeStyle();
-        ftsL.rules().add(rule2);
-        ftsL.featureTypeNames().add(new NameImpl("querytest"));
-
-        PolygonSymbolizer polysym = sFac.createPolygonSymbolizer();
-        polysym.setGeometryPropertyName("polygon");
-        Fill myFill = sFac.getDefaultFill();
-        myFill.setColor(filterFactory.literal("#ff0000"));
-        polysym.setFill(myFill);
-        polysym.setStroke(sFac.getDefaultStroke());
-        Rule rule = sFac.createRule();
-        rule.symbolizers().add(polysym);
-        FeatureTypeStyle ftsPoly = sFac.createFeatureTypeStyle(new Rule[] {rule});
-        // ftsPoly.setRules(new Rule[]{rule});
-        ftsPoly.featureTypeNames().add(new NameImpl("querytest"));
-
-        Style style = sFac.createStyle();
-        style.featureTypeStyles().addAll(Arrays.asList(ftsPoly, ftsL, ftsP));
-
-        return style;
-    }
-
     public LineString line(final GeometryFactory gf, int[] xy) {
         Coordinate[] coords = new Coordinate[xy.length / 2];
 
@@ -1012,7 +913,6 @@ public class Rendering2DTest {
     private Geometry buildShiftedGeometry(Geometry g, double shiftX, double shiftY) {
         Geometry clone = g.copy();
         Coordinate[] coords = clone.getCoordinates();
-        final int length = coords.length;
         for (Coordinate coord : coords) {
             coord.x += shiftX;
             coord.y += shiftY;

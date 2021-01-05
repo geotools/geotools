@@ -343,10 +343,8 @@ public class FilterFilterTest {
         assertThat(f, instanceOf(Or.class));
 
         int i = 0;
-        for (Iterator<org.opengis.filter.Filter> filters =
-                        ((BinaryLogicOperator) f).getChildren().iterator();
-                filters.hasNext();
-                i++) {
+        Iterator<Filter> filters = ((BinaryLogicOperator) f).getChildren().iterator();
+        while (filters.hasNext()) {
             BinaryComparisonOperator subFilter = (BinaryComparisonOperator) filters.next();
             StringBuffer attName = new StringBuffer();
             for (int repCount = 0; repCount <= i; repCount++) {
@@ -355,6 +353,7 @@ public class FilterFilterTest {
             String parsedName = ((PropertyName) subFilter.getExpression1()).getPropertyName();
             assertEquals("at index " + i, attName.toString(), parsedName);
             assertEquals("literal-" + i, ((Literal) subFilter.getExpression2()).getValue());
+            i++;
         }
         assertEquals(filterCount, i);
     }

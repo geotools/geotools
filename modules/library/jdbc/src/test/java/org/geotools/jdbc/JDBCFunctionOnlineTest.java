@@ -38,6 +38,7 @@ import org.opengis.filter.expression.Function;
  *
  * @author Andrea Aime - GeoSolutions
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
     static final Logger LOGGER = Logging.getLogger(JDBCFunctionOnlineTest.class);
 

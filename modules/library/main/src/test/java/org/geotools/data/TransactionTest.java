@@ -93,9 +93,11 @@ public class TransactionTest {
     private void count(SimpleFeatureStore store, int expected)
             throws IOException, IllegalAttributeException {
         int i = 0;
-        for (SimpleFeatureIterator reader = store.getFeatures().features(); reader.hasNext(); ) {
-            reader.next();
-            i++;
+        try (SimpleFeatureIterator reader = store.getFeatures().features()) {
+            while (reader.hasNext()) {
+                reader.next();
+                i++;
+            }
         }
         Assert.assertEquals("Number of known feature as obtained from reader", expected, i);
     }

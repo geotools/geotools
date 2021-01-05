@@ -197,8 +197,6 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class ImageMosaicReaderTest {
 
-    private static final String OS_NAME = System.getProperty("os.name");
-
     private static final FilterFactory2 FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
 
     private static final double DELTA = 1E-4;
@@ -381,7 +379,6 @@ public class ImageMosaicReaderTest {
         colorModel = coverage.getRenderedImage().getColorModel();
         assertTrue(colorModel.hasAlpha());
         assertTrue(colorModel instanceof ComponentColorModel);
-        ;
     }
 
     /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
@@ -1278,7 +1275,6 @@ public class ImageMosaicReaderTest {
         FileUtils.copyDirectory(source, directory1);
 
         // ok, let's create a mosaic with a single granule and check its times
-        URL harvestSingleURL = fileToUrl(directory1);
         File renamed = new File(directory1, "temp_020_099_20081101T000000_20081104T000000.tiff");
 
         try {
@@ -1392,7 +1388,6 @@ public class ImageMosaicReaderTest {
         FileUtils.copyDirectory(source, directory1);
 
         // ok, let's create a mosaic with a single granule and check its times
-        URL harvestSingleURL = fileToUrl(directory1);
         File renamed = new File(directory1, "NCOM_wattemp_000_20081031T0000000_12.tiff");
 
         try {
@@ -2831,8 +2826,6 @@ public class ImageMosaicReaderTest {
         URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = getReader(harvestSingleURL, format);
-        GeneralEnvelope singleGranuleEnvelope = reader.getOriginalEnvelope();
-        // System.out.println(singleGranuleEnvelope);
 
         // now create a second reader that won't be informed of the harvesting changes
         // (simulating changes over a cluster, where the bbox information won't be updated from one
@@ -4268,8 +4261,6 @@ public class ImageMosaicReaderTest {
 
     /**
      * Tests {@link ImageMosaicReader} asking to crop the lower left quarter of the input coverage.
-     *
-     * @param title to use when showing image.
      */
     @Test
     public void testExpandToRGB() throws Exception {
@@ -4905,11 +4896,11 @@ public class ImageMosaicReaderTest {
         SimpleFeature first = DataUtilities.first(granules.getGranules(Query.ALL));
         // poison it
         first.setAttribute("location", "global_mosaic_11-invalid.png");
-        Transaction t = new DefaultTransaction();
-        granules.setTransaction(t);
-        granules.addGranules(DataUtilities.collection(first));
-        t.commit();
-        t.close();
+        try (Transaction t = new DefaultTransaction()) {
+            granules.setTransaction(t);
+            granules.addGranules(DataUtilities.collection(first));
+            t.commit();
+        }
 
         // Test the output coverage
         TestUtils.checkCoverage(reader, new GeneralParameterValue[0], "Ignore invalid granule");
@@ -4967,38 +4958,38 @@ public class ImageMosaicReaderTest {
         ResourceInfo info = reader.getInfo(reader.getGridCoverageNames()[0]);
         assertTrue(info instanceof FileResourceInfo);
         FileResourceInfo fileInfo = (FileResourceInfo) info;
-        CloseableIterator<FileGroup> files = fileInfo.getFiles(null);
-        List<FileGroup> fileGroups = new ArrayList<>();
-        Set<File> mainFiles = new HashSet<>();
-        Set<File> supportFiles = new HashSet<>();
-        while (files.hasNext()) {
-            FileGroup group = files.next();
-            fileGroups.add(group);
-            mainFiles.add(group.getMainFile());
-            supportFiles.addAll(group.getSupportFiles());
+        try (CloseableIterator<FileGroup> files = fileInfo.getFiles(null)) {
+            List<FileGroup> fileGroups = new ArrayList<>();
+            Set<File> mainFiles = new HashSet<>();
+            Set<File> supportFiles = new HashSet<>();
+            while (files.hasNext()) {
+                FileGroup group = files.next();
+                fileGroups.add(group);
+                mainFiles.add(group.getMainFile());
+                supportFiles.addAll(group.getSupportFiles());
+            }
+            assertEquals(3, fileGroups.size());
+            assertEquals(3, mainFiles.size());
+            assertEquals(6, supportFiles.size());
+            File dir = URLs.urlToFile(indexURL);
+            String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".gif"));
+            String[] supportFilesPaths =
+                    dir.list(
+                            FileFilterUtils.and(
+                                    FileFilterUtils.or(
+                                            FileFilterUtils.suffixFileFilter(".prj"),
+                                            FileFilterUtils.suffixFileFilter(".wld")),
+                                    FileFilterUtils.notFileFilter(
+                                            FileFilterUtils.prefixFileFilter("index"))));
+            for (String filePath : mainFilesPaths) {
+                final File myFile = new File(dir, filePath);
+                assertTrue(mainFiles.contains(myFile));
+            }
+            for (String filePath : supportFilesPaths) {
+                final File myFile = new File(dir, filePath);
+                assertTrue(supportFiles.contains(myFile));
+            }
         }
-        assertEquals(3, fileGroups.size());
-        assertEquals(3, mainFiles.size());
-        assertEquals(6, supportFiles.size());
-        File dir = URLs.urlToFile(indexURL);
-        String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".gif"));
-        String[] supportFilesPaths =
-                dir.list(
-                        FileFilterUtils.and(
-                                FileFilterUtils.or(
-                                        FileFilterUtils.suffixFileFilter(".prj"),
-                                        FileFilterUtils.suffixFileFilter(".wld")),
-                                FileFilterUtils.notFileFilter(
-                                        FileFilterUtils.prefixFileFilter("index"))));
-        for (String filePath : mainFilesPaths) {
-            final File myFile = new File(dir, filePath);
-            assertTrue(mainFiles.contains(myFile));
-        }
-        for (String filePath : supportFilesPaths) {
-            final File myFile = new File(dir, filePath);
-            assertTrue(supportFiles.contains(myFile));
-        }
-
         reader.dispose();
     }
 
@@ -5011,36 +5002,36 @@ public class ImageMosaicReaderTest {
         ResourceInfo info = reader.getInfo(reader.getGridCoverageNames()[0]);
         assertTrue(info instanceof FileResourceInfo);
         FileResourceInfo fileInfo = (FileResourceInfo) info;
-        CloseableIterator<FileGroup> files = fileInfo.getFiles(null);
-        List<FileGroup> fileGroups = new ArrayList<>();
-        Set<File> mainFiles = new HashSet<>();
-        Set<File> supportFiles = new HashSet<>();
-        while (files.hasNext()) {
-            FileGroup group = files.next();
-            fileGroups.add(group);
-            mainFiles.add(group.getMainFile());
-            supportFiles.addAll(group.getSupportFiles());
+        try (CloseableIterator<FileGroup> files = fileInfo.getFiles(null)) {
+            List<FileGroup> fileGroups = new ArrayList<>();
+            Set<File> mainFiles = new HashSet<>();
+            Set<File> supportFiles = new HashSet<>();
+            while (files.hasNext()) {
+                FileGroup group = files.next();
+                fileGroups.add(group);
+                mainFiles.add(group.getMainFile());
+                supportFiles.addAll(group.getSupportFiles());
+            }
+            assertEquals(2, fileGroups.size());
+            assertEquals(2, mainFiles.size());
+            assertEquals(2, supportFiles.size());
+            File dir = URLs.urlToFile(overviewURL);
+            String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".tif"));
+            String[] supportFilesPaths =
+                    dir.list(
+                            FileFilterUtils.and(
+                                    FileFilterUtils.or(FileFilterUtils.suffixFileFilter(".ovr")),
+                                    FileFilterUtils.notFileFilter(
+                                            FileFilterUtils.prefixFileFilter("index"))));
+            for (String filePath : mainFilesPaths) {
+                final File myFile = new File(dir, filePath);
+                assertTrue(mainFiles.contains(myFile));
+            }
+            for (String filePath : supportFilesPaths) {
+                final File myFile = new File(dir, filePath);
+                assertTrue(supportFiles.contains(myFile));
+            }
         }
-        assertEquals(2, fileGroups.size());
-        assertEquals(2, mainFiles.size());
-        assertEquals(2, supportFiles.size());
-        File dir = URLs.urlToFile(overviewURL);
-        String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".tif"));
-        String[] supportFilesPaths =
-                dir.list(
-                        FileFilterUtils.and(
-                                FileFilterUtils.or(FileFilterUtils.suffixFileFilter(".ovr")),
-                                FileFilterUtils.notFileFilter(
-                                        FileFilterUtils.prefixFileFilter("index"))));
-        for (String filePath : mainFilesPaths) {
-            final File myFile = new File(dir, filePath);
-            assertTrue(mainFiles.contains(myFile));
-        }
-        for (String filePath : supportFilesPaths) {
-            final File myFile = new File(dir, filePath);
-            assertTrue(supportFiles.contains(myFile));
-        }
-
         reader.dispose();
     }
 
@@ -5450,12 +5441,12 @@ public class ImageMosaicReaderTest {
     @Ignore(
             "Does not work due to limitations in ContentDataStore transaction handling, not even with rw locking")
     public void testConcurrentHarvestAndRemoveShapefile() throws Exception {
-        testConcurrentHarvestAndRemove(f -> {}, 20);
+        checkConcurrentHarvestAndRemove(f -> {}, 20);
     }
 
     @Test
     public void testConcurrentHarvestAndRemoveH2() throws Exception {
-        testConcurrentHarvestAndRemove(
+        checkConcurrentHarvestAndRemove(
                 f -> {
                     // place H2 file in the dir
                     try (FileWriter out = new FileWriter(new File(f, "datastore.properties"))) {
@@ -5469,7 +5460,7 @@ public class ImageMosaicReaderTest {
                 10);
     }
 
-    public void testConcurrentHarvestAndRemove(Consumer<File> mosaicCustomizer, int loops)
+    public void checkConcurrentHarvestAndRemove(Consumer<File> mosaicCustomizer, int loops)
             throws Exception {
         File source = URLs.urlToFile(rgbURL);
         File testDataDir = TestData.file(this, ".");
@@ -5709,7 +5700,7 @@ public class ImageMosaicReaderTest {
             assertThat(
                     groupFirst.getMainFile().getPath().toLowerCase(),
                     endsWith("global_mosaic_0.png"));
-            System.out.println(groupFirst.getSupportFiles());
+            // System.out.println(groupFirst.getSupportFiles());
             assertThat(
                     groupFirst
                             .getSupportFiles()

@@ -55,7 +55,7 @@ public class LRSGeocodeProcessTest {
         SimpleFeatureCollection origional = source.getFeatures();
 
         try {
-            FeatureCollection result = process.execute(origional, "from_lrs_bad", "to_lrs", 1.0);
+            process.execute(origional, "from_lrs_bad", "to_lrs", 1.0);
             Assert.fail("Expected error from bad from_lrs name");
         } catch (ProcessException e) {
             // Successful
@@ -69,7 +69,7 @@ public class LRSGeocodeProcessTest {
         SimpleFeatureCollection origional = source.getFeatures();
 
         try {
-            FeatureCollection result = process.execute(origional, "from_lrs", "to_lrs_bad", 1.0);
+            process.execute(origional, "from_lrs", "to_lrs_bad", 1.0);
             Assert.fail("Expected error from bad to_lrs name");
         } catch (ProcessException e) {
             // Successful
@@ -83,7 +83,7 @@ public class LRSGeocodeProcessTest {
         SimpleFeatureCollection origional = source.getFeatures();
 
         try {
-            FeatureCollection result = process.execute(origional, null, "to_lrs", 1.0);
+            process.execute(origional, null, "to_lrs", 1.0);
             Assert.fail("Expected error from bad from_lrs name");
         } catch (ProcessException e) {
             // Successful
@@ -97,7 +97,7 @@ public class LRSGeocodeProcessTest {
         SimpleFeatureCollection origional = source.getFeatures();
 
         try {
-            FeatureCollection result = process.execute(origional, "from_lrs", null, 1.0);
+            process.execute(origional, "from_lrs", null, 1.0);
             Assert.fail("Expected error from bad to_lrs name");
         } catch (ProcessException e) {
             // Successful
@@ -111,7 +111,7 @@ public class LRSGeocodeProcessTest {
         SimpleFeatureCollection origional = source.getFeatures();
 
         try {
-            FeatureCollection result = process.execute(origional, "from_lrs", "to_lrs_bad", null);
+            process.execute(origional, "from_lrs", "to_lrs_bad", null);
             Assert.fail("Expected error from bad measure value");
         } catch (ProcessException e) {
             // Successful

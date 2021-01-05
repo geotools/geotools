@@ -18,7 +18,11 @@
  */
 package org.geotools.feature;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Array;
 import java.net.URI;
@@ -40,7 +44,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 
 /**
@@ -199,10 +202,6 @@ public class FeatureTypeTest extends DataTestCase {
         Float f = Float.valueOf(3.14f);
         Double d = Double.valueOf(3.14159);
 
-        AttributeTypeBuilder ab = new AttributeTypeBuilder();
-
-        AttributeDescriptor testType = ab.binding(Object.class).buildDescriptor("test");
-
         assertSame("String", str, DataUtilities.duplicate(str));
         assertSame("Integer", i, DataUtilities.duplicate(i));
         assertSame("Float", f, DataUtilities.duplicate(f));
@@ -274,10 +273,6 @@ public class FeatureTypeTest extends DataTestCase {
                     ((SimpleFeature) value).getAttributes());
         } else {
             assertEquals(message, expected, value);
-        }
-        // Ensure Non Immutables are actually copied
-        if (!immutable.contains(expected.getClass())) {
-            // assertNotSame( message, expected, value );
         }
     }
 }

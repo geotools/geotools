@@ -63,17 +63,17 @@ public class PropertyDataStore2Test {
         if (file.exists()) {
             file.delete();
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write("_=id:Integer,*geom:Geometry,name:String");
-        writer.newLine();
-        writer.write("fid1=1|LINESTRING(0 0,10 10)|jody");
-        writer.newLine();
-        writer.write("fid2=2|LINESTRING(20 20,30 30)|brent");
-        writer.newLine();
-        writer.write("fid3=3|LINESTRING(5 0, 5 10)|dave");
-        writer.newLine();
-        writer.write("fid4=4|LINESTRING(0 5, 5 0, 10 5, 5 10, 0 5)|justin");
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("_=id:Integer,*geom:Geometry,name:String");
+            writer.newLine();
+            writer.write("fid1=1|LINESTRING(0 0,10 10)|jody");
+            writer.newLine();
+            writer.write("fid2=2|LINESTRING(20 20,30 30)|brent");
+            writer.newLine();
+            writer.write("fid3=3|LINESTRING(5 0, 5 10)|dave");
+            writer.newLine();
+            writer.write("fid4=4|LINESTRING(0 5, 5 0, 10 5, 5 10, 0 5)|justin");
+        }
         store = new PropertyDataStore(dir, "propertyTestData");
 
         // Create a similar data store but with srid in the geometry column
@@ -83,17 +83,17 @@ public class PropertyDataStore2Test {
         if (file2.exists()) {
             file2.delete();
         }
-        BufferedWriter writer2 = new BufferedWriter(new FileWriter(file2));
-        writer2.write("_=id:Integer,geom:Geometry:srid=4283");
-        writer2.newLine();
-        writer2.write("fid1=1|LINESTRING(0 0,10 10)");
-        writer2.newLine();
-        writer2.write("fid2=2|LINESTRING(20 20,30 30)");
-        writer2.newLine();
-        writer2.write("fid3=3|LINESTRING(5 0, 5 10)");
-        writer2.newLine();
-        writer2.write("fid4=4|LINESTRING(0 5, 5 0, 10 5, 5 10, 0 5)");
-        writer2.close();
+        try (BufferedWriter writer2 = new BufferedWriter(new FileWriter(file2))) {
+            writer2.write("_=id:Integer,geom:Geometry:srid=4283");
+            writer2.newLine();
+            writer2.write("fid1=1|LINESTRING(0 0,10 10)");
+            writer2.newLine();
+            writer2.write("fid2=2|LINESTRING(20 20,30 30)");
+            writer2.newLine();
+            writer2.write("fid3=3|LINESTRING(5 0, 5 10)");
+            writer2.newLine();
+            writer2.write("fid4=4|LINESTRING(0 5, 5 0, 10 5, 5 10, 0 5)");
+        }
         sridStore = new PropertyDataStore(dir2, "propertyTestData2");
 
         // Create a data store with a 3D geometry
@@ -104,13 +104,13 @@ public class PropertyDataStore2Test {
             file3.delete();
         }
 
-        BufferedWriter writer3 = new BufferedWriter(new FileWriter(file3));
-        writer3.write("_=id:Integer,geom:Geometry:srid=4327");
-        writer3.newLine();
-        writer3.write("fid1=1|LINESTRING(0 0 0,10 10 0)");
-        writer3.newLine();
-        writer3.write("fid2=2|LINESTRING(20 20 10,30 30 20)");
-        writer3.close();
+        try (BufferedWriter writer3 = new BufferedWriter(new FileWriter(file3))) {
+            writer3.write("_=id:Integer,geom:Geometry:srid=4327");
+            writer3.newLine();
+            writer3.write("fid1=1|LINESTRING(0 0 0,10 10 0)");
+            writer3.newLine();
+            writer3.write("fid2=2|LINESTRING(20 20 10,30 30 20)");
+        }
         store3d = new PropertyDataStore(dir3, "propertyTestData3");
     }
 
@@ -149,21 +149,23 @@ public class PropertyDataStore2Test {
         Geometry geom;
         Property prop;
         GeometryType geomType;
-        SimpleFeatureIterator iterator = features.features();
-        while (iterator.hasNext()) {
-            feature = iterator.next();
-            prop = feature.getProperty("geom");
-            Assert.assertTrue(prop.getType() instanceof GeometryType);
-            geomType = (GeometryType) prop.getType();
+        try (SimpleFeatureIterator iterator = features.features()) {
+            while (iterator.hasNext()) {
+                feature = iterator.next();
+                prop = feature.getProperty("geom");
+                Assert.assertTrue(prop.getType() instanceof GeometryType);
+                geomType = (GeometryType) prop.getType();
 
-            Object val = prop.getValue();
-            Assert.assertTrue(val != null && val instanceof Geometry);
-            geom = (Geometry) val;
+                Object val = prop.getValue();
+                Assert.assertTrue(val != null && val instanceof Geometry);
+                geom = (Geometry) val;
 
-            Object userData = geom.getUserData();
-            Assert.assertTrue(userData != null && userData instanceof CoordinateReferenceSystem);
-            // ensure the same CRS is passed on to userData for encoding
-            Assert.assertEquals(userData, geomType.getCoordinateReferenceSystem());
+                Object userData = geom.getUserData();
+                Assert.assertTrue(
+                        userData != null && userData instanceof CoordinateReferenceSystem);
+                // ensure the same CRS is passed on to userData for encoding
+                Assert.assertEquals(userData, geomType.getCoordinateReferenceSystem());
+            }
         }
     }
 
@@ -181,11 +183,12 @@ public class PropertyDataStore2Test {
         SimpleFeatureCollection features = fs.getFeatures();
         Assert.assertEquals(2, features.size());
 
-        SimpleFeatureIterator i = features.features();
-        for (SimpleFeature feature = i.next(); i.hasNext(); feature = i.next()) {
-            Property p = feature.getProperty("geom");
-            Assert.assertTrue(p.getType() instanceof GeometryType);
-            Assert.assertTrue(p.getValue() instanceof Geometry);
+        try (SimpleFeatureIterator i = features.features()) {
+            for (SimpleFeature feature = i.next(); i.hasNext(); feature = i.next()) {
+                Property p = feature.getProperty("geom");
+                Assert.assertTrue(p.getType() instanceof GeometryType);
+                Assert.assertTrue(p.getValue() instanceof Geometry);
+            }
         }
     }
 

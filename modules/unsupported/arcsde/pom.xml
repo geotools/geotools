@@ -131,4 +131,17 @@
     </profile>
   </profiles>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${maven.pmd.plugin.version}</version>       
+        <configuration>
+          <!-- This module is on life support, disabling PMD checks on tests -->
+          <includeTests>false</includeTests>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

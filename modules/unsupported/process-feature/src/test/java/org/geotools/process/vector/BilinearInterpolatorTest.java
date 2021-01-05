@@ -18,6 +18,8 @@ package org.geotools.process.vector;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 import org.junit.Test;
 
 /**
@@ -26,6 +28,8 @@ import org.junit.Test;
  * @author Martin Davis, OpenGeo
  */
 public class BilinearInterpolatorTest {
+
+    static final Logger LOGGER = Logging.getLogger(BilinearInterpolatorTest.class);
 
     @Test
     public void testSquareWithTriangleData() {
@@ -101,12 +105,14 @@ public class BilinearInterpolatorTest {
         return true;
     }
 
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     private void printGrid(float[][] grid) {
+        StringBuilder sb = new StringBuilder();
         for (int j = grid[0].length - 1; j >= 0; j--) {
             for (int i = 0; i < grid.length; i++) {
-                // System.out.print(grid[i][j] + " ");
+                sb.append(grid[i][j] + " ");
             }
-            // System.out.println();
+            LOGGER.info(sb.toString());
         }
     }
 }

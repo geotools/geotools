@@ -20,13 +20,11 @@ package org.geotools.swing.dialog;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.awt.image.Raster;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -59,7 +57,7 @@ public class DialogUtilsTest extends GraphicsTestBase {
     @Test
     public void labelTextExtentCanBeCalledSafelyOutsideEDT() {
         // Just testing there is no exception
-        Dimension dim = DialogUtils.getHtmlLabelTextExtent("foo", 300, true);
+        DialogUtils.getHtmlLabelTextExtent("foo", 300, true);
     }
 
     /**
@@ -117,12 +115,10 @@ public class DialogUtilsTest extends GraphicsTestBase {
                         });
 
         FrameFixture fixture = new FrameFixture(frame);
-        Insets insets = frame.getInsets();
         fixture.show();
 
         JLabelFixture lf = fixture.label("TheLabel");
         Point pos = lf.target().getLocationOnScreen();
-        Dimension size = lf.target().getSize();
 
         Robot robot = new Robot();
         BufferedImage img = robot.createScreenCapture(new Rectangle(pos, dim));
@@ -153,7 +149,6 @@ public class DialogUtilsTest extends GraphicsTestBase {
     private boolean findColorInRange(
             BufferedImage img, Rectangle bounds, int[] lowerRGB, int[] upperRGB) {
 
-        final Raster raster = img.getData();
         final ColorModel cm = img.getColorModel();
         boolean found = false;
 

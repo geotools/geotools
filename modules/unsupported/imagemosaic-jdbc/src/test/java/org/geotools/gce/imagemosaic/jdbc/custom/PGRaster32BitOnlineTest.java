@@ -55,6 +55,7 @@ public class PGRaster32BitOnlineTest extends PGRasterOnlineTest {
         return suite;
     }
 
+    @org.junit.Test
     public void testCreateFloat32() {
         executeCreate(
                 Connection,

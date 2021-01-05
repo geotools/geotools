@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 import org.geotools.geometry.GeneralEnvelope;
@@ -112,7 +111,7 @@ public class WebMapTileServerTest {
         tileRequest1.setRequestedHeight(768);
         tileRequest1.setRequestedWidth(1024);
         Set<Tile> receivedTiles = tileRequest1.getTiles();
-        assertTrue(receivedTiles.size() > 0);
+        assertFalse(receivedTiles.isEmpty());
         for (Tile t : receivedTiles) {
 
             String recvdTileCRS =
@@ -134,7 +133,7 @@ public class WebMapTileServerTest {
         tileRequest2.setRequestedHeight(768);
         tileRequest2.setRequestedWidth(1024);
         Set<Tile> receivedTiles2 = tileRequest2.getTiles();
-        assertTrue(receivedTiles2.size() > 0);
+        assertFalse(receivedTiles2.isEmpty());
         for (Tile t : receivedTiles2) {
             String recvdTileCRS =
                     t.getExtent()
@@ -154,7 +153,7 @@ public class WebMapTileServerTest {
         tileRequest3.setRequestedHeight(768);
         tileRequest3.setRequestedWidth(1024);
         Set<Tile> receivedTiles3 = tileRequest3.getTiles();
-        assertTrue(receivedTiles3.size() > 0);
+        assertFalse(receivedTiles3.isEmpty());
         for (Tile t : receivedTiles3) {
             String recvdTileCRS =
                     t.getExtent()
@@ -190,7 +189,7 @@ public class WebMapTileServerTest {
         GetTileRequest tileRequest = server.createGetTileRequest();
         WMTSLayer layer = server.getCapabilities().getLayer("83637_2");
         tileRequest.setLayer(layer);
-        String url = tileRequest.getFinalURL().toString();
+        tileRequest.getFinalURL().toString();
     }
 
     private WebMapTileServer createServer(String resourceName) throws Exception {

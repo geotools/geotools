@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -82,11 +83,12 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
     }
 
     @Override
-    public void setUpInternal() {
+    public void setUpInternal() throws IOException {
         // instantiate the Apache Solr client
-        HttpSolrClient client = new HttpSolrClient.Builder(getSolrCoreURL()).build();
-        // configure the target Apache Solr core
-        StationsSetup.setupSolrIndex(client);
+        try (HttpSolrClient client = new HttpSolrClient.Builder(getSolrCoreURL()).build()) {
+            // configure the target Apache Solr core
+            StationsSetup.setupSolrIndex(client);
+        }
         // prepare the App-Schema configuration files
         StationsSetup.prepareAppSchemaFiles(TESTS_ROOT_DIR, getSolrCoreURL());
         instantiateAppSchemaDataStore();
@@ -165,7 +167,6 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
                     assertThat(index >= 0, is(true));
                     assertThat(tags[index], is(tagValue));
                 }
-                for (String tag : tags) {}
 
                 // feature found, we are done
                 return feature;

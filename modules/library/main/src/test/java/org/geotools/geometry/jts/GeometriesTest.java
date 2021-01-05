@@ -123,7 +123,6 @@ public class GeometriesTest {
             }
         }
 
-        DerivedLine p = new DerivedLine(new CoordinateArraySequence(coords), geomFactory);
         assertEquals(Geometries.LINESTRING, Geometries.getForBinding(DerivedLine.class));
     }
 

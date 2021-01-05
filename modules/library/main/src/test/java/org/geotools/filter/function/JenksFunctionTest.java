@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.function;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -25,6 +26,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -168,14 +170,13 @@ public class JenksFunctionTest extends FunctionTestSupport {
                             "classification.t" + (i + 1));
         }
         SimpleFeatureSource source = DataUtilities.source(myfeatures);
-        ;
         SimpleFeatureCollection myFeatureCollection = source.getFeatures();
 
         // run the quantile function
         org.opengis.filter.expression.Expression function =
                 ff.function("Jenks", ff.property("value"), ff.literal(5));
         Classifier classifier = (Classifier) function.evaluate(myFeatureCollection);
-        RangedClassifier range = (RangedClassifier) classifier;
+        assertThat(classifier, CoreMatchers.instanceOf(RangedClassifier.class));
     }
 
     @Test

@@ -229,17 +229,17 @@ public class GMLParserTest {
 
         // remaining slot (s) should be feature(s)
         Assert.assertTrue("Requires atleast one feature", doc.size() > 0); // bbox + feature
-        SimpleFeatureIterator i = doc.features();
-        int j = 1;
-        while (i.hasNext()) {
-            SimpleFeature ft = i.next();
-            Assert.assertNotNull("Feature #" + j + " is null", ft);
-            //            assertNotNull("Feature #"+j+" missing crs
-            // ",ft.getFeatureType().getDefaultGeometry().getCoordinateSystem());
-            //            System.out.println("Feature "+j+" : "+ft);
-            j++;
+        try (SimpleFeatureIterator i = doc.features()) {
+            int j = 1;
+            while (i.hasNext()) {
+                SimpleFeature ft = i.next();
+                Assert.assertNotNull("Feature #" + j + " is null", ft);
+                //            assertNotNull("Feature #"+j+" missing crs
+                // ",ft.getFeatureType().getDefaultGeometry().getCoordinateSystem());
+                //            System.out.println("Feature "+j+" : "+ft);
+                j++;
+            }
         }
-        // System.out.println("Found " + j + " Features");
     }
 
     @Test

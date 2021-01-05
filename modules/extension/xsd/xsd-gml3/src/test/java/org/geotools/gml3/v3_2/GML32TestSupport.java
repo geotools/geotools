@@ -7,6 +7,7 @@ import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
 import org.junit.After;
+import org.junit.Before;
 import org.w3c.dom.Node;
 
 public abstract class GML32TestSupport extends XMLTestSupport {
@@ -30,6 +31,7 @@ public abstract class GML32TestSupport extends XMLTestSupport {
     }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         GML3MockData.setGML(GML.getInstance());

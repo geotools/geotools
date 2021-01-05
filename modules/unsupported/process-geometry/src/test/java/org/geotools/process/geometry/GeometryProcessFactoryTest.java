@@ -31,7 +31,7 @@ public class GeometryProcessFactoryTest {
     @Test
     public void testNames() {
         Set<Name> names = factory.getNames();
-        Assert.assertTrue(names.size() > 0);
+        Assert.assertFalse(names.isEmpty());
         // System.out.println(names);
         Assert.assertTrue(names.contains(new NameImpl("geo", "buffer")));
         Assert.assertTrue(names.contains(new NameImpl("geo", "union")));

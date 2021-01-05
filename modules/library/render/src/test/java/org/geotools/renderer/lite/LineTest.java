@@ -239,26 +239,25 @@ public class LineTest {
                         RendererBaseTest.loadStyle(this, "linePerpendicularOffsetSmall.sld"));
 
         final AtomicInteger errors = new AtomicInteger(0);
-        BufferedImage image =
-                RendererBaseTest.showRender(
-                        "Perpendicular offset",
-                        renderer,
-                        TIME,
-                        new ReferencedEnvelope[] {
-                            new ReferencedEnvelope(1, 4, 1, 4, DefaultGeographicCRS.WGS84)
-                        },
-                        new RenderListener() {
+        RendererBaseTest.showRender(
+                "Perpendicular offset",
+                renderer,
+                TIME,
+                new ReferencedEnvelope[] {
+                    new ReferencedEnvelope(1, 4, 1, 4, DefaultGeographicCRS.WGS84)
+                },
+                new RenderListener() {
 
-                            @Override
-                            public void featureRenderer(SimpleFeature feature) {
-                                // nothing to do
-                            }
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        // nothing to do
+                    }
 
-                            @Override
-                            public void errorOccurred(Exception e) {
-                                errors.incrementAndGet();
-                            }
-                        });
+                    @Override
+                    public void errorOccurred(Exception e) {
+                        errors.incrementAndGet();
+                    }
+                });
         assertEquals(0, errors.get());
     }
 }

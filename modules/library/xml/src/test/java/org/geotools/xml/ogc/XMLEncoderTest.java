@@ -100,7 +100,7 @@ public class XMLEncoderTest {
 
     @Test
     public void test3a() throws Exception {
-        Filter test = parseDocument("test3a.xml");
+        parseDocument("test3a.xml");
 
         // LOGGER.fine("parsed filter is: " + test);
     }

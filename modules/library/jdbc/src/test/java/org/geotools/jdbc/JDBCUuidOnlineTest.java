@@ -28,6 +28,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
 /** @author kbyte */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
 
     @Override

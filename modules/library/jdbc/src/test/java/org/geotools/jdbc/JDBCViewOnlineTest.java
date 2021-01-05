@@ -9,12 +9,12 @@ import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
 
     protected static final String LAKESVIEW = "lakesview";
@@ -86,7 +86,7 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
         assertEquals(1, fc.size());
         try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
-            SimpleFeature f = fr.next();
+            fr.next();
             assertFalse(fr.hasNext());
         }
     }

@@ -19,7 +19,6 @@ package org.geotools.xml.filter;
 import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.TestSuite;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -43,9 +42,6 @@ public class ParserTest extends FilterTestSupport {
     /** Standard logging instance */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ParserTest.class);
-
-    /** Test suite for this test case */
-    TestSuite suite = null;
 
     /** Constructor with test name. */
     String dataFolder = "";
@@ -83,7 +79,7 @@ public class ParserTest extends FilterTestSupport {
         // Builds the test feature
         Object[] attributes = new Object[11];
         attributes[0] = geomFac.createLineString(coords);
-        attributes[1] = Boolean.valueOf(true);
+        attributes[1] = Boolean.TRUE;
         attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");
@@ -248,8 +244,6 @@ public class ParserTest extends FilterTestSupport {
     // }
     public org.opengis.filter.Filter parseDocument(String uri) throws Exception {
         LOGGER.finest("about to create parser");
-
-        SAXParserFactory factory = SAXParserFactory.newInstance();
 
         // chains all the appropriate filters together (in correct order)
         //  and initiates parsing

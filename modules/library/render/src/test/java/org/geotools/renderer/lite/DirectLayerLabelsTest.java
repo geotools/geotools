@@ -50,8 +50,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class DirectLayerLabelsTest {
 
     private long timout = 3000;
-    private static final int CENTERX = 130;
-    private static final int CENTERY = 40;
     /** @throws java.lang.Exception */
     @Before
     public void setUp() throws Exception {

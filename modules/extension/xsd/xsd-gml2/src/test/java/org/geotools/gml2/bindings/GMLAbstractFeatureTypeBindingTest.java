@@ -24,6 +24,7 @@ import org.geotools.gml2.TEST;
 import org.geotools.gml2.TestConfiguration;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -36,6 +37,7 @@ public class GMLAbstractFeatureTypeBindingTest extends GMLTestSupport {
     }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         registerNamespaceMapping("test", TEST.NAMESPACE);

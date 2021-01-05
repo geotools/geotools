@@ -19,7 +19,6 @@ package org.geotools.coverage.processing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ import javax.media.jai.PlanarImage;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
-import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
@@ -64,7 +62,6 @@ public final class BandMergeTest extends GridProcessingTestBase {
         ParameterValueGroup param = processor.getOperation("BandMerge").getParameters();
         param.parameter("sources").setValue(coverages);
         GridCoverage2D merged = (GridCoverage2D) processor.doOperation(param);
-        NoDataContainer noData = CoverageUtilities.getNoDataProperty(merged);
 
         if (SHOW) {
             Viewer.show(source);

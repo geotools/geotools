@@ -65,11 +65,12 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
                 ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
 
         HttpHost httpHost = new HttpHost(host, port, "http");
-        RestClient client = RestClient.builder(httpHost).build();
+        try (RestClient client = RestClient.builder(httpHost).build()) {
 
-        DataStore dataStore = new ElasticDataStore(client, indexName);
-        String[] typeNames = dataStore.getTypeNames();
-        assertTrue(typeNames.length > 0);
+            DataStore dataStore = new ElasticDataStore(client, indexName);
+            String[] typeNames = dataStore.getTypeNames();
+            assertTrue(typeNames.length > 0);
+        }
     }
 
     @Test
@@ -81,14 +82,16 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
                 ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
 
         HttpHost httpHost = new HttpHost(host, port, "http");
-        RestClient client = RestClient.builder(httpHost).build();
+        try (RestClient client = RestClient.builder(httpHost).build()) {
 
-        DataStore dataStore = new ElasticDataStore(client, client, indexName, false);
-        String[] typeNames = dataStore.getTypeNames();
-        assertTrue(typeNames.length > 0);
+            DataStore dataStore = new ElasticDataStore(client, client, indexName, false);
+            String[] typeNames = dataStore.getTypeNames();
+            assertTrue(typeNames.length > 0);
+        }
     }
 
     @Test(expected = IOException.class)
+    @SuppressWarnings("PMD.CloseResource") // all mocks
     public void testConstructionWithBadClient() throws IOException {
         Map<String, Serializable> params = createConnectionParams();
         String indexName =
@@ -107,6 +110,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
     }
 
     @Test(expected = IOException.class)
+    @SuppressWarnings("PMD.CloseResource") // all mocks
     public void testConstructionWithBadProxyClient() throws IOException {
         Map<String, Serializable> params = createConnectionParams();
         String indexName =

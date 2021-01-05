@@ -89,8 +89,8 @@ public abstract class WaitingListener<T extends EventObject, E extends Enum> {
             // do nothing
         } finally {
             latches[type.ordinal()] = null;
-            return result;
         }
+        return result;
     }
 
     /**

@@ -16,6 +16,8 @@
  */
 package org.geotools.sld.v1_1;
 
+import static org.junit.Assert.assertTrue;
+
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -91,7 +93,7 @@ public class SLDExampleTest {
         Assert.assertEquals(1, l.getStyles().length);
         Style s = l.getStyles()[0];
         Assert.assertEquals("GEOSYM", s.getName());
-        Assert.assertTrue(s.isDefault());
+        assertTrue(s.isDefault());
 
         Assert.assertEquals(1, s.featureTypeStyles().size());
         FeatureTypeStyle fts = s.featureTypeStyles().get(0);
@@ -103,7 +105,7 @@ public class SLDExampleTest {
         Assert.assertEquals("main", r.getName());
         Assert.assertEquals(1, r.symbolizers().size());
 
-        PolygonSymbolizer sym = (PolygonSymbolizer) r.symbolizers().get(0);
+        assertTrue(r.symbolizers().get(0) instanceof PolygonSymbolizer);
     }
 
     @Test
@@ -129,16 +131,18 @@ public class SLDExampleTest {
 
     Object parse(String filename) throws Exception {
         SLDConfiguration sld = new SLDConfiguration();
-        InputStream location = getClass().getResourceAsStream(filename);
-        return new Parser(sld).parse(location);
+        try (InputStream location = getClass().getResourceAsStream(filename)) {
+            return new Parser(sld).parse(location);
+        }
     }
 
     List validate(String filename) throws Exception {
         SLDConfiguration sld = new SLDConfiguration();
-        InputStream location = getClass().getResourceAsStream(filename);
-        Parser p = new Parser(sld);
-        p.validate(location);
-        return p.getValidationErrors();
+        try (InputStream location = getClass().getResourceAsStream(filename)) {
+            Parser p = new Parser(sld);
+            p.validate(location);
+            return p.getValidationErrors();
+        }
     }
 
     @Test
@@ -148,8 +152,7 @@ public class SLDExampleTest {
 
         Parser parser = new Parser(new SLDConfiguration());
 
-        try {
-            InputStream location = getClass().getResourceAsStream(file);
+        try (InputStream location = getClass().getResourceAsStream(file)) {
             parser.parse(location);
             Assert.fail(
                     "parsing should fail with a FileNotFoundException because the parser try to "
@@ -181,8 +184,7 @@ public class SLDExampleTest {
                     }
                 });
 
-        try {
-            InputStream location = getClass().getResourceAsStream(file);
+        try (InputStream location = getClass().getResourceAsStream(file)) {
             parser.parse(location);
             Assert.fail(
                     "parsing should fail with a MalformedURLException because the EntityResolver blocked entity resolution");
@@ -277,7 +279,7 @@ public class SLDExampleTest {
         Graphic graphic = fill.getGraphicFill();
         Assert.assertNotNull(graphic);
         GraphicalSymbol firstSymbol = graphic.graphicalSymbols().get(0);
-        Assert.assertTrue(firstSymbol instanceof Mark);
+        assertTrue(firstSymbol instanceof Mark);
         Assert.assertEquals(
                 "square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
     }

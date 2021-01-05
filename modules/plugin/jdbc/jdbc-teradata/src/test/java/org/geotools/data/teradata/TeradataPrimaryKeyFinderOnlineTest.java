@@ -45,16 +45,14 @@ public class TeradataPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnli
         assertTrue(
                 fs.getPrimaryKey().getColumns().get(1) instanceof NonIncrementingPrimaryKeyColumn);
 
-        FeatureIterator<?> i = fs.getFeatures().features();
-
-        // On Teradata it's undered !!
-        SimpleFeature f = (SimpleFeature) i.next();
-        assertEquals(tname("assignedmultipk") + ".3.4", f.getID());
-        f = (SimpleFeature) i.next();
-        assertEquals(tname("assignedmultipk") + ".1.2", f.getID());
-        f = (SimpleFeature) i.next();
-        assertEquals(tname("assignedmultipk") + ".2.3", f.getID());
-
-        i.close();
+        try (FeatureIterator<?> i = fs.getFeatures().features()) {
+            // On Teradata it's undered !!
+            SimpleFeature f = (SimpleFeature) i.next();
+            assertEquals(tname("assignedmultipk") + ".3.4", f.getID());
+            f = (SimpleFeature) i.next();
+            assertEquals(tname("assignedmultipk") + ".1.2", f.getID());
+            f = (SimpleFeature) i.next();
+            assertEquals(tname("assignedmultipk") + ".2.3", f.getID());
+        }
     }
 }

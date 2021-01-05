@@ -18,7 +18,6 @@
 package org.geotools.process.vector;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -91,12 +90,13 @@ public class UnionFeatureCollectionTest {
             union[i + 5] = secondArrayGeometry[i];
         }
         GeometryCollection unionCollection = new GeometryCollection(union, new GeometryFactory());
-        SimpleFeatureIterator iterator = output.features();
+        try (SimpleFeatureIterator iterator = output.features()) {
 
-        for (int h = 0; h < unionCollection.getNumGeometries(); h++) {
-            Geometry expected = unionCollection.getGeometryN(h);
-            SimpleFeature sf = iterator.next();
-            assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
+            for (int h = 0; h < unionCollection.getNumGeometries(); h++) {
+                Geometry expected = unionCollection.getGeometryN(h);
+                SimpleFeature sf = iterator.next();
+                assertEquals(expected, sf.getDefaultGeometry());
+            }
         }
     }
 }

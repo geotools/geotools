@@ -122,10 +122,10 @@ public class GeoRasterOnlineTest extends AbstractTest {
     }
 
     @Override
+    @org.junit.Test
     public void testCreate() {
 
-        try {
-            java.sql.Connection con = dialect.getConnection();
+        try (java.sql.Connection con = dialect.getConnection()) {
             con.prepareStatement("CREATE TABLE RASTER (NAME VARCHAR(64) ,  IMAGE SDO_GEORASTER)")
                     .execute();
             con.prepareCall("{ call sdo_geor_utl.createDMLTrigger('RASTER', 'IMAGE') }").execute();
@@ -136,26 +136,31 @@ public class GeoRasterOnlineTest extends AbstractTest {
                             "CREATE TABLE blob_table (blob_col BLOB, blobid NUMBER unique, clob_col CLOB)")
                     .execute();
 
-            InputStream imageIn = new URL("file:target/resources/baseimage/map.tif").openStream();
             ByteArrayOutputStream imageOut = new ByteArrayOutputStream();
             int in;
-            while ((in = imageIn.read()) != -1) {
-                imageOut.write(in);
+            try (InputStream imageIn =
+                    new URL("file:target/resources/baseimage/map.tif").openStream()) {
+                while ((in = imageIn.read()) != -1) {
+                    imageOut.write(in);
+                }
             }
 
-            InputStream worldIn = new URL("file:target/resources/baseimage/map.tfw").openStream();
             ByteArrayOutputStream worldOut = new ByteArrayOutputStream();
-
-            while ((in = worldIn.read()) != -1) {
-                worldOut.write(in);
+            try (InputStream worldIn =
+                    new URL("file:target/resources/baseimage/map.tfw").openStream()) {
+                while ((in = worldIn.read()) != -1) {
+                    worldOut.write(in);
+                }
             }
 
-            PreparedStatement ps = con.prepareStatement("INSERT INTO blob_table values(?,?,?)");
-            ps.setBytes(1, imageOut.toByteArray());
-            ps.setInt(2, 1);
-            String world = new String(worldOut.toByteArray());
-            ps.setString(3, world);
-            ps.execute();
+            try (PreparedStatement ps =
+                    con.prepareStatement("INSERT INTO blob_table values(?,?,?)")) {
+                ps.setBytes(1, imageOut.toByteArray());
+                ps.setInt(2, 1);
+                String world = new String(worldOut.toByteArray());
+                ps.setString(3, world);
+                ps.execute();
+            }
 
             String importString =
                     "DECLARE"
@@ -171,8 +176,9 @@ public class GeoRasterOnlineTest extends AbstractTest {
                             + " UPDATE raster SET image = geor1 WHERE name = 'oek';"
                             + " COMMIT;"
                             + " END;";
-            CallableStatement cs = con.prepareCall(importString);
-            cs.execute();
+            try (CallableStatement cs = con.prepareCall(importString)) {
+                cs.execute();
+            }
 
             String createPyramidString =
                     "declare"
@@ -184,17 +190,15 @@ public class GeoRasterOnlineTest extends AbstractTest {
                             + " update raster set image = gr where name='oek';"
                             + " commit;"
                             + " end;";
-            cs = con.prepareCall(createPyramidString);
-            cs.execute();
+            try (CallableStatement cs = con.prepareCall(createPyramidString)) {
+                cs.execute();
+            }
 
-            imageIn.close();
             imageOut.close();
-            worldIn.close();
             worldOut.close();
 
             con.prepareStatement("DROP TABLE blob_table").execute();
             con.commit();
-            con.close();
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
@@ -202,35 +206,25 @@ public class GeoRasterOnlineTest extends AbstractTest {
     }
 
     @Override
-    public void testDrop() {
+    @org.junit.Test
+    public void testDrop() throws Exception {
+        try (java.sql.Connection con = dialect.getConnection()) {
+            try {
+                con.prepareStatement("DROP TABLE RASTER_RDT").execute();
+                con.commit();
+            } catch (Exception e) {
+            }
+            try {
+                con.prepareStatement("DROP TABLE RASTER").execute();
+                con.commit();
+            } catch (Exception e) {
+            }
 
-        java.sql.Connection con = null;
-        try {
-            con = dialect.getConnection();
-        } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            Assert.fail(e.getMessage());
-        }
-        try {
-            con.prepareStatement("DROP TABLE RASTER_RDT").execute();
-            con.commit();
-        } catch (Exception e) {
-        }
-        try {
-            con.prepareStatement("DROP TABLE RASTER").execute();
-            con.commit();
-        } catch (Exception e) {
-        }
-
-        try {
-            con.prepareStatement("DROP TABLE blob_table").execute();
-            con.commit();
-        } catch (Exception e) {
-        }
-
-        try {
-            con.close();
-        } catch (Exception e) {
+            try {
+                con.prepareStatement("DROP TABLE blob_table").execute();
+                con.commit();
+            } catch (Exception e) {
+            }
         }
     }
 }

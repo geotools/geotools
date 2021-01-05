@@ -232,12 +232,12 @@ public class ArcSDEDataStoreNonSpatialTest {
         assertEquals(1, features.size());
         assertNull(fs.getBounds());
 
-        SimpleFeatureIterator iterator = features.features();
-        assertTrue(iterator.hasNext());
-        SimpleFeature next = iterator.next();
-        assertNotNull(next);
-        assertFalse(iterator.hasNext());
-        iterator.close();
+        try (SimpleFeatureIterator iterator = features.features()) {
+            assertTrue(iterator.hasNext());
+            SimpleFeature next = iterator.next();
+            assertNotNull(next);
+            assertFalse(iterator.hasNext());
+        }
     }
 
     @Test
@@ -307,10 +307,10 @@ public class ArcSDEDataStoreNonSpatialTest {
     public void testFeatureWriter_RowID_USER_Transaction()
             throws IOException, UnavailableConnectionException {
         final String tableName = seRowidUserTable;
-        try (Transaction transaction = new DefaultTransaction()) {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        try (Transaction transaction = new DefaultTransaction();
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                        addFeatures(tableName, transaction)) {
 
-            writer = addFeatures(tableName, transaction);
             if (databaseIsMsSqlServer) {
                 /*
                  * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not
@@ -323,9 +323,8 @@ public class ArcSDEDataStoreNonSpatialTest {
                 assertEquals(0, ds.getFeatureSource(tableName).getCount(Query.ALL));
             }
             transaction.commit();
-            writer.close();
-            assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
         }
+        assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
     }
 
     private FeatureWriter<SimpleFeatureType, SimpleFeature> addFeatures(

@@ -89,16 +89,16 @@ public final class SRPTest extends GDALTestCase {
     @Test
     public void testFile() throws Exception {
         final File file = TestData.file(this, fileName);
-        testSource(file);
+        checkSource(file);
     }
 
     @Test
     public void testPath() throws Exception {
         final File file = TestData.file(this, fileName);
-        testSource(file.getAbsolutePath());
+        checkSource(file.getAbsolutePath());
     }
 
-    public void testSource(Object source) throws IOException {
+    public void checkSource(Object source) throws IOException {
         if (!testingEnabled()) {
             return;
         }

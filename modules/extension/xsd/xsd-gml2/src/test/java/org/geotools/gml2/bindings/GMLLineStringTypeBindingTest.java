@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -39,6 +40,7 @@ public class GMLLineStringTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coords;
     MutablePicoContainer container;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -98,7 +100,7 @@ public class GMLLineStringTypeBindingTest extends AbstractGMLBindingTest {
                         container.getComponentInstanceOfType(GMLLineStringTypeBinding.class);
 
         try {
-            LineString lineString = (LineString) s.parse(line, node, null);
+            s.parse(line, node, null);
             fail("Should have died with just one coordinate");
         } catch (RuntimeException e) {
             // ok
@@ -177,7 +179,7 @@ public class GMLLineStringTypeBindingTest extends AbstractGMLBindingTest {
                         container.getComponentInstanceOfType(GMLLineStringTypeBinding.class);
 
         try {
-            LineString lineString = (LineString) s.parse(line, node, null);
+            s.parse(line, node, null);
             fail("Should have died with just one coordinate");
         } catch (RuntimeException e) {
             // ok

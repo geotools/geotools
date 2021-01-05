@@ -48,8 +48,7 @@ public class XmlnsNamespaceTest {
 
         try {
             SLDParser parser2 = new SLDParser(new StyleFactoryImpl(), new StringReader(xml));
-            Style style2 = parser2.readXML()[0];
-
+            parser2.readXML();
         } catch (Exception exc) {
             fail("Failed to persist object tree to XML and parse back: " + exc.getMessage());
             throw exc;

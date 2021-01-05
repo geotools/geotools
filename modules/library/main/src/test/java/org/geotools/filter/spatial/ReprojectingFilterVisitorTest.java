@@ -1,6 +1,7 @@
 package org.geotools.filter.spatial;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.Collections;
 import java.util.List;
@@ -129,18 +130,18 @@ public class ReprojectingFilterVisitorTest {
     }
 
     @Test
-    public void testIntersectsReproject() throws Exception {
+    public void checkIntersectsReproject() throws Exception {
         Expression geom = ff.property("geom");
-        testIntersectsReproject(geom);
+        checkIntersectsReproject(geom);
     }
 
     @Test
     public void testBoundedByReproject() throws Exception {
         Expression geom = ff.function("boundedBy");
-        testIntersectsReproject(geom);
+        checkIntersectsReproject(geom);
     }
 
-    public void testIntersectsReproject(Expression geom) throws FactoryException {
+    public void checkIntersectsReproject(Expression geom) throws FactoryException {
         GeometryFactory gf = new GeometryFactory();
         LineString ls =
                 gf.createLineString(

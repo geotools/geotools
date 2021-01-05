@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.geotools.graph.build.line.BasicLineGraphGenerator;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
-import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
@@ -84,8 +83,6 @@ public class DijkstraShortestPathFinderWithTurnCostsTest {
 
         while (it1.hasNext()) {
             Node d = (Node) it1.next();
-
-            Path path = pf.getPath(d);
 
             gotArray.add(pf.getCost(d));
         }

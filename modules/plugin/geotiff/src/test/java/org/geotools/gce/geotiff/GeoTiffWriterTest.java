@@ -93,11 +93,11 @@ public class GeoTiffWriterTest extends Assert {
 
         // read
         final GeoTiffReader reader = new GeoTiffReader(geotiff);
-        if (TestData.isInteractiveTest()) {
-            IIOMetadataDumper iIOMetadataDumper =
-                    new IIOMetadataDumper(reader.getMetadata().getRootNode());
-            // System.out.println(iIOMetadataDumper.getMetadata());
-        }
+        //        if (TestData.isInteractiveTest()) {
+        //            IIOMetadataDumper iIOMetadataDumper =
+        //                    new IIOMetadataDumper(reader.getMetadata().getRootNode());
+        //            // System.out.println(iIOMetadataDumper.getMetadata());
+        //        }
         assertTrue(
                 CRS.findMathTransform(
                                 reader.getCoordinateReferenceSystem(),
@@ -111,7 +111,7 @@ public class GeoTiffWriterTest extends Assert {
 
     /** Testing {@link GeoTiffWriter} capabilities to write a cropped coverage. */
     @Test
-    //	    @Ignore
+    @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
     public void testWriteCroppedCoverage()
             throws IllegalArgumentException, IOException, UnsupportedOperationException,
                     ParseException, FactoryException, TransformException {

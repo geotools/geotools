@@ -590,7 +590,7 @@ public class VisitorCalculationTest extends DataTestCase {
         maxVisitor.setValue(Double.valueOf(99));
         CalcResult maxResult = maxVisitor.getResult();
         try {
-            CalcResult boomResult = maxResult.merge(countResult);
+            maxResult.merge(countResult);
             fail(); // merge should throw an exception
         } catch (Exception e) {
             assertEquals("Parameter is not a compatible type", e.getMessage());

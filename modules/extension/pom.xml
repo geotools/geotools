@@ -52,7 +52,6 @@
     <module>mbstyle</module>
     <module>tile-client</module>
     <module>transform</module>
-    <module>validation</module>
     <module>wms</module>
     <module>wmts</module>
     <module>xsd</module>

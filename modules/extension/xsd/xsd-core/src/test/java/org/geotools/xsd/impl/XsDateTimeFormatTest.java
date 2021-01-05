@@ -70,8 +70,8 @@ public class XsDateTimeFormatTest {
         XsDateTimeFormat format = new XsDateTimeFormat();
         // Set a date
         String time = "2014-10-12T09:00Z";
-        // Parse the Date
-        Object parseObject = format.parseObject(time);
+        // Parse the Date, should throw an exception
+        format.parseObject(time);
     }
 
     @Test

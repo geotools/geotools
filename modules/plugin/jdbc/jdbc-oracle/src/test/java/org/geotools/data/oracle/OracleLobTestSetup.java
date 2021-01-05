@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import org.geotools.jdbc.JDBCLobTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class OracleLobTestSetup extends JDBCLobTestSetup {
 
     protected OracleLobTestSetup() {

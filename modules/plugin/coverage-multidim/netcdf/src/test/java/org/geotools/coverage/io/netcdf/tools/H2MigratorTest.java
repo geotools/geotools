@@ -178,7 +178,7 @@ public class H2MigratorTest {
     }
 
     /** Test migration on a mosaic with multiple files each one having multiple coverages */
-    public void testMultiCoverageRepository(String[] coverageNames, boolean setIndexStoreName)
+    protected void testMultiCoverageRepository(String[] coverageNames, boolean setIndexStoreName)
             throws Exception {
         // copy the data over
         File testDir = tempFolder.newFolder("multi-coverage");
@@ -375,7 +375,7 @@ public class H2MigratorTest {
         assertEquals(H2Migrator.NETCDF_DATASTORE_PROPERTIES, auxDataStore.get());
     }
 
-    public void testMultiCoverageMosaic(URL testUrl, Hints hints) throws Exception {
+    protected void testMultiCoverageMosaic(URL testUrl, Hints hints) throws Exception {
         ImageMosaicReader reader = null;
         try {
             reader = new ImageMosaicReader(testUrl, hints);

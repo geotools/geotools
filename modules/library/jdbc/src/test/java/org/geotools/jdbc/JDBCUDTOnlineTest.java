@@ -25,6 +25,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
 
     @Override
@@ -39,8 +40,6 @@ public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
     }
 
     public void testRead() throws Exception {
-        SimpleFeatureType type = dataStore.getSchema(tname("udt"));
-
         SimpleFeatureCollection features = dataStore.getFeatureSource(tname("udt")).getFeatures();
         try (SimpleFeatureIterator fi = features.features()) {
             assertTrue(fi.hasNext());

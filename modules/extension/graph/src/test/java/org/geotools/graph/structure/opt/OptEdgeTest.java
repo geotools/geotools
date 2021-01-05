@@ -38,7 +38,6 @@ public class OptEdgeTest {
     private OptEdge m_other4;
 
     private OptEdge m_same;
-    private OptEdge m_diff;
     private OptEdge m_opp;
     private OptEdge m_loopA;
     private OptEdge m_loopB;

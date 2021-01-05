@@ -16,7 +16,9 @@
  */
 package org.geotools.filter;
 
-import static org.junit.Assert.assertFalse;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import org.geotools.filter.function.Collection_NearestFunction;
 import org.geotools.filter.function.Collection_SumFunction;
 import org.geotools.filter.function.Collection_UniqueFunction;
 import org.geotools.filter.function.DefaultFunctionFactory;
+import org.hamcrest.MatcherAssert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -91,30 +94,13 @@ public class FunctionToStringTest {
         // Get list of all support functions
         List<FunctionName> functionNameList = functionFactory.getFunctionNames();
 
-        boolean fail = false;
-
         for (FunctionName functionName : functionNameList) {
-            try {
-                // Create a function expression with default parameters
-                Expression expression = createExpression(functionName);
-                if (expression != null) {
-                    String result = expression.toString();
-
-                    if (result.contains("@")) {
-                        // System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING
-                        // MISSING");
-                    }
-                } else {
-                    fail = true;
-                    // System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
-                }
-            } catch (Exception e) {
-                fail = true;
-                // System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
-            }
+            // Create a function expression with default parameters
+            Expression expression = createExpression(functionName);
+            assertNotNull(expression);
+            assertNotNull(expression.toString());
+            MatcherAssert.assertThat(expression.toString(), not(containsString("@")));
         }
-
-        assertFalse(fail);
     }
 
     /**

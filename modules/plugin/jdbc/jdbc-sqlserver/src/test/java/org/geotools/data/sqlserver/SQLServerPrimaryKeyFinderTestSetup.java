@@ -18,6 +18,7 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class SQLServerPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     public SQLServerPrimaryKeyFinderTestSetup() {

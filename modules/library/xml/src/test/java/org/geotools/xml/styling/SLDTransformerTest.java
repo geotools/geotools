@@ -891,7 +891,7 @@ public class SLDTransformerTest {
         assertNotNull(firstImport[0]);
 
         // NPE here
-        String secondExport = st.transform(firstImport);
+        st.transform(firstImport);
     }
 
     // GEOT-5726
@@ -1916,8 +1916,6 @@ public class SLDTransformerTest {
 
     @Test
     public void testContrastEnhancement() throws Exception {
-        StyleBuilder sb = new StyleBuilder();
-
         ContrastEnhancement ce = new ContrastEnhancementImpl();
         NormalizeContrastMethodStrategy normal = new NormalizeContrastMethodStrategy();
         normal.setAlgorithm(ff.literal("ClipToMinimumMaximum"));
@@ -1970,8 +1968,6 @@ public class SLDTransformerTest {
 
     @Test
     public void testGammaValueExpressionContrastEnhancement() throws Exception {
-        StyleBuilder sb = new StyleBuilder();
-
         ContrastEnhancement ce = new ContrastEnhancementImpl();
         ce.setGammaValue(ff.add(ff.literal(1.0), ff.literal(0.5)));
         SLDTransformer st = new SLDTransformer();

@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -129,7 +130,6 @@ public class LocalGeoServerOnlineTest {
         } catch (MalformedURLException e) {
             serverURL = null;
         }
-        ;
     }
 
     @Before
@@ -291,7 +291,6 @@ public class LocalGeoServerOnlineTest {
         CRSEnvelope bounds = water_bodies.getBoundingBoxes().get("EPSG:4326");
         CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
         Assert.assertEquals("EPSG:4326", AxisOrder.EAST_NORTH, CRS.getAxisOrder(boundsCRS));
-        ;
 
         Assert.assertEquals("axis order 0 min", latLon.getMinimum(0), bounds.getMinimum(0), 0d);
         Assert.assertEquals("axis order 1 min", latLon.getMinimum(1), bounds.getMinimum(1), 0d);
@@ -329,7 +328,6 @@ public class LocalGeoServerOnlineTest {
             throws Exception {
 
         layer.clearCache();
-        CRSEnvelope latLon = layer.getLatLonBoundingBox();
         GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
         Assert.assertFalse(envelope.isEmpty() || envelope.isNull() || envelope.isInfinite());
         Assert.assertNotNull("Envelope " + CRS.toSRS(crs), envelope);
@@ -361,26 +359,24 @@ public class LocalGeoServerOnlineTest {
         getMap.setFormat(format);
         getMap.setDimensions(500, 500);
 
-        URL url = getMap.getFinalURL();
         GetMapResponse response = wms.issueRequest(getMap);
         Assert.assertEquals("image/jpeg", response.getContentType());
 
-        InputStream stream = response.getInputStream();
-        BufferedImage image = ImageIO.read(stream);
-        Assert.assertNotNull("jpeg", image);
-        Assert.assertEquals(500, image.getWidth());
-        Assert.assertEquals(500, image.getHeight());
+        try (InputStream stream = response.getInputStream()) {
+            BufferedImage image = ImageIO.read(stream);
+            Assert.assertNotNull("jpeg", image);
+            Assert.assertEquals(500, image.getWidth());
+            Assert.assertEquals(500, image.getHeight());
 
-        int rgb = image.getRGB(70, 420);
-        Color sample = new Color(rgb);
-        boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
-        String context = "srs=" + srs + " forceXY=" + forceXY + " Version=" + version;
-        if (Color.WHITE.equals(sample)) {
-            // System.out.println("FAIL: " + context + ": GetMap BBOX=" + envelope);
-            // System.out.println("--> " + url);
-            Assert.fail(context + ": GetMap BBOX=" + envelope);
-        } else {
-            // System.out.println("PASS: "+ context+": GetMap BBOX=" + bbox);
+            int rgb = image.getRGB(70, 420);
+            Color sample = new Color(rgb);
+            boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+            String context = "srs=" + srs + " forceXY=" + forceXY + " Version=" + version;
+            if (Color.WHITE.equals(sample)) {
+                // System.out.println("FAIL: " + context + ": GetMap BBOX=" + envelope);
+                // System.out.println("--> " + url);
+                Assert.fail(context + ": GetMap BBOX=" + envelope);
+            }
         }
     }
 
@@ -393,7 +389,6 @@ public class LocalGeoServerOnlineTest {
             throws Exception {
 
         layer.clearCache();
-        CRSEnvelope latLon = layer.getLatLonBoundingBox();
         GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
         Assert.assertFalse(envelope.isEmpty() || envelope.isNull() || envelope.isInfinite());
         Assert.assertNotNull("Envelope " + CRS.toSRS(crs), envelope);
@@ -408,30 +403,29 @@ public class LocalGeoServerOnlineTest {
         String format = format(operationType, "jpeg");
         getMap.setFormat(format);
         getMap.setDimensions(500, 500);
-        URL url = getMap.getFinalURL();
 
         GetFeatureInfoRequest getFeatureInfo = wms.createGetFeatureInfoRequest(getMap);
         getFeatureInfo.setInfoFormat("text/html");
         getFeatureInfo.setQueryLayers(Collections.singleton(layer));
         getFeatureInfo.setQueryPoint(75, 100);
-        URL url2 = getFeatureInfo.getFinalURL();
 
         GetFeatureInfoResponse response = wms.issueRequest(getFeatureInfo);
         Assert.assertEquals("text/html", response.getContentType());
-        InputStream stream = response.getInputStream();
-        StringBuilderWriter writer = new StringBuilderWriter();
-        IOUtils.copy(stream, writer, "UTF-8");
+        try (InputStream stream = response.getInputStream();
+                StringBuilderWriter writer = new StringBuilderWriter()) {
+            IOUtils.copy(stream, writer, "UTF-8");
 
-        String info = writer.toString();
-        Assert.assertFalse("response available", info.isEmpty());
-        Assert.assertTrue("html", info.contains("<html") || info.contains("<HTML"));
-        boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
-        String context = "srs=" + srs + " forceXY=" + forceXY + " Version=" + version;
-        if (!info.contains("tasmania_water_bodies.3")) {
-            // System.out.println("FAIL: " + context + ": GetFeatureInfo BBOX=" + envelope);
-            // System.out.println("GETMAP         --> " + url);
-            // System.out.println("GETFEATUREINFO --> " + url2);
-            Assert.fail(context + ": GetFeatureInfo BBOX=" + envelope);
+            String info = writer.toString();
+            Assert.assertFalse("response available", info.isEmpty());
+            Assert.assertTrue("html", info.contains("<html") || info.contains("<HTML"));
+            boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+            String context = "srs=" + srs + " forceXY=" + forceXY + " Version=" + version;
+            if (!info.contains("tasmania_water_bodies.3")) {
+                // System.out.println("FAIL: " + context + ": GetFeatureInfo BBOX=" + envelope);
+                // System.out.println("GETMAP         --> " + url);
+                // System.out.println("GETFEATUREINFO --> " + url2);
+                Assert.fail(context + ": GetFeatureInfo BBOX=" + envelope);
+            }
         }
     }
 
@@ -477,36 +471,44 @@ public class LocalGeoServerOnlineTest {
 
         // Set encoding of response from HTTP content-type header
         ContentType contentType = new ContentType(wmsResponse.getContentType());
+        try (InputStreamReader stream = getInputStreamReader(wmsResponse, contentType)) {
+
+            Style[] styles = (new SLDParser(styleFactory, stream)).readXML();
+
+            assert styles.length > 0;
+
+            SLDTransformer styleTransform = new SLDTransformer();
+            StyledLayerDescriptorBuilder SLDBuilder = new StyledLayerDescriptorBuilder();
+
+            NamedLayerBuilder namedLayerBuilder = SLDBuilder.namedLayer();
+            namedLayerBuilder.name(layers);
+            StyleBuilder styleBuilder = namedLayerBuilder.style();
+
+            for (int i = 0; i < styles.length; i++) {
+                styleBuilder.reset(styles[i]);
+                styles[i] = styleBuilder.build();
+            }
+
+            NamedLayer namedLayer = namedLayerBuilder.build();
+
+            for (Style style : styles) namedLayer.addStyle(style);
+
+            StyledLayerDescriptor sld = (new StyledLayerDescriptorBuilder()).build();
+            sld.addStyledLayer(namedLayer);
+            String xml = styleTransform.transform(sld);
+            assert xml.length() > 300;
+        }
+    }
+
+    private InputStreamReader getInputStreamReader(
+            GetStylesResponse wmsResponse, ContentType contentType)
+            throws UnsupportedEncodingException {
         InputStreamReader stream;
         if (contentType.getParameter("charset") != null)
             stream =
                     new InputStreamReader(
                             wmsResponse.getInputStream(), contentType.getParameter("charset"));
         else stream = new InputStreamReader(wmsResponse.getInputStream());
-
-        Style[] styles = (new SLDParser(styleFactory, stream)).readXML();
-
-        assert styles.length > 0;
-
-        SLDTransformer styleTransform = new SLDTransformer();
-        StyledLayerDescriptorBuilder SLDBuilder = new StyledLayerDescriptorBuilder();
-
-        NamedLayerBuilder namedLayerBuilder = SLDBuilder.namedLayer();
-        namedLayerBuilder.name(layers);
-        StyleBuilder styleBuilder = namedLayerBuilder.style();
-
-        for (int i = 0; i < styles.length; i++) {
-            styleBuilder.reset(styles[i]);
-            styles[i] = styleBuilder.build();
-        }
-
-        NamedLayer namedLayer = namedLayerBuilder.build();
-
-        for (Style style : styles) namedLayer.addStyle(style);
-
-        StyledLayerDescriptor sld = (new StyledLayerDescriptorBuilder()).build();
-        sld.addStyledLayer(namedLayer);
-        String xml = styleTransform.transform(sld);
-        assert xml.length() > 300;
+        return stream;
     }
 }

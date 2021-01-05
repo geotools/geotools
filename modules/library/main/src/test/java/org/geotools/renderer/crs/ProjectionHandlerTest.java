@@ -156,7 +156,6 @@ public class ProjectionHandlerTest {
 
     @Test
     public void testDensification() throws Exception {
-        CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, WGS84);
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true);
         Geometry line =
@@ -637,8 +636,7 @@ public class ProjectionHandlerTest {
         Geometry g = new WKTReader().read(wkt);
         Geometry original = new WKTReader().read(wkt);
         MathTransform mt = CRS.findMathTransform(WGS84, ED50_LATLON);
-        MathTransform prepared =
-                handler.getRenderingTransform(CRS.findMathTransform(WGS84, ED50_LATLON));
+        MathTransform prepared = handler.getRenderingTransform(mt);
         Geometry reprojected = JTS.transform(original, prepared);
 
         assertTrue(handler.requiresProcessing(g));
@@ -1612,7 +1610,6 @@ public class ProjectionHandlerTest {
         List<ReferencedEnvelope> envelopes = ph.getQueryEnvelopes();
         assertEquals(1, envelopes.size());
         ReferencedEnvelope qe = envelopes.get(0);
-        System.out.println(qe);
         assertEquals(-180, qe.getMinX(), 1e-3);
         // miny used to be a higher number, making the reprojection miss necessary data
         assertEquals(-90, qe.getMinY(), 1e-3);

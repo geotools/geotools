@@ -16,10 +16,14 @@
  */
 package org.geotools.data;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import org.junit.After;
 import org.junit.Test;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
@@ -44,6 +48,7 @@ public class FilteringFeatureReaderTest extends DataTestCase {
         riverReader = DataUtilities.reader(riverFeatures);
     }
 
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
         roadReader.close();

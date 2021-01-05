@@ -24,7 +24,6 @@ import org.geotools.feature.visitor.IdCollectorFilterVisitor;
 import org.geotools.feature.visitor.IdFinderFilterVisitor;
 import org.junit.Assert;
 import org.junit.Test;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.FilterVisitor;
@@ -46,7 +45,6 @@ import org.opengis.filter.expression.PropertyName;
 public class FilterVisitorTest {
 
     private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-    private static GeometryFactory gf = new GeometryFactory();
 
     /** Example located on the wiki */
     @Test

@@ -37,6 +37,7 @@ import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xsd.Encoder;
+import org.junit.Before;
 import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
 import org.xml.sax.helpers.AttributesImpl;
@@ -50,6 +51,7 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
     protected XpathEngine xpath;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.gtEncoder = new Encoder(createConfiguration());

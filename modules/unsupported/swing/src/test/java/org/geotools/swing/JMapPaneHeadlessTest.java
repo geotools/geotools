@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Rectangle;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.edt.GuiQuery;
@@ -45,8 +44,6 @@ import org.junit.Test;
  * @version $Id$
  */
 public class JMapPaneHeadlessTest extends JMapPaneTestBase {
-
-    private static final Rectangle PANE = new Rectangle(100, 100);
 
     private static final ReferencedEnvelope WORLD =
             new ReferencedEnvelope(-10, 10, -5, 5, DefaultEngineeringCRS.CARTESIAN_2D);

@@ -96,4 +96,20 @@
     <module>jdbc-teradata</module>
     <module>jdbc-hana</module>
   </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${maven.pmd.plugin.version}</version>       
+        <configuration>
+          <!-- Disable JUnit specific rules, these modules tests extends JUnit3 based OnlineTest -->
+          <rulesets>
+            <ruleset>${geotoolsBaseDir}/build/qa/pmd-ruleset.xml</ruleset>
+          </rulesets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

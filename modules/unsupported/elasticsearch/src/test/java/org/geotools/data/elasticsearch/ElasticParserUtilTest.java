@@ -46,7 +46,9 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+// unfortunately Geometry.equals(Geometry) does not behave as Geometry.equals(Object)
+// see https://github.com/locationtech/jts/issues/159
+@SuppressWarnings({"rawtypes", "unchecked", "PMD.UseAssertEqualsInsteadOfAssertTrue"})
 public class ElasticParserUtilTest {
 
     private ElasticParserUtil parserUtil;

@@ -41,6 +41,7 @@ public class OGCBBoxTypeBindingTest extends FilterTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
     public void testParse() throws Exception {
         FilterMockData.bbox(document, document);
 

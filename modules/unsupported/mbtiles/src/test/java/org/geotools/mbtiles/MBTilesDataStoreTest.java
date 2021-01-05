@@ -67,7 +67,7 @@ public class MBTilesDataStoreTest {
 
                     @Override
                     public void run() throws Throwable {
-                        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+                        new MBTilesDataStore(new MBTilesFile(file));
                     }
                 });
     }
@@ -81,7 +81,7 @@ public class MBTilesDataStoreTest {
 
                     @Override
                     public void run() throws Throwable {
-                        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+                        new MBTilesDataStore(new MBTilesFile(file));
                     }
                 });
     }
@@ -120,10 +120,8 @@ public class MBTilesDataStoreTest {
     public void readSingle() throws IOException, ParseException {
         File file = URLs.urlToFile(this.getClass().getResource("datatypes.mbtiles"));
         MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(new Query("datatypes"), Transaction.AUTO_COMMIT);
-        assertNotNull(reader);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(new Query("datatypes"), Transaction.AUTO_COMMIT)) {
             assertTrue(reader.hasNext());
             SimpleFeature feature = reader.next();
             assertThat(feature.getAttribute("bool_false"), equalTo(false));
@@ -139,8 +137,6 @@ public class MBTilesDataStoreTest {
                     (Point) new WKTReader().read("POINT (215246.671651058 6281289.23636264)");
             Point actual = (Point) feature.getDefaultGeometry();
             assertTrue(actual.equalsExact(expected, 0.01));
-        } finally {
-            reader.close();
         }
     }
 

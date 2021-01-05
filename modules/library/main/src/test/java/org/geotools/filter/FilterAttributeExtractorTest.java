@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.function.EnvFunction;
@@ -53,9 +52,6 @@ public class FilterAttributeExtractorTest {
     boolean set = false;
     FilterAttributeExtractor fae;
     org.opengis.filter.FilterFactory2 fac;
-
-    /** Test suite for this test case */
-    TestSuite suite = null;
 
     /**
      * Sets up a schema and a test feature.

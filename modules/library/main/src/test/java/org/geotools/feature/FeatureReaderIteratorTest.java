@@ -12,11 +12,12 @@ public class FeatureReaderIteratorTest {
 
     @Test
     public void testCloseOnException() {
-        FeatureReaderIterator<SimpleFeature> it =
-                new FeatureReaderIterator<>(new BreakingFeatureReader());
-        Assert.assertFalse(it.hasNext());
-        // the reader is really closed or not?
-        Assert.assertNull(it.reader);
+        try (FeatureReaderIterator<SimpleFeature> it =
+                new FeatureReaderIterator<>(new BreakingFeatureReader())) {
+            Assert.assertFalse(it.hasNext());
+            // the reader is really closed or not?
+            Assert.assertNull(it.reader);
+        }
     }
 
     class BreakingFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {

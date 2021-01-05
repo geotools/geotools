@@ -58,6 +58,7 @@ public class HsqlDialectEpsgMediatorStressTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.SystemPrintln")
     public void testRunners() throws Throwable {
         if (!TestData.isExtensiveTest()) {
             return;
@@ -131,13 +132,13 @@ public class HsqlDialectEpsgMediatorStressTest {
                         "THREADS, MAX_WORKERS, ITERATIONS_PER_THREAD, CACHE, AVG_TIME, TOTAL_TIME, TOTAL_RUNS, THROUGHPUT, MIN_TIME, MAX_TIME, EXCEPTIONS";
             }
             file.createNewFile();
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            if (header != null) {
-                bw.write(header);
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                if (header != null) {
+                    bw.write(header);
+                }
+                bw.newLine();
+                bw.write(content);
             }
-            bw.newLine();
-            bw.write(content);
-            bw.close();
         }
         if (exceptions != 0) {
             Assert.fail(exceptions + " exception(s) occurred");

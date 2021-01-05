@@ -275,20 +275,15 @@ public final class CoordinateOperationFactoryTest extends TransformTestBase {
          * Remove the TOWGS84 element and test again. An exception should be throws,
          * since no Bursa-Wolf parameters were available.
          */
-        final CoordinateReferenceSystem amputedCRS;
-        if (true) {
-            String wkt = sourceCRS.toWKT();
-            final int start = wkt.indexOf("TOWGS84");
-            assertTrue(start >= 0);
-            final int end = wkt.indexOf(']', start);
-            assertTrue(end >= 0);
-            final int comma = wkt.indexOf(',', end);
-            assertTrue(comma >= 0);
-            wkt = wkt.substring(0, start) + wkt.substring(comma + 1);
-            amputedCRS = crsFactory.createFromWKT(wkt);
-        } else {
-            amputedCRS = sourceCRS;
-        }
+        String wkt = sourceCRS.toWKT();
+        final int start = wkt.indexOf("TOWGS84");
+        assertTrue(start >= 0);
+        final int end = wkt.indexOf(']', start);
+        assertTrue(end >= 0);
+        final int comma = wkt.indexOf(',', end);
+        assertTrue(comma >= 0);
+        wkt = wkt.substring(0, start) + wkt.substring(comma + 1);
+        final CoordinateReferenceSystem amputedCRS = crsFactory.createFromWKT(wkt);
         try {
             assertNotNull(opFactory.createOperation(amputedCRS, targetCRS));
             fail("Operation without Bursa-Wolf parameters should not have been allowed.");
@@ -647,9 +642,6 @@ public final class CoordinateOperationFactoryTest extends TransformTestBase {
     public void testFindOperations() throws Exception {
         final CoordinateReferenceSystem targetCRS = DefaultGeographicCRS.WGS84;
         final CoordinateReferenceSystem sourceCRS = crsFactory.createFromWKT(WKT.NAD83);
-        final CoordinateReferenceSystem sourceCRS2 =
-                crsFactory.createFromWKT(
-                        "PROJCS[\"ED50 / UTM zone 30N\",GEOGCS[\"ED50\",DATUM[\"European Datum 1950\",SPHEROID[\"International 1924\",6378388.0,297.0,AUTHORITY[\"EPSG\",\"7022\"]],TOWGS84[-116.641,-56.931,-110.559,0.893,0.921,-0.917,-3.52],AUTHORITY[\"EPSG\",\"6230\"]],PRIMEM[\"Greenwich\",0.0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.017453292519943295],AXIS[\"Geodetic latitude\",NORTH],AXIS[\"Geodetic longitude\",EAST],AUTHORITY[\"EPSG\",\"4230\"]],PROJECTION[\"Transverse_Mercator\",AUTHORITY[\"EPSG\",\"9807\"]],PARAMETER[\"central_meridian\",-3.0],PARAMETER[\"latitude_of_origin\",0.0],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000.0],PARAMETER[\"false_northing\",0.0],UNIT[\"m\",1.0],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"23030\"]]");
         Set<CoordinateOperation> operations = opFactory.findOperations(sourceCRS, targetCRS);
         int size = operations.size();
 

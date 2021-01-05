@@ -38,6 +38,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
 
     public void testSimpleGroupByWithMax() throws Exception {
@@ -107,6 +108,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "SCHOOL", "600.0");
     }
 
+    @SuppressWarnings("PMD.UseCollectionIsEmpty")
     public void testComputeOnMathExpressionWithLimit() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         // aggregate on expression

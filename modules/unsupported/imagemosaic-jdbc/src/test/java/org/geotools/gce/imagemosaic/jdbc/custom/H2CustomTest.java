@@ -39,13 +39,6 @@ public class H2CustomTest extends AbstractTest {
 
     static DBDialect dialect = null;
 
-    {
-        try {
-        } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        }
-    }
-
     public H2CustomTest(String test) {
         super(test);
     }
@@ -126,74 +119,74 @@ public class H2CustomTest extends AbstractTest {
     }
 
     @Override
+    @org.junit.Test
     public void testCreate() {
         String createStmt =
                 "CREATE TABLE OEK ( level INT NOT NULL,"
                         + " RESX DOUBLE  ,  RESY DOUBLE,  ULX DOUBLE ,  ULY DOUBLE,"
                         + " Data BLOB,CONSTRAINT OEK_PK PRIMARY KEY(level))";
 
-        try {
+        try (InputStream worldIn = new URL("file:target/resources/baseimage/map.tfw").openStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(worldIn))) {
 
             // read world file
-            InputStream worldIn = new URL("file:target/resources/baseimage/map.tfw").openStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(worldIn));
+
             double xRes = Double.valueOf(reader.readLine());
             reader.readLine();
             reader.readLine();
             double yRes = Double.valueOf(reader.readLine());
             double ulx = Double.valueOf(reader.readLine());
             double uly = Double.valueOf(reader.readLine());
-            reader.close();
 
-            URL baseImageUrl = new URL("file:target/resources/baseimage/map.tif");
-            java.sql.Connection con = dialect.getConnection();
-            con.prepareStatement(createStmt).execute();
-            InputStream imageIn = baseImageUrl.openStream();
-            ByteArrayOutputStream imageOut = new ByteArrayOutputStream();
-            int in;
-            while ((in = imageIn.read()) != -1) {
-                imageOut.write(in);
+            try (java.sql.Connection con = dialect.getConnection()) {
+                con.prepareStatement(createStmt).execute();
+                ByteArrayOutputStream baseOut = new ByteArrayOutputStream();
+                int in;
+                URL baseImageUrl = new URL("file:target/resources/baseimage/map.tif");
+                try (InputStream imageIn = baseImageUrl.openStream()) {
+                    while ((in = imageIn.read()) != -1) {
+                        baseOut.write(in);
+                    }
+                }
+
+                try (PreparedStatement ps =
+                        con.prepareStatement("INSERT INTO oek values(?,?,?,?,?,?)")) {
+                    ps.setInt(1, 0);
+                    ps.setDouble(2, xRes);
+                    ps.setDouble(3, yRes);
+                    ps.setDouble(4, ulx);
+                    ps.setDouble(5, uly);
+                    ps.setBytes(6, baseOut.toByteArray());
+                    ps.execute();
+
+                    BufferedImage baseImage = ImageIO.read(baseImageUrl);
+
+                    BufferedImage pyramid1 = getNextPyramid(baseImage);
+                    ByteArrayOutputStream p1Out = new ByteArrayOutputStream();
+                    ImageIO.write(pyramid1, "TIF", p1Out);
+
+                    ps.setInt(1, 1);
+                    ps.setDouble(2, xRes * 2);
+                    ps.setDouble(3, yRes * 2);
+                    ps.setDouble(4, ulx);
+                    ps.setDouble(5, uly);
+                    ps.setBytes(6, p1Out.toByteArray());
+                    ps.execute();
+
+                    BufferedImage pyramid2 = getNextPyramid(pyramid1);
+                    ByteArrayOutputStream p2Out = new ByteArrayOutputStream();
+                    ImageIO.write(pyramid2, "TIF", p2Out);
+
+                    ps.setInt(1, 2);
+                    ps.setDouble(2, xRes * 4);
+                    ps.setDouble(3, yRes * 4);
+                    ps.setDouble(4, ulx);
+                    ps.setDouble(5, uly);
+                    ps.setBytes(6, p2Out.toByteArray());
+                    ps.execute();
+                }
+                con.commit();
             }
-
-            PreparedStatement ps = con.prepareStatement("INSERT INTO oek values(?,?,?,?,?,?)");
-            ps.setInt(1, 0);
-            ps.setDouble(2, xRes);
-            ps.setDouble(3, yRes);
-            ps.setDouble(4, ulx);
-            ps.setDouble(5, uly);
-            ps.setBytes(6, imageOut.toByteArray());
-            ps.execute();
-
-            imageIn = new URL("file:target/resources/baseimage/map.tif").openStream();
-            BufferedImage baseImage = ImageIO.read(baseImageUrl);
-
-            BufferedImage pyramid1 = getNextPyramid(baseImage);
-            imageOut = new ByteArrayOutputStream();
-            ImageIO.write(pyramid1, "TIF", imageOut);
-
-            ps.setInt(1, 1);
-            ps.setDouble(2, xRes * 2);
-            ps.setDouble(3, yRes * 2);
-            ps.setDouble(4, ulx);
-            ps.setDouble(5, uly);
-            ps.setBytes(6, imageOut.toByteArray());
-            ps.execute();
-
-            BufferedImage pyramid2 = getNextPyramid(pyramid1);
-            imageOut = new ByteArrayOutputStream();
-            ImageIO.write(pyramid2, "TIF", imageOut);
-
-            ps.setInt(1, 2);
-            ps.setDouble(2, xRes * 4);
-            ps.setDouble(3, yRes * 4);
-            ps.setDouble(4, ulx);
-            ps.setDouble(5, uly);
-            ps.setBytes(6, imageOut.toByteArray());
-            ps.execute();
-
-            ps.close();
-            con.commit();
-            con.close();
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -214,19 +207,11 @@ public class H2CustomTest extends AbstractTest {
     }
 
     @Override
-    public void testDrop() {
-        java.sql.Connection con = null;
-        try {
-            con = dialect.getConnection();
-        } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            Assert.fail(e.getMessage());
-        }
-        try {
-            con.prepareStatement("DROP TABLE OEK").execute();
+    @org.junit.Test
+    public void testDrop() throws Exception {
+        try (java.sql.Connection con = dialect.getConnection()) {
+            con.prepareStatement("DROP TABLE IF EXISTS OEK").execute();
             con.commit();
-            con.close();
-        } catch (Exception e) {
         }
     }
 }

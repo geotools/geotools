@@ -41,7 +41,7 @@ public class FeatureListenerTest {
         testFeatureCount("fillSolidTwoRuleElse.sld", 2);
     }
 
-    public void testFeatureCount(String sldFilename, int expectedCount) throws Exception {
+    protected void testFeatureCount(String sldFilename, int expectedCount) throws Exception {
         Style style = RendererBaseTest.loadStyle(this, sldFilename);
 
         MapContent mc = new MapContent();

@@ -59,6 +59,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Aime - OpenGeo
  * @author Martin Davis - OpenGeo
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
     protected static final String ID = "id";

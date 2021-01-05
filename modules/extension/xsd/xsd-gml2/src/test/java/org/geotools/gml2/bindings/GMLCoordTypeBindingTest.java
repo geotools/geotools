@@ -24,6 +24,7 @@ import org.geotools.gml2.GML;
 import org.geotools.xs.XS;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
@@ -37,6 +38,7 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coordinate;
     MutablePicoContainer container;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -56,7 +58,7 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
                 createNode(
                         coordinate,
                         new ElementInstance[] {x},
-                        new Object[] {new BigDecimal(12.34)},
+                        new Object[] {BigDecimal.valueOf(12.34)},
                         null,
                         null);
 
@@ -75,7 +77,7 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
                 createNode(
                         coordinate,
                         new ElementInstance[] {x, y},
-                        new Object[] {new BigDecimal(12.34), new BigDecimal(56.78)},
+                        new Object[] {BigDecimal.valueOf(12.34), BigDecimal.valueOf(56.78)},
                         null,
                         null);
 
@@ -96,7 +98,9 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
                         coordinate,
                         new ElementInstance[] {x, y, z},
                         new Object[] {
-                            new BigDecimal(12.34), new BigDecimal(56.78), new BigDecimal(910.11)
+                            BigDecimal.valueOf(12.34),
+                            BigDecimal.valueOf(56.78),
+                            BigDecimal.valueOf(910.11)
                         },
                         null,
                         null);

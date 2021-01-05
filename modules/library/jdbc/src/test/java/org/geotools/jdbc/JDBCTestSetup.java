@@ -46,6 +46,10 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
+@SuppressWarnings({
+    "PMD.JUnit4TestShouldUseAfterAnnotation",
+    "PMD.JUnit4TestShouldUseBeforeAnnotation"
+})
 public abstract class JDBCTestSetup {
     static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JDBCTestSetup.class);
     protected Properties fixture = null;

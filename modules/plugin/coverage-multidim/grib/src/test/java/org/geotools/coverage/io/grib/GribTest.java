@@ -109,22 +109,23 @@ public class GribTest extends Assert {
 
         TestData.unzipFile(this, referenceDir + "/TT_FC_INCA_EarthShape.zip");
         final File file = new File(workDir, "TT_FC_INCA_EarthShape.grb2");
-        NetcdfDataset dataset = NetcdfDataset.openDataset(file.getAbsolutePath());
-        Variable var = dataset.findVariable(null, "LambertConformal_Projection");
-        assertNotNull(var);
+        try (NetcdfDataset dataset = NetcdfDataset.openDataset(file.getAbsolutePath())) {
+            Variable var = dataset.findVariable(null, "LambertConformal_Projection");
+            assertNotNull(var);
 
-        // Before switching to NetCDF 4.6.2 there was a bug which was returning
-        // semi_major_axis = 6.377397248E9 and inverse_flattening = 299.15349328722255;
-        // https://github.com/Unidata/thredds/issues/133
+            // Before switching to NetCDF 4.6.2 there was a bug which was returning
+            // semi_major_axis = 6.377397248E9 and inverse_flattening = 299.15349328722255;
+            // https://github.com/Unidata/thredds/issues/133
 
-        // Checking that it's now reporting proper values
-        Attribute attribute = var.findAttribute("semi_major_axis");
-        assertNotNull(attribute);
+            // Checking that it's now reporting proper values
+            Attribute attribute = var.findAttribute("semi_major_axis");
+            assertNotNull(attribute);
 
-        assertEquals(6377397.0, attribute.getNumericValue().doubleValue(), DELTA);
-        attribute = var.findAttribute("inverse_flattening");
-        assertNotNull(attribute);
-        assertEquals(299.15550239234693, attribute.getNumericValue().doubleValue(), DELTA);
+            assertEquals(6377397.0, attribute.getNumericValue().doubleValue(), DELTA);
+            attribute = var.findAttribute("inverse_flattening");
+            assertNotNull(attribute);
+            assertEquals(299.15550239234693, attribute.getNumericValue().doubleValue(), DELTA);
+        }
     }
 
     /** Test if the Grib format is accepted by the NetCDF reader */
@@ -325,11 +326,6 @@ public class GribTest extends Assert {
             // Get the envelope
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-            // gg.setValue(originalEnvelope);
-
-            // Selecting the same gridRange
-            GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
 
             final ParameterValue<List> time =
                     new DefaultParameterDescriptor<>("TIME", List.class, null, null).createValue();

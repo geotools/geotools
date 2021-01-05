@@ -259,24 +259,21 @@ public class ShapefileTest extends TestCaseSupport {
         tb.setName("shapefile");
         tb.add("the_geom", Point.class);
         ds.createSchema(tb.buildFeatureType());
-        Transaction transaction = Transaction.AUTO_COMMIT;
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                ds.getFeatureWriter(ds.getTypeNames()[0], Transaction.AUTO_COMMIT);
-        SimpleFeature feature = writer.next();
-        feature.setAttribute(0, null);
-        writer.close();
-        transaction.commit();
+        try (Transaction transaction = Transaction.AUTO_COMMIT;
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                        ds.getFeatureWriter(ds.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
+            SimpleFeature feature = writer.next();
+            feature.setAttribute(0, null);
+            transaction.commit();
+        }
         ds.dispose();
 
         // Read the same file and check the geometry is null
         ShpFiles shpFiles = new ShpFiles(shpUrl);
-        ShapefileReader reader =
-                new ShapefileReader(shpFiles, false, true, new GeometryFactory(), false);
-        try {
+        try (ShapefileReader reader =
+                new ShapefileReader(shpFiles, false, true, new GeometryFactory(), false)) {
             assertTrue(reader.hasNext());
             assertNull(reader.nextRecord().shape());
-        } finally {
-            reader.close();
         }
     }
 
@@ -337,27 +334,27 @@ public class ShapefileTest extends TestCaseSupport {
                         ff.featureId(fidPrefix + ".2"));
         // force creation of a fid index
         ds.indexManager.hasFidIndex(true);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 ds.getFeatureReader(
-                        new Query(ds.getTypeNames()[0], filter), Transaction.AUTO_COMMIT);
-        assertTrue(reader instanceof IndexedShapefileFeatureReader);
+                        new Query(ds.getTypeNames()[0], filter), Transaction.AUTO_COMMIT)) {
+            assertTrue(reader instanceof IndexedShapefileFeatureReader);
 
-        // prepare a screenmap that will heavily prune features
-        ScreenMap screenMap = new ScreenMap(-180, -90, 360, 180);
-        screenMap.setSpans(1.0, 1.0);
-        screenMap.setTransform(IdentityTransform.create(2));
-        ((ShapefileFeatureReader) reader).setScreenMap(screenMap);
-        ((ShapefileFeatureReader) reader).setSimplificationDistance(1.0);
+            // prepare a screenmap that will heavily prune features
+            ScreenMap screenMap = new ScreenMap(-180, -90, 360, 180);
+            screenMap.setSpans(1.0, 1.0);
+            screenMap.setTransform(IdentityTransform.create(2));
+            ((ShapefileFeatureReader) reader).setScreenMap(screenMap);
+            ((ShapefileFeatureReader) reader).setSimplificationDistance(1.0);
 
-        int count = 0;
-        while (reader.hasNext()) {
-            SimpleFeature feature = reader.next();
-            assertNotNull(feature);
-            assertNotSame(ShapefileFeatureReader.SKIP, feature.getDefaultGeometry());
-            count++;
+            int count = 0;
+            while (reader.hasNext()) {
+                SimpleFeature feature = reader.next();
+                assertNotNull(feature);
+                assertNotSame(ShapefileFeatureReader.SKIP, feature.getDefaultGeometry());
+                count++;
+            }
+            assertEquals(1, count);
         }
-        assertEquals(1, count);
-        reader.close();
     }
 
     @Test
@@ -445,37 +442,33 @@ public class ShapefileTest extends TestCaseSupport {
         ShapefileDataStore ds =
                 (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        Query query = new Query(ds.getTypeNames()[0]);
         if (isFilterBeforeScreenMap && filterFid != null) {
             FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
             Id id =
                     factory.id(
                             Collections.singleton(
                                     ff.featureId(shpName + "." + filterFid.toString())));
-            reader =
-                    ds.getFeatureReader(
-                            new Query(ds.getTypeNames()[0], id), Transaction.AUTO_COMMIT);
-        } else {
-            reader = ds.getFeatureReader();
+            query.setFilter(id);
         }
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            ScreenMap screenMap = new ScreenMap(-180, -90, 360, 180);
+            screenMap.setSpans(1.0, 1.0);
+            screenMap.setTransform(IdentityTransform.create(2));
 
-        ScreenMap screenMap = new ScreenMap(-180, -90, 360, 180);
-        screenMap.setSpans(1.0, 1.0);
-        screenMap.setTransform(IdentityTransform.create(2));
+            ((ShapefileFeatureReader) reader).setScreenMap(screenMap);
+            ((ShapefileFeatureReader) reader).setSimplificationDistance(1.0);
 
-        ((ShapefileFeatureReader) reader).setScreenMap(screenMap);
-        ((ShapefileFeatureReader) reader).setSimplificationDistance(1.0);
+            assertTrue(reader.hasNext());
+            SimpleFeature feature = reader.next();
+            assertFalse(reader.hasNext());
 
-        assertTrue(reader.hasNext());
-        SimpleFeature feature = reader.next();
-        assertFalse(reader.hasNext());
-
-        assertNotNull(feature);
-        assertNotEquals(ShapefileFeatureReader.SKIP, feature.getDefaultGeometry());
-        assertEquals(expectedName, feature.getAttribute("NAME"));
-        assertEquals(expectedFid, feature.getAttribute("feature_id"));
-
-        reader.close();
+            assertNotNull(feature);
+            assertNotEquals(ShapefileFeatureReader.SKIP, feature.getDefaultGeometry());
+            assertEquals(expectedName, feature.getAttribute("NAME"));
+            assertEquals(expectedFid, feature.getAttribute("feature_id"));
+        }
     }
 
     protected void loadMemoryMapped(String resource, int expected) throws Exception {

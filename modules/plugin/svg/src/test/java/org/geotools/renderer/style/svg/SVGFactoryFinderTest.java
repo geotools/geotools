@@ -36,14 +36,14 @@ public class SVGFactoryFinderTest {
     public void testLookupExternalGraphicFactories() {
         List<ExternalGraphicFactory> result =
                 loadIterator(DynamicSymbolFactoryFinder.getExternalGraphicFactories());
-        Assert.assertTrue(result.size() >= 1);
+        Assert.assertFalse(result.isEmpty());
         assertContainsClassInstance(result, SVGGraphicFactory.class);
     }
 
     @Test
     public void testLookupMarkFactories() {
         List<MarkFactory> result = loadIterator(DynamicSymbolFactoryFinder.getMarkFactories());
-        Assert.assertTrue(result.size() >= 1);
+        Assert.assertFalse(result.isEmpty());
         assertContainsClassInstance(result, MarkFactory.class);
     }
 

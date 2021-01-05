@@ -84,8 +84,10 @@ public abstract class WFSTestSupport extends XMLTestSupport {
         assertEquals(toExModeString(executionMode), executionMode, binding.getExecutionMode());
     }
 
+    @Test
     public abstract void testParse() throws Exception;
 
+    @Test
     public abstract void testEncode() throws Exception;
 
     private String toExModeString(final int executionMode) {
@@ -165,9 +167,10 @@ public abstract class WFSTestSupport extends XMLTestSupport {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 
-        InputStream in = resource.openStream();
-        InputStreamReader reader = new InputStreamReader(in, Charset.forName("UTF-8"));
-        InputSource source = new InputSource(new BufferedReader(reader));
-        document = docFactory.newDocumentBuilder().parse(source);
+        try (InputStream in = resource.openStream();
+                InputStreamReader reader = new InputStreamReader(in, Charset.forName("UTF-8"))) {
+            InputSource source = new InputSource(new BufferedReader(reader));
+            document = docFactory.newDocumentBuilder().parse(source);
+        }
     }
 }

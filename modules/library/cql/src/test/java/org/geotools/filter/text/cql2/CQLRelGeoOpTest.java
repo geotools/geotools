@@ -155,6 +155,7 @@ public class CQLRelGeoOpTest {
      * </pre>
      */
     @Ignore
+    @Test
     public void testRoutineInvocationGeneric() throws Exception {
         // TODO (Mauricio Comments) This case is not implemented because the filter
         // model has not a

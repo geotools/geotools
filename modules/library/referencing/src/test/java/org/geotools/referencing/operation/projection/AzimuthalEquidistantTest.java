@@ -20,7 +20,6 @@ package org.geotools.referencing.operation.projection;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.geom.Point2D;
-import java.util.Arrays;
 import org.apache.commons.lang3.SerializationUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -130,7 +129,6 @@ public class AzimuthalEquidistantTest {
         double[] dst = new double[2];
         for (int i = 0; i < 40; i++) {
             mt.transform(src, 0, dst, 0, 1);
-            System.out.println(Arrays.toString(src) + " --> " + Arrays.toString(dst));
             src[0] += 0.1;
         }
     }

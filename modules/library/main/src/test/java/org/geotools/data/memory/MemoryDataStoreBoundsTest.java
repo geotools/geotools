@@ -16,7 +16,9 @@
  */
 package org.geotools.data.memory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
@@ -27,6 +29,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.junit.After;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -57,6 +60,7 @@ public class MemoryDataStoreBoundsTest extends DataTestCase {
     /*
      * @see TestCase#tearDown()
      */
+    @After
     public void tearDown() throws Exception {
         data = null;
         super.tearDown();

@@ -41,7 +41,6 @@ public class DefaultTemporalCoordinateTest {
 
     @Before
     public void setUp() {
-        NamedIdentifier name = new NamedIdentifier(Citations.CRS, "Gregorian calendar");
         GregorianCalendar gc = new GregorianCalendar(-4713, 1, 1);
         Number coordinateValue = 100;
         TemporalCoordinateSystem frame1 =

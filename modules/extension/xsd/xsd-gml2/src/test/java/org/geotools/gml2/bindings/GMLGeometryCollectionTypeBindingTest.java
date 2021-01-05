@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -43,6 +44,7 @@ public class GMLGeometryCollectionTypeBindingTest extends AbstractGMLBindingTest
     ElementInstance poly1;
     GeometryFactory gf;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 

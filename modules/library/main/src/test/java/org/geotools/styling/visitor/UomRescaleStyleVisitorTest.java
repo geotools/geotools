@@ -172,7 +172,6 @@ public class UomRescaleStyleVisitorTest {
         try {
             UomRescaleStyleVisitor visitor = null;
             double size = 100;
-            double margin = 15;
             double expectedRescaledSize = computeExpectedRescaleSize(size, scaleMetersToPixel, uom);
             int expectedGraphicMargin =
                     (int) computeExpectedRescaleSize(15, scaleMetersToPixel, uom);
@@ -794,7 +793,7 @@ public class UomRescaleStyleVisitorTest {
         LineSymbolizer rescaledLineSymb = (LineSymbolizer) visitor.getCopy();
         double rescaledSize = rescaledLineSymb.getStroke().getWidth().evaluate(null, Double.class);
 
-        assertEquals(Math.round(size), Math.round(size));
+        assertEquals(Math.round(rescaledSize), Math.round(size));
         assertNotSame(rescaledLineSymb, lineSymb);
     }
 

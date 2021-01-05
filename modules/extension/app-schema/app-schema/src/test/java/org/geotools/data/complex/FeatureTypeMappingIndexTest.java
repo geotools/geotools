@@ -47,7 +47,6 @@ import org.opengis.feature.type.Name;
 public class FeatureTypeMappingIndexTest extends AppSchemaTestSupport {
 
     private static final String schemaBase = "/test-data/index/";
-    private static final String NSURI = "http://www.stations.org/1.0";
     static final Name mappedTypeName = Types.typeName(null, "stationsIndexed");
 
     private AppSchemaDataAccessFactory factory;

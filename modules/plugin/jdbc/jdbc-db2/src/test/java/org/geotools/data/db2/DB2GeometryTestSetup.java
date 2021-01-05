@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2GeometryTestSetup extends JDBCGeometryTestSetup {
 
     protected DB2GeometryTestSetup() {
@@ -28,13 +29,12 @@ public class DB2GeometryTestSetup extends JDBCGeometryTestSetup {
 
     @Override
     protected void dropSpatialTable(String tableName) throws Exception {
-        Connection con = getDataSource().getConnection();
-        try {
-            DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, tableName, "goem", con);
-            DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, tableName, con);
-        } catch (SQLException e) {
+        try (Connection con = getDataSource().getConnection()) {
+            try {
+                DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, tableName, "goem", con);
+                DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, tableName, con);
+            } catch (SQLException e) {
+            }
         }
-
-        con.close();
     }
 }

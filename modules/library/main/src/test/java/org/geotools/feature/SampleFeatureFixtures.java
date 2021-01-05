@@ -71,7 +71,7 @@ public class SampleFeatureFixtures {
         Object[] attributes = new Object[10];
         GeometryFactory gf = new GeometryFactory();
         attributes[0] = gf.createPoint(new Coordinate(1, 2));
-        attributes[1] = Boolean.valueOf(true);
+        attributes[1] = Boolean.TRUE;
         attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");

@@ -54,6 +54,7 @@ public class AppSchemaValidatorDemo {
      *
      * @param args ignored
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws IOException {
         // download and cache schemas using app-schema-cache discovered from resource path
         SchemaCache cache =

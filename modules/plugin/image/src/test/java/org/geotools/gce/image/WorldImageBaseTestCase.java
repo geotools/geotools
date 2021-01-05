@@ -58,7 +58,7 @@ public abstract class WorldImageBaseTestCase {
          * extensions.
          */
         public boolean accept(File file, String name) {
-            if (this.extensions.size() > 0) {
+            if (!this.extensions.isEmpty()) {
                 Iterator it = this.extensions.iterator();
 
                 while (it.hasNext())

@@ -27,25 +27,23 @@ import org.opengis.feature.simple.SimpleFeature;
 public class GMLFeatureStreamingTest {
     @Test
     public void testStreamByXpath() throws Exception {
-        InputStream in = getClass().getResourceAsStream("feature.xml");
-        String xpath = "/featureMember/TestFeature";
+        try (InputStream in = getClass().getResourceAsStream("feature.xml")) {
+            String xpath = "/featureMember/TestFeature";
 
-        StreamingParser parser = new StreamingParser(new TestConfiguration(), in, xpath);
-        makeAssertions(parser);
-
-        in.close();
+            StreamingParser parser = new StreamingParser(new TestConfiguration(), in, xpath);
+            makeAssertions(parser);
+        }
     }
 
     @Test
     public void testStreamByElementName() throws Exception {
-        InputStream in = getClass().getResourceAsStream("feature.xml");
+        try (InputStream in = getClass().getResourceAsStream("feature.xml")) {
 
-        StreamingParser parser =
-                new StreamingParser(
-                        new TestConfiguration(), in, new QName(GML.NAMESPACE, "featureMember"));
-        makeAssertions(parser);
-
-        in.close();
+            StreamingParser parser =
+                    new StreamingParser(
+                            new TestConfiguration(), in, new QName(GML.NAMESPACE, "featureMember"));
+            makeAssertions(parser);
+        }
     }
 
     private void makeAssertions(StreamingParser parser) {

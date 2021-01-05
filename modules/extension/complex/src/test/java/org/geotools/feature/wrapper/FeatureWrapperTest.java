@@ -124,15 +124,6 @@ public class FeatureWrapperTest {
 
     @Test(expected = InvalidClassException.class)
     public void wrap_invalidFeatureMissingAttribute_throwsInvalidClassException() throws Exception {
-        // Arrange
-        // AttributeImpl:mineName<string id=mineName_1>=Pieces of Eight -
-        // Admiral Hill
-        Attribute mineName =
-                new AttributeImpl(
-                        "Pieces of Eight - Admiral Hill",
-                        Mine.mineNAME_DESCRIPTOR,
-                        new GmlObjectIdImpl("mineName"));
-
         // AttributeImpl:isPreferred<boolean id=isPreferred_1>=true,
         Attribute isPreferred =
                 new AttributeImpl(

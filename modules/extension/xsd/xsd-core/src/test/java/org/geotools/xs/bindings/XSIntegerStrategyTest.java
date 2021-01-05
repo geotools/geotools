@@ -32,7 +32,7 @@ public class XSIntegerStrategyTest extends TestSchema {
     @Test
     public void testParse() throws Exception {
         validateValues("-1", new BigInteger("-1"));
-        validateValues("0", new BigInteger("0"));
+        validateValues("0", BigInteger.valueOf(0));
         validateValues("12678967543233", new BigInteger("12678967543233"));
         validateValues("+100000", new BigInteger("100000"));
     }

@@ -742,7 +742,7 @@ public class VisualTransformerTest {
     //        mc.dispose();
     //    }
 
-    public void testVisualizeStyleWithPointFeatures(
+    protected void testVisualizeStyleWithPointFeatures(
             JSONObject jsonStyle,
             String renderTitle,
             String renderComparisonFileName,
@@ -782,7 +782,7 @@ public class VisualTransformerTest {
         mc.dispose();
     }
 
-    public void testVisualizeStyleWithLineFeatures(
+    protected void testVisualizeStyleWithLineFeatures(
             JSONObject jsonStyle,
             String renderTitle,
             String renderComparisonFileName,

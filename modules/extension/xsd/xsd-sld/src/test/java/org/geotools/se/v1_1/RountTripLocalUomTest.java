@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.opengis.style.PointSymbolizer;
 import org.opengis.style.PolygonSymbolizer;
 import org.opengis.style.TextSymbolizer;
-import org.w3c.dom.Document;
 import si.uom.SI;
 
 public class RountTripLocalUomTest extends SETestSupport {
@@ -19,7 +18,7 @@ public class RountTripLocalUomTest extends SETestSupport {
         assertEquals(Units.PIXEL, sym.getUnitOfMeasure());
 
         assertEquals("8m", sym.getGraphic().getSize().evaluate(null, String.class));
-        Document doc = encode(sym, SE.PointSymbolizer);
+        encode(sym, SE.PointSymbolizer);
         // print(doc);
         // what... nothing getting encoded??
     }
@@ -30,7 +29,7 @@ public class RountTripLocalUomTest extends SETestSupport {
                 (PolygonSymbolizer) parse("example-polygonsymbolizer-local-uom.xml");
         assertEquals(SI.METRE, sym.getUnitOfMeasure());
         assertEquals("2m", sym.getStroke().getWidth().evaluate(null, String.class));
-        Document doc = encode(sym, SE.PolygonSymbolizer);
+        encode(sym, SE.PolygonSymbolizer);
         // print(doc);
         // what... nothing getting encoded??
     }
@@ -42,7 +41,7 @@ public class RountTripLocalUomTest extends SETestSupport {
         assertEquals("pixel", Units.toName(sym.getUnitOfMeasure()));
 
         assertEquals("10m", sym.getFont().getSize().evaluate(null, String.class));
-        Document doc = encode(sym, SE.TextSymbolizer);
+        encode(sym, SE.TextSymbolizer);
         // print(doc);
         // nothing getting encoded...
     }

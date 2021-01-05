@@ -19,6 +19,7 @@ package org.geotools.data;
 import java.io.IOException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +31,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 public class DiffWriterTest {
 
+    FeatureReader<SimpleFeatureType, SimpleFeature> reader;
     DiffFeatureWriter writer;
     private Point geom;
     private SimpleFeatureType type;
@@ -45,7 +47,7 @@ public class DiffWriterTest {
         diff.modify(
                 "original",
                 SimpleFeatureBuilder.build(type, new Object[] {"diff2", geom}, "original"));
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+        reader =
                 new TestReader(
                         type,
                         SimpleFeatureBuilder.build(
@@ -54,6 +56,12 @@ public class DiffWriterTest {
                 new DiffFeatureWriter(reader, diff) {
                     protected void fireNotification(int eventType, ReferencedEnvelope bounds) {}
                 };
+    }
+
+    @After
+    public void cleanup() throws IOException {
+        writer.close();
+        reader.close();
     }
 
     @Test

@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xsd.Configuration;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -34,6 +35,7 @@ public class AbstractFeatureTypeBindingTest extends GML3TestSupport {
     }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         registerNamespaceMapping("test", TEST.NAMESPACE);

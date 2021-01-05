@@ -2,6 +2,7 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class OracleSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     protected OracleSkipColumnTestSetup() {

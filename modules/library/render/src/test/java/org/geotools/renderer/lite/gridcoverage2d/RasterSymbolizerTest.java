@@ -200,7 +200,6 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
         cntEnh.setMethod(ContrastMethod.HISTOGRAM);
-        ;
         // cntEnh.setType(type);
         // cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 
@@ -1266,7 +1265,6 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
         cntEnh.setMethod(ContrastMethod.HISTOGRAM);
-        ;
         // cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 
         chTypeGray.setChannelName("1");
@@ -1380,7 +1378,6 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
         cntEnh.setMethod(ContrastMethod.HISTOGRAM);
-        ;
         // cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 
         chTypeRed.setChannelName("1");
@@ -1495,7 +1492,6 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
         cntEnh.setMethod(ContrastMethod.HISTOGRAM);
-        ;
 
         chTypeRed.setChannelName("1");
         chTypeBlue.setChannelName("2");
@@ -2364,13 +2360,11 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rgb[1] = 0xFFFFFF & icm.getRGB(1);
         rgb[2] = 0xFFFFFF & icm.getRGB(2);
 
-        int found = 0;
         for (int i = 0; i < mapSize; i++) {
             switch (rgb[i]) {
                 case 0x008000:
                 case 0x663333:
                 case 0:
-                    found++;
                     break;
                 default:
                     throw new IllegalStateException("Found unexpected colors:" + rgb[i]);

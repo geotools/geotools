@@ -69,8 +69,6 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
     }
 
     public void testRead() throws Exception {
-        SimpleFeatureType type = dataStore.getSchema(tname("udt"));
-
         SimpleFeatureCollection features = dataStore.getFeatureSource(tname("udt")).getFeatures();
         try (SimpleFeatureIterator fi = features.features()) {
             assertTrue(fi.hasNext());

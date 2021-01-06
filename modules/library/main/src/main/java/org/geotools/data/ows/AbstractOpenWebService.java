@@ -71,7 +71,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      */
     @Deprecated
     public AbstractOpenWebService(final URL serverURL) throws IOException, ServiceException {
-        this(serverURL, null, null);
+        throw new UnsupportedOperationException("Don't use this constructor.");
     }
 
     public AbstractOpenWebService(

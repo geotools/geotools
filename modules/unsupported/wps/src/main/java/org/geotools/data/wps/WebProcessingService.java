@@ -45,7 +45,7 @@ import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
 import org.geotools.data.wps.response.DescribeProcessResponse;
 import org.geotools.data.wps.response.ExecuteProcessResponse;
-import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.http.HTTPFactoryFinder;
 import org.geotools.ows.ServiceException;
 import org.geotools.wps.WPS;
 
@@ -145,7 +145,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
             throws IOException, ServiceException {
         super(
                 getOperationURL("getcapabilities", capabilities, true),
-                CommonFactoryFinder.getHttpClientFactory().getClient(),
+                HTTPFactoryFinder.getHttpClientFactory().getClient(),
                 capabilities);
     }
 

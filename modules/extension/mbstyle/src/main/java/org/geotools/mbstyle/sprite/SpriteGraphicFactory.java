@@ -36,7 +36,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.http.HTTPFactoryFinder;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
@@ -310,7 +310,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
     }
 
     protected HTTPClient getHttpClient() {
-        return CommonFactoryFinder.getHttpClientFactory().getClient();
+        return HTTPFactoryFinder.getHttpClientFactory().getClient();
     }
 
     /**

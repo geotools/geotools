@@ -28,7 +28,7 @@ import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.data.wfs.internal.WFSRequest;
-import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.http.HTTPFactoryFinder;
 import org.geotools.ows.ServiceException;
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class Strategy2_0Test {
 
     private WFSClient newClient(String resource) throws IOException, ServiceException {
         URL capabilitiesURL = WFSTestData.url(resource);
-        HTTPClient httpClient = CommonFactoryFinder.getHttpClientFactory().getClient();
+        HTTPClient httpClient = HTTPFactoryFinder.getHttpClientFactory().getClient();
 
         WFSClient client = new WFSClient(capabilitiesURL, httpClient, new WFSConfig());
         return client;

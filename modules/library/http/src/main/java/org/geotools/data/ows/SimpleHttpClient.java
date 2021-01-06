@@ -54,7 +54,7 @@ public class SimpleHttpClient implements HTTPClient {
 
     /**
      * A SimpleHttpClient should be initiated by a call to
-     * CommonFactoryFinder.getHttpClientFactory().getClient();
+     * HTTPFactoryFinder.getHttpClientFactory().getClient();
      */
     public SimpleHttpClient() {}
 

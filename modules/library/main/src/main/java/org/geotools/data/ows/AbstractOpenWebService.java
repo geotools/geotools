@@ -30,7 +30,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.ows.ServiceException;
 
 /**
@@ -70,8 +69,9 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @throws IOException if there is an error communicating with the server
      * @throws ServiceException if the server responds with an error
      */
+    @Deprecated
     public AbstractOpenWebService(final URL serverURL) throws IOException, ServiceException {
-        this(serverURL, CommonFactoryFinder.getHttpClientFactory().getClient(), null);
+        this(serverURL, null, null);
     }
 
     public AbstractOpenWebService(

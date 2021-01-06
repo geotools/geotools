@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Set;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.filter.FunctionFactory;
-import org.geotools.http.HTTPClientFactory;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.LazySet;
 import org.geotools.util.factory.FactoryCreator;
@@ -76,8 +75,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
                                         Function.class,
                                         FunctionFactory.class,
                                         FeatureFactory.class,
-                                        FeatureTypeFactory.class,
-                                        HTTPClientFactory.class
+                                        FeatureTypeFactory.class
                                     }));
         }
         return registry;
@@ -220,16 +218,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static FilterFactory getFilterFactory() throws FactoryRegistryException {
         return getFilterFactory(null);
-    }
-
-    public static HTTPClientFactory getHttpClientFactory(Hints hints)
-            throws FactoryRegistryException {
-        hints = mergeSystemHints(hints);
-        return lookup(HTTPClientFactory.class, hints, Hints.HTTP_CLIENT_FACTORY);
-    }
-
-    public static HTTPClientFactory getHttpClientFactory() throws FactoryRegistryException {
-        return getHttpClientFactory(null);
     }
 
     /**

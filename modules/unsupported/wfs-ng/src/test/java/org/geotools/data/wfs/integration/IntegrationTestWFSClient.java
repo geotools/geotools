@@ -62,6 +62,7 @@ import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.data.wfs.internal.parsers.PullParserFeatureReader;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.http.HTTPFactoryFinder;
 import org.geotools.ows.ServiceException;
 import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xml.XMLHandlerHints;
@@ -92,7 +93,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         super(
                 url(baseDirectory + "/GetCapabilities.xml"),
-                CommonFactoryFinder.getHttpClientFactory().getClient(),
+                HTTPFactoryFinder.getHttpClientFactory().getClient(),
                 config);
 
         this.baseDirectory = url(baseDirectory);

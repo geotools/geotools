@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import org.apache.commons.io.IOUtils;
-import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.MockHttpClient;
+import org.geotools.http.HTTPResponse;
+import org.geotools.http.MockHttpClient;
 
 /** HTTPClient that returns a mockResponse for get and post. */
 public class TestHttpClient extends MockHttpClient {

@@ -27,8 +27,8 @@ import java.util.logging.Level;
 import javax.xml.namespace.QName;
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.AbstractRequest;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Request;
+import org.geotools.http.HTTPResponse;
 import org.geotools.util.factory.FactoryNotFoundException;
 import org.geotools.util.logging.Logging;
 

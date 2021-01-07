@@ -17,7 +17,6 @@
  */
 package org.geotools.http;
 
-import org.geotools.data.ows.HTTPClient;
 import org.geotools.util.factory.Hints;
 
 /**
@@ -35,9 +34,9 @@ public interface HTTPClientFactory {
     HTTPClient getClient();
 
     /**
-     * Get a client by the given hints. Superseds the one given by Geotools.getDefaultHints()
+     * Get a client by the given hints. Supersedes the one given by Geotools.getDefaultHints()
      *
-     * @param hints The hints for the http client
+     * @param hints Looks for the key HTTP_CLIENT
      * @return
      */
     HTTPClient getClient(Hints hints);

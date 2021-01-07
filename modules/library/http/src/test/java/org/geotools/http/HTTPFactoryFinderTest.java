@@ -18,9 +18,9 @@ package org.geotools.http;
 
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.LoggingHTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,13 +42,13 @@ public class HTTPFactoryFinderTest {
     }
 
     @Test
-    public void findingSimpleHttpClientTestByHints() throws Exception {
+    public void findingCustomHttpClientTestByHints() throws Exception {
 
         HTTPClient client =
                 HTTPFactoryFinder.getHttpClientFactory()
-                        .getClient(new Hints(Hints.HTTP_CLIENT, SimpleHttpClient.class));
+                        .getClient(new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
 
-        assertTrue(client instanceof SimpleHttpClient);
+        assertTrue(client instanceof CustomHttpClient);
     }
 
     @Test
@@ -85,6 +85,20 @@ public class HTTPFactoryFinderTest {
             assertTrue(client instanceof LoggingHTTPClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
+        }
+    }
+
+    static class CustomHttpClient extends AbstractHttpClient {
+
+        @Override
+        public HTTPResponse get(URL url) throws IOException {
+            return null;
+        }
+
+        @Override
+        public HTTPResponse post(URL url, InputStream content, String contentType)
+                throws IOException {
+            return null;
         }
     }
 }

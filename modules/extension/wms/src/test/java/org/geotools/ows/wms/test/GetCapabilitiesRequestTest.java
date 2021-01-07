@@ -21,8 +21,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.response.WMSGetCapabilitiesResponse;
 

@@ -18,8 +18,6 @@ package org.geotools.http;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 

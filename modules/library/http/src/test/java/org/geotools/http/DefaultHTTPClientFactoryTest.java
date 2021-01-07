@@ -17,9 +17,6 @@ package org.geotools.http;
 
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.LoggingHTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
 

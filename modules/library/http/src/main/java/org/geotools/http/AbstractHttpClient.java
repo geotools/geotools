@@ -14,7 +14,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.ows;
+package org.geotools.http;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * A base class for HTTPClient, that implements everything except the get and post methods.
@@ -76,4 +80,7 @@ public abstract class AbstractHttpClient implements HTTPClient {
     public boolean isTryGzip() {
         return tryGzip;
     }
+
+    public abstract HTTPResponse post(URL url, InputStream content, String contentType)
+            throws IOException;
 }

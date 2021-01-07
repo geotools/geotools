@@ -25,9 +25,10 @@ import java.util.Set;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
-import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.OperationType;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.http.DelegateOldHTTPClient;
+import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPFactoryFinder;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.CRSEnvelope;
@@ -72,6 +73,15 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             throws ServiceException, IOException {
         super(serverURL, httpClient, capabilities);
         setType(super.capabilities.getType());
+    }
+
+    @Deprecated
+    public WebMapTileServer(
+            URL serverURL,
+            org.geotools.data.ows.HTTPClient httpClient,
+            WMTSCapabilities capabilities)
+            throws ServiceException, IOException {
+        this(serverURL, new DelegateOldHTTPClient(httpClient), capabilities);
     }
 
     /** */

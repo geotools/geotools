@@ -17,12 +17,19 @@
 package org.geotools.ows.wms.response;
 
 import java.io.IOException;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
+import org.geotools.http.DelegateOldHTTPResponse;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /** @author Richard Gould */
 public class GetLegendGraphicResponse extends Response {
+
+    @Deprecated
+    public GetLegendGraphicResponse(org.geotools.data.ows.HTTPResponse httpResponse)
+            throws ServiceException, IOException {
+        this(new DelegateOldHTTPResponse(httpResponse));
+    }
 
     public GetLegendGraphicResponse(HTTPResponse httpResponse)
             throws ServiceException, IOException {

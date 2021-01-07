@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -65,7 +65,7 @@ public class HTTPFactoryFinder extends FactoryFinder {
     }
 
     /**
-     * Get a special Http Client factory by specifying hint HTTP_CLIENT_FACTORY
+     * Get a special Http Client Factory by specifying hint HTTP_CLIENT_FACTORY
      *
      * @param hints
      * @return
@@ -81,7 +81,7 @@ public class HTTPFactoryFinder extends FactoryFinder {
 
     /** Makes sure a call for getServiceRegistry will do a clean scan */
     public static synchronized void reset() {
-        FactoryRegistry copy = registry;
+        final FactoryRegistry copy = registry;
         registry = null;
         if (copy != null) {
             copy.deregisterAll();

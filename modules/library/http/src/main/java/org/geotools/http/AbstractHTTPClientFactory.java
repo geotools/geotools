@@ -16,13 +16,20 @@
  */
 package org.geotools.http;
 
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.LoggingHTTPClient;
+import java.util.logging.Logger;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 
-/** @author Roar Brænden */
+/**
+ * Base HTTPClientFactory adding wrapper client's to the desired HTTP Client like for instance
+ * LoggingHTTPClient.
+ *
+ * @author Roar Brænden
+ */
 public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
+
+    private final Logger LOGGER = Logging.getLogger(AbstractHTTPClientFactory.class);
 
     public AbstractHTTPClientFactory() {}
 
@@ -48,6 +55,7 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
      */
     protected HTTPClient applyLogging(HTTPClient client, Hints hints) {
         if (hints.containsKey(Hints.HTTP_LOGGING)) {
+            LOGGER.fine("Applying logging to HTTP Client.");
             final String hint = (String) hints.get(Hints.HTTP_LOGGING);
             final Boolean logging = Boolean.parseBoolean(hint);
             if (logging) {

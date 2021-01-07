@@ -30,6 +30,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
+import org.geotools.http.DelegateOldHTTPClient;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /**
@@ -128,6 +131,11 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
     public void setHttpClient(HTTPClient httpClient) {
         this.httpClient = httpClient;
+    }
+
+    @Deprecated
+    public void setHttpClient(org.geotools.data.ows.HTTPClient httpClient) {
+        this.httpClient = new DelegateOldHTTPClient(httpClient);
     }
 
     public HTTPClient getHTTPClient() {

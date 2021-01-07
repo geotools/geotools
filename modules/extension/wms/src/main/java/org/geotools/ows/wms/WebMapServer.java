@@ -33,11 +33,12 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesResponse;
-import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.http.DelegateOldHTTPClient;
+import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPFactoryFinder;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.request.DescribeLayerRequest;
@@ -381,6 +382,12 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
         super(serverURL, httpClient, null);
     }
 
+    @Deprecated
+    public WebMapServer(final URL serverURL, final org.geotools.data.ows.HTTPClient httpClient)
+            throws IOException, ServiceException {
+        this(serverURL, httpClient, null);
+    }
+
     /**
      * Creates a new WebMapServer instance and attempts to retrieve the Capabilities document
      * specified by serverURL.
@@ -395,6 +402,15 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     public WebMapServer(final URL serverURL, final HTTPClient httpClient, Map<String, Object> hints)
             throws IOException, ServiceException {
         super(serverURL, httpClient, null, hints);
+    }
+
+    @Deprecated
+    public WebMapServer(
+            final URL serverURL,
+            final org.geotools.data.ows.HTTPClient httpClient,
+            Map<String, Object> hints)
+            throws IOException, ServiceException {
+        this(serverURL, new DelegateOldHTTPClient(httpClient), hints);
     }
 
     /**

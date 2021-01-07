@@ -24,7 +24,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.ows.HTTPClient;
+import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPFactoryFinder;
 
 public class MongoDataStoreFactory implements DataStoreFactorySpi {

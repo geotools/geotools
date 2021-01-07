@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import org.geotools.data.ows.HTTPResponse;
+import org.geotools.http.HTTPResponse;
 
 /** Takes a response either as a String or the url to a file with the reponse */
 public class TestHttpResponse implements HTTPResponse {

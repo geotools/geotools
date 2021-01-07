@@ -26,6 +26,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 
+/**
+ * @deprecated Copied to gt-http
+ * @see org.geotools.http.LoggingHTTPClient
+ */
+@Deprecated
 public class LoggingHTTPClient extends DelegateHTTPClient {
 
     private String charsetName;

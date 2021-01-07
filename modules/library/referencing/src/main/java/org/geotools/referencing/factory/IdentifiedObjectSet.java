@@ -197,8 +197,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      */
     public boolean removeAll(final Collection collection) {
         boolean modified = false;
-        for (final Iterator it = collection.iterator(); it.hasNext(); ) {
-            if (remove(it.next())) {
+        for (Object o : collection) {
+            if (remove(o)) {
                 modified = true;
             }
         }
@@ -226,11 +226,11 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      *     {@linkplain #size set's size}, then the creation of all objects is garantee successful.
      * @throws FactoryException if an {@linkplain #createObject object creation} failed.
      */
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void resolve(int n) throws FactoryException {
         if (n > 0)
             try {
-                for (final Iterator it = iterator(); it.hasNext(); ) {
-                    it.next();
+                for (Object o : this) {
                     if (--n == 0) {
                         break;
                     }
@@ -273,8 +273,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     public void setAuthorityCodes(final String[] codes) {
         final Map<String, IdentifiedObject> copy = new HashMap<>(objects);
         objects.clear();
-        for (int i = 0; i < codes.length; i++) {
-            final String code = codes[i];
+        for (final String code : codes) {
             objects.put(code, copy.get(code));
         }
     }

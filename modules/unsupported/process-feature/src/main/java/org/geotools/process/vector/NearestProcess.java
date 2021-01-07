@@ -105,8 +105,7 @@ public class NearestProcess implements VectorProcess {
             Feature nearestFeature = null;
             double nearestDistance = 9e9;
             double nearestBearing = 0;
-            FeatureIterator featureIterator = featureCollection.features();
-            try {
+            try (FeatureIterator featureIterator = featureCollection.features()) {
                 while (featureIterator.hasNext()) {
                     SimpleFeature f = (SimpleFeature) featureIterator.next();
                     if (f.getDefaultGeometryProperty().getValue() == null) continue;
@@ -134,8 +133,6 @@ public class NearestProcess implements VectorProcess {
                     nearestDistance = m.doubleValue();
                     nearestBearing = calcBearing(co);
                 }
-            } finally {
-                featureIterator.close();
             }
             if (nearestFeature != null) {
                 nearestDistance = unitConvert.convert(nearestDistance);

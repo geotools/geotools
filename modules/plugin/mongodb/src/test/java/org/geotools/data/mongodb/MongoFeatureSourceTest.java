@@ -63,12 +63,9 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        try {
+        try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             assertFeature(it.next(), 1);
-        } finally {
-            it.close();
         }
     }
 
@@ -87,12 +84,9 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        try {
+        try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             assertFeature(it.next(), 0);
-        } finally {
-            it.close();
         }
     }
 
@@ -109,12 +103,9 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        try {
+        try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             assertFeature(it.next(), 1);
-        } finally {
-            it.close();
         }
 
         // check full string match
@@ -153,16 +144,13 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        try {
+        try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             SimpleFeature feature = it.next();
             assertFeature(feature, 1, false);
             // the stringProperty attribute should not be returned, since it was
             // used in the post-filter, but was not listed among the properties to fetch
             assertNull(feature.getAttribute("properties.stringProperty"));
-        } finally {
-            it.close();
         }
     }
 
@@ -236,12 +224,9 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        try {
+        try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             assertFeature(it.next(), 0);
-        } finally {
-            it.close();
         }
 
         // test no-match filter
@@ -272,12 +257,9 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        try {
+        try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             assertFeature(it.next(), 0);
-        } finally {
-            it.close();
         }
 
         // test no-match filter

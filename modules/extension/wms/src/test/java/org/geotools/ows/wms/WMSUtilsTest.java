@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import junit.framework.TestCase;
 import org.geotools.referencing.CRS;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class WMSUtilsTest extends TestCase {
+public class WMSUtilsTest {
 
+    @Test
     public void testFindCommonEPSGs() {
         List<Layer> layers = new ArrayList<>();
 
@@ -52,11 +54,11 @@ public class WMSUtilsTest extends TestCase {
 
         Set<String> results1 = WMSUtils.findCommonEPSGs(layers);
 
-        assertNotNull(results1);
-        assertEquals(2, results1.size());
-        assertTrue(results1.contains("EPSG:3005"));
-        assertTrue(results1.contains("EPSG:42101"));
-        assertFalse(results1.contains("EPSG:4326"));
+        Assert.assertNotNull(results1);
+        Assert.assertEquals(2, results1.size());
+        Assert.assertTrue(results1.contains("EPSG:3005"));
+        Assert.assertTrue(results1.contains("EPSG:42101"));
+        Assert.assertFalse(results1.contains("EPSG:4326"));
 
         layers.clear();
 
@@ -65,11 +67,12 @@ public class WMSUtilsTest extends TestCase {
 
         Set<String> results2 = WMSUtils.findCommonEPSGs(layers);
 
-        assertNotNull(results2);
-        assertEquals(0, results2.size());
-        assertTrue(results2.isEmpty());
+        Assert.assertNotNull(results2);
+        Assert.assertEquals(0, results2.size());
+        Assert.assertTrue(results2.isEmpty());
     }
 
+    @Test
     public void testMatchEPSG() throws Exception {
         CoordinateReferenceSystem crs4326 = CRS.decode("EPSG:4326");
         CoordinateReferenceSystem crs3005 = CRS.decode("EPSG:3005");
@@ -82,16 +85,16 @@ public class WMSUtilsTest extends TestCase {
 
         String result1 = WMSUtils.matchEPSG(crs4326, codes);
 
-        assertNotNull(result1);
-        assertEquals("EPSG:4326", result1);
+        Assert.assertNotNull(result1);
+        Assert.assertEquals("EPSG:4326", result1);
 
         // 3005 == 42102
         String result2 = WMSUtils.matchEPSG(crs3005, codes);
 
-        assertNotNull(result2);
-        assertEquals("EPSG:42102", result2);
+        Assert.assertNotNull(result2);
+        Assert.assertEquals("EPSG:42102", result2);
 
         String result3 = WMSUtils.matchEPSG(crs3347, codes);
-        assertNull(result3);
+        Assert.assertNull(result3);
     }
 }

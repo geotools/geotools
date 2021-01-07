@@ -121,8 +121,8 @@ public class PropertyDataStore extends ContentDataStore {
                         });
         List<Name> typeNames = new ArrayList<>();
         if (list != null) {
-            for (int i = 0; i < list.length; i++) {
-                String typeName = list[i].substring(0, list[i].lastIndexOf('.'));
+            for (String s : list) {
+                String typeName = s.substring(0, s.lastIndexOf('.'));
                 typeNames.add(new NameImpl(namespaceURI, typeName));
             }
         }

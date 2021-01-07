@@ -174,9 +174,8 @@ public class TestAxisOrder {
         SimpleFeatureStore featureStored =
                 (SimpleFeatureStore) duplicate.getFeatureSource(typeName);
 
-        SimpleFeatureIterator dups = featureStored.getFeatures().features();
-        Point expected = gf.createPoint(new Coordinate(15.457678, 47.0850875));
-        try {
+        try (SimpleFeatureIterator dups = featureStored.getFeatures().features()) {
+            Point expected = gf.createPoint(new Coordinate(15.457678, 47.0850875));
             while (dups.hasNext()) {
                 SimpleFeature d = dups.next();
                 Geometry dgeom = (Geometry) d.getDefaultGeometry();
@@ -185,7 +184,6 @@ public class TestAxisOrder {
             }
 
         } finally {
-            dups.close();
             store.dispose();
         }
     }

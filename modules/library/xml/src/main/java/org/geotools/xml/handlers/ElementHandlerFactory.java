@@ -176,10 +176,10 @@ public class ElementHandlerFactory {
             return null;
         }
 
-        for (int i = 0; i < eth.length; i++) {
-            String name = eth[i].getName();
+        for (Element element : eth) {
+            String name = element.getName();
             if (localName.equalsIgnoreCase(name) || name.equals(IgnoreHandler.NAME)) {
-                return createElementHandler(eth[i]);
+                return createElementHandler(element);
             }
         }
 

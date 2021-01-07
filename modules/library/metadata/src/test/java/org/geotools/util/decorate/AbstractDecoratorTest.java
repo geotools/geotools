@@ -17,6 +17,7 @@
 package org.geotools.util.decorate;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -51,7 +52,7 @@ public class AbstractDecoratorTest {
 
     @Test
     public void testUnwrap() {
-        assertTrue(decorator.unwrap(MyClass.class) == sampleClass);
+        assertSame(decorator.unwrap(MyClass.class), sampleClass);
     }
 
     @Test

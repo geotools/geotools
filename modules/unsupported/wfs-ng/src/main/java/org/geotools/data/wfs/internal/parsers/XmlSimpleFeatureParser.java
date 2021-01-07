@@ -225,8 +225,6 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
             parser.nextTag();
             try {
                 parsedValue = parseGeom();
-            } catch (NoSuchAuthorityCodeException e) {
-                throw new DataSourceException(e);
             } catch (FactoryException e) {
                 throw new DataSourceException(e);
             }

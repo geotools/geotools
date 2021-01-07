@@ -16,6 +16,8 @@
  */
 package org.geotools.xml.styling;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -30,9 +32,6 @@ import java.util.Locale;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_buffer;
@@ -69,6 +68,8 @@ import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
@@ -91,24 +92,13 @@ import org.opengis.style.SemanticType;
  *
  * @author jamesm
  */
-public class SLDStyleTest extends TestCase {
+public class SLDStyleTest {
     StyleFactory sf = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     StyleBuilder sb = new StyleBuilder(sf, ff);
 
-    /** Creates a new SLDStyleTest object. */
-    public SLDStyleTest(java.lang.String testName) {
-        super(testName);
-    }
-
-    /** */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(SLDStyleTest.class);
-
-        return suite;
-    }
-
     /** Test of parseStyle method, of class org.geotools.styling.SLDStyle. */
+    @Test
     public void testParseStyle() throws Exception {
         // java.net.URL base = getClass().getResource("testData/");
         // base = getClass().getResource("testData");
@@ -118,29 +108,32 @@ public class SLDStyleTest extends TestCase {
         java.net.URL surl = TestData.getResource(this, "test-sld.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
-        assertEquals("My Layer", sld.getName());
-        assertEquals("A layer by me", sld.getTitle());
-        assertEquals("this is a sample layer", sld.getAbstract());
-        assertEquals(1, sld.getStyledLayers().length);
+        Assert.assertEquals("My Layer", sld.getName());
+        Assert.assertEquals("A layer by me", sld.getTitle());
+        Assert.assertEquals("this is a sample layer", sld.getAbstract());
+        Assert.assertEquals(1, sld.getStyledLayers().length);
 
         UserLayer layer = (UserLayer) sld.getStyledLayers()[0];
-        assertNull(layer.getName());
-        assertEquals(1, layer.getUserStyles().length);
+        Assert.assertNull(layer.getName());
+        Assert.assertEquals(1, layer.getUserStyles().length);
 
         Style style = layer.getUserStyles()[0];
-        assertEquals(1, style.featureTypeStyles().size());
-        assertEquals("My User Style", style.getName());
-        assertEquals("A style by me", style.getDescription().getTitle().toString());
-        assertEquals("this is a sample style", style.getDescription().getAbstract().toString());
-        assertTrue(style.isDefault());
+        Assert.assertEquals(1, style.featureTypeStyles().size());
+        Assert.assertEquals("My User Style", style.getName());
+        Assert.assertEquals("A style by me", style.getDescription().getTitle().toString());
+        Assert.assertEquals(
+                "this is a sample style", style.getDescription().getAbstract().toString());
+        Assert.assertTrue(style.isDefault());
 
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         Rule rule = fts.rules().get(0);
         LineSymbolizer lineSym = (LineSymbolizer) rule.symbolizers().get(0);
-        assertEquals(4, lineSym.getStroke().getWidth().evaluate(null, Number.class).intValue());
+        Assert.assertEquals(
+                4, lineSym.getStroke().getWidth().evaluate(null, Number.class).intValue());
     }
 
     /** XML --> SLD --> XML */
+    @Test
     public void testSLDParser() throws Exception {
         java.net.URL surl = TestData.getResource(this, "example-sld.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -150,12 +143,13 @@ public class SLDStyleTest extends TestCase {
         SLDTransformer aTransformer = new SLDTransformer();
         String xml = aTransformer.transform(sld);
 
-        assertNotNull(xml);
+        Assert.assertNotNull(xml);
         // we're content for the moment if this didn't throw an exception...
         // TODO: convert the buffer/resource to a string and compare
     }
 
     /** XML --> SLD --> XML */
+    @Test
     public void testSLDParserWithLocalizedTitle() throws Exception {
         java.net.URL surl = TestData.getResource(this, "example-localized-sld.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -165,38 +159,41 @@ public class SLDStyleTest extends TestCase {
         SLDTransformer aTransformer = new SLDTransformer();
         String xml = aTransformer.transform(sld);
 
-        assertNotNull(xml);
-        assertTrue(xml.contains("<sld:Title>title"));
-        assertTrue(
+        Assert.assertNotNull(xml);
+        Assert.assertTrue(xml.contains("<sld:Title>title"));
+        Assert.assertTrue(
                 xml.contains(
                         "<sld:Localized lang=\""
                                 + Locale.ITALIAN.toString()
                                 + "\">titolo</sld:Localized>"));
-        assertTrue(
+        Assert.assertTrue(
                 xml.contains(
                         "<sld:Localized lang=\""
                                 + Locale.FRENCH.toString()
                                 + "\">titre</sld:Localized>"));
-        assertTrue(
+        Assert.assertTrue(
                 xml.contains(
                         "<sld:Localized lang=\""
                                 + Locale.CANADA_FRENCH.toString()
                                 + "\">titre</sld:Localized>"));
     }
 
+    @Test
     public void testEmptyElements() throws Exception {
         // before GEOT-3042 this would simply fail with an NPE
         java.net.URL surl = TestData.getResource(this, "test-empty-elements.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
+        Assert.assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
-        assertEquals(1, style.featureTypeStyles().size());
-        assertEquals(1, style.featureTypeStyles().get(0).rules().size());
-        assertEquals(1, style.featureTypeStyles().get(0).rules().get(0).symbolizers().size());
+        Assert.assertEquals(1, style.featureTypeStyles().size());
+        Assert.assertEquals(1, style.featureTypeStyles().get(0).rules().size());
+        Assert.assertEquals(
+                1, style.featureTypeStyles().get(0).rules().get(0).symbolizers().size());
     }
 
+    @Test
     public void testDashArray1() throws Exception {
         // plain text in dasharray
         java.net.URL surl = TestData.getResource(this, "dasharray1.sld");
@@ -204,9 +201,10 @@ public class SLDStyleTest extends TestCase {
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
         Stroke stroke = validateDashArrayStyle(sld);
-        assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray()));
+        assertArrayEquals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray(), 0f);
     }
 
+    @Test
     public void testDashArray2() throws Exception {
         // using ogc:Literal in dasharray
         java.net.URL surl = TestData.getResource(this, "dasharray2.sld");
@@ -214,9 +212,10 @@ public class SLDStyleTest extends TestCase {
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
         Stroke stroke = validateDashArrayStyle(sld);
-        assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray()));
+        assertArrayEquals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray(), 0f);
     }
 
+    @Test
     public void testDashArray3() throws Exception {
         // using expressions in the dasharray
         java.net.URL surl = TestData.getResource(this, "dasharray3.sld");
@@ -225,13 +224,14 @@ public class SLDStyleTest extends TestCase {
 
         List<Expression> expressions = validateDashArrayStyle(sld).dashArray();
 
-        assertTrue("more or less expressions available", expressions.size() == 4);
-        assertTrue("not expected expression", expressions.get(0).equals(ff.property("stroke1")));
-        assertTrue("not expected expression", expressions.get(1).equals(ff.literal(1.0)));
-        assertTrue("not expected expression", expressions.get(2).equals(ff.property("stroke2")));
-        assertTrue("not expected expression", expressions.get(3).equals(ff.literal(2.0)));
+        Assert.assertEquals("more or less expressions available", 4, expressions.size());
+        Assert.assertEquals("not expected expression", expressions.get(0), ff.property("stroke1"));
+        Assert.assertEquals("not expected expression", expressions.get(1), ff.literal(1.0));
+        Assert.assertEquals("not expected expression", expressions.get(2), ff.property("stroke2"));
+        Assert.assertEquals("not expected expression", expressions.get(3), ff.literal(2.0));
     }
 
+    @Test
     public void testDashArray3_dynamic() throws Exception {
         java.net.URL surl = TestData.getResource(this, "dasharray3_dynamic.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -241,42 +241,43 @@ public class SLDStyleTest extends TestCase {
     }
 
     private Stroke validateDashArrayStyle(StyledLayerDescriptor sld) {
-        assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
+        Assert.assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
         List<FeatureTypeStyle> fts = style.featureTypeStyles();
-        assertEquals(1, fts.size());
+        Assert.assertEquals(1, fts.size());
         List<Rule> rules = fts.get(0).rules();
-        assertEquals(1, rules.size());
+        Assert.assertEquals(1, rules.size());
         List<Symbolizer> symbolizers = rules.get(0).symbolizers();
-        assertEquals(1, symbolizers.size());
+        Assert.assertEquals(1, symbolizers.size());
 
         LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
-        assertNotNull("line symbolizer is null", ls);
+        Assert.assertNotNull("line symbolizer is null", ls);
 
         Stroke stroke = ls.getStroke();
-        assertNotNull("stroke is null", stroke);
-        assertNotNull("stroke dasharray is null", stroke.dashArray());
+        Assert.assertNotNull("stroke is null", stroke);
+        Assert.assertNotNull("stroke dasharray is null", stroke.dashArray());
 
         return stroke;
     }
 
     private void validateDynamicDashArrayStyle(StyledLayerDescriptor sld) {
-        assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
+        Assert.assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
         List<FeatureTypeStyle> fts = style.featureTypeStyles();
-        assertEquals(1, fts.size());
+        Assert.assertEquals(1, fts.size());
         List<Rule> rules = fts.get(0).rules();
-        assertEquals(1, rules.size());
+        Assert.assertEquals(1, rules.size());
         List<Symbolizer> symbolizers = rules.get(0).symbolizers();
-        assertEquals(1, symbolizers.size());
+        Assert.assertEquals(1, symbolizers.size());
 
         LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
-        assertNotNull(ls.getStroke().dashArray());
+        Assert.assertNotNull(ls.getStroke().dashArray());
         List<Expression> e = ls.getStroke().dashArray();
-        assertEquals(1, e.size());
-        assertEquals("2.0 1.0 4.0 1.0", e.get(0).evaluate(null));
+        Assert.assertEquals(1, e.size());
+        Assert.assertEquals("2.0 1.0 4.0 1.0", e.get(0).evaluate(null));
     }
 
+    @Test
     public void testSLDParserWithWhitespaceIsTrimmed() throws Exception {
         java.net.URL surl = TestData.getResource(this, "whitespace.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -294,12 +295,13 @@ public class SLDStyleTest extends TestCase {
                                 .get(0);
 
         PropertyName property = (PropertyName) ts.getLabel();
-        assertEquals("testProperty", property.getPropertyName());
+        Assert.assertEquals("testProperty", property.getPropertyName());
 
         Expression color = ts.getFill().getColor();
-        assertEquals(Color.BLACK, SLD.color(color));
+        Assert.assertEquals(Color.BLACK, SLD.color(color));
     }
 
+    @Test
     public void testSLDParserWithhMixedContent() throws Exception {
         java.net.URL surl = TestData.getResource(this, "mixedContent.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -323,10 +325,12 @@ public class SLDStyleTest extends TestCase {
         String fillValue = fill.evaluate(null, String.class);
         String labelValue = label.evaluate(null, String.class);
 
-        assertEquals("#96C3F5", fillValue);
-        assertEquals("this is a prefix; this is an expression; this is a postfix", labelValue);
+        Assert.assertEquals("#96C3F5", fillValue);
+        Assert.assertEquals(
+                "this is a prefix; this is an expression; this is a postfix", labelValue);
     }
 
+    @Test
     public void testSLDExtendedColorMap() throws Exception {
         java.net.URL surl = TestData.getResource(this, "colormap.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -344,10 +348,11 @@ public class SLDStyleTest extends TestCase {
                                 .symbolizers()
                                 .get(0);
 
-        assertTrue(rs.getColorMap().getExtendedColors());
-        assertTrue(rs.getColorMap().getType() == ColorMap.TYPE_RAMP);
+        Assert.assertTrue(rs.getColorMap().getExtendedColors());
+        Assert.assertEquals(rs.getColorMap().getType(), ColorMap.TYPE_RAMP);
     }
 
+    @Test
     public void testSLDParserWithhMixedContentCDATA() throws Exception {
         java.net.URL surl = TestData.getResource(this, "mixedContentWithCDATA.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -368,9 +373,10 @@ public class SLDStyleTest extends TestCase {
 
         String labelValue = label.evaluate(null, String.class);
 
-        assertEquals("literal_1\n cdata literal_2", labelValue);
+        Assert.assertEquals("literal_1\n cdata literal_2", labelValue);
     }
 
+    @Test
     public void testSLDParserWithhMixedContentCDATASpaces() throws Exception {
         java.net.URL surl = TestData.getResource(this, "mixedContentWithCDATASpaces.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -391,9 +397,10 @@ public class SLDStyleTest extends TestCase {
 
         String labelValue = label.evaluate(null, String.class);
 
-        assertEquals("literal_1\nliteral_2", labelValue);
+        Assert.assertEquals("literal_1\nliteral_2", labelValue);
     }
 
+    @Test
     public void testSLDParserWithFuncConcatenateCDATASpaces() throws Exception {
         java.net.URL surl = TestData.getResource(this, "funcConcatenateWithCDATASpaces.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -416,9 +423,10 @@ public class SLDStyleTest extends TestCase {
 
         // System.out.println(labelValue);
 
-        assertEquals("literal_1\n literal_2", labelValue);
+        Assert.assertEquals("literal_1\n literal_2", labelValue);
     }
 
+    @Test
     public void testStrokeCssParameter() throws Exception {
         java.net.URL surl = TestData.getResource(this, "strokeParam.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -441,10 +449,11 @@ public class SLDStyleTest extends TestCase {
                         "strConcat",
                         ff.literal("#"),
                         ff.function("env", ff.literal("stroke"), ff.literal("0000FF")));
-        assertEquals(expected, color);
+        Assert.assertEquals(expected, color);
     }
 
     /** SLD --> XML --> SLD */
+    @Test
     public void testSLDTransformer() throws Exception {
         // create an SLD
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
@@ -503,9 +512,10 @@ public class SLDStyleTest extends TestCase {
         //        assertTrue(result);
 
         // everything is equal
-        assertEquals(sld2, sld);
+        Assert.assertEquals(sld2, sld);
     }
 
+    @Test
     public void testSLDTransformerIndentation() throws Exception {
         // create a simple object
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
@@ -520,9 +530,10 @@ public class SLDStyleTest extends TestCase {
         String xml2 = aTransformer.transform(sld);
         // generated xml contains 4 indents, so if indentation is working, the difference should be
         // 4
-        assertEquals(xml1.length() + 4, xml2.length());
+        Assert.assertEquals(xml1.length() + 4, xml2.length());
     }
 
+    @Test
     public void testParseSLD_NameSpaceAware() throws Exception {
         URL surl = TestData.getResource(this, "test-ns.sld");
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
@@ -530,12 +541,12 @@ public class SLDStyleTest extends TestCase {
         SLDParser stylereader = new SLDParser(factory, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        assertEquals(1, sld.getStyledLayers().length);
+        Assert.assertEquals(1, sld.getStyledLayers().length);
         FeatureTypeStyle[] fts = SLD.featureTypeStyles(sld);
-        assertEquals(2, fts.length);
-        assertEquals(1, fts[0].semanticTypeIdentifiers().size());
-        assertEquals(2, fts[1].semanticTypeIdentifiers().size());
-        assertEquals(
+        Assert.assertEquals(2, fts.length);
+        Assert.assertEquals(1, fts[0].semanticTypeIdentifiers().size());
+        Assert.assertEquals(2, fts[1].semanticTypeIdentifiers().size());
+        Assert.assertEquals(
                 "colorbrewer:default",
                 new ArrayList<>(fts[1].semanticTypeIdentifiers()).get(1).name());
     }
@@ -546,6 +557,7 @@ public class SLDStyleTest extends TestCase {
      *
      * @throws Exception boom
      */
+    @Test
     public void testParseSLDNamedLayersOnly() throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "namedLayers.sld");
@@ -558,21 +570,21 @@ public class SLDStyleTest extends TestCase {
         final String[] namedStyleNames = {"CenterLine", "CenterLine", "Outline"};
         StyledLayer[] layers = sld.getStyledLayers();
 
-        assertEquals(expectedLayerCount, layers.length);
+        Assert.assertEquals(expectedLayerCount, layers.length);
 
         for (int i = 0; i < expectedLayerCount; i++) {
-            assertTrue(layers[i] instanceof NamedLayer);
+            Assert.assertTrue(layers[i] instanceof NamedLayer);
         }
 
         for (int i = 0; i < expectedLayerCount; i++) {
-            assertEquals(layerNames[i], layers[i].getName());
+            Assert.assertEquals(layerNames[i], layers[i].getName());
         }
 
         for (int i = 0; i < expectedLayerCount; i++) {
             NamedLayer layer = (NamedLayer) layers[i];
-            assertEquals(1, layer.getStyles().length);
-            assertTrue(layer.getStyles()[0] instanceof NamedStyle);
-            assertEquals(namedStyleNames[i], layer.getStyles()[0].getName());
+            Assert.assertEquals(1, layer.getStyles().length);
+            Assert.assertTrue(layer.getStyles()[0] instanceof NamedStyle);
+            Assert.assertEquals(namedStyleNames[i], layer.getStyles()[0].getName());
         }
 
         // find the rivers layers and test the LayerFeatureConstraints
@@ -581,12 +593,12 @@ public class SLDStyleTest extends TestCase {
             if (layer.getName().equals("Rivers")) {
                 FeatureTypeConstraint[] featureTypeConstraints = layer.getLayerFeatureConstraints();
                 final int featureTypeConstraintCount = 1;
-                assertEquals(featureTypeConstraintCount, featureTypeConstraints.length);
+                Assert.assertEquals(featureTypeConstraintCount, featureTypeConstraints.length);
                 Filter filter = featureTypeConstraints[0].getFilter();
-                assertTrue(filter instanceof PropertyIsEqualTo);
+                Assert.assertTrue(filter instanceof PropertyIsEqualTo);
                 PropertyIsEqualTo equal = (PropertyIsEqualTo) filter;
-                assertTrue(equal.getExpression1() instanceof PropertyName);
-                assertTrue(equal.getExpression2() instanceof Literal);
+                Assert.assertTrue(equal.getExpression1() instanceof PropertyName);
+                Assert.assertTrue(equal.getExpression2() instanceof Literal);
             }
         }
     }
@@ -597,6 +609,7 @@ public class SLDStyleTest extends TestCase {
      *
      * @throws Exception boom
      */
+    @Test
     public void testParseSLDNamedAndUserLayers() throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "mixedLayerTypes.sld");
@@ -608,11 +621,11 @@ public class SLDStyleTest extends TestCase {
 
         StyledLayer[] layers = sld.getStyledLayers();
 
-        assertEquals(expectedLayerCount, layers.length);
-        assertTrue(layers[0] instanceof NamedLayer);
-        assertTrue(layers[1] instanceof UserLayer);
-        assertTrue(layers[2] instanceof NamedLayer);
-        assertTrue(layers[3] instanceof UserLayer);
+        Assert.assertEquals(expectedLayerCount, layers.length);
+        Assert.assertTrue(layers[0] instanceof NamedLayer);
+        Assert.assertTrue(layers[1] instanceof UserLayer);
+        Assert.assertTrue(layers[2] instanceof NamedLayer);
+        Assert.assertTrue(layers[3] instanceof UserLayer);
     }
 
     /**
@@ -620,44 +633,45 @@ public class SLDStyleTest extends TestCase {
      *
      * @throws IOException boom
      */
+    @Test
     public void testParseGeometryFilters() throws IOException {
         final String TYPE_NAME = "testType";
         final String GEOMETRY_ATTR = "Polygons";
         Style[] styles = getStyles("spatialFilter.xml");
 
         final int expectedStyleCount = 1;
-        assertEquals(expectedStyleCount, styles.length);
+        Assert.assertEquals(expectedStyleCount, styles.length);
 
         Style notDisjoint = styles[0];
-        assertEquals(1, notDisjoint.featureTypeStyles().size());
+        Assert.assertEquals(1, notDisjoint.featureTypeStyles().size());
 
         FeatureTypeStyle fts = notDisjoint.featureTypeStyles().get(0);
-        assertEquals(TYPE_NAME, fts.featureTypeNames().iterator().next().getLocalPart());
-        assertEquals(1, fts.rules().size());
+        Assert.assertEquals(TYPE_NAME, fts.featureTypeNames().iterator().next().getLocalPart());
+        Assert.assertEquals(1, fts.rules().size());
 
         Filter filter = fts.rules().get(0).getFilter();
-        assertTrue(filter instanceof Not);
+        Assert.assertTrue(filter instanceof Not);
 
         Filter spatialFilter = ((Not) filter).getFilter();
-        assertTrue(spatialFilter instanceof Disjoint);
+        Assert.assertTrue(spatialFilter instanceof Disjoint);
 
         Disjoint disjoint = (Disjoint) spatialFilter;
         Expression left = disjoint.getExpression1();
         Expression right = disjoint.getExpression2();
 
-        assertTrue(left instanceof PropertyName);
+        Assert.assertTrue(left instanceof PropertyName);
 
-        assertTrue(right instanceof Literal);
-        assertTrue(right.evaluate(null) instanceof Geometry);
+        Assert.assertTrue(right instanceof Literal);
+        Assert.assertTrue(right.evaluate(null) instanceof Geometry);
 
-        assertEquals(GEOMETRY_ATTR, ((PropertyName) left).getPropertyName());
-        assertTrue(right.evaluate(null) instanceof Polygon);
+        Assert.assertEquals(GEOMETRY_ATTR, ((PropertyName) left).getPropertyName());
+        Assert.assertTrue(right.evaluate(null) instanceof Polygon);
 
         Envelope bbox = ((Polygon) right.evaluate(null)).getEnvelopeInternal();
-        assertEquals(-10D, bbox.getMinX(), 0);
-        assertEquals(-10D, bbox.getMinY(), 0);
-        assertEquals(10D, bbox.getMaxX(), 0);
-        assertEquals(10D, bbox.getMaxY(), 0);
+        Assert.assertEquals(-10D, bbox.getMinX(), 0);
+        Assert.assertEquals(-10D, bbox.getMinY(), 0);
+        Assert.assertEquals(10D, bbox.getMaxX(), 0);
+        Assert.assertEquals(10D, bbox.getMaxY(), 0);
     }
 
     /**
@@ -665,61 +679,64 @@ public class SLDStyleTest extends TestCase {
      *
      * @throws IOException boom
      */
+    @Test
     public void testParseFidFilter() throws IOException {
         Style[] styles = getStyles("fidFilter.xml");
 
         final int expectedStyleCount = 1;
-        assertEquals(expectedStyleCount, styles.length);
+        Assert.assertEquals(expectedStyleCount, styles.length);
 
         Style style = styles[0];
-        assertEquals(1, style.featureTypeStyles().size());
+        Assert.assertEquals(1, style.featureTypeStyles().size());
 
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
-        assertEquals("Feature", fts.featureTypeNames().iterator().next().getLocalPart());
-        assertEquals(1, fts.rules().size());
+        Assert.assertEquals("Feature", fts.featureTypeNames().iterator().next().getLocalPart());
+        Assert.assertEquals(1, fts.rules().size());
 
         Filter filter = fts.rules().get(0).getFilter();
-        assertTrue(filter instanceof Id);
+        Assert.assertTrue(filter instanceof Id);
 
         Id fidFilter = (Id) filter;
         String[] fids =
                 fidFilter.getIDs().stream().map(id -> (String) id).toArray(n -> new String[n]);
-        assertEquals("Wrong number of fids", 5, fids.length);
+        Assert.assertEquals("Wrong number of fids", 5, fids.length);
 
         Arrays.sort(fids);
 
-        assertEquals("fid.0", fids[0]);
-        assertEquals("fid.1", fids[1]);
-        assertEquals("fid.2", fids[2]);
-        assertEquals("fid.3", fids[3]);
-        assertEquals("fid.4", fids[4]);
+        Assert.assertEquals("fid.0", fids[0]);
+        Assert.assertEquals("fid.1", fids[1]);
+        Assert.assertEquals("fid.2", fids[2]);
+        Assert.assertEquals("fid.3", fids[3]);
+        Assert.assertEquals("fid.4", fids[4]);
     }
 
+    @Test
     public void testParseKmlExtensions() throws IOException {
         Style[] styles = getStyles("kmlSymbolizer.sld");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
-        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
         final Rule rule = styles[0].featureTypeStyles().get(0).rules().get(0);
-        assertEquals(1, rule.symbolizers().size());
+        Assert.assertEquals(1, rule.symbolizers().size());
         TextSymbolizer2 ts = (TextSymbolizer2) rule.symbolizers().get(0);
 
         // abstract == property name
-        assertEquals("propertyOne", ((PropertyName) ts.getSnippet()).getPropertyName());
+        Assert.assertEquals("propertyOne", ((PropertyName) ts.getSnippet()).getPropertyName());
 
         // abstract == mixed literal + propertyName
         Expression desc = ts.getFeatureDescription();
-        assertTrue(desc instanceof Function);
-        assertEquals("strConcat", ((Function) desc).getName());
-        assertEquals(2, ((Function) desc).getParameters().size());
-        assertTrue(((Function) desc).getParameters().get(0) instanceof Literal);
-        assertTrue(((Function) desc).getParameters().get(1) instanceof PropertyName);
+        Assert.assertTrue(desc instanceof Function);
+        Assert.assertEquals("strConcat", ((Function) desc).getName());
+        Assert.assertEquals(2, ((Function) desc).getParameters().size());
+        Assert.assertTrue(((Function) desc).getParameters().get(0) instanceof Literal);
+        Assert.assertTrue(((Function) desc).getParameters().get(1) instanceof PropertyName);
 
         // other text -> target & literal
-        assertEquals("extrude", ts.getOtherText().getTarget());
-        assertTrue(ts.getOtherText().getText() instanceof Literal);
+        Assert.assertEquals("extrude", ts.getOtherText().getTarget());
+        Assert.assertTrue(ts.getOtherText().getText() instanceof Literal);
     }
 
+    @Test
     public void testParseAnchorDisplacement() throws IOException {
         Style[] styles = getStyles("markDisplacementTest.sld");
         PointSymbolizer ps =
@@ -727,36 +744,37 @@ public class SLDStyleTest extends TestCase {
                         styles[0].featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         Graphic graphic = ps.getGraphic();
         Displacement displacement = graphic.getDisplacement();
-        assertNotNull(displacement);
+        Assert.assertNotNull(displacement);
         assertLiteral(11, displacement.getDisplacementX());
         assertLiteral(8, displacement.getDisplacementY());
 
         AnchorPoint anchorPoint = graphic.getAnchorPoint();
-        assertNotNull(displacement);
+        Assert.assertNotNull(displacement);
         assertLiteral(0, anchorPoint.getAnchorPointX());
         assertLiteral(1, anchorPoint.getAnchorPointY());
     }
 
     private void assertLiteral(double expected, Expression exp) {
-        assertTrue(exp instanceof Literal);
+        Assert.assertTrue(exp instanceof Literal);
         double value = exp.evaluate(null, Double.class);
-        assertEquals(expected, value, 0d);
+        Assert.assertEquals(expected, value, 0d);
     }
 
     /** Tests the parsing of a raster symbolizer sld */
+    @Test
     public void testParseRasterSymbolizer() throws IOException {
         Style[] styles = getStyles("rasterSymbolizer.sld");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
-        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
         Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
-        assertEquals(1, r.symbolizers().size());
+        Assert.assertEquals(1, r.symbolizers().size());
 
         RasterSymbolizer rs = (RasterSymbolizer) r.symbolizers().get(0);
 
         // opacity
-        assertEquals(0.75, SLD.opacity(rs));
+        Assert.assertEquals(0.75, SLD.opacity(rs), 0d);
 
         // channels
         ChannelSelection cs = rs.getChannelSelection();
@@ -765,52 +783,53 @@ public class SLDStyleTest extends TestCase {
         SelectedChannelType blueChannel = cs.getRGBChannels()[2];
 
         // channel names
-        assertEquals("1", redChannel.getChannelName().evaluate(null, String.class));
-        assertEquals("2", greenChannel.getChannelName().evaluate(null, String.class));
-        assertEquals("6", blueChannel.getChannelName().evaluate(null, String.class));
+        Assert.assertEquals("1", redChannel.getChannelName().evaluate(null, String.class));
+        Assert.assertEquals("2", greenChannel.getChannelName().evaluate(null, String.class));
+        Assert.assertEquals("6", blueChannel.getChannelName().evaluate(null, String.class));
 
         // contrast enhancement
         ContrastEnhancement rcs = redChannel.getContrastEnhancement();
 
-        assertEquals("histogram", rcs.getMethod().name().toLowerCase());
+        Assert.assertEquals("histogram", rcs.getMethod().name().toLowerCase());
 
         ContrastEnhancement gcs = greenChannel.getContrastEnhancement();
         Double ggamma = gcs.getGammaValue().evaluate(null, Double.class);
-        assertEquals(2.8, ggamma.doubleValue());
+        Assert.assertEquals(2.8, ggamma.doubleValue(), 0d);
 
         ContrastEnhancement bcs = blueChannel.getContrastEnhancement();
         ContrastMethod m = bcs.getMethod();
-        assertEquals("normalize", m.name().toLowerCase());
+        Assert.assertEquals("normalize", m.name().toLowerCase());
 
         // overlap behaviour
         Expression overlapExpr = rs.getOverlap();
         String type = (String) overlapExpr.evaluate(null);
-        assertEquals("LATEST_ON_TOP", type);
+        Assert.assertEquals("LATEST_ON_TOP", type);
 
         org.opengis.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
         type = overlapBehavior.name();
-        assertEquals("LATEST_ON_TOP", type);
+        Assert.assertEquals("LATEST_ON_TOP", type);
 
         // ContrastEnhancement
         ContrastEnhancement ce = rs.getContrastEnhancement();
         Double v = ce.getGammaValue().evaluate(null, Double.class);
-        assertEquals(1.0, v.doubleValue());
+        Assert.assertEquals(1.0, v.doubleValue(), 0d);
     }
 
     /** Tests the parsing of a raster symbolizer sld */
+    @Test
     public void testParseRasterSymbolizerWithExpressionGammaValue() throws IOException {
         Style[] styles = getStyles("rasterSymbolizerGammaValue.sld");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
-        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
         Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
-        assertEquals(1, r.symbolizers().size());
+        Assert.assertEquals(1, r.symbolizers().size());
 
         RasterSymbolizer rs = (RasterSymbolizer) r.symbolizers().get(0);
 
         // opacity
-        assertEquals(0.75, SLD.opacity(rs));
+        Assert.assertEquals(0.75, SLD.opacity(rs), 0d);
 
         // channels
         ChannelSelection cs = rs.getChannelSelection();
@@ -819,54 +838,55 @@ public class SLDStyleTest extends TestCase {
         SelectedChannelType blueChannel = cs.getRGBChannels()[2];
 
         // channel names
-        assertEquals("1", redChannel.getChannelName().evaluate(null, String.class));
-        assertEquals("2", greenChannel.getChannelName().evaluate(null, String.class));
-        assertEquals("6", blueChannel.getChannelName().evaluate(null, String.class));
+        Assert.assertEquals("1", redChannel.getChannelName().evaluate(null, String.class));
+        Assert.assertEquals("2", greenChannel.getChannelName().evaluate(null, String.class));
+        Assert.assertEquals("6", blueChannel.getChannelName().evaluate(null, String.class));
 
         // contrast enhancement
         ContrastEnhancement rcs = redChannel.getContrastEnhancement();
 
-        assertEquals("histogram", rcs.getMethod().name().toLowerCase());
+        Assert.assertEquals("histogram", rcs.getMethod().name().toLowerCase());
 
         ContrastEnhancement gcs = greenChannel.getContrastEnhancement();
         Double ggamma = gcs.getGammaValue().evaluate(null, Double.class);
-        assertEquals(3.8, ggamma.doubleValue());
+        Assert.assertEquals(3.8, ggamma.doubleValue(), 0d);
 
         ContrastEnhancement bcs = blueChannel.getContrastEnhancement();
         ContrastMethod m = bcs.getMethod();
-        assertEquals("normalize", m.name().toLowerCase());
+        Assert.assertEquals("normalize", m.name().toLowerCase());
 
         // overlap behaviour
         Expression overlapExpr = rs.getOverlap();
         String type = (String) overlapExpr.evaluate(null);
-        assertEquals("LATEST_ON_TOP", type);
+        Assert.assertEquals("LATEST_ON_TOP", type);
 
         org.opengis.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
         type = overlapBehavior.name();
-        assertEquals("LATEST_ON_TOP", type);
+        Assert.assertEquals("LATEST_ON_TOP", type);
 
         // ContrastEnhancement
         ContrastEnhancement ce = rs.getContrastEnhancement();
         Double v = ce.getGammaValue().evaluate(null, Double.class);
-        assertEquals(1.5, v.doubleValue());
+        Assert.assertEquals(1.5, v.doubleValue(), 0d);
     }
 
     /**
      * Tests the parsing of a raster symbolizer sld with ENV function expression on SelectedChannel
      */
+    @Test
     public void testParseRasterChannelExpression() throws IOException {
         Style[] styles = getStyles("raster-channel-expression.xml");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
-        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
         Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
-        assertEquals(1, r.symbolizers().size());
+        Assert.assertEquals(1, r.symbolizers().size());
 
         RasterSymbolizer rs = (RasterSymbolizer) r.symbolizers().get(0);
 
         // opacity
-        assertEquals(1.0, SLD.opacity(rs));
+        Assert.assertEquals(1.0, SLD.opacity(rs), 0d);
 
         // channels
         ChannelSelection cs = rs.getChannelSelection();
@@ -877,40 +897,43 @@ public class SLDStyleTest extends TestCase {
         // channel names
         // test default: 5
         EnvFunction.removeLocalValue("B1");
-        assertEquals(5, redChannel.getChannelName().evaluate(null, Integer.class).intValue());
+        Assert.assertEquals(
+                5, redChannel.getChannelName().evaluate(null, Integer.class).intValue());
         // set env variable B1:20
         EnvFunction.setLocalValue("B1", "20");
-        assertEquals(20, redChannel.getChannelName().evaluate(null, Integer.class).intValue());
+        Assert.assertEquals(
+                20, redChannel.getChannelName().evaluate(null, Integer.class).intValue());
         EnvFunction.removeLocalValue("B1");
 
-        assertEquals("2", greenChannel.getChannelName().evaluate(null, String.class));
-        assertEquals("4", blueChannel.getChannelName().evaluate(null, String.class));
+        Assert.assertEquals("2", greenChannel.getChannelName().evaluate(null, String.class));
+        Assert.assertEquals("4", blueChannel.getChannelName().evaluate(null, String.class));
     }
 
     /** Tests the parsing of a raster symbolizer sld with color Map */
+    @Test
     public void testParseRasterSymbolizerColorMap() throws IOException {
         Style[] styles = getStyles("rasterSymbolizerColorMap.sld");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
-        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
         Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
-        assertEquals(1, r.symbolizers().size());
+        Assert.assertEquals(1, r.symbolizers().size());
 
         RasterSymbolizer rs = (RasterSymbolizer) r.symbolizers().get(0);
 
         // opacity
         Double d = rs.getOpacity().evaluate(null, Double.class);
-        assertEquals(1.0, d.doubleValue());
+        Assert.assertEquals(1.0, d.doubleValue(), 0d);
 
         // overlap behaviour
         Expression overlapExpr = rs.getOverlap();
         String type = (String) overlapExpr.evaluate(null);
-        assertEquals("AVERAGE", type);
+        Assert.assertEquals("AVERAGE", type);
 
         // ColorMap
         ColorMap cMap = rs.getColorMap();
-        assertEquals(20, cMap.getColorMapEntries().length);
+        Assert.assertEquals(20, cMap.getColorMapEntries().length);
         ColorMapEntry[] centeries = cMap.getColorMapEntries();
         String[] colors =
                 new String[] {
@@ -927,148 +950,159 @@ public class SLDStyleTest extends TestCase {
             ColorMapEntry entry = centeries[i];
             String c = (String) entry.getColor().evaluate(null);
             Integer q = entry.getQuantity().evaluate(null, Integer.class);
-            assertEquals(colors[i], c);
-            assertEquals(values[i], q.intValue());
+            Assert.assertEquals(colors[i], c);
+            Assert.assertEquals(values[i], q.intValue());
         }
     }
 
+    @Test
     public void testParseGeometryExpressions() throws Exception {
         Style[] styles = getStyles("geometryTransformation.sld");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
-        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
         Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
-        assertEquals(1, r.symbolizers().size());
+        Assert.assertEquals(1, r.symbolizers().size());
 
         PolygonSymbolizer ps = (PolygonSymbolizer) r.symbolizers().get(0);
         Expression geom = ps.getGeometry();
-        assertNotNull(geom);
-        assertTrue(geom instanceof FilterFunction_buffer);
+        Assert.assertNotNull(geom);
+        Assert.assertTrue(geom instanceof FilterFunction_buffer);
         FilterFunction_buffer buf = (FilterFunction_buffer) geom;
-        assertTrue(buf.getParameters().get(0) instanceof PropertyName);
-        assertTrue(buf.getParameters().get(1) instanceof Literal);
+        Assert.assertTrue(buf.getParameters().get(0) instanceof PropertyName);
+        Assert.assertTrue(buf.getParameters().get(1) instanceof Literal);
     }
 
+    @Test
     public void testParsePlainGeometryExpression() throws Exception {
         Style[] styles = getStyles("geometryPlain.sld");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
-        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
         Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
-        assertEquals(1, r.symbolizers().size());
+        Assert.assertEquals(1, r.symbolizers().size());
 
         PolygonSymbolizer ps = (PolygonSymbolizer) r.symbolizers().get(0);
         Expression geom = ps.getGeometry();
-        assertNotNull(geom);
-        assertTrue(geom instanceof PropertyName);
+        Assert.assertNotNull(geom);
+        Assert.assertTrue(geom instanceof PropertyName);
         PropertyName pn = (PropertyName) geom;
-        assertEquals("the_geom", pn.getPropertyName());
-        assertEquals("the_geom", ps.getGeometryPropertyName());
+        Assert.assertEquals("the_geom", pn.getPropertyName());
+        Assert.assertEquals("the_geom", ps.getGeometryPropertyName());
     }
 
+    @Test
     public void testDataTransformation() throws Exception {
         Style[] styles = getStyles("transformation.xml");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
         final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
-        assertEquals(1, fts.rules().size());
-        assertNotNull(fts.getTransformation());
+        Assert.assertEquals(1, fts.rules().size());
+        Assert.assertNotNull(fts.getTransformation());
         Function tx = (Function) fts.getTransformation();
-        assertEquals("union", tx.getName());
+        Assert.assertEquals("union", tx.getName());
     }
 
+    @Test
     public void testRuleEvaluationMode() throws Exception {
         Style[] styles = getStyles("ruleEvaluationMode.xml");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
         final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
-        assertEquals(1, fts.rules().size());
+        Assert.assertEquals(1, fts.rules().size());
         Map<String, String> options = fts.getOptions();
-        assertEquals(1, options.size());
-        assertEquals(
+        Assert.assertEquals(1, options.size());
+        Assert.assertEquals(
                 FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST,
                 options.get(FeatureTypeStyle.KEY_EVALUATION_MODE));
     }
 
+    @Test
     public void testGreenBandSelection() throws Exception {
         Style[] styles = getStyles("greenChannelSelection.sld");
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
         final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
-        assertEquals(1, fts.rules().size());
+        Assert.assertEquals(1, fts.rules().size());
         RasterSymbolizer symbolizer = (RasterSymbolizer) fts.rules().get(0).symbolizers().get(0);
         final SelectedChannelType[] rgbChannels = symbolizer.getChannelSelection().getRGBChannels();
-        assertNotNull(rgbChannels);
-        assertNull(rgbChannels[0]);
-        assertNotNull(rgbChannels[1]);
-        assertNull(rgbChannels[2]);
+        Assert.assertNotNull(rgbChannels);
+        Assert.assertNull(rgbChannels[0]);
+        Assert.assertNotNull(rgbChannels[1]);
+        Assert.assertNull(rgbChannels[2]);
     }
 
+    @Test
     public void testMultipleFonts() throws Exception {
         Style[] styles = getStyles("multifont.sld");
-        assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles.length);
         List<FeatureTypeStyle> featureTypeStyles = styles[0].featureTypeStyles();
-        assertEquals(1, featureTypeStyles.size());
+        Assert.assertEquals(1, featureTypeStyles.size());
         List<Rule> rules = featureTypeStyles.get(0).rules();
-        assertEquals(1, rules.size());
+        Assert.assertEquals(1, rules.size());
         List<Symbolizer> symbolizers = rules.get(0).symbolizers();
-        assertEquals(1, symbolizers.size());
+        Assert.assertEquals(1, symbolizers.size());
         TextSymbolizer ts = (TextSymbolizer) symbolizers.get(0);
-        assertEquals(1, ts.fonts().size());
+        Assert.assertEquals(1, ts.fonts().size());
         List<Expression> families = ts.fonts().get(0).getFamily();
-        assertEquals(3, families.size());
-        assertEquals("Comic Sans MS", families.get(0).evaluate(null, String.class));
-        assertEquals("Droid Sans Fallback", families.get(1).evaluate(null, String.class));
-        assertEquals("Arial", families.get(2).evaluate(null, String.class));
+        Assert.assertEquals(3, families.size());
+        Assert.assertEquals("Comic Sans MS", families.get(0).evaluate(null, String.class));
+        Assert.assertEquals("Droid Sans Fallback", families.get(1).evaluate(null, String.class));
+        Assert.assertEquals("Arial", families.get(2).evaluate(null, String.class));
     }
 
+    @Test
     public void testParseBase64EncodedContent() throws Exception {
         ExternalGraphic graphic = getGraphic("base64.sld");
-        assertNotNull(graphic.getInlineContent());
-        assertEquals("image/png", graphic.getFormat());
-        assertNull(graphic.getLocation());
+        Assert.assertNotNull(graphic.getInlineContent());
+        Assert.assertEquals("image/png", graphic.getFormat());
+        Assert.assertNull(graphic.getLocation());
         assertImagesEqual(getReferenceImage("test.png"), graphic.getInlineContent());
     }
 
+    @Test
     public void testInvalidInlineContent() throws Exception {
         ExternalGraphic graphic = getGraphic("invalid-content.sld");
-        assertNotNull(graphic.getInlineContent());
-        assertEquals("image/png", graphic.getFormat());
-        assertNull(graphic.getLocation());
-        assertEquals(1, graphic.getInlineContent().getIconWidth());
-        assertEquals(1, graphic.getInlineContent().getIconHeight());
+        Assert.assertNotNull(graphic.getInlineContent());
+        Assert.assertEquals("image/png", graphic.getFormat());
+        Assert.assertNull(graphic.getLocation());
+        Assert.assertEquals(1, graphic.getInlineContent().getIconWidth());
+        Assert.assertEquals(1, graphic.getInlineContent().getIconHeight());
     }
 
+    @Test
     public void testUnsuppotedInlineContentEncoding() throws Exception {
         ExternalGraphic graphic = getGraphic("unsupported-encoding.sld");
-        assertNotNull(graphic.getInlineContent());
-        assertEquals("image/svg", graphic.getFormat());
-        assertNull(graphic.getLocation());
-        assertEquals(1, graphic.getInlineContent().getIconWidth());
-        assertEquals(1, graphic.getInlineContent().getIconHeight());
+        Assert.assertNotNull(graphic.getInlineContent());
+        Assert.assertEquals("image/svg", graphic.getFormat());
+        Assert.assertNull(graphic.getLocation());
+        Assert.assertEquals(1, graphic.getInlineContent().getIconWidth());
+        Assert.assertEquals(1, graphic.getInlineContent().getIconHeight());
     }
 
+    @Test
     public void testParseBackgroundSolid() throws Exception {
         Style[] styles = getStyles("backgroundSolid.sld");
-        assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles.length);
         Fill background = styles[0].getBackground();
-        assertNotNull(background);
-        assertEquals(Color.RED, background.getColor().evaluate(null, Color.class));
-        assertEquals(1, background.getOpacity().evaluate(null, Double.class), 0d);
+        Assert.assertNotNull(background);
+        Assert.assertEquals(Color.RED, background.getColor().evaluate(null, Color.class));
+        Assert.assertEquals(1, background.getOpacity().evaluate(null, Double.class), 0d);
     }
 
+    @Test
     public void testParseBackgroundGraphicFill() throws Exception {
         Style[] styles = getStyles("backgroundGraphicFill.sld");
-        assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles.length);
         Fill background = styles[0].getBackground();
-        assertNotNull(background);
+        Assert.assertNotNull(background);
         Graphic graphic = background.getGraphicFill();
-        assertNotNull(graphic);
+        Assert.assertNotNull(graphic);
         GraphicalSymbol firstSymbol = graphic.graphicalSymbols().get(0);
-        assertTrue(firstSymbol instanceof Mark);
-        assertEquals(
+        Assert.assertTrue(firstSymbol instanceof Mark);
+        Assert.assertEquals(
                 "square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
     }
 
@@ -1091,25 +1125,25 @@ public class SLDStyleTest extends TestCase {
         SLDParser stylereader = new SLDParser(sf, surl);
 
         Style[] styles = stylereader.readXML();
-        assertEquals(1, styles.length);
-        assertEquals(1, styles[0].featureTypeStyles().size());
-        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+        Assert.assertEquals(1, styles.length);
+        Assert.assertEquals(1, styles[0].featureTypeStyles().size());
+        Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
         Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
-        assertEquals(1, r.symbolizers().size());
+        Assert.assertEquals(1, r.symbolizers().size());
 
         PolygonSymbolizer symbolizer = (PolygonSymbolizer) r.symbolizers().get(0);
 
         Fill fill = symbolizer.getFill();
-        assertNotNull(fill);
+        Assert.assertNotNull(fill);
 
         Graphic graphicFill = fill.getGraphicFill();
-        assertNotNull(graphicFill);
+        Assert.assertNotNull(graphicFill);
 
-        assertEquals(1, graphicFill.graphicalSymbols().size());
+        Assert.assertEquals(1, graphicFill.graphicalSymbols().size());
 
         GraphicalSymbol symbol = graphicFill.graphicalSymbols().get(0);
-        assertTrue(symbol instanceof ExternalGraphic);
+        Assert.assertTrue(symbol instanceof ExternalGraphic);
         return (ExternalGraphic) symbol;
     }
 
@@ -1124,14 +1158,14 @@ public class SLDStyleTest extends TestCase {
             g.dispose();
         }
 
-        assertNotNull(expected);
-        assertEquals(expected.getWidth(), actual.getWidth());
-        assertEquals(expected.getHeight(), actual.getHeight());
+        Assert.assertNotNull(expected);
+        Assert.assertEquals(expected.getWidth(), actual.getWidth());
+        Assert.assertEquals(expected.getHeight(), actual.getHeight());
         int w = actual.getWidth();
         int h = actual.getHeight();
         for (int x = 0; x < w; ++x) {
             for (int y = 0; y < h; ++y) {
-                assertEquals(
+                Assert.assertEquals(
                         "mismatch at (" + x + ", " + y + ")",
                         actual.getRGB(x, y),
                         expected.getRGB(x, y));

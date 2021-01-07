@@ -19,7 +19,6 @@ package org.geotools.graph.util;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.graph.build.line.BasicLineGraphGenerator;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
@@ -27,19 +26,17 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineSegment;
 
-public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
+public class DijkstraShortestPathFinderWithTurnCostsTest {
 
     private Graph graph;
 
-    public DijkstraShortestPathFinderWithTurnCostsTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         LineSegment ld1 = new LineSegment();
         ld1.setCoordinates(new Coordinate(0, 0), new Coordinate(1, 1));
@@ -57,8 +54,8 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
         BasicLineGraphGenerator graphGen = new BasicLineGraphGenerator();
 
         // add the lines to the graph
-        for (int i = 0; i < lines.length; i++) {
-            graphGen.add(lines[i]);
+        for (LineSegment line : lines) {
+            graphGen.add(line);
         }
 
         this.graph = graphGen.getGraph();
@@ -66,6 +63,7 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
         // System.out.println(graph);
     }
 
+    @Test
     public void test1() {
 
         double[] expected = {0.0, 1.0, 3.0, 3.0};

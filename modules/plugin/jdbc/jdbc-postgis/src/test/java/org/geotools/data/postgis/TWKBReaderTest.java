@@ -17,7 +17,7 @@
  */
 package org.geotools.data.postgis;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
@@ -327,8 +327,9 @@ public class TWKBReaderTest {
                 throw new RuntimeException("Never gonna get here!");
         }
 
-        assertTrue(
+        assertEquals(
                 "\nExpected:" + expected + "\nActual:  " + actual,
-                expected.compareTo(actual, comp) == 0);
+                0,
+                expected.compareTo(actual, comp));
     }
 }

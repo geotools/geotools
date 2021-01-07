@@ -16,6 +16,7 @@
  */
 package org.geotools.gml;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -31,7 +32,7 @@ public class SubHandlerFactory {
 
     /** List of all valid OGC multi geometry types. */
     private static final java.util.Collection<String> BASE_GEOMETRY_TYPES =
-            new java.util.Vector<>(
+            new ArrayList<>(
                     java.util.Arrays.asList(
                             new String[] {"MultiPoint", "MultiLineString", "MultiPolygon"}));
 

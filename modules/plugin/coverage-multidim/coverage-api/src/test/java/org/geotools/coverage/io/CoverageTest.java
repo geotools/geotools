@@ -17,7 +17,9 @@
 package org.geotools.coverage.io;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -102,7 +104,7 @@ public class CoverageTest {
         assertEquals(TEST_NAME, source.getName(null));
 
         // Test additional domains Setter and getter
-        assertTrue(!source.getAdditionalDomains().isEmpty());
+        assertFalse(source.getAdditionalDomains().isEmpty());
         assertNotNull(source.getVerticalDomain());
     }
 
@@ -123,7 +125,7 @@ public class CoverageTest {
         assertNotNull(metadata);
         Map<String, MetadataAttribute> attributes = metadata.getAttributes();
         assertNotNull(attributes);
-        assertTrue(!attributes.isEmpty());
+        assertFalse(attributes.isEmpty());
         MetadataAttribute metadataAttribute = attributes.get("testAttribute");
         assertNotNull(metadataAttribute);
         assertNotNull(metadata.getNodes());
@@ -175,34 +177,34 @@ public class CoverageTest {
         request.setHandle(handle);
         request.setDomainSubset(rasterArea, gridToWorldTransform, crs);
         // Ensure that both geographic and raster area have been set
-        assertTrue(request.getRasterArea() != null);
-        assertTrue(request.getGeographicArea() != null);
+        assertNotNull(request.getRasterArea());
+        assertNotNull(request.getGeographicArea());
         // Check that there is no Filter already set
-        assertTrue(request.getFilter() == null);
+        assertNull(request.getFilter());
         // Setting the filter
         request.setFilter(filter);
-        assertTrue(request.getFilter() != null);
+        assertNotNull(request.getFilter());
         // Check that there is no temporal subset already set
         assertTrue(request.getTemporalSubset().isEmpty());
         // Setting temporal subset
         request.setTemporalSubset(set);
-        assertTrue(!request.getTemporalSubset().isEmpty());
+        assertFalse(request.getTemporalSubset().isEmpty());
         // Check that there is no vertical subset already set
         assertTrue(request.getVerticalSubset().isEmpty());
         // Setting vertical subset
         request.setVerticalSubset(verticalSubset);
-        assertTrue(!request.getVerticalSubset().isEmpty());
+        assertFalse(request.getVerticalSubset().isEmpty());
         // Get the response
         CoverageResponse response = source.read(request, null);
         // Ensure the response status is success
-        assertTrue(response.getStatus() == Status.SUCCESS);
+        assertSame(response.getStatus(), Status.SUCCESS);
         // Ensure the request is the same
-        assertTrue(response.getRequest().equals(request));
+        assertEquals(response.getRequest(), request);
         // Ensure the Handle is the same
         assertTrue(response.getHandle().equalsIgnoreCase(handle));
         // Ensure the result is not null
         Collection<? extends Coverage> results = response.getResults(null);
-        assertTrue(results != null);
+        assertNotNull(results);
         assertTrue(results.size() > 0);
         assertTrue(results.iterator().next() instanceof GridCoverage2D);
     }
@@ -240,8 +242,8 @@ public class CoverageTest {
 
         Collection<? extends Coverage> results = response.getResults(null);
         // Ensure the results are not null and it is not empty
-        assertTrue(results != null);
-        assertTrue(!results.isEmpty());
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
         // Get the first result from the collection and ensure it is the same coverage of the input
         GridCoverage2D covOutput = (GridCoverage2D) results.iterator().next();
         assertSame(cov, covOutput);

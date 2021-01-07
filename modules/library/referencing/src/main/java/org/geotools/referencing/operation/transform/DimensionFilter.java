@@ -388,8 +388,8 @@ public class DimensionFilter {
             final int subLower = passThrough.firstAffectedOrdinate;
             final int subUpper = subLower + dimPass;
             final DimensionFilter subFilter = new DimensionFilter(factory);
-            for (int i = 0; i < sourceDimensions.length; i++) {
-                int n = sourceDimensions[i];
+            for (int sourceDimension : sourceDimensions) {
+                int n = sourceDimension;
                 if (n >= subLower && n < subUpper) {
                     // Dimension n belong to the subtransform.
                     subFilter.addSourceDimension(n - subLower);
@@ -661,8 +661,8 @@ public class DimensionFilter {
             } else {
                 // Note: the following loop is unefficient, but should suffise since this
                 //       case should not occurs often and arrays should be small anyway.
-                for (int i = 0; i < dimensions.length; i++) {
-                    sequence = add(sequence, dimensions[i]);
+                for (int dimension : dimensions) {
+                    sequence = add(sequence, dimension);
                 }
             }
         }

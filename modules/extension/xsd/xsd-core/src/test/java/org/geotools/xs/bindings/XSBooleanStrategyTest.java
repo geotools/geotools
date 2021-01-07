@@ -16,9 +16,12 @@
  */
 package org.geotools.xs.bindings;
 
+import static org.junit.Assert.fail;
+
 import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
+import org.junit.Test;
 
 public class XSBooleanStrategyTest extends TestSchema {
     /**
@@ -29,6 +32,7 @@ public class XSBooleanStrategyTest extends TestSchema {
     /*
      * Test method for 'org.geotools.xs.strategies.XSBooleanStrategy.parse(Element, Node[], Object)'
      */
+    @Test
     public void testTruth() throws Exception {
         validateValues("true", Boolean.TRUE);
         validateValues("false", Boolean.FALSE);
@@ -36,6 +40,7 @@ public class XSBooleanStrategyTest extends TestSchema {
         validateValues("0", Boolean.FALSE);
     }
 
+    @Test
     public void testUntruth() throws Exception {
         try {
             validateValues("TRUE", Boolean.FALSE);

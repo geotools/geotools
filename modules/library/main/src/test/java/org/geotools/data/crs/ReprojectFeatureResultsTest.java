@@ -16,7 +16,6 @@
  */
 package org.geotools.data.crs;
 
-import junit.framework.TestCase;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -26,6 +25,9 @@ import org.geotools.feature.visitor.BoundsVisitor;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.referencing.CRS;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -36,7 +38,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.ProgressListener;
 
 /** Test ForceCoordinateSystemFeatureResults feature collection wrapper. */
-public class ReprojectFeatureResultsTest extends TestCase {
+public class ReprojectFeatureResultsTest {
 
     private static final String FEATURE_TYPE_NAME = "testType";
     private CoordinateReferenceSystem wgs84;
@@ -45,7 +47,8 @@ public class ReprojectFeatureResultsTest extends TestCase {
     FeatureVisitor lastVisitor = null;
     private ListFeatureCollection visitorCollection;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         lastVisitor = null;
         wgs84 = CRS.decode("EPSG:4326");
         utm32n = CRS.decode("EPSG:32632");
@@ -80,12 +83,14 @@ public class ReprojectFeatureResultsTest extends TestCase {
                 };
     }
 
+    @Test
     public void testMaxVisitorDelegation() throws Exception {
         MaxVisitor visitor =
                 new MaxVisitor(CommonFactoryFinder.getFilterFactory2().property("value"));
         assertOptimalVisit(visitor);
     }
 
+    @Test
     public void testCountVisitorDelegation() throws Exception {
         FeatureVisitor visitor = new CountVisitor();
         assertOptimalVisit(visitor);
@@ -95,15 +100,16 @@ public class ReprojectFeatureResultsTest extends TestCase {
         SimpleFeatureCollection retypedCollection =
                 new ReprojectFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(visitor, null);
-        assertSame(lastVisitor, visitor);
+        Assert.assertSame(lastVisitor, visitor);
     }
 
+    @Test
     public void testBoundsNotOptimized() throws Exception {
         BoundsVisitor boundsVisitor = new BoundsVisitor();
         SimpleFeatureCollection retypedCollection =
                 new ReprojectFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(boundsVisitor, null);
         // not optimized
-        assertNull(lastVisitor);
+        Assert.assertNull(lastVisitor);
     }
 }

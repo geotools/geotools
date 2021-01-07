@@ -19,7 +19,6 @@ package org.geotools.graph.structure.basic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
@@ -156,8 +155,7 @@ public class BasicGraph implements Graph, Serializable {
      * @see BasicGraphable#getCount()
      */
     public void initNodes() {
-        for (Iterator<?> itr = m_nodes.iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
+        for (Node node : m_nodes) {
             node.setVisited(false);
             node.setCount(0);
         }
@@ -171,8 +169,7 @@ public class BasicGraph implements Graph, Serializable {
      * @see BasicGraphable#getCount()
      */
     public void initEdges() {
-        for (Iterator<?> itr = m_edges.iterator(); itr.hasNext(); ) {
-            Edge edge = (Edge) itr.next();
+        for (Edge edge : m_edges) {
             edge.setVisited(false);
             edge.setCount(0);
         }
@@ -195,9 +192,7 @@ public class BasicGraph implements Graph, Serializable {
             Collection<? extends Graphable> components, GraphVisitor visitor) {
         ArrayList<Graphable> result = new ArrayList<>();
 
-        for (Iterator<? extends Graphable> itr = components.iterator(); itr.hasNext(); ) {
-            Graphable component = itr.next();
-
+        for (Graphable component : components) {
             switch (visitor.visit(component)) {
                 case PASS_AND_CONTINUE:
                     result.add(component);
@@ -219,8 +214,8 @@ public class BasicGraph implements Graph, Serializable {
      * Internal visit method
      */
     private void visit(Collection<?> components, GraphVisitor visitor) {
-        for (Iterator<?> itr = components.iterator(); itr.hasNext(); ) {
-            visitor.visit((Graphable) itr.next());
+        for (Object component : components) {
+            visitor.visit((Graphable) component);
         }
     }
 

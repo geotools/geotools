@@ -23,22 +23,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
-import junit.framework.TestCase;
 import org.geotools.util.URLs;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XSConfiguration;
 import org.geotools.xsd.Parser;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class XSUnsignedBindingsTest extends TestCase {
+public class XSUnsignedBindingsTest {
 
     Parser p;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         XSConfiguration xs = new XSConfiguration();
         p = new Parser(xs);
     }
 
+    @Test
     public void testParseUnsignedInt() throws Exception {
         Long l =
                 (Long)
@@ -46,9 +49,10 @@ public class XSUnsignedBindingsTest extends TestCase {
                                 new ByteArrayInputStream(
                                         doc("unsignedInt", "12")
                                                 .getBytes(Charset.forName("UTF-8"))));
-        assertEquals(12l, l.longValue());
+        Assert.assertEquals(12l, l.longValue());
     }
 
+    @Test
     public void testParseUnsignedByte() throws Exception {
         Short s =
                 (Short)
@@ -56,9 +60,10 @@ public class XSUnsignedBindingsTest extends TestCase {
                                 new ByteArrayInputStream(
                                         doc("unsignedByte", "12")
                                                 .getBytes(Charset.forName("UTF-8"))));
-        assertEquals(12, s.shortValue());
+        Assert.assertEquals(12, s.shortValue());
     }
 
+    @Test
     public void testParseUnsignedShort() throws Exception {
         Integer i =
                 (Integer)
@@ -66,9 +71,10 @@ public class XSUnsignedBindingsTest extends TestCase {
                                 new ByteArrayInputStream(
                                         doc("unsignedShort", "12")
                                                 .getBytes(Charset.forName("UTF-8"))));
-        assertEquals(12, i.longValue());
+        Assert.assertEquals(12, i.longValue());
     }
 
+    @Test
     public void testParseUnsignedLong() throws Exception {
         BigDecimal l =
                 (BigDecimal)
@@ -76,7 +82,7 @@ public class XSUnsignedBindingsTest extends TestCase {
                                 new ByteArrayInputStream(
                                         doc("unsignedLong", "12")
                                                 .getBytes(Charset.forName("UTF-8"))));
-        assertEquals(12l, l.longValue());
+        Assert.assertEquals(12l, l.longValue());
     }
 
     String doc(String elName, String elValue) throws IOException {

@@ -26,14 +26,14 @@ public class SoftObjectCacheTest {
         ObjectCache<Integer, String> cache = new SoftObjectCache<>();
         assertNotNull(cache);
 
-        assertEquals(null, cache.get(key1));
+        assertNull(cache.get(key1));
 
         cache.writeLock(key1);
         cache.put(key1, value1);
         cache.writeUnLock(key1);
         assertEquals(value1, cache.get(key1));
 
-        assertEquals(null, cache.get(key2));
+        assertNull(cache.get(key2));
 
         // test getKeys()
         assertEquals(1, cache.getKeys().size());
@@ -45,14 +45,14 @@ public class SoftObjectCacheTest {
         ObjectCache<Integer, String> cache = new SoftObjectCache<>();
         assertNotNull(cache);
 
-        assertEquals(null, cache.get(key1));
+        assertNull(cache.get(key1));
 
         cache.writeLock(key1);
         cache.put(key1, value1);
         cache.writeUnLock(key1);
         assertEquals(value1, cache.get(key1));
 
-        assertEquals(null, cache.get(key2));
+        assertNull(cache.get(key2));
 
         // test getKeys()
         assertEquals(1, cache.getKeys().size());

@@ -17,11 +17,12 @@
 package org.geotools.renderer.style.markwkt;
 
 import java.awt.Shape;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -33,7 +34,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Luca Morandini lmorandini@ieee.org
  */
-public class ShapeMarkFactoryTest extends TestCase {
+public class ShapeMarkFactoryTest {
 
     private SimpleFeature feature;
     private Expression exp;
@@ -53,47 +54,50 @@ public class ShapeMarkFactoryTest extends TestCase {
         }
     }
 
+    @Test
     public void testWellKnownName() {
         MeteoMarkFactory smf = new MeteoMarkFactory();
         try {
             this.exp = ff.literal("shape://triangle");
             smf.getShape(null, this.exp, this.feature);
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
             return;
         }
 
-        assertTrue(true);
+        Assert.assertTrue(true);
     }
 
+    @Test
     public void testUnknownProtocol() {
         MeteoMarkFactory smf = new MeteoMarkFactory();
         try {
             this.exp = ff.literal("xxx://triangle");
             if (smf.getShape(null, this.exp, this.feature) == null) {
-                assertTrue(true);
+                Assert.assertTrue(true);
                 return;
             }
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
             return;
         }
 
-        assertTrue(false);
+        Assert.fail();
     }
 
+    @Test
     public void testSouthArrow() {
         MeteoMarkFactory smf = new MeteoMarkFactory();
         try {
             this.exp = ff.literal("extshape://sarrow");
             Shape shape = smf.getShape(null, this.exp, this.feature);
             // Check if the South Arrow is present
-            assertNotNull(shape);
+            Assert.assertNotNull(shape);
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
             return;
         }
 
-        assertTrue(true);
+        Assert.assertTrue(true);
     }
 }

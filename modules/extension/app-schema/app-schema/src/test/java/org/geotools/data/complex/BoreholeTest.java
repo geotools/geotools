@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -192,8 +191,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
                     name(XMMLNS, "collarDiameter"), typeName(GMLNS, "MeasureType"));
             expectedNamesAndTypes.put(name(XMMLNS, "log"), typeName(XMMLNS, "LogPropertyType"));
 
-            for (Iterator it = expectedNamesAndTypes.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Entry) it.next();
+            for (Entry<Name, Name> nameNameEntry : expectedNamesAndTypes.entrySet()) {
+                Entry entry = (Entry) nameNameEntry;
                 Name dName = (Name) entry.getKey();
                 Name tName = (Name) entry.getValue();
 
@@ -313,13 +312,10 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
         int size = 0;
-        FeatureIterator<Feature> i = features.features();
-        try {
+        try (FeatureIterator<Feature> i = features.features()) {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        } finally {
-            i.close();
         }
         return size;
     }
@@ -384,8 +380,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
         value = f.getValue();
         if (f instanceof ComplexAttribute) {
             Collection values = (Collection) value;
-            for (Iterator it = values.iterator(); it.hasNext(); ) {
-                Attribute att = (Attribute) it.next();
+            for (Object o : values) {
+                Attribute att = (Attribute) o;
                 assertNotNull(att);
                 traverse(att);
             }

@@ -59,11 +59,7 @@ public final class ErdasImgFormat extends BaseGDALGridFormat implements Format {
     public ErdasImgReader getReader(Object source, Hints hints) {
         try {
             return new ErdasImgReader(source, hints);
-        } catch (MismatchedDimensionException e) {
-            final RuntimeException re = new RuntimeException();
-            re.initCause(e);
-            throw re;
-        } catch (DataSourceException e) {
+        } catch (MismatchedDimensionException | DataSourceException e) {
             final RuntimeException re = new RuntimeException();
             re.initCause(e);
             throw re;

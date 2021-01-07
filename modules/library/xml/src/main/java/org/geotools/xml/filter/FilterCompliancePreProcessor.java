@@ -19,7 +19,6 @@ package org.geotools.xml.filter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -163,7 +162,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             return ff.id(empty);
         }
         Data data = current.peek();
-        if (data.fids.size() > 0) {
+        if (!data.fids.isEmpty()) {
             Set<FeatureId> set = new HashSet<>();
             Set<String> fids = data.fids;
             for (String fid : fids) {
@@ -485,7 +484,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             current.removeAll(toRemove);
         }
 
-        if (fidSet.size() == 0) {
+        if (fidSet.isEmpty()) {
             return Collections.emptySet();
         }
 
@@ -495,8 +494,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
         HashSet<String> set = new HashSet<>();
 
-        for (int i = 0; i < fidSet.size(); i++) {
-            Set<String> tmp = fidSet.get(i);
+        for (Set<String> tmp : fidSet) {
             for (String fid : tmp) {
                 if (allContain(fid, fidSet)) {
                     set.add(fid);
@@ -624,8 +622,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     }
 
     private boolean contains(BinaryLogicOperator f, org.opengis.filter.Filter toFind) {
-        for (Iterator iter = f.getChildren().iterator(); iter.hasNext(); ) {
-            if (toFind.equals(iter.next())) {
+        for (Filter filter : f.getChildren()) {
+            if (toFind.equals(filter)) {
                 return true;
             }
         }

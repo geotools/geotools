@@ -16,9 +16,13 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -26,14 +30,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class LineStringTypeBindingTest extends KMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(LineString.class, binding(KML.LineStringType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.LineStringType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         buildDocument("<LineString><coordinates>1,1 2,2 3,3</coordinates></LineString>");
 
@@ -44,6 +51,7 @@ public class LineStringTypeBindingTest extends KMLTestSupport {
         assertEquals(new Coordinate(3, 3), l.getCoordinateN(2));
     }
 
+    @Test
     public void testEncode() throws Exception {
         LineString l =
                 new GeometryFactory()

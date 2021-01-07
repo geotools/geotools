@@ -287,8 +287,7 @@ public class CoordinateFormat extends Format {
      */
     public void setNumberPattern(final String pattern) {
         Format lastFormat = null;
-        for (int i = 0; i < formats.length; i++) {
-            final Format format = formats[i];
+        for (final Format format : formats) {
             if (format != lastFormat && (format instanceof DecimalFormat)) {
                 ((DecimalFormat) format).applyPattern(pattern);
                 lastFormat = format;
@@ -305,8 +304,7 @@ public class CoordinateFormat extends Format {
      */
     public void setAnglePattern(final String pattern) {
         Format lastFormat = null;
-        for (int i = 0; i < formats.length; i++) {
-            final Format format = formats[i];
+        for (final Format format : formats) {
             if (format != lastFormat && (format instanceof AngleFormat)) {
                 ((AngleFormat) format).applyPattern(pattern);
                 lastFormat = format;
@@ -323,8 +321,7 @@ public class CoordinateFormat extends Format {
      */
     public void setDatePattern(final String pattern) {
         Format lastFormat = null;
-        for (int i = 0; i < formats.length; i++) {
-            final Format format = formats[i];
+        for (final Format format : formats) {
             if (format != lastFormat && (format instanceof SimpleDateFormat)) {
                 ((SimpleDateFormat) format).applyPattern(pattern);
                 lastFormat = format;
@@ -341,8 +338,7 @@ public class CoordinateFormat extends Format {
      */
     public void setTimeZone(final TimeZone timezone) {
         Format lastFormat = null;
-        for (int i = 0; i < formats.length; i++) {
-            final Format format = formats[i];
+        for (final Format format : formats) {
             if (format != lastFormat && (format instanceof DateFormat)) {
                 ((DateFormat) format).setTimeZone(timezone);
                 lastFormat = format;

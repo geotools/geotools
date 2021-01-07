@@ -127,8 +127,8 @@ public final class PostGisIndexTest extends OnlineTestCase {
             // check coverage names
             final List<Name> names = reader.getCoveragesNames();
             assertNotNull(names);
-            assertTrue(!names.isEmpty());
-            assertTrue(2 == names.size());
+            assertFalse(names.isEmpty());
+            assertEquals(2, names.size());
             assertTrue(names.contains(new NameImpl("O3")));
 
             // checking slice catalog

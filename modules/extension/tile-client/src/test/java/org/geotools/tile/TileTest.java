@@ -51,13 +51,13 @@ public class TileTest {
     @Test
     public void testEquals() {
 
-        Assert.assertTrue(this.tile.equals(this.tile));
-        Assert.assertFalse(this.tile.equals(null));
-        Assert.assertFalse(this.tile.equals("Blah"));
+        Assert.assertEquals(this.tile, this.tile);
+        Assert.assertNotEquals(null, this.tile);
+        Assert.assertNotEquals("Blah", this.tile);
 
         Tile otherTile = createTestTile();
-        Assert.assertTrue(this.tile.equals(otherTile));
-        Assert.assertTrue(otherTile.equals(this.tile));
+        Assert.assertEquals(this.tile, otherTile);
+        Assert.assertEquals(otherTile, this.tile);
     }
 
     @Test

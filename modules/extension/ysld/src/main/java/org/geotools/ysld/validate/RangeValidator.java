@@ -32,7 +32,7 @@ public abstract class RangeValidator<T extends Comparable<T>> extends TupleValid
     T min = null;
 
     public RangeValidator() {
-        super(Collections.<ScalarValidator>emptyList());
+        super(Collections.emptyList());
     }
 
     @Override

@@ -16,11 +16,14 @@
  */
 package org.geotools.filter.function;
 
+import static org.junit.Assert.*;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -32,28 +35,19 @@ import org.opengis.filter.expression.PropertyName;
 /** @author Cory Horner, Refractions Research Inc. */
 public class QuantileFunctionTest extends FunctionTestSupport {
 
-    public QuantileFunctionTest(String testName) {
-        super(testName);
-    }
-
-    protected void tearDown() throws java.lang.Exception {}
-
-    public static junit.framework.Test suite() {
-        junit.framework.TestSuite suite = new junit.framework.TestSuite(QuantileFunctionTest.class);
-
-        return suite;
-    }
-
+    @Test
     public void testInstance() {
         Function equInt = ff.function("Quantile", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(equInt);
     }
 
+    @Test
     public void testGetName() {
         Function qInt = ff.function("Quantile", ff.literal(new DefaultFeatureCollection()));
         assertEquals("Quantile", qInt.getName());
     }
 
+    @Test
     public void testSetParameters() throws Exception {
         Literal classes = ff.literal(3);
         PropertyName expr = ff.property("foo");
@@ -68,6 +62,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertEquals(5, func.getClasses());
     }
 
+    @Test
     public void testEvaluateWithExpressions() throws Exception {
         Literal classes = ff.literal(2);
         PropertyName exp = ff.property("foo");
@@ -93,6 +88,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
      * <p>Creates a feature collection with five features 1-5. Then uses the quantile function to
      * put these features in 5 bins. Each bin should have a single feature.
      */
+    @Test
     public void testSingleBin() throws Exception {
 
         // create a feature collection with five features values 1-5
@@ -121,17 +117,18 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertEquals(5, range.getSize());
 
         for (int i = 0; i < 5; i++) {
-            assertTrue(i + 1 == ((Number) range.getMin(i)).doubleValue());
+            assertEquals(i + 1d, ((Number) range.getMin(i)).doubleValue(), 0d);
             if (i != 4) {
-                assertTrue(i + 2 == ((Number) range.getMax(i)).doubleValue());
+                assertEquals(i + 2d, ((Number) range.getMax(i)).doubleValue(), 0d);
                 assertEquals((i + 1) + ".." + (i + 2), range.getTitle(i));
             } else {
-                assertTrue(i + 1 == ((Number) range.getMax(i)).doubleValue());
+                assertEquals(i + 1d, ((Number) range.getMax(i)).doubleValue(), 0d);
                 assertEquals((i + 1) + ".." + (i + 1), range.getTitle(i));
             }
         }
     }
 
+    @Test
     public void test2() throws Exception {
         // create a feature collection with five features values 1-5
         SimpleFeatureType dataType =
@@ -154,6 +151,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertTrue(classifier instanceof RangedClassifier);
     }
 
+    @Test
     public void testEvaluateWithStrings() throws Exception {
         org.opengis.filter.expression.Expression function =
                 ff.function("Quantile", ff.property("group"), ff.literal(2));
@@ -167,7 +165,9 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertNull(number);
     }
 
-    public void xtestNullNaNHandling() throws Exception {
+    @Test
+    @Ignore
+    public void testNullNaNHandling() throws Exception {
         // create a feature collection
         SimpleFeatureType ft =
                 DataUtilities.createType("classification.nullnan", "id:0,foo:int,bar:double");
@@ -219,6 +219,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertEquals("0..0.25995", range.getTitle(1));
     }
 
+    @Test
     public void testConstantValuesNumeric() {
         Function function = ff.function("quantile", ff.property("v"), ff.literal(12));
         RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
@@ -228,6 +229,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertEquals(123.123, (Double) classifier.getMax(0), 0d);
     }
 
+    @Test
     public void testConstantValuesString() {
         Function function = ff.function("quantile", ff.property("s"), ff.literal(12));
         ExplicitClassifier classifier = (ExplicitClassifier) function.evaluate(constantCollection);
@@ -249,8 +251,8 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         RangedClassifier ranged = (RangedClassifier) value;
         double[] percentages = ranged.getPercentages();
         assertEquals(percentages.length, 2);
-        assertEquals(percentages[0], 50.0);
-        assertEquals(percentages[1], 50.0);
+        assertEquals(percentages[0], 50.0, 0d);
+        assertEquals(percentages[1], 50.0, 0d);
     }
 
     @Test
@@ -275,8 +277,8 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         Classifier ranged2 = (Classifier) value2;
         double[] percentages2 = ranged2.getPercentages();
         assertEquals(percentages2.length, 6);
-        for (int i = 0; i < percentages2.length; i++) {
-            assertEquals(Math.floor(percentages2[i]), 16.0);
+        for (double v : percentages2) {
+            assertEquals(Math.floor(v), 16.0, 0d);
         }
     }
 
@@ -304,9 +306,9 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         RangedClassifier ranged = (RangedClassifier) value;
         double[] percentages = ranged.getPercentages();
         assertEquals(percentages.length, 5);
-        assertEquals(Math.floor(percentages[0]), 33.0);
+        assertEquals(Math.floor(percentages[0]), 33.0, 0d);
         for (int i = 1; i < percentages.length; i++) {
-            assertEquals(Math.floor(percentages[i]), 16.0);
+            assertEquals(Math.floor(percentages[i]), 16.0, 0d);
         }
     }
 
@@ -319,8 +321,8 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         RangedClassifier ranged = (RangedClassifier) value;
         double[] percentages = ranged.getPercentages();
         assertEquals(percentages.length, 8);
-        for (int i = 0; i < percentages.length; i++) {
-            assertTrue(percentages[i] == 12.5);
+        for (double percentage : percentages) {
+            assertEquals(12.5, percentage, 0d);
         }
     }
 }

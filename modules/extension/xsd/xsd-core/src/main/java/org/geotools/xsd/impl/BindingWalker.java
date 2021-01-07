@@ -17,7 +17,6 @@
 package org.geotools.xsd.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 import javax.xml.namespace.QName;
@@ -63,9 +62,7 @@ public class BindingWalker implements TypeWalker.Visitor {
             bindingName = new QName(type.getTargetNamespace(), type.getName());
         } else {
             // anonymous type, does it belong to a global element
-            for (Iterator e = type.getSchema().getElementDeclarations().iterator(); e.hasNext(); ) {
-                XSDElementDeclaration element = (XSDElementDeclaration) e.next();
-
+            for (XSDElementDeclaration element : type.getSchema().getElementDeclarations()) {
                 if (type.equals(element.getAnonymousTypeDefinition())) {
                     // TODO: this naming convention for anonymous types could conflict with
                     // other types in the schema
@@ -206,8 +203,8 @@ public class BindingWalker implements TypeWalker.Visitor {
             Stack<Binding> stack = new Stack<>();
 
             // visit from bottom to top
-            for (int i = 0; i < bindings.size(); i++) {
-                Binding binding = (Binding) bindings.get(i);
+            for (Object o : bindings) {
+                Binding binding = (Binding) o;
 
                 if (binding.getExecutionMode() == Binding.AFTER) {
                     // put on stack to execute after parent

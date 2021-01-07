@@ -99,9 +99,8 @@ public class MapServerTest {
                         new NameImpl(
                                 "http://mapserver.gis.umn.edu/mapserver", "ms_GovernmentalUnitCE"));
         SimpleFeatureCollection features = source.getFeatures();
-        SimpleFeatureIterator reader = features.features();
-        SimpleFeature sf = null;
-        try {
+        try (SimpleFeatureIterator reader = features.features()) {
+            SimpleFeature sf = null;
             if (reader.hasNext()) {
                 sf = reader.next();
                 assertNotNull(sf);
@@ -110,8 +109,6 @@ public class MapServerTest {
                 assertTrue(sf.getAttribute("doubleNumber") instanceof Double);
             }
             assertNotNull(sf);
-        } finally {
-            reader.close();
         }
     }
 }

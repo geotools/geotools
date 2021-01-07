@@ -420,7 +420,7 @@ public class RasterManager implements Cloneable {
             try {
                 Set<String> result =
                         extractDomain(propertyName, additionalPropertyName, domainType);
-                if (result.size() <= 0) {
+                if (result.isEmpty()) {
                     return "";
                 }
 
@@ -446,7 +446,7 @@ public class RasterManager implements Cloneable {
                 // implicit ordering
                 final Set result = new TreeSet(extractDomain(propertyName));
                 // check result
-                if (result.size() <= 0) {
+                if (result.isEmpty()) {
                     return "";
                 }
 
@@ -478,12 +478,10 @@ public class RasterManager implements Cloneable {
 
             // === create the filter
             // loop values and AND them
-            final int size = values.size();
             final List<Filter> filters = new ArrayList<>();
             FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
-            for (int i = 0; i < size; i++) {
+            for (Object value : values) {
                 // checks
-                Object value = values.get(i);
                 if (value == null) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.info("Ignoring null date for the filter:" + this.identifier);
@@ -819,7 +817,7 @@ public class RasterManager implements Cloneable {
             Utilities.ensureNonNull("name", name);
 
             String value = null;
-            if (domainsMap.size() > 0) {
+            if (!domainsMap.isEmpty()) {
                 // is a domain?
                 if (domainsMap.containsKey(name)) {
                     final DomainDescriptor domainDescriptor = domainsMap.get(name);
@@ -1534,7 +1532,7 @@ public class RasterManager implements Cloneable {
                 UniqueVisitor visitor = new UniqueVisitor(parentReader.locationAttributeName);
                 collection.accepts(visitor, null);
                 Set<String> features = visitor.getUnique();
-                if (features.size() > 0) {
+                if (!features.isEmpty()) {
                     return true;
                 }
             }
@@ -1643,10 +1641,7 @@ public class RasterManager implements Cloneable {
                             crs,
                             raster2Model,
                             overviewsController);
-        } catch (TransformException e) {
-            throw new IOException(
-                    "Exception occurred while initializing the SpatialDomainManager", e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new IOException(
                     "Exception occurred while initializing the SpatialDomainManager", e);
         }

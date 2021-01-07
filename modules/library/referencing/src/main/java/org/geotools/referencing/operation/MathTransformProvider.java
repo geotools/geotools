@@ -243,8 +243,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
         int aliasCount = 0;
         ReferenceIdentifier[] id = new ReferenceIdentifier[identifiers.length];
         GenericName[] alias = new GenericName[identifiers.length];
-        for (int i = 0; i < identifiers.length; i++) {
-            final ReferenceIdentifier candidate = identifiers[i];
+        for (final ReferenceIdentifier candidate : identifiers) {
             if (candidate instanceof GenericName) {
                 alias[aliasCount++] = (GenericName) candidate;
             } else {

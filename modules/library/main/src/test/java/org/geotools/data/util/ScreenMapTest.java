@@ -16,9 +16,10 @@
  */
 package org.geotools.data.util;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class ScreenMapTest extends TestCase {
+public class ScreenMapTest {
     private int xmin;
 
     private int width;
@@ -30,6 +31,7 @@ public class ScreenMapTest extends TestCase {
     /*
      * Test method for 'org.geotools.renderer.shape.ScreenMap.set(int, int)'
      */
+    @Test
     public void testSet() {
         ymin = xmin = 0;
         height = width = 8;
@@ -37,7 +39,7 @@ public class ScreenMapTest extends TestCase {
 
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                assertEquals(false, map.get(x, y));
+                Assert.assertFalse(map.get(x, y));
             }
         }
 
@@ -50,15 +52,15 @@ public class ScreenMapTest extends TestCase {
 
     private void setOne(
             ScreenMap map, int xconst, int yconst, boolean bool, boolean expectedOldValue) {
-        assertEquals(expectedOldValue, map.get(xconst, yconst));
+        Assert.assertEquals(expectedOldValue, map.get(xconst, yconst));
         map.set(xconst, yconst, bool);
 
         for (int x = xmin; x < width; x++) {
             for (int y = ymin; y < height; y++) {
                 if ((x == xconst) && (y == yconst)) {
-                    assertEquals("x=" + x + " y=" + y, bool, map.get(x, y));
+                    Assert.assertEquals("x=" + x + " y=" + y, bool, map.get(x, y));
                 } else {
-                    assertEquals("x=" + x + " y=" + y, false, map.get(x, y));
+                    Assert.assertFalse("x=" + x + " y=" + y, map.get(x, y));
                 }
             }
         }
@@ -73,11 +75,12 @@ public class ScreenMapTest extends TestCase {
 
         for (int x = xmin; x < width; x++) {
             for (int y = ymin; y < height; y++) {
-                assertEquals(value, map.get(x, y));
+                Assert.assertEquals(value, map.get(x, y));
             }
         }
     }
 
+    @Test
     public void testSubsetScreen() throws Exception {
         xmin = 478;
         ymin = 0;
@@ -118,6 +121,7 @@ public class ScreenMapTest extends TestCase {
         setAll(map, false);
     }
 
+    @Test
     public void testOutsideScreen() throws Exception {
         xmin = 0;
         ymin = 0;
@@ -126,28 +130,28 @@ public class ScreenMapTest extends TestCase {
         ScreenMap map = new ScreenMap(xmin, ymin, width, height);
 
         // check points outside the screen
-        assertFalse(map.checkAndSet(-10, -10));
-        assertFalse(map.checkAndSet(-10, -10));
-        assertFalse(map.checkAndSet(-10, 10));
-        assertFalse(map.checkAndSet(-10, 10));
-        assertFalse(map.checkAndSet(20, 10));
-        assertFalse(map.checkAndSet(20, 10));
-        assertFalse(map.checkAndSet(20, -10));
-        assertFalse(map.checkAndSet(20, -10));
+        Assert.assertFalse(map.checkAndSet(-10, -10));
+        Assert.assertFalse(map.checkAndSet(-10, -10));
+        Assert.assertFalse(map.checkAndSet(-10, 10));
+        Assert.assertFalse(map.checkAndSet(-10, 10));
+        Assert.assertFalse(map.checkAndSet(20, 10));
+        Assert.assertFalse(map.checkAndSet(20, 10));
+        Assert.assertFalse(map.checkAndSet(20, -10));
+        Assert.assertFalse(map.checkAndSet(20, -10));
 
         // also control "get"
-        assertFalse(map.get(-10, -10));
-        assertFalse(map.get(-10, -10));
-        assertFalse(map.get(-10, 10));
-        assertFalse(map.get(-10, 10));
-        assertFalse(map.get(20, 10));
-        assertFalse(map.get(20, 10));
-        assertFalse(map.get(20, -10));
-        assertFalse(map.get(20, -10));
+        Assert.assertFalse(map.get(-10, -10));
+        Assert.assertFalse(map.get(-10, -10));
+        Assert.assertFalse(map.get(-10, 10));
+        Assert.assertFalse(map.get(-10, 10));
+        Assert.assertFalse(map.get(20, 10));
+        Assert.assertFalse(map.get(20, 10));
+        Assert.assertFalse(map.get(20, -10));
+        Assert.assertFalse(map.get(20, -10));
 
         // compare with one inside
-        assertFalse(map.checkAndSet(0, 0));
-        assertTrue(map.checkAndSet(0, 0));
-        assertTrue(map.get(0, 0));
+        Assert.assertFalse(map.checkAndSet(0, 0));
+        Assert.assertTrue(map.checkAndSet(0, 0));
+        Assert.assertTrue(map.get(0, 0));
     }
 }

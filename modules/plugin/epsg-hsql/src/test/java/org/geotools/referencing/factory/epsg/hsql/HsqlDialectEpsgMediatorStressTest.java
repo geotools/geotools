@@ -21,19 +21,21 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Random;
 import javax.sql.DataSource;
-import junit.framework.TestCase;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
 import org.geotools.TestData;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-public class HsqlDialectEpsgMediatorStressTest extends TestCase {
+public class HsqlDialectEpsgMediatorStressTest {
 
     static final int RUNNER_COUNT = 10;
     static final int ITERATIONS = 50;
@@ -46,9 +48,8 @@ public class HsqlDialectEpsgMediatorStressTest extends TestCase {
     static String[] codes;
     Hints hints;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         hints = new Hints(Hints.CACHE_POLICY, "none");
         hints.put(Hints.AUTHORITY_MAX_ACTIVE, Integer.valueOf(MAX_WORKERS));
         datasource = HsqlEpsgDatabase.createDataSource();
@@ -56,6 +57,7 @@ public class HsqlDialectEpsgMediatorStressTest extends TestCase {
         codes = getCodes();
     }
 
+    @Test
     public void testRunners() throws Throwable {
         if (!TestData.isExtensiveTest()) {
             return;
@@ -138,7 +140,7 @@ public class HsqlDialectEpsgMediatorStressTest extends TestCase {
             bw.close();
         }
         if (exceptions != 0) {
-            fail(exceptions + " exception(s) occurred");
+            Assert.fail(exceptions + " exception(s) occurred");
         }
     }
 

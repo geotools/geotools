@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDSchema;
@@ -41,9 +40,12 @@ import org.geotools.xsd.SimpleBinding;
 import org.geotools.xsd.impl.BindingLoader;
 import org.geotools.xsd.impl.ElementImpl;
 import org.geotools.xsd.impl.PicoMap;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-public abstract class TestSchema extends TestCase {
+public abstract class TestSchema {
     public static URL url;
     public static XSDSchema schema;
     public static XSDSchema xsd;
@@ -72,10 +74,6 @@ public abstract class TestSchema extends TestCase {
 
     public TestSchema() {}
 
-    public TestSchema(String name) {
-        super(name);
-    }
-
     /**
      * Limited to a search of simple types, no QName required.
      *
@@ -92,9 +90,7 @@ public abstract class TestSchema extends TestCase {
         Class xs = XS.class;
         Field[] fields = xs.getFields();
 
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-
+        for (Field field : fields) {
             if (field.getName().equalsIgnoreCase(name)) {
                 return (QName) field.get(null);
             }
@@ -164,15 +160,15 @@ public abstract class TestSchema extends TestCase {
      */
     public void validateValues(String given, Object expected) throws Exception {
         Object result = strategy.parse(element(given, qname), given);
-        assertEquals(expected, result);
+        Assert.assertEquals(expected, result);
     }
 
     /** Each subclass must indicate which kind of QName they wish to operate against. */
     protected abstract QName getQName();
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         // TODO Auto-generated method stub
-        super.setUp();
 
         qname = getQName();
 
@@ -182,10 +178,11 @@ public abstract class TestSchema extends TestCase {
         }
     }
 
+    @Test
     public void testSetUp() {
         if (getQName() != null) {
-            assertNotNull("XSD typedef", typeDef);
-            assertNotNull(strategy);
+            Assert.assertNotNull("XSD typedef", typeDef);
+            Assert.assertNotNull(strategy);
         }
     }
 }

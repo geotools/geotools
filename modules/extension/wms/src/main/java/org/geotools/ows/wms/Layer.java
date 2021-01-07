@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -209,7 +208,7 @@ public class Layer implements Comparable<Layer> {
             }
 
             Layer parent = this.getParent();
-            while (parent != null && allBoundingBoxesCache.size() == 0) {
+            while (parent != null && allBoundingBoxesCache.isEmpty()) {
                 for (CRSEnvelope bbox : parent.getLayerBoundingBoxes()) {
                     allBoundingBoxesCache.put(bbox.getSRSName(), bbox);
                 }
@@ -448,8 +447,7 @@ public class Layer implements Comparable<Layer> {
         // inherited from a parent. A child may define a new Style with a new Name that is
         // not available for the parent Layer."
         if ((styles != null) && !styles.isEmpty()) {
-            for (Iterator<StyleImpl> iter = styles.iterator(); iter.hasNext(); ) {
-                StyleImpl style = iter.next();
+            for (StyleImpl style : styles) {
                 if (!allStyles.contains(style)) allStyles.add(style);
             }
         }
@@ -757,7 +755,7 @@ public class Layer implements Comparable<Layer> {
         // TODO Attempt to figure out the valid area of the CRS and use that.
 
         // last attempt grab the first thing (and we will transform it)
-        if (tempBBox == null && getBoundingBoxes() != null && getBoundingBoxes().size() > 0) {
+        if (tempBBox == null && getBoundingBoxes() != null && !getBoundingBoxes().isEmpty()) {
             tempBBox = getBoundingBoxes().values().iterator().next();
         }
 

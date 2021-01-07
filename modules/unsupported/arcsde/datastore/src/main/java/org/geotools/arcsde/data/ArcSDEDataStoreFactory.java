@@ -69,7 +69,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
     /** friendly factory description */
     public static final String FACTORY_DESCRIPTION = "ESRI(tm) ArcSDE 9.2+ vector data store";
 
-    private static List<Param> paramMetadata = new ArrayList<Param>(10);
+    private static List<Param> paramMetadata = new ArrayList<>(10);
 
     public static final int JSDE_VERSION_DUMMY = -1;
 
@@ -409,9 +409,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
 
         try {
             new ArcSDEDataStoreConfig(params);
-        } catch (NullPointerException ex) {
-            canProcess = false;
-        } catch (IllegalArgumentException ex) {
+        } catch (NullPointerException | IllegalArgumentException ex) {
             canProcess = false;
         }
 

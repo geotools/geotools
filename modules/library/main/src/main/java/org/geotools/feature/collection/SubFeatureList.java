@@ -97,8 +97,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
             RandomFeatureAccess random = (RandomFeatureAccess) collection;
             return random.getFeatureMember(fid.getID());
         }
-        SimpleFeatureIterator it = collection.features();
-        try {
+        try (SimpleFeatureIterator it = collection.features()) {
             while (it.hasNext()) {
                 SimpleFeature feature = it.next();
                 if (id.equals(feature.getID())) {
@@ -106,8 +105,6 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
                 }
             }
             throw new IndexOutOfBoundsException();
-        } finally {
-            it.close();
         }
     }
 
@@ -115,8 +112,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
     protected Filter createFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Set<FeatureId> featureIds = new HashSet<>();
-        for (Iterator<FeatureId> it = index.iterator(); it.hasNext(); ) {
-            FeatureId fid = it.next();
+        for (FeatureId fid : index) {
             featureIds.add(ff.featureId(fid.getID()));
         }
         Id fids = ff.id(featureIds);
@@ -127,8 +123,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
     /** Put this SubFeatureList in touch with its inner index */
     protected List<FeatureId> createIndex() {
         List<FeatureId> fids = new ArrayList<>();
-        SimpleFeatureIterator it = collection.features();
-        try {
+        try (SimpleFeatureIterator it = collection.features()) {
             while (it.hasNext()) {
                 SimpleFeature feature = it.next();
                 if (filter.evaluate(feature)) {
@@ -178,8 +173,6 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
                             }
                         });
             }
-        } finally {
-            it.close();
         }
         return fids;
     }
@@ -278,8 +271,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
                 }
 
                 // sigh, full scan needed
-                SimpleFeatureIterator it = collection.features();
-                try {
+                try (SimpleFeatureIterator it = collection.features()) {
                     while (it.hasNext()) {
                         SimpleFeature feature = it.next();
                         featureCache.put(id, feature);
@@ -287,23 +279,18 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
                             return feature;
                         }
                     }
-                } finally {
-                    it.close();
                 }
 
                 throw new RuntimeException("Could not find feature with id " + id);
             } else {
                 // full scan...
-                SimpleFeatureIterator it = collection.features();
-                try {
+                try (SimpleFeatureIterator it = collection.features()) {
                     while (it.hasNext()) {
                         SimpleFeature feature = it.next();
                         if (id.equals(feature.getID())) {
                             return feature;
                         }
                     }
-                } finally {
-                    it.close();
                 }
 
                 throw new RuntimeException("Could not find feature with id " + id);

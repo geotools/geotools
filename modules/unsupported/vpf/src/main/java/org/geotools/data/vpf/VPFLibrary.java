@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.logging.Level;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -105,7 +104,7 @@ public class VPFLibrary extends ContentDataStore {
     /** The name of the library */
     private final String libraryName;
     /** The coverages that are in the library */
-    private final List<VPFCoverage> coverages = new Vector<>();
+    private final List<VPFCoverage> coverages = new ArrayList<>();
     /** The coordinate reference system used through this library */
     private CoordinateReferenceSystem crs;
     /** Signals if an error has already been logged for a CRS related exception */
@@ -248,8 +247,8 @@ public class VPFLibrary extends ContentDataStore {
 
                 List featureTypes = coverage.getFeatureTypes();
 
-                for (int ift = 0; ift < featureTypes.size(); ift++) {
-                    VPFFeatureType featureType = (VPFFeatureType) featureTypes.get(ift);
+                for (Object type : featureTypes) {
+                    VPFFeatureType featureType = (VPFFeatureType) type;
                     VPFFeatureClass featureClass = featureType.getFeatureClass();
                     String featureTypeName = featureType.getTypeName();
                     if (debug) {
@@ -266,8 +265,8 @@ public class VPFLibrary extends ContentDataStore {
                         VPFLogger.log("   file count :   " + fileList.size());
                     }
 
-                    for (int ifl = 0; ifl < fileList.size(); ifl++) {
-                        VPFFile vpfClassFile = (VPFFile) fileList.get(ifl);
+                    for (Object o : fileList) {
+                        VPFFile vpfClassFile = (VPFFile) o;
                         if (debug) {
                             if (vpfClassFile == null) {
                                 VPFLogger.log("null");

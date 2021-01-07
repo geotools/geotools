@@ -466,7 +466,7 @@ class FilterToSqlHelper {
     }
 
     private Geometry toPolygon(GeometryFactory gf, final List<Polygon> polygons) {
-        if (polygons.size() == 0) {
+        if (polygons.isEmpty()) {
             return gf.createGeometryCollection(null);
         } else if (polygons.size() == 1) {
             return polygons.get(0);
@@ -1017,7 +1017,7 @@ class FilterToSqlHelper {
         Expression numNearest = getParameter(filter, 1, true);
         try {
             List<PrimaryKeyColumn> pkColumns = delegate.getPrimaryKey().getColumns();
-            if (pkColumns == null || pkColumns.size() == 0) {
+            if (pkColumns == null || pkColumns.isEmpty()) {
                 throw new UnsupportedOperationException(
                         "Unsupported usage of Postgis Nearest Operator: table with no primary key");
             }

@@ -16,58 +16,65 @@
  */
 package org.geotools.gml2;
 
-import junit.framework.TestCase;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xs.XSConfiguration;
 import org.geotools.xsd.SchemaLocationResolver;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-public class GMLConfigurationTest extends TestCase {
+public class GMLConfigurationTest {
     GMLConfiguration configuration;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         configuration = new GMLConfiguration();
     }
 
+    @Test
     public void testGetNamespaceURI() {
-        assertEquals(GML.NAMESPACE, configuration.getNamespaceURI());
+        Assert.assertEquals(GML.NAMESPACE, configuration.getNamespaceURI());
     }
 
+    @Test
     public void testGetSchemaLocation() {
-        assertEquals(
+        Assert.assertEquals(
                 GMLConfiguration.class.getResource("feature.xsd").toString(),
                 configuration.getXSD().getSchemaLocation());
     }
 
+    @Test
     public void testDependencies() {
-        assertEquals(2, configuration.getDependencies().size());
-        assertTrue(configuration.getDependencies().contains(new XLINKConfiguration()));
-        assertTrue(configuration.getDependencies().contains(new XSConfiguration()));
+        Assert.assertEquals(2, configuration.getDependencies().size());
+        Assert.assertTrue(configuration.getDependencies().contains(new XLINKConfiguration()));
+        Assert.assertTrue(configuration.getDependencies().contains(new XSConfiguration()));
     }
 
+    @Test
     public void testSchemaLocationResolver() {
-        assertEquals(
+        Assert.assertEquals(
                 GMLConfiguration.class.getResource("feature.xsd").toString(),
                 ((XSDSchemaLocationResolver) new SchemaLocationResolver(configuration.getXSD()))
                         .resolveSchemaLocation(null, GML.NAMESPACE, "feature.xsd"));
-        assertEquals(
+        Assert.assertEquals(
                 GMLConfiguration.class.getResource("geometry.xsd").toString(),
                 ((XSDSchemaLocationResolver) new SchemaLocationResolver(configuration.getXSD()))
                         .resolveSchemaLocation(null, GML.NAMESPACE, "geometry.xsd"));
     }
 
+    @Test
     public void testContext() {
         MutablePicoContainer container = new DefaultPicoContainer();
         configuration.configureContext(container);
 
-        assertNotNull(container.getComponentInstanceOfType(FeatureTypeCache.class));
-        assertNotNull(container.getComponentAdapter(CoordinateSequenceFactory.class));
-        assertNotNull(container.getComponentAdapterOfType(GeometryFactory.class));
+        Assert.assertNotNull(container.getComponentInstanceOfType(FeatureTypeCache.class));
+        Assert.assertNotNull(container.getComponentAdapter(CoordinateSequenceFactory.class));
+        Assert.assertNotNull(container.getComponentAdapterOfType(GeometryFactory.class));
     }
 }

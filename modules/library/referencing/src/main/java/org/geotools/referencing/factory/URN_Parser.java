@@ -70,8 +70,7 @@ final class URN_Parser extends URI_Parser {
     public static URN_Parser buildParser(final String urn) throws NoSuchAuthorityCodeException {
         final String code = urn.trim();
         String type = urn; // To be really assigned later.
-        for (int i = 0; i < URN_BASES.length; i++) {
-            final String urnBase = URN_BASES[i];
+        for (final String urnBase : URN_BASES) {
             final int typeStart = urnBase.length();
             if (code.regionMatches(true, 0, urnBase, 0, typeStart)) {
                 final int typeEnd = code.indexOf(URN_SEPARATOR, typeStart);

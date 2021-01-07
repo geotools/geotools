@@ -47,8 +47,7 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
         final FeatureTypeInfo featureTypeInfo = strategy.getFeatureTypeInfo(remoteTypeName);
         final CoordinateReferenceSystem defaultCrs = featureTypeInfo.getCRS();
 
-        InputStream responseStream = httpResponse.getResponseStream();
-        try {
+        try (InputStream responseStream = httpResponse.getResponseStream()) {
             String prefix = remoteTypeName.getLocalPart();
             if (prefix.length() < 3) {
                 /*
@@ -74,7 +73,6 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
                 tmpSchemaFile.delete();
             }
         } finally {
-            responseStream.close();
             httpResponse.dispose();
         }
     }

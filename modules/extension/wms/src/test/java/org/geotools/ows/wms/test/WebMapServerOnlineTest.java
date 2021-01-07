@@ -34,6 +34,9 @@ import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.response.GetMapResponse;
 import org.geotools.referencing.CRS;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -41,7 +44,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
  */
-public class WebMapServerOnlineTest extends ServerTestCase {
+public class WebMapServerOnlineTest {
     URL serverURL;
     URL serverWithSpacedLayerNamesURL;
     URL brokenURL;
@@ -50,8 +53,8 @@ public class WebMapServerOnlineTest extends ServerTestCase {
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         // serverURL = new
         // URL("http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?CONFIG=main&SERVICE=WMS&?VERSION=1.3.0&REQUEST=GetCapabilities");
         serverURL =
@@ -73,18 +76,21 @@ public class WebMapServerOnlineTest extends ServerTestCase {
     /*
      * Class under test for void WebMapServer(URL)
      */
+    @Test
     public void testWebMapServerURL() throws Exception {
         WebMapServer wms = new WebMapServer(serverURL);
 
-        assertNotNull(wms.getCapabilities());
+        Assert.assertNotNull(wms.getCapabilities());
     }
 
+    @Test
     public void testGetCapabilities() throws Exception {
         WebMapServer wms = new WebMapServer(serverURL);
 
-        assertNotNull(wms.getCapabilities());
+        Assert.assertNotNull(wms.getCapabilities());
     }
 
+    @Test
     public void testIssueGetMapRequest() throws Exception {
         WebMapServer wms = new WebMapServer(serverURL);
 
@@ -134,13 +140,14 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         // System.out.println(request.getFinalURL());
         GetMapResponse response = wms.issueRequest(request);
 
-        assertEquals(response.getContentType(), format);
+        Assert.assertEquals(response.getContentType(), format);
         // System.out.println("Content Type: " + response.getContentType());
 
         BufferedImage image = ImageIO.read(response.getInputStream());
-        assertEquals(image.getHeight(), 400);
+        Assert.assertEquals(image.getHeight(), 400);
     }
 
+    @Test
     public void testIssueGetMapRequestWithSpacedLayerNames() throws Exception {
         WebMapServer wms = new WebMapServer(serverWithSpacedLayerNamesURL);
 
@@ -161,7 +168,7 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         }
 
         // for the test to make sense at least one layer name must contain spaces
-        assertTrue(atLeastOneLayerNameContainsSpaces);
+        Assert.assertTrue(atLeastOneLayerNameContainsSpaces);
 
         Set<?> srss = WMSUtils.getSRSs(capabilities);
         request.setSRS((String) srss.iterator().next());
@@ -178,9 +185,10 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         GetMapResponse response = wms.issueRequest(request);
 
         BufferedImage image = ImageIO.read(response.getInputStream());
-        assertNotNull(image);
+        Assert.assertNotNull(image);
     }
 
+    @Test
     public void testIssueGetFeatureInfoRequest() throws Exception {
         /* TODO fix this
 
@@ -242,6 +250,7 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         */
     }
 
+    @Test
     public void testGetEnvelope() throws Exception {
         WebMapServer wms = new WebMapServer(featureURL);
 
@@ -253,19 +262,19 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
 
         //        minx="-172.367" miny="35.6673" maxx="-11.5624" maxy="83.8293" />
-        assertEquals(envelope.getMinimum(0), -172.367, 0.0);
-        assertEquals(envelope.getMinimum(1), 35.6673, 0.0);
-        assertEquals(envelope.getMaximum(0), -11.5624, 0.0);
-        assertEquals(envelope.getMaximum(1), 83.8293, 0.0);
+        Assert.assertEquals(envelope.getMinimum(0), -172.367, 0.0);
+        Assert.assertEquals(envelope.getMinimum(1), 35.6673, 0.0);
+        Assert.assertEquals(envelope.getMaximum(0), -11.5624, 0.0);
+        Assert.assertEquals(envelope.getMaximum(1), 83.8293, 0.0);
 
         crs = CRS.decode("EPSG:42304");
         envelope = wms.getEnvelope(layer, crs);
 
         //        minx="-2.2e+06" miny="-712631" maxx="3.0728e+06" maxy="3.84e+06" />
-        assertEquals(envelope.getMinimum(0), -2.2e+06, 0.0);
-        assertEquals(envelope.getMinimum(1), -712631, 0.0);
-        assertEquals(envelope.getMaximum(0), 3.0728e+06, 0.0);
-        assertEquals(envelope.getMaximum(1), 3.84e+06, 0.0);
+        Assert.assertEquals(envelope.getMinimum(0), -2.2e+06, 0.0);
+        Assert.assertEquals(envelope.getMinimum(1), -712631, 0.0);
+        Assert.assertEquals(envelope.getMaximum(0), 3.0728e+06, 0.0);
+        Assert.assertEquals(envelope.getMaximum(1), 3.84e+06, 0.0);
 
         layer = caps.getLayerList().get(2);
         crs = CRS.decode("EPSG:4326");
@@ -273,12 +282,13 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         envelope = wms.getEnvelope(layer, crs);
 
         //        minx="-178.838" miny="31.8844" maxx="179.94" maxy="89.8254" />
-        assertEquals(envelope.getMinimum(0), -178.838, 0.0);
-        assertEquals(envelope.getMinimum(1), 31.8844, 0.0);
-        assertEquals(envelope.getMaximum(0), 179.94, 0.0);
-        assertEquals(envelope.getMaximum(1), 89.8254, 0.0);
+        Assert.assertEquals(envelope.getMinimum(0), -178.838, 0.0);
+        Assert.assertEquals(envelope.getMinimum(1), 31.8844, 0.0);
+        Assert.assertEquals(envelope.getMaximum(0), 179.94, 0.0);
+        Assert.assertEquals(envelope.getMaximum(1), 89.8254, 0.0);
     }
 
+    @Test
     public void testServiceExceptions() throws Exception {
         WebMapServer wms = new WebMapServer(featureURL);
         GetMapRequest request = wms.createGetMapRequest();
@@ -286,7 +296,7 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         try {
             // System.out.println(request.getFinalURL());
             GetMapResponse response = wms.issueRequest(request);
-            assertTrue(false);
+            Assert.fail();
         } catch (ServiceException e) {
             // e.printStackTrace();
         }

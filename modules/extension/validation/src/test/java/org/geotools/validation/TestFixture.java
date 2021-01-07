@@ -80,8 +80,8 @@ public class TestFixture {
                                 return name.toUpperCase().endsWith(".SHP");
                             }
                         });
-        for (int i = 0; i < shapefiles.length; i++) {
-            File shapefile = new File(directory, shapefiles[i]);
+        for (String s : shapefiles) {
+            File shapefile = new File(directory, s);
             ShapefileDataStore dataStore = new ShapefileDataStore(shapefile.toURI().toURL());
             String dataStoreId = dataStore.getTypeNames()[0].toUpperCase();
             String typeName = dataStore.getTypeNames()[0];

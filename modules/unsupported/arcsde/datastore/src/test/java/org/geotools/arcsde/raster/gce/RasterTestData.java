@@ -1216,8 +1216,7 @@ public class RasterTestData {
 
     public abstract static class PixelSampler {
 
-        private static Map<RasterCellType, PixelSampler> byPixelTypeSamplers =
-                new HashMap<RasterCellType, PixelSampler>();
+        private static Map<RasterCellType, PixelSampler> byPixelTypeSamplers = new HashMap<>();
 
         static {
             byPixelTypeSamplers.put(TYPE_1BIT, new SamplerType1Bit());
@@ -1312,7 +1311,7 @@ public class RasterTestData {
                     int imgWidth, int imgHeight, final int bandN, final int numBands) {
                 final int numBytes = (int) Math.ceil(imgWidth * imgHeight / 2D);
                 final byte[] imgBandData = new byte[numBytes];
-                LinkedList<Integer> values = new LinkedList<Integer>();
+                LinkedList<Integer> values = new LinkedList<>();
                 for (int val = 0; val < 16; val++) {
                     values.add(val);
                 }

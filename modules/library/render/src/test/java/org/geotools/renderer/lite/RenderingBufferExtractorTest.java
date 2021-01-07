@@ -155,7 +155,7 @@ public class RenderingBufferExtractorTest {
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(r);
         assertEquals(12, rbe.getBuffer());
-        assertTrue(!rbe.isEstimateAccurate());
+        assertFalse(rbe.isEstimateAccurate());
     }
 
     @Test

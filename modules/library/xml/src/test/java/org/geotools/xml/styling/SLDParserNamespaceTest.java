@@ -19,13 +19,14 @@ package org.geotools.xml.styling;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
@@ -37,7 +38,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Niels Charlier
  */
-public class SLDParserNamespaceTest extends TestCase {
+public class SLDParserNamespaceTest {
 
     public static String SLD =
             "<StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" version=\"1.0.0\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\" >"
@@ -69,33 +70,34 @@ public class SLDParserNamespaceTest extends TestCase {
 
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
 
+    @Test
     public void testNamespace() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input());
         Style[] styles = parser.readXML();
-        assertEquals(styles.length, 1);
+        Assert.assertEquals(styles.length, 1);
         Style style = styles[0];
         List<FeatureTypeStyle> ftstyles = style.featureTypeStyles();
-        assertEquals(ftstyles.size(), 1);
+        Assert.assertEquals(ftstyles.size(), 1);
         FeatureTypeStyle ftstyle = ftstyles.get(0);
         List<Rule> rules = ftstyle.rules();
-        assertEquals(rules.size(), 1);
+        Assert.assertEquals(rules.size(), 1);
         Rule rule = rules.get(0);
         Filter filter = rule.getFilter();
         assert (filter instanceof PropertyIsEqualTo);
         Expression expr = ((PropertyIsEqualTo) filter).getExpression1();
         assert (expr instanceof PropertyName);
         NamespaceSupport ns = ((PropertyName) expr).getNamespaceContext();
-        assertEquals(ns.getURI("xlink"), "http://www.w3.org/1999/xlink");
-        assertEquals(ns.getURI("gml"), "http://www.opengis.net/gml");
-        assertEquals(ns.getURI("gsml"), "urn:cgi:xmlns:CGI:GeoSciML:2.0");
+        Assert.assertEquals(ns.getURI("xlink"), "http://www.w3.org/1999/xlink");
+        Assert.assertEquals(ns.getURI("gml"), "http://www.opengis.net/gml");
+        Assert.assertEquals(ns.getURI("gsml"), "urn:cgi:xmlns:CGI:GeoSciML:2.0");
 
         Symbolizer s = rule.symbolizers().get(0);
         expr = s.getGeometry();
         assert (expr instanceof PropertyName);
         ns = ((PropertyName) expr).getNamespaceContext();
-        assertEquals(ns.getURI("xlink"), null);
-        assertEquals(ns.getURI("gml"), "http://www.opengis.net/gml");
-        assertEquals(ns.getURI("gsml"), "urn:cgi:xmlns:CGI:GeoSciML:2.0");
+        Assert.assertNull(ns.getURI("xlink"));
+        Assert.assertEquals(ns.getURI("gml"), "http://www.opengis.net/gml");
+        Assert.assertEquals(ns.getURI("gsml"), "urn:cgi:xmlns:CGI:GeoSciML:2.0");
     }
 
     InputStream input() {

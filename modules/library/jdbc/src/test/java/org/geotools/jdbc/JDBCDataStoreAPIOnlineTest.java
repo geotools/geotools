@@ -1285,12 +1285,12 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     void assertContains(SimpleFeature[] array, SimpleFeature expected) {
-        assertFalse(array == null);
+        assertNotNull(array);
         assertFalse(array.length == 0);
         assertNotNull(expected);
 
-        for (int i = 0; i < array.length; i++) {
-            if (id(array[i].getID(), array[i]).equals(expected.getID())) {
+        for (SimpleFeature simpleFeature : array) {
+            if (id(simpleFeature.getID(), simpleFeature).equals(expected.getID())) {
                 return;
             }
         }
@@ -1315,8 +1315,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(expected)) {
+        for (Object o : array) {
+            if (o.equals(expected)) {
                 return true;
             }
         }
@@ -1352,10 +1352,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
     protected SimpleFeature feature(String typeName, String fid)
             throws NoSuchElementException, IOException, IllegalAttributeException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader(typeName);
-        SimpleFeature f;
 
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader(typeName)) {
+            SimpleFeature f;
             while (reader.hasNext()) {
                 f = reader.next();
 
@@ -1363,8 +1362,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                     return f;
                 }
             }
-        } finally {
-            reader.close();
         }
 
         return null;
@@ -1448,8 +1445,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         SimpleFeatureType type = expected.getFeatureType();
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].getID().equals(expected.getID())) {
+        for (SimpleFeature simpleFeature : array) {
+            if (simpleFeature.getID().equals(expected.getID())) {
                 return true;
             }
 
@@ -1533,13 +1530,13 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     void assertMatch(SimpleFeature[] array, SimpleFeature feature) {
-        assertTrue(array != null);
+        assertNotNull(array);
         assertTrue(array.length != 0);
 
         SimpleFeatureType schema = feature.getFeatureType();
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].getID().equals(feature.getID())) {
+        for (SimpleFeature simpleFeature : array) {
+            if (simpleFeature.getID().equals(feature.getID())) {
                 return;
             }
 

@@ -21,10 +21,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -53,7 +55,7 @@ public class ColorBrewer {
     public static final PaletteType QUALITATIVE = new PaletteType(false, true, "QUALITATIVE");
     String name = null;
     String description = null;
-    Hashtable<String, BrewerPalette> palettes = new Hashtable<>();
+    Map<String, BrewerPalette> palettes = new HashMap<>();
 
     /** Creates a new instance of ColorBrewer */
     public ColorBrewer() {}
@@ -116,8 +118,8 @@ public class ColorBrewer {
         List<BrewerPalette> palettes = new ArrayList<>();
         Object[] entry = this.palettes.keySet().toArray();
 
-        for (int i = 0; i < entry.length; i++) {
-            BrewerPalette pal = getPalette(entry[i].toString());
+        for (Object o : entry) {
+            BrewerPalette pal = getPalette(o.toString());
             boolean match = true;
 
             // filter by number of classes
@@ -143,8 +145,8 @@ public class ColorBrewer {
         List<BrewerPalette> palettes = new ArrayList<>();
         Object[] entry = this.palettes.keySet().toArray();
 
-        for (int i = 0; i < entry.length; i++) {
-            BrewerPalette pal = getPalette(entry[i].toString());
+        for (Object o : entry) {
+            BrewerPalette pal = getPalette(o.toString());
             boolean match = true;
 
             // filter by number of classes
@@ -223,8 +225,8 @@ public class ColorBrewer {
         Set<String> paletteSet = new HashSet<>();
 
         // generate the set of palette names
-        for (int i = 0; i < keys.length; i++) {
-            BrewerPalette thisPalette = palettes.get(keys[i]);
+        for (Object key : keys) {
+            BrewerPalette thisPalette = palettes.get(key);
             int numColors = thisPalette.getMaxColors();
 
             if ((numColors >= minClasses) && (numColors <= maxClasses)) {

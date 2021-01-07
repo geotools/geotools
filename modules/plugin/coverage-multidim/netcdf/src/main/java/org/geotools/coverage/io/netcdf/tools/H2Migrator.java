@@ -392,8 +392,7 @@ public class H2Migrator {
         }
         final DataStore sourceDataStore =
                 config.getDatastoreSpi().createDataStore(config.getParams());
-        Transaction t = new DefaultTransaction();
-        try {
+        try (Transaction t = new DefaultTransaction()) {
             final Set<String> typeNames =
                     new HashSet<>(Arrays.asList(sourceDataStore.getTypeNames()));
             // shuffle coverages to avoid all threads accumulating on the same coverage
@@ -418,7 +417,6 @@ public class H2Migrator {
             netcdfWriter.addLines(path);
             h2Writer.addLines(collectH2Files(config));
         } finally {
-            t.close();
             if (sourceDataStore != null) {
                 sourceDataStore.dispose();
             }

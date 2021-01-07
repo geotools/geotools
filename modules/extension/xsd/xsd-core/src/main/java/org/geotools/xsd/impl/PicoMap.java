@@ -223,8 +223,8 @@ public class PicoMap implements Map, MutablePicoContainer {
     public Collection getComponentAdapters() {
         List adapters = new ArrayList();
 
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
             adapters.add(getComponentAdapter(entry.getKey()));
         }
 
@@ -238,8 +238,8 @@ public class PicoMap implements Map, MutablePicoContainer {
 
         List adapters = new ArrayList();
 
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
 
             if (entry.getValue() instanceof Class) {
                 Class clazz = (Class) entry.getValue();
@@ -281,8 +281,8 @@ public class PicoMap implements Map, MutablePicoContainer {
         }
 
         // first look for instance
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object value : entrySet()) {
+            Entry entry = (Entry) value;
 
             if (entry.getValue() instanceof Class) {
                 continue;
@@ -293,8 +293,8 @@ public class PicoMap implements Map, MutablePicoContainer {
             }
         }
 
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
 
             if (entry.getValue() instanceof Class) {
                 Class clazz = (Class) entry.getValue();
@@ -310,8 +310,8 @@ public class PicoMap implements Map, MutablePicoContainer {
     public List getComponentInstances() {
         ArrayList instances = new ArrayList();
 
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
             instances.add(getComponentInstance(entry.getKey()));
         }
 
@@ -324,8 +324,8 @@ public class PicoMap implements Map, MutablePicoContainer {
         }
 
         ArrayList instances = new ArrayList();
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
 
             if (entry.getValue() instanceof Class) {
                 Class clazz = (Class) entry.getValue();

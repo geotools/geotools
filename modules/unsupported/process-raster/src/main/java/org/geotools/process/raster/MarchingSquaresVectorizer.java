@@ -233,7 +233,7 @@ public final class MarchingSquaresVectorizer {
         private void isFullyInvalid(
                 List<Polygon> geometriesList, RenderedImage inputRI, RenderingHints localHints)
                 throws Exception {
-            if (geometriesList.size() == 0) {
+            if (geometriesList.isEmpty()) {
                 // Must be a fully "invalid-Pixels" image, or an error occurred
                 ImageWorker w = new ImageWorker(inputRI);
 
@@ -584,7 +584,7 @@ public final class MarchingSquaresVectorizer {
      * any valid points (isAllZeros), then return an empty GeometryCollection
      */
     private boolean noGeometries(final List<Polygon> geometriesList, final boolean isAllZeros) {
-        if (geometriesList.size() == 0) {
+        if (geometriesList.isEmpty()) {
             if (isAllZeros) {
                 footprint = EMPTY_GEOMETRY;
                 simplifiedFootprint = EMPTY_GEOMETRY;
@@ -603,10 +603,9 @@ public final class MarchingSquaresVectorizer {
      * aren't) by also removing holes.
      */
     private List<Polygon> validateGeometries(List<Polygon> geometriesList) {
-        if (forceValid && (geometriesList.size() > 0)) {
+        if (forceValid && (!geometriesList.isEmpty())) {
             List<Polygon> validated = new ArrayList<>(geometriesList.size());
-            for (int i = 0; i < geometriesList.size(); i++) {
-                Polygon polygon = geometriesList.get(i);
+            for (Polygon polygon : geometriesList) {
                 if (!polygon.isValid()) {
                     List<Polygon> validPolygons = JTS.makeValid(polygon, true);
                     validated.addAll(validPolygons);

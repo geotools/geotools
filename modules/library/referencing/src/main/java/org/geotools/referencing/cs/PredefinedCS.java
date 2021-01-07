@@ -78,8 +78,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
     public int compare(final CoordinateSystem object1, final CoordinateSystem object2) {
         final Class<? extends CoordinateSystem> type1 = object1.getClass();
         final Class<? extends CoordinateSystem> type2 = object2.getClass();
-        for (int i = 0; i < types.length; i++) {
-            final Class<?> type = types[i];
+        for (final Class<?> type : types) {
             final boolean a1 = type.isAssignableFrom(type1);
             final boolean a2 = type.isAssignableFrom(type2);
             if (a1) return a2 ? 0 : -1;

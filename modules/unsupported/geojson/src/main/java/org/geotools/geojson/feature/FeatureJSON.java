@@ -654,8 +654,7 @@ public class FeatureJSON {
                     new FeatureEncoder((SimpleFeatureType) features.getSchema());
 
             out.write("[");
-            FeatureIterator i = features.features();
-            try {
+            try (FeatureIterator i = features.features()) {
                 if (i.hasNext()) {
                     SimpleFeature f = (SimpleFeature) i.next();
                     out.write(featureEncoder.toJSONString(f));
@@ -665,10 +664,6 @@ public class FeatureJSON {
                         f = (SimpleFeature) i.next();
                         out.write(featureEncoder.toJSONString(f));
                     }
-                }
-            } finally {
-                if (i != null) {
-                    i.close();
                 }
             }
             out.write("]");

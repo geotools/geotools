@@ -23,7 +23,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.net.URL;
 import javax.imageio.ImageIO;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -45,8 +44,9 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.operation.MathTransform;
 
-public class StyledShapePainterTest extends TestCase {
+public class StyledShapePainterTest {
 
+    @Test
     public void testGraphicLegendNullLegend() throws Exception {
         StyledShapePainter painter = new StyledShapePainter();
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
@@ -57,9 +57,10 @@ public class StyledShapePainterTest extends TestCase {
         LiteShape2 pointShape = new LiteShape2(point, transform, decimator, false);
         try {
             painter.paint(g2, pointShape, (GraphicLegend) null, 1, false);
-            fail();
+            Assert.fail();
         } catch (NullPointerException e) {
-            assertEquals("ShapePainter has been asked to paint a null legend!!", e.getMessage());
+            Assert.assertEquals(
+                    "ShapePainter has been asked to paint a null legend!!", e.getMessage());
         }
     }
 
@@ -129,6 +130,7 @@ public class StyledShapePainterTest extends TestCase {
         Assert.assertTrue(imagesIdentical(paintedImage, testImage));
     }
 
+    @Test
     public void testGraphicLegendRotation() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
@@ -197,6 +199,7 @@ public class StyledShapePainterTest extends TestCase {
         return true;
     }
 
+    @Test
     public void testGraphicLegend2() throws Exception {
 
         StyledShapePainter painter = new StyledShapePainter();
@@ -218,32 +221,32 @@ public class StyledShapePainterTest extends TestCase {
         LiteShape2 pointShape = new LiteShape2(point, transform, decimator, false);
         painter.paint(g2, pointShape, legend, 1, false);
         // check it is correctly painted
-        assertEquals(0, image.getRaster().getSample(0, 0, 0));
-        assertEquals(64, image.getRaster().getSample(0, 0, 1));
-        assertEquals(128, image.getRaster().getSample(0, 0, 2));
+        Assert.assertEquals(0, image.getRaster().getSample(0, 0, 0));
+        Assert.assertEquals(64, image.getRaster().getSample(0, 0, 1));
+        Assert.assertEquals(128, image.getRaster().getSample(0, 0, 2));
 
-        assertEquals(255, image.getRaster().getSample(30, 30, 0));
-        assertEquals(255, image.getRaster().getSample(30, 30, 1));
-        assertEquals(255, image.getRaster().getSample(30, 30, 2));
+        Assert.assertEquals(255, image.getRaster().getSample(30, 30, 0));
+        Assert.assertEquals(255, image.getRaster().getSample(30, 30, 1));
+        Assert.assertEquals(255, image.getRaster().getSample(30, 30, 2));
 
-        assertEquals(0, image.getRaster().getSample(90, 30, 0));
-        assertEquals(0, image.getRaster().getSample(90, 30, 1));
-        assertEquals(0, image.getRaster().getSample(90, 30, 2));
+        Assert.assertEquals(0, image.getRaster().getSample(90, 30, 0));
+        Assert.assertEquals(0, image.getRaster().getSample(90, 30, 1));
+        Assert.assertEquals(0, image.getRaster().getSample(90, 30, 2));
 
         // check with a scaling factor
         image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) image.getGraphics();
         painter.paint(g2, pointShape, legend, 2, false);
-        assertEquals(255, image.getRaster().getSample(0, 0, 0));
-        assertEquals(255, image.getRaster().getSample(0, 0, 1));
-        assertEquals(192, image.getRaster().getSample(0, 0, 2));
+        Assert.assertEquals(255, image.getRaster().getSample(0, 0, 0));
+        Assert.assertEquals(255, image.getRaster().getSample(0, 0, 1));
+        Assert.assertEquals(192, image.getRaster().getSample(0, 0, 2));
 
-        assertEquals(0, image.getRaster().getSample(30, 30, 0));
-        assertEquals(0, image.getRaster().getSample(30, 30, 1));
-        assertEquals(0, image.getRaster().getSample(30, 30, 2));
+        Assert.assertEquals(0, image.getRaster().getSample(30, 30, 0));
+        Assert.assertEquals(0, image.getRaster().getSample(30, 30, 1));
+        Assert.assertEquals(0, image.getRaster().getSample(30, 30, 2));
 
-        assertEquals(0, image.getRaster().getSample(90, 30, 0));
-        assertEquals(0, image.getRaster().getSample(90, 30, 1));
-        assertEquals(0, image.getRaster().getSample(90, 30, 2));
+        Assert.assertEquals(0, image.getRaster().getSample(90, 30, 0));
+        Assert.assertEquals(0, image.getRaster().getSample(90, 30, 1));
+        Assert.assertEquals(0, image.getRaster().getSample(90, 30, 2));
     }
 }

@@ -50,11 +50,8 @@ public class ListStoredQueriesResponse extends WFSResponse {
             final byte[] rawResponse;
             {
                 ByteArrayOutputStream buff = new ByteArrayOutputStream();
-                InputStream inputStream = response.getResponseStream();
-                try {
+                try (InputStream inputStream = response.getResponseStream()) {
                     IOUtils.copy(inputStream, buff);
-                } finally {
-                    inputStream.close();
                 }
                 rawResponse = buff.toByteArray();
             }

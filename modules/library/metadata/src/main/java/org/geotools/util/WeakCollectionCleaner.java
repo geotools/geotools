@@ -81,13 +81,11 @@ public final class WeakCollectionCleaner extends Thread {
                 //       subclasses. This is what WeakHashSet.Entry and WeakHashMap.Entry do.
             } catch (InterruptedException exception) {
                 // Somebody doesn't want to lets us sleep... Go back to work.
-            } catch (Exception exception) {
+            } catch (Exception | AssertionError exception) {
                 Logging.unexpectedException(WeakCollectionCleaner.class, "remove", exception);
-            } catch (AssertionError exception) {
-                Logging.unexpectedException(WeakCollectionCleaner.class, "remove", exception);
-                // Do not kill the thread on assertion failure, in order to
-                // keep the same behaviour as if assertions were turned off.
-            }
+            } // Do not kill the thread on assertion failure, in order to
+            // keep the same behaviour as if assertions were turned off.
+
         }
         Logging.getLogger(WeakCollectionCleaner.class).info("Weak collection cleaner stopped");
     }

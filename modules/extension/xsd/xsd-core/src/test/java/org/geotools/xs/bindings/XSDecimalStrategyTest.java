@@ -17,7 +17,6 @@
 package org.geotools.xs.bindings;
 
 import java.math.BigDecimal;
-import junit.framework.TestCase;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDMaxExclusiveFacet;
 import org.eclipse.xsd.XSDMaxInclusiveFacet;
@@ -35,11 +34,14 @@ import org.eclipse.xsd.impl.XSDTotalDigitsFacetImpl;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.geotools.xsd.impl.ElementImpl;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class XSDecimalStrategyTest extends TestCase {
+public class XSDecimalStrategyTest {
     /*
      * Test method for 'org.geotools.xml.strategies.xs.XSDecimalStrategy.parse(Element, Node[], Object)'
      */
+    @Test
     public void testParse() throws Exception {
         // Valid values
         validateValues("50", 5, 0, 0, 100, 100);
@@ -113,7 +115,7 @@ public class XSDecimalStrategyTest extends TestCase {
 
         BigDecimal decimal = (BigDecimal) strat.parse(element, element.getText().trim());
 
-        assertNotNull(decimal);
+        Assert.assertNotNull(decimal);
     }
 
     private XSDElementDeclaration makeDeclaration(

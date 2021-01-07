@@ -16,6 +16,10 @@
  */
 package org.geotools.validation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataTestCase;
@@ -25,9 +29,12 @@ import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.validation.spatial.LineMustBeASinglePartValidation;
 import org.geotools.validation.spatial.LineNoSelfIntersectValidation;
 import org.geotools.validation.spatial.LineNoSelfOverlappingValidation;
 import org.geotools.validation.spatial.LinesNotIntersectValidation;
+import org.junit.After;
+import org.junit.Test;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -57,38 +64,22 @@ public class ValidationPlugInTester extends DataTestCase {
     MemoryDataStore store;
     ValidationProcessor processor;
 
-    /**
-     * ValidationPlugInTester constructor.
-     *
-     * <p>Description
-     */
-    public ValidationPlugInTester(String arg0) {
-        super(arg0);
-    }
-
-    /**
-     * Construct data store for use.
-     *
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    /** Construct data store for use. */
+    public void init() throws Exception {
+        super.init();
         store = new MemoryDataStore();
         store.addFeatures(roadFeatures);
         store.addFeatures(riverFeatures);
         processor = new ValidationProcessor();
     }
 
-    /**
-     * Override tearDown.
-     *
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         store = null;
         super.tearDown();
     }
 
+    @Test
     public void testLineNoSelfIntersectFV_CorrectData() {
         // the visitor
         RoadNetworkValidationResults roadValidationResults = new RoadNetworkValidationResults();
@@ -101,14 +92,14 @@ public class ValidationPlugInTester extends DataTestCase {
         try {
             processor.addValidation(valid);
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
 
         try {
             processor.runFeatureTests(
                     "road", DataUtilities.collection(this.roadFeatures), roadValidationResults);
         } catch (Exception e1) {
-            assertTrue(false);
+            fail();
         }
 
         // System.out.println("NoLineSelfIntersect - correct");
@@ -116,22 +107,21 @@ public class ValidationPlugInTester extends DataTestCase {
         for (int i = 0; i < messages.length; i++) {
             // System.out.println(messages[i]);
         }
-        assertTrue(roadValidationResults.getFailedMessages().length == 0);
+        assertEquals(0, roadValidationResults.getFailedMessages().length);
     }
 
+    @Test
     public void testLineNoSelfIntersectFV_IncorrectData() {
         // the visitor
         RoadNetworkValidationResults roadValidationResults = new RoadNetworkValidationResults();
 
-        /*LineNoSelfIntersectValidation selfIntersectValidatorRoads
-        = new LineNoSelfIntersectValidation("RoadSelfIntersect",
-        		"Tests to see if a road intersects itself, which is bad!",
-        		new String[] {"road"});*/
+        LineNoSelfIntersectValidation selfIntersectValidatorRoads =
+                new LineNoSelfIntersectValidation();
 
         try {
-            // processor.addValidation(selfIntersectValidatorRoads);
+            processor.addValidation(selfIntersectValidatorRoads);
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
 
         // produce a broken road (newRoad)
@@ -156,7 +146,7 @@ public class ValidationPlugInTester extends DataTestCase {
                     DataUtilities.collection(new SimpleFeature[] {this.newRoad});
             processor.runFeatureTests("road", collection, roadValidationResults);
         } catch (Exception e1) {
-            assertTrue(false);
+            fail();
         }
 
         // System.out.println("NoLineSelfIntersect - incorrect");
@@ -167,6 +157,7 @@ public class ValidationPlugInTester extends DataTestCase {
         assertTrue(roadValidationResults.getFailedMessages().length > 0);
     }
 
+    @Test
     public void testLineNoSelfOverlapFV_CorrectData() {
         // the visitor
         RoadNetworkValidationResults roadValidationResults = new RoadNetworkValidationResults();
@@ -181,22 +172,23 @@ public class ValidationPlugInTester extends DataTestCase {
         try {
             processor.addValidation(selfOverlappingValidatorRoads);
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
 
         try {
             processor.runFeatureTests(
                     "id", DataUtilities.collection(this.roadFeatures), roadValidationResults);
         } catch (Exception e1) {
-            assertTrue(false);
+            fail();
         }
 
         // System.out.println("NoLineSelfOverlap - correct");
         String[] messages = roadValidationResults.getFailedMessages();
         for (int i = 0; i < messages.length; i++) // System.out.println(messages[i]);
-        assertTrue(roadValidationResults.getFailedMessages().length == 0);
+        assertEquals(0, roadValidationResults.getFailedMessages().length);
     }
 
+    @Test
     public void testLineNoSelfOverlapFV_IncorrectData() {
         // the visitor
         RoadNetworkValidationResults roadValidationResults = new RoadNetworkValidationResults();
@@ -206,12 +198,12 @@ public class ValidationPlugInTester extends DataTestCase {
         selfOverlappingValidatorRoads.setName("RoadSelfIntersect");
         selfOverlappingValidatorRoads.setDescription(
                 "Tests to see if a road intersects itself, which is bad!");
-        selfOverlappingValidatorRoads.setTypeRef("road");
+        selfOverlappingValidatorRoads.setTypeRef("datastoreId:road");
 
         try {
             processor.addValidation(selfOverlappingValidatorRoads);
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
 
         // produce a broken road (newRoad)
@@ -234,7 +226,7 @@ public class ValidationPlugInTester extends DataTestCase {
                     DataUtilities.collection(new SimpleFeature[] {this.newRoad}),
                     roadValidationResults);
         } catch (Exception e1) {
-            assertTrue(false);
+            fail();
         }
 
         // System.out.println("NoLineSelfOverlap - incorrect");
@@ -245,6 +237,7 @@ public class ValidationPlugInTester extends DataTestCase {
         assertTrue(roadValidationResults.getFailedMessages().length > 0);
     }
 
+    @Test
     public void testLineIsSingleSegmentFV_CorrectData() {
         // the visitor
         RoadNetworkValidationResults roadValidationResults = new RoadNetworkValidationResults();
@@ -266,29 +259,27 @@ public class ValidationPlugInTester extends DataTestCase {
                     DataUtilities.collection(new SimpleFeature[] {this.newRoad}),
                     roadValidationResults);
         } catch (Exception e1) {
-            assertTrue(false);
+            fail();
         }
 
         // System.out.println("LineIsSingleSegment - correct");
         String[] messages = roadValidationResults.getFailedMessages();
         for (int i = 0; i < messages.length; i++) // System.out.println(messages[i]);
-        assertTrue(roadValidationResults.getFailedMessages().length == 0);
+        assertEquals(0, roadValidationResults.getFailedMessages().length);
     }
 
+    @Test
     public void testLineIsSingleSegmentFV_IncorrectData() {
         // the visitor
         RoadNetworkValidationResults roadValidationResults = new RoadNetworkValidationResults();
-        /*
-        LineMustBeASinglePartValidation singleSegmentLineValidatorRoads
-        			= new LineMustBeASinglePartValidation("RoadSelfIntersect",
-        					"Tests to see if a road intersects itself, which is bad!",
-        					new String[] {"road"});
+        LineMustBeASinglePartValidation singleSegmentLineValidatorRoads =
+                new LineMustBeASinglePartValidation();
 
         try {
-        	processor.addValidation(singleSegmentLineValidatorRoads);
+            processor.addValidation(singleSegmentLineValidatorRoads);
         } catch (Exception e) {
-        	assertTrue(false);
-        }*/
+            fail();
+        }
 
         try {
             processor.runFeatureTests(
@@ -296,7 +287,7 @@ public class ValidationPlugInTester extends DataTestCase {
                     DataUtilities.collection(this.roadFeatures),
                     roadValidationResults);
         } catch (Exception e1) {
-            assertTrue(false);
+            fail();
         }
 
         // System.out.println("LineIsSingleSegment - incorrect");
@@ -307,7 +298,8 @@ public class ValidationPlugInTester extends DataTestCase {
         assertTrue(roadValidationResults.getFailedMessages().length > 0);
     }
 
-    public void testLinesIntersectIV_CorrectData() {
+    @Test
+    public void testLinesIntersectIV_CorrectData() throws Exception {
         // the visitor
         RoadNetworkValidationResults roadValidationResults = new RoadNetworkValidationResults();
 
@@ -322,7 +314,7 @@ public class ValidationPlugInTester extends DataTestCase {
         try {
             processor.addValidation(noIntersectingLinesValidatorAll);
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
 
         //		Feature[] roads = new Feature[2];
@@ -344,25 +336,18 @@ public class ValidationPlugInTester extends DataTestCase {
         //		store.addFeatures( riverFeatures );
 
         Map<String, SimpleFeatureSource> layers = new HashMap<>();
-        try {
-            layers.put("dataStoreId:road", DataUtilities.source(new SimpleFeature[] {newRoad}));
-            layers.put("dataStoreId:river", DataUtilities.source(riverFeatures));
-        } catch (Exception e) {
-            assertTrue(false);
-        }
+        layers.put("dataStoreId:road", DataUtilities.source(new SimpleFeature[] {newRoad}));
+        layers.put("dataStoreId:river", DataUtilities.source(riverFeatures));
 
-        try {
-            processor.runIntegrityTests(null, layers, null, roadValidationResults);
-        } catch (Exception e1) {
-            assertTrue(false);
-        }
+        processor.runIntegrityTests(null, layers, null, roadValidationResults);
 
         // System.out.println("NoLinesIntersect - correct");
         String[] messages = roadValidationResults.getFailedMessages();
         for (int i = 0; i < messages.length; i++) // System.out.println(messages[i]);
-        assertTrue(roadValidationResults.getFailedMessages().length == 0);
+        assertEquals(0, roadValidationResults.getFailedMessages().length);
     }
 
+    @Test
     public void testLinesIntersectIV_IncorrectData() {
         // the visitor
         RoadNetworkValidationResults roadValidationResults = new RoadNetworkValidationResults();
@@ -378,7 +363,7 @@ public class ValidationPlugInTester extends DataTestCase {
         try {
             processor.addValidation(noIntersectingLinesValidatorAll);
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
 
         Map<String, SimpleFeatureSource> layers = new HashMap<>();
@@ -386,13 +371,13 @@ public class ValidationPlugInTester extends DataTestCase {
             layers.put("dataStoreId:road", store.getFeatureSource("road"));
             layers.put("dataStoreId:river", store.getFeatureSource("river"));
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
 
         try {
             processor.runIntegrityTests(null, layers, null, roadValidationResults);
         } catch (Exception e1) {
-            assertTrue(false);
+            fail();
         }
 
         // System.out.println("NoLinesIntersect - incorrect");

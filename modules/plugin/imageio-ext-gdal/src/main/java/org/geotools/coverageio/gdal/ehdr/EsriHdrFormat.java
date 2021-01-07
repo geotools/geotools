@@ -60,11 +60,7 @@ public final class EsriHdrFormat extends BaseGDALGridFormat implements Format {
     public EsriHdrReader getReader(Object source, Hints hints) {
         try {
             return new EsriHdrReader(source, hints);
-        } catch (MismatchedDimensionException e) {
-            final RuntimeException re = new RuntimeException();
-            re.initCause(e);
-            throw re;
-        } catch (DataSourceException e) {
+        } catch (MismatchedDimensionException | DataSourceException e) {
             final RuntimeException re = new RuntimeException();
             re.initCause(e);
             throw re;

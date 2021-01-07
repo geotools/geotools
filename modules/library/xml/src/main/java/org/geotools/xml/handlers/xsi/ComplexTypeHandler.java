@@ -464,8 +464,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
                     if (ct != null && ct.getAttributes() != null) {
                         Attribute[] it = ct.getAttributes();
 
-                        for (int i = 0; i < it.length; i++) {
-                            attr.add(it[i]);
+                        for (Attribute attribute : it) {
+                            attr.add(attribute);
                         }
                     }
 
@@ -773,8 +773,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
             if (children == null) {
                 return null;
             }
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(name);
+            for (ElementGrouping elementGrouping : children) {
+                Element t = elementGrouping.findChildElement(name);
                 if (t != null) { // found it
 
                     return t;
@@ -788,8 +788,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
             if (children == null) {
                 return null;
             }
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(localName, namespaceURI);
+            for (ElementGrouping elementGrouping : children) {
+                Element t = elementGrouping.findChildElement(localName, namespaceURI);
                 if (t != null) { // found it
 
                     return t;
@@ -842,15 +842,15 @@ public class ComplexTypeHandler extends XSIElementHandler {
                     ElementGrouping[] children = ((Choice) child11).getChildren();
                     List<Element> l = new LinkedList<>();
 
-                    for (int i = 0; i < children.length; i++) {
-                        Element[] t = getChildElements(children[i]);
+                    for (ElementGrouping grouping : children) {
+                        Element[] t = getChildElements(grouping);
 
                         if (t != null) {
                             l.addAll(Arrays.asList(t));
                         }
                     }
 
-                    return (l.size() > 0) ? l.toArray(new Element[l.size()]) : null;
+                    return (l.isEmpty()) ? null : l.toArray(new Element[l.size()]);
 
                 case ElementGrouping.ELEMENT:
                     return new Element[] {
@@ -866,8 +866,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
                     children = ((Sequence) child11).getChildren();
                     l = new LinkedList<>();
                     if (children != null) {
-                        for (int i = 0; i < children.length; i++) {
-                            Element[] t = getChildElements(children[i]);
+                        for (ElementGrouping elementGrouping : children) {
+                            Element[] t = getChildElements(elementGrouping);
 
                             if (t != null) {
                                 l.addAll(Arrays.asList(t));
@@ -875,7 +875,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                         }
                     }
 
-                    return (l.size() > 0) ? l.toArray(new Element[l.size()]) : null;
+                    return (l.isEmpty()) ? null : l.toArray(new Element[l.size()]);
             }
 
             return null;
@@ -1051,8 +1051,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                     ComplexType complex = (ComplexType) type;
                     Element[] children = complex.getChildElements();
                     boolean found = false;
-                    for (int i = 0; i < children.length; i++) {
-                        Element child = children[i];
+                    for (Element child : children) {
                         if (child.getType().canEncode(child, value, hints)) {
                             child.getType().encode(child, value, output, hints);
                             found = true;

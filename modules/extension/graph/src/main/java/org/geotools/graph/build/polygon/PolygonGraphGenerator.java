@@ -16,7 +16,6 @@
  */
 package org.geotools.graph.build.polygon;
 
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.GraphGenerator;
@@ -138,8 +137,8 @@ public class PolygonGraphGenerator implements GraphGenerator {
 
     protected Node find(Polygon polygon) {
         List close = index.query(polygon.getEnvelopeInternal());
-        for (Iterator itr = close.iterator(); itr.hasNext(); ) {
-            Node node = (Node) itr.next();
+        for (Object o : close) {
+            Node node = (Node) o;
             Polygon p = (Polygon) node.getObject();
 
             if (rel.equal(polygon, p)) {
@@ -154,8 +153,8 @@ public class PolygonGraphGenerator implements GraphGenerator {
         Polygon polygon = (Polygon) node.getObject();
         List close = index.query(polygon.getEnvelopeInternal());
 
-        for (Iterator itr = close.iterator(); itr.hasNext(); ) {
-            Node n = (Node) itr.next();
+        for (Object o : close) {
+            Node n = (Node) o;
             Polygon p = (Polygon) n.getObject();
 
             if (!rel.equal(polygon, p) && rel.related(polygon, p)) {

@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
@@ -30,19 +29,18 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class BasicGraphSerializerTest extends TestCase {
+public class BasicGraphSerializerTest {
 
     private GraphBuilder m_builder;
     private GraphBuilder m_rebuilder;
     private SerializedReaderWriter m_serializer;
 
-    public BasicGraphSerializerTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
         m_rebuilder = createRebuilder();
@@ -55,6 +53,7 @@ public class BasicGraphSerializerTest extends TestCase {
      * <br>
      * Expected: 1. before and after graph should have same structure.
      */
+    @Test
     public void test_0() throws Exception {
         final int nnodes = 100;
         GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -69,8 +68,8 @@ public class BasicGraphSerializerTest extends TestCase {
         Graph after = m_serializer.read();
 
         // ensure same number of nodes and edges
-        assertTrue(before.getNodes().size() == after.getNodes().size());
-        assertTrue(before.getEdges().size() == after.getEdges().size());
+        Assert.assertEquals(before.getNodes().size(), after.getNodes().size());
+        Assert.assertEquals(before.getEdges().size(), after.getEdges().size());
 
         // ensure same graph structure
         GraphVisitor visitor =
@@ -78,8 +77,8 @@ public class BasicGraphSerializerTest extends TestCase {
                     public int visit(Graphable component) {
                         Edge e = (Edge) component;
 
-                        assertTrue(e.getNodeA().getID() == e.getID());
-                        assertTrue(e.getNodeB().getID() == e.getID() + 1);
+                        Assert.assertEquals(e.getNodeA().getID(), e.getID());
+                        Assert.assertEquals(e.getNodeB().getID(), e.getID() + 1);
 
                         return (0);
                     }
@@ -92,14 +91,14 @@ public class BasicGraphSerializerTest extends TestCase {
                         Node n = (Node) component;
 
                         if (n.getDegree() == 1) {
-                            assertTrue(n.getID() == 0 || n.getID() == nnodes - 1);
+                            Assert.assertTrue(n.getID() == 0 || n.getID() == nnodes - 1);
                         } else {
-                            assertTrue(n.getDegree() == 2);
+                            Assert.assertEquals(2, n.getDegree());
 
                             Edge e0 = n.getEdges().get(0);
                             Edge e1 = n.getEdges().get(1);
 
-                            assertTrue(
+                            Assert.assertTrue(
                                     (e0.getID() == n.getID() - 1 && e1.getID() == n.getID())
                                             || (e1.getID() == n.getID() - 1
                                                     && e0.getID() == n.getID()));
@@ -116,6 +115,7 @@ public class BasicGraphSerializerTest extends TestCase {
      * <br>
      * Expected: 1. Same structure before and after.
      */
+    @Test
     public void test_1() {
         final int k = 5;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -133,8 +133,8 @@ public class BasicGraphSerializerTest extends TestCase {
             Graph after = m_serializer.read();
 
             // ensure same number of nodes and edges
-            assertTrue(before.getNodes().size() == after.getNodes().size());
-            assertTrue(before.getEdges().size() == after.getEdges().size());
+            Assert.assertEquals(before.getNodes().size(), after.getNodes().size());
+            Assert.assertEquals(before.getEdges().size(), after.getEdges().size());
 
             // ensure same structure
             GraphVisitor visitor =
@@ -143,32 +143,32 @@ public class BasicGraphSerializerTest extends TestCase {
                             Node n = (Node) component;
                             String id = (String) n.getObject();
 
-                            assertTrue(obj2node.get(id) != null);
+                            Assert.assertNotNull(obj2node.get(id));
 
                             StringTokenizer st = new StringTokenizer(id, ".");
 
                             if (st.countTokens() == 1) {
                                 // root
-                                assertTrue(n.getDegree() == 2);
+                                Assert.assertEquals(2, n.getDegree());
 
                                 Node n0 = n.getEdges().get(0).getOtherNode(n);
                                 Node n1 = n.getEdges().get(1).getOtherNode(n);
 
-                                assertTrue(
+                                Assert.assertTrue(
                                         n0.getObject().equals("0.0") && n1.getObject().equals("0.1")
                                                 || n0.getObject().equals("0.1")
                                                         && n1.getObject().equals("0.0"));
                             } else if (st.countTokens() == k + 1) {
                                 // leaf
-                                assertTrue(n.getDegree() == 1);
+                                Assert.assertEquals(1, n.getDegree());
 
                                 Node parent = n.getEdges().get(0).getOtherNode(n);
                                 String parentid = (String) parent.getObject();
 
-                                assertTrue(parentid.equals(id.substring(0, id.length() - 2)));
+                                Assert.assertEquals(parentid, id.substring(0, id.length() - 2));
                             } else {
                                 // internal
-                                assertTrue(n.getDegree() == 3);
+                                Assert.assertEquals(3, n.getDegree());
 
                                 String id0 =
                                         n.getEdges().get(0).getOtherNode(n).getObject().toString();
@@ -179,7 +179,7 @@ public class BasicGraphSerializerTest extends TestCase {
 
                                 String parentid = id.substring(0, id.length() - 2);
 
-                                assertTrue(
+                                Assert.assertTrue(
                                         id0.equals(parentid)
                                                         && id1.equals(id + ".0")
                                                         && id2.equals(id + ".1")
@@ -207,7 +207,7 @@ public class BasicGraphSerializerTest extends TestCase {
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            assertTrue(false);
+            Assert.fail();
         }
     }
 
@@ -217,6 +217,7 @@ public class BasicGraphSerializerTest extends TestCase {
      * <br>
      * Exepcted: 1. Same graph structure.
      */
+    @Test
     public void test_2() {
         final int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -228,8 +229,8 @@ public class BasicGraphSerializerTest extends TestCase {
         // disconnect end nodes
         builder().removeEdges(toRemove);
 
-        assertTrue(builder().getGraph().getNodes().size() == nnodes);
-        assertTrue(builder().getGraph().getEdges().size() == nnodes - 3);
+        Assert.assertEquals(builder().getGraph().getNodes().size(), nnodes);
+        Assert.assertEquals(builder().getGraph().getEdges().size(), nnodes - 3);
 
         try {
             File victim = File.createTempFile("graph", null);
@@ -242,18 +243,18 @@ public class BasicGraphSerializerTest extends TestCase {
             Graph after = m_serializer.read();
 
             // ensure same number of nodes and edges
-            assertTrue(before.getNodes().size() == after.getNodes().size());
-            assertTrue(before.getEdges().size() == after.getEdges().size());
+            Assert.assertEquals(before.getNodes().size(), after.getNodes().size());
+            Assert.assertEquals(before.getEdges().size(), after.getEdges().size());
 
             GraphVisitor visitor =
                     new GraphVisitor() {
                         public int visit(Graphable component) {
                             Node n = (Node) component;
                             if (n.getID() == 0 || n.getID() == nnodes - 1)
-                                assertTrue(n.getDegree() == 0);
+                                Assert.assertEquals(0, n.getDegree());
                             else if (n.getID() == 1 || n.getID() == nnodes - 2)
-                                assertTrue(n.getDegree() == 1);
-                            else assertTrue(n.getDegree() == 2);
+                                Assert.assertEquals(1, n.getDegree());
+                            else Assert.assertEquals(2, n.getDegree());
 
                             return (0);
                         }
@@ -261,7 +262,7 @@ public class BasicGraphSerializerTest extends TestCase {
             after.visitNodes(visitor);
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            assertTrue(false);
+            Assert.fail();
         }
     }
 

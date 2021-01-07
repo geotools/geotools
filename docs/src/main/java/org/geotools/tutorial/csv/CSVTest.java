@@ -147,9 +147,8 @@ public class CSVTest {
         Query query = new Query("locations");
 
         System.out.println("open feature reader");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                datastore.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                datastore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             int count = 0;
             while (reader.hasNext()) {
                 SimpleFeature feature = reader.next();
@@ -158,8 +157,6 @@ public class CSVTest {
             }
             System.out.println("close feature reader");
             System.out.println("read in " + count + " features");
-        } finally {
-            reader.close();
         }
         // example3 end
         System.out.println("\nexample3 end\n");
@@ -184,10 +181,8 @@ public class CSVTest {
         Filter filter = ff.id(selection);
         Query query = new Query("locations", filter);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(query, Transaction.AUTO_COMMIT);
-
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 SimpleFeature feature = reader.next();
                 System.out.println("feature " + feature.getID());
@@ -199,8 +194,6 @@ public class CSVTest {
                     System.out.println(property.getValue());
                 }
             }
-        } finally {
-            reader.close();
         }
         // example4 end
         System.out.println("\nexample4 end\n");

@@ -243,13 +243,11 @@ public abstract class AbstractGenerator {
         File file = null;
         try {
             file = new File(new URL(path).toURI());
-        } catch( MalformedURLException e ) {
+        } catch( MalformedURLException | URISyntaxException e ) {
             file = new File(path);
-        } catch( URISyntaxException e ) {
-            file = new File( path );
         }
-    	
-    	if ( file.isAbsolute() ) {
+
+        if ( file.isAbsolute() ) {
     		return file;
     	}
     	
@@ -261,13 +259,12 @@ public abstract class AbstractGenerator {
     	}
     	
     	if ( schemaLookupDirectories != null ) {
-    		for ( int i = 0; i < schemaLookupDirectories.length; i++ ) {
-    			File dir = schemaLookupDirectories[i];
-    			file = new File( dir, path );
-    			if ( file.exists() ) {
-    				return file;
-    			}
-    		}
+            for (File dir : schemaLookupDirectories) {
+                file = new File(dir, path);
+                if (file.exists()) {
+                    return file;
+                }
+            }
     	}
     	
     	return null;

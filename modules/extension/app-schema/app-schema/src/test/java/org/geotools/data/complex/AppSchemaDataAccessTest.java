@@ -165,14 +165,11 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         try {
             ReferencedEnvelope boundingBox = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
             FeatureCollection features = source.getFeatures();
-            FeatureIterator iterator = features.features();
-            try {
+            try (FeatureIterator iterator = features.features()) {
                 while (iterator.hasNext()) {
                     Feature f = iterator.next();
                     boundingBox.include(f.getBounds());
                 }
-            } finally {
-                iterator.close();
             }
             return boundingBox;
         } catch (IOException e) {

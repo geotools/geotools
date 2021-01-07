@@ -17,8 +17,7 @@
 package org.geotools.temporal.object;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotEquals;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Time;
@@ -54,49 +53,49 @@ public class DefaultIntervalLengthTest {
     @Test
     public void testGetUnit() {
         Unit result = intervalLength1.getUnit();
-        assertFalse(intervalLength2.getUnit().equals(result));
+        assertNotEquals(intervalLength2.getUnit(), result);
     }
 
     /** Test of getRadix method, of class DefaultIntervalLength. */
     @Test
     public void testGetRadix() {
         int result = intervalLength1.getRadix();
-        assertTrue(intervalLength2.getRadix() == result);
+        assertEquals(intervalLength2.getRadix(), result);
     }
 
     /** Test of getFactor method, of class DefaultIntervalLength. */
     @Test
     public void testGetFactor() {
         int result = intervalLength1.getFactor();
-        assertFalse(intervalLength2.getFactor() == result);
+        assertNotEquals(intervalLength2.getFactor(), result);
     }
 
     /** Test of getValue method, of class DefaultIntervalLength. */
     @Test
     public void testGetValue() {
         int result = intervalLength1.getValue();
-        assertFalse(intervalLength2.getValue() == result);
+        assertNotEquals(intervalLength2.getValue(), result);
     }
 
     /** Test of equals method, of class DefaultIntervalLength. */
     @Test
     public void testEquals() {
-        assertFalse(intervalLength1.equals(null));
+        assertNotEquals(null, intervalLength1);
         assertEquals(intervalLength1, intervalLength1);
-        assertFalse(intervalLength1.equals(intervalLength2));
+        assertNotEquals(intervalLength1, intervalLength2);
     }
 
     /** Test of hashCode method, of class DefaultIntervalLength. */
     @Test
     public void testHashCode() {
         int result = intervalLength1.hashCode();
-        assertFalse(intervalLength2.hashCode() == result);
+        assertNotEquals(intervalLength2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultIntervalLength. */
     @Test
     public void testToString() {
         String result = intervalLength1.toString();
-        assertFalse(intervalLength2.toString().equals(result));
+        assertNotEquals(intervalLength2.toString(), result);
     }
 }

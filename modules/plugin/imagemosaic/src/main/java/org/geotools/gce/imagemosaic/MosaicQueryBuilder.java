@@ -92,7 +92,7 @@ class MosaicQueryBuilder {
                                 queryBBox, queryBBox.getCoordinateReferenceSystem(), true);
                 if (handler != null) {
                     List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
-                    if (envelopes != null && envelopes.size() > 0) {
+                    if (envelopes != null && !envelopes.isEmpty()) {
                         List<Filter> filters = new ArrayList<>();
                         for (ReferencedEnvelope envelope : envelopes) {
                             Filter f =
@@ -131,9 +131,9 @@ class MosaicQueryBuilder {
         final List elevations = request.getElevation();
         final Map<String, List> additionalDomains = request.getRequestedAdditionalDomains();
         final Filter filter = request.getFilter();
-        final boolean hasTime = (times != null && times.size() > 0);
-        final boolean hasElevation = (elevations != null && elevations.size() > 0);
-        final boolean hasAdditionalDomains = additionalDomains.size() > 0;
+        final boolean hasTime = (times != null && !times.isEmpty());
+        final boolean hasElevation = (elevations != null && !elevations.isEmpty());
+        final boolean hasAdditionalDomains = !additionalDomains.isEmpty();
         final boolean hasFilter = filter != null && !Filter.INCLUDE.equals(filter);
         // prepare eventual filter for filtering granules
         // handle elevation indexing first since we then combine this with the max in case we are

@@ -361,12 +361,9 @@ public class HeatmapProcess implements VectorProcess {
             attrExpr = ECQL.toExpression(attrName);
         }
 
-        SimpleFeatureIterator obsIt = obsPoints.features();
-
-        double[] srcPt = new double[2];
-        double[] dstPt = new double[2];
-
-        try {
+        try (SimpleFeatureIterator obsIt = obsPoints.features()) {
+            double[] srcPt = new double[2];
+            double[] dstPt = new double[2];
             while (obsIt.hasNext()) {
                 SimpleFeature feature = obsIt.next();
 
@@ -392,8 +389,6 @@ public class HeatmapProcess implements VectorProcess {
                     // " failed to evaluate to a numeric value", e);
                 }
             }
-        } finally {
-            obsIt.close();
         }
     }
 

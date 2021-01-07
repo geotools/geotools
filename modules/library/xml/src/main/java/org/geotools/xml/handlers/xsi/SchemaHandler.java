@@ -1216,7 +1216,7 @@ public class SchemaHandler extends XSIElementHandler {
                 attributes = new LinkedList<>();
             }
 
-            for (int i = 0; i < objs.length; i++) attributes.add(objs[i]);
+            for (Object obj : objs) attributes.add(obj);
         }
 
         objs = s.getAttributeGroups();
@@ -1226,7 +1226,7 @@ public class SchemaHandler extends XSIElementHandler {
                 attributeGroups = new LinkedList<>();
             }
 
-            for (int i = 0; i < objs.length; i++) attributeGroups.add(objs[i]);
+            for (Object obj : objs) attributeGroups.add(obj);
         }
 
         objs = s.getComplexTypes();
@@ -1236,7 +1236,7 @@ public class SchemaHandler extends XSIElementHandler {
                 complexTypes = new LinkedList<>();
             }
 
-            for (int i = 0; i < objs.length; i++) complexTypes.add(objs[i]);
+            for (Object obj : objs) complexTypes.add(obj);
         }
 
         objs = s.getElements();
@@ -1246,7 +1246,7 @@ public class SchemaHandler extends XSIElementHandler {
                 elements = new LinkedList<>();
             }
 
-            for (int i = 0; i < objs.length; i++) elements.add(objs[i]);
+            for (Object obj : objs) elements.add(obj);
         }
 
         objs = s.getGroups();
@@ -1256,7 +1256,7 @@ public class SchemaHandler extends XSIElementHandler {
                 groups = new LinkedList<>();
             }
 
-            for (int i = 0; i < objs.length; i++) groups.add(objs[i]);
+            for (Object obj : objs) groups.add(obj);
         }
 
         objs = s.getImports();
@@ -1266,7 +1266,7 @@ public class SchemaHandler extends XSIElementHandler {
                 imports = new LinkedList<>();
             }
 
-            for (int i = 0; i < objs.length; i++) imports.add(objs[i]);
+            for (Object obj : objs) imports.add(obj);
         }
 
         objs = s.getSimpleTypes();
@@ -1276,7 +1276,7 @@ public class SchemaHandler extends XSIElementHandler {
                 simpleTypes = new LinkedList<>();
             }
 
-            for (int i = 0; i < objs.length; i++) simpleTypes.add(objs[i]);
+            for (Object obj : objs) simpleTypes.add(obj);
         }
 
         URI tempuri = s.getURI();

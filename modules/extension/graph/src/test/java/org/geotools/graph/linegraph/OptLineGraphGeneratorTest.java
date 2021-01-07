@@ -16,26 +16,24 @@
  */
 package org.geotools.graph.linegraph;
 
-import junit.framework.TestCase;
 import org.geotools.graph.build.line.OptLineGraphGenerator;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.line.XYNode;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineSegment;
 
-public class OptLineGraphGeneratorTest extends TestCase {
+public class OptLineGraphGeneratorTest {
 
     private OptLineGraphGenerator m_gen;
 
-    public OptLineGraphGeneratorTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_gen = createGenerator();
     }
@@ -45,6 +43,7 @@ public class OptLineGraphGeneratorTest extends TestCase {
      * Expected: 1. Number of edges = number of lines added. 2. Number of nodes = number of lines +
      * 1
      */
+    @Test
     public void test_0() {
         final Coordinate base = new Coordinate(0d, 0d);
         final int n = 100;
@@ -62,11 +61,11 @@ public class OptLineGraphGeneratorTest extends TestCase {
         Graph built = generator().getGraph();
 
         // ensure correct graph structure
-        assertTrue(built.getEdges().size() == n);
-        assertTrue(built.getNodes().size() == n + 1);
+        Assert.assertEquals(built.getEdges().size(), n);
+        Assert.assertEquals(built.getNodes().size(), n + 1);
 
-        assertTrue(built.getNodesOfDegree(1).size() == 2);
-        assertTrue(built.getNodesOfDegree(2).size() == n - 1);
+        Assert.assertEquals(2, built.getNodesOfDegree(1).size());
+        Assert.assertEquals(built.getNodesOfDegree(2).size(), n - 1);
 
         // ensure coordinates
         GraphVisitor visitor =
@@ -77,7 +76,7 @@ public class OptLineGraphGeneratorTest extends TestCase {
                         XYNode b = (XYNode) e.getNodeB();
 
                         // coordinats should be a distance of sqrt(2)
-                        assertTrue(
+                        Assert.assertTrue(
                                 Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
                                         && Math.abs(a.getCoordinate().y - b.getCoordinate().y)
                                                 == 1);
@@ -97,6 +96,7 @@ public class OptLineGraphGeneratorTest extends TestCase {
      * <br>
      * Expected: 1. Number of edges = number of nodes = number of lines.
      */
+    @Test
     public void test_1() {
 
         final Coordinate base = new Coordinate(0d, 0d);
@@ -118,11 +118,11 @@ public class OptLineGraphGeneratorTest extends TestCase {
         generator().generate();
         Graph built = generator().getGraph();
 
-        assertTrue(built.getEdges().size() == n + 1);
-        assertTrue(built.getNodes().size() == n + 1);
+        Assert.assertEquals(built.getEdges().size(), n + 1);
+        Assert.assertEquals(built.getNodes().size(), n + 1);
 
         // all nodes should be of degree 2
-        assertTrue(built.getNodesOfDegree(2).size() == built.getNodes().size());
+        Assert.assertEquals(built.getNodesOfDegree(2).size(), built.getNodes().size());
 
         // ensure coordinates
         GraphVisitor visitor =
@@ -133,9 +133,9 @@ public class OptLineGraphGeneratorTest extends TestCase {
                         XYNode b = (XYNode) e.getNodeB();
 
                         if (b.getCoordinate().equals(base)) {
-                            assertTrue(a.getCoordinate().equals(new Coordinate(n, n)));
+                            Assert.assertEquals(a.getCoordinate(), new Coordinate(n, n));
                         } else {
-                            assertTrue(
+                            Assert.assertTrue(
                                     Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
                                             && Math.abs(a.getCoordinate().y - b.getCoordinate().y)
                                                     == 1);

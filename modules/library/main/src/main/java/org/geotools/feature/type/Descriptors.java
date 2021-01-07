@@ -79,8 +79,8 @@ public class Descriptors {
      */
     public static final AttributeDescriptor find(List descriptors, Name name) {
         if (name == null) return null;
-        for (Iterator i = descriptors.iterator(); i.hasNext(); ) {
-            AttributeDescriptor attributeType = (AttributeDescriptor) i.next();
+        for (Object descriptor : descriptors) {
+            AttributeDescriptor attributeType = (AttributeDescriptor) descriptor;
             if (name.equals(attributeType.getType().getName())) {
                 return attributeType;
             }
@@ -398,8 +398,8 @@ public class Descriptors {
     public static AttributeDescriptor node(ComplexType schema, String name) {
         // return node(schema,new org.geotools.feature.Name(name));
 
-        for (Iterator itr = list(schema).iterator(); itr.hasNext(); ) {
-            AttributeDescriptor node = (AttributeDescriptor) itr.next();
+        for (Object o : list(schema)) {
+            AttributeDescriptor node = (AttributeDescriptor) o;
 
             if (node.getName() == null) {
                 // this may be due to old api usage style, where
@@ -450,9 +450,9 @@ public class Descriptors {
      * @return AttributeDescriptor assoicated with provided name, or null if not found.
      */
     public static AttributeDescriptor node(Collection schema, Name name) {
-        for (Iterator itr = schema.iterator(); itr.hasNext(); ) {
+        for (Object o : schema) {
 
-            AttributeDescriptor node = (AttributeDescriptor) itr.next();
+            AttributeDescriptor node = (AttributeDescriptor) o;
 
             Name nodeName = node.getName();
             if (nodeName == null) {
@@ -491,8 +491,8 @@ public class Descriptors {
      * @return AttributeDescriptor assoicated with provided name, or null if not found.
      */
     public static AttributeDescriptor node(ComplexType schema, AttributeType type) {
-        for (Iterator itr = list(schema).iterator(); itr.hasNext(); ) {
-            AttributeDescriptor node = (AttributeDescriptor) itr.next();
+        for (Object o : list(schema)) {
+            AttributeDescriptor node = (AttributeDescriptor) o;
             if (node.getType() == type) {
                 return node;
             }
@@ -507,8 +507,8 @@ public class Descriptors {
      */
     public static List<AttributeDescriptor> nodes(ComplexType schema, AttributeType type) {
         List<AttributeDescriptor> nodes = new ArrayList<>();
-        for (Iterator itr = list(schema).iterator(); itr.hasNext(); ) {
-            AttributeDescriptor node = (AttributeDescriptor) itr.next();
+        for (Object o : list(schema)) {
+            AttributeDescriptor node = (AttributeDescriptor) o;
             if (node.getType().equals(type)) {
                 nodes.add(node);
             }
@@ -526,8 +526,8 @@ public class Descriptors {
      */
     public static List<AttributeType> types(AttributeType type) {
         List<AttributeType> types = new ArrayList<>();
-        for (Iterator itr = list(type).iterator(); itr.hasNext(); ) {
-            AttributeDescriptor node = (AttributeDescriptor) itr.next();
+        for (Object o : list(type)) {
+            AttributeDescriptor node = (AttributeDescriptor) o;
             types.add(node.getType());
         }
         return types;
@@ -553,8 +553,7 @@ public class Descriptors {
         if (nodes.isEmpty()) return 0;
 
         int max = 0;
-        for (Iterator itr = nodes.iterator(); itr.hasNext(); ) {
-            AttributeDescriptor node = (AttributeDescriptor) itr.next();
+        for (AttributeDescriptor node : nodes) {
             if (max == Integer.MAX_VALUE) {
                 return Integer.MAX_VALUE;
             }
@@ -600,8 +599,7 @@ public class Descriptors {
      * @return True if schema is simple, otherwise false.
      */
     public static boolean isSimple(Collection<AttributeDescriptor> schema) {
-        for (Iterator itr = schema.iterator(); itr.hasNext(); ) {
-            AttributeDescriptor d = (AttributeDescriptor) itr.next();
+        for (AttributeDescriptor d : schema) {
             if (d.getMinOccurs() != 1 || d.getMaxOccurs() != 1) {
                 return false;
             }

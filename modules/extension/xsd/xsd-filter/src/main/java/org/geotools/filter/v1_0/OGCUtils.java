@@ -16,7 +16,6 @@
  */
 package org.geotools.filter.v1_0;
 
-import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -133,9 +132,7 @@ public class OGCUtils {
             spatial = ff.literal(polygon);
         } else {
             // look for an expression that is not a property name
-            for (Iterator c = node.getChildren().iterator(); c.hasNext(); ) {
-                Node child = (Node) c.next();
-
+            for (Node child : node.getChildren()) {
                 // if property name, skip
                 if (child.getValue() instanceof PropertyName) {
                     continue;

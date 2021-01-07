@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.shp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
@@ -42,10 +43,10 @@ public class PolygonHandler2Test extends org.geotools.data.shapefile.TestCaseSup
         c[2] = new Coordinate(1, 2, 3);
 
         PolygonHandler handler = new PolygonHandler(new GeometryFactory());
-        assertTrue(handler.getShapeType() == ShapeType.POLYGON);
+        assertSame(handler.getShapeType(), ShapeType.POLYGON);
 
-        for (int i = 0, ii = c.length; i < ii; i++) {
-            assertTrue(handler.pointInList(c[i], c));
+        for (Coordinate coordinate : c) {
+            assertTrue(handler.pointInList(coordinate, c));
         }
     }
 

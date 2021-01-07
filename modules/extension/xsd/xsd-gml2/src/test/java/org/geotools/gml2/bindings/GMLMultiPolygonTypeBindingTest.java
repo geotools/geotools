@@ -16,9 +16,13 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -30,7 +34,7 @@ public class GMLMultiPolygonTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance poly2;
     GeometryFactory gf;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         poly1 = createElement(GML.NAMESPACE, "myPoly", GML.PolygonMemberType, null);
@@ -43,6 +47,7 @@ public class GMLMultiPolygonTypeBindingTest extends AbstractGMLBindingTest {
         container.registerComponentImplementation(GMLMultiPolygonTypeBinding.class);
     }
 
+    @Test
     public void test() throws Exception {
         Node node =
                 createNode(

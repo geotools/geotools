@@ -17,7 +17,6 @@
 package org.geotools.referencing.factory.wms;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -133,8 +132,7 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
             throws FactoryException {
         if (type.isAssignableFrom(ProjectedCRS.class)) {
             final Set<String> set = new LinkedHashSet<>();
-            for (final Iterator<Integer> it = factlets.keySet().iterator(); it.hasNext(); ) {
-                Integer code = it.next();
+            for (Integer code : factlets.keySet()) {
                 set.add(String.valueOf(code));
             }
             return set;

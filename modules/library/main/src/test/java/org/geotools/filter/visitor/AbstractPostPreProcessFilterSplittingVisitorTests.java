@@ -19,13 +19,14 @@ package org.geotools.filter.visitor;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.FilterFunction_geometryType;
+import org.junit.Assert;
+import org.junit.Before;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -43,7 +44,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-public class AbstractPostPreProcessFilterSplittingVisitorTests extends TestCase {
+public class AbstractPostPreProcessFilterSplittingVisitorTests {
     public class TestAccessor implements ClientTransactionAccessor {
 
         private Filter updateFilter;
@@ -71,9 +72,8 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests extends TestCase 
     protected static final String nameAtt = "name";
     protected static final String numAtt = "num";
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+    @Before
+    public void setUp() throws Exception {}
 
     protected PostPreProcessFilterSplittingVisitor newVisitor(FilterCapabilities supportedCaps)
             throws SchemaException {
@@ -111,16 +111,16 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests extends TestCase 
         // Testing when FilterCapabilites indicate that filter type is not supported
         filter.accept(visitor, null);
 
-        assertEquals(filter, visitor.getFilterPost());
-        assertEquals(Filter.INCLUDE, visitor.getFilterPre());
+        Assert.assertEquals(filter, visitor.getFilterPost());
+        Assert.assertEquals(Filter.INCLUDE, visitor.getFilterPre());
 
         // now filter type is supported
         visitor = newVisitor(supportedCaps);
 
         filter.accept(visitor, null);
 
-        assertEquals(Filter.INCLUDE, visitor.getFilterPost());
-        assertEquals(filter, visitor.getFilterPre());
+        Assert.assertEquals(Filter.INCLUDE, visitor.getFilterPost());
+        Assert.assertEquals(filter, visitor.getFilterPre());
 
         if (attToEdit != null && accessor != null) {
             // Test when the an update exists that affects the attribute of a
@@ -135,8 +135,8 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests extends TestCase 
 
             filter.accept(visitor, null);
 
-            assertEquals(filter, visitor.getFilterPost());
-            assertEquals(ff.or(filter, updateFilter), visitor.getFilterPre());
+            Assert.assertEquals(filter, visitor.getFilterPost());
+            Assert.assertEquals(ff.or(filter, updateFilter), visitor.getFilterPre());
         }
     }
 

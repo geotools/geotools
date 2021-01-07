@@ -380,15 +380,15 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 } else {
                     params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.TRUE);
                 }
-                if (beans.size() > 0) {
+                if (beans.isEmpty()) {
+                    catalog =
+                            ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(
+                                    parentDirectory, datastoreProperties, true, getHints());
+                } else {
                     CatalogConfigurationBean bean = beans.get(0).getCatalogConfigurationBean();
                     catalog =
                             GranuleCatalogFactory.createGranuleCatalog(
                                     sourceURL, bean, params, getCatalogHints(bean));
-                } else {
-                    catalog =
-                            ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(
-                                    parentDirectory, datastoreProperties, true, getHints());
                 }
                 MultiLevelROIProvider rois =
                         MultiLevelROIProviderMosaicFactory.createFootprintProvider(parentDirectory);

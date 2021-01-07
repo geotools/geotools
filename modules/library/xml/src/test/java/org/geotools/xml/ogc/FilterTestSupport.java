@@ -17,10 +17,10 @@
 package org.geotools.xml.ogc;
 
 import java.util.logging.Logger;
-import junit.framework.TestCase;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Before;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -33,7 +33,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Chris Holmes
  */
-public abstract class FilterTestSupport extends TestCase {
+public abstract class FilterTestSupport {
     /** Standard logging instance */
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(FilterTestSupport.class);
@@ -45,16 +45,8 @@ public abstract class FilterTestSupport extends TestCase {
 
     protected boolean setup = false;
 
-    /**
-     * Creates a new instance of TestCaseSupport
-     *
-     * @param name what to call this...
-     */
-    public FilterTestSupport(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws SchemaException, IllegalAttributeException {
+    @Before
+    public void setUp() throws SchemaException, IllegalAttributeException {
         if (setup) {
             return;
         }

@@ -78,8 +78,8 @@ public class NormalizeCoverageProcessTest {
         GridCoverage2D norm = p.execute(cov);
 
         float[] data = data(norm);
-        for (int i = 0; i < data.length; i++) {
-            assertEquals(0f, data[i], 1E-9);
+        for (float datum : data) {
+            assertEquals(0f, datum, 1E-9);
         }
     }
 

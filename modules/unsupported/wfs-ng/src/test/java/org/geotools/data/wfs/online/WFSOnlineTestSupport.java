@@ -323,7 +323,7 @@ public class WFSOnlineTestSupport {
             fr.next();
         }
         fr.close();
-        assertTrue(count2 == count3);
+        assertEquals(count2, count3);
     }
 
     public static void doUpdate(

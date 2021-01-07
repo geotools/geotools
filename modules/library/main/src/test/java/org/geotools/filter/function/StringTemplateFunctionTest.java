@@ -1,6 +1,7 @@
 package org.geotools.filter.function;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import org.geotools.data.DataUtilities;
@@ -79,7 +80,7 @@ public class StringTemplateFunctionTest extends SEFunctionTestBase {
         SimpleFeature f2 =
                 SimpleFeatureBuilder.build(
                         type, new Object[] {"abc12_67", "(.*)_(\\d{3})", "${1}_${2}"}, null);
-        assertEquals(null, fn.evaluate(f2));
+        assertNull(fn.evaluate(f2));
 
         SimpleFeature f3 =
                 SimpleFeatureBuilder.build(

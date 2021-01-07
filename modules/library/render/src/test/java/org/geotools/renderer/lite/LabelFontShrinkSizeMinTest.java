@@ -22,7 +22,6 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -33,6 +32,8 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
@@ -45,15 +46,15 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author nprigour
  */
-public class LabelFontShrinkSizeMinTest extends TestCase {
+public class LabelFontShrinkSizeMinTest {
 
     private static final long TIME = 5000;
     SimpleFeatureSource fs;
 
     ReferencedEnvelope bounds;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         RendererBaseTest.setupVeraFonts();
 
         bounds = new ReferencedEnvelope(0, 10, 0, 10, null);
@@ -104,6 +105,7 @@ public class LabelFontShrinkSizeMinTest extends TestCase {
         fs = data.getFeatureSource("labelFontShrinkSizeMin");
     }
 
+    @Test
     public void testFonstShrinkSize() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "fontShrinkSize/fontShrinkSizeMin.sld");
         BufferedImage image = renderLabels(fs, style, "Label fontShrink");

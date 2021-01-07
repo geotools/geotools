@@ -16,13 +16,18 @@
  */
 package org.geotools.filter.v1_1;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.filter.v1_0.OGC;
+import org.junit.Test;
 import org.opengis.filter.PropertyIsLike;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
-
+    @Test
     public void testParse() throws Exception {
         FilterMockData.propertyIsLike(document, document);
 
@@ -34,9 +39,10 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
         assertEquals("x", isLike.getWildCard());
         assertEquals("y", isLike.getSingleChar());
         assertEquals("z", isLike.getEscape());
-        assertEquals(false, isLike.isMatchingCase());
+        assertFalse(isLike.isMatchingCase());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.propertyIsLike(), OGC.PropertyIsLike);
 
@@ -53,6 +59,7 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
         assertEquals("false", doc.getDocumentElement().getAttribute("matchCase"));
     }
 
+    @Test
     public void testEncodeAsFilter() throws Exception {
         Document doc = encode(FilterMockData.propertyIsLike(), OGC.Filter);
         // print(doc);

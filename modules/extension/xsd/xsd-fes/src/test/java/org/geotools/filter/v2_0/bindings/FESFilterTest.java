@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -23,18 +25,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.geotools.xsd.Encoder;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsLike;
 import org.w3c.dom.Document;
 
-/**
- * Tests for GEOT-4697
- *
- * @author "Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it"
- */
 public class FESFilterTest extends FESTestSupport {
-
+    @Test
     public void testEncodePropertyIsLike() throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
@@ -55,6 +53,7 @@ public class FESFilterTest extends FESTestSupport {
         assertEquals(1, doc.getElementsByTagName("fes:Literal").getLength());
     }
 
+    @Test
     public void testEncodeTemporal() throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();

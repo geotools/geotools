@@ -196,11 +196,7 @@ public class CQLJsonCompiler implements ICompiler {
         Object processedNotNull = null;
         try {
             processedNotNull = getNonNull(predicates);
-        } catch (IntrospectionException e) {
-            throw new CQLException(e.getMessage());
-        } catch (InvocationTargetException e) {
-            throw new CQLException(e.getMessage());
-        } catch (IllegalAccessException e) {
+        } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
             throw new CQLException(e.getMessage());
         }
         if (processedNotNull != null) {

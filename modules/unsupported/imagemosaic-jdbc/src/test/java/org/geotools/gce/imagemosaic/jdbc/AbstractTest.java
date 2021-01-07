@@ -408,14 +408,14 @@ public abstract class AbstractTest extends TestCase {
         importParamList = new ArrayList<>();
         Import.fillImportParamList(
                 "SPAT", "TILE", dirFileUrl, "tif", ImportTyp.DIR, importParamList);
-        assertTrue(importParamList.size() == 3);
+        assertEquals(3, importParamList.size());
 
-        assertTrue(importParamList.get(0).getTileTableName().equals("TILE_0"));
-        assertTrue(importParamList.get(1).getTileTableName().equals("TILE_1"));
-        assertTrue(importParamList.get(2).getTileTableName().equals("TILE_2"));
-        assertTrue(importParamList.get(0).getSpatialTableName().equals("SPAT_0"));
-        assertTrue(importParamList.get(1).getSpatialTableName().equals("SPAT_1"));
-        assertTrue(importParamList.get(2).getSpatialTableName().equals("SPAT_2"));
+        assertEquals("TILE_0", importParamList.get(0).getTileTableName());
+        assertEquals("TILE_1", importParamList.get(1).getTileTableName());
+        assertEquals("TILE_2", importParamList.get(2).getTileTableName());
+        assertEquals("SPAT_0", importParamList.get(0).getSpatialTableName());
+        assertEquals("SPAT_1", importParamList.get(1).getSpatialTableName());
+        assertEquals("SPAT_2", importParamList.get(2).getSpatialTableName());
 
         assertTrue(isSameFile(importParamList.get(0).getSourceURL(), OUTPUTDIR_RESOURCES));
         assertTrue(isSameFile(importParamList.get(1).getSourceURL(), OUTPUTDIR_RESOURCES + 1));
@@ -423,7 +423,7 @@ public abstract class AbstractTest extends TestCase {
 
         importParamList = new ArrayList<>();
         Import.fillImportParamList("SPAT", "TILE", csvFileUrl, ";", ImportTyp.CSV, importParamList);
-        assertTrue(importParamList.size() == 3);
+        assertEquals(3, importParamList.size());
 
         assertTrue(
                 isSameFile(
@@ -440,7 +440,7 @@ public abstract class AbstractTest extends TestCase {
         importParamList = new ArrayList<>();
         Import.fillImportParamList(
                 "SPAT", "TILE", shapeFileUrl, "LOCATION", ImportTyp.SHAPE, importParamList);
-        assertTrue(importParamList.size() == 3);
+        assertEquals(3, importParamList.size());
 
         assertTrue(
                 isSameFile(
@@ -861,13 +861,10 @@ public abstract class AbstractTest extends TestCase {
         File fixtureFile = getFixtureFile();
 
         if ((fixtureFile != null) && fixtureFile.exists()) {
-            InputStream input = new BufferedInputStream(new FileInputStream(fixtureFile));
 
-            try {
+            try (InputStream input = new BufferedInputStream(new FileInputStream(fixtureFile))) {
                 fixture = new Properties();
                 fixture.load(input);
-            } finally {
-                input.close();
             }
         }
     }

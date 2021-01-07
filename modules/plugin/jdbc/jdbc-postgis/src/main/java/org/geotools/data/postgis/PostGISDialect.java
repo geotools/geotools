@@ -1396,8 +1396,8 @@ public class PostGISDialect extends BasicSQLDialect {
 
     void encodeByteArrayAsHex(byte[] input, StringBuffer sql) {
         StringBuffer sb = new StringBuffer("\\x");
-        for (int i = 0; i < input.length; i++) {
-            sb.append(String.format("%02x", input[i]));
+        for (byte b : input) {
+            sb.append(String.format("%02x", b));
         }
         super.encodeValue(sb.toString(), String.class, sql);
     }
@@ -1405,8 +1405,7 @@ public class PostGISDialect extends BasicSQLDialect {
     void encodeByteArrayAsEscape(byte[] input, StringBuffer sql) {
         // escape the into bytea representation
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < input.length; i++) {
-            byte b = input[i];
+        for (byte b : input) {
             if (b == 0) {
                 sb.append("\\\\000");
             } else if (b == 39) {
@@ -1553,5 +1552,10 @@ public class PostGISDialect extends BasicSQLDialect {
             return duplicated;
         }
         return expression;
+    }
+
+    @Override
+    public String[] getDesiredTablesType() {
+        return new String[] {"TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM", "PARTITIONED TABLE"};
     }
 }

@@ -191,8 +191,8 @@ public class H2DialectBasic extends BasicSQLDialect {
             if (value != null) {
                 // encode as hex string
                 sql.append("'");
-                for (int i = 0; i < b.length; i++) {
-                    sql.append(Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1));
+                for (byte item : b) {
+                    sql.append(Integer.toString((item & 0xff) + 0x100, 16).substring(1));
                 }
                 sql.append("'");
             } else {

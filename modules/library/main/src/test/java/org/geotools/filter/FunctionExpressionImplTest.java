@@ -24,11 +24,13 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
@@ -44,7 +46,7 @@ import org.opengis.filter.expression.Subtract;
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
  */
-public class FunctionExpressionImplTest extends TestCase {
+public class FunctionExpressionImplTest {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(FunctionExpressionImplTest.class);
 
@@ -52,8 +54,8 @@ public class FunctionExpressionImplTest extends TestCase {
 
     TestExpressionVisitor testVisitor;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         function =
                 new FunctionExpressionImpl(
                         FunctionExpressionImpl.functionName(
@@ -61,12 +63,13 @@ public class FunctionExpressionImplTest extends TestCase {
         testVisitor = new TestExpressionVisitor();
     }
 
+    @After
     public void tearDown() throws Exception {
-        super.tearDown();
         function = null;
         testVisitor = null;
     }
 
+    @Test
     public void testAcceptExpressionVisitor() {
         Object extraData = new Object();
 
@@ -75,59 +78,68 @@ public class FunctionExpressionImplTest extends TestCase {
         final Object[] expected = {Boolean.TRUE, extraData};
         final Object[] actual = testVisitor.functionVisited;
 
-        assertEquals(expected[0], actual[0]);
-        assertEquals(expected[1], actual[1]);
+        Assert.assertEquals(expected[0], actual[0]);
+        Assert.assertEquals(expected[1], actual[1]);
     }
 
+    @Test
     public void testGetType() {
-        assertEquals(ExpressionType.FUNCTION, Filters.getExpressionType(function));
+        Assert.assertEquals(ExpressionType.FUNCTION, Filters.getExpressionType(function));
     }
 
+    @Test
     public void testGetName() {
         FunctionExpressionImpl anonymous =
                 new FunctionExpressionImpl(
                         FunctionExpressionImpl.functionName("testFunction", "text:String")) {};
-        assertEquals("testFunction", anonymous.getName());
+        Assert.assertEquals("testFunction", anonymous.getName());
     }
 
+    @Test
     public void testGetParameters() {
         final List<Expression> expected = Collections.singletonList(new LiteralExpressionImpl(10d));
         // do not try this at home
         function.params = expected;
-        assertEquals(expected, function.getParameters());
+        Assert.assertEquals(expected, function.getParameters());
     }
 
+    @Test
     public void testSetParameters() {
         final List<Expression> expected = Collections.singletonList(new LiteralExpressionImpl(10d));
         // do not try this at home
         function.setParameters(expected);
-        assertEquals(expected, function.params);
+        Assert.assertEquals(expected, function.params);
     }
 
+    @Test
     public void testGetArgs() {
         final List<Expression> expected = Collections.singletonList(new LiteralExpressionImpl(10d));
         function.setParameters(expected);
         List<Expression> actual = function.getParameters();
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testSetArgs() {
         final List<Expression> expected = Collections.singletonList(new LiteralExpressionImpl(10d));
         function.setParameters(expected);
-        assertEquals(expected, function.params);
+        Assert.assertEquals(expected, function.params);
     }
 
+    @Test
     public void testGetArgCount() {
         final List<Expression> expected = Collections.singletonList(new LiteralExpressionImpl(10d));
         function.setParameters(expected);
-        assertEquals(1, function.getFunctionName().getArgumentCount());
+        Assert.assertEquals(1, function.getFunctionName().getArgumentCount());
     }
 
+    @Test
     public void testGetImplementationHints() {
-        assertNotNull(function.getImplementationHints());
-        assertTrue(function.getImplementationHints().isEmpty());
+        Assert.assertNotNull(function.getImplementationHints());
+        Assert.assertTrue(function.getImplementationHints().isEmpty());
     }
 
+    @Test
     public void testImplementations()
             throws IOException, ClassNotFoundException, InstantiationException,
                     IllegalAccessException, NoSuchMethodException, InvocationTargetException {
@@ -142,7 +154,7 @@ public class FunctionExpressionImplTest extends TestCase {
         if (errors.size() > 0) {
             String errorsMessage = buildErrosMessage(errors);
             LOGGER.info(errorsMessage);
-            fail(errorsMessage);
+            Assert.fail(errorsMessage);
         }
     }
 
@@ -154,8 +166,8 @@ public class FunctionExpressionImplTest extends TestCase {
         StringBuffer sb =
                 new StringBuffer("Some function expression implementations violates contract:\n");
         int errorCount = 1;
-        for (Iterator it = errors.iterator(); it.hasNext(); ) {
-            String error = (String) it.next();
+        for (Object o : errors) {
+            String error = (String) o;
             sb.append(errorCount++ + " - ");
             sb.append(error);
             sb.append("\n");

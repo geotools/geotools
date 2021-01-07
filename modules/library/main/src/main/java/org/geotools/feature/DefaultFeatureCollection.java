@@ -134,8 +134,8 @@ public class DefaultFeatureCollection
         if (bounds == null) {
             bounds = new ReferencedEnvelope();
 
-            for (Iterator i = contents.values().iterator(); i.hasNext(); ) {
-                BoundingBox geomBounds = ((SimpleFeature) i.next()).getBounds();
+            for (SimpleFeature simpleFeature : contents.values()) {
+                BoundingBox geomBounds = simpleFeature.getBounds();
                 // IanS - as of 1.3, JTS expandToInclude ignores "null" Envelope
                 // and simply adds the new bounds...
                 // This check ensures this behavior does not occur.
@@ -223,16 +223,13 @@ public class DefaultFeatureCollection
         // TODO check inheritance with FeatureType here!!!
         boolean changed = false;
 
-        FeatureIterator<?> iterator = collection.features();
-        try {
+        try (FeatureIterator<?> iterator = collection.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature f = (SimpleFeature) iterator.next();
                 boolean added = add(f, false);
                 changed |= added;
             }
             return changed;
-        } finally {
-            iterator.close();
         }
     }
 
@@ -508,8 +505,7 @@ public class DefaultFeatureCollection
     public SimpleFeatureCollection collection() throws IOException {
         DefaultFeatureCollection copy = new DefaultFeatureCollection(null, getSchema());
         List<SimpleFeature> list = new ArrayList<>(contents.size());
-        SimpleFeatureIterator iterator = features();
-        try {
+        try (SimpleFeatureIterator iterator = features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 SimpleFeature duplicate;
@@ -520,8 +516,6 @@ public class DefaultFeatureCollection
                 }
                 list.add(duplicate);
             }
-        } finally {
-            iterator.close();
         }
         copy.addAll(list);
         return copy;

@@ -18,6 +18,7 @@ package org.geotools.coverage.grid;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -139,8 +140,8 @@ public final class GridGeometryTest extends GridCoverageTestBase {
                 new GridGeometry2D(range, PixelInCell.CELL_CORNER, identity, null, null);
 
         assertSame(identity, gg.getGridToCRS(PixelInCell.CELL_CORNER));
-        assertFalse(identity.equals(gg.getGridToCRS(PixelInCell.CELL_CENTER)));
-        assertFalse(identity.equals(gg.getGridToCRS(PixelOrientation.CENTER)));
+        assertNotEquals(identity, gg.getGridToCRS(PixelInCell.CELL_CENTER));
+        assertNotEquals(identity, gg.getGridToCRS(PixelOrientation.CENTER));
         assertSame(
                 gg.getGridToCRS(PixelInCell.CELL_CENTER), gg.getGridToCRS(PixelOrientation.CENTER));
 
@@ -165,12 +166,12 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         DirectPosition worldPoint = worldBounds.getLowerCorner();
         GridCoordinates2D gridCalc = gg.worldToGrid(worldPoint);
         gridExp.setLocation(0, gridBounds.height - 1);
-        assertTrue(gridExp.equals(gridCalc));
+        assertEquals(gridExp, gridCalc);
 
         worldPoint = worldBounds.getUpperCorner();
         gridCalc = gg.worldToGrid(worldPoint);
         gridExp.setLocation(gridBounds.width - 1, 0);
-        assertTrue(gridExp.equals(gridCalc));
+        assertEquals(gridExp, gridCalc);
 
         // This is a specific example that previously broke this unit test
         Double minX = -78.523;
@@ -188,7 +189,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         GridGeometry2D gm = new GridGeometry2D(ggEnvelope, bounds);
         gridExp.setLocation(0, height - 1);
         GridCoordinates2D gridCalcException = gm.worldToGrid(bounds.getLowerCorner());
-        assertTrue(gridCalcException.equals(gridExp));
+        assertEquals(gridCalcException, gridExp);
     }
 
     @Test
@@ -199,7 +200,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         GridEnvelope2D gridBounds = gg.getGridRange2D();
 
         GridEnvelope2D gridEnv = gg.worldToGrid(worldBounds);
-        assertTrue(gridBounds.equals(gridEnv));
+        assertEquals(gridBounds, gridEnv);
 
         // test sub-area conversion by creating an envelope that excludes
         // the first and last grid row and col centres
@@ -223,7 +224,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
                         gridBounds.width - 2,
                         gridBounds.height - 2);
 
-        assertTrue(gridEnv.equals(expectedEnv));
+        assertEquals(gridEnv, expectedEnv);
     }
 
     @Test

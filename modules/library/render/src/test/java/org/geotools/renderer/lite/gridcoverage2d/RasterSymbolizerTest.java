@@ -1830,7 +1830,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         // visit the RasterSymbolizer
         rsh.visit(rsb_1);
         final RenderedImage im = rsh.getOutput().getRenderedImage();
-        Assert.assertTrue(im.getSampleModel().getDataType() == 0);
+        Assert.assertEquals(0, im.getSampleModel().getDataType());
 
         testRasterSymbolizerHelper(rsh);
 
@@ -2065,7 +2065,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         IndexColorModel icm2 = (IndexColorModel) rsh.getOutput().getRenderedImage().getColorModel();
         testRasterSymbolizerHelper(rsh);
         // check that the two color models are equals!
-        Assert.assertTrue(icm1.equals(icm2));
+        Assert.assertEquals(icm1, icm2);
     }
 
     @org.junit.Test
@@ -2312,7 +2312,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
 
         final RenderedImage ri = rsh.getOutput().getRenderedImage();
         Assert.assertTrue(ri.getColorModel() instanceof ComponentColorModel);
-        Assert.assertTrue(ri.getColorModel().getNumComponents() == 3);
+        Assert.assertEquals(3, ri.getColorModel().getNumComponents());
         testRasterSymbolizerHelper(rsh);
     }
 
@@ -2474,16 +2474,12 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             assertTrue(options.containsKey("algorithm"));
             assertTrue(options.containsKey("minValue"));
             assertTrue(options.containsKey("maxValue"));
-            assertTrue(
-                    options.get("algorithm")
-                            .equals(
-                                    sldBuilder.literalExpression(
-                                            ContrastEnhancementType
-                                                    .NORMALIZE_STRETCH_TO_MINMAX_NAME)));
-            assertTrue(
-                    options.get("minValue").equals(sldBuilder.literalExpression(min + (20 * i))));
-            assertTrue(
-                    options.get("maxValue").equals(sldBuilder.literalExpression(max + (20 * i))));
+            assertEquals(
+                    options.get("algorithm"),
+                    sldBuilder.literalExpression(
+                            ContrastEnhancementType.NORMALIZE_STRETCH_TO_MINMAX_NAME));
+            assertEquals(options.get("minValue"), sldBuilder.literalExpression(min + (20 * i)));
+            assertEquals(options.get("maxValue"), sldBuilder.literalExpression(max + (20 * i)));
         }
     }
 }

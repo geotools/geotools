@@ -16,7 +16,6 @@
  */
 package org.geotools.graph.build.opt;
 
-import junit.framework.TestCase;
 import org.geotools.graph.structure.DirectedEdge;
 import org.geotools.graph.structure.DirectedGraph;
 import org.geotools.graph.structure.DirectedNode;
@@ -24,40 +23,42 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.opt.OptDirectedEdge;
 import org.geotools.graph.structure.opt.OptDirectedNode;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class OptDirectedGraphBuilderTest extends TestCase {
+public class OptDirectedGraphBuilderTest {
 
     private OptDirectedGraphBuilder m_builder;
 
-    public OptDirectedGraphBuilderTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = new OptDirectedGraphBuilder();
     }
 
+    @Test
     public void test_buildNode() {
         DirectedNode dn = (DirectedNode) m_builder.buildNode();
 
-        assertTrue(dn != null);
-        assertTrue(dn instanceof OptDirectedNode);
+        Assert.assertNotNull(dn);
+        Assert.assertTrue(dn instanceof OptDirectedNode);
     }
 
+    @Test
     public void test_buildEdge() {
         Node n1 = m_builder.buildNode();
         Node n2 = m_builder.buildNode();
 
         DirectedEdge de = (DirectedEdge) m_builder.buildEdge(n1, n2);
 
-        assertTrue(de != null);
-        assertTrue(de instanceof OptDirectedEdge);
-        assertTrue(de.getInNode() == n1);
-        assertTrue(de.getOutNode() == n2);
+        Assert.assertNotNull(de);
+        Assert.assertTrue(de instanceof OptDirectedEdge);
+        Assert.assertSame(de.getInNode(), n1);
+        Assert.assertSame(de.getOutNode(), n2);
     }
 
+    @Test
     public void test_addEdge() {
         OptDirectedNode n1 = (OptDirectedNode) m_builder.buildNode();
         n1.setInDegree(0);
@@ -71,13 +72,14 @@ public class OptDirectedGraphBuilderTest extends TestCase {
 
         m_builder.addEdge(e);
 
-        assertTrue(m_builder.getEdges().contains(e));
-        assertTrue(n1.getOutEdges().contains(e));
-        assertTrue(n2.getInEdges().contains(e));
+        Assert.assertTrue(m_builder.getEdges().contains(e));
+        Assert.assertTrue(n1.getOutEdges().contains(e));
+        Assert.assertTrue(n2.getInEdges().contains(e));
     }
 
+    @Test
     public void test_getGraph() {
         Graph graph = m_builder.getGraph();
-        assertTrue(graph instanceof DirectedGraph);
+        Assert.assertTrue(graph instanceof DirectedGraph);
     }
 }

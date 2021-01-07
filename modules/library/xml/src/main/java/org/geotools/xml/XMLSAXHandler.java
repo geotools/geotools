@@ -280,8 +280,7 @@ public class XMLSAXHandler extends DefaultHandler {
         StringBuffer msg = new StringBuffer(e.getLocalizedMessage());
         StackTraceElement[] trace = e.getStackTrace();
 
-        for (int i = 0; i < trace.length; i++) {
-            StackTraceElement element = trace[i];
+        for (StackTraceElement element : trace) {
             msg.append("    ");
             msg.append(element.toString());
             msg.append("\n");
@@ -301,7 +300,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
         checkStatus();
 
-        if (schemaProxy.size() != 0) {
+        if (!schemaProxy.isEmpty()) {
             logger.fine("ADDING NAMESPACES: " + schemaProxy.size());
 
             String t = atts.getValue("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
@@ -353,7 +352,7 @@ public class XMLSAXHandler extends DefaultHandler {
                 }
             }
 
-            if (schemaProxy.size() != 0) {
+            if (!schemaProxy.isEmpty()) {
                 Iterator it = schemaProxy.keySet().iterator();
 
                 while (it.hasNext()) {

@@ -19,10 +19,6 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCFeatureLockingOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * TODO: find out how to fix the following Temporarily override all of these as SQLite/GeoPkg throws
- * an SQLException not a FeatureLockException when the DB is locked, so the tests fail.
- */
 public class GeoPkgFeatureLockingOnlineTest extends JDBCFeatureLockingOnlineTest {
 
     @Override

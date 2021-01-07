@@ -85,7 +85,7 @@ public class RootNodeTest {
 
         try {
             root3.addSource(root2);
-            Assert.assertFalse(true);
+            Assert.fail();
         } catch (Exception e) {
 
         }
@@ -95,38 +95,38 @@ public class RootNodeTest {
     public final void getSource() {
         try {
             root1.getSource(2);
-            Assert.assertFalse(true);
+            Assert.fail();
         } catch (Exception e) {
 
         }
         try {
             root2.getSource(2);
-            Assert.assertFalse(true);
+            Assert.fail();
         } catch (Exception e) {
 
         }
         try {
             root3.getSource(2);
-            Assert.assertFalse(true);
+            Assert.fail();
         } catch (Exception e) {
 
         }
 
         try {
             Assert.assertNotNull(root3.getSource(0));
-            Assert.assertFalse(true);
+            Assert.fail();
         } catch (Exception e) {
 
         }
         try {
             Assert.assertNotNull(root2.getSource(0));
-            Assert.assertFalse(true);
+            Assert.fail();
         } catch (Exception e) {
 
         }
         try {
             Assert.assertNotNull(root1.getSource(0));
-            Assert.assertFalse(true);
+            Assert.fail();
         } catch (Exception e) {
 
         }
@@ -136,18 +136,18 @@ public class RootNodeTest {
     public final void getSources() {
         try {
             Assert.assertNotNull(root1.getSources());
-            Assert.assertTrue(root1.getSources().size() == 0);
+            Assert.assertEquals(0, root1.getSources().size());
         } catch (Exception e) {
         }
         try {
             Assert.assertNotNull(root2.getSources());
-            Assert.assertTrue(root2.getSources().size() == 0);
+            Assert.assertEquals(0, root2.getSources().size());
         } catch (Exception e) {
 
         }
         try {
             Assert.assertNotNull(root3.getSources());
-            Assert.assertTrue(root3.getSources().size() == 0);
+            Assert.assertEquals(0, root3.getSources().size());
         } catch (Exception e) {
 
         }

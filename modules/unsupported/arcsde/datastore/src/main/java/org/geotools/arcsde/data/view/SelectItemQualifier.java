@@ -100,8 +100,8 @@ class SelectItemQualifier implements net.sf.jsqlparser.statement.select.SelectIt
 
         qualifiedItems = new ArrayList<>(cols.length);
 
-        for (int i = 0; i < cols.length; i++) {
-            String colName = cols[i].getName();
+        for (SeColumnDefinition col : cols) {
+            String colName = col.getName();
 
             Column column = new Column();
             column.setTable(qt);

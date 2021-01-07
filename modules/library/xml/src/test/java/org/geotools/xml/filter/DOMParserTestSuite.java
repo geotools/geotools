@@ -130,8 +130,7 @@ public class DOMParserTestSuite extends TestSuite {
                                     return pathname.toString().endsWith("test20.xml");
                                 }
                             });
-            for (int i = 0; i < tests.length; i++) {
-                File test = tests[i];
+            for (File test : tests) {
                 suite.addTest(suite.new DomTestXml(test.getName()));
             }
             // .. etc..

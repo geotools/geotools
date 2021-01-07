@@ -16,6 +16,9 @@
  */
 package org.geotools.validation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataTestCase;
@@ -25,6 +28,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.spatial.IsValidGeometryValidation;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestName;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -54,16 +60,13 @@ public class ValidationProcessorTest extends DataTestCase {
     ValidationProcessor processor;
     RoadNetworkValidationResults results;
 
-    /** Constructor for ValidationProcessorTest. */
-    public ValidationProcessorTest(String arg0) {
-        super(arg0);
-    }
+    @Rule public TestName testName = new TestName();
 
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void init() throws Exception {
+        super.init();
         store = new MemoryDataStore();
         store.addFeatures(roadFeatures);
         store.addFeatures(riverFeatures);
@@ -74,23 +77,24 @@ public class ValidationProcessorTest extends DataTestCase {
     /*
      * @see TestCase#tearDown()
      */
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         super.tearDown();
         store = null;
         super.tearDown();
     }
 
+    @Test
     public void testIsValidFeatureValidation() throws Exception {
         IsValidGeometryValidation geom = new IsValidGeometryValidation();
         geom.setName("IsValidGeometry");
-        geom.setDescription("IsValid geomtry test for Junit Test +" + getName());
+        geom.setDescription("IsValid geomtry test for Junit Test +" + testName.getMethodName());
         geom.setTypeRef("*");
         processor.addValidation(geom);
 
         // test the correct roads
         processor.runFeatureTests(
                 "dataStoreId", DataUtilities.collection(this.roadFeatures), results);
-        assertTrue(results.getFailedMessages().length == 0);
+        assertEquals(0, results.getFailedMessages().length);
 
         // test the broken road
         // make an incorrect line
@@ -113,8 +117,7 @@ public class ValidationProcessorTest extends DataTestCase {
         // make a map of FeatureSources
         Map<String, SimpleFeatureSource> map = new HashMap<>();
         String[] typeNames = this.store.getTypeNames();
-        for (int i = 0; i < typeNames.length; i++)
-            map.put(typeNames[i], this.store.getFeatureSource(typeNames[i]));
+        for (String typeName : typeNames) map.put(typeName, this.store.getFeatureSource(typeName));
         map.put("newThing", this.store.getFeatureSource(typeNames[0]));
 
         processor.runIntegrityTests(null, map, null, results);

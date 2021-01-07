@@ -30,9 +30,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public class TreeSetFeatureCollectionTest
         extends org.geotools.data.collection.FeatureCollectionTest {
-    public TreeSetFeatureCollectionTest(String testName) {
-        super(testName);
-    }
 
     protected TreeSetFeatureCollection newCollection(
             SimpleFeatureType schema, List<SimpleFeature> list) {

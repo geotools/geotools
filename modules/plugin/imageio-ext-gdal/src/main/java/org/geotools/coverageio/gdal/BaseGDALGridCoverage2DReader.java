@@ -217,11 +217,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
                                         ProjectiveTransform.create(tempTransform),
                                         new GeneralEnvelope(
                                                 ((GridEnvelope2D) this.originalGridRange)));
-                    } catch (IllegalStateException e) {
-                        if (LOGGER.isLoggable(Level.WARNING)) {
-                            LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                        }
-                    } catch (TransformException e) {
+                    } catch (IllegalStateException | TransformException e) {
                         if (LOGGER.isLoggable(Level.WARNING)) {
                             LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                         }

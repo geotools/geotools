@@ -1,23 +1,30 @@
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 import java.util.Map;
 import org.geotools.kml.Folder;
 import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class FolderBindingTest extends KMLTestSupport {
-
+    @Test
     public void testType() throws Exception {
         assertEquals(SimpleFeature.class, binding(KML.Folder).getType());
     }
 
+    @Test
     public void testExecutionMode() throws Exception {
         assertEquals(Binding.AFTER, binding(KML.Folder).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml = "<Folder>" + "<name>foo</name>" + "</Folder>";
         buildDocument(xml);
@@ -26,6 +33,7 @@ public class FolderBindingTest extends KMLTestSupport {
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testFolderHierarchy() throws Exception {
         String xml =
                 "<Folder><name>foo</name>"

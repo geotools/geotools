@@ -61,7 +61,6 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
 import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -1575,11 +1574,6 @@ public class NetCDFMosaicReaderTest {
      */
     static void show(RenderedImage image, String title) {
         ImageIOUtilities.visualize(image, title);
-    }
-
-    /** @param args */
-    public static void main(String[] args) {
-        TestRunner.run(NetCDFMosaicReaderTest.suite());
     }
 
     @BeforeClass

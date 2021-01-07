@@ -474,8 +474,8 @@ public final class ExpressionDOMParser {
 
             org.locationtech.jts.geom.Envelope env = new org.locationtech.jts.geom.Envelope();
 
-            for (int i = 0; i < coordList.size(); i++) {
-                env.expandToInclude(coordList.get(i));
+            for (Coordinate coordinate : coordList) {
+                env.expandToInclude(coordinate);
             }
             Coordinate[] coords = new Coordinate[NUM_BOX_COORDS];
             coords[0] = new Coordinate(env.getMinX(), env.getMinY());
@@ -545,10 +545,10 @@ public final class ExpressionDOMParser {
                 }
             }
 
-            if (inner.size() > 0) {
-                return gfac.createPolygon(outer, inner.toArray(new LinearRing[0]));
-            } else {
+            if (inner.isEmpty()) {
                 return gfac.createPolygon(outer, null);
+            } else {
+                return gfac.createPolygon(outer, inner.toArray(new LinearRing[0]));
             }
         }
 

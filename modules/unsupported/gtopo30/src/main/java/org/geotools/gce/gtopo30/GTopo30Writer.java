@@ -232,9 +232,8 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
         GeoToolsWriteParams gtParams = null;
         if (params != null) {
             Parameter<?> param;
-            final int length = params.length;
-            for (int i = 0; i < length; i++) {
-                param = (Parameter<?>) params[i];
+            for (GeneralParameterValue generalParameterValue : params) {
+                param = (Parameter<?>) generalParameterValue;
                 if (param.getDescriptor()
                         .getName()
                         .getCode()

@@ -609,9 +609,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -622,10 +622,10 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (localName.equals(elements[i].getName())
-                        && namespaceURI.equals(elements[i].getNamespace())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (localName.equals(element.getName())
+                        && namespaceURI.equals(element.getNamespace())) {
+                    return element;
                 }
 
             return null;
@@ -685,9 +685,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -698,10 +698,10 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (localName.equals(elements[i].getName())
-                        && namespaceURI.equals(elements[i].getNamespace())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (localName.equals(element.getName())
+                        && namespaceURI.equals(element.getNamespace())) {
+                    return element;
                 }
 
             return null;
@@ -1077,9 +1077,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elems.length; i++)
-                if (name.equals(elems[i].getName())) {
-                    return elems[i];
+            for (Element elem : elems)
+                if (name.equals(elem.getName())) {
+                    return elem;
                 }
 
             return null;
@@ -1243,9 +1243,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -1410,9 +1410,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -1578,9 +1578,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -1745,9 +1745,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -1901,9 +1901,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -2079,9 +2079,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -2242,9 +2242,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -2411,9 +2411,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -2595,11 +2595,11 @@ public class GMLComplexTypes {
             LinearRing[] innerLR = new LinearRing[(value.length > 1) ? (value.length - 1) : 0];
             int innerIndex = 0;
 
-            for (int i = 0; i < value.length; i++) {
-                if (elements[0].getName().equalsIgnoreCase(value[i].getElement().getName())) {
-                    outerLR = (LinearRing) value[i].getValue();
+            for (ElementValue elementValue : value) {
+                if (elements[0].getName().equalsIgnoreCase(elementValue.getElement().getName())) {
+                    outerLR = (LinearRing) elementValue.getValue();
                 } else {
-                    innerLR[innerIndex++] = (LinearRing) value[i].getValue();
+                    innerLR[innerIndex++] = (LinearRing) elementValue.getValue();
                 }
             }
 
@@ -2622,9 +2622,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -2768,9 +2768,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -2921,9 +2921,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -3074,9 +3074,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -3227,9 +3227,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -3348,17 +3348,17 @@ public class GMLComplexTypes {
             Double z;
             x = y = z = null;
 
-            for (int i = 0; i < value.length; i++) {
-                if (elements[0].getName().equals(value[i].getElement().getName())) {
-                    x = (Double) value[i].getValue();
+            for (ElementValue elementValue : value) {
+                if (elements[0].getName().equals(elementValue.getElement().getName())) {
+                    x = (Double) elementValue.getValue();
                 }
 
-                if (elements[1].getName().equals(value[i].getElement().getName())) {
-                    y = (Double) value[i].getValue();
+                if (elements[1].getName().equals(elementValue.getElement().getName())) {
+                    y = (Double) elementValue.getValue();
                 }
 
-                if (elements[2].getName().equals(value[i].getElement().getName())) {
-                    z = (Double) value[i].getValue();
+                if (elements[2].getName().equals(elementValue.getElement().getName())) {
+                    z = (Double) elementValue.getValue();
                 }
             }
 
@@ -3388,9 +3388,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -3855,8 +3855,8 @@ public class GMLComplexTypes {
             if (AttributeDescriptor instanceof ChoiceAttributeType) {
                 ChoiceAttributeType choiceAT = (ChoiceAttributeType) AttributeDescriptor;
                 Class<?>[] choices = choiceAT.getChoices();
-                for (int j = 0; j < choices.length; j++) {
-                    if (choices[j].isAssignableFrom(instanceClass)) return true;
+                for (Class<?> choice : choices) {
+                    if (choice.isAssignableFrom(instanceClass)) return true;
                 }
             }
             return AttributeDescriptor.getType().getBinding().isAssignableFrom(instanceClass);
@@ -3946,9 +3946,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -4127,9 +4127,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements1.length; i++)
-                if (name.equals(elements1[i].getName())) {
-                    return elements1[i];
+            for (Element element : elements1)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -4280,9 +4280,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -4494,9 +4494,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -4658,9 +4658,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -4807,9 +4807,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -4964,9 +4964,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -5110,9 +5110,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -5256,9 +5256,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -5411,9 +5411,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -5550,7 +5550,8 @@ public class GMLComplexTypes {
             //            	return (MultiLineString) value2;
             //            else if( value2 instanceof LineString ){
             //            	GeometryFactory fac=new GeometryFactory();
-            //            	return fac.createMultiLineString(new LineString[]{(LineString) value2});
+            //            	return fac.createMultiLineString(new LineString[]{(LineString)
+            //            	value2});
             //            }
             //            throw new SAXException("Expected value was a MultiLineString, instead it
             // was a: "+value2.getClass());
@@ -5567,9 +5568,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -5724,9 +5725,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -5880,9 +5881,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++)
-                if (name.equals(elements[i].getName())) {
-                    return elements[i];
+            for (Element element : elements)
+                if (name.equals(element.getName())) {
+                    return element;
                 }
 
             return null;
@@ -5961,19 +5962,19 @@ public class GMLComplexTypes {
 
         AttributeDescriptor[] attrs =
                 getAttributes(element.getName(), child).toArray(new AttributeDescriptor[] {,});
-        for (int i = 0; i < attrs.length; i++) {
-            if (attrs[i] != null) {
-                build.add(attrs[i]);
+        for (AttributeDescriptor attr : attrs) {
+            if (attr != null) {
+                build.add(attr);
 
-                if ((geometryAttribute == null) && attrs[i] instanceof GeometryDescriptor) {
-                    if (!attrs[i].getLocalName()
+                if ((geometryAttribute == null) && attr instanceof GeometryDescriptor) {
+                    if (!attr.getLocalName()
                             //
                             // .equalsIgnoreCase(BoxType.getInstance().getName())) {
                             .equalsIgnoreCase(
                                     AbstractFeatureType.getInstance()
                                             .getChildElements()[2]
                                             .getName())) {
-                        geometryAttribute = (GeometryDescriptor) attrs[i];
+                        geometryAttribute = (GeometryDescriptor) attr;
                     }
                 }
             }
@@ -6054,14 +6055,13 @@ public class GMLComplexTypes {
 
             case ElementGrouping.ALL:
                 Element[] elems = ((All) eg).getElements();
-                if (elems != null)
-                    for (int i = 0; i < elems.length; i++) attributes.add(getAttribute(elems[i]));
+                if (elems != null) for (Element elem : elems) attributes.add(getAttribute(elem));
                 break;
             case ElementGrouping.SEQUENCE:
                 ElementGrouping[] children = ((Sequence) eg).getChildren();
                 if (children != null)
-                    for (int i = 0; i < children.length; i++)
-                        attributes.addAll(getAttributes(name, children[i]));
+                    for (ElementGrouping child : children)
+                        attributes.addAll(getAttributes(name, child));
                 break;
         }
         return attributes;
@@ -6161,8 +6161,8 @@ public class GMLComplexTypes {
         List<AttributeDescriptor> l = new LinkedList<>();
         ElementGrouping[] children = eg.getChildren();
         if (children != null)
-            for (int i = 0; i < children.length; i++) {
-                l.addAll(getAttributes(name, children[i]));
+            for (ElementGrouping child : children) {
+                l.addAll(getAttributes(name, child));
             }
 
         if (l.isEmpty()) {
@@ -6195,12 +6195,12 @@ public class GMLComplexTypes {
         }
     }
 
-    private static Class[] collectionChoices(List l) {
+    private static Class[] collectionChoices(List<AttributeDescriptor> l) {
         Class[] choices = new Class[l.size()];
         int i = 0;
-        for (Iterator iter = l.iterator(); iter.hasNext(); i++) {
-            AttributeDescriptor type = (AttributeDescriptor) iter.next();
-            choices[i] = type.getType().getBinding();
+
+        for (AttributeDescriptor type : l) {
+            choices[i++] = type.getType().getBinding();
         }
         return choices;
     }
@@ -6309,10 +6309,10 @@ public class GMLComplexTypes {
         Class<?>[] it2 = c2.getInterfaces();
 
         if (it1 != null && it1.length > 0 && it2 != null && it2.length > 0) {
-            for (int i = 0; i < it1.length; i++) {
-                for (int j = 0; j < it2.length; j++) {
-                    if (it1[i].isAssignableFrom(it2[j])) return it1[i];
-                    if (it2[j].isAssignableFrom(it1[i])) return it2[j];
+            for (Class<?> value : it1) {
+                for (Class<?> aClass : it2) {
+                    if (value.isAssignableFrom(aClass)) return value;
+                    if (aClass.isAssignableFrom(value)) return aClass;
                 }
             }
         }

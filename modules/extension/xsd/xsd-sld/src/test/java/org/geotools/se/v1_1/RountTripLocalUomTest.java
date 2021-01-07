@@ -1,5 +1,7 @@
 package org.geotools.se.v1_1;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.measure.Units;
 import org.junit.Test;
 import org.opengis.style.PointSymbolizer;

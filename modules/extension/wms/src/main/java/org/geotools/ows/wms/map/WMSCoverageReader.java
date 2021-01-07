@@ -180,7 +180,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
             // can we reuse what we have?
             if (!intersection.contains(srsName)) {
-                if (intersection.size() == 0) {
+                if (intersection.isEmpty()) {
                     throw new IllegalArgumentException(
                             "The layer being appended does "
                                     + "not have any SRS in common with the ones already "

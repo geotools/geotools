@@ -18,7 +18,6 @@ package org.geotools.data.oracle.sdo;
 
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Iterator;
 import oracle.jdbc.OracleArray;
 import oracle.jdbc.OracleConnection;
 import oracle.jdbc.OracleStruct;
@@ -275,11 +274,8 @@ public class GeometryConverter {
         Datum data[] = new Datum[list.size() * LEN];
         int offset = 0;
         int index = 0;
-        Coordinate coord;
 
-        for (Iterator i = list.iterator(); i.hasNext(); index++) {
-            coord = (Coordinate) i.next();
-
+        for (Coordinate coord : list) {
             data[offset++] = toNUMBER(coord.x);
             data[offset++] = toNUMBER(coord.y);
             if (D == 3) {

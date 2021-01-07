@@ -61,7 +61,6 @@ import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.operation.CoordinateOperation;
@@ -959,8 +958,6 @@ public final class JTS {
         } else if (srsName != null) {
             try {
                 crs = CRS.decode(srsName);
-            } catch (NoSuchAuthorityCodeException e) {
-                // e.printStackTrace();
             } catch (FactoryException e) {
                 // e.printStackTrace();
             }
@@ -1140,10 +1137,12 @@ public final class JTS {
         // check each coordinate
         Coordinate[] c = geom.getCoordinates();
 
-        for (int i = 0; i < c.length; i++) {
-            if (!xUnbounded && ((c[i].x < x.getMinimumValue()) || (c[i].x > x.getMaximumValue()))) {
+        for (Coordinate coordinate : c) {
+            if (!xUnbounded
+                    && ((coordinate.x < x.getMinimumValue())
+                            || (coordinate.x > x.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(
-                        c[i].x
+                        coordinate.x
                                 + " outside of ("
                                 + x.getMinimumValue()
                                 + ","
@@ -1151,9 +1150,11 @@ public final class JTS {
                                 + ")");
             }
 
-            if (!yUnbounded && ((c[i].y < y.getMinimumValue()) || (c[i].y > y.getMaximumValue()))) {
+            if (!yUnbounded
+                    && ((coordinate.y < y.getMinimumValue())
+                            || (coordinate.y > y.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(
-                        c[i].y
+                        coordinate.y
                                 + " outside of ("
                                 + y.getMinimumValue()
                                 + ","

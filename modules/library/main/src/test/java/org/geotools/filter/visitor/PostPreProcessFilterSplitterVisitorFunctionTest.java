@@ -16,10 +16,13 @@
  */
 package org.geotools.filter.visitor;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_geometryType;
 import org.geotools.filter.function.math.FilterFunction_abs;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
@@ -34,6 +37,7 @@ public class PostPreProcessFilterSplitterVisitorFunctionTest
 
     PostPreProcessFilterSplittingVisitor visitor;
 
+    @Test
     public void testSupportAll() throws Exception {
 
         PropertyIsEqualTo filter1 = createFunctionFilter();
@@ -63,6 +67,7 @@ public class PostPreProcessFilterSplitterVisitorFunctionTest
         assertEquals(filter, visitor.getFilterPre());
     }
 
+    @Test
     public void testSupportOnlySome() throws Exception {
 
         PropertyIsEqualTo filter1 = createFunctionFilter();

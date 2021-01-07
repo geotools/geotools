@@ -78,8 +78,8 @@ public class AllGT implements All {
      */
     public Element findChildElement(String name) {
         if (elements != null) {
-            for (int i = 0; i < elements.length; i++) {
-                Element e = elements[i].findChildElement(name);
+            for (Element element : elements) {
+                Element e = element.findChildElement(name);
 
                 if (e != null) {
                     return e;
@@ -92,8 +92,8 @@ public class AllGT implements All {
 
     public Element findChildElement(String localName, URI namespaceURI) {
         if (elements != null) {
-            for (int i = 0; i < elements.length; i++) {
-                Element e = elements[i].findChildElement(localName, namespaceURI);
+            for (Element element : elements) {
+                Element e = element.findChildElement(localName, namespaceURI);
 
                 if (e != null) {
                     return e;

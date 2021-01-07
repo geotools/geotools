@@ -99,7 +99,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
         this.conn = session;
 
         if (definitionQuery != null) {
-            attributeNames = new HashMap<String, SelectExpressionItem>();
+            attributeNames = new HashMap<>();
 
             @SuppressWarnings("unchecked")
             List<SelectItem> selectItems = definitionQuery.getSelectItems();
@@ -200,7 +200,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     @Override
     public Object visit(final Id filter, final Object unused) {
         final Set<Identifier> identifiers = filter.getIdentifiers();
-        if (identifiers.size() == 0) {
+        if (identifiers.isEmpty()) {
             Filter.EXCLUDE.accept(this, unused);
             return unused;
         }

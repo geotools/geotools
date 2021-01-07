@@ -16,22 +16,29 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Collection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class DocumentTypeBindingTest extends KMLTestSupport {
+
+    @Test
     public void testType() throws Exception {
         assertEquals(FeatureCollection.class, binding(KML.DocumentType).getType());
     }
 
+    @Test
     public void testExecutionMode() throws Exception {
         assertEquals(Binding.AFTER, binding(KML.DocumentType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<Document>"

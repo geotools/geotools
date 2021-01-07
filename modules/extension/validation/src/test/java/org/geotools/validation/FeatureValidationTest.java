@@ -16,10 +16,14 @@
  */
 package org.geotools.validation;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataTestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.spatial.IsValidGeometryValidation;
+import org.junit.Test;
 import org.opengis.feature.IllegalAttributeException;
 
 /**
@@ -36,37 +40,21 @@ import org.opengis.feature.IllegalAttributeException;
 public class FeatureValidationTest extends DataTestCase {
     MemoryDataStore store;
 
-    /**
-     * FeatureValidationTest constructor.
-     *
-     * <p>Run test <code>testName</code>.
-     */
-    public FeatureValidationTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * Construct data store for use.
-     *
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    /** Construct data store for use. */
+    public void init() throws Exception {
+        super.init();
         store = new MemoryDataStore();
         store.addFeatures(roadFeatures);
         store.addFeatures(riverFeatures);
     }
 
-    /**
-     * Override tearDown.
-     *
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
+    /** Override tearDown. */
+    public void tearDown() throws Exception {
         store = null;
         super.tearDown();
     }
 
+    @Test
     public void testIsValidFeatureValidation() {
         // the visitor
         RoadValidationResults validationResults = new RoadValidationResults();
@@ -87,8 +75,8 @@ public class FeatureValidationTest extends DataTestCase {
         } catch (IllegalAttributeException e) {
         }
 
-        assertTrue(
-                !validator.validate(
+        assertFalse(
+                validator.validate(
                         this.newRoad,
                         this.roadType,
                         validationResults)); // validate will return false
@@ -99,6 +87,7 @@ public class FeatureValidationTest extends DataTestCase {
      *
      * <p>Description ...
      */
+    @Test
     public void testABunchOfValidations() {
         // the visitor
         RoadNetworkValidationResults roadValidationResults = new RoadNetworkValidationResults();

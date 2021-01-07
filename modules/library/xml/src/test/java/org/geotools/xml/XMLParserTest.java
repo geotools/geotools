@@ -16,22 +16,22 @@
  */
 package org.geotools.xml;
 
-import static junit.framework.TestCase.assertNotNull;
-
 import java.io.File;
 import java.net.URI;
 import java.util.logging.Level;
 import javax.naming.OperationNotSupportedException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.TestCase;
 import org.geotools.TestData;
 import org.geotools.xml.schema.Schema;
+import org.junit.Assert;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 /** @author dzwiers www.refractions.net */
-public class XMLParserTest extends TestCase {
+public class XMLParserTest {
 
+    @Test
     public void testNestedFeature() throws Throwable {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -50,9 +50,10 @@ public class XMLParserTest extends TestCase {
         parser.parse(f, xmlContentHandler);
 
         Object doc = xmlContentHandler.getDocument();
-        assertNotNull("Document missing", doc);
+        Assert.assertNotNull("Document missing", doc);
     }
 
+    @Test
     public void testMail() {
         try {
             String path = "xml/mails.xml";
@@ -63,17 +64,15 @@ public class XMLParserTest extends TestCase {
 
             Object doc = DocumentFactory.getInstance(u, null, Level.WARNING);
 
-            assertNotNull("Document missing", doc);
+            Assert.assertNotNull("Document missing", doc);
             // System.out.println(doc);
-        } catch (SAXException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
         } catch (Throwable e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
+            java.util.logging.Logger.getGlobal().log(Level.INFO, "", e);
+            Assert.fail(e.toString());
         }
     }
 
+    @Test
     public void testMailWrite() {
 
         try {
@@ -83,7 +82,7 @@ public class XMLParserTest extends TestCase {
             TestData.copy(this, "xml/mails.xsd");
 
             Object doc = DocumentFactory.getInstance(f.toURI(), null, Level.WARNING);
-            assertNotNull("Document missing", doc);
+            Assert.assertNotNull("Document missing", doc);
 
             Schema s = SchemaFactory.getInstance(new URI("http://mails/refractions/net"));
 
@@ -95,15 +94,15 @@ public class XMLParserTest extends TestCase {
             DocumentWriter.writeDocument(doc, s, f, null);
 
             doc = DocumentFactory.getInstance(f.toURI(), null, Level.WARNING);
-            assertNotNull("New Document missing", doc);
+            Assert.assertNotNull("New Document missing", doc);
 
-            assertTrue("file was not created +f", f.exists());
+            Assert.assertTrue("file was not created +f", f.exists());
             // System.out.println(f);
         } catch (SAXException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
+            Assert.fail(e.toString());
         } catch (Throwable e) {
-            assertTrue(e instanceof OperationNotSupportedException);
+            Assert.assertTrue(e instanceof OperationNotSupportedException);
             //            e.printStackTrace();
             //            fail(e.toString()); Operation not supported yet
         }

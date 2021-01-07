@@ -17,11 +17,13 @@
 package org.geotools.feature.simple;
 
 import java.util.Collections;
-import junit.framework.TestCase;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.SchemaImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -30,13 +32,14 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Schema;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class SimpleTypeBuilderTest extends TestCase {
+public class SimpleTypeBuilderTest {
 
     static final String URI = "gopher://localhost/test";
 
     SimpleFeatureTypeBuilder builder;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         Schema schema = new SchemaImpl("test");
 
         FeatureTypeFactoryImpl typeFactory = new FeatureTypeFactoryImpl();
@@ -67,6 +70,7 @@ public class SimpleTypeBuilderTest extends TestCase {
         builder.setBindings(schema);
     }
 
+    @Test
     public void testSanity() {
         builder.setName("testName");
         builder.setNamespaceURI("testNamespaceURI");
@@ -74,23 +78,24 @@ public class SimpleTypeBuilderTest extends TestCase {
         builder.add("integer", Integer.class);
 
         SimpleFeatureType type = builder.buildFeatureType();
-        assertNotNull(type);
+        Assert.assertNotNull(type);
 
-        assertEquals(2, type.getAttributeCount());
+        Assert.assertEquals(2, type.getAttributeCount());
 
         AttributeType t = type.getType("point");
-        assertNotNull(t);
-        assertEquals(Point.class, t.getBinding());
+        Assert.assertNotNull(t);
+        Assert.assertEquals(Point.class, t.getBinding());
 
         t = type.getType("integer");
-        assertNotNull(t);
-        assertEquals(Integer.class, t.getBinding());
+        Assert.assertNotNull(t);
+        Assert.assertEquals(Integer.class, t.getBinding());
 
         t = type.getGeometryDescriptor().getType();
-        assertNotNull(t);
-        assertEquals(Point.class, t.getBinding());
+        Assert.assertNotNull(t);
+        Assert.assertEquals(Point.class, t.getBinding());
     }
 
+    @Test
     public void testCRS() {
         builder.setName("testName");
         builder.setNamespaceURI("testNamespaceURI");
@@ -100,26 +105,28 @@ public class SimpleTypeBuilderTest extends TestCase {
         builder.add("point2", Point.class, DefaultGeographicCRS.WGS84);
         builder.setDefaultGeometry("point");
         SimpleFeatureType type = builder.buildFeatureType();
-        assertEquals(DefaultGeographicCRS.WGS84, type.getCoordinateReferenceSystem());
+        Assert.assertEquals(DefaultGeographicCRS.WGS84, type.getCoordinateReferenceSystem());
 
-        assertNull(type.getGeometryDescriptor().getType().getCoordinateReferenceSystem());
-        assertEquals(
+        Assert.assertNull(type.getGeometryDescriptor().getType().getCoordinateReferenceSystem());
+        Assert.assertEquals(
                 DefaultGeographicCRS.WGS84,
                 ((GeometryType) type.getType("point2")).getCoordinateReferenceSystem());
     }
 
+    @Test
     public void testAttributeDefaultValue() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("buggy");
         builder.nillable(false).defaultValue(12).add("attrWithDefault", Integer.class);
         builder.nillable(true).defaultValue(null).add("attrWithoutDefault", Integer.class);
         SimpleFeatureType featureType = builder.buildFeatureType();
-        assertFalse(featureType.getDescriptor("attrWithDefault").isNillable());
-        assertEquals(12, featureType.getDescriptor("attrWithDefault").getDefaultValue());
-        assertTrue(featureType.getDescriptor("attrWithoutDefault").isNillable());
-        assertNull(featureType.getDescriptor("attrWithoutDefault").getDefaultValue());
+        Assert.assertFalse(featureType.getDescriptor("attrWithDefault").isNillable());
+        Assert.assertEquals(12, featureType.getDescriptor("attrWithDefault").getDefaultValue());
+        Assert.assertTrue(featureType.getDescriptor("attrWithoutDefault").isNillable());
+        Assert.assertNull(featureType.getDescriptor("attrWithoutDefault").getDefaultValue());
     }
 
+    @Test
     public void testMaintainDefaultGeometryOnRetype() {
         builder.setName("testGeometries");
         builder.add("geo1", Point.class, DefaultGeographicCRS.WGS84);
@@ -131,9 +138,10 @@ public class SimpleTypeBuilderTest extends TestCase {
         // the default geometry, that had a special meaning in the original source
         SimpleFeatureType retyped =
                 SimpleFeatureTypeBuilder.retype(type, new String[] {"geo2", "geo1"});
-        assertEquals("geo1", retyped.getGeometryDescriptor().getLocalName());
+        Assert.assertEquals("geo1", retyped.getGeometryDescriptor().getLocalName());
     }
 
+    @Test
     public void testRetypeGeometryless() {
         builder.setName("testGeometryless");
         builder.add("geo1", Point.class, DefaultGeographicCRS.WGS84);
@@ -144,12 +152,13 @@ public class SimpleTypeBuilderTest extends TestCase {
         // performing an attribute selection, even changing order, should not change
         // the default geometry, that had a special meaning in the original source
         SimpleFeatureType retyped = SimpleFeatureTypeBuilder.retype(type, new String[] {"integer"});
-        assertNotNull(retyped);
-        assertNull(retyped.getGeometryDescriptor());
-        assertEquals(1, retyped.getAttributeCount());
-        assertEquals("integer", retyped.getAttributeDescriptors().get(0).getLocalName());
+        Assert.assertNotNull(retyped);
+        Assert.assertNull(retyped.getGeometryDescriptor());
+        Assert.assertEquals(1, retyped.getAttributeCount());
+        Assert.assertEquals("integer", retyped.getAttributeDescriptors().get(0).getLocalName());
     }
 
+    @Test
     public void testInitGeometryless() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("testGeometryless");
@@ -160,9 +169,10 @@ public class SimpleTypeBuilderTest extends TestCase {
         builder.init(type1);
         SimpleFeatureType type2 = builder.buildFeatureType();
 
-        assertEquals(type1, type2);
+        Assert.assertEquals(type1, type2);
     }
 
+    @Test
     public void testMaintainDefaultGeometryOnInit() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("testGeometries");
@@ -175,10 +185,11 @@ public class SimpleTypeBuilderTest extends TestCase {
         builder.init(type1);
         SimpleFeatureType type2 = builder.buildFeatureType();
 
-        assertEquals("geo2", type1.getGeometryDescriptor().getLocalName());
-        assertEquals("geo2", type2.getGeometryDescriptor().getLocalName());
+        Assert.assertEquals("geo2", type1.getGeometryDescriptor().getLocalName());
+        Assert.assertEquals("geo2", type2.getGeometryDescriptor().getLocalName());
     }
 
+    @Test
     public void testRemoveDefaultGeometryAfterInit() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("testGeometries");
@@ -192,7 +203,7 @@ public class SimpleTypeBuilderTest extends TestCase {
         builder.remove("geo2");
         SimpleFeatureType type2 = builder.buildFeatureType();
 
-        assertEquals("geo2", type1.getGeometryDescriptor().getLocalName());
-        assertEquals("geo1", type2.getGeometryDescriptor().getLocalName());
+        Assert.assertEquals("geo2", type1.getGeometryDescriptor().getLocalName());
+        Assert.assertEquals("geo1", type2.getGeometryDescriptor().getLocalName());
     }
 }

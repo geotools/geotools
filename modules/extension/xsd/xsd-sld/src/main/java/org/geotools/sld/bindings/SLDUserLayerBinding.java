@@ -16,7 +16,6 @@
  */
 package org.geotools.sld.bindings;
 
-import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.geotools.styling.LayerFeatureConstraints;
 import org.geotools.styling.RemoteOWS;
@@ -126,8 +125,8 @@ public class SLDUserLayerBinding extends AbstractComplexBinding {
         }
 
         // &lt;xsd:element ref="sld:UserStyle" maxOccurs="unbounded"/&gt;
-        for (Iterator i = node.getChildValues("UserStyle").iterator(); i.hasNext(); ) {
-            userLayer.addUserStyle((Style) i.next());
+        for (Object o : node.getChildValues("UserStyle")) {
+            userLayer.addUserStyle((Style) o);
         }
 
         return userLayer;

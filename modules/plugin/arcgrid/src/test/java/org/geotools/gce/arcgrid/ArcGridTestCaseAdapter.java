@@ -27,11 +27,6 @@ import java.io.File;
  */
 public class ArcGridTestCaseAdapter extends ArcGridBaseTestCase {
 
-    /** @param name */
-    public ArcGridTestCaseAdapter(String name) {
-        super(name);
-    }
-
     /* (non-Javadoc)
      * @see org.geotools.gce.arcgrid.ArcGridBaseTestCase#runMe(java.io.File)
      */

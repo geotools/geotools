@@ -22,20 +22,22 @@ import java.net.URI;
 import java.util.logging.Level;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.TestCase;
 import org.geotools.test.TestData;
 import org.geotools.xml.schema.Schema;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /** @author dzwiers */
-public class SchemaMergeTest extends TestCase {
+public class SchemaMergeTest {
 
     protected SAXParser parser;
 
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -43,6 +45,7 @@ public class SchemaMergeTest extends TestCase {
         parser = spf.newSAXParser();
     }
 
+    @Test
     public void testMergeSchema() {
         // will load a doc that includes two schema docs which duplicate definitions
 
@@ -57,29 +60,31 @@ public class SchemaMergeTest extends TestCase {
                 parser.parse(f, contentHandler);
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-                fail(e.toString());
+                Assert.fail(e.toString());
             }
 
             try {
-                assertNotNull("Schema missing", contentHandler.getSchema());
+                Assert.assertNotNull("Schema missing", contentHandler.getSchema());
                 // System.out.println(contentHandler.getSchema());
 
                 Schema schema = contentHandler.getSchema();
 
-                assertTrue(
+                Assert.assertEquals(
                         "Should only have 2 elements, had " + schema.getElements().length,
-                        schema.getElements().length == 2);
-                assertTrue(
+                        2,
+                        schema.getElements().length);
+                Assert.assertEquals(
                         "Should only have 1 complexType, had " + schema.getComplexTypes().length,
-                        schema.getComplexTypes().length == 1);
+                        1,
+                        schema.getComplexTypes().length);
 
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-                fail(e.toString());
+                Assert.fail(e.toString());
             }
         } catch (IOException e1) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
-            fail(e1.toString());
+            Assert.fail(e1.toString());
         }
     }
 }

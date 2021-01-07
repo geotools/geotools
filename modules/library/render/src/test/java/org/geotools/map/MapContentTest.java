@@ -19,8 +19,10 @@ package org.geotools.map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -186,9 +188,8 @@ public class MapContentTest {
 
         assertTrue(viewport.isEditable());
         assertEquals(crs, mapContent.getCoordinateReferenceSystem());
-        assertFalse(
-                WORLD.getCoordinateReferenceSystem()
-                        .equals(mapContent.getCoordinateReferenceSystem()));
+        assertNotEquals(
+                WORLD.getCoordinateReferenceSystem(), mapContent.getCoordinateReferenceSystem());
     }
 
     @Test
@@ -229,8 +230,8 @@ public class MapContentTest {
         mapContent.layers().add(0, layer2);
 
         // check reference equality
-        assertTrue(mapContent.layers().get(0) == layer2);
-        assertTrue(mapContent.layers().get(1) == layer1);
+        assertSame(mapContent.layers().get(0), layer2);
+        assertSame(mapContent.layers().get(1), layer1);
     }
 
     @Test
@@ -263,9 +264,9 @@ public class MapContentTest {
         assertEquals(layers.size(), mapContent.layers().size());
 
         // check expected layer order
-        assertTrue(mapContent.layers().get(0) == layer1);
-        assertTrue(mapContent.layers().get(1) == layer3);
-        assertTrue(mapContent.layers().get(2) == layer2);
+        assertSame(mapContent.layers().get(0), layer1);
+        assertSame(mapContent.layers().get(1), layer3);
+        assertSame(mapContent.layers().get(2), layer2);
     }
 
     @Test
@@ -280,7 +281,7 @@ public class MapContentTest {
         mapContent.layers().remove(0);
 
         assertEquals(1, mapContent.layers().size());
-        assertTrue(mapContent.layers().get(0) == layer2);
+        assertSame(mapContent.layers().get(0), layer2);
         assertTrue(layer1.isDisposed());
         assertFalse(layer2.isDisposed());
     }
@@ -296,7 +297,7 @@ public class MapContentTest {
         mapContent.layers().remove(layer1);
 
         assertEquals(1, mapContent.layers().size());
-        assertTrue(mapContent.layers().get(0) == layer2);
+        assertSame(mapContent.layers().get(0), layer2);
         assertTrue(layer1.isDisposed());
         assertFalse(layer2.isDisposed());
     }
@@ -330,8 +331,8 @@ public class MapContentTest {
         assertTrue(mapContent.layers().removeAll(layers));
 
         assertEquals(2, mapContent.layers().size());
-        assertTrue(mapContent.layers().get(0) == layerFirst);
-        assertTrue(mapContent.layers().get(1) == layerLast);
+        assertSame(mapContent.layers().get(0), layerFirst);
+        assertSame(mapContent.layers().get(1), layerLast);
 
         assertFalse(layerFirst.isDisposed());
         assertFalse(layerLast.isDisposed());
@@ -360,7 +361,7 @@ public class MapContentTest {
 
         assertEquals(layers.size(), mapContent.layers().size());
         for (int i = 0; i < layers.size(); i++) {
-            assertTrue(mapContent.layers().get(i) == layers.get(i));
+            assertSame(mapContent.layers().get(i), layers.get(i));
         }
 
         assertTrue(layerFirst.isDisposed());
@@ -386,7 +387,7 @@ public class MapContentTest {
         assertTrue(listener.await(WaitingMapListener.Type.ADDED, LISTENER_TIMEOUT));
 
         assertEquals(1, mapContent.layers().size());
-        assertTrue(mapContent.layers().get(0) == layer2);
+        assertSame(mapContent.layers().get(0), layer2);
         assertTrue(layer1.isDisposed());
         assertFalse(layer2.isDisposed());
     }

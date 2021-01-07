@@ -1,10 +1,13 @@
 package org.geotools.data.memory;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.data.DataTestCase;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -15,10 +18,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public class MemoryDataStoreConcurrencyTest extends DataTestCase {
 
-    public MemoryDataStoreConcurrencyTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testConcurrencyReadsAndWrite() throws Exception {
         final MemoryDataStore dataStore = new MemoryDataStore();
         dataStore.createSchema(roadType);
@@ -49,11 +49,11 @@ public class MemoryDataStoreConcurrencyTest extends DataTestCase {
             // start some reads from FeatureSource
             for (int i = 0; i < 10; i++) {
                 // just run through the features
-                assertTrue(dataStore != null);
+                assertNotNull(dataStore);
                 Query query = new Query(roadType.getTypeName());
                 FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
                         dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
-                assertTrue(featureReader != null);
+                assertNotNull(featureReader);
                 while (featureReader.hasNext()) {
                     featureReader.next();
                 }

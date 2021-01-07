@@ -255,7 +255,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         buf.append(", rules=<");
         buf.append(rules.size());
         buf.append(">");
-        if (rules.size() > 0) {
+        if (!rules.isEmpty()) {
             buf.append("(");
             buf.append(rules.get(0));
             if (rules.size() > 1) {

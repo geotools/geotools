@@ -16,19 +16,27 @@
  */
 package org.geotools.filter.v1_1;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.Not;
 import org.w3c.dom.Document;
 
 public class NotBindingTest extends FilterTestSupport {
+
+    @Test
     public void testType() {
         assertEquals(Not.class, binding(OGC.Not).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.Not).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.not(document, document);
 
@@ -37,6 +45,7 @@ public class NotBindingTest extends FilterTestSupport {
         assertNotNull(not.getFilter());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom = encode(FilterMockData.not(), OGC.Not);
         assertEquals(

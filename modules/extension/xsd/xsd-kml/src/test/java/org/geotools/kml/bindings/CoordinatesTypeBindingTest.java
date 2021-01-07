@@ -16,23 +16,30 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.w3c.dom.Document;
 
 public class CoordinatesTypeBindingTest extends KMLTestSupport {
+
+    @Test
     public void testType() {
         assertEquals(CoordinateSequence.class, binding(KML.CoordinatesType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.CoordinatesType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         buildDocument("<coordinates>1,1 2,2</coordinates>");
 
@@ -52,6 +59,7 @@ public class CoordinatesTypeBindingTest extends KMLTestSupport {
         assertEquals(2d, cs.getCoordinate(1).getZ(), 0.1);
     }
 
+    @Test
     public void testEncode() throws Exception {
         CoordinateSequence cs =
                 CoordinateArraySequenceFactory.instance()

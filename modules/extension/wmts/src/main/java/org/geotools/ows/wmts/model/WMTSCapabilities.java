@@ -240,12 +240,12 @@ public class WMTSCapabilities extends Capabilities {
                 net.opengis.ows11.OperationType opx = (net.opengis.ows11.OperationType) op;
 
                 EList dcps = opx.getDCP();
-                for (int i = 0; i < dcps.size(); i++) {
-                    DCPType dcp = (DCPType) dcps.get(i);
+                for (Object item : dcps) {
+                    DCPType dcp = (DCPType) item;
 
                     EList gets = dcp.getHTTP().getGet();
-                    for (int j = 0; j < gets.size(); j++) {
-                        RequestMethodType get = (RequestMethodType) gets.get(j);
+                    for (Object value : gets) {
+                        RequestMethodType get = (RequestMethodType) value;
                         try {
                             opt.setGet(new URL(get.getHref()));
                             if (!get.getConstraint().isEmpty()) {
@@ -269,8 +269,8 @@ public class WMTSCapabilities extends Capabilities {
                         }
                     }
                     EList posts = dcp.getHTTP().getPost();
-                    for (int j = 0; j < posts.size(); j++) {
-                        RequestMethodType post = (RequestMethodType) posts.get(j);
+                    for (Object o : posts) {
+                        RequestMethodType post = (RequestMethodType) o;
                         try {
                             opt.setPost(new URL(post.getHref()));
                             if (!post.getConstraint().isEmpty()) {

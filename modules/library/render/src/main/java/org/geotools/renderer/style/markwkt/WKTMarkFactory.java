@@ -196,16 +196,10 @@ public class WKTMarkFactory implements MarkFactory {
             return properties;
         }
 
-        InputStream in = null;
-        try {
-            in = libUrl.openStream();
+        try (InputStream in = libUrl.openStream()) {
             properties.load(in);
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
-        } finally {
-            if (in != null) {
-                in.close();
-            }
         }
 
         return properties;

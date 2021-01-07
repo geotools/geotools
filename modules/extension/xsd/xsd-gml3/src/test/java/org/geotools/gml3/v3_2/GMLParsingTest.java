@@ -27,7 +27,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.feature.FeatureCollection;
@@ -35,6 +34,8 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
 import org.geotools.xsd.Parser;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -42,13 +43,15 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class GMLParsingTest extends TestCase {
+public class GMLParsingTest {
 
+    @Test
     public void testGML() throws Exception {
         XSDSchema gml = GML.getInstance().getSchema();
-        assertFalse(gml.getTypeDefinitions().isEmpty());
+        Assert.assertFalse(gml.getTypeDefinitions().isEmpty());
     }
 
+    @Test
     public void testParseFeatureCollection() throws Exception {
         File schema = File.createTempFile("test", "xsd");
         schema.deleteOnExit();
@@ -71,27 +74,24 @@ public class GMLParsingTest extends TestCase {
         GMLConfiguration config = new GMLConfiguration();
         Parser p = new Parser(config);
         Object o = p.parse(new ByteArrayInputStream(out.toByteArray()));
-        assertTrue(o instanceof FeatureCollection);
+        Assert.assertTrue(o instanceof FeatureCollection);
 
         FeatureCollection features = (FeatureCollection) o;
-        assertEquals(3, features.size());
+        Assert.assertEquals(3, features.size());
 
-        FeatureIterator fi = features.features();
-        try {
+        try (FeatureIterator fi = features.features()) {
             for (int i = 0; i < 3; i++) {
-                assertTrue(fi.hasNext());
+                Assert.assertTrue(fi.hasNext());
 
                 SimpleFeature f = (SimpleFeature) fi.next();
-                assertTrue(f.getDefaultGeometry() instanceof Point);
+                Assert.assertTrue(f.getDefaultGeometry() instanceof Point);
 
                 Point point = (Point) f.getDefaultGeometry();
-                assertEquals(i / 1d, point.getX(), 0.1);
-                assertEquals(i / 1d, point.getX(), 0.1);
+                Assert.assertEquals(i / 1d, point.getX(), 0.1);
+                Assert.assertEquals(i / 1d, point.getX(), 0.1);
 
-                assertEquals(i, f.getAttribute("count"));
+                Assert.assertEquals(i, f.getAttribute("count"));
             }
-        } finally {
-            fi.close();
         }
     }
 
@@ -120,67 +120,77 @@ public class GMLParsingTest extends TestCase {
     }
 
     /** Test parsing of an srsName in EPSG code format. */
+    @Test
     public void testParseEpsgSrsname() throws Exception {
-        assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("EPSG:4326"));
+        Assert.assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("EPSG:4326"));
     }
 
     /** Test parsing of an srsName in OGC HTTP URL format. */
+    @Test
     public void testParseOgcHttpUrlSrsname() throws Exception {
-        assertEquals(
+        Assert.assertEquals(
                 CRS.decode("EPSG:4326"),
                 parsePointSrsname("http://www.opengis.net/gml/srs/epsg.xml#4326"));
     }
 
     /** Test parsing of an srsName in OGC URN Experimental format. */
+    @Test
     public void testParseOgcUrnExperimentalSrsname() throws Exception {
-        assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("urn:x-ogc:def:crs:EPSG::4326"));
+        Assert.assertEquals(
+                CRS.decode("EPSG:4326"), parsePointSrsname("urn:x-ogc:def:crs:EPSG::4326"));
     }
 
     /** Test parsing of an srsName in OGC URN format. */
+    @Test
     public void testParseOgcUrnSrsname() throws Exception {
-        assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("urn:ogc:def:crs:EPSG::4326"));
+        Assert.assertEquals(
+                CRS.decode("EPSG:4326"), parsePointSrsname("urn:ogc:def:crs:EPSG::4326"));
     }
 
     /** Test parsing of an srsName in OGC HTTP URI format. */
+    @Test
     public void testParseOgcHttpUriSrsname() throws Exception {
-        assertEquals(
+        Assert.assertEquals(
                 CRS.decode("EPSG:4326"),
                 parsePointSrsname("http://www.opengis.net/def/crs/EPSG/0/4326"));
     }
 
+    @Test
     public void testCoordinateList()
             throws IOException, SAXException, ParserConfigurationException {
         GMLConfiguration gml = new GMLConfiguration(true);
         Parser p = new Parser(gml);
         Object multiSurface = p.parse(getClass().getResourceAsStream("surfacePatches.xml"));
-        assertFalse(multiSurface instanceof String);
-        assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
+        Assert.assertFalse(multiSurface instanceof String);
+        Assert.assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
         MultiPolygon geom = (MultiPolygon) multiSurface;
 
-        assertFalse(geom.isEmpty());
+        Assert.assertFalse(geom.isEmpty());
     }
 
+    @Test
     public void testSurfacememberPatches()
             throws IOException, SAXException, ParserConfigurationException {
         GMLConfiguration gml = new GMLConfiguration(true);
         Parser p = new Parser(gml);
         Object multiSurface = p.parse(getClass().getResourceAsStream("surfacememberPatches.xml"));
-        assertFalse(multiSurface instanceof String);
-        assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
+        Assert.assertFalse(multiSurface instanceof String);
+        Assert.assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
         MultiPolygon geom = (MultiPolygon) multiSurface;
 
-        assertFalse(geom.isEmpty());
+        Assert.assertFalse(geom.isEmpty());
     }
 
+    @Test
     public void testNestedInteriors()
             throws IOException, SAXException, ParserConfigurationException {
         GMLConfiguration gml = new GMLConfiguration(true);
         Parser p = new Parser(gml);
         Object multiSurface = p.parse(getClass().getResourceAsStream("nestedInteriors.xml"));
-        assertFalse(multiSurface instanceof String);
-        assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
+        Assert.assertFalse(multiSurface instanceof String);
+        Assert.assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
         MultiPolygon geom = (MultiPolygon) multiSurface;
 
-        assertFalse(geom.isEmpty());
+        Assert.assertFalse(geom.isEmpty());
     }
 }

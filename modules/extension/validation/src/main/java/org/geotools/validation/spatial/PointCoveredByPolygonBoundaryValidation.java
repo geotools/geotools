@@ -81,8 +81,8 @@ public class PointCoveredByPolygonBoundaryValidation extends PointPolygonAbstrac
             return false;
         }
 
-        for (int i = 0; i < points.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) points[i];
+        for (Object point : points) {
+            SimpleFeature tmp = (SimpleFeature) point;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
             if (gt instanceof Polygon) {

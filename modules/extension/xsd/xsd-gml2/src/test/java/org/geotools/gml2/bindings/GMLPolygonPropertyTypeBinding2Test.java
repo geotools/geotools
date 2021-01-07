@@ -16,20 +16,27 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
 public class GMLPolygonPropertyTypeBinding2Test extends GMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(Polygon.class, binding(GML.PolygonPropertyType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(GML.PolygonPropertyType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         GML2MockData.polygonProperty(document, document);
 
@@ -37,6 +44,7 @@ public class GMLPolygonPropertyTypeBinding2Test extends GMLTestSupport {
         assertNotNull(poly);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.polygon(), GML.polygonProperty);
 

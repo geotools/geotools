@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -56,6 +55,8 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -77,7 +78,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /** @author jamesm */
-public class Rendering2DTest extends TestCase {
+public class Rendering2DTest {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
@@ -103,10 +104,6 @@ public class Rendering2DTest extends TestCase {
 
     {
         rendererHints.put("optimizedDataLoadingEnabled", Boolean.valueOf(true));
-    }
-
-    public Rendering2DTest(java.lang.String testName) {
-        super(testName);
     }
 
     Style loadTestStyle() throws IOException {
@@ -267,6 +264,7 @@ public class Rendering2DTest extends TestCase {
         return data.getFeatureSource(typeName).getFeatures();
     }
 
+    @Test
     public void testSimplePolygonRender() throws Exception {
 
         LOGGER.finer("starting rendering2DTest");
@@ -330,6 +328,7 @@ public class Rendering2DTest extends TestCase {
     //
     // }
 
+    @Test
     public void testSimpleLineRender() throws Exception {
 
         // ////////////////////////////////////////////////////////////////////
@@ -380,6 +379,7 @@ public class Rendering2DTest extends TestCase {
         RendererBaseTest.showRender("testSimpleLineRender", renderer, 1000, env);
     }
 
+    @Test
     public void testSimplePointRender() throws Exception {
 
         // ////////////////////////////////////////////////////////////////////
@@ -430,6 +430,7 @@ public class Rendering2DTest extends TestCase {
         RendererBaseTest.showRender("testSimplePointRender", renderer, 1000, env);
     }
 
+    @Test
     public void testReprojectionWithPackedCoordinateSequence() throws Exception {
 
         // same as the datasource test, load in some features into a table
@@ -503,6 +504,7 @@ public class Rendering2DTest extends TestCase {
         LOGGER.finer(stringBuffer.toString());
     }
 
+    @Test
     public void testLineReprojection() throws Exception {
         // ///////////////////////////////////////////////////////////////////
         //
@@ -574,6 +576,7 @@ public class Rendering2DTest extends TestCase {
         RendererBaseTest.showRender("testLineReprojection", renderer, 1000, newbounds);
     }
 
+    @Test
     public void testPointReprojection() throws Exception {
 
         // ///////////////////////////////////////////////////////////////////
@@ -656,6 +659,7 @@ public class Rendering2DTest extends TestCase {
      *
      * <p>This method relies on the features created on createTestFeatureCollection()
      */
+    @Test
     public void testDefinitionQueryProcessing() throws Exception {
 
         // LOGGER.info("starting definition query test");
@@ -772,6 +776,7 @@ public class Rendering2DTest extends TestCase {
 
     }
 
+    @Test
     public void testDefinitionQuerySLDProcessing() throws Exception {
         // final SimpleFeatureCollection ft = createTestDefQueryFeatureCollection();
         // final Style style = createDefQueryTestStyle();
@@ -978,7 +983,7 @@ public class Rendering2DTest extends TestCase {
             Polygon polyg = geomFac.createPolygon(ring, null);
             return polyg;
         } catch (TopologyException te) {
-            fail("Error creating sample polygon for testing " + te);
+            Assert.fail("Error creating sample polygon for testing " + te);
         }
         return null;
     }
@@ -989,7 +994,7 @@ public class Rendering2DTest extends TestCase {
             Geometry lineString = buildShiftedGeometry(makeSampleLineString(geomFac), 50, 50);
             return geomFac.createGeometryCollection(new Geometry[] {polyg, lineString});
         } catch (TopologyException te) {
-            fail("Error creating sample polygon for testing " + te);
+            Assert.fail("Error creating sample polygon for testing " + te);
         }
         return null;
     }
@@ -999,7 +1004,7 @@ public class Rendering2DTest extends TestCase {
             Polygon polyg = (Polygon) buildShiftedGeometry(makeSamplePolygon(geomFac), 0, 100);
             return polyg.getExteriorRing();
         } catch (TopologyException te) {
-            fail("Error creating sample polygon for testing " + te);
+            Assert.fail("Error creating sample polygon for testing " + te);
         }
         return null;
     }
@@ -1008,8 +1013,7 @@ public class Rendering2DTest extends TestCase {
         Geometry clone = g.copy();
         Coordinate[] coords = clone.getCoordinates();
         final int length = coords.length;
-        for (int i = 0; i < length; i++) {
-            Coordinate coord = coords[i];
+        for (Coordinate coord : coords) {
             coord.x += shiftX;
             coord.y += shiftY;
         }
@@ -1018,6 +1022,7 @@ public class Rendering2DTest extends TestCase {
     }
 
     /** I am not sure this is really correct. We should check it with more care. */
+    @Test
     public void testScaleCalc() throws Exception {
 
         // 1388422.8746916912, 639551.3924667436
@@ -1056,6 +1061,7 @@ public class Rendering2DTest extends TestCase {
         // assertTrue(Math.abs(102355 - s) < 10); // 102355.1639202933
     }
 
+    @Test
     public void testRenderEmptyLine() throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
         StyleBuilder sb = new StyleBuilder();
@@ -1071,6 +1077,7 @@ public class Rendering2DTest extends TestCase {
         renderEmptyGeometry(f, style);
     }
 
+    @Test
     public void testRenderEmptyCollection() throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
         StyleBuilder sb = new StyleBuilder();
@@ -1084,6 +1091,7 @@ public class Rendering2DTest extends TestCase {
         renderEmptyGeometry(f, style);
     }
 
+    @Test
     public void testRenderCollectionWithEmptyItems()
             throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
@@ -1108,6 +1116,7 @@ public class Rendering2DTest extends TestCase {
         renderEmptyGeometry(f, style);
     }
 
+    @Test
     public void testRenderPolygonEmptyRings() throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
         StyleBuilder sb = new StyleBuilder();
@@ -1131,6 +1140,7 @@ public class Rendering2DTest extends TestCase {
         renderEmptyGeometry(f, style);
     }
 
+    @Test
     public void testMixedEmptyMultiLine() throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
         StyleBuilder sb = new StyleBuilder();
@@ -1161,7 +1171,7 @@ public class Rendering2DTest extends TestCase {
                     public void errorOccurred(Exception e) {
                         java.util.logging.Logger.getGlobal()
                                 .log(java.util.logging.Level.INFO, "", e);
-                        fail(
+                        Assert.fail(
                                 "Got an exception during rendering, this should not happen, "
                                         + "not even with emtpy geometries");
                     }

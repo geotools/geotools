@@ -1,5 +1,6 @@
 package org.geotools.mbtiles;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -8,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -117,7 +117,7 @@ public class MBTilesFileTest {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         // Ensure journal has never been found
-        assertTrue(counter.get() == 0);
+        assertEquals(0, counter.get());
     }
 
     @Test
@@ -145,10 +145,10 @@ public class MBTilesFileTest {
         file.saveTile(tile2);
 
         MBTilesTile testTile = file.loadTile(1, 0, 0);
-        assertTrue(Arrays.equals(tile1.getData(), testTile.getData()));
+        assertArrayEquals(tile1.getData(), testTile.getData());
 
         testTile = file.loadTile(2, 0, 1);
-        assertTrue(Arrays.equals(tile2.getData(), testTile.getData()));
+        assertArrayEquals(tile2.getData(), testTile.getData());
 
         assertEquals(2, file.numberOfTiles());
 
@@ -190,12 +190,12 @@ public class MBTilesFileTest {
         file.saveGrid(grid2);
 
         MBTilesGrid testGrid = file.loadGrid(1, 0, 0);
-        assertTrue(Arrays.equals(grid1.getGrid(), testGrid.getGrid()));
+        assertArrayEquals(grid1.getGrid(), testGrid.getGrid());
         assertEquals(grid1.getGridDataKey("key1"), grid1.getGridDataKey("key1"));
         assertEquals(grid1.getGridDataKey("key2"), grid1.getGridDataKey("key2"));
 
         testGrid = file.loadGrid(2, 0, 1);
-        assertTrue(Arrays.equals(grid2.getGrid(), testGrid.getGrid()));
+        assertArrayEquals(grid2.getGrid(), testGrid.getGrid());
         assertEquals(grid2.getGridDataKey("key3"), grid2.getGridDataKey("key3"));
         assertEquals(grid2.getGridDataKey("key4"), grid2.getGridDataKey("key4"));
     }

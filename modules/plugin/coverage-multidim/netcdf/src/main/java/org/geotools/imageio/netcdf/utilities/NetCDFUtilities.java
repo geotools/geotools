@@ -399,7 +399,7 @@ public class NetCDFUtilities {
     public static final String NC4_ERROR_MESSAGE =
             "Native NetCDF C library is not available. "
                     + "Unable to handle NetCDF4 files on input/output."
-                    + "\nPlease make sure to add the paht of the Native NetCDF C libraries to the "
+                    + "\nPlease make sure to add the path of the Native NetCDF C libraries to the "
                     + "PATH environment variable\n if you want to support NetCDF4-Classic files";
 
     static {
@@ -759,9 +759,7 @@ public class NetCDFUtilities {
                 if ("featureCollection".equals(reader.getName().getLocalPart())) {
                     return FileFormat.FC;
                 }
-            } catch (XMLStreamException e) {
-
-            } catch (FactoryConfigurationError e) {
+            } catch (XMLStreamException | FactoryConfigurationError e) {
 
             } finally {
                 if (input != null) {

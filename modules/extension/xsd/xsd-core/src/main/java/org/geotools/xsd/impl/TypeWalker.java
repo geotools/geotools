@@ -29,8 +29,8 @@ public class TypeWalker {
     public void walk(XSDTypeDefinition base, Visitor visitor) {
         List types = types(base);
 
-        for (int i = 0; i < types.size(); i++) {
-            XSDTypeDefinition type = (XSDTypeDefinition) types.get(i);
+        for (Object o : types) {
+            XSDTypeDefinition type = (XSDTypeDefinition) o;
 
             // do the visit, if visitor returns false, break out
             if (!visitor.visit(type)) {

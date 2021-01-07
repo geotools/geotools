@@ -20,7 +20,6 @@
 package org.geotools.referencing.factory;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -230,8 +229,8 @@ public class IdentifiedObjectFinder {
             throws FactoryException {
         final Citation authority = getProxy().getAuthorityFactory().getAuthority();
         final boolean isAll = ReferencingFactory.ALL.equals(authority);
-        for (final Iterator it = object.getIdentifiers().iterator(); it.hasNext(); ) {
-            final Identifier id = (Identifier) it.next();
+        for (ReferenceIdentifier referenceIdentifier : object.getIdentifiers()) {
+            final Identifier id = (Identifier) referenceIdentifier;
             if (!isAll && !Citations.identifierMatches(authority, id.getAuthority())) {
                 // The identifier is not for this authority. Looks the other ones.
                 continue;
@@ -283,8 +282,7 @@ public class IdentifiedObjectFinder {
              *       name found, etc.).
              */
         }
-        for (final Iterator it = object.getAlias().iterator(); it.hasNext(); ) {
-            final GenericName id = (GenericName) it.next();
+        for (final GenericName id : object.getAlias()) {
             try {
                 candidate = getProxy().create(id.toString());
             } catch (FactoryException e) {
@@ -324,8 +322,7 @@ public class IdentifiedObjectFinder {
         @SuppressWarnings("unchecked")
         final Set<String> codes =
                 specific ? getSpecificCodeCandidates(object) : getCodeCandidates(object);
-        for (final Iterator it = codes.iterator(); it.hasNext(); ) {
-            final String code = (String) it.next();
+        for (final String code : codes) {
             IdentifiedObject candidate;
             try {
                 candidate = getProxy().create(code);

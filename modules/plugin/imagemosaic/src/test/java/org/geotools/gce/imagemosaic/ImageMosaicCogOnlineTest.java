@@ -16,11 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.Raster;
@@ -37,7 +32,6 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -57,6 +51,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.test.TestData;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -65,7 +60,7 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 
 /** Testing using COG remote granules on an ImageMosaic */
-public class ImageMosaicCogOnlineTest extends TestCase {
+public class ImageMosaicCogOnlineTest {
 
     @BeforeClass
     public static void init() {
@@ -84,14 +79,14 @@ public class ImageMosaicCogOnlineTest extends TestCase {
         File workDir = prepareWorkingDir("cogtest.zip", "cogtest", "");
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
         GridCoverage2D coverage = reader.read(null);
-        assertNotNull(coverage);
+        Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();
         int numTileY = image.getNumYTiles();
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
-        assertEquals(512, raster.getWidth());
-        assertEquals(512, raster.getHeight());
-        assertEquals(1, raster.getNumBands());
+        Assert.assertEquals(512, raster.getWidth());
+        Assert.assertEquals(512, raster.getHeight());
+        Assert.assertEquals(1, raster.getNumBands());
         reader.dispose();
     }
 
@@ -117,20 +112,20 @@ public class ImageMosaicCogOnlineTest extends TestCase {
 
         GridCoverage2D coverage = reader.read(params);
         RenderedImage image = coverage.getRenderedImage();
-        assertNotNull(coverage);
+        Assert.assertNotNull(coverage);
         int numTileX = image.getNumXTiles();
         int numTileY = image.getNumYTiles();
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
-        assertEquals(512, raster.getWidth());
-        assertEquals(512, raster.getHeight());
-        assertEquals(1, raster.getNumBands());
+        Assert.assertEquals(512, raster.getWidth());
+        Assert.assertEquals(512, raster.getHeight());
+        Assert.assertEquals(1, raster.getNumBands());
         Object fileLocation =
                 coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
-        assertNotNull(fileLocation);
-        assertTrue(fileLocation instanceof String);
+        Assert.assertNotNull(fileLocation);
+        Assert.assertTrue(fileLocation instanceof String);
         String path = (String) fileLocation;
-        assertTrue(!path.isEmpty());
-        assertTrue(path.endsWith(".ovr"));
+        Assert.assertFalse(path.isEmpty());
+        Assert.assertTrue(path.endsWith(".ovr"));
         reader.dispose();
     }
 
@@ -144,21 +139,21 @@ public class ImageMosaicCogOnlineTest extends TestCase {
         }
 
         try (FileWriter fw = new FileWriter(file)) {
-            assertNotNull(properties.remove("CogRangeReader"));
-            assertNotNull(properties.remove("SuggestedSPI"));
+            Assert.assertNotNull(properties.remove("CogRangeReader"));
+            Assert.assertNotNull(properties.remove("SuggestedSPI"));
             properties.store(fw, "");
         }
 
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
         GridCoverage2D coverage = reader.read(null);
-        assertNotNull(coverage);
+        Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();
         int numTileY = image.getNumYTiles();
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
-        assertEquals(512, raster.getWidth());
-        assertEquals(512, raster.getHeight());
-        assertEquals(1, raster.getNumBands());
+        Assert.assertEquals(512, raster.getWidth());
+        Assert.assertEquals(512, raster.getHeight());
+        Assert.assertEquals(1, raster.getNumBands());
         reader.dispose();
     }
 
@@ -172,7 +167,7 @@ public class ImageMosaicCogOnlineTest extends TestCase {
         }
 
         try (FileWriter fw = new FileWriter(file)) {
-            assertNotNull(properties.remove("UseExistingSchema"));
+            Assert.assertNotNull(properties.remove("UseExistingSchema"));
             properties.store(fw, "");
         }
 
@@ -181,7 +176,7 @@ public class ImageMosaicCogOnlineTest extends TestCase {
         GranuleSource granules = reader.getGranules(coverageName, true);
 
         // Only 1 granule available before doing the harvest
-        assertEquals(1, granules.getCount(Query.ALL));
+        Assert.assertEquals(1, granules.getCount(Query.ALL));
 
         try {
             // now go and harvest the url
@@ -195,7 +190,7 @@ public class ImageMosaicCogOnlineTest extends TestCase {
             granules = reader.getGranules(coverageName, true);
 
             // We now have 2 granules
-            assertEquals(2, granules.getCount(Query.ALL));
+            Assert.assertEquals(2, granules.getCount(Query.ALL));
         } finally {
             reader.dispose();
         }
@@ -223,21 +218,18 @@ public class ImageMosaicCogOnlineTest extends TestCase {
                     "https://s3-us-west-2.amazonaws.com/landsat-pds/c1/L8/153/075/LC08_L1TP_153075_20190515_20190515_01_RT/LC08_L1TP_153075_20190515_20190515_01_RT_B3.TIF";
             URL source = new URL(granuleUrl);
             List<HarvestedSource> summary = reader.harvest(null, source, null);
-            assertSame(originalCatalog, reader.granuleCatalog);
-            assertEquals(1, summary.size());
+            Assert.assertSame(originalCatalog, reader.granuleCatalog);
+            Assert.assertEquals(1, summary.size());
 
             // check the granule catalog
             String coverageName = reader.getGridCoverageNames()[0];
             GranuleSource granules = reader.getGranules(coverageName, true);
-            assertEquals(1, granules.getCount(Query.ALL));
+            Assert.assertEquals(1, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
-                assertTrue(fi.hasNext());
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
+                Assert.assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
-                assertEquals(granuleUrl, f.getAttribute("location"));
-            } finally {
-                fi.close();
+                Assert.assertEquals(granuleUrl, f.getAttribute("location"));
             }
 
         } finally {
@@ -287,13 +279,13 @@ public class ImageMosaicCogOnlineTest extends TestCase {
                     new URL(
                             "https://s3-us-west-2.amazonaws.com/landsat-pds/c1/L8/153/075/LC08_L1TP_153075_20190515_20190515_01_RT/LC08_L1TP_153075_20190515_20190515_01_RT_B3.TIF"));
             List<HarvestedSource> summary = reader.harvest(null, urls, null);
-            assertSame(originalCatalog, reader.granuleCatalog);
-            assertEquals(2, summary.size());
+            Assert.assertSame(originalCatalog, reader.granuleCatalog);
+            Assert.assertEquals(2, summary.size());
 
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
+            Assert.assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            Assert.assertEquals(
                     "2019-04-29T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
-            assertEquals(
+            Assert.assertEquals(
                     "2019-05-15T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
         } finally {
             reader.dispose();
@@ -319,9 +311,9 @@ public class ImageMosaicCogOnlineTest extends TestCase {
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
         Date date = (Date) feature.getAttribute("createdate");
         calendar.setTime(date);
-        assertEquals(2019, calendar.get(Calendar.YEAR));
-        assertEquals(29, calendar.get(Calendar.DAY_OF_MONTH));
-        assertEquals(4, calendar.get(Calendar.MONTH) + 1);
+        Assert.assertEquals(2019, calendar.get(Calendar.YEAR));
+        Assert.assertEquals(29, calendar.get(Calendar.DAY_OF_MONTH));
+        Assert.assertEquals(4, calendar.get(Calendar.MONTH) + 1);
     }
 
     private File prepareWorkingDir(String zipName, String folder, String subFolder)
@@ -335,7 +327,7 @@ public class ImageMosaicCogOnlineTest extends TestCase {
         destinationPath += zipName;
         if (!workDir.mkdirs()) {
             FileUtils.deleteDirectory(workDir);
-            assertTrue("Unable to create workdir:" + workDir, workDir.mkdirs());
+            Assert.assertTrue("Unable to create workdir:" + workDir, workDir.mkdirs());
         }
         File zipFile = new File(workDir, zipName);
         FileUtils.copyFile(TestData.file(this, zipName), zipFile);

@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.visitor;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -24,6 +26,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_geometryType;
 import org.geotools.filter.function.JsonPointerFunction;
+import org.junit.Test;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -48,6 +51,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         simpleLogicalCaps.addAll(FilterCapabilities.LOGICAL_OPENGIS);
     }
 
+    @Test
     public void testVisitBetweenFilter() throws Exception {
         PropertyIsBetween filter = ff.between(ff.literal(0), ff.property(numAtt), ff.literal(4));
 
@@ -55,6 +59,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         runTest(filter, caps, numAtt);
     }
 
+    @Test
     public void testNullTransactionAccessor() throws Exception {
         accessor = null;
         Filter f1 = createPropertyIsEqualToFilter(nameAtt, "david");
@@ -63,6 +68,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         runTest(ff.and(f1, f2), simpleLogicalCaps, nameAtt);
     }
 
+    @Test
     public void testVisitLogicalANDFilter() throws Exception {
         Filter f1 = createPropertyIsEqualToFilter(nameAtt, "david");
         Filter f2 = createPropertyIsEqualToFilter(nameAtt, "david");
@@ -70,12 +76,14 @@ public class PostPreProcessFilterSplittingVisitorTest
         runTest(ff.and(f1, f2), simpleLogicalCaps, nameAtt);
     }
 
+    @Test
     public void testVisitLogicalNOTFilter() throws Exception {
         Filter f1 = createPropertyIsEqualToFilter(nameAtt, "david");
 
         runTest(ff.not(f1), simpleLogicalCaps, nameAtt);
     }
 
+    @Test
     public void testVisitLogicalORFilter() throws Exception {
         Filter f1 = createPropertyIsEqualToFilter(nameAtt, "david");
         Filter f2 = createPropertyIsEqualToFilter("name", "jose");
@@ -95,6 +103,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(orFilter, visitor.getFilterPost());
     }
 
+    @Test
     public void testMassOrFilter() throws Exception {
         List<Filter> filters = new ArrayList<>();
         for (int i = 0; i < 10000; i++) {
@@ -108,6 +117,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(Filter.INCLUDE, visitor.getFilterPost());
     }
 
+    @Test
     public void testVisitCompareFilter() throws Exception {
         Filter f = createPropertyIsEqualToFilter(nameAtt, "david");
 
@@ -117,6 +127,7 @@ public class PostPreProcessFilterSplittingVisitorTest
     /**
      * an update is in transaction that modifies an attribute that NOT is referenced in the query
      */
+    @Test
     public void testVisitCompareFilterWithUpdateDifferentAttribute() throws Exception {
         Filter f = createPropertyIsEqualToFilter(nameAtt, "david");
 
@@ -132,18 +143,21 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(visitor.getFilterPre().toString(), f, visitor.getFilterPre());
     }
 
+    @Test
     public void testVisitLikeFilter() throws Exception {
         Filter filter = ff.like(ff.property(nameAtt), "j*", "*", "?", "\\");
         FilterCapabilities likeCaps = new FilterCapabilities(PropertyIsLike.class);
         runTest(filter, likeCaps, nameAtt);
     }
 
+    @Test
     public void testVisitNullFilter() throws Exception {
         Filter filter = ff.isNull(ff.property(nameAtt));
         FilterCapabilities nullCaps = new FilterCapabilities(PropertyIsNull.class);
         runTest(filter, nullCaps, nameAtt);
     }
 
+    @Test
     public void testVisitFidFilter() throws Exception {
         HashSet<FeatureId> ids = new HashSet<>();
         ids.add(ff.featureId("david"));
@@ -156,6 +170,7 @@ public class PostPreProcessFilterSplittingVisitorTest
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
+    @Test
     public void testVisitIdFilterWithNoIdCapabilities() throws Exception {
         // Id Filter
         HashSet<FeatureId> ids = new HashSet<>();
@@ -174,6 +189,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(idFilter, visitor.getFilterPost());
     }
 
+    @Test
     public void testFunctionFilter() throws Exception {
         simpleLogicalCaps.addType(BBOX.class);
         visitor = newVisitor(simpleLogicalCaps);
@@ -194,6 +210,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(filter, visitor.getFilterPre());
     }
 
+    @Test
     public void testFunctionANDGeometryFilter() throws Exception {
         simpleLogicalCaps.addType(BBOX.class);
         visitor = newVisitor(simpleLogicalCaps);
@@ -217,6 +234,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(andFilter, visitor.getFilterPre());
     }
 
+    @Test
     public void testFunctionORGeometryFilter() throws Exception {
         simpleLogicalCaps.addType(BBOX.class);
         visitor = newVisitor(simpleLogicalCaps);
@@ -240,6 +258,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(orFilter, visitor.getFilterPre());
     }
 
+    @Test
     public void testFunctionNOTFilter() throws Exception {
         simpleLogicalCaps.addType(BBOX.class);
         visitor = newVisitor(simpleLogicalCaps);
@@ -261,6 +280,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(not, visitor.getFilterPre());
     }
 
+    @Test
     public void testNullParentNullAccessor() throws Exception {
         simpleLogicalCaps.addType(BBOX.class);
         simpleLogicalCaps.addType(FilterFunction_geometryType.class);
@@ -284,6 +304,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(orFilter, visitor.getFilterPre());
     }
 
+    @Test
     public void testComplicatedOrFilter() throws Exception {
         Filter c1 = ff.equals(ff.property("eventstatus"), ff.literal("deleted"));
 
@@ -335,6 +356,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(ff.or(f, ff.id(ids)), visitor.getFilterPre());
     }
 
+    @Test
     public void testOrNotSupported() {
         FilterCapabilities caps = new FilterCapabilities();
         caps.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
@@ -358,6 +380,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(Filter.INCLUDE, visitor.getFilterPost());
     }
 
+    @Test
     public void testTemporalFilter() throws Exception {
         FilterCapabilities caps = new FilterCapabilities();
         PostPreProcessFilterSplittingVisitor visitor =
@@ -369,6 +392,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(f1, visitor.getFilterPost());
     }
 
+    @Test
     public void testIsNullFilter() {
         FilterCapabilities caps = new FilterCapabilities();
         PostPreProcessFilterSplittingVisitor visitor =
@@ -387,6 +411,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(f2, visitor.getFilterPost());
     }
 
+    @Test
     public void testNullLiteralInLogicCombination() {
         FilterCapabilities caps = new FilterCapabilities();
         PostPreProcessFilterSplittingVisitor visitor =
@@ -404,6 +429,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(Filter.INCLUDE, visitor.getFilterPost());
     }
 
+    @Test
     public void testIndexOutOfBoundExceptionNotHappensWithTwoInMemoryFilter() {
         // test a bug doesn't occur when having in the filter a function
         // with a number of parameters <= the number of filters in the post stack

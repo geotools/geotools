@@ -67,9 +67,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
                 parser.setEntityResolver(resolver);
             }
             parsed = parser.parse(in);
-        } catch (SAXException e) {
-            throw new IOException(e);
-        } catch (ParserConfigurationException e) {
+        } catch (SAXException | ParserConfigurationException e) {
             throw new IOException(e);
         } finally {
             response.dispose();

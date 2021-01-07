@@ -209,14 +209,16 @@ public class GeoTiffWriterTest extends Assert {
         final GridEnvelope croppedGR = croppedGG.getGridRange();
         final MathTransform croppedG2W = croppedGG.getGridToCRS(PixelInCell.CELL_CENTER);
         final GeneralEnvelope croppedEnvelope = (GeneralEnvelope) cropped.getEnvelope();
-        assertTrue("min x do not match after crop", 29 == croppedGR.getLow(0));
-        assertTrue("min y do not match after crop", 30 == croppedGR.getLow(1));
-        assertTrue("max x do not match after crop", 90 == croppedGR.getHigh(0) + 1);
-        assertTrue("max y do not match after crop", 91 == croppedGR.getHigh(1) + 1);
+        assertEquals("min x do not match after crop", 29, croppedGR.getLow(0));
+        assertEquals("min y do not match after crop", 30, croppedGR.getLow(1));
+        assertEquals("max x do not match after crop", 90, croppedGR.getHigh(0) + 1);
+        assertEquals("max y do not match after crop", 91, croppedGR.getHigh(1) + 1);
         // check that the affine transform are the same thing
-        assertTrue(
-                "The Grdi2World tranformations of the original and the cropped covearage do not match",
-                sourceG2W.equals(croppedG2W));
+        assertEquals(
+                "The Grdi2World tranformations of the original and the cropped covearage do "
+                        + "not match",
+                sourceG2W,
+                croppedG2W);
         // check that the envelope is correct
         final GeneralEnvelope expectedEnvelope =
                 new GeneralEnvelope(
@@ -343,10 +345,8 @@ public class GeoTiffWriterTest extends Assert {
         assertNotNull(coverageMercator);
         assertNotNull(coverageMercator.getCoordinateReferenceSystem());
         assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), googleCRS));
-        assertTrue(
-                coverage.getEnvelope2D()
-                        .getFrame()
-                        .equals(coverageMercator.getEnvelope2D().getFrame()));
+        assertEquals(
+                coverage.getEnvelope2D().getFrame(), coverageMercator.getEnvelope2D().getFrame());
         reader.dispose();
         coverage.dispose(true);
         coverage.dispose(true);
@@ -609,7 +609,7 @@ public class GeoTiffWriterTest extends Assert {
         final MathTransform g2w_ = gc.getGridGeometry().getGridToCRS();
         assertTrue(g2w_ instanceof AffineTransform2D);
         AffineTransform2D g2w = (AffineTransform2D) g2w_;
-        assertTrue(XAffineTransform.getSwapXY(g2w) == -1);
+        assertEquals(XAffineTransform.getSwapXY(g2w), -1);
         assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(gc.getCoordinateReferenceSystem()));
         RenderedImage ri = gc.getRenderedImage();
         assertEquals(ri.getWidth(), 120);
@@ -668,9 +668,7 @@ public class GeoTiffWriterTest extends Assert {
             assertEquals(ri.getHeight(), i == 0 ? 120 : 12);
             reader.dispose();
 
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(output);
+            try (FileInputStream fis = new FileInputStream(output)) {
 
                 byte[] bytes = new byte[6];
                 fis.read(bytes);
@@ -680,14 +678,6 @@ public class GeoTiffWriterTest extends Assert {
                 } else {
                     // Little Endian Case
                     assertEquals(bytes[4], 43); // 43 is the magic number of BigTiff
-                }
-            } finally {
-                if (fis != null) {
-                    try {
-                        fis.close();
-                    } catch (Throwable t) {
-
-                    }
                 }
             }
             i++;

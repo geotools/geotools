@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.spi.ImageReaderSpi;
 import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -309,11 +308,6 @@ public class OverviewsControllerTest extends Assert {
             assertSame(at.ot[i].g2.ssy, readParamsG2.getSourceYSubsampling());
         }
         reader.dispose();
-    }
-
-    /** @param args */
-    public static void main(String[] args) {
-        TestRunner.run(OverviewsControllerTest.suite());
     }
 
     @Before

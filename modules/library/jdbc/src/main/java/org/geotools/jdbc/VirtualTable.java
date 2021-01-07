@@ -186,7 +186,7 @@ public class VirtualTable implements Serializable {
             // remove the where clause place holder
             result = removeWhereClausePlaceHolder(result);
         }
-        if (parameters.size() == 0) {
+        if (parameters.isEmpty()) {
             return result;
         }
 

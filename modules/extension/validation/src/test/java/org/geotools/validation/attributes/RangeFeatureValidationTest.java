@@ -16,10 +16,15 @@
  */
 package org.geotools.validation.attributes;
 
-import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.RoadValidationResults;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestName;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.IllegalAttributeException;
@@ -47,31 +52,31 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author $Author: sploreg $ (last modification)
  * @version $Id$
  */
-public class RangeFeatureValidationTest extends TestCase {
+public class RangeFeatureValidationTest {
     private GeometryFactory gf;
     private RoadValidationResults results;
     private SimpleFeatureType type;
     private SimpleFeature feature;
     RangeValidation test;
-    /** Constructor for RangeFeatureValidationTest. */
-    public RangeFeatureValidationTest(String arg0) {
-        super(arg0);
-    }
+
+    @Rule public TestName testName = new TestName();
 
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         gf = new GeometryFactory();
 
         test = new RangeValidation();
         test.setAttribute("name");
         test.setTypeRef("road");
         test.setName("JUnit");
-        test.setName("test used for junit test " + getName());
+        test.setName("test used for junit test " + testName.getMethodName());
 
-        type = DataUtilities.createType(getName() + ".road", "id:0,*geom:LineString,name:String");
+        type =
+                DataUtilities.createType(
+                        testName.getMethodName() + ".road", "id:0,*geom:LineString,name:String");
 
         results = new RoadValidationResults();
     }
@@ -95,71 +100,83 @@ public class RangeFeatureValidationTest extends TestCase {
     /*
      * @see TestCase#tearDown()
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         test = null;
-        super.tearDown();
     }
 
+    @Test
     public void testSetName() {
         test.setName("foo");
-        assertEquals("foo", test.getName());
+        Assert.assertEquals("foo", test.getName());
     }
 
+    @Test
     public void testGetName() {
         test.setName("bork");
-        assertEquals("bork", test.getName());
+        Assert.assertEquals("bork", test.getName());
     }
 
+    @Test
     public void testSetDescription() {
         test.setDescription("foo");
-        assertEquals("foo", test.getDescription());
+        Assert.assertEquals("foo", test.getDescription());
     }
 
+    @Test
     public void testGetDescription() {
         test.setDescription("bork");
-        assertEquals("bork", test.getDescription());
+        Assert.assertEquals("bork", test.getDescription());
     }
 
+    @Test
     public void testGetPriority() {
         // TODO Implement getPriority().
     }
 
+    @Test
     public void testGetMax() {
         test.setMax(100);
-        assertEquals(100, test.getMax());
+        Assert.assertEquals(100, test.getMax());
     }
 
+    @Test
     public void testGetMin() {
         test.setMin(10);
-        assertEquals(10, test.getMin());
+        Assert.assertEquals(10, test.getMin());
     }
 
+    @Test
     public void testGetPath() {
         test.setAttribute("path");
-        assertEquals("path", test.getAttribute());
+        Assert.assertEquals("path", test.getAttribute());
     }
 
+    @Test
     public void testSetMax() {
         test.setMax(500);
-        assertEquals(500, test.getMax());
+        Assert.assertEquals(500, test.getMax());
     }
 
+    @Test
     public void testSetMin() {
         test.setMin(5);
-        assertEquals(5, test.getMin());
+        Assert.assertEquals(5, test.getMin());
     }
 
+    @Test
     public void testSetPath() {
         test.setAttribute("path2");
-        assertEquals("path2", test.getAttribute());
+        Assert.assertEquals("path2", test.getAttribute());
     }
 
+    @Test
     public void testRangeFeatureValidation() throws Exception {
         test.setTypeRef("road");
         test.setAttribute("id");
         test.setMin(0);
-        assertTrue(test.validate(road("rd1", 1, "street"), type, results));
-        assertTrue(test.validate(road("rd2", 0, "avenue"), type, results));
-        assertFalse(test.validate(road("rd3", -1, "alley"), type, results));
+        Assert.assertTrue(test.validate(road("rd1", 1, "street"), type, results));
+        Assert.assertTrue(test.validate(road("rd2", 0, "avenue"), type, results));
+        Assert.assertFalse(test.validate(road("rd3", -1, "alley"), type, results));
     }
 }

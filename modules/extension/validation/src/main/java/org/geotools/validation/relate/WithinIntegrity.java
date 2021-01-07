@@ -107,10 +107,8 @@ public class WithinIntegrity extends RelationIntegrity {
         SimpleFeatureCollection collectionA = featureSourceA.getFeatures(filter);
         SimpleFeatureCollection collectionB = featureSourceB.getFeatures(filter);
 
-        SimpleFeatureIterator fr1 = null;
         SimpleFeatureIterator fr2 = null;
-        try {
-            fr1 = collectionA.features();
+        try (SimpleFeatureIterator fr1 = collectionA.features()) {
 
             if (fr1 == null) return false;
 
@@ -141,8 +139,6 @@ public class WithinIntegrity extends RelationIntegrity {
                     if (fr2 != null) fr2.close();
                 }
             }
-        } finally {
-            if (fr1 != null) fr1.close();
         }
 
         return success;
@@ -184,10 +180,8 @@ public class WithinIntegrity extends RelationIntegrity {
 
         SimpleFeatureCollection collection = featureSourceA.getFeatures(filter);
 
-        SimpleFeatureIterator fr1 = null;
         SimpleFeatureIterator fr2 = null;
-        try {
-            fr1 = collection.features();
+        try (SimpleFeatureIterator fr1 = collection.features()) {
 
             if (fr1 == null) return false;
 
@@ -222,8 +216,6 @@ public class WithinIntegrity extends RelationIntegrity {
                     if (fr2 != null) fr2.close();
                 }
             }
-        } finally {
-            if (fr1 != null) fr1.close();
         }
 
         return success;

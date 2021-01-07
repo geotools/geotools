@@ -20,7 +20,6 @@ package org.geotools.coverageio.gdal.nitf;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.media.jai.ImageLayout;
@@ -70,11 +69,7 @@ public final class NITFTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning(
-                    "Test File not found, please download it at: http://dl.maptools.org/dl/gdal/data/nitf/cadrg/001zc013.on1");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning(
                     "Test File not found, please download it at: http://dl.maptools.org/dl/gdal/data/nitf/cadrg/001zc013.on1");
             return;

@@ -598,7 +598,7 @@ public final class GridCoverageRendererUtilities {
             double[] bgValues,
             Hints hints) {
         GridCoverage2D mosaicked = null;
-        if (coverages.size() == 0) {
+        if (coverages.isEmpty()) {
             return null;
         } else if (coverages.size() == 1) {
             mosaicked = coverages.get(0);

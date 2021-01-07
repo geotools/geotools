@@ -421,11 +421,8 @@ public class TinyOwsTest {
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName.getLocalPart(), ff.id(fids));
-        SimpleFeatureIterator reader = source.getFeatures(query).features();
-        try {
+        try (SimpleFeatureIterator reader = source.getFeatures(query).features()) {
             return reader.next();
-        } finally {
-            reader.close();
         }
     }
 

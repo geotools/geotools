@@ -16,14 +16,18 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.w3c.dom.Document;
 
 public class MultiGeometryTypeBindingTest extends GML3TestSupport {
-
+    @Test
     public void testParse() throws Exception {
         GML3MockData.multiGeometry(document, document);
 
@@ -33,6 +37,7 @@ public class MultiGeometryTypeBindingTest extends GML3TestSupport {
         assertEquals(3, multiGeom.getNumGeometries());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Geometry geometry = GML3MockData.multiGeometry();
         GML3EncodingUtils.setID(geometry, "geometry");

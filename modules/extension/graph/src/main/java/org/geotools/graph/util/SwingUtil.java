@@ -74,8 +74,8 @@ public class SwingUtil {
                         JList source = (JList) e.getSource();
                         if (e.getClickCount() == 2) {
                             ListSelectionListener[] listeners = source.getListSelectionListeners();
-                            for (int i = 0; i < listeners.length; i++) {
-                                listeners[i].valueChanged(
+                            for (ListSelectionListener listener : listeners) {
+                                listener.valueChanged(
                                         new ListSelectionEvent(
                                                 source,
                                                 source.getSelectedIndex(),

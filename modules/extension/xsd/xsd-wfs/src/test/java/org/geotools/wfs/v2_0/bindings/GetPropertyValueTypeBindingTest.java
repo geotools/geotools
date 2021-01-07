@@ -16,15 +16,19 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.net.URI;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.GetPropertyValueType;
 import net.opengis.wfs20.QueryType;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 import org.opengis.filter.Id;
 
 public class GetPropertyValueTypeBindingTest extends WFSTestSupport {
-
+    @Test
     public void testParse1() throws Exception {
         String xml =
                 "<wfs:GetPropertyValue service='WFS' version='2.0.0' valueReference='foo'"

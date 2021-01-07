@@ -37,16 +37,13 @@ public class ClippingFeatureCollection extends DecoratingSimpleFeatureCollection
     @Override
     public int size() {
         int count = 0;
-        SimpleFeatureIterator i = features();
-        try {
+        try (SimpleFeatureIterator i = features()) {
             while (i.hasNext()) {
                 count++;
                 i.next();
             }
 
             return count;
-        } finally {
-            i.close();
         }
     }
 }

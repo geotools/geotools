@@ -180,6 +180,7 @@ public class WorldFileWriter {
      * @param transform is the transformation that we want to write out.
      * @throws IOException in case something bad happens.
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     private void write(BufferedWriter writer, MathTransform transform) {
         try {
             if ((transform instanceof IdentityTransform)) {

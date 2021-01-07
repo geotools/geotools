@@ -24,7 +24,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -79,8 +78,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
 
     public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params)
             throws IOException {
-        final Set<AppSchemaDataAccess> registeredAppSchemaStores =
-                new HashSet<AppSchemaDataAccess>();
+        final Set<AppSchemaDataAccess> registeredAppSchemaStores = new HashSet<>();
         try {
             return createDataStore(params, false, new DataAccessMap(), registeredAppSchemaStores);
         } catch (Exception ex) {
@@ -110,8 +108,8 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         // on getCapabilities, and getFeature also shouldn't return anything etc.
         List<String> includes = config.getIncludes();
         Map<String, Object> extendedParams = new HashMap<>(params);
-        for (Iterator<String> it = includes.iterator(); it.hasNext(); ) {
-            extendedParams.put("url", buildIncludeUrl(configFileUrl, it.next()));
+        for (String include : includes) {
+            extendedParams.put("url", buildIncludeUrl(configFileUrl, include));
             // this will register the related data access, to enable feature chaining;
             // sourceDataStoreMap is passed on to keep track of the already created source data
             // stores

@@ -207,8 +207,8 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         Rectangle dim = null;
 
         if (parameters != null) {
-            for (int i = 0; i < parameters.length; i++) {
-                final ParameterValue param = (ParameterValue) parameters[i];
+            for (GeneralParameterValue parameter : parameters) {
+                final ParameterValue param = (ParameterValue) parameter;
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
@@ -375,6 +375,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
      * Fast lane mosaicker, basically builds an OpImage that returns translated versions of the
      * source images, without actually copying pixels around
      */
+    @SuppressWarnings("PMD.UseArrayListInsteadOfVector") // old API asking for Vector
     private OpImage mosaicUniformImages(List<ImageInTile> sources) {
         // compute bounds
         int minx = sources.stream().mapToInt(it -> it.posx).min().getAsInt();
@@ -439,7 +440,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             }
 
             @Override
-            @SuppressWarnings("unchecked")
+            @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
             public Vector<RenderedImage> getSources() {
                 return super.getSources();
             }

@@ -127,7 +127,7 @@ public class ExpressionExtractor {
 
     /** Given an expression list will create an expression concatenating them. */
     static Expression catenateExpressions(List<Expression> expressions) {
-        if (expressions == null || expressions.size() == 0)
+        if (expressions == null || expressions.isEmpty())
             throw new IllegalArgumentException(
                     "You should provide at least one expression in the list");
 

@@ -128,8 +128,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         if (median != null) {
             // median was overwritten by an optimization
             return new MedianResult(median);
-        } else if (list.size() < 1) {
-            // no items in the list
+        } else if (list.isEmpty()) {
             return CalcResult.NULL_RESULT;
         } else {
             // we have a list; create a CalcResult containing the list
@@ -239,7 +238,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
      */
     @SuppressWarnings("unchecked") // tried various ways to make this work, failed
     private static Object findMedian(List<Comparable> list) {
-        if (list.size() < 1) {
+        if (list.isEmpty()) {
             return null;
         }
         Object median;

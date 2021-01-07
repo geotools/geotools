@@ -18,7 +18,6 @@ package org.geotools.gml3.complex;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -150,8 +149,8 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
         final String idAttName = getId().getLocalPart();
 
-        for (Iterator it = attributeUses.iterator(); it.hasNext(); ) {
-            XSDAttributeUse use = (XSDAttributeUse) it.next();
+        for (Object attributeUs : attributeUses) {
+            XSDAttributeUse use = (XSDAttributeUse) attributeUs;
             XSDAttributeUseCategory useCategory = use.getUse();
 
             XSDAttributeDeclaration idAtt = use.getAttributeDeclaration();

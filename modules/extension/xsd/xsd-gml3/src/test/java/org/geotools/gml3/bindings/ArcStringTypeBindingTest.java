@@ -16,6 +16,9 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.XpathEngine;
 import org.geotools.geometry.jts.CircularString;
@@ -23,6 +26,7 @@ import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
@@ -33,6 +37,7 @@ public class ArcStringTypeBindingTest extends GML3TestSupport {
         return true;
     }
 
+    @Test
     public void testParse() throws Exception {
         GML3MockData.arcStringWithPosList(document, document);
         LineString lineString = (LineString) parse();
@@ -52,6 +57,7 @@ public class ArcStringTypeBindingTest extends GML3TestSupport {
         assertEquals(3, controlPoints[9], 0d);
     }
 
+    @Test
     public void testEncodeSimple() throws Exception {
         LineString curve =
                 new CurvedGeometryFactory(0.1)
@@ -69,6 +75,7 @@ public class ArcStringTypeBindingTest extends GML3TestSupport {
         assertEquals("1 1 2 2 3 1 5 5 7 3", xpath.evaluate(basePath + "/gml:posList", dom));
     }
 
+    @Test
     public void testEncodeCompound() throws Exception {
         // create a compound curve
         CurvedGeometryFactory factory = new CurvedGeometryFactory(0.1);

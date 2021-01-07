@@ -107,7 +107,7 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
         List<String> matches = getMatches();
 
         // set the properties, only if we have matches!
-        if (matches.size() <= 0) {
+        if (matches.isEmpty()) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("No matches found for this property extractor:");
         }

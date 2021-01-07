@@ -16,14 +16,20 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.filter.Filters;
 import org.geotools.styling.Font;
+import org.junit.Test;
 
 public class SLDFontTestBinding extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(Font.class, new SLDFontBinding(null, null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.font(document, document);
 
@@ -35,6 +41,7 @@ public class SLDFontTestBinding extends SLDTestSupport {
         assertEquals(14, Filters.asInt(font.getSize()));
     }
 
+    @Test
     public void testDefaultFont() throws Exception {
         SLDMockData.element(SLD.FONT, document, document);
         Font font = (Font) parse();

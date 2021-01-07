@@ -17,7 +17,6 @@
 package org.geotools.referencing.operation.builder;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.geometry.DirectPosition2D;
 import org.opengis.geometry.DirectPosition;
@@ -149,9 +148,7 @@ class MapTriangulationFactory {
         // Assert.isTrue(vectors.size() > 0);
         MappedPosition nearestOne = vertices.get(0);
 
-        for (Iterator<MappedPosition> i = vertices.iterator(); i.hasNext(); ) {
-            MappedPosition candidate = i.next();
-
+        for (MappedPosition candidate : vertices) {
             if (((DirectPosition2D) candidate.getSource()).distance(x.toPoint2D())
                     < ((DirectPosition2D) nearestOne.getSource()).distance(x.toPoint2D())) {
                 nearestOne = candidate;

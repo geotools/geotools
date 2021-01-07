@@ -762,7 +762,7 @@ public class ProjectionHandler {
                     }
                 }
 
-                if (elements.size() == 0) {
+                if (elements.isEmpty()) {
                     return null;
                 }
 
@@ -785,6 +785,10 @@ public class ProjectionHandler {
         try {
             result = geometry.intersection(mask);
         } catch (Exception e1) {
+            // JTS versions lower than 1.18.0 included a call to buffer(0) in the reduce call.
+            // We add it here to ensure that inputs are suitably clean.
+            geometry = geometry.buffer(0);
+
             // try a precision reduction approach, starting from mm and scaling up to km
             double precision;
             if (CRS.getProjectedCRS(geometryCRS) != null) {

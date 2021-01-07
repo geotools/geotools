@@ -184,7 +184,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                 }
             }
             // no geometries, no bounds
-            if (geometries.size() == 0) {
+            if (geometries.isEmpty()) {
                 return new ReferencedEnvelope();
             } else {
                 q.setPropertyNames(geometries);
@@ -305,11 +305,8 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
 
         try {
-            FeatureReader<?, ?> fr = featureSource.getReader(notEmptyQuery);
-            try {
+            try (FeatureReader<?, ?> fr = featureSource.getReader(notEmptyQuery)) {
                 return !fr.hasNext();
-            } finally {
-                fr.close();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -356,9 +353,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      */
     public boolean contains(Object o) {
         // TODO: base this on reader
-        SimpleFeatureIterator e = null;
-        try {
-            e = this.features();
+        try (SimpleFeatureIterator e = this.features()) {
             if (o == null) {
                 while (e.hasNext()) {
                     if (e.next() == null) {
@@ -373,10 +368,6 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                 }
             }
             return false;
-        } finally {
-            if (e != null) {
-                e.close();
-            }
         }
     }
     /**
@@ -441,17 +432,11 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         // code based on AbstractFeatureCollection
         // TODO: base this on reader
         ArrayList<SimpleFeature> array = new ArrayList<>();
-        FeatureIterator<SimpleFeature> e = null;
-        try {
-            e = features();
+        try (FeatureIterator<SimpleFeature> e = features()) {
             while (e.hasNext()) {
                 array.add(e.next());
             }
             return array.toArray(new SimpleFeature[array.size()]);
-        } finally {
-            if (e != null) {
-                e.close();
-            }
         }
     }
 
@@ -464,8 +449,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                             java.lang.reflect.Array.newInstance(
                                     array.getClass().getComponentType(), size);
         }
-        FeatureIterator<SimpleFeature> it = features();
-        try {
+        try (FeatureIterator<SimpleFeature> it = features()) {
             Object[] result = array;
             for (int i = 0; it.hasNext() && i < size; i++) {
                 result[i] = it.next();
@@ -474,10 +458,6 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                 array[size] = null;
             }
             return array;
-        } finally {
-            if (it != null) {
-                it.close();
-            }
         }
     }
 

@@ -18,7 +18,6 @@ package org.geotools.graph.util;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -73,8 +72,8 @@ public class MultiMap implements Map, Serializable {
     }
 
     public boolean containsValue(Object value) {
-        for (Iterator itr = values().iterator(); itr.hasNext(); ) {
-            Collection c = (Collection) itr.next();
+        for (Object o : values()) {
+            Collection c = (Collection) o;
             if (c.contains(value)) return (true);
         }
         return (false);
@@ -85,8 +84,8 @@ public class MultiMap implements Map, Serializable {
     }
 
     public void putAll(Map t) {
-        for (Iterator itr = t.entrySet().iterator(); itr.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) itr.next();
+        for (Object o : t.entrySet()) {
+            Entry entry = (Entry) o;
             put(entry.getKey(), entry.getValue());
         }
     }

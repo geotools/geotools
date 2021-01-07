@@ -99,7 +99,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
             idList.add(id);
             getResultStack().popResult();
         }
-        assert idList.size() >= 1 : "must have one or more FeatureIds";
+        assert !idList.isEmpty() : "must have one or more FeatureIds";
 
         // shorts the id list and builds the filter Id
         Collections.reverse(idList);
@@ -168,7 +168,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
             exprList.add(expr);
         }
 
-        assert exprList.size() >= 1 : "must have one or more expressions";
+        assert !exprList.isEmpty() : "must have one or more expressions";
 
         // retrieve the left hand expression from the stack
         final Expression leftHandExpr = getResultStack().popExpression();
@@ -434,8 +434,8 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
             char character = patternUC.charAt(i);
 
             boolean found = false;
-            for (int j = 0; j < validFlags.length; j++) {
-                if (validFlags[j] == character) {
+            for (char validFlag : validFlags) {
+                if (validFlag == character) {
                     found = true;
                     break;
                 }

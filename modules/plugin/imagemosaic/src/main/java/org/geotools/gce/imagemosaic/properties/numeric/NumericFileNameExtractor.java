@@ -128,7 +128,7 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
         }
 
         // set the properties, if we have some
-        if (values.size() <= 0) {
+        if (values.isEmpty()) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("No matches found for this property extractor:");
         }

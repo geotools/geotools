@@ -94,9 +94,7 @@ final class MetadataEntity implements InvocationHandler {
              */
             try {
                 return method.invoke(this, args);
-            } catch (IllegalAccessException e) {
-                throw new MetadataException("Illegal method call.", e); // TODO: localize
-            } catch (InvocationTargetException e) {
+            } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new MetadataException("Illegal method call.", e); // TODO: localize
             }
         }

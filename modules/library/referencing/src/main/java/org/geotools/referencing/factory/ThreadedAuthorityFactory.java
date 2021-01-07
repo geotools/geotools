@@ -21,7 +21,6 @@ package org.geotools.referencing.factory;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -251,13 +250,13 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
             final Collection titles = citation.getAlternateTitles();
             InternationalString title = citation.getTitle();
             if (titles != null) {
-                for (final Iterator it = titles.iterator(); it.hasNext(); ) {
+                for (Object o : titles) {
                     /*
                      * Uses the longuest title instead of the main one. In Geotools
                      * implementation, the alternate title may contains usefull informations
                      * like the EPSG database version number and the database engine.
                      */
-                    final InternationalString candidate = (InternationalString) it.next();
+                    final InternationalString candidate = (InternationalString) o;
                     if (candidate.length() > title.length()) {
                         title = candidate;
                     }

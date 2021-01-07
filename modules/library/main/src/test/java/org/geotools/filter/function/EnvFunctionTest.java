@@ -17,6 +17,7 @@
 package org.geotools.filter.function;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -396,7 +397,7 @@ public class EnvFunctionTest {
     public void testExistingKeyEvalIsNotNil() {
         EnvFunction.setGlobalValue("foo", "whatever");
         boolean isNil = ff.isNil(ff.function("env", ff.literal("foo")), null).evaluate(null);
-        assertTrue(!isNil);
+        assertFalse(isNil);
     }
 
     @Test

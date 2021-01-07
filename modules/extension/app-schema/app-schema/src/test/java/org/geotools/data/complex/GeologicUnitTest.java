@@ -195,13 +195,10 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
 
     private int size(FeatureCollection features) {
         int size = 0;
-        FeatureIterator i = features.features();
-        try {
+        try (FeatureIterator i = features.features()) {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        } finally {
-            i.close();
         }
         return size;
     }

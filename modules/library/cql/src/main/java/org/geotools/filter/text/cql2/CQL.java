@@ -259,12 +259,10 @@ public class CQL {
                     System.out.println();
                     filterTransformer.transform(filter, System.out);
                 }
-            } catch (IOException e1) {
+            } catch (IOException | TransformerException e1) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
             } catch (CQLException cqlex) {
                 System.out.println(cqlex.getSyntaxError());
-            } catch (TransformerException e) {
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
     }

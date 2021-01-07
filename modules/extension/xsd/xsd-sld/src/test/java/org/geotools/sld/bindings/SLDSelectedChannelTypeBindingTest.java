@@ -16,6 +16,9 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.v1_0.OGC;
 import org.geotools.styling.SelectedChannelType;
@@ -23,10 +26,12 @@ import org.junit.Test;
 import org.w3c.dom.Element;
 
 public class SLDSelectedChannelTypeBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(SelectedChannelType.class, new SLDSelectedChannelTypeBinding(null).getType());
     }
 
+    @Test
     public void testNormal() throws Exception {
         document.appendChild(document.createElementNS(SLD.NAMESPACE, "GreenChannel"));
 

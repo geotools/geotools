@@ -18,9 +18,7 @@ package org.geotools.referencing.wkt;
 
 import java.util.HashMap;
 import java.util.Objects;
-import javax.measure.IncommensurableException;
 import javax.measure.Quantity;
-import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import org.geotools.measure.Units;
 import org.geotools.referencing.wkt.GeoToolsCRSUnitFormat.BaseGT2Format;
@@ -107,7 +105,6 @@ public class DefaultUnitParser extends BaseGT2Format {
                 try {
                     float factor1 = (float) unit.getConverterToAny(systemUnit).convert(1.0);
                     return Objects.hash(systemUnit, Float.floatToIntBits(factor1));
-                } catch (UnconvertibleException | IncommensurableException e) {
                 } catch (Throwable e) {
                 }
             }

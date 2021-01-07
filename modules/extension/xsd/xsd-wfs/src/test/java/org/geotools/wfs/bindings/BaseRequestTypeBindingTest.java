@@ -16,27 +16,25 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.net.URL;
 import net.opengis.wfs.BaseRequestType;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Unit test suite for {@link BaseRequestTypeBinding}
- *
- * @author Gabriel Roldan (TOPP)
- * @version $Id$
- * @since 2.5.x
- */
 public class BaseRequestTypeBindingTest extends WFSTestSupport {
     public BaseRequestTypeBindingTest() {
         super(WFS.BaseRequestType, BaseRequestType.class, Binding.OVERRIDE);
     }
 
+    @Test
     public void testEncode() throws Exception {
         // BaseRequestType is abstract, use a concrete subclass instead
         BaseRequestType brq = factory.createDescribeFeatureTypeType();
@@ -52,6 +50,7 @@ public class BaseRequestTypeBindingTest extends WFSTestSupport {
         assertEquals("foo", root.getAttribute("handle"));
     }
 
+    @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "BaseRequestTypeBindingTest.xml");
         buildDocument(resource);

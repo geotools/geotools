@@ -16,13 +16,19 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.RasterSymbolizer;
+import org.junit.Test;
 
 public class SLDRasterSymbolizerBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(RasterSymbolizer.class, new SLDRasterSymbolizerBinding(null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.rasterSymbolizer(document, document);
 

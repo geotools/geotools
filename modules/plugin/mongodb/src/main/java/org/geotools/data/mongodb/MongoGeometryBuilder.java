@@ -260,10 +260,10 @@ public class MongoGeometryBuilder {
 
     List<?> toList(Coordinate[] cs) {
         BasicDBList l = new BasicDBList();
-        for (int i = 0; i < cs.length; i++) {
+        for (Coordinate c : cs) {
             BasicDBList m = new BasicDBList();
-            m.add(cs[i].x);
-            m.add(cs[i].y);
+            m.add(c.x);
+            m.add(c.y);
             l.add(m);
         }
         return l;

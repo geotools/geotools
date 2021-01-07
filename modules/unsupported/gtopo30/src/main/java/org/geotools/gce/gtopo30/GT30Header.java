@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.geotools.data.DataSourceException;
 import org.geotools.util.URLs;
@@ -329,8 +328,8 @@ final class GT30Header {
     private static boolean fullPropertySet(final Map<String, Object> properties) {
         boolean full = true;
         final Collection<Object> values = properties.values();
-        for (final Iterator<Object> it = values.iterator(); it.hasNext(); ) {
-            if (it.next() == null) {
+        for (Object value : values) {
+            if (value == null) {
                 full = false;
 
                 break;

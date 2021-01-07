@@ -16,6 +16,9 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Arrays;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.ParameterExpressionType;
@@ -25,10 +28,11 @@ import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class StoredQueryDescriptionTypeBindingTest extends WFSTestSupport {
-
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "   <wfs:StoredQueryDefinition id='myStoredQuery' xmlns:wfs='http://www.opengis.net/wfs/2.0' "
@@ -63,6 +67,7 @@ public class StoredQueryDescriptionTypeBindingTest extends WFSTestSupport {
         assertEquals(1, sqd.getQueryExpressionText().size());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Wfs20Factory f = Wfs20Factory.eINSTANCE;
         StoredQueryDescriptionType sqd = f.createStoredQueryDescriptionType();
@@ -95,11 +100,11 @@ public class StoredQueryDescriptionTypeBindingTest extends WFSTestSupport {
         assertEquals("wfs:StoredQueryDescription", dom.getDocumentElement().getNodeName());
         assertEquals(1, dom.getElementsByTagName("wfs:QueryExpressionText").getLength());
 
-        assertTrue(
+        assertEquals(
+                "wfs:Query",
                 dom.getElementsByTagName("wfs:QueryExpressionText")
                         .item(0)
                         .getFirstChild()
-                        .getNodeName()
-                        .equals("wfs:Query"));
+                        .getNodeName());
     }
 }

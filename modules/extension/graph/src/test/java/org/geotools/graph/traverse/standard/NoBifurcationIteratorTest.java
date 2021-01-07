@@ -16,7 +16,6 @@
  */
 package org.geotools.graph.traverse.standard;
 
-import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
@@ -27,17 +26,16 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.CountingWalker;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class NoBifurcationIteratorTest extends TestCase {
+public class NoBifurcationIteratorTest {
 
     private GraphBuilder m_builder;
 
-    public NoBifurcationIteratorTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
     }
@@ -47,6 +45,7 @@ public class NoBifurcationIteratorTest extends TestCase {
      * <br>
      * Expected: 1. Every node should be visited. 2. Nodes should be visited in order.
      */
+    @Test
     public void test_0() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -58,7 +57,7 @@ public class NoBifurcationIteratorTest extends TestCase {
                         element.setCount(getCount() - 1);
 
                         // nodes should be visited in order
-                        assertTrue(element.getID() == getCount() - 1);
+                        Assert.assertEquals(element.getID(), getCount() - 1);
                         return (GraphTraversal.CONTINUE);
                     }
                 };
@@ -72,7 +71,7 @@ public class NoBifurcationIteratorTest extends TestCase {
         traversal.traverse();
 
         // every node should have been visited
-        assertTrue(walker.getCount() == builder().getGraph().getNodes().size());
+        Assert.assertEquals(walker.getCount(), builder().getGraph().getNodes().size());
     }
 
     /**
@@ -83,6 +82,7 @@ public class NoBifurcationIteratorTest extends TestCase {
      * node should not be visited. After continue: 1. First node visited after continue should have
      * id = id + suspend node + 1 2. Every node should be visited.
      */
+    @Test
     public void test_1() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -103,7 +103,7 @@ public class NoBifurcationIteratorTest extends TestCase {
                             }
                         } else if (m_mode == 1) {
                             // check first node after continue
-                            assertTrue(element.getID() == suspend + 1);
+                            Assert.assertEquals(element.getID(), suspend + 1);
                             m_mode++;
                         }
                         return (GraphTraversal.CONTINUE);
@@ -122,13 +122,13 @@ public class NoBifurcationIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        if (component.getID() <= suspend) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
+                        else Assert.assertFalse(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - suspend + 1);
+        Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         traversal.traverse();
 
@@ -136,12 +136,12 @@ public class NoBifurcationIteratorTest extends TestCase {
         visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -151,6 +151,7 @@ public class NoBifurcationIteratorTest extends TestCase {
      * <p>Expected: After kill: 1. Every node of with an id greater than the id of the killing node
      * should not be visited. After continue: 2. No more nodes should be visited.
      */
+    @Test
     public void test_2() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), 100);
@@ -170,7 +171,7 @@ public class NoBifurcationIteratorTest extends TestCase {
                             }
                         } else if (m_mode == 1) {
                             // should never get here
-                            assertTrue(false);
+                            Assert.fail();
                         }
                         return (GraphTraversal.CONTINUE);
                     }
@@ -188,13 +189,13 @@ public class NoBifurcationIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        if (component.getID() <= kill) assertTrue(component.isVisited());
-                        else assertTrue(!component.isVisited());
+                        if (component.getID() <= kill) Assert.assertTrue(component.isVisited());
+                        else Assert.assertFalse(component.isVisited());
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - kill + 1);
+        Assert.assertEquals(walker.getCount(), nnodes - kill + 1);
 
         // continue, no more nodes should be visited
         traversal.traverse();
@@ -206,6 +207,7 @@ public class NoBifurcationIteratorTest extends TestCase {
      * <p>Exepected: 1. The traversal should stop at the bifurcating node. 2. Every node after the
      * bifurcating node should not be visited.
      */
+    @Test
     public void test_3() {
         int nnodes = 100;
         final int bif = 50;
@@ -224,16 +226,16 @@ public class NoBifurcationIteratorTest extends TestCase {
                 new GraphVisitor() {
                     public int visit(Graphable component) {
                         if (component.getID() < bif) {
-                            assertTrue(component.isVisited());
+                            Assert.assertTrue(component.isVisited());
                         } else if (component.getID() >= bif) {
-                            assertTrue(!component.isVisited());
+                            Assert.assertFalse(component.isVisited());
                         }
 
                         return (0);
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertTrue(walker.getCount() == nnodes - bif);
+        Assert.assertEquals(walker.getCount(), nnodes - bif);
     }
 
     /**
@@ -241,6 +243,7 @@ public class NoBifurcationIteratorTest extends TestCase {
      * <br>
      * Expected: 1. All nodes visited.
      */
+    @Test
     public void test_4() {
         int nnodes = 100;
         GraphTestUtil.buildCircular(builder(), nnodes);
@@ -266,14 +269,14 @@ public class NoBifurcationIteratorTest extends TestCase {
         visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
                         return (0);
                     }
                 };
 
         builder().getGraph().visitNodes(visitor);
 
-        assertTrue(walker.getCount() == nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     protected GraphBuilder createBuilder() {

@@ -68,7 +68,7 @@ public class PseudoClassRemover implements SelectorVisitor {
                 simplified.add(newChild);
             }
         }
-        if (simplified.size() == 0) {
+        if (simplified.isEmpty()) {
             return Selector.ACCEPT;
         } else if (simplified.size() == 1) {
             return simplified.get(0);
@@ -88,7 +88,7 @@ public class PseudoClassRemover implements SelectorVisitor {
                 simplified.add(newChild);
             }
         }
-        if (simplified.size() == 0) {
+        if (simplified.isEmpty()) {
             return Selector.REJECT;
         } else if (simplified.size() == 1) {
             return simplified.get(0);

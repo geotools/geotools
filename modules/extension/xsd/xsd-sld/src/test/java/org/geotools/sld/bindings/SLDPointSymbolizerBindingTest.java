@@ -16,14 +16,20 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.PointSymbolizer;
+import org.junit.Test;
 import org.opengis.filter.expression.Function;
 
 public class SLDPointSymbolizerBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(PointSymbolizer.class, new SLDPointSymbolizerBinding(null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.pointSymbolizer(document, document);
 
@@ -33,6 +39,7 @@ public class SLDPointSymbolizerBindingTest extends SLDTestSupport {
         assertNotNull(ps.getGraphic());
     }
 
+    @Test
     public void testTransform() throws Exception {
         SLDMockData.transformedPointSymbolizer(document, document);
 

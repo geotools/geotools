@@ -17,6 +17,9 @@
 
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.InputStream;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -27,20 +30,18 @@ import net.opengis.wfs20.QueryExpressionTextType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import org.geotools.wfs.WFS_2_0_0_ParsingTest;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 
 public class DescribeStoredQueriesTypeBindingTest extends WFSTestSupport {
-
+    @Test
     public void testParse() throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 
-        InputStream is =
+        try (InputStream is =
                 WFS_2_0_0_ParsingTest.class.getResourceAsStream(
-                        "fmi-DescribeStoredQueries_2_0_0.xml");
-        try {
+                        "fmi-DescribeStoredQueries_2_0_0.xml")) {
             document = docFactory.newDocumentBuilder().parse(is);
-        } finally {
-            is.close();
         }
 
         Object o = parse();

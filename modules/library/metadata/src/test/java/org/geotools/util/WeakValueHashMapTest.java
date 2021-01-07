@@ -128,7 +128,7 @@ public final class WeakValueHashMapTest {
                 Thread.sleep(50);
                 System.gc();
             }
-            assertTrue("equals:", strongMap.equals(weakMap));
+            assertEquals("equals:", strongMap, weakMap);
         }
     }
 

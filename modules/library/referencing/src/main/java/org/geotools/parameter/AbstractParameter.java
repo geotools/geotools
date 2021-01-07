@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.lang.reflect.Array;
-import java.util.Iterator;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.wkt.Formattable;
@@ -243,9 +242,7 @@ public abstract class AbstractParameter extends Formattable
             table.write(':');
             table.nextColumn();
             TableWriter inner = null;
-            for (final Iterator it = ((ParameterValueGroup) this).values().iterator();
-                    it.hasNext(); ) {
-                final GeneralParameterValue value = (GeneralParameterValue) it.next();
+            for (final GeneralParameterValue value : ((ParameterValueGroup) this).values()) {
                 if (value instanceof AbstractParameter) {
                     if (inner == null) {
                         inner = new TableWriter(table, 1);

@@ -18,7 +18,7 @@ package org.geotools.filter;
 
 import static org.junit.Assert.assertThrows;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.expression.Function;
 
@@ -27,14 +27,14 @@ import org.opengis.filter.expression.Function;
  *
  * @author Erwan Bocher, CNRS, 2020
  */
-public class OrFunctionTest extends TestCase {
+public class OrFunctionTest {
 
     @Test
     public void testOrFunction1() throws IllegalFilterException {
         FilterFactoryImpl ff = new FilterFactoryImpl();
         Function equalsTo = ff.function("equalTo", ff.literal("string1"), ff.literal("string1"));
         Function orFunction = ff.function("or", equalsTo, equalsTo);
-        assertTrue((Boolean) orFunction.evaluate(new Object()));
+        Assert.assertTrue((Boolean) orFunction.evaluate(new Object()));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class OrFunctionTest extends TestCase {
         Function equalsTo_right =
                 ff.function("equalTo", ff.literal("string1"), ff.literal("string2"));
         Function orFunction = ff.function("or", equalsTo_left, equalsTo_right);
-        assertTrue((Boolean) orFunction.evaluate(new Object()));
+        Assert.assertTrue((Boolean) orFunction.evaluate(new Object()));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class OrFunctionTest extends TestCase {
         Function equalsTo_right =
                 ff.function("equalTo", ff.literal("string1"), ff.literal("string1"));
         Function orFunction = ff.function("or", equalsTo_left, equalsTo_right);
-        assertTrue((Boolean) orFunction.evaluate(new Object()));
+        Assert.assertTrue((Boolean) orFunction.evaluate(new Object()));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class OrFunctionTest extends TestCase {
         Function equalsTo_right =
                 ff.function("equalTo", ff.literal("string1"), ff.literal("string2"));
         Function orFunction = ff.function("or", equalsTo_left, equalsTo_right);
-        assertTrue((Boolean) orFunction.evaluate(new Object()));
+        Assert.assertTrue((Boolean) orFunction.evaluate(new Object()));
     }
 
     @Test
@@ -110,6 +110,6 @@ public class OrFunctionTest extends TestCase {
         Function orFunction = ff.function("or", equalsTo_left, equalsTo_right);
         Function if_then_elseFunction =
                 ff.function("if_then_else", orFunction, ff.literal(10), ff.literal(-1));
-        assertEquals(10, if_then_elseFunction.evaluate(new Object()));
+        Assert.assertEquals(10, if_then_elseFunction.evaluate(new Object()));
     }
 }

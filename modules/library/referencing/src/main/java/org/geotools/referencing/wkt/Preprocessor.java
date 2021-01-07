@@ -24,7 +24,6 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -253,8 +252,8 @@ public class Preprocessor extends Format {
         Replacement last;
         replacements = last = new Replacement(0, 0, offset);
         StringBuilder buffer = null;
-        for (final Iterator it = definitions.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (Map.Entry<String, Definition> stringDefinitionEntry : definitions.entrySet()) {
+            final Map.Entry entry = (Map.Entry) stringDefinitionEntry;
             final String name = (String) entry.getKey();
             final Definition def = (Definition) entry.getValue();
             int index = (buffer != null) ? buffer.indexOf(name) : text.indexOf(name);
@@ -380,8 +379,8 @@ public class Preprocessor extends Format {
         table.write(resources.getString(VocabularyKeys.DESCRIPTION));
         table.nextLine();
         table.writeHorizontalSeparator();
-        for (final Iterator it = definitions.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (Map.Entry<String, Definition> stringDefinitionEntry : definitions.entrySet()) {
+            final Map.Entry entry = (Map.Entry) stringDefinitionEntry;
             final Object object = ((Definition) entry.getValue()).asObject;
             table.write(String.valueOf(entry.getKey()));
             table.nextColumn();

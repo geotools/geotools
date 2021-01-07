@@ -16,10 +16,15 @@
  */
 package org.geotools.filter.v1_1;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
 import org.opengis.filter.expression.Literal;
 import org.w3c.dom.Document;
 
 public class LiteralTypeBindingTest extends FilterTestSupport {
+    @Test
     public void testParse() throws Exception {
         FilterMockData.literal(document, document);
 
@@ -28,6 +33,7 @@ public class LiteralTypeBindingTest extends FilterTestSupport {
         assertEquals("foo", literal.getValue());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Literal literal = FilterMockData.literal();
         Document dom = encode(literal, OGC.Literal);

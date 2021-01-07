@@ -763,7 +763,7 @@ public class ImageMosaicConfigHandler {
             final GridCoverage2DReader inputReader,
             final List<PropertiesCollector> propertiesCollectors) {
         // collect and dump properties
-        if (propertiesCollectors != null && propertiesCollectors.size() > 0)
+        if (propertiesCollectors != null && !propertiesCollectors.isEmpty())
             for (PropertiesCollector pc : propertiesCollectors) {
                 elementBeingProcessed.addToCollector(pc);
                 pc.collect(inputReader).setProperties(feature);

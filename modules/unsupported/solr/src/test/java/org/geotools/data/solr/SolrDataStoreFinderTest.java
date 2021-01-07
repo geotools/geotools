@@ -25,21 +25,23 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import junit.framework.TestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryRegistry;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class SolrDataStoreFinderTest extends TestCase {
+public class SolrDataStoreFinderTest {
 
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(SolrDataStoreFinderTest.class);
 
     private DataStore source;
 
+    @Test
     public void testDbcpFactory() throws IOException {
-        assertTrue(new SolrDataStoreFactory().isAvailable());
+        Assert.assertTrue(new SolrDataStoreFactory().isAvailable());
         scanForPlugins();
 
         Map<String, Object> map = new HashMap<>();
@@ -60,8 +62,8 @@ public class SolrDataStoreFinderTest extends TestCase {
             }
         }
 
-        assertNotNull(source);
-        assertTrue(source instanceof SolrDataStore);
+        Assert.assertNotNull(source);
+        Assert.assertTrue(source instanceof SolrDataStore);
     }
 
     private FactoryRegistry getServiceRegistry() {

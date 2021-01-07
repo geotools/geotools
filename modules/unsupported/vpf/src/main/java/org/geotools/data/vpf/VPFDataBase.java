@@ -20,9 +20,9 @@ import static org.geotools.data.vpf.ifc.FileConstants.LIBRARY_ATTTIBUTE_TABLE;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.feature.SchemaException;
@@ -39,7 +39,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class VPFDataBase {
     /** The libraries in the database */
-    private final List<VPFLibrary> libraries = new Vector<>();
+    private final List<VPFLibrary> libraries = new ArrayList<>();
     /**
      * Constructor
      *

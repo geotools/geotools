@@ -139,9 +139,7 @@ public class AttributeMapping {
         this.targetXPath = targetXPath;
         this.targetNodeInstance = targetNodeInstance;
         this.clientProperties =
-                clientProperties == null
-                        ? Collections.<Name, Expression>emptyMap()
-                        : clientProperties;
+                clientProperties == null ? Collections.emptyMap() : clientProperties;
         this.multipleValue = multipleValue;
         if (multipleValue != null) {
             this.isMultiValued = true;
@@ -268,9 +266,7 @@ public class AttributeMapping {
     }
 
     public Map<Name, Expression> getClientProperties() {
-        return clientProperties == null
-                ? Collections.<Name, Expression>emptyMap()
-                : clientProperties;
+        return clientProperties == null ? Collections.emptyMap() : clientProperties;
     }
 
     public Expression getIdentifierExpression() {

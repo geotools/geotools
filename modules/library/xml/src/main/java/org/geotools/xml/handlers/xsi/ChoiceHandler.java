@@ -217,8 +217,8 @@ public class ChoiceHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(name);
+            for (ElementGrouping child : children) {
+                Element t = child.findChildElement(name);
 
                 if (t != null) { // found it
 
@@ -259,8 +259,8 @@ public class ChoiceHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(localName, namespaceURI);
+            for (ElementGrouping child : children) {
+                Element t = child.findChildElement(localName, namespaceURI);
 
                 if (t != null) { // found it
 

@@ -227,7 +227,7 @@ class RangeVisitor implements FeatureCalc {
     }
 
     public CalcResult getResult() {
-        if (set.size() < 1) {
+        if (set.isEmpty()) {
             return CalcResult.NULL_RESULT;
         }
         return new RangeResult(set);

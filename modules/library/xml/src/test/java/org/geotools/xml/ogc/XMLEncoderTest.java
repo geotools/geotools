@@ -26,9 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterDOMParser;
 import org.geotools.test.TestData;
@@ -36,6 +33,8 @@ import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.DocumentWriter;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.filter.FilterSchema;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsNull;
@@ -54,7 +53,7 @@ import org.w3c.dom.NodeList;
  * @author Rob Hranac, TOPP
  * @author David Zwiers
  */
-public class XMLEncoderTest extends TestCase {
+public class XMLEncoderTest {
 
     /** Standard logging instance */
     protected static final Logger LOGGER =
@@ -63,9 +62,7 @@ public class XMLEncoderTest extends TestCase {
     /** Constructor with test name. */
     String dataFolder = "";
 
-    public XMLEncoderTest(String testName) {
-        super(testName);
-
+    public XMLEncoderTest() {
         // _log.getLoggerRepository().setThreshold(Level.DEBUG);
         LOGGER.finer("running XMLEncoderTests");
 
@@ -86,37 +83,29 @@ public class XMLEncoderTest extends TestCase {
         }
     }
 
-    /**
-     * Required suite builder.
-     *
-     * @return A test suite for this unit test.
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(XMLEncoderTest.class);
-
-        return suite;
-    }
-
+    @Test
     public void test1() throws Exception {
         Filter test = parseDocument("test1.xml");
-        assertNotNull(test);
+        Assert.assertNotNull(test);
         StringWriter output = new StringWriter();
         DocumentWriter.writeFragment(test, FilterSchema.getInstance(), output, null);
         // System.out.println( output );
         InputStream stream = new ByteArrayInputStream(output.toString().getBytes("UTF-8"));
 
         Object o = DocumentFactory.getInstance(stream, new HashMap<>(), Level.FINEST);
-        assertNotNull(o);
-        assertEquals(test, o);
+        Assert.assertNotNull(o);
+        Assert.assertEquals(test, o);
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test3a() throws Exception {
         Filter test = parseDocument("test3a.xml");
 
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test3b() throws Exception {
         Filter test = parseDocument("test3b.xml");
         StringWriter output = new StringWriter();
@@ -125,6 +114,7 @@ public class XMLEncoderTest extends TestCase {
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test4() throws Exception {
         Filter test = parseDocument("test4.xml");
         StringWriter output = new StringWriter();
@@ -133,6 +123,7 @@ public class XMLEncoderTest extends TestCase {
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test5() throws Exception {
         Filter test = parseDocument("test5.xml");
         StringWriter output = new StringWriter();
@@ -141,6 +132,7 @@ public class XMLEncoderTest extends TestCase {
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test8() throws Exception {
         Filter test = parseDocument("test8.xml");
 
@@ -151,6 +143,7 @@ public class XMLEncoderTest extends TestCase {
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test9() throws Exception {
         Filter test = parseDocument("test9.xml");
         StringWriter output = new StringWriter();
@@ -159,6 +152,7 @@ public class XMLEncoderTest extends TestCase {
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test12() throws Exception {
         Filter test = parseDocument("test12.xml");
         StringWriter output = new StringWriter();
@@ -167,6 +161,7 @@ public class XMLEncoderTest extends TestCase {
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test13() throws Exception {
         Filter test = parseDocument("test13.xml");
         StringWriter output = new StringWriter();
@@ -175,6 +170,7 @@ public class XMLEncoderTest extends TestCase {
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test14() throws Exception {
         Filter test = parseDocument("test14.xml");
         StringWriter output = new StringWriter();
@@ -183,6 +179,7 @@ public class XMLEncoderTest extends TestCase {
         // LOGGER.fine("parsed filter is: " + test);
     }
 
+    @Test
     public void test28() throws Exception {
         Filter test = parseDocument("test28.xml");
         StringWriter output = new StringWriter();
@@ -228,6 +225,7 @@ public class XMLEncoderTest extends TestCase {
     }
 
     // TODO test or ( null, and( fidFilter, null ) ) filter
+    @Test
     public void testStrictHintComplexFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -250,12 +248,13 @@ public class XMLEncoderTest extends TestCase {
                         + "<PropertyIsNull><PropertyName>geom</PropertyName></PropertyIsNull>"
                         + "<Filter><FeatureIdfid=\"FID.1\"/></Filter>"
                         + "</Filter>";
-        assertEquals(xml, string);
+        Assert.assertEquals(xml, string);
 
         // Note:  Round trip doesn't work in this case because request may returns more features
         // than "filter" will accept
     }
 
+    @Test
     public void testStrictHintOR() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         HashSet<FeatureId> set = new HashSet<>();
@@ -273,12 +272,13 @@ public class XMLEncoderTest extends TestCase {
         // The following test fails with Java 1.6. May be caused by some iteration order dependent
         // code.
         if (TestData.isBaseJavaPlatform()) {
-            assertEquals(
-                    "<Filterxmlns=\"http://www.opengis.net/ogc\"xmlns:gml=\"http://www.opengis.net/gml\"><FeatureIdfid=\"FID.1\"/><FeatureIdfid=\"FID.2\"/></Filter>",
+            Assert.assertEquals(
+                    "<Filterxmlns=\"http://www.opengis.net/ogc\"xmlns:gml=\"http://www.opengis"
+                            + ".net/gml\"><FeatureIdfid=\"FID.1\"/><FeatureIdfid=\"FID.2\"/></Filter>",
                     string);
         }
         ByteArrayInputStream byteStream = new ByteArrayInputStream(output.toString().getBytes());
         Filter roundTrip = (Filter) DocumentFactory.getInstance(byteStream, null, Level.OFF);
-        assertEquals(filter, roundTrip);
+        Assert.assertEquals(filter, roundTrip);
     }
 }

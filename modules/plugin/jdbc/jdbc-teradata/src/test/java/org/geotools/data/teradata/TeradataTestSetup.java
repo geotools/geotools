@@ -37,10 +37,8 @@ public class TeradataTestSetup extends JDBCTestSetup {
         super.initializeDatabase();
 
         // figure out the 4326 native srid
-        Connection cx = getConnection();
-        try {
-            Statement st = cx.createStatement();
-            try {
+        try (Connection cx = getConnection()) {
+            try (Statement st = cx.createStatement()) {
                 ResultSet rs =
                         st.executeQuery(
                                 "SELECT srid FROM sysspatial.spatial_ref_sys "
@@ -48,11 +46,7 @@ public class TeradataTestSetup extends JDBCTestSetup {
                 rs.next();
                 srid4326 = rs.getInt(1);
                 rs.close();
-            } finally {
-                st.close();
             }
-        } finally {
-            cx.close();
         }
     }
 

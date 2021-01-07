@@ -1,18 +1,23 @@
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 
 public class ExtendedDataTypeBindingTest extends KMLTestSupport {
-
+    @Test
     public void testExecutionMode() throws Exception {
         assertEquals(Binding.OVERRIDE, binding(KML.ExtendedDataType).getExecutionMode());
     }
 
+    @Test
     public void testGetType() {
         assertEquals(Map.class, binding(KML.ExtendedDataType).getType());
     }
@@ -24,6 +29,7 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testParseEmpty() throws Exception {
         String xml = "<ExtendedData></ExtendedData>";
         buildDocument(xml);
@@ -37,6 +43,7 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
         assertTrue(untyped.isEmpty());
     }
 
+    @Test
     public void testParseUntyped() throws Exception {
         String xml =
                 "<ExtendedData>"
@@ -50,6 +57,7 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testParseTyped() throws Exception {
         String xml =
                 "<ExtendedData>"
@@ -67,6 +75,7 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testParseMultipleTypes() throws Exception {
         String xml =
                 "<ExtendedData>"

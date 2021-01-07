@@ -185,10 +185,7 @@ public class DiffTransactionState implements Transaction.State {
                     }
                 }
             }
-        } catch (IOException e) {
-            cause = e;
-            throw e;
-        } catch (RuntimeException e) {
+        } catch (IOException | RuntimeException e) {
             cause = e;
             throw e;
         } finally {
@@ -196,12 +193,7 @@ public class DiffTransactionState implements Transaction.State {
                 writer.close();
                 state.fireBatchFeatureEvent(true);
                 diff.clear();
-            } catch (IOException e) {
-                if (cause != null) {
-                    e.initCause(cause);
-                }
-                throw e;
-            } catch (RuntimeException e) {
+            } catch (IOException | RuntimeException e) {
                 if (cause != null) {
                     e.initCause(cause);
                 }

@@ -16,13 +16,17 @@
  */
 package org.geotools.kml.v22;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.List;
 import org.geotools.xsd.Parser;
+import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class KMLPlacemarkLookAtTest extends KMLTestSupport {
-
+    @Test
     public void testParseDocument() throws Exception {
         Parser parser = new Parser(createConfiguration());
         SimpleFeature doc =

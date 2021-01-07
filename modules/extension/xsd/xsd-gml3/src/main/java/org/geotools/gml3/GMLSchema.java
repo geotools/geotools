@@ -38,7 +38,6 @@ import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.Filter;
 
 public class GMLSchema extends SchemaImpl {
 
@@ -113,7 +112,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -146,7 +145,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -179,7 +178,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -252,7 +251,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLELIST_TYPE,
                         null);
         return builtType;
@@ -326,7 +325,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLELIST_TYPE,
                         null);
         return builtType;
@@ -446,7 +445,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -494,7 +493,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -628,7 +627,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -739,7 +738,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -841,7 +840,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -891,7 +890,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -962,7 +961,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -1010,7 +1009,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Geometry.class,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -1046,10 +1045,10 @@ public class GMLSchema extends SchemaImpl {
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeometricPrimitiveType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -1120,7 +1119,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -1183,7 +1182,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -1241,7 +1240,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Point.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -1288,7 +1287,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Point.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -1374,7 +1373,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLELIST_TYPE,
                         null);
         return builtType;
@@ -1421,7 +1420,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.DOUBLE_TYPE,
                         null);
         return builtType;
@@ -1453,10 +1452,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LengthType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -1488,10 +1487,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AngleType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -1538,7 +1537,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -1706,7 +1705,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -1739,10 +1738,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CircleByCenterPointType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ARCBYCENTERPOINTTYPE_TYPE,
                         null);
         return builtType;
@@ -1818,7 +1817,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -1886,7 +1885,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -1956,7 +1955,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -1988,10 +1987,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractSurfaceType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -2023,10 +2022,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractRingType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -2071,7 +2070,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -2111,7 +2110,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -2243,7 +2242,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -2276,10 +2275,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimeObjectType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -2316,10 +2315,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimePrimitiveType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEOBJECTTYPE_TYPE,
                         null);
         return builtType;
@@ -2371,7 +2370,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -2416,7 +2415,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -2455,7 +2454,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -2525,7 +2524,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         TIMEPOSITIONUNION_TYPE,
                         null);
         return builtType;
@@ -2573,7 +2572,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -2680,7 +2679,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -2728,7 +2727,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -2798,7 +2797,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.DECIMAL_TYPE,
                         null);
         return builtType;
@@ -2891,7 +2890,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -2996,7 +2995,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -3080,7 +3079,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMBASETYPE_TYPE,
                         null);
         return builtType;
@@ -3148,7 +3147,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -3219,7 +3218,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -3312,7 +3311,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         COORDINATESYSTEMAXISBASETYPE_TYPE,
                         null);
         return builtType;
@@ -3422,7 +3421,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -3501,7 +3500,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMBASETYPE_TYPE,
                         null);
         return builtType;
@@ -3533,10 +3532,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EllipsoidalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -3645,7 +3644,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -3711,7 +3710,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -3812,7 +3811,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMBASETYPE_TYPE,
                         null);
         return builtType;
@@ -3878,7 +3877,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -3913,7 +3912,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.NONNEGATIVEINTEGER_TYPE,
                         null);
         return builtType;
@@ -3963,10 +3962,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DegreesType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEGREEVALUETYPE_TYPE,
                         null);
         return builtType;
@@ -4002,7 +4001,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.DECIMAL_TYPE,
                         null);
         return builtType;
@@ -4037,7 +4036,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.NONNEGATIVEINTEGER_TYPE,
                         null);
         return builtType;
@@ -4073,7 +4072,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.DECIMAL_TYPE,
                         null);
         return builtType;
@@ -4148,7 +4147,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4201,7 +4200,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4275,7 +4274,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         PRIMEMERIDIANBASETYPE_TYPE,
                         null);
         return builtType;
@@ -4384,7 +4383,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4450,7 +4449,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -4482,7 +4481,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -4545,7 +4544,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4628,7 +4627,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ELLIPSOIDBASETYPE_TYPE,
                         null);
         return builtType;
@@ -4737,7 +4736,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4794,7 +4793,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -4903,7 +4902,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4960,7 +4959,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -5069,7 +5068,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5134,7 +5133,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.LinearRing.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTRINGTYPE_TYPE,
                         null);
         return builtType;
@@ -5170,7 +5169,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.LinearRing.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5202,10 +5201,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractSolidType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -5319,7 +5318,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5380,7 +5379,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSOLIDTYPE_TYPE,
                         null);
         return builtType;
@@ -5487,7 +5486,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5520,7 +5519,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -5575,7 +5574,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5716,7 +5715,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5779,7 +5778,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -5905,7 +5904,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5942,10 +5941,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompositeValueType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -5999,7 +5998,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         COMPOSITEVALUETYPE_TYPE,
                         null);
         return builtType;
@@ -6032,7 +6031,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -6065,7 +6064,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -6115,7 +6114,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         NAMEORNULLLIST_TYPE,
                         null);
         return builtType;
@@ -6149,10 +6148,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CategoryExtentType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         CODEORNULLLISTTYPE_TYPE,
                         null);
         return builtType;
@@ -6185,7 +6184,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -6234,7 +6233,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLEORNULLLIST_TYPE,
                         null);
         return builtType;
@@ -6268,10 +6267,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "QuantityExtentType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASUREORNULLLISTTYPE_TYPE,
                         null);
         return builtType;
@@ -6304,7 +6303,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -6339,7 +6338,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         INTEGERORNULLLIST_TYPE,
                         null);
         return builtType;
@@ -6538,7 +6537,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -6599,7 +6598,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -6634,7 +6633,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -6711,7 +6710,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -6819,7 +6818,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -6885,7 +6884,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -6925,7 +6924,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -6963,7 +6962,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -7006,7 +7005,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SEQUENCERULENAMES_TYPE,
                         null);
         return builtType;
@@ -7039,7 +7038,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -7100,7 +7099,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7154,7 +7153,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7203,7 +7202,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -7256,7 +7255,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7297,7 +7296,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7363,7 +7362,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -7420,7 +7419,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         GRIDTYPE_TYPE,
                         null);
         return builtType;
@@ -7531,7 +7530,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -7629,7 +7628,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -7739,7 +7738,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -7836,7 +7835,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -7868,10 +7867,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SpeedType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -7905,10 +7904,10 @@ public class GMLSchema extends SchemaImpl {
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeometricAggregateType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -7954,7 +7953,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7998,7 +7997,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPoint.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -8040,7 +8039,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPoint.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -8198,7 +8197,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -8341,7 +8340,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ARCSTRINGBYBULGETYPE_TYPE,
                         null);
         return builtType;
@@ -8410,7 +8409,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -8456,7 +8455,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -8565,7 +8564,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -8690,7 +8689,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONBASETYPE_TYPE,
                         null);
         return builtType;
@@ -8832,7 +8831,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -8899,7 +8898,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -8950,7 +8949,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -9062,7 +9061,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -9167,7 +9166,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         OPERATIONMETHODBASETYPE_TYPE,
                         null);
         return builtType;
@@ -9277,7 +9276,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -9311,10 +9310,10 @@ public class GMLSchema extends SchemaImpl {
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeneralParameterValueType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -9362,7 +9361,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLELIST_TYPE,
                         null);
         return builtType;
@@ -9438,7 +9437,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE,
                         null);
         return builtType;
@@ -9504,7 +9503,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         OPERATIONPARAMETERBASETYPE_TYPE,
                         null);
         return builtType;
@@ -9614,7 +9613,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -9736,7 +9735,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALPARAMETERVALUETYPE_TYPE,
                         null);
         return builtType;
@@ -9799,7 +9798,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALTRANSFORMATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -9908,7 +9907,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10019,7 +10018,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10133,7 +10132,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -10243,7 +10242,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10301,7 +10300,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -10351,7 +10350,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         CODETYPE_TYPE,
                         null);
         return builtType;
@@ -10461,7 +10460,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10518,7 +10517,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALDERIVEDCRSTYPE_TYPE,
                         null);
         return builtType;
@@ -10627,7 +10626,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10679,7 +10678,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -10786,7 +10785,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10888,7 +10887,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -10995,7 +10994,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11049,7 +11048,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -11156,7 +11155,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11248,7 +11247,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -11354,7 +11353,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11395,7 +11394,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11440,7 +11439,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11484,7 +11483,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -11595,7 +11594,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -11696,7 +11695,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -11747,7 +11746,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTPOSITIONALACCURACYTYPE_TYPE,
                         null);
         return builtType;
@@ -11778,10 +11777,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractSurfacePatchType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11815,10 +11814,10 @@ public class GMLSchema extends SchemaImpl {
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractParametricCurveSurfaceType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACEPATCHTYPE_TYPE,
                         null);
         return builtType;
@@ -11877,7 +11876,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11986,7 +11985,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTPARAMETRICCURVESURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -12075,7 +12074,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGRIDDEDSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -12108,10 +12107,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractCurveType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -12183,7 +12182,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.LineString.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVETYPE_TYPE,
                         null);
         return builtType;
@@ -12232,7 +12231,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.LineString.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12271,7 +12270,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiLineString.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -12314,7 +12313,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiLineString.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12367,7 +12366,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -12474,7 +12473,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12531,7 +12530,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -12630,7 +12629,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12678,7 +12677,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITDEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -12725,7 +12724,7 @@ public class GMLSchema extends SchemaImpl {
                         CurvedGeometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12763,7 +12762,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -12829,7 +12828,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVETYPE_TYPE,
                         null);
         return builtType;
@@ -13042,7 +13041,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13116,7 +13115,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -13158,7 +13157,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13265,7 +13264,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13374,7 +13373,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13494,7 +13493,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13613,7 +13612,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13685,7 +13684,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -13749,7 +13748,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13797,7 +13796,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -13933,7 +13932,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13979,7 +13978,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         OBSERVATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -14026,7 +14025,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DIRECTEDOBSERVATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -14078,7 +14077,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -14187,7 +14186,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -14225,7 +14224,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -14335,7 +14334,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -14390,7 +14389,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTRINGTYPE_TYPE,
                         null);
         return builtType;
@@ -14434,7 +14433,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -14544,7 +14543,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -14645,7 +14644,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -14693,7 +14692,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -14759,7 +14758,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGRIDDEDSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -14817,7 +14816,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ENVELOPETYPE_TYPE,
                         null);
         return builtType;
@@ -14865,7 +14864,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -14910,7 +14909,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -14954,7 +14953,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -15000,7 +14999,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -15070,7 +15069,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACEPATCHTYPE_TYPE,
                         null);
         return builtType;
@@ -15120,7 +15119,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SURFACEPATCHARRAYPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -15201,7 +15200,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -15311,7 +15310,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -15364,7 +15363,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -15474,7 +15473,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -15527,7 +15526,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVETYPE_TYPE,
                         null);
         return builtType;
@@ -15634,7 +15633,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -15667,10 +15666,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimeComplexType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEOBJECTTYPE_TYPE,
                         null);
         return builtType;
@@ -15720,7 +15719,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -15834,7 +15833,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -15883,7 +15882,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMECOMPLEXTYPE_TYPE,
                         null);
         return builtType;
@@ -15997,7 +15996,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -16030,7 +16029,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -16059,10 +16058,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTopologyType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -16097,10 +16096,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTopoPrimitiveType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -16150,7 +16149,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -16266,7 +16265,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -16314,7 +16313,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -16431,7 +16430,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -16587,7 +16586,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -16620,7 +16619,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -16652,10 +16651,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractStyleType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -16693,7 +16692,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -16821,7 +16820,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -16853,10 +16852,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ScaleType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -16911,7 +16910,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -17006,7 +17005,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -17060,7 +17059,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17117,7 +17116,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BASESTYLEDESCRIPTORTYPE_TYPE,
                         null);
         return builtType;
@@ -17236,7 +17235,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17327,7 +17326,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BASESTYLEDESCRIPTORTYPE_TYPE,
                         null);
         return builtType;
@@ -17446,7 +17445,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17537,7 +17536,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BASESTYLEDESCRIPTORTYPE_TYPE,
                         null);
         return builtType;
@@ -17656,7 +17655,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17694,7 +17693,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -17796,7 +17795,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -17915,7 +17914,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17951,7 +17950,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -17987,7 +17986,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -18023,7 +18022,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -18069,7 +18068,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -18190,7 +18189,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BASESTYLEDESCRIPTORTYPE_TYPE,
                         null);
         return builtType;
@@ -18309,7 +18308,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -18366,7 +18365,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSTYLETYPE_TYPE,
                         null);
         return builtType;
@@ -18453,7 +18452,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -18492,10 +18491,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeodesicType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         GEODESICSTRINGTYPE_TYPE,
                         null);
         return builtType;
@@ -18544,10 +18543,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RelatedTimeType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         TIMEPRIMITIVEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -18597,7 +18596,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMETOPOLOGYPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -18708,7 +18707,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -18776,7 +18775,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMETOPOLOGYPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -18887,7 +18886,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -18993,7 +18992,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -19100,7 +19099,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -19152,7 +19151,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -19184,10 +19183,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VerticalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -19296,7 +19295,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -19346,7 +19345,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         CODETYPE_TYPE,
                         null);
         return builtType;
@@ -19394,7 +19393,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -19503,7 +19502,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -19560,7 +19559,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -19669,7 +19668,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -19746,7 +19745,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE,
                         null);
         return builtType;
@@ -19834,7 +19833,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         OPERATIONPARAMETERGROUPBASETYPE_TYPE,
                         null);
         return builtType;
@@ -19945,7 +19944,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20007,7 +20006,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALPARAMETERVALUETYPE_TYPE,
                         null);
         return builtType;
@@ -20040,7 +20039,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -20082,7 +20081,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.GeometryCollection.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20147,7 +20146,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACEPATCHTYPE_TYPE,
                         null);
         return builtType;
@@ -20266,7 +20265,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20324,7 +20323,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -20440,7 +20439,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20489,7 +20488,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -20530,7 +20529,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20562,10 +20561,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VolumeType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -20610,7 +20609,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20671,7 +20670,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -20781,7 +20780,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -20882,7 +20881,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -21001,7 +21000,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21053,7 +21052,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -21097,7 +21096,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21164,7 +21163,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -21238,7 +21237,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21282,7 +21281,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21319,7 +21318,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -21487,7 +21486,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -21654,7 +21653,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BSPLINETYPE_TYPE,
                         null);
         return builtType;
@@ -21763,7 +21762,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21795,10 +21794,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TemporalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -21907,7 +21906,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22000,7 +21999,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -22048,7 +22047,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         TEMPORALDATUMBASETYPE_TYPE,
                         null);
         return builtType;
@@ -22157,7 +22156,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22214,7 +22213,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -22323,7 +22322,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22371,7 +22370,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -22413,7 +22412,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22523,7 +22522,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22555,10 +22554,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AreaType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -22590,10 +22589,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EngineeringDatumType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -22703,7 +22702,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22763,7 +22762,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -22872,7 +22871,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22930,7 +22929,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -23045,7 +23044,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -23106,7 +23105,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -23152,7 +23151,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -23196,7 +23195,7 @@ public class GMLSchema extends SchemaImpl {
                         MultiCurvedGeometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -23306,7 +23305,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -23407,7 +23406,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -23440,7 +23439,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -23489,7 +23488,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         NAMELIST_TYPE,
                         null);
         return builtType;
@@ -23537,7 +23536,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -23602,7 +23601,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACEPATCHTYPE_TYPE,
                         null);
         return builtType;
@@ -23653,7 +23652,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SURFACEPATCHARRAYPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -23734,7 +23733,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -23850,7 +23849,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -23893,7 +23892,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -23951,7 +23950,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24081,7 +24080,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         TRIANGULATEDSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -24161,7 +24160,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSOLIDTYPE_TYPE,
                         null);
         return builtType;
@@ -24277,7 +24276,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24325,7 +24324,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -24366,7 +24365,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24453,7 +24452,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -24485,10 +24484,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GridLengthType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -24597,7 +24596,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24659,7 +24658,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -24769,7 +24768,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24814,7 +24813,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24872,7 +24871,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -24904,10 +24903,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FeatureCollectionType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURECOLLECTIONTYPE_TYPE,
                         null);
         return builtType;
@@ -24966,7 +24965,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -25010,7 +25009,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25073,7 +25072,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         FEATURECOLLECTIONTYPE_TYPE,
                         null);
         return builtType;
@@ -25135,7 +25134,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -25167,10 +25166,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolarCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -25279,7 +25278,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25330,7 +25329,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTPOSITIONALACCURACYTYPE_TYPE,
                         null);
         return builtType;
@@ -25377,7 +25376,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25446,7 +25445,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -25478,10 +25477,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CartesianCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -25590,7 +25589,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25622,10 +25621,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SphericalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -25734,7 +25733,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25802,7 +25801,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -25911,7 +25910,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -26039,7 +26038,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -26153,7 +26152,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ARCSTRINGTYPE_TYPE,
                         null);
         return builtType;
@@ -26185,10 +26184,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CircleType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ARCTYPE_TYPE,
                         null);
         return builtType;
@@ -26236,7 +26235,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -26305,7 +26304,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -26420,7 +26419,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -26528,7 +26527,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -26561,7 +26560,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -26609,7 +26608,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         GRIDFUNCTIONTYPE_TYPE,
                         null);
         return builtType;
@@ -26674,7 +26673,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -26707,7 +26706,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -26754,7 +26753,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -26825,7 +26824,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -26891,7 +26890,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITOFMEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -26938,7 +26937,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITOFMEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -27007,7 +27006,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITDEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -27039,10 +27038,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LinearCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -27151,7 +27150,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27199,7 +27198,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALDERIVEDCRSTYPE_TYPE,
                         null);
         return builtType;
@@ -27308,7 +27307,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27418,7 +27417,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27470,7 +27469,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27539,7 +27538,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -27648,7 +27647,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27681,10 +27680,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ObliqueCartesianCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -27794,7 +27793,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27844,7 +27843,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         CODETYPE_TYPE,
                         null);
         return builtType;
@@ -27892,7 +27891,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -28001,7 +28000,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28069,7 +28068,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -28178,7 +28177,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28210,10 +28209,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "UserDefinedCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -28322,7 +28321,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28445,7 +28444,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28493,7 +28492,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -28638,7 +28637,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28700,7 +28699,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGRIDDEDSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -28733,7 +28732,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -28776,7 +28775,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -28818,7 +28817,7 @@ public class GMLSchema extends SchemaImpl {
                         MultiCurvedGeometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28914,7 +28913,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMESLICETYPE_TYPE,
                         null);
         return builtType;
@@ -28962,7 +28961,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         HISTORYPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -28994,10 +28993,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -29039,7 +29038,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29078,7 +29077,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -29122,7 +29121,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29155,7 +29154,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -29197,7 +29196,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29233,10 +29232,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GenericMetaDataType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTMETADATATYPE_TYPE,
                         null);
         return builtType;
@@ -29298,7 +29297,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29363,7 +29362,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTPOSITIONALACCURACYTYPE_TYPE,
                         null);
         return builtType;
@@ -29408,7 +29407,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29453,7 +29452,7 @@ public class GMLSchema extends SchemaImpl {
                         CurvedGeometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVETYPE_TYPE,
                         null);
         return builtType;
@@ -29501,7 +29500,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -29650,7 +29649,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29700,7 +29699,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -29748,7 +29747,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         LOCATIONPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -29796,7 +29795,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITDEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -29859,7 +29858,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALCONVERSIONTYPE_TYPE,
                         null);
         return builtType;
@@ -29968,7 +29967,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30084,7 +30083,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30132,7 +30131,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -30174,7 +30173,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30284,7 +30283,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30332,7 +30331,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Geometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30378,7 +30377,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30422,7 +30421,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.GeometryCollection.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -30454,10 +30453,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CylindricalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -30566,7 +30565,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30682,7 +30681,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;

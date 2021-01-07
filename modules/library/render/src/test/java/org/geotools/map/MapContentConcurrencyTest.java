@@ -98,7 +98,7 @@ public class MapContentConcurrencyTest {
                     new AddLayerTask(layer1, startLatch) {
                         @Override
                         public void postRun() {
-                            assertTrue(mapContent.layers().size() == 1);
+                            assertEquals(1, mapContent.layers().size());
                         }
                     });
             k++;

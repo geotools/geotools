@@ -188,7 +188,7 @@ public class StyleParseTests {
         assertEquals(1.0, l.getIconSize().doubleValue(), .00001);
         assertEquals(IconTextFit.NONE, l.getIconTextFit());
         // assertEquals( l.getIconTextFitPadding());
-        assertEquals(null, l.getIconImage());
+        assertNull(l.getIconImage());
         assertEquals(0.0, l.getIconRotate().doubleValue(), .00001);
         assertEquals(2.0, l.getIconPadding().doubleValue(), .00001);
         assertEquals(false, l.getIconKeepUpright());

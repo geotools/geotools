@@ -16,6 +16,7 @@
  */
 package org.geotools.parameter;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -25,7 +26,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
@@ -99,10 +99,10 @@ public final class ImagingParametersTest {
             } else {
                 values.parameter("constants").setValue(new double[] {i});
             }
-            assertTrue(
-                    Arrays.equals(
-                            values.parameter("constants").doubleValueList(),
-                            (double[]) values.parameters.getObjectParameter("constants")));
+            assertArrayEquals(
+                    values.parameter("constants").doubleValueList(),
+                    (double[]) values.parameters.getObjectParameter("constants"),
+                    0.0);
             assertSame(before, values.parameter("constants"));
         }
         assertNotNull(values.toString());

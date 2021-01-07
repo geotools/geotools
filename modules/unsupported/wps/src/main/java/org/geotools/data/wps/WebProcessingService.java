@@ -297,7 +297,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         private Set<String> keywords;
 
         WPSInfo() {
-            keywords = new HashSet<String>();
+            keywords = new HashSet<>();
             keywords.add("WPS");
             keywords.add(serverURL.toString());
         }
@@ -345,8 +345,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
 
                 // URL source = getCapabilities().getRequest().getGetCapabilities().getGet();
                 return source.toURI();
-            } catch (NullPointerException huh) {
-            } catch (URISyntaxException e) {
+            } catch (NullPointerException | URISyntaxException huh) {
             }
             try {
                 return serverURL.toURI();

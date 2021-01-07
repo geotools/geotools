@@ -17,11 +17,12 @@
 package org.geotools.feature;
 
 import java.util.logging.Logger;
-import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -32,7 +33,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-public class FeatureFlatTest extends TestCase {
+public class FeatureFlatTest {
 
     /** The logger for the default core module. */
     private static final Logger LOGGER =
@@ -43,59 +44,57 @@ public class FeatureFlatTest extends TestCase {
 
     TestSuite suite = null;
 
-    public FeatureFlatTest(String testName) {
-        super(testName);
-    }
-
-    public static void main(String[] args) {
-        org.geotools.util.logging.Logging.GEOTOOLS.forceMonolineConsoleOutput();
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite(FeatureFlatTest.class);
-        return suite;
-    }
-
+    @Before
     public void setUp() {
         testFeature = SampleFeatureFixtures.createFeature();
     }
 
+    @Test
     public void testRetrieve() {
         GeometryFactory gf = new GeometryFactory();
-        assertTrue(
+        Assert.assertTrue(
                 "geometry retrieval and match",
                 ((Point) testFeature.getAttribute("testGeometry"))
                         .equalsExact(gf.createPoint(new Coordinate(1, 2))));
-        assertTrue(
+        Assert.assertEquals(
                 "boolean retrieval and match",
-                testFeature.getAttribute("testBoolean").equals(Boolean.valueOf(true)));
-        assertTrue(
+                testFeature.getAttribute("testBoolean"),
+                Boolean.valueOf(true));
+        Assert.assertEquals(
                 "character retrieval and match",
-                testFeature.getAttribute("testCharacter").equals(Character.valueOf('t')));
-        assertTrue(
+                testFeature.getAttribute("testCharacter"),
+                Character.valueOf('t'));
+        Assert.assertEquals(
                 "byte retrieval and match",
-                testFeature.getAttribute("testByte").equals(Byte.valueOf("10")));
-        assertTrue(
+                testFeature.getAttribute("testByte"),
+                Byte.valueOf("10"));
+        Assert.assertEquals(
                 "short retrieval and match",
-                testFeature.getAttribute("testShort").equals(Short.valueOf("101")));
-        assertTrue(
+                testFeature.getAttribute("testShort"),
+                Short.valueOf("101"));
+        Assert.assertEquals(
                 "integer retrieval and match",
-                testFeature.getAttribute("testInteger").equals(Integer.valueOf(1002)));
-        assertTrue(
+                testFeature.getAttribute("testInteger"),
+                Integer.valueOf(1002));
+        Assert.assertEquals(
                 "long retrieval and match",
-                testFeature.getAttribute("testLong").equals(Long.valueOf(10003)));
-        assertTrue(
+                testFeature.getAttribute("testLong"),
+                Long.valueOf(10003));
+        Assert.assertEquals(
                 "float retrieval and match",
-                testFeature.getAttribute("testFloat").equals(Float.valueOf(10000.4f)));
-        assertTrue(
+                testFeature.getAttribute("testFloat"),
+                Float.valueOf(10000.4f));
+        Assert.assertEquals(
                 "double retrieval and match",
-                testFeature.getAttribute("testDouble").equals(Double.valueOf(100000.5)));
-        assertTrue(
+                testFeature.getAttribute("testDouble"),
+                Double.valueOf(100000.5));
+        Assert.assertEquals(
                 "string retrieval and match",
-                testFeature.getAttribute("testString").equals("test string data"));
+                "test string data",
+                testFeature.getAttribute("testString"));
     }
 
+    @Test
     public void testBogusCreation() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("test1");
@@ -111,11 +110,12 @@ public class FeatureFlatTest extends TestCase {
 
         try {
             SimpleFeatureBuilder.build(test, new Object[32], null);
-            fail("no error");
+            Assert.fail("no error");
         } catch (Exception e) {
         }
     }
 
+    @Test
     public void testBounds() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         Geometry[] g = new Geometry[4];
@@ -135,32 +135,35 @@ public class FeatureFlatTest extends TestCase {
         SimpleFeatureType t = tb.buildFeatureType();
 
         SimpleFeature f = SimpleFeatureBuilder.build(t, g, null);
-        assertEquals(gc.getEnvelopeInternal(), f.getBounds());
+        Assert.assertEquals(gc.getEnvelopeInternal(), f.getBounds());
 
         g[1].getCoordinate().y = 20;
         g[2].getCoordinate().x = 20;
         f.setAttribute(1, g[1]);
         f.setAttribute(2, g[2]);
         gc = gf.createGeometryCollection(g);
-        assertEquals(gc.getEnvelopeInternal(), f.getBounds());
+        Assert.assertEquals(gc.getEnvelopeInternal(), f.getBounds());
     }
 
+    @Test
     public void testClone() {
         SimpleFeature f = SampleFeatureFixtures.createFeature();
         SimpleFeature c = SimpleFeatureBuilder.copy(f);
         for (int i = 0, ii = c.getAttributeCount(); i < ii; i++) {
-            assertEquals(c.getAttribute(i), f.getAttribute(i));
+            Assert.assertEquals(c.getAttribute(i), f.getAttribute(i));
         }
     }
 
+    @Test
     public void testClone2() throws Exception {
         SimpleFeatureType type = SampleFeatureFixtures.createTestType();
         Object[] attributes = SampleFeatureFixtures.createAttributes();
         SimpleFeature feature = SimpleFeatureBuilder.build(type, attributes, "fid");
         SimpleFeature clone = SimpleFeatureBuilder.deep(feature);
-        assertTrue("Clone was not equal", feature.equals(clone));
+        Assert.assertEquals("Clone was not equal", feature, clone);
     }
 
+    @Test
     public void testToStringWontThrow() throws IllegalAttributeException {
         SimpleFeature f = SampleFeatureFixtures.createFeature();
         f.setAttributes(new Object[f.getAttributeCount()]);
@@ -180,10 +183,11 @@ public class FeatureFlatTest extends TestCase {
         return ab.buildDescriptor(name);
     }
 
+    @Test
     public void testModify() throws IllegalAttributeException {
         String newData = "new test string data";
         testFeature.setAttribute("testString", newData);
-        assertEquals(
+        Assert.assertEquals(
                 "match modified (string) attribute",
                 testFeature.getAttribute("testString"),
                 newData);
@@ -191,13 +195,13 @@ public class FeatureFlatTest extends TestCase {
         GeometryFactory gf = new GeometryFactory();
         Point newGeom = gf.createPoint(new Coordinate(3, 4));
         testFeature.setAttribute("testGeometry", newGeom);
-        assertEquals(
+        Assert.assertEquals(
                 "match modified (geometry) attribute",
                 testFeature.getAttribute("testGeometry"),
                 newGeom);
 
         testFeature.setDefaultGeometry(newGeom);
-        assertEquals(
+        Assert.assertEquals(
                 "match modified (geometry) attribute",
                 testFeature.getAttribute("testGeometry"),
                 newGeom);
@@ -260,20 +264,21 @@ public class FeatureFlatTest extends TestCase {
     //
     //    }
 
+    @Test
     public void testEquals() throws Exception {
         SimpleFeature f1 = SampleFeatureFixtures.createFeature();
         SimpleFeature f2 = SampleFeatureFixtures.createFeature();
-        assertTrue(f1.equals(f1));
-        assertTrue(f2.equals(f2));
-        assertTrue(!f1.equals(f2));
-        assertTrue(!f1.equals(null));
+        Assert.assertEquals(f1, f1);
+        Assert.assertEquals(f2, f2);
+        Assert.assertFalse(f1.equals(f2));
+        Assert.assertFalse(f1.equals(null));
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("different");
         tb.add("name", String.class);
         SimpleFeatureType type = tb.buildFeatureType();
 
-        assertTrue(!f1.equals(SimpleFeatureBuilder.build(type, new Object[1], null)));
+        Assert.assertFalse(f1.equals(SimpleFeatureBuilder.build(type, new Object[1], null)));
     }
 
     /*

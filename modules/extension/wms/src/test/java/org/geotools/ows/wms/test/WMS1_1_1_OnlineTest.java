@@ -16,6 +16,12 @@
  */
 package org.geotools.ows.wms.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -27,6 +33,7 @@ import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wms.WMS1_1_1;
 import org.geotools.ows.wms.WMSCapabilities;
 import org.geotools.ows.wms.WebMapServer;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 /**
@@ -48,10 +55,12 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
                         "http://mapserv2.esrin.esa.it/cubestor/cubeserv/cubeserv.cgi?VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS");
     }
 
+    @Test
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.1.1");
     }
 
+    @Test
     public void testCreateParser() throws Exception {
         try {
             WMSCapabilities capabilities = createCapabilities("1.1.1Capabilities.xml");

@@ -225,8 +225,11 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
             }
 
             PropertyName getPropertyName() {
-                if (pNames.size() > 0) return pNames.get(0);
-                else return null;
+                if (pNames.isEmpty()) {
+                    return null;
+                } else {
+                    return pNames.get(0);
+                }
             }
         }
         PropertyNameFinder finder = new PropertyNameFinder();

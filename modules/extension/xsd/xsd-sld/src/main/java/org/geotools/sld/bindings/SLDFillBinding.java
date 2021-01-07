@@ -16,7 +16,6 @@
  */
 package org.geotools.sld.bindings;
 
-import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.sld.CssParameter;
@@ -120,8 +119,8 @@ public class SLDFillBinding extends AbstractComplexBinding {
         // &quot;fill-opacity&quot;
         List params = node.getChildValues(CssParameter.class);
 
-        for (Iterator itr = params.iterator(); itr.hasNext(); ) {
-            CssParameter param = (CssParameter) itr.next();
+        for (Object o : params) {
+            CssParameter param = (CssParameter) o;
 
             if ("fill".equals(param.getName())) {
                 color = param.getExpression();

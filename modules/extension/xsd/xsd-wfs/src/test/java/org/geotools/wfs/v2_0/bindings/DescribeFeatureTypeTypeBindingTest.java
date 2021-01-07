@@ -1,11 +1,15 @@
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.DescribeFeatureTypeType;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 
 public class DescribeFeatureTypeTypeBindingTest extends WFSTestSupport {
-
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<DescribeFeatureType service='WFS' version='2.0.0' xmlns='http://www.opengis.net/wfs/2.0' "

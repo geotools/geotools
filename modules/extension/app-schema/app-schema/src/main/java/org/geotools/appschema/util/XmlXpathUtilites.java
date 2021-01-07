@@ -146,8 +146,7 @@ public class XmlXpathUtilites {
             ls = new ArrayList<>();
         } else {
             ls = new ArrayList<>(values.size());
-            for (int i = 0; i < values.size(); i++) {
-                Object value = values.get(i);
+            for (Object value : values) {
                 String unwrappedValue = "";
                 if (value instanceof org.jdom2.Attribute) {
                     unwrappedValue = ((org.jdom2.Attribute) value).getValue();

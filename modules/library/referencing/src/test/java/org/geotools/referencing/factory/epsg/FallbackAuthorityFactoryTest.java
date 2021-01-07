@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.net.URL;
-import java.util.Iterator;
 import java.util.Set;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -83,8 +82,7 @@ public final class FallbackAuthorityFactoryTest {
         }
         boolean foundWkt = false;
         boolean foundExtra = false;
-        for (Iterator<CRSAuthorityFactory> it = factories.iterator(); it.hasNext(); ) {
-            CRSAuthorityFactory factory = it.next();
+        for (CRSAuthorityFactory factory : factories) {
             Class<?> type = factory.getClass();
             if (VERBOSE) {
                 // System.out.println(type);

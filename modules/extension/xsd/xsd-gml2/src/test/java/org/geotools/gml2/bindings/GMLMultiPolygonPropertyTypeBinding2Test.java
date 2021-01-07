@@ -16,20 +16,27 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.w3c.dom.Document;
 
 public class GMLMultiPolygonPropertyTypeBinding2Test extends GMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(MultiPolygon.class, binding(GML.MultiPolygonPropertyType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(GML.MultiPolygonPropertyType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         GML2MockData.multiPolygonProperty(document, document);
 
@@ -37,6 +44,7 @@ public class GMLMultiPolygonPropertyTypeBinding2Test extends GMLTestSupport {
         assertNotNull(mp);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.multiPolygon(), GML.multiPolygonProperty);
 

@@ -16,8 +16,12 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
@@ -30,6 +34,7 @@ public class PolygonTypeBindingTest extends GML3TestSupport {
         return true;
     }
 
+    @Test
     public void testNoInterior() throws Exception {
         GML3MockData.polygon(document, document);
 
@@ -37,6 +42,7 @@ public class PolygonTypeBindingTest extends GML3TestSupport {
         assertNotNull(polygon);
     }
 
+    @Test
     public void testPolygon3D() throws Exception {
         GML3MockData.polygon3D(document, document, true);
 
@@ -49,6 +55,7 @@ public class PolygonTypeBindingTest extends GML3TestSupport {
         assertTrue(new Coordinate(1d, 2d, 10d).equals3D(interior.getCoordinateN(0)));
     }
 
+    @Test
     public void testPolygonPosList3D() throws Exception {
         GML3MockData.polygonWithPosList3D(document, document, true);
 
@@ -61,6 +68,7 @@ public class PolygonTypeBindingTest extends GML3TestSupport {
         assertTrue(new Coordinate(1d, 2d, 10d).equals3D(interior.getCoordinateN(0)));
     }
 
+    @Test
     public void testEncode3D() throws Exception {
         Polygon poly = GML3MockData.polygonLite3D();
         Document doc = encode(poly, GML.Polygon);
@@ -69,6 +77,7 @@ public class PolygonTypeBindingTest extends GML3TestSupport {
         checkPosListOrdinates(doc, 3 * poly.getNumPoints());
     }
 
+    @Test
     public void testEncode2D() throws Exception {
         Polygon poly = GML3MockData.polygonLite2D();
         Document doc = encode(poly, GML.Polygon);
@@ -77,6 +86,7 @@ public class PolygonTypeBindingTest extends GML3TestSupport {
         checkPosListOrdinates(doc, 2 * poly.getNumPoints());
     }
 
+    @Test
     public void testEncodeCurved() throws Exception {
         Polygon poly = GML3MockData.curvePolygon();
         Document doc = encode(poly, GML.Polygon);

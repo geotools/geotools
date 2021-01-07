@@ -460,11 +460,11 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     public void visit(StyledLayerDescriptor sld) {
         StyledLayer[] layers = sld.getStyledLayers();
 
-        for (int i = 0; i < layers.length; i++) {
-            if (layers[i] instanceof NamedLayer) {
-                ((NamedLayer) layers[i]).accept(this);
-            } else if (layers[i] instanceof UserLayer) {
-                ((UserLayer) layers[i]).accept(this);
+        for (StyledLayer layer : layers) {
+            if (layer instanceof NamedLayer) {
+                ((NamedLayer) layer).accept(this);
+            } else if (layer instanceof UserLayer) {
+                ((UserLayer) layer).accept(this);
             }
         }
     }
@@ -472,16 +472,16 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     public void visit(NamedLayer layer) {
         org.geotools.styling.Style[] styles = layer.getStyles();
 
-        for (int i = 0; i < styles.length; i++) {
-            styles[i].accept(this);
+        for (org.geotools.styling.Style style : styles) {
+            style.accept(this);
         }
     }
 
     public void visit(UserLayer layer) {
         org.geotools.styling.Style[] styles = layer.getUserStyles();
 
-        for (int i = 0; i < styles.length; i++) {
-            styles[i].accept(this);
+        for (org.geotools.styling.Style style : styles) {
+            style.accept(this);
         }
     }
 
@@ -492,8 +492,8 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     public void visit(ColorMap map) {
         ColorMapEntry[] entries = map.getColorMapEntries();
 
-        for (int i = 0; i < entries.length; i++) {
-            entries[i].accept(this);
+        for (ColorMapEntry entry : entries) {
+            entry.accept(this);
         }
     }
 

@@ -48,11 +48,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
 import java.util.logging.Level;
 import org.geotools.data.vpf.VPFColumn;
 import org.geotools.data.vpf.VPFLogger;
@@ -99,7 +99,7 @@ public class VPFFile {
      */
     private char byteOrder = LEAST_SIGNIF_FIRST;
     /** The columns of the file. This list shall contain objects of type <code>VPFColumn</code> */
-    private final List<VPFColumn> columns = new Vector<>();
+    private final List<VPFColumn> columns = new ArrayList<>();
 
     /**
      * Variable <code>description</code> keeps value of text description of the table's contents.

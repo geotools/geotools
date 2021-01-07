@@ -20,6 +20,8 @@ package org.geotools.filter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
@@ -93,11 +95,11 @@ public class BetweenTest {
                         new Object[] {Integer.valueOf(30), gf.createPoint(new Coordinate(30, 30))},
                         null);
 
-        assertEquals(true, a.evaluate(f1)); // in between
-        assertEquals(false, a.evaluate(f2)); // too small
-        assertEquals(true, a.evaluate(f3)); // max value
-        assertEquals(true, a.evaluate(f4)); // min value
-        assertEquals(false, a.evaluate(f5)); // too large
+        assertTrue(a.evaluate(f1)); // in between
+        assertFalse(a.evaluate(f2)); // too small
+        assertTrue(a.evaluate(f3)); // max value
+        assertTrue(a.evaluate(f4)); // min value
+        assertFalse(a.evaluate(f5)); // too large
     }
 
     @Test
@@ -108,6 +110,6 @@ public class BetweenTest {
         PropertyIsBetween f3 = ff.between(ff.property("abc"), ff.literal(10), ff.literal(20));
 
         assertEquals(f1, f3);
-        assertFalse(f1.equals(f2));
+        assertNotEquals(f1, f2);
     }
 }

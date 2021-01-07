@@ -88,8 +88,8 @@ public class Slice2DIndex {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        for (int i = 0; i < index.length; i++) {
-            result = prime * result + index[i];
+        for (int j : index) {
+            result = prime * result + j;
         }
         result = prime * result + ((variableName == null) ? 0 : variableName.hashCode());
         return result;
@@ -220,9 +220,7 @@ public class Slice2DIndex {
          */
         public static void writeIndexFile(File file, List<Slice2DIndex> indexList)
                 throws IOException {
-            RandomAccessFile raf = null;
-            try {
-                raf = new RandomAccessFile(file, "rw");
+            try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
                 int size = indexList.size();
                 // write number of records
                 raf.writeInt(size);
@@ -253,11 +251,6 @@ public class Slice2DIndex {
                 }
                 // add also the data end position
                 raf.writeLong(dataEnd);
-
-            } finally {
-                if (raf != null) {
-                    raf.close();
-                }
             }
         }
 

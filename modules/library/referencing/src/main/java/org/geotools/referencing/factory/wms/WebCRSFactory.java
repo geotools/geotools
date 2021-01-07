@@ -17,7 +17,6 @@
 package org.geotools.referencing.factory.wms;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -142,8 +141,9 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
             throws FactoryException {
         ensureInitialized();
         final Set<String> set = new LinkedHashSet<>();
-        for (final Iterator it = crsMap.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (Map.Entry<Integer, CoordinateReferenceSystem> integerCoordinateReferenceSystemEntry :
+                crsMap.entrySet()) {
+            final Map.Entry entry = (Map.Entry) integerCoordinateReferenceSystemEntry;
             final CoordinateReferenceSystem crs = (CoordinateReferenceSystem) entry.getValue();
             if (type.isAssignableFrom(crs.getClass())) {
                 final Integer code = (Integer) entry.getKey();

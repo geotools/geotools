@@ -98,57 +98,57 @@ public class XSDTemplate
     stringBuffer.append(TEXT_11);
     
     List types = GeneratorUtils.allTypes( schema );
-    for (Iterator itr = types.iterator(); itr.hasNext();) {
-        XSDTypeDefinition type = (XSDTypeDefinition)itr.next();
-        if (type.getName() == null) continue;
-        if (!ns.equals(type.getTargetNamespace())) continue;
-        
+      for (Object item : types) {
+          XSDTypeDefinition type = (XSDTypeDefinition) item;
+          if (type.getName() == null) continue;
+          if (!ns.equals(type.getTargetNamespace())) continue;
 
-    stringBuffer.append(TEXT_12);
-    stringBuffer.append(type.getName());
-    stringBuffer.append(TEXT_13);
-    stringBuffer.append(ns);
-    stringBuffer.append(TEXT_14);
-    stringBuffer.append(type.getName());
-    stringBuffer.append(TEXT_15);
-    
-    }
+
+          stringBuffer.append(TEXT_12);
+          stringBuffer.append(type.getName());
+          stringBuffer.append(TEXT_13);
+          stringBuffer.append(ns);
+          stringBuffer.append(TEXT_14);
+          stringBuffer.append(type.getName());
+          stringBuffer.append(TEXT_15);
+
+      }
 
     stringBuffer.append(TEXT_16);
     
     List elements = schema.getElementDeclarations();
-    for (Iterator itr = elements.iterator(); itr.hasNext();) {
-        XSDElementDeclaration element = (XSDElementDeclaration)itr.next();
-        if (element.getName() == null) continue;
-        if (!ns.equals(element.getTargetNamespace())) continue;
+      for (Object value : elements) {
+          XSDElementDeclaration element = (XSDElementDeclaration) value;
+          if (element.getName() == null) continue;
+          if (!ns.equals(element.getTargetNamespace())) continue;
 
-    stringBuffer.append(TEXT_17);
-    stringBuffer.append(element.getName());
-    stringBuffer.append(TEXT_18);
-    stringBuffer.append(ns);
-    stringBuffer.append(TEXT_19);
-    stringBuffer.append(element.getName());
-    stringBuffer.append(TEXT_20);
-    
-    }
+          stringBuffer.append(TEXT_17);
+          stringBuffer.append(element.getName());
+          stringBuffer.append(TEXT_18);
+          stringBuffer.append(ns);
+          stringBuffer.append(TEXT_19);
+          stringBuffer.append(element.getName());
+          stringBuffer.append(TEXT_20);
+
+      }
 
     stringBuffer.append(TEXT_21);
     
     List attributes = schema.getAttributeDeclarations();
-    for (Iterator itr = attributes.iterator(); itr.hasNext();) {
-        XSDAttributeDeclaration attribute = (XSDAttributeDeclaration)itr.next();
-        if (attribute.getName() == null) continue;
-        if (!ns.equals(attribute.getTargetNamespace())) continue;
+      for (Object o : attributes) {
+          XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) o;
+          if (attribute.getName() == null) continue;
+          if (!ns.equals(attribute.getTargetNamespace())) continue;
 
-    stringBuffer.append(TEXT_22);
-    stringBuffer.append(attribute.getName());
-    stringBuffer.append(TEXT_23);
-    stringBuffer.append(ns);
-    stringBuffer.append(TEXT_24);
-    stringBuffer.append(attribute.getName());
-    stringBuffer.append(TEXT_25);
-    
-    }
+          stringBuffer.append(TEXT_22);
+          stringBuffer.append(attribute.getName());
+          stringBuffer.append(TEXT_23);
+          stringBuffer.append(ns);
+          stringBuffer.append(TEXT_24);
+          stringBuffer.append(attribute.getName());
+          stringBuffer.append(TEXT_25);
+
+      }
 
     stringBuffer.append(TEXT_26);
     stringBuffer.append(TEXT_27);

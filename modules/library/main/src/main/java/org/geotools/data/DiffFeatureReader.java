@@ -141,9 +141,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
 
             try {
                 peek = reader.next();
-            } catch (NoSuchElementException e) {
-                throw new DataSourceException("Could not aquire the next Feature", e);
-            } catch (IllegalAttributeException e) {
+            } catch (NoSuchElementException | IllegalAttributeException e) {
                 throw new DataSourceException("Could not aquire the next Feature", e);
             }
 

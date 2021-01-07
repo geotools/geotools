@@ -61,9 +61,7 @@ public class RectangularClipProcess implements VectorProcess {
             boolean lenient = true;
             try {
                 clip = clip.transform(featuresCRS, lenient);
-            } catch (TransformException e) {
-                throw new ProcessException(e);
-            } catch (FactoryException e) {
+            } catch (TransformException | FactoryException e) {
                 throw new ProcessException(e);
             }
         }

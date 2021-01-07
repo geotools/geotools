@@ -18,17 +18,19 @@ package org.geotools.xml.handlers;
 
 import java.net.URI;
 import java.util.logging.Logger;
-import junit.framework.TestCase;
 import org.geotools.xml.XMLElementHandler;
 import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.impl.ElementGT;
+import org.junit.Assert;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 /** @author Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it */
-public class ElementHandlerFactoryTest extends TestCase {
+public class ElementHandlerFactoryTest {
     private static final Logger logger =
             Logger.getLogger(ElementHandlerFactoryTest.class.getName());
 
+    @Test
     public void testCreateElementHandlerIgnoresUnknownTypes() {
         ElementHandlerFactory factory = new ElementHandlerFactory(logger);
         Element el =
@@ -44,10 +46,10 @@ public class ElementHandlerFactoryTest extends TestCase {
                         false);
         try {
             XMLElementHandler elementHandler = factory.createElementHandler(el);
-            assertNotNull(elementHandler);
-            assertTrue(elementHandler instanceof IgnoreHandler);
+            Assert.assertNotNull(elementHandler);
+            Assert.assertTrue(elementHandler instanceof IgnoreHandler);
         } catch (SAXException e) {
-            fail("Failure in createElementHandler: " + e.getLocalizedMessage());
+            Assert.fail("Failure in createElementHandler: " + e.getLocalizedMessage());
         }
     }
 }

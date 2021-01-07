@@ -62,12 +62,9 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
             return;
         }
         File schemaFile = schemaFile(schema.getTypeName());
-        BufferedWriter writer = new BufferedWriter(new FileWriter(schemaFile));
-        try {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(schemaFile))) {
             BasicDBObject dbObject = FeatureTypeDBObject.convert(schema);
             writer.write(dbObject.toJson());
-        } finally {
-            writer.close();
         }
     }
 

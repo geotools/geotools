@@ -25,9 +25,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.geometry.jts.GeometryBuilder;
+import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
-public class PolyLabellerTest extends TestCase {
+public class PolyLabellerTest {
 
     @Test
     public void testSquare() throws ParseException {
@@ -46,7 +46,7 @@ public class PolyLabellerTest extends TestCase {
         Point point = (Point) PolyLabeller.getPolylabel(p, 1);
 
         Point expected = gb.point(5, 5);
-        assertEquals(expected, point);
+        Assert.assertEquals(expected, point);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class PolyLabellerTest extends TestCase {
         // first.
         Point expected2 = gb.point(15, 5);
 
-        assertEquals(expected1, point);
+        Assert.assertEquals(expected1, point);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class PolyLabellerTest extends TestCase {
         Point point = (Point) PolyLabeller.getPolylabel(p, 1);
 
         Point expected = gb.point(15, 5);
-        assertEquals(expected, point);
+        Assert.assertEquals(expected, point);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class PolyLabellerTest extends TestCase {
         Point point = (Point) PolyLabeller.getPolylabel(p, 1);
 
         Point expected = gb.point(5, 5);
-        assertEquals(expected, point);
+        Assert.assertEquals(expected, point);
     }
 
     @Test
@@ -109,14 +109,14 @@ public class PolyLabellerTest extends TestCase {
         Polygon p = gb.polygon();
         try {
             Point point = (Point) PolyLabeller.getPolylabel(p, 1);
-            fail("processed empty polygon");
+            Assert.fail("processed empty polygon");
         } catch (IllegalStateException e) {
             // this is good!
         }
         try {
             p = gb.polygon(0, 0, 0, 0, 0, 0, 0, 0);
             Point point = (Point) PolyLabeller.getPolylabel(p, 1);
-            fail("processed invalid polygon");
+            Assert.fail("processed invalid polygon");
         } catch (IllegalStateException e) {
             // this is good.
         }

@@ -124,12 +124,12 @@ public class ArcSDEQueryTest {
         SimpleFeatureSource source = dstore.getFeatureSource(typeName);
         SimpleFeatureCollection features = source.getFeatures();
         SimpleFeatureIterator iterator = features.features();
-        List<FeatureId> fids = new ArrayList<FeatureId>();
+        List<FeatureId> fids = new ArrayList<>();
         for (int i = 0; i < FILTERING_COUNT; i++) {
             fids.add(ff.featureId(iterator.next().getID()));
         }
         iterator.close();
-        Id filter = ff.id(new HashSet<FeatureId>(fids));
+        Id filter = ff.id(new HashSet<>(fids));
         filteringQuery = new Query(typeName, filter);
     }
 
@@ -258,7 +258,7 @@ public class ArcSDEQueryTest {
     @Test
     public void testWipesOutInvalidFids() throws IOException {
         final String typeName = this.typeName;
-        Set<Identifier> ids = new HashSet<Identifier>();
+        Set<Identifier> ids = new HashSet<>();
         ids.add(ff.featureId(typeName + ".1"));
         ids.add(ff.featureId(typeName + ".2"));
         // some non valid ones...
@@ -281,7 +281,7 @@ public class ArcSDEQueryTest {
         assertTrue(sqlFilter instanceof Id);
         Id id = (Id) sqlFilter;
         Assert.assertEquals(2, id.getIDs().size());
-        Set<Identifier> validFids = new HashSet<Identifier>();
+        Set<Identifier> validFids = new HashSet<>();
         validFids.add(ff.featureId(typeName + ".1"));
         validFids.add(ff.featureId(typeName + ".2"));
         Id expected = ff.id(validFids);

@@ -441,8 +441,8 @@ public class FeatureTypes {
         if (defaultGeometry != null) {
             // make sure that the default geometry was one of the types specified
             boolean add = true;
-            for (int i = 0; i < types.length; i++) {
-                if (types[i] == defaultGeometry) {
+            for (AttributeDescriptor type : types) {
+                if (type == defaultGeometry) {
                     add = false;
                     break;
                 }
@@ -756,10 +756,6 @@ public class FeatureTypes {
 
         // null == null handled above
         if (a == null || b == null) return false;
-
-        if (a != null && a.size() == 0 && b == null) return true;
-
-        if (b != null && b.size() == 0 && a == null) return true;
 
         return a.equals(b);
     }

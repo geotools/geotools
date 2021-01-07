@@ -17,12 +17,14 @@
 package org.geotools.styling;
 
 import java.net.URL;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** This test case captures specific problems encountered with the GraphicImpl code. */
-public class GraphicImplTest extends TestCase {
+public class GraphicImplTest {
 
     /** Checks if creating a Graphic with an ExternalGraphics works. */
+    @Test
     public void testWithExternalGraphics() throws Exception {
         StyleBuilder sb = new StyleBuilder();
 
@@ -30,10 +32,11 @@ public class GraphicImplTest extends TestCase {
         ExternalGraphic extg = sb.createExternalGraphic(urlExternal, "image/svg+xml");
         Graphic graphic = sb.createGraphic(extg, null, null);
 
-        assertEquals(1, graphic.graphicalSymbols().size());
+        Assert.assertEquals(1, graphic.graphicalSymbols().size());
     }
 
     /** Checks if the Displacement settings are exported to XML */
+    @Test
     public void testDisplacement() throws Exception {
         StyleBuilder sb = new StyleBuilder();
 
@@ -45,9 +48,9 @@ public class GraphicImplTest extends TestCase {
         }
 
         Displacement disp = graphic.getDisplacement();
-        assertNotNull(disp);
+        Assert.assertNotNull(disp);
 
-        assertEquals(disp.getDisplacementX().toString(), "10.1");
-        assertEquals(disp.getDisplacementY().toString(), "-5.5");
+        Assert.assertEquals(disp.getDisplacementX().toString(), "10.1");
+        Assert.assertEquals(disp.getDisplacementY().toString(), "-5.5");
     }
 }

@@ -17,6 +17,7 @@
 package org.geotools.imageio;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -139,7 +140,7 @@ public class GeoSpatialImageReaderTest {
             // Get ImageIndexes
             List<Integer> indexes = reader.getImageIndex(q);
             assertNotNull(indexes);
-            assertTrue(!indexes.isEmpty());
+            assertFalse(indexes.isEmpty());
         } catch (Exception e) {
             t.rollback();
         } finally {

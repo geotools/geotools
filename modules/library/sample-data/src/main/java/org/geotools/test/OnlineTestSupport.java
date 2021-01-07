@@ -18,7 +18,7 @@
 package org.geotools.test;
 
 import java.util.Properties;
-import junit.framework.TestCase;
+import junit.framework.TestCase; // NOPMD
 import junit.textui.TestRunner;
 import org.junit.After;
 import org.junit.Assume;

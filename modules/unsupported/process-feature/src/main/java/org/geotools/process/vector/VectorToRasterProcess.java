@@ -318,8 +318,7 @@ public class VectorToRasterProcess implements VectorProcess {
         float scale = 100.0f / features.size();
         monitor.started();
 
-        SimpleFeatureIterator fi = features.features();
-        try {
+        try (SimpleFeatureIterator fi = features.features()) {
             int counter = 0;
             while (fi.hasNext()) {
                 try {
@@ -330,8 +329,6 @@ public class VectorToRasterProcess implements VectorProcess {
 
                 monitor.progress(scale * counter++);
             }
-        } finally {
-            fi.close();
         }
         monitor.complete();
 

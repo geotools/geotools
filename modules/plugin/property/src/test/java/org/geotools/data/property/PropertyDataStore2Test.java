@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import junit.framework.TestCase;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -30,6 +29,9 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Property;
@@ -45,19 +47,15 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jody Garnett, Refractions Research Inc.
  * @author Torben Barsballe (Boundless)
  */
-public class PropertyDataStore2Test extends TestCase {
+public class PropertyDataStore2Test {
     PropertyDataStore store;
     PropertyDataStore store3d;
     PropertyDataStore sridStore;
 
     private static final String TARGET_DIR = "./target";
 
-    /** Constructor for SimpleDataStoreTest. */
-    public PropertyDataStore2Test(String arg0) {
-        super(arg0);
-    }
-
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         File dir = new File(TARGET_DIR, "propertyTestData");
         dir.mkdir();
 
@@ -114,40 +112,38 @@ public class PropertyDataStore2Test extends TestCase {
         writer3.write("fid2=2|LINESTRING(20 20 10,30 30 20)");
         writer3.close();
         store3d = new PropertyDataStore(dir3, "propertyTestData3");
-
-        super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         File dir = new File(TARGET_DIR, "propertyTestData");
         File list[] = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File item : list) {
+            item.delete();
         }
         dir.delete();
 
         dir = new File(TARGET_DIR, "propertyTestData2");
         list = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File value : list) {
+            value.delete();
         }
         dir.delete();
 
         dir = new File(TARGET_DIR, "propertyTestData3");
         list = dir.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        for (File file : list) {
+            file.delete();
         }
         dir.delete();
-
-        super.tearDown();
     }
 
     /** Test CRS being passed into Geometry user data. */
+    @Test
     public void testCRS() throws Exception {
         SimpleFeatureSource road = sridStore.getFeatureSource("road2");
         SimpleFeatureCollection features = road.getFeatures();
-        assertEquals(4, features.size());
+        Assert.assertEquals(4, features.size());
 
         SimpleFeature feature;
         Geometry geom;
@@ -157,59 +153,63 @@ public class PropertyDataStore2Test extends TestCase {
         while (iterator.hasNext()) {
             feature = iterator.next();
             prop = feature.getProperty("geom");
-            assertTrue(prop.getType() instanceof GeometryType);
+            Assert.assertTrue(prop.getType() instanceof GeometryType);
             geomType = (GeometryType) prop.getType();
 
             Object val = prop.getValue();
-            assertTrue(val != null && val instanceof Geometry);
+            Assert.assertTrue(val != null && val instanceof Geometry);
             geom = (Geometry) val;
 
             Object userData = geom.getUserData();
-            assertTrue(userData != null && userData instanceof CoordinateReferenceSystem);
+            Assert.assertTrue(userData != null && userData instanceof CoordinateReferenceSystem);
             // ensure the same CRS is passed on to userData for encoding
-            assertEquals(userData, geomType.getCoordinateReferenceSystem());
+            Assert.assertEquals(userData, geomType.getCoordinateReferenceSystem());
         }
     }
 
+    @Test
     public void test3D() throws Exception {
         SimpleFeatureSource fs = store3d.getFeatureSource("road3");
         Query q = new Query("road3", Filter.INCLUDE);
-        assertEquals(2, fs.getCount(q));
+        Assert.assertEquals(2, fs.getCount(q));
         ReferencedEnvelope bounds =
                 new ReferencedEnvelope3D(
                         0, 30, 0, 30, 0, 20, fs.getSchema().getCoordinateReferenceSystem());
-        assertEquals(bounds, fs.getBounds());
-        assertEquals(bounds, fs.getBounds(q));
+        Assert.assertEquals(bounds, fs.getBounds());
+        Assert.assertEquals(bounds, fs.getBounds(q));
 
         SimpleFeatureCollection features = fs.getFeatures();
-        assertEquals(2, features.size());
+        Assert.assertEquals(2, features.size());
 
         SimpleFeatureIterator i = features.features();
         for (SimpleFeature feature = i.next(); i.hasNext(); feature = i.next()) {
             Property p = feature.getProperty("geom");
-            assertTrue(p.getType() instanceof GeometryType);
-            assertTrue(p.getValue() instanceof Geometry);
+            Assert.assertTrue(p.getType() instanceof GeometryType);
+            Assert.assertTrue(p.getValue() instanceof Geometry);
         }
     }
 
+    @Test
     public void testSimple() throws Exception {
         SimpleFeatureSource road = store.getFeatureSource("road");
         SimpleFeatureCollection features = road.getFeatures();
 
         // assertEquals( 1, features.getFeatureType().getAttributeCount() );
-        assertEquals(4, features.size());
+        Assert.assertEquals(4, features.size());
     }
 
+    @Test
     public void testQuery() throws Exception {
         SimpleFeatureSource road = store.getFeatureSource("road");
 
         Query query = new Query("road", Filter.INCLUDE, new String[] {"name"});
 
         SimpleFeatureCollection features = road.getFeatures(query);
-        assertEquals(4, features.size());
+        Assert.assertEquals(4, features.size());
         // assertEquals( 1, features.getFeatureType().getAttributeCount() );
     }
 
+    @Test
     public void testQueryReproject() throws Exception {
         CoordinateReferenceSystem world = CRS.decode("EPSG:4326"); // world lon/lat
         CoordinateReferenceSystem local = CRS.decode("EPSG:3005"); // british columbia
@@ -225,25 +225,27 @@ public class PropertyDataStore2Test extends TestCase {
         SimpleFeatureCollection features = road.getFeatures(query);
         SimpleFeatureType resultType = features.getSchema();
 
-        assertNotNull(resultType);
-        assertNotSame(resultType, origionalType);
+        Assert.assertNotNull(resultType);
+        Assert.assertNotSame(resultType, origionalType);
 
-        assertEquals(world, resultType.getCoordinateReferenceSystem());
+        Assert.assertEquals(world, resultType.getCoordinateReferenceSystem());
 
-        assertNotNull(resultType.getGeometryDescriptor());
+        Assert.assertNotNull(resultType.getGeometryDescriptor());
     }
 
+    @Test
     public void testGetFeaturesFilterSize() throws Exception {
         Filter f = CQL.toFilter("name = 'brent'");
         SimpleFeatureSource features = store.getFeatureSource("road");
-        assertEquals(1, features.getFeatures(f).size());
+        Assert.assertEquals(1, features.getFeatures(f).size());
     }
 
+    @Test
     public void testGetFeaturesFilterBounds() throws Exception {
         Filter f = CQL.toFilter("name = 'brent'");
         SimpleFeatureSource features = store.getFeatureSource("road");
         ReferencedEnvelope envelope = new ReferencedEnvelope(20, 30, 20, 30, null);
-        assertEquals(envelope, features.getFeatures(f).getBounds());
+        Assert.assertEquals(envelope, features.getFeatures(f).getBounds());
     }
 
     /** Test query with a start index */
@@ -255,8 +257,8 @@ public class PropertyDataStore2Test extends TestCase {
 
         SimpleFeatureCollection matches = features.getFeatures(query);
 
-        assertEquals(1, matches.size());
-        assertEquals(1, features.getCount(query));
+        Assert.assertEquals(1, matches.size());
+        Assert.assertEquals(1, features.getCount(query));
     }
 
     /** Test query with maxFeatures */
@@ -268,8 +270,8 @@ public class PropertyDataStore2Test extends TestCase {
 
         SimpleFeatureCollection matches = features.getFeatures(query);
 
-        assertEquals(3, matches.size());
-        assertEquals(3, features.getCount(query));
+        Assert.assertEquals(3, matches.size());
+        Assert.assertEquals(3, features.getCount(query));
     }
 
     /** Test query with maxFeatures and startIndex */
@@ -282,7 +284,7 @@ public class PropertyDataStore2Test extends TestCase {
 
         SimpleFeatureCollection matches = features.getFeatures(query);
 
-        assertEquals(1, matches.size());
-        assertEquals(1, features.getCount(query));
+        Assert.assertEquals(1, matches.size());
+        Assert.assertEquals(1, features.getCount(query));
     }
 }

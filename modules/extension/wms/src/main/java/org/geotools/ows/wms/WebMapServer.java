@@ -58,7 +58,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -167,8 +166,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
             try {
                 URL source = getCapabilities().getRequest().getGetCapabilities().getGet();
                 return source.toURI();
-            } catch (NullPointerException huh) {
-            } catch (URISyntaxException e) {
+            } catch (NullPointerException | URISyntaxException huh) {
             }
             try {
                 return serverURL.toURI();
@@ -228,9 +226,6 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
                                     bbox.getMinY(),
                                     bbox.getMaxY(),
                                     crs);
-                } catch (NoSuchAuthorityCodeException e) {
-                    crs = DefaultGeographicCRS.WGS84;
-                    env = layer.getEnvelope(crs);
                 } catch (FactoryException e) {
                     crs = DefaultGeographicCRS.WGS84;
                     env = layer.getEnvelope(crs);

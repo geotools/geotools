@@ -291,10 +291,8 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
                     deletes.add(delete);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             throw e;
-        } catch (RuntimeException re) {
-            throw re;
         } catch (Exception other) {
             throw new RuntimeException(other);
         }

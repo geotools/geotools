@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -125,9 +124,7 @@ public class Schemas {
 
         List<XSDSchema> resolvedSchemas = new ArrayList<>(configurations.size());
 
-        for (Iterator it = configurations.iterator(); it.hasNext(); ) {
-            Configuration conf = (Configuration) it.next();
-
+        for (Configuration conf : configurations) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("looking up schema for " + conf.getNamespaceURI());
             }
@@ -567,9 +564,7 @@ public class Schemas {
 
                 if (schemaLocation != null) {
                     // look for a locator or resolver that can handle it
-                    for (Iterator l = locators.iterator(); l.hasNext(); ) {
-                        XSDSchemaLocator locator = (XSDSchemaLocator) l.next();
-
+                    for (XSDSchemaLocator locator : locators) {
                         // check for schema locator which canHandle
                         if (locator instanceof SchemaLocator) {
                             if (((SchemaLocator) locator)
@@ -605,8 +600,7 @@ public class Schemas {
 
         String resolve(String namespace, String location) {
             // look for a location resolver capable of handling it
-            for (Iterator r = resolvers.iterator(); r.hasNext(); ) {
-                XSDSchemaLocationResolver resolver = (XSDSchemaLocationResolver) r.next();
+            for (XSDSchemaLocationResolver resolver : resolvers) {
                 if (resolver instanceof SchemaLocationResolver) {
                     if (((SchemaLocationResolver) resolver).canHandle(null, namespace, location)) {
                         // can handle, actually resolve and recurse
@@ -677,8 +671,8 @@ public class Schemas {
             XSDTypeDefinition type, String name, boolean includeParents) {
         List particles = getChildElementParticles(type, includeParents);
 
-        for (Iterator p = particles.iterator(); p.hasNext(); ) {
-            XSDParticle particle = (XSDParticle) p.next();
+        for (Object o : particles) {
+            XSDParticle particle = (XSDParticle) o;
             XSDElementDeclaration element = (XSDElementDeclaration) particle.getContent();
 
             if (element.isElementDeclarationReference()) {
@@ -884,8 +878,7 @@ public class Schemas {
         List<XSDParticle> particles = getChildElementParticles(type, includeParents);
         List<XSDElementDeclaration> elements = new ArrayList<>();
 
-        for (Iterator p = particles.iterator(); p.hasNext(); ) {
-            XSDParticle particle = (XSDParticle) p.next();
+        for (XSDParticle particle : particles) {
             XSDElementDeclaration decl = (XSDElementDeclaration) particle.getContent();
 
             if (decl.isElementDeclarationReference()) {
@@ -1153,8 +1146,8 @@ public class Schemas {
         // look for a match in a direct child
         List children = getChildElementDeclarations(parent.getType());
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            XSDElementDeclaration element = (XSDElementDeclaration) itr.next();
+        for (Object value : children) {
+            XSDElementDeclaration element = (XSDElementDeclaration) value;
 
             if (nameMatches(element, qName)) {
                 return element;
@@ -1164,14 +1157,12 @@ public class Schemas {
         // couldn't find one, look for match in derived elements
         ArrayList<XSDElementDeclaration> derived = new ArrayList<>();
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            XSDElementDeclaration child = (XSDElementDeclaration) itr.next();
+        for (Object o : children) {
+            XSDElementDeclaration child = (XSDElementDeclaration) o;
             derived.addAll(getDerivedElementDeclarations(child));
         }
 
-        for (Iterator itr = derived.iterator(); itr.hasNext(); ) {
-            XSDElementDeclaration child = (XSDElementDeclaration) itr.next();
-
+        for (XSDElementDeclaration child : derived) {
             if (nameMatches(child, qName)) {
                 return child;
             }
@@ -1273,9 +1264,8 @@ public class Schemas {
                         // get all the attribute content (groups,or uses) and add to q
                         List attContent = cType.getAttributeContents();
 
-                        for (Iterator itr = attContent.iterator(); itr.hasNext(); ) {
-                            XSDAttributeGroupContent content =
-                                    (XSDAttributeGroupContent) itr.next();
+                        for (Object value : attContent) {
+                            XSDAttributeGroupContent content = (XSDAttributeGroupContent) value;
 
                             if (content instanceof XSDAttributeUse) {
                                 // an attribute, add it to the list
@@ -1292,8 +1282,8 @@ public class Schemas {
 
                                 List uses = attGrp.getAttributeUses();
 
-                                for (Iterator aitr = uses.iterator(); aitr.hasNext(); ) {
-                                    XSDAttributeUse use = (XSDAttributeUse) aitr.next();
+                                for (Object o : uses) {
+                                    XSDAttributeUse use = (XSDAttributeUse) o;
                                     attributes.add(use.getAttributeDeclaration());
                                 }
                             }
@@ -1327,8 +1317,8 @@ public class Schemas {
             XSDElementDeclaration element, QName qName) {
         List atts = getAttributeDeclarations(element);
 
-        for (Iterator itr = atts.iterator(); itr.hasNext(); ) {
-            XSDAttributeDeclaration att = (XSDAttributeDeclaration) itr.next();
+        for (Object o : atts) {
+            XSDAttributeDeclaration att = (XSDAttributeDeclaration) o;
 
             if (nameMatches(att, qName)) {
                 return att;
@@ -1360,8 +1350,8 @@ public class Schemas {
 
             List contents = schema.getContents();
 
-            for (Iterator itr = contents.iterator(); itr.hasNext(); ) {
-                XSDSchemaContent content = (XSDSchemaContent) itr.next();
+            for (Object o : contents) {
+                XSDSchemaContent content = (XSDSchemaContent) o;
 
                 if (content instanceof XSDImport) {
                     XSDImport imprt = (XSDImport) content;
@@ -1409,8 +1399,8 @@ public class Schemas {
 
             List contents = schema.getContents();
 
-            for (Iterator itr = contents.iterator(); itr.hasNext(); ) {
-                XSDSchemaContent content = (XSDSchemaContent) itr.next();
+            for (Object o : contents) {
+                XSDSchemaContent content = (XSDSchemaContent) o;
 
                 if (content instanceof XSDInclude) {
                     XSDInclude include = (XSDInclude) content;
@@ -1442,9 +1432,7 @@ public class Schemas {
      * @return The element declaration, or null if it could not be found.
      */
     public static XSDElementDeclaration getElementDeclaration(XSDSchema schema, QName name) {
-        for (Iterator e = schema.getElementDeclarations().iterator(); e.hasNext(); ) {
-            XSDElementDeclaration element = (XSDElementDeclaration) e.next();
-
+        for (XSDElementDeclaration element : schema.getElementDeclarations()) {
             if (element.getTargetNamespace().equals(name.getNamespaceURI())) {
                 if (element.getName().equals(name.getLocalPart())) {
                     return element;
@@ -1534,8 +1522,8 @@ public class Schemas {
         String ns = schema.getTargetNamespace();
         Map pre2ns = schema.getQNamePrefixToNamespaceMap();
 
-        for (Iterator itr = pre2ns.entrySet().iterator(); itr.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) itr.next();
+        for (Object o : pre2ns.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
 
             if (entry.getKey() == null) {
                 continue; // default prefix
@@ -1676,8 +1664,7 @@ public class Schemas {
                 String namespaceURI,
                 String rawSchemaLocationURI,
                 String resolvedSchemaLocationURI) {
-            for (int i = 0; i < locators.size(); i++) {
-                XSDSchemaLocator locator = locators.get(i);
+            for (XSDSchemaLocator locator : locators) {
                 XSDSchema schema =
                         locator.locateSchema(
                                 xsdSchema,
@@ -1728,8 +1715,7 @@ public class Schemas {
 
         public String resolveSchemaLocation(
                 XSDSchema schema, String namespaceURI, String rawSchemaLocationURI) {
-            for (int i = 0; i < resolvers.size(); i++) {
-                XSDSchemaLocationResolver resolver = resolvers.get(i);
+            for (XSDSchemaLocationResolver resolver : resolvers) {
                 String resolved =
                         resolver.resolveSchemaLocation(schema, namespaceURI, rawSchemaLocationURI);
 

@@ -16,6 +16,8 @@
  */
 package org.geotools.xs.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
@@ -30,6 +32,7 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.SimpleBinding;
 import org.geotools.xsd.XSD;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class XSDateTimeStrategyTest extends TestSchema {
@@ -48,7 +51,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
 
         SimpleBinding strategy = (SimpleBinding) stratagy(qname);
         Date parsed = (Date) strategy.parse(element(toParse, qname), toParse);
-        assertTrue(toEncode.getClass().equals(parsed.getClass()));
+        assertEquals(toEncode.getClass(), parsed.getClass());
 
         assertEquals(parsed.getClass().getName(), toEncode, parsed);
 
@@ -90,6 +93,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         return cal.getTimeInMillis();
     }
 
+    @Test
     public void testDate() throws Exception {
         java.sql.Date expected;
 
@@ -97,6 +101,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         testParseEncode(XS.DATE, "2011-10-24Z", expected, "2011-10-24Z");
     }
 
+    @Test
     public void testTime() throws Exception {
         Integer nil = null;
         java.sql.Time expected;
@@ -116,6 +121,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         testParseEncode(XS.TIME, "10:53:24.255+03:00", expected, "07:53:24.255Z");
     }
 
+    @Test
     public void testTimeStamp() throws Exception {
         java.sql.Timestamp expected;
 
@@ -142,6 +148,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         testParseEncode(XS.DATETIME, "2011-10-24T10:53Z", expected, "2011-10-24T10:53:00Z");
     }
 
+    @Test
     public void testEncodeCalendarDate() throws Exception {
 
         Calendar cal;
@@ -153,6 +160,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         testEncodeCalendar(cal, TEST.DATE, "2011-10-23Z");
     }
 
+    @Test
     public void testEncodeCalendarTime() throws Exception {
 
         Integer nil = null;
@@ -165,6 +173,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         testEncodeCalendar(cal, TEST.TIME, "10:53:31.125Z");
     }
 
+    @Test
     public void testEncodeCalendarDateTime() throws Exception {
 
         Calendar cal;
@@ -176,6 +185,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         testEncodeCalendar(cal, TEST.DATETIME, "2011-10-24T10:53:31.999Z");
     }
 
+    @Test
     public void testDirectlyEncodeCalendarDateTime() throws Exception {
         Calendar cal = calendar(2011, 9, 24, 10, 53, 31);
         String encoded = new XSDateTimeBinding().encode(cal, null);

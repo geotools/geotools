@@ -19,27 +19,28 @@ package org.geotools.referencing.factory.epsg.hsql;
 import java.sql.Connection;
 import java.util.Set;
 import javax.sql.DataSource;
-import junit.framework.TestCase;
 import org.geotools.TestData;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
 import org.geotools.util.factory.Hints;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-public class DialectEpsgMediatorTest extends TestCase {
+public class DialectEpsgMediatorTest {
 
     private static HsqlDialectEpsgMediator factory;
     private static IdentifiedObjectFinder finder;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         if (factory == null) {
             DataSource datasource = HsqlEpsgDatabase.createDataSource();
             Connection connection = datasource.getConnection();
@@ -51,15 +52,17 @@ public class DialectEpsgMediatorTest extends TestCase {
         }
     }
 
+    @Test
     public void testCreation() throws Exception {
-        assertNotNull(factory);
+        Assert.assertNotNull(factory);
         CoordinateReferenceSystem epsg4326 = factory.createCoordinateReferenceSystem("EPSG:4326");
         CoordinateReferenceSystem code4326 = factory.createCoordinateReferenceSystem("4326");
 
-        assertEquals("4326 equals EPSG:4326", code4326, epsg4326);
-        assertSame("4326 == EPSG:4326", code4326, epsg4326);
+        Assert.assertEquals("4326 equals EPSG:4326", code4326, epsg4326);
+        Assert.assertSame("4326 == EPSG:4326", code4326, epsg4326);
     }
 
+    @Test
     public void testFunctionality() throws Exception {
         CoordinateReferenceSystem crs1 = factory.createCoordinateReferenceSystem("4326");
         CoordinateReferenceSystem crs2 = factory.createCoordinateReferenceSystem("3005");
@@ -70,12 +73,14 @@ public class DialectEpsgMediatorTest extends TestCase {
         transform.transform(pos, null);
     }
 
+    @Test
     public void testAuthorityCodes() throws Exception {
         Set authorityCodes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
-        assertNotNull(authorityCodes);
-        assertTrue(authorityCodes.size() > 3000);
+        Assert.assertNotNull(authorityCodes);
+        Assert.assertTrue(authorityCodes.size() > 3000);
     }
 
+    @Test
     public void testFindWSG84() throws FactoryException {
         if (!TestData.isExtensiveTest()) {
             return;
@@ -93,27 +98,29 @@ public class DialectEpsgMediatorTest extends TestCase {
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         finder.setFullScanAllowed(false);
 
-        assertNull(
+        Assert.assertNull(
                 "Should not find without a full scan, because the WKT contains no identifier "
-                        + "and the CRS name is ambiguous (more than one EPSG object have this name).",
+                        + "and the CRS name is ambiguous (more than one EPSG object have this "
+                        + "name).",
                 finder.find(crs));
 
         finder.setFullScanAllowed(true);
         IdentifiedObject find = finder.find(crs);
 
-        assertNotNull("With full scan allowed, the CRS should be found.", find);
+        Assert.assertNotNull("With full scan allowed, the CRS should be found.", find);
 
-        assertTrue(
+        Assert.assertTrue(
                 "Should found an object equals (ignoring metadata) to the requested one.",
                 CRS.equalsIgnoreMetadata(crs, find));
         String code =
                 AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode();
-        assertTrue("4326".equals(code) || "63266405".equals(code));
+        Assert.assertTrue("4326".equals(code) || "63266405".equals(code));
 
         finder.setFullScanAllowed(false);
-        assertNotNull("The CRS should still in the cache.", finder.findIdentifier(crs));
+        Assert.assertNotNull("The CRS should still in the cache.", finder.findIdentifier(crs));
     }
 
+    @Test
     public void testFindBeijing1954() throws FactoryException {
         if (!TestData.isExtensiveTest()) {
             return;
@@ -144,20 +151,21 @@ public class DialectEpsgMediatorTest extends TestCase {
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
 
         finder.setFullScanAllowed(false);
-        assertNull("Should not find the CRS without a full scan.", finder.find(crs));
+        Assert.assertNull("Should not find the CRS without a full scan.", finder.find(crs));
 
         finder.setFullScanAllowed(true);
         IdentifiedObject find = finder.find(crs);
-        assertNotNull("With full scan allowed, the CRS should be found.", find);
+        Assert.assertNotNull("With full scan allowed, the CRS should be found.", find);
 
-        assertTrue(
+        Assert.assertTrue(
                 "Should found an object equals (ignoring metadata) to the requested one.",
                 CRS.equalsIgnoreMetadata(crs, find));
         String code =
                 AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode();
-        assertEquals("2442", code);
+        Assert.assertEquals("2442", code);
 
         finder.setFullScanAllowed(false);
-        assertEquals("The CRS should still in the cache.", "EPSG:2442", finder.findIdentifier(crs));
+        Assert.assertEquals(
+                "The CRS should still in the cache.", "EPSG:2442", finder.findIdentifier(crs));
     }
 }

@@ -16,22 +16,28 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import java.awt.Color;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.styling.SLD;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 
 public class LabelStyleTypeBindingTest extends KMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(TextSymbolizer.class, binding(KML.LabelStyleType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.AFTER, binding(KML.LabelStyleType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml = "<LabelStyle>" + "<color>ffff0000</color>" + "</LabelStyle>";
 

@@ -382,7 +382,7 @@ public class StyleTransformTest {
         assertEquals(Integer.valueOf(1), lsym.getStroke().getWidth().evaluate(null, Integer.class));
         assertEquals(
                 Integer.valueOf(0), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
-        assertTrue(lsym.getStroke().dashArray() == null);
+        assertNull(lsym.getStroke().dashArray());
     }
 
     @Test
@@ -406,7 +406,7 @@ public class StyleTransformTest {
         assertTrue(symbolizer instanceof PointSymbolizer);
         PointSymbolizer psym = (PointSymbolizer) symbolizer;
 
-        assertTrue(psym.getGraphic() != null);
+        assertNotNull(psym.getGraphic());
 
         assertEquals(
                 Integer.valueOf(30), psym.getGraphic().getSize().evaluate(null, Integer.class));
@@ -462,7 +462,7 @@ public class StyleTransformTest {
         assertTrue(symbolizer instanceof PointSymbolizer);
         PointSymbolizer psym = (PointSymbolizer) symbolizer;
 
-        assertTrue(psym.getGraphic() != null);
+        assertNotNull(psym.getGraphic());
 
         assertEquals(
                 Integer.valueOf(10), psym.getGraphic().getSize().evaluate(null, Integer.class));

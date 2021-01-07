@@ -16,8 +16,13 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
@@ -27,7 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 public class MultiPolygonTypeBindingTest extends GML3TestSupport {
-
+    @Test
     public void test() throws Exception {
         GML3MockData.multiPolygon(document, document);
 
@@ -36,6 +41,7 @@ public class MultiPolygonTypeBindingTest extends GML3TestSupport {
         assertEquals(2, multiPolygon.getNumGeometries());
     }
 
+    @Test
     public void test3D() throws Exception {
         GML3MockData.multiPolygon3D(document, document);
 
@@ -50,6 +56,7 @@ public class MultiPolygonTypeBindingTest extends GML3TestSupport {
         assertTrue(new Coordinate(1d, 2d, 10d).equals3D(interior.getCoordinateN(0)));
     }
 
+    @Test
     public void testEncode() throws Exception {
         Geometry geometry = GML3MockData.multiPolygon();
         GML3EncodingUtils.setID(geometry, "geometry");

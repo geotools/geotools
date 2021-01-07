@@ -22,7 +22,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.geotools.factory.CommonFactoryFinder;
@@ -167,7 +166,7 @@ public class Filters {
             list.add(filter2);
         }
 
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             return Filter.EXCLUDE;
         } else if (list.size() == 1) {
             return list.get(0);
@@ -215,7 +214,7 @@ public class Filters {
             list.add(filter2);
         }
 
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             return Filter.EXCLUDE;
         } else if (list.size() == 1) {
             return list.get(0);
@@ -461,17 +460,12 @@ public class Filters {
         try {
             Constructor<T> create = TYPE.getConstructor(new Class[] {String.class});
             return create.newInstance(new Object[] {text});
-        } catch (SecurityException e) {
-            // hates you
-        } catch (NoSuchMethodException e) {
-            // nope
-        } catch (IllegalArgumentException e) {
-            // should not occur
-        } catch (InstantiationException e) {
-            // should not occur, perhaps the class was abstract?
-            // eg. Number.class is a bad idea
-        } catch (IllegalAccessException e) {
-            // hates you
+        } catch (SecurityException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | IllegalArgumentException
+                | InstantiationException e) {
+            // should not occurr, or is meant to be ignored
         } catch (InvocationTargetException e) {
             // should of worked but we got a real problem,
             // an actual problem
@@ -645,8 +639,7 @@ public class Filters {
                                 Object extraData) {
                             List<Filter> children = filter.getChildren();
                             List<Filter> newChildren = new ArrayList<>();
-                            for (Iterator<Filter> iter = children.iterator(); iter.hasNext(); ) {
-                                Filter child = iter.next();
+                            for (Filter child : children) {
                                 if (targetFilter.equals(child)) {
                                     continue; // skip this one
                                 }

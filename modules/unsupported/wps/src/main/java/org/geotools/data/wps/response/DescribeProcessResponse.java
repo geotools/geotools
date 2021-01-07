@@ -43,9 +43,7 @@ public class DescribeProcessResponse extends Response {
     public DescribeProcessResponse(HTTPResponse httpResponse) throws IOException, ServiceException {
         super(httpResponse);
 
-        InputStream inputStream = null;
-        try {
-            inputStream = httpResponse.getResponseStream();
+        try (InputStream inputStream = httpResponse.getResponseStream()) {
 
             // Map hints = new HashMap();
             // hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WPSSchema.getInstance());
@@ -58,9 +56,7 @@ public class DescribeProcessResponse extends Response {
             try {
                 // object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
                 object = parser.parse(inputStream);
-            } catch (SAXException e) {
-                throw (IOException) new IOException().initCause(e);
-            } catch (ParserConfigurationException e) {
+            } catch (SAXException | ParserConfigurationException e) {
                 throw (IOException) new IOException().initCause(e);
             }
 
@@ -71,11 +67,6 @@ public class DescribeProcessResponse extends Response {
             // exception caught on server and returned
             else if (object instanceof ExceptionReportType) {
                 excepResponse = (ExceptionReportType) object;
-            }
-
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
             }
         }
     }

@@ -65,8 +65,8 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
     @Test
     public void testAll() throws Throwable {
-        for (int i = 0, ii = files.length; i < ii; i++) {
-            test(files[i]);
+        for (String file : files) {
+            test(file);
         }
     }
 
@@ -252,9 +252,5 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
         assertTrue(result == null || result.equals(bounds));
         ds.dispose();
-    }
-
-    public static final void main(String[] args) throws Exception {
-        junit.textui.TestRunner.run(suite(ShapefileQuadTreeReadWriteTest.class));
     }
 }

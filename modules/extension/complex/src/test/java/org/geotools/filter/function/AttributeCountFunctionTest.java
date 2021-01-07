@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.function;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
 import org.geotools.factory.CommonFactoryFinder;
@@ -28,6 +30,7 @@ import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -48,11 +51,6 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
     Feature complexFeature;
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-
-    /** @param testName */
-    public AttributeCountFunctionTest(String testName) {
-        super(testName);
-    }
 
     @Override
     public void setUp() throws Exception {
@@ -107,6 +105,7 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
         complexFeature = builder.buildFeature("parentFeature");
     }
 
+    @Test
     public void testComplexFeature() {
         // have to pass on namespaceSupport to enable FeaturePropertyAccessor
         NamespaceSupport ns = new NamespaceSupport();
@@ -130,6 +129,7 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
         assertEquals(2, ff.function("attributeCount", nestedPath).evaluate(complexFeature));
     }
 
+    @Test
     public void testSimpleFeature() {
         SimpleFeature f = featureCollection.features().next();
 

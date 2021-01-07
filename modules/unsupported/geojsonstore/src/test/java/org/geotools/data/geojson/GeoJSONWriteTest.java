@@ -114,10 +114,10 @@ public class GeoJSONWriteTest {
         if (list == null) {
             throw new IOException("no directory " + tmp);
         }
-        for (int i = 0; i < list.length; i++) {
-            if (list[i].exists()) {
-                if (!list[i].delete()) {
-                    throw new IOException("could not delete: " + list[i]);
+        for (File value : list) {
+            if (value.exists()) {
+                if (!value.delete()) {
+                    throw new IOException("could not delete: " + value);
                 }
             }
         }
@@ -260,16 +260,13 @@ public class GeoJSONWriteTest {
 
         Transaction t = new DefaultTransaction("locations");
         try {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                    store.getFeatureWriter("locations", Filter.INCLUDE, t);
 
-            try {
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    store.getFeatureWriter("locations", Filter.INCLUDE, t)) {
                 while (writer.hasNext()) {
                     writer.next();
                     writer.remove(); // marking contents for removal
                 }
-            } finally {
-                writer.close();
             }
 
             // Test the contents have been removed
@@ -393,10 +390,8 @@ public class GeoJSONWriteTest {
                 (SimpleFeatureStore) duplicate.getFeatureSource("duplicate");
         assertEquals(9, featureStored.getFeatures().size());
 
-        SimpleFeatureIterator original = featureStore.getFeatures().features();
-        SimpleFeatureIterator dups = featureStored.getFeatures().features();
-
-        try {
+        try (SimpleFeatureIterator original = featureStore.getFeatures().features();
+                SimpleFeatureIterator dups = featureStored.getFeatures().features()) {
             while (original.hasNext() && dups.hasNext()) {
                 SimpleFeature o = original.next();
                 SimpleFeature d = dups.next();
@@ -409,8 +404,6 @@ public class GeoJSONWriteTest {
             }
 
         } finally {
-            original.close();
-            dups.close();
             store.dispose();
         }
     }

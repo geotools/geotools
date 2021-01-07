@@ -18,7 +18,6 @@ package org.geotools.process.vector;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -95,7 +94,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                 throw new ProcessException(
                         Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "operationAttribute"));
             }
-            if (groupingAttributes == null || groupingAttributes.size() == 0) {
+            if (groupingAttributes == null || groupingAttributes.isEmpty()) {
                 throw new ProcessException(
                         Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "groupingAttributes"));
             }
@@ -169,12 +168,11 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         List<SortBy> newSorts = new ArrayList<>(groupingAttributes.size());
         List<PropertyName> properties =
                 groupingAttributes.stream().map(s -> ff.property(s)).collect(Collectors.toList());
-        for (int i = 0; i < properties.size(); i++) {
-            PropertyName pn = properties.get(i);
+        for (PropertyName pn : properties) {
             if (!sortByAlreadyExists(sorts, pn))
                 newSorts.add(new SortByImpl(pn, SortOrder.ASCENDING));
         }
-        if (newSorts.size() > 0) {
+        if (!newSorts.isEmpty()) {
             if (sorts == null) return newSorts.toArray(new SortBy[newSorts.size()]);
             else return ArrayUtils.addAll(sorts, newSorts.toArray(new SortBy[newSorts.size()]));
         }
@@ -219,8 +217,8 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         Map namespaces = (Map) type.getUserData().get(Types.DECLARED_NAMESPACES_MAP);
         if (namespaces != null) {
             namespaceSupport = new NamespaceSupport();
-            for (Iterator it = namespaces.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) it.next();
+            for (Object o : namespaces.entrySet()) {
+                Map.Entry entry = (Map.Entry) o;
                 String prefix = (String) entry.getKey();
                 String namespace = (String) entry.getValue();
                 namespaceSupport.declarePrefix(prefix, namespace);
@@ -329,7 +327,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                 Object val = p.evaluate(f);
                 if (val != null) toCompareValues.add(p.evaluate(f));
             }
-            if (toCompareValues.size() == 0) toCompareValues = null;
+            if (toCompareValues.isEmpty()) toCompareValues = null;
             if (groupingValues == null && toCompareValues == null) return true;
             else if (groupingValues != null
                     && toCompareValues != null
@@ -342,7 +340,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                 Object result = p.evaluate(f);
                 groupingValues.add(result);
             }
-            if (groupingValues.size() == 0) return null;
+            if (groupingValues.isEmpty()) return null;
             else return groupingValues;
         }
 

@@ -58,7 +58,7 @@ class MergeSortReader implements SimpleFeatureReader {
 
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
-        if (readers.size() == 0) {
+        if (readers.isEmpty()) {
             throw new NoSuchElementException();
         }
 
@@ -84,7 +84,7 @@ class MergeSortReader implements SimpleFeatureReader {
     }
 
     public boolean hasNext() throws IOException {
-        return readers.size() > 0;
+        return !readers.isEmpty();
     }
 
     public void close() throws IOException {

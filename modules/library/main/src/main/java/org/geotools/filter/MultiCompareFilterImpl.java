@@ -83,11 +83,11 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
         Collection<Object> leftValues =
                 collection1 instanceof Collection
                         ? collection1
-                        : Collections.<Object>singletonList(object1);
+                        : Collections.singletonList(object1);
         Collection<Object> rightValues =
                 collection2 instanceof Collection
                         ? collection2
-                        : Collections.<Object>singletonList(object2);
+                        : Collections.singletonList(object2);
 
         int count = 0;
 

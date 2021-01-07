@@ -427,7 +427,7 @@ public class SLDColorMapBuilder {
      *     {@link ColorMapTransform} we will create.
      */
     public double[] getValuesToPreserve() {
-        if (this.preservedValues.size() == 0) return new double[0];
+        if (this.preservedValues.isEmpty()) return new double[0];
         final double retVal[] = new double[this.preservedValues.size()];
         int i = 0;
         for (Double value : preservedValues) retVal[i++] = value.doubleValue();

@@ -88,7 +88,7 @@ public class JParameterListWizard extends JWizard {
 
         List<Parameter<?>> advancedContents = contentsForLevel(contents, "advanced");
 
-        if (advancedContents.size() > 0) {
+        if (!advancedContents.isEmpty()) {
             advancedPage =
                     new JParameterListPage(
                             title, description, advancedContents, connectionParameters);

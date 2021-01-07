@@ -26,9 +26,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /** @author en */
 public class FeatureCollectionTest extends org.geotools.data.collection.FeatureCollectionTest {
-    public FeatureCollectionTest(String testName) {
-        super(testName);
-    }
 
     protected SimpleFeatureCollection newCollection(
             SimpleFeatureType schema, List<SimpleFeature> list) {

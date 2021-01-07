@@ -28,7 +28,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -42,6 +41,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -52,7 +53,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /** Tests labeling in multiple scripts on point and line labels */
-public class MultiScriptTest extends TestCase {
+public class MultiScriptTest {
 
     private static final long TIME = 10000;
 
@@ -66,8 +67,8 @@ public class MultiScriptTest extends TestCase {
 
     ReferencedEnvelope bounds;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         RendererBaseTest.setupVeraFonts();
         FontCache.getDefaultInstance()
                 .registerFont(
@@ -201,6 +202,7 @@ public class MultiScriptTest extends TestCase {
         return (LineString) intersection;
     }
 
+    @Test
     public void testMultiScriptPoint() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScript.sld");
         BufferedImage image = renderLabels(points, style, "Multi script");
@@ -209,6 +211,7 @@ public class MultiScriptTest extends TestCase {
         ImageAssert.assertEquals(new File(refPath), image, TOLERANCE);
     }
 
+    @Test
     public void testMultiScriptPointWrap() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptWrap.sld");
         BufferedImage image = renderLabels(points, style, "Multi script wrap");
@@ -217,6 +220,7 @@ public class MultiScriptTest extends TestCase {
         ImageAssert.assertEquals(new File(refPath), image, TOLERANCE);
     }
 
+    @Test
     public void testMultiScriptLine() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptLine.sld");
         BufferedImage image = renderLabels(lines, style, "Multi script lines");
@@ -238,6 +242,7 @@ public class MultiScriptTest extends TestCase {
         return RendererBaseTest.showRender(title, renderer, TIME, bounds);
     }
 
+    @Test
     public void testFollowLineWithLocalTransform() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptLine.sld");
         MapContent mc = new MapContent();

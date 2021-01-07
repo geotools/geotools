@@ -35,7 +35,6 @@ import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
-import junit.framework.TestCase;
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -59,6 +58,7 @@ import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Range.Type;
 import org.jaitools.numeric.Statistic;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -81,7 +81,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Andrea Antonello, Hydrologis
  * @author Daniele Romagnoli, GeoSolutions
  */
-public class ZonalStasTest extends TestCase {
+public class ZonalStasTest {
 
     static final double DELTA = 10E-4;
 
@@ -364,48 +364,56 @@ public class ZonalStasTest extends TestCase {
         String id = "testpolygon.1";
         Map<Statistic, List<Result>> statistics = statisticsTool.getStatistics(id);
         LOGGER.info(id + statistics.toString());
-        assertEquals(statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 343.0, DELTA);
-        assertEquals(
+        Assert.assertEquals(
+                statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 343.0, DELTA);
+        Assert.assertEquals(
                 statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 88.7358, DELTA);
-        assertEquals(statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1255.0, DELTA);
-        assertEquals(
+        Assert.assertEquals(
+                statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1255.0, DELTA);
+        Assert.assertEquals(
                 statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1380.5423, DELTA);
-        assertEquals(
+        Assert.assertEquals(
                 statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(),
                 7874.0598,
                 DELTA);
-        assertEquals(statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1598.0, DELTA);
+        Assert.assertEquals(
+                statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1598.0, DELTA);
 
         id = "testpolygon.2";
         statistics = statisticsTool.getStatistics(id);
         LOGGER.info(id + statistics.toString());
-        assertEquals(statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 216.0, DELTA);
-        assertEquals(
+        Assert.assertEquals(
+                statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 216.0, DELTA);
+        Assert.assertEquals(
                 statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 36.7996, DELTA);
-        assertEquals(statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1192.0, DELTA);
-        assertEquals(
+        Assert.assertEquals(
+                statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1192.0, DELTA);
+        Assert.assertEquals(
                 statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1248.3870, DELTA);
-        assertEquals(
+        Assert.assertEquals(
                 statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(),
                 1354.2150,
                 DELTA);
-        assertEquals(statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1408.0, DELTA);
+        Assert.assertEquals(
+                statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1408.0, DELTA);
 
         id = "testpolygon.3";
         statistics = statisticsTool.getStatistics(id);
         LOGGER.info(id + statistics.toString());
-        assertEquals(
+        Assert.assertEquals(
                 statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 127.0000, DELTA);
-        assertEquals(
+        Assert.assertEquals(
                 statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 30.9412, DELTA);
-        assertEquals(statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1173.0, DELTA);
-        assertEquals(
+        Assert.assertEquals(
+                statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1173.0, DELTA);
+        Assert.assertEquals(
                 statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1266.3876, DELTA);
-        assertEquals(
+        Assert.assertEquals(
                 statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(),
                 957.3594,
                 DELTA);
-        assertEquals(statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1300.0, DELTA);
+        Assert.assertEquals(
+                statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1300.0, DELTA);
 
         reader.dispose();
         coverage2D.dispose(true);
@@ -480,28 +488,34 @@ public class ZonalStasTest extends TestCase {
         String id = "testpolygon.1";
         Map<Statistic, List<Result>> statistics = statisticsTool.getStatistics(id);
         LOGGER.info(id + statistics.toString());
-        assertEquals(statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 45.0, DELTA);
-        assertEquals(statistics.get(Statistic.RANGE).get(1).getValue().doubleValue(), 228.0, DELTA);
-        assertEquals(
+        Assert.assertEquals(
+                statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 45.0, DELTA);
+        Assert.assertEquals(
+                statistics.get(Statistic.RANGE).get(1).getValue().doubleValue(), 228.0, DELTA);
+        Assert.assertEquals(
                 statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 11.7972, DELTA);
-        assertEquals(
+        Assert.assertEquals(
                 statistics.get(Statistic.SDEV).get(1).getValue().doubleValue(), 63.7335, DELTA);
-        assertEquals(statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1255.0, DELTA);
-        assertEquals(statistics.get(Statistic.MIN).get(1).getValue().doubleValue(), 1370.0, DELTA);
-        assertEquals(
+        Assert.assertEquals(
+                statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1255.0, DELTA);
+        Assert.assertEquals(
+                statistics.get(Statistic.MIN).get(1).getValue().doubleValue(), 1370.0, DELTA);
+        Assert.assertEquals(
                 statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1283.1634, DELTA);
-        assertEquals(
+        Assert.assertEquals(
                 statistics.get(Statistic.MEAN).get(1).getValue().doubleValue(), 1433.8979, DELTA);
-        assertEquals(
+        Assert.assertEquals(
                 statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(),
                 139.1754,
                 DELTA);
-        assertEquals(
+        Assert.assertEquals(
                 statistics.get(Statistic.VARIANCE).get(1).getValue().doubleValue(),
                 4061.9665,
                 DELTA);
-        assertEquals(statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1300.0, DELTA);
-        assertEquals(statistics.get(Statistic.MAX).get(1).getValue().doubleValue(), 1598.0, DELTA);
+        Assert.assertEquals(
+                statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1300.0, DELTA);
+        Assert.assertEquals(
+                statistics.get(Statistic.MAX).get(1).getValue().doubleValue(), 1598.0, DELTA);
 
         reader.dispose();
         coverage2D.dispose(true);

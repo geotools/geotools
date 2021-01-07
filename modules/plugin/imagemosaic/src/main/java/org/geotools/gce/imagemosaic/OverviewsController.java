@@ -87,7 +87,7 @@ final class OverviewsController {
         // Future versions should use both.
         //
         // //
-        if (resolutionsLevels == null || resolutionsLevels.size() <= 0) return 0;
+        if (resolutionsLevels == null || resolutionsLevels.isEmpty()) return 0;
 
         // Now search for the best matching resolution.
         // Check also for the "perfect match"... unlikely in practice unless someone

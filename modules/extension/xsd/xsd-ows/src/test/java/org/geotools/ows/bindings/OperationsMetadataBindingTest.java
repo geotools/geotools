@@ -1,10 +1,13 @@
 package org.geotools.ows.bindings;
 
+import static org.junit.Assert.assertNotNull;
+
 import net.opengis.ows10.OperationsMetadataType;
 import org.geotools.ows.OWSTestSupport;
+import org.junit.Test;
 
 public class OperationsMetadataBindingTest extends OWSTestSupport {
-
+    @Test
     public void testParse() throws Exception {
         String xml =
                 " <ows:OperationsMetadata xmlns:ows=\"http://www.opengis.net/ows\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">"

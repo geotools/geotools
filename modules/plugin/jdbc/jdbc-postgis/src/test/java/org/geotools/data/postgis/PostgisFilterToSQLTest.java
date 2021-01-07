@@ -16,6 +16,10 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.StringWriter;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.data.jdbc.SQLFilterTestSupport;
@@ -43,10 +47,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
-
-    public PostgisFilterToSQLTest(String name) {
-        super(name);
-    }
 
     private static FilterFactory2 ff;
 

@@ -88,7 +88,7 @@ class ParameterFunction implements Function {
     }
 
     public Object evaluate(Object object) {
-        if (parameters.size() < 1) {
+        if (parameters.isEmpty()) {
             throw new IllegalArgumentException(
                     "The parameter function requires at "
                             + "least one parameter, the argument name");

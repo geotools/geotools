@@ -681,12 +681,12 @@ public final class CustomPaletteBuilder {
 
             int cnt = 0;
 
-            for (int i = 0; i < children.length; i++) {
-                if (children[i] != null) {
-                    if (children[i].isLeaf) {
+            for (ColorNode child : children) {
+                if (child != null) {
+                    if (child.isLeaf) {
                         cnt++;
                     } else {
-                        cnt += children[i].getLeafChildCount();
+                        cnt += child.getLeafChildCount();
                     }
                 }
             }

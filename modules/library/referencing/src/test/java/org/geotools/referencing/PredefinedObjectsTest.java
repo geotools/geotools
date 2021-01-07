@@ -18,6 +18,7 @@ package org.geotools.referencing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -167,9 +168,8 @@ public final class PredefinedObjectsTest {
                 "PrimeMeridian",
                 DefaultPrimeMeridian.GREENWICH,
                 DefaultGeodeticDatum.WGS84.getPrimeMeridian());
-        assertFalse(
-                "VerticalDatum",
-                DefaultVerticalDatum.GEOIDAL.equals(DefaultVerticalDatum.ELLIPSOIDAL));
+        assertNotEquals(
+                "VerticalDatum", DefaultVerticalDatum.GEOIDAL, DefaultVerticalDatum.ELLIPSOIDAL);
         assertEquals(
                 "Geoidal",
                 VerticalDatumType.GEOIDAL,

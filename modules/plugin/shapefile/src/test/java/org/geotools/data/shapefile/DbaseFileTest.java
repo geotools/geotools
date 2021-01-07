@@ -115,9 +115,9 @@ public class DbaseFileTest extends TestCaseSupport {
             header.removeColumn("emptyDate");
             assertTrue(length != header.getRecordLength());
             header.addColumn("emptyDate", 'D', 20, 0);
-            assertTrue(length == header.getRecordLength());
+            assertEquals(length, header.getRecordLength());
             header.removeColumn("billy");
-            assertTrue(length == header.getRecordLength());
+            assertEquals(length, header.getRecordLength());
         } finally {
             LOGGER.setLevel(before);
         }
@@ -170,7 +170,7 @@ public class DbaseFileTest extends TestCaseSupport {
             while (r.hasNext()) {
                 cnt++;
                 Object[] o = r.readEntry();
-                assertTrue(o.length == r.getHeader().getNumFields());
+                assertEquals(o.length, r.getHeader().getNumFields());
             }
             assertEquals("Bad number of records", cnt, 20);
         } finally {

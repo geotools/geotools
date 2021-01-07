@@ -1540,8 +1540,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected void cleanEmptyElements(Feature target) throws DataSourceException {
         try {
             List<Property> values = new ArrayList<>();
-            for (Iterator i = target.getValue().iterator(); i.hasNext(); ) {
-                Property property = (Property) i.next();
+            for (Property property : target.getValue()) {
                 if (hasChild(property)
                         || property.getDescriptor().getMinOccurs() > 0
                         || getEncodeIfEmpty(property)) {

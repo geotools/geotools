@@ -22,7 +22,6 @@ package org.geotools.parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -367,8 +366,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
                     Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
         }
         int count = 0;
-        for (final Iterator it = values.iterator(); it.hasNext(); ) {
-            final GeneralParameterValue value = (GeneralParameterValue) it.next();
+        for (final GeneralParameterValue value : values) {
             if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), name)) {
                 count++;
             }

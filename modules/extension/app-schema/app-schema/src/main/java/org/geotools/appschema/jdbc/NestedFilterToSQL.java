@@ -199,7 +199,7 @@ public class NestedFilterToSQL extends FilterToSQL {
             nestedMappingsExtractor.visit(ff.property(xpath), null);
             List<FeatureChainedAttributeDescriptor> attributes =
                     nestedMappingsExtractor.getFeatureChainedAttributes();
-            if (attributes.size() >= 1) {
+            if (!attributes.isEmpty()) {
                 if (attributes.size() > 1) out.write("(");
                 boolean first = true;
                 for (FeatureChainedAttributeDescriptor nestedAttrDescr : attributes) {
@@ -211,12 +211,8 @@ public class NestedFilterToSQL extends FilterToSQL {
             }
             return extraData;
 
-        } catch (java.io.IOException ioe) {
+        } catch (IOException | FilterToSQLException | SQLException ioe) {
             throw new RuntimeException("Problem writing filter: ", ioe);
-        } catch (SQLException e) {
-            throw new RuntimeException("Problem writing filter: ", e);
-        } catch (FilterToSQLException e) {
-            throw new RuntimeException("Problem writing filter: ", e);
         }
     }
 
@@ -680,7 +676,7 @@ public class NestedFilterToSQL extends FilterToSQL {
 
             List<Expression> matchingMappings = mappings.findMappingsFor(simplifiedSteps, false);
 
-            if (matchingMappings.size() == 0) {
+            if (matchingMappings.isEmpty()) {
                 throw new IllegalArgumentException(
                         "Can't find source expression for: " + targetXPath);
             }

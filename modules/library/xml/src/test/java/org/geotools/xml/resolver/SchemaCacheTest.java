@@ -45,14 +45,8 @@ public class SchemaCacheTest {
         (new File("target/test/a/b/c")).mkdirs();
         (new File("target/test/a/b/d/e/f")).mkdirs();
         File f = new File("target/test/a/b/d/e/f/temp.txt");
-        PrintWriter printWriter = null;
-        try {
-            printWriter = new PrintWriter(f);
+        try (PrintWriter printWriter = new PrintWriter(f)) {
             printWriter.println("Some text");
-        } finally {
-            if (printWriter != null) {
-                printWriter.close();
-            }
         }
         Assert.assertTrue((new File("target/test/a/b/d/e/f/temp.txt")).exists());
         SchemaCache.delete(new File("target/test/a"));
@@ -74,8 +68,8 @@ public class SchemaCacheTest {
         Assert.assertTrue(resolvedLocation.endsWith("cache-test.xsd"));
         Assert.assertTrue(URLs.urlToFile((new URI(resolvedLocation)).toURL()).exists());
         // test that cache path is not canonical
-        Assert.assertFalse(
-                cacheDirectory.toString().equals(cacheDirectory.getCanonicalFile().toString()));
+        Assert.assertNotEquals(
+                cacheDirectory.toString(), cacheDirectory.getCanonicalFile().toString());
         // test that resolved location is canonical, despite cache directory not being canonical
         Assert.assertEquals(
                 resolvedLocation,

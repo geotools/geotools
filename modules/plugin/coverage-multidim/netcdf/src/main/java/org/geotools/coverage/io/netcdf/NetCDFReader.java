@@ -701,7 +701,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     /** Build a String containing comma separated values from the result set */
     private String buildResultsString(Set<String> result) {
-        if (result.size() <= 0) {
+        if (result.isEmpty()) {
             return "";
         }
 

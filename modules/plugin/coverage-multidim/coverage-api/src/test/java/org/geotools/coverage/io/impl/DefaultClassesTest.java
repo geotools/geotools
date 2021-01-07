@@ -19,6 +19,7 @@ package org.geotools.coverage.io.impl;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -207,13 +208,13 @@ public class DefaultClassesTest {
 
         // ParameterInfo
         Map<String, Parameter<?>> connectParameterInfo = driver.getConnectParameterInfo();
-        assertTrue(connectParameterInfo != null);
+        assertNotNull(connectParameterInfo);
         assertTrue(connectParameterInfo.containsKey(DefaultFileDriver.URL.key));
         Map<String, Parameter<?>> createParameterInfo = driver.getCreateParameterInfo();
-        assertTrue(createParameterInfo != null);
+        assertNotNull(createParameterInfo);
         assertTrue(createParameterInfo.containsKey(DefaultFileDriver.URL.key));
         Map<String, Parameter<?>> deleteParameterInfo = driver.getDeleteParameterInfo();
-        assertTrue(deleteParameterInfo != null);
+        assertNotNull(deleteParameterInfo);
         assertTrue(deleteParameterInfo.containsKey(DefaultFileDriver.URL.key));
     }
 
@@ -239,7 +240,7 @@ public class DefaultClassesTest {
                         response.getCoordinateReferenceSystem(),
                         cov.getCoordinateReferenceSystem()));
         assertTrue(new ReferencedEnvelope(response.getEnvelope()).contains(cov.getEnvelope2D()));
-        assertTrue(response.isDataEditable() == cov.isDataEditable());
+        assertEquals(response.isDataEditable(), cov.isDataEditable());
         assertSame(response.getGridGeometry(), cov.getGridGeometry());
         assertSame(response.getGridCoverage2D(), cov);
         assertSame(response.getRenderedImage(), cov.getRenderedImage());

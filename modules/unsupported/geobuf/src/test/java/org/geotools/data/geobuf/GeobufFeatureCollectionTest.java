@@ -84,8 +84,7 @@ public class GeobufFeatureCollectionTest {
         inputStream.close();
 
         assertEquals(2, decodedFeatureCollection.size());
-        SimpleFeatureIterator it = decodedFeatureCollection.features();
-        try {
+        try (SimpleFeatureIterator it = decodedFeatureCollection.features()) {
             int c = 0;
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
@@ -100,8 +99,6 @@ public class GeobufFeatureCollectionTest {
                 }
                 c++;
             }
-        } finally {
-            it.close();
         }
     }
 }

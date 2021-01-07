@@ -311,8 +311,8 @@ public abstract class AbstractIntegrationTest {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(expected)) {
+        for (Object o : array) {
+            if (o.equals(expected)) {
                 return true;
             }
         }
@@ -347,8 +347,8 @@ public abstract class AbstractIntegrationTest {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (isFeatureEqual((SimpleFeature) array[i], (SimpleFeature) expected)) {
+        for (Object o : array) {
+            if (isFeatureEqual((SimpleFeature) o, (SimpleFeature) expected)) {
                 return true;
             }
         }
@@ -402,8 +402,8 @@ public abstract class AbstractIntegrationTest {
 
         // SimpleFeatureType type = expected.getFeatureType();
 
-        for (int i = 0; i < array.length; i++) {
-            if (match(array[i], expected)) {
+        for (SimpleFeature simpleFeature : array) {
+            if (match(simpleFeature, expected)) {
                 return true;
             }
         }
@@ -476,7 +476,7 @@ public abstract class AbstractIntegrationTest {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         reader = data.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertCovered(first.features, reader);
-        assertEquals(false, reader.hasNext());
+        assertFalse(reader.hasNext());
     }
 
     @Test
@@ -505,8 +505,7 @@ public abstract class AbstractIntegrationTest {
         try {
             reader.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
     }
 
@@ -534,22 +533,19 @@ public abstract class AbstractIntegrationTest {
         try {
             reader1.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
 
         try {
             reader2.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
 
         try {
             reader3.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
 
         reader1.close();
@@ -657,8 +653,7 @@ public abstract class AbstractIntegrationTest {
 
         SimpleFeature feature;
         int count = 0;
-        SimpleFeatureIterator i = features.features();
-        try {
+        try (SimpleFeatureIterator i = features.features()) {
             while (i.hasNext()) {
                 feature = i.next();
                 if (!containsFeature(array, feature)) {
@@ -666,8 +661,6 @@ public abstract class AbstractIntegrationTest {
                 }
                 count++;
             }
-        } finally {
-            i.close();
         }
         return count == array.length;
     }
@@ -1450,7 +1443,7 @@ public abstract class AbstractIntegrationTest {
             assertEquals("AdditionalErrorMessage", exceptionData.get(0).getTexts().get(1));
             return;
         }
-        assertTrue(false);
+        fail();
     }
 
     /**

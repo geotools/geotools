@@ -227,12 +227,12 @@ public class RasterZonalStatistics implements RasterProcess {
         }
 
         public boolean hasNext() {
-            return features.size() > 0 || zones.hasNext();
+            return !features.isEmpty() || zones.hasNext();
         }
 
         public SimpleFeature next() throws NoSuchElementException {
             // build the next set of features if necessary
-            if (features.size() == 0) {
+            if (features.isEmpty()) {
                 // grab the current zone
                 SimpleFeature zone = zones.next();
 

@@ -19,7 +19,6 @@ package org.geotools.data.gen;
 
 import java.io.IOException;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -31,18 +30,20 @@ import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-public class PreGeneralizedDataStoreTest extends TestCase {
+public class PreGeneralizedDataStoreTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         TestSetup.initialize();
     }
 
+    @Test
     public void testBaseFunctionallity() {
 
         GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();
@@ -52,33 +53,33 @@ public class PreGeneralizedDataStoreTest extends TestCase {
             PreGeneralizedDataStore ds = new PreGeneralizedDataStore(ginfos, TestSetup.REPOSITORY);
 
             String typeName = ds.getTypeNames()[0];
-            assertTrue("GenStreams".equals(typeName));
+            Assert.assertEquals("GenStreams", typeName);
             Query query = new Query(typeName);
 
             FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-            assertTrue(reader != null);
+            Assert.assertNotNull(reader);
             reader.close();
 
             SimpleFeatureSource fsource = ds.getFeatureSource(typeName);
-            assertTrue(fsource != null);
+            Assert.assertNotNull(fsource);
 
             fsource = ds.getFeatureSource(new NameImpl(typeName));
-            assertTrue(fsource != null);
+            Assert.assertNotNull(fsource);
 
             ServiceInfo si = ds.getInfo();
-            assertTrue(si != null);
+            Assert.assertNotNull(si);
             // System.out.println(si);
 
             List<Name> names = ds.getNames();
-            assertTrue(names.contains(new NameImpl(typeName)));
-            assertTrue("GenStreams".equals(ds.getNames().get(0).getLocalPart()));
+            Assert.assertTrue(names.contains(new NameImpl(typeName)));
+            Assert.assertEquals("GenStreams", ds.getNames().get(0).getLocalPart());
 
             fsource = DataUtilities.createView(ds, query);
-            assertTrue(fsource != null);
+            Assert.assertNotNull(fsource);
 
-            assertNotNull(ds.getSchema(typeName));
-            assertNotNull(ds.getSchema(new NameImpl(typeName)));
+            Assert.assertNotNull(ds.getSchema(typeName));
+            Assert.assertNotNull(ds.getSchema(new NameImpl(typeName)));
 
             ds.dispose();
         } catch (Exception e) {
@@ -87,6 +88,7 @@ public class PreGeneralizedDataStoreTest extends TestCase {
         }
     }
 
+    @Test
     public void testNotSupportedFeatures() {
 
         GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();

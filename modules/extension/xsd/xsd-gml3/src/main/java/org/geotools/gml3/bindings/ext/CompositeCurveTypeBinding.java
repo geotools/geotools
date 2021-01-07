@@ -17,7 +17,6 @@
 package org.geotools.gml3.bindings.ext;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
@@ -66,8 +65,8 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List children = node.getChildren("curveMember");
         List<LineString> components = new ArrayList<>();
-        for (Iterator it = children.iterator(); it.hasNext(); ) {
-            Node child = (Node) it.next();
+        for (Object o : children) {
+            Node child = (Node) o;
             if (child.getValue() instanceof LineString) {
                 LineString ls = (LineString) child.getValue();
                 components.add(ls);
@@ -88,10 +87,10 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
     public static CoordinateList extractCurveMemberCoordinates(Node node) {
         List curveMembers = node.getChildren("curveMember");
         CoordinateList clist = new CoordinateList();
-        for (int i = 0; i < curveMembers.size(); i++) {
-            List curves = ((Node) curveMembers.get(i)).getChildren(MultiLineString.class);
-            for (int j = 0; j < curves.size(); j++) {
-                MultiLineString mls = (MultiLineString) ((Node) curves.get(j)).getValue();
+        for (Object curveMember : curveMembers) {
+            List curves = ((Node) curveMember).getChildren(MultiLineString.class);
+            for (Object curve : curves) {
+                MultiLineString mls = (MultiLineString) ((Node) curve).getValue();
                 clist.add(mls.getCoordinates(), false);
             }
         }

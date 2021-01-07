@@ -17,13 +17,12 @@
  */
 package org.geotools.coverageio.gdal.ecw;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -85,10 +84,7 @@ public final class ECWTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }
@@ -223,10 +219,7 @@ public final class ECWTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }
@@ -250,10 +243,10 @@ public final class ECWTest extends GDALTestCase {
 
         // Assert point in Greenland is masked out
         gc.evaluate(pointInGreenland, pixel);
-        assertTrue((pixel[3] & 0xFF) == 0);
+        assertEquals(0, (pixel[3] & 0xFF));
 
         // Assert point in Africa is present
         gc.evaluate(pointInAfrica, pixel);
-        assertTrue((pixel[3] & 0xFF) == 255);
+        assertEquals(255, (pixel[3] & 0xFF));
     }
 }

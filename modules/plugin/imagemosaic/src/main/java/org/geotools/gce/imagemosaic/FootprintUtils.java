@@ -105,12 +105,7 @@ class FootprintUtils {
                 }
             }
             bReader.close();
-        } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
-        } catch (ParseException e) {
-
+        } catch (IOException | ParseException e) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }
@@ -161,13 +156,12 @@ class FootprintUtils {
             return;
         }
 
-        FeatureIterator<SimpleFeature> it = null;
-        try {
+        try (FeatureIterator<SimpleFeature> it = features.features()) {
             // load the feature from the footprint shapefile store
-            it = features.features();
             if (!it.hasNext()) {
                 throw new IllegalArgumentException(
-                        "The provided FeatureCollection<SimpleFeatureType, SimpleFeature>  or empty, it's impossible to create an index!");
+                        "The provided FeatureCollection<SimpleFeatureType, SimpleFeature>  or "
+                                + "empty, it's impossible to create an index!");
             }
 
             // now add the footprint to the Map
@@ -176,20 +170,6 @@ class FootprintUtils {
                 final Geometry g = (Geometry) feature.getDefaultGeometry();
                 final String location = (String) feature.getAttribute("location");
                 footprintsMap.put(location, g);
-            }
-
-        } finally {
-
-            try {
-                if (it != null) {
-                    it.close();
-                }
-            } catch (Throwable e) {
-            }
-
-            try {
-                it.close();
-            } catch (Throwable e) {
             }
         }
     }

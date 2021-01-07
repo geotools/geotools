@@ -23,7 +23,6 @@ import com.esri.sde.sdk.client.SeQueryInfo;
 import com.esri.sde.sdk.client.SeSqlConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -111,8 +110,8 @@ public class QueryInfoParser {
 
         List tableNames = new ArrayList(fromItems.size());
 
-        for (Iterator it = fromItems.iterator(); it.hasNext(); ) {
-            FromItem fromItem = (FromItem) it.next();
+        for (Object item : fromItems) {
+            FromItem fromItem = (FromItem) item;
             String fromItemDef = fromItem.toString();
             tableNames.add(fromItemDef);
         }
@@ -124,14 +123,14 @@ public class QueryInfoParser {
      *     net.sf.jsqlparser.statement.select.AllColumns}
      */
     private static String[] getColumns(ISession session, List selectItems) throws IOException {
-        if (selectItems == null || selectItems.size() == 0) {
+        if (selectItems == null || selectItems.isEmpty()) {
             return null;
         }
 
         SelectItem item;
         List colNames = new ArrayList(selectItems.size());
-        for (Iterator it = selectItems.iterator(); it.hasNext(); ) {
-            item = (SelectItem) it.next();
+        for (Object selectItem : selectItems) {
+            item = (SelectItem) selectItem;
             if (item instanceof AllColumns) {
                 continue;
             } else if (item instanceof AllTableColumns) {
@@ -155,8 +154,8 @@ public class QueryInfoParser {
         List colNames = new ArrayList();
         String tableName = table.getSchemaName() + "." + table.getName();
         SeColumnDefinition[] cols = session.describe(tableName);
-        for (int i = 0; i < cols.length; i++) {
-            String colName = cols[i].getName();
+        for (SeColumnDefinition col : cols) {
+            String colName = col.getName();
             colName = tableName + "." + colName;
             colNames.add(colName);
         }

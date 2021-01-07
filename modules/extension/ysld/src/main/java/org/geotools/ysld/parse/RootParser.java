@@ -40,7 +40,7 @@ public class RootParser extends YsldParseHandler {
     Style style;
 
     public RootParser() {
-        this(Collections.<ZoomContextFinder>emptyList());
+        this(Collections.emptyList());
     }
 
     public RootParser(List<ZoomContextFinder> zCtxtFinders) {

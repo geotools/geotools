@@ -22,7 +22,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-import org.geotools.http.DelegateOldHTTPResponse;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
@@ -88,7 +87,7 @@ public interface Request {
     @Deprecated
     default Response createResponse(org.geotools.data.ows.HTTPResponse response)
             throws ServiceException, IOException {
-        return createResponse(new DelegateOldHTTPResponse(response));
+        return createResponse(new org.geotools.http.DelegateOldHTTPResponse(response));
     }
 
     /**

@@ -29,6 +29,7 @@ import java.util.Map;
  * @see SimpleHttpClient
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
+@SuppressWarnings("deprecation")
 public interface HTTPClient extends org.geotools.data.ows.HTTPClient {
 
     /**

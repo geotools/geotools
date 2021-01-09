@@ -29,10 +29,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.http.DelegateOldHTTPClient;
 import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPFactoryFinder;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
+import org.geotools.util.logging.Logging;
 
 /**
  * This abstract class provides a building block for one to implement an Open Web Service (OWS)
@@ -61,8 +62,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     /** Hints, now used for the XML parsing * */
     protected Map<String, Object> hints;
 
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AbstractOpenWebService.class);
+    protected static final Logger LOGGER = Logging.getLogger(AbstractOpenWebService.class);
 
     /**
      * Set up the specifications used and retrieve the Capabilities document given by serverURL.
@@ -71,9 +71,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @throws IOException if there is an error communicating with the server
      * @throws ServiceException if the server responds with an error
      */
-    @Deprecated
     public AbstractOpenWebService(final URL serverURL) throws IOException, ServiceException {
-        throw new UnsupportedOperationException("Don't use this constructor.");
+        this(serverURL, HTTPFactoryFinder.getHttpClientFactory().getClient(), null);
     }
 
     public AbstractOpenWebService(
@@ -134,7 +133,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
     @Deprecated
     public void setHttpClient(org.geotools.data.ows.HTTPClient httpClient) {
-        this.httpClient = new DelegateOldHTTPClient(httpClient);
+        this.httpClient = new org.geotools.http.DelegateOldHTTPClient(httpClient);
     }
 
     public HTTPClient getHTTPClient() {

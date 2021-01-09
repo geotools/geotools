@@ -19,8 +19,6 @@ package org.geotools.data.wfs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
 
 /**
  * Test HTTP Client
@@ -28,7 +26,7 @@ import org.geotools.data.ows.HTTPResponse;
  * @author Andrea Aime - GeoSolutions
  */
 @Deprecated
-public class AbstractTestHTTPClient implements HTTPClient {
+public class AbstractTestHTTPClient implements org.geotools.data.ows.HTTPClient {
 
     protected String user;
 
@@ -40,13 +38,13 @@ public class AbstractTestHTTPClient implements HTTPClient {
 
     protected boolean tryGzip;
 
-    public HTTPResponse post(URL url, InputStream postContent, String postContentType)
+    public org.geotools.data.ows.HTTPResponse post(URL url, InputStream postContent, String postContentType)
             throws IOException {
         throw new UnsupportedOperationException(
                 "POST not supported, if needed you have to override and implement");
     }
 
-    public HTTPResponse get(URL url) throws IOException {
+    public org.geotools.data.ows.HTTPResponse get(URL url) throws IOException {
         throw new UnsupportedOperationException(
                 "GET not supported, if needed you have to override and implement");
     }

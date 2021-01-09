@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
-import org.geotools.data.ows.HTTPResponse;
 import org.junit.Assert;
 
 /**
@@ -16,7 +15,7 @@ import org.junit.Assert;
  * @author Andrea Aime - GeoSolutions
  */
 @Deprecated
-public class MockHttpResponse implements HTTPResponse {
+public class MockHttpResponse implements org.geotools.data.ows.HTTPResponse {
 
     String contentType;
 

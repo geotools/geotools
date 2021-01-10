@@ -38,8 +38,8 @@ public class AbstractTestHTTPClient implements org.geotools.data.ows.HTTPClient 
 
     protected boolean tryGzip;
 
-    public org.geotools.data.ows.HTTPResponse post(URL url, InputStream postContent, String postContentType)
-            throws IOException {
+    public org.geotools.data.ows.HTTPResponse post(
+            URL url, InputStream postContent, String postContentType) throws IOException {
         throw new UnsupportedOperationException(
                 "POST not supported, if needed you have to override and implement");
     }

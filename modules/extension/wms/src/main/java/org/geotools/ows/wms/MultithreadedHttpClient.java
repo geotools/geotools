@@ -197,7 +197,8 @@ public class MultithreadedHttpClient implements org.geotools.data.ows.HTTPClient
     }
 
     @Override
-    public org.geotools.data.ows.HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
+    public org.geotools.data.ows.HTTPResponse get(URL url, Map<String, String> headers)
+            throws IOException {
         GetMethod getMethod = new GetMethod(url.toExternalForm());
         getMethod.setDoAuthentication(user != null && password != null);
         if (tryGzip) {

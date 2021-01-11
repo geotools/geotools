@@ -25,7 +25,7 @@
  *    Please visit <a href="http://iharder.net/base64">http://iharder.net/base64</a>
  *    periodically to check for updates or to contribute improvements.
  */
-package org.geotools.data;
+package org.geotools.util;
 
 import java.io.IOException;
 
@@ -68,9 +68,7 @@ import java.io.IOException;
  * @author Robert Harder
  * @author rob@iharder.net
  * @version 2.1
- * @deprecated Copied to org.geotools.util of gt-metadata
  */
-@Deprecated
 public class Base64 {
 
     /* ********  P U B L I C   F I E L D S  ******** */

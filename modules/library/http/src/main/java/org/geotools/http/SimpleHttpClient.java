@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import org.geotools.data.Base64;
+import org.geotools.util.Base64;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 

@@ -37,7 +37,7 @@ import java.util.Map;
  * <p>Taking anything that could be turned into an InputStream as an argument for the constructor.
  *
  * @author Andrea Aime - GeoSolutions
- * @deprecated Copied to gt-http
+ * @deprecated Copied to org.geotools.http
  * @see org.geotools.http.MockHttpResponse
  */
 @Deprecated

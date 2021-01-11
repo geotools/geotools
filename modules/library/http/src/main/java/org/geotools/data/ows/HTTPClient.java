@@ -28,7 +28,7 @@ import java.util.Map;
  * @see HTTPResponse
  * @see SimpleHttpClient
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
- * @deprecated Copied to gt-http
+ * @deprecated Copied to org.geotools.http
  * @see org.geotools.http.HTTPClient
  */
 @Deprecated

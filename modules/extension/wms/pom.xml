@@ -81,11 +81,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-	      <groupId>org.geotools</groupId>
-	      <artifactId>gt-http</artifactId>
-	      <version>${project.version}</version>
-	    </dependency>
-        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-coverage</artifactId>
             <version>${project.version}</version>
@@ -94,11 +89,6 @@
             <groupId>org.geotools</groupId>
             <artifactId>gt-referencing</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <!-- The version number is specified in the parent POM. -->
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>

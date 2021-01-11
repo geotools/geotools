@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * them
  *
  * @author Andrea Aime - GeoSolutions
- * @deprecated Copied to gt-http
+ * @deprecated Copied to org.geotools.http
  * @see org.geotools.http.MockHttpClient
  */
 @Deprecated

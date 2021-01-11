@@ -29,7 +29,7 @@ import java.io.InputStream;
  * connection pool, or any other resource clean up task that needs to be done.
  *
  * @author groldan
- * @deprecated Copied to gt-http
+ * @deprecated Copied to org.geotools.http
  * @see org.geotools.http.HTTPResponse
  */
 @Deprecated

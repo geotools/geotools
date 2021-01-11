@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * @deprecated Copied to gt-http
+ * @deprecated Copied to org.geotools.http
  * @see org.geotools.http.DelegateHttpClient
  */
 @Deprecated

@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 
 /**
- * @deprecated Copied to gt-http
+ * @deprecated Copied to org.geotools.http
  * @see org.geotools.http.LoggingHTTPClient
  */
 @Deprecated

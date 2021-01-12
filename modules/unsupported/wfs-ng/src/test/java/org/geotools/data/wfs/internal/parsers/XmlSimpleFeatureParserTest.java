@@ -31,6 +31,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // wrapped and returned
     protected GetParser<SimpleFeature> getParser(
             final QName featureName,
             final URL schemaLocation,

@@ -139,13 +139,14 @@ public class DataStoreTest {
 
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
-        featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        while (featureReader.hasNext()) {
-            SimpleFeature feature = featureReader.next();
-            Object geometry = feature.getDefaultGeometry();
-            assertNotNull(geometry);
-            assertTrue(geometry instanceof Polygon);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            while (featureReader.hasNext()) {
+                SimpleFeature feature = featureReader.next();
+                Object geometry = feature.getDefaultGeometry();
+                assertNotNull(geometry);
+                assertTrue(geometry instanceof Polygon);
+            }
         }
         GetFeatureRequest request = wfs.getRequest();
         assertEquals("text/xml; subtype=gml/2.1.2", request.getOutputFormat());

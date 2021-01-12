@@ -797,88 +797,97 @@ public abstract class AbstractIntegrationTest {
      */
     @Test
     public void testGetFeatureWriter() throws Exception {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT);
-        assertEquals(first.features.length, count(writer));
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT)) {
+            assertEquals(first.features.length, count(writer));
 
-        try {
-            writer.hasNext();
-            fail("Should not be able to use a closed writer");
-        } catch (IOException expected) {
-        }
+            try {
+                writer.hasNext();
+                fail("Should not be able to use a closed writer");
+            } catch (IOException expected) {
+            }
 
-        try {
-            writer.next();
-            fail("Should not be able to use a closed writer");
-        } catch (IOException expected) {
+            try {
+                writer.next();
+                fail("Should not be able to use a closed writer");
+            } catch (IOException expected) {
+            }
         }
     }
 
     @Test
     public void testGetFeatureWriterRemove() throws Exception {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT);
-        SimpleFeature feature;
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT)) {
+            SimpleFeature feature;
 
-        while (writer.hasNext()) {
-            feature = writer.next();
+            while (writer.hasNext()) {
+                feature = writer.next();
 
-            if (feature.getID().equals(first.features[0].getID())) {
-                writer.remove();
+                if (feature.getID().equals(first.features[0].getID())) {
+                    writer.remove();
+                }
             }
         }
 
-        writer = data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT);
-        assertEquals(first.features.length - 1, count(writer));
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT)) {
+            assertEquals(first.features.length - 1, count(writer));
+        }
     }
 
     @Test
     public void testGetFeaturesWriterAdd() throws Exception {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT);
-        SimpleFeature feature;
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT)) {
+            SimpleFeature feature;
 
-        while (writer.hasNext()) {
+            while (writer.hasNext()) {
+                writer.next();
+            }
+
+            assertFalse(writer.hasNext());
             feature = writer.next();
+            feature.setAttributes(first.newFeature.getAttributes());
+            writer.write();
+            assertFalse(writer.hasNext());
         }
 
-        assertFalse(writer.hasNext());
-        feature = writer.next();
-        feature.setAttributes(first.newFeature.getAttributes());
-        writer.write();
-        assertFalse(writer.hasNext());
-
-        writer = data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT);
-        assertEquals(first.features.length + 1, count(writer));
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT)) {
+            assertEquals(first.features.length + 1, count(writer));
+        }
     }
 
     @Test
     public void testGetFeaturesWriterModify() throws Exception {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
-        writer = data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT);
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT)) {
 
-        SimpleFeature feature;
+            SimpleFeature feature;
 
-        while (writer.hasNext()) {
-            feature = writer.next();
+            while (writer.hasNext()) {
+                feature = writer.next();
 
-            if (feature.getID().equals(first.features[0].getID())) {
-                feature.setAttribute(first.stringAttribute, "changed");
-                writer.write();
-            }
-        }
-
-        feature = null;
-
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                data.getFeatureReader(
-                        new Query(first.typeName, first.feat1Filter), Transaction.AUTO_COMMIT)) {
-
-            if (reader.hasNext()) {
-                feature = reader.next();
+                if (feature.getID().equals(first.features[0].getID())) {
+                    feature.setAttribute(first.stringAttribute, "changed");
+                    writer.write();
+                }
             }
 
-            assertEquals("changed", feature.getAttribute(first.stringAttribute));
+            feature = null;
+
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(
+                            new Query(first.typeName, first.feat1Filter),
+                            Transaction.AUTO_COMMIT)) {
+
+                if (reader.hasNext()) {
+                    feature = reader.next();
+                }
+
+                assertEquals("changed", feature.getAttribute(first.stringAttribute));
+            }
         }
     }
 

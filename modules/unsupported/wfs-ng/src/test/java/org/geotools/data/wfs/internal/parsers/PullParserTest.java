@@ -44,6 +44,7 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
             Configuration wfsConfiguration)
             throws IOException {
 
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         InputStream inputStream = new BufferedInputStream(getFeaturesRequest.openStream());
         GetParser<SimpleFeature> parser =
                 new PullParserFeatureReader(wfsConfiguration, inputStream, featureType, axisOrder);

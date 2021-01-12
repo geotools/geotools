@@ -149,6 +149,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         return ret;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // readers are wrapped and returned in the response
     protected Response mockGetFeature(GetFeatureRequest request) throws IOException {
 
         final QName typeName = request.getTypeName();
@@ -250,6 +251,7 @@ public class IntegrationTestWFSClient extends WFSClient {
                     }
 
                     @Override
+                    @SuppressWarnings("PMD.CloseResource") // reaaders are from memory lists
                     public int getNumberOfFeatures() {
                         if (-1 != allFeatures.getNumberOfFeatures()) {
                             // only if the original response included number of features (i.e. the

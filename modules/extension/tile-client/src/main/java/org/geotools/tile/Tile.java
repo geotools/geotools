@@ -183,9 +183,12 @@ public abstract class Tile implements ImageLoader {
 
     /**
      * Implementation of ImageLoader. Has been moved to {@link
-     * org.geotools.tile.TileService#loadImageTileImage(Tile)}
+     * @see org.geotools.tile.TileService#loadImageTileImage(Tile)}
      */
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
+        if (service == null) {
+            throw new IllegalStateException("service cannot be null.");
+        }
         final HTTPResponse response = service.getHttpClient().get(tile.getUrl());
         try {
             return ImageIOExt.readBufferedImage(response.getResponseStream());

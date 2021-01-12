@@ -40,6 +40,32 @@ For those feeding ``Properties`` object to ``DataAccess.getDataStore()`` a new u
 ``DataUtilities.toConnectionParameters`` has been made available, which converts a ``Properties``
 to a ``Map<String, ?>``.
 
+It has been established a new library ``gt-http`` that will focus on http client's.
+The original interfaces HTTPClient and HTTPResponse and their implementations: (SimpleHttpClient, DelegateHTTPClient, LoggingHTTPClient and DelegateHTTPResponse), living in 
+``org.geotools.data.ows``, has been moved to namespace ``org.geotools.http``. In addition to namespace changes,
+there are a new preferred way of acquairing a HTTPClient:
+
+.. code::
+
+  HTTPClient client = HTTPFactoryFinder.getHttpClientFactory().getClient();
+
+In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHttpClient. To acquaire an instance the plugin should be added with Maven:
+
+.. code-block:: xml
+
+     <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-http-commons</artifactId>
+        <version>${gt.version}</version>
+     </dependency>
+
+Then in the code: 
+
+.. code::
+
+  HTTPClient client = HTTPFactoryFinder.getHttpClientFactory()
+                                          .getClient(new Hints(Hints.HTTP_CLIENT, MultihreadedHttpClient.class));
+
 GeoTools 24.x
 -------------
 

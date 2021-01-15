@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -197,5 +198,16 @@ public class DbaseFileTest extends TestCaseSupport {
         formattedString = formatter.getFieldString(10, stringWithInternationChars);
 
         assertEquals("          ".getBytes().length, formattedString.getBytes().length);
+    }
+
+    @Test
+    public void testUTF8Chars() throws Exception {
+        // looks like "A, B, C" in an editor, but the B and C are actually weird UTF-8 entities
+        DbaseFileWriter.FieldFormatter formatter =
+                new DbaseFileWriter.FieldFormatter(
+                        StandardCharsets.UTF_8, TimeZone.getDefault(), false);
+        String test = "A, \u0412, \u0421";
+        String formattedString = formatter.getFieldString(8, test);
+        assertEquals("        ".getBytes().length, formattedString.getBytes().length);
     }
 }

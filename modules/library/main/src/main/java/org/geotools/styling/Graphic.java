@@ -251,7 +251,7 @@ abstract class ConstantGraphic implements Graphic {
         cannotModifyConstant();
     }
 
-    public void setExternalGraphics(ExternalGraphic[] externalGraphics) {
+    public void setExternalGraphics(ExternalGraphic... externalGraphics) {
         cannotModifyConstant();
     }
 
@@ -259,7 +259,7 @@ abstract class ConstantGraphic implements Graphic {
         cannotModifyConstant();
     }
 
-    public void setMarks(Mark[] marks) {
+    public void setMarks(Mark... marks) {
         cannotModifyConstant();
     }
 
@@ -275,7 +275,7 @@ abstract class ConstantGraphic implements Graphic {
         cannotModifyConstant();
     }
 
-    public void setSymbols(Symbol[] symbols) {
+    public void setSymbols(Symbol... symbols) {
         cannotModifyConstant();
     }
 

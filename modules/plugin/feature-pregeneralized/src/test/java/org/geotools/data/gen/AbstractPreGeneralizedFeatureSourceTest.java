@@ -47,7 +47,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -598,8 +597,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
 
             SortOrder so = SortOrder.valueOf("CAT_ID");
             Assert.assertTrue(
-                    fs.getQueryCapabilities()
-                            .supportsSorting(new SortBy[] {new SortByImpl(propertyName, so)}));
+                    fs.getQueryCapabilities().supportsSorting(new SortByImpl(propertyName, so)));
 
             ds.dispose();
 

@@ -139,7 +139,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
                                 + "so there is no way a stable paging (offset/limit) can be performed");
             }
             Query copy = new Query(query);
-            copy.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+            copy.setSortBy(SortBy.NATURAL_ORDER);
             query = copy;
         }
         SimpleFeatureCollection collection;

@@ -40,7 +40,7 @@ public class RetypeFeatureReaderTest {
                 DataUtilities.createType(
                         "feature", "id:string,name:String,geometry:Point:srid=4326");
         SimpleFeatureType targetType =
-                SimpleFeatureTypeBuilder.retype(featureType, new String[] {"id", "geometry"});
+                SimpleFeatureTypeBuilder.retype(featureType, "id", "geometry");
         // create a feature collection wit a single feature
         SimpleFeature feature = DataUtilities.createFeature(featureType, "1|foobar|POINT(1 2)");
         feature.getUserData().put(UD_KEY, UD_VALUE);

@@ -1083,7 +1083,7 @@ public class Hints extends RenderingHints {
      * @param pairs An array of Key/Value pairs.
      * @throws IllegalArgumentException if a value is illegal.
      */
-    private void fromPairs(final Object[] pairs) throws IllegalArgumentException {
+    private void fromPairs(final Object... pairs) throws IllegalArgumentException {
         if ((pairs.length & 1) != 0) {
             throw new IllegalArgumentException(
                     Errors.format(ErrorKeys.ODD_ARRAY_LENGTH_$1, pairs.length));

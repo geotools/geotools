@@ -1768,7 +1768,7 @@ public class YsldEncodeTest {
         rule.setLegend(sf.createGraphic(new ExternalGraphic[] {eg}, null, null, null, null, null));
 
         StringWriter out = new StringWriter();
-        Ysld.encode(sld(sf.createFeatureTypeStyle(new Rule[] {rule})), out);
+        Ysld.encode(sld(sf.createFeatureTypeStyle(rule)), out);
         // System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));

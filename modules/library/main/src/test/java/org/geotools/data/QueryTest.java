@@ -49,7 +49,7 @@ public class QueryTest {
         // System.out.println("testPropertyNames");
         Query query = new Query();
         Assert.assertNull(query.getPropertyNames());
-        query.setPropertyNames(new String[] {"foo", "bar"});
+        query.setPropertyNames("foo", "bar");
         String names[] = query.getPropertyNames();
         Assert.assertNotNull(names);
         Assert.assertEquals("foo", names[0]);
@@ -118,7 +118,7 @@ public class QueryTest {
         Query query = new Query();
         Assert.assertTrue(query.retrieveAllProperties());
 
-        query.setPropertyNames(new String[] {"foo", "bar"});
+        query.setPropertyNames("foo", "bar");
         Assert.assertFalse(query.retrieveAllProperties());
 
         query.setPropertyNames(Query.ALL_NAMES);
@@ -127,7 +127,7 @@ public class QueryTest {
         query.setProperties(Query.ALL_PROPERTIES);
         Assert.assertTrue(query.retrieveAllProperties());
 
-        query.setPropertyNames(new String[] {"foo", "bar"});
+        query.setPropertyNames("foo", "bar");
         query.setProperties(Query.ALL_PROPERTIES);
         Assert.assertTrue(query.retrieveAllProperties());
     }
@@ -199,13 +199,13 @@ public class QueryTest {
         query.setFilter(Filter.EXCLUDE);
         Assert.assertNotNull(query.toString());
 
-        query.setPropertyNames(new String[] {"foo", "bar"});
+        query.setPropertyNames("foo", "bar");
         Assert.assertNotNull(query.toString());
 
         query = new Query();
-        query.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        query.setSortBy(SortBy.NATURAL_ORDER);
         Assert.assertTrue(query.toString().contains("[sort by: NATURAL]"));
-        query.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        query.setSortBy(SortBy.REVERSE_ORDER);
         Assert.assertTrue(query.toString().contains("[sort by: REVERSE]"));
     }
 
@@ -214,11 +214,11 @@ public class QueryTest {
         Query q1 = new Query();
 
         Query q2 = new Query();
-        q2.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        q2.setSortBy(SortBy.NATURAL_ORDER);
         assertThat(q1, not(equalTo(q2)));
 
         Query q3 = new Query();
-        q3.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        q3.setSortBy(SortBy.NATURAL_ORDER);
         assertThat(q2, equalTo(q3));
     }
 }

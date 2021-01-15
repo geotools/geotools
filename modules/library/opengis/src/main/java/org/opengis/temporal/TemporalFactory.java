@@ -100,7 +100,7 @@ public interface TemporalFactory {
     ClockTime createClockTime(
             TemporalReferenceSystem frame,
             IndeterminateValue indeterminatePosition,
-            Number[] clockTime);
+            Number... clockTime);
 
     /**
      * @param frame : This is the TM_ReferenceSystem associated with this TM_TemporalPosition, if

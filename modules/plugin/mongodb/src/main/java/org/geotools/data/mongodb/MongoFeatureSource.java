@@ -185,7 +185,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
             SortBy sortBy = new SortByImpl(propertyName, SortOrder.ASCENDING);
 
             Query newQuery = new Query(query);
-            newQuery.setSortBy(new SortBy[] {sortBy});
+            newQuery.setSortBy(sortBy);
 
             // Sorting to get min only need to get one result
             newQuery.setMaxFeatures(1);
@@ -208,7 +208,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
             SortBy sortBy = new SortByImpl(propertyName, SortOrder.DESCENDING);
 
             Query newQuery = new Query(query);
-            newQuery.setSortBy(new SortBy[] {sortBy});
+            newQuery.setSortBy(sortBy);
 
             // Sorting to get max only need to get one result
             newQuery.setMaxFeatures(1);

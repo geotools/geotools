@@ -1180,7 +1180,7 @@ public class Parser extends MathTransformParser {
      * @param args The command line arguments.
      */
     @SuppressWarnings("PMD.CloseResource")
-    public static void main(String[] args) {
+    public static void main(String... args) {
         final Arguments arguments = new Arguments(args);
         final Integer indentation = arguments.getOptionalInteger(Formattable.INDENTATION);
         final String authority = arguments.getOptionalString("-authority");

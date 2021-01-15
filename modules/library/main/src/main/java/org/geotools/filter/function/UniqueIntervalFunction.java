@@ -153,7 +153,8 @@ public class UniqueIntervalFunction extends ClassificationFunction {
         return calculate((SimpleFeatureCollection) feature);
     }
 
-    private double[] getPercentages(FeatureCollection collection, Set[] values) throws IOException {
+    private double[] getPercentages(FeatureCollection collection, Set... values)
+            throws IOException {
         Expression prop = getParameters().get(0);
         GroupByVisitor groupBy =
                 new GroupByVisitor(Aggregate.COUNT, prop, Arrays.asList(prop), null);
@@ -164,7 +165,7 @@ public class UniqueIntervalFunction extends ClassificationFunction {
     }
 
     private double[] computePercentages(
-            Map<List, Integer> queryResult, int totalSize, Set[] values) {
+            Map<List, Integer> queryResult, int totalSize, Set... values) {
         double[] percentages = new double[values.length];
         for (int i = 0; i < values.length; i++) {
             Set s = values[i];

@@ -45,7 +45,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
 
 @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
@@ -366,7 +365,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         v.setStartIndex(0);
         v.setMaxFeatures(2);
         Query q = new Query(tname("ft1"));
-        q.setSortBy(new SortBy[] {new SortByImpl(p, ASCENDING)});
+        q.setSortBy(new SortByImpl(p, ASCENDING));
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
         Set result = v.getResult().toSet();
@@ -398,7 +397,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
         Query q = new Query(tname("ft1"));
         q.setMaxFeatures(1);
-        q.setSortBy(new SortBy[] {new SortByImpl(p, ASCENDING)});
+        q.setSortBy(new SortByImpl(p, ASCENDING));
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
         Set result = v.getResult().toSet();
@@ -421,7 +420,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         v.setStartIndex(1);
         v.setMaxFeatures(2);
         Query q = new Query(tname("ft1"));
-        q.setSortBy(new SortBy[] {new SortByImpl(p, ASCENDING)});
+        q.setSortBy(new SortByImpl(p, ASCENDING));
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
         Set result = v.getResult().toSet();

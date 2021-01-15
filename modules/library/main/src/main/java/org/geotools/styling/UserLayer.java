@@ -64,13 +64,13 @@ public interface UserLayer extends StyledLayer {
 
     public FeatureTypeConstraint[] getLayerFeatureConstraints();
 
-    public void setLayerFeatureConstraints(FeatureTypeConstraint[] constraints);
+    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints);
 
     public List<Style> userStyles();
 
     public Style[] getUserStyles();
 
-    public void setUserStyles(Style[] styles);
+    public void setUserStyles(Style... styles);
 
     public void addUserStyle(Style style);
 

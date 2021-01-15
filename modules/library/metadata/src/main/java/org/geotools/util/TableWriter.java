@@ -898,7 +898,7 @@ public class TableWriter extends FilterWriter {
     }
 
     /** Checks if {@code array} contains only {@code null} elements. */
-    private static boolean isEmpty(final Object[] array) {
+    private static boolean isEmpty(final Object... array) {
         for (int i = array.length; --i >= 0; ) {
             if (array[i] != null) {
                 return false;

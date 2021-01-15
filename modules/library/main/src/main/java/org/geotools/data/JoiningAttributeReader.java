@@ -35,13 +35,13 @@ public class JoiningAttributeReader implements AttributeReader {
      *
      * @param readers Readers to join
      */
-    public JoiningAttributeReader(AttributeReader[] readers) {
+    public JoiningAttributeReader(AttributeReader... readers) {
         this.readers = readers;
 
         this.metaData = joinMetaData(readers);
     }
 
-    private AttributeDescriptor[] joinMetaData(AttributeReader[] readers) {
+    private AttributeDescriptor[] joinMetaData(AttributeReader... readers) {
         int total = 0;
         index = new int[readers.length];
 

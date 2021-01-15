@@ -137,6 +137,6 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
         feature3.getUserData().put(Hints.USE_PROVIDED_FID, true);
         feature3.getUserData().put(Hints.PROVIDED_FID, uuid3);
 
-        return DataUtilities.collection(new SimpleFeature[] {feature1, feature2, feature3});
+        return DataUtilities.collection(feature1, feature2, feature3);
     }
 }

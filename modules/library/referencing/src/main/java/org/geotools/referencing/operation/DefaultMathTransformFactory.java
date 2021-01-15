@@ -129,7 +129,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
 
     /** Constructs a default {@link MathTransform math transform} factory. */
     public DefaultMathTransformFactory() {
-        this(new Class<?>[] {MathTransformProvider.class});
+        this(MathTransformProvider.class);
     }
 
     /**
@@ -139,7 +139,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @param categories The providers categories, as implementations of {@link
      *     MathTransformProvider}.
      */
-    private DefaultMathTransformFactory(final Class<?>[] categories) {
+    private DefaultMathTransformFactory(final Class<?>... categories) {
         registry = new FactoryRegistry(Arrays.asList(categories));
         pool = CanonicalSet.newInstance(MathTransform.class);
     }
@@ -641,7 +641,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      *
      * @param args Command line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String... args) {
         /*
          * Parse the command-line arguments and print the summary.
          */

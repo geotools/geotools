@@ -41,7 +41,7 @@ public class FunctionsImpl implements Functions {
         this.functionNames = new HashSet<>(functionNames);
     }
 
-    public FunctionsImpl(FunctionName[] functionNames) {
+    public FunctionsImpl(FunctionName... functionNames) {
         if (functionNames == null) {
             functionNames = new FunctionName[] {};
         }

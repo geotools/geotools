@@ -83,7 +83,7 @@ public interface GridCoverageWriter {
      * @throws IOException if the export failed for some other input/output reason, including {@link
      *     javax.imageio.IIOException} if an error was thrown by the underlying image library.
      */
-    void write(GridCoverage coverage, GeneralParameterValue[] parameters)
+    void write(GridCoverage coverage, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException;
 
     /**

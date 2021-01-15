@@ -114,7 +114,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      *     ParameterDescriptorGroup descriptor}.
      */
     public ParameterGroup(
-            final ParameterDescriptorGroup descriptor, final GeneralParameterValue[] values) {
+            final ParameterDescriptorGroup descriptor, final GeneralParameterValue... values) {
         super(descriptor);
         ensureNonNull("values", values);
         this.values = new ArrayList<>(values.length);
@@ -140,7 +140,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      *     occurences doesn't matches the number declared in the {@linkplain
      *     ParameterDescriptorGroup descriptor}.
      */
-    public ParameterGroup(final Map<String, ?> properties, final GeneralParameterValue[] values) {
+    public ParameterGroup(final Map<String, ?> properties, final GeneralParameterValue... values) {
         super(createDescriptor(properties, values));
         this.values = new ArrayList<>(values.length);
         this.values.addAll(Arrays.asList(values));
@@ -155,7 +155,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      *     ParameterDescriptorGroup descriptor}.
      */
     private static ParameterDescriptorGroup createDescriptor(
-            final Map<String, ?> properties, final GeneralParameterValue[] values) {
+            final Map<String, ?> properties, final GeneralParameterValue... values) {
         ensureNonNull("values", values);
         final Map<GeneralParameterDescriptor, int[]> occurences =
                 new LinkedHashMap<>(Math.round(values.length / 0.75f) + 1, 0.75f);

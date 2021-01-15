@@ -46,7 +46,7 @@ public class SpatialOperatorsImpl implements SpatialOperators {
         }
     }
 
-    public SpatialOperatorsImpl(SpatialOperator[] operators) {
+    public SpatialOperatorsImpl(SpatialOperator... operators) {
         this.operators = new HashSet<>();
         if (operators != null) {
             for (SpatialOperator operator : operators) {

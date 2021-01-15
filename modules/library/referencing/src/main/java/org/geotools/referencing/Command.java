@@ -104,7 +104,7 @@ final class Command {
     }
 
     /** Prints all objects as WKT. This is the default behavior when no option is specified. */
-    private void list(final PrintWriter out, final String[] args) throws FactoryException {
+    private void list(final PrintWriter out, final String... args) throws FactoryException {
         char[] separator = null;
         for (String arg : args) {
             if (separator == null) {
@@ -218,7 +218,7 @@ final class Command {
     }
 
     /** Prints the bursa-wolfs parameters for the specified CRS. */
-    private void bursaWolfs(final PrintWriter out, final String[] args) throws FactoryException {
+    private void bursaWolfs(final PrintWriter out, final String... args) throws FactoryException {
         final NumberFormat nf = NumberFormat.getNumberInstance();
         nf.setMinimumFractionDigits(3);
         nf.setMaximumFractionDigits(3);
@@ -290,7 +290,7 @@ final class Command {
     }
 
     /** Prints the operations between every pairs of the specified authority code. */
-    private void operations(final PrintWriter out, final String[] args) throws FactoryException {
+    private void operations(final PrintWriter out, final String... args) throws FactoryException {
         if (!(factory instanceof CoordinateOperationAuthorityFactory)) {
             return;
         }
@@ -314,7 +314,7 @@ final class Command {
     }
 
     /** Prints the math transforms between every pairs of the specified authority code. */
-    private void transform(final PrintWriter out, final String[] args) throws FactoryException {
+    private void transform(final PrintWriter out, final String... args) throws FactoryException {
         if (!(factory instanceof CRSAuthorityFactory)) {
             return;
         }
@@ -363,7 +363,7 @@ final class Command {
 
     /** Implementation of {@link CRS#main}. */
     @SuppressWarnings("PMD.CloseResource")
-    public static void execute(String[] args) {
+    public static void execute(String... args) {
         final Arguments arguments = new Arguments(args);
         final PrintWriter out = arguments.out;
         Locale.setDefault(arguments.locale);

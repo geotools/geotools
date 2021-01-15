@@ -43,7 +43,7 @@ public class PostGISUuidOnlineTest extends JDBCUuidOnlineTest {
                 .put(Hints.USE_PROVIDED_FID, false); // false, so that a UUID will be generated
         // feature1.getUserData().put(Hints.PROVIDED_FID, uuid1);
 
-        return DataUtilities.collection(new SimpleFeature[] {feature1});
+        return DataUtilities.collection(feature1);
     }
 
     @Override

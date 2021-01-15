@@ -51,7 +51,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
     @Test
     public void naturalSortedFeatures() throws IOException {
         Query query = new Query();
-        query.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        query.setSortBy(SortBy.NATURAL_ORDER);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
         Assert.assertEquals(3, fs.getCount(query));
@@ -64,7 +64,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
     @Test
     public void reverseSortedFeatures() throws IOException {
         Query query = new Query();
-        query.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        query.setSortBy(SortBy.REVERSE_ORDER);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
         Assert.assertEquals(3, fs.getCount(query));
@@ -113,7 +113,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
     @Test
     public void naturalSortedOneFeatureFirstPage() throws IOException {
         Query query = new Query();
-        query.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        query.setSortBy(SortBy.NATURAL_ORDER);
         query.setMaxFeatures(1);
         query.setStartIndex(0);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
@@ -126,7 +126,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
     @Test
     public void naturalSortedOneFeatureSecondPage() throws IOException {
         Query query = new Query();
-        query.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        query.setSortBy(SortBy.NATURAL_ORDER);
         query.setMaxFeatures(1);
         query.setStartIndex(1);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
@@ -139,7 +139,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
     @Test
     public void naturalSortedOneFeatureThirdPage() throws IOException {
         Query query = new Query();
-        query.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        query.setSortBy(SortBy.NATURAL_ORDER);
         query.setMaxFeatures(1);
         query.setStartIndex(2);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
@@ -152,7 +152,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
     @Test
     public void reverseSortedOneFeatureFirstPage() throws IOException {
         Query query = new Query();
-        query.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        query.setSortBy(SortBy.REVERSE_ORDER);
         query.setMaxFeatures(1);
         query.setStartIndex(0);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
@@ -165,7 +165,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
     @Test
     public void reverseSortedOneFeatureSecondPage() throws IOException {
         Query query = new Query();
-        query.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        query.setSortBy(SortBy.REVERSE_ORDER);
         query.setMaxFeatures(1);
         query.setStartIndex(1);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
@@ -178,7 +178,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
     @Test
     public void reverseSortedOneFeatureThirdPage() throws IOException {
         Query query = new Query();
-        query.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        query.setSortBy(SortBy.REVERSE_ORDER);
         query.setMaxFeatures(1);
         query.setStartIndex(2);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);

@@ -36,7 +36,7 @@ public abstract class Classifier {
         return titles;
     }
 
-    public void setTitles(String[] titles) {
+    public void setTitles(String... titles) {
         this.titles = titles;
     }
 

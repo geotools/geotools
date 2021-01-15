@@ -38,7 +38,7 @@ import org.opengis.filter.sort.SortBy;
 
 class MergeSortDumper {
 
-    static final boolean canSort(SimpleFeatureType schema, SortBy[] sortBy) {
+    static final boolean canSort(SimpleFeatureType schema, SortBy... sortBy) {
         if (sortBy == SortBy.UNSORTED) {
             return true;
         }

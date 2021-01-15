@@ -41,7 +41,7 @@ public class CollectionUtil {
         }
     }
 
-    static void accept(SimpleFeatureCollection collection, FeatureVisitor[] visitors) {
+    static void accept(SimpleFeatureCollection collection, FeatureVisitor... visitors) {
         try (SimpleFeatureIterator iterator = collection.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();

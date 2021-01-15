@@ -68,7 +68,7 @@ public class JTSTestBase {
         private static final double TOL = 1.0e-4d;
         private List<Coordinate> coords;
 
-        CoordList(Coordinate[] coordArray) {
+        CoordList(Coordinate... coordArray) {
             coords = Arrays.asList(coordArray);
         }
 
@@ -79,7 +79,7 @@ public class JTSTestBase {
             return false;
         }
 
-        public boolean containsAll(Coordinate[] coordArray) {
+        public boolean containsAll(Coordinate... coordArray) {
             for (Coordinate c : coordArray) {
                 if (!contains(c)) return false;
             }

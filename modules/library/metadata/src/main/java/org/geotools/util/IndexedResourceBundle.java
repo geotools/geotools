@@ -152,7 +152,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @param values The resources to list.
      * @throws IOException if an output operation failed.
      */
-    private static void list(final Writer out, final String[] values) throws IOException {
+    private static void list(final Writer out, final String... values) throws IOException {
         final String lineSeparator = System.getProperty("line.separator", "\n");
         for (int i = 0; i < values.length; i++) {
             String value = values[i];

@@ -357,12 +357,9 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
         public static final DefaultParameterDescriptor<URI> FILE =
                 new DefaultParameterDescriptor<>(
                         toMap(
-                                new NamedIdentifier[] {
-                                    new NamedIdentifier(
-                                            Citations.EPSG,
-                                            "Latitude and longitude difference file"),
-                                    new NamedIdentifier(Citations.EPSG, "8656")
-                                }),
+                                new NamedIdentifier(
+                                        Citations.EPSG, "Latitude and longitude difference file"),
+                                new NamedIdentifier(Citations.EPSG, "8656")),
                         URI.class,
                         null,
                         null,

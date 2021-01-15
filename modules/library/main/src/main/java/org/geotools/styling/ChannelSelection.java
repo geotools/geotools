@@ -63,7 +63,7 @@ public interface ChannelSelection extends org.opengis.style.ChannelSelection {
      *
      * @param channels array of channels in RGB order
      */
-    void setRGBChannels(SelectedChannelType[] channels);
+    void setRGBChannels(SelectedChannelType... channels);
 
     /**
      * get the RGB channels to be used

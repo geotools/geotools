@@ -60,7 +60,7 @@ public class Service {
         return keywordList;
     }
 
-    public void setKeywordList(String[] keywordList) {
+    public void setKeywordList(String... keywordList) {
         this.keywordList = keywordList;
     }
 

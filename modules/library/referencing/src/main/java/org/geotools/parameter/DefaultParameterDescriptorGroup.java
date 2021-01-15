@@ -87,7 +87,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      * @param parameters The {@linkplain #descriptors() parameter descriptors} for this group.
      */
     public DefaultParameterDescriptorGroup(
-            final String name, final GeneralParameterDescriptor[] parameters) {
+            final String name, final GeneralParameterDescriptor... parameters) {
         this(Collections.singletonMap(NAME_KEY, name), parameters);
     }
 
@@ -104,7 +104,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
     public DefaultParameterDescriptorGroup(
             final Citation authority,
             final String name,
-            final GeneralParameterDescriptor[] parameters) {
+            final GeneralParameterDescriptor... parameters) {
         this(Collections.singletonMap(NAME_KEY, new NamedIdentifier(authority, name)), parameters);
     }
 
@@ -117,7 +117,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      * @param parameters The {@linkplain #descriptors() parameter descriptors} for this group.
      */
     public DefaultParameterDescriptorGroup(
-            final Map<String, ?> properties, final GeneralParameterDescriptor[] parameters) {
+            final Map<String, ?> properties, final GeneralParameterDescriptor... parameters) {
         this(properties, 1, 1, parameters);
     }
 
@@ -137,7 +137,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
             final Map<String, ?> properties,
             final int minimumOccurs,
             final int maximumOccurs,
-            GeneralParameterDescriptor[] parameters) {
+            GeneralParameterDescriptor... parameters) {
         super(properties, minimumOccurs, maximumOccurs);
         this.maximumOccurs = maximumOccurs;
         ensureNonNull("parameters", parameters);
@@ -201,7 +201,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
         private transient Set<GeneralParameterDescriptor> asSet;
 
         /** Constructs a list for the specified array. */
-        public AsList(final GeneralParameterDescriptor[] array) {
+        public AsList(final GeneralParameterDescriptor... array) {
             super(array);
         }
 

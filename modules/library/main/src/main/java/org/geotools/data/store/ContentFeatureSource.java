@@ -584,7 +584,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         if (query.getStartIndex() != null
                 && (query.getSortBy() == null || query.getSortBy().length == 0)) {
             Query dq = new Query(query);
-            dq.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+            dq.setSortBy(SortBy.NATURAL_ORDER);
             query = dq;
         }
 
@@ -725,7 +725,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * Returns all the properties used in the sortBy (excluding primary keys and the like, e.g.,
      * natural sorting)
      */
-    private Set<String> getSortPropertyNames(SortBy[] sortBy) {
+    private Set<String> getSortPropertyNames(SortBy... sortBy) {
         Set<String> result = new HashSet<>();
         for (SortBy sort : sortBy) {
             PropertyName p = sort.getPropertyName();

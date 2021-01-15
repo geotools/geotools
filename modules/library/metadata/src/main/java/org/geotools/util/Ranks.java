@@ -254,7 +254,7 @@ public class Ranks {
     }
 
     /** Extracts the ranks from the specified entries. */
-    private static int[] ranks(final Ranks[] entries) {
+    private static int[] ranks(final Ranks... entries) {
         Arrays.sort(entries);
         final int[] ranks = new int[entries.length];
         for (int i = 0; i < ranks.length; i++) {

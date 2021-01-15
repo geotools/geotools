@@ -57,8 +57,8 @@ public class SimpleFeatureStoreExamples {
         GeometryBuilder geom = new GeometryBuilder();
 
         List<SimpleFeature> list = new ArrayList<>();
-        list.add(build.buildFeature("fid1", new Object[] {geom.point(1, 1), "hello"}));
-        list.add(build.buildFeature("fid2", new Object[] {geom.point(2, 3), "martin"}));
+        list.add(build.buildFeature("fid1", geom.point(1, 1), "hello"));
+        list.add(build.buildFeature("fid2", geom.point(2, 3), "martin"));
         SimpleFeatureCollection collection = new ListFeatureCollection(featureType, list);
 
         Transaction transaction = new DefaultTransaction("Add Example");

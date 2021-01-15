@@ -82,7 +82,7 @@ final class ComparableAxisWrapper implements Comparable<ComparableAxisWrapper> {
      * Sorts the specified axis in an attempt to create a right-handed system. The sorting is
      * performed in place. This method returns {@code true} if at least one axis moved.
      */
-    public static boolean sort(final CoordinateSystemAxis[] axis) {
+    public static boolean sort(final CoordinateSystemAxis... axis) {
         final ComparableAxisWrapper[] wrappers = new ComparableAxisWrapper[axis.length];
         for (int i = 0; i < axis.length; i++) {
             wrappers[i] = new ComparableAxisWrapper(axis[i]);

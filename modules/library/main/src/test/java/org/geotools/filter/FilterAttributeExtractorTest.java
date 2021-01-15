@@ -106,11 +106,7 @@ public class FilterAttributeExtractorTest {
         assertAttributeName(filter, "testString");
     }
 
-    private void assertAttributeName(org.opengis.filter.Filter filter, String name) {
-        assertAttributeName(filter, new String[] {name});
-    }
-
-    private void assertAttributeName(org.opengis.filter.Filter filter, String[] names) {
+    private void assertAttributeName(org.opengis.filter.Filter filter, String... names) {
         fae.clear();
         filter.accept(fae, null);
 
@@ -152,7 +148,7 @@ public class FilterAttributeExtractorTest {
     @Test
     public void testNull() throws IllegalFilterException {
         PropertyIsNull filter = fac.isNull(fac.property("foo"));
-        assertAttributeName(filter, new String[] {"foo"});
+        assertAttributeName(filter, "foo");
     }
 
     /**
@@ -174,8 +170,7 @@ public class FilterAttributeExtractorTest {
         assertAttributeName(fac.between(pint, pint, pint), "testInteger");
 
         assertAttributeName(
-                fac.between(pint, plong, pfloat),
-                new String[] {"testInteger", "testLong", "testFloat"});
+                fac.between(pint, plong, pfloat), "testInteger", "testLong", "testFloat");
     }
 
     /**

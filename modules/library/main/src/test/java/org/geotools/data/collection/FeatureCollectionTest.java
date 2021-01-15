@@ -231,9 +231,9 @@ public abstract class FeatureCollectionTest {
 
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(tb.buildFeatureType());
 
-        SimpleFeature f1 = b.buildFeature(null, new Object[] {"Steve", 32});
-        SimpleFeature f2 = b.buildFeature(null, new Object[] {null, null});
-        SimpleFeature f3 = b.buildFeature(null, new Object[] {null, null});
+        SimpleFeature f1 = b.buildFeature(null, "Steve", 32);
+        SimpleFeature f2 = b.buildFeature(null, null, null);
+        SimpleFeature f3 = b.buildFeature(null, null, null);
 
         Name compareName = new FeatureComparators.Name("name");
 

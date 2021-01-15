@@ -87,42 +87,12 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
     }
 
     /**
-     * Constructs a coordinate reference system from a name and two CRS.
-     *
-     * @param name The name.
-     * @param head The head CRS.
-     * @param tail The tail CRS.
-     */
-    public DefaultCompoundCRS(
-            final String name,
-            final CoordinateReferenceSystem head,
-            final CoordinateReferenceSystem tail) {
-        this(name, new CoordinateReferenceSystem[] {head, tail});
-    }
-
-    /**
-     * Constructs a coordinate reference system from a name and three CRS.
-     *
-     * @param name The name.
-     * @param head The head CRS.
-     * @param middle The middle CRS.
-     * @param tail The tail CRS.
-     */
-    public DefaultCompoundCRS(
-            final String name,
-            final CoordinateReferenceSystem head,
-            final CoordinateReferenceSystem middle,
-            final CoordinateReferenceSystem tail) {
-        this(name, new CoordinateReferenceSystem[] {head, middle, tail});
-    }
-
-    /**
      * Constructs a coordinate reference system from a name.
      *
      * @param name The name.
      * @param crs The array of coordinate reference system making this compound CRS.
      */
-    public DefaultCompoundCRS(final String name, final CoordinateReferenceSystem[] crs) {
+    public DefaultCompoundCRS(final String name, final CoordinateReferenceSystem... crs) {
         this(Collections.singletonMap(NAME_KEY, name), crs);
     }
 
@@ -134,7 +104,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param crs The array of coordinate reference system making this compound CRS.
      */
-    public DefaultCompoundCRS(final Map<String, ?> properties, CoordinateReferenceSystem[] crs) {
+    public DefaultCompoundCRS(final Map<String, ?> properties, CoordinateReferenceSystem... crs) {
         super(properties, createCoordinateSystem(crs));
         this.crs = copy(Arrays.asList(crs));
     }
@@ -144,7 +114,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
      * work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
      * this()/super() call in constructors").
      */
-    private static CoordinateSystem createCoordinateSystem(final CoordinateReferenceSystem[] crs) {
+    private static CoordinateSystem createCoordinateSystem(final CoordinateReferenceSystem... crs) {
         ensureNonNull("crs", crs);
         if (crs.length < 2) {
             throw new IllegalArgumentException(

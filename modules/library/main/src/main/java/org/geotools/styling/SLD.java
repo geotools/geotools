@@ -928,8 +928,7 @@ public class SLD {
                                 if (rgb != null) {
                                     return sf.createChannelSelection(rgb);
                                 } else {
-                                    return sf.createChannelSelection(
-                                            new SelectedChannelType[] {gray});
+                                    return sf.createChannelSelection(gray);
                                 }
                             }
                         };
@@ -1608,7 +1607,7 @@ public class SLD {
      * @param rule the rule
      * @return array of filters
      */
-    public static Filter[] filters(Rule[] rule) {
+    public static Filter[] filters(Rule... rule) {
         Filter[] filter = new Filter[rule.length];
         for (int i = 0; i < rule.length; i++) {
             filter[i] = rule[0].getFilter();
@@ -2100,7 +2099,7 @@ public class SLD {
             rule.symbolizers().add(sym);
         }
 
-        FeatureTypeStyle fts = sf.createFeatureTypeStyle(new Rule[] {rule});
+        FeatureTypeStyle fts = sf.createFeatureTypeStyle(rule);
 
         Style style = sf.createStyle();
         style.featureTypeStyles().add(fts);

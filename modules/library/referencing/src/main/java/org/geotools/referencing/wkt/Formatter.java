@@ -869,7 +869,7 @@ public class Formatter {
      *
      * @param args The command-line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String... args) {
         final Arguments arguments = new Arguments(args);
         final int indentation = arguments.getRequiredInteger(Formattable.INDENTATION);
         arguments.getRemainingArguments(0);

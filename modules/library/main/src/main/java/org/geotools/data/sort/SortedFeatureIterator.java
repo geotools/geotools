@@ -34,7 +34,7 @@ public class SortedFeatureIterator implements SimpleFeatureIterator {
      * Checks if the schema and the sortBy are suitable for merge/sort. All attributes need to be
      * {@link Serializable}, all sorting attributes need to be {@link Comparable}
      */
-    public static final boolean canSort(SimpleFeatureType schema, SortBy[] sortBy) {
+    public static final boolean canSort(SimpleFeatureType schema, SortBy... sortBy) {
         return MergeSortDumper.canSort(schema, sortBy);
     }
 

@@ -72,7 +72,6 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.RuleImpl;
 import org.geotools.styling.SLD;
-import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
@@ -659,10 +658,7 @@ public class SLDTransformerTest {
         RasterSymbolizer rasterSymbolizer = sf.createRasterSymbolizer();
         rasterSymbolizer.setChannelSelection(
                 sf.createChannelSelection(
-                        new SelectedChannelType[] {
-                            sf.createSelectedChannelType(
-                                    envFunction, sf.createContrastEnhancement())
-                        }));
+                        sf.createSelectedChannelType(envFunction, sf.createContrastEnhancement())));
         String xmlFragment = transformer.transform(rasterSymbolizer);
         assertNotNull(xmlFragment);
 

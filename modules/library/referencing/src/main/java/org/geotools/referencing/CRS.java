@@ -2392,7 +2392,7 @@ public final class CRS {
      * @param args Options and list of object codes to display.
      * @since 2.4
      */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         Command.execute(args);
     }
 }

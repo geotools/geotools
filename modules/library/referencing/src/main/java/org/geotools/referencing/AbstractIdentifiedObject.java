@@ -316,7 +316,7 @@ public class AbstractIdentifiedObject extends Formattable
     protected AbstractIdentifiedObject(
             final Map<String, ?> properties,
             final Map<String, Object> subProperties,
-            final String[] localizables)
+            final String... localizables)
             throws IllegalArgumentException {
         ensureNonNull("properties", properties);
         Object name = null;
@@ -1061,7 +1061,8 @@ public class AbstractIdentifiedObject extends Formattable
      * @param array The array to copy in a set. May be {@code null}.
      * @return A set containing the array elements, or {@code null} if none or empty.
      */
-    protected static <E> Set<E> asSet(final E[] array) {
+    @SafeVarargs
+    protected static <E> Set<E> asSet(final E... array) {
         if (array == null) {
             return null;
         }

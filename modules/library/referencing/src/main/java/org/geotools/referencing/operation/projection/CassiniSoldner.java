@@ -169,7 +169,7 @@ public class CassiniSoldner extends MapProjection {
     public static class Provider extends AbstractProvider {
         /** Returns a descriptor group for the specified parameters. */
         static ParameterDescriptorGroup createDescriptorGroup(
-                final ReferenceIdentifier[] identifiers) {
+                final ReferenceIdentifier... identifiers) {
             return createDescriptorGroup(
                     identifiers,
                     new ParameterDescriptor[] {
@@ -183,17 +183,15 @@ public class CassiniSoldner extends MapProjection {
         /** The parameters group. */
         static final ParameterDescriptorGroup PARAMETERS =
                 createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Cassini_Soldner"),
-                            new NamedIdentifier(Citations.EPSG, "Cassini-Soldner"),
-                            new NamedIdentifier(Citations.EPSG, "9806"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_CassiniSoldner"),
-                            new NamedIdentifier(Citations.ESRI, "Cassini"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.CASSINI_SOLDNER_PROJECTION))
-                        });
+                        new NamedIdentifier(Citations.OGC, "Cassini_Soldner"),
+                        new NamedIdentifier(Citations.EPSG, "Cassini-Soldner"),
+                        new NamedIdentifier(Citations.EPSG, "9806"),
+                        new NamedIdentifier(Citations.GEOTIFF, "CT_CassiniSoldner"),
+                        new NamedIdentifier(Citations.ESRI, "Cassini"),
+                        new NamedIdentifier(
+                                Citations.GEOTOOLS,
+                                Vocabulary.formatInternational(
+                                        VocabularyKeys.CASSINI_SOLDNER_PROJECTION)));
 
         /** Constructs a new provider. */
         public Provider() {

@@ -69,7 +69,7 @@ public class QueryCapabilities {
      * @return whether the FeatureType this query capabilities refers to can be natively sorted by
      *     the provided list of attribtue/order pairs
      */
-    public boolean supportsSorting(SortBy[] sortAttributes) {
+    public boolean supportsSorting(SortBy... sortAttributes) {
         return (sortAttributes == null) || (sortAttributes.length == 0);
     }
 

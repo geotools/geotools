@@ -143,7 +143,7 @@ public interface SimpleFeature extends Feature {
      *
      * @param values The attribute values to set.
      */
-    void setAttributes(Object[] values);
+    void setAttributes(Object... values);
 
     /**
      * Gets an attribute value by name.

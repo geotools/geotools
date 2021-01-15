@@ -146,8 +146,8 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
     public void testEqualFeatureTypes() throws Exception {
         String name = "name";
         PropertyName property = ff.property(name);
-        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
-        SimpleFeatureType subtype2 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, name);
+        SimpleFeatureType subtype2 = SimpleFeatureTypeBuilder.retype(roadType, name);
 
         MemoryFilterOptimizer optimizer =
                 new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
@@ -167,7 +167,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
     public void testInFunctionOptimizer() throws Exception {
         String name = "name";
         PropertyName property = ff.property(name);
-        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, name);
         Filter nameR1 = ff.equal(property, ff.literal("r1"), true);
         Filter nameR2 = ff.equal(property, ff.literal("r2"), true);
         Filter nameR3 = ff.equal(ff.property(name), ff.literal("r3"), true);
@@ -200,7 +200,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         String name = "name";
         PropertyName property = ff.property(name);
         PropertyName property2 = ff.property("other");
-        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, name);
         Filter nameR1 = ff.equal(property, ff.literal("r1"), true);
         Filter nameR2 = ff.equal(property2, ff.literal("r2"), true);
         Filter nameR3 = ff.equal(property, ff.literal("r3"), true);
@@ -216,7 +216,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
     public void testInFunctionOptimizerNotUsedOtherFilter() throws Exception {
         String name = "name";
         PropertyName property = ff.property(name);
-        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, name);
         Filter nameR1 = ff.equal(property, ff.literal("r1"), true);
         Filter nameR2 = ff.notEqual(property, ff.literal("r2"), true);
         Filter nameR3 = ff.equal(property, ff.literal("r3"), true);
@@ -237,7 +237,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         propExpressions.add(property);
         propExpressions.add(ff.literal("-id"));
         concat.setParameters(propExpressions);
-        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, name);
         Filter nameR1 = ff.equal(concat, ff.literal("r1"), true);
         Filter nameR2 = ff.equal(concat, ff.literal("r2"), true);
         Filter nameR3 = ff.equal(concat, ff.literal("r3"), true);

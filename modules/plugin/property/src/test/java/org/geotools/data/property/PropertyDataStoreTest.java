@@ -74,7 +74,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 /**
@@ -803,8 +802,8 @@ public class PropertyDataStoreTest {
     public void testSortOnUnrequestedProperties() throws Exception {
         ContentFeatureSource fs = store.getFeatureSource("road");
         Query q = new Query("road");
-        q.setPropertyNames(new String[] {"name"});
-        q.setSortBy(new SortBy[] {ff.sort("id", SortOrder.DESCENDING)});
+        q.setPropertyNames("name");
+        q.setSortBy(ff.sort("id", SortOrder.DESCENDING));
 
         ContentFeatureCollection fc = fs.getFeatures(q);
         String[] expectedNames = new String[] {"", "justin", "dave", "brent", "jody"};

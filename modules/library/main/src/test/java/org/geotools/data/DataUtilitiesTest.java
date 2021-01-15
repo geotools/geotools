@@ -671,7 +671,7 @@ public class DataUtilitiesTest extends DataTestCase {
     public void testCreateSubType() throws Exception {
         SimpleFeatureType before =
                 DataUtilities.createType("cities", "the_geom:Point:srid=4326,name:String");
-        SimpleFeatureType after = DataUtilities.createSubType(before, new String[] {"the_geom"});
+        SimpleFeatureType after = DataUtilities.createSubType(before, "the_geom");
         Assert.assertEquals(1, after.getAttributeCount());
 
         before =
@@ -692,14 +692,14 @@ public class DataUtilitiesTest extends DataTestCase {
         before =
                 DataUtilities.createType(
                         "cities", "the_geom:Point:srid=4326,name:String,population:Integer");
-        after = DataUtilities.createSubType(before, new String[] {"the_geom"});
+        after = DataUtilities.createSubType(before, "the_geom");
         Assert.assertEquals(before.getGeometryDescriptor(), after.getGeometryDescriptor());
 
         // check that subtyping does not cause the geometry attribute structure to change
         before =
                 DataUtilities.createType(
                         "cities", "the_geom:Point:srid=4326,name:String,population:Integer");
-        after = DataUtilities.createSubType(before, new String[] {"the_geom"});
+        after = DataUtilities.createSubType(before, "the_geom");
         Assert.assertEquals(before.getGeometryDescriptor(), after.getGeometryDescriptor());
     }
 
@@ -714,8 +714,7 @@ public class DataUtilitiesTest extends DataTestCase {
         tb.setDefaultGeometry("the_geom2");
         SimpleFeatureType before = tb.buildFeatureType();
         SimpleFeatureType after =
-                DataUtilities.createSubType(
-                        before, new String[] {"name", "the_geom1", "the_geom3"});
+                DataUtilities.createSubType(before, "name", "the_geom1", "the_geom3");
         Assert.assertEquals(3, after.getAttributeCount());
         Assert.assertEquals("the_geom1", after.getGeometryDescriptor().getLocalName());
 
@@ -727,9 +726,7 @@ public class DataUtilitiesTest extends DataTestCase {
         Assert.assertEquals(3, after.getAttributeCount());
         Assert.assertEquals("the_geom1", after.getGeometryDescriptor().getLocalName());
 
-        after =
-                DataUtilities.createSubType(
-                        before, new String[] {"name", "the_geom1", "the_geom2"});
+        after = DataUtilities.createSubType(before, "name", "the_geom1", "the_geom2");
         Assert.assertEquals(3, after.getAttributeCount());
         Assert.assertEquals("the_geom2", after.getGeometryDescriptor().getLocalName());
 
@@ -748,8 +745,7 @@ public class DataUtilitiesTest extends DataTestCase {
         SimpleFeatureType before =
                 DataUtilities.createType("cities", "the_geom:Point:srid=4326,name:String");
         SimpleFeatureType after =
-                DataUtilities.createSubType(
-                        before, new String[] {"the_geom", "name", "not_existing"});
+                DataUtilities.createSubType(before, "the_geom", "name", "not_existing");
         // the not_existing property should have been ignored
         Assert.assertEquals(2, after.getAttributeCount());
         assertNotNull(after.getDescriptor("the_geom"));
@@ -1003,7 +999,7 @@ public class DataUtilitiesTest extends DataTestCase {
         // simple merge, no conflict
         Query q1 = new Query();
         Query q2 = new Query();
-        q2.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        q2.setSortBy(SortBy.NATURAL_ORDER);
         assertThat(
                 DataUtilities.mixQueries(q1, q2, null).getSortBy(),
                 arrayContaining(SortBy.NATURAL_ORDER));
@@ -1013,7 +1009,7 @@ public class DataUtilitiesTest extends DataTestCase {
 
         // more complex, override (the second wins)
         Query q3 = new Query();
-        q3.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        q3.setSortBy(SortBy.REVERSE_ORDER);
         assertThat(
                 DataUtilities.mixQueries(q2, q3, null).getSortBy(),
                 arrayContaining(SortBy.REVERSE_ORDER));

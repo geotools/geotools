@@ -2184,9 +2184,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                         // Note: Don't invoke 'createProperties' sooner.
                         final Map<String, Object> properties =
                                 createProperties(name, epsg, area, scope, remarks);
-                        crs =
-                                factory.createCompoundCRS(
-                                        properties, new CoordinateReferenceSystem[] {crs1, crs2});
+                        crs = factory.createCompoundCRS(properties, crs1, crs2);
                     }
                     /* ----------------------------------------------------------------------
                      *   GEOCENTRIC CRS
@@ -2543,7 +2541,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         return returnValue;
     }
 
-    private Map<String, Object> addAliases(Map<String, Object> properties, GenericName[] aliases) {
+    private Map<String, Object> addAliases(Map<String, Object> properties, GenericName... aliases) {
         ensureNonNull("properties", properties);
         Object value = properties.get(IdentifiedObject.NAME_KEY);
         ensureNonNull("name", value);
@@ -3156,7 +3154,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *     string objects, then the {@link Object#toString} method must returns the code for each
      *     element.
      */
-    private void sort(final Object[] codes) throws SQLException, FactoryException {
+    private void sort(final Object... codes) throws SQLException, FactoryException {
         if (codes.length <= 1) {
             return; // Nothing to sort.
         }

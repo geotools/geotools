@@ -51,7 +51,7 @@ class Quadrilateral extends Polygon {
      */
     public Quadrilateral(
             DirectPosition p0, DirectPosition p1, DirectPosition p2, DirectPosition p3) {
-        super(new DirectPosition[] {p0, p1, p2, p3, p0});
+        super(p0, p1, p2, p3, p0);
         this.p0 = p0;
         this.p1 = p1;
         this.p2 = p2;

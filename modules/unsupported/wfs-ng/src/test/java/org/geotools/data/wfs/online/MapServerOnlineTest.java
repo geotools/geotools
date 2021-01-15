@@ -168,7 +168,7 @@ public class MapServerOnlineTest {
         query.setTypeName(typeName);
         query.setFilter(filter);
         // test property names
-        query.setPropertyNames(new String[] {"POPULATION", "NAME"});
+        query.setPropertyNames("POPULATION", "NAME");
 
         features = source.getFeatures(query);
 
@@ -213,7 +213,7 @@ public class MapServerOnlineTest {
         query.setTypeName(typeName);
         query.setFilter(filter);
         // test property names
-        query.setPropertyNames(new String[] {"codice", "nome"});
+        query.setPropertyNames("codice", "nome");
 
         features = source.getFeatures(query);
 

@@ -138,7 +138,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
     }
 
     /** Explicitly creates a {@link CurvePolygon} */
-    public Polygon createCurvePolygon(LinearRing shell, LinearRing[] holes) {
+    public Polygon createCurvePolygon(LinearRing shell, LinearRing... holes) {
         return new CurvePolygon(shell, holes, this, tolerance);
     }
 

@@ -65,9 +65,9 @@ public abstract class VisitorTestCase<T, R> {
 
     @Test
     public void onlyNulls() throws Exception {
-        featureCollection.add(featureBuilder.buildFeature("f1", new Object[] {null, 1}));
-        featureCollection.add(featureBuilder.buildFeature("f2", new Object[] {null, 2}));
-        featureCollection.add(featureBuilder.buildFeature("f3", new Object[] {null, 3}));
+        featureCollection.add(featureBuilder.buildFeature("f1", null, 1));
+        featureCollection.add(featureBuilder.buildFeature("f2", null, 2));
+        featureCollection.add(featureBuilder.buildFeature("f3", null, 3));
 
         FeatureCalc calc = createVisitor(0, featureType);
         featureCollection.accepts(calc, null);
@@ -78,8 +78,7 @@ public abstract class VisitorTestCase<T, R> {
     public void onlyNotNulls() throws Exception {
         int idx = 1;
         for (T value : values) {
-            featureCollection.add(
-                    featureBuilder.buildFeature("f" + idx, new Object[] {value, idx}));
+            featureCollection.add(featureBuilder.buildFeature("f" + idx, value, idx));
             ++idx;
         }
 
@@ -94,10 +93,9 @@ public abstract class VisitorTestCase<T, R> {
     public void mixed() throws Exception {
         int idx = 1;
         for (T value : values) {
-            featureCollection.add(
-                    featureBuilder.buildFeature("f" + idx, new Object[] {value, idx}));
+            featureCollection.add(featureBuilder.buildFeature("f" + idx, value, idx));
             ++idx;
-            featureCollection.add(featureBuilder.buildFeature("f" + idx, new Object[] {null, idx}));
+            featureCollection.add(featureBuilder.buildFeature("f" + idx, null, idx));
             ++idx;
         }
 

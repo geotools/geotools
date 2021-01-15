@@ -346,7 +346,7 @@ public class Robinson extends MapProjection {
     //        }
     //    }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         // System.out.println(PI / 2d);
     }
 }

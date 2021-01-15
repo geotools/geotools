@@ -136,8 +136,7 @@ public class SimpleTypeBuilderTest {
 
         // performing an attribute selection, even changing order, should not change
         // the default geometry, that had a special meaning in the original source
-        SimpleFeatureType retyped =
-                SimpleFeatureTypeBuilder.retype(type, new String[] {"geo2", "geo1"});
+        SimpleFeatureType retyped = SimpleFeatureTypeBuilder.retype(type, "geo2", "geo1");
         Assert.assertEquals("geo1", retyped.getGeometryDescriptor().getLocalName());
     }
 
@@ -151,7 +150,7 @@ public class SimpleTypeBuilderTest {
 
         // performing an attribute selection, even changing order, should not change
         // the default geometry, that had a special meaning in the original source
-        SimpleFeatureType retyped = SimpleFeatureTypeBuilder.retype(type, new String[] {"integer"});
+        SimpleFeatureType retyped = SimpleFeatureTypeBuilder.retype(type, "integer");
         Assert.assertNotNull(retyped);
         Assert.assertNull(retyped.getGeometryDescriptor());
         Assert.assertEquals(1, retyped.getAttributeCount());

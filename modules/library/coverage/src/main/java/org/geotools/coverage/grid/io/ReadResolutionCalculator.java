@@ -48,7 +48,7 @@ public class ReadResolutionCalculator {
     static final Logger LOGGER = Logging.getLogger(ReadResolutionCalculator.class);
 
     static final int MAX_OVERSAMPLING_FACTOR_DEFAULT =
-            Integer.valueOf(System.getProperty("org.geotools.coverage.max.oversample", "10000"));
+            Integer.valueOf(System.getProperty("org.geotools.coverage.max.oversample", "30"));
 
     static final double DELTA = 1E-10;
 
@@ -176,6 +176,7 @@ public class ReadResolutionCalculator {
                 !CRS.equalsIgnoreMetadata(
                         readBBox.getCoordinateReferenceSystem(),
                         requestedBBox.getCoordinateReferenceSystem());
+        final ReferencedEnvelope originalReadBBox = readBBox;
         if (isReprojected) {
             readBBox = readBBox.transform(requestedBBox.getCoordinateReferenceSystem(), true);
         }
@@ -245,9 +246,17 @@ public class ReadResolutionCalculator {
             fullRes[0] = XAffineTransform.getScaleX0(transform);
             fullRes[1] = XAffineTransform.getScaleY0(transform);
         }
-        // fall back on the full resolution when zero length
-        double minDistanceX = Math.max(fullRes[0] / maxOversamplingFactor, minDistance);
-        double minDistanceY = Math.max(fullRes[1] / maxOversamplingFactor, minDistance);
+
+        // fall back on the full resolution when zero length.
+        // Moreover keep into account the specified maxOversamplingFactor
+        // to control the reading resolution.
+        double[] classicRes = computeClassicResolution(originalReadBBox);
+        double limitResX = Math.max(fullRes[0], classicRes[0]) / maxOversamplingFactor;
+        double limitResY = Math.max(fullRes[1], classicRes[1]) / maxOversamplingFactor;
+
+        // Make sure the reading resolution isn't finer than the limit resolution
+        double minDistanceX = Math.max(limitResX, minDistance);
+        double minDistanceY = Math.max(limitResY, minDistance);
         return new double[] {minDistanceX, minDistanceY};
     }
 

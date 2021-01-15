@@ -46,6 +46,7 @@ import org.geotools.test.TestData;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.spatial.BBOX;
@@ -62,10 +63,10 @@ public class AxisOrderTest {
 
     private QName qTypeName = new QName("http://www.tinyows.org/", "comuni11", "comuni");
 
+    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+
     @Test
     public void testGetFeatureWithNorthEastAxisOrderOutputEPSG4326() throws Exception {
-
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName, ff.id(fids));
@@ -104,7 +105,11 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithEastNorthAxisOrderFilter() throws Exception {
+        final Filter bbox =
+                ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857");
+
         TestWFSClient wfs = createWFSClient();
+        wfs.mockGetFeatureRequest(url("axisorder/GetFeaturesByBBox.xml"), qTypeName, bbox);
 
         WFSDataStore ds = new WFSDataStore(wfs);
 
@@ -113,17 +118,9 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT,
                 WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Query query =
-                new Query(
-                        typeName,
-                        ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857"));
+        Query query = new Query(typeName, bbox);
 
-        try {
-            ds.getFeatureSource(typeName).getFeatures(query).features();
-        } catch (IllegalArgumentException ex) {
-            // GetFeature request isn't mocked because it isn't really used
-        }
+        ds.getFeatureSource(typeName).getFeatures(query).features();
 
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
@@ -138,9 +135,12 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithNorthEastAxisOrderFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-
         TestWFSClient wfs = createWFSClient();
+
+        wfs.mockGetFeatureRequest(
+                url("axisorder/GetFeaturesByBBox.xml"),
+                qTypeName,
+                ff.bbox("the_geom", 815134.0, 4623055.0, 820740.0, 4629904.0, "EPSG:3857"));
 
         // axis order used will be NORTH / EAST
         wfs.setAxisOrderOverride(
@@ -154,11 +154,7 @@ public class AxisOrderTest {
                         typeName,
                         ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857"));
 
-        try {
-            ds.getFeatureSource(typeName).getFeatures(query).features();
-        } catch (IllegalArgumentException ex) {
-            // GetFeature request isn't mocked.
-        }
+        ds.getFeatureSource(typeName).getFeatures(query).features();
 
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
@@ -175,26 +171,22 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithCompliantAxisOrderFilter() throws Exception {
+        final Filter bbox =
+                ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857");
+
         TestWFSClient wfs = createWFSClient();
 
         WFSDataStore ds = new WFSDataStore(wfs);
+        wfs.mockGetFeatureRequest(url("axisorder/GetFeaturesByBBox.xml"), qTypeName, bbox);
 
         // axis order used will be NORTH / EAST
         wfs.setAxisOrderOverride(
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Query query = new Query(typeName, bbox);
 
-        Query query =
-                new Query(
-                        typeName,
-                        ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857"));
+        ds.getFeatureSource(typeName).getFeatures(query).features();
 
-        try {
-            ds.getFeatureSource(typeName).getFeatures(query).features();
-        } catch (IllegalArgumentException ex) {
-            // GetFeature request isn't mocked because we don't actually need the result.
-        }
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
         // filter coordinates are NOT inverted
@@ -208,8 +200,6 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithEastNorthAxisOrderOutputEPSG4326() throws Exception {
-
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName, ff.id(fids));
@@ -247,8 +237,6 @@ public class AxisOrderTest {
 
     @Test
     public void testGetFeatureWithEastNorthAxisOrderOutputEPSG3857() throws Exception {
-
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName, ff.id(fids));

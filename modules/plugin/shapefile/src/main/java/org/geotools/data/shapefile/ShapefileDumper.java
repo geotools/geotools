@@ -263,7 +263,7 @@ public class ShapefileDumper {
 
         } catch (ShapefileSizeException e) {
             throw e;
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             LOGGER.log(
                     Level.WARNING,
                     "Error while writing featuretype '" + schema.getTypeName() + "' to shapefile.",

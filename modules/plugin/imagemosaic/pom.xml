@@ -136,7 +136,7 @@
       <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
-    
+
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
@@ -164,7 +164,7 @@
     <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-geocore</artifactId>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-image</artifactId>
@@ -213,7 +213,7 @@
     <dependency>
       <groupId>javax.activation</groupId>
       <artifactId>javax.activation-api</artifactId>
-      <version>1.2.0</version>
+      <version>${javax.activation-api.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>

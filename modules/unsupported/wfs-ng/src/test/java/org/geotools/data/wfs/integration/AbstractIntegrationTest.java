@@ -1190,10 +1190,7 @@ public abstract class AbstractIntegrationTest {
     @Test
     public void testGetFeatureStoreAddFeatures() throws IOException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {
-                            first.newFeature,
-                        })) {
+                DataUtilities.reader(first.newFeature)) {
             SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
 
             road.addFeatures(DataUtilities.collection(reader));
@@ -1204,10 +1201,7 @@ public abstract class AbstractIntegrationTest {
     @Test
     public void testGetFeatureStoreSetFeatures() throws IOException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {
-                            first.newFeature,
-                        })) {
+                DataUtilities.reader(first.newFeature)) {
             SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
 
             assertEquals(3, road.getFeatures().size());
@@ -1277,11 +1271,7 @@ public abstract class AbstractIntegrationTest {
             // road2 adds road.rd4 on t2
             // ----------------------------
             // - tests transaction independence from each other
-            SimpleFeatureCollection collection =
-                    DataUtilities.collection(
-                            new SimpleFeature[] {
-                                first.newFeature,
-                            });
+            SimpleFeatureCollection collection = DataUtilities.collection(first.newFeature);
             road2.addFeatures(collection);
 
             // We still have ORIGIONAL, t1 has REMOVE, and t2 has ADD

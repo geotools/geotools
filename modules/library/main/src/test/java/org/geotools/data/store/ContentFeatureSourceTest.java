@@ -39,7 +39,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 public class ContentFeatureSourceTest {
@@ -71,37 +70,28 @@ public class ContentFeatureSourceTest {
     @Test
     public void testRetypeCannotSortCovered() throws Exception {
         Query q = new Query();
-        q.setPropertyNames(new String[] {"name", "z"});
-        q.setSortBy(new SortBy[] {ff.sort("z", SortOrder.ASCENDING)});
+        q.setPropertyNames("name", "z");
+        q.setSortBy(ff.sort("z", SortOrder.ASCENDING));
         checkRetypeCannotSort(q, q);
     }
 
     @Test
     public void testRetypeCannotSortPartiallyCovered() throws Exception {
         Query q = new Query();
-        q.setPropertyNames(
-                new String[] {
-                    "name",
-                });
-        q.setSortBy(
-                new SortBy[] {
-                    ff.sort("name", SortOrder.ASCENDING), ff.sort("z", SortOrder.ASCENDING)
-                });
+        q.setPropertyNames("name");
+        q.setSortBy(ff.sort("name", SortOrder.ASCENDING), ff.sort("z", SortOrder.ASCENDING));
         Query expected = new Query(q);
-        expected.setPropertyNames(new String[] {"name", "z"});
+        expected.setPropertyNames("name", "z");
         checkRetypeCannotSort(q, expected);
     }
 
     @Test
     public void testRetypeCannotSortFullyCovered() throws Exception {
         Query q = new Query();
-        q.setPropertyNames(
-                new String[] {
-                    "name",
-                });
-        q.setSortBy(new SortBy[] {ff.sort("z", SortOrder.ASCENDING)});
+        q.setPropertyNames("name");
+        q.setSortBy(ff.sort("z", SortOrder.ASCENDING));
         Query expected = new Query(q);
-        expected.setPropertyNames(new String[] {"name", "z"});
+        expected.setPropertyNames("name", "z");
         checkRetypeCannotSort(q, expected);
     }
 

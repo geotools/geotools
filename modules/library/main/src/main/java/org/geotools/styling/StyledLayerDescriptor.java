@@ -56,7 +56,7 @@ import java.util.List;
 public interface StyledLayerDescriptor {
     public StyledLayer[] getStyledLayers();
 
-    public void setStyledLayers(StyledLayer[] layers);
+    public void setStyledLayers(StyledLayer... layers);
 
     public void addStyledLayer(StyledLayer layer);
 

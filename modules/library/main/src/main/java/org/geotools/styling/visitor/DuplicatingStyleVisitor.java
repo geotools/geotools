@@ -534,7 +534,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         return (ColorMap) pages.pop();
     }
 
-    protected SelectedChannelType[] copy(SelectedChannelType[] channels) {
+    protected SelectedChannelType[] copy(SelectedChannelType... channels) {
         if (channels == null) return null;
 
         SelectedChannelType[] copy = new SelectedChannelType[channels.length];
@@ -558,8 +558,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         if (channelSelection == null) return null;
 
         if (channelSelection.getGrayChannel() != null) {
-            return sf.createChannelSelection(
-                    new SelectedChannelType[] {copy(channelSelection.getGrayChannel())});
+            return sf.createChannelSelection(copy(channelSelection.getGrayChannel()));
         } else {
             return sf.createChannelSelection(copy(channelSelection.getRGBChannels()));
         }
@@ -943,7 +942,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
-    protected Extent[] copy(Extent[] extents) {
+    protected Extent[] copy(Extent... extents) {
         if (extents == null) {
             return null;
         }

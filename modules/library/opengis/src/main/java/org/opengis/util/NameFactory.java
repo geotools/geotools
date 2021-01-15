@@ -98,7 +98,7 @@ public interface NameFactory {
      * @return The generic name for the given parsed names.
      * @since GeoAPI 2.2
      */
-    GenericName createGenericName(NameSpace scope, CharSequence[] parsedNames);
+    GenericName createGenericName(NameSpace scope, CharSequence... parsedNames);
 
     /**
      * Constructs a generic name from a qualified name. This method splits the given name around a

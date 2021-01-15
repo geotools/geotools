@@ -204,7 +204,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
                 if (newMax.getClass()
                         != toAdd.getClass()) { // 2 different data types, therefore convert
-                    Class bestClass = CalcUtil.bestClass(new Object[] {toAdd, newMax});
+                    Class bestClass = CalcUtil.bestClass(toAdd, newMax);
                     if (bestClass != toAdd.getClass())
                         toAdd = (Comparable) CalcUtil.convert(toAdd, bestClass);
                     if (bestClass != newMax.getClass())

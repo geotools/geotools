@@ -52,7 +52,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     protected RuleImpl() {}
 
     /** Creates a new instance of DefaultRule */
-    protected RuleImpl(Symbolizer[] symbolizers) {
+    protected RuleImpl(Symbolizer... symbolizers) {
         this.symbolizers.addAll(Arrays.asList(symbolizers));
     }
 

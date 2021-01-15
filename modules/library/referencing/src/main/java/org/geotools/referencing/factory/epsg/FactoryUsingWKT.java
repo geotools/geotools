@@ -387,7 +387,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      * @throws FactoryException if an error occured.
      * @since 2.4
      */
-    public static void main(final String[] args) throws FactoryException {
+    public static void main(final String... args) throws FactoryException {
         main(args, FactoryUsingWKT.class);
     }
 

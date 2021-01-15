@@ -518,7 +518,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // build a query that extracts no geom but uses a bbox filter
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Query q = new Query();
-        q.setPropertyNames(new String[] {"STATE_NAME", "PERSONS"});
+        q.setPropertyNames("STATE_NAME", "PERSONS");
         ReferencedEnvelope queryBounds =
                 new ReferencedEnvelope(-75.102613, -72.361859, 40.212597, 41.512517, null);
         q.setFilter(ff.bbox(ff.property(""), queryBounds));

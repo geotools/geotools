@@ -1459,7 +1459,7 @@ public class RasterLayerResponse {
                             final GeometryDescriptor gd =
                                     granules.getSchema().getGeometryDescriptor();
                             if (gd != null) {
-                                query.setPropertyNames(new String[] {gd.getLocalName()});
+                                query.setPropertyNames(gd.getLocalName());
                             }
                             SimpleFeatureCollection features = granules.getGranules(query);
                             ReferencedEnvelope envelope = DataUtilities.bounds(features);

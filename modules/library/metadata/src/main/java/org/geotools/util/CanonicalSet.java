@@ -132,7 +132,8 @@ public class CanonicalSet<E> extends WeakHashSet<E> {
      *     instance already presents in this set has been replaced by a reference to the existing
      *     instance.
      */
-    public synchronized void uniques(final E[] objects) {
+    @SafeVarargs
+    public final synchronized void uniques(final E... objects) {
         for (int i = 0; i < objects.length; i++) {
             objects[i] = intern(objects[i], INTERN);
         }

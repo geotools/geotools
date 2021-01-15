@@ -469,11 +469,11 @@ public class SLDStyleTest {
         Rule rule1 = sb.createRule(sb.createLineSymbolizer(new Color(0), 2));
         // note: symbolizers containing a fill will likely fail, as the SLD
         // transformation loses a little data (background colour?)
-        FeatureTypeStyle fts1 = sf.createFeatureTypeStyle(new Rule[] {rule1});
+        FeatureTypeStyle fts1 = sf.createFeatureTypeStyle(rule1);
         fts1.semanticTypeIdentifiers().add(SemanticType.valueOf("generic:geometry"));
         style.featureTypeStyles().add(fts1);
-        layer.setUserStyles(new Style[] {style});
-        sld.setStyledLayers(new UserLayer[] {layer});
+        layer.setUserStyles(style);
+        sld.setStyledLayers(layer);
 
         // convert it to XML
         SLDTransformer aTransformer = new SLDTransformer();

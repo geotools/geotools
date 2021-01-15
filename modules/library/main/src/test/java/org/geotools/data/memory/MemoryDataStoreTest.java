@@ -502,7 +502,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertOrderSame(dynFeatures);
     }
 
-    void assertOrderSame(SimpleFeature[] features) throws Exception {
+    void assertOrderSame(SimpleFeature... features) throws Exception {
         // init using readers
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 DataUtilities.reader(features)) {
@@ -554,7 +554,7 @@ public class MemoryDataStoreTest extends DataTestCase {
      * Ensure that FeatureReader<SimpleFeatureType, SimpleFeature> reader contains extactly the
      * contents of array.
      */
-    boolean covers(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array)
+    boolean covers(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature... array)
             throws NoSuchElementException, IOException {
         SimpleFeature feature;
         int count = 0;
@@ -576,7 +576,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         return count == array.length;
     }
 
-    boolean covers(SimpleFeatureIterator reader, SimpleFeature[] array)
+    boolean covers(SimpleFeatureIterator reader, SimpleFeature... array)
             throws NoSuchElementException, IOException {
         SimpleFeature feature;
         int count = 0;
@@ -598,7 +598,8 @@ public class MemoryDataStoreTest extends DataTestCase {
         return count == array.length;
     }
 
-    boolean coversLax(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array)
+    boolean coversLax(
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature... array)
             throws NoSuchElementException, IOException {
         SimpleFeature feature;
         int count = 0;
@@ -620,7 +621,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         return count == array.length;
     }
 
-    boolean coversLax(SimpleFeatureIterator reader, SimpleFeature[] array)
+    boolean coversLax(SimpleFeatureIterator reader, SimpleFeature... array)
             throws NoSuchElementException, IOException {
         SimpleFeature feature;
         int count = 0;
@@ -1205,10 +1206,7 @@ public class MemoryDataStoreTest extends DataTestCase {
     @Test
     public void testGetFeatureStoreAddFeatures() throws IOException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {
-                            newRoad,
-                        })) {
+                DataUtilities.reader(newRoad)) {
             SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
 
             road.addFeatures(DataUtilities.collection(reader));
@@ -1219,10 +1217,7 @@ public class MemoryDataStoreTest extends DataTestCase {
     @Test
     public void testGetFeatureStoreSetFeatures() throws IOException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {
-                            newRoad,
-                        })) {
+                DataUtilities.reader(newRoad)) {
             SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
 
             road.setFeatures(reader);
@@ -1286,10 +1281,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             // ----------------------------
             // - tests transaction independence from each other
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    DataUtilities.reader(
-                            new SimpleFeature[] {
-                                newRoad,
-                            })) {
+                    DataUtilities.reader(newRoad)) {
                 road2.addFeatures(DataUtilities.collection(reader));
             }
 
@@ -1591,7 +1583,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         mds.addFeatures(roadFeatures);
 
         SimpleFeature road1 = SimpleFeatureBuilder.template(roadType, null);
-        mds.addFeatures(new SimpleFeature[] {road1});
+        mds.addFeatures(road1);
 
         Assert.assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
     }
@@ -1620,9 +1612,7 @@ public class MemoryDataStoreTest extends DataTestCase {
                     roadFeatures.length, mds.entry(roadType.getTypeName()).getMemory().size());
 
             try (FeatureReader<SimpleFeatureType, SimpleFeature> secondReader =
-                    DataUtilities.reader(
-                            new SimpleFeature[] {SimpleFeatureBuilder.template(roadType, null)})) {
-
+                    DataUtilities.reader(SimpleFeatureBuilder.template(roadType, null))) {
                 mds.addFeatures(secondReader);
                 Assert.assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
             }
@@ -1640,10 +1630,7 @@ public class MemoryDataStoreTest extends DataTestCase {
                     roadFeatures.length, mds.entry(roadType.getTypeName()).getMemory().size());
 
             try (SimpleFeatureIterator featureIterator =
-                    DataUtilities.collection(
-                                    new SimpleFeature[] {
-                                        SimpleFeatureBuilder.template(roadType, null)
-                                    })
+                    DataUtilities.collection(SimpleFeatureBuilder.template(roadType, null))
                             .features()) {
 
                 mds.addFeatures(featureIterator);

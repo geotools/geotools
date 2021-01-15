@@ -619,7 +619,7 @@ public abstract class LoggerAdapter extends Logger {
      * Formats the specified message. This is a helper method for {@code log(..., Object[])} methods
      * that delegate their work to {@code log(...)}
      */
-    private static String format(String message, final Object[] params) {
+    private static String format(String message, final Object... params) {
         if (params != null && params.length != 0) {
             if (MESSAGE_FORMAT.matcher(message).find())
                 try {

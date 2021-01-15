@@ -46,5 +46,5 @@ public interface LayerFeatureConstraints {
     FeatureTypeConstraint[] getFeatureTypeConstraints();
 
     /** @param constraints The new feature type constraints. */
-    void setFeatureTypeConstraints(FeatureTypeConstraint[] constraints);
+    void setFeatureTypeConstraints(FeatureTypeConstraint... constraints);
 }

@@ -482,7 +482,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
         }
 
         Query newQuery = new Query(query);
-        newQuery.setSortBy(new SortBy[] {sortBy});
+        newQuery.setSortBy(sortBy);
 
         // We set up the sortBy where we only need a single value instead of the
         // entire collection.

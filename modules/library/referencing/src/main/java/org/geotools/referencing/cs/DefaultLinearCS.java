@@ -64,7 +64,7 @@ public class DefaultLinearCS extends AbstractCS implements LinearCS {
      * @param axis The axis.
      */
     public DefaultLinearCS(final String name, final CoordinateSystemAxis axis) {
-        super(name, new CoordinateSystemAxis[] {axis});
+        super(name, axis);
     }
 
     /**
@@ -76,7 +76,7 @@ public class DefaultLinearCS extends AbstractCS implements LinearCS {
      * @param axis The axis.
      */
     public DefaultLinearCS(final Map<String, ?> properties, final CoordinateSystemAxis axis) {
-        super(properties, new CoordinateSystemAxis[] {axis});
+        super(properties, axis);
     }
 
     /**

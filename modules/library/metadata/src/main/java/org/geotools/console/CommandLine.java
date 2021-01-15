@@ -104,7 +104,7 @@ public class CommandLine {
      *
      * @param args The command-line arguments.
      */
-    protected CommandLine(final String[] args) {
+    protected CommandLine(final String... args) {
         this(args, 0);
     }
 

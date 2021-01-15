@@ -29,7 +29,6 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
@@ -65,9 +64,9 @@ public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
         assertTrue(fs.getSupportedHints().contains(Hints.SCREENMAP));
 
         Query q = new Query(tname("ft1"));
-        q.setPropertyNames(new String[] {"stringProperty", "geometry"});
+        q.setPropertyNames("stringProperty", "geometry");
         FilterFactory ff = dataStore.getFilterFactory();
-        q.setSortBy(new SortBy[] {ff.sort("doubleProperty", SortOrder.ASCENDING)});
+        q.setSortBy(ff.sort("doubleProperty", SortOrder.ASCENDING));
 
         // setup the screenmap so that we have a feature that gets skipped due to screenmap
         // but the next one is not

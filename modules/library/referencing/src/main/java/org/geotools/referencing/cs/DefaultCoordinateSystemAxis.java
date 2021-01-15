@@ -821,7 +821,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         if (name != null) {
             // The "null" locale argument is required for getting the unlocalized version.
             properties.put(NAME_KEY, name.toString(null));
-            properties.put(ALIAS_KEY, NameFactory.create(new InternationalString[] {name}));
+            properties.put(ALIAS_KEY, NameFactory.create(name));
         }
         return properties;
     }

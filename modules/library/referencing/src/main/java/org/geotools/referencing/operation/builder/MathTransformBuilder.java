@@ -271,7 +271,7 @@ public abstract class MathTransformBuilder {
      *     #getDimension expected number of dimensions}.
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
-    public void setSourcePoints(final DirectPosition[] points)
+    public void setSourcePoints(final DirectPosition... points)
             throws IllegalArgumentException, MismatchedDimensionException,
                     MismatchedReferenceSystemException {
         // Set the points only after we checked them.
@@ -299,7 +299,7 @@ public abstract class MathTransformBuilder {
      *     #getDimension expected number of dimensions}.
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
-    public void setTargetPoints(final DirectPosition[] points)
+    public void setTargetPoints(final DirectPosition... points)
             throws IllegalArgumentException, MismatchedDimensionException,
                     MismatchedReferenceSystemException {
         // Set the points only after we checked them.

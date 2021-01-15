@@ -53,7 +53,7 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
         tb.add(NAME, String.class);
         lakeViewSchema = tb.buildFeatureType();
 
-        lakeViewPkSchema = tb.retype(lakeViewSchema, new String[] {ID, GEOM, NAME});
+        lakeViewPkSchema = tb.retype(lakeViewSchema, ID, GEOM, NAME);
     }
 
     /**

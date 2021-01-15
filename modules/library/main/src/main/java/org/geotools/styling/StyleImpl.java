@@ -77,7 +77,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
         this.defaultSymbolizer = defaultSymbolizer;
     }
 
-    public void setFeatureTypeStyles(FeatureTypeStyle[] styles) {
+    public void setFeatureTypeStyles(FeatureTypeStyle... styles) {
         List<FeatureTypeStyle> newStyles = Arrays.asList(styles);
 
         this.featureTypeStyles.clear();

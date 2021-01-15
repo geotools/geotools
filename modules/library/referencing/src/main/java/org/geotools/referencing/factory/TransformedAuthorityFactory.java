@@ -440,7 +440,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
     private CoordinateSystem createCS(
             final Class<? extends CoordinateSystem> type,
             final Map<String, ?> properties,
-            final CoordinateSystemAxis[] axis)
+            final CoordinateSystemAxis... axis)
             throws FactoryException {
         final int dimension = axis.length;
         final ReferencingFactoryContainer factories = getFactoryContainer(false);

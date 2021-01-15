@@ -40,12 +40,12 @@ class Polygon implements Cloneable {
      *
      * @param coordinates of vertices
      */
-    Polygon(DirectPosition[] coordinates) {
+    Polygon(DirectPosition... coordinates) {
         this.vertices = coordinates;
     }
 
     /** Sets the vertices of this polygon. */
-    public void setCoordinates(DirectPosition[] coordinates) {
+    public void setCoordinates(DirectPosition... coordinates) {
         this.vertices = coordinates;
     }
 
@@ -83,7 +83,7 @@ class Polygon implements Cloneable {
      * @param points vertices of polygon.
      * @return generated GeneralPath.
      */
-    protected GeneralPath generateGeneralPath(DirectPosition[] points) {
+    protected GeneralPath generateGeneralPath(DirectPosition... points) {
         GeneralPath ring = new GeneralPath();
 
         // Set the initiakl coordinates of the general Path

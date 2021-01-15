@@ -636,7 +636,7 @@ public class WKTReader2 extends WKTReader {
      * @return <code>Point</code>s created using this <code>WKTReader</code> s <code>GeometryFactory
      *     </code>
      */
-    private Point[] toPoints(Coordinate[] coordinates) {
+    private Point[] toPoints(Coordinate... coordinates) {
         ArrayList<Point> points = new ArrayList<>();
         for (Coordinate coordinate : coordinates) {
             points.add(geometryFactory.createPoint(coordinate));
@@ -679,7 +679,7 @@ public class WKTReader2 extends WKTReader {
         String nextToken = getNextEmptyOrOpener();
         if (nextToken.equals(EMPTY)) {
             return geometryFactory.createCurvePolygon(
-                    geometryFactory.createLinearRing(new Coordinate[] {}), new LinearRing[] {});
+                    geometryFactory.createLinearRing(new Coordinate[] {}));
         }
         if (!nextToken.equals(L_PAREN)) {
             parseError("Ring expected");

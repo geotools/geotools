@@ -31,7 +31,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
@@ -403,7 +402,7 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         Filter j = ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true);
         Query q = new Query(tname("ft1"));
         q.getJoins().add(new Join(tname("ftjoin"), j));
-        q.setSortBy(new SortBy[] {ff.sort(aname("intProperty"), SortOrder.DESCENDING)});
+        q.setSortBy(ff.sort(aname("intProperty"), SortOrder.DESCENDING));
 
         SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
@@ -430,7 +429,7 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         q.getJoins().add(new Join(tname("ftjoin"), j));
         q.setFilter(ff.greater(ff.property(aname("intProperty")), ff.literal(0)));
         q.setStartIndex(1);
-        q.setSortBy(new SortBy[] {ff.sort(aname("intProperty"), SortOrder.ASCENDING)});
+        q.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));
 
         SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         assertEquals(1, features.size());
@@ -494,7 +493,7 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
         q.setPropertyNames(Arrays.asList(aname("geometry"), aname("intProperty")));
-        q.setSortBy(new SortBy[] {ff.sort(aname("intProperty"), SortOrder.ASCENDING)});
+        q.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));
         q.getJoins()
                 .add(
                         new Join(

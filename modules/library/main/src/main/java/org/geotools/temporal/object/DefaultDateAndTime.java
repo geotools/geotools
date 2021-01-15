@@ -91,7 +91,7 @@ public class DefaultDateAndTime extends DefaultTemporalPosition implements DateA
         this.calendarDate = calendarDate;
     }
 
-    public void setClockTime(Number[] clockTime) {
+    public void setClockTime(Number... clockTime) {
         this.clockTime = clockTime;
     }
 

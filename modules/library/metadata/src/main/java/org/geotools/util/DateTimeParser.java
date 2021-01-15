@@ -147,7 +147,7 @@ public class DateTimeParser {
         public final int precision;
         public final String[] lenientFormats;
 
-        FormatAndPrecision(final String format, int precision, final String[] lenientFormats) {
+        FormatAndPrecision(final String format, int precision, final String... lenientFormats) {
             this.format = format;
             this.precision = precision;
             this.lenientFormats = lenientFormats;
@@ -370,7 +370,7 @@ public class DateTimeParser {
         }
     }
 
-    private Date[] parseTimeDuration(final String[] period) throws ParseException {
+    private Date[] parseTimeDuration(final String... period) throws ParseException {
         Date[] range = null;
 
         if (period.length == 2 || period.length == 3) {

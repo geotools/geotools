@@ -238,7 +238,7 @@ public class Query {
      * @param filter the OGC filter to constrain the request.
      * @param properties an array of the properties to fetch.
      */
-    public Query(String typeName, Filter filter, String[] properties) {
+    public Query(String typeName, Filter filter, String... properties) {
         this(typeName, null, filter, Query.DEFAULT_MAX, properties, null);
     }
 
@@ -403,7 +403,7 @@ public class Query {
      * @param propNames the names of the properties to retrieve or one of {@linkplain #ALL_NAMES} or
      *     {@linkplain #NO_NAMES}.
      */
-    public void setPropertyNames(String[] propNames) {
+    public void setPropertyNames(String... propNames) {
         if (propNames == null) {
             properties = ALL_PROPERTIES;
             return;
@@ -809,7 +809,7 @@ public class Query {
     }
 
     /** Sets the sort by information. */
-    public void setSortBy(SortBy[] sortBy) {
+    public void setSortBy(SortBy... sortBy) {
         this.sortBy = sortBy;
     }
 

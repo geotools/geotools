@@ -40,7 +40,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.FactoryException;
 import org.sqlite.SQLiteConfig;
@@ -320,15 +319,10 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
     private ListFeatureCollection getEnumeratedFeatureCollection(SimpleFeatureType schema)
             throws ParseException {
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
-        SimpleFeature f1 =
-                fb.buildFeature(null, new Object[] {new WKTReader().read("POINT(0 0)"), 1, "one"});
-        SimpleFeature f2 =
-                fb.buildFeature(null, new Object[] {new WKTReader().read("POINT(0 0)"), 2, "two"});
-        SimpleFeature f3 =
-                fb.buildFeature(
-                        null, new Object[] {new WKTReader().read("POINT(0 0)"), 3, "three"});
-        SimpleFeature f4 =
-                fb.buildFeature(null, new Object[] {new WKTReader().read("POINT(0 0)"), 4, null});
+        SimpleFeature f1 = fb.buildFeature(null, new WKTReader().read("POINT(0 0)"), 1, "one");
+        SimpleFeature f2 = fb.buildFeature(null, new WKTReader().read("POINT(0 0)"), 2, "two");
+        SimpleFeature f3 = fb.buildFeature(null, new WKTReader().read("POINT(0 0)"), 3, "three");
+        SimpleFeature f4 = fb.buildFeature(null, new WKTReader().read("POINT(0 0)"), 4, null);
         return new ListFeatureCollection(schema, new SimpleFeature[] {f1, f2, f3, f4});
     }
 
@@ -341,7 +335,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         SimpleFeatureSource source = dataStore.getFeatureSource(tname("ft2"));
         Query q = new Query();
-        q.setSortBy(new SortBy[] {ff.sort(aname("enumProperty"), SortOrder.ASCENDING)});
+        q.setSortBy(ff.sort(aname("enumProperty"), SortOrder.ASCENDING));
         List<SimpleFeature> features = DataUtilities.list(source.getFeatures(q));
         assertEquals(4, features.size());
         assertNull(features.get(0).getAttribute("enumProperty"));
@@ -408,7 +402,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
 
         // read back and confirm
         Query q = new Query();
-        q.setSortBy(new SortBy[] {ff.sort(aname("enumProperty"), SortOrder.ASCENDING)});
+        q.setSortBy(ff.sort(aname("enumProperty"), SortOrder.ASCENDING));
         List<SimpleFeature> features = DataUtilities.list(store.getFeatures());
         assertEquals(4, features.size());
         assertEquals("one", features.get(0).getAttribute("enumProperty"));
@@ -454,7 +448,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
             FilterFactory ff = dataStore.getFilterFactory();
             SimpleFeatureSource source = dataStore.getFeatureSource(tname("ft2"));
             Query q = new Query();
-            q.setSortBy(new SortBy[] {ff.sort(aname("enumProperty"), SortOrder.ASCENDING)});
+            q.setSortBy(ff.sort(aname("enumProperty"), SortOrder.ASCENDING));
             List<SimpleFeature> features = DataUtilities.list(source.getFeatures(q));
             assertEquals(4, features.size());
             assertNull(features.get(0).getAttribute("enumProperty"));
@@ -503,37 +497,29 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         SimpleFeature f1 =
                 fb.buildFeature(
                         null,
-                        new Object[] {
-                            new WKTReader().read("POINT(0 0)"),
-                            1,
-                            new Integer[] {1},
-                            new String[] {"a"},
-                            new String[] {"one"}
-                        });
+                        new WKTReader().read("POINT(0 0)"),
+                        1,
+                        new Integer[] {1},
+                        new String[] {"a"},
+                        new String[] {"one"});
         SimpleFeature f2 =
                 fb.buildFeature(
                         null,
-                        new Object[] {
-                            new WKTReader().read("POINT(0 0)"),
-                            2,
-                            new Integer[] {2, 2},
-                            new String[] {"a", "b"},
-                            new String[] {"one", "two"}
-                        });
+                        new WKTReader().read("POINT(0 0)"),
+                        2,
+                        new Integer[] {2, 2},
+                        new String[] {"a", "b"},
+                        new String[] {"one", "two"});
         SimpleFeature f3 =
                 fb.buildFeature(
                         null,
-                        new Object[] {
-                            new WKTReader().read("POINT(0 0)"),
-                            3,
-                            new Integer[] {3, 3, 3},
-                            new String[] {"a", "b", "c"},
-                            new String[] {"one", "two", "three"}
-                        });
+                        new WKTReader().read("POINT(0 0)"),
+                        3,
+                        new Integer[] {3, 3, 3},
+                        new String[] {"a", "b", "c"},
+                        new String[] {"one", "two", "three"});
         SimpleFeature f4 =
-                fb.buildFeature(
-                        null,
-                        new Object[] {new WKTReader().read("POINT(0 0)"), 4, null, null, null});
+                fb.buildFeature(null, new WKTReader().read("POINT(0 0)"), 4, null, null, null);
         return new ListFeatureCollection(schema, new SimpleFeature[] {f1, f2, f3, f4});
     }
 
@@ -575,7 +561,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("ft_array"));
         Query q = new Query(tname("ft_array"));
         FilterFactory ff = dataStore.getFilterFactory();
-        q.setSortBy(new SortBy[] {ff.sort("id", SortOrder.ASCENDING)});
+        q.setSortBy(ff.sort("id", SortOrder.ASCENDING));
         List<SimpleFeature> features = DataUtilities.list(fs.getFeatures(q));
 
         // TODO: clarify data type once we write the actual data type in the mime type

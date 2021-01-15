@@ -45,8 +45,7 @@ public class MainExamples {
     void exampleRetype() throws Exception {
         SimpleFeatureType origional =
                 DataUtilities.createType("LINE", "centerline:LineString,name:\"\",id:0");
-        SimpleFeatureType modified =
-                DataUtilities.createSubType(origional, new String[] {"centerline"});
+        SimpleFeatureType modified = DataUtilities.createSubType(origional, "centerline");
 
         SimpleFeature feature = DataUtilities.template(origional);
 

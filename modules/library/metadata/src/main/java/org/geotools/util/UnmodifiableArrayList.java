@@ -67,7 +67,8 @@ public class UnmodifiableArrayList<E> extends AbstractList<E>
      *
      * @param array The array to wrap.
      */
-    protected UnmodifiableArrayList(final E[] array) {
+    @SafeVarargs
+    protected UnmodifiableArrayList(final E... array) {
         this.array = array;
     }
 
@@ -81,7 +82,8 @@ public class UnmodifiableArrayList<E> extends AbstractList<E>
      * @return The given array wrapped in an unmodifiable list.
      * @since 2.5
      */
-    public static <E> UnmodifiableArrayList<E> wrap(final E[] array) {
+    @SafeVarargs
+    public static <E> UnmodifiableArrayList<E> wrap(final E... array) {
         return new UnmodifiableArrayList<>(array);
     }
 

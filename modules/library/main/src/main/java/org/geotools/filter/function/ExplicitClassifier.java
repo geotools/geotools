@@ -27,7 +27,7 @@ public final class ExplicitClassifier extends Classifier {
 
     Set[] values = null; // the contents of each bin (set of objects)
 
-    public ExplicitClassifier(Set[] values) {
+    public ExplicitClassifier(Set... values) {
         this.values = values;
         // initialize titles
         this.titles = new String[values.length];

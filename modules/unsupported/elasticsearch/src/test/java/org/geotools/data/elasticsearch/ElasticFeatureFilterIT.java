@@ -265,7 +265,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         PropertyIsEqualTo filter = ff.equals(ff.property("modem_b"), ff.literal(true));
 
         Query query = new Query();
-        query.setPropertyNames(new String[] {"standard_ss", "security_ss"});
+        query.setPropertyNames("standard_ss", "security_ss");
         query.setFilter(filter);
 
         SimpleFeatureCollection features = featureSource.getFeatures(query);
@@ -325,7 +325,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         SortBy sort = ff.sort("vendor_s", SortOrder.ASCENDING);
         Query query = new Query();
-        query.setSortBy(new SortBy[] {sort});
+        query.setSortBy(sort);
 
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         assertEquals(11, features.size());
@@ -347,7 +347,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         }
 
         sort = ff.sort("vendor_s", SortOrder.DESCENDING);
-        query.setSortBy(new SortBy[] {sort});
+        query.setSortBy(sort);
         features = featureSource.getFeatures(query);
         iterator = features.features();
         try {
@@ -390,7 +390,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     public void testNaturalSortingAsc() throws Exception {
         init();
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        q.setSortBy(SortBy.NATURAL_ORDER);
         try (SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
             String prevId = null;
             while (features.hasNext()) {
@@ -405,7 +405,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     public void testNaturalSortingDesc() throws Exception {
         init();
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        q.setSortBy(SortBy.REVERSE_ORDER);
         try (SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
             String prevId = null;
             while (features.hasNext()) {
@@ -587,7 +587,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         }
 
         // Specify Columns
-        query.setPropertyNames(new String[] {"standard_ss", "security_ss"});
+        query.setPropertyNames("standard_ss", "security_ss");
 
         features = featureSource.getFeatures(query);
 

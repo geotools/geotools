@@ -601,7 +601,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     }
 
     /** Run the compiler for GeoTools resources. */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         main(args, SOURCE_DIRECTORY, RESOURCES_TO_PROCESS);
     }
 }

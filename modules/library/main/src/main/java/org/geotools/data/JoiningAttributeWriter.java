@@ -30,12 +30,12 @@ public class JoiningAttributeWriter implements AttributeWriter {
     private AttributeDescriptor[] metaData;
 
     /** */
-    public JoiningAttributeWriter(AttributeWriter[] writers) {
+    public JoiningAttributeWriter(AttributeWriter... writers) {
         this.writers = writers;
         metaData = joinMetaData(writers);
     }
 
-    private AttributeDescriptor[] joinMetaData(AttributeWriter[] writers) {
+    private AttributeDescriptor[] joinMetaData(AttributeWriter... writers) {
         int total = 0;
         index = new int[writers.length];
         for (int i = 0, ii = writers.length; i < ii; i++) {

@@ -473,7 +473,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                 };
 
         final Query query = new Query(ft.getTypeName());
-        query.setPropertyNames(new String[] {"the_geom"});
+        query.setPropertyNames("the_geom");
         query.setFilter(strictBBox);
         query.setHandle("testDataStoreSupportsPlainBBOXInterface");
 
@@ -528,7 +528,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                         null);
 
         final Query query = new Query(ft.getTypeName());
-        query.setPropertyNames(new String[] {"the_geom"});
+        query.setPropertyNames("the_geom");
         query.setFilter(lonLatFilter);
         query.setCoordinateSystem(wgs84LonLat);
 

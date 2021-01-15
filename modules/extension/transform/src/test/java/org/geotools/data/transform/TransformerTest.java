@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.geotools.data.Query;
 import org.junit.Test;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 public class TransformerTest extends AbstractTransformTest {
@@ -31,7 +30,7 @@ public class TransformerTest extends AbstractTransformTest {
         TransformFeatureSource transformedSource = (TransformFeatureSource) transformWithRename();
 
         Query query = new Query(Query.ALL);
-        query.setSortBy(new SortBy[] {FF.sort("name", SortOrder.DESCENDING)});
+        query.setSortBy(FF.sort("name", SortOrder.DESCENDING));
 
         Query transformedQuery = transformedSource.transformer.transformQuery(query);
         assertNotNull(transformedQuery);

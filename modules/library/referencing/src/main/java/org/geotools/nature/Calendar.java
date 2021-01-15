@@ -130,7 +130,7 @@ public final class Calendar {
      * seront utilisées.
      */
     @SuppressWarnings("PMD.SystemPrintln")
-    public static final void main(final String[] args) throws ParseException {
+    public static final void main(final String... args) throws ParseException {
         final DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
         final Date time = (args.length != 0) ? format.parse(args[0]) : new Date();

@@ -211,7 +211,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     }
 
     /** Adds an array of attributes. */
-    public void addAll(Object[] values) {
+    public void addAll(Object... values) {
         addAll(Arrays.asList(values));
     }
 
@@ -324,7 +324,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     }
 
     /** Quickly builds the feature using the specified values and id */
-    public SimpleFeature buildFeature(String id, Object[] values) {
+    public SimpleFeature buildFeature(String id, Object... values) {
         addAll(values);
         return buildFeature(id);
     }

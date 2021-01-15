@@ -56,7 +56,7 @@ public interface RenderingTransformation extends Function {
 
     /** Allows the transformation to customize the read */
     default GeneralParameterValue[] customizeReadParams(
-            GridCoverageReader reader, GeneralParameterValue[] params) {
+            GridCoverageReader reader, GeneralParameterValue... params) {
         return params;
     }
 }

@@ -578,7 +578,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
     public SimpleFeatureCollection sort(SortBy order) {
         Query subQuery = new Query(getSchema().getTypeName());
-        subQuery.setSortBy(new SortBy[] {order});
+        subQuery.setSortBy(order);
 
         CollectionFeatureSource temp = new CollectionFeatureSource(this);
         return temp.getFeatures(subQuery);

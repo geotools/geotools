@@ -179,7 +179,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
                 if (newMin.getClass()
                         != toAdd.getClass()) { // 2 different data types, therefore convert
-                    Class bestClass = CalcUtil.bestClass(new Object[] {toAdd, newMin});
+                    Class bestClass = CalcUtil.bestClass(toAdd, newMin);
                     if (bestClass != toAdd.getClass())
                         toAdd = (Comparable) CalcUtil.convert(toAdd, bestClass);
                     if (bestClass != newMin.getClass())

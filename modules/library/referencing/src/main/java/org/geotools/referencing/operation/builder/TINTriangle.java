@@ -50,7 +50,7 @@ class TINTriangle extends Polygon {
      * @param p2 another vertex
      */
     protected TINTriangle(DirectPosition p0, DirectPosition p1, DirectPosition p2) {
-        super(new DirectPosition[] {p0, p1, p2, p0});
+        super(p0, p1, p2, p0);
         this.p0 = p0;
         this.p1 = p1;
         this.p2 = p2;

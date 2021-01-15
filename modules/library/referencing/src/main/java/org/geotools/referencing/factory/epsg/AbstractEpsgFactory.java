@@ -1876,9 +1876,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         // Note: Don't invoke 'generateProperties' sooner.
                         final Map<String, Object> properties =
                                 generateProperties(name, epsg, area, scope, remarks);
-                        crs =
-                                factory.createCompoundCRS(
-                                        properties, new CoordinateReferenceSystem[] {crs1, crs2});
+                        crs = factory.createCompoundCRS(properties, crs1, crs2);
                     }
                     /* ----------------------------------------------------------------------
                      *   GEOCENTRIC CRS
@@ -2747,7 +2745,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *     element.
      */
     // TODO: Use generic type for "Object[] codes" with J2SE 1.5.
-    private void sort(final Object[] codes) throws SQLException, FactoryException {
+    private void sort(final Object... codes) throws SQLException, FactoryException {
         if (codes.length <= 1) {
             return; // Nothing to sort.
         }

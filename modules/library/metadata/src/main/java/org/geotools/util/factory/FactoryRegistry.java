@@ -167,7 +167,7 @@ public class FactoryRegistry {
      * @param categories The categories.
      * @since 2.4
      */
-    public FactoryRegistry(final Class<?>[] categories) {
+    public FactoryRegistry(final Class<?>... categories) {
         this(Arrays.asList(categories));
     }
 

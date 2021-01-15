@@ -480,7 +480,7 @@ final class PropertyAccessor {
             final Method setter = setters[index];
             if (setter != null) {
                 final Object old = get(getter, metadata);
-                set(getter, setter, metadata, new Object[] {value});
+                set(getter, setter, metadata, value);
                 return old;
             } else {
                 key = getter.getName();
@@ -506,7 +506,7 @@ final class PropertyAccessor {
             final Method getter,
             final Method setter,
             final Object metadata,
-            final Object[] arguments)
+            final Object... arguments)
             throws ClassCastException {
         final Class<?>[] paramTypes = setter.getParameterTypes();
         for (int i = 0; i < paramTypes.length; i++) {

@@ -377,7 +377,7 @@ public class RasterLayerRequest {
             // ... load only the default geometry if possible
             final GeometryDescriptor gd = granules.getSchema().getGeometryDescriptor();
             if (gd != null) {
-                query.setPropertyNames(new String[] {gd.getLocalName()});
+                query.setPropertyNames(gd.getLocalName());
             }
             SimpleFeatureCollection features = granules.getGranules(query);
             ReferencedEnvelope envelope = DataUtilities.bounds(features);

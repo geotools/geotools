@@ -1944,9 +1944,7 @@ public class GridCoverageRendererTest {
         StyleFactory sf = sb.getStyleFactory();
         symbolizer.setChannelSelection(
                 sf.createChannelSelection(
-                        new SelectedChannelType[] {
-                            sf.createSelectedChannelType(String.valueOf(band), null)
-                        }));
+                        sf.createSelectedChannelType(String.valueOf(band), null)));
         return symbolizer;
     }
 
@@ -1958,11 +1956,9 @@ public class GridCoverageRendererTest {
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         symbolizer.setChannelSelection(
                 sf.createChannelSelection(
-                        new SelectedChannelType[] {
-                            sf.createSelectedChannelType(
-                                    ff.function("env", ff.literal(envVar), ff.literal(band)),
-                                    (ContrastEnhancement) null)
-                        }));
+                        sf.createSelectedChannelType(
+                                ff.function("env", ff.literal(envVar), ff.literal(band)),
+                                (ContrastEnhancement) null)));
         return symbolizer;
     }
 

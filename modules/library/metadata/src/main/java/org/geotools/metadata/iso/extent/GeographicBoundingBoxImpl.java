@@ -142,12 +142,10 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
         super(true);
         if (constructor == null) {
             // No need to synchronize; not a big deal if we set this field twice.
-            constructor =
-                    getMethod(
-                            "copy", new Class[] {Envelope.class, GeographicBoundingBoxImpl.class});
+            constructor = getMethod("copy", Envelope.class, GeographicBoundingBoxImpl.class);
         }
         try {
-            invoke(constructor, new Object[] {envelope, this});
+            invoke(constructor, envelope, this);
         } catch (InvocationTargetException exception) {
             final Throwable cause = exception.getTargetException();
             if (cause instanceof TransformException) {
@@ -479,12 +477,10 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
         if (toString == null) {
             // No need to synchronize.
             toString =
-                    getMethod(
-                            "toString",
-                            new Class[] {GeographicBoundingBox.class, String.class, Locale.class});
+                    getMethod("toString", GeographicBoundingBox.class, String.class, Locale.class);
         }
         try {
-            return String.valueOf(invoke(toString, new Object[] {box, pattern, locale}));
+            return String.valueOf(invoke(toString, box, pattern, locale));
         } catch (InvocationTargetException exception) {
             throw new UndeclaredThrowableException(exception.getTargetException());
         }
@@ -494,7 +490,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      * Returns a helper method which depends on the referencing module. We use reflection since we
      * can't have a direct dependency to this module.
      */
-    private static Method getMethod(final String name, final Class<?>[] arguments) {
+    private static Method getMethod(final String name, final Class<?>... arguments) {
         try {
             return Class.forName("org.geotools.referencing.util.BoundingBoxes")
                     .getMethod(name, arguments);
@@ -508,7 +504,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /** Invokes the specified method with the specified arguments. */
-    private static Object invoke(final Method method, final Object[] arguments)
+    private static Object invoke(final Method method, final Object... arguments)
             throws InvocationTargetException {
         try {
             return method.invoke(null, arguments);

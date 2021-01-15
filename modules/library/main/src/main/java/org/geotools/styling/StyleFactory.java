@@ -124,12 +124,12 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @return The new feature type constaint.
      */
     public FeatureTypeConstraint createFeatureTypeConstraint(
-            String featureTypeName, Filter filter, Extent[] extents);
+            String featureTypeName, Filter filter, Extent... extents);
 
     public LayerFeatureConstraints createLayerFeatureConstraints(
-            FeatureTypeConstraint[] featureTypeConstraints);
+            FeatureTypeConstraint... featureTypeConstraints);
 
-    public FeatureTypeStyle createFeatureTypeStyle(Rule[] rules);
+    public FeatureTypeStyle createFeatureTypeStyle(Rule... rules);
 
     /**
      * Creates a new ImageOutline.
@@ -252,7 +252,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public RasterSymbolizer getDefaultRasterSymbolizer();
 
-    public ChannelSelection createChannelSelection(SelectedChannelType[] channels);
+    public ChannelSelection createChannelSelection(SelectedChannelType... channels);
 
     public ContrastEnhancement createContrastEnhancement();
 

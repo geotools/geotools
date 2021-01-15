@@ -343,42 +343,31 @@ public class DbaseFileWriter {
         }
 
         public String getFieldString(int size, String s) {
-            try {
-                buffer.replace(0, size, emptyString);
-                buffer.setLength(size);
-                // international characters must be accounted for so size != length.
-                int maxSize = size;
-                if (s != null) {
-                    buffer.replace(0, size, s);
-                    int currentBytes =
-                            s.substring(0, Math.min(size, s.length()))
-                                    .getBytes(charset.name())
-                                    .length;
-                    if (currentBytes > size) {
-                        char[] c = new char[1];
-                        for (int index = size - 1; currentBytes > size; index--) {
-                            c[0] = buffer.charAt(index);
-                            String string = new String(c);
-                            buffer.deleteCharAt(index);
-                            currentBytes -= string.getBytes().length;
-                            maxSize--;
-                        }
-                    } else {
-                        if (s.length() < size) {
-                            maxSize = size - (currentBytes - s.length());
-                            for (int i = s.length(); i < size; i++) {
-                                buffer.append(' ');
-                            }
-                        }
+            buffer.replace(0, size, emptyString);
+            buffer.setLength(size);
+            // international characters must be accounted for so size != length.
+            if (s != null) {
+                int maxBytes = Math.min(size, s.length());
+                buffer.replace(0, maxBytes, s);
+                int currentBytes = buffer.toString().getBytes(charset).length;
+                if (currentBytes > size) {
+                    while (currentBytes > size) {
+                        int index = buffer.length() - 1;
+                        buffer.deleteCharAt(index);
+                        currentBytes = buffer.toString().getBytes(charset).length;
                     }
                 }
-
-                buffer.setLength(maxSize);
-
-                return buffer.toString();
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException("This error should never occurr", e);
+                // in sequence to the above step, rather than as an alternative, as the step above
+                // might have removed a last char that was multi-byte, making the buffer short
+                if (currentBytes < size) {
+                    int diff = size - currentBytes;
+                    for (int i = 0; i < diff; i++) {
+                        buffer.append(' ');
+                    }
+                }
             }
+
+            return buffer.toString();
         }
 
         public String getFieldString(Date d) {

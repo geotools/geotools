@@ -17,7 +17,6 @@
 package org.geotools.data.view;
 
 import java.io.IOException;
-import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -27,6 +26,9 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.IllegalFilterException;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.IllegalAttributeException;
@@ -35,12 +37,13 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-public class DefaultViewTest extends TestCase {
+public class DefaultViewTest {
 
     String typeName = "type1";
     private SimpleFeatureSource fs;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
 
         SimpleFeatureType ft = DataUtilities.createType(typeName, "geom:Point,name:String,id:int");
         ListFeatureCollection collection = new ListFeatureCollection(ft);
@@ -62,6 +65,7 @@ public class DefaultViewTest extends TestCase {
                 null);
     }
 
+    @Test
     public void testGetFeatures() throws Exception {
 
         SimpleFeatureSource view = getView();
@@ -73,9 +77,10 @@ public class DefaultViewTest extends TestCase {
             features.next();
         }
 
-        assertEquals(2, count);
+        Assert.assertEquals(2, count);
     }
 
+    @Test
     public void testGetFeaturesQuery() throws Exception {
 
         SimpleFeatureSource view = getView();
@@ -87,9 +92,10 @@ public class DefaultViewTest extends TestCase {
             features.next();
         }
 
-        assertEquals(1, count);
+        Assert.assertEquals(1, count);
     }
 
+    @Test
     public void testGetFeaturesFilter() throws Exception {
 
         SimpleFeatureSource view = getView();
@@ -101,15 +107,16 @@ public class DefaultViewTest extends TestCase {
             features.next();
         }
 
-        assertEquals(1, count);
+        Assert.assertEquals(1, count);
     }
 
+    @Test
     public void testGetCount() throws Exception {
         SimpleFeatureSource view = getView();
 
         Query query = getQuery();
         int count = view.getCount(query);
-        assertEquals(1, count);
+        Assert.assertEquals(1, count);
     }
 
     private Query getQuery() throws IllegalFilterException {

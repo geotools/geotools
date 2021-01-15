@@ -16,24 +16,31 @@
  */
 package org.geotools.filter.v1_0;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.w3c.dom.Document;
 
 public class OGCBBoxTypeBindingTest extends FilterTestSupport {
+    @Test
     public void testType() {
         assertEquals(BBOX.class, binding(OGC.BBOXType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.BBOXType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.bbox(document, document);
 
@@ -47,6 +54,7 @@ public class OGCBBoxTypeBindingTest extends FilterTestSupport {
                         1e-6));
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.bbox(), OGC.BBOX);
 

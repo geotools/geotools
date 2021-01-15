@@ -16,6 +16,11 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigInteger;
 import java.net.URL;
 import javax.xml.namespace.QName;
@@ -30,17 +35,11 @@ import org.geotools.test.TestData;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/**
- * Unit test suite for {@link TransactionResponseTypeBinding}
- *
- * @author Gabriel Roldan (TOPP)
- * @version $Id$
- * @since 2.5.x
- */
 public class TransactionResponseTypeBindingTest extends WFSTestSupport {
 
     public TransactionResponseTypeBindingTest() {
@@ -49,6 +48,7 @@ public class TransactionResponseTypeBindingTest extends WFSTestSupport {
 
     @SuppressWarnings("unchecked")
     @Override
+    @Test
     public void testEncode() throws Exception {
         final TransactionResponseType tr = factory.createTransactionResponseType();
         {
@@ -122,6 +122,7 @@ public class TransactionResponseTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "TransactionResponseTypeBindingTest.xml");
         buildDocument(resource);

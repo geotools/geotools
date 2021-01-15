@@ -16,22 +16,30 @@
  */
 package org.geotools.xs;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.lang.reflect.Field;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.geotools.xsd.ElementInstance;
+import org.junit.Test;
 
 public class TestSchemaTest extends TestSchema {
+    @Test
     public void testInitialize() {
         assertNotNull(url);
         assertNotNull(schema);
         assertNotNull(factory);
     }
 
+    @Test
     public void testStratagyQName() throws Exception {
         assertNotNull(stratagy(XS.ANYSIMPLETYPE));
     }
 
+    @Test
     public void testStratagyName() throws Exception {
         assertNotNull(stratagy("anySimpleType"));
 
@@ -43,6 +51,7 @@ public class TestSchemaTest extends TestSchema {
         }
     }
 
+    @Test
     public void testXS() throws Exception {
         assertEquals(XS.ANYSIMPLETYPE, xs("anySimpleType"));
 
@@ -54,6 +63,7 @@ public class TestSchemaTest extends TestSchema {
         }
     }
 
+    @Test
     public void testSchemaIdentiy() {
         assertNotNull(schema);
         assertNotNull(xsd);
@@ -61,17 +71,20 @@ public class TestSchemaTest extends TestSchema {
     }
 
     /** Look into "builtin" schema for schema (aka xsd ?) */
+    @Test
     public void testXSDSimpleTypes() throws Exception {
         XSDSimpleTypeDefinition any = xsdSimple("anySimpleType");
         assertNotNull("Found", any);
     }
 
     /** Look into parsed schema - should agree with XMLSchema */
+    @Test
     public void testSchemaSimpleTypes() throws Exception {
         XSDSimpleTypeDefinition any = xsdSimple("anySimpleType");
         assertNotNull("Found", any);
     }
 
+    @Test
     public void testAllSimpleTypes() throws Exception {
         Class xs = XS.class;
         Field[] fields = xs.getFields();
@@ -90,6 +103,7 @@ public class TestSchemaTest extends TestSchema {
         }
     }
 
+    @Test
     public void testElement() {
         ElementInstance element = element(" hello world ", XS.ANYSIMPLETYPE);
         assertEquals(" hello world ", element.getText());

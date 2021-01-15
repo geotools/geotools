@@ -16,11 +16,14 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.*;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xsd.Configuration;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Element;
 
@@ -30,11 +33,12 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         registerNamespaceMapping("test", TEST.NAMESPACE);
     }
 
+    @Test
     public void testFeatureMember() throws Exception {
         Element featureCollection =
                 GML3MockData.element(TEST.TestFeatureCollection, document, document);
@@ -64,6 +68,7 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
         }
     }
 
+    @Test
     public void testFeatureMembers() throws Exception {
         Element featureCollection =
                 GML3MockData.element(TEST.TestFeatureCollection, document, document);

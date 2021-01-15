@@ -16,6 +16,9 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.net.URL;
 import java.util.Collections;
 import javax.xml.namespace.QName;
@@ -24,18 +27,12 @@ import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Unit test suite for {@link DeleteElementTypeBinding}
- *
- * @author Gabriel Roldan (TOPP)
- * @version $Id$
- * @since 2.5.x
- */
 public class DeleteElementTypeBindingTest extends WFSTestSupport {
 
     public DeleteElementTypeBindingTest() {
@@ -43,7 +40,7 @@ public class DeleteElementTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         // additional namespace
@@ -51,6 +48,7 @@ public class DeleteElementTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @Test
     public void testEncode() throws Exception {
 
         final DeleteElementType delete = factory.createDeleteElementType();
@@ -71,6 +69,7 @@ public class DeleteElementTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "DeleteElementTypeBindingTest.xml");
         buildDocument(resource);

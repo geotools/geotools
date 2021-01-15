@@ -16,12 +16,13 @@
  */
 package org.geotools.feature.collection;
 
-import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.util.factory.Hints;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -29,12 +30,12 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class ClippingFeatureCollectionTest extends TestCase {
+public class ClippingFeatureCollectionTest {
 
     DefaultFeatureCollection delegate;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("foo");
         tb.add("geom", Point.class);
@@ -72,7 +73,7 @@ public class ClippingFeatureCollectionTest extends TestCase {
                 i++;
             }
             // first two points have been removed
-            assertEquals(8, i);
+            Assert.assertEquals(8, i);
         }
     }
 
@@ -80,6 +81,6 @@ public class ClippingFeatureCollectionTest extends TestCase {
     public void testSize() {
         ClippingFeatureCollection clipping = new ClippingFeatureCollection(delegate);
         // first two points have been removed
-        assertEquals(8, clipping.size());
+        Assert.assertEquals(8, clipping.size());
     }
 }

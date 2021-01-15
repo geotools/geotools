@@ -1,16 +1,18 @@
 package org.geotools.filter;
 
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.GeometryTransformationVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
-public class GeometryFilterVisitorTest extends TestCase {
+public class GeometryFilterVisitorTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
+    @Test
     public void testSimpleBuffer() {
         org.opengis.filter.expression.Expression geomTx =
                 ff.function("buffer", ff.property("the_geom"), ff.literal(2));
@@ -21,9 +23,10 @@ public class GeometryFilterVisitorTest extends TestCase {
         ReferencedEnvelope result = (ReferencedEnvelope) geomTx.accept(visitor, re);
 
         ReferencedEnvelope expected = new ReferencedEnvelope(-2, 4, -2, 4, null);
-        assertEquals(expected, result);
+        Assert.assertEquals(expected, result);
     }
 
+    @Test
     public void testChainBuffer() {
         // check buffer chaining
         Function innerBuffer = ff.function("buffer", ff.property("the_geom"), ff.literal(3));
@@ -35,9 +38,10 @@ public class GeometryFilterVisitorTest extends TestCase {
         ReferencedEnvelope result = (ReferencedEnvelope) geomTx.accept(visitor, re);
 
         ReferencedEnvelope expected = new ReferencedEnvelope(-5, 7, -5, 7, null);
-        assertEquals(expected, result);
+        Assert.assertEquals(expected, result);
     }
 
+    @Test
     public void testChainIntersection() {
         Function innerBuffer1 = ff.function("buffer", ff.property("the_geom"), ff.literal(3));
         Function innerBuffer2 = ff.function("buffer", ff.property("other_geom"), ff.literal(2));
@@ -49,6 +53,6 @@ public class GeometryFilterVisitorTest extends TestCase {
         ReferencedEnvelope result = (ReferencedEnvelope) geomTx.accept(visitor, re);
 
         ReferencedEnvelope expected = new ReferencedEnvelope(-3, 5, -3, 5, null);
-        assertEquals(expected, result);
+        Assert.assertEquals(expected, result);
     }
 }

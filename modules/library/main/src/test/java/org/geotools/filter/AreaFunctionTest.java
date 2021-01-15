@@ -18,13 +18,14 @@ package org.geotools.filter;
 
 import java.util.Arrays;
 import java.util.logging.Logger;
-import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
@@ -41,7 +42,7 @@ import org.opengis.filter.expression.PropertyName;
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
  */
-public class AreaFunctionTest extends TestCase {
+public class AreaFunctionTest {
 
     /** Standard logging instance */
     protected static final Logger LOGGER =
@@ -56,36 +57,14 @@ public class AreaFunctionTest extends TestCase {
     /** Test suite for this test case */
     TestSuite suite = null;
 
-    /** Constructor with test name. */
-    public AreaFunctionTest(String testName) {
-        super(testName);
-        // BasicConfigurator.configure();
-
-    }
-
-    /** Main for test runner. */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /**
-     * Required suite builder.
-     *
-     * @return A test suite for this unit test.
-     */
-    public static Test suite() {
-
-        TestSuite suite = new TestSuite(AreaFunctionTest.class);
-        return suite;
-    }
-
     /**
      * Sets up a schema and a test feature.
      *
      * @throws SchemaException If there is a problem setting up the schema.
      * @throws IllegalFeatureException If problem setting up the feature.
      */
-    protected void setUp() throws SchemaException, IllegalAttributeException {
+    @Before
+    public void setUp() throws SchemaException, IllegalAttributeException {
         if (setup) {
             return;
         }
@@ -154,12 +133,13 @@ public class AreaFunctionTest extends TestCase {
             CommonFactoryFinder.getFilterFactory(null);
 
     /** Tests the min function expression. */
+    @Test
     public void testAreaFunction() throws IllegalFilterException {
 
         PropertyName a = filterFactory.property("testGeometry");
 
         AreaFunction area = new AreaFunction();
         area.setParameters(Arrays.asList(new org.opengis.filter.expression.Expression[] {a}));
-        assertEquals(100d, ((Double) area.evaluate(testFeature)).doubleValue(), 0);
+        Assert.assertEquals(100d, ((Double) area.evaluate(testFeature)).doubleValue(), 0);
     }
 }

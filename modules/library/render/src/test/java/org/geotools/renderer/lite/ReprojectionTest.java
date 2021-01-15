@@ -19,7 +19,6 @@ package org.geotools.renderer.lite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -32,6 +31,9 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -46,7 +48,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author wolf
  */
-public class ReprojectionTest extends TestCase {
+public class ReprojectionTest {
 
     private SimpleFeatureType pointFeautureType;
 
@@ -54,8 +56,8 @@ public class ReprojectionTest extends TestCase {
 
     protected int errors;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("Lines");
@@ -84,6 +86,7 @@ public class ReprojectionTest extends TestCase {
         return sb.createStyle(sb.createLineSymbolizer());
     }
 
+    @Test
     public void testSkipProjectionErrors() throws Exception {
         // build map context
         MapContent MapContent = new MapContent();
@@ -119,6 +122,6 @@ public class ReprojectionTest extends TestCase {
         MapContent.dispose();
         // we should get two errors since there are two features that cannot be
         // projected but the renderer itself should not throw exceptions
-        assertEquals(1, errors);
+        Assert.assertEquals(1, errors);
     }
 }

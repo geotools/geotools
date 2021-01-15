@@ -16,21 +16,27 @@
  */
 package org.geotools.ows.v1_1.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import net.opengis.ows11.GetCapabilitiesType;
 import org.geotools.ows.v1_1.OWS;
 import org.geotools.ows.v1_1.OWSTestSupport_1_1;
 import org.geotools.xsd.Binding;
 import org.junit.Assert;
+import org.junit.Test;
 
 public class GetCapabilitiesTypeBindingTest extends OWSTestSupport_1_1 {
+    @Test
     public void testType() throws Exception {
         assertEquals(GetCapabilitiesType.class, binding(OWS.GetCapabilitiesType).getType());
     }
 
+    @Test
     public void testExecutionMode() throws Exception {
         assertEquals(Binding.OVERRIDE, binding(OWS.GetCapabilitiesType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<ows:GetCapabilities xmlns:ows=\"http://www.opengis.net/ows\" version=\"1.1.0\">"

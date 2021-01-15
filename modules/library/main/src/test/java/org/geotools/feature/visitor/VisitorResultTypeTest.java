@@ -16,33 +16,41 @@
  */
 package org.geotools.feature.visitor;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.util.NullProgressListener;
+import org.junit.Test;
 
 public class VisitorResultTypeTest extends DataTestCase {
 
+    @Test
     public void testAverageInteger() {
         AverageVisitor visitor = new AverageVisitor(ff.property("id"));
         assertEquals(Arrays.asList(Double.class), getResultTypes(visitor, Integer.class));
     }
 
+    @Test
     public void testAverageDouble() {
         AverageVisitor visitor = new AverageVisitor(ff.property("flow"));
         assertEquals(Arrays.asList(Double.class), getResultTypes(visitor, Double.class));
     }
 
+    @Test
     public void testMaxInteger() {
         MaxVisitor visitor = new MaxVisitor(ff.property("id"));
         assertEquals(Arrays.asList(Integer.class), getResultTypes(visitor, Integer.class));
     }
 
+    @Test
     public void testMaxDouble() {
         MaxVisitor visitor = new MaxVisitor(ff.property("flow"));
         assertEquals(Arrays.asList(Double.class), getResultTypes(visitor, Double.class));
     }
 
+    @Test
     public void testGroupByAverageInteger() {
         GroupByVisitor visitor =
                 new GroupByVisitor(
@@ -54,6 +62,7 @@ public class VisitorResultTypeTest extends DataTestCase {
                 Arrays.asList(Double.class), getResultTypes(visitor, Integer.class, Integer.class));
     }
 
+    @Test
     public void testGroupByAverageDouble() {
         GroupByVisitor visitor =
                 new GroupByVisitor(
@@ -65,6 +74,7 @@ public class VisitorResultTypeTest extends DataTestCase {
                 Arrays.asList(Double.class), getResultTypes(visitor, Integer.class, Double.class));
     }
 
+    @Test
     public void testGroupByMaxInteger() {
         GroupByVisitor visitor =
                 new GroupByVisitor(
@@ -77,6 +87,7 @@ public class VisitorResultTypeTest extends DataTestCase {
                 getResultTypes(visitor, Integer.class, Integer.class));
     }
 
+    @Test
     public void testGroupByMaxDouble() {
         GroupByVisitor visitor =
                 new GroupByVisitor(

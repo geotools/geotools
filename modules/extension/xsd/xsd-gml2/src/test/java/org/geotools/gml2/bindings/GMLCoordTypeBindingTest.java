@@ -16,11 +16,15 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.math.BigDecimal;
 import org.geotools.gml2.GML;
 import org.geotools.xs.XS;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;
@@ -33,7 +37,7 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coordinate;
     MutablePicoContainer container;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         x = createElement(GML.NAMESPACE, "X", XS.DECIMAL, "12.34");
@@ -46,6 +50,7 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
         container.registerComponentImplementation(GMLCoordTypeBinding.class);
     }
 
+    @Test
     public void testParse1D() throws Exception {
         Node node =
                 createNode(
@@ -64,6 +69,7 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
         assertEquals(c.x, 12.34, 0d);
     }
 
+    @Test
     public void testParse2D() throws Exception {
         Node node =
                 createNode(
@@ -83,6 +89,7 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
         assertEquals(c.y, 56.78, 0d);
     }
 
+    @Test
     public void testParse3D() throws Exception {
         Node node =
                 createNode(

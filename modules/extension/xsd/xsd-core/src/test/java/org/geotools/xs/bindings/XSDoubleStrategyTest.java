@@ -16,10 +16,13 @@
  */
 package org.geotools.xs.bindings;
 
+import static org.junit.Assert.*;
+
 import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 import org.geotools.xsd.ElementInstance;
+import org.junit.Test;
 
 public class XSDoubleStrategyTest extends TestSchema {
     /**
@@ -30,6 +33,7 @@ public class XSDoubleStrategyTest extends TestSchema {
     /*
      * Test method for 'org.geotools.xml.strategies.xs.XSDoubleStrategy.parse(Element, Node[], Object)'
      */
+    @Test
     public void testParse() throws Exception {
         validateValues("-1E4", Double.valueOf(-1E4));
         validateValues("1267.43233E12", Double.valueOf(1267.43233E12));
@@ -42,6 +46,7 @@ public class XSDoubleStrategyTest extends TestSchema {
         assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), strategy.parse(element, "INF"));
     }
 
+    @Test
     public void testIntegerParse() throws Exception {
         ElementInstance element = element("12345", XS.INTEGER);
         assertEquals(Double.valueOf(12345.0), strategy.parse(element, "12345"));

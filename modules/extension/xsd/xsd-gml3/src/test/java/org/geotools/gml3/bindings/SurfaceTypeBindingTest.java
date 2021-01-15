@@ -16,12 +16,16 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
 public class SurfaceTypeBindingTest extends GML3TestSupport {
-
+    @Test
     public void testParse() throws Exception {
         GML3MockData.surface(document, document);
         MultiPolygon surface = (MultiPolygon) parse();

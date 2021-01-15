@@ -16,40 +16,25 @@
  */
 package org.geotools.geopkg.wps.xml;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 
-/**
- * Binding test case for http://www.opengis.net/gpkg:bboxtype.
- *
- * <p>
- *
- * <pre>
- *   <code>
- *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;xs:complexType name="bboxtype" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
- *      &lt;xs:sequence&gt;
- *        &lt;xs:element name="minx" type="xs:decimal"/&gt;
- *        &lt;xs:element name="miny" type="xs:decimal"/&gt;
- *        &lt;xs:element name="maxx" type="xs:decimal"/&gt;
- *        &lt;xs:element name="maxy" type="xs:decimal"/&gt;
- *      &lt;/xs:sequence&gt;
- *    &lt;/xs:complexType&gt;
- *
- *    </code>
- *   </pre>
- *
- * @generated
- */
 public class BboxtypeBindingTest extends GPKGTestSupport {
-
+    @Test
     public void testType() {
         assertEquals(Envelope.class, binding(GPKG.bboxtype).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(GPKG.bboxtype).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         buildDocument("<bbox><minx>0</minx><maxx>100</maxx><miny>10</miny><maxy>50</maxy></bbox>");
         Object result = parse(GPKG.bboxtype);

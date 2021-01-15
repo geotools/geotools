@@ -16,12 +16,16 @@
  */
 package org.geotools.validation;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.attributes.UniqueFIDValidation;
+import org.junit.After;
+import org.junit.Test;
 
 /**
  * IntegrityValidationTest purpose.
@@ -37,37 +41,21 @@ import org.geotools.validation.attributes.UniqueFIDValidation;
 public class IntegrityValidationTest extends DataTestCase {
     MemoryDataStore store;
 
-    /**
-     * FeatureValidationTest constructor.
-     *
-     * <p>Run test <code>testName</code>.
-     */
-    public IntegrityValidationTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * Construct data store for use.
-     *
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    /** Construct data store for use. */
+    public void init() throws Exception {
+        super.init();
         store = new MemoryDataStore();
         store.addFeatures(roadFeatures);
         store.addFeatures(riverFeatures);
     }
 
-    /**
-     * Override tearDown.
-     *
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         store = null;
         super.tearDown();
     }
 
+    @Test
     public void testUniqueFIDIntegrityValidation() throws Exception {
         // the visitor
         RoadValidationResults validationResults = new RoadValidationResults();

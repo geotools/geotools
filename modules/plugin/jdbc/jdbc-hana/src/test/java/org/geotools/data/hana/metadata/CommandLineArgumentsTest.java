@@ -19,82 +19,90 @@ package org.geotools.data.hana.metadata;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.data.hana.HanaConnectionParameters;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** @author Stefan Uhrig, SAP SE */
-public class CommandLineArgumentsTest extends TestCase {
+public class CommandLineArgumentsTest {
 
+    @Test
     public void testValidArgsUsePort() {
         String[] args = {"user", "host:1234"};
         CommandLineArguments cla = CommandLineArguments.parse(args);
-        assertNotNull(cla);
-        assertEquals("user", cla.getUser());
+        Assert.assertNotNull(cla);
+        Assert.assertEquals("user", cla.getUser());
         HanaConnectionParameters hcp = cla.getConnectionParameters();
-        assertEquals("host", hcp.getHost());
-        assertEquals(1234, hcp.getPort().intValue());
+        Assert.assertEquals("host", hcp.getHost());
+        Assert.assertEquals(1234, hcp.getPort().intValue());
     }
 
+    @Test
     public void testValidArgsUsePortSsl() {
         String[] args = {"user", "host:1234", "--ssl"};
         CommandLineArguments cla = CommandLineArguments.parse(args);
-        assertNotNull(cla);
-        assertEquals("user", cla.getUser());
+        Assert.assertNotNull(cla);
+        Assert.assertEquals("user", cla.getUser());
         HanaConnectionParameters hcp = cla.getConnectionParameters();
-        assertEquals("host", hcp.getHost());
-        assertEquals(1234, hcp.getPort().intValue());
+        Assert.assertEquals("host", hcp.getHost());
+        Assert.assertEquals(1234, hcp.getPort().intValue());
         Map<String, String> options = hcp.getAdditionalOptions();
-        assertEquals("true", options.get("encrypt"));
+        Assert.assertEquals("true", options.get("encrypt"));
     }
 
+    @Test
     public void testValidArgsSingleContainer() {
         String[] args = {"user", "host", "0"};
         CommandLineArguments cla = CommandLineArguments.parse(args);
-        assertNotNull(cla);
-        assertEquals("user", cla.getUser());
+        Assert.assertNotNull(cla);
+        Assert.assertEquals("user", cla.getUser());
         HanaConnectionParameters hcp = cla.getConnectionParameters();
-        assertEquals("host", hcp.getHost());
+        Assert.assertEquals("host", hcp.getHost());
         Map<String, String> options = hcp.getAdditionalOptions();
-        assertEquals("0", options.get("instanceNumber"));
+        Assert.assertEquals("0", options.get("instanceNumber"));
     }
 
+    @Test
     public void testValidArgsSingleContainerSsl() {
         String[] args = {"user", "host", "0", "--ssl"};
         CommandLineArguments cla = CommandLineArguments.parse(args);
-        assertNotNull(cla);
-        assertEquals("user", cla.getUser());
+        Assert.assertNotNull(cla);
+        Assert.assertEquals("user", cla.getUser());
         HanaConnectionParameters hcp = cla.getConnectionParameters();
-        assertEquals("host", hcp.getHost());
+        Assert.assertEquals("host", hcp.getHost());
         Map<String, String> options = hcp.getAdditionalOptions();
-        assertEquals("0", options.get("instanceNumber"));
-        assertEquals("true", options.get("encrypt"));
+        Assert.assertEquals("0", options.get("instanceNumber"));
+        Assert.assertEquals("true", options.get("encrypt"));
     }
 
+    @Test
     public void testValidArgsMultiContainer() {
         String[] args = {"user", "host", "0", "DTB"};
         CommandLineArguments cla = CommandLineArguments.parse(args);
-        assertNotNull(cla);
-        assertEquals("user", cla.getUser());
+        Assert.assertNotNull(cla);
+        Assert.assertEquals("user", cla.getUser());
         HanaConnectionParameters hcp = cla.getConnectionParameters();
-        assertEquals("host", hcp.getHost());
+        Assert.assertEquals("host", hcp.getHost());
         Map<String, String> options = hcp.getAdditionalOptions();
-        assertEquals("0", options.get("instanceNumber"));
-        assertEquals("DTB", options.get("databaseName"));
+        Assert.assertEquals("0", options.get("instanceNumber"));
+        Assert.assertEquals("DTB", options.get("databaseName"));
     }
 
+    @Test
     public void testValidArgsMultiContainerSsl() {
         String[] args = {"user", "host", "0", "DTB", "--ssl"};
         CommandLineArguments cla = CommandLineArguments.parse(args);
-        assertNotNull(cla);
-        assertEquals("user", cla.getUser());
+        Assert.assertNotNull(cla);
+        Assert.assertEquals("user", cla.getUser());
         HanaConnectionParameters hcp = cla.getConnectionParameters();
-        assertEquals("host", hcp.getHost());
+        Assert.assertEquals("host", hcp.getHost());
         Map<String, String> options = hcp.getAdditionalOptions();
-        assertEquals("0", options.get("instanceNumber"));
-        assertEquals("DTB", options.get("databaseName"));
-        assertEquals("true", options.get("encrypt"));
+        Assert.assertEquals("0", options.get("instanceNumber"));
+        Assert.assertEquals("DTB", options.get("databaseName"));
+        Assert.assertEquals("true", options.get("encrypt"));
     }
 
+    @Test
     public void testInvalidArgs() {
         PrintStream ps = new PrintStream(new ByteArrayOutputStream());
         PrintStream out = System.out;
@@ -103,9 +111,9 @@ public class CommandLineArgumentsTest extends TestCase {
             String[] twoArgs = {"a", "b"};
             String[] fiveArgs = {"a", "b", "c", "d", "e"};
             String[] invalidInstance = {"user", "host", "a"};
-            assertNull(CommandLineArguments.parse(twoArgs));
-            assertNull(CommandLineArguments.parse(fiveArgs));
-            assertNull(CommandLineArguments.parse(invalidInstance));
+            Assert.assertNull(CommandLineArguments.parse(twoArgs));
+            Assert.assertNull(CommandLineArguments.parse(fiveArgs));
+            Assert.assertNull(CommandLineArguments.parse(invalidInstance));
         } finally {
             System.setOut(out);
         }

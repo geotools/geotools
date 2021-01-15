@@ -16,11 +16,16 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xlink.XLINK;
+import org.junit.Test;
 import org.opengis.feature.type.AttributeType;
 
 /**
@@ -31,6 +36,7 @@ import org.opengis.feature.type.AttributeType;
 public class ReferenceTypeBindingTest extends GML3TestSupport {
 
     /** Make sure no xlink:href is created if id is not set. */
+    @Test
     public void testXlinkHrefNull() throws Exception {
         AttributeType attType =
                 new AttributeTypeImpl(
@@ -48,6 +54,7 @@ public class ReferenceTypeBindingTest extends GML3TestSupport {
     }
 
     /** Test xlink:href returns gml:id. */
+    @Test
     public void testXlinkHref() throws Exception {
         AttributeType attType =
                 new AttributeTypeImpl(

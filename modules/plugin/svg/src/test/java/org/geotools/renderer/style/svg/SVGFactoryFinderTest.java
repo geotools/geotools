@@ -19,28 +19,31 @@ package org.geotools.renderer.style.svg;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
 import org.geotools.renderer.style.ExternalGraphicFactory;
 import org.geotools.renderer.style.MarkFactory;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Makes sure the symbol factory lookup works as advertised
  *
  * @author Andrea Aime - TOPP
  */
-public class SVGFactoryFinderTest extends TestCase {
+public class SVGFactoryFinderTest {
 
+    @Test
     public void testLookupExternalGraphicFactories() {
         List<ExternalGraphicFactory> result =
                 loadIterator(DynamicSymbolFactoryFinder.getExternalGraphicFactories());
-        assertTrue(result.size() >= 1);
+        Assert.assertTrue(result.size() >= 1);
         assertContainsClassInstance(result, SVGGraphicFactory.class);
     }
 
+    @Test
     public void testLookupMarkFactories() {
         List<MarkFactory> result = loadIterator(DynamicSymbolFactoryFinder.getMarkFactories());
-        assertTrue(result.size() >= 1);
+        Assert.assertTrue(result.size() >= 1);
         assertContainsClassInstance(result, MarkFactory.class);
     }
 
@@ -48,7 +51,7 @@ public class SVGFactoryFinderTest extends TestCase {
         for (Object item : list) {
             if (item != null && clazz.isAssignableFrom(item.getClass())) return;
         }
-        fail("List does not contain any element of class " + clazz.getName());
+        Assert.fail("List does not contain any element of class " + clazz.getName());
     }
 
     public <T> List<T> loadIterator(Iterator<T> iterator) {

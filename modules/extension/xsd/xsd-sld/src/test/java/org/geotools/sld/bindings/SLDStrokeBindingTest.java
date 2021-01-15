@@ -16,15 +16,21 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.filter.Filters;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Stroke;
+import org.junit.Test;
 
 public class SLDStrokeBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(Stroke.class, new SLDStrokeBinding(null, null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.stroke(document, document);
 

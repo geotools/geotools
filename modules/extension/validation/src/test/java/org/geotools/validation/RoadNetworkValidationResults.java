@@ -83,7 +83,7 @@ public class RoadNetworkValidationResults implements ValidationResults {
      */
     public void error(SimpleFeature feature, String message) {
         failedFeatures.add(feature);
-        failureMessages.add(feature.getID() + ": " + message);
+        if (feature != null) failureMessages.add(feature.getID() + ": " + message);
     }
 
     /**
@@ -96,7 +96,7 @@ public class RoadNetworkValidationResults implements ValidationResults {
      */
     public void warning(SimpleFeature feature, String message) {
         warningFeatures.add(feature);
-        warningMessages.add(feature.getID() + ": " + message);
+        if (feature != null) warningMessages.add(feature.getID() + ": " + message);
     }
 
     /**

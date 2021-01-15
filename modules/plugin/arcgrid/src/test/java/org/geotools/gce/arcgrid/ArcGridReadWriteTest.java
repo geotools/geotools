@@ -17,6 +17,8 @@
  */
 package org.geotools.gce.arcgrid;
 
+import static org.junit.Assert.*;
+
 import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +31,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterValue;
@@ -42,11 +45,6 @@ import org.opengis.parameter.ParameterValueGroup;
  */
 public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     private final Random generator = new Random();
-
-    /** Creates a new instance of ArcGridReadWriteTest */
-    public ArcGridReadWriteTest(String name) {
-        super(name);
-    }
 
     /** */
     public void runMe(final File testFile) throws Exception {
@@ -228,6 +226,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         }
     }
 
+    @Test
     public void testErrorConditions() throws IOException {
 
         // testing format and reader
@@ -266,10 +265,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
                 af.getWriter(new URL("http://www.geo-solutions.it")));
     }
 
-    public static final void main(String[] args) throws Exception {
-        junit.textui.TestRunner.run(ArcGridReadWriteTest.class);
-    }
-
+    @Test
     public void testImageLayout() throws Exception {
         // test ImageLayout
         LOGGER.info("testImageLayout");

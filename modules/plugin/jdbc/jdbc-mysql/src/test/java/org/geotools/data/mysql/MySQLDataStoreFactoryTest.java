@@ -18,20 +18,24 @@ package org.geotools.data.mysql;
 
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class MySQLDataStoreFactoryTest extends TestCase {
+public class MySQLDataStoreFactoryTest {
     MySQLDataStoreFactory factory;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         factory = new MySQLDataStoreFactory();
     }
 
+    @Test
     public void testCanProcess() throws Exception {
         Map<String, Object> params = new HashMap<>();
-        assertFalse(factory.canProcess(params));
+        Assert.assertFalse(factory.canProcess(params));
 
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
         params.put(JDBCDataStoreFactory.DATABASE.key, "geotools");
@@ -40,10 +44,11 @@ public class MySQLDataStoreFactoryTest extends TestCase {
         params.put(JDBCDataStoreFactory.HOST.key, "localhost");
         params.put(JDBCDataStoreFactory.PORT.key, "3306");
         params.put(JDBCDataStoreFactory.USER.key, "mysqluser");
-        assertTrue(factory.canProcess(params));
+        Assert.assertTrue(factory.canProcess(params));
     }
 
     /** check fix of possible NPE issue during MySQLVersion56 check (pull request #2033) */
+    @Test
     public void testNoNpeOnConnectionFailure() throws Exception {
         // create a dummy JDBC store
         JDBCDataStore store = new JDBCDataStore();
@@ -55,7 +60,7 @@ public class MySQLDataStoreFactoryTest extends TestCase {
         try {
             factory.isMySqlVersion56OrAbove(store);
         } catch (NullPointerException e) {
-            fail("an exception occured during checking of MySQL version " + e);
+            Assert.fail("an exception occured during checking of MySQL version " + e);
         }
     }
 }

@@ -16,9 +16,12 @@
  */
 package org.geotools.xs.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
+import org.junit.Test;
 
 public class XSFloatStrategyTest extends TestSchema {
     public void validateValues(String given, Float expected) throws Exception {
@@ -30,10 +33,12 @@ public class XSFloatStrategyTest extends TestSchema {
      * For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for
      * float.
      */
+    @Test
     public void testWhiteSpace() throws Exception {
         validateValues(" \n12", Float.valueOf(12));
     }
 
+    @Test
     public void testParse() throws Exception {
         validateValues("-1E4", Float.valueOf(-1E4f));
         validateValues("1267.43233E12", Float.valueOf(1267.43233E12f));

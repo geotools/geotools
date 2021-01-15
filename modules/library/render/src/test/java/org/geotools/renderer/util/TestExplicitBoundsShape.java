@@ -11,34 +11,38 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class TestExplicitBoundsShape extends TestCase {
+public class TestExplicitBoundsShape {
 
+    @Test
     public void testConstructorOk() {
         try {
 
             Shape shape = createMock(Shape.class);
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
-            assertNotNull(target);
+            Assert.assertNotNull(target);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Should not throw " + e.getClass().getSimpleName());
+            Assert.fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
 
+    @Test
     public void testConstructor_NullShape() throws Exception {
 
         try {
             new ExplicitBoundsShape(null);
-            fail("Should throw IllegalArgumentException");
+            Assert.fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // ok
         }
     }
 
+    @Test
     public void testDelegate_AllMethods() {
         try {
             Shape shape = createMock(Shape.class);
@@ -60,24 +64,25 @@ public class TestExplicitBoundsShape extends TestCase {
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertFalse(target.contains((Point2D) null));
-            assertFalse(target.contains((Rectangle2D) null));
-            assertFalse(target.contains(0.0, 0.0));
-            assertFalse(target.contains(0.0, 0.0, 0.0, 0.0));
-            assertNull(target.getBounds());
-            assertNull(target.getBounds2D());
-            assertNull(target.getPathIterator(null));
-            assertNull(target.getPathIterator(null, 0.0));
-            assertFalse(target.intersects(null));
-            assertFalse(target.intersects(0.0, 0.0, 0.0, 0.0));
+            Assert.assertFalse(target.contains((Point2D) null));
+            Assert.assertFalse(target.contains((Rectangle2D) null));
+            Assert.assertFalse(target.contains(0.0, 0.0));
+            Assert.assertFalse(target.contains(0.0, 0.0, 0.0, 0.0));
+            Assert.assertNull(target.getBounds());
+            Assert.assertNull(target.getBounds2D());
+            Assert.assertNull(target.getPathIterator(null));
+            Assert.assertNull(target.getPathIterator(null, 0.0));
+            Assert.assertFalse(target.intersects(null));
+            Assert.assertFalse(target.intersects(0.0, 0.0, 0.0, 0.0));
 
             verify(shape);
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Should not throw " + e.getClass().getSimpleName());
+            Assert.fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
 
+    @Test
     public void testSetBounds() {
         try {
 
@@ -93,30 +98,31 @@ public class TestExplicitBoundsShape extends TestCase {
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertEquals(shapeBounds, target.getBounds());
-            assertEquals(shapeBounds, target.getBounds2D());
+            Assert.assertEquals(shapeBounds, target.getBounds());
+            Assert.assertEquals(shapeBounds, target.getBounds2D());
 
             Rectangle bounds = new Rectangle(1, 2, 5, 6);
             target.setBounds(bounds);
 
-            assertEquals(bounds, target.getBounds());
-            assertEquals(bounds, target.getBounds2D());
+            Assert.assertEquals(bounds, target.getBounds());
+            Assert.assertEquals(bounds, target.getBounds2D());
 
             verify(shape);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Should not throw " + e.getClass().getSimpleName());
+            Assert.fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
 
+    @Test
     public void testEquals_Shape() {
         try {
             Shape shape = createMock(Shape.class);
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertEquals(target, shape);
+            Assert.assertEquals(target, shape);
 
             Rectangle bounds = new Rectangle(1, 2, 5, 6);
             target.setBounds(bounds);
@@ -125,10 +131,11 @@ public class TestExplicitBoundsShape extends TestCase {
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Should not throw " + e.getClass().getSimpleName());
+            Assert.fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
 
+    @Test
     public void testEquals_Null() {
         try {
 
@@ -140,10 +147,11 @@ public class TestExplicitBoundsShape extends TestCase {
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Should not throw " + e.getClass().getSimpleName());
+            Assert.fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
 
+    @Test
     public void testEquals_Object() {
         try {
 
@@ -155,24 +163,26 @@ public class TestExplicitBoundsShape extends TestCase {
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Should not throw " + e.getClass().getSimpleName());
+            Assert.fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
 
+    @Test
     public void testEquals_SameObject() {
         try {
             Shape shape = createMock(Shape.class);
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertEquals(target, target);
+            Assert.assertEquals(target, target);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Should not throw " + e.getClass().getSimpleName());
+            Assert.fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
 
+    @Test
     public void testEquals_OtherObject() {
         try {
             Shape shape = createMock(Shape.class);
@@ -182,7 +192,7 @@ public class TestExplicitBoundsShape extends TestCase {
             ExplicitBoundsShape other = new ExplicitBoundsShape(shape);
             ExplicitBoundsShape another = new ExplicitBoundsShape(shape2);
 
-            assertEquals(target, other);
+            Assert.assertEquals(target, other);
             assertNotEquals(target, another);
 
             Rectangle bounds = new Rectangle(1, 1, 4, 4);
@@ -194,24 +204,25 @@ public class TestExplicitBoundsShape extends TestCase {
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Should not throw " + e.getClass().getSimpleName());
+            Assert.fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
 
+    @Test
     public void testHashCode() {
         try {
             Shape shape = createMock(Shape.class);
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertEquals(shape.hashCode(), target.hashCode());
+            Assert.assertEquals(shape.hashCode(), target.hashCode());
 
             Rectangle bounds = new Rectangle(1, 1, 4, 4);
             target.setBounds(bounds);
-            assertFalse(shape.hashCode() == target.hashCode());
+            Assert.assertFalse(shape.hashCode() == target.hashCode());
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail("Should not throw " + e.getClass().getSimpleName());
+            Assert.fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
 }

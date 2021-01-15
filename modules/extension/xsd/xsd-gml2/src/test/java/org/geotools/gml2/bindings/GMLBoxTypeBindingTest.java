@@ -16,9 +16,14 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
@@ -29,7 +34,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coord3;
     ElementInstance coords;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         box = createElement(GML.NAMESPACE, "myBox", GML.BoxType, null);
@@ -39,6 +44,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         coords = createElement(GML.NAMESPACE, "coordinates", GML.CoordinatesType, null);
     }
 
+    @Test
     public void testTwoCoord() throws Exception {
         Node node =
                 createNode(
@@ -57,6 +63,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         assertEquals(e.getMaxY(), 4d, 0d);
     }
 
+    @Test
     public void testSingleCoord() throws Exception {
         Node node =
                 createNode(
@@ -76,6 +83,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         }
     }
 
+    @Test
     public void testMultiCoord() throws Exception {
         Node node =
                 createNode(
@@ -99,6 +107,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         }
     }
 
+    @Test
     public void testTwoCoordinates() throws Exception {
         Node node =
                 createNode(
@@ -120,6 +129,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         assertEquals(e.getMaxY(), 4d, 0d);
     }
 
+    @Test
     public void testSingleCoordinates() throws Exception {
         Node node =
                 createNode(
@@ -139,6 +149,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
         }
     }
 
+    @Test
     public void testMultiCoordinates() throws Exception {
         Node node =
                 createNode(

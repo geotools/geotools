@@ -17,25 +17,15 @@
 package org.geotools.gce.gtopo30;
 
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** @author Simone Giannecchini */
-public class GT30ServiceTest extends TestCase {
-    public GT30ServiceTest() {
-        super();
+public class GT30ServiceTest {
 
-        // TODO Auto-generated constructor stub
-    }
-
-    /** @param arg0 */
-    public GT30ServiceTest(String arg0) {
-        super(arg0);
-
-        // TODO Auto-generated constructor stub
-    }
-
+    @Test
     public void testIsAvailable() {
         Iterator list = GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
@@ -50,6 +40,6 @@ public class GT30ServiceTest extends TestCase {
             }
         }
 
-        assertTrue("GTopo30FormatFactory not registered", found);
+        Assert.assertTrue("GTopo30FormatFactory not registered", found);
     }
 }

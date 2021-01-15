@@ -16,13 +16,16 @@
  */
 package org.geotools.gml3.simple;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
+import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.w3c.dom.Document;
 
 public class MultiPolygonTest extends GeometryEncoderTestSupport {
-
+    @Test
     public void testEncodeMultiPolygon() throws Exception {
         MultiPolygonEncoder encoder = new MultiPolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
         MultiPolygon geometry =
@@ -49,6 +52,7 @@ public class MultiPolygonTest extends GeometryEncoderTestSupport {
     }
 
     /** No encode gml:id test */
+    @Test
     public void testEncodeMultiPolygonNoGmlId() throws Exception {
         MultiPolygonEncoder encoder =
                 new MultiPolygonEncoder(gtEncoder, "gml", GML.NAMESPACE, false);

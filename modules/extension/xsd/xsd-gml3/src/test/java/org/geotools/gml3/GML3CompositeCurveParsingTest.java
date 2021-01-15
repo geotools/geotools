@@ -1,6 +1,11 @@
 package org.geotools.gml3;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.xsd.Parser;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 
 public class GML3CompositeCurveParsingTest extends GML3TestSupport {
@@ -10,6 +15,7 @@ public class GML3CompositeCurveParsingTest extends GML3TestSupport {
         return true;
     }
 
+    @Test
     public void testCompositeCurve() throws Exception {
         GMLConfiguration gml = new GMLConfiguration(true);
         Parser p = new Parser(gml);

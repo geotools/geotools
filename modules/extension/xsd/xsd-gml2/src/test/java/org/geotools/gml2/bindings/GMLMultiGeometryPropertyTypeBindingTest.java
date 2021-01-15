@@ -16,9 +16,12 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -29,7 +32,7 @@ public class GMLMultiGeometryPropertyTypeBindingTest extends AbstractGMLBindingT
     ElementInstance association;
     ElementInstance geometry;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         association =
@@ -40,6 +43,7 @@ public class GMLMultiGeometryPropertyTypeBindingTest extends AbstractGMLBindingT
                         GML.NAMESPACE, "myGeometryCollection", GML.GeometryCollectionType, null);
     }
 
+    @Test
     public void testWithGeometry() throws Exception {
         Point p1 = new GeometryFactory().createPoint(new Coordinate(0, 0));
         Point p2 = new GeometryFactory().createPoint(new Coordinate(1, 1));

@@ -1,20 +1,25 @@
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class SchemaTypeBindingTest extends KMLTestSupport {
-
+    @Test
     public void testExecutionMode() throws Exception {
         assertEquals(Binding.OVERRIDE, binding(KML.SchemaType).getExecutionMode());
     }
 
+    @Test
     public void testGetType() {
         assertEquals(SimpleFeatureType.class, binding(KML.SchemaType).getType());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<Schema name=\"foo\">"

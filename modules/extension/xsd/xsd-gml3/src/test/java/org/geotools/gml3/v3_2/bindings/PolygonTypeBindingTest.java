@@ -16,10 +16,14 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.custommonkey.xmlunit.XMLAssert;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
@@ -30,13 +34,14 @@ public class PolygonTypeBindingTest extends GML32TestSupport {
     //        Polygon polygon = (Polygon) parse();
     //        assertNotNull(polygon);
     //    }
-
+    @Test
     public void testParse() throws Exception {
         GML3MockData.polygonWithPosList(document, document);
         Polygon p = (Polygon) parse();
         assertNotNull(p);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.polygon(), GML.Polygon);
 

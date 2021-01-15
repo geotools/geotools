@@ -17,41 +17,45 @@
 package org.geotools.filter.v1_0;
 
 import java.io.ByteArrayInputStream;
-import junit.framework.TestCase;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DWithin;
 
-public class OGCFilterTest extends TestCase {
+public class OGCFilterTest {
     Parser parser;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         Configuration configuration = new OGCConfiguration();
         parser = new Parser(configuration);
     }
 
+    @Test
     public void testRun() throws Exception {
         Object thing = parser.parse(getClass().getResourceAsStream("test1.xml"));
-        assertNotNull(thing);
-        assertTrue(thing instanceof PropertyIsEqualTo);
+        Assert.assertNotNull(thing);
+        Assert.assertTrue(thing instanceof PropertyIsEqualTo);
 
         PropertyIsEqualTo equal = (PropertyIsEqualTo) thing;
-        assertTrue(equal.getExpression1() instanceof PropertyName);
-        assertTrue(equal.getExpression2() instanceof Literal);
+        Assert.assertTrue(equal.getExpression1() instanceof PropertyName);
+        Assert.assertTrue(equal.getExpression2() instanceof Literal);
 
         PropertyName name = (PropertyName) equal.getExpression1();
-        assertEquals("testString", name.getPropertyName());
+        Assert.assertEquals("testString", name.getPropertyName());
 
         Literal literal = (Literal) equal.getExpression2();
-        assertEquals("2", literal.toString());
+        Assert.assertEquals("2", literal.toString());
     }
 
+    @Test
     public void testLax() throws Exception {
         String xml =
                 "<Filter>"
@@ -64,9 +68,10 @@ public class OGCFilterTest extends TestCase {
         Parser parser = new Parser(new OGCConfiguration());
         parser.setStrict(false);
         Filter filter = (Filter) parser.parse(new ByteArrayInputStream(xml.getBytes()));
-        assertNotNull(filter);
+        Assert.assertNotNull(filter);
     }
 
+    @Test
     public void testLiteralWithEntity() throws Exception {
         String xml =
                 "<Filter>"
@@ -79,14 +84,15 @@ public class OGCFilterTest extends TestCase {
         Parser parser = new Parser(new OGCConfiguration());
         parser.setStrict(false);
         Filter filter = (Filter) parser.parse(new ByteArrayInputStream(xml.getBytes()));
-        assertNotNull(filter);
+        Assert.assertNotNull(filter);
         PropertyIsEqualTo equal = (PropertyIsEqualTo) filter;
         PropertyName pn = (PropertyName) equal.getExpression1();
-        assertEquals("foo", pn.getPropertyName());
+        Assert.assertEquals("foo", pn.getPropertyName());
         Literal literal = (Literal) equal.getExpression2();
-        assertEquals("bar > 10 and < 20", literal.getValue());
+        Assert.assertEquals("bar > 10 and < 20", literal.getValue());
     }
 
+    @Test
     public void testDWithinParse() throws Exception {
 
         String xml =
@@ -104,27 +110,27 @@ public class OGCFilterTest extends TestCase {
 
         Parser parser = new Parser(configuration);
         DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes()));
-        assertNotNull(filter);
+        Assert.assertNotNull(filter);
 
         // Asserting the Property Name
-        assertNotNull(filter.getExpression1());
+        Assert.assertNotNull(filter.getExpression1());
         PropertyName propName = (PropertyName) filter.getExpression1();
         String name = propName.getPropertyName();
-        assertEquals("the_geom", name);
+        Assert.assertEquals("the_geom", name);
 
         // Asserting the Geometry
-        assertNotNull(filter.getExpression2());
+        Assert.assertNotNull(filter.getExpression2());
         Literal geom = (Literal) filter.getExpression2();
-        assertEquals("POINT (-74.817265 40.5296504)", geom.toString());
+        Assert.assertEquals("POINT (-74.817265 40.5296504)", geom.toString());
 
         // Asserting the Distance
-        assertTrue(filter.getDistance() > 0);
+        Assert.assertTrue(filter.getDistance() > 0);
         Double dist = filter.getDistance();
-        assertEquals(200.0, dist);
+        Assert.assertEquals(200.0, dist, 0d);
 
         // Asserting the Distance Units
-        assertNotNull(filter.getDistanceUnits());
+        Assert.assertNotNull(filter.getDistanceUnits());
         String unit = filter.getDistanceUnits();
-        assertEquals("km", unit);
+        Assert.assertEquals("km", unit);
     }
 }

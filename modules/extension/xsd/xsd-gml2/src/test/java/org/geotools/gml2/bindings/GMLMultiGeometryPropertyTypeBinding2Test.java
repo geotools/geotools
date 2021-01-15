@@ -16,15 +16,20 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.GeometryCollection;
 
 public class GMLMultiGeometryPropertyTypeBinding2Test extends GMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(GeometryCollection.class, binding(GML.MultiGeometryPropertyType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.AFTER, binding(GML.MultiGeometryPropertyType).getExecutionMode());
     }

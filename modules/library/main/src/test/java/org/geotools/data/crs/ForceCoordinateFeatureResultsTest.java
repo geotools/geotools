@@ -17,7 +17,6 @@
 package org.geotools.data.crs;
 
 import java.io.IOException;
-import junit.framework.TestCase;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -29,6 +28,9 @@ import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -39,7 +41,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.ProgressListener;
 
 /** Test ForceCoordinateSystemFeatureResults feature collection wrapper. */
-public class ForceCoordinateFeatureResultsTest extends TestCase {
+public class ForceCoordinateFeatureResultsTest {
 
     private static final String FEATURE_TYPE_NAME = "testType";
     private CoordinateReferenceSystem wgs84;
@@ -49,7 +51,8 @@ public class ForceCoordinateFeatureResultsTest extends TestCase {
     FeatureVisitor lastVisitor = null;
     private ListFeatureCollection visitorCollection;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         lastVisitor = null;
         wgs84 = CRS.decode("EPSG:4326");
         utm32n = CRS.decode("EPSG:32632");
@@ -87,27 +90,31 @@ public class ForceCoordinateFeatureResultsTest extends TestCase {
                 };
     }
 
+    @Test
     public void testSchema() throws Exception {
         SimpleFeatureCollection original = featureCollection;
-        assertEquals(wgs84, original.getSchema().getCoordinateReferenceSystem());
+        Assert.assertEquals(wgs84, original.getSchema().getCoordinateReferenceSystem());
 
         SimpleFeatureCollection forced = new ForceCoordinateSystemFeatureResults(original, utm32n);
-        assertEquals(utm32n, forced.getSchema().getCoordinateReferenceSystem());
+        Assert.assertEquals(utm32n, forced.getSchema().getCoordinateReferenceSystem());
     }
 
+    @Test
     public void testBounds() throws Exception {
         SimpleFeatureCollection original = featureCollection;
-        assertFalse(original.getBounds().isEmpty());
+        Assert.assertFalse(original.getBounds().isEmpty());
         SimpleFeatureCollection forced = new ForceCoordinateSystemFeatureResults(original, utm32n);
-        assertEquals(new ReferencedEnvelope(10, 10, 10, 10, utm32n), forced.getBounds());
+        Assert.assertEquals(new ReferencedEnvelope(10, 10, 10, 10, utm32n), forced.getBounds());
     }
 
+    @Test
     public void testMaxVisitorDelegation() throws SchemaException, IOException {
         MaxVisitor visitor =
                 new MaxVisitor(CommonFactoryFinder.getFilterFactory2().property("value"));
         assertOptimalVisit(visitor);
     }
 
+    @Test
     public void testCountVisitorDelegation() throws SchemaException, IOException {
         FeatureVisitor visitor = new CountVisitor();
         assertOptimalVisit(visitor);
@@ -117,15 +124,16 @@ public class ForceCoordinateFeatureResultsTest extends TestCase {
         SimpleFeatureCollection retypedCollection =
                 new ForceCoordinateSystemFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(visitor, null);
-        assertSame(lastVisitor, visitor);
+        Assert.assertSame(lastVisitor, visitor);
     }
 
+    @Test
     public void testBoundsNotOptimized() throws IOException, SchemaException {
         BoundsVisitor boundsVisitor = new BoundsVisitor();
         SimpleFeatureCollection retypedCollection =
                 new ForceCoordinateSystemFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(boundsVisitor, null);
         // not optimized
-        assertNull(lastVisitor);
+        Assert.assertNull(lastVisitor);
     }
 }

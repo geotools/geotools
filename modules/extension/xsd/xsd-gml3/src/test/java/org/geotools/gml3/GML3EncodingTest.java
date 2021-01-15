@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.data.DataUtilities;
@@ -34,6 +33,8 @@ import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
 import org.geotools.xsd.Encoder;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
@@ -43,17 +44,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class GML3EncodingTest extends TestCase {
+public class GML3EncodingTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         Map<String, String> namespaces = new HashMap<>();
         namespaces.put("test", TEST.TestFeature.getNamespaceURI());
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }
 
+    @Test
     public void testEncodeFeatureWithBounds() throws Exception {
         SimpleFeature feature = GML3MockData.feature();
         TestConfiguration configuration = new TestConfiguration();
@@ -63,9 +64,10 @@ public class GML3EncodingTest extends TestCase {
         Encoder encoder = new Encoder(configuration);
         Document dom = encoder.encodeAsDOM(feature, TEST.TestFeature);
 
-        assertEquals(1, dom.getElementsByTagName("gml:boundedBy").getLength());
+        Assert.assertEquals(1, dom.getElementsByTagName("gml:boundedBy").getLength());
     }
 
+    @Test
     public void testEncodeFeatureWithNoBounds() throws Exception {
         SimpleFeature feature = GML3MockData.feature();
         TestConfiguration configuration = new TestConfiguration();
@@ -74,42 +76,45 @@ public class GML3EncodingTest extends TestCase {
         Encoder encoder = new Encoder(configuration);
         Document dom = encoder.encodeAsDOM(feature, TEST.TestFeature);
 
-        assertEquals(0, dom.getElementsByTagName("gml:boundedBy").getLength());
+        Assert.assertEquals(0, dom.getElementsByTagName("gml:boundedBy").getLength());
     }
 
+    @Test
     public void testEncodeWithNoSrsDimension() throws Exception {
         GMLConfiguration gml = new GMLConfiguration();
         Document dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
-        assertTrue(dom.getDocumentElement().hasAttribute("srsDimension"));
+        Assert.assertTrue(dom.getDocumentElement().hasAttribute("srsDimension"));
 
         gml.getProperties().add(GMLConfiguration.NO_SRS_DIMENSION);
         dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
-        assertFalse(dom.getDocumentElement().hasAttribute("srsDimension"));
+        Assert.assertFalse(dom.getDocumentElement().hasAttribute("srsDimension"));
     }
 
+    @Test
     public void testEncodeSrsSyntax() throws Exception {
         GMLConfiguration gml = new GMLConfiguration();
         Document dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
-        assertTrue(
+        Assert.assertTrue(
                 dom.getDocumentElement()
                         .getAttribute("srsName")
                         .startsWith("urn:x-ogc:def:crs:EPSG:"));
 
         gml.setSrsSyntax(SrsSyntax.OGC_URN);
         dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
-        assertTrue(
+        Assert.assertTrue(
                 dom.getDocumentElement()
                         .getAttribute("srsName")
                         .startsWith("urn:ogc:def:crs:EPSG::"));
 
         gml.setSrsSyntax(SrsSyntax.OGC_HTTP_URI);
         dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
-        assertTrue(
+        Assert.assertTrue(
                 dom.getDocumentElement()
                         .getAttribute("srsName")
                         .startsWith("http://www.opengis.net/def/crs/EPSG/0/"));
     }
 
+    @Test
     public void testEncodeFeatureWithNullValues() throws Exception {
         SimpleFeatureType type = buildTestFeatureType();
 
@@ -127,10 +132,10 @@ public class GML3EncodingTest extends TestCase {
         Document dom = encoder.encodeAsDOM(feature, TEST.TestFeature);
         NodeList countList = dom.getElementsByTagName("test:count");
         Node count = countList.item(0);
-        assertEquals("true", count.getAttributes().getNamedItem("xs:nil").getTextContent());
+        Assert.assertEquals("true", count.getAttributes().getNamedItem("xs:nil").getTextContent());
         NodeList dateList = dom.getElementsByTagName("test:date");
         Node date = dateList.item(0);
-        assertEquals("true", date.getAttributes().getNamedItem("xs:nil").getTextContent());
+        Assert.assertEquals("true", date.getAttributes().getNamedItem("xs:nil").getTextContent());
 
         // now force the XSD prefix
         encoder = new Encoder(configuration);
@@ -138,10 +143,10 @@ public class GML3EncodingTest extends TestCase {
         dom = encoder.encodeAsDOM(feature, TEST.TestFeature);
         countList = dom.getElementsByTagName("test:count");
         count = countList.item(0);
-        assertEquals("true", count.getAttributes().getNamedItem("xsd:nil").getTextContent());
+        Assert.assertEquals("true", count.getAttributes().getNamedItem("xsd:nil").getTextContent());
         dateList = dom.getElementsByTagName("test:date");
         date = dateList.item(0);
-        assertEquals("true", date.getAttributes().getNamedItem("xsd:nil").getTextContent());
+        Assert.assertEquals("true", date.getAttributes().getNamedItem("xsd:nil").getTextContent());
     }
 
     private SimpleFeatureType buildTestFeatureType() {
@@ -163,6 +168,7 @@ public class GML3EncodingTest extends TestCase {
         return type;
     }
 
+    @Test
     public void testEncodeBigDecimal() throws Exception {
         SimpleFeatureType type = buildTestFeatureType();
 

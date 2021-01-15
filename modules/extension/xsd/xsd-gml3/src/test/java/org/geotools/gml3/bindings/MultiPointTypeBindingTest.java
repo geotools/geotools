@@ -16,8 +16,13 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPoint;
@@ -26,7 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 public class MultiPointTypeBindingTest extends GML3TestSupport {
-
+    @Test
     public void test() throws Exception {
         GML3MockData.multiPoint(document, document);
 
@@ -36,6 +41,7 @@ public class MultiPointTypeBindingTest extends GML3TestSupport {
         assertEquals(4, multiPoint.getNumPoints());
     }
 
+    @Test
     public void test3D() throws Exception {
         GML3MockData.multiPoint3D(document, document);
 
@@ -47,6 +53,7 @@ public class MultiPointTypeBindingTest extends GML3TestSupport {
         assertTrue(new Coordinate(1d, 2d, 10d).equals3D(p.getCoordinate()));
     }
 
+    @Test
     public void testEncode() throws Exception {
         Geometry geometry = GML3MockData.multiPoint();
         GML3EncodingUtils.setID(geometry, "geometry");

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.transform;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.data.DataUtilities;
@@ -24,6 +26,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.FeatureCollectionWrapperTestSupport;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.ecql.ECQL;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class TransformFeatureCollectionMemoryTest extends FeatureCollectionWrapperTestSupport {
@@ -39,6 +42,7 @@ public class TransformFeatureCollectionMemoryTest extends FeatureCollectionWrapp
         return transformedSource.getFeatures();
     }
 
+    @Test
     public void testPreserveUserData() throws Exception {
         SimpleFeatureCollection transformedCollection = transformWithExpressions();
         SimpleFeature first = DataUtilities.first(transformedCollection);

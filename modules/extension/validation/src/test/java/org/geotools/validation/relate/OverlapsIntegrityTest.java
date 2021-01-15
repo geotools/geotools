@@ -16,11 +16,16 @@
  */
 package org.geotools.validation.relate;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
@@ -35,11 +40,7 @@ import org.opengis.filter.Filter;
  */
 public class OverlapsIntegrityTest extends SpatialTestCase {
 
-    /** Constructor for OverlapsIntegrityTest. */
-    public OverlapsIntegrityTest(String arg0) {
-        super(arg0);
-    }
-
+    @Test
     public void testOverlapFilter() throws Exception {
         SimpleFeatureSource line = mds.getFeatureSource("line");
 
@@ -69,6 +70,7 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
         assertEquals("count of all features", 4, line.getFeatures(filter).size());
     }
 
+    @Test
     public void testValidate() {
         OverlapsIntegrity overlap = new OverlapsIntegrity();
         overlap.setExpected(false);
@@ -89,6 +91,7 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
         }
     }
 
+    @Test
     public void testValidateBBox() {
         OverlapsIntegrity overlap = new OverlapsIntegrity();
         overlap.setExpected(false);

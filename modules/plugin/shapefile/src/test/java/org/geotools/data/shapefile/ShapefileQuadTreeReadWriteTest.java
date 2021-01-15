@@ -253,8 +253,4 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         assertTrue(result == null || result.equals(bounds));
         ds.dispose();
     }
-
-    public static final void main(String[] args) throws Exception {
-        junit.textui.TestRunner.run(suite(ShapefileQuadTreeReadWriteTest.class));
-    }
 }

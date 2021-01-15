@@ -16,6 +16,9 @@
  */
 package org.geotools.data.memory;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DefaultTransaction;
@@ -24,6 +27,7 @@ import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -34,15 +38,12 @@ public class MemoryFeatureReaderTest extends DataTestCase {
 
     private final Transaction transaction = new DefaultTransaction();
 
-    public MemoryFeatureReaderTest(String name) {
-        super(name);
-    }
-
-    public void setUp() throws Exception {
-        super.setUp();
+    public void init() throws Exception {
+        super.init();
         memoryDataStore = new MemoryDataStore(roadFeatures);
     }
 
+    @Test
     public void testReaderIsNotBrokenWhileWritingFeatureDirectly() throws IOException {
         // a write should not "destroy" readers
         int expectedFeatureCount = roadFeatures.length;
@@ -64,6 +65,7 @@ public class MemoryFeatureReaderTest extends DataTestCase {
         assertReaderHasFeatureCount(expectedFeatureCount, currentFeatureCount, featureReader);
     }
 
+    @Test
     public void testReaderIsNotBrokenWhileWritingWithWriterAndTransaction() throws IOException {
         // a write should not "destroy" readers
         int expectedFeatureCount = roadFeatures.length;

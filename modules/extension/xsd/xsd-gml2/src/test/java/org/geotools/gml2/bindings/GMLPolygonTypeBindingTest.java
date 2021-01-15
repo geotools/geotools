@@ -16,9 +16,13 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
@@ -31,7 +35,7 @@ public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance iring;
     MutablePicoContainer container;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         poly = createElement(GML.NAMESPACE, "myPolygon", GML.PolygonType, null);
@@ -43,6 +47,7 @@ public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
         container.registerComponentImplementation(GMLPolygonTypeBinding.class);
     }
 
+    @Test
     public void testNoInnerRing() throws Exception {
         Node node =
                 createNode(
@@ -76,6 +81,7 @@ public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
         assertEquals(p.getExteriorRing().getPointN(3).getY(), 2d, 0d);
     }
 
+    @Test
     public void testInnerRing() throws Exception {
         Node node =
                 createNode(

@@ -16,13 +16,19 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.Graphic;
+import org.junit.Test;
 
 public class SLDGraphicStrokeBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(Graphic.class, new SLDGraphicStrokeBinding().getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.graphicStroke(document, document);
 

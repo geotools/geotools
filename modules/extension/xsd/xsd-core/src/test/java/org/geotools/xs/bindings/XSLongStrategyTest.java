@@ -19,6 +19,7 @@ package org.geotools.xs.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
+import org.junit.Test;
 
 public class XSLongStrategyTest extends TestSchema {
     /**
@@ -31,6 +32,7 @@ public class XSLongStrategyTest extends TestSchema {
     /*
      * Test method for 'org.geotools.xml.strategies.xs.XSLongStrategy.parse(Element, Node[], Object)'
      */
+    @Test
     public void testParse() throws Exception {
         validateValues("-1", Long.valueOf(-1));
         validateValues("0", Long.valueOf(0));

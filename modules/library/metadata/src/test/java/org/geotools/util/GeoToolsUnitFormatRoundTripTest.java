@@ -16,7 +16,7 @@
  */
 package org.geotools.util;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static tech.units.indriya.unit.Units.GRAM;
 import static tech.units.indriya.unit.Units.JOULE;
 import static tech.units.indriya.unit.Units.KELVIN;

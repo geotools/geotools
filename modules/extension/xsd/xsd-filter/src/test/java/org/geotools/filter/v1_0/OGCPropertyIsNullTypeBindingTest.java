@@ -16,20 +16,28 @@
  */
 package org.geotools.filter.v1_0;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.PropertyIsNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class OGCPropertyIsNullTypeBindingTest extends FilterTestSupport {
+
+    @Test
     public void testType() {
         assertEquals(PropertyIsNull.class, binding(OGC.PropertyIsNullType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.PropertyIsNullType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.propertyisNull(document, document);
 
@@ -38,12 +46,14 @@ public class OGCPropertyIsNullTypeBindingTest extends FilterTestSupport {
         assertNotNull(isNull.getExpression());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.propertyIsNull(), OGC.PropertyIsNull);
         Element e = getElementByQName(doc, OGC.PropertyName);
         assertEquals("foo", e.getFirstChild().getNodeValue());
     }
 
+    @Test
     public void testEncodeAsFilter() throws Exception {
         Document doc = encode(FilterMockData.propertyIsNull(), OGC.Filter);
         Element e = getElementByQName(doc, OGC.PropertyName);

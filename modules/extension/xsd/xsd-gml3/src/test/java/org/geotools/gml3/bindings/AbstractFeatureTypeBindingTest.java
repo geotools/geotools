@@ -16,9 +16,13 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xsd.Configuration;
+import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
@@ -30,11 +34,12 @@ public class AbstractFeatureTypeBindingTest extends GML3TestSupport {
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         registerNamespaceMapping("test", TEST.NAMESPACE);
     }
 
+    @Test
     public void testWithoutGmlProperties() throws Exception {
         Element feature = GML3MockData.feature(document, document);
         feature.setAttributeNS(GML.NAMESPACE, "id", "fid.1");
@@ -54,6 +59,7 @@ public class AbstractFeatureTypeBindingTest extends GML3TestSupport {
         assertEquals(1, i.intValue());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.feature(), TEST.TestFeature);
 

@@ -18,11 +18,12 @@
 package org.geotools.data.gen.tool;
 
 import java.io.IOException;
-import junit.framework.TestCase;
 import org.junit.Assert;
+import org.junit.Test;
 
-public class ToolboxTest extends TestCase {
+public class ToolboxTest {
 
+    @Test
     public void testValidate() {
         Toolbox tb = new Toolbox();
         try {

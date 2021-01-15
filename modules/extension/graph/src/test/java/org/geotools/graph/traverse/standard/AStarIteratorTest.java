@@ -16,13 +16,9 @@
  */
 package org.geotools.graph.traverse.standard;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
@@ -36,17 +32,16 @@ import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.CountingWalker;
 import org.geotools.graph.traverse.standard.AStarIterator.AStarNode;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class AStarIteratorTest extends TestCase {
+public class AStarIteratorTest {
     public GraphBuilder m_builder;
     public GraphBuilder m_directed_builder;
 
-    public AStarIteratorTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
         m_directed_builder = createDirectedBuilder();
@@ -55,6 +50,7 @@ public class AStarIteratorTest extends TestCase {
      * Test 0: Graph with no bifurcations. 100 nodes. G = 1 for all edges H = TargetsID - currentID
      * Expected: 1. Every node should be visited 2. ParentID = SonsID - 1
      */
+    @Test
     public void test_0() {
         final int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -71,11 +67,11 @@ public class AStarIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
                         if (component.getID() == 0)
-                            assertNull(iterator.getParent((Node) component));
+                            Assert.assertNull(iterator.getParent((Node) component));
                         else
-                            assertEquals(
+                            Assert.assertEquals(
                                     component.getID(),
                                     iterator.getParent((Node) component).getID() + 1);
                         return 0;
@@ -83,7 +79,7 @@ public class AStarIteratorTest extends TestCase {
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -95,6 +91,7 @@ public class AStarIteratorTest extends TestCase {
      * <p>After resume: 1. Next node visited should have id suspend node id + 1 2. Every node should
      * have a parent with id node id + 1
      */
+    @Test
     public void test_1() {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -112,7 +109,7 @@ public class AStarIteratorTest extends TestCase {
                                 return (GraphTraversal.SUSPEND);
                             }
                         } else if (m_mode == 1) {
-                            assertEquals(element.getID(), suspend + 1);
+                            Assert.assertEquals(element.getID(), suspend + 1);
                             m_mode++;
                         }
                         return (GraphTraversal.CONTINUE);
@@ -129,13 +126,13 @@ public class AStarIteratorTest extends TestCase {
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        if (component.getID() <= suspend) assertTrue(component.isVisited());
-                        else assertFalse(component.isVisited());
+                        if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
+                        else Assert.assertFalse(component.isVisited());
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), nnodes - suspend + 1);
+        Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         // resume
         traversal.traverse();
@@ -143,11 +140,11 @@ public class AStarIteratorTest extends TestCase {
         visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.isVisited());
+                        Assert.assertTrue(component.isVisited());
                         if (component.getID() == 0)
-                            assertNull(iterator.getParent((Node) component));
+                            Assert.assertNull(iterator.getParent((Node) component));
                         else
-                            assertEquals(
+                            Assert.assertEquals(
                                     iterator.getParent((Node) component).getID(),
                                     component.getID() - 1);
 
@@ -155,7 +152,7 @@ public class AStarIteratorTest extends TestCase {
                     }
                 };
         builder().getGraph().visitNodes(visitor);
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -165,6 +162,7 @@ public class AStarIteratorTest extends TestCase {
      * parent of the tree. 3. G = depth. H = infinity if the target is not in any subtree of this
      * node or depth difference between target node and current node otherwise.
      */
+    @Test
     @SuppressWarnings("unchecked") // refusing to clean up this unholy mess
     public void test_3() {
         int k = 4;
@@ -214,8 +212,8 @@ public class AStarIteratorTest extends TestCase {
         MyVisitor visitor = new MyVisitor();
         builder().getGraph().visitNodes(visitor);
         // #1
-        assertTrue(visitor.count > 0);
-        assertTrue(visitor.count < map.size() + 1);
+        Assert.assertTrue(visitor.count > 0);
+        Assert.assertTrue(visitor.count < map.size() + 1);
         Path p = null;
         try {
             p = walker.getPath();
@@ -223,14 +221,14 @@ public class AStarIteratorTest extends TestCase {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         p.getEdges();
-        assertEquals(4, p.size());
+        Assert.assertEquals(4, p.size());
         // #2
         for (int j = 0; j < p.size() - 1; j++) {
             Node n = p.get(j);
             Node parent = p.get(j + 1);
             String n_id = rmap.get(n).toString();
             String parent_id = rmap.get(parent).toString();
-            assertTrue(n_id.startsWith(parent_id));
+            Assert.assertTrue(n_id.startsWith(parent_id));
         }
     }
 
@@ -242,6 +240,7 @@ public class AStarIteratorTest extends TestCase {
      * have two related nodes 3. Related nodes should have an id one greater or one less than the
      * current node
      */
+    @Test
     public void test_4() {
         final int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -267,19 +266,19 @@ public class AStarIteratorTest extends TestCase {
                         }
                         while (related.hasNext()) {
                             Graphable relatedComponent = (Graphable) related.next();
-                            assertTrue(
+                            Assert.assertTrue(
                                     component.getID() == relatedComponent.getID() - 1
                                             || component.getID() == relatedComponent.getID() + 1);
                             count++;
                         }
-                        assertEquals(expectedCount, count);
+                        Assert.assertEquals(expectedCount, count);
 
                         return 0;
                     }
                 };
         builder().getGraph().visitNodes(visitor);
 
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
@@ -289,6 +288,7 @@ public class AStarIteratorTest extends TestCase {
      * Expected: 1. The last node should have no related nodes 2. All other nodes should have one
      * related node 3. Related nodes should have an id one greater than the current node
      */
+    @Test
     public void test_5() {
         final int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(directedBuilder(), nnodes);
@@ -314,17 +314,17 @@ public class AStarIteratorTest extends TestCase {
                         }
                         while (related.hasNext()) {
                             Graphable relatedComponent = (Graphable) related.next();
-                            assertEquals(component.getID(), relatedComponent.getID() - 1);
+                            Assert.assertEquals(component.getID(), relatedComponent.getID() - 1);
                             count++;
                         }
-                        assertEquals(expectedCount, count);
+                        Assert.assertEquals(expectedCount, count);
 
                         return 0;
                     }
                 };
         directedBuilder().getGraph().visitNodes(visitor);
 
-        assertEquals(walker.getCount(), nnodes);
+        Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     private class MyVisitor implements GraphVisitor {

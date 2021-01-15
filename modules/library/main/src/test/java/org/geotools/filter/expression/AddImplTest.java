@@ -16,16 +16,19 @@
  */
 package org.geotools.filter.expression;
 
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
-public class AddImplTest extends TestCase {
+public class AddImplTest {
 
     AddImpl add;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Expression e1 = ff.literal(1);
         Expression e2 = ff.literal(2);
@@ -33,18 +36,21 @@ public class AddImplTest extends TestCase {
         add = new AddImpl(e1, e2);
     }
 
+    @Test
     public void testEvaluate() {
         Object result = add.evaluate(null);
-        assertEquals(Double.valueOf(3), result);
+        Assert.assertEquals(Double.valueOf(3), result);
     }
 
+    @Test
     public void testEvaluateAsInteger() {
         Object result = add.evaluate(null, Integer.class);
-        assertEquals(Integer.valueOf(3), result);
+        Assert.assertEquals(Integer.valueOf(3), result);
     }
 
+    @Test
     public void testEvaluateAsString() {
         Object result = add.evaluate(null, String.class);
-        assertEquals("3.0", result);
+        Assert.assertEquals("3.0", result);
     }
 }

@@ -35,10 +35,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * @author Simone Giannecchini
  */
 public class GT30DecimationTest extends GT30TestBase {
-    /** Constructor for GT30ReaderTest. */
-    public GT30DecimationTest(String arg0) {
-        super(arg0);
-    }
 
     /**
      * Testing reader and writer for gtopo. This test first of all read an existing gtopo tessel
@@ -74,9 +70,5 @@ public class GT30DecimationTest extends GT30TestBase {
                 PlanarImage.wrapRenderedImage(gc.getRenderedImage()).getTiles();
             }
         }
-    }
-
-    public static final void main(String[] args) throws Exception {
-        junit.textui.TestRunner.run(GT30DecimationTest.class);
     }
 }

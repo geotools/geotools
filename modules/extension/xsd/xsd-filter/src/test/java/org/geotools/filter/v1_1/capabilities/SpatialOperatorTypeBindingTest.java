@@ -16,9 +16,12 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.SpatialOperator;
 import org.w3c.dom.Document;
 
@@ -42,14 +45,17 @@ import org.w3c.dom.Document;
  * @generated
  */
 public class SpatialOperatorTypeBindingTest extends OGCTestSupport {
+    @Test
     public void testType() {
         assertEquals(SpatialOperator.class, binding(OGC.SpatialOperatorType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.SpatialOperatorType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.spatialOperator(document, document, "Intersect");
 
@@ -58,6 +64,7 @@ public class SpatialOperatorTypeBindingTest extends OGCTestSupport {
         assertEquals("Intersect", sop.getName());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom =
                 encode(

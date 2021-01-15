@@ -18,21 +18,22 @@
 package org.geotools.data.gen;
 
 import java.io.IOException;
-import junit.framework.TestCase;
 import org.geotools.data.gen.info.GeneralizationInfos;
 import org.geotools.data.gen.info.GeneralizationInfosProvider;
 import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class PreGeneralizedFeatureCollectionTest extends TestCase {
+public class PreGeneralizedFeatureCollectionTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         TestSetup.initialize();
     }
 
+    @Test
     public void testNotSupportedFeatures() {
 
         GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();

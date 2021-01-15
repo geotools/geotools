@@ -16,15 +16,15 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataTestCase;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.junit.Test;
 
 public class DelayedSchemaFeatureCollectionTest extends DataTestCase {
-
-    public DelayedSchemaFeatureCollectionTest() {
-        super(DelayedSchemaFeatureCollectionTest.class.getSimpleName());
-    }
 
     @Test
     public void testEmpty() {

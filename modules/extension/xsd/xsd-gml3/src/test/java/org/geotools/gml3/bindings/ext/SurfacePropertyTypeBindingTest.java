@@ -16,8 +16,11 @@
  */
 package org.geotools.gml3.bindings.ext;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -28,8 +31,9 @@ public class SurfacePropertyTypeBindingTest extends GML3TestSupport {
 
     protected boolean enableExtendedArcSurfaceSupport() {
         return true;
-    };
+    }
 
+    @Test
     public void testEncode() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         Polygon polygon =

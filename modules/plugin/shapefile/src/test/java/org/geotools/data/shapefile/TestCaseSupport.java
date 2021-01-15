@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.geotools.TestData;
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -239,10 +237,5 @@ public class TestCaseSupport {
         }
 
         return count;
-    }
-
-    /** Returns the test suite for the given class. */
-    public static Test suite(Class<?> c) {
-        return new TestSuite(c);
     }
 }

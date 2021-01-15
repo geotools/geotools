@@ -16,6 +16,11 @@
  */
 package org.geotools.brewer.color;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +40,7 @@ import org.geotools.filter.function.ExplicitClassifier;
 import org.geotools.filter.function.RangedClassifier;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -44,9 +50,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
 public class StyleGeneratorTest extends DataTestCase {
-    public StyleGeneratorTest(String arg0) {
-        super(arg0);
-    }
 
     public void checkFilteredResultNotEmpty(
             List<Rule> rules, SimpleFeatureSource fs, String attribName) throws IOException {
@@ -77,6 +80,7 @@ public class StyleGeneratorTest extends DataTestCase {
         }
     }
 
+    @Test
     public void testComplexExpression() throws Exception {
         ColorBrewer brewer = new ColorBrewer();
         brewer.loadPalettes();
@@ -136,6 +140,7 @@ public class StyleGeneratorTest extends DataTestCase {
     }
 
     /** This test cases test the generation of a style using a ExcplicitClassifier */
+    @Test
     public void testExplicitClassifier() {
         ColorBrewer brewer = new ColorBrewer();
         brewer.loadPalettes();

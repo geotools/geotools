@@ -16,22 +16,28 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
 public class LineStringPropertyTypeBindingTest extends GML3TestSupport {
-
+    @Test
     public void testType() {
         assertEquals(LineString.class, binding(GML.LineStringPropertyType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(GML.LineStringPropertyType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         GML3MockData.lineStringProperty(document, document);
 
@@ -39,6 +45,7 @@ public class LineStringPropertyTypeBindingTest extends GML3TestSupport {
         assertNotNull(line);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(GML3MockData.lineString(), GML.lineStringProperty);
 

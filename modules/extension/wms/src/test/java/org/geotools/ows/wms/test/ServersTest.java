@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
-import junit.framework.TestCase;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
@@ -34,9 +33,12 @@ import org.geotools.ows.wms.WMSCapabilities;
 import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.response.GetMapResponse;
+import org.junit.Assert;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
-public class ServersTest extends TestCase {
+public class ServersTest {
+    @Test
     public void testServers() throws Exception {
 
         List servers = new ArrayList();
@@ -190,7 +192,7 @@ public class ServersTest extends TestCase {
         }
 
         WMSCapabilities caps = wms.getCapabilities();
-        assertNotNull(caps);
+        Assert.assertNotNull(caps);
 
         out.println("Validating layer LatLonBoundingBoxes...");
         Iterator iter = caps.getLayerList().iterator();

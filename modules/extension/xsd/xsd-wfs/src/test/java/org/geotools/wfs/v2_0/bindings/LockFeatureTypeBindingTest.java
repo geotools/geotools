@@ -1,5 +1,9 @@
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.StringReader;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.LockFeatureType;
@@ -12,6 +16,7 @@ import org.opengis.filter.Id;
 
 public class LockFeatureTypeBindingTest extends WFSTestSupport {
 
+    @Test
     public void testParse1() throws Exception {
         String xml =
                 "<LockFeature "

@@ -22,6 +22,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.*;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -30,12 +31,14 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
 public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
+    @Test
     public void testSchema() throws Exception {
         // see http://jira.codehaus.org/browse/GEOT-1616
         SimpleFeatureType schema = delegate.getSchema();
@@ -53,6 +56,7 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
         return stb.buildFeatureType();
     }
 
+    @Test
     public void testDelegateAccepts() throws Exception {
         SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
         stb.setName("test");
@@ -89,6 +93,7 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
         verify(delegate);
     }
 
+    @Test
     public void testDelegateAcceptsNearest() throws Exception {
         SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
         stb.setName("test");
@@ -126,6 +131,7 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
         verify(delegate);
     }
 
+    @Test
     public void testPreserveUserData() throws Exception {
         SimpleFeatureType schema = delegate.getSchema();
         SimpleFeatureType renamed = buildRenamedFeatureType(schema, schema.getTypeName() + "xxx");

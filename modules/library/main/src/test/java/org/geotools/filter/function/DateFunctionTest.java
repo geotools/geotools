@@ -17,15 +17,17 @@
 package org.geotools.filter.function;
 
 import java.util.Calendar;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-public class DateFunctionTest extends TestCase {
+public class DateFunctionTest {
 
+    @Test
     public void testDateParse() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Literal pattern = ff.literal("yyyy");
@@ -34,9 +36,10 @@ public class DateFunctionTest extends TestCase {
         Function f = ff.function("dateParse", new Expression[] {pattern, year});
         Calendar cal = f.evaluate(null, Calendar.class);
         // System.out.println(cal);
-        assertEquals(1975, cal.get(Calendar.YEAR));
+        Assert.assertEquals(1975, cal.get(Calendar.YEAR));
     }
 
+    @Test
     public void testDateEncode() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Literal pattern = ff.literal("yyyy");
@@ -47,6 +50,6 @@ public class DateFunctionTest extends TestCase {
 
         Function f = ff.function("dateFormat", new Expression[] {pattern, date});
         String year = f.evaluate(null, String.class);
-        assertEquals("2000", year);
+        Assert.assertEquals("2000", year);
     }
 }

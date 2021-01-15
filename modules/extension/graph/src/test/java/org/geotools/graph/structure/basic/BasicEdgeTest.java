@@ -17,10 +17,12 @@
 package org.geotools.graph.structure.basic;
 
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.geotools.graph.structure.Edge;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class BasicEdgeTest extends TestCase {
+public class BasicEdgeTest {
 
     private BasicNode m_nodeA;
     private BasicNode m_nodeB;
@@ -42,12 +44,8 @@ public class BasicEdgeTest extends TestCase {
     private BasicEdge m_loopA;
     private BasicEdge m_loopB;
 
-    public BasicEdgeTest(String name) {
-        super(name);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         m_nodeA = new BasicNode();
         m_nodeB = new BasicNode();
         m_otherNode1 = new BasicNode();
@@ -83,120 +81,125 @@ public class BasicEdgeTest extends TestCase {
         m_loopB = new BasicEdge(m_nodeB, m_nodeB);
     }
 
+    @Test
     public void test_getNodeA() {
-        assertSame(m_edge.getNodeA(), m_nodeA);
+        Assert.assertSame(m_edge.getNodeA(), m_nodeA);
     }
 
+    @Test
     public void test_getNodeB() {
-        assertSame(m_edge.getNodeB(), m_nodeB);
+        Assert.assertSame(m_edge.getNodeB(), m_nodeB);
     }
 
+    @Test
     public void test_getOtherNode() {
-        assertSame(m_edge.getOtherNode(m_nodeA), m_nodeB);
-        assertSame(m_edge.getOtherNode(m_nodeB), m_nodeA);
-        assertSame(m_edge.getOtherNode(new BasicNode()), null);
+        Assert.assertSame(m_edge.getOtherNode(m_nodeA), m_nodeB);
+        Assert.assertSame(m_edge.getOtherNode(m_nodeB), m_nodeA);
+        Assert.assertSame(m_edge.getOtherNode(new BasicNode()), null);
     }
 
+    @Test
     public void test_reverse() {
-        assertSame(m_nodeA, m_edge.getNodeA());
-        assertSame(m_nodeB, m_edge.getNodeB());
+        Assert.assertSame(m_nodeA, m_edge.getNodeA());
+        Assert.assertSame(m_nodeB, m_edge.getNodeB());
 
         m_edge.reverse();
 
-        assertSame(m_nodeA, m_edge.getNodeB());
-        assertSame(m_nodeB, m_edge.getNodeA());
+        Assert.assertSame(m_nodeA, m_edge.getNodeB());
+        Assert.assertSame(m_nodeB, m_edge.getNodeA());
     }
 
+    @Test
     public void test_getRelated() {
         BasicEdge be;
         Iterator<Edge> itr;
 
         // nodes share single edge
         itr = m_edge.getRelated();
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4));
-        assertFalse(itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // nodes share multiple edges (same direction)
         m_nodeA.add(m_same);
         m_nodeB.add(m_same);
 
         itr = m_edge.getRelated();
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_same));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_same));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_same));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_same));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_same));
-        assertFalse(itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
         m_nodeA.remove(m_same);
         m_nodeB.remove(m_same);
 
@@ -205,52 +208,52 @@ public class BasicEdgeTest extends TestCase {
         m_nodeA.add(m_opp);
 
         itr = m_edge.getRelated();
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_opp));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_opp));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_opp));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_opp));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_opp));
-        assertFalse(itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         m_nodeA.remove(m_opp);
         m_nodeB.remove(m_opp);
@@ -259,27 +262,19 @@ public class BasicEdgeTest extends TestCase {
         m_nodeA.add(m_loopA);
 
         itr = m_edge.getRelated();
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopA));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
-                be.equals(m_other1)
-                        || be.equals(m_other2)
-                        || be.equals(m_other3)
-                        || be.equals(m_other4)
-                        || be.equals(m_loopA));
-
-        be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
@@ -287,22 +282,30 @@ public class BasicEdgeTest extends TestCase {
                         || be.equals(m_loopA));
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopA));
-        assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopA));
-        assertFalse(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
+
+        be = (BasicEdge) itr.next();
+        Assert.assertTrue(
+                be.equals(m_other1)
+                        || be.equals(m_other2)
+                        || be.equals(m_other3)
+                        || be.equals(m_other4)
+                        || be.equals(m_loopA));
+        Assert.assertFalse(itr.hasNext());
 
         m_nodeA.remove(m_loopA);
 
@@ -310,27 +313,19 @@ public class BasicEdgeTest extends TestCase {
         m_nodeB.add(m_loopB);
 
         itr = m_edge.getRelated();
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
-                be.equals(m_other1)
-                        || be.equals(m_other2)
-                        || be.equals(m_other3)
-                        || be.equals(m_other4)
-                        || be.equals(m_loopB));
-
-        be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
@@ -338,49 +333,48 @@ public class BasicEdgeTest extends TestCase {
                         || be.equals(m_loopB));
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertFalse(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
+
+        be = (BasicEdge) itr.next();
+        Assert.assertTrue(
+                be.equals(m_other1)
+                        || be.equals(m_other2)
+                        || be.equals(m_other3)
+                        || be.equals(m_other4)
+                        || be.equals(m_loopB));
+        Assert.assertFalse(itr.hasNext());
 
         // test loop on both nodes
         m_nodeA.add(m_loopA);
         itr = m_edge.getRelated();
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_loopA)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
-                be.equals(m_other1)
-                        || be.equals(m_other2)
-                        || be.equals(m_loopA)
-                        || be.equals(m_other3)
-                        || be.equals(m_other4)
-                        || be.equals(m_loopB));
-
-        be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_loopA)
@@ -389,42 +383,52 @@ public class BasicEdgeTest extends TestCase {
                         || be.equals(m_loopB));
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_loopA)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_loopA)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertTrue(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
 
         be = (BasicEdge) itr.next();
-        assertTrue(
+        Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)
                         || be.equals(m_loopA)
                         || be.equals(m_other3)
                         || be.equals(m_other4)
                         || be.equals(m_loopB));
-        assertFalse(itr.hasNext());
+        Assert.assertTrue(itr.hasNext());
+
+        be = (BasicEdge) itr.next();
+        Assert.assertTrue(
+                be.equals(m_other1)
+                        || be.equals(m_other2)
+                        || be.equals(m_loopA)
+                        || be.equals(m_other3)
+                        || be.equals(m_other4)
+                        || be.equals(m_loopB));
+        Assert.assertFalse(itr.hasNext());
     }
 
+    @Test
     public void test_compareTo() {
         BasicEdge same = new BasicEdge(m_nodeA, m_nodeB);
         BasicEdge opp = new BasicEdge(m_nodeB, m_nodeA);
 
-        assertEquals(m_edge.compareNodes(same), Edge.EQUAL_NODE_ORIENTATION);
-        assertEquals(m_edge.compareNodes(opp), Edge.OPPOSITE_NODE_ORIENTATION);
-        assertEquals(m_edge.compareNodes(m_other1), Edge.UNEQUAL_NODE_ORIENTATION);
+        Assert.assertEquals(m_edge.compareNodes(same), Edge.EQUAL_NODE_ORIENTATION);
+        Assert.assertEquals(m_edge.compareNodes(opp), Edge.OPPOSITE_NODE_ORIENTATION);
+        Assert.assertEquals(m_edge.compareNodes(m_other1), Edge.UNEQUAL_NODE_ORIENTATION);
     }
 }

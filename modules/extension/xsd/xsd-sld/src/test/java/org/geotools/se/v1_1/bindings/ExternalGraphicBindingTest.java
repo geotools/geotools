@@ -16,14 +16,19 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import org.geotools.se.v1_1.SE;
 import org.geotools.se.v1_1.SETestSupport;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.xlink.XLINK;
+import org.junit.Test;
 import org.w3c.dom.Element;
 
-/** @author Sebastian Graca, ISPiK S.A. */
 public class ExternalGraphicBindingTest extends SETestSupport {
+    @Test
     public void testOnlineResource() throws Exception {
         document.appendChild(document.createElementNS(SE.NAMESPACE, "ExternalGraphic"));
 
@@ -49,6 +54,7 @@ public class ExternalGraphicBindingTest extends SETestSupport {
         assertNull(externalGraphic.getInlineContent());
     }
 
+    @Test
     public void testInlineContent() throws Exception {
         document.appendChild(document.createElementNS(SE.NAMESPACE, "ExternalGraphic"));
 
@@ -73,6 +79,7 @@ public class ExternalGraphicBindingTest extends SETestSupport {
         assertNull(externalGraphic.getLocation());
     }
 
+    @Test
     public void testInlineContentWithINvalidData() throws Exception {
         document.appendChild(document.createElementNS(SE.NAMESPACE, "ExternalGraphic"));
 

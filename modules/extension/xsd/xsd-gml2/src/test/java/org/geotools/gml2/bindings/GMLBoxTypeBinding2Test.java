@@ -16,20 +16,26 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.w3c.dom.Document;
 
 public class GMLBoxTypeBinding2Test extends GMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(Envelope.class, binding(GML.BoxType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(GML.BoxType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         GML2MockData.box(document, document);
 
@@ -40,6 +46,7 @@ public class GMLBoxTypeBinding2Test extends GMLTestSupport {
         assertEquals(2.0, box.getMaxY(), 0.0);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(new Envelope(1, 2, 3, 4), GML.Box);
 

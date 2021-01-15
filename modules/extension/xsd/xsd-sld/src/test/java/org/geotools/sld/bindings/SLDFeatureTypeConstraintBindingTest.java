@@ -16,14 +16,20 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.FeatureTypeConstraint;
+import org.junit.Test;
 
 public class SLDFeatureTypeConstraintBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(
                 FeatureTypeConstraint.class, new SLDFeatureTypeConstraintBinding(null).getType());
     }
 
+    @Test
     public void testNormal() throws Exception {
         SLDMockData.featureTypeConstraint(document, document);
 

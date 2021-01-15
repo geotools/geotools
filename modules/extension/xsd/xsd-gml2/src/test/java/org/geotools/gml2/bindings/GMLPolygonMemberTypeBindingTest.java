@@ -16,9 +16,13 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -28,13 +32,14 @@ public class GMLPolygonMemberTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         association = createElement(GML.NAMESPACE, "myAssociation", GML.PolygonMemberType, null);
         geometry = createElement(GML.NAMESPACE, "myGeometry", GML.PolygonType, null);
     }
 
+    @Test
     public void testWithGeometry() throws Exception {
         Node node =
                 createNode(

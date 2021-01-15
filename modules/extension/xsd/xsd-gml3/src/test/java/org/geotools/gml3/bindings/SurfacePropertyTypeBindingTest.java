@@ -16,14 +16,19 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
 public class SurfacePropertyTypeBindingTest extends GML3TestSupport {
+
+    @Test
     public void testEncode() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         Polygon polygon =

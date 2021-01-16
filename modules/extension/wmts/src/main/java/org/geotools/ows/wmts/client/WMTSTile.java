@@ -73,10 +73,6 @@ class WMTSTile extends Tile {
         tileImages = ObjectCaches.create("soft", cacheSize);
     }
 
-    private final WMTSServiceType type;
-
-    private final WMTSTileService service;
-
     public WMTSTile(int x, int y, ZoomLevel zoomLevel, TileService service) {
         this(new WMTSTileIdentifier(x, y, zoomLevel, service.getName()), service);
     }
@@ -89,20 +85,25 @@ class WMTSTile extends Tile {
                 ((WMTSTileService) service)
                         .getTileMatrix(tileIdentifier.getZoomLevel().getZoomLevel())
                         .getTileWidth());
+
         this.service = (WMTSTileService) service;
-        this.type = this.service.getType();
     }
 
     /** @return the type of WMTS KVP or REST */
     public WMTSServiceType getType() {
-        return type;
+        return getService().getType();
+    }
+
+    private WMTSTileService getService() {
+        return (WMTSTileService) service;
     }
 
     @Override
     public URL getUrl() {
-        String baseUrl = service.getTemplateURL();
+        String baseUrl = getService().getTemplateURL();
 
         TileIdentifier tileIdentifier = getTileIdentifier();
+        WMTSServiceType type = getType();
         if (null == type) {
             throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
         } else
@@ -117,14 +118,14 @@ class WMTSTile extends Tile {
     }
 
     private URL getRESTurl(String baseUrl, TileIdentifier tileIdentifier) throws RuntimeException {
-        String tileMatrix = service.getTileMatrix(tileIdentifier.getZ()).getIdentifier();
+        String tileMatrix = getService().getTileMatrix(tileIdentifier.getZ()).getIdentifier();
 
         if (baseUrl.indexOf("{style}") != -1)
-            baseUrl = baseUrl.replace("{style}", service.getStyleName());
+            baseUrl = baseUrl.replace("{style}", getService().getStyleName());
         else if (baseUrl.indexOf("{Style}") != -1)
-            baseUrl = baseUrl.replace("{Style}", service.getStyleName());
+            baseUrl = baseUrl.replace("{Style}", getService().getStyleName());
 
-        baseUrl = baseUrl.replace("{TileMatrixSet}", service.getTileMatrixSetName());
+        baseUrl = baseUrl.replace("{TileMatrixSet}", getService().getTileMatrixSetName());
         baseUrl = baseUrl.replace("{TileMatrix}", "" + tileMatrix);
         baseUrl = baseUrl.replace("{TileCol}", "" + tileIdentifier.getX());
         baseUrl = baseUrl.replace("{TileRow}", "" + tileIdentifier.getY());
@@ -133,7 +134,7 @@ class WMTSTile extends Tile {
                 replaceToken(
                         baseUrl,
                         "time",
-                        service.getDimensions().get(WMTSTileService.DIMENSION_TIME));
+                        getService().getDimensions().get(WMTSTileService.DIMENSION_TIME));
 
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine("Requesting tile " + tileIdentifier.getCode());
@@ -170,11 +171,11 @@ class WMTSTile extends Tile {
         params.put("service", "WMTS");
         params.put("version", "1.0.0");
         params.put("request", "GetTile");
-        params.put("layer", service.getLayerName());
-        params.put("style", service.getStyleName());
-        params.put("format", service.getFormat());
-        params.put("tilematrixset", service.getTileMatrixSetName());
-        params.put("TileMatrix", service.getTileMatrix(tileIdentifier.getZ()).getIdentifier());
+        params.put("layer", getService().getLayerName());
+        params.put("style", getService().getStyleName());
+        params.put("format", getService().getFormat());
+        params.put("tilematrixset", getService().getTileMatrixSetName());
+        params.put("TileMatrix", getService().getTileMatrix(tileIdentifier.getZ()).getIdentifier());
         params.put("TileCol", tileIdentifier.getX());
         params.put("TileRow", tileIdentifier.getY());
 
@@ -224,7 +225,7 @@ class WMTSTile extends Tile {
 
         Map<String, String> headers =
                 (Map<String, String>)
-                        this.service.getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);
+                        getService().getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);
         try (InputStream is = setupInputStream(getUrl(), headers)) {
             return ImageIOExt.readBufferedImage(is);
         }

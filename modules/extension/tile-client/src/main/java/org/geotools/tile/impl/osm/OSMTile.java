@@ -35,16 +35,16 @@ public class OSMTile extends Tile {
 
     public static final int DEFAULT_TILE_SIZE = 256;
 
-    private TileService service;
-
     public OSMTile(int x, int y, ZoomLevel zoomLevel, TileService service) {
         this(new OSMTileIdentifier(x, y, zoomLevel, service.getName()), service);
     }
 
     public OSMTile(TileIdentifier tileName, TileService service) {
-        super(tileName, WebMercatorTileFactory.getExtentFromTileName(tileName), DEFAULT_TILE_SIZE);
-
-        this.service = service;
+        super(
+                tileName,
+                WebMercatorTileFactory.getExtentFromTileName(tileName),
+                DEFAULT_TILE_SIZE,
+                service);
     }
 
     @Override

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.http;
+package org.geotools.http.commons;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +43,8 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.geotools.data.ows.AbstractOpenWebService;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPResponse;
 import org.geotools.util.logging.Logging;
 
 /**

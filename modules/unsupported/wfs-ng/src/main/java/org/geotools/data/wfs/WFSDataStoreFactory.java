@@ -33,7 +33,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPFactoryFinder;
-import org.geotools.http.MultithreadedHttpClient;
+import org.geotools.http.commons.MultithreadedHttpClient;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
 import org.geotools.util.factory.Hints;

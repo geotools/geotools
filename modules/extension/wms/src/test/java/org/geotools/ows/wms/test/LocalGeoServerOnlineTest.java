@@ -40,7 +40,7 @@ import org.geotools.data.ows.Specification;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPFactoryFinder;
-import org.geotools.http.MultithreadedHttpClient;
+import org.geotools.http.commons.MultithreadedHttpClient;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.WMS1_1_1;

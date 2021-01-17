@@ -386,8 +386,8 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
             return code;
         }
         final String candidate = scope.toString();
-        for (int i = 0; i < authorities.length; i++) {
-            if (Citations.identifierMatches(authorities[i], candidate)) {
+        for (Citation citation : authorities) {
+            if (Citations.identifierMatches(citation, candidate)) {
                 return name.tip().toString().trim();
             }
         }
@@ -415,7 +415,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
         protected Map<String, Object> alterProperties(Map<String, Object> properties) {
             Object candidate = properties.get(IdentifiedObject.IDENTIFIERS_KEY);
             if (candidate == null && code != null) {
-                properties = new HashMap<String, Object>(properties);
+                properties = new HashMap<>(properties);
                 code = trimAuthority(code);
                 final Object identifiers;
                 if (authorities.length <= 1) {

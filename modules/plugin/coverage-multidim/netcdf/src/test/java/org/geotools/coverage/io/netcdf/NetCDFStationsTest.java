@@ -18,6 +18,7 @@ package org.geotools.coverage.io.netcdf;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
@@ -35,7 +36,6 @@ import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
@@ -47,7 +47,7 @@ import org.opengis.parameter.ParameterValue;
  * the binary index for example) are not reused. The stations data set is very small (perfect for
  * testing proposes) please use netcdf dump if you need to check is content.
  */
-public final class NetCDFStationsTest extends Assert {
+public final class NetCDFStationsTest {
 
     @BeforeClass
     public static void init() {
@@ -139,10 +139,10 @@ public final class NetCDFStationsTest extends Assert {
 
     /** Checks that arrayA contains arrayB. */
     private void checkArrayContainsArray(int[] arrayA, int[] arrayB) {
-        for (int i = 0; i < arrayB.length; i++) {
+        for (int j : arrayB) {
             boolean found = false;
-            for (int j = 0; j < arrayA.length; j++) {
-                if (arrayB[i] == arrayA[j]) {
+            for (int k : arrayA) {
+                if (j == k) {
                     found = true;
                 }
             }

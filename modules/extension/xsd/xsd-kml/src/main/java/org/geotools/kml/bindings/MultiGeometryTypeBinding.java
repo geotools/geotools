@@ -83,23 +83,24 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List geometries = node.getChildValues(Geometry.class);
+        List<Geometry> geometries = node.getChildValues(Geometry.class);
 
         if (geometries.isEmpty()) {
             return geometryFactory.createGeometryCollection(new Geometry[] {});
         }
 
         // try to be smart about which subclass to return
-        int i = 0;
-        Class geometryClass = geometries.get(i++).getClass();
-
-        for (; i < geometries.size(); i++) {
-            Class clazz = geometries.get(i).getClass();
-
-            if (!clazz.isAssignableFrom(geometryClass) && !geometryClass.isAssignableFrom(clazz)) {
-                geometryClass = null;
-
-                break;
+        Class<?> geometryClass = null;
+        for (Geometry g : geometries) {
+            Class<?> clazz = g.getClass();
+            if (geometryClass == null) {
+                geometryClass = clazz;
+            } else {
+                if (!clazz.isAssignableFrom(geometryClass)
+                        && !geometryClass.isAssignableFrom(clazz)) {
+                    geometryClass = null;
+                    break;
+                }
             }
         }
 
@@ -107,24 +108,24 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
             if (geometryClass == Point.class) {
                 // create a multi point
                 return geometryFactory.createMultiPoint(
-                        (Point[]) geometries.toArray(new Point[geometries.size()]));
+                        geometries.toArray(new Point[geometries.size()]));
             }
 
             if ((geometryClass == LineString.class) || (geometryClass == LinearRing.class)) {
                 // create a multi line string
                 return geometryFactory.createMultiLineString(
-                        (LineString[]) geometries.toArray(new LineString[geometries.size()]));
+                        geometries.toArray(new LineString[geometries.size()]));
             }
 
             if (geometryClass == Polygon.class) {
                 // create a multi polygon
                 return geometryFactory.createMultiPolygon(
-                        (Polygon[]) geometries.toArray(new Polygon[geometries.size()]));
+                        geometries.toArray(new Polygon[geometries.size()]));
             }
         }
 
         return geometryFactory.createGeometryCollection(
-                (Geometry[]) geometries.toArray(new Geometry[geometries.size()]));
+                geometries.toArray(new Geometry[geometries.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

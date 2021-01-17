@@ -16,6 +16,7 @@
  */
 package org.geotools.appschema.filter.expression;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -108,7 +109,7 @@ public class AppSchemaFeaturePropertyAccessorTest extends AppSchemaTestSupport {
 
             o = ex.evaluate(mf);
             assertNotNull(o);
-            assertTrue(o.equals(Types.typeName(XLINKNS, "href")));
+            assertEquals(o, Types.typeName(XLINKNS, "href"));
 
             ex =
                     new AttributeExpressionImpl(

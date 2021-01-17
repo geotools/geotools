@@ -84,8 +84,7 @@ final class URI_Type {
 
     /** Returns an instance of the specified name (case-insensitive), or {@code null} if none. */
     public static URI_Type get(final String name) {
-        for (int i = 0; i < TYPES.length; i++) {
-            final URI_Type candidate = TYPES[i];
+        for (final URI_Type candidate : TYPES) {
             if (name.equalsIgnoreCase(candidate.name)) {
                 return candidate;
             }

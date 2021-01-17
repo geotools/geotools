@@ -18,7 +18,6 @@ package org.geotools.graph.util;
 
 import java.util.List;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
@@ -27,17 +26,16 @@ import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.util.graph.GraphPartitioner;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class GraphPartitionerTest extends TestCase {
+public class GraphPartitionerTest {
 
     private GraphBuilder m_builder;
 
-    public GraphPartitionerTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
     }
@@ -47,6 +45,7 @@ public class GraphPartitionerTest extends TestCase {
      *
      * <p>Expected: 1. There should only be one partition.
      */
+    @Test
     public void test_0() {
         int nnodes = 100;
         GraphTestUtil.buildNoBifurcations(builder(), nnodes);
@@ -56,17 +55,17 @@ public class GraphPartitionerTest extends TestCase {
 
         List partitions = partitioner.getPartitions();
 
-        assertTrue(partitions.size() == 1);
+        Assert.assertEquals(1, partitions.size());
 
         // ensure every node in the original graph is in the new graph
         final Graph g = (Graph) partitions.get(0);
-        assertTrue(g.getNodes().size() == builder().getGraph().getNodes().size());
-        assertTrue(g.getEdges().size() == builder().getGraph().getEdges().size());
+        Assert.assertEquals(g.getNodes().size(), builder().getGraph().getNodes().size());
+        Assert.assertEquals(g.getEdges().size(), builder().getGraph().getEdges().size());
 
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(g.getNodes().contains(component));
+                        Assert.assertTrue(g.getNodes().contains(component));
                         return 0;
                     }
                 };
@@ -78,6 +77,7 @@ public class GraphPartitionerTest extends TestCase {
      * <br>
      * Expected: 1. Two graphs should be created. One for each subtree of original.
      */
+    @Test
     public void test_1() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -94,7 +94,7 @@ public class GraphPartitionerTest extends TestCase {
 
         List partitions = parter.getPartitions();
 
-        assertEquals(2, partitions.size());
+        Assert.assertEquals(2, partitions.size());
 
         Graph left = (Graph) partitions.get(0);
         Graph right = (Graph) partitions.get(1);
@@ -105,18 +105,18 @@ public class GraphPartitionerTest extends TestCase {
             right = (Graph) partitions.get(0);
         }
 
-        assertTrue(left.getNodes().contains(lc));
-        assertTrue(right.getNodes().contains(rc));
+        Assert.assertTrue(left.getNodes().contains(lc));
+        Assert.assertTrue(right.getNodes().contains(rc));
 
-        assertTrue(left.getNodes().size() == Math.pow(2, k) - 1);
-        assertTrue(left.getEdges().size() == Math.pow(2, k) - 2);
-        assertTrue(right.getNodes().size() == Math.pow(2, k) - 1);
-        assertTrue(right.getEdges().size() == Math.pow(2, k) - 2);
+        Assert.assertEquals(left.getNodes().size(), (int) Math.pow(2, k) - 1);
+        Assert.assertEquals(left.getEdges().size(), (int) Math.pow(2, k) - 2);
+        Assert.assertEquals(right.getNodes().size(), (int) Math.pow(2, k) - 1);
+        Assert.assertEquals(right.getEdges().size(), (int) Math.pow(2, k) - 2);
 
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.getObject().toString().startsWith("0.0"));
+                        Assert.assertTrue(component.getObject().toString().startsWith("0.0"));
                         return 0;
                     }
                 };
@@ -125,7 +125,7 @@ public class GraphPartitionerTest extends TestCase {
         visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
-                        assertTrue(component.getObject().toString().startsWith("0.1"));
+                        Assert.assertTrue(component.getObject().toString().startsWith("0.1"));
                         return 0;
                     }
                 };

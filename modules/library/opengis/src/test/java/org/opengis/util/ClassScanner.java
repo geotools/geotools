@@ -9,7 +9,9 @@
  */
 package org.opengis.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -30,7 +32,7 @@ final class ClassScanner implements Iterator<Class<?>> {
     private static final String EXTENSION = ".class";
 
     /** The classes to load. */
-    private final List<String> classNames = new ArrayList<String>();
+    private final List<String> classNames = new ArrayList<>();
 
     /** Index of the next element to return. */
     private int index = 0;

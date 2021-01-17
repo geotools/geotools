@@ -19,7 +19,7 @@ package org.geotools.filter.text.ecql;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterFactoryImpl;
@@ -28,7 +28,6 @@ import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.function.PropertyExistsFunction;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
@@ -293,7 +292,7 @@ public final class ECQLTest {
 
         List<Filter> list = ECQL.toFilterList("A=1; B<4");
 
-        Assert.assertTrue(list.size() == 2);
+        assertEquals(2, list.size());
 
         Assert.assertTrue(list.get(0) instanceof PropertyIsEqualTo);
 
@@ -326,7 +325,7 @@ public final class ECQLTest {
     public void functionExpressionToCQL() throws Exception {
 
         Expression[] absArgs = new Expression[1];
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         absArgs[0] = ff.literal(10);
         Function abs = ff.function("abs", absArgs);
 
@@ -359,7 +358,7 @@ public final class ECQLTest {
         String expectedECQL = "QUANTITY = 1; YEAR < 1963";
         List<Filter> list = ECQL.toFilterList(expectedECQL);
 
-        Assert.assertTrue(list.size() == 2);
+        assertEquals(2, list.size());
 
         String cqlResult = ECQL.toCQL(list);
 
@@ -373,7 +372,7 @@ public final class ECQLTest {
                 "INTERSECTS(the_geom, SRID=4326;POINT (1 2)); INTERSECTS(abcd, SRID=4962;POINT (0 0))";
         List<Filter> list = ECQL.toFilterList(expectedECQL);
 
-        Assert.assertTrue(list.size() == 2);
+        assertEquals(2, list.size());
 
         String cqlResult = ECQL.toCQL(list);
 
@@ -396,7 +395,7 @@ public final class ECQLTest {
         String expectedCQL = "QUANTITY = 1; YEAR < 1963";
         List<Filter> list = CQL.toFilterList(expectedCQL);
 
-        Assert.assertTrue(list.size() == 2);
+        assertEquals(2, list.size());
 
         String cqlResult = CQL.toCQL(list);
 

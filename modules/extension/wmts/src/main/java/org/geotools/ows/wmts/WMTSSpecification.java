@@ -18,8 +18,17 @@ package org.geotools.ows.wmts;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Properties;
-import org.geotools.data.ows.*;
+import java.util.Set;
+import java.util.TreeSet;
+import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
+import org.geotools.data.ows.GetCapabilitiesRequest;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.Response;
+import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.data.ows.Specification;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSServiceType;
@@ -38,9 +47,7 @@ public class WMTSSpecification extends Specification {
     private WMTSServiceType type;
 
     /** */
-    public WMTSSpecification() {
-        // TODO Auto-generated constructor stub
-    }
+    public WMTSSpecification() {}
 
     @Override
     public String getVersion() {
@@ -50,7 +57,6 @@ public class WMTSSpecification extends Specification {
 
     @Override
     public GetCapabilitiesRequest createGetCapabilitiesRequest(URL server) {
-        // TODO Auto-generated method stub
         return new GetCapsRequest(server);
     }
 
@@ -78,13 +84,21 @@ public class WMTSSpecification extends Specification {
                 WMTSCapabilities capabilities,
                 HTTPClient client) {
             super(onlineResource, properties, client);
-            this.type = capabilities.getType();
+            if (properties.containsKey("type")) {
+                String t = (String) properties.get("type");
+                if ("REST".equalsIgnoreCase(t)) {
+                    this.type = WMTSServiceType.REST;
+                } else if ("KVP".equalsIgnoreCase(t)) {
+                    this.type = WMTSServiceType.KVP;
+                }
+            } else {
+                this.type = capabilities.getType();
+            }
             this.capabilities = capabilities;
         }
 
         @Override
         public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
-            // TODO Auto-generated method stub
             return new GetTileResponse(response, getType());
         }
 
@@ -138,7 +152,36 @@ public class WMTSSpecification extends Specification {
 
     /** */
     public static String processKey(String key) {
+        if (keywords.contains(key.toLowerCase())) return key.trim().toUpperCase();
+        else return key;
+    }
 
-        return key.trim().toUpperCase();
+    static Set<String> keywords = new TreeSet<>();
+
+    static { // a list of keywords from the WMTS spec -
+        // http://portal.opengeospatial.org/files/?artifact_id=35326
+        String[] words = {
+            "request",
+            "version",
+            "layer",
+            "acceptversions",
+            "sections",
+            "updatesequence",
+            "acceptformats",
+            "style",
+            "format",
+            "tilematrixset",
+            "tilematrix",
+            "tilerow",
+            "tilecol",
+            "j",
+            "i",
+            "infoformat",
+            "service",
+            "time",
+            "elevation",
+            "band"
+        };
+        keywords.addAll(Arrays.asList(words));
     }
 }

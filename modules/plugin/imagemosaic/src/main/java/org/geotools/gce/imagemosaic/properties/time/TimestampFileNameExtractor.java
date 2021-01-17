@@ -74,7 +74,7 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
     public void setProperties(SimpleFeature feature) {
 
         // get all the matches and convert them in times
-        final List<Date> dates = new ArrayList<Date>();
+        final List<Date> dates = new ArrayList<>();
         for (String match : getMatches()) {
             // try to convert to date
 
@@ -90,7 +90,7 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
                     }
                     dates.add(parsed);
                 } else {
-                    Collection parsed = PARSER.parse(match);
+                    Collection<?> parsed = PARSER.parse(match);
                     parsed.stream()
                             .forEach(
                                     d -> {
@@ -109,7 +109,7 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
         }
 
         // set the properties, only if we have matches!
-        if (dates.size() <= 0) {
+        if (dates.isEmpty()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("No matches found for this property extractor:");
             }

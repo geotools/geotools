@@ -16,21 +16,37 @@
  */
 package org.geotools.referencing.factory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import org.geotools.geometry.GeometryFactoryFinder;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.GenericName;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.*;
-import org.opengis.referencing.crs.*;
-import org.opengis.referencing.cs.*;
-import org.opengis.referencing.datum.*;
-import org.opengis.referencing.operation.*;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.IdentifiedObject;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.CSAuthorityFactory;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.datum.Datum;
+import org.opengis.referencing.datum.DatumAuthorityFactory;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.opengis.util.InternationalString;
 
 /**
@@ -111,7 +127,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      */
     public ManyAuthoritiesFactory(final Collection<? extends AuthorityFactory> factories) {
         super(NORMAL_PRIORITY);
-        inProgress = new ThreadLocal<Boolean>();
+        inProgress = new ThreadLocal<>();
         if (factories != null && !factories.isEmpty()) {
             for (final AuthorityFactory factory : factories) {
                 if (factory instanceof Factory) {
@@ -171,7 +187,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
             final List<AuthorityFactory> list;
             if (authorityIndex == authorityCount) {
                 authorities[authorityCount++] = authority;
-                factoriesByAuthority[authorityIndex] = list = new ArrayList<AuthorityFactory>(4);
+                factoriesByAuthority[authorityIndex] = list = new ArrayList<>(4);
             } else {
                 list = factoriesByAuthority[authorityIndex];
             }
@@ -182,8 +198,8 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         /*
          * For each authority, chains the factories into a FallbackAuthorityFactory object.
          */
-        final ArrayList<AuthorityFactory> result = new ArrayList<AuthorityFactory>();
-        final List<AuthorityFactory> buffer = new ArrayList<AuthorityFactory>(4);
+        final ArrayList<AuthorityFactory> result = new ArrayList<>();
+        final List<AuthorityFactory> buffer = new ArrayList<>(4);
         for (int i = 0; i < authorityCount; i++) {
             final Collection<AuthorityFactory> list = factoriesByAuthority[i];
             while (!list.isEmpty()) {
@@ -302,7 +318,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
 
     /** Returns the authority names of every factories given at construction time. */
     public Set<String> getAuthorityNames() {
-        final Set<String> names = new HashSet<String>();
+        final Set<String> names = new HashSet<>();
         final Collection<AuthorityFactory> factories = getFactories();
         if (factories != null) {
             for (final AuthorityFactory factory : factories) {
@@ -551,7 +567,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * @param type The spatial reference objects type (may be {@code IdentifiedObject.class}).
      * @return The set of authority codes for spatial reference objects of the given type. If this
      *     factory doesn't contains any object of the given type, then this method returns an
-     *     {@linkplain java.util.Collections#EMPTY_SET empty set}.
+     *     {@linkplain java.util.Collections.emptySet() empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
     @Override
@@ -565,8 +581,8 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
              */
             return Collections.emptySet();
         }
-        final Set<String> codes = new LinkedHashSet<String>();
-        final Set<AuthorityFactory> done = new HashSet<AuthorityFactory>();
+        final Set<String> codes = new LinkedHashSet<>();
+        final Set<AuthorityFactory> done = new HashSet<>();
         done.add(this); // Safety for avoiding recursive calls.
         try {
             inProgress.set(Boolean.TRUE);
@@ -660,10 +676,10 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      */
     @Override
     public InternationalString getDescriptionText(final String code) throws FactoryException {
-        final Set<AuthorityFactory> done = new HashSet<AuthorityFactory>();
+        final Set<AuthorityFactory> done = new HashSet<>();
         done.add(this); // Safety for avoiding recursive calls.
         FactoryException failure = null;
-        for (int type = 0; type < FACTORY_TYPES.length; type++) {
+        for (Class<? extends AuthorityFactory> factoryType : FACTORY_TYPES) {
             /*
              * Try all factories, starting with the CRS factory because it is the only one most
              * users care about. If the CRS factory doesn't know about the specified object, then
@@ -671,7 +687,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
              */
             final AuthorityFactory factory;
             try {
-                factory = getAuthorityFactory(FACTORY_TYPES[type], code);
+                factory = getAuthorityFactory(factoryType, code);
             } catch (NoSuchAuthorityCodeException exception) {
                 if (failure == null) {
                     failure = exception;
@@ -683,9 +699,12 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
                     return factory.getDescriptionText(code);
                 } catch (FactoryException exception) {
                     /*
-                     * Failed to creates an object using the current factory.  We will retain only the
-                     * first exception and discart all other ones, except if the first exceptions were
-                     * due to unknown authority (we will prefer exception due to unknown code instead).
+                     * Failed to creates an object using the current factory.  We will retain
+                     * only the
+                     * first exception and discart all other ones, except if the first exceptions
+                     *  were
+                     * due to unknown authority (we will prefer exception due to unknown code
+                     * instead).
                      * The first exception is usually thrown by the CRS factory, which is the only
                      * factory most users care about.
                      */
@@ -710,10 +729,10 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      */
     @Override
     public IdentifiedObject createObject(final String code) throws FactoryException {
-        final Set<AuthorityFactory> done = new HashSet<AuthorityFactory>();
+        final Set<AuthorityFactory> done = new HashSet<>();
         done.add(this); // Safety for avoiding recursive calls.
         FactoryException failure = null;
-        for (int type = 0; type < FACTORY_TYPES.length; type++) {
+        for (Class<? extends AuthorityFactory> factoryType : FACTORY_TYPES) {
             /*
              * Try all factories, starting with the CRS factory because it is the only one most
              * users care about. If the CRS factory doesn't know about the specified object, then
@@ -721,7 +740,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
              */
             final AuthorityFactory factory;
             try {
-                factory = getAuthorityFactory(FACTORY_TYPES[type], code);
+                factory = getAuthorityFactory(factoryType, code);
             } catch (NoSuchAuthorityCodeException exception) {
                 if (failure == null) {
                     failure = exception;
@@ -733,9 +752,12 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
                     return factory.createObject(code);
                 } catch (FactoryException exception) {
                     /*
-                     * Failed to creates an object using the current factory.  We will retain only the
-                     * first exception and discart all other ones, except if the first exceptions were
-                     * due to unknown authority (we will prefer exception due to unknown code instead).
+                     * Failed to creates an object using the current factory.  We will retain
+                     * only the
+                     * first exception and discart all other ones, except if the first exceptions
+                     *  were
+                     * due to unknown authority (we will prefer exception due to unknown code
+                     * instead).
                      * The first exception is usually thrown by the CRS factory, which is the only
                      * factory most users care about.
                      */

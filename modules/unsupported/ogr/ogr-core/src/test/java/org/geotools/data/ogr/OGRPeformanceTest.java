@@ -23,6 +23,7 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 
 public abstract class OGRPeformanceTest extends TestCaseSupport {
 
@@ -32,11 +33,12 @@ public abstract class OGRPeformanceTest extends TestCaseSupport {
         super(dataStoreFactoryClass);
     }
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         CRS.decode("EPSG:4326");
     }
 
+    @Test
     public void testOGRShapePerformance() throws Exception {
         OGRDataStore ods = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
         long start = System.currentTimeMillis();
@@ -52,6 +54,7 @@ public abstract class OGRPeformanceTest extends TestCaseSupport {
         // System.out.println("OGR: " + (end - start) / 1000.0);
     }
 
+    @Test
     public void testShapefilePerformance() throws Exception {
         URL url = TestData.url(STATE_POP);
         ShapefileDataStore sds = new ShapefileDataStore(url);

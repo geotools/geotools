@@ -16,7 +16,9 @@
  */
 package org.geotools.mbstyle.source;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
@@ -131,7 +133,7 @@ public class StyleSourcesTest {
         assertTrue(sourceMap.get("vector-tiles") instanceof VectorMBSource);
         VectorMBSource vector = (VectorMBSource) sourceMap.get("vector-tiles");
         assertEquals("vector", vector.getType());
-        assertEquals(null, vector.getUrl());
+        assertNull(vector.getUrl());
         assertEquals(10, vector.getMinZoom().intValue());
         assertEquals(14, vector.getMaxZoom().intValue());
         assertEquals(

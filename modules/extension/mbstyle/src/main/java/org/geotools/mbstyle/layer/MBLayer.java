@@ -69,7 +69,7 @@ public abstract class MBLayer {
      *
      * <p>Optional enum. One of visible, none. Defaults to visible.
      */
-    public static enum Visibility {
+    public enum Visibility {
         /** The layer is shown. */
         VISIBLE,
         /** The layer is not shown. */
@@ -398,8 +398,12 @@ public abstract class MBLayer {
         if (getClass() != obj.getClass()) return false;
         MBLayer other = (MBLayer) obj;
         if (json == null) {
-            if (other.json != null) return false;
-        } else if (!json.equals(other.json)) return false;
+            if (other.json != null) {
+                return false;
+            }
+        } else if (!json.equals(other.json)) {
+            return false;
+        }
         return true;
     }
 

@@ -17,8 +17,10 @@
  */
 package org.geotools.mbstyle.layer;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Point;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
@@ -26,7 +28,11 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.*;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.Rule;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
@@ -61,12 +67,12 @@ import org.opengis.style.SemanticType;
  */
 public class FillMBLayer extends MBLayer {
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "fill";
+    private static final String TYPE = "fill";
 
     /** Controls the translation reference point. */
-    public static enum FillTranslateAnchor {
+    public enum FillTranslateAnchor {
         /** The fill is translated relative to the map. */
         MAP,
         /** The fill is translated relative to the viewport. */
@@ -242,7 +248,7 @@ public class FillMBLayer extends MBLayer {
 
     /** @return True if the layer has a fill-pattern explicitly provided. */
     public boolean hasFillPattern() {
-        return parse.isPropertyDefined(paint, "fill-pattern");
+        return parse.isDefined(paint, "fill-pattern");
     }
 
     /**

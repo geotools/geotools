@@ -21,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.AbstractRequest;
@@ -29,7 +28,13 @@ import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
-import org.geotools.ows.wms.request.*;
+import org.geotools.ows.wms.request.AbstractGetFeatureInfoRequest;
+import org.geotools.ows.wms.request.AbstractGetMapRequest;
+import org.geotools.ows.wms.request.AbstractGetStylesRequest;
+import org.geotools.ows.wms.request.DescribeLayerRequest;
+import org.geotools.ows.wms.request.GetLegendGraphicRequest;
+import org.geotools.ows.wms.request.GetStylesRequest;
+import org.geotools.ows.wms.request.PutStylesRequest;
 import org.geotools.ows.wms.response.GetFeatureInfoResponse;
 import org.geotools.ows.wms.response.GetMapResponse;
 import org.geotools.ows.wms.response.GetStylesResponse;
@@ -45,8 +50,8 @@ import org.geotools.ows.wms.response.WMSGetCapabilitiesResponse;
  * @author rgould
  */
 public class WMS1_0_0 extends WMSSpecification {
-    static final Map formatMimeTypes = new HashMap();
-    static final Map exceptionMimeTypes = new HashMap();
+    static final Map<String, String> formatMimeTypes = new HashMap<>();
+    static final Map<String, String> exceptionMimeTypes = new HashMap<>();
 
     static {
         exceptionMimeTypes.put("WMS_XML", "application/vnd.ogc.se_xml");
@@ -152,8 +157,8 @@ public class WMS1_0_0 extends WMSSpecification {
     }
 
     private static final String getParameterValue(String mimeType, Map map) {
-        for (Iterator i = map.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) i.next();
+        for (Object o : map.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
 
             if (mimeType.equals(entry.getValue())) {
                 return (String) entry.getKey();

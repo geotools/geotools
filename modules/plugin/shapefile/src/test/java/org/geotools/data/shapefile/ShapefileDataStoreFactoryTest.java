@@ -19,7 +19,9 @@ package org.geotools.data.shapefile;
 import static org.geotools.data.shapefile.ShapefileDataStoreFactory.ENABLE_SPATIAL_INDEX;
 import static org.geotools.data.shapefile.ShapefileDataStoreFactory.FSTYPE;
 import static org.geotools.data.shapefile.ShapefileDataStoreFactory.URLP;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -158,7 +160,7 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         if ((pairs.length & 1) != 0) {
             throw new IllegalArgumentException("Pairs was not an even number");
         }
-        Map<String, Serializable> result = new HashMap<String, Serializable>();
+        Map<String, Serializable> result = new HashMap<>();
         for (int i = 0; i < pairs.length; i += 2) {
             String key = (String) pairs[i];
             Serializable value = (Serializable) pairs[i + 1];

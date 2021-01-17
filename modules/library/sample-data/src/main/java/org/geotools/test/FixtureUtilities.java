@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
-import junit.framework.TestCase;
+import junit.framework.TestCase; // NOPMD
 
 /**
  * Static methods to support the implementation of tests that use fixture configuration files. See
@@ -35,16 +35,10 @@ public class FixtureUtilities {
     /** Load {@link Properties} from a {@link File}. */
     public static Properties loadProperties(File file) {
         try {
-            InputStream input = null;
-            try {
-                input = new BufferedInputStream(new FileInputStream(file));
+            try (InputStream input = new BufferedInputStream(new FileInputStream(file))) {
                 Properties properties = new Properties();
                 properties.load(input);
                 return properties;
-            } finally {
-                if (input != null) {
-                    input.close();
-                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

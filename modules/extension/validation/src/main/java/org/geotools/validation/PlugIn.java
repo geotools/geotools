@@ -43,7 +43,7 @@ public class PlugIn {
     BeanInfo beanInfo;
     Map propertyMap;
 
-    PlugIn(Map config) throws ValidationException {
+    PlugIn(Map<String, Object> config) throws ValidationException {
         this(
                 get(config, "name"),
                 get(config, "bean", Validation.class),
@@ -51,7 +51,7 @@ public class PlugIn {
                 config);
     }
 
-    public PlugIn(String name, Class type, String description, Map config)
+    public PlugIn(String name, Class type, String description, Map<String, Object> config)
             throws ValidationException {
         if ((type == null) || (!Validation.class.isAssignableFrom(type) && type.isInterface())) {
             throw new ValidationException("Not a validation test '" + name + "' plugIn:" + type);
@@ -75,12 +75,12 @@ public class PlugIn {
         propertyMap = propertyMap(beanInfo);
     }
 
-    private Map transArgs(Map config) {
-        Map defaults = new HashMap();
-        Iterator i = config.keySet().iterator();
+    private Map transArgs(Map<String, Object> config) {
+        Map<String, Object> defaults = new HashMap<>();
+        Iterator<String> i = config.keySet().iterator();
 
         while (i.hasNext()) {
-            String key = (String) i.next();
+            String key = i.next();
             Object o = config.get(key);
 
             if (o instanceof ArgumentDTO) {
@@ -97,12 +97,12 @@ public class PlugIn {
         return (PropertyDescriptor) propertyMap.get(name);
     }
 
-    protected static Map propertyMap(BeanInfo info) {
+    protected static Map<String, PropertyDescriptor> propertyMap(BeanInfo info) {
         PropertyDescriptor[] properties = info.getPropertyDescriptors();
-        Map lookup = new HashMap(properties.length);
+        Map<String, PropertyDescriptor> lookup = new HashMap<>(properties.length);
 
-        for (int i = 0; i < properties.length; i++) {
-            lookup.put(properties[i].getName(), properties[i]);
+        for (PropertyDescriptor property : properties) {
+            lookup.put(property.getName(), property);
         }
 
         return lookup;
@@ -118,22 +118,16 @@ public class PlugIn {
      * @return Validation ready for use by the ValidationProcessor
      * @throws ValidationException when an error occurs
      */
-    public Validation createValidation(String name, String description, Map args)
+    public Validation createValidation(String name, String description, Map<String, Object> args)
             throws ValidationException {
         BeanDescriptor beanDescriptor = beanInfo.getBeanDescriptor();
-        Class type = beanDescriptor.getBeanClass();
+        Class<?> type = beanDescriptor.getBeanClass();
 
         Constructor create;
 
         try {
             create = type.getConstructor(new Class[0]);
-        } catch (SecurityException e) {
-            throw new ValidationException(
-                    "Could not create '" + plugInName + "' as " + type.getName(), e);
-        } catch (NoSuchMethodException e) {
-            throw new ValidationException(
-                    "Could not create '" + plugInName + "' as " + type.getName(), e);
-        } catch (IllegalArgumentException e) {
+        } catch (SecurityException | IllegalArgumentException | NoSuchMethodException e) {
             throw new ValidationException(
                     "Could not create '" + plugInName + "' as " + type.getName(), e);
         }
@@ -142,13 +136,7 @@ public class PlugIn {
 
         try {
             validate = (Validation) create.newInstance(new Object[0]);
-        } catch (InstantiationException e) {
-            throw new ValidationException(
-                    "Could not create '" + name + "' as plugIn " + plugInName, e);
-        } catch (IllegalAccessException e) {
-            throw new ValidationException(
-                    "Could not create '" + name + "' as plugIn " + plugInName, e);
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             throw new ValidationException(
                     "Could not create '" + name + "' as plugIn " + plugInName, e);
         }
@@ -162,14 +150,14 @@ public class PlugIn {
     }
 
     protected void configure(Object bean, Map config) throws ValidationException {
-        if ((config == null) || (config.size() == 0)) {
+        if ((config == null) || (config.isEmpty())) {
             return;
         }
 
         PropertyDescriptor property;
 
-        for (Iterator i = config.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) i.next();
+        for (Object o : config.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
             property = propertyInfo((String) entry.getKey());
 
             if (property == null) {
@@ -179,17 +167,9 @@ public class PlugIn {
 
             try {
                 property.getWriteMethod().invoke(bean, new Object[] {entry.getValue()});
-            } catch (IllegalArgumentException e) {
-                String val = entry.getValue() == null ? entry.getValue().toString() : "null";
-                throw new ValidationException(
-                        "test failed to configure " + plugInName + " " + entry.getKey() + " " + val,
-                        e);
-            } catch (IllegalAccessException e) {
-                String val = entry.getValue() == null ? entry.getValue().toString() : "null";
-                throw new ValidationException(
-                        "test failed to configure " + plugInName + " " + entry.getKey() + " " + val,
-                        e);
-            } catch (InvocationTargetException e) {
+            } catch (IllegalArgumentException
+                    | InvocationTargetException
+                    | IllegalAccessException e) {
                 String val = entry.getValue() == null ? entry.getValue().toString() : "null";
                 throw new ValidationException(
                         "test failed to configure " + plugInName + " " + entry.getKey() + " " + val,
@@ -208,7 +188,7 @@ public class PlugIn {
      * @return String the value in the map.
      * @see Map
      */
-    private static String get(Map map, String key) {
+    private static String get(Map<String, Object> map, String key) {
         if (map.containsKey(key)) {
             return (String) map.get(key);
         }
@@ -227,7 +207,7 @@ public class PlugIn {
      * @param defaultType The default value should the key not exist.
      * @return Class an boolean as described above.
      */
-    private static Class get(Map map, String key, Class defaultType) {
+    private static Class get(Map<String, Object> map, String key, Class defaultType) {
         if (!map.containsKey(key)) {
             return defaultType;
         }

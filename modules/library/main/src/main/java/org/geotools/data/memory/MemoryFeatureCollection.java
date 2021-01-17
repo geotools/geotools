@@ -42,14 +42,14 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public class MemoryFeatureCollection extends AbstractFeatureCollection
         implements RandomFeatureAccess, Collection<SimpleFeature> {
-    TreeMap<String, SimpleFeature> contents = new TreeMap<String, SimpleFeature>();
+    TreeMap<String, SimpleFeature> contents = new TreeMap<>();
 
     public MemoryFeatureCollection(SimpleFeatureType schema) {
         super(schema);
     }
 
     public boolean add(SimpleFeature o) {
-        SimpleFeature feature = (SimpleFeature) o;
+        SimpleFeature feature = o;
         contents.put(feature.getID(), feature);
         return true;
     }
@@ -97,14 +97,14 @@ public class MemoryFeatureCollection extends AbstractFeatureCollection
     //
     public SimpleFeature getFeatureMember(String id) throws NoSuchElementException {
         if (contents.containsKey(id)) {
-            return (SimpleFeature) contents.get(id);
+            return contents.get(id);
         }
         throw new NoSuchElementException(id);
     }
 
     public SimpleFeature removeFeatureMember(String id) {
         if (contents.containsKey(id)) {
-            SimpleFeature old = (SimpleFeature) contents.get(id);
+            SimpleFeature old = contents.get(id);
             contents.remove(id);
             return old;
         }

@@ -51,7 +51,7 @@ public class SMIL20Schema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 
@@ -82,7 +82,7 @@ public class SMIL20Schema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 
@@ -105,10 +105,10 @@ public class SMIL20Schema extends SchemaImpl {
     public static final ComplexType ANIMATEMOTIONPROTOTYPE_TYPE =
             new ComplexTypeImpl(
                     new NameImpl("http://www.w3.org/2001/SMIL20/", "animateMotionPrototype"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -131,10 +131,10 @@ public class SMIL20Schema extends SchemaImpl {
     public static final ComplexType ANIMATECOLORPROTOTYPE_TYPE =
             new ComplexTypeImpl(
                     new NameImpl("http://www.w3.org/2001/SMIL20/", "animateColorPrototype"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -160,7 +160,7 @@ public class SMIL20Schema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.DECIMAL_TYPE,
                     null);
 
@@ -191,7 +191,7 @@ public class SMIL20Schema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 
@@ -214,10 +214,10 @@ public class SMIL20Schema extends SchemaImpl {
     public static final ComplexType ANIMATEPROTOTYPE_TYPE =
             new ComplexTypeImpl(
                     new NameImpl("http://www.w3.org/2001/SMIL20/", "animatePrototype"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -246,7 +246,7 @@ public class SMIL20Schema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 
@@ -275,7 +275,7 @@ public class SMIL20Schema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 
@@ -304,7 +304,7 @@ public class SMIL20Schema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 
@@ -326,10 +326,10 @@ public class SMIL20Schema extends SchemaImpl {
     public static final ComplexType SETPROTOTYPE_TYPE =
             new ComplexTypeImpl(
                     new NameImpl("http://www.w3.org/2001/SMIL20/", "setPrototype"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 

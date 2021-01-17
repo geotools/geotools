@@ -16,7 +16,7 @@
  */
 package org.geotools.mbstyle.function;
 
-import java.awt.*;
+import java.awt.Color;
 import org.geotools.data.Parameter;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.filter.FunctionImpl;
@@ -44,9 +44,9 @@ public class CSSFunction extends FunctionImpl {
     public static final FunctionName NAME;
 
     static {
-        Parameter<Color> color = new Parameter<Color>("color", Color.class, 1, 1);
+        Parameter<Color> color = new Parameter<>("color", Color.class, 1, 1);
         Parameter<Double> string =
-                new Parameter<Double>(
+                new Parameter<>(
                         "string",
                         Double.class,
                         Text.text("String"),

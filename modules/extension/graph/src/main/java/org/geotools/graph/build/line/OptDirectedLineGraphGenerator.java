@@ -17,7 +17,6 @@
 package org.geotools.graph.build.line;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graphable;
@@ -46,17 +45,17 @@ import org.locationtech.jts.geom.LineSegment;
 public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
 
     /** maps in coordinates to count / node * */
-    HashMap m_in2count;
+    Map<Coordinate, Object> m_in2count;
 
     /** maps out coordinates to count / node * */
-    HashMap m_out2count;
+    Map<Coordinate, Object> m_out2count;
 
     /** Constructs a new OptLineGraphGenerator. */
     public OptDirectedLineGraphGenerator() {
         super();
 
-        m_in2count = new HashMap();
-        m_out2count = new HashMap();
+        m_in2count = new HashMap<>();
+        m_out2count = new HashMap<>();
 
         setGraphBuilder(new OptDirectedLineGraphBuilder());
     }
@@ -94,8 +93,8 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
      *
      * @return Coordinate to in node map.
      */
-    public Map getInNodeMap() {
-        return (m_in2count);
+    public Map<Coordinate, Object> getInNodeMap() {
+        return m_in2count;
     }
 
     /**
@@ -104,15 +103,14 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
      *
      * @return Coordinate to out node map.
      */
-    public Map getOutNodeMap() {
-        return (m_out2count);
+    public Map<Coordinate, Object> getOutNodeMap() {
+        return m_out2count;
     }
 
     protected void generateNodes() {
         // create the nodes, starting with in nodes
-        for (Iterator itr = m_in2count.entrySet().iterator(); itr.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) itr.next();
-            Coordinate coord = (Coordinate) entry.getKey();
+        for (Map.Entry<Coordinate, Object> entry : m_in2count.entrySet()) {
+            Coordinate coord = entry.getKey();
             Integer count = (Integer) entry.getValue();
 
             OptDirectedXYNode node = (OptDirectedXYNode) getGraphBuilder().buildNode();
@@ -133,9 +131,8 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
         }
 
         // create only nodes that are not in the in set
-        for (Iterator itr = m_out2count.entrySet().iterator(); itr.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) itr.next();
-            Coordinate coord = (Coordinate) entry.getKey();
+        for (Map.Entry<Coordinate, Object> entry : m_out2count.entrySet()) {
+            Coordinate coord = entry.getKey();
             Integer count = (Integer) entry.getValue();
 
             // look for the node in the in set, if not there, it means that the

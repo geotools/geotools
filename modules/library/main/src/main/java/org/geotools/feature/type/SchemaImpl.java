@@ -38,7 +38,7 @@ public class SchemaImpl implements Schema {
     public SchemaImpl(String uri) {
         super();
         this.uri = uri;
-        this.contents = new HashMap();
+        this.contents = new HashMap<>();
     }
 
     public Set<Name> keySet() {
@@ -69,14 +69,14 @@ public class SchemaImpl implements Schema {
         if (!(name instanceof Name)) {
             throw new IllegalArgumentException("Please use a Name");
         }
-        Name n = (Name) name;
+        Name n = name;
         if (!(n.toString().startsWith(uri.toString()))) {
             throw new IllegalArgumentException("Provided name was not in schema:" + uri);
         }
         if (!(type instanceof AttributeType)) {
             throw new IllegalArgumentException("Please use an AttributeType");
         }
-        AttributeType t = (AttributeType) type;
+        AttributeType t = type;
 
         return contents.put(n, t);
     }

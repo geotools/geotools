@@ -17,7 +17,6 @@
 package org.geotools.jdbc;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -45,6 +44,8 @@ import org.locationtech.jts.geom.GeometryFactory;
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
 
     /** parameter for database type */
@@ -265,18 +266,18 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      *
      * @return true if params is in agreement with getParametersInfo and checkDBType
      */
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
         if (!DataUtilities.canProcess(params, getParametersInfo())) {
             return false;
         }
         return checkDBType(params);
     }
 
-    protected boolean checkDBType(Map params) {
+    protected boolean checkDBType(Map<String, ?> params) {
         return checkDBType(params, getDatabaseID());
     }
 
-    protected final boolean checkDBType(Map params, String dbtype) {
+    protected final boolean checkDBType(Map<String, ?> params, String dbtype) {
         String type;
 
         try {
@@ -292,7 +293,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         }
     }
 
-    public final JDBCDataStore createDataStore(Map params) throws IOException {
+    public final JDBCDataStore createDataStore(Map<String, ?> params) throws IOException {
         JDBCDataStore dataStore = new JDBCDataStore();
 
         // dialect
@@ -406,20 +407,20 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      * @param dataStore The newly created datastore.
      * @param params THe datastore parameters.
      */
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
         return dataStore;
     }
 
-    public DataStore createNewDataStore(Map params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException();
     }
 
     public final Param[] getParametersInfo() {
-        LinkedHashMap map = new LinkedHashMap();
+        Map<String, Object> map = new LinkedHashMap<>();
         setupParameters(map);
 
-        return (Param[]) map.values().toArray(new Param[map.size()]);
+        return map.values().toArray(new Param[map.size()]);
     }
 
     /**
@@ -442,7 +443,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      *
      * @param parameters Map of {@link Param} objects.
      */
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         // remember: when adding a new parameter here that is not connection related,
         // add it to the JDBCJNDIDataStoreFactory class
         parameters.put(
@@ -522,7 +523,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      * @param dataStore The datastore.
      * @param params The connection parameters
      */
-    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map params) {
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map<String, ?> params) {
         return createSQLDialect(dataStore);
     }
 
@@ -548,7 +549,8 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      *
      * If different behaviour is needed, this method should be extended or overridden.
      */
-    protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
+            throws IOException {
         BasicDataSource dataSource = createDataSource(params);
 
         // some default data source behaviour
@@ -556,7 +558,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
             dataSource.setPoolPreparedStatements(true);
 
             // check if the dialect exposes the max prepared statements param
-            Map<String, Serializable> testMap = new HashMap<String, Serializable>();
+            Map<String, Object> testMap = new HashMap<>();
             setupParameters(testMap);
             if (testMap.containsKey(MAX_OPEN_PREPARED_STATEMENTS.key)) {
                 Integer maxPreparedStatements =
@@ -581,7 +583,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      * @param params Map of connection parameter.
      * @return DataSource for SQL use
      */
-    public BasicDataSource createDataSource(Map params) throws IOException {
+    public BasicDataSource createDataSource(Map<String, ?> params) throws IOException {
         // create a datasource
         BasicDataSource dataSource = new BasicDataSource();
 
@@ -661,7 +663,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      * Builds up the JDBC url in a jdbc:<database>://<host>:<port>/<dbname> Override if you need a
      * different setup
      */
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         // jdbc url
         String host = (String) HOST.lookUp(params);
         Integer port = (Integer) PORT.lookUp(params);

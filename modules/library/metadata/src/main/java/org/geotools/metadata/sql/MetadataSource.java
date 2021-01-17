@@ -93,8 +93,7 @@ public class MetadataSource implements AutoCloseable {
      * The prepared statements created is previous call to {@link #getValue}. Those statements are
      * encapsulated into {@link MetadataResult} objects.
      */
-    private final Map<Class<?>, MetadataResult> statements =
-            new HashMap<Class<?>, MetadataResult>();
+    private final Map<Class<?>, MetadataResult> statements = new HashMap<>();
 
     /**
      * The map from GeoAPI names to ISO names. For example the GeoAPI {@link
@@ -189,11 +188,11 @@ public class MetadataSource implements AutoCloseable {
         if (Collection.class.isAssignableFrom(valueType)) {
             final Collection<Object> collection;
             if (List.class.isAssignableFrom(valueType)) {
-                collection = new ArrayList<Object>();
+                collection = new ArrayList<>();
             } else if (SortedSet.class.isAssignableFrom(valueType)) {
-                collection = new TreeSet<Object>();
+                collection = new TreeSet<>();
             } else {
-                collection = new LinkedHashSet<Object>();
+                collection = new LinkedHashSet<>();
             }
             assert valueType.isAssignableFrom(collection.getClass());
             final Object elements = result.getArray(identifier, columnName);
@@ -305,11 +304,9 @@ public class MetadataSource implements AutoCloseable {
             values =
                     (CodeList[])
                             type.getMethod("values", (Class[]) null).invoke(null, (Object[]) null);
-        } catch (NoSuchMethodException exception) {
-            throw new MetadataException("Can't read code list.", exception); // TODO: localize
-        } catch (IllegalAccessException exception) {
-            throw new MetadataException("Can't read code list.", exception); // TODO: localize
-        } catch (InvocationTargetException exception) {
+        } catch (NoSuchMethodException
+                | InvocationTargetException
+                | IllegalAccessException exception) {
             throw new MetadataException("Can't read code list.", exception); // TODO: localize
         }
         CodeList<?> candidate;
@@ -330,8 +327,8 @@ public class MetadataSource implements AutoCloseable {
          * maybe the numerical code are not the same in the database than in the Java
          * CodeList implementation. Check each code list element by name.
          */
-        for (int i = 0; i < values.length; i++) {
-            candidate = values[i];
+        for (CodeList<?> value : values) {
+            candidate = value;
             candidateName.setLength(base);
             candidateName.append(candidate.name());
             if (identifier.equals(geoApiToIso.getProperty(candidateName.toString()))) {

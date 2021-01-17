@@ -73,9 +73,7 @@ public class WindBarbsFactory implements MarkFactory {
     private static final SoftValueHashMap<WindBarbDefinition, Map<Integer, Shape>> CACHE;
 
     static {
-        CACHE =
-                new SoftValueHashMap<WindBarb.WindBarbDefinition, Map<Integer, Shape>>(
-                        1); // make room for the default definition
+        CACHE = new SoftValueHashMap<>(1); // make room for the default definition
         CACHE.put(
                 WindBarb.DEFAULT_WINDBARB_DEFINITION,
                 createWindBarbs(WindBarb.DEFAULT_WINDBARB_DEFINITION));
@@ -223,7 +221,7 @@ public class WindBarbsFactory implements MarkFactory {
         // //
         int index = wellKnownName.indexOf('?');
         if (index > 0) {
-            final Map<String, String> params = new HashMap<String, String>();
+            final Map<String, String> params = new HashMap<>();
             final String kvp = wellKnownName.substring(index + 1);
             String[] pairs = kvp.split("&");
             if (pairs != null && pairs.length > 0) {
@@ -263,7 +261,7 @@ public class WindBarbsFactory implements MarkFactory {
     }
 
     private static Map<Integer, Shape> createWindBarbs(WindBarbDefinition definition) {
-        final Map<Integer, Shape> windBarbsMapping = new HashMap<Integer, Shape>();
+        final Map<Integer, Shape> windBarbsMapping = new HashMap<>();
         for (int i = 0; i <= NUMBER_OF_ITEMS_IN_CACHE; i++) {
             windBarbsMapping.put(
                     i, new WindBarb(definition, i * 5).build()); // pass over the knots definition
@@ -351,7 +349,7 @@ public class WindBarbsFactory implements MarkFactory {
     /** @return a {@link WindBarbDefinition} for the provided params */
     private WindBarbDefinition parseWindBarbsDefinition(Map<String, String> params) {
         final WindBarbDefinition retValue = WindBarb.DEFAULT_WINDBARB_DEFINITION;
-        if (params == null || params.size() <= 0) {
+        if (params == null || params.isEmpty()) {
             return retValue;
         }
 

@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -125,7 +125,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
                                 }
                             }
                         } catch (FileNotFoundException e) {
-                            assertTrue(false);
+                            fail();
                         } finally {
                             if (fr != null) {
                                 try {
@@ -185,7 +185,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
 
         ShapefileDataStore shapefile;
         String typeName;
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, tmp.toURI().toURL());
         params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, memorymapped);
         shapefile = (ShapefileDataStore) maker.createDataStore(params);
@@ -258,10 +258,5 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
                 }
             }
         }
-    }
-
-    public static final void main(String[] args) throws Exception {
-        // verbose = true;
-        junit.textui.TestRunner.run(suite(ShapefileReadWriteTest.class));
     }
 }

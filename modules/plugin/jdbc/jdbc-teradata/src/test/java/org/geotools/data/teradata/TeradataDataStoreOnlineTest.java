@@ -80,8 +80,8 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
                             });
             t[i].start();
         }
-        for (int i = 0; i < t.length; i++) {
-            t[i].join();
+        for (Thread thread : t) {
+            thread.join();
         }
         ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("ft2"));
         int size = featureSource.getFeatures().size();

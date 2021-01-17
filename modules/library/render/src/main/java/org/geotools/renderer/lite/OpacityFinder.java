@@ -58,11 +58,11 @@ import org.opengis.filter.expression.Literal;
  * @author jones
  */
 public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor {
-    private Class[] acceptableTypes;
+    private Class<?>[] acceptableTypes;
 
     public boolean hasOpacity;
 
-    public OpacityFinder(Class[] acceptableTypes) {
+    public OpacityFinder(Class<?>[] acceptableTypes) {
         this.acceptableTypes = acceptableTypes;
     }
 
@@ -207,9 +207,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
     }
 
     private boolean isAcceptable(Symbolizer s) {
-        for (int i = 0; i < acceptableTypes.length; i++) {
-            Class type = acceptableTypes[i];
-
+        for (Class<?> type : acceptableTypes) {
             if (type.isAssignableFrom(s.getClass())) {
                 return true;
             }

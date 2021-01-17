@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>unsupported</artifactId>
-		<version>24-SNAPSHOT</version>
+		<version>25-SNAPSHOT</version>
 	</parent>
 
 	<!-- =========================================================== -->
@@ -99,7 +99,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -145,7 +144,7 @@
 						<include></include>
 					</includes>
 					<excludes>
-						<exclude></exclude>
+						<exclude>${jdk11test.skip.pattern}</exclude>
 					</excludes>
 					<systemPropertyVariables>
 						<glass.platform>Monocle</glass.platform>

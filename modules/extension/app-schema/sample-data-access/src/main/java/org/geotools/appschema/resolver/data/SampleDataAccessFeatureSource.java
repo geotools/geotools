@@ -17,12 +17,16 @@
 
 package org.geotools.appschema.resolver.data;
 
-import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.data.*;
+import org.geotools.data.DataAccess;
+import org.geotools.data.FeatureListener;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
+import org.geotools.data.QueryCapabilities;
+import org.geotools.data.ResourceInfo;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
@@ -163,7 +167,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      * @see org.geotools.data.FeatureSource#getSupportedHints()
      */
     public Set<Key> getSupportedHints() {
-        return new HashSet<RenderingHints.Key>();
+        return new HashSet<>();
     }
 
     /**

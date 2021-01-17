@@ -26,15 +26,17 @@ public class ScaleRange extends Selector {
             return selectors.get(0);
         }
 
-        Range<?> range = selectors.get(0).range;
+        Range<Double> range = selectors.get(0).range;
         for (ScaleRange selector : selectors) {
-            range = range.intersect(selector.range);
+            @SuppressWarnings("unchecked")
+            Range<Double> intersect = (Range<Double>) range.intersect(selector.range);
+            range = intersect;
             if (range.isEmpty()) {
                 return REJECT;
             }
         }
 
-        return new ScaleRange((Range<Double>) range);
+        return new ScaleRange(range);
     }
 
     public Range<Double> range;
@@ -44,7 +46,7 @@ public class ScaleRange extends Selector {
     }
 
     public ScaleRange(double min, boolean minIncluded, double max, boolean maxIncluded) {
-        this.range = new Range<Double>(Double.class, min, minIncluded, max, maxIncluded);
+        this.range = new Range<>(Double.class, min, minIncluded, max, maxIncluded);
     }
 
     @Override

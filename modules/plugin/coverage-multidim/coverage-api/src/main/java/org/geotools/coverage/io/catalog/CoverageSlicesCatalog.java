@@ -135,14 +135,14 @@ public class CoverageSlicesCatalog {
     private DataStore slicesIndexStore;
 
     /** The feature type name */
-    private Set<String> typeNames = new HashSet<String>();
+    private Set<String> typeNames = new HashSet<>();
 
     public static final String IMAGE_INDEX_ATTR = "imageindex";
 
     private static final String HIDDEN_FOLDER = ".mapping";
 
     private final SoftValueHashMap<Integer, CoverageSlice> coverageSliceDescriptorsCache =
-            new SoftValueHashMap<Integer, CoverageSlice>(0);
+            new SoftValueHashMap<>(0);
 
     private boolean repositoryStore;
 
@@ -237,10 +237,10 @@ public class CoverageSlicesCatalog {
                 addTypeName(typeName, false);
             }
 
-            if (this.typeNames.size() > 0) {
-                extractBasicProperties(typeNames.iterator().next());
-            } else {
+            if (this.typeNames.isEmpty()) {
                 extractBasicProperties(typeName);
+            } else {
+                extractBasicProperties(typeNames.iterator().next());
             }
         } catch (Throwable e) {
             try {
@@ -327,7 +327,7 @@ public class CoverageSlicesCatalog {
 
     public String[] getTypeNames() {
         if (this.typeNames != null && !this.typeNames.isEmpty()) {
-            return (String[]) this.typeNames.toArray(new String[] {});
+            return this.typeNames.toArray(new String[] {});
         }
         return null;
     }
@@ -390,7 +390,7 @@ public class CoverageSlicesCatalog {
 
     public List<CoverageSlice> getGranules(final Query q) throws IOException {
         Utilities.ensureNonNull("query", q);
-        final List<CoverageSlice> returnValue = new ArrayList<CoverageSlice>();
+        final List<CoverageSlice> returnValue = new ArrayList<>();
         final Lock lock = rwLock.readLock();
         try {
             lock.lock();
@@ -469,7 +469,7 @@ public class CoverageSlicesCatalog {
                 // getting the features
                 while (it.hasNext()) {
                     SimpleFeature feature = it.next();
-                    final SimpleFeature sf = (SimpleFeature) feature;
+                    final SimpleFeature sf = feature;
                     final CoverageSlice slice;
 
                     // caching by granule's index

@@ -1,6 +1,11 @@
 package org.geotools.filter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -159,7 +164,7 @@ public class FiltersTest {
         assertEquals("Filter should not be removed because it should not recurse", base, results);
 
         results = Filters.removeFilter(base, d);
-        assertFalse("Results should be a new object with different children", base.equals(results));
+        assertNotEquals("Results should be a new object with different children", base, results);
         childOr = ff.or(b, c);
         And expected = ff.and(a, childOr);
         assertEquals(expected, results);

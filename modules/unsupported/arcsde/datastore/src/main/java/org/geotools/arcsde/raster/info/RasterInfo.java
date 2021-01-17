@@ -88,7 +88,7 @@ public final class RasterInfo {
             // levels goes from 0 to N, maxLevel is the zero-based max index of levels
             final int numLevels = rasterAttributes.getMaxLevel() + 1;
 
-            pyramidList = new ArrayList<PyramidLevelInfo>(numLevels);
+            pyramidList = new ArrayList<>(numLevels);
 
             tileWidth = rasterAttributes.getTileWidth();
             tileHeight = rasterAttributes.getTileHeight();
@@ -192,7 +192,7 @@ public final class RasterInfo {
         this.rasterId = rasterId;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        pyramidList = new ArrayList<PyramidLevelInfo>(4);
+        pyramidList = new ArrayList<>(4);
         this.skipLevelone = false;
     }
 
@@ -309,7 +309,7 @@ public final class RasterInfo {
     }
 
     private List<double[]> getValidResolutions() {
-        List<double[]> validResolutions = new ArrayList<double[]>();
+        List<double[]> validResolutions = new ArrayList<>();
         final int numLevels = getNumLevels();
         for (int l = 0; l < numLevels; l++) {
             if (l == 1 && skipLevelone) {
@@ -383,11 +383,11 @@ public final class RasterInfo {
     }
 
     public void setBands(List<RasterBandInfo> bands) {
-        this.bands = new ArrayList<RasterBandInfo>(bands);
+        this.bands = new ArrayList<>(bands);
     }
 
     public List<RasterBandInfo> getBands() {
-        return new ArrayList<RasterBandInfo>(bands);
+        return new ArrayList<>(bands);
     }
 
     public int getNumBands() {
@@ -423,7 +423,7 @@ public final class RasterInfo {
     }
 
     public List<Number> getNoDataValues() {
-        final List<Number> noDataValues = new ArrayList<Number>();
+        final List<Number> noDataValues = new ArrayList<>();
         for (RasterBandInfo band : getBands()) {
             Number noDataValue = band.getNoDataValue();
             noDataValues.add(noDataValue);

@@ -16,7 +16,9 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -42,7 +44,7 @@ public class ServiceTest extends TestCaseSupport {
         Iterator<DataStoreFactorySpi> list = DataStoreFinder.getAvailableDataStores();
         boolean found = false;
         while (list.hasNext()) {
-            DataStoreFactorySpi fac = (DataStoreFactorySpi) list.next();
+            DataStoreFactorySpi fac = list.next();
             if (fac instanceof ShapefileDataStoreFactory) {
                 found = true;
                 assertNotNull(fac.getDescription());

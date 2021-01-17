@@ -47,10 +47,10 @@ import org.opengis.referencing.operation.MathTransform;
 public class RubberSheetBuilder extends MathTransformBuilder {
 
     /* Map of the original and destination triangles. */
-    private HashMap trianglesMap;
+    private HashMap<TINTriangle, Object> trianglesMap;
 
     /* Map of a original triangles and associated AffineTransformation.*/
-    private HashMap trianglesToKeysMap;
+    private Map<TINTriangle, Object> trianglesToKeysMap;
 
     /**
      * Creates the Builder from a List of control points and a List of four DirectPositions defining
@@ -75,7 +75,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
         // Get the DirectPositions (In Java 1.4 we fail hard on this cast.)
         DirectPosition[] ddpp = new DirectPosition[4];
         for (int i = 0; i < vertices.size(); i++) {
-            ddpp[i] = (DirectPosition) vertices.get(i);
+            ddpp[i] = vertices.get(i);
         }
 
         // Check they have a common crs;
@@ -99,8 +99,8 @@ public class RubberSheetBuilder extends MathTransformBuilder {
         //  to n dimensional operations.
         DirectPosition[] dpa = this.getSourcePoints();
         GeneralEnvelope srcextnt = new GeneralEnvelope(2);
-        for (int i = 0; i < dpa.length; i++) {
-            srcextnt.add(dpa[i]);
+        for (DirectPosition directPosition : dpa) {
+            srcextnt.add(directPosition);
         }
         GeneralEnvelope vtxextnt = new GeneralEnvelope(2);
         vtxextnt.add(ddpp[0]);
@@ -115,7 +115,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
 
         MapTriangulationFactory trianglemap = new MapTriangulationFactory(quad, vectors);
 
-        this.trianglesMap = (HashMap) trianglemap.getTriangleMap();
+        this.trianglesMap = trianglemap.getTriangleMap();
         this.trianglesToKeysMap = mapTrianglesToKey();
     }
 
@@ -133,7 +133,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
      *
      * @return The Map of source and destination triangles.
      */
-    public HashMap getMapTriangulation() {
+    public Map<TINTriangle, Object> getMapTriangulation() {
         return trianglesMap;
     }
 
@@ -153,22 +153,24 @@ public class RubberSheetBuilder extends MathTransformBuilder {
      * @return The HashMap where the keys are the original triangles and values are
      *     AffineTransformation Objects.
      */
-    private HashMap mapTrianglesToKey() {
+    private HashMap<TINTriangle, Object> mapTrianglesToKey() {
         AffineTransformBuilder calculator;
 
-        HashMap trianglesToKeysMap = (HashMap) trianglesMap.clone();
+        @SuppressWarnings("unchecked")
+        HashMap<TINTriangle, Object> trianglesToKeysMap =
+                (HashMap<TINTriangle, Object>) trianglesMap.clone();
 
-        Iterator it = trianglesToKeysMap.entrySet().iterator();
+        Iterator<Map.Entry<TINTriangle, Object>> it = trianglesToKeysMap.entrySet().iterator();
 
         while (it.hasNext()) {
 
-            Map.Entry a = (Map.Entry) it.next();
-            List pts = new ArrayList();
+            Map.Entry<TINTriangle, Object> a = it.next();
+            List<MappedPosition> pts = new ArrayList<>();
 
             for (int i = 1; i <= 3; i++) {
                 pts.add(
                         new MappedPosition(
-                                ((TINTriangle) a.getKey()).getPoints()[i],
+                                a.getKey().getPoints()[i],
                                 ((TINTriangle) a.getValue()).getPoints()[i]));
             }
 

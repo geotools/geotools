@@ -207,7 +207,7 @@ public class LargePolygonsPerfTest {
     }
 
     private DataStore getPostGISDataStore() throws IOException {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("dbtype", "postgis");
         params.put("host", "192.168.1.10");
         params.put("port", "5432");
@@ -224,7 +224,7 @@ public class LargePolygonsPerfTest {
     }
 
     private DataStore getShapefileDataStore() throws IOException {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("url", "file:/home/groldan/tmp/shp/ASSESSPAR_POLY_PUBLIC.shp");
         DataStore dataStore = DataStoreFinder.getDataStore(params);
         return dataStore;

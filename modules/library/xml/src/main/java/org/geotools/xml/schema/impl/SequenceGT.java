@@ -72,8 +72,8 @@ public class SequenceGT implements Sequence {
     /** @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String) */
     public Element findChildElement(String name) {
         if (children != null) {
-            for (int i = 0; i < children.length; i++) {
-                Element e = children[i].findChildElement(name);
+            for (ElementGrouping child : children) {
+                Element e = child.findChildElement(name);
 
                 if (e != null) {
                     return e;
@@ -86,8 +86,8 @@ public class SequenceGT implements Sequence {
 
     public Element findChildElement(String localName, URI namespaceURI) {
         if (children != null) {
-            for (int i = 0; i < children.length; i++) {
-                Element e = children[i].findChildElement(localName, namespaceURI);
+            for (ElementGrouping child : children) {
+                Element e = child.findChildElement(localName, namespaceURI);
 
                 if (e != null) {
                     return e;

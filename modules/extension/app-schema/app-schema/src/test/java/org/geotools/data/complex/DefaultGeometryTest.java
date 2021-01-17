@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,8 +113,8 @@ public class DefaultGeometryTest {
         assertEquals(STATION_WITH_GEOM_FEATURE_TYPE, ft.getName());
         assertNotNull(stationsDataAccess.getSchema(STATION_DEFAULT_GEOM_OVERRIDE_MAPPING));
 
-        FeatureSource fs = (FeatureSource) stationsDataAccess.getFeatureSource(STATION_FEATURE);
-        FeatureCollection stationFeatures = (FeatureCollection) fs.getFeatures();
+        FeatureSource fs = stationsDataAccess.getFeatureSource(STATION_FEATURE);
+        FeatureCollection stationFeatures = fs.getFeatures();
         assertEquals(3, size(stationFeatures));
 
         ft = measurementsDataAccess.getSchema(MEASUREMENT_FEATURE);
@@ -123,7 +124,7 @@ public class DefaultGeometryTest {
     }
 
     private static AppSchemaDataAccess loadDataAccess(String mappingFile) throws IOException {
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url = DefaultGeometryTest.class.getResource(STATIONS_SCHEMA_BASE + mappingFile);
         assertNotNull(url);
 
@@ -137,9 +138,9 @@ public class DefaultGeometryTest {
         return (AppSchemaDataAccess) dataAccess;
     }
 
-    private static int size(FeatureCollection<FeatureType, Feature> features) {
+    private static int size(FeatureCollection features) {
         int size = 0;
-        FeatureIterator<Feature> iterator = features.features();
+        FeatureIterator iterator = features.features();
         while (iterator.hasNext()) {
             iterator.next();
             size++;

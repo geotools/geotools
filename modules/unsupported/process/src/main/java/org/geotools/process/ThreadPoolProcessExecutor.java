@@ -30,7 +30,7 @@ public class ThreadPoolProcessExecutor extends ThreadPoolExecutor implements Pro
                 nThreads,
                 0L,
                 TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(),
+                new LinkedBlockingQueue<>(),
                 threadFactory);
     }
 

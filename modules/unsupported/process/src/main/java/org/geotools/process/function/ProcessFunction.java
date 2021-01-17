@@ -85,8 +85,7 @@ public class ProcessFunction implements Function {
         this.fallbackValue = fallbackValue;
 
         // build the function name
-        List<org.opengis.parameter.Parameter<?>> inputParams =
-                new ArrayList<org.opengis.parameter.Parameter<?>>();
+        List<org.opengis.parameter.Parameter<?>> inputParams = new ArrayList<>();
         Map<String, Parameter<?>> parameterInfo = Processors.getParameterInfo(processName);
         if (parameterInfo instanceof LinkedHashMap) {
             // predictable order so we can assume parameter order
@@ -173,7 +172,7 @@ public class ProcessFunction implements Function {
      */
     protected Map<String, Object> evaluateInputs(Object object) {
         // collect the entries
-        Map<String, Object> processInputs = new HashMap<String, Object>();
+        Map<String, Object> processInputs = new HashMap<>();
         for (Expression input : inputExpressions) {
             Object result = input.evaluate(object, Map.class);
             if (result != null) {
@@ -187,12 +186,13 @@ public class ProcessFunction implements Function {
                 } else {
                     // handle the key/value
                     Iterator it = map.entrySet().iterator();
+                    @SuppressWarnings("unchecked")
                     Map.Entry<String, Object> entry = (Entry<String, Object>) it.next();
                     final String paramName = entry.getKey();
                     final Object paramValue = entry.getValue();
 
                     // see if we have a parameter with that name
-                    Parameter param = parameters.get(paramName);
+                    Parameter<?> param = parameters.get(paramName);
                     if (param == null) {
                         throw new InvalidParameterException(
                                 "Parameter "
@@ -230,8 +230,8 @@ public class ProcessFunction implements Function {
                                         && Collection.class.isAssignableFrom(
                                                 paramValue.getClass())) {
                                     final Collection collection = (Collection) paramValue;
-                                    Collection convertedCollection =
-                                            new ArrayList(collection.size());
+                                    Collection<Object> convertedCollection =
+                                            new ArrayList<>(collection.size());
                                     for (Object original : collection) {
                                         Object convertedItem =
                                                 Converters.convert(original, param.type);

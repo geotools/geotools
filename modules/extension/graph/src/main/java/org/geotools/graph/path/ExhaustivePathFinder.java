@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
@@ -70,20 +71,20 @@ public class ExhaustivePathFinder {
     }
 
     public List getPaths(Node from, GraphVisitor visitor) {
-        ArrayList paths = new ArrayList();
+        List<Path> paths = new ArrayList<>();
 
         // create a map to maintain iterator state
-        HashMap node2related = new HashMap();
+        Map<Node, Iterator<? extends Graphable>> node2related = new HashMap<>();
 
         // create the stack and place start node on
-        IndexedStack stack = new IndexedStack();
+        IndexedStack<Node> stack = new IndexedStack<>();
         stack.push(from);
 
         int iterations = 0;
         O:
         while (!stack.isEmpty() && (iterations++ < m_maxitr)) {
             // peek the stack
-            Node top = (Node) stack.peek();
+            Node top = stack.peek();
 
             switch (visitor.visit(top)) {
                 case END_PATH_AND_CONTINUE:
@@ -102,8 +103,8 @@ public class ExhaustivePathFinder {
                 case CONTINUE_PATH:
             }
 
-            Iterator related = null;
-            if ((related = (Iterator) node2related.get(top)) == null) {
+            Iterator<? extends Graphable> related = null;
+            if ((related = node2related.get(top)) == null) {
                 related = top.getRelated();
                 node2related.put(top, related);
             }

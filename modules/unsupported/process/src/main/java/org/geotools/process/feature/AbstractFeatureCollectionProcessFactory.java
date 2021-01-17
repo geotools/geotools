@@ -44,7 +44,7 @@ import org.geotools.text.Text;
 public abstract class AbstractFeatureCollectionProcessFactory extends SingleProcessFactory {
     /** Features for operation */
     public static final Parameter<FeatureCollection> FEATURES =
-            new Parameter<FeatureCollection>(
+            new Parameter<>(
                     "features",
                     FeatureCollection.class,
                     Text.text("Features"),
@@ -52,7 +52,7 @@ public abstract class AbstractFeatureCollectionProcessFactory extends SingleProc
 
     /** Adds the {@link #FEATURES} parameter and then delegates to {@link #addParameters(Map)}. */
     public final Map<String, Parameter<?>> getParameterInfo() {
-        HashMap<String, Parameter<?>> parameterInfo = new LinkedHashMap<String, Parameter<?>>();
+        HashMap<String, Parameter<?>> parameterInfo = new LinkedHashMap<>();
         parameterInfo.put(FEATURES.key, FEATURES);
         addParameters(parameterInfo);
         return parameterInfo;

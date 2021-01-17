@@ -37,7 +37,7 @@ import org.geotools.map.Layer;
  * @since 2.6
  * @version $Id$
  */
-public class MapLayerTableCellRenderer extends JPanel implements ListCellRenderer {
+public class MapLayerTableCellRenderer extends JPanel implements ListCellRenderer<Layer> {
     private static final long serialVersionUID = 7907189175227502588L;
 
     /**
@@ -248,12 +248,12 @@ public class MapLayerTableCellRenderer extends JPanel implements ListCellRendere
     @Override
     public Component getListCellRendererComponent(
             JList list,
-            Object value, // value to display
+            Layer value, // value to display
             int index, // cell index
             boolean isSelected, // is the cell selected
             boolean cellHasFocus) // the list and the cell have the focus
             {
-        Layer layer = (Layer) value;
+        Layer layer = value;
         String name = layer.getTitle();
         if (name == null || name.trim().length() == 0) {
             name = layer.getFeatureSource().getName().getLocalPart();

@@ -134,15 +134,12 @@ public final class RendererUtilities {
         // Get the transform
         //
         // //
-        final GridToEnvelopeMapper m = (GridToEnvelopeMapper) gridToEnvelopeMappers.get();
+        final GridToEnvelopeMapper m = gridToEnvelopeMappers.get();
         try {
             m.setGridRange(new GridEnvelope2D(paintArea));
             m.setEnvelope(genvelope);
             return m.createAffineTransform().createInverse();
-        } catch (MismatchedDimensionException e) {
-            LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-            return null;
-        } catch (NoninvertibleTransformException e) {
+        } catch (MismatchedDimensionException | NoninvertibleTransformException e) {
             LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }
@@ -262,7 +259,7 @@ public final class RendererUtilities {
      *
      * @return size adjusted for GeographicCRS or CRS units
      */
-    private static double toMeters(double size, CoordinateReferenceSystem crs) {
+    public static double toMeters(double size, CoordinateReferenceSystem crs) {
         if (crs == null) {
             LOGGER.finer(
                     "toMeters: assuming the original size is in meters already, as crs is null");
@@ -319,7 +316,7 @@ public final class RendererUtilities {
      * hints contains a DPI then that DPI is used otherwise 90 is used (the OGS default).
      */
     public static double calculateScale(
-            ReferencedEnvelope envelope, int imageWidth, int imageHeight, Map hints)
+            ReferencedEnvelope envelope, int imageWidth, int imageHeight, Map<?, ?> hints)
             throws TransformException, FactoryException {
 
         if (hints != null && hints.containsKey("declaredScaleDenominator")) {
@@ -577,7 +574,7 @@ public final class RendererUtilities {
         // is a hashtable lookup. The benefit is reusing the last
         // transform (instead of creating a new one) if the grid
         // and envelope are the same one than during last invocation.
-        final GridToEnvelopeMapper m = (GridToEnvelopeMapper) gridToEnvelopeMappers.get();
+        final GridToEnvelopeMapper m = gridToEnvelopeMappers.get();
         m.setGridRange(new GridEnvelope2D(paintArea));
         m.setEnvelope(newEnvelope);
         return (AffineTransform) (m.createTransform().inverse());

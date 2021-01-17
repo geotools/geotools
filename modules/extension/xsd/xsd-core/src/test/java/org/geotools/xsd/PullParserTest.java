@@ -1,13 +1,15 @@
 package org.geotools.xsd;
 
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.Mail;
 import org.geotools.ml.bindings.ML;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class PullParserTest extends TestCase {
+public class PullParserTest {
 
+    @Test
     public void testParse() throws Exception {
         PullParser parser =
                 new PullParser(
@@ -16,13 +18,13 @@ public class PullParserTest extends TestCase {
                         new QName(ML.NAMESPACE, "mail"));
 
         Mail m = (Mail) parser.parse();
-        assertNotNull(m);
-        assertEquals(0, m.getId().intValue());
+        Assert.assertNotNull(m);
+        Assert.assertEquals(0, m.getId().intValue());
 
         m = (Mail) parser.parse();
-        assertNotNull(m);
-        assertEquals(1, m.getId().intValue());
+        Assert.assertNotNull(m);
+        Assert.assertEquals(1, m.getId().intValue());
 
-        assertNull(parser.parse());
+        Assert.assertNull(parser.parse());
     }
 }

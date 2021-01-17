@@ -39,8 +39,6 @@ public class BingTile extends Tile {
 
     private static final Logger LOGGER = Logging.getLogger(BingTile.class);
 
-    private TileService service;
-
     /** Creates a new BingTile. */
     public BingTile(int x, int y, ZoomLevel zoomLevel, TileService service) {
         this(new BingTileIdentifier(x, y, zoomLevel, service.getName()), service);
@@ -48,10 +46,11 @@ public class BingTile extends Tile {
 
     public BingTile(TileIdentifier tileName, TileService service) {
 
-        super(tileName, WebMercatorTileFactory.getExtentFromTileName(tileName), DEFAULT_TILE_SIZE);
-
-        // this.tileIdentifier = tileName;
-        this.service = service;
+        super(
+                tileName,
+                WebMercatorTileFactory.getExtentFromTileName(tileName),
+                DEFAULT_TILE_SIZE,
+                service);
     }
 
     public URL getUrl() {

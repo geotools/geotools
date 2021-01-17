@@ -25,6 +25,8 @@ import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.test.TestData;
+import org.geotools.validation.dto.PlugInDTO;
+import org.geotools.validation.dto.TestSuiteDTO;
 import org.geotools.validation.xml.XMLReader;
 
 /**
@@ -48,8 +50,8 @@ import org.geotools.validation.xml.XMLReader;
  */
 public class TestFixture {
     Repository data = new DefaultRepository();
-    public Map pluginDTOs;
-    public Map testSuiteDTOs;
+    public Map<String, PlugInDTO> pluginDTOs;
+    public Map<String, TestSuiteDTO> testSuiteDTOs;
     public ValidationProcessor processor;
     public DefaultRepository repository;
 
@@ -61,7 +63,7 @@ public class TestFixture {
         pluginDTOs = XMLReader.loadPlugIns(pluginDir);
         testSuiteDTOs = XMLReader.loadValidations(testDir, pluginDTOs);
         processor = new ValidationProcessor();
-        processor.load(pluginDTOs, testSuiteDTOs);
+        processor.load(testSuiteDTOs, pluginDTOs);
     }
     /**
      * Sets up a test fixture based on GeoServer confDemo.
@@ -78,8 +80,8 @@ public class TestFixture {
                                 return name.toUpperCase().endsWith(".SHP");
                             }
                         });
-        for (int i = 0; i < shapefiles.length; i++) {
-            File shapefile = new File(directory, shapefiles[i]);
+        for (String s : shapefiles) {
+            File shapefile = new File(directory, s);
             ShapefileDataStore dataStore = new ShapefileDataStore(shapefile.toURI().toURL());
             String dataStoreId = dataStore.getTypeNames()[0].toUpperCase();
             String typeName = dataStore.getTypeNames()[0];
@@ -96,6 +98,6 @@ public class TestFixture {
         testSuiteDTOs = XMLReader.loadValidations(validationDir, pluginDTOs);
 
         processor = new ValidationProcessor();
-        processor.load(pluginDTOs, testSuiteDTOs);
+        processor.load(testSuiteDTOs, pluginDTOs);
     }
 }

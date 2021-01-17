@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import junit.framework.TestCase;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -46,9 +45,12 @@ import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /** Confirm functionality of letter level conflict detection. */
-public class LetterConflictTest extends TestCase {
+public class LetterConflictTest {
     static final Logger LOGGER = Logging.getLogger(LetterConflictTest.class);
     /**
      * Makes the test interactive, showing a Swing dialog with image.
@@ -80,8 +82,8 @@ public class LetterConflictTest extends TestCase {
     ReferencedEnvelope bounds1;
     ReferencedEnvelope bounds2;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
 
         File property_line =
                 new File(TestData.getResource(this, "letterConflict1.properties").toURI());
@@ -100,7 +102,7 @@ public class LetterConflictTest extends TestCase {
 
     private StreamingRenderer getNewRenderer(MapContent context) {
         StreamingRenderer renderer = new StreamingRenderer();
-        Map<String, Object> rendererParams = new HashMap<String, Object>();
+        Map<Object, Object> rendererParams = new HashMap<>();
         LabelCacheImpl labelCache = new LabelCacheImpl();
         rendererParams.put(StreamingRenderer.LABEL_CACHE_KEY, labelCache);
         renderer.setRendererHints(rendererParams);
@@ -109,6 +111,7 @@ public class LetterConflictTest extends TestCase {
         return renderer;
     }
 
+    @Test
     public void testLetterConflictEnabled() throws Exception {
 
         LabelCacheImpl.DISABLE_LETTER_LEVEL_CONFLICT = true;
@@ -131,7 +134,7 @@ public class LetterConflictTest extends TestCase {
         final BufferedImage image2 = RendererBaseTest.renderImage(renderer, bounds1, null);
         mc.dispose();
 
-        assertTrue(
+        Assert.assertTrue(
                 "More labels in image2 than image1",
                 countPixels(image2, Color.BLACK) >= countPixels(image1, Color.BLACK));
 
@@ -141,6 +144,7 @@ public class LetterConflictTest extends TestCase {
         showImage("letterConflictEnabled true", TIME, image2);
     }
 
+    @Test
     public void testLetterConflictEnabled2Lines() throws Exception {
 
         LabelCacheImpl.DISABLE_LETTER_LEVEL_CONFLICT = true;
@@ -161,7 +165,7 @@ public class LetterConflictTest extends TestCase {
         renderer = getNewRenderer(mc);
         final BufferedImage image2 = RendererBaseTest.renderImage(renderer, bounds1, null);
 
-        assertTrue(
+        Assert.assertTrue(
                 "More labels in image2 than image1",
                 countPixels(image2, Color.BLACK) > countPixels(image1, Color.BLACK));
 
@@ -172,6 +176,7 @@ public class LetterConflictTest extends TestCase {
         mc.dispose();
     }
 
+    @Test
     public void testLetterConflictEnabledCurvedLine() throws Exception {
 
         LabelCacheImpl.DISABLE_LETTER_LEVEL_CONFLICT = true;
@@ -193,7 +198,7 @@ public class LetterConflictTest extends TestCase {
         final BufferedImage image2 = RendererBaseTest.renderImage(renderer, bounds1, null);
         mc.dispose();
 
-        assertTrue(
+        Assert.assertTrue(
                 "More labels in image2 than image1",
                 countPixels(image2, Color.BLACK) > countPixels(image1, Color.BLACK));
 
@@ -204,6 +209,7 @@ public class LetterConflictTest extends TestCase {
         showImage("letterConflictEnabledCurvedLine true", TIME, image2);
     }
 
+    @Test
     public void testLetterConflictEnabledPerf() throws Exception {
         synchronized (LabelCacheImpl.class) {
             LabelCacheImpl.DISABLE_LETTER_LEVEL_CONFLICT = true;
@@ -246,7 +252,7 @@ public class LetterConflictTest extends TestCase {
             LOGGER.fine("time true " + ta / 10000000);
             mc.dispose();
 
-            assertTrue(
+            Assert.assertTrue(
                     "More labels in image2 than image1",
                     countDarkPixels(image2) >= countDarkPixels(image1));
 

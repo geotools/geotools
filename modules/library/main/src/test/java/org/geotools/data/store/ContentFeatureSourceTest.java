@@ -143,8 +143,7 @@ public class ContentFeatureSourceTest {
                             protected FeatureReader<SimpleFeatureType, SimpleFeature>
                                     getReaderInternal(Query query) throws IOException {
                                 assertEquals(expected, query);
-                                return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                        TYPE);
+                                return new EmptyFeatureReader<>(TYPE);
                             }
 
                             @Override

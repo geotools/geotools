@@ -39,6 +39,7 @@ import java.util.AbstractList;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.measure.MetricPrefix;
 import javax.media.jai.RasterFactory;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -52,8 +53,6 @@ import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import si.uom.SI;
-import si.uom.SI.*;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * Base class for grid coverage tests. This base class provides factory methods for sample {@link
@@ -412,11 +411,8 @@ public class GridCoverageTestBase extends CoverageTestBase {
          * But we want to test the default GridCoverage2D encoding.
          */
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        final ObjectOutputStream out = new ObjectOutputStream(buffer);
-        try {
+        try (ObjectOutputStream out = new ObjectOutputStream(buffer)) {
             out.writeObject(coverage);
-        } finally {
-            out.close();
         }
         final ObjectInputStream in =
                 new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));

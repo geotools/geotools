@@ -19,7 +19,6 @@ package org.geotools.data.store;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -51,11 +50,11 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
     }
 
     public FeatureReader<T, F> reader() throws IOException {
-        return new DelegateFeatureReader<T, F>(getSchema(), features());
+        return new DelegateFeatureReader<>(getSchema(), features());
     }
 
     public FeatureIterator<F> features() {
-        return new MaxFeaturesIterator<F>(delegate.features(), max);
+        return new MaxFeaturesIterator<>(delegate.features(), max);
     }
 
     public FeatureCollection<T, F> subCollection(Filter filter) {
@@ -79,21 +78,18 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
     }
 
     public <O> O[] toArray(O[] a) {
-        List<F> list = new ArrayList<F>();
-        FeatureIterator<F> i = features();
-        try {
+        List<F> list = new ArrayList<>();
+        try (FeatureIterator<F> i = features()) {
             while (i.hasNext()) {
                 list.add(i.next());
             }
             return list.toArray(a);
-        } finally {
-            i.close();
         }
     }
 
     public boolean containsAll(Collection<?> c) {
-        for (Iterator<?> i = c.iterator(); i.hasNext(); ) {
-            if (!contains(i.next())) {
+        for (Object o : c) {
+            if (!contains(o)) {
                 return false;
             }
         }

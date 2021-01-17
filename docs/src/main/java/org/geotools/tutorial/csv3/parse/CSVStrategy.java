@@ -107,7 +107,7 @@ public abstract class CSVStrategy {
      */
     protected static Map<String, Class<?>> findMostSpecificTypesFromData(
             CsvReader csvReader, String[] headers) throws IOException {
-        Map<String, Class<?>> result = new HashMap<String, Class<?>>();
+        Map<String, Class<?>> result = new HashMap<>();
         // start off assuming Integers for everything
         for (String header : headers) {
             result.put(header, Integer.class);

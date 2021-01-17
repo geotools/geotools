@@ -18,16 +18,18 @@ package org.geotools.graph.build.line;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import junit.framework.TestCase;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.structure.basic.BasicNode;
+import org.geotools.graph.structure.Node;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 
 /** @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com */
-public class LineStringGraphGeneratorTest extends TestCase {
+public class LineStringGraphGeneratorTest {
 
     private Coordinate c1, c2, c3, c4, c6, c7;
 
@@ -35,6 +37,7 @@ public class LineStringGraphGeneratorTest extends TestCase {
 
     private LineStringGraphGenerator gen;
 
+    @Before
     public void setUp() throws Exception {
         c1 = new Coordinate(1, 1);
         c2 = new Coordinate(2, 2);
@@ -47,6 +50,7 @@ public class LineStringGraphGeneratorTest extends TestCase {
         gen = new LineStringGraphGenerator(0.2);
     }
 
+    @Test
     public void testThatCoordinatesNearbySnapToSameNode() {
         LineString lineString = gf.createLineString(new Coordinate[] {c1, c2});
         LineString lineString2 = gf.createLineString(new Coordinate[] {c6, c3});
@@ -56,20 +60,20 @@ public class LineStringGraphGeneratorTest extends TestCase {
         gen.add(lineString3);
 
         Graph graph = gen.getGraph();
-        Collection graphNodes = graph.getNodes();
-        assertEquals(5, graphNodes.size());
+        Collection<Node> graphNodes = graph.getNodes();
+        Assert.assertEquals(5, graphNodes.size());
         Collection<Coordinate> graphNodeCoordinates = getCoordinates(graphNodes);
-        assertTrue(graphNodeCoordinates.contains(c2));
-        assertFalse("c6 should be snapped to c2", graphNodeCoordinates.contains(c6));
-        assertTrue(
+        Assert.assertTrue(graphNodeCoordinates.contains(c2));
+        Assert.assertFalse("c6 should be snapped to c2", graphNodeCoordinates.contains(c6));
+        Assert.assertTrue(
                 "c7 should not have been snapped to c2 - distance bigger than tolerance",
                 graphNodeCoordinates.contains(c7)); //
-        assertEquals(3, graph.getEdges().size());
+        Assert.assertEquals(3, graph.getEdges().size());
     }
 
-    private Collection<Coordinate> getCoordinates(Collection<BasicNode> graphNodes) {
-        Collection<Coordinate> coordinates = new ArrayList<Coordinate>();
-        for (BasicNode node : graphNodes) {
+    private Collection<Coordinate> getCoordinates(Collection<Node> graphNodes) {
+        Collection<Coordinate> coordinates = new ArrayList<>();
+        for (Node node : graphNodes) {
             coordinates.add(((Point) node.getObject()).getCoordinate());
         }
         return coordinates;

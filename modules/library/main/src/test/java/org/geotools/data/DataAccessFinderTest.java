@@ -25,8 +25,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -39,152 +42,156 @@ import org.opengis.filter.Filter;
  * @version $Id$
  * @since 2.5.x
  */
-public class DataAccessFinderTest extends TestCase {
+public class DataAccessFinderTest {
 
     private static final String MOCK_DS_PARAM_KEY = "MOCK_PARAM_KEY";
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+    @Before
+    public void setUp() throws Exception {}
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
+    @After
+    public void tearDown() throws Exception {}
 
+    @Test
     public void testGetDataStore() throws IOException {
         DataStore dataStore;
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(MOCK_DS_PARAM_KEY, MockUnavailableDataStoreFactory.class);
 
         dataStore = DataStoreFinder.getDataStore(params);
-        assertNull(dataStore);
+        Assert.assertNull(dataStore);
 
         params.put(MOCK_DS_PARAM_KEY, MockDataStoreFactory.class);
 
         dataStore = DataStoreFinder.getDataStore(params);
-        assertSame(MOCK_DATASTORE, dataStore);
+        Assert.assertSame(MOCK_DATASTORE, dataStore);
     }
 
     /** Can both DataStores and plain DataAccess be aquired through {@link DataAccessFinder}? */
+    @Test
     public void testGetDataAccess() throws IOException {
         DataAccess<FeatureType, Feature> dataStore;
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(MOCK_DS_PARAM_KEY, MockUnavailableDataStoreFactory.class);
 
         dataStore = DataAccessFinder.getDataStore(params);
-        assertNull(dataStore);
+        Assert.assertNull(dataStore);
 
         params.put(MOCK_DS_PARAM_KEY, MockDataStoreFactory.class);
 
         dataStore = DataAccessFinder.getDataStore(params);
-        assertSame(MOCK_DATASTORE, dataStore);
+        Assert.assertSame(MOCK_DATASTORE, dataStore);
 
         params.put(MOCK_DS_PARAM_KEY, MockDataAccessFactory.class);
 
         dataStore = DataAccessFinder.getDataStore(params);
-        assertSame(MOCK_DATAACCESS, dataStore);
+        Assert.assertSame(MOCK_DATAACCESS, dataStore);
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGetAllDataStores() {
         Iterator<DataStoreFactorySpi> availableDataStores;
         availableDataStores = DataStoreFinder.getAllDataStores();
 
-        assertNotNull(availableDataStores);
-        assertTrue(availableDataStores.hasNext());
+        Assert.assertNotNull(availableDataStores);
+        Assert.assertTrue(availableDataStores.hasNext());
 
         DataStoreFactorySpi dsf1 = availableDataStores.next();
-        assertTrue(availableDataStores.hasNext());
+        Assert.assertTrue(availableDataStores.hasNext());
         DataStoreFactorySpi dsf2 = availableDataStores.next();
-        assertFalse(availableDataStores.hasNext());
+        Assert.assertFalse(availableDataStores.hasNext());
 
-        assertNotNull(dsf1);
-        assertNotNull(dsf2);
+        Assert.assertNotNull(dsf1);
+        Assert.assertNotNull(dsf2);
         // do not assume iteration order...
         if (dsf1 instanceof MockUnavailableDataStoreFactory) {
-            assertTrue(dsf2 instanceof MockDataStoreFactory);
+            Assert.assertTrue(dsf2 instanceof MockDataStoreFactory);
         } else {
-            assertTrue(dsf1 instanceof MockDataStoreFactory);
-            assertTrue(dsf2 instanceof MockUnavailableDataStoreFactory);
+            Assert.assertTrue(dsf1 instanceof MockDataStoreFactory);
+            Assert.assertTrue(dsf2 instanceof MockUnavailableDataStoreFactory);
         }
     }
 
     /** Does DataAccessFinder.getAllDataStores() return both the DataStores and DataAccess? */
+    @Test
     @SuppressWarnings("unchecked")
     public void testGetAllDataAccess() {
         Iterator<DataAccessFactory> availableDataStores;
         availableDataStores = DataAccessFinder.getAllDataStores();
 
-        assertNotNull(availableDataStores);
-        assertTrue(availableDataStores.hasNext());
+        Assert.assertNotNull(availableDataStores);
+        Assert.assertTrue(availableDataStores.hasNext());
 
         DataAccessFactory dsf1 = availableDataStores.next();
-        assertTrue(availableDataStores.hasNext());
+        Assert.assertTrue(availableDataStores.hasNext());
         DataAccessFactory dsf2 = availableDataStores.next();
-        assertTrue(availableDataStores.hasNext());
+        Assert.assertTrue(availableDataStores.hasNext());
         DataAccessFactory dsf3 = availableDataStores.next();
 
-        assertFalse(availableDataStores.hasNext());
+        Assert.assertFalse(availableDataStores.hasNext());
 
-        assertNotNull(dsf1);
-        assertNotNull(dsf2);
-        assertNotNull(dsf3);
+        Assert.assertNotNull(dsf1);
+        Assert.assertNotNull(dsf2);
+        Assert.assertNotNull(dsf3);
 
-        Set<Class> classes = new HashSet<Class>();
+        Set<Class> classes = new HashSet<>();
         classes.add(dsf1.getClass());
         classes.add(dsf2.getClass());
         classes.add(dsf3.getClass());
 
-        assertTrue(classes.contains(MockDataAccessFactory.class));
-        assertTrue(classes.contains(MockDataStoreFactory.class));
-        assertTrue(classes.contains(MockUnavailableDataStoreFactory.class));
+        Assert.assertTrue(classes.contains(MockDataAccessFactory.class));
+        Assert.assertTrue(classes.contains(MockDataStoreFactory.class));
+        Assert.assertTrue(classes.contains(MockUnavailableDataStoreFactory.class));
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGetAvailableDataStores() {
         Iterator<DataStoreFactorySpi> availableDataStores;
         availableDataStores = DataStoreFinder.getAvailableDataStores();
 
-        assertNotNull(availableDataStores);
-        assertTrue(availableDataStores.hasNext());
+        Assert.assertNotNull(availableDataStores);
+        Assert.assertTrue(availableDataStores.hasNext());
 
         DataStoreFactorySpi dsf = availableDataStores.next();
 
-        assertFalse(availableDataStores.hasNext());
+        Assert.assertFalse(availableDataStores.hasNext());
 
-        assertTrue(dsf instanceof MockDataStoreFactory);
+        Assert.assertTrue(dsf instanceof MockDataStoreFactory);
     }
 
     /**
      * Does DataAccessFinder.getAvailableDataStores() return both the available DataStore and
      * DataAccess factories?
      */
+    @Test
     @SuppressWarnings("unchecked")
     public void testGetAvailableDataAccess() {
         Iterator<DataAccessFactory> availableDataAccess;
         availableDataAccess = DataAccessFinder.getAvailableDataStores();
 
-        assertNotNull(availableDataAccess);
-        assertTrue(availableDataAccess.hasNext());
+        Assert.assertNotNull(availableDataAccess);
+        Assert.assertTrue(availableDataAccess.hasNext());
 
-        Set<Class> classes = new HashSet<Class>();
+        Set<Class> classes = new HashSet<>();
         DataAccessFactory daf;
 
         daf = availableDataAccess.next();
-        assertNotNull(daf);
+        Assert.assertNotNull(daf);
         classes.add(daf.getClass());
 
-        assertTrue(availableDataAccess.hasNext());
+        Assert.assertTrue(availableDataAccess.hasNext());
         daf = availableDataAccess.next();
-        assertNotNull(daf);
+        Assert.assertNotNull(daf);
         classes.add(daf.getClass());
 
-        assertFalse(availableDataAccess.hasNext());
+        Assert.assertFalse(availableDataAccess.hasNext());
 
-        assertTrue(classes.contains(MockDataStoreFactory.class));
-        assertTrue(classes.contains(MockDataAccessFactory.class));
+        Assert.assertTrue(classes.contains(MockDataStoreFactory.class));
+        Assert.assertTrue(classes.contains(MockDataAccessFactory.class));
     }
 
     /**
@@ -201,12 +208,12 @@ public class DataAccessFinderTest extends TestCase {
          * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
          * this class as value
          */
-        public boolean canProcess(Map<String, Serializable> params) {
+        public boolean canProcess(Map<String, ?> params) {
             return MockDataAccessFactory.class.equals(params.get(MOCK_DS_PARAM_KEY));
         }
 
         /** @return {@link DataAccessFinderTest#MOCK_DATAACCESS} */
-        public DataAccess<FeatureType, Feature> createDataStore(Map<String, Serializable> params)
+        public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params)
                 throws IOException {
             return MOCK_DATAACCESS;
         }
@@ -244,16 +251,16 @@ public class DataAccessFinderTest extends TestCase {
          * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
          * this class as value
          */
-        public boolean canProcess(Map<String, Serializable> params) {
+        public boolean canProcess(Map<String, ?> params) {
             return MockDataStoreFactory.class.equals(params.get(MOCK_DS_PARAM_KEY));
         }
 
         /** @return {@link DataAccessFinderTest#MOCK_DATASTORE} */
-        public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+        public DataStore createDataStore(Map<String, ?> params) throws IOException {
             return MOCK_DATASTORE;
         }
 
-        public DataStore createNewDataStore(Map params) throws IOException {
+        public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
             return null;
         }
 

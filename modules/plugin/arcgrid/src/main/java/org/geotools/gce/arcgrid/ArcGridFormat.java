@@ -74,7 +74,7 @@ public final class ArcGridFormat extends AbstractGridFormat implements Format {
 
     /** Sets the metadata information. */
     private void setInfo() {
-        HashMap<String, String> info = new HashMap<String, String>();
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("name", "ArcGrid");
         info.put("description", "ARC/INFO ASCII GRID Coverage Format");

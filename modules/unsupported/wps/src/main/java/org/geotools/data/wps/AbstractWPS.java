@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -56,7 +55,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
     protected final URL serverURL;
     protected C capabilities;
     protected ServiceInfo info;
-    protected Map<R, ResourceInfo> resourceInfo = new HashMap<R, ResourceInfo>();
+    protected Map<R, ResourceInfo> resourceInfo = new HashMap<>();
 
     /** Contains the specifications that are to be used with this service */
     protected Specification[] specs;
@@ -110,9 +109,9 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
     /** @param capabilities */
     private void setupSpecification(final C capabilities) {
-        for (int i = 0; i < specs.length; i++) {
-            if (specs[i].getVersion().equals(capabilities.getVersion())) {
-                specification = specs[i];
+        for (Specification spec : specs) {
+            if (spec.getVersion().equals(capabilities.getVersion())) {
+                specification = spec;
 
                 break;
             }
@@ -212,7 +211,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
      * @throws ServiceException if the server returns a ServiceException
      */
     protected C negotiateVersion() throws IOException, ServiceException {
-        List versions = new ArrayList(specs.length);
+        List<String> versions = new ArrayList<>(specs.length);
         Exception exception = null;
 
         for (int i = 0; i < specs.length; i++) {
@@ -234,7 +233,9 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
             // Grab document
             C tempCapabilities;
             try {
-                tempCapabilities = (C) issueRequest(request).getCapabilities();
+                @SuppressWarnings("unchecked")
+                C caps = (C) issueRequest(request).getCapabilities();
+                tempCapabilities = caps;
             } catch (ServiceException e) {
                 tempCapabilities = null;
                 exception = e;
@@ -333,8 +334,8 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
         String before = null;
 
-        for (Iterator i = known.iterator(); i.hasNext(); ) {
-            String test = (String) i.next();
+        for (Object o : known) {
+            String test = (String) o;
 
             if (test.compareTo(version) < 0) {
 
@@ -361,8 +362,8 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
         String after = null;
 
-        for (Iterator i = known.iterator(); i.hasNext(); ) {
-            String test = (String) i.next();
+        for (Object o : known) {
+            String test = (String) o;
 
             if (test.compareTo(version) > 0) {
                 if ((after == null) || (after.compareTo(test) < 0)) {
@@ -395,12 +396,8 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             request.performPostOutput(out);
 
-            InputStream in = new ByteArrayInputStream(out.toByteArray());
-
-            try {
+            try (InputStream in = new ByteArrayInputStream(out.toByteArray())) {
                 httpResponse = httpClient.post(finalURL, in, postContentType);
-            } finally {
-                in.close();
             }
         } else {
             httpResponse = httpClient.get(finalURL);

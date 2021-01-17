@@ -93,13 +93,13 @@ final class LiteFeatureTypeStyle {
     public LiteFeatureTypeStyle(
             Layer layer,
             Graphics2D graphics,
-            List ruleList,
-            List elseRuleList,
+            List<Rule> ruleList,
+            List<Rule> elseRuleList,
             Expression transformation) {
         this.layer = layer;
         this.graphics = graphics;
-        this.ruleList = (Rule[]) ruleList.toArray(new Rule[ruleList.size()]);
-        this.elseRules = (Rule[]) elseRuleList.toArray(new Rule[elseRuleList.size()]);
+        this.ruleList = ruleList.toArray(new Rule[ruleList.size()]);
+        this.elseRules = elseRuleList.toArray(new Rule[elseRuleList.size()]);
         this.transformation = transformation;
     }
 }

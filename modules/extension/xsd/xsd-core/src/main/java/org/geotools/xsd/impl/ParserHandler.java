@@ -76,7 +76,7 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     /** execution stack * */
-    protected Stack handlers;
+    protected Stack<Handler> handlers;
 
     /** namespace support * */
     ParserNamespaceSupport namespaces;
@@ -130,7 +130,7 @@ public class ParserHandler extends DefaultHandler2 {
     QName rootElementType = null;
 
     /** uri handlers for handling uri references during parsing */
-    List<URIHandler> uriHandlers = new ArrayList<URIHandler>();
+    List<URIHandler> uriHandlers = new ArrayList<>();
 
     /** entity resolver */
     EntityResolver2 entityResolver;
@@ -206,7 +206,7 @@ public class ParserHandler extends DefaultHandler2 {
         return rootElementType;
     }
 
-    public List getValidationErrors() {
+    public List<Exception> getValidationErrors() {
         return validator.getErrors();
     }
 
@@ -281,7 +281,7 @@ public class ParserHandler extends DefaultHandler2 {
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
         namespaces.declarePrefix(prefix, uri);
         if (!handlers.isEmpty()) {
-            Handler h = (Handler) handlers.peek();
+            Handler h = handlers.peek();
             h.startPrefixMapping(prefix, uri);
         }
     }
@@ -302,7 +302,7 @@ public class ParserHandler extends DefaultHandler2 {
         docHandler.setContext(context);
 
         // create the stack and add handler for document element
-        handlers = new Stack();
+        handlers = new Stack<>();
         handlers.push(docHandler);
 
         // get a logger from the context
@@ -394,9 +394,8 @@ public class ParserHandler extends DefaultHandler2 {
                     }
 
                     // first check for a location override
-                    for (int j = 0; j < resolvers.size(); j++) {
-                        String override =
-                                resolvers.get(j).resolveSchemaLocation(null, namespace, location);
+                    for (XSDSchemaLocationResolver resolver : resolvers) {
+                        String override = resolver.resolveSchemaLocation(null, namespace, location);
                         if (override != null) {
                             // ensure that override has no spaces
                             override = override.replaceAll(" ", "%20");
@@ -414,9 +413,8 @@ public class ParserHandler extends DefaultHandler2 {
                     }
 
                     // next check for schema override
-                    for (int j = 0; j < locators.size(); j++) {
-                        XSDSchema schema =
-                                locators.get(j).locateSchema(null, namespace, location, null);
+                    for (XSDSchemaLocator locator : locators) {
+                        XSDSchema schema = locator.locateSchema(null, namespace, location, null);
 
                         if (schema != null) {
                             schemas[i / 2] = schema;
@@ -455,8 +453,8 @@ public class ParserHandler extends DefaultHandler2 {
             } else {
                 // could not find a schemaLocation attribute, use the locators
                 // look for schema with locators
-                for (int i = 0; i < locators.size(); i++) {
-                    XSDSchema schema = locators.get(i).locateSchema(null, uri, null, null);
+                for (XSDSchemaLocator locator : locators) {
+                    XSDSchema schema = locator.locateSchema(null, uri, null, null);
 
                     if (schema != null) {
                         schemas = new XSDSchema[] {schema};
@@ -469,8 +467,8 @@ public class ParserHandler extends DefaultHandler2 {
             // strip out any null schemas
             int n = 0;
 
-            for (int i = 0; i < schemas.length; i++) {
-                if (schemas[i] != null) {
+            for (XSDSchema xsdSchema : schemas) {
+                if (xsdSchema != null) {
                     n++;
                 }
             }
@@ -479,12 +477,12 @@ public class ParserHandler extends DefaultHandler2 {
                 XSDSchema[] nschemas = new XSDSchema[n];
                 int j = 0;
 
-                for (int i = 0; i < schemas.length; i++) {
-                    if (schemas[i] == null) {
+                for (XSDSchema schema : schemas) {
+                    if (schema == null) {
                         continue;
                     }
 
-                    nschemas[j++] = schemas[i];
+                    nschemas[j++] = schema;
                 }
 
                 schemas = nschemas;
@@ -513,16 +511,16 @@ public class ParserHandler extends DefaultHandler2 {
             boolean found = false;
 
             O:
-            for (int i = 0; i < schemas.length; i++) {
-                if (config.getNamespaceURI().equals(schemas[i].getTargetNamespace())) {
+            for (XSDSchema schema : schemas) {
+                if (config.getNamespaceURI().equals(schema.getTargetNamespace())) {
                     found = true;
                     break O;
                 }
 
-                List imports = Schemas.getImports(schemas[i]);
+                List imports = Schemas.getImports(schema);
 
-                for (Iterator im = imports.iterator(); im.hasNext(); ) {
-                    XSDImport imprt = (XSDImport) im.next();
+                for (Object anImport : imports) {
+                    XSDImport imprt = (XSDImport) anImport;
 
                     if (config.getNamespaceURI().equals(imprt.getNamespace())) {
                         found = true;
@@ -582,7 +580,7 @@ public class ParserHandler extends DefaultHandler2 {
         // get the handler at top of the stack and lookup child
 
         // First ask the parent handler for a child
-        Handler parent = (Handler) handlers.peek();
+        Handler parent = handlers.peek();
         ElementHandler handler = (ElementHandler) parent.createChildHandler(qualifiedName);
 
         if (handler == null) {
@@ -609,8 +607,8 @@ public class ParserHandler extends DefaultHandler2 {
             // around to handle this
             List adapters = Schemas.getComponentAdaptersOfType(context, ParserDelegate.class);
             // List delegates = Schemas.getComponentInstancesOfType(context,ParserDelegate.class);
-            for (Iterator a = adapters.iterator(); a.hasNext(); ) {
-                ComponentAdapter adapter = (ComponentAdapter) a.next();
+            for (Object o : adapters) {
+                ComponentAdapter adapter = (ComponentAdapter) o;
                 ParserDelegate delegate = (ParserDelegate) adapter.getComponentInstance(context);
                 boolean canHandle = delegate.canHandle(qualifiedName, attributes, handler, parent);
 
@@ -804,7 +802,7 @@ public class ParserHandler extends DefaultHandler2 {
     @Override
     public void endPrefixMapping(String prefix) throws SAXException {
         if (!handlers.isEmpty()) {
-            Handler h = (Handler) handlers.peek();
+            Handler h = handlers.peek();
             h.endPrefixMapping(prefix);
         }
     }
@@ -850,7 +848,7 @@ public class ParserHandler extends DefaultHandler2 {
 
         // grab handler on top of stack
         if (!handlers.isEmpty()) {
-            Handler h = (Handler) handlers.peek();
+            Handler h = handlers.peek();
             return h.getParseNode().getValue();
         }
 
@@ -859,7 +857,7 @@ public class ParserHandler extends DefaultHandler2 {
 
     protected void configure(Configuration config) {
         // configure the bindings
-        Map bindings = config.setupBindings();
+        Map<QName, Object> bindings = config.setupBindings();
 
         handlerFactory = new HandlerFactoryImpl();
         bindingLoader = new BindingLoader(bindings);
@@ -867,25 +865,25 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     protected XSDSchemaLocator[] findSchemaLocators() {
-        List l = Schemas.getComponentInstancesOfType(context, XSDSchemaLocator.class);
+        List<XSDSchemaLocator> l =
+                Schemas.getComponentInstancesOfType(context, XSDSchemaLocator.class);
 
-        // List l = context.getComponentInstancesOfType(XSDSchemaLocator.class);
         if ((l == null) || l.isEmpty()) {
             return new XSDSchemaLocator[] {};
         }
 
-        return (XSDSchemaLocator[]) l.toArray(new XSDSchemaLocator[l.size()]);
+        return l.toArray(new XSDSchemaLocator[l.size()]);
     }
 
     protected XSDSchemaLocationResolver[] findSchemaLocationResolvers() {
-        // List l = context.getComponentInstancesOfType(XSDSchemaLocationResolver.class);
-        List l = Schemas.getComponentInstancesOfType(context, XSDSchemaLocationResolver.class);
+        List<XSDSchemaLocationResolver> l =
+                Schemas.getComponentInstancesOfType(context, XSDSchemaLocationResolver.class);
 
         if ((l == null) || l.isEmpty()) {
             return new XSDSchemaLocationResolver[] {};
         }
 
-        return (XSDSchemaLocationResolver[]) l.toArray(new XSDSchemaLocationResolver[l.size()]);
+        return l.toArray(new XSDSchemaLocationResolver[l.size()]);
     }
 
     @Override

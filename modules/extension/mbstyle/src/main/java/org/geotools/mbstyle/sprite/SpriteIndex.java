@@ -53,11 +53,12 @@ import org.json.simple.JSONObject;
  */
 public class SpriteIndex {
 
-    private String spriteIndexUrl;
+    private final String spriteIndexUrl;
 
-    private JSONObject json;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final JSONObject json;
 
-    private Map<String, IconInfo> icons;
+    private final Map<String, IconInfo> icons;
 
     private static final Logger LOGGER = Logging.getLogger(SpriteIndex.class);
 
@@ -161,9 +162,9 @@ public class SpriteIndex {
      */
     public static class IconInfo {
 
-        private String iconName;
+        private final String iconName;
 
-        private JSONObject json;
+        private final JSONObject json;
 
         /**
          * @param iconName The name of this sprite icon (used for error messages)
@@ -208,7 +209,7 @@ public class SpriteIndex {
                 if (o instanceof Number) {
                     return ((Number) o).intValue();
                 } else if (o instanceof String) {
-                    return Integer.valueOf((String) o);
+                    return Integer.parseInt((String) o);
                 } else {
                     throw new IllegalArgumentException();
                 }

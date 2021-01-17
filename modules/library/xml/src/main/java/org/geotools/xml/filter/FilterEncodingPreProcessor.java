@@ -19,10 +19,10 @@ package org.geotools.xml.filter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import javax.xml.crypto.Data;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.xml.XMLHandlerHints;
@@ -124,12 +124,14 @@ import org.opengis.filter.temporal.TOverlaps;
  *
  * @author Jesse Eichar
  */
+@SuppressWarnings(
+        "unchecked") // gigantic mess, too much untyped structures and methods to work on them
 public class FilterEncodingPreProcessor implements FilterVisitor {
     private static final int LOW = 0;
     private static final int MEDIUM = 1;
     private static final int HIGH = 2;
     private int complianceInt;
-    private Stack<Data> current = new Stack<Data>();
+    private Stack<Data> current = new Stack<>();
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     private boolean requiresPostProcessing = false;
@@ -153,21 +155,21 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     public Id getFidFilter() {
         if (current.isEmpty()) {
             Set<FeatureId> empty = Collections.emptySet();
-            return (Id) ff.id(empty);
+            return ff.id(empty);
         }
 
-        Data data = (Data) current.peek();
+        Data data = current.peek();
 
-        if (data.fids.size() > 0) {
-            Set<FeatureId> set = new HashSet<FeatureId>();
+        if (data.fids.isEmpty()) {
+            Set<FeatureId> empty = Collections.emptySet();
+            return ff.id(empty);
+        } else {
+            Set<FeatureId> set = new HashSet<>();
             Set<String> fids = data.fids;
             for (String fid : fids) {
                 set.add(ff.featureId(fid));
             }
-            return (Id) ff.id(set);
-        } else {
-            Set<FeatureId> empty = Collections.emptySet();
-            return (Id) ff.id(empty);
+            return ff.id(set);
         }
     }
 
@@ -178,7 +180,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
      */
     public org.opengis.filter.Filter getFilter() {
         if (current.isEmpty()) return Filter.EXCLUDE;
-        return ((Data) this.current.peek()).filter;
+        return this.current.peek().filter;
     }
 
     public void visit(Filter filter) {
@@ -316,7 +318,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         Set set = new HashSet();
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (!data.fids.isEmpty()) {
                 set.addAll(data.fids);
@@ -328,15 +330,15 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
 
     private Set andFids(int startOfFilterStack) {
         if (!hasFidFilter(startOfFilterStack)) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
 
         Set toRemove = new HashSet();
-        List fidSet = new ArrayList();
+        List<Set> fidSet = new ArrayList<>();
         boolean doRemove = true;
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (data.fids.isEmpty()) {
                 toRemove.add(data);
@@ -353,21 +355,19 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             current.removeAll(toRemove);
         }
 
-        if (fidSet.size() == 0) {
-            return Collections.EMPTY_SET;
+        if (fidSet.isEmpty()) {
+            return Collections.emptySet();
         }
 
         if (fidSet.size() == 1) {
-            return (Set) fidSet.get(0);
+            return fidSet.get(0);
         }
 
         HashSet set = new HashSet();
 
-        for (int i = 0; i < fidSet.size(); i++) {
-            Set tmp = (Set) fidSet.get(i);
-
-            for (Iterator iter = tmp.iterator(); iter.hasNext(); ) {
-                String fid = (String) iter.next();
+        for (Set tmp : fidSet) {
+            for (Object o : tmp) {
+                String fid = (String) o;
 
                 if (allContain(fid, fidSet)) {
                     set.add(fid);
@@ -379,8 +379,8 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     }
 
     private boolean allContain(String fid, List fidSets) {
-        for (int i = 0; i < fidSets.size(); i++) {
-            Set tmp = (Set) fidSets.get(i);
+        for (Object fidSet : fidSets) {
+            Set tmp = (Set) fidSet;
 
             if (!tmp.contains(fid)) {
                 return false;
@@ -400,13 +400,13 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
 
         if (current.size() == (startOfFilterStack + 1)) {
-            return (Data) current.pop();
+            return current.pop();
         }
 
-        List<org.opengis.filter.Filter> filterList = new ArrayList<org.opengis.filter.Filter>();
+        List<org.opengis.filter.Filter> filterList = new ArrayList<>();
 
         while (current.size() > startOfFilterStack) {
-            Data data = (Data) current.pop();
+            Data data = current.pop();
 
             if (data.filter != Filter.EXCLUDE) {
                 filterList.add(data.filter);
@@ -429,7 +429,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             throws IllegalFilterException {
         BinaryLogicOperator result;
         int added = 0;
-        List<org.opengis.filter.Filter> resultList = new ArrayList<org.opengis.filter.Filter>();
+        List<org.opengis.filter.Filter> resultList = new ArrayList<>();
 
         if (filter instanceof And) {
             if (contains(f, Filter.EXCLUDE)) {
@@ -807,59 +807,59 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     //
 
     public Object visit(After after, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) after);
+        return visitTemporalFilter(after);
     }
 
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) anyInteracts);
+        return visitTemporalFilter(anyInteracts);
     }
 
     public Object visit(Before before, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) before);
+        return visitTemporalFilter(before);
     }
 
     public Object visit(Begins begins, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) begins);
+        return visitTemporalFilter(begins);
     }
 
     public Object visit(BegunBy begunBy, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) begunBy);
+        return visitTemporalFilter(begunBy);
     }
 
     public Object visit(During during, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) during);
+        return visitTemporalFilter(during);
     }
 
     public Object visit(EndedBy endedBy, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) endedBy);
+        return visitTemporalFilter(endedBy);
     }
 
     public Object visit(Ends ends, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) ends);
+        return visitTemporalFilter(ends);
     }
 
     public Object visit(Meets meets, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) meets);
+        return visitTemporalFilter(meets);
     }
 
     public Object visit(MetBy metBy, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) metBy);
+        return visitTemporalFilter(metBy);
     }
 
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) overlappedBy);
+        return visitTemporalFilter(overlappedBy);
     }
 
     public Object visit(TContains contains, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) contains);
+        return visitTemporalFilter(contains);
     }
 
     public Object visit(TEquals equals, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) equals);
+        return visitTemporalFilter(equals);
     }
 
     public Object visit(TOverlaps contains, Object extraData) {
-        return visitTemporalFilter((BinaryTemporalOperator) contains);
+        return visitTemporalFilter(contains);
     }
 
     protected Object visitTemporalFilter(BinaryTemporalOperator filter) {

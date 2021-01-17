@@ -16,7 +16,10 @@
  */
 package org.geotools.referencing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.PrintStream;
 import java.util.Collection;
@@ -35,10 +38,11 @@ import org.geotools.referencing.factory.ReferencingObjectFactory;
 import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.util.factory.Hints;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.cs.AxisDirection;
@@ -211,10 +215,8 @@ public final class FactoriesTest {
             final MathTransform mt;
             try {
                 mt = mtFactory.createParameterizedTransform(param);
-            } catch (FactoryException e) {
+            } catch (FactoryException | UnsupportedOperationException e) {
                 // Probably not a map projection. This test is mostly about projection, so ignore.
-                continue;
-            } catch (UnsupportedOperationException e) {
                 continue;
             }
             if (mt instanceof MapProjection) {
@@ -307,7 +309,7 @@ public final class FactoriesTest {
                 factory.createGeodeticDatum(
                         Collections.singletonMap("name", "_toKyo  _"), ellipsoid, meridian);
         assertEquals(4, datum.getAlias().size());
-        assertTrue(aliases.equals(datum.getAlias()));
+        assertEquals(aliases, datum.getAlias());
 
         datum =
                 factory.createGeodeticDatum(

@@ -45,7 +45,7 @@ public class MBObjectStops {
     static final Logger LOGGER = Logging.getLogger(MBObjectStops.class);
     private static final double ZOOM_EPS = 0.01; // 1% of a zoom level
 
-    JSONParser parser = new JSONParser();
+    final JSONParser parser = new JSONParser();
     public LayerStops ls = new LayerStops();
     List<Double> layerZoomLevels;
     public List<Double> stops = new ArrayList<>();
@@ -121,6 +121,7 @@ public class MBObjectStops {
      *
      * @return Split layer based on zoom-level stops
      */
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Double> layerStops)
             throws ParseException {
         List<MBLayer> layers = new ArrayList<>();
@@ -149,6 +150,7 @@ public class MBObjectStops {
      *
      * @return List of ranges based on zoom-level stops
      */
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     List<double[]> getStopLevelRanges(List<Double> stops) {
         List<double[]> ranges = new ArrayList<>();
         for (int i = 0; i < stops.size(); i++) {
@@ -180,9 +182,9 @@ public class MBObjectStops {
      */
     public double[] getRangeForStop(Double stop, List<double[]> ranges) {
         double[] rangeForStopLevel = {0, 0};
-        for (int i = 0; i < ranges.size(); i++) {
-            if (ranges.get(i)[0] == stop) {
-                rangeForStopLevel = ranges.get(i);
+        for (double[] range : ranges) {
+            if (range[0] == stop) {
+                rangeForStopLevel = range;
             }
         }
         return rangeForStopLevel;
@@ -207,9 +209,8 @@ public class MBObjectStops {
 
     LayerStops containsStops(JSONObject jsonObject, LayerStops ls) {
         Set<?> keySet = jsonObject.keySet();
-        Iterator<?> keys = keySet.iterator();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
+        for (Object o : keySet) {
+            String key = (String) o;
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject child = (JSONObject) jsonObject.get(key);
                 if (child.containsKey("stops")) {
@@ -274,15 +275,14 @@ public class MBObjectStops {
      */
     double findStop(JSONObject jsonObject, double layerStop) {
         Set<?> keySet = jsonObject.keySet();
-        Iterator<?> keys = keySet.iterator();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
+        for (Object value : keySet) {
+            String key = (String) value;
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject child = (JSONObject) jsonObject.get(key);
                 if (child.containsKey("stops")) {
                     JSONArray stops = (JSONArray) child.get("stops");
-                    for (int i = 0; i < stops.size(); i++) {
-                        JSONArray stop = (JSONArray) stops.get(i);
+                    for (Object o : stops) {
+                        JSONArray stop = (JSONArray) o;
                         if (stop.get(0) instanceof Number) {
                             layerStop = ((Number) stop.get(0)).doubleValue();
                         }
@@ -300,6 +300,7 @@ public class MBObjectStops {
      * @param range Range
      * @return Modified JSON definition
      */
+    @SuppressWarnings("unchecked")
     JSONObject reduceJsonForRange(JSONObject jsonObject, double[] range) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
@@ -312,23 +313,23 @@ public class MBObjectStops {
                     List<JSONArray> objectsToEdit = new ArrayList<>();
                     List<Object> objectsToRemove = new ArrayList<>();
                     JSONArray stops = (JSONArray) child.get("stops");
-                    for (int i = 0; i < stops.size(); i++) {
-                        JSONArray stop = (JSONArray) stops.get(i);
+                    for (Object value : stops) {
+                        JSONArray stop = (JSONArray) value;
                         if (stop.get(0) instanceof JSONObject) {
                             double zoomValue =
                                     ((Number) ((JSONObject) stop.get(0)).get("zoom")).doubleValue();
                             if (zoomEquals(zoomValue, range[0])) {
-                                objectsToEdit.add((JSONArray) stops.get(i));
+                                objectsToEdit.add((JSONArray) value);
                             } else {
-                                objectsToRemove.add(stops.get(i));
+                                objectsToRemove.add(value);
                             }
                         }
                         if (stop.get(0) instanceof Number) {
                             double zoomValue = ((Number) stop.get(0)).doubleValue();
                             if (zoomEquals(zoomValue, range[0])) {
-                                objectsToEdit.add((JSONArray) stops.get(i));
+                                objectsToEdit.add((JSONArray) value);
                             } else {
-                                objectsToRemove.add(stops.get(i));
+                                objectsToRemove.add(value);
                             }
                         }
                     }
@@ -375,15 +376,14 @@ public class MBObjectStops {
      */
     List<Double> findStopLevels(JSONObject jsonObject, List<Double> layerZoomLevels) {
         Set<?> keySet = jsonObject.keySet();
-        Iterator<?> keys = keySet.iterator();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
+        for (Object value : keySet) {
+            String key = (String) value;
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject child = (JSONObject) jsonObject.get(key);
                 if (child.containsKey("stops")) {
                     JSONArray stops = (JSONArray) child.get("stops");
-                    for (int i = 0; i < stops.size(); i++) {
-                        JSONArray stop = (JSONArray) stops.get(i);
+                    for (Object o : stops) {
+                        JSONArray stop = (JSONArray) o;
                         if (stop.get(0) instanceof Number) {
                             layerZoomLevels.add(((Number) stop.get(0)).doubleValue());
                         } else if (stop.get(0) instanceof JSONObject) {
@@ -401,7 +401,8 @@ public class MBObjectStops {
         return layerZoomLevels;
     }
 
-    public class LayerStops {
+    /** Function stops representation. */
+    public static class LayerStops {
         public boolean propertyStops = false;
         public boolean zoomStops = false;
         public boolean zoomPropertyStops = false;

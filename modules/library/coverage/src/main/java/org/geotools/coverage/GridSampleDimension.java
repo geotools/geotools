@@ -125,7 +125,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @since 2.3
      */
     public GridSampleDimension(final CharSequence description) {
-        this(description, (CategoryList) null, 1, 0);
+        this(description, null, 1, 0);
     }
 
     /**
@@ -348,7 +348,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         }
         final int nameCount = (categories != null) ? categories.length : 0;
         final int nodataCount = (nodata != null) ? nodata.length : 0;
-        final List<Category> categoryList = new ArrayList<Category>(nameCount + nodataCount + 2);
+        final List<Category> categoryList = new ArrayList<>(nameCount + nodataCount + 2);
         /*
          * STEP 1 - Add a qualitative category for each 'nodata' value.
          *   NAME: Fetched from 'categories' if available, otherwise default to the value.
@@ -369,6 +369,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             if (name == null) {
                 name = value.toString();
             }
+            @SuppressWarnings("unchecked")
             final NumberRange<?> range = new NumberRange(value.getClass(), value, value);
             final Color[] colors = ColorUtilities.subarray(palette, intValue, intValue + 1);
             categoryList.add(new Category(name, colors, range, false));
@@ -406,6 +407,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                     min = ClassChanger.cast(min, classe);
                     max = ClassChanger.cast(max, classe);
                 }
+                @SuppressWarnings("unchecked")
                 final NumberRange<?> range = new NumberRange(classe, min, max);
                 final Color[] colors = ColorUtilities.subarray(palette, lower, upper);
                 categoryList.add(new Category(name, colors, range, false));
@@ -433,7 +435,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             for (int i = categoryList.size(); --i >= 0; ) {
                 Category category = categoryList.get(i);
                 if (!category.isQuantitative()) {
-                    final NumberRange range = category.getRange();
+                    final NumberRange<? extends Number> range = category.getRange();
                     final Comparable min = range.getMinValue();
                     final Comparable max = range.getMaxValue();
                     @SuppressWarnings("unchecked")
@@ -492,7 +494,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                 final Class<? extends Number> classe = ClassChanger.getWidestClass(min, max);
                 min = ClassChanger.cast(min, classe);
                 max = ClassChanger.cast(max, classe);
-                final NumberRange range =
+                @SuppressWarnings("unchecked")
+                final NumberRange<? extends Number> range =
                         new NumberRange(classe, min, minIncluded, max, maxIncluded);
                 final Color[] colors =
                         ColorUtilities.subarray(
@@ -830,8 +833,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     public double getMinimumValue() {
         if (categories != null && !categories.isEmpty()) {
-            for (int i = 0; i < categories.size(); i++) {
-                Category cat = categories.get(i);
+            for (Category cat : categories) {
                 if (!Category.NODATA.getName().equals(cat.getName())) {
                     // Exclude the value of the NODATA category
                     // which can be retrieved with getNoDataValues
@@ -894,8 +896,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     private static boolean rangeContains(
             final double lower, final double upper, final double[] values) {
         if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                final double v = values[i];
+            for (final double v : values) {
                 if (v >= lower && v < upper) {
                     return true;
                 }

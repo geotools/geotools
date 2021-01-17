@@ -35,7 +35,6 @@ import org.geotools.gml3.v3_2.gmd.GMD;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
@@ -58,7 +57,7 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
 
     @Test
     public void features() throws Exception {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("dbtype", "app-schema");
         URL url = getClass().getResource(TEST_DATA + "Gsml30MappedFeature.xml");
         Assert.assertNotNull(url);
@@ -73,7 +72,7 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
                     dataAccess.getFeatureSource(MAPPED_FEATURE);
             FeatureCollection<FeatureType, Feature> features = source.getFeatures();
             FeatureIterator<Feature> iterator = features.features();
-            Map<String, Feature> featureMap = new LinkedHashMap<String, Feature>();
+            Map<String, Feature> featureMap = new LinkedHashMap<>();
             try {
                 while (iterator.hasNext()) {
                     Feature f = iterator.next();
@@ -104,28 +103,22 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
             for (int i = 1; i <= 2; i++) {
                 Assert.assertEquals(
                         BigInteger.valueOf(250000),
-                        ((Attribute)
+                        ((ComplexAttribute)
                                         ((ComplexAttribute)
                                                         ((ComplexAttribute)
-                                                                        ((ComplexAttribute)
-                                                                                        featureMap
-                                                                                                .get(
-                                                                                                        "mf."
-                                                                                                                + i)
-                                                                                                .getProperty(
-                                                                                                        new NameImpl(
-                                                                                                                GSML,
-                                                                                                                "resolutionScale")))
+                                                                        featureMap
+                                                                                .get("mf." + i)
                                                                                 .getProperty(
                                                                                         new NameImpl(
-                                                                                                GMD.NAMESPACE,
-                                                                                                "MD_RepresentativeFraction")))
+                                                                                                GSML,
+                                                                                                "resolutionScale")))
                                                                 .getProperty(
                                                                         new NameImpl(
                                                                                 GMD.NAMESPACE,
-                                                                                "denominator")))
+                                                                                "MD_RepresentativeFraction")))
                                                 .getProperty(
-                                                        new NameImpl(GCO.NAMESPACE, "Integer")))
+                                                        new NameImpl(GMD.NAMESPACE, "denominator")))
+                                .getProperty(new NameImpl(GCO.NAMESPACE, "Integer"))
                                 .getValue());
             }
         } finally {

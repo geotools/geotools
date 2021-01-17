@@ -16,21 +16,27 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.w3c.dom.Document;
 
 public class GMLCoordinatesTypeBinding2Test extends GMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(CoordinateSequence.class, binding(GML.CoordinatesType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(GML.CoordinatesType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         GML2MockData.coordinates(document, document);
 
@@ -40,6 +46,7 @@ public class GMLCoordinatesTypeBinding2Test extends GMLTestSupport {
         assertEquals(new Coordinate(3, 4), c.getCoordinate(1));
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.coordinates(), GML.coordinates);
 

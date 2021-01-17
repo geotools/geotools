@@ -25,10 +25,12 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
-import junit.framework.TestCase;
 import org.geotools.util.URLs;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class DefaultResourceLocatorTest extends TestCase {
+public class DefaultResourceLocatorTest {
+    @Test
     public void testRelativeFileURL() throws Exception {
         DefaultResourceLocator locator = new DefaultResourceLocator();
         locator.setSourceUrl(getClass().getResource("test-data/blob.gif"));
@@ -39,17 +41,19 @@ public class DefaultResourceLocatorTest extends TestCase {
         checkURL(locator.locateResource("file://./blob.gif"));
     }
 
+    @Test
     public void testPreserveURLQuery() throws Exception {
         DefaultResourceLocator locator = new DefaultResourceLocator();
         locator.setSourceUrl(getClass().getResource("test-data/blob.gif"));
 
         // Confirm still able to resolve to a File
         URL url = locator.locateResource("blob.gif?query=parameter");
-        assertEquals("query=parameter", url.getQuery());
+        Assert.assertEquals("query=parameter", url.getQuery());
         File file = URLs.urlToFile(url);
-        assertTrue(file.exists());
+        Assert.assertTrue(file.exists());
     }
 
+    @Test
     public void testPreserveURLQueryWithColors() throws Exception {
         DefaultResourceLocator locator = new DefaultResourceLocator();
         locator.setSourceUrl(getClass().getResource("test-data/blob.gif"));
@@ -57,17 +61,18 @@ public class DefaultResourceLocatorTest extends TestCase {
         // Confirm still able to resolve to a File
         URL url = locator.locateResource("blob.gif?fill=#ff0000&stroke=#000000");
         final String external = url.toExternalForm();
-        assertTrue(external.indexOf('?') > 0);
-        assertEquals("fill=#ff0000&stroke=#000000", external.split("\\?")[1]);
+        Assert.assertTrue(external.indexOf('?') > 0);
+        Assert.assertEquals("fill=#ff0000&stroke=#000000", external.split("\\?")[1]);
         File file = URLs.urlToFile(url);
-        assertTrue(file.exists());
+        Assert.assertTrue(file.exists());
     }
 
     void checkURL(URL url) {
         File f = URLs.urlToFile(url);
-        assertTrue(f.exists());
+        Assert.assertTrue(f.exists());
     }
 
+    @Test
     public void testInvalidPath() throws Exception {
         DefaultResourceLocator locator = new DefaultResourceLocator();
         URL testURL =
@@ -104,6 +109,6 @@ public class DefaultResourceLocatorTest extends TestCase {
                         });
         locator.setSourceUrl(testURL);
         // used to go NPE here
-        assertEquals(new URL("file://test"), locator.locateResource("file://test"));
+        Assert.assertEquals(new URL("file://test"), locator.locateResource("file://test"));
     }
 }

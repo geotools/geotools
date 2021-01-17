@@ -108,7 +108,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      */
     private static Map<String, Object> toMap(final IdentifiedObject parameters) {
         ensureNonNull("parameters", parameters);
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         properties.put(NAME_KEY, parameters.getName());
         properties.put(
                 IDENTIFIERS_KEY, parameters.getIdentifiers().toArray(EMPTY_IDENTIFIER_ARRAY));
@@ -243,8 +243,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
         int aliasCount = 0;
         ReferenceIdentifier[] id = new ReferenceIdentifier[identifiers.length];
         GenericName[] alias = new GenericName[identifiers.length];
-        for (int i = 0; i < identifiers.length; i++) {
-            final ReferenceIdentifier candidate = identifiers[i];
+        for (final ReferenceIdentifier candidate : identifiers) {
             if (candidate instanceof GenericName) {
                 alias[aliasCount++] = (GenericName) candidate;
             } else {
@@ -253,7 +252,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
         }
         id = XArray.resize(id, idCount);
         alias = XArray.resize(alias, aliasCount);
-        final Map<String, Object> properties = new HashMap<String, Object>(4, 0.8f);
+        final Map<String, Object> properties = new HashMap<>(4, 0.8f);
         properties.put(NAME_KEY, identifiers[0]);
         properties.put(IDENTIFIERS_KEY, id);
         properties.put(ALIAS_KEY, alias);

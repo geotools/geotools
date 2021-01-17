@@ -106,13 +106,13 @@ final class Command {
     /** Prints all objects as WKT. This is the default behavior when no option is specified. */
     private void list(final PrintWriter out, final String[] args) throws FactoryException {
         char[] separator = null;
-        for (int i = 0; i < args.length; i++) {
+        for (String arg : args) {
             if (separator == null) {
                 separator = getSeparator();
             } else {
                 out.println(separator);
             }
-            out.println(formatter.format(factory.createObject(args[i])));
+            out.println(formatter.format(factory.createObject(arg)));
             final String warning = formatter.getWarning();
             if (warning != null) {
                 out.println();
@@ -156,7 +156,7 @@ final class Command {
 
     /** Lists all CRS authority factories. */
     private static void factories(final PrintWriter out) {
-        final Set<Citation> done = new HashSet<Citation>();
+        final Set<Citation> done = new HashSet<>();
         final TableWriter table = new TableWriter(out, TableWriter.SINGLE_VERTICAL_LINE);
         final TableWriter notes = new TableWriter(out, " ");
         int noteCount = 0;
@@ -227,22 +227,21 @@ final class Command {
         final String[] titles = {
             Vocabulary.format(VocabularyKeys.TARGET), "dx", "dy", "dz", "ex", "ey", "ez", "ppm"
         };
-        for (int i = 0; i < titles.length; i++) {
-            table.write(titles[i]);
+        for (String title : titles) {
+            table.write(title);
             table.nextColumn();
             table.setAlignment(TableWriter.ALIGN_CENTER);
         }
         table.writeHorizontalSeparator();
-        for (int i = 0; i < args.length; i++) {
-            IdentifiedObject object = factory.createObject(args[i]);
+        for (String arg : args) {
+            IdentifiedObject object = factory.createObject(arg);
             if (object instanceof CoordinateReferenceSystem) {
                 object = CRSUtilities.getDatum((CoordinateReferenceSystem) object);
             }
             if (object instanceof DefaultGeodeticDatum) {
                 final BursaWolfParameters[] params =
                         ((DefaultGeodeticDatum) object).getBursaWolfParameters();
-                for (int j = 0; j < params.length; j++) {
-                    final BursaWolfParameters p = params[j];
+                for (final BursaWolfParameters p : params) {
                     table.setAlignment(TableWriter.ALIGN_LEFT);
                     table.write(p.targetDatum.getName().getCode());
                     table.nextColumn();

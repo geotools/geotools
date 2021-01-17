@@ -29,6 +29,8 @@ import org.geotools.jdbc.SQLDialect;
  *
  * @author Justin Deoliveira, OpenGEO
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE =
@@ -130,7 +132,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         super.setupParameters(parameters);
         parameters.put(PORT.key, PORT);
         parameters.put(DBTYPE.key, DBTYPE);
@@ -146,7 +148,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** Builds up the JDBC url in a jdbc:<database>://<host>:<port>;DatabaseName=<dbname> */
     @SuppressWarnings("unchecked")
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String host = (String) HOST.lookUp(params);
         Integer port = (Integer) PORT.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
@@ -178,7 +180,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
 
         if (!super.canProcess(params)) {
             return false; // was not in agreement with getParametersInfo
@@ -197,7 +199,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
 

@@ -120,8 +120,8 @@ Setting up a database for online testing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can use `docker <https://www.docker.com/>`_ to run a database flavour of your choice,
-some examples are given below. Also the Travis-CI build script shows how to install / run
-SQL Server and Oracle XE (see `.travis.yml <https://github.com/geotools/geotools/blob/master/.travis.yml>`_).
+some examples are given below. Also the GitHub workflows show how to run SQL Server, MySQL 
+and Oracle XE (see `.github/workflows/ <https://github.com/geotools/geotools/tree/master/.github/workflows>`_).
 Using docker will prevent the hassle of local installation on your computer possibly messing up your configuration.
 
 Oracle XE
@@ -151,9 +151,9 @@ Also note that the Oracle docker image and container will take quite a few gigab
 
 To create a user and schema for testing you can use the following command::
 
-    docker exec -i geotools sqlplus -l system/oracle@//localhost:1521/XE < .travis/create_user.sql
+    docker exec -i geotools sqlplus -l system/oracle@//localhost:1521/XE < build/ci/oracle/setup-oracle.sql
 
-The ``create_user.sql`` can be found in `.travis/ <https://github.com/geotools/geotools/tree/master/.travis>`_ it consists of::
+The ``setup-oracle.sql`` can be found in `.travis/ <https://github.com/geotools/geotools/tree/master/.travis>`_ it consists of::
 
     ALTER SESSION SET "_ORACLE_SCRIPT"=true;
     CREATE USER "GEOTOOLS" IDENTIFIED BY "geotools"  DEFAULT TABLESPACE "USERS" TEMPORARY TABLESPACE "TEMP";
@@ -178,6 +178,8 @@ The appropriate fixture for using the above database schema would be::
     driver=oracle.jdbc.OracleDriver
 
 In file ``~/.geotools/oracle.properties``
+
+Shell scripts for the above steps are provided in directory ``build/ci/oracle/`` of the source tree.
 
 To run the online test for the ``gt-jdbc-oracle`` module use the following Maven command:::
 
@@ -221,6 +223,8 @@ The appropriate fixture for using the above database schema would be::
 
 In file ``~/.geotools/sqlserver.properties``
 
+Shell scripts for the above steps are provided in directory ``build/ci/mssql/`` of the source tree.
+
 To run the online test for the ``gt-jdbc-sqlserver`` module use the following Maven command:::
 
     mvn install -Dall -pl :gt-jdbc-sqlserver -Ponline -T1.1C -Dfmt.skip=true -am
@@ -262,3 +266,44 @@ To run the online test for the ``gt-jdbc-postgis`` module use the following Mave
     mvn install -Dall -pl :gt-jdbc-postgis -Ponline -T1.1C -Dfmt.skip=true -am
 
 When done use ``docker stop geotools`` to stop and cleanup the container.
+
+MySQL
+____________________
+
+Official MySQL images are provided `on dockerhub <https://hub.docker.com/_/mysql/>`_.
+
+Use the following to create and start a MySQL 5 (5.7.32 at the time of writing) container listening on port 3306:::
+
+    docker pull mysql:5
+    docker run --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=geotools --name geotools -h geotools -d mysql:5
+
+or use the following to create and start a MySQL 8 (8.0.22 at the time of writing) container listening on port 3306:::
+
+    docker pull mysql:8
+    docker run --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=geotools --name geotools -h geotools -d mysql:8
+
+Note that the ``--rm`` option will delete the container after stopping it, the image is preserved so you won't need
+to pull it next time, but you may want to preserve the container so you don't have to build a new one.
+
+Then create a ``geotools`` database using:::
+
+    docker exec -i geotools mysql -uroot -pgeotools < build/ci/mysql/setup_mysql.sql
+
+The appropriate fixture for using the above database schema would be::
+
+    driver=com.mysql.cj.jdbc.Driver
+    url=jdbc:mysql://localhost/geotools
+    host=localhost
+    port=3306
+    user=root
+    password=geotools
+
+In file ``~/.geotools/mysql.properties``
+
+Shell scripts for the above steps are provided in directory ``build/ci/mysql/`` of the source tree.
+
+To run the online tests for the ``gt-jdbc-mysql`` module use the following Maven command:::
+
+    mvn install -Dall -pl :gt-jdbc-mysql -Ponline -T1.1C -Dfmt.skip=true -am
+
+When done use ``docker stop geotools`` to stop and cleanup/remove the container.

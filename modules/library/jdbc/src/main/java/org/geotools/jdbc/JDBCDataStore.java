@@ -38,12 +38,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -282,12 +280,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     new MetadataTablePrimaryKeyFinder(), new HeuristicPrimaryKeyFinder());
 
     /** Contains the SQL definition of the various virtual tables */
-    protected Map<String, VirtualTable> virtualTables =
-            new ConcurrentHashMap<String, VirtualTable>();
+    protected Map<String, VirtualTable> virtualTables = new ConcurrentHashMap<>();
 
     /** The listeners that are allowed to handle the connection lifecycle */
     protected List<ConnectionLifecycleListener> connectionLifecycleListeners =
-            new CopyOnWriteArrayList<ConnectionLifecycleListener>();
+            new CopyOnWriteArrayList<>();
 
     protected JDBCCallbackFactory callbackFactory = JDBCCallbackFactory.NULL;
 
@@ -347,7 +344,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /** Returns a live, immutable view of the virtual tables map (from name to definition) */
     public Map<String, VirtualTable> getVirtualTables() {
-        Map<String, VirtualTable> result = new HashMap<String, VirtualTable>();
+        Map<String, VirtualTable> result = new HashMap<>();
         for (String key : virtualTables.keySet()) {
             result.put(key, new VirtualTable(virtualTables.get(key)));
         }
@@ -546,7 +543,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Map<Integer, Class<?>> getSqlTypeToClassMappings() {
         if (sqlTypeToClassMappings == null) {
-            sqlTypeToClassMappings = new HashMap<Integer, Class<?>>();
+            sqlTypeToClassMappings = new HashMap<>();
             dialect.registerSqlTypeToClassMappings(sqlTypeToClassMappings);
         }
 
@@ -564,7 +561,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Map<String, Class<?>> getSqlTypeNameToClassMappings() {
         if (sqlTypeNameToClassMappings == null) {
-            sqlTypeNameToClassMappings = new HashMap<String, Class<?>>();
+            sqlTypeNameToClassMappings = new HashMap<>();
             dialect.registerSqlTypeNameToClassMappings(sqlTypeNameToClassMappings);
         }
 
@@ -581,7 +578,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Map<Class<?>, Integer> getClassToSqlTypeMappings() {
         if (classToSqlTypeMappings == null) {
-            HashMap<Class<?>, Integer> classToSqlTypeMappings = new HashMap<Class<?>, Integer>();
+            HashMap<Class<?>, Integer> classToSqlTypeMappings = new HashMap<>();
             dialect.registerClassToSqlMappings(classToSqlTypeMappings);
             this.classToSqlTypeMappings = classToSqlTypeMappings;
         }
@@ -596,7 +593,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Map<Integer, String> getSqlTypeToSqlTypeNameOverrides() {
         if (sqlTypeToSqlTypeNameOverrides == null) {
-            sqlTypeToSqlTypeNameOverrides = new HashMap<Integer, String>();
+            sqlTypeToSqlTypeNameOverrides = new HashMap<>();
             dialect.registerSqlTypeToSqlTypeNameOverrides(sqlTypeToSqlTypeNameOverrides);
         }
 
@@ -611,7 +608,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public ConcurrentHashMap<Integer, String> getDBsqlTypesCache() {
         if (dBsqlTypesCache == null) {
-            dBsqlTypesCache = new ConcurrentHashMap<Integer, String>();
+            dBsqlTypesCache = new ConcurrentHashMap<>();
         }
 
         return dBsqlTypesCache;
@@ -620,7 +617,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /** Returns the supported aggregate functions and the visitors they map to. */
     public Map<Class<? extends FeatureVisitor>, String> getAggregateFunctions() {
         if (aggregateFunctions == null) {
-            aggregateFunctions = new HashMap();
+            aggregateFunctions = new HashMap<>();
             dialect.registerAggregateFunctions(aggregateFunctions);
         }
         return aggregateFunctions;
@@ -668,7 +665,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         if (mapping == null) {
             // no match, try a "fuzzy" match in which we find the super class which matches best
-            List<Map.Entry<Class<?>, Integer>> matches = new ArrayList();
+            List<Map.Entry<Class<?>, Integer>> matches = new ArrayList<>();
             for (Map.Entry<Class<?>, Integer> e : getClassToSqlTypeMappings().entrySet()) {
                 if (e.getKey().isAssignableFrom(clazz)) {
                     matches.add(e);
@@ -874,13 +871,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         SimpleFeatureCollection features = getFeatureSource(featureTypeName).getFeatures(query);
         if (!features.isEmpty()) {
-            SimpleFeatureIterator fi = features.features();
-            try {
+            try (SimpleFeatureIterator fi = features.features()) {
                 if (fi.hasNext()) {
                     return fi.next();
                 }
-            } finally {
-                fi.close();
             }
         }
 
@@ -933,7 +927,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      *
      * <p>The list is generated from the underlying database metadata.
      */
-    protected List createTypeNames() throws IOException {
+    protected List<Name> createTypeNames() throws IOException {
         Connection cx = createConnection();
 
         /*
@@ -953,11 +947,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
          *                  SELF_REFERENCING_COL_NAME are created. Values are
          *                  "SYSTEM", "USER", "DERIVED". (may be <code>null</code>)
          */
-        List typeNames = new ArrayList();
+        List<Name> typeNames = new ArrayList<>();
 
         try {
             DatabaseMetaData metaData = cx.getMetaData();
-            Set<String> availableTableTypes = new HashSet<String>();
+            Set<String> availableTableTypes = new HashSet<>();
 
             ResultSet tableTypes = null;
             try {
@@ -968,7 +962,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             } finally {
                 closeSafe(tableTypes);
             }
-            Set<String> queryTypes = new HashSet<String>();
+            Set<String> queryTypes = new HashSet<>();
             for (String desiredTableType : dialect.getDesiredTablesType()) {
                 if (availableTableTypes.contains(desiredTableType)) {
                     queryTypes.add(desiredTableType);
@@ -1035,7 +1029,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                                 List<ColumnMetadata> metas =
                                         JDBCFeatureSource.getColumnMetadata(cx, vt, dialect, this);
 
-                                List<PrimaryKeyColumn> kcols = new ArrayList<PrimaryKeyColumn>();
+                                List<PrimaryKeyColumn> kcols = new ArrayList<>();
                                 for (String pkName : vt.getPrimaryKeyColumns()) {
                                     // look for the pk type
                                     Class binding = null;
@@ -1114,7 +1108,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     PrimaryKey createPrimaryKey(
             ResultSet index, DatabaseMetaData metaData, String tableName, Connection cx)
             throws SQLException {
-        ArrayList<PrimaryKeyColumn> cols = new ArrayList();
+        ArrayList<PrimaryKeyColumn> cols = new ArrayList<>();
 
         while (index.next()) {
             String columnName = index.getString("COLUMN_NAME");
@@ -1278,7 +1272,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 rs = ((PreparedStatement) st).executeQuery();
             } else {
                 String sql = selectBoundsSQL(featureType, query);
-                LOGGER.log(Level.FINE, "Retriving bounding box: {0}", sql);
+                LOGGER.log(Level.FINE, "Retrieving bounding box: {0}", sql);
 
                 st = cx.createStatement();
                 rs = st.executeQuery(sql);
@@ -1420,7 +1414,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         // result of the function
         try {
             Object result = null;
-            List results = new ArrayList();
+            List<Object> results = new ArrayList<>();
             Statement st = null;
             ResultSet rs = null;
 
@@ -1668,7 +1662,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
                 if (s == null) {
                     for (Method m : visitor.getClass().getMethods()) {
-                        if ("setValue".equals(m.getName())) {
+                        if ("setValue".equals(m.getName()) && m.getParameterCount() == 1) {
                             s = m;
                             break;
                         }
@@ -1677,7 +1671,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 AGGREGATE_SETVALUE_CACHE.put(visitor.getClass(), s);
             }
             if (s != null) {
-                Class type = s.getParameterTypes()[0];
+                Class<?> type = s.getParameterTypes()[0];
                 if (!type.isInstance(result)) {
                     // convert
                     Object converted = Converters.convert(result, type);
@@ -1693,7 +1687,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 return true;
             }
         } catch (Exception e) {
-            // ignore for now
+            LOGGER.log(
+                    Level.INFO,
+                    "Failed to set optimized result, will fall back on full collection visit",
+                    e);
         }
         return false;
     }
@@ -1791,7 +1788,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         int srid = getGeometrySRID(g, att);
                         int dimension = getGeometryDimension(g, att);
                         dialect.setGeometryValue(g, dimension, srid, binding, ps, i);
-                    } else if (isArray(att)) {
+                    } else if (this.dialect.isArray(att)) {
                         dialect.setArrayValue(value, att, ps, i, cx);
                     } else {
                         if (mapper != null) {
@@ -2132,10 +2129,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             dialect.initializeConnection(cx);
 
             // if there is any lifecycle listener use it
-            if (connectionLifecycleListeners.size() > 0) {
+            if (!connectionLifecycleListeners.isEmpty()) {
                 List<ConnectionLifecycleListener> locals =
-                        new ArrayList<ConnectionLifecycleListener>(connectionLifecycleListeners);
-                cx = new LifecycleConnection(this, cx, locals);
+                        new ArrayList<>(connectionLifecycleListeners);
+                return new LifecycleConnection(this, cx, locals);
             }
             return cx;
         } catch (SQLException e) {
@@ -2185,7 +2182,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         // more than one
-        List<Object> keyValues = new ArrayList<Object>();
+        List<Object> keyValues = new ArrayList<>();
         for (int i = 0; i < columns.size(); i++) {
             String o = dialect.getPkColumnValue(rs, columns.get(0), offset + i + 1);
             keyValues.add(o);
@@ -2222,18 +2219,18 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // check for case of multi column primary key and try to backwards map using
         // "." as a seperator of values
-        List values = null;
+        List<Object> values = null;
         if (key.getColumns().size() > 1) {
             String[] split = FID.split("\\.");
 
             // copy over to avoid array store exception
-            values = new ArrayList(split.length);
-            for (int i = 0; i < split.length; i++) {
-                values.add(split[i]);
+            values = new ArrayList<>(split.length);
+            for (String s : split) {
+                values.add(s);
             }
         } else {
             // single value case
-            values = new ArrayList();
+            values = new ArrayList<>();
             values.add(FID);
         }
         if (values.size() != key.getColumns().size()) {
@@ -2250,7 +2247,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         for (int i = 0; i < values.size(); i++) {
             Object value = values.get(i);
             if (value != null) {
-                Class type = key.getColumns().get(i).getType();
+                Class<?> type = key.getColumns().get(i).getType();
                 Object converted = Converters.convert(value, type);
                 if (converted != null) {
                     values.set(i, converted);
@@ -2376,7 +2373,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         InProcessLockingManager lm = (InProcessLockingManager) getLockingManager();
         // verify if we have any lock to check
         Map locks = lm.locks(featureType.getTypeName());
-        if (locks.size() != 0) {
+        if (!locks.isEmpty()) {
             // limiting query to only extract locked features
             if (locks.size() <= MAX_IDS_IN_FILTER) {
                 Set<FeatureId> ids = getLockedIds(locks);
@@ -2425,7 +2422,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /** Extracts a set of FeatureId objects from the locks Map. */
     private Set<FeatureId> getLockedIds(Map locks) {
-        Set<FeatureId> ids = new HashSet<FeatureId>();
+        Set<FeatureId> ids = new HashSet<>();
         for (Object lock : locks.keySet()) {
             ids.add(getFilterFactory().featureId(lock.toString()));
         }
@@ -3505,15 +3502,15 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             PrimaryKey key = getPrimaryKey(featureType);
             sql.append(" ORDER BY ");
 
-            for (int i = 0; i < sort.length; i++) {
+            for (SortBy sortBy : sort) {
                 String order;
-                if (sort[i].getSortOrder() == SortOrder.DESCENDING) {
+                if (sortBy.getSortOrder() == SortOrder.DESCENDING) {
                     order = " DESC";
                 } else {
                     order = " ASC";
                 }
 
-                if (SortBy.NATURAL_ORDER.equals(sort[i]) || SortBy.REVERSE_ORDER.equals(sort[i])) {
+                if (SortBy.NATURAL_ORDER.equals(sortBy) || SortBy.REVERSE_ORDER.equals(sortBy)) {
                     if (key instanceof NullPrimaryKey)
                         throw new IOException(
                                 "Cannot do natural order without a primary key, please add it or "
@@ -3526,7 +3523,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     }
                 } else {
                     dialect.encodeColumnName(
-                            prefix, getPropertyName(featureType, sort[i].getPropertyName()), sql);
+                            prefix, getPropertyName(featureType, sortBy.getPropertyName()), sql);
                     sql.append(order);
                     sql.append(",");
                 }
@@ -3638,10 +3635,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Helper method for setting the values of the WHERE class of a prepared statement from a list
      * of PreparedFilterToSQL.
      */
-    protected void setPreparedFilterValues(PreparedStatement ps, List toSQLs, Connection cx)
-            throws SQLException {
+    protected void setPreparedFilterValues(
+            PreparedStatement ps, List<FilterToSQL> toSQLs, Connection cx) throws SQLException {
         int offset = 0;
-        for (PreparedFilterToSQL toSQL : (List<PreparedFilterToSQL>) toSQLs) {
+        for (FilterToSQL fts : toSQLs) {
+            PreparedFilterToSQL toSQL = (PreparedFilterToSQL) fts;
             setPreparedFilterValues(ps, toSQL, offset, cx);
             offset += toSQL.getLiteralValues().size();
         }
@@ -3669,7 +3667,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             if (binding != null && Geometry.class.isAssignableFrom(binding)) {
                 dialect.setGeometryValue(
                         (Geometry) value, dimension, srid, binding, ps, offset + i + 1);
-            } else if (ad != null && isArray(ad)) {
+            } else if (ad != null && this.dialect.isArray(ad)) {
                 dialect.setArrayValue(value, ad, ps, offset + i + 1, cx);
             } else {
                 dialect.setValue(value, binding, ps, offset + i + 1, cx);
@@ -3678,15 +3676,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 LOGGER.fine((i + 1) + " = " + value);
             }
         }
-    }
-
-    /**
-     * Returns true if the attribute descriptor matches a native SQL array (as recorded in its user
-     * data via {@link #JDBC_NATIVE_TYPE}
-     */
-    private boolean isArray(AttributeDescriptor att) {
-        Integer nativeType = (Integer) att.getUserData().get(JDBC_NATIVE_TYPE);
-        return Objects.equals(Types.ARRAY, nativeType);
     }
 
     /**
@@ -3841,8 +3830,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     void buildEnvelopeAggregates(SimpleFeatureType featureType, StringBuffer sql) {
         // walk through all geometry attributes and build the query
-        for (Iterator a = featureType.getAttributeDescriptors().iterator(); a.hasNext(); ) {
-            AttributeDescriptor attribute = (AttributeDescriptor) a.next();
+        for (AttributeDescriptor attribute : featureType.getAttributeDescriptors()) {
             if (attribute instanceof GeometryDescriptor) {
                 String geometryColumn = attribute.getLocalName();
                 dialect.encodeGeometryEnvelope(featureType.getTypeName(), geometryColumn, sql);
@@ -3908,7 +3896,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         JoinInfo join =
                 !query.getJoins().isEmpty() ? JoinInfo.create(query, featureType, this) : null;
 
-        List<FilterToSQL> toSQL = new ArrayList();
+        List<FilterToSQL> toSQL = new ArrayList<>();
         boolean queryLimitOffset = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
         boolean visitorLimitOffset =
                 visitor == null ? false : visitor.hasLimits() && dialect.isLimitOffsetSupported();
@@ -4238,7 +4226,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * iteration order as the primary key.
      */
     protected static LinkedHashSet<String> getColumnNames(PrimaryKey key) {
-        LinkedHashSet<String> pkColumnNames = new LinkedHashSet<String>();
+        LinkedHashSet<String> pkColumnNames = new LinkedHashSet<>();
         for (PrimaryKeyColumn pkcol : key.getColumns()) {
             pkColumnNames.add(pkcol.getName());
         }
@@ -4602,7 +4590,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     protected List<FilterToSQL> encodeWhereJoin(
             SimpleFeatureType featureType, JoinInfo join, StringBuffer sql) throws IOException {
 
-        List<FilterToSQL> toSQL = new ArrayList();
+        List<FilterToSQL> toSQL = new ArrayList<>();
 
         boolean whereEncoded = false;
         Filter filter = join.getFilter();
@@ -4635,17 +4623,19 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /** Helper method for setting the gml:id of a geometry as user data. */
     protected void setGmlProperties(Geometry g, String gid, String name, String description) {
         // set up the user data
-        Map userData = null;
+        Map<Object, Object> userData = null;
 
         if (g.getUserData() != null) {
             if (g.getUserData() instanceof Map) {
-                userData = (Map) g.getUserData();
+                @SuppressWarnings("unchecked")
+                Map<Object, Object> cast = (Map) g.getUserData();
+                userData = cast;
             } else {
-                userData = new HashMap();
+                userData = new HashMap<>();
                 userData.put(g.getUserData().getClass(), g.getUserData());
             }
         } else {
-            userData = new HashMap();
+            userData = new HashMap<>();
         }
 
         if (gid != null) {

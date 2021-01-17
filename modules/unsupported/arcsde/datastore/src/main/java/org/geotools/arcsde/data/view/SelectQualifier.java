@@ -19,7 +19,6 @@ package org.geotools.arcsde.data.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.sf.jsqlparser.expression.Expression;
@@ -91,7 +90,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
         // @todo: REVISIT, looks like a bug here, fromItems is not being read after assigned
         fromItems = removeTableAliases(fromItems);
 
-        List selectItems = qualifySelectItems(aliases, plainSelect.getSelectItems());
+        List<Object> selectItems = qualifySelectItems(aliases, plainSelect.getSelectItems());
         qualifiedSelect.setSelectItems(selectItems);
 
         Expression where = qualifyWhere(aliases, plainSelect.getWhere());
@@ -103,9 +102,8 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
     }
 
     private Map<String, Table> extractTableAliases(List<FromItem> fromItems) {
-        Map<String, Table> aliases = new HashMap<String, Table>();
-        for (Iterator<FromItem> it = fromItems.iterator(); it.hasNext(); ) {
-            FromItem fromItem = it.next();
+        Map<String, Table> aliases = new HashMap<>();
+        for (FromItem fromItem : fromItems) {
             if (fromItem instanceof Table) {
                 Table table = (Table) fromItem;
                 String alias = table.getAlias();
@@ -118,11 +116,9 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
     }
 
     private List<FromItem> removeTableAliases(final List<FromItem> fromItems) {
-        List<FromItem> items = new ArrayList<FromItem>(fromItems);
+        List<FromItem> items = new ArrayList<>(fromItems);
 
-        for (Iterator<FromItem> it = items.iterator(); it.hasNext(); ) {
-
-            FromItem fromItem = it.next();
+        for (FromItem fromItem : items) {
 
             if (fromItem instanceof Table) {
                 Table table = (Table) fromItem;
@@ -132,7 +128,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
         return items;
     }
 
-    private Expression qualifyWhere(Map tableAliases, Expression where) {
+    private Expression qualifyWhere(Map<String, ?> tableAliases, Expression where) {
         if (where == null) {
             return null;
         }
@@ -142,15 +138,15 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
         return qualifiedWhere;
     }
 
-    private List<OrderByElement> qualifyOrderBy(Map tableAliases, List orderByElements) {
+    private List<OrderByElement> qualifyOrderBy(Map<String, ?> tableAliases, List orderByElements) {
         if (orderByElements == null) {
             return null;
         }
 
-        List<OrderByElement> qualifiedOrderElems = new ArrayList<OrderByElement>();
+        List<OrderByElement> qualifiedOrderElems = new ArrayList<>();
 
-        for (Iterator it = orderByElements.iterator(); it.hasNext(); ) {
-            OrderByElement orderByElem = (OrderByElement) it.next();
+        for (Object orderByElement : orderByElements) {
+            OrderByElement orderByElem = (OrderByElement) orderByElement;
 
             OrderByElement qualified =
                     OrderByElementQualifier.qualify(session, tableAliases, orderByElem);
@@ -161,17 +157,17 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
         return qualifiedOrderElems;
     }
 
-    private List qualifySelectItems(Map tableAlias, List selectItems) {
+    private List<Object> qualifySelectItems(Map<String, ?> tableAlias, List selectItems) {
         if (selectItems == null) {
             return null;
         }
 
-        List qualifiedItems = new ArrayList();
+        List<Object> qualifiedItems = new ArrayList<>();
 
-        for (Iterator it = selectItems.iterator(); it.hasNext(); ) {
-            SelectItem selectItem = (SelectItem) it.next();
+        for (Object item : selectItems) {
+            SelectItem selectItem = (SelectItem) item;
 
-            List items = SelectItemQualifier.qualify(session, tableAlias, selectItem);
+            List<Object> items = SelectItemQualifier.qualify(session, tableAlias, selectItem);
 
             qualifiedItems.addAll(items);
         }
@@ -184,10 +180,10 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
             return null;
         }
 
-        List<FromItem> qualifiedFromItems = new ArrayList<FromItem>();
+        List<FromItem> qualifiedFromItems = new ArrayList<>();
 
-        for (Iterator it = fromItems.iterator(); it.hasNext(); ) {
-            FromItem fromItem = (FromItem) it.next();
+        for (Object item : fromItems) {
+            FromItem fromItem = (FromItem) item;
 
             FromItem qualifiedItem = FromItemQualifier.qualify(session, fromItem);
 

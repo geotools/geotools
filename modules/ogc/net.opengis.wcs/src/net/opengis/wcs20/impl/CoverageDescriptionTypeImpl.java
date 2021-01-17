@@ -193,7 +193,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
 	 */
     public EList<Object> getMetadata() {
 		if (metadata == null) {
-			metadata = new EObjectContainmentEList<Object>(Object.class, this, Wcs20Package.COVERAGE_DESCRIPTION_TYPE__METADATA);
+			metadata = new EObjectContainmentEList<>(Object.class, this, Wcs20Package.COVERAGE_DESCRIPTION_TYPE__METADATA);
 		}
 		return metadata;
 	}

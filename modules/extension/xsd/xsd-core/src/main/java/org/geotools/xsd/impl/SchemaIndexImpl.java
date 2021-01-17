@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
@@ -39,6 +38,7 @@ import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.util.SoftValueHashMap;
@@ -50,19 +50,20 @@ public class SchemaIndexImpl implements SchemaIndex {
     XSDSchema[] schemas;
 
     /** Indexes */
-    HashMap elementIndex;
+    HashMap<QName, XSDElementDeclaration> elementIndex;
 
-    HashMap attributeIndex;
-    HashMap attributeGroupIndex;
-    HashMap complexTypeIndex;
-    HashMap simpleTypeIndex;
+    HashMap<QName, XSDAttributeDeclaration> attributeIndex;
+    HashMap<QName, XSDAttributeGroupDefinition> attributeGroupIndex;
+    HashMap<QName, XSDComplexTypeDefinition> complexTypeIndex;
+    HashMap<QName, XSDSimpleTypeDefinition> simpleTypeIndex;
 
     /** Cache of elements to children */
-    SoftValueHashMap /*<XSDElementDeclaration,OrderedMap>*/ element2children =
-            new SoftValueHashMap(1000);
+    SoftValueHashMap<XSDElementDeclaration, OrderedMap<QName, XSDParticle>> element2children =
+            new SoftValueHashMap<>(1000);
 
     /** Cache of elements to attributes */
-    HashMap /*<XSDElementDeclaration,List>*/ element2attributes = new HashMap();
+    HashMap<XSDElementDeclaration, List<XSDAttributeDeclaration>> element2attributes =
+            new HashMap<>();
 
     /** Adapter for tracking changes to schemas. */
     SchemaAdapter adapter;
@@ -88,9 +89,9 @@ public class SchemaIndexImpl implements SchemaIndex {
         if (schemas == null) {
             return;
         }
-        for (int i = 0; i < schemas.length; i++) {
-            synchronized (this.schemas[i].eAdapters()) {
-                this.schemas[i].eAdapters().remove(adapter);
+        for (XSDSchema schema : schemas) {
+            synchronized (schema.eAdapters()) {
+                schema.eAdapters().remove(adapter);
             }
         }
         schemas = null;
@@ -101,15 +102,15 @@ public class SchemaIndexImpl implements SchemaIndex {
     }
 
     public XSDImport[] getImports() {
-        Collection imports = find(XSDImport.class);
+        Collection<XSDImport> imports = find(XSDImport.class);
 
-        return (XSDImport[]) imports.toArray(new XSDImport[imports.size()]);
+        return imports.toArray(new XSDImport[imports.size()]);
     }
 
     public XSDInclude[] getIncludes() {
-        Collection includes = find(XSDInclude.class);
+        Collection<XSDInclude> includes = find(XSDInclude.class);
 
-        return (XSDInclude[]) includes.toArray(new XSDInclude[includes.size()]);
+        return includes.toArray(new XSDInclude[includes.size()]);
     }
 
     public XSDElementDeclaration getElementDeclaration(QName qName) {
@@ -161,38 +162,35 @@ public class SchemaIndexImpl implements SchemaIndex {
 
         // check for namespace wildcard
         if ("*".equals(qName.getNamespaceURI())) {
-            ArrayList matches = new ArrayList();
+            List<XSDNamedComponent> matches = new ArrayList<>();
 
-            for (Iterator e = index.entrySet().iterator(); e.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) e.next();
+            for (Object o : index.entrySet()) {
+                Map.Entry entry = (Map.Entry) o;
                 QName name = (QName) entry.getKey();
 
                 if (name.getLocalPart().equals(qName.getLocalPart())) {
-                    matches.add(entry.getValue());
+                    matches.add((XSDNamedComponent) entry.getValue());
                 }
             }
 
             if (matches.size() == 1) {
-                return (XSDNamedComponent) matches.get(0);
+                return matches.get(0);
             }
         }
 
         return null;
     }
 
-    protected OrderedMap children(XSDElementDeclaration parent) {
-        OrderedMap children = (OrderedMap) element2children.get(parent);
+    protected OrderedMap<QName, XSDParticle> children(XSDElementDeclaration parent) {
+        OrderedMap<QName, XSDParticle> children = element2children.get(parent);
 
         if (children == null) {
             synchronized (this) {
                 if (children == null) {
-                    children = new ListOrderedMap();
+                    children = new ListOrderedMap<>();
 
-                    for (Iterator i =
-                                    Schemas.getChildElementParticles(parent.getType(), true)
-                                            .iterator();
-                            i.hasNext(); ) {
-                        XSDParticle particle = (XSDParticle) i.next();
+                    for (XSDParticle particle :
+                            Schemas.getChildElementParticles(parent.getType(), true)) {
                         XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
 
                         if (child.isElementDeclarationReference()) {
@@ -225,8 +223,8 @@ public class SchemaIndexImpl implements SchemaIndex {
     }
 
     public XSDElementDeclaration getChildElement(XSDElementDeclaration parent, QName childName) {
-        OrderedMap children = (OrderedMap) children(parent);
-        XSDParticle particle = (XSDParticle) children.get(childName);
+        OrderedMap<QName, XSDParticle> children = children(parent);
+        XSDParticle particle = children.get(childName);
 
         if (particle != null) {
             XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
@@ -240,11 +238,10 @@ public class SchemaIndexImpl implements SchemaIndex {
 
         if ("*".equals(childName.getNamespaceURI())) {
             // do a check just on local name
-            ArrayList matches = new ArrayList();
+            List<XSDParticle> matches = new ArrayList<>();
 
-            for (Iterator e = children.entrySet().iterator(); e.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) e.next();
-                QName name = (QName) entry.getKey();
+            for (Map.Entry<QName, XSDParticle> entry : children.entrySet()) {
+                QName name = entry.getKey();
 
                 if (name.getLocalPart().equals(childName.getLocalPart())) {
                     matches.add(entry.getValue());
@@ -252,7 +249,7 @@ public class SchemaIndexImpl implements SchemaIndex {
             }
 
             if (matches.size() == 1) {
-                particle = (XSDParticle) matches.get(0);
+                particle = matches.get(0);
 
                 XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
 
@@ -267,12 +264,12 @@ public class SchemaIndexImpl implements SchemaIndex {
         return null;
     }
 
-    public List getChildElementParticles(XSDElementDeclaration parent) {
-        return new ArrayList(children(parent).values());
+    public List<XSDParticle> getChildElementParticles(XSDElementDeclaration parent) {
+        return new ArrayList<>(children(parent).values());
     }
 
     public List getAttributes(XSDElementDeclaration element) {
-        List attributes = (List) element2attributes.get(element);
+        List<XSDAttributeDeclaration> attributes = element2attributes.get(element);
 
         if (attributes == null) {
             attributes = Schemas.getAttributeDeclarations(element);
@@ -282,19 +279,17 @@ public class SchemaIndexImpl implements SchemaIndex {
         return Collections.unmodifiableList(attributes);
     }
 
-    protected Collection find(Class c) {
-        ArrayList found = new ArrayList();
+    protected <T> Collection<T> find(Class<?> c) {
+        List<T> found = new ArrayList<>();
 
-        for (int i = 0; i < schemas.length; i++) {
-            XSDSchema schema = schemas[i];
+        for (XSDSchema schema : schemas) {
+            List<XSDSchemaContent> content = schema.getContents();
 
-            List content = schema.getContents();
-
-            for (Iterator itr = content.iterator(); itr.hasNext(); ) {
-                Object o = itr.next();
-
+            for (XSDSchemaContent o : content) {
                 if (c.isAssignableFrom(o.getClass())) {
-                    found.add(o);
+                    @SuppressWarnings("unchecked")
+                    T cast = (T) o;
+                    found.add(cast);
                 }
             }
         }
@@ -363,14 +358,10 @@ public class SchemaIndexImpl implements SchemaIndex {
     }
 
     protected void buildElementIndex() {
-        elementIndex = new HashMap();
+        elementIndex = new HashMap<>();
 
-        for (int i = 0; i < schemas.length; i++) {
-            XSDSchema schema = schemas[i];
-
-            for (Iterator e = schema.getElementDeclarations().iterator(); e.hasNext(); ) {
-                XSDElementDeclaration element = (XSDElementDeclaration) e.next();
-
+        for (XSDSchema schema : schemas) {
+            for (XSDElementDeclaration element : schema.getElementDeclarations()) {
                 QName qName = new QName(element.getTargetNamespace(), element.getName());
                 elementIndex.put(qName, element);
             }
@@ -378,14 +369,10 @@ public class SchemaIndexImpl implements SchemaIndex {
     }
 
     protected void buildAttriubuteIndex() {
-        attributeIndex = new HashMap();
+        attributeIndex = new HashMap<>();
 
-        for (int i = 0; i < schemas.length; i++) {
-            XSDSchema schema = schemas[i];
-
-            for (Iterator a = schema.getAttributeDeclarations().iterator(); a.hasNext(); ) {
-                XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) a.next();
-
+        for (XSDSchema schema : schemas) {
+            for (XSDAttributeDeclaration attribute : schema.getAttributeDeclarations()) {
                 QName qName = new QName(attribute.getTargetNamespace(), attribute.getName());
                 attributeIndex.put(qName, attribute);
             }
@@ -393,14 +380,10 @@ public class SchemaIndexImpl implements SchemaIndex {
     }
 
     protected void buildAttributeGroupIndex() {
-        attributeGroupIndex = new HashMap();
+        attributeGroupIndex = new HashMap<>();
 
-        for (int i = 0; i < schemas.length; i++) {
-            XSDSchema schema = schemas[i];
-
-            for (Iterator g = schema.getAttributeGroupDefinitions().iterator(); g.hasNext(); ) {
-                XSDAttributeGroupDefinition group = (XSDAttributeGroupDefinition) g.next();
-
+        for (XSDSchema schema : schemas) {
+            for (XSDAttributeGroupDefinition group : schema.getAttributeGroupDefinitions()) {
                 QName qName = new QName(group.getTargetNamespace(), group.getName());
                 attributeGroupIndex.put(qName, group);
             }
@@ -408,34 +391,26 @@ public class SchemaIndexImpl implements SchemaIndex {
     }
 
     protected void buildComplexTypeIndex() {
-        complexTypeIndex = new HashMap();
+        complexTypeIndex = new HashMap<>();
 
-        for (int i = 0; i < schemas.length; i++) {
-            XSDSchema schema = schemas[i];
-
-            for (Iterator t = schema.getTypeDefinitions().iterator(); t.hasNext(); ) {
-                XSDTypeDefinition type = (XSDTypeDefinition) t.next();
-
+        for (XSDSchema schema : schemas) {
+            for (XSDTypeDefinition type : schema.getTypeDefinitions()) {
                 if (type instanceof XSDComplexTypeDefinition) {
                     QName qName = new QName(type.getTargetNamespace(), type.getName());
-                    complexTypeIndex.put(qName, type);
+                    complexTypeIndex.put(qName, (XSDComplexTypeDefinition) type);
                 }
             }
         }
     }
 
     protected void buildSimpleTypeIndex() {
-        simpleTypeIndex = new HashMap();
+        simpleTypeIndex = new HashMap<>();
 
-        for (int i = 0; i < schemas.length; i++) {
-            XSDSchema schema = schemas[i];
-
-            for (Iterator t = schema.getTypeDefinitions().iterator(); t.hasNext(); ) {
-                XSDTypeDefinition type = (XSDTypeDefinition) t.next();
-
+        for (XSDSchema schema : schemas) {
+            for (XSDTypeDefinition type : schema.getTypeDefinitions()) {
                 if (type instanceof XSDSimpleTypeDefinition) {
                     QName qName = new QName(type.getTargetNamespace(), type.getName());
-                    simpleTypeIndex.put(qName, type);
+                    simpleTypeIndex.put(qName, (XSDSimpleTypeDefinition) type);
                 }
             }
         }

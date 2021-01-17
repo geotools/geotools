@@ -16,9 +16,12 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -27,13 +30,14 @@ public class GMLPointPropertyTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         association = createElement(GML.NAMESPACE, "myPointProperty", GML.PointPropertyType, null);
         geometry = createElement(GML.NAMESPACE, "myPoint", GML.PointType, null);
     }
 
+    @Test
     public void testWithGeometry() throws Exception {
         Node node =
                 createNode(

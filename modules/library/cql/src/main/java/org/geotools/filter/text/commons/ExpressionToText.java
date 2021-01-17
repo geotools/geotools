@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.text.commons;
 
-import java.awt.*;
+import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -138,7 +138,6 @@ public class ExpressionToText implements ExpressionVisitor {
         expression.getExpression1().accept(this, output);
         output.append(" + ");
         expression.getExpression2().accept(this, output);
-
         return output;
     }
 
@@ -147,13 +146,20 @@ public class ExpressionToText implements ExpressionVisitor {
      */
     @Override
     public Object visit(Divide expression, Object extraData) {
-
         StringBuilder output = asStringBuilder(extraData);
-        expression.getExpression1().accept(this, output);
+        visitWithBrackets(expression.getExpression1(), output);
         output.append(" / ");
-        expression.getExpression2().accept(this, output);
-
+        visitWithBrackets(expression.getExpression2(), output);
         return output;
+    }
+
+    private void visitWithBrackets(Expression expression, StringBuilder output) {
+        boolean needsBrackets = (expression instanceof Subtract || expression instanceof Add);
+        // Make sure to include Subtract or Add expression between brackets to preserve
+        // operator precedences.
+        output.append(needsBrackets ? "(" : "");
+        expression.accept(this, output);
+        output.append(needsBrackets ? ")" : "");
     }
 
     /* (non-Javadoc)
@@ -250,8 +256,12 @@ public class ExpressionToText implements ExpressionVisitor {
         } else if (literal instanceof Boolean) {
             output.append(literal);
         } else {
-            String escaped = literal.toString().replaceAll("'", "''");
-            output.append("'" + escaped + "'");
+            if (literal == null) {
+                throw new NullPointerException("ECQL does not support null literal value");
+            } else {
+                String escaped = literal.toString().replaceAll("'", "''");
+                output.append("'" + escaped + "'");
+            }
         }
         return output;
     }
@@ -261,12 +271,10 @@ public class ExpressionToText implements ExpressionVisitor {
      */
     @Override
     public Object visit(Multiply expression, Object extraData) {
-
         StringBuilder output = asStringBuilder(extraData);
-        expression.getExpression1().accept(this, output);
+        visitWithBrackets(expression.getExpression1(), output);
         output.append(" * ");
-        expression.getExpression2().accept(this, output);
-
+        visitWithBrackets(expression.getExpression2(), output);
         return output;
     }
 
@@ -349,12 +357,10 @@ public class ExpressionToText implements ExpressionVisitor {
      */
     @Override
     public Object visit(Subtract expression, Object extraData) {
-
         StringBuilder output = asStringBuilder(extraData);
         expression.getExpression1().accept(this, output);
         output.append(" - ");
         expression.getExpression2().accept(this, output);
-
         return output;
     }
 }

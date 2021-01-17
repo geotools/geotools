@@ -74,8 +74,7 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
                     // When looking for formats which may parse this file, make sure to exclude the
                     // ImageMosaicFormat as return
                     AbstractGridFormat format =
-                            (AbstractGridFormat)
-                                    GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
+                            GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
                     AbstractGridCoverage2DReader reader = format.getReader(file);
                     // Getting Dataset Layout
                     DatasetLayout layout = reader.getDatasetLayout();

@@ -177,8 +177,8 @@ public class IntersectionFeatureCollection implements VectorProcess {
     /**
      * Checks if the specified class is same, or subclass, of any of the specified target classes
      */
-    static boolean isGeometryTypeIn(Class test, Class... targets) {
-        for (Class target : targets) {
+    static boolean isGeometryTypeIn(Class<?> test, Class<?>... targets) {
+        for (Class<?> target : targets) {
             if (target.isAssignableFrom(test)) {
                 return true;
             }
@@ -258,7 +258,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
             Geometry firstTargetGeometry = reprojectAndDensify(first, firstCRS, null);
             Geometry secondTargetGeometry = reprojectAndDensify(second, firstCRS, null);
             double numeratorArea =
-                    (double) (firstTargetGeometry.intersection(secondTargetGeometry)).getArea();
+                    (firstTargetGeometry.intersection(secondTargetGeometry)).getArea();
             if (divideFirst) {
                 double denom = firstTargetGeometry.getArea();
                 if (denom != 0) return numeratorArea / denom;
@@ -576,7 +576,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
                                     } else if (intersectionMode == IntersectionMode.FIRST) {
                                         attribute = currentGeom;
                                     } else if (intersectionMode == IntersectionMode.SECOND) {
-                                        attribute = (Geometry) second.getDefaultGeometry();
+                                        attribute = second.getDefaultGeometry();
                                     }
                                     if (((Geometry) attribute).getNumGeometries() > 0) {
                                         fb.add(attribute);
@@ -712,7 +712,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
     static class GeometryFilterImpl implements GeometryFilter {
         GeometryFactory factory = new GeometryFactory();
 
-        ArrayList<Geometry> collection = new ArrayList<Geometry>();
+        ArrayList<Geometry> collection = new ArrayList<>();
 
         Class binding = null;
 

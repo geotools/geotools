@@ -16,6 +16,10 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,6 +44,7 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.geotools.xlink.XLINK;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -49,7 +54,7 @@ import org.opengis.filter.identity.Identifier;
 import org.w3c.dom.Document;
 
 public class TransactionTypeBindingTest extends WFSTestSupport {
-
+    @Test
     public void testParseInsert() throws Exception {
         String xml =
                 "<wfs:Transaction "
@@ -115,6 +120,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         assertEquals(2, i.getAny().size());
     }
 
+    @Test
     public void testParseUpdate() throws Exception {
         String xml =
                 "<wfs:Transaction "
@@ -156,6 +162,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         assertTrue(id.getIDs().contains("BuiltUpA_1M.10131"));
     }
 
+    @Test
     public void testEncode() throws Exception {
         Wfs20Factory factory = Wfs20Factory.eINSTANCE;
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
@@ -172,7 +179,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         property.setValueReference(ref);
         property.setValue("myvalue");
         update.getProperty().add(property);
-        Set<Identifier> ids = new HashSet<Identifier>();
+        Set<Identifier> ids = new HashSet<>();
         ids.add(ff.featureId("myid"));
         update.setFilter(ff.id(ids));
 
@@ -180,7 +187,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
 
         DeleteType delete = factory.createDeleteType();
         delete.setTypeName(new QName("http://blabla", "MyFeature", "bla"));
-        Set<Identifier> ids2 = new HashSet<Identifier>();
+        Set<Identifier> ids2 = new HashSet<>();
         ids2.add(ff.featureId("myid2"));
         delete.setFilter(ff.id(ids2));
         abstractTransactionAction.add(delete);
@@ -202,7 +209,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         Document doc = encode(t, WFS.Transaction);
         // print(doc);
 
-        HashMap<String, String> m = new HashMap<String, String>();
+        HashMap<String, String> m = new HashMap<>();
         m.put("bla", "http://blabla");
         m.put("wfs", WFS.NAMESPACE);
         m.put("gml", GML.NAMESPACE);
@@ -230,6 +237,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         XMLAssert.assertXpathEvaluatesTo("0", "//wfs:Insert//bla:MyFeature/bla:integer", doc);
     }
 
+    @Test
     public void testParseDelete() throws Exception {
         String xml =
                 "<wfs:Transaction "

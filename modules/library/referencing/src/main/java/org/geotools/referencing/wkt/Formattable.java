@@ -50,7 +50,7 @@ public class Formattable {
     static final String INDENTATION = "Indentation";
 
     /** The formatter for the {@link #toWKT()} method. */
-    private static final ThreadLocal<Formatter> FORMATTER = new ThreadLocal<Formatter>();
+    private static final ThreadLocal<Formatter> FORMATTER = new ThreadLocal<>();
 
     /**
      * The indentation value to give to {@link #toWKT(int)} method for formatting the complete
@@ -223,8 +223,7 @@ public class Formattable {
         Class type = getClass();
         formatter.setInvalidWKT(type);
         Class[] interfaces = type.getInterfaces();
-        for (int i = 0; i < interfaces.length; i++) {
-            final Class candidate = interfaces[i];
+        for (final Class candidate : interfaces) {
             if (candidate.getName().startsWith("org.opengis.referencing.")) {
                 type = candidate;
                 break;

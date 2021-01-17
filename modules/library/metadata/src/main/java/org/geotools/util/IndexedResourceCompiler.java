@@ -102,13 +102,13 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * Integer IDs allocated to resource keys. This map will be shared for all languages of a given
      * resource bundle.
      */
-    private final Map<Integer, String> allocatedIDs = new HashMap<Integer, String>();
+    private final Map<Integer, String> allocatedIDs = new HashMap<>();
 
     /**
      * Resource keys and their localized values. This map will be cleared for each language in a
      * resource bundle.
      */
-    private final Map<Object, Object> resources = new HashMap<Object, Object>();
+    private final Map<Object, Object> resources = new HashMap<>();
 
     /** The output stream for printing message. */
     private final PrintWriter out;
@@ -253,8 +253,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
         final String[] keys = resources.keySet().toArray(new String[resources.size()]);
         Arrays.sort(keys, this);
         int freeID = 0;
-        for (int i = 0; i < keys.length; i++) {
-            final String key = keys[i];
+        for (final String key : keys) {
             if (!allocatedIDs.containsValue(key)) {
                 Integer ID;
                 do {
@@ -455,10 +454,10 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
             final Map.Entry[] entries =
                     allocatedIDs.entrySet().toArray(new Map.Entry[allocatedIDs.size()]);
             Arrays.sort(entries, this);
-            for (int i = 0; i < entries.length; i++) {
+            for (Map.Entry entry : entries) {
                 out.write('\n');
-                final String key = (String) entries[i].getValue();
-                final String ID = entries[i].getKey().toString();
+                final String key = (String) entry.getValue();
+                final String ID = entry.getKey().toString();
                 String message = (String) resources.get(key);
                 if (message != null) {
                     out.write("    /**\n");
@@ -540,8 +539,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
         final File[] content = srcDir.listFiles();
         File defaultLanguage = null;
         if (content != null) {
-            for (int i = 0; i < content.length; i++) {
-                final File file = content[i];
+            for (final File file : content) {
                 final String filename = file.getName();
                 if (filename.startsWith(classname) && filename.endsWith(PROPERTIES_EXT)) {
                     if (compiler == null) {
@@ -592,9 +590,9 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
             out.println(" not found or is not a directory.");
             return;
         }
-        for (int i = 0; i < resourcesToProcess.length; i++) {
+        for (Class<? extends IndexedResourceBundle> toProcess : resourcesToProcess) {
             try {
-                scanForResources(sourceDirectory, resourcesToProcess[i], renumber, out);
+                scanForResources(sourceDirectory, toProcess, renumber, out);
             } catch (IOException exception) {
                 out.println(exception.getLocalizedMessage());
             }

@@ -18,7 +18,6 @@ package org.geotools.filter;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import org.opengis.filter.And;
@@ -146,7 +145,7 @@ public class FilterCapabilities {
 
     public static final FilterCapabilities LOGICAL_OPENGIS;
 
-    static final Map /*<int,Class>*/ intTypeToOpenGisTypeMap = new HashMap();
+    static final Map<Long, Object> intTypeToOpenGisTypeMap = new HashMap<>();
 
     static {
         SIMPLE_COMPARISONS_OPENGIS = new FilterCapabilities();
@@ -220,16 +219,16 @@ public class FilterCapabilities {
 
         ops = ops | type;
         // the type can be a mask signifying multiple filter types, we have to add them all
-        for (Iterator it = intTypeToOpenGisTypeMap.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) it.next();
+        for (Map.Entry<Long, Object> longObjectEntry : intTypeToOpenGisTypeMap.entrySet()) {
+            Map.Entry entry = (Map.Entry) longObjectEntry;
             long key = ((Long) entry.getKey()).longValue();
             if ((key & type) != 0) {
                 Object filter = entry.getValue();
                 if (filter != null) {
                     if (filter instanceof Class[]) {
                         Class[] filters = (Class[]) filter;
-                        for (int i = 0; i < filters.length; i++) {
-                            addType(filters[i], false);
+                        for (Class aClass : filters) {
+                            addType(aClass, false);
                         }
                     } else {
                         addType((Class) filter, false);
@@ -298,8 +297,8 @@ public class FilterCapabilities {
      * @return true if supported, false otherwise.
      */
     public boolean supports(org.opengis.filter.Filter filter) {
-        for (Iterator ifunc = functions.iterator(); ifunc.hasNext(); ) {
-            if (((Class) ifunc.next()).isAssignableFrom(filter.getClass())) return true;
+        for (Class<?> function : functions) {
+            if (function.isAssignableFrom(filter.getClass())) return true;
         }
 
         if (functions.contains(filter.getClass())) return true;
@@ -362,7 +361,7 @@ public class FilterCapabilities {
         if (functions.contains(type)) {
             return true;
         }
-        for (Class functionClass : functions) {
+        for (Class<?> functionClass : functions) {
             if (functionClass.isAssignableFrom(type)) {
                 return true;
             }

@@ -19,16 +19,15 @@ package org.geotools.validation;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultRepository;
-import org.geotools.data.FeatureSource;
 import org.geotools.data.Repository;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.type.Name;
@@ -97,7 +96,7 @@ public class Validator {
      * @param featureStores Map of required FeatureStores by typeRef (dataStoreId:typeName)
      */
     public void integrityValidation(
-            Map<Name, FeatureSource<?, ?>> featureStores,
+            Map<Name, SimpleFeatureSource> featureStores,
             ReferencedEnvelope bBox,
             ValidationResults results)
             throws IOException, Exception // WfsTransactionException
@@ -113,24 +112,28 @@ public class Validator {
 
         // go through each typeName passed in through stores
         // and ask what we need to check
-        Set typeRefs = new HashSet();
+        Set<String> typeRefs = new HashSet<>();
         for (Name name : featureStores.keySet()) {
             String typeRef = typeRef(name);
             typeRefs.add(typeRef);
 
-            Set dependencies = validationProcessor.getDependencies(typeRef);
+            Set<String> dependencies = validationProcessor.getDependencies(typeRef);
             LOGGER.finer("typeRef " + typeRef + " requires " + dependencies);
-            if (dependencies != null && dependencies.size() > 0) typeRefs.addAll(dependencies);
+            if (dependencies != null && !dependencies.isEmpty()) typeRefs.addAll(dependencies);
         }
 
         // Grab a source for each typeName we need to check
         // Grab from the provided stores - so we check against
         // the transaction
         //
-        Map<String, FeatureSource> sources = new HashMap<>();
+        Map<String, SimpleFeatureSource> sources = new HashMap<>();
 
-        for (Iterator i = typeRefs.iterator(); i.hasNext(); ) {
-            String typeRef = (String) i.next();
+        /**
+         * This checks to see if we have already loaded in any feature stores. They can be loaded
+         * already if we are in a transaction operation. If this is for the "do it" button, there
+         * will be no feature stores already loaded and thus we always hit the 'else' statement.
+         */
+        for (String typeRef : typeRefs) {
             LOGGER.finer("Searching for required typeRef: " + typeRef);
 
             /**
@@ -142,14 +145,15 @@ public class Validator {
             Name name = name(typeRef);
             if (featureStores.containsKey(name)) // if it was passed in through stores
             {
-                LOGGER.finer(" found required typeRef: " + typeRef + " (it was already loaded)");
+                LOGGER.finer(
+                        " found required typeRef: " + typeRef + " (it was already " + "loaded)");
                 sources.put(typeRef, featureStores.get(name));
             } else // if we have to go get it (ie. it is a dependant for a test)
             {
                 // These will be using Transaction.AUTO_COMMIT
                 // this is okay as they were not involved in our
                 // Transaction...
-                LOGGER.finer(" could not find typeRef: " + typeRef + " (we will now load it)");
+                LOGGER.finer(" could not find typeRef: " + typeRef + " (we will now load " + "it)");
                 String split[] = typeRef.split(":");
                 String dataStoreId = split[0];
                 String typeName = split[1];
@@ -161,7 +165,7 @@ public class Validator {
 
                 // FeatureTypeInfo meta = catalog.getFeatureTypeInfo(typeName);
                 LOGGER.finer(" loaded required typeRef: " + typeRef);
-                FeatureSource<?, ?> source = repository.source(dataStoreId, typeName);
+                SimpleFeatureSource source = repository.source(dataStoreId, typeName);
                 sources.put(typeRef, source);
             }
         }
@@ -190,8 +194,8 @@ public class Validator {
          */
         LOGGER.finer("Validation fail - marshal result for transaction document");
         StringBuffer message = new StringBuffer();
-        for (Iterator i = failed.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) i.next();
+        for (Object o : failed.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
             message.append(entry.getKey());
             message.append(" failed test ");
             message.append(entry.getValue());

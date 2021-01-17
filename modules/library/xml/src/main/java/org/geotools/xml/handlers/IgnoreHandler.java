@@ -55,7 +55,8 @@ public class IgnoreHandler extends XMLElementHandler {
     }
 
     /** @see schema.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
-    public XMLElementHandler getHandler(URI namespaceURI, String localName, Map hints) {
+    public XMLElementHandler getHandler(
+            URI namespaceURI, String localName, Map<String, Object> hints) {
         return this;
     }
 
@@ -70,7 +71,7 @@ public class IgnoreHandler extends XMLElementHandler {
     }
 
     /** @see org.geotools.xml.XMLElementHandler#endElement(java.lang.String, java.lang.String) */
-    public void endElement(URI namespaceURI, String localName, Map hints) {
+    public void endElement(URI namespaceURI, String localName, Map<String, Object> hints) {
         // do nothing
     }
 

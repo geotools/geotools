@@ -16,7 +16,8 @@
  */
 package org.geotools.temporal.reference;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class DefaultCalendarTest {
         Number[] clock = {12, 10, 5.488};
         ClockTime clockTime = new DefaultClockTime(calendar1, IndeterminateValue.NOW, clock);
         JulianDate result = calendar1.dateTrans(calendarDate, clockTime);
-        assertTrue(calendar2.dateTrans(calendarDate, clockTime).equals(result));
+        assertEquals(calendar2.dateTrans(calendarDate, clockTime), result);
     }
 
     /** Test of dateTrans method, of class DefaultCalendar. */
@@ -86,7 +87,7 @@ public class DefaultCalendarTest {
         Number[] clock = {12, 10, 5.488};
         DateAndTime dateAndTime = new DefaultDateAndTime(calendar1, null, null, cal, clock);
         JulianDate result = ((DefaultCalendar) calendar1).dateTrans(dateAndTime);
-        assertTrue(((DefaultCalendar) calendar1).dateTrans(dateAndTime).equals(result));
+        assertEquals(((DefaultCalendar) calendar1).dateTrans(dateAndTime), result);
     }
 
     /** Test of julTrans method, of class DefaultCalendar. */
@@ -128,10 +129,10 @@ public class DefaultCalendarTest {
                                 new DefaultInstant(
                                         new DefaultPosition(
                                                 new DefaultJulianDate(calendar1, null, 2299160)))));
-        Collection<CalendarEra> collection = new ArrayList<CalendarEra>();
+        Collection<CalendarEra> collection = new ArrayList<>();
         collection.add(calendarEra);
         ((DefaultCalendar) calendar1).setBasis(collection);
-        assertFalse(calendar1.getBasis().equals(result));
+        assertNotEquals(calendar1.getBasis(), result);
     }
 
     /** Test of setClock method, of class DefaultCalendar. */
@@ -145,22 +146,22 @@ public class DefaultCalendarTest {
     /** Test of equals method, of class DefaultCalendar. */
     @Test
     public void testEquals() {
-        assertFalse(calendar1.equals(null));
+        assertNotEquals(null, calendar1);
         assertEquals(calendar1, calendar1);
-        assertFalse(calendar1.equals(calendar2));
+        assertNotEquals(calendar1, calendar2);
     }
 
     /** Test of hashCode method, of class DefaultCalendar. */
     @Test
     public void testHashCode() {
         int result = calendar1.hashCode();
-        assertFalse(calendar2.hashCode() == result);
+        assertNotEquals(calendar2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultCalendar. */
     @Test
     public void testToString() {
         String result = calendar1.toString();
-        assertFalse(calendar2.toString().equals(result));
+        assertNotEquals(calendar2.toString(), result);
     }
 }

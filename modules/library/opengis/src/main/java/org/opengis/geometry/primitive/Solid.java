@@ -9,8 +9,9 @@
  */
 package org.opengis.geometry.primitive;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.FORBIDDEN;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Specification.ISO_19107;
 
 import org.opengis.annotation.Association;
 import org.opengis.annotation.UML;

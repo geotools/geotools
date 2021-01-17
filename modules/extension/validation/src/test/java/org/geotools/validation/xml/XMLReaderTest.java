@@ -22,10 +22,11 @@ import java.io.FileReader;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.validation.dto.PlugInDTO;
 import org.geotools.validation.dto.TestDTO;
 import org.geotools.validation.dto.TestSuiteDTO;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * XMLReaderTest purpose.
@@ -48,14 +49,7 @@ import org.geotools.validation.dto.TestSuiteDTO;
  * @author $Author: sploreg $ (last modification)
  * @version $Id$
  */
-public class XMLReaderTest extends TestCase {
-    public XMLReaderTest() {
-        super("XMLReaderTest");
-    }
-
-    public XMLReaderTest(String s) {
-        super(s);
-    }
+public class XMLReaderTest {
 
     protected FileReader features() throws FileNotFoundException {
         File file = new File("C:/Java/workspace/geoserver/conf/plugins/Constraint.xml");
@@ -65,6 +59,7 @@ public class XMLReaderTest extends TestCase {
         return new FileReader(file);
     }
 
+    @Test
     public void testReadPlugIn() {
         try {
 
@@ -72,32 +67,35 @@ public class XMLReaderTest extends TestCase {
             if (fr == null) return;
 
             PlugInDTO dto = XMLReader.readPlugIn(fr);
-            assertNotNull("Error if null", dto);
-            assertTrue("Name read", "Constraint".equals(dto.getName()));
-            assertTrue(
+            Assert.assertNotNull("Error if null", dto);
+            Assert.assertEquals("Name read", "Constraint", dto.getName());
+            Assert.assertEquals(
                     "Description read",
-                    "All features must pass the provided filter".equals(dto.getDescription()));
-            assertTrue(
+                    "All features must pass the provided filter",
+                    dto.getDescription());
+            Assert.assertEquals(
                     "ClassName read",
-                    "org.geoserver.validation.plugins.filter.OGCFilter".equals(dto.getClassName()));
-            assertNotNull("Should be one arg.", dto.getArgs());
-            assertTrue("Should be one arg.", dto.getArgs().size() == 1);
-            assertTrue("Arg. name", dto.getArgs().containsKey("tempDirectory"));
-            assertTrue(
+                    "org.geoserver.validation.plugins.filter.OGCFilter",
+                    dto.getClassName());
+            Assert.assertNotNull("Should be one arg.", dto.getArgs());
+            Assert.assertEquals("Should be one arg.", 1, dto.getArgs().size());
+            Assert.assertTrue("Arg. name", dto.getArgs().containsKey("tempDirectory"));
+            Assert.assertTrue(
                     "Arg. value : " + dto.getArgs().get("tempDirectory"),
                     dto.getArgs().containsValue(new URI("file:///c:/temp")));
         } catch (Exception e) {
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
     }
 
+    @Test
     public void testReadTestSuite() {
         try {
             // set-up
             FileReader fr = features();
             if (fr == null) return;
 
-            Map m = new HashMap();
+            Map<String, PlugInDTO> m = new HashMap<>();
             PlugInDTO dto = XMLReader.readPlugIn(fr);
             m.put(dto.getName(), dto);
             fr = new FileReader("C:/Java/workspace/geoserver/conf/plugins/NameInList.xml");
@@ -107,7 +105,7 @@ public class XMLReaderTest extends TestCase {
             fr = new FileReader("C:/Java/workspace/geoserver/conf/validation/RoadTestSuite.xml");
 
             TestSuiteDTO testsuite = XMLReader.readTestSuite("test", fr, m);
-            assertTrue("TestSuite Name read", "RoadTestSuite".equals(testsuite.getName()));
+            Assert.assertEquals("TestSuite Name read", "RoadTestSuite", testsuite.getName());
 
             // multi line so cannot effectively test
 
@@ -116,26 +114,26 @@ public class XMLReaderTest extends TestCase {
             "see if they are on the list of possible road names.\n"+
             "It also checks to see if any roads are contained in\n"+
             "a specified box.").equals(testsuite.getDescription()));*/
-            TestDTO test = (TestDTO) testsuite.getTests().get("NameLookup");
+            TestDTO test = testsuite.getTests().get("NameLookup");
 
-            assertNotNull("NameLookup does not exist as a test", test);
+            Assert.assertNotNull("NameLookup does not exist as a test", test);
 
             // multi line so cannot effectively test
             // assertTrue("Test Description read","Checks to see if the road name is in the list of
             // possible names.".equals(test.getDescription()));
-            assertNotNull("Should not be null", test.getPlugIn());
-            assertTrue("Test plugInName read", "NameInList".equals(test.getPlugIn().getName()));
+            Assert.assertNotNull("Should not be null", test.getPlugIn());
+            Assert.assertEquals("Test plugInName read", "NameInList", test.getPlugIn().getName());
 
-            assertNotNull("Should be one arg.", test.getArgs());
-            assertTrue("Should be one arg.", test.getArgs().size() == 2);
-            assertTrue("Arg. name", test.getArgs().containsKey("LUTName"));
+            Assert.assertNotNull("Should be one arg.", test.getArgs());
+            Assert.assertEquals("Should be one arg.", 2, test.getArgs().size());
+            Assert.assertTrue("Arg. name", test.getArgs().containsKey("LUTName"));
 
             // multi line so cannot effectively test
             // assertTrue("Arg. value :
             // "+test.getArgs().get("LUTName"),test.getArgs().containsValue("RoadNameLUT.xls"));
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
     }
 }

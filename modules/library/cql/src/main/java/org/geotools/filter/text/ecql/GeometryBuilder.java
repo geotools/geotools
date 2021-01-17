@@ -83,7 +83,7 @@ abstract class GeometryBuilder {
         Coordinate[] coordinates = new Coordinate[size];
         int i = 0;
         while (!stack.empty()) {
-            coordinates[i++] = (Coordinate) stack.pop();
+            coordinates[i++] = stack.pop();
         }
         return coordinates;
     }
@@ -94,7 +94,7 @@ abstract class GeometryBuilder {
      * @return an Stack with the required geometries
      */
     protected Stack<Coordinate> popCoordinatesOf(int geomNode) throws CQLException {
-        Stack<Coordinate> stack = new Stack<Coordinate>();
+        Stack<Coordinate> stack = new Stack<>();
         while (!getResultStack().empty()) {
 
             Result result = getResultStack().peek();
@@ -120,7 +120,7 @@ abstract class GeometryBuilder {
     protected List<Geometry> popGeometry(final int geometryNode)
             throws org.geotools.filter.text.cql2.CQLException {
 
-        List<Geometry> geomList = new LinkedList<Geometry>();
+        List<Geometry> geomList = new LinkedList<>();
         while (!getResultStack().empty()) {
 
             Result result = getResultStack().peek();
@@ -145,7 +145,7 @@ abstract class GeometryBuilder {
      */
     protected List<Geometry> popGeometryLiteral(final int geometryNode) throws CQLException {
 
-        List<Geometry> geomList = new LinkedList<Geometry>();
+        List<Geometry> geomList = new LinkedList<>();
         while (!getResultStack().empty()) {
 
             Result result = getResultStack().peek();

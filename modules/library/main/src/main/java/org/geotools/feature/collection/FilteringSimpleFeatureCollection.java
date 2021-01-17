@@ -19,7 +19,6 @@ package org.geotools.feature.collection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -93,16 +92,13 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 
     public int size() {
         int count = 0;
-        SimpleFeatureIterator i = features();
-        try {
+        try (SimpleFeatureIterator i = features()) {
             while (i.hasNext()) {
                 count++;
                 i.next();
             }
 
             return count;
-        } finally {
-            i.close();
         }
     }
 
@@ -115,16 +111,13 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
     }
 
     public <T> T[] toArray(T[] a) {
-        List<SimpleFeature> list = new ArrayList<SimpleFeature>();
-        SimpleFeatureIterator i = features();
-        try {
+        List<SimpleFeature> list = new ArrayList<>();
+        try (SimpleFeatureIterator i = features()) {
             while (i.hasNext()) {
                 list.add(i.next());
             }
 
             return list.toArray(a);
-        } finally {
-            i.close();
         }
     }
 
@@ -133,8 +126,8 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
     }
 
     public boolean containsAll(Collection<?> c) {
-        for (Iterator<?> i = c.iterator(); i.hasNext(); ) {
-            if (!contains(i.next())) {
+        for (Object o : c) {
+            if (!contains(o)) {
                 return false;
             }
         }
@@ -143,7 +136,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
     }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema(), features());
+        return new DelegateFeatureReader<>(getSchema(), features());
     }
 
     public ReferencedEnvelope getBounds() {

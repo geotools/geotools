@@ -16,7 +16,12 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -247,9 +252,7 @@ public final class ResampleTest extends GridProcessingTestBase {
                             CRS.parseWKT(GOOGLE_MERCATOR_WKT),
                             coverage.getGridGeometry(),
                             null));
-            Assert.assertTrue(
-                    "We should not be allowed to set different crs for target crs and target gg",
-                    false);
+            fail("We should not be allowed to set different crs for target crs and target gg");
         } catch (Exception e) {
             // ok!
         }

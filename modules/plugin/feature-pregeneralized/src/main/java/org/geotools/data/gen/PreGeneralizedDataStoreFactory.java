@@ -19,7 +19,6 @@ package org.geotools.data.gen;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
@@ -68,7 +67,7 @@ public class PreGeneralizedDataStoreFactory implements DataStoreFactorySpi {
     public static final Param NAMESPACEP =
             new Param("namespace", URI.class, "uri to a the namespace", false); // not required
 
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
 
         String providerClassName = (String) GENERALIZATION_INFOS_PROVIDER_CLASS.lookUp(params);
         String repositoryClassName = (String) REPOSITORY_CLASS.lookUp(params);
@@ -77,13 +76,13 @@ public class PreGeneralizedDataStoreFactory implements DataStoreFactorySpi {
         URI namespace = (URI) NAMESPACEP.lookUp(params);
 
         try {
-            Class providerClass = Class.forName(providerClassName);
+            Class<?> providerClass = Class.forName(providerClassName);
             GeneralizationInfosProvider provider =
                     (GeneralizationInfosProvider)
                             providerClass.getDeclaredConstructor().newInstance();
             GeneralizationInfos gInfos = provider.getGeneralizationInfos(providerParam);
 
-            Class repositoryClass = Class.forName(repositoryClassName);
+            Class<?> repositoryClass = Class.forName(repositoryClassName);
             Repository repository =
                     (Repository) repositoryClass.getDeclaredConstructor().newInstance();
 
@@ -93,11 +92,11 @@ public class PreGeneralizedDataStoreFactory implements DataStoreFactorySpi {
         }
     }
 
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException();
     }
 
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         String repositoryClass = null, providerClass = null;
         try {
             repositoryClass = (String) REPOSITORY_CLASS.lookUp(params);

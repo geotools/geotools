@@ -41,7 +41,7 @@ public class PGRasterFormat extends AbstractGridFormat {
     static final Logger LOG = Logging.getLogger(PGRasterFormat.class);
 
     public PGRasterFormat() {
-        final HashMap<String, String> info = new HashMap<String, String>();
+        final HashMap<String, String> info = new HashMap<>();
         info.put("name", "PGRaster");
         info.put("description", "PostGIS Raster Mosaic Plugin");
         info.put("vendor", "OpenNRM");

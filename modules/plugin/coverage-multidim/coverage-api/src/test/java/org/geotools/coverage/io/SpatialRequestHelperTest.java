@@ -18,6 +18,7 @@ package org.geotools.coverage.io;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
@@ -109,7 +110,7 @@ public class SpatialRequestHelperTest {
         // Ensure the same Coverage properties
         assertEquals(coverageProperties, helper.getCoverageProperties());
         // Ensure is not empty
-        assertTrue(!helper.isEmpty());
+        assertFalse(helper.isEmpty());
         // Check resolution
         assertArrayEquals(helper.getRequestedResolution(), calculatedResolution, TOLERANCE);
         // Check the same boundingBox
@@ -195,7 +196,7 @@ public class SpatialRequestHelperTest {
                 };
 
         // Ensure is not empty
-        assertTrue(!helper.isEmpty());
+        assertFalse(helper.isEmpty());
         // Check resolution
         assertArrayEquals(helper.getRequestedResolution(), calculatedResolution, TOLERANCE);
         // Check the same boundingBox
@@ -217,7 +218,7 @@ public class SpatialRequestHelperTest {
         helper.prepare();
 
         // Ensure is not empty
-        assertTrue(!helper.isEmpty());
+        assertFalse(helper.isEmpty());
         // Check resolution
         assertArrayEquals(
                 helper.getRequestedResolution(), coverageProperties.getFullResolution(), TOLERANCE);

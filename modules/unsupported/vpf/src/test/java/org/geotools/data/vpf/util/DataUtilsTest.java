@@ -26,15 +26,17 @@
  */
 package org.geotools.data.vpf.util;
 
-import junit.framework.TestCase;
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test <code>DataUtils</code>.
  *
  * @source $URL$
  */
-public class DataUtilsTest extends TestCase implements DataTypesDefinition {
+public class DataUtilsTest implements DataTypesDefinition {
     /** Instance of tested class. */
     protected DataUtils varDataUtils;
 
@@ -42,7 +44,8 @@ public class DataUtilsTest extends TestCase implements DataTypesDefinition {
      * This method is called every time before particular test execution. It creates new instance of
      * tested class and it can perform some more actions which are necessary for performs tests.
      */
-    protected void setUp() {
+    @Before
+    public void setUp() {
         varDataUtils = new org.geotools.data.vpf.util.DataUtils();
     } // end of setUp()
 
@@ -69,9 +72,10 @@ public class DataUtilsTest extends TestCase implements DataTypesDefinition {
     /**
      * Method for testing original source method: int littleEndianToInt(byte[]) from tested class
      */
+    @Test
     public void testLittleEndianToInt1374008726() {
         for (int i = 0; i < TEST_SAMPLES.length; i++) {
-            assertEquals(
+            Assert.assertEquals(
                     "Testing little endian converions from bytes to java int",
                     TEST_RESULTS[i][1],
                     DataUtils.littleEndianToInt(TEST_SAMPLES[i]));
@@ -79,45 +83,46 @@ public class DataUtilsTest extends TestCase implements DataTypesDefinition {
     } // end of testLittleEndianToInt1374008726(byte[])
 
     /** Method for testing original source method: byte[] toBigEndian(byte[]) from tested class */
+    @Test
     public void testToBigEndian1374008726() {
         byte[] testData = DataUtils.toBigEndian(TEST_SAMPLES[0]);
         for (int i = 0; i < testData.length; i++) {
-            assertEquals(
+            Assert.assertEquals(
                     "Checking translation little endian bytes order to bin " + "endian bytes order",
                     testData[i],
                     TEST_SAMPLES[1][i]);
         } // end of for (int i = 0; i < testData.length; i++)
         testData = DataUtils.toBigEndian(TEST_SAMPLES[1]);
         for (int i = 0; i < testData.length; i++) {
-            assertEquals(
+            Assert.assertEquals(
                     "Checking translation little endian bytes order to bin " + "endian bytes order",
                     testData[i],
                     TEST_SAMPLES[0][i]);
         } // end of for (int i = 0; i < testData.length; i++)
         testData = DataUtils.toBigEndian(TEST_SAMPLES[2]);
         for (int i = 0; i < testData.length; i++) {
-            assertEquals(
+            Assert.assertEquals(
                     "Checking translation little endian bytes order to bin " + "endian bytes order",
                     testData[i],
                     TEST_SAMPLES[3][i]);
         } // end of for (int i = 0; i < testData.length; i++)
         testData = DataUtils.toBigEndian(TEST_SAMPLES[3]);
         for (int i = 0; i < testData.length; i++) {
-            assertEquals(
+            Assert.assertEquals(
                     "Checking translation little endian bytes order to bin " + "endian bytes order",
                     testData[i],
                     TEST_SAMPLES[2][i]);
         } // end of for (int i = 0; i < testData.length; i++)
         testData = DataUtils.toBigEndian(TEST_SAMPLES[4]);
         for (int i = 0; i < testData.length; i++) {
-            assertEquals(
+            Assert.assertEquals(
                     "Checking translation little endian bytes order to bin " + "endian bytes order",
                     testData[i],
                     TEST_SAMPLES[5][i]);
         } // end of for (int i = 0; i < testData.length; i++)
         testData = DataUtils.toBigEndian(TEST_SAMPLES[5]);
         for (int i = 0; i < testData.length; i++) {
-            assertEquals(
+            Assert.assertEquals(
                     "Checking translation little endian bytes order to bin " + "endian bytes order",
                     testData[i],
                     TEST_SAMPLES[4][i]);
@@ -164,12 +169,13 @@ public class DataUtilsTest extends TestCase implements DataTypesDefinition {
      * Method for testing original source method: java.lang.Object decodeData(byte[], char) from
      * tested class
      */
+    @Test
     public void testDecodeData13740087263052374() {
         byte[] testData = new byte[] {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
         for (int i = 0; i < TEST_TYPES.length; i++) {
             Object result = DataUtils.decodeData(testData, TEST_TYPES[i]);
             if (i < TEST_TYPES.length - 2) {
-                assertTrue(
+                Assert.assertTrue(
                         "Incorrect type "
                                 + RESULT_TYPES[i].getName()
                                 + " detected for data for VPF type: "
@@ -177,55 +183,56 @@ public class DataUtilsTest extends TestCase implements DataTypesDefinition {
                         RESULT_TYPES[i].isInstance(result));
             } // end of if (i < TEST_TYPES.length - 2)
             else {
-                assertNull(
+                Assert.assertNull(
                         "for this type: " + RESULT_TYPES[i] + " NULL should be returned", result);
             } // end of else
         } // end of for (int i = 0; i < TEST_TYPES.length; i++)
     } // end of testDecodeData13740087263052374(byte[], char)
 
     /** Method for testing original source method: double decodeDouble(byte[]) from tested class */
+    @Test
     public void testDecodeDouble1374008726() {
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding double from bytes stream",
                 4.9E-324d,
                 DataUtils.decodeDouble(new byte[] {0, 0, 0, 0, 0, 0, 0, 1}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding double from bytes stream",
                 1.26E-321d,
                 DataUtils.decodeDouble(new byte[] {0, 0, 0, 0, 0, 0, 0, (byte) 0xFF}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding double from bytes stream",
                 3.22526E-319d,
                 DataUtils.decodeDouble(new byte[] {0, 0, 0, 0, 0, 0, (byte) 0xFF, 0}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding double from bytes stream",
                 8.256667E-317d,
                 DataUtils.decodeDouble(new byte[] {0, 0, 0, 0, 0, (byte) 0xFF, 0, 0}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding double from bytes stream",
                 2.113706745E-314d,
                 DataUtils.decodeDouble(new byte[] {0, 0, 0, 0, (byte) 0xFF, 0, 0, 0}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding double from bytes stream",
                 5.41108926696E-312d,
                 DataUtils.decodeDouble(new byte[] {0, 0, 0, (byte) 0xFF, 0, 0, 0, 0}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding double from bytes stream",
                 1.38523885234213E-309d,
                 DataUtils.decodeDouble(new byte[] {0, 0, (byte) 0xFF, 0, 0, 0, 0, 0}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding double from bytes stream",
                 7.06327445644526E-304d,
                 DataUtils.decodeDouble(new byte[] {0, (byte) 0xFF, 0, 0, 0, 0, 0, 0}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding double from bytes stream",
                 -5.4861240687936887E303d,
                 DataUtils.decodeDouble(new byte[] {(byte) 0xFF, 0, 0, 0, 0, 0, 0, 0}),
@@ -233,28 +240,29 @@ public class DataUtilsTest extends TestCase implements DataTypesDefinition {
     } // end of testDecodeDouble1374008726(byte[])
 
     /** Method for testing original source method: float decodeFloat(byte[]) from tested class */
+    @Test
     public void testDecodeFloat1374008726() {
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding float from bytes stream",
                 1.4E-45f,
                 DataUtils.decodeFloat(new byte[] {0, 0, 0, 1}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding float from bytes stream",
                 3.57E-43f,
                 DataUtils.decodeFloat(new byte[] {0, 0, 0, (byte) 0xFF}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding float from bytes stream",
                 9.147676375112406E-41f,
                 DataUtils.decodeFloat(new byte[] {0, 0, (byte) 0xFF, 0}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding float from bytes stream",
                 2.3418052E-38f,
                 DataUtils.decodeFloat(new byte[] {0, (byte) 0xFF, 0, 0}),
                 0);
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding float from bytes stream",
                 -1.7014118E38f,
                 DataUtils.decodeFloat(new byte[] {(byte) 0xFF, 0, 0, 0}),
@@ -262,44 +270,45 @@ public class DataUtilsTest extends TestCase implements DataTypesDefinition {
     } // end of testDecodeFloat1374008726(byte[])
 
     /** Method for testing original source method: int decodeInt(byte[]) from tested class */
+    @Test
     public void testDecodeInt1374008726() {
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding short from bytes stream",
                 255,
                 DataUtils.decodeInt(new byte[] {0, 0, 0, (byte) 0xFF}));
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding short from bytes stream",
                 65280,
                 DataUtils.decodeInt(new byte[] {0, 0, (byte) 0xFF, 0}));
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding short from bytes stream",
                 16711680,
                 DataUtils.decodeInt(new byte[] {0, (byte) 0xFF, 0, 0}));
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding short from bytes stream",
                 -16777216,
                 DataUtils.decodeInt(new byte[] {(byte) 0xFF, 0, 0, 0}));
     } // end of testDecodeInt1374008726(byte[])
 
     /** Method for testing original source method: short decodeShort(byte[]) from tested class */
+    @Test
     public void testDecodeShort1374008726() {
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding short from bytes stream",
                 255,
                 DataUtils.decodeShort(new byte[] {0, (byte) 0xFF}));
-        assertEquals(
+        Assert.assertEquals(
                 "Decoding short from bytes stream",
                 -256,
                 DataUtils.decodeShort(new byte[] {(byte) 0xFF, 0}));
     } // end of testDecodeShort1374008726(byte[])
 
     /** Method for testing original source method: int unsigByteToInt(byte) from tested class */
+    @Test
     public void testUnsigByteToInt3039496() {
-        assertEquals(
+        Assert.assertEquals(
                 "Is negative byte converted correcly:", 255, DataUtils.unsigByteToInt((byte) 0xFF));
-        assertEquals(
-                "Is negative byte converted correcly:",
-                (int) 1,
-                DataUtils.unsigByteToInt((byte) 1));
+        Assert.assertEquals(
+                "Is negative byte converted correcly:", 1, DataUtils.unsigByteToInt((byte) 1));
     } // end of testUnsigByteToInt3039496(byte)
 } // end of DataUtilsTest

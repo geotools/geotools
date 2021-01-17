@@ -24,7 +24,7 @@ import org.opengis.filter.expression.Expression;
 public class FontBuilder extends AbstractStyleBuilder<Font> {
     boolean familiesSet = false;
 
-    private List<Expression> families = new ArrayList<Expression>();
+    private List<Expression> families = new ArrayList<>();
 
     private Expression style;
 
@@ -109,7 +109,7 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
 
     public FontBuilder reset() {
         Font df = sf.getDefaultFont();
-        this.families = new ArrayList<Expression>();
+        this.families = new ArrayList<>();
         this.size = df.getSize();
         this.style = df.getStyle();
         this.weight = df.getWeight();
@@ -120,7 +120,7 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
         if (font == null) {
             return reset();
         }
-        this.families = font.getFamily() != null ? font.getFamily() : new ArrayList<Expression>();
+        this.families = font.getFamily() != null ? font.getFamily() : new ArrayList<>();
         this.size = font.getSize();
         this.style = font.getStyle();
         this.weight = font.getWeight();

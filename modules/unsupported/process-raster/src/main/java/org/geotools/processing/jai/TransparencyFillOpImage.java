@@ -22,6 +22,7 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.util.Map;
+import java.util.Vector;
 import javax.media.jai.AreaOpImage;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
@@ -57,8 +58,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                         int right = (srcData[k][srcOffset + srcStride2 + k] & 0xFF);
                         dstData[k][dstOffset + k] = (byte) ((left + right) / 2);
                     } else {
-                        dstData[k][dstOffset + k] =
-                                ((byte) ((srcData[k][srcOffset - srcStride1 + k])));
+                        dstData[k][dstOffset + k] = (srcData[k][srcOffset - srcStride1 + k]);
                     }
                 }
             }
@@ -76,10 +76,9 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     if (k != numBands - 1) {
                         int left = (srcData[k][srcOffset - srcStride1 + k]);
                         int right = (srcData[k][srcOffset + srcStride2 + k]);
-                        dstData[k][dstOffset + k] = (int) ((left + right) / 2);
+                        dstData[k][dstOffset + k] = (left + right) / 2;
                     } else {
-                        dstData[k][dstOffset + k] =
-                                ((int) ((srcData[k][srcOffset - srcStride1 + k])));
+                        dstData[k][dstOffset + k] = (srcData[k][srcOffset - srcStride1 + k]);
                     }
                 }
             }
@@ -99,8 +98,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                         float right = (srcData[k][srcOffset + srcStride2 + k]);
                         dstData[k][dstOffset + k] = (short) ((left + right) / 2);
                     } else {
-                        dstData[k][dstOffset + k] =
-                                ((short) ((srcData[k][srcOffset - srcStride1 + k])));
+                        dstData[k][dstOffset + k] = (srcData[k][srcOffset - srcStride1 + k]);
                     }
                 }
             }
@@ -118,10 +116,9 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     if (k != numBands - 1) {
                         float left = (srcData[k][srcOffset - srcStride1 + k]);
                         float right = (srcData[k][srcOffset + srcStride2 + k]);
-                        dstData[k][dstOffset + k] = (float) ((left + right) / 2);
+                        dstData[k][dstOffset + k] = (left + right) / 2;
                     } else {
-                        dstData[k][dstOffset + k] =
-                                ((float) ((srcData[k][srcOffset - srcStride1 + k])));
+                        dstData[k][dstOffset + k] = (srcData[k][srcOffset - srcStride1 + k]);
                     }
                 }
             }
@@ -139,10 +136,9 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     if (k != numBands - 1) {
                         double left = (srcData[k][srcOffset - srcStride1 + k]);
                         double right = (srcData[k][srcOffset + srcStride2 + k]);
-                        dstData[k][dstOffset + k] = (double) ((left + right) / 2);
+                        dstData[k][dstOffset + k] = (left + right) / 2;
                     } else {
-                        dstData[k][dstOffset + k] =
-                                ((double) ((srcData[k][srcOffset - srcStride1 + k])));
+                        dstData[k][dstOffset + k] = (srcData[k][srcOffset - srcStride1 + k]);
                     }
                 }
             }
@@ -160,7 +156,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((byte) ((srcData[k][srcOffset - srcStride1 + k])));
+                    dstData[k][dstOffset + k] = (srcData[k][srcOffset - srcStride1 + k]);
                 }
             }
 
@@ -174,7 +170,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((int) ((srcData[k][srcOffset - srcStride1 + k])));
+                    dstData[k][dstOffset + k] = (srcData[k][srcOffset - srcStride1 + k]);
                 }
             }
 
@@ -188,8 +184,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] =
-                            ((short) ((srcData[k][srcOffset - srcStride1 + k])));
+                    dstData[k][dstOffset + k] = (srcData[k][srcOffset - srcStride1 + k]);
                 }
             }
 
@@ -203,8 +198,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] =
-                            ((float) ((srcData[k][srcOffset - srcStride1 + k])));
+                    dstData[k][dstOffset + k] = (srcData[k][srcOffset - srcStride1 + k]);
                 }
             }
 
@@ -236,7 +230,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((byte) ((srcData[k][srcOffset + srcStride2 + k])));
+                    dstData[k][dstOffset + k] = (srcData[k][srcOffset + srcStride2 + k]);
                 }
             }
 
@@ -250,8 +244,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] =
-                            ((short) ((srcData[k][srcOffset + srcStride2 + k])));
+                    dstData[k][dstOffset + k] = (srcData[k][srcOffset + srcStride2 + k]);
                 }
             }
 
@@ -265,7 +258,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((int) ((srcData[k][srcOffset + srcStride2 + k])));
+                    dstData[k][dstOffset + k] = (srcData[k][srcOffset + srcStride2 + k]);
                 }
             }
 
@@ -279,8 +272,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] =
-                            ((float) ((srcData[k][srcOffset + srcStride2 + k])));
+                    dstData[k][dstOffset + k] = (srcData[k][srcOffset + srcStride2 + k]);
                 }
             }
 
@@ -294,8 +286,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] =
-                            ((double) ((srcData[k][srcOffset + srcStride2 + k])));
+                    dstData[k][dstOffset + k] = (srcData[k][srcOffset + srcStride2 + k]);
                 }
             }
         };
@@ -1313,5 +1304,12 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 dstScanlineOffset[i] += dstScanlineStride;
             }
         }
+    }
+
+    @Override
+    // PlanarImage does not have generics, overrides this method
+    @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
+    public Vector<RenderedImage> getSources() {
+        return super.getSources();
     }
 }

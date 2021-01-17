@@ -34,7 +34,8 @@ import static org.geotools.styling.TextSymbolizer.MAX_ANGLE_DELTA_KEY;
 import static org.geotools.styling.TextSymbolizer.PARTIALS_KEY;
 
 import com.google.common.collect.ImmutableSet;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -94,11 +95,11 @@ import org.opengis.style.Symbolizer;
 public class SymbolMBLayer extends MBLayer {
 
     private static final Color DEFAULT_HALO_COLOR = new Color(0, 0, 0, 0);
-    private JSONObject layout;
+    private final JSONObject layout;
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "symbol";
+    private static final String TYPE = "symbol";
 
     private Integer labelPriority;
 
@@ -598,7 +599,7 @@ public class SymbolMBLayer extends MBLayer {
 
     /** @return True if the layer has a icon-image explicitly provided. */
     public boolean hasIconImage() throws MBFormatException {
-        return parse.isPropertyDefined(layout, "icon-image");
+        return parse.isDefined(layout, "icon-image");
     }
 
     /**
@@ -830,7 +831,7 @@ public class SymbolMBLayer extends MBLayer {
 
     /** @return True if the layer has a text-field explicitly provided. */
     private boolean hasTextField() throws MBFormatException {
-        return parse.isPropertyDefined(layout, "text-field");
+        return parse.isDefined(layout, "text-field");
     }
 
     /**
@@ -911,7 +912,7 @@ public class SymbolMBLayer extends MBLayer {
 
     /** @return True if the layer has a text-max-width explicitly provided. */
     public boolean hasTextMaxWidth() throws MBFormatException {
-        return parse.isPropertyDefined(layout, "text-max-width");
+        return parse.isDefined(layout, "text-max-width");
     }
 
     /**
@@ -1098,7 +1099,7 @@ public class SymbolMBLayer extends MBLayer {
 
     /** @return True if the layer has a text-max-angle explicitly provided. */
     private boolean hasTextMaxAngle() throws MBFormatException {
-        return parse.isPropertyDefined(layout, "text-max-angle");
+        return parse.isDefined(layout, "text-max-angle");
     }
 
     /**
@@ -1204,7 +1205,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return true if text-transform provided
      */
     public boolean hasTextTransform() {
-        return parse.isPropertyDefined(layout, "text-transform");
+        return parse.isDefined(layout, "text-transform");
     }
 
     /**
@@ -1260,7 +1261,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     private boolean hasTextOffset() {
-        return parse.isPropertyDefined(layout, "text-offset");
+        return parse.isDefined(layout, "text-offset");
     }
 
     /**
@@ -1665,7 +1666,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     private boolean hasTextTranslate() {
-        return parse.isPropertyDefined(layout, "text-translate");
+        return parse.isDefined(layout, "text-translate");
     }
 
     /**
@@ -1727,14 +1728,14 @@ public class SymbolMBLayer extends MBLayer {
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         StyleBuilder sb = new StyleBuilder();
-        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+        List<Symbolizer> symbolizers = new ArrayList<>();
 
         LabelPlacement labelPlacement;
         // Create point or line placement
 
         // Functions not yet supported for symbolPlacement, so try to evaluate or use default.
         String symbolPlacementVal =
-                transformer.requireLiteral(
+                MBStyleTransformer.requireLiteral(
                         symbolPlacement(), String.class, "point", "symbol-placement", getId());
         Expression fontSize = textSize();
         if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
@@ -1753,7 +1754,7 @@ public class SymbolMBLayer extends MBLayer {
                 displacement = textTranslate;
             }
             // MapBox test-offset: +y mean down and expressed in ems
-            Displacement textOffset = null;
+            Displacement textOffset;
             if (hasTextOffset()) {
                 textOffset = textOffsetDisplacement();
                 textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
@@ -1861,7 +1862,7 @@ public class SymbolMBLayer extends MBLayer {
         symbolizer.fonts().addAll(fonts);
 
         Number symbolSpacing =
-                transformer.requireLiteral(
+                MBStyleTransformer.requireLiteral(
                         symbolSpacing(), Number.class, 250, "symbol-spacing", getId());
         symbolizer.getOptions().put(LABEL_REPEAT_KEY, String.valueOf(symbolSpacing));
 
@@ -1883,10 +1884,10 @@ public class SymbolMBLayer extends MBLayer {
         // Mapbox allows text overlap and icon overlap separately. GeoTools only has
         // conflictResolution.
         Boolean textAllowOverlap =
-                transformer.requireLiteral(
+                MBStyleTransformer.requireLiteral(
                         textAllowOverlap(), Boolean.class, false, "text-allow-overlap", getId());
         Boolean iconAllowOverlap =
-                transformer.requireLiteral(
+                MBStyleTransformer.requireLiteral(
                         iconAllowOverlap(), Boolean.class, false, "icon-allow-overlap", getId());
 
         symbolizer
@@ -1896,8 +1897,7 @@ public class SymbolMBLayer extends MBLayer {
                         String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
 
         String textFitVal =
-                transformer
-                        .requireLiteral(
+                MBStyleTransformer.requireLiteral(
                                 iconTextFit(), String.class, "none", "icon-text-fit", getId())
                         .trim();
         if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
@@ -1942,10 +1942,10 @@ public class SymbolMBLayer extends MBLayer {
         // options don't take expressions)
         if (hasTextMaxWidth()) {
             double textMaxWidth =
-                    transformer.requireLiteral(
+                    MBStyleTransformer.requireLiteral(
                             textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
             double textSize =
-                    transformer.requireLiteral(
+                    MBStyleTransformer.requireLiteral(
                             fontSize,
                             Double.class,
                             16.0,

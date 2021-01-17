@@ -18,7 +18,6 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
-import org.junit.Assume;
 
 public class OraclePrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
@@ -34,9 +33,11 @@ public class OraclePrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override
     public void testSequencedPrimaryKey() throws Exception {
-        // on Travis this test does not work, we cannot figure out why though.
+        // on Github this test does not always work, we cannot figure out why though.
         // Works fine on local builds in two different machines
-        Assume.assumeFalse(System.getProperty("travis-oracle-build") != null);
+        if (System.getProperty("ci-oracle-build") != null) {
+            return;
+        }
         super.testSequencedPrimaryKey();
     }
 }

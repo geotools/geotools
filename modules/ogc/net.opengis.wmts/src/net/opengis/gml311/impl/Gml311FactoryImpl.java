@@ -4619,7 +4619,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<Boolean> createBooleanListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<Boolean> result = new ArrayList<Boolean>();
+        List<Boolean> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add((Boolean)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.BOOLEAN, item));
         }
@@ -4728,7 +4728,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<Object> createBooleanOrNullListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add(createBooleanOrNullFromString(Gml311Package.eINSTANCE.getBooleanOrNull(), item));
         }
@@ -5023,7 +5023,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<Double> createDoubleListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<Double> result = new ArrayList<Double>();
+        List<Double> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add((Double)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.DOUBLE, item));
         }
@@ -5132,7 +5132,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<Object> createDoubleOrNullListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add(createDoubleOrNullFromString(Gml311Package.eINSTANCE.getDoubleOrNull(), item));
         }
@@ -5235,7 +5235,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<BigInteger> createIntegerListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<BigInteger> result = new ArrayList<BigInteger>();
+        List<BigInteger> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add((BigInteger)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.INTEGER, item));
         }
@@ -5344,7 +5344,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<Object> createIntegerOrNullListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add(createIntegerOrNullFromString(Gml311Package.eINSTANCE.getIntegerOrNull(), item));
         }
@@ -5429,7 +5429,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<String> createNameListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add((String)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.NAME, item));
         }
@@ -5538,7 +5538,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<Object> createNameOrNullListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add(createNameOrNullFromString(Gml311Package.eINSTANCE.getNameOrNull(), item));
         }
@@ -5569,7 +5569,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<String> createNCNameListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add((String)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.NC_NAME, item));
         }
@@ -5756,7 +5756,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      */
     public List<Object> createQNameListFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add(XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.QNAME, item));
         }

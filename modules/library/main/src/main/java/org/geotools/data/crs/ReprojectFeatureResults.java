@@ -88,7 +88,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         this.transform = CRS.findMathTransform(originalCs, destinationCS, true);
     }
 
-    public Iterator openIterator() {
+    public Iterator<SimpleFeature> openIterator() {
         return new ReprojectFeatureIterator(results.features(), getSchema(), transform);
     }
 
@@ -160,8 +160,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
      * @see org.geotools.data.FeatureResults#getBounds()
      */
     public ReferencedEnvelope getBounds() {
-        SimpleFeatureIterator r = features();
-        try {
+        try (SimpleFeatureIterator r = features()) {
             Envelope newBBox = new Envelope();
             Envelope internal;
             SimpleFeature feature;
@@ -177,8 +176,6 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
             return ReferencedEnvelope.reference(newBBox);
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred while computing reprojected bounds", e);
-        } finally {
-            r.close();
         }
     }
 

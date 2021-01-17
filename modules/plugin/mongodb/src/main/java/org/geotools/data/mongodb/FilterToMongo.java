@@ -225,8 +225,11 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
             }
 
             PropertyName getPropertyName() {
-                if (pNames.size() > 0) return pNames.get(0);
-                else return null;
+                if (pNames.isEmpty()) {
+                    return null;
+                } else {
+                    return pNames.get(0);
+                }
             }
         }
         PropertyNameFinder finder = new PropertyNameFinder();
@@ -236,7 +239,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         BasicDBObject expr = (BasicDBObject) filter.getFilter().accept(this, null);
         BasicDBObject dbObject;
         if (pn != null) {
-            String strPn = pn.getPropertyName();
+            String strPn = mapper.getPropertyPath(pn.getPropertyName());
             // get only the operator expression
             Object exprValue = expr.get(strPn);
             dbObject = new BasicDBObject("$not", exprValue);
@@ -399,7 +402,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         // force full string match
         regex = "^" + regex + "$";
         Pattern p = Pattern.compile(regex, flags);
-        output.put((String) expr, p);
+        output.put(expr, p);
 
         return output;
     }
@@ -422,7 +425,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
         Set<Identifier> ids = filter.getIdentifiers();
 
-        List<ObjectId> objectIds = new ArrayList<ObjectId>(ids.size());
+        List<ObjectId> objectIds = new ArrayList<>(ids.size());
         for (Identifier id : ids) {
             objectIds.add(new ObjectId(id.toString()));
         }

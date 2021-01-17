@@ -17,6 +17,7 @@
 package org.geotools.validation.spatial;
 
 import java.util.Map;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Envelope;
 
@@ -51,7 +52,8 @@ public class LineNoDanglesValidation extends LineAbstractValidation {
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
         // TODO Fix Me
         return false;

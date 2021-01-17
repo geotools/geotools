@@ -16,7 +16,9 @@
  */
 package org.geotools.geometry.jts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +66,7 @@ public class JTSSmoothTest extends JTSTestBase {
     public void smoothPointReturnsSameObject() {
         Point point = factory.createPoint(new Coordinate());
         Geometry smoothed = JTS.smooth(point, 0);
-        assertTrue(smoothed == point);
+        assertSame(smoothed, point);
     }
 
     @Test
@@ -72,7 +74,7 @@ public class JTSSmoothTest extends JTSTestBase {
         Coordinate[] coords = getLineCoords();
         MultiPoint mpoint = factory.createMultiPoint(new CoordinateArraySequence(coords));
         Geometry smoothed = JTS.smooth(mpoint, 0);
-        assertTrue(smoothed == mpoint);
+        assertSame(smoothed, mpoint);
     }
 
     @Test
@@ -167,7 +169,7 @@ public class JTSSmoothTest extends JTSTestBase {
         assertEquals(3, smoothed.getNumGeometries());
 
         // Input point should have been returned
-        assertTrue(geoms[0] == smoothed.getGeometryN(0));
+        assertSame(geoms[0], smoothed.getGeometryN(0));
 
         // Smoothed line
         Geometry g = smoothed.getGeometryN(1);

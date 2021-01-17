@@ -65,8 +65,7 @@ public class BasicNode extends BasicGraphable implements Node {
         // list
         int degree = 0;
 
-        for (int i = 0; i < m_edges.size(); i++) {
-            Edge e = m_edges.get(i);
+        for (Edge e : m_edges) {
             if (e.getNodeA().equals(this)) degree++;
             if (e.getNodeB().equals(this)) degree++;
         }
@@ -79,8 +78,7 @@ public class BasicNode extends BasicGraphable implements Node {
     public Edge getEdge(Node other) {
         // must explictley check that the edge has node other, and one node this,
         // just checking other is not good enough because of loops
-        for (int i = 0; i < m_edges.size(); i++) {
-            Edge e = m_edges.get(i);
+        for (Edge e : m_edges) {
             if ((e.getNodeA().equals(this) && e.getNodeB().equals(other))
                     || (e.getNodeA().equals(other) && e.getNodeB().equals(this))) return (e);
         }
@@ -93,8 +91,7 @@ public class BasicNode extends BasicGraphable implements Node {
         // must explictley check that the edge has node other, and one node this,
         // just checking other is not good enough because of loops
         ArrayList<Edge> edges = new ArrayList<>();
-        for (int i = 0; i < m_edges.size(); i++) {
-            Edge e = m_edges.get(i);
+        for (Edge e : m_edges) {
             if ((e.getNodeA().equals(this) && e.getNodeB().equals(other))
                     || (e.getNodeA().equals(other) && e.getNodeB().equals(this))) edges.add(e);
         }
@@ -116,8 +113,7 @@ public class BasicNode extends BasicGraphable implements Node {
     @Override
     public Iterator<Node> getRelated() {
         ArrayList<Node> related = new ArrayList<>(m_edges.size());
-        for (int i = 0; i < m_edges.size(); i++) {
-            Edge e = m_edges.get(i);
+        for (Edge e : m_edges) {
             related.add(e.getOtherNode(this));
         }
         return (related.iterator());

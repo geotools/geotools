@@ -16,7 +16,7 @@
  */
 package org.geotools.temporal.object;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -67,7 +67,7 @@ public class DefaultTemporalPrimitiveTest {
         Position position = new DefaultPosition(cal.getTime());
         other = new DefaultInstant(position);
         RelativePosition result = temporalPrimitive1.relativePosition(other);
-        assertFalse(temporalPrimitive2.relativePosition(other).equals(result));
+        assertNotEquals(temporalPrimitive2.relativePosition(other), result);
 
         // relative position between Instant and Period
         Instant instant1 = new DefaultInstant(new DefaultPosition(cal.getTime()));
@@ -75,7 +75,7 @@ public class DefaultTemporalPrimitiveTest {
 
         other = new DefaultPeriod(instant1, instant2);
         result = temporalPrimitive1.relativePosition(other);
-        assertFalse(temporalPrimitive2.relativePosition(other).equals(result));
+        assertNotEquals(temporalPrimitive2.relativePosition(other), result);
 
         // relative position between Period onbjects
         temporalPrimitive1 = new DefaultPeriod(new DefaultInstant(position1), instant1);
@@ -83,6 +83,6 @@ public class DefaultTemporalPrimitiveTest {
         temporalPrimitive2 =
                 new DefaultPeriod(instant2, new DefaultInstant(new DefaultPosition(cal.getTime())));
         result = temporalPrimitive1.relativePosition(other);
-        assertFalse(temporalPrimitive2.relativePosition(other).equals(result));
+        assertNotEquals(temporalPrimitive2.relativePosition(other), result);
     }
 }

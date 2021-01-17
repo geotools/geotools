@@ -16,9 +16,7 @@
  */
 package org.geotools.wps;
 
-import junit.framework.TestCase;
 import net.opengis.ows11.AddressType;
-import net.opengis.ows11.CodeType;
 import net.opengis.ows11.ContactType;
 import net.opengis.ows11.DCPType;
 import net.opengis.ows11.HTTPType;
@@ -36,16 +34,19 @@ import net.opengis.wps10.ProcessBriefType;
 import net.opengis.wps10.ProcessOfferingsType;
 import net.opengis.wps10.WPSCapabilitiesType;
 import org.geotools.xsd.Parser;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class GetCapabilitiesTest extends TestCase {
+public class GetCapabilitiesTest {
 
+    @Test
     public void testParse() throws Exception {
         WPSConfiguration wps = new WPSConfiguration();
         Parser parser = new Parser(wps);
 
         Object o =
                 parser.parse(getClass().getResourceAsStream("20_wpsGetCapabilities_response.xml"));
-        assertTrue(o instanceof WPSCapabilitiesType);
+        Assert.assertTrue(o instanceof WPSCapabilitiesType);
 
         WPSCapabilitiesType caps = (WPSCapabilitiesType) o;
         assertServiceIdentification(caps.getServiceIdentification());
@@ -66,38 +67,39 @@ public class GetCapabilitiesTest extends TestCase {
      * <ows:AccessConstraints>NONE</ows:AccessConstraints> </ows:ServiceIdentification>
      */
     void assertServiceIdentification(ServiceIdentificationType si) {
-        assertNotNull(si);
+        Assert.assertNotNull(si);
 
-        assertEquals(1, si.getTitle().size());
-        assertEquals(
+        Assert.assertEquals(1, si.getTitle().size());
+        Assert.assertEquals(
                 "AAFC GDAS-based WPS server",
                 ((LanguageStringType) si.getTitle().get(0)).getValue());
 
-        assertEquals(1, si.getAbstract().size());
-        assertEquals(
+        Assert.assertEquals(1, si.getAbstract().size());
+        Assert.assertEquals(
                 "AAFC GDAS-based WPS server developed for the OGC WPSie.",
                 ((LanguageStringType) si.getAbstract().get(0)).getValue());
 
-        assertEquals(1, si.getKeywords().size());
+        Assert.assertEquals(1, si.getKeywords().size());
         KeywordsType kw = (KeywordsType) si.getKeywords().get(0);
 
-        assertEquals(4, kw.getKeyword().size());
-        assertEquals("WPS", ((LanguageStringType) kw.getKeyword().get(0)).getValue());
-        assertEquals("AAFC", ((LanguageStringType) kw.getKeyword().get(1)).getValue());
-        assertEquals("geospatial", ((LanguageStringType) kw.getKeyword().get(2)).getValue());
-        assertEquals("geoprocessing", ((LanguageStringType) kw.getKeyword().get(3)).getValue());
+        Assert.assertEquals(4, kw.getKeyword().size());
+        Assert.assertEquals("WPS", ((LanguageStringType) kw.getKeyword().get(0)).getValue());
+        Assert.assertEquals("AAFC", ((LanguageStringType) kw.getKeyword().get(1)).getValue());
+        Assert.assertEquals("geospatial", ((LanguageStringType) kw.getKeyword().get(2)).getValue());
+        Assert.assertEquals(
+                "geoprocessing", ((LanguageStringType) kw.getKeyword().get(3)).getValue());
 
-        assertNotNull(si.getServiceType());
-        assertEquals("WPS", si.getServiceType().getValue());
+        Assert.assertNotNull(si.getServiceType());
+        Assert.assertEquals("WPS", si.getServiceType().getValue());
 
-        assertNotNull(si.getServiceTypeVersion());
-        assertEquals("1.0.0", si.getServiceTypeVersion());
+        Assert.assertNotNull(si.getServiceTypeVersion());
+        Assert.assertEquals("1.0.0", si.getServiceTypeVersion());
         //       assertEquals("0.4.0", si.getServiceTypeVersion().get(1));
 
-        assertEquals("NONE", si.getFees());
+        Assert.assertEquals("NONE", si.getFees());
 
-        assertNotNull(si.getAccessConstraints());
-        assertEquals("NONE", si.getAccessConstraints());
+        Assert.assertNotNull(si.getAccessConstraints());
+        Assert.assertEquals("NONE", si.getAccessConstraints());
     }
 
     /**
@@ -114,30 +116,31 @@ public class GetCapabilitiesTest extends TestCase {
      * </ows:ContactInfo> </ows:ServiceContact> </ows:ServiceProvider>
      */
     void assertServiceProvider(ServiceProviderType sp) {
-        assertNotNull(sp);
-        assertEquals("Agriculture and Agri-Food Canada", sp.getProviderName());
-        assertEquals("http://gis.agr.gc.ca/", sp.getProviderSite().getHref());
+        Assert.assertNotNull(sp);
+        Assert.assertEquals("Agriculture and Agri-Food Canada", sp.getProviderName());
+        Assert.assertEquals("http://gis.agr.gc.ca/", sp.getProviderSite().getHref());
 
         ResponsiblePartySubsetType sc = sp.getServiceContact();
-        assertNotNull(sc);
-        assertEquals("Peter Schut", sc.getIndividualName());
+        Assert.assertNotNull(sc);
+        Assert.assertEquals("Peter Schut", sc.getIndividualName());
 
         ContactType ci = sc.getContactInfo();
-        assertNotNull(ci);
-        assertNotNull(ci.getPhone().getVoice());
-        assertEquals("+1 613 759-1874", ci.getPhone().getVoice());
-        assertNotNull(ci.getPhone().getFacsimile());
-        assertEquals("+1 613 759-1937", ci.getPhone().getFacsimile());
+        Assert.assertNotNull(ci);
+        Assert.assertNotNull(ci.getPhone().getVoice());
+        Assert.assertEquals("+1 613 759-1874", ci.getPhone().getVoice());
+        Assert.assertNotNull(ci.getPhone().getFacsimile());
+        Assert.assertEquals("+1 613 759-1937", ci.getPhone().getFacsimile());
 
         AddressType a = ci.getAddress();
-        assertNotNull(a);
-        assertNotNull(a.getDeliveryPoint());
-        assertEquals("Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint());
-        assertEquals("Ottawa", a.getCity());
-        assertEquals("ON", a.getAdministrativeArea());
-        assertEquals("Canada", a.getCountry());
-        assertNotNull(a.getElectronicMailAddress());
-        assertEquals("schutp@agr.gc.ca", a.getElectronicMailAddress());
+        Assert.assertNotNull(a);
+        Assert.assertNotNull(a.getDeliveryPoint());
+        Assert.assertEquals(
+                "Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint());
+        Assert.assertEquals("Ottawa", a.getCity());
+        Assert.assertEquals("ON", a.getAdministrativeArea());
+        Assert.assertEquals("Canada", a.getCountry());
+        Assert.assertNotNull(a.getElectronicMailAddress());
+        Assert.assertEquals("schutp@agr.gc.ca", a.getElectronicMailAddress());
     }
 
     /**
@@ -152,45 +155,45 @@ public class GetCapabilitiesTest extends TestCase {
      * </ows:OperationsMetadata>
      */
     void assertOperationsMetadata(OperationsMetadataType om) {
-        assertNotNull(om);
+        Assert.assertNotNull(om);
 
-        assertEquals(3, om.getOperation().size());
+        Assert.assertEquals(3, om.getOperation().size());
 
         OperationType op = (OperationType) om.getOperation().get(0);
-        assertEquals("GetCapabilities", op.getName());
-        assertEquals(1, op.getDCP().size());
+        Assert.assertEquals("GetCapabilities", op.getName());
+        Assert.assertEquals(1, op.getDCP().size());
 
         HTTPType http = ((DCPType) op.getDCP().get(0)).getHTTP();
-        assertEquals(1, http.getGet().size());
-        assertEquals(
+        Assert.assertEquals(1, http.getGet().size());
+        Assert.assertEquals(
                 "http://wms1.agr.gc.ca/GeoPS/GeoPS?",
                 ((RequestMethodType) http.getGet().get(0)).getHref());
 
         op = (OperationType) om.getOperation().get(1);
-        assertEquals("DescribeProcess", op.getName());
-        assertEquals(1, op.getDCP().size());
+        Assert.assertEquals("DescribeProcess", op.getName());
+        Assert.assertEquals(1, op.getDCP().size());
 
         http = ((DCPType) op.getDCP().get(0)).getHTTP();
-        assertEquals(1, http.getGet().size());
-        assertEquals(
+        Assert.assertEquals(1, http.getGet().size());
+        Assert.assertEquals(
                 "http://wms1.agr.gc.ca/GeoPS/GeoPS?",
                 ((RequestMethodType) http.getGet().get(0)).getHref());
-        assertEquals(1, http.getPost().size());
-        assertEquals(
+        Assert.assertEquals(1, http.getPost().size());
+        Assert.assertEquals(
                 "http://wms1.agr.gc.ca/GeoPS/GeoPS",
                 ((RequestMethodType) http.getPost().get(0)).getHref());
 
         op = (OperationType) om.getOperation().get(2);
-        assertEquals("Execute", op.getName());
-        assertEquals(1, op.getDCP().size());
+        Assert.assertEquals("Execute", op.getName());
+        Assert.assertEquals(1, op.getDCP().size());
 
         http = ((DCPType) op.getDCP().get(0)).getHTTP();
-        assertEquals(1, http.getGet().size());
-        assertEquals(
+        Assert.assertEquals(1, http.getGet().size());
+        Assert.assertEquals(
                 "http://wms1.agr.gc.ca/GeoPS/GeoPS?",
                 ((RequestMethodType) http.getGet().get(0)).getHref());
-        assertEquals(1, http.getPost().size());
-        assertEquals(
+        Assert.assertEquals(1, http.getPost().size());
+        Assert.assertEquals(
                 "http://wms1.agr.gc.ca/GeoPS/GeoPS",
                 ((RequestMethodType) http.getPost().get(0)).getHref());
     }
@@ -203,32 +206,33 @@ public class GetCapabilitiesTest extends TestCase {
      * <ows:Metadata xlink:title="polygon" /> </wps:Process> </wps:ProcessOfferings>
      */
     void assertProcessOfferings(ProcessOfferingsType po) {
-        assertNotNull(po);
-        assertEquals(1, po.getProcess().size());
+        Assert.assertNotNull(po);
+        Assert.assertEquals(1, po.getProcess().size());
 
         ProcessBriefType pb = (ProcessBriefType) po.getProcess().get(0);
-        assertNotNull(pb.getIdentifier());
-        assertEquals("buffer", ((CodeType) pb.getIdentifier()).getValue());
+        Assert.assertNotNull(pb.getIdentifier());
+        Assert.assertEquals("buffer", pb.getIdentifier().getValue());
 
-        assertNotNull(pb.getTitle());
-        assertEquals("Buffer a polygon feature", pb.getTitle().getValue());
+        Assert.assertNotNull(pb.getTitle());
+        Assert.assertEquals("Buffer a polygon feature", pb.getTitle().getValue());
 
-        assertNotNull(pb.getAbstract());
-        assertEquals(
-                "Buffer  the polygon coordinates found in one GML stream by a given buffer distance, and output the results in GML.",
+        Assert.assertNotNull(pb.getAbstract());
+        Assert.assertEquals(
+                "Buffer  the polygon coordinates found in one GML stream by a given buffer "
+                        + "distance, and output the results in GML.",
                 pb.getAbstract().getValue());
 
-        assertEquals(2, pb.getMetadata().size());
-        assertEquals("buffer", ((MetadataType) pb.getMetadata().get(0)).getTitle());
-        assertEquals("polygon", ((MetadataType) pb.getMetadata().get(1)).getTitle());
+        Assert.assertEquals(2, pb.getMetadata().size());
+        Assert.assertEquals("buffer", ((MetadataType) pb.getMetadata().get(0)).getTitle());
+        Assert.assertEquals("polygon", ((MetadataType) pb.getMetadata().get(1)).getTitle());
     }
 
     void assertLanguages(LanguagesType1 l) {
-        assertNotNull(l.getDefault());
-        assertEquals("en-CA", l.getDefault().getLanguage());
+        Assert.assertNotNull(l.getDefault());
+        Assert.assertEquals("en-CA", l.getDefault().getLanguage());
 
-        assertEquals(2, l.getSupported().getLanguage().size());
-        assertEquals("en-CA", l.getSupported().getLanguage().get(0));
-        assertEquals("fr-CA", l.getSupported().getLanguage().get(1));
+        Assert.assertEquals(2, l.getSupported().getLanguage().size());
+        Assert.assertEquals("en-CA", l.getSupported().getLanguage().get(0));
+        Assert.assertEquals("fr-CA", l.getSupported().getLanguage().get(1));
     }
 }

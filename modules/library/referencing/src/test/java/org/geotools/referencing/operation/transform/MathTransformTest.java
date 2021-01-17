@@ -16,7 +16,13 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.geom.AffineTransform;
 import java.util.Arrays;
@@ -32,7 +38,8 @@ import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.matrix.XMatrix;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -167,7 +174,7 @@ public final class MathTransformTest {
                 assertTrue(sub.isAffine());
                 assertEquals(sub, new GeneralMatrix(((LinearTransform) transform).getMatrix()));
                 assertInterfaced(transform);
-                assertTrue(i == transform.getSourceDimensions());
+                assertEquals(i, transform.getSourceDimensions());
             }
             /*
              * Check transformations and the inverse transformations.
@@ -298,7 +305,7 @@ public final class MathTransformTest {
             ctr.transform(sourcePt, 0, targetPt, 0, numPts);
             for (int i = random.nextInt(2) + 1; --i >= 0; ) {
                 final MathTransform1D step = getRandomTransform1D();
-                ctr = (MathTransform1D) factory.createConcatenatedTransform(ctr, step);
+                ctr = factory.createConcatenatedTransform(ctr, step);
                 step.transform(targetPt, 0, targetPt, 0, numPts);
             }
             ctr.transform(sourcePt, 0, compare, 0, numPts);
@@ -410,8 +417,7 @@ public final class MathTransformTest {
         for (int pass = 0; pass < 200; pass++) {
             for (int j = 0; j < maxDimSource; j++) {
                 final double ord = 100 * random.nextDouble();
-                for (int i = 0; i < sources.length; i++) {
-                    final GeneralDirectPosition source = sources[i];
+                for (final GeneralDirectPosition source : sources) {
                     if (j < source.ordinates.length) {
                         source.ordinates[j] = ord;
                     }
@@ -436,7 +442,7 @@ public final class MathTransformTest {
                     buffer.append(i).append(']');
                     final String label = buffer.toString();
                     final GeneralDirectPosition targetI = targets[i];
-                    assertTrue(targetJ.ordinates != targetI.ordinates);
+                    assertNotSame(targetJ.ordinates, targetI.ordinates);
                     for (int k = Math.min(targetJ.ordinates.length, targetI.ordinates.length);
                             --k >= 0; ) {
                         assertEquals(label, targetJ.ordinates[k], targetI.ordinates[k], 1E-6);
@@ -520,8 +526,8 @@ public final class MathTransformTest {
         if (transform.getTargetDimensions() != dim) {
             dim = 0;
         }
-        assertTrue("MathTransform1D", (dim == 1) == (transform instanceof MathTransform1D));
-        assertTrue("MathTransform2D", (dim == 2) == (transform instanceof MathTransform2D));
+        assertEquals("MathTransform1D", (dim == 1), (transform instanceof MathTransform1D));
+        assertEquals("MathTransform2D", (dim == 2), (transform instanceof MathTransform2D));
     }
 
     /**

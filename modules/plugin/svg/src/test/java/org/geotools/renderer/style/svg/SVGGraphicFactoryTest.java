@@ -17,7 +17,7 @@
 package org.geotools.renderer.style.svg;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
@@ -30,7 +30,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.Icon;
-import junit.framework.TestCase;
 import org.apache.batik.bridge.TextNode;
 import org.apache.batik.gvt.CompositeGraphicsNode;
 import org.apache.batik.gvt.GraphicsNode;
@@ -38,51 +37,59 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.style.GraphicCache;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.factory.Hints;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
 import org.xml.sax.SAXException;
 
-public class SVGGraphicFactoryTest extends TestCase {
+public class SVGGraphicFactoryTest {
 
     private FilterFactory ff;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
 
         ff = CommonFactoryFinder.getFilterFactory(null);
     }
 
+    @Test
     public void testNull() throws Exception {
         SVGGraphicFactory svg = new SVGGraphicFactory();
-        assertNull(svg.getIcon(null, ff.literal("http://www.nowhere.com"), null, 20));
+        Assert.assertNull(svg.getIcon(null, ff.literal("http://www.nowhere.com"), null, 20));
     }
 
+    @Test
     public void testInvalidPaths() throws Exception {
         SVGGraphicFactory svg = new SVGGraphicFactory();
-        assertNull(svg.getIcon(null, ff.literal("http://www.nowhere.com"), "image/svg+not!", 20));
+        Assert.assertNull(
+                svg.getIcon(null, ff.literal("http://www.nowhere.com"), "image/svg+not!", 20));
         try {
             svg.getIcon(null, ff.literal("ThisIsNotAUrl"), "image/svg", 20);
-            fail("Should have throw an exception, invalid url");
+            Assert.fail("Should have throw an exception, invalid url");
         } catch (IllegalArgumentException e) {
         }
     }
 
+    @Test
     public void testLocalURL() throws Exception {
         SVGGraphicFactory svg = new SVGGraphicFactory();
         URL url = SVGGraphicFactory.class.getResource("gradient.svg");
-        assertNotNull(url);
+        Assert.assertNotNull(url);
         // first call, non cached path
         Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", 20);
-        assertNotNull(icon);
-        assertEquals(20, icon.getIconHeight());
+        Assert.assertNotNull(icon);
+        Assert.assertEquals(20, icon.getIconHeight());
         // check caching is working
-        assertTrue(RenderableSVGCache.glyphCache.containsKey(url.toString()));
+        Assert.assertTrue(RenderableSVGCache.glyphCache.containsKey(url.toString()));
         // second call, hopefully using the cached path
         icon = svg.getIcon(null, ff.literal(url), "image/svg", 20);
-        assertNotNull(icon);
-        assertEquals(20, icon.getIconHeight());
+        Assert.assertNotNull(icon);
+        Assert.assertEquals(20, icon.getIconHeight());
     }
 
+    @Test
     public void testLocalURLXEE() throws Exception {
         // disable references to entity stored on local file
         HashMap<Key, Object> hints = new HashMap<>();
@@ -92,7 +99,7 @@ public class SVGGraphicFactoryTest extends TestCase {
             URL url = SVGGraphicFactory.class.getResource("attack.svg");
             SVGGraphicFactory.SVGIcon icon =
                     (SVGGraphicFactory.SVGIcon) svg.getIcon(null, ff.literal(url), "image/svg", 20);
-            assertEquals("", getIconText(icon));
+            Assert.assertEquals("", getIconText(icon));
         } catch (Exception e) {
             assertThat(e.getMessage(), containsString("passwd"));
         }
@@ -101,7 +108,7 @@ public class SVGGraphicFactoryTest extends TestCase {
     private String getIconText(SVGGraphicFactory.SVGIcon icon) {
         GraphicsNode node = icon.svg.node;
         TextNode text = getTextNode(node);
-        assertNotNull(text);
+        Assert.assertNotNull(text);
         return text.getText();
     }
 
@@ -122,49 +129,53 @@ public class SVGGraphicFactoryTest extends TestCase {
         return null;
     }
 
+    @Test
     public void testNaturalSize() throws Exception {
         SVGGraphicFactory svg = new SVGGraphicFactory();
         URL url = SVGGraphicFactory.class.getResource("gradient.svg");
-        assertNotNull(url);
+        Assert.assertNotNull(url);
         // first call, non cached path
         Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", -1);
-        assertNotNull(icon);
-        assertEquals(500, icon.getIconHeight());
+        Assert.assertNotNull(icon);
+        Assert.assertEquals(500, icon.getIconHeight());
     }
 
+    @Test
     public void testSizeWithPixels() throws Exception {
         SVGGraphicFactory svg = new SVGGraphicFactory();
         URL url = SVGGraphicFactory.class.getResource("gradient-pixels.svg");
-        assertNotNull(url);
+        Assert.assertNotNull(url);
         // first call, non cached path
         Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", -1);
-        assertNotNull(icon);
-        assertEquals(500, icon.getIconHeight());
+        Assert.assertNotNull(icon);
+        Assert.assertEquals(500, icon.getIconHeight());
     }
 
     /**
      * Tests that a fetched graphic is added to the cache, and that the {@link
      * GraphicCache#clearCache()} method correctly clears the cache.
      */
+    @Test
     public void testClearCache() throws Exception {
         SVGGraphicFactory svg = new SVGGraphicFactory();
         URL url = SVGGraphicFactory.class.getResource("gradient.svg");
 
-        assertNotNull(url);
+        Assert.assertNotNull(url);
         Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", -1);
-        assertNotNull(icon);
+        Assert.assertNotNull(icon);
 
         String evaluatedUrl = ff.literal(url).evaluate(null, String.class);
-        assertTrue(RenderableSVGCache.glyphCache.containsKey(evaluatedUrl));
-        assertNotNull(RenderableSVGCache.glyphCache.get(evaluatedUrl));
+        Assert.assertTrue(RenderableSVGCache.glyphCache.containsKey(evaluatedUrl));
+        Assert.assertNotNull(RenderableSVGCache.glyphCache.get(evaluatedUrl));
 
         ((GraphicCache) svg).clearCache();
-        assertTrue(RenderableSVGCache.glyphCache.isEmpty());
+        Assert.assertTrue(RenderableSVGCache.glyphCache.isEmpty());
     }
 
+    @Test
     public void testConcurrentLoad() throws Exception {
         URL url = SVGGraphicFactory.class.getResource("gradient.svg");
-        assertNotNull(url);
+        Assert.assertNotNull(url);
         Literal expression = ff.literal(url);
 
         // create N threads and have them load the same SVG over a graphic factory. Do it a number
@@ -181,7 +192,7 @@ public class SVGGraphicFactoryTest extends TestCase {
                         protected RenderableSVG toRenderableSVG(String svgfile, URL svgUrl)
                                 throws SAXException, IOException {
                             int value = counter.incrementAndGet();
-                            assertEquals(1, value);
+                            Assert.assertEquals(1, value);
                             return super.toRenderableSVG(svgfile, svgUrl);
                         }
                     };
@@ -192,9 +203,10 @@ public class SVGGraphicFactoryTest extends TestCase {
                 executorService.submit(
                         () -> {
                             Icon icon = svg.getIcon(null, expression, "image/svg", 20);
-                            assertNotNull(icon);
-                            assertEquals(20, icon.getIconHeight());
-                            assertTrue(RenderableSVGCache.glyphCache.containsKey(url.toString()));
+                            Assert.assertNotNull(icon);
+                            Assert.assertEquals(20, icon.getIconHeight());
+                            Assert.assertTrue(
+                                    RenderableSVGCache.glyphCache.containsKey(url.toString()));
                             return null;
                         });
             }

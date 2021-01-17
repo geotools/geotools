@@ -111,8 +111,8 @@ public class ArrayConverterFactoryTest {
                 factory.createConverter(array.getClass(), Integer[].class, new Hints());
         int[] converted = converter.convert(array, int[].class);
         assertEquals(3, converted.length);
-        assertEquals((int) 1, converted[0]);
-        assertEquals((int) 2, converted[1]);
-        assertEquals((int) 3, converted[2]);
+        assertEquals(1, converted[0]);
+        assertEquals(2, converted[1]);
+        assertEquals(3, converted[2]);
     }
 }

@@ -40,7 +40,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
@@ -93,7 +92,7 @@ public class ProcessExample {
 
         WKTReader reader = new WKTReader(new GeometryFactory());
 
-        Geometry geom1 = (Polygon) reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
+        Geometry geom1 = reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
         Double buffer = Double.valueOf(213.78);
 
         Map<String, Object> map = new HashMap<>();
@@ -124,7 +123,7 @@ public class ProcessExample {
             features.add(b.buildFeature(i + ""));
         }
 
-        Map<String, Object> input = new HashMap();
+        Map<String, Object> input = new HashMap<>();
         input.put(BufferFeatureCollectionFactory.FEATURES.key, features);
         input.put(BufferFeatureCollectionFactory.BUFFER.key, 10d);
 

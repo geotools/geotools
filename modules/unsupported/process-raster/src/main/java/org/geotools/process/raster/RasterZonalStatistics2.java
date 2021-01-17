@@ -210,6 +210,7 @@ public class RasterZonalStatistics2 implements RasterProcess {
         // Operation execution
         GridCoverage2D output = (GridCoverage2D) PROCESSOR.doOperation(param);
         // Retrieval of the result
+        @SuppressWarnings("unchecked")
         List<ZoneGeometry> value =
                 (List<ZoneGeometry>) output.getProperty(ZonalStatsDescriptor.ZS_PROPERTY);
         return value;

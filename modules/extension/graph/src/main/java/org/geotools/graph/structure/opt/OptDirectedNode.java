@@ -129,8 +129,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     /** @see DirectedNode#getInEdge(DirectedNode) */
     @Override
     public Edge getInEdge(DirectedNode other) {
-        for (int i = 0; i < m_in.length; i++) {
-            if (m_in[i].getInNode().equals(other)) return (m_in[i]);
+        for (DirectedEdge directedEdge : m_in) {
+            if (directedEdge.getInNode().equals(other)) return directedEdge;
         }
         return (null);
     }
@@ -138,8 +138,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     /** @see DirectedNode#getOutEdge(DirectedNode) */
     @Override
     public Edge getOutEdge(DirectedNode other) {
-        for (int i = 0; i < m_out.length; i++) {
-            if (m_out[i].getOutNode().equals(other)) return (m_out[i]);
+        for (DirectedEdge directedEdge : m_out) {
+            if (directedEdge.getOutNode().equals(other)) return directedEdge;
         }
 
         return (null);
@@ -159,8 +159,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     public List<Edge> getInEdges(DirectedNode other) {
         ArrayList<Edge> edges = new ArrayList<>();
 
-        for (int i = 0; i < m_in.length; i++) {
-            if (m_in[i].getInNode().equals(other)) edges.add(m_in[i]);
+        for (DirectedEdge directedEdge : m_in) {
+            if (directedEdge.getInNode().equals(other)) edges.add(directedEdge);
         }
 
         return (edges);
@@ -171,8 +171,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     public List<Edge> getOutEdges(DirectedNode other) {
         ArrayList<Edge> edges = new ArrayList<>();
 
-        for (int i = 0; i < m_out.length; i++) {
-            if (m_out[i].getOutNode().equals(other)) edges.add(m_out[i]);
+        for (DirectedEdge directedEdge : m_out) {
+            if (directedEdge.getOutNode().equals(other)) edges.add(directedEdge);
         }
 
         return (edges);
@@ -182,8 +182,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     @Override
     public List<DirectedEdge> getEdges() {
         ArrayList<DirectedEdge> edges = new ArrayList<>();
-        for (int i = 0; i < m_in.length; i++) edges.add(m_in[i]);
-        for (int i = 0; i < m_out.length; i++) edges.add(m_out[i]);
+        for (DirectedEdge edge : m_in) edges.add(edge);
+        for (DirectedEdge directedEdge : m_out) edges.add(directedEdge);
 
         return (edges);
     }
@@ -202,8 +202,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     public List<DirectedEdge> getInEdges() {
         ArrayList<DirectedEdge> edges = new ArrayList<>();
 
-        for (int i = 0; i < m_in.length; i++) {
-            edges.add(m_in[i]);
+        for (DirectedEdge directedEdge : m_in) {
+            edges.add(directedEdge);
         }
         return (edges);
     }
@@ -222,8 +222,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     public List<DirectedEdge> getOutEdges() {
         ArrayList<DirectedEdge> edges = new ArrayList<>();
 
-        for (int i = 0; i < m_out.length; i++) {
-            edges.add(m_out[i]);
+        for (DirectedEdge directedEdge : m_out) {
+            edges.add(directedEdge);
         }
         return (edges);
     }

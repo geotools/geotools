@@ -16,7 +16,8 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,8 +25,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Locale;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.util.GenericName;
+import org.opengis.util.InternationalString;
 
 /**
  * Tests the various {@link InternationalString} implementations.

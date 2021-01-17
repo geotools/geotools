@@ -26,7 +26,16 @@ import org.geotools.ysld.Tuple;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.emitter.Emitable;
 import org.yaml.snakeyaml.emitter.Emitter;
-import org.yaml.snakeyaml.events.*;
+import org.yaml.snakeyaml.events.DocumentEndEvent;
+import org.yaml.snakeyaml.events.DocumentStartEvent;
+import org.yaml.snakeyaml.events.ImplicitTuple;
+import org.yaml.snakeyaml.events.MappingEndEvent;
+import org.yaml.snakeyaml.events.MappingStartEvent;
+import org.yaml.snakeyaml.events.ScalarEvent;
+import org.yaml.snakeyaml.events.SequenceEndEvent;
+import org.yaml.snakeyaml.events.SequenceStartEvent;
+import org.yaml.snakeyaml.events.StreamEndEvent;
+import org.yaml.snakeyaml.events.StreamStartEvent;
 
 /**
  * Context for {@link SldTransformer}
@@ -62,7 +71,7 @@ class SldTransformContext {
 
         yaml = new Emitter(output, dumpOpts);
 
-        handlers = new ArrayDeque<SldTransformHandler>();
+        handlers = new ArrayDeque<>();
     }
 
     public void trace() {

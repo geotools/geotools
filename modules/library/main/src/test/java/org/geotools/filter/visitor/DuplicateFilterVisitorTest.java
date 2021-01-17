@@ -16,17 +16,19 @@
  */
 package org.geotools.filter.visitor;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.NativeFilter;
@@ -46,18 +48,16 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Cory Horner, Refractions Research Inc.
  */
-public class DuplicateFilterVisitorTest extends TestCase {
+public class DuplicateFilterVisitorTest {
 
     private org.opengis.filter.FilterFactory2 fac;
 
-    public DuplicateFilterVisitorTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         fac = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
     }
 
+    @Test
     public void testLogicFilterDuplication() throws IllegalFilterException {
         // create a filter
         PropertyIsGreaterThan greater = fac.greater(fac.literal(2), fac.literal(1));
@@ -69,10 +69,11 @@ public class DuplicateFilterVisitorTest extends TestCase {
         Filter newFilter = (Filter) and.accept(visitor, fac);
 
         // compare it
-        assertNotNull(newFilter);
-        assertEquals(and, newFilter);
+        Assert.assertNotNull(newFilter);
+        Assert.assertEquals(and, newFilter);
     }
 
+    @Test
     public void testOptimizationExample() {
         Expression add = fac.add(fac.literal(1), fac.literal(2));
         class Optimization extends DuplicatingFilterVisitor {
@@ -80,8 +81,8 @@ public class DuplicateFilterVisitorTest extends TestCase {
                 Expression expr1 = expression.getExpression1();
                 Expression expr2 = expression.getExpression2();
                 if (expr1 instanceof Literal && expr2 instanceof Literal) {
-                    Double number1 = (Double) expr1.evaluate(null, Double.class);
-                    Double number2 = (Double) expr2.evaluate(null, Double.class);
+                    Double number1 = expr1.evaluate(null, Double.class);
+                    Double number2 = expr2.evaluate(null, Double.class);
 
                     return ff.literal(number1.doubleValue() + number2.doubleValue());
                 }
@@ -89,20 +90,22 @@ public class DuplicateFilterVisitorTest extends TestCase {
             }
         };
         Expression modified = (Expression) add.accept(new Optimization(), null);
-        assertTrue(modified instanceof Literal);
+        Assert.assertTrue(modified instanceof Literal);
     }
 
+    @Test
     public void testNotFilter() {
         // set GEOT-1566
         PropertyIsLike like = fac.like(fac.property("stringProperty"), "ab*");
         Not not = fac.not(like);
         DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor(fac);
         Not clone = (Not) not.accept(visitor, null);
-        assertEquals(not, clone);
-        assertNotSame(not, clone);
-        assertNotSame(like, clone.getFilter());
+        Assert.assertEquals(not, clone);
+        Assert.assertNotSame(not, clone);
+        Assert.assertNotSame(like, clone.getFilter());
     }
 
+    @Test
     public void testPreservedNamespaceContext() {
         // set GEOT-3756
         NamespaceSupport nsContext = new NamespaceSupport();
@@ -111,11 +114,12 @@ public class DuplicateFilterVisitorTest extends TestCase {
         BBOX bbox = fac.bbox(geometry, 0, 0, 1, 1, "EPSG:4326");
         DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor(fac);
         BBOX clone = (BBOX) bbox.accept(visitor, null);
-        assertEquals(bbox, clone);
-        assertNotSame(bbox, clone);
-        assertSame(nsContext, ((PropertyName) clone.getExpression1()).getNamespaceContext());
+        Assert.assertEquals(bbox, clone);
+        Assert.assertNotSame(bbox, clone);
+        Assert.assertSame(nsContext, ((PropertyName) clone.getExpression1()).getNamespaceContext());
     }
 
+    @Test
     public void testNativeFilterIsDuplicated() {
         // build a filter that uses a native filter
         BBOX boundingBoxFilter =

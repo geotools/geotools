@@ -131,7 +131,7 @@ public final class GeoTiffIIOMetadataDecoder {
 
         // getting the geokey ddirectory
         IIOMetadataNode geoKeyDir = getTiffField(rootNode, GeoTIFFTagSet.TAG_GEO_KEY_DIRECTORY);
-        geoKeys = new HashMap<Integer, GeoKeyEntry>();
+        geoKeys = new HashMap<>();
         if (geoKeyDir != null) {
             NodeList geoKeyDirEntries = geoKeyDir.getFirstChild().getChildNodes();
             int length = geoKeyDirEntries.getLength();
@@ -358,8 +358,8 @@ public final class GeoTiffIIOMetadataDecoder {
             return false;
         } else {
             final double[] values = pixelScale.getValues();
-            for (int i = 0; i < values.length; i++) {
-                if (Double.isInfinite(values[i]) || Double.isNaN(values[i])) {
+            for (double value : values) {
+                if (Double.isInfinite(value) || Double.isNaN(value)) {
                     return false;
                 }
             }

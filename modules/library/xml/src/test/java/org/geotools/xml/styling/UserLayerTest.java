@@ -23,7 +23,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -45,6 +44,8 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -53,7 +54,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class UserLayerTest extends TestCase {
+public class UserLayerTest {
 
     private static final String CRS_WKT =
             "GEOGCS[\"WGS 84\", "
@@ -112,6 +113,7 @@ public class UserLayerTest extends TestCase {
         }
     }
 
+    @Test
     public void testUserLayerWithInlineFeatures() throws Exception {
         // create the feature's schema ----------------------------------------
         final CoordinateReferenceSystem crs = CRS.parseWKT(CRS_WKT);
@@ -169,7 +171,7 @@ public class UserLayerTest extends TestCase {
         sld1.addStyledLayer(layer);
 
         // marshal the SLD to XML ---------------------------------------------
-        final Map nsMap = new HashMap();
+        final Map<URI, String> nsMap = new HashMap<>();
         nsMap.put(MY_URI, MY_NAMESPACE);
         final SLDTransformer sldTransformer = new SLDTransformer(nsMap);
         sldTransformer.setIndentation(2);
@@ -184,42 +186,43 @@ public class UserLayerTest extends TestCase {
 
         // check both SLDs ----------------------------------------------------
         final StyledLayer[] layers = sld2.getStyledLayers();
-        assertNotNull("Styled layers array MUST NOT be null", layers);
-        assertEquals("Styled layers array MUST be 1-element long", 1, layers.length);
+        Assert.assertNotNull("Styled layers array MUST NOT be null", layers);
+        Assert.assertEquals("Styled layers array MUST be 1-element long", 1, layers.length);
         final StyledLayer sLayer = layers[0];
-        assertNotNull("Single styled layer MUST NOT be null", sLayer);
-        assertTrue(
+        Assert.assertNotNull("Single styled layer MUST NOT be null", sLayer);
+        Assert.assertTrue(
                 "Single layer MUST be a UserLayer",
                 UserLayer.class.isAssignableFrom(sLayer.getClass()));
         final UserLayer uLayer = (UserLayer) sLayer;
         final String lName = uLayer.getName();
-        assertEquals("Read layer name MUST match", LAYER_NAME, lName);
+        Assert.assertEquals("Read layer name MUST match", LAYER_NAME, lName);
         final SimpleFeatureType ft = uLayer.getInlineFeatureType();
-        assertNotNull("Unmarshalled feature type MUST NOT be null", ft);
+        Assert.assertNotNull("Unmarshalled feature type MUST NOT be null", ft);
         final String fName = ft.getTypeName();
-        assertEquals("Read feature type name MUST match", MY_FEATURE, fName);
-        assertEquals(
+        Assert.assertEquals("Read feature type name MUST match", MY_FEATURE, fName);
+        Assert.assertEquals(
                 CRS.decode("EPSG:4326"), ft.getGeometryDescriptor().getCoordinateReferenceSystem());
     }
 
+    @Test
     public void testUserLayerWithRemoteOWS() throws Exception {
         URL sldUrl = TestData.getResource(this, "remoteOws.sld");
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         SLDParser stylereader = new SLDParser(factory, sldUrl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
-        assertEquals(1, sld.getStyledLayers().length);
-        assertTrue(sld.getStyledLayers()[0] instanceof UserLayer);
+        Assert.assertEquals(1, sld.getStyledLayers().length);
+        Assert.assertTrue(sld.getStyledLayers()[0] instanceof UserLayer);
         UserLayer layer = (UserLayer) sld.getStyledLayers()[0];
-        assertEquals("LayerWithRemoteOWS", layer.getName());
-        assertNotNull(layer.getRemoteOWS());
-        assertEquals("WFS", layer.getRemoteOWS().getService());
-        assertEquals(
+        Assert.assertEquals("LayerWithRemoteOWS", layer.getName());
+        Assert.assertNotNull(layer.getRemoteOWS());
+        Assert.assertEquals("WFS", layer.getRemoteOWS().getService());
+        Assert.assertEquals(
                 "http://sigma.openplans.org:8080/geoserver/wfs?",
                 layer.getRemoteOWS().getOnlineResource());
-        assertEquals(1, layer.getLayerFeatureConstraints().length);
+        Assert.assertEquals(1, layer.getLayerFeatureConstraints().length);
         FeatureTypeConstraint ftc = layer.getLayerFeatureConstraints()[0];
-        assertEquals("topp:states", ftc.getFeatureTypeName());
-        assertNotNull(ftc.getFilter());
-        assertTrue(ftc.getFilter() instanceof PropertyIsLessThan);
+        Assert.assertEquals("topp:states", ftc.getFeatureTypeName());
+        Assert.assertNotNull(ftc.getFilter());
+        Assert.assertTrue(ftc.getFilter() instanceof PropertyIsLessThan);
     }
 }

@@ -71,8 +71,8 @@ public class PointArrayPropertyTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List points = node.getChildValues(Point.class);
+        List<Point> points = node.getChildValues(Point.class);
 
-        return (Point[]) points.toArray(new Point[points.size()]);
+        return points.toArray(new Point[points.size()]);
     }
 }

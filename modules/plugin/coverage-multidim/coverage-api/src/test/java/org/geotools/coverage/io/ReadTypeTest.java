@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 
 import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -71,9 +71,8 @@ public class ReadTypeTest {
     public void testJAIReadType() throws IOException {
         // Definition of the reader
         ImageReader reader = new TIFFImageReaderSpi().createReaderInstance();
-        FileImageInputStream in = new FileImageInputStream(URLs.urlToFile(granuleUrl));
 
-        try {
+        try (FileImageInputStream in = new FileImageInputStream(URLs.urlToFile(granuleUrl))) {
             reader.setInput(in);
 
             // Definition of the read type
@@ -139,9 +138,6 @@ public class ReadTypeTest {
             assertEquals(output.getWidth(), sourceRegion.width);
             assertEquals(output.getHeight(), sourceRegion.height);
         } finally {
-            if (in != null) {
-                in.close();
-            }
             if (reader != null) {
                 reader.dispose();
             }

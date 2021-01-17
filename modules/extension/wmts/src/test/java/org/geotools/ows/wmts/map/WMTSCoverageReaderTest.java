@@ -17,17 +17,33 @@
 package org.geotools.ows.wmts.map;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.media.jai.Interpolation;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import org.apache.commons.lang3.NotImplementedException;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -37,11 +53,13 @@ import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.request.GetTileRequest;
+import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
+import org.opengis.parameter.GeneralParameterValue;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -56,9 +74,7 @@ public class WMTSCoverageReaderTest {
     public void testRESTInitMapRequest() throws Exception {
         WebMapTileServer server = createServer(REST_CAPA_RESOURCENAME);
         WMTSLayer layer =
-                (WMTSLayer)
-                        server.getCapabilities()
-                                .getLayer("ch.are.agglomerationen_isolierte_staedte");
+                server.getCapabilities().getLayer("ch.are.agglomerationen_isolierte_staedte");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);
@@ -138,6 +154,45 @@ public class WMTSCoverageReaderTest {
         assertTrue(
                 "Expected header1 in the GetTile request",
                 getTileHeadersCalled.containsKey("header1"));
+    }
+
+    @Test
+    public void testGEOT6754() throws Exception {
+        HTTPClient httpClientMock =
+                new MockHttpClient() {
+                    @Override
+                    public HTTPResponse get(URL url, Map<String, String> headers)
+                            throws IOException {
+                        if (url.toString().toLowerCase().contains("request=gettile")) {
+                            return new MockHTTPResponse("test-data/world.png");
+                        } else {
+                            throw new NotImplementedException(
+                                    "request is not implemented. " + url.toString());
+                        }
+                    }
+                };
+        File fileCapabilities = getResourceFile("test-data/topp_states.getcapa.xml");
+        WMTSCapabilities capabilities = createCapabilities(fileCapabilities);
+        WebMapTileServer server =
+                new WebMapTileServer(
+                        new URL("http://fake.fake/fake"), httpClientMock, capabilities);
+
+        WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
+        WMTSCoverageReader coverageReader = new WMTSCoverageReader(server, layer);
+
+        ReferencedEnvelope requestedEnvelope =
+                new ReferencedEnvelope(-100, -98, 41, 43, CRS.decode("EPSG:4326", true));
+        GridGeometry2D gridGeometry =
+                new GridGeometry2D(new GridEnvelope2D(0, 0, 1018, 632), requestedEnvelope);
+
+        final Parameter<Interpolation> paramInterpolation =
+                (Parameter<Interpolation>) AbstractGridFormat.INTERPOLATION.createValue();
+        paramInterpolation.setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        Parameter<GridGeometry2D> paramGridGeometry =
+                (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        paramGridGeometry.setValue(gridGeometry);
+
+        coverageReader.read(new GeneralParameterValue[] {paramInterpolation, paramGridGeometry});
     }
 
     public List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)

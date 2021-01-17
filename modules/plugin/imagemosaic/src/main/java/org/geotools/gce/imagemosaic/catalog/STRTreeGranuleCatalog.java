@@ -187,7 +187,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     private void createIndex() {
 
         Iterator<GranuleDescriptor> it = null;
-        final Collection<GranuleDescriptor> features = new ArrayList<GranuleDescriptor>();
+        final Collection<GranuleDescriptor> features = new ArrayList<>();
         //
         // Load tiles informations, especially the bounds, which will be
         // reused
@@ -390,6 +390,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             if (comparator == null) {
                 index.query(requestedBBox, new JTSIndexVisitorAdapter(visitor, q));
             } else {
+                @SuppressWarnings("unchecked")
                 final List<GranuleDescriptor> unfilteredGranules = index.query(requestedBBox);
                 List<GranuleDescriptor> granules =
                         unfilteredGranules

@@ -17,15 +17,10 @@
  */
 package org.geotools.process.geometry;
 
-import java.util.PriorityQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.geotools.geometry.jts.GeometryBuilder;
-import org.geotools.util.logging.Logging;
-import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.algorithm.construct.MaximumInscribedCircle;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
 /**
@@ -35,7 +30,6 @@ import org.locationtech.jts.geom.Polygon;
  * @author Casper Børgesen
  */
 public class PolyLabeller {
-    private static final Logger LOGGER = Logging.getLogger(PolyLabeller.class);
 
     static GeometryBuilder GB = new GeometryBuilder();
 
@@ -54,74 +48,6 @@ public class PolyLabeller {
             throw new IllegalStateException("Can not label empty geometries");
         }
 
-        // find the bounding box of the outer ring
-        double minX, minY, maxX, maxY;
-        Envelope env = multiPolygon.getEnvelopeInternal();
-        minX = env.getMinX();
-        maxX = env.getMaxX();
-        minY = env.getMinY();
-        maxY = env.getMaxY();
-        double width = env.getWidth();
-        double height = env.getHeight();
-        double cellSize = Math.min(width, height);
-        double h = cellSize / 2.0;
-
-        // a priority queue of cells in order of their "potential" (max distance
-        // to polygon)
-        PriorityQueue<Cell> cellQueue = new PriorityQueue<>();
-
-        // cover polygon with initial cells
-        for (double x = minX; x < maxX; x += cellSize) {
-            for (double y = minY; y < maxY; y += cellSize) {
-                cellQueue.add(new Cell(x + h, y + h, h, multiPolygon));
-            }
-        }
-
-        // take centroid as the first best guess
-        Cell bestCell = getCentroidCell(multiPolygon);
-        int numProbes = cellQueue.size();
-
-        while (!cellQueue.isEmpty()) {
-            // pick the most promising cell from the queue
-            Cell cell = cellQueue.remove();
-
-            // update the best cell if we found a better one
-            if (cell.getD() > bestCell.getD()) {
-                bestCell = cell;
-                if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.finer(
-                            "found best "
-                                    + (Math.round(1e4 * cell.getD()) / 1e4)
-                                    + " after "
-                                    + numProbes
-                                    + " probes");
-                }
-            }
-
-            // do not drill down further if there's no chance of a better
-            // solution
-            if (cell.getMax() - bestCell.getD() <= precision) continue;
-
-            // split the cell into four cells
-            h = cell.getH() / 2;
-            cellQueue.add(new Cell(cell.getX() - h, cell.getY() - h, h, multiPolygon));
-            cellQueue.add(new Cell(cell.getX() + h, cell.getY() - h, h, multiPolygon));
-            cellQueue.add(new Cell(cell.getX() - h, cell.getY() + h, h, multiPolygon));
-            cellQueue.add(new Cell(cell.getX() + h, cell.getY() + h, h, multiPolygon));
-            numProbes += 4;
-        }
-
-        if (LOGGER.isLoggable(Level.FINER)) {
-            LOGGER.finer("num probes: " + numProbes);
-            LOGGER.finer("best distance: " + bestCell.getD());
-        }
-
-        return bestCell.getPoint();
-    }
-
-    // get a cell centered on polygon centroid
-    private static Cell getCentroidCell(MultiPolygon poly) {
-        Point p = poly.getCentroid();
-        return new Cell(p.getX(), p.getY(), 0, poly);
+        return MaximumInscribedCircle.getCenter(multiPolygon, precision);
     }
 }

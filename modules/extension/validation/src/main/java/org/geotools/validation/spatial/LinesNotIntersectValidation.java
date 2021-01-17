@@ -18,6 +18,7 @@ package org.geotools.validation.spatial;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -53,28 +54,28 @@ public class LinesNotIntersectValidation extends LineLineAbstractValidation {
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        ArrayList geoms = new ArrayList(); // FIDs used for lookup to see if any match
+        List<Geometry> geoms = new ArrayList<>(); // FIDs used for lookup to see if any match
         boolean result = true;
         Iterator it = layers.values().iterator();
 
         while (it.hasNext()) // for each layer
         {
             SimpleFeatureSource featureSource = (SimpleFeatureSource) it.next();
-            SimpleFeatureIterator features = featureSource.getFeatures().features();
 
-            try {
+            try (SimpleFeatureIterator features = featureSource.getFeatures().features()) {
                 while (features.hasNext()) // for each feature
                 {
                     // check if it intersects any of the previous features
                     SimpleFeature feature = features.next();
                     Geometry geom = (Geometry) feature.getDefaultGeometry();
 
-                    for (int i = 0; i < geoms.size(); i++) // for each existing geometry
-                    {
+                    // for each existing geometry
+                    for (Geometry geometry : geoms) {
                         // I don't trust this thing to work correctly
-                        if (geom.crosses((Geometry) geoms.get(i))) {
+                        if (geom.crosses(geometry)) {
                             results.error(feature, "Lines cross when they shouldn't.");
                             result = false;
                         }
@@ -82,8 +83,6 @@ public class LinesNotIntersectValidation extends LineLineAbstractValidation {
 
                     geoms.add(geom);
                 }
-            } finally {
-                features.close(); // this is an important line
             }
         }
 

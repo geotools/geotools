@@ -70,7 +70,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
     private static List<String> readerFileSuffixes;
     private static List<String> writerFileSuffixes;
 
-    private WindowActivatedListener listener;
+    private WindowActivatedListener<DialogFixture, Dialog, DialogDriver> listener;
 
     @BeforeClass
     public static void setupOnce() {
@@ -85,7 +85,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
          * or JFileChooser, because this is what the underlying Swing file chooser
          * creates and displays.
          */
-        listener = new WindowActivatedListener(JDialog.class);
+        listener = new WindowActivatedListener<>(JDialog.class);
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
     }
 

@@ -19,7 +19,6 @@ package org.geotools.data.solr;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -117,9 +116,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                             getSchema(), store.getSolrServer(), q, this.getDataStore());
             // if post filter, wrap it
             if (postFilter != null && postFilter != Filter.INCLUDE) {
-                reader =
-                        new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                reader, postFilter);
+                reader = new FilteringFeatureReader<>(reader, postFilter);
             }
             try {
                 if (reader.hasNext()) {
@@ -149,14 +146,11 @@ public class SolrFeatureSource extends ContentFeatureSource {
             Filter postFilter = split[1];
             if (postFilter != null && postFilter != Filter.INCLUDE) {
                 // grab a reader
-                FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
-                try {
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query)) {
                     while (reader.hasNext()) {
                         reader.next();
                         count++;
                     }
-                } finally {
-                    reader.close();
                 }
                 return count;
             } else {
@@ -216,9 +210,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
             }
             reader = new SolrFeatureReader(querySchema, store.getSolrServer(), q, store);
             if (postFilter != null && postFilter != Filter.INCLUDE) {
-                reader =
-                        new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                reader, postFilter);
+                reader = new FilteringFeatureReader<>(reader, postFilter);
                 if (!returnedSchema.equals(querySchema))
                     reader = new ReTypeFeatureReader(reader, returnedSchema);
             }
@@ -389,8 +381,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
 
                 String[] extraAttributes = extractor.getAttributeNames();
                 if (extraAttributes != null && extraAttributes.length > 0) {
-                    List<String> allAttributes =
-                            new ArrayList<String>(Arrays.asList(propertyNames));
+                    List<String> allAttributes = new ArrayList<>(Arrays.asList(propertyNames));
                     for (String extraAttribute : extraAttributes) {
                         if (!allAttributes.contains(extraAttribute))
                             allAttributes.add(extraAttribute);

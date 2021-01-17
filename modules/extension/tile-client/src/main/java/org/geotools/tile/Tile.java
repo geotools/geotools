@@ -22,14 +22,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.logging.Logging;
@@ -117,6 +113,9 @@ public abstract class Tile implements ImageLoader {
     /** A delegate to proved direct loading or load from a disk (cache). */
     private ImageLoader imageLoader = this;
 
+    /** The initiating service */
+    protected TileService service = null;
+
     public void setImageLoader(ImageLoader imageLoader) {
         if (imageLoader == null) {
             throw new IllegalArgumentException("ImageLoader cannot be null");
@@ -139,6 +138,12 @@ public abstract class Tile implements ImageLoader {
             throw new IllegalArgumentException("TileIdentifier cannot be null");
         }
         this.tileIdentifier = tileId;
+    }
+
+    public Tile(TileIdentifier tileId, ReferencedEnvelope env, int tileSize, TileService service) {
+        this(tileId, env, tileSize);
+        imageLoader = service;
+        this.service = service;
     }
 
     public void setStateChangedListener(TileStateChangedListener listener) {
@@ -176,19 +181,20 @@ public abstract class Tile implements ImageLoader {
         }
     }
 
-    @Override
+    /**
+     * Implementation of ImageLoader. Has been moved to {@link
+     * @see org.geotools.tile.TileService#loadImageTileImage(Tile)}
+     */
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("User-Agent", "Geotools Http client");
-        try (InputStream is = setupInputStream(getUrl(), headers)) {
-            return ImageIOExt.readBufferedImage(is);
+        if (service == null) {
+            throw new IllegalStateException("service cannot be null.");
         }
-    }
-
-    private InputStream setupInputStream(URL url, Map<String, String> headers) throws IOException {
-        HTTPClient client = new SimpleHttpClient();
-        return client.get(url, headers).getResponseStream();
+        final HTTPResponse response = service.getHttpClient().get(tile.getUrl());
+        try {
+            return ImageIOExt.readBufferedImage(response.getResponseStream());
+        } finally {
+            response.dispose();
+        }
     }
 
     /**
@@ -388,7 +394,6 @@ public abstract class Tile implements ImageLoader {
         return getUrl().equals(((Tile) other).getUrl());
     }
 
-    @Override
     public String toString() {
         return this.getId(); // this.getUrl().toString();
     }

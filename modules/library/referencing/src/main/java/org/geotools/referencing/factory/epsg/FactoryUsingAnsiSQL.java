@@ -17,7 +17,6 @@
 package org.geotools.referencing.factory.epsg;
 
 import java.sql.Connection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.sql.DataSource;
@@ -87,7 +86,7 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
      *
      * Subclasses can modify this map in their constructor in order to provide a different mapping.
      */
-    protected final Map map = new LinkedHashMap();
+    protected final Map<String, String> map = new LinkedHashMap<>();
 
     /**
      * The prefix before any table name. May be replaced by a schema if {@link #setSchema} is
@@ -143,9 +142,13 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
         } else if (length == 1) {
             throw new IllegalArgumentException(schema);
         }
-        for (final Iterator it = map.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
-            final String tableName = (String) entry.getValue();
+        /**
+         * Update the map, prepending the schema name to the table name so long as the value is a
+         * table name and not a field. This algorithm assumes that all old table names start with
+         * "epsg_".
+         */
+        for (final Map.Entry<String, String> entry : map.entrySet()) {
+            final String tableName = entry.getValue();
             /**
              * Update the map, prepending the schema name to the table name so long as the value is
              * a table name and not a field. This algorithm assumes that all old table names start
@@ -169,8 +172,8 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
     @Override
     protected String adaptSQL(final String statement) {
         final StringBuilder modified = new StringBuilder(statement);
-        for (final Iterator it = map.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
+            final Map.Entry entry = (Map.Entry) stringStringEntry;
             final String oldName = (String) entry.getKey();
             final String newName = (String) entry.getValue();
             /*

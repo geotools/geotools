@@ -26,8 +26,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.test.TestData;
 import org.geotools.validation.dto.ArgumentDTO;
@@ -96,7 +99,7 @@ public class ValidationProcessor {
      *
      * <p>Map of ArrayLists by featureType (the lists contain FeatureValidation instances)
      */
-    protected Map featureLookup;
+    protected Map<Object, List<FeatureValidation>> featureLookup;
 
     /**
      * Stores Lists of IntegrityValidation by featureType.
@@ -105,10 +108,10 @@ public class ValidationProcessor {
      *
      * <p>How are tests that map against all FeatureTypes stored?
      */
-    protected Map integrityLookup; //
+    protected Map<Object, List<IntegrityValidation>> integrityLookup; //
 
     /** List of feature types that have been modified. */
-    protected ArrayList modifiedFeatureTypes;
+    protected List modifiedFeatureTypes;
 
     /**
      * ValidationProcessor constructor.
@@ -116,8 +119,8 @@ public class ValidationProcessor {
      * <p>Initializes the data structure to hold the validations.
      */
     public ValidationProcessor() {
-        featureLookup = new HashMap();
-        integrityLookup = new HashMap();
+        featureLookup = new HashMap<>();
+        integrityLookup = new HashMap<>();
     }
 
     /**
@@ -131,25 +134,25 @@ public class ValidationProcessor {
 
         if (featureTypeList == Validation.ALL) // if null (ALL)
         {
-            ArrayList tests = (ArrayList) featureLookup.get(ANYTYPENAME);
+            List<FeatureValidation> tests = featureLookup.get(ANYTYPENAME);
 
             if (tests == null) { // if an ALL test doesn't exist yet
-                tests = new ArrayList(); // create it
+                tests = new ArrayList<>(); // create it
             }
 
             tests.add(validation);
             featureLookup.put(ANYTYPENAME, tests); // add the ALL test to it
         } else // a non ALL FeatureTypeInfo validation
         {
-            for (int i = 0; i < featureTypeList.length; i++) {
-                ArrayList tests = (ArrayList) featureLookup.get(featureTypeList[i]);
+            for (String s : featureTypeList) {
+                List<FeatureValidation> tests = featureLookup.get(s);
 
                 if (tests == null) { // if this FeatureTypeInfo doesn't have a validation test yet
-                    tests = new ArrayList(); // put it in the list
+                    tests = new ArrayList<>(); // put it in the list
                 }
 
                 tests.add(validation);
-                featureLookup.put(featureTypeList[i], tests); // add a validation to it
+                featureLookup.put(s, tests); // add a validation to it
             }
         }
     }
@@ -165,24 +168,24 @@ public class ValidationProcessor {
 
         if (integrityTypeList == Validation.ALL) // if null (ALL)
         {
-            ArrayList tests = (ArrayList) integrityLookup.get(ANYTYPENAME);
+            List<IntegrityValidation> tests = integrityLookup.get(ANYTYPENAME);
 
             if (tests == null) { // if an ALL test doesn't exist yet
-                tests = new ArrayList(); // create it
+                tests = new ArrayList<>(); // create it
             }
 
             tests.add(validation);
             integrityLookup.put(ANYTYPENAME, tests); // add the ALL test to it
         } else {
-            for (int i = 0; i < integrityTypeList.length; i++) {
-                ArrayList tests = (ArrayList) integrityLookup.get(integrityTypeList[i]);
+            for (String s : integrityTypeList) {
+                List<IntegrityValidation> tests = integrityLookup.get(s);
 
                 if (tests == null) { // if this FeatureTypeInfo doesn't have a validation test yet
-                    tests = new ArrayList(); // put it in the list
+                    tests = new ArrayList<>(); // put it in the list
                 }
 
                 tests.add(validation);
-                integrityLookup.put(integrityTypeList[i], tests); // add a validation to it
+                integrityLookup.put(s, tests); // add a validation to it
             }
         }
     }
@@ -193,7 +196,7 @@ public class ValidationProcessor {
      * <p>Add a FeatureValidation to the list of Feature tests
      */
     public void addValidation(FeatureValidation validation) {
-        addToFVLookup((FeatureValidation) validation);
+        addToFVLookup(validation);
     }
 
     /**
@@ -202,7 +205,7 @@ public class ValidationProcessor {
      * <p>Add an IntegrityValidation to the list of Integrity tests
      */
     public void addValidation(IntegrityValidation validation) {
-        addToIVLookup((IntegrityValidation) validation);
+        addToIVLookup(validation);
     }
 
     /**
@@ -213,17 +216,17 @@ public class ValidationProcessor {
      * @param typeName the FeatureTypeName
      * @return all the FeatureTypes that this FeatureTypeInfo uses.
      */
-    public Set getDependencies(String typeName) {
-        ArrayList validations = (ArrayList) integrityLookup.get(typeName);
-        HashSet s = new HashSet();
+    public Set<String> getDependencies(String typeName) {
+        List<IntegrityValidation> validations = integrityLookup.get(typeName);
+        Set<String> s = new HashSet<>();
 
         if (validations != null) {
-            for (int i = 0; i < validations.size(); i++) // for each validation
-            {
-                String[] types = ((Validation) validations.get(i)).getTypeRefs();
+            // for each validation
+            for (IntegrityValidation validation : validations) {
+                String[] types = validation.getTypeRefs();
 
-                for (int j = 0; j < types.length; j++) // for each FeatureTypeInfo
-                s.add(types[j]); // add it to the list
+                // for each FeatureTypeInfo
+                for (String type : types) s.add(type); // add it to the list
             }
         }
 
@@ -257,18 +260,17 @@ public class ValidationProcessor {
         SimpleFeatureType type = collection.getSchema();
 
         // check for any tests that are to be performed on ALL features
-        ArrayList tests = (ArrayList) featureLookup.get(ANYTYPENAME);
+        List<FeatureValidation> tests = featureLookup.get(ANYTYPENAME);
 
         // check for any FeatureTypeInfo specific tests
         String typeRef = dsID + ":" + type.getTypeName();
-        ArrayList FT_tests = (ArrayList) featureLookup.get(typeRef);
+        List<FeatureValidation> FT_tests = featureLookup.get(typeRef);
 
         // append featureType specific tests to the list of tests
         if (FT_tests != null) {
             if (tests != null) {
-                Iterator it = FT_tests.iterator();
-
-                while (it.hasNext()) tests.add((FeatureValidation) it.next());
+                Iterator<FeatureValidation> it = FT_tests.iterator();
+                while (it.hasNext()) tests.add(it.next());
             } else {
                 tests = FT_tests;
             }
@@ -276,15 +278,13 @@ public class ValidationProcessor {
 
         if (tests != null) // if we found some tests to be performed on this FeatureTypeInfo
         {
-            SimpleFeatureIterator features = collection.features();
-            try {
+            try (SimpleFeatureIterator features = collection.features()) {
                 while (features.hasNext()) // iterate through each feature and run the test on it
                 {
-                    SimpleFeature feature = (SimpleFeature) features.next();
+                    SimpleFeature feature = features.next();
 
                     // for each test that is to be performed on this feature
-                    for (int i = 0; i < tests.size(); i++) {
-                        FeatureValidation validator = (FeatureValidation) tests.get(i);
+                    for (FeatureValidation validator : tests) {
                         results.setValidation(validator);
                         try {
                             validator.validate(feature, type, results);
@@ -293,8 +293,6 @@ public class ValidationProcessor {
                         }
                     }
                 }
-            } finally {
-                features.close();
             }
         }
     }
@@ -321,9 +319,12 @@ public class ValidationProcessor {
      *     FeatureSource
      */
     public void runIntegrityTests(
-            Set<Name> typeRefs, Map stores, ReferencedEnvelope envelope, ValidationResults results)
+            Set<Name> typeRefs,
+            Map<String, SimpleFeatureSource> stores,
+            ReferencedEnvelope envelope,
+            ValidationResults results)
             throws Exception {
-        if ((integrityLookup == null) || (integrityLookup.size() == 0)) {
+        if ((integrityLookup == null) || (integrityLookup.isEmpty())) {
             LOGGER.fine("No tests defined by integrityLookup - validation not needed");
 
             return;
@@ -335,20 +336,21 @@ public class ValidationProcessor {
 
         if (typeRefs == null) {
             LOGGER.finer("Using default typeRegs for stores");
-            typeRefs = stores.keySet();
+            typeRefs =
+                    stores.keySet().stream().map(n -> new NameImpl(n)).collect(Collectors.toSet());
         } else if (typeRefs.isEmpty()) {
             LOGGER.finer("Validation test abandond - nothing was modified");
         }
 
         // convert each HashMap element into FeatureSources
         //
-        List tests = new ArrayList();
+        List<IntegrityValidation> tests = new ArrayList<>();
 
         // check for any tests that are to be performed on ALL features
         //
         LOGGER.finer("Finding tests for everybody");
 
-        List anyTests = (List) integrityLookup.get(ANYTYPENAME);
+        List<IntegrityValidation> anyTests = integrityLookup.get(ANYTYPENAME);
 
         if ((anyTests != null) && !anyTests.isEmpty()) {
             tests.addAll(anyTests);
@@ -365,7 +367,7 @@ public class ValidationProcessor {
 
             LOGGER.finer("Finding tests for typeRef:" + typeRef);
 
-            List moreTests = (List) integrityLookup.get(typeRef);
+            List<IntegrityValidation> moreTests = integrityLookup.get(typeRef);
 
             if ((moreTests != null) && !moreTests.isEmpty()) {
                 tests.addAll(moreTests);
@@ -380,9 +382,7 @@ public class ValidationProcessor {
 
         LOGGER.finer("Validation test about to run - " + tests.size() + " tests found");
 
-        for (Iterator j = tests.iterator(); j.hasNext(); ) {
-            IntegrityValidation validator = (IntegrityValidation) j.next();
-
+        for (IntegrityValidation validator : tests) {
             LOGGER.finer("Running test:" + validator.getName());
             results.setValidation(validator);
 
@@ -402,7 +402,7 @@ public class ValidationProcessor {
                 }
 
                 LOGGER.log(Level.WARNING, validator.getName() + " failed with " + error, e);
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                Logger.getGlobal().log(Level.INFO, "", e);
                 results.error(null, error);
             }
         }
@@ -412,23 +412,23 @@ public class ValidationProcessor {
         return name.getNamespaceURI() + ":" + name.getLocalPart();
     }
 
-    protected static final Set queryPlugInNames(Map testSuiteDTOs) {
-        Set plugInNames = new HashSet();
+    protected static final Set<String> queryPlugInNames(Map<String, TestSuiteDTO> testSuiteDTOs) {
+        Set<String> plugInNames = new HashSet<>();
 
-        Iterator i = testSuiteDTOs.keySet().iterator();
+        Iterator<String> i = testSuiteDTOs.keySet().iterator();
 
         // go through each test suite
         // and gather up all the required plugInNames
         //
         while (i.hasNext()) {
-            String testSuite = (String) i.next();
-            TestSuiteDTO dto = (TestSuiteDTO) testSuiteDTOs.get(testSuite);
+            String testSuite = i.next();
+            TestSuiteDTO dto = testSuiteDTOs.get(testSuite);
             Iterator j = dto.getTests().keySet().iterator();
 
             // go through each test plugIn
             //
             while (j.hasNext()) {
-                TestDTO tdto = (TestDTO) dto.getTests().get(j.next());
+                TestDTO tdto = dto.getTests().get(j.next());
                 plugInNames.add(tdto.getPlugIn().getName());
             }
         }
@@ -443,8 +443,8 @@ public class ValidationProcessor {
      * enhanced error reporting.
      */
     public void load(File plugins, File testsuites) throws Exception {
-        Map pluginDTOs = XMLReader.loadPlugIns(TestData.file(this, "plugins"));
-        Map testSuiteDTOs =
+        Map<String, PlugInDTO> pluginDTOs = XMLReader.loadPlugIns(TestData.file(this, "plugins"));
+        Map<String, TestSuiteDTO> testSuiteDTOs =
                 XMLReader.loadValidations(TestData.file(this, "validation"), pluginDTOs);
         load(testSuiteDTOs, pluginDTOs);
     }
@@ -455,22 +455,22 @@ public class ValidationProcessor {
      * <p>This method is useful for testing, it is not forgiving and will error out if things go
      * bad.
      */
-    public void load(Map plugInDTOs, Map testSuiteDTOs) throws Exception {
+    public void load(Map<String, TestSuiteDTO> testSuiteDTOs, Map<String, PlugInDTO> plugInDTOs)
+            throws Exception {
         // step 1 make a list required plug-ins
         //
-        Set plugInNames = queryPlugInNames(testSuiteDTOs);
+        Set<String> plugInNames = queryPlugInNames(testSuiteDTOs);
 
         // step 2 set up real plug-ins
         // configured with defaults
         //
         // (This is a map of PlugIn by name)
-        Map plugIns = new HashMap(plugInNames.size());
+        Map<String, PlugIn> plugIns = new HashMap<>(plugInNames.size());
 
         // go through each plugIn
         //
-        for (Iterator i = plugInNames.iterator(); i.hasNext(); ) {
-            String plugInName = (String) i.next();
-            PlugInDTO dto = (PlugInDTO) plugInDTOs.get(plugInName);
+        for (String plugInName : plugInNames) {
+            PlugInDTO dto = plugInDTOs.get(plugInName);
             Class plugInClass = null;
 
             plugInClass = Class.forName(dto.getClassName());
@@ -484,10 +484,10 @@ public class ValidationProcessor {
                                 + " not found");
             }
 
-            Map plugInArgs = dto.getArgs();
+            Map<String, Object> plugInArgs = dto.getArgs();
 
             if (plugInArgs == null) {
-                plugInArgs = new HashMap();
+                plugInArgs = new HashMap<>();
             }
 
             PlugIn plugIn = new PlugIn(plugInName, plugInClass, dto.getDescription(), plugInArgs);
@@ -497,21 +497,22 @@ public class ValidationProcessor {
         // step 3
         // set up tests and add to processor
         //
-        for (Iterator i = testSuiteDTOs.keySet().iterator(); i.hasNext(); ) {
-            TestSuiteDTO tdto = (TestSuiteDTO) testSuiteDTOs.get(i.next());
+        for (String s : testSuiteDTOs.keySet()) {
+            TestSuiteDTO tdto = testSuiteDTOs.get(s);
             Iterator j = tdto.getTests().keySet().iterator();
 
             // for each TEST in the test suite
             while (j.hasNext()) {
-                TestDTO dto = (TestDTO) tdto.getTests().get(j.next());
+                TestDTO dto = tdto.getTests().get(j.next());
 
                 // deal with test
-                Map testArgs = dto.getArgs();
+                @SuppressWarnings("unchecked")
+                Map<String, Object> testArgs = (Map) dto.getArgs();
 
                 if (testArgs == null) {
-                    testArgs = new HashMap();
+                    testArgs = new HashMap<>();
                 } else {
-                    Map m = new HashMap();
+                    Map<String, Object> m = new HashMap<>();
                     Iterator k = testArgs.keySet().iterator();
 
                     while (k.hasNext()) {
@@ -522,8 +523,7 @@ public class ValidationProcessor {
                     testArgs = m;
                 }
 
-                PlugIn plugIn =
-                        (org.geotools.validation.PlugIn) plugIns.get(dto.getPlugIn().getName());
+                PlugIn plugIn = plugIns.get(dto.getPlugIn().getName());
                 Validation validation =
                         plugIn.createValidation(dto.getName(), dto.getDescription(), testArgs);
 

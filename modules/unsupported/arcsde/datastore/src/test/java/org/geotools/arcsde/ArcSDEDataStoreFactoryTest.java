@@ -32,7 +32,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.geotools.arcsde.data.*;
+import org.geotools.arcsde.data.ArcSDEDataStore;
+import org.geotools.arcsde.data.ArcSDEDataStoreConfig;
+import org.geotools.arcsde.data.ArcSDEDataStoreFactory;
+import org.geotools.arcsde.data.InProcessViewSupportTestData;
+import org.geotools.arcsde.data.TestData;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.UnavailableConnectionException;
@@ -81,10 +85,10 @@ public class ArcSDEDataStoreFactoryTest {
 
         workingParams = testData.getConProps();
 
-        nonWorkingParams = new HashMap<String, Serializable>(workingParams);
+        nonWorkingParams = new HashMap<>(workingParams);
         nonWorkingParams.put(ArcSDEConnectionConfig.SERVER_NAME_PARAM_NAME, "non-existent-server");
 
-        illegalParams = new HashMap<String, Serializable>(workingParams);
+        illegalParams = new HashMap<>(workingParams);
         illegalParams.put(ArcSDEDataStoreConfig.DBTYPE_PARAM_NAME, "non-existent-db-type");
 
         dsFactory = new ArcSDEDataStoreFactory();
@@ -144,7 +148,7 @@ public class ArcSDEDataStoreFactoryTest {
     @Test
     public void testCreateNewDataStore() {
         try {
-            dsFactory.createNewDataStore((Map<String, Serializable>) Collections.EMPTY_MAP);
+            dsFactory.createNewDataStore(Collections.emptyMap());
             fail("Expected UOE as we can't create new datastores");
         } catch (UnsupportedOperationException e) {
             assertTrue(true);
@@ -185,8 +189,7 @@ public class ArcSDEDataStoreFactoryTest {
             session.dispose();
         }
 
-        Map<String, Serializable> workingParamsWithSqlView =
-                new HashMap<String, Serializable>(workingParams);
+        Map<String, Serializable> workingParamsWithSqlView = new HashMap<>(workingParams);
         workingParamsWithSqlView.putAll(InProcessViewSupportTestData.registerViewParams);
 
         DataStore store = dsFactory.createDataStore(workingParamsWithSqlView);
@@ -209,8 +212,7 @@ public class ArcSDEDataStoreFactoryTest {
             session.dispose();
         }
 
-        Map<String, Serializable> paramsWithVersion =
-                new HashMap<String, Serializable>(workingParams);
+        Map<String, Serializable> paramsWithVersion = new HashMap<>(workingParams);
         try {
             paramsWithVersion.put(VERSION_PARAM_NAME, "Non existent version name");
             dsFactory.createDataStore(paramsWithVersion);
@@ -232,8 +234,7 @@ public class ArcSDEDataStoreFactoryTest {
             session.dispose();
         }
 
-        Map<String, Serializable> paramsWithVersion =
-                new HashMap<String, Serializable>(workingParams);
+        Map<String, Serializable> paramsWithVersion = new HashMap<>(workingParams);
         paramsWithVersion.put(VERSION_PARAM_NAME, versionName);
         DataStore ds = dsFactory.createDataStore(paramsWithVersion);
         assertNotNull(ds);

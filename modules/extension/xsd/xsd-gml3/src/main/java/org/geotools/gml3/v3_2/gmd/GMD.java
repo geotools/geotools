@@ -23,6 +23,7 @@ import org.geotools.gml3.v3_2.gco.GCO;
 import org.geotools.gml3.v3_2.gsr.GSR;
 import org.geotools.gml3.v3_2.gss.GSS;
 import org.geotools.gml3.v3_2.gts.GTS;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.type.Schema;
 
 /**
@@ -44,7 +45,7 @@ public final class GMD extends GML.DelegatingXSD {
     /** private constructor */
     private GMD() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(GSS.getInstance());
         dependencies.add(GTS.getInstance());
         dependencies.add(GCO.getInstance());

@@ -717,11 +717,9 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         GridGeometry2D gg2d;
         gg2d = new GridGeometry2D(new GridEnvelope2D(new Rectangle(reqWidth, reqHeight)), reqEnv);
 
-        requestParams[0] =
-                new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg2d);
+        requestParams[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg2d);
         requestParams[1] =
-                new Parameter<OverviewPolicy>(
-                        AbstractGridFormat.OVERVIEW_POLICY, OverviewPolicy.SPEED);
+                new Parameter<>(AbstractGridFormat.OVERVIEW_POLICY, OverviewPolicy.SPEED);
 
         final GridCoverage2D coverage;
         coverage = (GridCoverage2D) reader.read(requestParams);

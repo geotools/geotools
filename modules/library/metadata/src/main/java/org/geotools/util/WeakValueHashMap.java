@@ -169,8 +169,8 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
      *
      * @todo Use the commented line instead if a future Java version supports generic arrays.
      */
+    @SuppressWarnings("unchecked")
     private void newEntryTable(final int size) {
-        //      table = new Entry[size];
         table = (Entry[]) Array.newInstance(Entry.class, size);
     }
 
@@ -247,8 +247,8 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
         final Entry[] oldTable = table;
         newEntryTable(capacity);
         threshold = Math.round(capacity * LOAD_FACTOR);
-        for (int i = 0; i < oldTable.length; i++) {
-            for (Entry old = oldTable[i]; old != null; ) {
+        for (Entry entry : oldTable) {
+            for (Entry old = entry; old != null; ) {
                 final Entry e = old;
                 old = old.next; // On retient 'next' tout de suite car sa valeur va changer...
                 final Object key = e.key;
@@ -284,8 +284,8 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
      */
     private boolean valid() {
         int n = 0;
-        for (int i = 0; i < table.length; i++) {
-            for (Entry e = table[i]; e != null; e = e.next) {
+        for (Entry entry : table) {
+            for (Entry e = entry; e != null; e = e.next) {
                 n++;
             }
         }

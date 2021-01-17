@@ -25,6 +25,7 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import org.assertj.swing.driver.WindowDriver;
 import org.assertj.swing.fixture.AbstractWindowFixture;
 import org.assertj.swing.fixture.DialogFixture;
 import org.assertj.swing.fixture.FrameFixture;
@@ -37,11 +38,12 @@ import org.assertj.swing.fixture.FrameFixture;
  * @since 8.0
  * @version $Id$
  */
-public class WindowActivatedListener implements AWTEventListener {
+public class WindowActivatedListener<S, C extends Window, D extends WindowDriver>
+        implements AWTEventListener {
 
     private final Class<? extends Window> windowClass;
     private final CountDownLatch latch;
-    private AbstractWindowFixture fixture;
+    private AbstractWindowFixture<S, C, D> fixture;
 
     /**
      * Creates a new listener.
@@ -67,6 +69,7 @@ public class WindowActivatedListener implements AWTEventListener {
      * @param event an event
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void eventDispatched(AWTEvent event) {
         if (fixture == null) {
             Object source = event.getSource();
@@ -74,9 +77,9 @@ public class WindowActivatedListener implements AWTEventListener {
                     && event.getID() == WindowEvent.WINDOW_ACTIVATED) {
 
                 if (source instanceof Frame) {
-                    fixture = new FrameFixture((Frame) source);
+                    fixture = (AbstractWindowFixture<S, C, D>) new FrameFixture((Frame) source);
                 } else if (source instanceof Dialog) {
-                    fixture = new DialogFixture((Dialog) source);
+                    fixture = (AbstractWindowFixture<S, C, D>) new DialogFixture((Dialog) source);
                 }
 
                 latch.countDown();
@@ -92,7 +95,8 @@ public class WindowActivatedListener implements AWTEventListener {
      * @throws InterruptedException on interruption while waiting for the fixture to become
      *     available
      */
-    public AbstractWindowFixture getFixture(long timeOutMillis) throws InterruptedException {
+    public AbstractWindowFixture<S, C, D> getFixture(long timeOutMillis)
+            throws InterruptedException {
         if (latch.await(timeOutMillis, TimeUnit.MILLISECONDS)) {
             return fixture;
         } else {

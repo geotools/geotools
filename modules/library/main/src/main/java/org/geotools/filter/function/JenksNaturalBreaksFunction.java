@@ -74,7 +74,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
      * @return a RangedClassifier
      */
     private Object calculate(SimpleFeatureCollection featureCollection) {
-        ArrayList<Double> data = new ArrayList<Double>();
+        ArrayList<Double> data = new ArrayList<>();
         try (SimpleFeatureIterator features = featureCollection.features()) {
             try {
                 while (features.hasNext()) {
@@ -150,7 +150,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
                 // update running totals
                 s2 = s2 + (val * val);
                 s1 += val;
-                double s0 = (double) ii;
+                double s0 = ii;
                 // calculate (square of) the variance
                 // (http://secure.wikimedia.org/wikipedia/en/wiki/Standard_deviation#Rapid_calculation_methods)
                 var = s2 - ((s1 * s1) / s0);
@@ -192,12 +192,12 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         localMax[k - 1] = data.get(ik);
         for (int j = k; j >= 2; j--) {
             logger.finest("index " + ik + ", class" + j);
-            int id = (int) iwork[ik][j] - 1; // subtract one as we want inclusive breaks on the
+            int id = iwork[ik][j] - 1; // subtract one as we want inclusive breaks on the
             // left?
 
             localMax[j - 2] = data.get(id);
             localMin[j - 1] = data.get(id);
-            ik = (int) iwork[ik][j] - 1;
+            ik = iwork[ik][j] - 1;
         }
         localMin[0] = data.get(0);
         /*

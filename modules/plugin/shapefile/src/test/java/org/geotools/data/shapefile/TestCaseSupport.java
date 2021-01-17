@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.geotools.TestData;
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -76,7 +74,7 @@ public class TestCaseSupport {
      */
     // protected static boolean verbose = false;
     /** Stores all temporary files here - delete on tear down. */
-    private final List<File> tmpFiles = new ArrayList<File>();
+    private final List<File> tmpFiles = new ArrayList<>();
 
     /**
      * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run
@@ -239,10 +237,5 @@ public class TestCaseSupport {
         }
 
         return count;
-    }
-
-    /** Returns the test suite for the given class. */
-    public static Test suite(Class<?> c) {
-        return new TestSuite(c);
     }
 }

@@ -77,8 +77,8 @@ public class _Filter_CapabilitiesBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return factory.capabilities(
                 FilterCapabilities.VERSION_100,
-                (ScalarCapabilities) node.getChildValue(ScalarCapabilities.class),
-                (SpatialCapabilities) node.getChildValue(SpatialCapabilities.class),
+                node.getChildValue(ScalarCapabilities.class),
+                node.getChildValue(SpatialCapabilities.class),
                 null);
     }
 

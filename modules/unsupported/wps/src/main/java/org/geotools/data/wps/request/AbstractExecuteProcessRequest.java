@@ -134,7 +134,7 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest
                         CodeType ct = Ows11Factory.eINSTANCE.createCodeType();
                         ct.setValue((String) key);
                         input.setIdentifier(ct);
-                        input.setData((DataType) dt);
+                        input.setData(dt);
                         inputtypes.getInput().add(input);
                     } else if (oInput instanceof InputReferenceType) {
                         InputReferenceType rt = (InputReferenceType) oInput;

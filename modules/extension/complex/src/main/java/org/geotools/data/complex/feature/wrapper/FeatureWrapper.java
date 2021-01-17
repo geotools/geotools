@@ -108,17 +108,18 @@ public abstract class FeatureWrapper {
                     if (!path.equals("")) {
                         String[] steps = path.split("/");
 
-                        for (int i = 0; i < steps.length; i++) {
+                        for (String step : steps) {
                             if (targetAttribute == null) {
                                 throw new InvalidClassException(
                                         String.format(
-                                                "Unable to wrap attribute in class '%s'. Reference to %s could not be found in the attribute.",
+                                                "Unable to wrap attribute in class '%s'. "
+                                                        + "Reference to %s could not be found in "
+                                                        + "the attribute.",
                                                 clazz, xsdMapping.local()));
                             }
 
                             // Dig through the attribute to get to the end node.
-                            targetAttribute =
-                                    (ComplexAttribute) targetAttribute.getProperty(steps[i]);
+                            targetAttribute = (ComplexAttribute) targetAttribute.getProperty(step);
                         }
                     }
 
@@ -159,6 +160,7 @@ public abstract class FeatureWrapper {
                         }
 
                         // Look for this field in the complexAttribute:
+                        @SuppressWarnings("unchecked")
                         FeatureWrapper property =
                                 wrap(nestedComplexAttribute, (Class<FeatureWrapper>) fieldType);
                         field.set(wrapper, property);
@@ -176,14 +178,14 @@ public abstract class FeatureWrapper {
                                         ((ParameterizedType) field.getGenericType())
                                                 .getActualTypeArguments()[0];
 
-                        ArrayList<Object> collection = new ArrayList<Object>();
+                        ArrayList<Object> collection = new ArrayList<>();
                         if (FeatureWrapper.class.isAssignableFrom(collectionType)) {
                             // The collection is complex.
                             for (Property property : targetAttribute.getProperties(xsdName)) {
-                                collection.add(
-                                        wrap(
-                                                (ComplexAttribute) property,
-                                                (Class<FeatureWrapper>) collectionType));
+                                @SuppressWarnings("unchecked")
+                                Class<FeatureWrapper> fwClass =
+                                        (Class<FeatureWrapper>) collectionType;
+                                collection.add(wrap((ComplexAttribute) property, fwClass));
                             }
                         } else {
                             // The collection is simple.

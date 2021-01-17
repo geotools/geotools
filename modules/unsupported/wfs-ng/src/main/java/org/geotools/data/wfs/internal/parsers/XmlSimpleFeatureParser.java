@@ -133,8 +133,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         // the schema. Rationale being that the FGDC CubeWerx server has a missmatch in the case of
         // property names between what it states in a DescribeFeatureType and in a GetFeature
         // requests
-        expectedProperties =
-                new TreeMap<String, AttributeDescriptor>(String.CASE_INSENSITIVE_ORDER);
+        expectedProperties = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (AttributeDescriptor desc : targetType.getAttributeDescriptors()) {
             expectedProperties.put(desc.getLocalName(), desc);
         }
@@ -226,8 +225,6 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
             parser.nextTag();
             try {
                 parsedValue = parseGeom();
-            } catch (NoSuchAuthorityCodeException e) {
-                throw new DataSourceException(e);
             } catch (FactoryException e) {
                 throw new DataSourceException(e);
             }
@@ -294,7 +291,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         Geometry geom;
         parser.nextTag();
         final QName memberTag = new QName(parser.getNamespace(), parser.getName());
-        List<Point> points = new ArrayList<Point>(4);
+        List<Point> points = new ArrayList<>(4);
         if (GML.pointMembers.equals(memberTag)) {
             while (true) {
                 parser.nextTag();
@@ -345,7 +342,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
 
         parser.require(START_TAG, GML.NAMESPACE, GML.MultiLineString.getLocalPart());
 
-        List<LineString> lines = new ArrayList<LineString>(2);
+        List<LineString> lines = new ArrayList<>(2);
 
         while (true) {
             parser.nextTag();
@@ -388,7 +385,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         Geometry geom;
         parser.nextTag();
         final QName memberTag = new QName(parser.getNamespace(), parser.getName());
-        List<Polygon> polygons = new ArrayList<Polygon>(2);
+        List<Polygon> polygons = new ArrayList<>(2);
         if (GML.surfaceMembers.equals(memberTag)) {
             while (true) {
                 parser.nextTag();
@@ -429,7 +426,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         parser.require(START_TAG, GML.NAMESPACE, GML.MultiPolygon.getLocalPart());
 
         Geometry geom;
-        List<Polygon> polygons = new ArrayList<Polygon>(2);
+        List<Polygon> polygons = new ArrayList<>(2);
         parser.nextTag();
         while (true) {
             parser.require(START_TAG, GML.NAMESPACE, GML.polygonMember.getLocalPart());
@@ -494,7 +491,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         if (START_TAG == parser.getEventType()) {
             if (GML.interior.equals(name) || GML.innerBoundaryIs.equals(name)) {
                 // parse interior rings
-                holes = new ArrayList<LinearRing>(2);
+                holes = new ArrayList<>(2);
                 while (true) {
                     parser.require(START_TAG, GML.NAMESPACE, name.getLocalPart());
                     parser.nextTag();
@@ -572,7 +569,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         String tagName = parser.getName();
         if (GML.pos.equals(coordsName)) {
             Coordinate[] point;
-            List<Coordinate> coords = new ArrayList<Coordinate>();
+            List<Coordinate> coords = new ArrayList<>();
             int eventType;
             do {
                 point = parseCoordList(dimension, crs);
@@ -594,7 +591,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
             parser.nextTag();
         } else if (GML.coord.equals(coordsName)) {
             Coordinate point;
-            List<Coordinate> coords = new ArrayList<Coordinate>();
+            List<Coordinate> coords = new ArrayList<>();
             int eventType;
             do {
                 point = parseCoord();

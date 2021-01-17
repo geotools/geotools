@@ -17,15 +17,18 @@
 
 package org.geotools.feature.simple;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import junit.framework.TestCase;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -36,40 +39,46 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  */
-public class SimpleFeatureTypeImplTest extends TestCase {
+public class SimpleFeatureTypeImplTest {
 
     /**
      * Test that properties returned by getAttributeDescriptors() and getDescriptors() are the same
      * and in the same order.
      */
+    @Test
     public void testConsistentIterationOrder() {
         SimpleFeatureType type = buildLocationCountType();
-        assertEquals(
-                "FeatureType and SimpleFeatureType APIs must return the same descriptors in the same order",
+        Assert.assertEquals(
+                "FeatureType and SimpleFeatureType APIs must return the same descriptors in the "
+                        + "same order",
                 new ArrayList<PropertyDescriptor>(type.getAttributeDescriptors()),
-                new ArrayList<PropertyDescriptor>(type.getDescriptors()));
+                new ArrayList<>(type.getDescriptors()));
     }
 
     /** Test that property order is significant to equals(). */
+    @Test
     public void testOrderSignificantEquals() {
         SimpleFeatureType type1 = buildLocationCountType();
         SimpleFeatureType type2 = buildCountLocationType();
-        assertFalse(
-                "Simple feature types with properties in a different order must not be equal",
-                type1.equals(type2));
+        assertNotEquals(
+                "Simple feature types with properties in a different order must not be " + "equal",
+                type1,
+                type2);
     }
 
     /** Test that distinct instances identically constructed are equal (location/count version). */
+    @Test
     public void testLocationCountEquals() {
-        assertEquals(
+        Assert.assertEquals(
                 "Identical simple feature types must be equal",
                 buildLocationCountType(),
                 buildLocationCountType());
     }
 
     /** Test that distinct instances identically constructed are equal (count/location version). */
+    @Test
     public void testCountLocationEquals() {
-        assertEquals(
+        Assert.assertEquals(
                 "Identical simple feature types must be equal",
                 buildCountLocationType(),
                 buildCountLocationType());
@@ -79,6 +88,7 @@ public class SimpleFeatureTypeImplTest extends TestCase {
      * Test that calls to getType(int) from multiple threads will not throw an
      * IndexOutOfBoundsException due to poor synchronization
      */
+    @Test
     public void testGetTypeThreadSafety() {
         SimpleFeatureTypeBuilder builder = buildPartialBuilder();
         builder.add("location", Point.class, (CoordinateReferenceSystem) null);
@@ -88,8 +98,8 @@ public class SimpleFeatureTypeImplTest extends TestCase {
             builder.add("" + i, String.class);
         }
         SimpleFeatureType schema = builder.buildFeatureType();
-        assertNotNull(schema);
-        assertEquals(SimpleFeatureTypeImpl.class, schema.getClass());
+        Assert.assertNotNull(schema);
+        Assert.assertEquals(SimpleFeatureTypeImpl.class, schema.getClass());
 
         final CountDownLatch latch = new CountDownLatch(8);
         class Task implements Runnable {
@@ -112,11 +122,11 @@ public class SimpleFeatureTypeImplTest extends TestCase {
         try {
             exec.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            fail("Interrupted");
+            Assert.fail("Interrupted");
         }
 
         // verify all threads ran successfully and triggered the latch
-        assertEquals(0, latch.getCount());
+        Assert.assertEquals(0, latch.getCount());
     }
 
     /** @return a simple feature type with location before count */
@@ -150,7 +160,7 @@ public class SimpleFeatureTypeImplTest extends TestCase {
                         null,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null));
         builder.addBinding(
@@ -160,7 +170,7 @@ public class SimpleFeatureTypeImplTest extends TestCase {
                         null,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null));
         builder.addBinding(
@@ -169,7 +179,7 @@ public class SimpleFeatureTypeImplTest extends TestCase {
                         Integer.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null));
         builder.setName("ThingsType");

@@ -39,7 +39,7 @@ import org.opengis.parameter.ParameterDescriptor;
 public class NetCDFFormat extends AbstractGridFormat {
 
     public static final ParameterDescriptor<Filter> FILTER =
-            new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
+            new DefaultParameterDescriptor<>("Filter", Filter.class, null, null);
 
     private static final Logger LOGGER = Logging.getLogger(NetCDFFormat.class);
 
@@ -50,7 +50,7 @@ public class NetCDFFormat extends AbstractGridFormat {
 
     /** Sets the metadata information. */
     private void setInfo() {
-        final HashMap<String, String> info = new HashMap<String, String>();
+        final HashMap<String, String> info = new HashMap<>();
         info.put("name", "NetCDF");
         info.put("description", "NetCDF store plugin");
         info.put("vendor", "Geotools");

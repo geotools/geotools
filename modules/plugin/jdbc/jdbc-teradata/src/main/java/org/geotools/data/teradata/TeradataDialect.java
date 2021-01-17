@@ -38,7 +38,12 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.jdbc.*;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.NullPrimaryKey;
+import org.geotools.jdbc.PreparedFilterToSQL;
+import org.geotools.jdbc.PreparedStatementSQLDialect;
+import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
@@ -176,11 +181,8 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             LOGGER.fine(sql);
         }
 
-        Statement st = cx.createStatement();
-        try {
+        try (Statement st = cx.createStatement()) {
             st.execute(sql);
-        } finally {
-            st.close();
         }
         //        String sql = "SET QUERY_BAND=? FOR SESSION";
         //        String qb = QueryBand.APPLICATION + "=GeoTools;";
@@ -288,11 +290,8 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             if (clob == null) {
                 return null;
             }
-            InputStream in = clob.getAsciiStream();
-            try {
+            try (InputStream in = clob.getAsciiStream()) {
                 return new WKTReader(factory).read(new InputStreamReader(in));
-            } finally {
-                if (in != null) in.close();
             }
         } catch (ParseException e) {
             throw (IOException) new IOException("Error parsing geometry").initCause(e);
@@ -410,7 +409,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                 try {
                     rs = ps.executeQuery();
 
-                    List<ReferencedEnvelope> envs = new ArrayList();
+                    List<ReferencedEnvelope> envs = new ArrayList<>();
                     if (rs.next()) {
                         int srid = rs.getInt(5);
                         ReferencedEnvelope env =
@@ -450,7 +449,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             return null;
         }
 
-        List<ReferencedEnvelope> envs = new ArrayList();
+        List<ReferencedEnvelope> envs = new ArrayList<>();
         for (TessellationInfo tinfo : tinfos) {
             GeometryDescriptor gatt =
                     (GeometryDescriptor) featureType.getDescriptor(tinfo.getColumName());
@@ -685,13 +684,13 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                                 + TESSELLATION
                                 + " does not exist. Unable to "
                                 + " perform spatially index queries.");
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
         } finally {
             dataStore.closeSafe(tables);
         }
 
-        List<TessellationInfo> tinfos = new ArrayList();
+        List<TessellationInfo> tinfos = new ArrayList<>();
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT * FROM ");

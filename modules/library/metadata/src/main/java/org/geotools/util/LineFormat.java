@@ -331,11 +331,12 @@ public class LineFormat extends Format {
      * @return The value as a {@link Number}.
      * @throws ParseException if the value can not be converted to a {@link Number}.
      */
+    @SuppressWarnings("unchecked")
     private Number getNumber(final int index) throws ParseException {
         Exception error = null;
         if (data[index] instanceof Comparable) {
             try {
-                return ClassChanger.toNumber((Comparable) data[index]);
+                return ClassChanger.toNumber((Comparable<Number>) data[index]);
             } catch (ClassNotFoundException exception) {
                 error = exception;
             }

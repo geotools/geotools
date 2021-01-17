@@ -53,7 +53,7 @@ public abstract class WFSStrategy extends Specification {
     private Map<WFSOperationType, AtomicLong> requestHandleSequences;
 
     public WFSStrategy() {
-        requestHandleSequences = new HashMap<WFSOperationType, AtomicLong>();
+        requestHandleSequences = new HashMap<>();
         for (WFSOperationType operationType : WFSOperationType.values()) {
             requestHandleSequences.put(operationType, new AtomicLong());
         }

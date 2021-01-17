@@ -61,9 +61,9 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
             Icon icon, Collection<ColorReplacement> replaces, OnLineResource source) {
         this.inlineContent = icon;
         if (replaces == null) {
-            colorReplacements = new TreeSet<ColorReplacement>();
+            colorReplacements = new TreeSet<>();
         } else {
-            colorReplacements = new TreeSet<ColorReplacement>(replaces);
+            colorReplacements = new TreeSet<>(replaces);
         }
         this.online = source;
     }
@@ -246,7 +246,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
         if (item == null) {
             return null;
         } else if (item instanceof ExternalGraphicImpl) {
-            return (ExternalGraphic) item;
+            return item;
         } else if (item instanceof org.opengis.style.ExternalGraphic) {
             org.opengis.style.ExternalGraphic graphic = (org.opengis.style.ExternalGraphic) item;
             ExternalGraphicImpl copy = new ExternalGraphicImpl();

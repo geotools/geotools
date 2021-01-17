@@ -1,0 +1,24 @@
+{"and":[{"eq":{"property":"swimming_pool","value":true}},{"or":[{"gt":{"property":"floor","value":5}},{"like":{"property":"material","value":"brick%"}},{"like":{"property":"material","value":"%brick"}}]}]}
+{"and":[{"eq":{"property":"beamMode","value":"ScanSAR Narrow"}},{"eq":{"property":"swathDirection","value":"ascending"}},{"eq":{"property":"polarization","value":"HH+VV+HV+VH"}},{"intersects":{"property":"footprint","value":{"type":"Polygon","coordinates":[[[-77.117938,38.93686],[-77.040604,39.995648],[-76.910536,38.892912],[-77.039359,38.791753],[-77.047906,38.841462],[-77.034183,38.840655],[-77.033142,38.85749],[-77.117938,38.93686]]]}}}]}
+{"lte":{"property":"taxes","value":500}}
+{"not":{"lte":{"property":"taxes","value":500}}}
+{"and":[{"not":{"lte":{"property":"taxes","value":500}}},{"lte":{"property":"taxes","value":800}}]}
+{"and":[{"lte":{"property":"taxes","value":500}},{"and":[{"lte":{"property":"taxes","value":600}},{"lte":{"property":"taxes","value":400}}]}]}
+{"like":{"property":"owner","value":"% Jones %"}}
+{"like":{"wildcard":"%","property":"owner","value":"Mike%"}}
+{"not":{"like":{"property":"owner","value":"% Mike %"}}}
+{"eq":{"property":"swimming_pool","value":true}}
+{"and":[{"gt":{"property":"floor","value":5}},{"eq":{"property":"swimming_pool","value":true}}]}
+{"and":[{"eq":{"property":"swimming_pool","value":true}},{"or":[{"gt":{"property":"floor","value":5}},{"like":{"property":"material","value":"brick%"}},{"like":{"property":"material","value":"%brick"}}]}]}
+{"or":[{"and":[{"gt":{"property":"floors","value":5}},{"eq":{"property":"material","value":"brick"}}]},{"eq":{"property":"swimming_pool","value":true}}]}
+{"or":[{"not":{"lt":{"property":"floors","value":5}}},{"eq":{"property":"swimming_pool","value":true}}]}
+{"and":[{"or":[{"like":{"property":"owner","value":"mike%"}},{"like":{"property":"owner","value":"Mike%"}}]},{"lt":{"property":"floors","value":4}}]}
+{"before":{"property":"built","value":"2015-01-01"}}
+{"after":{"property":"built","value":"2012-06-05"}}
+{"within":{"property":"location","value":{"bbox":[33.8,-118,34,-117.9]}}}
+{"intersects":{"property":"location","value":{"type":"Polygon","coordinates":[[[-10,-10],[10,-10],[10,10],[-10,-10]]]}}}
+{"and":[{"gt":{"property":"floors","value":5}},{"within":{"property":"geometry","value":{"bbox":[33.8,-118,34,-117.9]}}}]}
+{"touches":{"property":"location","value":{"type":"LineString","coordinates":[[100,0],[101,1]]}}}
+{"contains":{"property":"location","value":{"type":"Point","coordinates":[100,0]}}}
+{"overlaps":{"property":"location","value":{"type":"MultiPoint","coordinates":[[100,0],[101,1]]}}}
+{"during":{"property":"updated","value":["2017-06-10T07:30:00","2017-06-11T10:30:00"]}}

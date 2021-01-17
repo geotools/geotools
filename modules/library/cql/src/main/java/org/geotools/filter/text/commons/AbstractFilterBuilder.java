@@ -142,7 +142,7 @@ public abstract class AbstractFilterBuilder {
     public List<Filter> getFilterList() throws CQLException {
 
         int size = resultStack.size();
-        List<Filter> results = new ArrayList<Filter>(size);
+        List<Filter> results = new ArrayList<>(size);
 
         for (int i = 0; i < size; i++) {
             Result item = this.resultStack.popResult();
@@ -520,9 +520,9 @@ public abstract class AbstractFilterBuilder {
         try {
 
             // retrieves all part of identifier from result stack
-            ArrayList<String> arrayParts = new ArrayList<String>();
+            ArrayList<String> arrayParts = new ArrayList<>();
 
-            while (this.resultStack.size() > 0) {
+            while (!this.resultStack.empty()) {
                 Result r = this.resultStack.peek();
 
                 if (r.getNodeType() != nodeIdentifier) {
@@ -532,7 +532,7 @@ public abstract class AbstractFilterBuilder {
                 part = removeFirstAndLastDoubleQuote(part);
                 arrayParts.add(part);
             }
-            assert arrayParts.size() >= 1
+            assert !arrayParts.isEmpty()
                     : "postcondition: the list of identifier part must have one or more elements ";
 
             // makes the identifier
@@ -542,7 +542,7 @@ public abstract class AbstractFilterBuilder {
             int i = 0;
 
             for (i = arrayParts.size() - 1; i > 0; i--) {
-                part = (String) arrayParts.get(i);
+                part = arrayParts.get(i);
                 identifier.append(part).append(":");
             }
             assert i == 0;
@@ -553,7 +553,7 @@ public abstract class AbstractFilterBuilder {
             return identifier.toString();
 
         } catch (CQLException e) {
-            throw new CQLException("Fail builing identifier: " + e.getMessage(), this.cqlSource);
+            throw new CQLException("Fail building identifier: " + e.getMessage(), this.cqlSource);
         }
     }
 
@@ -599,10 +599,10 @@ public abstract class AbstractFilterBuilder {
     public PropertyName buildCompoundAttribute(
             final int nodeSimpleAttr, final String nodeAttrSeparator) throws CQLException {
 
-        ArrayList<String> arrayIdentifiers = new ArrayList<String>();
+        ArrayList<String> arrayIdentifiers = new ArrayList<>();
 
         // precondition: stack has one or more simple attributes
-        while (this.resultStack.size() > 0) {
+        while (!this.resultStack.empty()) {
             Result r = this.resultStack.peek();
 
             if (r.getNodeType() != nodeSimpleAttr) {
@@ -944,8 +944,7 @@ public abstract class AbstractFilterBuilder {
 
         org.opengis.filter.expression.Literal begin = period.getBeginning();
 
-        org.opengis.filter.expression.Expression property =
-                (org.opengis.filter.expression.Expression) resultStack.popExpression();
+        org.opengis.filter.expression.Expression property = resultStack.popExpression();
 
         PropertyIsGreaterThanOrEqualTo filter = filterFactory.greaterOrEqual(property, begin);
 
@@ -1199,7 +1198,7 @@ public abstract class AbstractFilterBuilder {
 
         // extracts the arguments from stack. Each argument in the stack
         // is preceded by an argument node. Finally extracts the function name
-        List<Expression> argList = new LinkedList<Expression>();
+        List<Expression> argList = new LinkedList<>();
 
         while (!this.resultStack.empty()) {
             Result node = this.resultStack.peek();
@@ -1223,7 +1222,7 @@ public abstract class AbstractFilterBuilder {
         // Puts the argument in correct order
         Collections.reverse(argList);
 
-        Expression[] args = (Expression[]) argList.toArray(new Expression[argList.size()]);
+        Expression[] args = argList.toArray(new Expression[argList.size()]);
 
         Function function = null;
         try {

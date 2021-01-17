@@ -16,7 +16,9 @@
  */
 package org.geotools.processing.jai;
 
-import static org.geotools.processing.jai.TransparencyFillDescriptor.*;
+import static org.geotools.processing.jai.TransparencyFillDescriptor.NODATA_ARG;
+import static org.geotools.processing.jai.TransparencyFillDescriptor.TYPE_ARG;
+import static org.geotools.processing.jai.TransparencyFillDescriptor.WIDTH_ARG;
 
 import com.sun.media.jai.opimage.RIFUtil;
 import java.awt.RenderingHints;

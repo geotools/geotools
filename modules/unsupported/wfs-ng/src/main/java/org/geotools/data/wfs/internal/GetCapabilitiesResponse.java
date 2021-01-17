@@ -62,11 +62,8 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
             final byte[] rawResponse;
             {
                 ByteArrayOutputStream buff = new ByteArrayOutputStream();
-                InputStream inputStream = response.getResponseStream();
-                try {
+                try (InputStream inputStream = response.getResponseStream()) {
                     IOUtils.copy(inputStream, buff);
-                } finally {
-                    inputStream.close();
                 }
                 rawResponse = buff.toByteArray();
             }

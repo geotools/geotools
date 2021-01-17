@@ -24,12 +24,14 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.TestCase;
 import org.geotools.TestData;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.XSISAXHandler;
 import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.Schema;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
@@ -38,12 +40,12 @@ import org.locationtech.jts.geom.Polygon;
 import org.xml.sax.Attributes;
 
 /** @author Jesse */
-public class GeometryEncoderTest extends TestCase {
+public class GeometryEncoderTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+    @Before
+    public void setUp() throws Exception {}
 
+    @Test
     public void testEncodeChoiceGeometryType() throws Exception {
         File f = TestData.copy(this, "xml/feature-type-choice.xsd");
         URI u = f.toURI();
@@ -131,9 +133,9 @@ public class GeometryEncoderTest extends TestCase {
                         writer.write(">");
                     }
                 };
-        geomElement.getType().encode(geomElement, geom, output, new HashMap());
+        geomElement.getType().encode(geomElement, geom, output, new HashMap<>());
         String expected =
                 "<GEOM><MultiPolygon srsName=EPSG:4326><polygonMember><Polygon srsName=EPSG:4326><outerBoundaryIs><LinearRing><coordinates decimal=. cs=, ts= >0.0,0.0 10.0,0.0 0.0,10.0 0.0,0.0</coordinates></LinearRing></outerBoundaryIs></Polygon></polygonMember></MultiPolygon></GEOM>";
-        assertEquals(expected, writer.toString());
+        Assert.assertEquals(expected, writer.toString());
     }
 }

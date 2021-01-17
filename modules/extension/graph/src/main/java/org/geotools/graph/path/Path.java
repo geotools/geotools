@@ -18,6 +18,7 @@ package org.geotools.graph.path;
 
 import java.util.Collection;
 import java.util.HashSet;
+import org.geotools.graph.structure.Node;
 
 /**
  * Represents a path in a graph. A <B>path</B> P is defined as a <B>walk</B> in which there are no
@@ -31,7 +32,7 @@ public class Path extends Walk {
         super();
     }
 
-    public Path(Collection nodes) {
+    public Path(Collection<Node> nodes) {
         super(nodes);
     }
 
@@ -44,7 +45,7 @@ public class Path extends Walk {
     public boolean isValid() {
         if (super.isValid()) {
             // test repetitions
-            HashSet s = new HashSet(this);
+            HashSet<Node> s = new HashSet<>(this);
             return (size() == s.size());
         }
 

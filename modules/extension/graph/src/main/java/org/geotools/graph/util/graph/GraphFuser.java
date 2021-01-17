@@ -95,6 +95,7 @@ public class GraphFuser {
      *
      * @return True if the fuse was successful, otherwise false.
      */
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public boolean fuse() {
         // create walker for first stage
         // if the walker sees a node of degree 2 it adds it to the current
@@ -163,21 +164,18 @@ public class GraphFuser {
             // a no bifurcation traversal from them
             Iterator<?> sources =
                     m_graph.queryNodes(
-                                    new GraphVisitor() {
-                                        @Override
-                                        public int visit(Graphable component) {
-                                            Node node = (Node) component;
-                                            if (!node.isVisited() && node.getDegree() == 2) {
-                                                // check for adjacent node of degree > 2
-                                                for (Iterator<?> itr = node.getRelated();
-                                                        itr.hasNext(); ) {
-                                                    Node rel = (Node) itr.next();
-                                                    if (rel.getDegree() > 2)
-                                                        return (Graph.PASS_AND_CONTINUE);
-                                                }
+                                    component -> {
+                                        Node node = (Node) component;
+                                        if (!node.isVisited() && node.getDegree() == 2) {
+                                            // check for adjacent node of degree > 2
+                                            for (Iterator<?> itr = node.getRelated();
+                                                    itr.hasNext(); ) {
+                                                Node rel = (Node) itr.next();
+                                                if (rel.getDegree() > 2)
+                                                    return (Graph.PASS_AND_CONTINUE);
                                             }
-                                            return (Graph.FAIL_QUERY);
                                         }
+                                        return (Graph.FAIL_QUERY);
                                     })
                             .iterator();
 
@@ -236,8 +234,7 @@ public class GraphFuser {
         if (m_ndegree2 == 0) {
 
             // build the fused graph
-            for (Iterator<ArrayList<Graphable>> sitr = m_sets.iterator(); sitr.hasNext(); ) {
-                ArrayList<Graphable> nodes = sitr.next();
+            for (ArrayList<Graphable> nodes : m_sets) {
                 ArrayList<Edge> edges = new ArrayList<>();
                 Node first = null; // node of degree != 2 adjacent to first node in set
                 Node last = null; // node of degree != 2 adjacent to last node in set
@@ -339,7 +336,7 @@ public class GraphFuser {
          * @param edges A collection of edges.
          * @return A single object.
          */
-        public Object merge(List<?> edges);
+        public Object merge(List<Edge> edges);
 
         /**
          * Sets the object for the edge created to represented the merged object.

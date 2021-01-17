@@ -130,7 +130,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      * @since 2.5
      */
     public DefaultProjectedCRS(
-            final Map<String, ?> properties,
+            final Map<String, Object> properties,
             final GeographicCRS base,
             final MathTransform baseToDerived,
             final CartesianCS derivedCS)
@@ -156,7 +156,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      *     respectively.
      */
     public DefaultProjectedCRS(
-            final Map<String, ?> properties,
+            final Map<String, Object> properties,
             final OperationMethod method,
             final GeographicCRS base,
             final MathTransform baseToDerived,

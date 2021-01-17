@@ -280,8 +280,8 @@ public final class Logging {
     public void setLoggerFactory(final LoggerFactory<?> factory) {
         synchronized (EMPTY) {
             this.factory = factory;
-            for (int i = 0; i < children.length; i++) {
-                children[i].setLoggerFactory(factory);
+            for (Logging child : children) {
+                child.setLoggerFactory(factory);
             }
             sameLoggerFactory = sameLoggerFactory(ALL.children, ALL.factory);
         }
@@ -294,8 +294,7 @@ public final class Logging {
     private static boolean sameLoggerFactory(
             final Logging[] children, final LoggerFactory<?> factory) {
         assert Thread.holdsLock(EMPTY);
-        for (int i = 0; i < children.length; i++) {
-            final Logging logging = children[i];
+        for (final Logging logging : children) {
             if (logging.factory != factory || !sameLoggerFactory(logging.children, factory)) {
                 return false;
             }
@@ -480,7 +479,7 @@ public final class Logging {
      * @since 2.5
      */
     public static boolean unexpectedException(Class<?> classe, String method, Throwable error) {
-        return unexpectedException((Logger) null, classe, method, error);
+        return unexpectedException(null, classe, method, error);
     }
 
     /**
@@ -516,13 +515,12 @@ public final class Logging {
         if (logger == null || classe == null || method == null) {
             String paquet = (logger != null) ? logger.getName() : null;
             final StackTraceElement[] elements = error.getStackTrace();
-            for (int i = 0; i < elements.length; i++) {
+            for (final StackTraceElement element : elements) {
                 /*
                  * Searchs for the first stack trace element with a classname matching the
                  * expected one. We compare preferably against the name of the class given
                  * in argument, or against the logger name (taken as the package name) otherwise.
                  */
-                final StackTraceElement element = elements[i];
                 final String classname = element.getClassName();
                 if (classe != null) {
                     if (!classname.equals(classe)) {

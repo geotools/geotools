@@ -49,10 +49,10 @@ public class ExponentialFunction extends FunctionImpl {
     public static final FunctionName NAME;
 
     static {
-        Parameter<Object> result = new Parameter<Object>("result", Object.class, 1, 1);
-        Parameter<Object> input = new Parameter<Object>("input", Object.class, 1, 1);
+        Parameter<Object> result = new Parameter<>("result", Object.class, 1, 1);
+        Parameter<Object> input = new Parameter<>("input", Object.class, 1, 1);
         Parameter<Double> base =
-                new Parameter<Double>(
+                new Parameter<>(
                         "base",
                         Double.class,
                         Text.text("Base"),
@@ -63,13 +63,13 @@ public class ExponentialFunction extends FunctionImpl {
                         1,
                         1.0,
                         null);
-        Parameter<Object> stops = new Parameter<Object>("stops", Object.class, 4, -1);
+        Parameter<Object> stops = new Parameter<>("stops", Object.class, 4, -1);
         NAME = new FunctionNameImpl("Exponential", result, input, base, stops);
     }
 
     private static class Stop {
-        Expression stop;
-        Expression value;
+        final Expression stop;
+        final Expression value;
 
         public Stop(Expression stop, Expression value) {
             this.stop = stop;
@@ -90,7 +90,7 @@ public class ExponentialFunction extends FunctionImpl {
     public Object evaluate(Object object) {
         // trying to guess the context from the input values
         List<Stop> stops = getStops(getParameters());
-        Class target = Color.class;
+        Class<?> target = Color.class;
         for (Stop stop : stops) {
             if (stop.value.evaluate(object, Double.class) != null) {
                 target = Double.class;
@@ -207,8 +207,6 @@ public class ExponentialFunction extends FunctionImpl {
      *
      * <p>(Note: a slightly different form for `ratio`, `(base^(x-x0) - 1) / (base^(x1-x0) - 1) `,
      * is equivalent, but requires fewer expensive `Math.pow()` operations.)
-     *
-     * @private
      */
     private double exponentialInterpolationRatio(
             Object object, double inputValue, double base, double stop1, double stop2) {

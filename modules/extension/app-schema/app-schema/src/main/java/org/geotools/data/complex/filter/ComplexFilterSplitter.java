@@ -107,7 +107,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
 
         public Object visit(Function expr, Object extraData) {
             for (int i = 0; i < expr.getParameters().size(); i++) {
-                ((Expression) expr.getParameters().get(i)).accept(this, null);
+                expr.getParameters().get(i).accept(this, null);
             }
 
             capable = capable && fcs.supports(expr.getClass());
@@ -156,7 +156,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         int i = preStack.size();
         Object data = super.visit(expression, notUsed);
         // encoding of functions with nested attributes as  arguments is not supported
-        if (nestedAttributes.size() > 0 && preStack.size() == i + 1) {
+        if (!nestedAttributes.isEmpty() && preStack.size() == i + 1) {
             Object o = preStack.pop();
             postStack.push(o);
         }
@@ -169,7 +169,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         int i = preStack.size();
         Object ret = super.visit(filter, data);
         // encoding of temporal operators involving nested attributes is not supported
-        if (nestedAttributes.size() > 0 && preStack.size() == i + 1) {
+        if (!nestedAttributes.isEmpty() && preStack.size() == i + 1) {
             Object o = preStack.pop();
             postStack.push(o);
         }
@@ -182,7 +182,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         int i = preStack.size();
         super.visitMathExpression(expression);
         // encoding of math expressions involving nested attributes is not supported
-        if (nestedAttributes.size() > 0 && preStack.size() == i + 1) {
+        if (!nestedAttributes.isEmpty() && preStack.size() == i + 1) {
             Object o = preStack.pop();
             postStack.push(o);
         }
@@ -317,7 +317,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                     expression, exprSteps, nestedAttrExtractor, existsAttrExtractor, fcAttrs);
             // encoding of filters on multiple nested attributes is not (yet) supported
             if (fcAttrs.size() == 1
-                    || (fcAttrs.size() >= 1 && validateNoClientProperties(fcAttrs))) {
+                    || (!fcAttrs.isEmpty() && validateNoClientProperties(fcAttrs))) {
                 FeatureChainedAttributeDescriptor nestedAttrDescr = fcAttrs.get(0);
                 if (nestedAttrDescr.chainSize() > 1 && nestedAttrDescr.isJoiningEnabled()) {
                     FeatureTypeMapping featureMapping =
@@ -423,7 +423,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             FeatureChainedAttributeVisitor nestedAttrExtractor,
             FeatureChainedAttributeVisitor existsAttrExtractor,
             List<FeatureChainedAttributeDescriptor> fcAttrs) {
-        if (fcAttrs.size() == 0
+        if (fcAttrs.isEmpty()
                 && !nestedAttrExtractor.conditionalMappingWasFound()
                 && !isXlinkHRef(exprSteps)
                 && !existsAttrExtractor.isUnboundedNestedElementFound()

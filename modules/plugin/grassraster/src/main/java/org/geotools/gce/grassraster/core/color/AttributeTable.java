@@ -16,15 +16,16 @@
  */
 package org.geotools.gce.grassraster.core.color;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class AttributeTable {
-    private Vector<CellAttribute> atts = null;
+    private List<CellAttribute> atts = null;
 
     /** Creates a new instance of AttributeTable */
     public AttributeTable() {
-        atts = new Vector<CellAttribute>();
+        atts = new ArrayList<>();
     }
 
     /** */
@@ -33,8 +34,8 @@ public class AttributeTable {
     }
 
     /** */
-    public Enumeration<CellAttribute> getCategories() {
-        return atts.elements();
+    public Iterator<CellAttribute> getCategories() {
+        return atts.iterator();
     }
 
     /** */
@@ -56,7 +57,7 @@ public class AttributeTable {
 
         while (low <= high) {
             int i = (low + high) / 2;
-            CellAttribute catt = (CellAttribute) atts.elementAt(i);
+            CellAttribute catt = atts.get(i);
             int c = catt.compare(cat);
             if (c == 0) {
                 return catt.getText();
@@ -76,7 +77,7 @@ public class AttributeTable {
 
         while (low <= high) {
             i = (low + high) / 2;
-            CellAttribute catt = (CellAttribute) atts.elementAt(i);
+            CellAttribute catt = atts.get(i);
             int c = catt.compare(cat);
             if (c == 0) {
                 /*
@@ -89,7 +90,7 @@ public class AttributeTable {
                 low = i++ + 1;
             }
         }
-        atts.insertElementAt(new CellAttribute(cat, value), i);
+        atts.add(i, new CellAttribute(cat, value));
     }
 
     /** */

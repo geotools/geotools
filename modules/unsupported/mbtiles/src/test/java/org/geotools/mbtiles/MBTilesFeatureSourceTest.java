@@ -17,13 +17,13 @@
 package org.geotools.mbtiles;
 
 import static org.geotools.mbtiles.MBTilesFile.SPHERICAL_MERCATOR;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -165,6 +165,29 @@ public class MBTilesFeatureSourceTest {
         MBTilesFeatureSource fs = getMadagascarSource("water");
         Query query = new Query("water", FF.equal(FF.property("class"), FF.literal("ocean"), true));
         query.setHints(new Hints(Hints.GEOMETRY_SIMPLIFICATION, 78271d));
+        ContentFeatureCollection fc = fs.getFeatures(query);
+        assertEquals(1, fc.size());
+        SimpleFeature feature = DataUtilities.first(fc);
+        // this one got from ogrinfo on the tile
+        Geometry expected =
+                new WKTReader()
+                        .read(
+                                IOUtils.toString(
+                                        getClass().getResourceAsStream("ocean_1_0_1.wkt"),
+                                        Charset.forName("UTF8")));
+        Geometry actual = (Geometry) feature.getDefaultGeometry();
+        // there is some difference in size, but nothing major (200k square meters are a square
+        // with a side of less than 500 meters, against a tile that covers 1/4 of the planet
+        assertEquals(0, expected.difference(actual).getArea(), 200000);
+        assertEquals(0, actual.difference(expected).getArea(), 200000);
+    }
+
+    // make it work with clients passing the distance hint instead of the simplification one
+    @Test
+    public void testGetLowerResolutionDistance() throws IOException, ParseException {
+        MBTilesFeatureSource fs = getMadagascarSource("water");
+        Query query = new Query("water", FF.equal(FF.property("class"), FF.literal("ocean"), true));
+        query.setHints(new Hints(Hints.GEOMETRY_DISTANCE, 78271d));
         ContentFeatureCollection fc = fs.getFeatures(query);
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);

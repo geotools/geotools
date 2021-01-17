@@ -33,7 +33,6 @@ import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -65,7 +64,7 @@ public class ToLineStringFunction implements Function {
                     FunctionNameImpl.parameter("parameter", Double.class, 2, 3));
 
     public ToLineStringFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public ToLineStringFunction(List<Expression> parameters, Literal fallback) {
@@ -114,11 +113,6 @@ public class ToLineStringFunction implements Function {
         CoordinateReferenceSystem crs = null;
         try {
             crs = CRS.decode(srsName);
-        } catch (NoSuchAuthorityCodeException e) {
-            // custom CRS
-            crs =
-                    new DefaultVerticalCRS(
-                            srsName, DefaultVerticalDatum.GEOIDAL, DefaultVerticalCS.DEPTH);
         } catch (FactoryException e) {
             // custom CRS
             crs =

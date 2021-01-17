@@ -110,7 +110,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
     @Override
     public ResourceInfo getInfo() {
         return new ResourceInfo() {
-            final Set<String> words = new HashSet<String>();
+            final Set<String> words = new HashSet<>();
 
             {
                 words.add("features");

@@ -24,7 +24,7 @@ import org.geotools.styling.FeatureTypeConstraint;
 import org.opengis.filter.Filter;
 
 public class FeatureTypeConstraintBuilder extends AbstractSLDBuilder<FeatureTypeConstraint> {
-    private List<Extent> extents = new ArrayList<Extent>();
+    private List<Extent> extents = new ArrayList<>();
 
     private Filter filter;
 

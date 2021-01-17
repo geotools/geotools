@@ -16,6 +16,10 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.StringWriter;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.data.jdbc.SQLFilterTestSupport;
@@ -34,6 +38,8 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -41,10 +47,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
-
-    public PostgisFilterToSQLTest(String name) {
-        super(name);
-    }
 
     private static FilterFactory2 ff;
 
@@ -247,5 +249,41 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.encode(like);
         String sql = writer.toString().toLowerCase().trim();
         assertEquals("where lower(teststring) like 'a_literal'", sql);
+    }
+
+    @Test
+    public void testFunctionJsonPointer() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));
+
+        filterToSql.encode(pointer);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("testjson ::json  -> 'arr' ->> 0", sql);
+    }
+
+    @Test
+    public void testBinaryComparisonWithJsonPointer() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));
+        Expression literal = ff.literal(3);
+        Filter less = ff.less(pointer, literal);
+        filterToSql.encode(less);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where (testjson ::json  -> 'arr' ->> 0)::integer < 3", sql);
+    }
+
+    @Test
+    public void testLikeWithJsonPointer() throws Exception {
+        // test that encoding not fails with NPE for LIKE
+        // when is specified an expression as parameter with Object as return type
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));
+        Filter like = ff.like(pointer, "a_literal", "%", "-", "\\", true);
+        filterToSql.encode(like);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where testjson ::json  -> 'arr' ->> 0 like 'a_literal'", sql);
     }
 }

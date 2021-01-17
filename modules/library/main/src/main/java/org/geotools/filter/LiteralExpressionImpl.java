@@ -180,15 +180,15 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
                 return ((Geometry) this.literal).equalsExact(expLit.evaluate(null, Geometry.class));
             } else if (expressionType == ExpressionType.LITERAL_GEOMETRY
                     && this.literal instanceof Envelope) {
-                return ((Envelope) this.literal).equals(expLit.evaluate(null, Envelope.class));
+                return this.literal.equals(expLit.evaluate(null, Envelope.class));
             } else if (expressionType == ExpressionType.LITERAL_INTEGER) {
-                return ((Integer) this.literal).equals(expLit.evaluate(null, Integer.class));
+                return this.literal.equals(expLit.evaluate(null, Integer.class));
             } else if (expressionType == ExpressionType.LITERAL_STRING) {
-                return ((String) this.literal).equals(expLit.evaluate(null, String.class));
+                return this.literal.equals(expLit.evaluate(null, String.class));
             } else if (expressionType == ExpressionType.LITERAL_DOUBLE) {
-                return ((Double) this.literal).equals(expLit.evaluate(null, Double.class));
+                return this.literal.equals(expLit.evaluate(null, Double.class));
             } else if (expressionType == ExpressionType.LITERAL_LONG) {
-                return ((Long) this.literal).equals(expLit.evaluate(null, Long.class));
+                return this.literal.equals(expLit.evaluate(null, Long.class));
             } else {
                 // try to convert the other to the current type
                 Object other = expLit.evaluate(null, this.literal.getClass());
@@ -202,8 +202,8 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
                     return converted.equals(other);
                 }
                 // final attemp with a string to string comparison
-                String str1 = (String) this.evaluate(null, String.class);
-                String str2 = (String) expLit.evaluate(null, String.class);
+                String str1 = this.evaluate(null, String.class);
+                String str2 = expLit.evaluate(null, String.class);
                 return str1 != null && str2 != null && str1.equals(str2);
             }
         } else if (obj instanceof Literal) {

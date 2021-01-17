@@ -17,12 +17,19 @@
 
 package org.geotools.data.complex;
 
-import static org.geotools.data.complex.SweValuesTest.*;
+import static org.geotools.data.complex.SweValuesTest.GML_NS;
+import static org.geotools.data.complex.SweValuesTest.OBSERVATION_FEATURE;
+import static org.geotools.data.complex.SweValuesTest.OM_NS;
+import static org.geotools.data.complex.SweValuesTest.SWE_NS;
+import static org.geotools.data.complex.SweValuesTest.SWE_VALUES_MAPPING;
+import static org.geotools.data.complex.SweValuesTest.XLINK_NS;
+import static org.geotools.data.complex.SweValuesTest.size;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +74,7 @@ public class ClientPropertyIdentifierTest {
     @Before
     public void loadDataAccess() throws Exception {
         /** Load observation data access */
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url = SweValuesTest.class.getResource(SWE_VALUES_MAPPING);
         assertNotNull(url);
 
@@ -79,9 +86,9 @@ public class ClientPropertyIdentifierTest {
         FeatureType observationFeatureType = omsoDataAccess.getSchema(OBSERVATION_FEATURE);
         assertNotNull(observationFeatureType);
 
-        obsSource = (FeatureSource) omsoDataAccess.getFeatureSource(OBSERVATION_FEATURE);
+        obsSource = omsoDataAccess.getFeatureSource(OBSERVATION_FEATURE);
         assertNotNull(obsSource);
-        FeatureCollection obsFeatures = (FeatureCollection) obsSource.getFeatures();
+        FeatureCollection obsFeatures = obsSource.getFeatures();
         assertEquals(2, size(obsFeatures));
     }
 

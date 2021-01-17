@@ -16,14 +16,20 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.LineSymbolizer;
+import org.junit.Test;
 import org.opengis.filter.expression.Function;
 
 public class SLDLineSymbolizerBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(LineSymbolizer.class, new SLDLineSymbolizerBinding(null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.lineSymbolizer(document, document);
 
@@ -33,6 +39,7 @@ public class SLDLineSymbolizerBindingTest extends SLDTestSupport {
         assertNotNull(lineSymbolizer.getStroke());
     }
 
+    @Test
     public void testTransform() throws Exception {
         SLDMockData.transformedLineSymbolizer(document, document);
 

@@ -16,12 +16,24 @@
  */
 package org.geotools.ows.wms.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 import org.geotools.data.ows.Specification;
-import org.geotools.ows.wms.*;
+import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.StyleImpl;
+import org.geotools.ows.wms.WMS1_1_1;
+import org.geotools.ows.wms.WMSCapabilities;
+import org.geotools.ows.wms.WebMapServer;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 /**
@@ -43,10 +55,12 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
                         "http://mapserv2.esrin.esa.it/cubestor/cubeserv/cubeserv.cgi?VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS");
     }
 
+    @Test
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.1.1");
     }
 
+    @Test
     public void testCreateParser() throws Exception {
         try {
             WMSCapabilities capabilities = createCapabilities("1.1.1Capabilities.xml");
@@ -175,7 +189,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
 
             assertEquals(capabilities.getLayerList().size(), 4);
 
-            Layer layer = (Layer) capabilities.getLayerList().get(0);
+            Layer layer = capabilities.getLayerList().get(0);
             assertNotNull(layer);
             assertNull(layer.getName());
             assertEquals(layer.getTitle(), "Microsoft TerraServer Map Server");
@@ -188,7 +202,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
             assertEquals(layer.getBoundingBoxes().size(), 0);
             assertEquals(layer.getStyles().size(), 0);
 
-            layer = (Layer) capabilities.getLayerList().get(1);
+            layer = capabilities.getLayerList().get(1);
             assertEquals(layer.getName(), "DOQ");
             assertEquals(layer.getTitle(), "USGS Digital Ortho-Quadrangles");
             // changed expected to 14 to account for inherited srs
@@ -198,7 +212,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
             assertTrue(layer.getSrs().contains("EPSG:26905"));
             assertTrue(layer.getSrs().contains("EPSG:26920"));
             assertEquals(layer.getBoundingBoxes().size(), 13);
-            CRSEnvelope bbox = (CRSEnvelope) layer.getBoundingBoxes().get("EPSG:26905");
+            CRSEnvelope bbox = layer.getBoundingBoxes().get("EPSG:26905");
             assertNotNull(bbox);
             assertEquals(bbox.getEPSGCode(), "EPSG:26905");
             assertEquals(bbox.getMinX(), 552600.0, 0.0);
@@ -208,7 +222,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
             assertEquals(10, layer.getScaleDenominatorMin(), 0);
             assertEquals(10000, layer.getScaleDenominatorMax(), 0);
 
-            bbox = (CRSEnvelope) layer.getBoundingBoxes().get("EPSG:26920");
+            bbox = layer.getBoundingBoxes().get("EPSG:26920");
             assertNotNull(bbox);
             assertEquals(bbox.getEPSGCode(), "EPSG:26920");
             assertEquals(bbox.getMinX(), 181800.0, 0.0);
@@ -224,7 +238,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
             assertTrue(layer.getStyles().contains(new StyleImpl("GeoGrid_Gray")));
             assertTrue(layer.getStyles().contains(new StyleImpl("GeoGrid_White")));
 
-            StyleImpl utmGrid = (StyleImpl) layer.getStyles().get(0);
+            StyleImpl utmGrid = layer.getStyles().get(0);
             assertEquals(utmGrid.getName(), "UTMGrid");
             assertEquals(
                     utmGrid.getAbstract().toString(),
@@ -236,7 +250,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
             // Added test to verify inheritance, should be same as previous llbbox
             validateBoundingBox(layer.getLatLonBoundingBox(), -168.67, 17.84, -65.15, 71.55);
 
-            layer = (Layer) capabilities.getLayerList().get(2);
+            layer = capabilities.getLayerList().get(2);
             assertNotNull(layer);
             assertEquals(layer.getName(), "DRG");
             assertEquals(layer.getTitle(), "USGS Raster Graphics (Topo Maps)");
@@ -245,7 +259,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
 
             assertEquals(50, layer.getScaleDenominatorMin(), 0);
 
-            layer = (Layer) capabilities.getLayerList().get(3);
+            layer = capabilities.getLayerList().get(3);
             assertNotNull(layer);
             assertEquals(layer.getName(), "UrbanArea");
             assertEquals(layer.getTitle(), "USGS Urban Areas Ortho-Imagery");

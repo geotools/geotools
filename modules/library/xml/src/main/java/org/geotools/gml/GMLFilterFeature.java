@@ -16,7 +16,8 @@
  */
 package org.geotools.gml;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -62,9 +63,9 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
     // private Feature currentFeature; // = new FeatureFlat();
 
     /** Stores current feature attributes. */
-    private Vector attributes = new Vector();
+    private List<Object> attributes = new ArrayList<>();
 
-    private Vector attributeNames = new Vector();
+    private List<String> attributeNames = new ArrayList<>();
     private String fid = null;
 
     /** Stores current feature attributes. */
@@ -118,12 +119,12 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
         // _log.debug("adding geometry with name "+attName);
         if (insideFeature) {
             if (attName.equals("")) {
-                attributeNames.addElement("geometry");
+                attributeNames.add("geometry");
             } else {
-                attributeNames.addElement(attName);
+                attributeNames.add(attName);
             }
 
-            attributes.addElement(geometry);
+            attributes.add(geometry);
             endAttribute();
 
             // currentFeature.setGeometry(geometry);
@@ -159,8 +160,8 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
         // if it ends with Member we'll assume it's a feature for the time being
         // nasty hack to fix members of multi lines and polygons
         if (isFeatureMember(localName)) {
-            attributes = new Vector();
-            attributeNames = new Vector();
+            attributes = new ArrayList<>();
+            attributeNames = new ArrayList<>();
 
             // currentFeature = new FeatureFlat();
             insideFeature = true;
@@ -290,7 +291,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
             //            }
             //            insideFeature = false;
             for (int i = 0, ii = attributes.size(); i < ii; i++) {
-                String name = (String) attributeNames.get(i);
+                String name = attributeNames.get(i);
                 Class clazz = attributes.get(i).getClass();
                 tb.add(name, clazz);
             }

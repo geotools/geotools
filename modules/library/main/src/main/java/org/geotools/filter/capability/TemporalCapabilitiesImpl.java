@@ -46,7 +46,7 @@ public class TemporalCapabilitiesImpl implements TemporalCapabilities {
             return new TemporalOperatorsImpl();
         }
         if (operators instanceof TemporalOperatorsImpl) {
-            return (TemporalOperatorsImpl) operators;
+            return operators;
         }
         return new TemporalOperatorsImpl(operators.getOperators());
     }

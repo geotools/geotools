@@ -41,7 +41,7 @@ public class FESParseEncodeUtil {
 
     /** Parses the two operands for a binary temporal filter. */
     static Expression[] temporal(Node node, FilterFactory factory) {
-        PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
+        PropertyName name = node.getChildValue(PropertyName.class);
         Object other = null;
         for (Object o : node.getChildValues(Object.class)) {
             if (o == name) {
@@ -74,8 +74,8 @@ public class FESParseEncodeUtil {
         return getProperty(op.getExpression1(), op.getExpression2(), name);
     }
 
-    static List getProperties(DistanceBufferOperator op) {
-        List l = new ArrayList();
+    static List<Object[]> getProperties(DistanceBufferOperator op) {
+        List<Object[]> l = new ArrayList<>();
         l.add(distanceBufferOpProperty(op.getExpression1()));
         l.add(distanceBufferOpProperty(op.getExpression2()));
 

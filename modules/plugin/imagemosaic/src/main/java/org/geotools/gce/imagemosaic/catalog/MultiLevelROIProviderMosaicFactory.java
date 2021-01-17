@@ -111,18 +111,14 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
 
         // Get the overviews suffix String format
         String overviewsSuffixFormat =
-                (String)
-                        properties.getProperty(
-                                MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_SUFFIX_FORMAT_KEY,
-                                MultiLevelROIGeometryOverviewsProvider
-                                        .DEFAULT_OVERVIEWS_SUFFIX_FORMAT);
+                properties.getProperty(
+                        MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_SUFFIX_FORMAT_KEY,
+                        MultiLevelROIGeometryOverviewsProvider.DEFAULT_OVERVIEWS_SUFFIX_FORMAT);
 
         // Whether overviewsROI are provided in raster space (or model space)
         String overviewsRoiInRasterSpaceString =
-                (String)
-                        properties.getProperty(
-                                MultiLevelROIGeometryOverviewsProvider
-                                        .OVERVIEWS_ROI_IN_RASTER_SPACE_KEY);
+                properties.getProperty(
+                        MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_ROI_IN_RASTER_SPACE_KEY);
         boolean overviewsRoiInRasterSpace =
                 overviewsRoiInRasterSpaceString != null
                         ? Boolean.parseBoolean(overviewsRoiInRasterSpaceString)
@@ -185,7 +181,7 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
                                 + shapefile.getCanonicalPath()
                                 + " but the file was not found");
             } else {
-                final Map<String, Serializable> params = new HashMap<String, Serializable>();
+                final Map<String, Serializable> params = new HashMap<>();
                 params.put("url", URLs.fileToUrl(shapefile));
                 String cql = (String) properties.get(FILTER_PROPERTY);
                 Filter filter = null;

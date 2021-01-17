@@ -25,7 +25,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -42,6 +41,7 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.measure.Quantity;
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FilenameUtils;
@@ -92,8 +92,8 @@ import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.format.SimpleUnitFormat;
+import tech.units.indriya.AbstractUnit;
+import tech.units.indriya.format.SimpleUnitFormat;
 
 /** @author Daniele Romagnoli, GeoSolutions */
 public class Utilities {
@@ -142,7 +142,7 @@ public class Utilities {
             final String name,
             final double equatorialRadius,
             final double inverseFlattening,
-            Unit unit) {
+            Unit<Length> unit) {
 
         DefaultEllipsoid ellipsoid =
                 DefaultEllipsoid.createFlattenedSphere(
@@ -151,7 +151,7 @@ public class Utilities {
         // TODO: Should I change this behavior?
         if (identifiers == null)
             throw new IllegalArgumentException("Reference Identifier not available");
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         properties.put(DefaultGeodeticDatum.NAME_KEY, identifiers[0]);
         properties.put(DefaultGeodeticDatum.ALIAS_KEY, identifiers);
         DefaultGeodeticDatum datum =
@@ -220,7 +220,7 @@ public class Utilities {
             //
             // //
 
-            final Map<String, String> props = new HashMap<String, String>();
+            final Map<String, Object> props = new HashMap<>();
             props.put("name", "Mercator CRS");
             OperationMethod method = null;
             final MathTransform mt =
@@ -270,8 +270,8 @@ public class Utilities {
     }
 
     /** Return a {@link Unit} instance for the specified uom String. */
-    public static Unit<? extends Quantity> parseUnit(final String uom) {
-        Unit<? extends Quantity> unit = AbstractUnit.ONE;
+    public static Unit<? extends Quantity<?>> parseUnit(final String uom) {
+        Unit<? extends Quantity<?>> unit = AbstractUnit.ONE;
         if (uom != null && uom.trim().length() > 0) {
             // TODO: Add more well known cases
             if (uom.equalsIgnoreCase("temp_deg_c") || uom.equalsIgnoreCase("Celsius"))
@@ -631,9 +631,7 @@ public class Utilities {
                 // don't use the source region. Set an empty one
                 sourceRegion.setBounds(new Rectangle(0, 0, Integer.MIN_VALUE, Integer.MIN_VALUE));
             }
-        } catch (TransformException e) {
-            throw new DataSourceException("Unable to create a coverage for this source", e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new DataSourceException("Unable to create a coverage for this source", e);
         }
         return adjustedRequestedEnvelope;
@@ -641,7 +639,7 @@ public class Utilities {
 
     /**
      * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link
-     * #raster2Model} that was provided for this coverage.
+     * MathTransform} that was provided for this coverage.
      *
      * <p>This method is vital when working with coverages that have a raster to model
      * transformation that is not a simple scale and translate.
@@ -904,7 +902,7 @@ public class Utilities {
                                             scaleX, 0, 0, scaleY, translateX, translateY)),
                             raster2Model),
                     coordinateReferenceSystem,
-                    (GeneralEnvelope) null,
+                    null,
                     sampleDimensions);
         } else {
             // In case of no transformation is required (As an instance,
@@ -914,8 +912,8 @@ public class Utilities {
                     coverageName,
                     imageIndex,
                     image,
-                    (MathTransform) null,
-                    (CoordinateReferenceSystem) null,
+                    null,
+                    null,
                     coverageEnvelope2D,
                     sampleDimensions);
         }
@@ -1270,10 +1268,6 @@ public class Utilities {
         final Properties properties = new Properties();
         try (InputStream openStream = propsURL.openStream()) {
             properties.load(openStream);
-        } catch (FileNotFoundException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            return null;
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.SEVERE))
                 LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);

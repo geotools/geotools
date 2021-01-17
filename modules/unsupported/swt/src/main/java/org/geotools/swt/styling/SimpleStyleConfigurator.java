@@ -241,7 +241,7 @@ public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
 
                     public Object[] getElements(Object inputElement) {
                         // note use of descriptors; so we can make use of associations if available
-                        ArrayList<String> names = new ArrayList<String>();
+                        ArrayList<String> names = new ArrayList<>();
                         names.add(DEFAULT_GEOMETRY);
                         if (schema != null) {
                             for (PropertyDescriptor descriptor : schema.getDescriptors()) {
@@ -442,7 +442,7 @@ public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
 
     /** Synchronize the SLD with the array of symbolizers */
     public void synchronize() {
-        List<Symbolizer> acquire = new ArrayList<Symbolizer>();
+        List<Symbolizer> acquire = new ArrayList<>();
         TextSymbolizer textSym = this.label.get(this.build);
 
         SimpleFeatureType schema = featureCollection.getSchema();
@@ -557,7 +557,7 @@ public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
                 style.featureTypeStyles().addAll(fts);
             } else {
                 // add the new entry to the array
-                List<FeatureTypeStyle> fts2 = new ArrayList<FeatureTypeStyle>(fts);
+                List<FeatureTypeStyle> fts2 = new ArrayList<>(fts);
                 Collections.copy(fts2, fts);
                 fts2.add(featureTypeStyle);
                 style.featureTypeStyles().clear();

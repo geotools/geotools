@@ -17,22 +17,21 @@
 package org.geotools.graph.structure.basic;
 
 import java.util.Iterator;
-import junit.framework.TestCase;
+import org.geotools.graph.structure.Graphable;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class BasicGraphableTest extends TestCase {
+public class BasicGraphableTest {
 
     private BasicGraphable m_graphable;
 
-    public BasicGraphableTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_graphable =
                 new BasicGraphable() {
-                    public Iterator getRelated() {
+                    public Iterator<? extends Graphable> getRelated() {
                         return null;
                     }
                 };
@@ -44,10 +43,11 @@ public class BasicGraphableTest extends TestCase {
      * Test: Clear visited flag, then reset.<br>
      * Expected: Visited flag should be set.
      */
+    @Test
     public void test_setVisited() {
-        assertTrue(!m_graphable.isVisited());
+        Assert.assertFalse(m_graphable.isVisited());
         m_graphable.setVisited(true);
-        assertTrue(m_graphable.isVisited());
+        Assert.assertTrue(m_graphable.isVisited());
     }
 
     /**
@@ -56,13 +56,14 @@ public class BasicGraphableTest extends TestCase {
      * Test: Create a new object and set underlying object. Expected: Underlying object should be
      * equal to created object.
      */
+    @Test
     public void test_setObject() {
         Object obj = Integer.valueOf(1);
 
-        assertTrue(m_graphable.getObject() == null);
+        Assert.assertNull(m_graphable.getObject());
         m_graphable.setObject(obj);
 
-        assertTrue(m_graphable.getObject() == obj);
+        Assert.assertSame(m_graphable.getObject(), obj);
     }
 
     /**
@@ -71,11 +72,12 @@ public class BasicGraphableTest extends TestCase {
      * Test: Change value of counter.<br>
      * Expected: Counter equal to new value.
      */
+    @Test
     public void test_setCount() {
-        assertEquals(m_graphable.getCount(), -1);
+        Assert.assertEquals(m_graphable.getCount(), -1);
         m_graphable.setCount(10);
 
-        assertEquals(m_graphable.getCount(), 10);
+        Assert.assertEquals(m_graphable.getCount(), 10);
     }
 
     /**
@@ -84,8 +86,9 @@ public class BasicGraphableTest extends TestCase {
      * Test: Change id.<br>
      * Expected: Id equal to new value.
      */
+    @Test
     public void test_setID() {
         m_graphable.setID(10);
-        assertEquals(m_graphable.getID(), 10);
+        Assert.assertEquals(m_graphable.getID(), 10);
     }
 }

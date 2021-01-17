@@ -76,7 +76,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
         ///////////////////////////////////////////////////////////////////////
         final Iterator<RenderedImage> it = intermediateOps.iterator();
         while (it.hasNext()) {
-            final PlanarImage image = PlanarImage.wrapRenderedImage((RenderedImage) it.next());
+            final PlanarImage image = PlanarImage.wrapRenderedImage(it.next());
             image.dispose();
         }
         super.dispose(force);
@@ -86,7 +86,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
      * Holds the intermediate {@link RenderedOp} we create along the path for this {@link
      * CoverageProcessingNode} in order to be able to dispose them later on.
      */
-    private Stack<RenderedImage> intermediateOps = new Stack<RenderedImage>();
+    private Stack<RenderedImage> intermediateOps = new Stack<>();
 
     /** alpha channel from previous nodes to be restored (it may be null) */
     private RenderedImage alpha;
@@ -150,7 +150,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
             GridGeometry2D gridGeometry = null;
             ImageLayout layout = null;
             final Hints hints = getHints();
-            final List<GridCoverage2D> sourceGridCoverages = new ArrayList<GridCoverage2D>();
+            final List<GridCoverage2D> sourceGridCoverages = new ArrayList<>();
             ImageWorker w = new ImageWorker();
             do {
                 // //
@@ -158,11 +158,11 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                 // Get the source image and do the merge
                 //
                 // //
-                final CoverageProcessingNode currentSourceNode = (CoverageProcessingNode) it.next();
+                final CoverageProcessingNode currentSourceNode = it.next();
                 final GridCoverage2D currentSourceCoverage =
                         (GridCoverage2D) currentSourceNode.getOutput();
                 sourceGridCoverages.add(currentSourceCoverage);
-                final GridGeometry2D gg = (GridGeometry2D) currentSourceCoverage.getGridGeometry();
+                final GridGeometry2D gg = currentSourceCoverage.getGridGeometry();
                 if (gridGeometry == null) {
                     // get the envelope for the first source.
                     gridGeometry = gg;

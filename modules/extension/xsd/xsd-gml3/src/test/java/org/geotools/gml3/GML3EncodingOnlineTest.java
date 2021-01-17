@@ -29,7 +29,6 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import junit.framework.TestCase;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.xsd.XSDSchema;
@@ -39,17 +38,19 @@ import org.geotools.gml3.bindings.TestConfiguration;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class GML3EncodingOnlineTest extends TestCase {
+public class GML3EncodingOnlineTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("test", TEST.TestFeature.getNamespaceURI());
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }
@@ -69,6 +70,7 @@ public class GML3EncodingOnlineTest extends TestCase {
         return false;
     }
 
+    @Test
     public void testWithConfiguration() throws Exception {
         if (isOffline()) {
             return;
@@ -81,10 +83,10 @@ public class GML3EncodingOnlineTest extends TestCase {
         SimpleFeatureCollection fc =
                 (SimpleFeatureCollection)
                         parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
-        assertNotNull(fc);
+        Assert.assertNotNull(fc);
 
         XSDSchema schema = TEST.getInstance().getSchema();
-        assertNotNull(schema);
+        Assert.assertNotNull(schema);
 
         Encoder encoder = new Encoder(configuration, schema);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -93,6 +95,7 @@ public class GML3EncodingOnlineTest extends TestCase {
         validate(output.toByteArray(), configuration);
     }
 
+    @Test
     public void testWithApplicationSchemaConfiguration() throws Exception {
         if (isOffline()) {
             return;
@@ -109,10 +112,10 @@ public class GML3EncodingOnlineTest extends TestCase {
         SimpleFeatureCollection fc =
                 (SimpleFeatureCollection)
                         parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
-        assertNotNull(fc);
+        Assert.assertNotNull(fc);
 
         XSDSchema schema = TEST.getInstance().getSchema();
-        assertNotNull(schema);
+        Assert.assertNotNull(schema);
 
         Encoder encoder = new Encoder(configuration, schema);
 
@@ -129,7 +132,7 @@ public class GML3EncodingOnlineTest extends TestCase {
 
         Validator v = s.newValidator();
 
-        final ArrayList errors = new ArrayList();
+        final ArrayList<SAXParseException> errors = new ArrayList<>();
         DefaultHandler handler =
                 new DefaultHandler() {
                     public void error(SAXParseException e) throws SAXException {
@@ -146,6 +149,6 @@ public class GML3EncodingOnlineTest extends TestCase {
         v.setErrorHandler(handler);
         v.validate(new StreamSource(new ByteArrayInputStream(data)));
 
-        assertTrue(errors.isEmpty());
+        Assert.assertTrue(errors.isEmpty());
     }
 }

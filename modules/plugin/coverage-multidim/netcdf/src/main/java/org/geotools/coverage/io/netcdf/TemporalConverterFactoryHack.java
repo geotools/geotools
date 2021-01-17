@@ -57,9 +57,10 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
 
                 return new Converter() {
-                    public Object convert(Object source, Class target) throws Exception {
+                    @SuppressWarnings("unchecked")
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof Date) {
-                            return df.format((Date) source);
+                            return (T) df.format((Date) source);
                         }
                         return null;
                     }
@@ -77,9 +78,10 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
 
                 return new Converter() {
-                    public Object convert(Object source, Class target) throws Exception {
+                    @SuppressWarnings("unchecked")
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof Calendar) {
-                            return df.format(((Calendar) source).getTime());
+                            return (T) df.format(((Calendar) source).getTime());
                         }
                         return null;
                     }
@@ -94,15 +96,17 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
 
                 return new Converter() {
-                    public Object convert(Object source, Class target) throws Exception {
+                    @SuppressWarnings("unchecked")
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof XMLGregorianCalendar) {
-                            return df.format(
-                                    ((XMLGregorianCalendar) source)
-                                            .toGregorianCalendar(
-                                                    TimeZone.getTimeZone("GMT"),
-                                                    Locale.getDefault(),
-                                                    null)
-                                            .getTime());
+                            return (T)
+                                    df.format(
+                                            ((XMLGregorianCalendar) source)
+                                                    .toGregorianCalendar(
+                                                            TimeZone.getTimeZone("GMT"),
+                                                            Locale.getDefault(),
+                                                            null)
+                                                    .getTime());
                         }
                         return null;
                     }

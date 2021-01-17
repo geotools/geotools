@@ -129,19 +129,18 @@ public class SchemaClassTemplate
 
     stringBuffer.append(TEXT_2);
     
-    HashMap ns2import = new HashMap();
-    for (Iterator itr = sg.getImports().iterator(); itr.hasNext();) {
-        Schema imported = (Schema)itr.next();
-        String fullClassName = imported.getClass().getName();
-        String className = fullClassName.substring(fullClassName.lastIndexOf(".")+1);
-        
-        ns2import.put(imported.getURI(), className);
+    Map<String, String> ns2import = new HashMap<>();
+      for (Schema imported : sg.getImports()) {
+          String fullClassName = imported.getClass().getName();
+          String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
 
-    stringBuffer.append(TEXT_3);
-    stringBuffer.append(fullClassName);
-    stringBuffer.append(TEXT_4);
-    
-    }
+          ns2import.put(imported.getURI(), className);
+
+          stringBuffer.append(TEXT_3);
+          stringBuffer.append(fullClassName);
+          stringBuffer.append(TEXT_4);
+
+      }
 
     stringBuffer.append(TEXT_5);
     stringBuffer.append(prefix);
@@ -149,251 +148,247 @@ public class SchemaClassTemplate
     
     Map<Name, String> typeBindings = sg.getTypeBindings();
 
-    for (Iterator itr = types.iterator(); itr.hasNext();) {
-        AttributeType type = (AttributeType) itr.next();
-        Name name = type.getName();
+      for (Object value : types) {
+          AttributeType type = (AttributeType) value;
+          Name name = type.getName();
 
-    stringBuffer.append(TEXT_7);
-    
-    StringWriter writer = new StringWriter();
+          stringBuffer.append(TEXT_7);
 
-    XSDTypeDefinition xsdType = sg.getXSDType(type);
-    SAXTransformerFactory txFactory = 
-            (SAXTransformerFactory) SAXTransformerFactory.newInstance();
-    TransformerHandler xmls;
-    try {
-        xmls = txFactory.newTransformerHandler();
-    } catch (TransformerConfigurationException e) {
-        throw new RuntimeException(e);
-    }
-    xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
-    xmls.getTransformer().setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "true");
-    xmls.getTransformer().setOutputProperty(OutputKeys.INDENT, "true");
+          StringWriter writer = new StringWriter();
 
-    try {
-        xmls.getTransformer().transform(new DOMSource(xsdType.getElement()), new StreamResult(writer));
-    } 
-    catch (Exception e) {
-        e.printStackTrace();
-        return null;
-    }
-      
-      String[] lines = writer.getBuffer().toString().split("\n");
-      for (int i = 0; i < lines.length; i++) {
+          XSDTypeDefinition xsdType = sg.getXSDType(type);
+          SAXTransformerFactory txFactory =
+                  (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+          TransformerHandler xmls;
+          try {
+              xmls = txFactory.newTransformerHandler();
+          } catch (TransformerConfigurationException e) {
+              throw new RuntimeException(e);
+          }
+          xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+          xmls.getTransformer().setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "true");
+          xmls.getTransformer().setOutputProperty(OutputKeys.INDENT, "true");
 
-    stringBuffer.append(TEXT_8);
-    stringBuffer.append(lines[i].replaceAll("<","&lt;").replaceAll(">","&gt;"));
-    
+          try {
+              xmls.getTransformer().transform(new DOMSource(xsdType.getElement()),
+                      new StreamResult(writer));
+          } catch (Exception e) {
+              e.printStackTrace();
+              return null;
+          }
+
+          String[] lines = writer.getBuffer().toString().split("\n");
+          for (String line : lines) {
+
+              stringBuffer.append(TEXT_8);
+              stringBuffer.append(line.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+
+          }
+
+          stringBuffer.append(TEXT_9);
+
+          if (type instanceof ComplexType && !typeBindings.containsKey(name)) {
+
+              stringBuffer.append(TEXT_10);
+              stringBuffer.append(name.getLocalPart().toUpperCase());
+              stringBuffer.append(TEXT_11);
+              stringBuffer.append(name.getLocalPart().toUpperCase());
+              stringBuffer.append(TEXT_12);
+              stringBuffer.append(name.getLocalPart().toUpperCase());
+              stringBuffer.append(TEXT_13);
+
+          } else {
+
+              stringBuffer.append(TEXT_14);
+              stringBuffer.append(name.getLocalPart().toUpperCase());
+              stringBuffer.append(TEXT_15);
+              stringBuffer.append(name.getLocalPart().toUpperCase());
+              stringBuffer.append(TEXT_16);
+              stringBuffer.append(name.getLocalPart().toUpperCase());
+              stringBuffer.append(TEXT_17);
+
+          }
+          String uri = name.getNamespaceURI();
+          String local = name.getLocalPart();
+
+          String binding;
+          if (typeBindings.containsKey(name)) {
+              binding = typeBindings.get(name) + ".class";
+          } else {
+              binding = type.getBinding().getName() + ".class";
+          }
+          String isIdentified = type.isIdentified() ? "true" : "false";
+          String isAbstract = type.isAbstract() ? "true" : "false";
+
+          String restrictions = "Collections.<Filter>emptyList()";
+          String superType = "null";
+
+          if (type.getSuper() != null) {
+              superType = type.getSuper().getName()
+                      .getLocalPart().toUpperCase() + "_TYPE";
+              String superURI = type.getSuper().getName().getNamespaceURI();
+              if (!uri.equals(superURI)) {
+                  superType = ns2import.get(superURI) + "." + superType;
+              }
+          }
+
+          String description = "null";
+          if (type instanceof ComplexType && !typeBindings.containsKey(name)) {
+              ComplexType cType = (ComplexType) type;
+
+              if (!cType.getDescriptors().isEmpty()) {
+
+                  stringBuffer.append(TEXT_18);
+
+                  for (PropertyDescriptor pd : cType.getDescriptors()) {
+                      if (!(pd instanceof AttributeDescriptor)) {
+                          continue;
+                      }
+
+                      AttributeDescriptor ad = (AttributeDescriptor) pd;
+
+                      AttributeType adType = ad.getType();
+
+                      String adTypeName = adType.getName().getLocalPart().toUpperCase() +
+                              "_TYPE";
+                      String adTypeURI = adType.getName().getNamespaceURI();
+                      if (!uri.equals(adTypeURI)) {
+                          adTypeName = ns2import.get(adTypeURI) + "." + adTypeName;
+                      }
+                      String adName = "new NameImpl(\"" + ad.getName().getNamespaceURI() +
+                              "\",\"" + ad.getName().getLocalPart() + "\")";
+                      String min = ad.getMinOccurs() + "";
+                      String max = ad.getMaxOccurs() + "";
+                      String isNillable = ad.isNillable() ? "true" : "false";
+
+                      stringBuffer.append(TEXT_19);
+                      stringBuffer.append(TEXT_20);
+                      stringBuffer.append(adTypeName);
+                      stringBuffer.append(TEXT_21);
+                      stringBuffer.append(adName);
+                      stringBuffer.append(TEXT_22);
+                      stringBuffer.append(min);
+                      stringBuffer.append(TEXT_23);
+                      stringBuffer.append(max);
+                      stringBuffer.append(TEXT_24);
+                      stringBuffer.append(isNillable);
+                      stringBuffer.append(TEXT_25);
+
+                  }
+
+                  stringBuffer.append(TEXT_26);
+                  stringBuffer.append(uri);
+                  stringBuffer.append(TEXT_27);
+                  stringBuffer.append(local);
+                  stringBuffer.append(TEXT_28);
+                  stringBuffer.append(isIdentified);
+                  stringBuffer.append(TEXT_29);
+                  stringBuffer.append(TEXT_30);
+                  stringBuffer.append(isAbstract);
+                  stringBuffer.append(TEXT_31);
+                  stringBuffer.append(restrictions);
+                  stringBuffer.append(TEXT_32);
+                  stringBuffer.append(superType);
+                  stringBuffer.append(TEXT_33);
+                  stringBuffer.append(description);
+                  stringBuffer.append(TEXT_34);
+
+              } else {
+
+                  stringBuffer.append(TEXT_35);
+                  stringBuffer.append(uri);
+                  stringBuffer.append(TEXT_36);
+                  stringBuffer.append(local);
+                  stringBuffer.append(TEXT_37);
+                  stringBuffer.append(isIdentified);
+                  stringBuffer.append(TEXT_38);
+                  stringBuffer.append(TEXT_39);
+                  stringBuffer.append(isAbstract);
+                  stringBuffer.append(TEXT_40);
+                  stringBuffer.append(restrictions);
+                  stringBuffer.append(TEXT_41);
+                  stringBuffer.append(superType);
+                  stringBuffer.append(TEXT_42);
+                  stringBuffer.append(description);
+                  stringBuffer.append(TEXT_43);
+
+              }
+          } else {
+
+              stringBuffer.append(TEXT_44);
+              stringBuffer.append(uri);
+              stringBuffer.append(TEXT_45);
+              stringBuffer.append(local);
+              stringBuffer.append(TEXT_46);
+              stringBuffer.append(binding);
+              stringBuffer.append(TEXT_47);
+              stringBuffer.append(isIdentified);
+              stringBuffer.append(TEXT_48);
+              stringBuffer.append(TEXT_49);
+              stringBuffer.append(isAbstract);
+              stringBuffer.append(TEXT_50);
+              stringBuffer.append(restrictions);
+              stringBuffer.append(TEXT_51);
+              stringBuffer.append(superType);
+              stringBuffer.append(TEXT_52);
+              stringBuffer.append(description);
+              stringBuffer.append(TEXT_53);
+
+          }
+
+          if (!type.getUserData().isEmpty()) {
+              //attributes
+              for (Map.Entry<Object, Object> objectObjectEntry : type.getUserData().entrySet()) {
+                  Map.Entry entry = (Map.Entry) objectObjectEntry;
+                  Name n = (Name) entry.getKey();
+                  PropertyDescriptor pd = (PropertyDescriptor) entry.getValue();
+                  PropertyType pdType = pd.getType();
+
+                  String pdTypeName = pdType.getName().getLocalPart().toUpperCase() +
+                          "_TYPE";
+                  if (ns2import.containsKey(pdType.getName().getNamespaceURI())) {
+                      String importClassName = ns2import.get(pdType.getName().getNamespaceURI());
+                      pdTypeName = importClassName + "." + pdTypeName;
+                  }
+                  String pdName = "new NameImpl(\"" + pd.getName().getNamespaceURI() +
+                          "\",\"" + pd.getName().getLocalPart() + "\")";
+
+
+                  stringBuffer.append(TEXT_54);
+                  stringBuffer.append(pdName);
+                  stringBuffer.append(TEXT_55);
+                  stringBuffer.append(pdTypeName);
+                  stringBuffer.append(TEXT_56);
+
+
+              }
+          }
+
+          stringBuffer.append(TEXT_57);
+
       }
-
-    stringBuffer.append(TEXT_9);
-    
-        if (type instanceof ComplexType && !typeBindings.containsKey(name)) {
-
-    stringBuffer.append(TEXT_10);
-    stringBuffer.append(name.getLocalPart().toUpperCase());
-    stringBuffer.append(TEXT_11);
-    stringBuffer.append(name.getLocalPart().toUpperCase());
-    stringBuffer.append(TEXT_12);
-    stringBuffer.append(name.getLocalPart().toUpperCase());
-    stringBuffer.append(TEXT_13);
-    
-        }
-        else {
-
-    stringBuffer.append(TEXT_14);
-    stringBuffer.append(name.getLocalPart().toUpperCase());
-    stringBuffer.append(TEXT_15);
-    stringBuffer.append(name.getLocalPart().toUpperCase());
-    stringBuffer.append(TEXT_16);
-    stringBuffer.append(name.getLocalPart().toUpperCase());
-    stringBuffer.append(TEXT_17);
-          
-        }
-        String uri = name.getNamespaceURI();
-        String local = name.getLocalPart();
-        
-        String binding;
-        if (typeBindings.containsKey(name)) {
-            binding = typeBindings.get(name) + ".class";
-        } else {
-            binding = type.getBinding().getName() + ".class";
-        }
-        String isIdentified = type.isIdentified() ? "true" : "false";
-        String isAbstract = type.isAbstract() ? "true" : "false";
-        
-        String restrictions = "Collections.<Filter>emptyList()";
-        String superType = "null";
-        
-        if (type.getSuper() != null) {
-            superType = type.getSuper().getName()
-                .getLocalPart().toUpperCase() + "_TYPE";
-            String superURI = type.getSuper().getName().getNamespaceURI();
-            if (!uri.equals(superURI)) {
-                superType = ns2import.get(superURI) + "." + superType;
-            }
-        }
-        
-        String description = "null";
-        if (type instanceof ComplexType && !typeBindings.containsKey(name)) {
-            ComplexType cType = (ComplexType)type;
-
-            if (!cType.getDescriptors().isEmpty()) {
-
-    stringBuffer.append(TEXT_18);
-    
-                for (Iterator adItr = cType.getDescriptors().iterator(); adItr.hasNext();) {
-                    PropertyDescriptor pd = (PropertyDescriptor) adItr.next();
-                    if ( !(pd instanceof AttributeDescriptor) ) {
-                        continue;
-                    }
-                    
-                    AttributeDescriptor ad = (AttributeDescriptor) pd;
-                    
-                    AttributeType adType = ad.getType();
-                    
-                    String adTypeName = adType.getName().getLocalPart().toUpperCase() + 
-                        "_TYPE";
-                    String adTypeURI = adType.getName().getNamespaceURI();
-                    if (!uri.equals(adTypeURI)) {
-                        adTypeName = ns2import.get(adTypeURI) + "." + adTypeName;
-                    }
-                    String adName = "new NameImpl(\"" + ad.getName().getNamespaceURI() + 
-                        "\",\"" + ad.getName().getLocalPart() + "\")";
-                    String min = ad.getMinOccurs() + "";
-                    String max = ad.getMaxOccurs() + "";
-                    String isNillable = ad.isNillable() ? "true" : "false";         
-
-    stringBuffer.append(TEXT_19);
-    stringBuffer.append(TEXT_20);
-    stringBuffer.append(adTypeName);
-    stringBuffer.append(TEXT_21);
-    stringBuffer.append(adName);
-    stringBuffer.append(TEXT_22);
-    stringBuffer.append(min);
-    stringBuffer.append(TEXT_23);
-    stringBuffer.append(max);
-    stringBuffer.append(TEXT_24);
-    stringBuffer.append(isNillable);
-    stringBuffer.append(TEXT_25);
-    
-                }
-
-    stringBuffer.append(TEXT_26);
-    stringBuffer.append(uri);
-    stringBuffer.append(TEXT_27);
-    stringBuffer.append(local);
-    stringBuffer.append(TEXT_28);
-    stringBuffer.append(isIdentified);
-    stringBuffer.append(TEXT_29);
-    stringBuffer.append(TEXT_30);
-    stringBuffer.append(isAbstract);
-    stringBuffer.append(TEXT_31);
-    stringBuffer.append(restrictions);
-    stringBuffer.append(TEXT_32);
-    stringBuffer.append(superType);
-    stringBuffer.append(TEXT_33);
-    stringBuffer.append(description);
-    stringBuffer.append(TEXT_34);
-    
-            }
-            else {
-
-    stringBuffer.append(TEXT_35);
-    stringBuffer.append(uri);
-    stringBuffer.append(TEXT_36);
-    stringBuffer.append(local);
-    stringBuffer.append(TEXT_37);
-    stringBuffer.append(isIdentified);
-    stringBuffer.append(TEXT_38);
-    stringBuffer.append(TEXT_39);
-    stringBuffer.append(isAbstract);
-    stringBuffer.append(TEXT_40);
-    stringBuffer.append(restrictions);
-    stringBuffer.append(TEXT_41);
-    stringBuffer.append(superType);
-    stringBuffer.append(TEXT_42);
-    stringBuffer.append(description);
-    stringBuffer.append(TEXT_43);
-              
-            }
-        }
-        else {
-
-    stringBuffer.append(TEXT_44);
-    stringBuffer.append(uri);
-    stringBuffer.append(TEXT_45);
-    stringBuffer.append(local);
-    stringBuffer.append(TEXT_46);
-    stringBuffer.append(binding);
-    stringBuffer.append(TEXT_47);
-    stringBuffer.append(isIdentified);
-    stringBuffer.append(TEXT_48);
-    stringBuffer.append(TEXT_49);
-    stringBuffer.append(isAbstract);
-    stringBuffer.append(TEXT_50);
-    stringBuffer.append(restrictions);
-    stringBuffer.append(TEXT_51);
-    stringBuffer.append(superType);
-    stringBuffer.append(TEXT_52);
-    stringBuffer.append(description);
-    stringBuffer.append(TEXT_53);
-          
-        }
-        
-        if (!type.getUserData().isEmpty()) {
-            //attributes
-            for (Iterator i = type.getUserData().entrySet().iterator(); i.hasNext(); ) {
-               Map.Entry entry = (Map.Entry) i.next();
-               Name n = (Name) entry.getKey();
-               PropertyDescriptor pd = (PropertyDescriptor) entry.getValue();
-               PropertyType pdType = pd.getType();
-               
-               String pdTypeName = pdType.getName().getLocalPart().toUpperCase() + 
-                            "_TYPE";
-               if (ns2import.containsKey(pdType.getName().getNamespaceURI())) {
-                    String importClassName = (String) ns2import.get(pdType.getName().getNamespaceURI());
-                    pdTypeName = importClassName + "." + pdTypeName;
-               }
-               String pdName = "new NameImpl(\"" + pd.getName().getNamespaceURI() + 
-                            "\",\"" + pd.getName().getLocalPart() + "\")";
-           
-
-    stringBuffer.append(TEXT_54);
-    stringBuffer.append(pdName);
-    stringBuffer.append(TEXT_55);
-    stringBuffer.append(pdTypeName);
-    stringBuffer.append(TEXT_56);
-    
-           
-            }
-        }
-
-    stringBuffer.append(TEXT_57);
-    
-    }
 
     stringBuffer.append(TEXT_58);
     stringBuffer.append(prefix);
     stringBuffer.append(TEXT_59);
     stringBuffer.append(schema.getURI());
     stringBuffer.append(TEXT_60);
-    
-    for (Iterator itr = types.iterator(); itr.hasNext();) {
-        AttributeType type = (AttributeType) itr.next();
-        Name name = type.getName();
 
-        String local = name.getLocalPart();
+      for (Object o : types) {
+          AttributeType type = (AttributeType) o;
+          Name name = type.getName();
 
-    stringBuffer.append(TEXT_61);
-    stringBuffer.append(schema.getURI());
-    stringBuffer.append(TEXT_62);
-    stringBuffer.append(local);
-    stringBuffer.append(TEXT_63);
-    stringBuffer.append(local.toUpperCase());
-    stringBuffer.append(TEXT_64);
-    
-    }
+          String local = name.getLocalPart();
+
+          stringBuffer.append(TEXT_61);
+          stringBuffer.append(schema.getURI());
+          stringBuffer.append(TEXT_62);
+          stringBuffer.append(local);
+          stringBuffer.append(TEXT_63);
+          stringBuffer.append(local.toUpperCase());
+          stringBuffer.append(TEXT_64);
+
+      }
 
     stringBuffer.append(TEXT_65);
     return stringBuffer.toString();

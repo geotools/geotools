@@ -56,7 +56,7 @@ public abstract class JDBCFeatureStoreExposePkOnlineTest extends JDBCFeatureStor
             assertTrue(i.hasNext());
 
             while (i.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) i.next();
+                SimpleFeature feature = i.next();
                 // this has been updated
                 assertEquals("foo", feature.getAttribute(aname("stringProperty")));
                 // the pk did not

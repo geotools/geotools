@@ -18,7 +18,8 @@ package org.geotools.xml.styling;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -39,13 +40,12 @@ import org.w3c.dom.NodeList;
 public class SLDInlineFeatureParser {
 
     /** hash table that takes a epsg# to its definition* */
-    private static Hashtable<Integer, CoordinateReferenceSystem> SRSLookup =
-            new Hashtable<Integer, CoordinateReferenceSystem>();
+    private static Map<Integer, CoordinateReferenceSystem> SRSLookup = new HashMap<>();
 
     public SimpleFeatureType featureType = null;
     public DataStore dataStore = null;
     Node rootNode = null;
-    ArrayList<Feature> features = new ArrayList<Feature>();
+    ArrayList<Feature> features = new ArrayList<>();
     CoordinateReferenceSystem SRS = null; // default EPSG#.
 
     private static int uniqueNumber = 0;
@@ -71,7 +71,7 @@ public class SLDInlineFeatureParser {
                     "SLD InlineFeature Parser - couldnt determine a FeatureType.  See help for whats supported."); // shouldnt get here
 
         makeFeatures(root, isFeatureCollection);
-        if (features.size() == 0)
+        if (features.isEmpty())
             throw new Exception("SLD InlineFeature Parser - didnt find any features!");
 
         buildStore();
@@ -464,8 +464,7 @@ public class SLDInlineFeatureParser {
      * the epsg.properties file. I cannot image a system with more than a dozen CRSs in it...
      */
     private CoordinateReferenceSystem getSRS(int epsg) throws Exception {
-        CoordinateReferenceSystem result =
-                (CoordinateReferenceSystem) SRSLookup.get(Integer.valueOf(epsg));
+        CoordinateReferenceSystem result = SRSLookup.get(Integer.valueOf(epsg));
         if (result == null) {
             // make and add to hash
             result = CRS.decode("EPSG:" + epsg);

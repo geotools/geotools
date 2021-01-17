@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -49,7 +48,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected final URL serverURL;
     protected C capabilities;
     protected ServiceInfo info;
-    protected Map<R, ResourceInfo> resourceInfo = new HashMap<R, ResourceInfo>();
+    protected Map<R, ResourceInfo> resourceInfo = new HashMap<>();
 
     /** Contains the specifications that are to be used with this service */
     protected Specification[] specs;
@@ -108,9 +107,9 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
             this.capabilities = capabilities;
         }
 
-        for (int i = 0; i < specs.length; i++) {
-            if (specs[i].getVersion().equals(this.capabilities.getVersion())) {
-                specification = specs[i];
+        for (Specification spec : specs) {
+            if (spec.getVersion().equals(this.capabilities.getVersion())) {
+                specification = spec;
                 break;
             }
         }
@@ -221,7 +220,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      */
     @SuppressWarnings("unchecked")
     protected C negotiateVersion() throws IOException, ServiceException {
-        List<String> versions = new ArrayList<String>(specs.length);
+        List<String> versions = new ArrayList<>(specs.length);
         Exception exception = null;
 
         for (int i = 0; i < specs.length; i++) {
@@ -356,8 +355,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
         String before = null;
 
-        for (Iterator i = known.iterator(); i.hasNext(); ) {
-            String test = (String) i.next();
+        for (Object o : known) {
+            String test = (String) o;
 
             if (test.compareTo(version) < 0) {
 
@@ -384,8 +383,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
         String after = null;
 
-        for (Iterator i = known.iterator(); i.hasNext(); ) {
-            String test = (String) i.next();
+        for (Object o : known) {
+            String test = (String) o;
 
             if (test.compareTo(version) > 0) {
                 if ((after == null) || (after.compareTo(test) < 0)) {

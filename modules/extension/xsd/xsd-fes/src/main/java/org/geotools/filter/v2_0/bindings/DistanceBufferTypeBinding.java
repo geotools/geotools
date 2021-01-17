@@ -71,7 +71,8 @@ public class DistanceBufferTypeBinding extends AbstractComplexBinding {
     //    }
 
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         return FESParseEncodeUtil.getProperties((DistanceBufferOperator) object);
     }
 }

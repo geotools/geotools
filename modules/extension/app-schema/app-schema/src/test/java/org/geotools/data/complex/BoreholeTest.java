@@ -22,10 +22,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -102,7 +102,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
     @BeforeClass
     public static void oneTimeSetUp() throws IOException {
         // System.out.println("beforeclass");
-        final Map dsParams = new HashMap();
+        final Map<String, Serializable> dsParams = new HashMap<>();
         final URL url = BoreholeTest.class.getResource(schemaBase + "BoreholeTest_properties.xml");
         dsParams.put("dbtype", "app-schema");
         dsParams.put("url", url.toExternalForm());
@@ -159,7 +159,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
             // ensure all needed types were parsed and aren't just empty proxies
             Collection properties = borehole.getTypeDescriptors();
             assertEquals(16, properties.size());
-            Map expectedNamesAndTypes = new HashMap();
+            Map<Name, Name> expectedNamesAndTypes = new HashMap<>();
             // from gml:AbstractFeatureType
             expectedNamesAndTypes.put(
                     name(GMLNS, "metaDataProperty"), typeName(GMLNS, "MetaDataPropertyType"));
@@ -191,8 +191,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
                     name(XMMLNS, "collarDiameter"), typeName(GMLNS, "MeasureType"));
             expectedNamesAndTypes.put(name(XMMLNS, "log"), typeName(XMMLNS, "LogPropertyType"));
 
-            for (Iterator it = expectedNamesAndTypes.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Entry) it.next();
+            for (Entry<Name, Name> nameNameEntry : expectedNamesAndTypes.entrySet()) {
+                Entry entry = (Entry) nameNameEntry;
                 Name dName = (Name) entry.getKey();
                 Name tName = (Name) entry.getValue();
 
@@ -200,12 +200,9 @@ public class BoreholeTest extends AppSchemaTestSupport {
                 assertNotNull("Descriptor not found: " + dName, d);
                 AttributeType type;
                 try {
-                    type = (AttributeType) d.getType();
+                    type = d.getType();
                 } catch (Exception e) {
-                    LOGGER.log(
-                            Level.SEVERE,
-                            "type not parsed for " + ((AttributeDescriptor) d).getName(),
-                            e);
+                    LOGGER.log(Level.SEVERE, "type not parsed for " + d.getName(), e);
                     throw e;
                 }
                 assertNotNull(type);
@@ -217,8 +214,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
             }
 
             Name tcl = Types.typeName(SWENS, "TypedCategoryListType");
-            AttributeType typedCategoryListType =
-                    (AttributeType) typeRegistry.getAttributeType(tcl);
+            AttributeType typedCategoryListType = typeRegistry.getAttributeType(tcl);
             assertNotNull(typedCategoryListType);
             assertTrue(typedCategoryListType instanceof ComplexType);
         } finally {
@@ -230,7 +226,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         return Types.typeName(ns, localName);
     }
 
-    private Object name(String ns, String localName) {
+    private Name name(String ns, String localName) {
         return new NameImpl(ns, localName);
     }
 
@@ -287,8 +283,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     @Test
     public void testDataStore() throws Exception {
-        FeatureSource<FeatureType, Feature> fSource =
-                (FeatureSource<FeatureType, Feature>) mappingDataStore.getFeatureSource(typeName);
+        FeatureSource<FeatureType, Feature> fSource = mappingDataStore.getFeatureSource(typeName);
 
         // make a getFeatures request with a nested properties filter.
         // note that the expected result count is set to 65 since that's the
@@ -296,8 +291,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         // of results I get from a sql select on min_time_d = 'carnian'
         final int EXPECTED_RESULT_COUNT = 20;
 
-        FeatureCollection<FeatureType, Feature> features =
-                (FeatureCollection<FeatureType, Feature>) fSource.getFeatures();
+        FeatureCollection<FeatureType, Feature> features = fSource.getFeatures();
 
         int resultCount = size(features);
         String msg =
@@ -309,7 +303,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         int count = 0;
         FeatureIterator<Feature> it = features.features();
         for (; it.hasNext(); ) {
-            feature = (Feature) it.next();
+            feature = it.next();
             count++;
         }
         it.close();
@@ -318,13 +312,10 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
         int size = 0;
-        FeatureIterator<Feature> i = features.features();
-        try {
+        try (FeatureIterator<Feature> i = features.features()) {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        } finally {
-            i.close();
         }
         return size;
     }
@@ -332,7 +323,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
     @Test
     public void testQueryXlinkProperty() throws Exception {
         final FeatureSource<FeatureType, Feature> fSource =
-                (FeatureSource<FeatureType, Feature>) mappingDataStore.getFeatureSource(typeName);
+                mappingDataStore.getFeatureSource(typeName);
         final String queryProperty = "sa:shape/geo:LineByVector/geo:origin/@xlink:href";
         final String queryLiteral = "#bh.176909a.start";
 
@@ -347,8 +338,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
         final Filter filter = ff.equals(propertyName, literal);
 
-        FeatureCollection<FeatureType, Feature> features =
-                (FeatureCollection<FeatureType, Feature>) fSource.getFeatures(filter);
+        FeatureCollection<FeatureType, Feature> features = fSource.getFeatures(filter);
 
         // did the query work?
         int resultCount = size(features);
@@ -371,7 +361,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
     @Test
     public void testTraverseDeep() throws Exception {
         final FeatureSource<FeatureType, Feature> fSource =
-                (FeatureSource<FeatureType, Feature>) mappingDataStore.getFeatureSource(typeName);
+                mappingDataStore.getFeatureSource(typeName);
         final String queryProperty = "sa:shape/geo:LineByVector/geo:origin/@xlink:href";
         final String queryLiteral = "#bh.176909a.start";
 
@@ -380,9 +370,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
         namespaces.declarePrefix("geo", GEONS);
         namespaces.declarePrefix("xlink", XLINK.NAMESPACE);
 
-        FeatureCollection<FeatureType, Feature> features =
-                (FeatureCollection) fSource.getFeatures();
-        Feature f = (Feature) features.features().next();
+        FeatureCollection features = fSource.getFeatures();
+        Feature f = features.features().next();
         traverse(f);
     }
 
@@ -391,8 +380,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
         value = f.getValue();
         if (f instanceof ComplexAttribute) {
             Collection values = (Collection) value;
-            for (Iterator it = values.iterator(); it.hasNext(); ) {
-                Attribute att = (Attribute) it.next();
+            for (Object o : values) {
+                Attribute att = (Attribute) o;
                 assertNotNull(att);
                 traverse(att);
             }

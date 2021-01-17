@@ -259,6 +259,7 @@ public class TestGraphics extends Graphics2D {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void setRenderingHints(Map<?, ?> hints) {
         this.hints = (Map<Key, ?>) hints;
     }

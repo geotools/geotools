@@ -91,7 +91,7 @@ public class SelectSampleDimension extends Operation2D {
 
     /** The parameter descriptor for the sample dimension indices. */
     public static final ParameterDescriptor<int[]> SAMPLE_DIMENSIONS =
-            new DefaultParameterDescriptor<int[]>(
+            new DefaultParameterDescriptor<>(
                     Citations.OGC,
                     "SampleDimensions",
                     int[].class, // Value class (mandatory)
@@ -107,7 +107,7 @@ public class SelectSampleDimension extends Operation2D {
      * parameter.
      */
     public static final ParameterDescriptor<Integer> VISIBLE_SAMPLE_DIMENSION =
-            new DefaultParameterDescriptor<Integer>(
+            new DefaultParameterDescriptor<>(
                     Citations.GEOTOOLS,
                     "VisibleSampleDimension",
                     Integer.class, // Value class (mandatory)

@@ -66,8 +66,8 @@ public class SimpleSchema extends SchemaImpl {
                     Boolean.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
-                    (AttributeType) null,
+                    Collections.emptyList(),
+                    null,
                     null);
     /** STRING to String.class */
     public static final AttributeType STRING =
@@ -76,8 +76,8 @@ public class SimpleSchema extends SchemaImpl {
                     String.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
-                    (AttributeType) null,
+                    Collections.emptyList(),
+                    null,
                     null);
     /** HEXBINRAY to byte[].class */
     public static final AttributeType HEXBINARY =
@@ -86,8 +86,8 @@ public class SimpleSchema extends SchemaImpl {
                     byte[].class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
-                    (AttributeType) null,
+                    Collections.emptyList(),
+                    null,
                     null);
     /** QNAME to byte[].class */
     public static final AttributeType QNAME =
@@ -96,8 +96,8 @@ public class SimpleSchema extends SchemaImpl {
                     QName.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
-                    (AttributeType) null,
+                    Collections.emptyList(),
+                    null,
                     null);
     /** QNAME to byte[].class */
     public static final AttributeType URI =
@@ -106,8 +106,8 @@ public class SimpleSchema extends SchemaImpl {
                     URI.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
-                    (AttributeType) null,
+                    Collections.emptyList(),
+                    null,
                     null);
     //
     // Numerics
@@ -115,7 +115,7 @@ public class SimpleSchema extends SchemaImpl {
     //    /** NUMBER to Number.class */
     //    public static final AttributeType NUMBER = factory.createAttributeType(
     //        new Name(NAMESPACE,"number"), Number.class, false,
-    //        false,Collections.EMPTY_LIST, (AttributeType) null, null
+    //        false,Collections.emptyList(), (AttributeType) null, null
     //    );
     /** INT to java Integer.class */
     public static final AttributeType INT =
@@ -124,7 +124,7 @@ public class SimpleSchema extends SchemaImpl {
                     Integer.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     /** INTEGER to BigInteger */
@@ -134,7 +134,7 @@ public class SimpleSchema extends SchemaImpl {
                     BigInteger.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     /** FLOAT to java Float.class */
@@ -144,7 +144,7 @@ public class SimpleSchema extends SchemaImpl {
                     Float.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     /** DOUBLE to Double.class */
@@ -154,7 +154,7 @@ public class SimpleSchema extends SchemaImpl {
                     Double.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     /** LONG to Long.class */
@@ -164,7 +164,7 @@ public class SimpleSchema extends SchemaImpl {
                     Long.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     /** SHORT to Short.class */
@@ -174,7 +174,7 @@ public class SimpleSchema extends SchemaImpl {
                     Short.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     /** BYTE to Byte.class */
@@ -184,7 +184,7 @@ public class SimpleSchema extends SchemaImpl {
                     Byte.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
 
@@ -198,8 +198,8 @@ public class SimpleSchema extends SchemaImpl {
                     Date.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
-                    (AttributeType) null,
+                    Collections.emptyList(),
+                    null,
                     null);
     /** TIME to java.sq1.Time.class */
     public static final AttributeType TIME =
@@ -208,8 +208,8 @@ public class SimpleSchema extends SchemaImpl {
                     Time.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
-                    (AttributeType) null,
+                    Collections.emptyList(),
+                    null,
                     null);
     /**
      * DATETIME to java.sql.Timestamp
@@ -222,8 +222,8 @@ public class SimpleSchema extends SchemaImpl {
                     Timestamp.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
-                    (AttributeType) null,
+                    Collections.emptyList(),
+                    null,
                     null);
 
     //
@@ -237,7 +237,7 @@ public class SimpleSchema extends SchemaImpl {
                     null,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     /** POINT (extends GEOMETRY) binds to Point.class */
@@ -248,7 +248,7 @@ public class SimpleSchema extends SchemaImpl {
                     null,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     /** LINESTRING (extends GEOMETRY) binds to LineString.class */
@@ -259,13 +259,13 @@ public class SimpleSchema extends SchemaImpl {
                     null,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     //    /** LINEARRING (extends GEOMETRY) binds to LinearRing.class */
     //    public static final GeometryType LINEARRING = factory.createGeometryType(
     //        new Name(NAMESPACE,"LinearRingPropertyType"), LinearRing.class, null, false,
-    //        false, Collections.EMPTY_LIST, LINESTRING, null
+    //        false, Collections.emptyList(), LINESTRING, null
     //    );
     /** POLYGON (extends GEOMETRY) binds to Polygon.class */
     public static final GeometryType POLYGON =
@@ -275,7 +275,7 @@ public class SimpleSchema extends SchemaImpl {
                     null,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
     /** MULTIGEOMETRY (extends GEOMETRY) binds to GeometryCollection.class */
@@ -286,7 +286,7 @@ public class SimpleSchema extends SchemaImpl {
                     null,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
 
@@ -298,7 +298,7 @@ public class SimpleSchema extends SchemaImpl {
                     null,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
 
@@ -310,7 +310,7 @@ public class SimpleSchema extends SchemaImpl {
                     null,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
 
@@ -322,7 +322,7 @@ public class SimpleSchema extends SchemaImpl {
                     null,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     MULTIGEOMETRY,
                     null);
 

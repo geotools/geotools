@@ -224,7 +224,7 @@ public class Util {
 
     /** Parses a float array from a space delimited list. */
     public static float[] floatArray(String value) {
-        List<Float> list = new ArrayList<Float>();
+        List<Float> list = new ArrayList<>();
         for (String str : value.split(" ")) {
             list.add(Float.parseFloat(str));
         }

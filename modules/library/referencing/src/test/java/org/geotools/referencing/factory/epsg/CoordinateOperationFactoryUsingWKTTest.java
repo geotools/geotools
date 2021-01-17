@@ -16,7 +16,12 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.Properties;
@@ -119,7 +124,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
     /** Test method for {@link CoordinateOperationFactoryUsingWKT#getAuthority}. */
     @Test
     public void testGetAuthority() {
-        assertTrue(factory.getAuthority().equals(Citations.EPSG));
+        assertEquals(factory.getAuthority(), Citations.EPSG);
     }
 
     /** Test method for {@link CoordinateOperationFactoryUsingWKT#createCoordinateOperation}. */
@@ -181,7 +186,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
             // Test CoordinateOperation
             Set<CoordinateOperation> cos =
                     factory.createFromCoordinateReferenceSystemCodes(SOURCE_CRS, TARGET_CRS);
-            assertTrue(cos.size() == 1);
+            assertEquals(1, cos.size());
             CoordinateOperation co = cos.iterator().next();
             assertNotNull(co);
 

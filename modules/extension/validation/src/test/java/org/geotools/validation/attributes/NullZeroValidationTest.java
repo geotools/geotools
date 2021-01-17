@@ -16,10 +16,16 @@
  */
 package org.geotools.validation.attributes;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.RoadValidationResults;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestName;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.IllegalAttributeException;
@@ -47,30 +53,26 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author $Author: sploreg $ (last modification)
  * @version $Id$
  */
-public class NullZeroValidationTest extends TestCase {
+public class NullZeroValidationTest {
     private GeometryFactory gf;
     private RoadValidationResults results;
     private SimpleFeatureType type;
     NullZeroValidation test;
-    /** Constructor for NullZeroValidationTest. */
-    public NullZeroValidationTest(String arg0) {
-        super(arg0);
-    }
 
-    /*
-     * @see TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Rule public TestName testName = new TestName();
 
+    @Before
+    public void setUp() throws Exception {
         gf = new GeometryFactory();
         test = new NullZeroValidation();
         test.setAttribute("name");
         test.setTypeRef("road");
         test.setName("JUnit");
-        test.setName("test used for junit test " + getName());
+        test.setName("test used for junit test " + testName.getMethodName());
 
-        type = DataUtilities.createType(getName() + ".road", "id:0,*geom:LineString,name:String");
+        type =
+                DataUtilities.createType(
+                        testName.getMethodName() + ".road", "id:0,*geom:LineString,name:String");
 
         results = new RoadValidationResults();
     }
@@ -90,14 +92,13 @@ public class NullZeroValidationTest extends TestCase {
                 },
                 type.getTypeName() + "." + road);
     }
-    /*
-     * @see TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
+
+    @After
+    public void tearDown() throws Exception {
         test = null;
-        super.tearDown();
     }
 
+    @Test
     public void testValidateNumber() throws Exception {
         test.setTypeRef("road");
         test.setAttribute("id");
@@ -105,6 +106,7 @@ public class NullZeroValidationTest extends TestCase {
         assertFalse(test.validate(road("rd2", 0, "avenue"), type, results));
     }
 
+    @Test
     public void testValidateName() throws Exception {
         test.setTypeRef("road");
         test.setAttribute("name");
@@ -112,16 +114,19 @@ public class NullZeroValidationTest extends TestCase {
         assertFalse(test.validate(road("rd2", 0, ""), type, results));
     }
 
+    @Test
     public void testNameAccessors() {
         test.setName("foo");
         assertEquals("foo", test.getName());
     }
 
+    @Test
     public void testDescriptionAccessors() {
         test.setDescription("foo");
         assertEquals("foo", test.getDescription());
     }
 
+    @Test
     public void testGetPriority() {
         test.getPriority();
     }

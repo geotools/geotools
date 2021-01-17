@@ -19,7 +19,6 @@ package org.geotools.data.wfs;
 import static org.geotools.data.wfs.internal.URIs.buildURL;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,7 +77,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
     @Override
-    public WFSDataStore createDataStore(final Map<String, Serializable> params) throws IOException {
+    public WFSDataStore createDataStore(final Map<String, ?> params) throws IOException {
 
         final WFSConfig config = WFSConfig.fromParams(params);
 
@@ -92,7 +91,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
             }
         }
 
-        final URL capabilitiesURL = (URL) URL.lookUp(params);
+        final URL capabilitiesURL = URL.lookUp(params);
 
         final HTTPClient http = getHttpClient(params);
         http.setTryGzip(config.isTryGZIP());
@@ -130,8 +129,8 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      * @param params wfs service connection parameters
      * @return the HttpClient instance
      */
-    public HTTPClient getHttpClient(final Map<String, Serializable> params) throws IOException {
-        final URL capabilitiesURL = (URL) URL.lookUp(params);
+    public HTTPClient getHttpClient(final Map<String, ?> params) throws IOException {
+        final URL capabilitiesURL = URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);
         return config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
                 ? new MultithreadedHttpClient(config)
@@ -143,7 +142,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
     }
 
     @Override
-    public DataStore createNewDataStore(final Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(final Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException("Operation not applicable to a WFS service");
     }
 
@@ -191,7 +190,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
             throw new NullPointerException("version");
         }
 
-        Map<String, String> getCapsKvp = new HashMap<String, String>();
+        Map<String, String> getCapsKvp = new HashMap<>();
         getCapsKvp.put("SERVICE", "WFS");
         getCapsKvp.put("REQUEST", "GetCapabilities");
         getCapsKvp.put("VERSION", version.toString());
@@ -229,7 +228,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
 
         if (queryString.length() > 0) {
 
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             String[] split = queryString.split("&");
             for (String kvp : split) {
                 int index = kvp.indexOf('=');

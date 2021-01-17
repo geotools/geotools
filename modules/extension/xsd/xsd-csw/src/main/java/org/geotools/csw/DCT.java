@@ -39,7 +39,7 @@ public final class DCT extends XSD {
     /** private constructor */
     private DCT() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(DC.getInstance());
     }
 

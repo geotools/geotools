@@ -91,14 +91,13 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl {
      * @param args Function parameters
      * @throws IllegalArgumentException If parameters do not match FunctionName
      */
-    public void setParameters(List args) {
+    public void setParameters(List<Expression> args) {
         if (args.size() != 1) {
             throw new IllegalArgumentException("Require a single argument for " + getName());
         }
 
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        org.opengis.filter.expression.Expression expr =
-                (org.opengis.filter.expression.Expression) args.get(0);
+        org.opengis.filter.expression.Expression expr = args.get(0);
         expr =
                 (org.opengis.filter.expression.Expression)
                         expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
@@ -122,9 +121,7 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl {
                     if (result != null) {
                         bounds = result.getValue();
                     }
-                } catch (IllegalFilterException e) {
-                    LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
-                } catch (IOException e) {
+                } catch (IllegalFilterException | IOException e) {
                     LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
                 }
             }

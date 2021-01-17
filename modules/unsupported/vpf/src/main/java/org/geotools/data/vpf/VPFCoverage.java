@@ -24,9 +24,9 @@ import static org.geotools.data.vpf.ifc.VPFCoverageIfc.FIELD_LEVEL;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.VPFCoverageIfc;
@@ -44,10 +44,10 @@ public class VPFCoverage {
     private final String description;
 
     /** List of feature classes part of this coverage */
-    private final List featureClasses = new Vector();
+    private final List<VPFFeatureClass> featureClasses = new ArrayList<>();
 
     /** List of feature types part of this coverage */
-    private final List featureTypes = new Vector(25);
+    private final List<VPFFeatureType> featureTypes = new ArrayList<>(25);
 
     /** The owning library */
     private final VPFLibrary library;
@@ -160,7 +160,7 @@ public class VPFCoverage {
             // If there is no char.vdt,
             // we can assume there is only one feature type
             // and only one feature class
-            VPFFeatureClass coverageClass = (VPFFeatureClass) featureClasses.get(0);
+            VPFFeatureClass coverageClass = featureClasses.get(0);
             VPFFeatureType featureType = new VPFFeatureType(coverageClass);
             featureTypes.add(featureType);
         }
@@ -185,7 +185,7 @@ public class VPFCoverage {
      *
      * @return the feature classes in the coverage
      */
-    public List getFeatureClasses() {
+    public List<VPFFeatureClass> getFeatureClasses() {
         return featureClasses;
     }
 
@@ -194,7 +194,7 @@ public class VPFCoverage {
      *
      * @return a <code>List</code> of the feature types
      */
-    public List getFeatureTypes() {
+    public List<VPFFeatureType> getFeatureTypes() {
         return featureTypes;
     }
 

@@ -36,7 +36,7 @@ import org.opengis.parameter.ParameterDescriptor;
 public class GRIBFormat extends NetCDFFormat {
 
     public static final ParameterDescriptor<Filter> FILTER =
-            new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
+            new DefaultParameterDescriptor<>("Filter", Filter.class, null, null);
 
     private static final Logger LOGGER = Logging.getLogger(GRIBFormat.class);
 
@@ -47,7 +47,7 @@ public class GRIBFormat extends NetCDFFormat {
 
     /** Sets the metadata information. */
     private void setInfo() {
-        final HashMap<String, String> info = new HashMap<String, String>();
+        final HashMap<String, String> info = new HashMap<>();
         info.put("name", "GRIB");
         info.put("description", "GRIB store plugin");
         info.put("vendor", "Geotools");

@@ -17,19 +17,24 @@
 package org.geotools.data.db2;
 
 import java.util.HashMap;
-import junit.framework.TestCase;
+import java.util.Map;
 import org.geotools.jdbc.JDBCDataStoreFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class DB2DataStoreFactoryTest extends TestCase {
+public class DB2DataStoreFactoryTest {
     DB2NGDataStoreFactory factory;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         factory = new DB2NGDataStoreFactory();
     }
 
+    @Test
     public void testCanProcess() throws Exception {
-        HashMap params = new HashMap();
-        assertFalse(factory.canProcess(params));
+        Map<String, Object> params = new HashMap<>();
+        Assert.assertFalse(factory.canProcess(params));
 
         // params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
         params.put(JDBCDataStoreFactory.DATABASE.key, "geotools");
@@ -37,13 +42,13 @@ public class DB2DataStoreFactoryTest extends TestCase {
 
         params.put(JDBCDataStoreFactory.USER.key, "db2inst1");
         params.put(JDBCDataStoreFactory.PASSWD.key, "db2inst1");
-        assertEquals("jdbc:db2:geotools", factory.getJDBCUrl(params));
+        Assert.assertEquals("jdbc:db2:geotools", factory.getJDBCUrl(params));
 
         params.put(JDBCDataStoreFactory.HOST.key, "localhost");
         params.put(JDBCDataStoreFactory.PORT.key, "50001");
-        assertEquals("jdbc:db2://localhost:50001/geotools", factory.getJDBCUrl(params));
+        Assert.assertEquals("jdbc:db2://localhost:50001/geotools", factory.getJDBCUrl(params));
 
         params.put(JDBCDataStoreFactory.SCHEMA.key, "db2inst1");
-        assertTrue(factory.canProcess(params));
+        Assert.assertTrue(factory.canProcess(params));
     }
 }

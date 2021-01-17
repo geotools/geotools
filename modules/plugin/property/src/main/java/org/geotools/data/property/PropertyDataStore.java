@@ -119,10 +119,10 @@ public class PropertyDataStore extends ContentDataStore {
                                 return name.endsWith(".properties");
                             }
                         });
-        List<Name> typeNames = new ArrayList<Name>();
+        List<Name> typeNames = new ArrayList<>();
         if (list != null) {
-            for (int i = 0; i < list.length; i++) {
-                String typeName = list[i].substring(0, list[i].lastIndexOf('.'));
+            for (String s : list) {
+                String typeName = s.substring(0, s.lastIndexOf('.'));
                 typeNames.add(new NameImpl(namespaceURI, typeName));
             }
         }
@@ -132,7 +132,7 @@ public class PropertyDataStore extends ContentDataStore {
     @Override
     public List<Name> getNames() throws IOException {
         String[] typeNames = getTypeNames();
-        List<Name> names = new ArrayList<Name>(typeNames.length);
+        List<Name> names = new ArrayList<>(typeNames.length);
         for (String typeName : typeNames) {
             names.add(new NameImpl(namespaceURI, typeName));
         }

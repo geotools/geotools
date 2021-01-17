@@ -17,11 +17,14 @@
  */
 package org.geotools.data.mongodb;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -35,14 +38,24 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.*;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Not;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNotEqualTo;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+import org.opengis.filter.spatial.Intersects;
 
 public abstract class MongoDataStoreTest extends MongoTestSupport {
 
@@ -52,8 +65,9 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
     public void testGetTypeNames() throws Exception {
         String[] typeNames = dataStore.getTypeNames();
-        assertEquals(1, typeNames.length);
+        assertEquals(2, typeNames.length);
         assertEquals("ft1", typeNames[0]);
+        assertEquals("ft3", typeNames[1]);
     }
 
     public void testGetSchema() throws Exception {
@@ -67,10 +81,9 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testGetFeatureReader() throws Exception {
-        SimpleFeatureReader reader =
+        try (SimpleFeatureReader reader =
                 (SimpleFeatureReader)
-                        dataStore.getFeatureReader(new Query("ft1"), Transaction.AUTO_COMMIT);
-        try {
+                        dataStore.getFeatureReader(new Query("ft1"), Transaction.AUTO_COMMIT)) {
             for (int i = 0; i < 3; i++) {
                 assertTrue(reader.hasNext());
                 SimpleFeature f = reader.next();
@@ -78,8 +91,6 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
                 assertFeature(f);
             }
             assertFalse(reader.hasNext());
-        } finally {
-            reader.close();
         }
     }
 
@@ -256,7 +267,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         SimpleFeatureIterator it = features.features();
         while (it.hasNext()) {
             SimpleFeature f = it.next();
-            assertFalse("one".equals(pn.evaluate(f)));
+            assertNotEquals("one", pn.evaluate(f));
         }
     }
 
@@ -353,7 +364,49 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         assertEquals(2, features.size());
         while (it.hasNext()) {
             SimpleFeature f = it.next();
-            assertFalse(pn.evaluate(f).equals("zero"));
+            assertNotEquals("zero", pn.evaluate(f));
         }
+    }
+
+    public void testIntersectsWithJsonSelectFunction() throws Exception {
+
+        Intersects intersects = getIntersectsFilter("jsonSelect");
+
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", intersects);
+        FeatureReader reader = dataStore.getFeatureReader(q, null);
+        // check type if the filter isn't fully supported we would have got
+        // a FilteringFeatureReader
+        assertTrue(reader instanceof MongoFeatureReader);
+        SimpleFeatureCollection features = source.getFeatures(q);
+        assertEquals(2, features.size());
+    }
+
+    public void testIntersectsWithJsonSelectAllFunction() throws Exception {
+
+        Intersects intersects = getIntersectsFilter("jsonSelectAll");
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", intersects);
+        FeatureReader reader = dataStore.getFeatureReader(q, null);
+        // check type if the filter isn't fully supported we would have got
+        // a FilteringFeatureReader
+        assertTrue(reader instanceof MongoFeatureReader);
+        SimpleFeatureCollection features = source.getFeatures(q);
+        assertEquals(2, features.size());
+    }
+
+    private Intersects getIntersectsFilter(String jsonSelectName) {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Coordinate[] coordinates =
+                new Coordinate[] {
+                    new Coordinate(1.0, 1.0),
+                    new Coordinate(2.0, 1.0),
+                    new Coordinate(3.0, 3.0),
+                    new Coordinate(4.0, 4.0),
+                    new Coordinate(1.0, 1.0),
+                };
+        Polygon polygon = new GeometryFactory().createPolygon(coordinates);
+        return ff.intersects(
+                ff.function(jsonSelectName, ff.literal("geometry")), ff.literal(polygon));
     }
 }

@@ -27,7 +27,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 // yourcode start
 public class YourCode extends XMLFilterImpl implements GMLHandlerFeature {
 
-    private List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+    private List<SimpleFeature> features = new ArrayList<>();
 
     public void feature(SimpleFeature feature) {
         features.add(feature);

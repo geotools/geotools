@@ -16,6 +16,9 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
@@ -25,16 +28,20 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 
 public class StyleTypeBindingTest extends KMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(FeatureTypeStyle.class, binding(KML.StyleType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.StyleType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml = "<Style>" + "<LineStyle/>" + "<PolyStyle/>" + "<LabelStyle/>" + "</Style>";
 

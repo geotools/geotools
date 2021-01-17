@@ -458,8 +458,7 @@ public final class Citations {
      * @return A citation using the specified name
      */
     public static Citation fromName(final String title) {
-        for (int i = 0; i < AUTHORITIES.length; i++) {
-            final Citation citation = AUTHORITIES[i];
+        for (final Citation citation : AUTHORITIES) {
             if (titleMatches(citation, title)) {
                 return citation;
             }

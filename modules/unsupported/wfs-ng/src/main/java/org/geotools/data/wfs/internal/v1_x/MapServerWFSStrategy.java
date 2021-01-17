@@ -76,7 +76,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
 
     @Override
     public Map<QName, Class<?>> getFieldTypeMappings() {
-        Map<QName, Class<?>> mappings = new HashMap<QName, Class<?>>();
+        Map<QName, Class<?>> mappings = new HashMap<>();
         mappings.put(
                 new QName("http://www.w3.org/2001/XMLSchema", "Character"), XSStringBinding.class);
         mappings.put(
@@ -175,6 +175,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                             pc = domsw.toString();
                         }
                     }
+                    in.close();
                     in = new ByteArrayInputStream(pc.getBytes());
                 }
             } catch (SAXException

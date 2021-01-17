@@ -27,11 +27,15 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.LengthFunction;
+import org.geotools.filter.LiteralExpressionImpl;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.FilterFunction_equalTo;
@@ -49,6 +53,7 @@ import org.geotools.filter.function.FilterFunction_strToUpperCase;
 import org.geotools.filter.function.FilterFunction_strTrim;
 import org.geotools.filter.function.FilterFunction_strTrim2;
 import org.geotools.filter.function.InArrayFunction;
+import org.geotools.filter.function.JsonPointerFunction;
 import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.filter.function.math.FilterFunction_abs_2;
 import org.geotools.filter.function.math.FilterFunction_abs_3;
@@ -190,7 +195,6 @@ class FilterToSqlHelper {
             // compare functions
             caps.addType(FilterFunction_equalTo.class);
         }
-
         // native filter support
         caps.addType(NativeFilter.class);
 
@@ -334,8 +338,7 @@ class FilterToSqlHelper {
                 out.write(" AND ");
             }
 
-            visitBinarySpatialOperator(
-                    filter, (Expression) property, (Expression) geometry, swapped, extraData);
+            visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 
@@ -408,7 +411,7 @@ class FilterToSqlHelper {
                 if (Math.sqrt(env.getWidth() * env.getWidth() + env.getHeight() * env.getHeight())
                         >= 180) {
                     // slice in 90x90 degrees quadrants, none of them has a diagonal longer than 180
-                    final List<Polygon> polygons = new ArrayList<Polygon>();
+                    final List<Polygon> polygons = new ArrayList<>();
                     for (double lon = Math.floor(env.getMinX()); lon < env.getMaxX(); lon += 90) {
                         for (double lat = Math.floor(env.getMinY());
                                 lat < env.getMaxY();
@@ -447,7 +450,7 @@ class FilterToSqlHelper {
         }
 
         // filter out only polygonal parts
-        final List<Polygon> polygons = new ArrayList<Polygon>();
+        final List<Polygon> polygons = new ArrayList<>();
         geometry.apply(
                 new GeometryComponentFilter() {
 
@@ -463,13 +466,12 @@ class FilterToSqlHelper {
     }
 
     private Geometry toPolygon(GeometryFactory gf, final List<Polygon> polygons) {
-        if (polygons.size() == 0) {
+        if (polygons.isEmpty()) {
             return gf.createGeometryCollection(null);
         } else if (polygons.size() == 1) {
             return polygons.get(0);
         } else {
-            return gf.createMultiPolygon(
-                    (Polygon[]) polygons.toArray(new Polygon[polygons.size()]));
+            return gf.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));
         }
     }
 
@@ -617,12 +619,50 @@ class FilterToSqlHelper {
             out.write("trim(both ' ' from ");
             string.accept(delegate, String.class);
             out.write(")");
+        } else if (function instanceof JsonPointerFunction) {
+            encodeJsonPointer(function, extraData);
         } else {
             // function not supported
             return false;
         }
 
         return true;
+    }
+
+    private void encodeJsonPointer(Function jsonPointer, Object extraData) throws IOException {
+        Expression json = getParameter(jsonPointer, 0, true);
+        Expression pointer = getParameter(jsonPointer, 1, true);
+        if (json instanceof PropertyName && pointer instanceof Literal) {
+            // if not a string need to cast the json attribute
+            boolean needCast =
+                    extraData != null
+                            && extraData instanceof Class
+                            && !extraData.equals(String.class);
+
+            if (needCast) out.write('(');
+            json.accept(delegate, null);
+            out.write(" ::json ");
+            String strPointer = ((Literal) pointer).getValue().toString();
+            List<String> pointerEl =
+                    Stream.of(strPointer.split("/"))
+                            .filter(p -> !p.equals(""))
+                            .collect(Collectors.toList());
+            for (int i = 0; i < pointerEl.size(); i++) {
+                String p = pointerEl.get(i);
+                if (i != pointerEl.size() - 1) out.write(" -> ");
+                // using for last element the ->> operator
+                // to have a text instead of a json returned
+                else out.write(" ->> ");
+                Literal elPointer = new LiteralExpressionImpl(p);
+                Class binding = NumberUtils.isParsable(p) ? Integer.class : String.class;
+                elPointer.accept(delegate, binding);
+            }
+            if (needCast) {
+                // cast from text to needed type
+                out.write(')');
+                out.write(cast("", (Class) extraData));
+            }
+        }
     }
 
     Expression getParameter(Function function, int idx, boolean mandatory) {
@@ -977,7 +1017,7 @@ class FilterToSqlHelper {
         Expression numNearest = getParameter(filter, 1, true);
         try {
             List<PrimaryKeyColumn> pkColumns = delegate.getPrimaryKey().getColumns();
-            if (pkColumns == null || pkColumns.size() == 0) {
+            if (pkColumns == null || pkColumns.isEmpty()) {
                 throw new UnsupportedOperationException(
                         "Unsupported usage of Postgis Nearest Operator: table with no primary key");
             }

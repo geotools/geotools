@@ -16,15 +16,18 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiLineString;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 public class MultiCurveTypeBindingTest extends GML3TestSupport {
-
+    @Test
     public void testEncode() throws Exception {
         Geometry geometry = GML3MockData.multiLineString();
         GML3EncodingUtils.setID(geometry, "geometry");
@@ -39,6 +42,7 @@ public class MultiCurveTypeBindingTest extends GML3TestSupport {
         assertEquals("geometry.2", getID(children.item(1)));
     }
 
+    @Test
     public void testParseWithCurveMember() throws Exception {
         GML3MockData.multiCurve(document, document);
         MultiLineString mline = (MultiLineString) parse();
@@ -46,6 +50,7 @@ public class MultiCurveTypeBindingTest extends GML3TestSupport {
         assertEquals(2, mline.getNumGeometries());
     }
 
+    @Test
     public void testParseWithCurveMembers() throws Exception {
         GML3MockData.multiCurve(document, document, false);
         MultiLineString mline = (MultiLineString) parse();

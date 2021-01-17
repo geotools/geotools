@@ -19,7 +19,7 @@ package org.geotools.geometry.jts;
 // J2SE dependencies
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 
 import java.util.Random;
@@ -63,8 +63,8 @@ public class CoordinateSequenceTransformerTest {
 
         // Tries with different coordinate sequence length.
         final int[] size = {12, 1000};
-        for (int j = 0; j < size.length; j++) {
-            final Coordinate[] source = new Coordinate[size[j]];
+        for (int k : size) {
+            final Coordinate[] source = new Coordinate[k];
             for (int i = 0; i < source.length; i++) {
                 source[i] =
                         new Coordinate(
@@ -77,7 +77,7 @@ public class CoordinateSequenceTransformerTest {
             assertNotSame(sourceCS, targetCS);
             assertEquals(sourceCS.size(), targetCS.size());
             for (int i = sourceCS.size(); --i >= 0; ) {
-                assertFalse(sourceCS.getCoordinate(i).equals(targetCS.getCoordinate(i)));
+                assertNotEquals(sourceCS.getCoordinate(i), targetCS.getCoordinate(i));
             }
 
             final CoordinateSequenceTransformer transformer =

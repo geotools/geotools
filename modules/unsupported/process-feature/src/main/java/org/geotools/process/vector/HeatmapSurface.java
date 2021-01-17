@@ -158,9 +158,9 @@ public class HeatmapSurface {
     /** Normalizes grid values to range [0,1] */
     private void normalize(float[][] grid) {
         float max = Float.NEGATIVE_INFINITY;
-        for (int i = 0; i < grid.length; i++) {
+        for (float[] floats : grid) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] > max) max = grid[i][j];
+                if (floats[j] > max) max = floats[j];
             }
         }
 
@@ -175,7 +175,7 @@ public class HeatmapSurface {
 
     private float kernelVal(int kernelRadius) {
         // This kernel function has been confirmed to integrate to 1 over the full radius
-        float val = (float) (1.0f / (2 * kernelRadius + 1));
+        float val = 1.0f / (2 * kernelRadius + 1);
         return val;
     }
 

@@ -94,15 +94,15 @@ public class WindBarbsFactoryTest extends Assert {
     public void testInvalidAndRare() {
         // INF and -INF are rejected
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(Infinity)[kts]");
-        Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        Shape shp = wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(-Infinity)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
 
         // NaN is x-----
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(NaN)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertEquals(
                 WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString(),
@@ -110,12 +110,12 @@ public class WindBarbsFactoryTest extends Assert {
 
         // missing ? before KVP
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(110)[kts]emisphere=N");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
 
         // wrong separator before KVP
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(110)[kts]&emisphere=N");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
     }
 
@@ -124,35 +124,35 @@ public class WindBarbsFactoryTest extends Assert {
 
         // wrong name
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "dummy(110)[kts]");
-        Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        Shape shp = wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
 
         // wrong name
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "(110)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
 
         // wrong qualifier
         this.exp = ff.literal("wrong://" + "default(110)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
 
         // missing UoM
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(110)");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
 
         // wrong syntax for speed
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default110[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
 
         // null symbol
-        shp = (Shape) wbf.getShape(null, null, this.feature);
+        shp = wbf.getShape(null, null, this.feature);
         assertNull(shp);
 
         // null feature
-        shp = (Shape) wbf.getShape(null, this.exp, null);
+        shp = wbf.getShape(null, this.exp, null);
         assertNull(shp);
     }
 
@@ -161,7 +161,7 @@ public class WindBarbsFactoryTest extends Assert {
         // no module --> x--------
         this.exp =
                 ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(NaN)[kts]?vectorLength=50");
-        Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        Shape shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         String wkt = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
@@ -172,7 +172,7 @@ public class WindBarbsFactoryTest extends Assert {
                 ff.literal(
                         WindBarbsFactory.WINDBARBS_PREFIX
                                 + "default(2.999999999999)[kts]?zeroWindRadius=15");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Ellipse2D);
         assertEquals(((Ellipse2D) shp).getHeight(), ((Ellipse2D) shp).getWidth(), 1E-6); // circle
@@ -183,7 +183,7 @@ public class WindBarbsFactoryTest extends Assert {
         // NORTH
         this.exp =
                 ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(3)[kts]?vectorLength=50");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         wkt = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
@@ -193,7 +193,7 @@ public class WindBarbsFactoryTest extends Assert {
                 ff.literal(
                         WindBarbsFactory.WINDBARBS_PREFIX
                                 + "default(3)[kts]?emisphere=S&vectorLength=50");
-        Shape shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        Shape shpS = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shpS);
         assertTrue(shpS instanceof Path2D);
         shpS =
@@ -204,7 +204,7 @@ public class WindBarbsFactoryTest extends Assert {
         // 5 KNOTS --> short barb
         this.exp =
                 ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(5)[kts]?vectorLength=50");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         wkt = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
@@ -215,7 +215,7 @@ public class WindBarbsFactoryTest extends Assert {
                 ff.literal(
                         WindBarbsFactory.WINDBARBS_PREFIX
                                 + "default(5)[kts]?hemisphere=S&vectorLength=50");
-        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shpS = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shpS);
         assertTrue(shpS instanceof Path2D);
         shpS =
@@ -226,7 +226,7 @@ public class WindBarbsFactoryTest extends Assert {
         // 15 KNOTS --> square
         this.exp =
                 ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(15)[kts]?vectorLength=30");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         assertEquals(
@@ -237,7 +237,7 @@ public class WindBarbsFactoryTest extends Assert {
         this.exp =
                 ff.literal(
                         WindBarbsFactory.WINDBARBS_PREFIX + "default(20)[kts]?longBarbLength=50");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         assertEquals(
@@ -248,7 +248,7 @@ public class WindBarbsFactoryTest extends Assert {
         this.exp =
                 ff.literal(
                         WindBarbsFactory.WINDBARBS_PREFIX + "default(25)[kts]?longBarbLength=50");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         assertEquals(
@@ -260,7 +260,7 @@ public class WindBarbsFactoryTest extends Assert {
                 ff.literal(
                         WindBarbsFactory.WINDBARBS_PREFIX
                                 + "default(50)[kts]?basePennantLength=10");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         assertEquals(
@@ -270,7 +270,7 @@ public class WindBarbsFactoryTest extends Assert {
         // 100 KNOTS --> 2 pennants
         this.exp =
                 ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(100)[kts]?vectorLength=30");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         wkt = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
@@ -283,7 +283,7 @@ public class WindBarbsFactoryTest extends Assert {
                 ff.literal(
                         WindBarbsFactory.WINDBARBS_PREFIX
                                 + "default(100)[kts]?hemisphere=s&vectorLength=30");
-        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shpS = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shpS);
         assertTrue(shpS instanceof Path2D);
         shpS =
@@ -296,7 +296,7 @@ public class WindBarbsFactoryTest extends Assert {
     public void testDefaultValid() {
         // no module --> x--------
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(NaN)[kts]");
-        Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        Shape shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         assertEquals(
@@ -305,14 +305,14 @@ public class WindBarbsFactoryTest extends Assert {
 
         // 1 KNOTS --> calm
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(1)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Ellipse2D);
         assertEquals(((Ellipse2D) shp).getHeight(), ((Ellipse2D) shp).getWidth(), 1E-6); // circle
 
         // 2.99999999 KNOTS --> calm
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(2.999999999999)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Ellipse2D);
         assertEquals(((Ellipse2D) shp).getHeight(), ((Ellipse2D) shp).getWidth(), 1E-6); // circle
@@ -320,7 +320,7 @@ public class WindBarbsFactoryTest extends Assert {
         // 3 KNOTS --> short barb
         // NORTH
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(3)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         String shpString = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
@@ -329,7 +329,7 @@ public class WindBarbsFactoryTest extends Assert {
                 "MULTILINESTRING ((0 -0, 0 40), (0 35, 10 36.25))");
         // SOUTH make sure the same shp is flipped on y axis
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(3)[kts]?emisphere=S");
-        Shape shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        Shape shpS = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shpS);
         assertTrue(shpS instanceof Path2D);
         shpS =
@@ -340,7 +340,7 @@ public class WindBarbsFactoryTest extends Assert {
 
         // 5 KNOTS --> short barb
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(5)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         shpString = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
@@ -348,7 +348,7 @@ public class WindBarbsFactoryTest extends Assert {
 
         // SOUTH make sure the same shp is flipped on y axis
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(5)[kts]?hemisphere=S");
-        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shpS = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shpS);
         assertTrue(shpS instanceof Path2D);
         shpS =
@@ -359,7 +359,7 @@ public class WindBarbsFactoryTest extends Assert {
 
         // 15 KNOTS --> 1 short barb + 1 long barb
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(15)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         assertEquals(
@@ -368,7 +368,7 @@ public class WindBarbsFactoryTest extends Assert {
 
         // 20 KNOTS --> 2 long barbs
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(20)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         assertEquals(
@@ -377,7 +377,7 @@ public class WindBarbsFactoryTest extends Assert {
 
         // 25 KNOTS --> 1 short barb + 2 long barbs
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(25)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         assertEquals(
@@ -386,7 +386,7 @@ public class WindBarbsFactoryTest extends Assert {
 
         // 50 KNOTS --> pennant
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(50)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         assertEquals(
@@ -396,7 +396,7 @@ public class WindBarbsFactoryTest extends Assert {
         // 100 KNOTS --> 2 pennants
         this.exp =
                 ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(100)[kts]?vectorLength=30");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         shpString = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
@@ -408,7 +408,7 @@ public class WindBarbsFactoryTest extends Assert {
                 ff.literal(
                         WindBarbsFactory.WINDBARBS_PREFIX
                                 + "default(100)[kts]?vectorLength=30&hemisphere=s");
-        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shpS = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shpS);
         assertTrue(shpS instanceof Path2D);
         shpS =
@@ -419,7 +419,7 @@ public class WindBarbsFactoryTest extends Assert {
 
         // 175 KNOTS --> 1 short barb + 2 long barbs + 3 pennants
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(175)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         shpString = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
@@ -428,7 +428,7 @@ public class WindBarbsFactoryTest extends Assert {
                 "MULTILINESTRING ((0 -0, 0 40), (0 40, 20 37, 0 34, 0 40), (0 34, 20 31, 0 28, 0 34), (0 28, 20 25, 0 22, 0 28), (0 17, 20 19.5), (0 12, 20 14.5), (0 7, 10 8.25))");
         // SOUTH make sure the same shp is flipped on y axis
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(175)[kts]?hemisphere=s");
-        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        shpS = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shpS);
         assertTrue(shpS instanceof Path2D);
         shpS =
@@ -444,7 +444,7 @@ public class WindBarbsFactoryTest extends Assert {
         // anyway
         this.exp =
                 ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(500)[kts]?vectorLength=80");
-        Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        Shape shp = wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
         assertTrue(shp instanceof Path2D);
         String shpString = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
@@ -465,7 +465,7 @@ public class WindBarbsFactoryTest extends Assert {
                     ff.literal(
                             WindBarbsFactory.WINDBARBS_PREFIX
                                     + "default(100)[kts]?vectorLength=30");
-            Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+            Shape shp = wbf.getShape(null, this.exp, this.feature);
             // System.out.println(
             //        WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString());
             ShapePanel p = new ShapePanel();
@@ -480,7 +480,7 @@ public class WindBarbsFactoryTest extends Assert {
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            assertTrue(false);
+            fail();
             return;
         }
 

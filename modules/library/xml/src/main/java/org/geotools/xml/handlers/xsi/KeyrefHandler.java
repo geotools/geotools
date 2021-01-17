@@ -41,7 +41,7 @@ public class KeyrefHandler extends XSIElementHandler {
     private String name;
     private String refer; // TODO check for referential support when using this type
     private SelectorHandler selector;
-    private List fields;
+    private List<FieldHandler> fields;
 
     /** @see java.lang.Object#hashCode() */
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
@@ -60,7 +60,7 @@ public class KeyrefHandler extends XSIElementHandler {
             // field
             if (FieldHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (fields == null) {
-                    fields = new LinkedList();
+                    fields = new LinkedList<>();
                 }
 
                 FieldHandler fh = new FieldHandler();
@@ -116,7 +116,7 @@ public class KeyrefHandler extends XSIElementHandler {
     }
 
     /** returns a list of child field elements */
-    public List getFields() {
+    public List<FieldHandler> getFields() {
         return fields;
     }
 

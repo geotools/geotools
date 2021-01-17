@@ -18,8 +18,12 @@
  */
 package org.geotools.filter.function;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.HashSet;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.junit.Test;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 
@@ -29,43 +33,45 @@ import org.opengis.filter.expression.PropertyName;
  * @author Cory Horner, Refractions Research
  */
 public class Collection_FunctionsTest extends FunctionTestSupport {
-
-    /** Creates a new instance of Collection_MinFunctionTest */
-    public Collection_FunctionsTest(String testName) {
-        super(testName);
-    }
-
+    @Test
     public void testInstance() {
         Function cmin = ff.function("Collection_Min", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(cmin);
     }
 
+    @Test
     public void testAverage() throws Exception {
         performNumberTest("Collection_Average", Double.valueOf(33.375));
     }
 
+    @Test
     public void testCount() throws Exception {
         performNumberTest("Collection_Count", Integer.valueOf(8));
     }
 
+    @Test
     public void testMin() throws Exception {
         performNumberTest("Collection_Min", Integer.valueOf(4));
     }
 
+    @Test
     public void testMedian() throws Exception {
         performNumberTest("Collection_Median", Double.valueOf(24.5));
     }
 
+    @Test
     public void testMax() throws Exception {
         performNumberTest("Collection_Max", Integer.valueOf(90));
     }
 
+    @Test
     public void testSum() throws Exception {
         performNumberTest("Collection_Sum", Integer.valueOf(267));
     }
 
+    @Test
     public void testUnique() throws Exception {
-        HashSet result = new HashSet(8);
+        HashSet<Integer> result = new HashSet<>(8);
         result.add(Integer.valueOf(90));
         result.add(Integer.valueOf(4));
         result.add(Integer.valueOf(8));
@@ -77,12 +83,14 @@ public class Collection_FunctionsTest extends FunctionTestSupport {
         performObjectTest("Collection_Unique", result);
     }
 
+    @Test
     public void testNearest() throws Exception {
         Function func = ff.function("Collection_Nearest", ff.property("foo"), ff.literal(9));
         Object match = func.evaluate(featureCollection);
         assertEquals("Nearest to 9 is 8", 8, match);
     }
 
+    @Test
     public void testCountFunctionDescription() throws Exception {
         // Create instance of function to get hold of the filter capabilities
         PropertyName exp = ff.property("foo");

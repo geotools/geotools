@@ -22,6 +22,7 @@ package org.geotools.referencing.crs;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Time;
@@ -32,7 +33,6 @@ import org.opengis.referencing.crs.TemporalCRS;
 import org.opengis.referencing.cs.TimeCS;
 import org.opengis.referencing.datum.TemporalDatum;
 import si.uom.SI;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * A 1D coordinate reference system used for the recording of time.
@@ -117,7 +117,7 @@ public class DefaultTemporalCRS extends AbstractSingleCRS implements TemporalCRS
             new DefaultTemporalCRS(DefaultTemporalDatum.UNIX, DefaultTimeCS.MILLISECONDS);
 
     /**
-     * Unit for milliseconds. Usefull for conversion from and to {@link Date} objects.
+     * Unit for milliseconds. Useful for conversion from and to {@link Date} objects.
      *
      * @todo Should probably move elswhere. To be revisited after the move to JSR-275.
      */

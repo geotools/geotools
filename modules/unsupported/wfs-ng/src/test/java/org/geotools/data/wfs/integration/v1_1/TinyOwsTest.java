@@ -211,7 +211,7 @@ public class TinyOwsTest {
         SimpleFeatureSource source = wfs.getFeatureSource(typeName);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName.getLocalPart(), ff.id(fids));
         iterate(source.getFeatures(query), 1, true);
@@ -296,7 +296,7 @@ public class TinyOwsTest {
         SimpleFeatureSource source = wfs.getFeatureSource(typeName);
         SimpleFeature sf = getSampleSimpleFeature(source);
 
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
@@ -342,7 +342,7 @@ public class TinyOwsTest {
         SimpleFeatureSource source = wfs.getFeatureSource(typeName);
         SimpleFeature sf = getSampleSimpleFeature(source);
 
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
@@ -394,7 +394,7 @@ public class TinyOwsTest {
         SimpleFeatureSource source = wfs.getFeatureSource(typeName);
         SimpleFeature sf = getSampleSimpleFeature(source);
 
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
@@ -418,14 +418,11 @@ public class TinyOwsTest {
 
     private SimpleFeature getSampleSimpleFeature(SimpleFeatureSource source) throws IOException {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName.getLocalPart(), ff.id(fids));
-        SimpleFeatureIterator reader = source.getFeatures(query).features();
-        try {
+        try (SimpleFeatureIterator reader = source.getFeatures(query).features()) {
             return reader.next();
-        } finally {
-            reader.close();
         }
     }
 

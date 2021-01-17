@@ -43,13 +43,13 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.FeatureStore;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -162,7 +162,7 @@ public class FootprintExtractionProcessTest {
                 final DataStoreFactorySpi factory = new ShapefileDataStoreFactory();
 
                 // Preparing creation param
-                final Map<String, Serializable> params = new HashMap<String, Serializable>();
+                final Map<String, Serializable> params = new HashMap<>();
                 params.put(CREATE_SPATIAL_INDEX, Boolean.TRUE);
                 params.put("url", URLs.fileToUrl(outputFile));
 
@@ -176,10 +176,10 @@ public class FootprintExtractionProcessTest {
                 // Write the features to the shapefile
                 Transaction transaction = new DefaultTransaction("create");
 
-                FeatureSource source = ds.getFeatureSource(ds.getTypeNames()[0]);
+                SimpleFeatureSource source = ds.getFeatureSource(ds.getTypeNames()[0]);
 
-                if (source instanceof FeatureStore) {
-                    FeatureStore store = (FeatureStore) source;
+                if (source instanceof SimpleFeatureStore) {
+                    SimpleFeatureStore store = (SimpleFeatureStore) source;
 
                     store.setTransaction(transaction);
                     try {
@@ -288,7 +288,7 @@ public class FootprintExtractionProcessTest {
             double fullArea = geometry.getArea();
 
             // Getting to the simplified Footprint
-            feature = (SimpleFeature) iter.next();
+            feature = iter.next();
             geometry = (Geometry) feature.getDefaultGeometry();
             double simplifiedArea = geometry.getArea();
 
@@ -372,8 +372,7 @@ public class FootprintExtractionProcessTest {
             // Exclude pixels with luminance less than 20.
             final int referenceLuminance = 10;
             List<Range<Integer>> exclusionRanges =
-                    Collections.singletonList(
-                            new Range<Integer>(Integer.class, 0, referenceLuminance));
+                    Collections.singletonList(new Range<>(Integer.class, 0, referenceLuminance));
             SimpleFeatureCollection fc =
                     process.execute(cov, exclusionRanges, 10d, false, null, true, true, null, null);
             iter = fc.features();
@@ -432,9 +431,9 @@ public class FootprintExtractionProcessTest {
             cov = reader.read(null);
 
             // Test removing black areas and clouds
-            List<Range<Integer>> exclusionRanges = new ArrayList<Range<Integer>>();
-            exclusionRanges.add(new Range<Integer>(Integer.class, 0, 10));
-            exclusionRanges.add(new Range<Integer>(Integer.class, 253, 255));
+            List<Range<Integer>> exclusionRanges = new ArrayList<>();
+            exclusionRanges.add(new Range<>(Integer.class, 0, 10));
+            exclusionRanges.add(new Range<>(Integer.class, 253, 255));
             SimpleFeatureCollection fc =
                     process.execute(cov, exclusionRanges, 10d, false, null, true, true, null, null);
             iter = fc.features();
@@ -475,10 +474,10 @@ public class FootprintExtractionProcessTest {
             cov = reader.read(null);
             BandSelectProcess select = new BandSelectProcess();
             cov = select.execute(cov, new int[] {0}, null);
-            List<Range<Integer>> exclusionRange = new ArrayList<Range<Integer>>();
+            List<Range<Integer>> exclusionRange = new ArrayList<>();
 
             // Exclude any value so the process will not find anything
-            exclusionRange.add(new Range<Integer>(Integer.class, 0, 255));
+            exclusionRange.add(new Range<>(Integer.class, 0, 255));
             SimpleFeatureCollection fc =
                     process.execute(cov, exclusionRange, 10d, false, null, true, true, null, null);
             assertEquals(1, fc.size());

@@ -59,11 +59,11 @@ public class RecodeFunction implements Function {
 
     private boolean staticTable = true;
 
-    private volatile Map fastLookup = null;
+    private volatile Map<Object, Object> fastLookup = null;
 
-    private Class lastKeyType = null;
+    private Class<? extends Object> lastKeyType = null;
 
-    private Class lastContextType = null;
+    private Class<? extends Object> lastContextType = null;
 
     private final Literal fallback;
 
@@ -72,7 +72,7 @@ public class RecodeFunction implements Function {
             new FunctionNameImpl("Recode", "LookupValue", "Data 1", "Value 1", "Data 2", "Value 2");
 
     public RecodeFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public RecodeFunction(List<Expression> parameters, Literal fallback) {
@@ -80,7 +80,7 @@ public class RecodeFunction implements Function {
         this.fallback = fallback;
 
         // check inputs
-        if (parameters.size() % 2 != 1 && parameters.size() != 0) {
+        if ((parameters.size() % 2 != 1) && (!parameters.isEmpty())) {
             throw new IllegalArgumentException(
                     "There must be an equal number of lookup data and return values");
         }
@@ -132,10 +132,11 @@ public class RecodeFunction implements Function {
                     synchronized (this) {
                         if (fastLookup == null) {
                             // build the fast lookup map
-                            Map fl = new HashMap();
+                            Map<Object, Object> fl = new HashMap<>();
                             lastKeyType = lookup.getClass();
                             lastContextType = context;
                             for (int i = 0; i < pairList.size(); i += 2) {
+
                                 Object key = pairList.get(i).evaluate(object, lastKeyType);
                                 Object value = pairList.get(i + 1).evaluate(object, context);
                                 fl.put(key, value);
@@ -148,6 +149,7 @@ public class RecodeFunction implements Function {
                 if (fastLookup != null
                         && lookup.getClass() == lastKeyType
                         && context == lastContextType) {
+                    @SuppressWarnings("unchecked")
                     T result = (T) fastLookup.get(lookup);
                     return result;
                 }

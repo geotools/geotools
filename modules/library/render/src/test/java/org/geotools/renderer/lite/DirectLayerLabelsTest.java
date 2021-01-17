@@ -19,7 +19,6 @@ package org.geotools.renderer.lite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.IOException;
-import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -36,6 +35,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -47,7 +47,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author ian */
-public class DirectLayerLabelsTest extends TestCase {
+public class DirectLayerLabelsTest {
 
     private long timout = 3000;
     private static final int CENTERX = 130;
@@ -56,14 +56,13 @@ public class DirectLayerLabelsTest extends TestCase {
     @Before
     public void setUp() throws Exception {
         // System.setProperty(TestData.INTERACTIVE_TEST_KEY, "true");
-        super.setUp();
     }
 
     @Test
     public void testPointLabeling() throws Exception {
         FeatureCollection collection = createPointFeatureCollection();
         Style style = loadStyle("PointStyle.sld");
-        assertNotNull(style);
+        Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));
         DirectLayer dl =

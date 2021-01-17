@@ -32,10 +32,9 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 
     RemoteOWSBuilder remoteOWS = new RemoteOWSBuilder().unset();
 
-    List<FeatureTypeConstraintBuilder> featureTypeConstraint =
-            new ArrayList<FeatureTypeConstraintBuilder>();
+    List<FeatureTypeConstraintBuilder> featureTypeConstraint = new ArrayList<>();
 
-    List<StyleBuilder> userStyles = new ArrayList<StyleBuilder>();
+    List<StyleBuilder> userStyles = new ArrayList<>();
 
     public UserLayerBuilder() {
         this(null);
@@ -119,7 +118,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
         layer.setRemoteOWS(remoteOWS.build());
         layer.setInlineFeatureDatastore(inlineFeatureDataStore);
         layer.setInlineFeatureType(inlineFeatureType);
-        if (featureTypeConstraint.size() > 0) {
+        if (!featureTypeConstraint.isEmpty()) {
             FeatureTypeConstraint[] constraints =
                     new FeatureTypeConstraint[featureTypeConstraint.size()];
             for (int i = 0; i < constraints.length; i++) {

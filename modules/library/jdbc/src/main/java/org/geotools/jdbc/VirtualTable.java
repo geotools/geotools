@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -65,17 +66,15 @@ public class VirtualTable implements Serializable {
 
     String sql;
 
-    List<String> primaryKeyColumns = new CopyOnWriteArrayList<String>();
+    List<String> primaryKeyColumns = new CopyOnWriteArrayList<>();
 
-    Map<String, Class<? extends Geometry>> geometryTypes =
-            new ConcurrentHashMap<String, Class<? extends Geometry>>();
+    Map<String, Class<? extends Geometry>> geometryTypes = new ConcurrentHashMap<>();
 
-    Map<String, Integer> nativeSrids = new ConcurrentHashMap<String, Integer>();
+    Map<String, Integer> nativeSrids = new ConcurrentHashMap<>();
 
-    Map<String, Integer> dimensions = new ConcurrentHashMap<String, Integer>();
+    Map<String, Integer> dimensions = new ConcurrentHashMap<>();
 
-    Map<String, VirtualTableParameter> parameters =
-            new ConcurrentHashMap<String, VirtualTableParameter>();
+    Map<String, VirtualTableParameter> parameters = new ConcurrentHashMap<>();
 
     boolean escapeSql = false;
 
@@ -135,24 +134,22 @@ public class VirtualTable implements Serializable {
     /** Clone a virtual table under a different name */
     public VirtualTable(String name, VirtualTable other) {
         this(name, other.sql);
-        this.geometryTypes =
-                new ConcurrentHashMap<String, Class<? extends Geometry>>(other.geometryTypes);
-        this.nativeSrids = new ConcurrentHashMap<String, Integer>(other.nativeSrids);
-        this.dimensions = new ConcurrentHashMap<String, Integer>(other.dimensions);
-        this.parameters = new ConcurrentHashMap<String, VirtualTableParameter>(other.parameters);
-        this.primaryKeyColumns = new ArrayList<String>(other.primaryKeyColumns);
+        this.geometryTypes = new ConcurrentHashMap<>(other.geometryTypes);
+        this.nativeSrids = new ConcurrentHashMap<>(other.nativeSrids);
+        this.dimensions = new ConcurrentHashMap<>(other.dimensions);
+        this.parameters = new ConcurrentHashMap<>(other.parameters);
+        this.primaryKeyColumns = new ArrayList<>(other.primaryKeyColumns);
         this.escapeSql = other.escapeSql;
     }
 
     /** Clone a virtual table */
     public VirtualTable(VirtualTable other) {
         this(other.name, other.sql);
-        this.geometryTypes =
-                new ConcurrentHashMap<String, Class<? extends Geometry>>(other.geometryTypes);
-        this.nativeSrids = new ConcurrentHashMap<String, Integer>(other.nativeSrids);
-        this.dimensions = new ConcurrentHashMap<String, Integer>(other.dimensions);
-        this.parameters = new ConcurrentHashMap<String, VirtualTableParameter>(other.parameters);
-        this.primaryKeyColumns = new ArrayList<String>(other.primaryKeyColumns);
+        this.geometryTypes = new ConcurrentHashMap<>(other.geometryTypes);
+        this.nativeSrids = new ConcurrentHashMap<>(other.nativeSrids);
+        this.dimensions = new ConcurrentHashMap<>(other.dimensions);
+        this.parameters = new ConcurrentHashMap<>(other.parameters);
+        this.primaryKeyColumns = new ArrayList<>(other.primaryKeyColumns);
         this.escapeSql = other.escapeSql;
     }
 
@@ -189,18 +186,16 @@ public class VirtualTable implements Serializable {
             // remove the where clause place holder
             result = removeWhereClausePlaceHolder(result);
         }
-        if (parameters.size() == 0) {
+        if (parameters.isEmpty()) {
             return result;
         }
 
         // grab the parameter values
-        Map<String, String> values = null;
-        if (hints != null) {
-            values = (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS);
-        }
-        if (values == null) {
-            values = Collections.emptyMap();
-        }
+        @SuppressWarnings("unchecked")
+        Map<String, String> values =
+                Optional.ofNullable(hints)
+                        .map(h -> (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS))
+                        .orElse(Collections.emptyMap());
 
         // perform the expansion, checking for validity and applying default values as needed
         for (VirtualTableParameter param : parameters.values()) {
@@ -270,7 +265,7 @@ public class VirtualTable implements Serializable {
 
     /** The current parameter names */
     public Collection<String> getParameterNames() {
-        return new ArrayList(parameters.keySet());
+        return new ArrayList<>(parameters.keySet());
     }
 
     /** Returns the requested parameter, or null if it could not be found */

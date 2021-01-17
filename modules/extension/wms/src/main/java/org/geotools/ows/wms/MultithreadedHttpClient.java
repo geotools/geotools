@@ -76,7 +76,7 @@ public class MultithreadedHttpClient implements HTTPClient {
     /** Available if a proxy was specified as system property */
     private HostConfiguration hostConfigNoProxy;
 
-    private Set<String> nonProxyHosts = new HashSet<String>();
+    private Set<String> nonProxyHosts = new HashSet<>();
 
     public MultithreadedHttpClient() {
         connectionManager = new MultiThreadedHttpConnectionManager();

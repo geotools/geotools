@@ -16,8 +16,15 @@
  */
 package org.geotools.geojson;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import org.geotools.geojson.geom.GeometryJSON;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -36,6 +43,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     GeometryFactory gf = new GeometryFactory();
     GeometryJSON gjson = new GeometryJSON();
 
+    @Test
     public void testPointWrite() throws Exception {
         assertEquals(pointText(), gjson.toString(point()));
         assertEquals(point3dText(), gjson.toString(point3d()));
@@ -63,6 +71,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         return p;
     }
 
+    @Test
     public void testPointRead() throws Exception {
         assertEquals(point(), gjson.readPoint(reader(pointText())));
         assertEquals(point3d(), gjson.readPoint(reader(point3dText())));
@@ -74,6 +83,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         }
     }
 
+    @Test
     public void testLineWrite() throws Exception {
         assertEquals(lineText(), gjson.toString(line()));
         assertEquals(line2Text(), gjson.toString(line2()));
@@ -112,6 +122,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         return l;
     }
 
+    @Test
     public void testLineRead() throws Exception {
         assertEquals(line(), (gjson.readLine(reader(lineText()))));
         assertNull(gjson.readLine(reader(line2Text())));
@@ -124,6 +135,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         }
     }
 
+    @Test
     public void testPolyWrite() throws Exception {
         assertEquals(polygonText1(), gjson.toString(polygon1()));
         assertEquals(polygonText2(), gjson.toString(polygon2()));
@@ -238,6 +250,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         return poly;
     }
 
+    @Test
     public void testPolyRead() throws Exception {
         assertEquals(polygon1(), (gjson.readPolygon(reader(polygonText1()))));
         assertEquals(polygon2(), (gjson.readPolygon(reader(polygonText2()))));
@@ -250,6 +263,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         }
     }
 
+    @Test
     public void testMultiPointWrite() throws Exception {
         assertEquals(multiPointText(), gjson.toString(multiPoint()));
         assertEquals(multiPoint3dText(), gjson.toString(multiPoint3d()));
@@ -283,11 +297,13 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         return mpoint;
     }
 
+    @Test
     public void testMultiPointRead() throws Exception {
         assertTrue(multiPoint().equals(gjson.readMultiPoint(reader(multiPointText()))));
         assertTrue(multiPoint3d().equals(gjson.readMultiPoint(reader(multiPoint3dText()))));
     }
 
+    @Test
     public void testMultiLineWrite() throws Exception {
         assertEquals(multiLineText(), gjson.toString(multiLine()));
         assertEquals(multiLine3dText(), gjson.toString(multiLine3d()));
@@ -335,11 +351,13 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         return mline;
     }
 
+    @Test
     public void testMultiLineRead() throws Exception {
         assertTrue(multiLine().equals(gjson.readMultiLine(reader(multiLineText()))));
         assertTrue(multiLine3d().equals(gjson.readMultiLine(reader(multiLine3dText()))));
     }
 
+    @Test
     public void testMultiPolygonWrite() throws Exception {
         assertEquals(multiPolygonText(), gjson.toString(multiPolygon()));
         assertEquals(multiPolygon3dText(), gjson.toString(multiPolygon3d()));
@@ -447,11 +465,13 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         return mpoly;
     }
 
+    @Test
     public void testMultiPolygonRead() throws IOException {
         assertTrue(multiPolygon().equals(gjson.readMultiPolygon(reader(multiPolygonText()))));
         assertTrue(multiPolygon3d().equals(gjson.readMultiPolygon(reader(multiPolygon3dText()))));
     }
 
+    @Test
     public void testGeometryCollectionWrite() throws Exception {
         assertEquals(collectionText(), gjson.toString(collection()));
         assertEquals(collection3dText(), gjson.toString(collection3d()));
@@ -521,15 +541,13 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         return gcol;
     }
 
+    @Test
     public void testGeometryCollectionRead() throws Exception {
-        assertEqual(
-                collection(),
-                (GeometryCollection) gjson.readGeometryCollection(reader(collectionText())));
-        assertEqual(
-                collection3d(),
-                (GeometryCollection) gjson.readGeometryCollection(reader(collection3dText())));
+        assertEqual(collection(), gjson.readGeometryCollection(reader(collectionText())));
+        assertEqual(collection3d(), gjson.readGeometryCollection(reader(collection3dText())));
     }
 
+    @Test
     public void testRead() throws Exception {
         assertTrue(point().equals(gjson.read(reader(pointText()))));
         assertTrue(point3d().equals(gjson.read(reader(point3dText()))));
@@ -549,6 +567,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         assertEqual(collection3d(), (GeometryCollection) gjson.read(reader(collection3dText())));
     }
 
+    @Test
     public void testReadOrder() throws Exception {
         String json = strip("{'coordinates':[100.1,0.1], 'type': 'Point'}");
         assertTrue(point().equals(gjson.read(reader(json))));
@@ -608,6 +627,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         return coordinates;
     }
 
+    @Test
     public void testGeometryCollectionReadTypeLast() throws IOException {
         Object obj = gjson.read(collectionTypeLastText());
         assertTrue(obj instanceof GeometryCollection);
@@ -619,6 +639,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         assertTrue(gc.getGeometryN(1) instanceof LineString);
     }
 
+    @Test
     public void testPointOrderParsing() throws Exception {
         String input1 = "{\n" + "  \"type\": \"Point\",\n" + "  \"coordinates\": [10, 10]\n" + "}";
         String input2 = "{\n" + "  \"coordinates\": [10, 10],\n" + "  \"type\": \"Point\"\n" + "}";
@@ -632,6 +653,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         assertEquals(10, p2.getY(), 0d);
     }
 
+    @Test
     public void testKeyOrderInGeometryCollectionParsing() throws Exception {
         /* Test parsing of two variations of the same GeoJSON object. */
 

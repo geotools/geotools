@@ -16,7 +16,6 @@
  */
 package org.geotools.sld.bindings;
 
-import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.Fill;
@@ -169,7 +168,7 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
         }
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
-        for (CssParameter param : (List<CssParameter>) node.getChildValues(CssParameter.class)) {
+        for (CssParameter param : node.getChildValues(CssParameter.class)) {
             ts.getOptions()
                     .put(param.getName(), param.getExpression().evaluate(null, String.class));
         }

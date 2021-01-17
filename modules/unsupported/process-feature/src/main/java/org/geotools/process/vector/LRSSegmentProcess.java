@@ -17,6 +17,7 @@
  */
 package org.geotools.process.vector;
 
+import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -37,6 +38,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureType;
 
 @DescribeProcess(
     title = "Extract Segment in LRS",
@@ -54,9 +56,9 @@ public class LRSSegmentProcess implements VectorProcess {
      * @throws ProcessException error
      */
     @DescribeResult(name = "result", description = "Output feature collection")
-    public FeatureCollection execute(
+    public FeatureCollection<? extends FeatureType, ? extends Feature> execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
-                    FeatureCollection featureCollection,
+                    FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection,
             @DescribeParameter(
                         name = "from_measure_attb",
                         description = "Attribute providing start measure of feature"
@@ -104,7 +106,7 @@ public class LRSSegmentProcess implements VectorProcess {
                 return results;
             }
 
-            FeatureIterator<Feature> featureIterator = null;
+            FeatureIterator<? extends Feature> featureIterator = null;
             Feature firstFeature = null;
             try {
                 LineMerger lineMerger = new LineMerger();
@@ -212,15 +214,14 @@ public class LRSSegmentProcess implements VectorProcess {
                             }
                         }
                     }
+                    @SuppressWarnings("unchecked")
+                    List<LineString> merged = (List<LineString>) lineMerger.getMergedLineStrings();
                     results.add(
                             createTargetFeature(
                                     firstFeature,
                                     (SimpleFeatureType) firstFeature.getType(),
                                     new MultiLineString(
-                                            (LineString[])
-                                                    lineMerger
-                                                            .getMergedLineStrings()
-                                                            .toArray(new LineString[0]),
+                                            merged.toArray(new LineString[merged.size()]),
                                             geometryFactory)));
                 }
             } finally {

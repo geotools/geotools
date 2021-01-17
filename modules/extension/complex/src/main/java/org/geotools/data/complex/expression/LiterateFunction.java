@@ -75,7 +75,7 @@ public class LiterateFunction extends FunctionExpressionImpl {
                     "literate function requires non-null, positive size");
         }
 
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             final int index = i;
             ExpressionVisitor indexVisitor =

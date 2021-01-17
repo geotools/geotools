@@ -81,6 +81,7 @@ class Mosaic {
         bounds.expandToInclude(tile.bounds);
     }
 
+    @SuppressWarnings("PMD.ReplaceHashtableWithMap")
     BufferedImage initImage(Tile tile) {
         BufferedImage from = tile.image;
         // copy over properties of this tile

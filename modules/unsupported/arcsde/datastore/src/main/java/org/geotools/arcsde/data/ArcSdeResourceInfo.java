@@ -81,7 +81,7 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
     /** @see org.geotools.data.ResourceInfo#getKeywords() */
     public synchronized Set<String> getKeywords() {
         if (this.cachedKeywords == null) {
-            cachedKeywords = new HashSet<String>();
+            cachedKeywords = new HashSet<>();
             cachedKeywords.add("ArcSDE");
             cachedKeywords.add(info.getFeatureTypeName());
             if (info.isInProcessView()) {
@@ -97,7 +97,7 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
                 cachedKeywords.add("writable");
             }
         }
-        return new HashSet<String>(this.cachedKeywords);
+        return new HashSet<>(this.cachedKeywords);
     }
 
     /** @see org.geotools.data.ResourceInfo#getName() */

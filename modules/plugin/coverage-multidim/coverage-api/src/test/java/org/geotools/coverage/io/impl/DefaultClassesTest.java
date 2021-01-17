@@ -19,6 +19,7 @@ package org.geotools.coverage.io.impl;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -64,7 +65,7 @@ public class DefaultClassesTest {
     @BeforeClass
     public static void setup() throws MalformedURLException {
         emptyMap = Collections.emptyMap();
-        connectionParams = new HashMap<String, Serializable>();
+        connectionParams = new HashMap<>();
         url = new URL(TestDriver.TEST_URL);
         connectionParams.put(DefaultFileDriver.URL.key, url);
         hints = new Hints();
@@ -207,13 +208,13 @@ public class DefaultClassesTest {
 
         // ParameterInfo
         Map<String, Parameter<?>> connectParameterInfo = driver.getConnectParameterInfo();
-        assertTrue(connectParameterInfo != null);
+        assertNotNull(connectParameterInfo);
         assertTrue(connectParameterInfo.containsKey(DefaultFileDriver.URL.key));
         Map<String, Parameter<?>> createParameterInfo = driver.getCreateParameterInfo();
-        assertTrue(createParameterInfo != null);
+        assertNotNull(createParameterInfo);
         assertTrue(createParameterInfo.containsKey(DefaultFileDriver.URL.key));
         Map<String, Parameter<?>> deleteParameterInfo = driver.getDeleteParameterInfo();
-        assertTrue(deleteParameterInfo != null);
+        assertNotNull(deleteParameterInfo);
         assertTrue(deleteParameterInfo.containsKey(DefaultFileDriver.URL.key));
     }
 
@@ -227,7 +228,7 @@ public class DefaultClassesTest {
                                 new float[][] {{1.0f, 1.0f}},
                                 new ReferencedEnvelope(0.0d, 1.0d, 0.0d, 1.0d, null));
         DateRange temporalExtent = new DateRange(new Date(10000), new Date(20000));
-        NumberRange<Double> verticalExtent = new NumberRange<Double>(Double.class, 0.0d, 100.0d);
+        NumberRange<Double> verticalExtent = new NumberRange<>(Double.class, 0.0d, 100.0d);
         DefaultGridCoverageResponse response =
                 new DefaultGridCoverageResponse(cov, temporalExtent, verticalExtent);
 
@@ -239,7 +240,7 @@ public class DefaultClassesTest {
                         response.getCoordinateReferenceSystem(),
                         cov.getCoordinateReferenceSystem()));
         assertTrue(new ReferencedEnvelope(response.getEnvelope()).contains(cov.getEnvelope2D()));
-        assertTrue(response.isDataEditable() == cov.isDataEditable());
+        assertEquals(response.isDataEditable(), cov.isDataEditable());
         assertSame(response.getGridGeometry(), cov.getGridGeometry());
         assertSame(response.getGridCoverage2D(), cov);
         assertSame(response.getRenderedImage(), cov.getRenderedImage());

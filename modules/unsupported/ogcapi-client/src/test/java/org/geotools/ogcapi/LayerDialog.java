@@ -117,7 +117,7 @@ public class LayerDialog extends JDialog {
         gbpanel0.setConstraints(label0, gbcpanel0);
         panel0.add(label0);
 
-        combo0 = new JComboBox<String>(layers);
+        combo0 = new JComboBox<>(layers);
         combo0.addItemListener(new ItemChangeListener());
         gbcpanel0.gridx = 1;
         gbcpanel0.gridy = 2;
@@ -131,7 +131,7 @@ public class LayerDialog extends JDialog {
         panel0.add(combo0);
 
         String[] styles = {"Please select a layer first"};
-        combo1 = new JComboBox<String>(styles);
+        combo1 = new JComboBox<>(styles);
         gbcpanel0.gridx = 1;
         gbcpanel0.gridy = 9;
         gbcpanel0.gridwidth = 20;

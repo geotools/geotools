@@ -13,6 +13,6 @@ package org.opengis.filter.expression;
 
 // Annotations
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.OGC_02059;
 
 import org.opengis.annotation.XmlSchema;

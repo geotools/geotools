@@ -1,6 +1,9 @@
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -89,9 +92,10 @@ public class DbaseNullSupportTest {
         fos.close();
         try (FileInputStream in = new FileInputStream(tmp);
                 DbaseFileReader reader = new DbaseFileReader(in.getChannel(), false, cs, tz)) {
-            assertTrue(
+            assertEquals(
                     "Number of records does not match",
-                    values.length == reader.getHeader().getNumRecords());
+                    values.length,
+                    reader.getHeader().getNumRecords());
             for (int row = 0; row < values.length; row++) {
                 Object[] current = reader.readEntry();
                 assertTrue(
@@ -99,19 +103,16 @@ public class DbaseNullSupportTest {
                         current != null && current.length == values.length);
                 for (int column = 0; column < values.length; column++) {
                     if (column == row) {
-                        assertTrue(
-                                "Column was null and should not have been",
-                                current[column] != null);
-                        assertTrue(
+                        assertNotNull("Column was null and should not have been", current[column]);
+                        assertEquals(
                                 "Non-null column value "
                                         + current[column]
                                         + " did not match original value "
                                         + values[column],
-                                current[column].equals(values[column]));
+                                current[column],
+                                values[column]);
                     } else {
-                        assertTrue(
-                                "Column that should have been null was not",
-                                current[column] == null);
+                        assertNull("Column that should have been null was not", current[column]);
                     }
                 }
             }

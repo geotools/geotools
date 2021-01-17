@@ -16,9 +16,11 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Uses a bit of number theory to test the range class.
@@ -27,36 +29,34 @@ import org.junit.*;
  */
 public final class RangeTest {
     /** [-1,1] */
-    private final Range<Integer> UNIT = new Range<Integer>(Integer.class, -1, 1);
+    private final Range<Integer> UNIT = new Range<>(Integer.class, -1, 1);
 
     /** Anything invalid is considered Empty; ie (1,-1) or (0,0) or (unbounded,unbounded) */
-    private final Range<Integer> EMPTY = new Range<Integer>(Integer.class, 1, -1);
+    private final Range<Integer> EMPTY = new Range<>(Integer.class, 1, -1);
 
     /** [0,0] */
-    private final Range<Integer> ZERO = new Range<Integer>(Integer.class, 0, 0);
+    private final Range<Integer> ZERO = new Range<>(Integer.class, 0, 0);
 
     /** 1, 2, 3, 4, ... positive integers Z-+ */
-    private final Range<Integer> POSITIVE = new Range<Integer>(Integer.class, 0, false, null, true);
+    private final Range<Integer> POSITIVE = new Range<>(Integer.class, 0, false, null, true);
 
     /** 0, 1, 2, 3, 4, ... nonnegative integers Z-* */
-    private final Range<Integer> NON_NEGATIVE =
-            new Range<Integer>(Integer.class, 0, true, null, true);
+    private final Range<Integer> NON_NEGATIVE = new Range<>(Integer.class, 0, true, null, true);
 
     /** -1, -2, -3, -4, ... negative integers Z-- */
-    private final Range<Integer> NEGATIVE = new Range<Integer>(Integer.class, null, true, 0, false);
+    private final Range<Integer> NEGATIVE = new Range<>(Integer.class, null, true, 0, false);
 
     /** 0, -1, -2, -3, -4, ... nonpositive integers */
-    private final Range<Integer> NON_POSITIVE =
-            new Range<Integer>(Integer.class, null, true, 0, true);
+    private final Range<Integer> NON_POSITIVE = new Range<>(Integer.class, null, true, 0, true);
 
     /** ..., -2, -1, 0, 1, 2, ... integers Z */
-    private final Range<Integer> INTEGERS = new Range<Integer>(Integer.class, null, null);
+    private final Range<Integer> INTEGERS = new Range<>(Integer.class, null, null);
 
     /** [A,B) */
-    private final Range<String> A = new Range<String>(String.class, "A", true, "B", false);
+    private final Range<String> A = new Range<>(String.class, "A", true, "B", false);
 
     /** [B,C) */
-    private final Range<String> B = new Range<String>(String.class, "B", true, "C", false);
+    private final Range<String> B = new Range<>(String.class, "B", true, "C", false);
 
     /**
      * The {@link Range} class has a number of assertions that are valuable for our testing purpose.
@@ -78,17 +78,17 @@ public final class RangeTest {
     @Test
     public void testIsEmpty() {
         // easy
-        assertTrue(new Range<Integer>(Integer.class, 0, -1).isEmpty());
-        assertFalse(new Range<Integer>(Integer.class, 0, 0).isEmpty());
-        assertFalse(new Range<Integer>(Integer.class, 0, 1).isEmpty());
-        assertFalse(new Range<Integer>(Integer.class, null, 1).isEmpty());
-        assertFalse(new Range<Integer>(Integer.class, 0, null).isEmpty());
+        assertTrue(new Range<>(Integer.class, 0, -1).isEmpty());
+        assertFalse(new Range<>(Integer.class, 0, 0).isEmpty());
+        assertFalse(new Range<>(Integer.class, 0, 1).isEmpty());
+        assertFalse(new Range<>(Integer.class, null, 1).isEmpty());
+        assertFalse(new Range<>(Integer.class, 0, null).isEmpty());
 
         // tricky
-        assertTrue("(0,0)", new Range<Integer>(Integer.class, 0, false, 0, false).isEmpty());
-        assertTrue("[0,0)", new Range<Integer>(Integer.class, 0, true, 0, false).isEmpty());
-        assertTrue("(0,0]", new Range<Integer>(Integer.class, 0, false, 0, true).isEmpty());
-        assertFalse("[0,0]", new Range<Integer>(Integer.class, 0, true, 0, true).isEmpty());
+        assertTrue("(0,0)", new Range<>(Integer.class, 0, false, 0, false).isEmpty());
+        assertTrue("[0,0)", new Range<>(Integer.class, 0, true, 0, false).isEmpty());
+        assertTrue("(0,0]", new Range<>(Integer.class, 0, false, 0, true).isEmpty());
+        assertFalse("[0,0]", new Range<>(Integer.class, 0, true, 0, true).isEmpty());
 
         // conformance
         assertTrue(EMPTY.isEmpty());
@@ -113,8 +113,8 @@ public final class RangeTest {
 
     @Test
     public void testEquals() {
-        assertEquals(EMPTY, new Range<Integer>(Integer.class, 2, -2));
-        assertEquals(UNIT, new Range<Integer>(Integer.class, -1, 1));
+        assertEquals(EMPTY, new Range<>(Integer.class, 2, -2));
+        assertEquals(UNIT, new Range<>(Integer.class, -1, 1));
     }
 
     @Test
@@ -145,19 +145,15 @@ public final class RangeTest {
 
     @Test
     public void testUnion() {
-        assertEquals(new Range<Integer>(Integer.class, -1, null), UNIT.union(POSITIVE));
+        assertEquals(new Range<>(Integer.class, -1, null), UNIT.union(POSITIVE));
     }
 
     @Test
     public void testIntersects() {
         assertEquals(
-                "(0,1]",
-                new Range<Integer>(Integer.class, 0, false, 1, true),
-                UNIT.intersect(POSITIVE));
+                "(0,1]", new Range<>(Integer.class, 0, false, 1, true), UNIT.intersect(POSITIVE));
         assertEquals(
-                "[-1,0)",
-                new Range<Integer>(Integer.class, -1, true, 0, false),
-                UNIT.intersect(NEGATIVE));
+                "[-1,0)", new Range<>(Integer.class, -1, true, 0, false), UNIT.intersect(NEGATIVE));
         assertEquals(EMPTY, POSITIVE.intersect(NEGATIVE));
 
         assertEquals("0+", ZERO, ZERO.intersect(NON_NEGATIVE));
@@ -177,16 +173,16 @@ public final class RangeTest {
     public void testUnionN() {
         Range<?> range;
 
-        range = new Range<Integer>(Integer.class, 0);
-        assertEquals(new Range<Integer>(Integer.class, 0), range);
+        range = new Range<>(Integer.class, 0);
+        assertEquals(new Range<>(Integer.class, 0), range);
 
-        range = range.union(new Range<Integer>(Integer.class, 1));
-        assertEquals(new Range<Integer>(Integer.class, 0, 1), range);
+        range = range.union(new Range<>(Integer.class, 1));
+        assertEquals(new Range<>(Integer.class, 0, 1), range);
 
-        range = range.union(new Range<Integer>(Integer.class, 10, true, 100, false));
-        assertEquals(new Range<Integer>(Integer.class, 0, true, 100, false), range);
+        range = range.union(new Range<>(Integer.class, 10, true, 100, false));
+        assertEquals(new Range<>(Integer.class, 0, true, 100, false), range);
 
-        range = range.union(new Range<Integer>(Integer.class, 100, true, 120, false));
-        assertEquals(new Range<Integer>(Integer.class, 0, true, 120, false), range);
+        range = range.union(new Range<>(Integer.class, 100, true, 120, false));
+        assertEquals(new Range<>(Integer.class, 0, true, 120, false), range);
     }
 }

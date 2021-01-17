@@ -34,7 +34,7 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
 
     private String location;
 
-    private Set<ColorReplacementBuilder> replacements = new HashSet<ColorReplacementBuilder>();
+    private Set<ColorReplacementBuilder> replacements = new HashSet<>();
 
     public ExternalGraphicBuilder() {
         this(null);
@@ -88,7 +88,7 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
             return null;
         }
         ExternalGraphic externalGraphic;
-        Collection<ColorReplacement> set = new HashSet<ColorReplacement>();
+        Collection<ColorReplacement> set = new HashSet<>();
         for (ColorReplacementBuilder replacement : replacements) {
             set.add(replacement.build());
         }

@@ -54,14 +54,11 @@ public class CSVFeatureSource extends ContentFeatureSource {
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         ReferencedEnvelope bounds =
                 new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReader(query);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReader(query)) {
             while (featureReader.hasNext()) {
                 SimpleFeature feature = featureReader.next();
                 bounds.include(feature.getBounds());
             }
-        } finally {
-            featureReader.close();
         }
         return bounds;
     }

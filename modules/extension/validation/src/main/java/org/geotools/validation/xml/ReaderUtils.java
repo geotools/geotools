@@ -388,7 +388,7 @@ class ReaderUtils {
     public static String[] getKeyWords(Element keywordsElem) {
         NodeList klist = keywordsElem.getElementsByTagName("keyword");
         int kCount = klist.getLength();
-        List keywords = new ArrayList(kCount);
+        List<String> keywords = new ArrayList<>(kCount);
         String kword;
         Element kelem;
 
@@ -401,7 +401,7 @@ class ReaderUtils {
             }
         }
 
-        Object[] s = (Object[]) keywords.toArray();
+        Object[] s = keywords.toArray();
 
         if (s == null) {
             return new String[0];

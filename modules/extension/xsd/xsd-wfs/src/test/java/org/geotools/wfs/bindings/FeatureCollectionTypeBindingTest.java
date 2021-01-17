@@ -16,6 +16,10 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.net.URL;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
@@ -28,6 +32,7 @@ import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -44,6 +49,8 @@ public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    @Test
     public void testEncode() throws Exception {
 
         namespaceMappings.put("geotools", "http://geotools.org");
@@ -82,6 +89,7 @@ public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "FeatureCollectionTypeBindingTest.xml");
         buildDocument(resource);
@@ -92,19 +100,13 @@ public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
         FeatureCollection features = (FeatureCollection) fc.getFeature().get(0);
         assertEquals(2, features.size());
 
-        FeatureIterator fi = features.features();
-        try {
+        try (FeatureIterator fi = features.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = (SimpleFeature) fi.next();
 
             assertEquals("feature", f.getType().getTypeName());
             assertTrue(f.getDefaultGeometry() instanceof LineString);
             assertEquals("1", f.getAttribute("integer").toString());
-
-        } finally {
-            if (fi != null) {
-                fi.close();
-            }
         }
     }
 }

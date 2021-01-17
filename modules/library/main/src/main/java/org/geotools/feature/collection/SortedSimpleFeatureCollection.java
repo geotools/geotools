@@ -33,19 +33,29 @@ import org.opengis.filter.sort.SortBy;
 public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollection {
 
     private SortBy[] sort;
+    private int maxMemoryFeatures = -1;
 
     public SortedSimpleFeatureCollection(SimpleFeatureCollection delegate, SortBy[] sort) {
         super(delegate);
         this.sort = sort;
     }
 
+    public SortedSimpleFeatureCollection(
+            SimpleFeatureCollection delegate, SortBy[] sort, int maxMemoryFeatures) {
+        super(delegate);
+        this.sort = sort;
+        this.maxMemoryFeatures = maxMemoryFeatures;
+    }
+
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public SimpleFeatureIterator features() {
         try {
             SimpleFeatureIterator features = delegate.features();
             // sort if necessary
             if (sort != null) {
-                features = new SortedFeatureIterator(features, getSchema(), sort, -1);
+                features =
+                        new SortedFeatureIterator(features, getSchema(), sort, maxMemoryFeatures);
             }
             return features;
         } catch (IOException e) {

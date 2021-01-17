@@ -172,6 +172,7 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
 
     private Map<String, Integer> calcToCountMap(CalcResult result) {
         // the result is a map going from list of grouping attributes to value
+        @SuppressWarnings("unchecked")
         Map<List<String>, Integer> map = result.toMap();
         return map.entrySet()
                 .stream()
@@ -183,8 +184,7 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
         Query q = new Query(manager.getTypeName());
         q.setFilter(filter);
         SimpleFeatureCollection lc = manager.getGranuleCatalog().getGranules(q);
-        List<Expression> groupByExpressions =
-                Arrays.asList((Expression) getLocationProperty(manager));
+        List<Expression> groupByExpressions = Arrays.asList(getLocationProperty(manager));
         GroupByVisitor groupVisitor =
                 new GroupByVisitor(Aggregate.COUNT, NilExpression.NIL, groupByExpressions, null);
         lc.accepts(groupVisitor, null);

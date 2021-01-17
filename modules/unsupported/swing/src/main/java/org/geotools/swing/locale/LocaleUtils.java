@@ -99,8 +99,7 @@ public class LocaleUtils {
      * Cached resource bundles. Each bundle will be that of the
      * highest available preference locale.
      */
-    private static final Map<String, ResourceBundle> bundles =
-            new ConcurrentHashMap<String, ResourceBundle>();
+    private static final Map<String, ResourceBundle> bundles = new ConcurrentHashMap<>();
 
     private static final ReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -113,7 +112,7 @@ public class LocaleUtils {
         try {
             supportedLocales = loadLocaleInfo();
 
-            workingLocales = new ArrayList<Locale>();
+            workingLocales = new ArrayList<>();
             workingLocales.add(Locale.ROOT);
 
         } catch (IOException ex) {
@@ -278,12 +277,12 @@ public class LocaleUtils {
         PropertiesFileFinder finder = new PropertiesFileFinder();
         List<PropertiesFileInfo> infoList = finder.scan(PREFIX);
 
-        Set<Locale> allLocales = new HashSet<Locale>();
+        Set<Locale> allLocales = new HashSet<>();
         for (PropertiesFileInfo info : infoList) {
             allLocales.addAll(info.getLocales());
         }
 
-        List<LocaleInfo> localeInfoList = new ArrayList<LocaleInfo>();
+        List<LocaleInfo> localeInfoList = new ArrayList<>();
         for (Locale l : allLocales) {
             localeInfoList.add(new LocaleInfo(l, true));
         }

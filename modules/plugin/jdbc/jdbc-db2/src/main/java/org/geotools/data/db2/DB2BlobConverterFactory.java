@@ -69,7 +69,7 @@ public class DB2BlobConverterFactory implements ConverterFactory {
 
         public <T> T convert(Object source, Class<T> target) throws Exception {
             int length = ((Long) DB2_LENGTH.invoke(source)).intValue();
-            return (T) DB2_GET_BYTES.invoke(source, 1l, length);
+            return target.cast(DB2_GET_BYTES.invoke(source, 1l, length));
         }
     }
 }

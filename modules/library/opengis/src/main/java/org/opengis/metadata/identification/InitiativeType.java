@@ -30,7 +30,7 @@ public final class InitiativeType extends CodeList<InitiativeType> {
     private static final long serialVersionUID = -6875282680499638030L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<InitiativeType> VALUES = new ArrayList<InitiativeType>(15);
+    private static final List<InitiativeType> VALUES = new ArrayList<>(15);
 
     /** Series of organized planned actions. */
     @UML(identifier = "campaign", obligation = CONDITIONAL, specification = ISO_19115)

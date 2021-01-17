@@ -9,3 +9,4 @@ CREATE TABLE IF NOT EXISTS gpkg_metadata_reference (
   CONSTRAINT crmr_mfi_fk FOREIGN KEY (md_file_id) REFERENCES gpkg_metadata(id),
   CONSTRAINT crmr_mpi_fk FOREIGN KEY (md_parent_id) REFERENCES gpkg_metadata(id)
 );
+INSERT into gpkg_extensions VALUES('gpkg_metadata_reference', null, 'gpkg_metadata', 'http://www.geopackage.org/spec121/#extension_metadata', 'read-write');

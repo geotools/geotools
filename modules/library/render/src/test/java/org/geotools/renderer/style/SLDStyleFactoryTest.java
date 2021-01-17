@@ -16,10 +16,14 @@
  */
 package org.geotools.renderer.style;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.TexturePaint;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
@@ -33,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -62,6 +65,10 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
 import org.hamcrest.CoreMatchers;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -79,7 +86,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author jamesm */
-public class SLDStyleFactoryTest extends TestCase {
+public class SLDStyleFactoryTest {
 
     StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
     SLDStyleFactory sld = new SLDStyleFactory();
@@ -89,8 +96,8 @@ public class SLDStyleFactoryTest extends TestCase {
     SimpleFeatureType featureType;
     SimpleFeature feature;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.setName("test");
         ftb.add("geom", Point.class);
@@ -106,13 +113,14 @@ public class SLDStyleFactoryTest extends TestCase {
         feature = fb.buildFeature(null);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         sld.setVectorRenderingEnabled(false);
         MarkStyle2D.setMaxMarkSizeEnabled(false);
     }
 
     /** This test created from Render2DTest.testSimplePointRender */
+    @Test
     public void testCreatePointStyle() {
         // The following is complex, and should be built from
         // an SLD document and not by hand
@@ -120,19 +128,21 @@ public class SLDStyleFactoryTest extends TestCase {
         pointsym.setGraphic(sf.getDefaultGraphic());
         NumberRange<Double> scaleRange = NumberRange.create(1.0, 50000.0);
         Style2D style = sld.createPointStyle(null, pointsym, scaleRange);
-        assertNotNull(style);
+        Assert.assertNotNull(style);
     }
 
+    @Test
     public void testCreateLineStyle() {
         LineSymbolizer ls = sf.createLineSymbolizer();
         ls.setPerpendicularOffset(ff.literal(5));
         NumberRange<Double> scaleRange = NumberRange.create(1.0, 50000.0);
         LineStyle2D style = (LineStyle2D) sld.createLineStyle(null, ls, scaleRange);
-        assertNotNull(style);
-        assertEquals(5, style.getPerpendicularOffset(), 0d);
+        Assert.assertNotNull(style);
+        Assert.assertEquals(5, style.getPerpendicularOffset(), 0d);
     }
 
     /** Test of createPolygonStyle method, of class org.geotools.renderer.style.SLDStyleFactory. */
+    @Test
     public void testCreateIncompletePolygonStyle() {
         PolygonSymbolizer symb;
 
@@ -142,6 +152,7 @@ public class SLDStyleFactoryTest extends TestCase {
     }
 
     /** Test of createPointStyle method, of class org.geotools.renderer.style.SLDStyleFactory. */
+    @Test
     public void testCreateCompletePointStyle() {
         PointSymbolizer symb;
         Mark myMark;
@@ -157,6 +168,7 @@ public class SLDStyleFactoryTest extends TestCase {
         sld.createPointStyle(null, symb, range);
     }
 
+    @Test
     public void testCreateIncompletePointStyle() {
         PointSymbolizer symb;
         Mark myMark;
@@ -169,6 +181,7 @@ public class SLDStyleFactoryTest extends TestCase {
         sld.createPointStyle(null, symb, range);
     }
 
+    @Test
     public void testCreateDynamicMark() throws Exception {
         PointSymbolizer symb = sf.createPointSymbolizer();
         Mark myMark = sf.createMark();
@@ -177,10 +190,10 @@ public class SLDStyleFactoryTest extends TestCase {
         symb.getGraphic().graphicalSymbols().add(myMark);
 
         MarkStyle2D ms = (MarkStyle2D) sld.createStyle(feature, symb, range);
-        assertNotNull(ms.getShape());
+        Assert.assertNotNull(ms.getShape());
         // make sure the style has been recognized as dynamic
         SymbolizerKey key = new SymbolizerKey(symb, range);
-        assertTrue(sld.dynamicSymbolizers.containsKey(key));
+        Assert.assertTrue(sld.dynamicSymbolizers.containsKey(key));
         Shape expected =
                 new TTFMarkFactory().getShape(null, ff.literal("ttf://Serif#0xF054"), feature);
 
@@ -189,19 +202,20 @@ public class SLDStyleFactoryTest extends TestCase {
         PathIterator pi = ms.getShape().getPathIterator(new AffineTransform());
         double[] coordsExpected = new double[6];
         double[] coords = new double[6];
-        assertEquals(piExpected.getWindingRule(), pi.getWindingRule());
+        Assert.assertEquals(piExpected.getWindingRule(), pi.getWindingRule());
         while (!piExpected.isDone()) {
-            assertFalse(pi.isDone());
+            Assert.assertFalse(pi.isDone());
             piExpected.currentSegment(coordsExpected);
             pi.currentSegment(coords);
-            assertEquals(coordsExpected[0], coords[0], 0.00001);
-            assertEquals(coordsExpected[1], coords[1], 0.00001);
+            Assert.assertEquals(coordsExpected[0], coords[0], 0.00001);
+            Assert.assertEquals(coordsExpected[1], coords[1], 0.00001);
             piExpected.next();
             pi.next();
         }
-        assertTrue(pi.isDone());
+        Assert.assertTrue(pi.isDone());
     }
 
+    @Test
     public void testCreateDynamicExternalGraphics() throws Exception {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
@@ -211,17 +225,18 @@ public class SLDStyleFactoryTest extends TestCase {
         GraphicStyle2D gs = (GraphicStyle2D) sld.createStyle(feature, symb, range);
         // make sure the style has been recognized as dynamic
         SymbolizerKey key = new SymbolizerKey(symb, range);
-        assertTrue(sld.dynamicSymbolizers.containsKey(key));
+        Assert.assertTrue(sld.dynamicSymbolizers.containsKey(key));
 
         BufferedImage img = gs.getImage();
         BufferedImage expected =
                 ImageIO.read(StreamingRenderer.class.getResource("test-data/draw.png"));
-        assertEquals(expected.getHeight(), img.getHeight());
-        assertEquals(expected.getWidth(), img.getWidth());
+        Assert.assertEquals(expected.getHeight(), img.getHeight());
+        Assert.assertEquals(expected.getWidth(), img.getWidth());
         // the two images are equal, but they have different color models due to the
         // different ways they have been loaded
     }
 
+    @Test
     public void testCreateDynamicExternalGraphicsVector() throws Exception {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
@@ -232,14 +247,15 @@ public class SLDStyleFactoryTest extends TestCase {
         GraphicStyle2D gs = (GraphicStyle2D) sld.createStyle(feature, symb, range);
         // make sure the style has been recognized as dynamic
         SymbolizerKey key = new SymbolizerKey(symb, range);
-        assertTrue(sld.dynamicSymbolizers.containsKey(key));
+        Assert.assertTrue(sld.dynamicSymbolizers.containsKey(key));
 
         BufferedImage expected =
                 ImageIO.read(StreamingRenderer.class.getResource("test-data/draw.png"));
-        assertEquals(expected.getHeight(), gs.getImage().getHeight());
-        assertEquals(expected.getWidth(), gs.getImage().getWidth());
+        Assert.assertEquals(expected.getHeight(), gs.getImage().getHeight());
+        Assert.assertEquals(expected.getWidth(), gs.getImage().getWidth());
     }
 
+    @Test
     public void testDefaultSizeExternalGraphic() throws Exception {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
@@ -248,10 +264,11 @@ public class SLDStyleFactoryTest extends TestCase {
 
         GraphicStyle2D gs = (GraphicStyle2D) sld.createPointStyle(feature, symb, range);
         BufferedImage img = gs.getImage();
-        assertEquals(64, img.getHeight());
-        assertEquals(64, img.getWidth());
+        Assert.assertEquals(64, img.getHeight());
+        Assert.assertEquals(64, img.getWidth());
     }
 
+    @Test
     public void testCreateDynamicExternalFormat() throws Exception {
         feature.setAttribute("symb", "image/png");
         URL url = StreamingRenderer.class.getResource("test-data/");
@@ -262,17 +279,18 @@ public class SLDStyleFactoryTest extends TestCase {
         GraphicStyle2D gs = (GraphicStyle2D) sld.createStyle(feature, symb, range);
         // make sure the style has been recognized as dynamic
         SymbolizerKey key = new SymbolizerKey(symb, range);
-        assertTrue(sld.dynamicSymbolizers.containsKey(key));
+        Assert.assertTrue(sld.dynamicSymbolizers.containsKey(key));
 
         BufferedImage img = gs.getImage();
         BufferedImage expected =
                 ImageIO.read(StreamingRenderer.class.getResource("test-data/draw.png"));
-        assertEquals(expected.getHeight(), img.getHeight());
-        assertEquals(expected.getWidth(), img.getWidth());
+        Assert.assertEquals(expected.getHeight(), img.getHeight());
+        Assert.assertEquals(expected.getWidth(), img.getWidth());
         // the two images are equal, but they have different color models due to the
         // different ways they have been loaded
     }
 
+    @Test
     public void testResizeExternalGraphic() throws Exception {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
@@ -282,10 +300,11 @@ public class SLDStyleFactoryTest extends TestCase {
 
         GraphicStyle2D gs = (GraphicStyle2D) sld.createPointStyle(feature, symb, range);
         BufferedImage img = gs.getImage();
-        assertEquals(20, img.getHeight());
-        assertEquals(20, img.getWidth());
+        Assert.assertEquals(20, img.getHeight());
+        Assert.assertEquals(20, img.getWidth());
     }
 
+    @Test
     public void testNonExistingExternalGraphic() throws Exception {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
@@ -296,9 +315,10 @@ public class SLDStyleFactoryTest extends TestCase {
         Style2D style2D = sld.createPointStyle(feature, symb, range);
         assertThat(style2D, CoreMatchers.instanceOf(MarkStyle2D.class));
         MarkStyle2D mark = (MarkStyle2D) style2D;
-        assertEquals(Color.GRAY, mark.getFill());
+        Assert.assertEquals(Color.GRAY, mark.getFill());
     }
 
+    @Test
     public void testNonExistingExternalGraphicNoFallback() throws Exception {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
@@ -307,9 +327,10 @@ public class SLDStyleFactoryTest extends TestCase {
         symb.getOptions().put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
 
         // fallback has been disabled
-        assertNull(sld.createPointStyle(feature, symb, range));
+        Assert.assertNull(sld.createPointStyle(feature, symb, range));
     }
 
+    @Test
     public void testResizeGraphicFill() throws Exception {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PolygonSymbolizer symb = sf.createPolygonSymbolizer();
@@ -321,11 +342,12 @@ public class SLDStyleFactoryTest extends TestCase {
         symb.setFill(fill);
 
         PolygonStyle2D ps = sld.createPolygonStyle(feature, symb, range);
-        assertTrue(ps.getFill() instanceof TexturePaint);
+        Assert.assertTrue(ps.getFill() instanceof TexturePaint);
         TexturePaint paint = (TexturePaint) ps.getFill();
-        assertEquals(20, paint.getImage().getWidth());
+        Assert.assertEquals(20, paint.getImage().getWidth());
     }
 
+    @Test
     public void testDefaultSizeMark() throws Exception {
         PointSymbolizer symb = sf.createPointSymbolizer();
         Mark myMark = sf.createMark();
@@ -333,9 +355,10 @@ public class SLDStyleFactoryTest extends TestCase {
         symb.getGraphic().graphicalSymbols().add(myMark);
 
         MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
-        assertEquals(16.0, ms.getSize());
+        Assert.assertEquals(16.0, ms.getSize(), 0d);
     }
 
+    @Test
     public void testDefaultExpressionSizeMark() throws Exception {
         PointSymbolizer symb = sf.createPointSymbolizer();
         Mark myMark = sf.createMark();
@@ -344,25 +367,27 @@ public class SLDStyleFactoryTest extends TestCase {
         symb.getGraphic().graphicalSymbols().add(myMark);
 
         MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
-        assertEquals(16.0, ms.getSize());
+        Assert.assertEquals(16.0, ms.getSize(), 0d);
     }
 
+    @Test
     public void testDefaultLineSymbolizerWithColor() throws Exception {
         LineSymbolizer symb = sf.createLineSymbolizer();
         symb.setStroke(sf.createStroke(ff.literal("#0000FF"), ff.literal(1.0)));
         symb.setPerpendicularOffset(ff.literal(10));
 
         Style2D s = sld.createLineStyle(feature, symb, range);
-        assertNotNull(s);
+        Assert.assertNotNull(s);
 
         DynamicLineStyle2D s2 =
                 (DynamicLineStyle2D) sld.createDynamicLineStyle(feature, symb, range);
-        assertNotNull(s2);
-        assertEquals(Color.BLUE, s2.getContour());
-        assertNotNull(s2.getStroke());
-        assertEquals(10, s2.getPerpendicularOffset(), 0d);
+        Assert.assertNotNull(s2);
+        Assert.assertEquals(Color.BLUE, s2.getContour());
+        Assert.assertNotNull(s2.getStroke());
+        Assert.assertEquals(10, s2.getPerpendicularOffset(), 0d);
     }
 
+    @Test
     public void testTexturePaintNoSize() throws Exception {
         PolygonSymbolizer symb = sf.createPolygonSymbolizer();
         Mark myMark = sf.createMark();
@@ -372,9 +397,10 @@ public class SLDStyleFactoryTest extends TestCase {
         symb.setFill(fill);
 
         PolygonStyle2D ps = sld.createPolygonStyle(feature, symb, range);
-        assertTrue(ps.getFill() instanceof TexturePaint);
+        Assert.assertTrue(ps.getFill() instanceof TexturePaint);
     }
 
+    @Test
     public void testUnknownFont() throws Exception {
         TextSymbolizer ts = sf.createTextSymbolizer();
         ts.setFill(sf.createFill(null));
@@ -387,14 +413,15 @@ public class SLDStyleFactoryTest extends TestCase {
         ts.setFont(font);
 
         TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
-        assertEquals(20, tsd.getFont().getSize());
-        assertEquals(java.awt.Font.ITALIC | java.awt.Font.BOLD, tsd.getFont().getStyle());
-        assertEquals("Serif", tsd.getFont().getName());
+        Assert.assertEquals(20, tsd.getFont().getSize());
+        Assert.assertEquals(java.awt.Font.ITALIC | java.awt.Font.BOLD, tsd.getFont().getStyle());
+        Assert.assertEquals("Serif", tsd.getFont().getName());
 
-        assertEquals(0.0, tsd.getAnchorX(), 0.0);
-        assertEquals(0.5, tsd.getAnchorY(), 0.0);
+        Assert.assertEquals(0.0, tsd.getAnchorX(), 0.0);
+        Assert.assertEquals(0.5, tsd.getAnchorY(), 0.0);
     }
 
+    @Test
     public void testAlternativeMarkSizeCalculation() {
         MarkStyle2D ms = new MarkStyle2D();
         ms.setSize(1);
@@ -408,32 +435,34 @@ public class SLDStyleFactoryTest extends TestCase {
         Shape shape = ms.getTransformedShape(0, 0);
 
         Rectangle2D rect = shape.getBounds2D();
-        assertEquals(1.0, rect.getHeight(), 0.0001);
-        assertEquals(1000.0 / 550.0, rect.getWidth(), 0.0001);
+        Assert.assertEquals(1.0, rect.getHeight(), 0.0001);
+        Assert.assertEquals(1000.0 / 550.0, rect.getWidth(), 0.0001);
 
         MarkStyle2D.setMaxMarkSizeEnabled(true);
         shape = ms.getTransformedShape(0, 0);
 
         rect = shape.getBounds2D();
-        assertEquals(550.0 / 1000.0, rect.getHeight(), 0.0001);
-        assertEquals(1.0, rect.getWidth(), 0.0001);
+        Assert.assertEquals(550.0 / 1000.0, rect.getHeight(), 0.0001);
+        Assert.assertEquals(1.0, rect.getWidth(), 0.0001);
     }
 
+    @Test
     public void testMarkSizeCalculation() throws Exception {
-        assertFalse(MarkStyle2D.isMaxMarkSizeEnabled());
+        Assert.assertFalse(MarkStyle2D.isMaxMarkSizeEnabled());
 
         PointSymbolizer symb = sf.createPointSymbolizer();
         Mark myMark = sf.createMark();
         myMark.setWellKnownName(ff.literal("square"));
         symb.getGraphic().graphicalSymbols().add(myMark);
         MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
-        assertFalse(MarkStyle2D.isMaxMarkSizeEnabled());
+        Assert.assertFalse(MarkStyle2D.isMaxMarkSizeEnabled());
 
         MarkStyle2D.setMaxMarkSizeEnabled(true);
         ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
-        assertTrue(MarkStyle2D.isMaxMarkSizeEnabled());
+        Assert.assertTrue(MarkStyle2D.isMaxMarkSizeEnabled());
     }
 
+    @Test
     public void testFallbackGraphicMark() throws Exception {
         PointSymbolizer symb = sf.createPointSymbolizer();
         ExternalGraphic eg =
@@ -441,13 +470,15 @@ public class SLDStyleFactoryTest extends TestCase {
         symb.getGraphic().graphicalSymbols().add(eg);
 
         Style2D icon = sld.createPointStyle(feature, symb, range);
-        assertNotNull(icon);
+        Assert.assertNotNull(icon);
     }
 
+    @Test
     public void testSortBySingleAscending() throws Exception {
         checkSortByParsing("z", ff.sort("z", SortOrder.ASCENDING));
     }
 
+    @Test
     public void testSortByTwoPropertiesAscending() throws Exception {
         checkSortByParsing(
                 "cat ,    name",
@@ -455,10 +486,12 @@ public class SLDStyleFactoryTest extends TestCase {
                 ff.sort("name", SortOrder.ASCENDING));
     }
 
+    @Test
     public void testSortBySingleDescending() throws Exception {
         checkSortByParsing("cat D   ", ff.sort("cat", SortOrder.DESCENDING));
     }
 
+    @Test
     public void testSortByMixed() throws Exception {
         checkSortByParsing(
                 "cat D,name A,z D",
@@ -474,6 +507,7 @@ public class SLDStyleFactoryTest extends TestCase {
         assertArrayEquals(expected, sortBy);
     }
 
+    @Test
     public void testKerningOnByDefault() throws Exception {
         TextSymbolizer ts = sf.createTextSymbolizer();
         ts.setFill(sf.createFill(null));
@@ -486,12 +520,13 @@ public class SLDStyleFactoryTest extends TestCase {
         ts.setFont(font);
 
         TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
-        assertEquals(20, tsd.getFont().getSize());
+        Assert.assertEquals(20, tsd.getFont().getSize());
         Map<TextAttribute, ?> attributes = tsd.getFont().getAttributes();
         Object kerningValue = attributes.get(TextAttribute.KERNING);
-        assertEquals(TextAttribute.KERNING_ON, kerningValue);
+        Assert.assertEquals(TextAttribute.KERNING_ON, kerningValue);
     }
 
+    @Test
     public void testKerningOffByDefault() throws Exception {
         TextSymbolizer ts = sf.createTextSymbolizer();
         ts.setFill(sf.createFill(null));
@@ -505,16 +540,17 @@ public class SLDStyleFactoryTest extends TestCase {
         ts.getOptions().put(TextSymbolizer.KERNING_KEY, "false");
 
         TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
-        assertEquals(20, tsd.getFont().getSize());
+        Assert.assertEquals(20, tsd.getFont().getSize());
         Map<TextAttribute, ?> attributes = tsd.getFont().getAttributes();
         Object kerningValue = attributes.get(TextAttribute.KERNING);
-        assertNull(kerningValue);
+        Assert.assertNull(kerningValue);
     }
 
     /**
      * A very large symbol can cause an Integer overflow in the renderer. The SLDFactory should give
      * a warning instead and try again with out meta tiling.
      */
+    @Test
     public void testGEOT5878() {
         String wkt[] = {
             "Polygon ((6438348.98000000044703484 4962869.70000000018626451, 6438348.88999999966472387 4962867.28000000026077032, 6438343.53000000026077032 4962867.28000000026077032, 6438343.53000000026077032 4962869.76999999955296516, 6438343.61000000033527613 4962870.17999999970197678, 6438348.90000000037252903 4962870.0400000000372529, 6438348.98000000044703484 4962869.70000000018626451))",
@@ -528,7 +564,7 @@ public class SLDStyleFactoryTest extends TestCase {
         try {
             crs = CRS.decode("EPSG:31276");
         } catch (FactoryException e1) {
-            fail(e1.getMessage());
+            Assert.fail(e1.getMessage());
         }
         ftb.add("the_geom", Polygon.class, crs);
         ftb.add("Nagib", Double.class);
@@ -541,7 +577,7 @@ public class SLDStyleFactoryTest extends TestCase {
             try {
                 geom = reader.read(w);
             } catch (ParseException e) {
-                fail(e.getMessage());
+                Assert.fail(e.getMessage());
             }
             fb.set("the_geom", geom);
             fb.set("Nagib", naglib);
@@ -575,7 +611,7 @@ public class SLDStyleFactoryTest extends TestCase {
 
                     @Override
                     public void errorOccurred(Exception e) {
-                        fail("an error occured");
+                        Assert.fail("an error occured");
                     }
                 });
         renderer.setMapContent(content);
@@ -589,6 +625,7 @@ public class SLDStyleFactoryTest extends TestCase {
                 RendererUtilities.worldToScreenTransform(layer.getBounds(), paintArea));
     }
 
+    @Test
     public void testDashArrayZero() throws Exception {
         LineSymbolizer ls = sf.createLineSymbolizer();
         Stroke stroke = sf.createStroke(ff.literal("red"), ff.literal(1));
@@ -600,6 +637,6 @@ public class SLDStyleFactoryTest extends TestCase {
         LineStyle2D ls2d = (LineStyle2D) sld.createLineStyle(feature, ls, range);
         assertThat(ls2d.getStroke(), CoreMatchers.instanceOf(BasicStroke.class));
         BasicStroke bs = (BasicStroke) ls2d.getStroke();
-        assertNull(bs.getDashArray());
+        Assert.assertNull(bs.getDashArray());
     }
 }

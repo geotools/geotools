@@ -16,25 +16,32 @@
  */
 package org.geotools.filter.v1_1;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Or;
 import org.w3c.dom.Document;
 
 public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
+    @Test
     public void testBinaryLogicOpType() {
         assertEquals(BinaryLogicOperator.class, binding(OGC.BinaryLogicOpType).getType());
     }
 
+    @Test
     public void testAndType() {
         assertEquals(And.class, binding(OGC.And).getType());
     }
 
+    @Test
     public void testAndExecutionMode() {
         assertEquals(Binding.AFTER, binding(OGC.And).getExecutionMode());
     }
 
+    @Test
     public void testAndParse() throws Exception {
         FilterMockData.and(document, document);
 
@@ -43,6 +50,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
         assertEquals(2, and.getChildren().size());
     }
 
+    @Test
     public void testAndEncode() throws Exception {
         Document dom = encode(FilterMockData.and(), OGC.And);
         assertEquals(
@@ -55,14 +63,17 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
     }
 
+    @Test
     public void testOrType() {
         assertEquals(Or.class, binding(OGC.Or).getType());
     }
 
+    @Test
     public void testOrExecutionMode() {
         assertEquals(Binding.AFTER, binding(OGC.Or).getExecutionMode());
     }
 
+    @Test
     public void testOrParse() throws Exception {
         FilterMockData.or(document, document);
 
@@ -71,6 +82,7 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
         assertEquals(2, or.getChildren().size());
     }
 
+    @Test
     public void testOrEncode() throws Exception {
         Document dom = encode(FilterMockData.or(), OGC.Or);
         assertEquals(

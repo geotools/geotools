@@ -90,12 +90,12 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      *
      * @param params function parameters
      */
-    public void setParameters(List params) {
+    public void setParameters(List<Expression> params) {
         super.setParameters(params);
         if (params.size() != 1) {
             throw new IllegalArgumentException("Require a single argument for average");
         }
-        expr = (Expression) getExpression(0);
+        expr = getExpression(0);
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
         expr = (Expression) expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
     }
@@ -116,9 +116,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
                     if (result != null) {
                         average = result.getValue();
                     }
-                } catch (IllegalFilterException e) {
-                    LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
-                } catch (IOException e) {
+                } catch (IllegalFilterException | IOException e) {
                     LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
                 }
             }

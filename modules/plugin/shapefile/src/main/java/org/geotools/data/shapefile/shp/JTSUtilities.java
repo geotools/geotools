@@ -175,18 +175,18 @@ public class JTSUtilities {
         coords = p.getExteriorRing().getCoordinates();
 
         if (Orientation.isCCW(coords)) {
-            outer = reverseRing((LinearRing) p.getExteriorRing());
+            outer = reverseRing(p.getExteriorRing());
         } else {
-            outer = (LinearRing) p.getExteriorRing();
+            outer = p.getExteriorRing();
         }
 
         for (int t = 0, tt = p.getNumInteriorRing(); t < tt; t++) {
             coords = p.getInteriorRingN(t).getCoordinates();
 
             if (!(Orientation.isCCW(coords))) {
-                holes[t] = reverseRing((LinearRing) p.getInteriorRingN(t));
+                holes[t] = reverseRing(p.getInteriorRingN(t));
             } else {
-                holes[t] = (LinearRing) p.getInteriorRingN(t);
+                holes[t] = p.getInteriorRingN(t);
             }
         }
 

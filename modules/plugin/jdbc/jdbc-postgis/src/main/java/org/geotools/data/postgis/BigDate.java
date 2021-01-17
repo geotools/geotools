@@ -27,7 +27,7 @@ import java.util.Date;
  */
 class BigDate extends Date {
 
-    private BigDate(long milliseconds) {
+    public BigDate(long milliseconds) {
         super(milliseconds);
     }
 }

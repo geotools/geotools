@@ -22,7 +22,7 @@ import static org.geotools.data.mongodb.MongoSchemaDBStore.DEFAULT_databaseName;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assume.assumeThat;
 
 import com.mongodb.MongoClient;
@@ -46,8 +46,7 @@ public class MongoSchemaDBStoreTest extends MongoSchemaStoreTest<MongoSchemaDBSt
 
     static final Logger LOGGER = Logging.getLogger(MongoSchemaDBStore.class);
 
-    Map<MongoSchemaDBStore, MongoClientURI> clientURIs =
-            new HashMap<MongoSchemaDBStore, MongoClientURI>();
+    Map<MongoSchemaDBStore, MongoClientURI> clientURIs = new HashMap<>();
 
     static String host;
     static int port;

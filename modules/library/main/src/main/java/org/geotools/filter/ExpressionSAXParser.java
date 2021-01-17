@@ -19,6 +19,7 @@ package org.geotools.filter;
 // Java Topology Suite dependencies
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.expression.AddImpl;
@@ -61,8 +62,8 @@ public class ExpressionSAXParser {
     private String currentState = null; // DJB: appears this can be leftValue rightValue complete.
     // DJB: added "accumulate" for <Function>
 
-    private ArrayList accumalationOfExpressions =
-            new ArrayList(); // DJB: keep a list of the expressions used in a <Function>
+    private List<Expression> expressions =
+            new ArrayList<>(); // DJB: keep a list of the expressions used in a <Function>
 
     /** The type of expression being constructed. */
     private String declaredType = null;
@@ -125,7 +126,7 @@ public class ExpressionSAXParser {
                 String name = getFunctionName(atts);
                 Function function = functionFinder.findFunction(name);
                 if (function != null && function instanceof FunctionExpression) {
-                    curExprssn = (FunctionExpression) function;
+                    curExprssn = function;
                 } else {
                     throw new IllegalFilterException(
                             name + " not availabel as FunctionExpressio:" + function);
@@ -207,18 +208,18 @@ public class ExpressionSAXParser {
                     expFactory = null;
                     LOGGER.finer("just added right value: " + currentState);
                 } else if (currentState.equals("accumulate")) {
-                    accumalationOfExpressions.add(expFactory.create());
+                    expressions.add(expFactory.create());
                     expFactory = null;
                     // currentState = "accumulate";  //leave unchanged
                     LOGGER.finer("just added a parameter for a function: " + currentState);
 
                     if (((FunctionExpression) curExprssn).getFunctionName().getArgumentCount()
-                            == accumalationOfExpressions.size()) {
+                            == expressions.size()) {
                         // hay, we've parsed all the arguments!
                         currentState = "complete";
 
                         // accumalationOfExpressions
-                        ((FunctionExpression) curExprssn).setParameters(accumalationOfExpressions);
+                        ((FunctionExpression) curExprssn).setParameters(expressions);
                     } else {
                         expFactory =
                                 new ExpressionSAXParser(schema); // we're gonna get more expressions

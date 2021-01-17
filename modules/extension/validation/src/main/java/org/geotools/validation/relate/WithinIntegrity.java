@@ -47,12 +47,13 @@ public class WithinIntegrity extends RelationIntegrity {
     /* (non-Javadoc)
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map, org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
         LOGGER.finer("Starting test " + getName() + " (" + getClass().getName() + ")");
         String typeRef1 = getGeomTypeRefA();
         LOGGER.finer(typeRef1 + ": looking up SimpleFeatureSource ");
-        SimpleFeatureSource geomSource1 = (SimpleFeatureSource) layers.get(typeRef1);
+        SimpleFeatureSource geomSource1 = layers.get(typeRef1);
         LOGGER.finer(typeRef1 + ": found " + geomSource1.getSchema().getTypeName());
 
         String typeRef2 = getGeomTypeRefB();
@@ -60,7 +61,7 @@ public class WithinIntegrity extends RelationIntegrity {
             return validateSingleLayer(geomSource1, isExpected(), results, envelope);
         else {
             LOGGER.finer(typeRef2 + ": looking up SimpleFeatureSource ");
-            SimpleFeatureSource geomSource2 = (SimpleFeatureSource) layers.get(typeRef2);
+            SimpleFeatureSource geomSource2 = layers.get(typeRef2);
             LOGGER.finer(typeRef2 + ": found " + geomSource2.getSchema().getTypeName());
             return validateMultipleLayers(
                     geomSource1, geomSource2, isExpected(), results, envelope);
@@ -106,10 +107,8 @@ public class WithinIntegrity extends RelationIntegrity {
         SimpleFeatureCollection collectionA = featureSourceA.getFeatures(filter);
         SimpleFeatureCollection collectionB = featureSourceB.getFeatures(filter);
 
-        SimpleFeatureIterator fr1 = null;
         SimpleFeatureIterator fr2 = null;
-        try {
-            fr1 = collectionA.features();
+        try (SimpleFeatureIterator fr1 = collectionA.features()) {
 
             if (fr1 == null) return false;
 
@@ -140,8 +139,6 @@ public class WithinIntegrity extends RelationIntegrity {
                     if (fr2 != null) fr2.close();
                 }
             }
-        } finally {
-            if (fr1 != null) fr1.close();
         }
 
         return success;
@@ -183,10 +180,8 @@ public class WithinIntegrity extends RelationIntegrity {
 
         SimpleFeatureCollection collection = featureSourceA.getFeatures(filter);
 
-        SimpleFeatureIterator fr1 = null;
         SimpleFeatureIterator fr2 = null;
-        try {
-            fr1 = collection.features();
+        try (SimpleFeatureIterator fr1 = collection.features()) {
 
             if (fr1 == null) return false;
 
@@ -221,8 +216,6 @@ public class WithinIntegrity extends RelationIntegrity {
                     if (fr2 != null) fr2.close();
                 }
             }
-        } finally {
-            if (fr1 != null) fr1.close();
         }
 
         return success;

@@ -16,7 +16,9 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.io.File;
@@ -153,7 +155,7 @@ public class RenderingBufferExtractorTest {
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(r);
         assertEquals(12, rbe.getBuffer());
-        assertTrue(!rbe.isEstimateAccurate());
+        assertFalse(rbe.isEstimateAccurate());
     }
 
     @Test

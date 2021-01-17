@@ -37,7 +37,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(StyleImpl.class);
 
-    private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
+    private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
     private DescriptionImpl description = new DescriptionImpl();
     private String name = "Default Styler";
     private boolean defaultB = false;
@@ -55,11 +55,11 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     public FeatureTypeStyle[] getFeatureTypeStyles() {
         FeatureTypeStyle[] ret = new FeatureTypeStyleImpl[] {new FeatureTypeStyleImpl()};
 
-        if ((featureTypeStyles != null) && (featureTypeStyles.size() != 0)) {
+        if ((featureTypeStyles != null) && (!featureTypeStyles.isEmpty())) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("number of fts set " + featureTypeStyles.size());
 
-            ret = (FeatureTypeStyle[]) featureTypeStyles.toArray(new FeatureTypeStyle[] {});
+            ret = featureTypeStyles.toArray(new FeatureTypeStyle[] {});
         }
 
         return ret;

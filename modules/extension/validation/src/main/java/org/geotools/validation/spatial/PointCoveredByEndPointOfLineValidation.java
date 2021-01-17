@@ -56,11 +56,11 @@ public class PointCoveredByEndPointOfLineValidation extends PointLineAbstractVal
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource lineSource =
-                (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
-        SimpleFeatureSource pointSource = (SimpleFeatureSource) layers.get(getPointTypeRef());
+        SimpleFeatureSource lineSource = layers.get(getRestrictedLineTypeRef());
+        SimpleFeatureSource pointSource = layers.get(getPointTypeRef());
 
         Object[] points = pointSource.getFeatures().toArray();
         Object[] lines = lineSource.getFeatures().toArray();
@@ -81,8 +81,8 @@ public class PointCoveredByEndPointOfLineValidation extends PointLineAbstractVal
             return false;
         }
 
-        for (int i = 0; i < lines.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) lines[i];
+        for (Object line : lines) {
+            SimpleFeature tmp = (SimpleFeature) line;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
             if (gt instanceof LineString) {
@@ -90,8 +90,8 @@ public class PointCoveredByEndPointOfLineValidation extends PointLineAbstractVal
                 Point str = ls.getStartPoint();
                 Point end = ls.getEndPoint();
 
-                for (int j = 0; j < points.length; j++) {
-                    SimpleFeature tmp2 = (SimpleFeature) points[j];
+                for (Object point : points) {
+                    SimpleFeature tmp2 = (SimpleFeature) point;
                     Geometry gt2 = (Geometry) tmp2.getDefaultGeometry();
 
                     if (gt2 instanceof Point) {

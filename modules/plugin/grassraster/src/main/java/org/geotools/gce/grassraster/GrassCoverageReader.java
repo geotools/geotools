@@ -564,7 +564,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
             colorRulesSplit = colorRulesString.split(GrassBinaryImageMetadata.RULESSPLIT);
         } else {
             List<String> defColorTable = JGrassColorTable.createDefaultColorTable(range, 255);
-            colorRulesSplit = (String[]) defColorTable.toArray(new String[defColorTable.size()]);
+            colorRulesSplit = defColorTable.toArray(new String[defColorTable.size()]);
             // make it also persistent
             File colrFile = jgMapEnvironment.getCOLR();
             JGrassUtilities.makeColorRulesPersistent(colrFile, defColorTable, range, 255);
@@ -580,7 +580,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
                 COLORNUM = 65500;
             }
 
-            List<Category> catsList = new ArrayList<Category>();
+            List<Category> catsList = new ArrayList<>();
 
             double[][] values = new double[rulesNum][2];
             Color[][] colors = new Color[rulesNum][2];
@@ -638,7 +638,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
                 catsList.add(dataCategory);
             }
 
-            Category[] array = (Category[]) catsList.toArray(new Category[catsList.size()]);
+            Category[] array = catsList.toArray(new Category[catsList.size()]);
             return new GridSampleDimension(name, array, scale, offSet);
         } else {
             return new GridSampleDimension(name, new Category[] {}, null);
@@ -771,8 +771,8 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
         Rectangle dim = null;
         // OverviewPolicy overviewPolicy = null;
         if (params != null) {
-            for (int i = 0; i < params.length; i++) {
-                final ParameterValue<?> param = (ParameterValue<?>) params[i];
+            for (GeneralParameterValue generalParameterValue : params) {
+                final ParameterValue<?> param = (ParameterValue<?>) generalParameterValue;
                 final String name = param.getDescriptor().getName().getCode();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
@@ -802,7 +802,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
             return readRaster(region);
         }
 
-        return readRaster((JGrassRegion) null);
+        return readRaster(null);
     }
 
     public Format getFormat() {

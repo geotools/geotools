@@ -17,7 +17,19 @@
  */
 package org.geotools.ysld;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -166,7 +178,7 @@ public class Ysld {
      * @return The GeoTools SLD object.
      */
     public static StyledLayerDescriptor parse(Object ysld) throws IOException {
-        return parse(ysld, (List<ZoomContextFinder>) null, (ResourceLocator) null, new UomMapper());
+        return parse(ysld, null, null, new UomMapper());
     }
 
     /**
@@ -224,7 +236,7 @@ public class Ysld {
      */
     public static List<MarkedYAMLException> validate(Object ysld) throws IOException {
 
-        return validate(ysld, Collections.<ZoomContextFinder>emptyList(), new UomMapper());
+        return validate(ysld, Collections.emptyList(), new UomMapper());
     }
 
     /**

@@ -1,6 +1,9 @@
 package org.geotools.csw;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.StringReader;
 import java.util.Collection;
@@ -75,7 +78,7 @@ public class CSWCapabilitiesTest {
                 "terraCatalog 2.1 - Web based Catalogue Service \n"
                         + "        (CS-W 2.0.0/AP ISO19115/19 0.9.3 (DE-Profil 1.0.1)) for service, datasets and applications",
                 si.getAbstract());
-        KeywordsType keywords = (KeywordsType) si.getKeywords().get(0);
+        KeywordsType keywords = si.getKeywords().get(0);
         assertEquals("CS-W", keywords.getKeyword().get(0));
         assertEquals("ISO19119", keywords.getKeyword().get(1));
         assertEquals("http://www.conterra.de", keywords.getType().getCodeSpace());
@@ -98,18 +101,18 @@ public class CSWCapabilitiesTest {
 
         OperationsMetadataType opm = caps.getOperationsMetadata();
         assertEquals(6, opm.getOperation().size());
-        OperationType gr = (OperationType) opm.getOperation().get(0);
+        OperationType gr = opm.getOperation().get(0);
         assertEquals("GetRecords", gr.getName());
-        DCPType dcp = (DCPType) gr.getDCP().get(0);
-        RequestMethodType rm = (RequestMethodType) dcp.getHTTP().getPost().get(0);
+        DCPType dcp = gr.getDCP().get(0);
+        RequestMethodType rm = dcp.getHTTP().getPost().get(0);
         assertEquals("http://tc22-test:9090/soapService/services/CSWDiscovery", rm.getHref());
         assertEquals(6, gr.getParameter().size());
-        DomainType param = (DomainType) gr.getParameter().get(0);
+        DomainType param = gr.getParameter().get(0);
         assertEquals("TypeName", param.getName());
         assertEquals("gmd:MD_Metadata", param.getValue().get(0));
         assertEquals("csw:Record", param.getValue().get(1));
         assertEquals(2, gr.getConstraint().size());
-        DomainType ct = (DomainType) gr.getConstraint().get(0);
+        DomainType ct = gr.getConstraint().get(0);
         assertEquals("SupportedISOQueryables", ct.getName());
         assertEquals(25, ct.getValue().size());
         assertEquals("RevisionDate", ct.getValue().get(0));
@@ -211,7 +214,7 @@ public class CSWCapabilitiesTest {
         // System.out.println(encoded);
 
         // prepare xmlunit
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("csw", CSW.NAMESPACE);
         namespaces.put("ows", OWS.NAMESPACE);
         namespaces.put("rim", rimNamespace);

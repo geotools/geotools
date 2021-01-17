@@ -136,8 +136,7 @@ public class ContentState {
     protected BatchFeatureEvent batchFeatureEvent;
 
     /** observers */
-    protected List<FeatureListener> listeners =
-            Collections.synchronizedList(new ArrayList<FeatureListener>());
+    protected List<FeatureListener> listeners = Collections.synchronizedList(new ArrayList<>());
 
     // TRANSACTION SUPPORT
     /**
@@ -307,7 +306,7 @@ public class ContentState {
     /** Helper method or building fid filters. */
     Filter idFilter(Feature feature) {
         FilterFactory ff = this.entry.dataStore.getFilterFactory();
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(feature.getIdentifier());
         return ff.id(fids);
     }

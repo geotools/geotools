@@ -22,7 +22,6 @@ import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.Filter;
 
 public class FakeTypes {
     // *** Taken from XSSchema ***
@@ -32,7 +31,7 @@ public class FakeTypes {
                     /* binding: */ java.lang.Object.class,
                     /* identified: */ false,
                     /* abstract: */ false,
-                    /* restrictions: */ Collections.<Filter>emptyList(),
+                    /* restrictions: */ Collections.emptyList(),
                     /* superType: */ null,
                     /* description: */ null);
 
@@ -42,7 +41,7 @@ public class FakeTypes {
                     /* binding: */ java.lang.Object.class,
                     /* identified: */ false,
                     /* abstract: */ false,
-                    /* restrictions: */ Collections.<Filter>emptyList(),
+                    /* restrictions: */ Collections.emptyList(),
                     /* superType: */ ANYTYPE_TYPE,
                     /* description: */ null);
 
@@ -52,7 +51,7 @@ public class FakeTypes {
                     /* binding: */ String.class,
                     /* identified: */ false,
                     /* abstract: */ false,
-                    /* restrictions: */ Collections.<Filter>emptyList(),
+                    /* restrictions: */ Collections.emptyList(),
                     /* superType: */ ANYSIMPLETYPE_TYPE,
                     /* description: */ null);
 
@@ -62,7 +61,7 @@ public class FakeTypes {
                     /* binding: */ Boolean.class,
                     /* identified: */ false,
                     /* abstract: */ false,
-                    /* restrictions: */ Collections.<Filter>emptyList(),
+                    /* restrictions: */ Collections.emptyList(),
                     /* superType: */ ANYSIMPLETYPE_TYPE,
                     /* description: */ null);
 
@@ -79,7 +78,7 @@ public class FakeTypes {
                         org.locationtech.jts.geom.Geometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         FakeTypes.ANYTYPE_TYPE,
                         null);
 
@@ -96,7 +95,7 @@ public class FakeTypes {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         FakeTypes.ANYSIMPLETYPE_TYPE,
                         null);
 
@@ -159,7 +158,7 @@ public class FakeTypes {
                         /* properties: */ MINENAMETYPE_SCHEMA,
                         /* identified: */ false,
                         /* isAbstract: */ false,
-                        /* restrictions: */ Collections.<Filter>emptyList(),
+                        /* restrictions: */ Collections.emptyList(),
                         /* superType: */ ANYTYPE_TYPE,
                         /* description: */ null);
 
@@ -187,7 +186,7 @@ public class FakeTypes {
                         /* properties: */ MINENAMEPROPERTYTYPE_SCHEMA,
                         /* identified: */ false,
                         /* isAbstract: */ false,
-                        /* restrictions: */ Collections.<Filter>emptyList(),
+                        /* restrictions: */ Collections.emptyList(),
                         /* superType: */ ANYTYPE_TYPE,
                         /* description: */ null);
 
@@ -218,7 +217,7 @@ public class FakeTypes {
                         // here.
                         /* defaultGeometry: */ null,
                         /* isAbstract: */ false,
-                        /* restrictions: */ Collections.<Filter>emptyList(),
+                        /* restrictions: */ Collections.emptyList(),
                         /* superType: */ ANYTYPE_TYPE, // In real life it's actually a
                         // MiningFeatureType but I don't think it
                         // matters.

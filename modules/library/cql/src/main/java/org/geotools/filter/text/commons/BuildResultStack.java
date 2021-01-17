@@ -45,7 +45,7 @@ import org.opengis.temporal.Position;
 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_EXCEPTION")
 public final class BuildResultStack {
 
-    private final Stack<Result> stack = new Stack<Result>();
+    private final Stack<Result> stack = new Stack<>();
 
     private final String cqlSource;
 
@@ -201,7 +201,7 @@ public final class BuildResultStack {
 
     public String popIdentifier() throws CQLException {
         try {
-            Result result = (Result) stack.pop();
+            Result result = stack.pop();
             String identifier = (String) result.getBuilt();
 
             return identifier;
@@ -212,7 +212,7 @@ public final class BuildResultStack {
 
     public Geometry popGeometry() throws CQLException {
         try {
-            Result result = (Result) stack.pop();
+            Result result = stack.pop();
             Geometry g = (Geometry) result.getBuilt();
 
             return g;

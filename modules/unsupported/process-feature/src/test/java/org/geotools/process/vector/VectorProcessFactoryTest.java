@@ -37,7 +37,9 @@ public class VectorProcessFactoryTest {
                     @Override
                     public <T> Iterator<T> iterator(Class<T> category) {
                         if (category == VectorProcess.class) {
-                            return (Iterator<T>) Arrays.asList(new CustomProcess()).iterator();
+                            @SuppressWarnings("unchecked")
+                            T t = (T) new CustomProcess();
+                            return Arrays.asList(t).iterator();
                         }
                         return null;
                     }

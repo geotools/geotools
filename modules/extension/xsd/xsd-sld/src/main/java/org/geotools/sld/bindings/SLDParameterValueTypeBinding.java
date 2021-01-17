@@ -17,7 +17,6 @@
 package org.geotools.sld.bindings;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.xsd.AbstractComplexBinding;
@@ -107,10 +106,8 @@ public class SLDParameterValueTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        List<Expression> expressions = new ArrayList();
-        for (Iterator itr = node.getChildren().iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        List<Expression> expressions = new ArrayList<>();
+        for (Node child : node.getChildren()) {
             if (child.getValue() instanceof Expression) {
                 expressions.add((Expression) child.getValue());
             } else if (child.getValue() instanceof Text) {
@@ -121,7 +118,7 @@ public class SLDParameterValueTypeBinding extends AbstractComplexBinding {
         if (expressions.isEmpty()) {
             return null;
         }
-        if (expressions.size() == 1) return (Expression) expressions.get(0);
+        if (expressions.size() == 1) return expressions.get(0);
 
         Expression e = expressions.get(0);
         for (int i = 1; i < expressions.size(); i++) {

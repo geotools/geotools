@@ -16,13 +16,15 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertSame;
 
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.junit.*;
+import org.junit.Test;
 import si.uom.SI;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * Tests the {@link MeasurementRange}.
@@ -58,9 +60,9 @@ public final class MeasurementRangeTest {
     public void testIntegerIntersect() {
         NumberRange<Integer> r1 = NumberRange.create(10, 20);
         NumberRange<Integer> r2 = NumberRange.create(15, 30);
-        assertTrue(r1.equals(r1));
-        assertTrue(r2.equals(r2));
-        assertFalse(r1.equals(r2));
+        assertEquals(r1, r1);
+        assertEquals(r2, r2);
+        assertNotEquals(r1, r2);
         assertEquals(Integer.class, r1.getElementClass());
         assertEquals(Integer.class, r2.getElementClass());
         assertEquals(NumberRange.create(10, 30), r1.union(r2));

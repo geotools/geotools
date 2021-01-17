@@ -532,6 +532,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
         }
 
         /** Returns {@code null} to indicate that no source information is available. */
+        @SuppressWarnings("PMD.ReplaceVectorWithList")
         public Vector<RenderableImage> getSources() {
             return null;
         }

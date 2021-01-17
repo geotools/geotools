@@ -16,12 +16,17 @@
  */
 package org.geotools.metadata.math;
 
-import static org.geotools.metadata.math.XMath.*;
-import static org.junit.Assert.*;
+import static org.geotools.metadata.math.XMath.countDecimalFractionDigits;
+import static org.geotools.metadata.math.XMath.divisors;
+import static org.geotools.metadata.math.XMath.pow10;
+import static org.geotools.metadata.math.XMath.primeNumber;
+import static org.geotools.metadata.math.XMath.trimDecimalFractionDigits;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import org.geotools.util.XArray;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link org.geotools.metadata.math.XMath} static methods.
@@ -80,8 +85,8 @@ public final class XMathTest {
         for (int i = 0; i < 10000; i++) {
             final int[] divisors = divisors(i);
             assertTrue(XArray.isStrictlySorted(divisors));
-            for (int j = 0; j < divisors.length; j++) {
-                assertEquals(0, i % divisors[j]);
+            for (int divisor : divisors) {
+                assertEquals(0, i % divisor);
             }
             if (i == 0) {
                 assertEquals(0, divisors.length);
@@ -90,21 +95,19 @@ public final class XMathTest {
                 assertEquals(i, divisors[divisors.length - 1]);
             }
         }
-        assertTrue(
-                Arrays.equals(
-                        divisors(2000),
-                        new int[] {
-                            1, 2, 4, 5, 8, 10, 16, 20, 25, 40, 50, 80, 100, 125, 200, 250, 400, 500,
-                            1000, 2000
-                        }));
-        assertTrue(Arrays.equals(divisors(4331), new int[] {1, 61, 71, 4331}));
-        assertTrue(
-                Arrays.equals(
-                        divisors(7800),
-                        new int[] {
-                            1, 2, 3, 4, 5, 6, 8, 10, 12, 13, 15, 20, 24, 25, 26, 30, 39, 40, 50, 52,
-                            60, 65, 75, 78, 100, 104, 120, 130, 150, 156, 195, 200, 260, 300, 312,
-                            325, 390, 520, 600, 650, 780, 975, 1300, 1560, 1950, 2600, 3900, 7800
-                        }));
+        assertArrayEquals(
+                divisors(2000),
+                new int[] {
+                    1, 2, 4, 5, 8, 10, 16, 20, 25, 40, 50, 80, 100, 125, 200, 250, 400, 500, 1000,
+                    2000
+                });
+        assertArrayEquals(divisors(4331), new int[] {1, 61, 71, 4331});
+        assertArrayEquals(
+                divisors(7800),
+                new int[] {
+                    1, 2, 3, 4, 5, 6, 8, 10, 12, 13, 15, 20, 24, 25, 26, 30, 39, 40, 50, 52, 60, 65,
+                    75, 78, 100, 104, 120, 130, 150, 156, 195, 200, 260, 300, 312, 325, 390, 520,
+                    600, 650, 780, 975, 1300, 1560, 1950, 2600, 3900, 7800
+                });
     }
 }

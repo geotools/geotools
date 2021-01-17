@@ -16,16 +16,20 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.geom.AffineTransform;
-import java.util.Arrays;
 import org.geotools.referencing.operation.TransformTestBase;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -109,9 +113,8 @@ public final class PassthroughTransformTest extends TransformTestBase {
         for (int i = 0; i < expectedDimensions.length; i++) {
             expectedDimensions[i] = subLower + i;
         }
-        assertTrue(
-                "Unexpected output dimensions",
-                Arrays.equals(expectedDimensions, filter.getTargetDimensions()));
+        assertArrayEquals(
+                "Unexpected output dimensions", expectedDimensions, filter.getTargetDimensions());
     }
 
     /**
@@ -138,7 +141,7 @@ public final class PassthroughTransformTest extends TransformTestBase {
             }
         }
         if (atDimension == mtDimension) {
-            assertTrue("Test arrays are not correctly build.", Arrays.equals(atData, mtData));
+            assertArrayEquals("Test arrays are not correctly build.", atData, mtData, 0.0);
         }
         final double[] reference = mtData.clone();
         submt.transform(atData, 0, atData, 0, pointCount);

@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
+import javax.measure.quantity.Length;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.wmts.model.TileMatrix;
 import org.geotools.ows.wmts.model.TileMatrixLimits;
@@ -233,7 +234,8 @@ public class WMTSTileFactory extends TileFactory {
     /** */
     private static double getPixelSpan(TileMatrix tileMatrix) {
         CoordinateSystem coordinateSystem = tileMatrix.getCrs().getCoordinateSystem();
-        Unit unit = coordinateSystem.getAxis(0).getUnit();
+        @SuppressWarnings("unchecked")
+        Unit<Length> unit = (Unit<Length>) coordinateSystem.getAxis(0).getUnit();
 
         // now divide by meters per unit!
         double pixelSpan = tileMatrix.getDenominator() * PixelSizeMeters;

@@ -54,8 +54,7 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
      * The authority factories by versions. Factories will be created by {@link
      * #createVersionedFactory} when first needed.
      */
-    private final SortedMap<Version, AuthorityFactory> byVersions =
-            new TreeMap<Version, AuthorityFactory>();
+    private final SortedMap<Version, AuthorityFactory> byVersions = new TreeMap<>();
 
     /** The parser for the last code processed, or {@code null} if none. */
     private transient URI_Parser last;
@@ -67,7 +66,7 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
      *     Hints#FORCE_AXIS_ORDER_HONORING}.
      */
     public Abstract_URI_AuthorityFactory(String hintsAuthority) {
-        this((Hints) null, hintsAuthority);
+        this(null, hintsAuthority);
     }
 
     /**

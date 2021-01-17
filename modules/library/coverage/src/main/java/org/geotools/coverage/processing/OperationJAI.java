@@ -181,8 +181,8 @@ public class OperationJAI extends Operation2D {
         if (sourceClasses != null) {
             final int length = sourceClasses.length;
             assert length == operation.getNumSources();
-            for (int i = 0; i < length; i++) {
-                ensureRenderedImage(sourceClasses[i]);
+            for (Class sourceClass : sourceClasses) {
+                ensureRenderedImage(sourceClass);
             }
         }
         assert super.getNumSources() == operation.getNumSources();
@@ -268,7 +268,7 @@ public class OperationJAI extends Operation2D {
          * next block.
          */
         final String[] sourceNames = operation.getSourceNames();
-        final Collection<GridCoverage2D> sourceCollection = new ArrayList<GridCoverage2D>();
+        final Collection<GridCoverage2D> sourceCollection = new ArrayList<>();
         extractSources(parameters, sourceCollection, sourceNames);
         int numSources = sourceCollection.size();
         final GridCoverage2D[] sources = sourceCollection.toArray(new GridCoverage2D[numSources]);
@@ -728,11 +728,11 @@ public class OperationJAI extends Operation2D {
          * handle those cases.
          */
         int numBands = 1;
-        for (int i = 0; i < bandLists.length; i++) {
-            if (bandLists[i] == null) {
+        for (GridSampleDimension[] bandList : bandLists) {
+            if (bandList == null) {
                 continue;
             }
-            final int nb = bandLists[i].length;
+            final int nb = bandList.length;
             if (nb != 1) {
                 if (numBands != 1 && nb != numBands) {
                     return null;
@@ -772,7 +772,7 @@ public class OperationJAI extends Operation2D {
                     result[numBands] = sampleDim;
                     continue;
                 }
-                categoryArray = (Category[]) categories.toArray(new Category[categories.size()]);
+                categoryArray = categories.toArray(new Category[categories.size()]);
                 indexOfQuantitative = getQuantitative(categoryArray);
                 if (indexOfQuantitative < 0) {
                     return null;
@@ -825,14 +825,15 @@ public class OperationJAI extends Operation2D {
      *     unknown.
      */
     protected Category deriveCategory(final Category[] categories, final Parameters parameters) {
-        final NumberRange[] ranges = new NumberRange[categories.length];
+        @SuppressWarnings("unchecked")
+        final NumberRange<? extends Number>[] ranges = new NumberRange[categories.length];
         for (int i = 0; i < ranges.length; i++) {
             if (categories[i] == null) {
                 continue;
             }
             ranges[i] = categories[i].getRange();
         }
-        final NumberRange range = deriveRange(ranges, parameters);
+        final NumberRange<? extends Number> range = deriveRange(ranges, parameters);
         if (range != null) {
             final Category category = categories[PRIMARY_SOURCE_INDEX];
             return new Category(category.getName(), category.getColors(), range, true);
@@ -863,7 +864,8 @@ public class OperationJAI extends Operation2D {
      * @param parameters Parameters, rendering hints and coordinate reference system to use.
      * @return The range of values to use in the destination image, or {@code null} if unknow.
      */
-    protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
+    protected NumberRange<? extends Number> deriveRange(
+            final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         return null;
     }
 
@@ -1167,7 +1169,7 @@ public class OperationJAI extends Operation2D {
 
         // Getting NoData propery
         NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
-        Range innerNodata = (Range) ((nodataProp != null) ? nodataProp.getAsRange() : null);
+        Range innerNodata = (nodataProp != null) ? nodataProp.getAsRange() : null;
         // Setting the NoData Range parameter if not present
         if (JAIExt.isJAIExtOperation(operationName) && noDataIndex >= 0) {
             Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);

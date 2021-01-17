@@ -19,38 +19,41 @@ package org.geotools.renderer.style;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Makes sure the symbol factory lookup works as advertised
  *
  * @author Andrea Aime - TOPP
  */
-public class DynamicSymbolFactoryFinderTest extends TestCase {
+public class DynamicSymbolFactoryFinderTest {
 
+    @Test
     public void testLookupMarkFactories() {
         List<MarkFactory> result = loadIterator(DynamicSymbolFactoryFinder.getMarkFactories());
-        assertTrue(result.size() >= 2);
+        Assert.assertTrue(result.size() >= 2);
         assertContainsClassInstance(result, WellKnownMarkFactory.class);
         assertContainsClassInstance(result, TTFMarkFactory.class);
     }
 
+    @Test
     public void testLookupExternalGraphicFactories() {
         List<ExternalGraphicFactory> result =
                 loadIterator(DynamicSymbolFactoryFinder.getExternalGraphicFactories());
-        assertTrue(result.size() >= 1);
+        Assert.assertTrue(result.size() >= 1);
         assertContainsClassInstance(result, ImageGraphicFactory.class);
     }
 
-    public void assertContainsClassInstance(List list, Class clazz) {
+    public void assertContainsClassInstance(List list, Class<?> clazz) {
         for (Object item : list) {
             if (item != null && clazz.isAssignableFrom(item.getClass())) return;
         }
-        fail("List does not contain any element of class " + clazz.getName());
+        Assert.fail("List does not contain any element of class " + clazz.getName());
     }
 
     public <T> List<T> loadIterator(Iterator<T> iterator) {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
         while (iterator.hasNext()) result.add(iterator.next());
         return result;
     }

@@ -101,8 +101,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      * @return <tt>true</tt> if this collection contains the specified element.
      */
     public boolean contains(Object o) {
-        FeatureIterator<F> e = features();
-        try {
+        try (FeatureIterator<F> e = features()) {
             if (o == null) {
                 while (e.hasNext()) {
                     if (e.next() == null) {
@@ -117,8 +116,6 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
                 }
             }
             return false;
-        } finally {
-            e.close();
         }
     }
 
@@ -135,8 +132,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      * @see #contains(Object)
      */
     public boolean containsAll(Collection<?> c) {
-        FeatureIterator<F> e = features();
-        try {
+        try (FeatureIterator<F> e = features()) {
             while (e.hasNext()) {
                 Feature feature = e.next();
                 if (!c.contains(feature)) {
@@ -144,18 +140,13 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
                 }
             }
             return true;
-        } finally {
-            e.close();
         }
     }
 
     /** @return <tt>true</tt> if this collection contains no elements. */
     public boolean isEmpty() {
-        FeatureIterator<F> iterator = features();
-        try {
+        try (FeatureIterator<F> iterator = features()) {
             return !iterator.hasNext();
-        } finally {
-            iterator.close();
         }
     }
 
@@ -166,15 +157,9 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      */
     public Object[] toArray() {
         Object[] result = new Object[size()];
-        FeatureIterator<F> e = null;
-        try {
-            e = features();
+        try (FeatureIterator<F> e = features()) {
             for (int i = 0; e.hasNext(); i++) result[i] = e.next();
             return result;
-        } finally {
-            if (e != null) {
-                e.close();
-            }
         }
     }
 
@@ -184,14 +169,11 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
         if (a.length < size) {
             a = (O[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
         }
-        FeatureIterator<F> it = features();
-        try {
+        try (FeatureIterator<F> it = features()) {
             Object[] result = a;
             for (int i = 0; i < size; i++) result[i] = it.next();
             if (a.length > size) a[size] = null;
             return a;
-        } finally {
-            it.close();
         }
     }
 
@@ -213,7 +195,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
         if (filter == Filter.INCLUDE) {
             return this;
         }
-        return new FilteringFeatureCollection<T, F>(this, filter);
+        return new FilteringFeatureCollection<>(this, filter);
     }
     /**
      * Obtained sorted contents, only implemented for SimpleFeature at present.
@@ -249,15 +231,12 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      */
     public int size() {
         int count = 0;
-        FeatureIterator<F> it = features();
-        try {
+        try (FeatureIterator<F> it = features()) {
             while (it.hasNext()) {
                 @SuppressWarnings("unused")
                 Feature feature = it.next();
                 count++;
             }
-        } finally {
-            it.close();
         }
         return count;
     }
@@ -268,8 +247,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      */
     public ReferencedEnvelope getBounds() {
         ReferencedEnvelope bounds = null;
-        FeatureIterator<F> it = features();
-        try {
+        try (FeatureIterator<F> it = features()) {
             while (it.hasNext()) {
                 Feature feature = it.next();
                 BoundingBox bbox = feature.getBounds();
@@ -281,8 +259,6 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
                     }
                 }
             }
-        } finally {
-            it.close();
         }
         return bounds;
     }

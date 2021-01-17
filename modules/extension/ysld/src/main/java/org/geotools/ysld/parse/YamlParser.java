@@ -43,7 +43,7 @@ public class YamlParser {
     }
 
     public <T extends YamlParseHandler> T parse(T root) throws IOException {
-        return parse(root, Collections.<String, Object>emptyMap());
+        return parse(root, Collections.emptyMap());
     }
 
     /**

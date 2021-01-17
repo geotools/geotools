@@ -27,7 +27,7 @@ import org.geotools.gml3.GML3CurveParsingTest;
 public class GML32CurveParsingTest extends GML3CurveParsingTest {
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         GMLConfiguration configuration = new GMLConfiguration(true);
         configuration.setGeometryFactory(new CurvedGeometryFactory(TOLERANCE));
         this.gml = configuration;

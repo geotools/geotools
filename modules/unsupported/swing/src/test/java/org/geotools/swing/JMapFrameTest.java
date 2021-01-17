@@ -17,7 +17,9 @@
 
 package org.geotools.swing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.AWTEvent;
 import java.awt.Frame;
@@ -66,7 +68,7 @@ public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDr
     private static final ReferencedEnvelope SMALL_WORLD =
             new ReferencedEnvelope(25, 75, 25, 75, DefaultEngineeringCRS.GENERIC_2D);
 
-    private WindowActivatedListener listener;
+    private WindowActivatedListener<FrameFixture, Frame, FrameDriver> listener;
     private MapContent mapContent;
 
     @Before
@@ -75,7 +77,7 @@ public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDr
         mapContent = new MockMapContent();
         mapContent.addLayer(layer);
 
-        listener = new WindowActivatedListener(JMapFrame.class);
+        listener = new WindowActivatedListener<>(JMapFrame.class);
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
     }
 

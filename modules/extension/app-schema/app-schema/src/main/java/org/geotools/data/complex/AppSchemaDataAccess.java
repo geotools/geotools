@@ -85,7 +85,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccess.class);
 
-    private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<Name, FeatureTypeMapping>();
+    private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<>();
 
     private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -185,7 +185,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * <p>Note this method is public just for unit testing purposes
      */
     public FeatureTypeMapping getMappingByName(Name typeName) throws IOException {
-        FeatureTypeMapping mapping = (FeatureTypeMapping) this.mappings.get(typeName);
+        FeatureTypeMapping mapping = this.mappings.get(typeName);
         if (mapping == null) {
             throw new DataSourceException(
                     typeName + " not found. Available: " + mappings.keySet().toString());
@@ -200,7 +200,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * <p>Note this method is public just for unit testing purposes
      */
     public FeatureTypeMapping getMappingByNameOrElement(Name typeName) throws IOException {
-        FeatureTypeMapping mapping = (FeatureTypeMapping) this.mappings.get(typeName);
+        FeatureTypeMapping mapping = this.mappings.get(typeName);
         if (mapping != null) {
             return mapping;
         }
@@ -340,7 +340,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             newQuery.setMaxFeatures(query.getMaxFeatures());
             newQuery.setStartIndex(query.getStartIndex());
 
-            List<SortBy> sort = new ArrayList<SortBy>();
+            List<SortBy> sort = new ArrayList<>();
             if (query.getSortBy() != null) {
                 for (SortBy sortBy : query.getSortBy()) {
                     List<Expression> expressions =
@@ -456,9 +456,9 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             boolean includeMandatory) {
         List<PropertyName> propNames = new ArrayList<>();
         final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
-        if (requestedProperties != null && requestedProperties.size() > 0) {
-            requestedProperties = new ArrayList<PropertyName>(requestedProperties);
-            Set<PropertyName> requestedSurrogateProperties = new HashSet<PropertyName>();
+        if (requestedProperties != null && !requestedProperties.isEmpty()) {
+            requestedProperties = new ArrayList<>(requestedProperties);
+            Set<PropertyName> requestedSurrogateProperties = new HashSet<>();
             // extension point allowing stores to contribute properties
             for (CustomSourceDataStore extension : CustomSourceDataStore.loadExtensions()) {
                 // ask the extension for surrogate properties
@@ -633,7 +633,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @see org.geotools.data.DataAccess#getNames()
      */
     public List<Name> getNames() {
-        List<Name> names = new LinkedList<Name>();
+        List<Name> names = new LinkedList<>();
         names.addAll(mappings.keySet());
         return names;
     }
@@ -696,13 +696,10 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             Filter filter = filterFac.id(id);
             FeatureCollection<FeatureType, Feature> fCollection =
                     new MappingFeatureSource(this, mapping.getValue()).getFeatures(filter, hints);
-            FeatureIterator<Feature> iterator = fCollection.features();
-            try {
+            try (FeatureIterator<Feature> iterator = fCollection.features()) {
                 if (iterator.hasNext()) {
                     return iterator.next();
                 }
-            } finally {
-                iterator.close();
             }
         }
         return null;

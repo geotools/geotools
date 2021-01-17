@@ -32,13 +32,9 @@ import java.io.File;
 import java.io.InputStream;
 import org.geotools.s3.S3Connector;
 import org.junit.After;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class CacheManagementTest {
-
-    public @Rule ExpectedException ex = ExpectedException.none();
 
     public @After void after() {
         System.clearProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG);

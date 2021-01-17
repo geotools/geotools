@@ -19,12 +19,17 @@ package org.geotools.mbstyle.parse;
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.categories;
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.equalInt;
 import static org.geotools.mbstyle.parse.MBStyleTestUtils.evaluatesTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.EnumSet;
@@ -72,7 +77,7 @@ public class MBFunctionTest {
         MBFunction function =
                 new MBFunction(MapboxTestUtils.object("{'property':'color','type':'identity'}"));
         assertTrue("property", function.category().contains(MBFunction.FunctionCategory.PROPERTY));
-        assertTrue("identity", function.getType() == FunctionType.IDENTITY);
+        assertSame("identity", function.getType(), FunctionType.IDENTITY);
 
         Expression color = function.color();
         assertEquals("color", Color.RED, color.evaluate(feature1, Color.class));
@@ -256,9 +261,10 @@ public class MBFunctionTest {
                         "{'type':'exponential','stops':[[0,'blue'],[6,'red'],[12, 'lime']]}");
         MBFunction function = new MBFunction(json);
 
-        assertTrue(
+        assertEquals(
                 "Is a zoom function",
-                EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.ZOOM),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         Function fn = (Function) function.color();
         assertNotNull(fn);
@@ -312,9 +318,10 @@ public class MBFunctionTest {
                         "{'type':'exponential', 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}");
 
         MBFunction function = new MBFunction(json);
-        assertTrue(
+        assertEquals(
                 "Is a zoom function",
-                EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.ZOOM),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
 
         Function fn = (Function) function.color();
@@ -378,9 +385,10 @@ public class MBFunctionTest {
         MBFunction function = new MBFunction(json);
 
         // Assert it is an exponential function with the correct base
-        assertTrue(
+        assertEquals(
                 "Is a zoom function",
-                EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.ZOOM),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(1.9, function.getBase().doubleValue(), .00001);
 
@@ -441,9 +449,10 @@ public class MBFunctionTest {
         MBFunction function = new MBFunction(json);
 
         // Assert it is an exponential function with the correct base
-        assertTrue(
+        assertEquals(
                 "Is a zoom function",
-                EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.ZOOM),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(0.5, function.getBase().doubleValue(), .00001);
 
@@ -500,9 +509,10 @@ public class MBFunctionTest {
         MBFunction function = new MBFunction(json);
 
         // Assert it is an exponential function with the correct base
-        assertTrue(
+        assertEquals(
                 "Is a zoom function",
-                EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.ZOOM),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(1.0, function.getBase().doubleValue(), .00001);
 
@@ -543,9 +553,10 @@ public class MBFunctionTest {
         String jsonStr =
                 "{'property': 'numbervalue', 'type': 'interval', 'default': '#0F0F0F', 'stops': [[-1000, '#000000'], [-30, '#00FF00'], [0, '#0000FF'], [100, '#FFFFFF']]}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"interval\"",
                 MBFunction.FunctionType.INTERVAL,
@@ -599,9 +610,10 @@ public class MBFunctionTest {
         String jsonStr =
                 "{'property': 'numbervalue', 'type': 'interval', 'default': 1, 'stops': [[-1000, 'INTERVAL'], [-30, 'CATEGORICAL'], [0, 'EXPONENTIAL'], [100, 'IDENTITY']]}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"interval\"",
                 MBFunction.FunctionType.INTERVAL,
@@ -654,9 +666,10 @@ public class MBFunctionTest {
         String jsonStr =
                 "{'property': 'numbervalue', 'type': 'interval', 'default': 1, 'stops': [[-1000, 'foo'], [-30, 'bar'], [0, 'baz'], [100, 'quux']]}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"interval\"",
                 MBFunction.FunctionType.INTERVAL,
@@ -718,9 +731,10 @@ public class MBFunctionTest {
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
 
         // Assert it is an exponential function with the correct base
-        assertTrue(
+        assertEquals(
                 "Is a zoom function",
-                EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.ZOOM),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(1.9, function.getBase().doubleValue(), .00001);
 
@@ -737,9 +751,10 @@ public class MBFunctionTest {
         function = new MBFunction(MapboxTestUtils.object(jsonStr));
 
         // Assert it is an exponential function with the correct base
-        assertTrue(
+        assertEquals(
                 "Is a zoom function",
-                EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.ZOOM),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(0.1, function.getBase().doubleValue(), .00001);
 
@@ -756,9 +771,10 @@ public class MBFunctionTest {
         function = new MBFunction(MapboxTestUtils.object(jsonStr));
 
         // Assert it is an exponential function with the correct base
-        assertTrue(
+        assertEquals(
                 "Is a zoom function",
-                EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.ZOOM),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(1.0, function.getBase().doubleValue(), .00001);
 
@@ -789,9 +805,10 @@ public class MBFunctionTest {
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
 
         // Assert it is an exponential function with the correct base
-        assertTrue(
+        assertEquals(
                 "Is a property function",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(1.9, function.getBase().doubleValue(), .00001);
 
@@ -809,9 +826,10 @@ public class MBFunctionTest {
         function = new MBFunction(MapboxTestUtils.object(jsonStr));
 
         // Assert it is an exponential function with the correct base
-        assertTrue(
+        assertEquals(
                 "Is a property function",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(0.1, function.getBase().doubleValue(), .00001);
 
@@ -829,9 +847,10 @@ public class MBFunctionTest {
         function = new MBFunction(MapboxTestUtils.object(jsonStr));
 
         // Assert it is an exponential function with the correct base
-        assertTrue(
+        assertEquals(
                 "Is a property function",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(1.0, function.getBase().doubleValue(), .00001);
 
@@ -876,9 +895,10 @@ public class MBFunctionTest {
         // Verify the function was created correctly
         String jsonStr = "{'property':'temperature', 'type':'identity', 'default':-1}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"Identity\"",
                 MBFunction.FunctionType.IDENTITY,
@@ -909,9 +929,10 @@ public class MBFunctionTest {
         String jsonStr =
                 "{'property': 'roadtype', 'type': 'categorical', 'default': -1, 'stops': [['trail', 1], ['dirtroad', 2], ['road', 3], ['highway', 4]]}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"categorical\"",
                 MBFunction.FunctionType.CATEGORICAL,
@@ -966,9 +987,10 @@ public class MBFunctionTest {
     public void stringIdentityFunctionTest() throws Exception {
         String jsonStr = "{'property': 'textproperty','type': 'identity', 'default':'defaultText'}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"identity\"",
                 MBFunction.FunctionType.IDENTITY,
@@ -996,9 +1018,10 @@ public class MBFunctionTest {
     public void enumIdentityFunctionTest() throws Exception {
         String jsonStr = "{'property': 'linecap','type': 'identity', 'default':'round'}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"identity\"",
                 MBFunction.FunctionType.IDENTITY,
@@ -1025,9 +1048,10 @@ public class MBFunctionTest {
     public void booleanIdentityFunctionTest() throws Exception {
         String jsonStr = "{'property': 'propName','type': 'identity', 'default':'false'}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"identity\"",
                 MBFunction.FunctionType.IDENTITY,
@@ -1053,9 +1077,10 @@ public class MBFunctionTest {
         String jsonStr =
                 "{'property': 'roadtype', 'type': 'categorical', 'default': 'defaultStr', 'stops': [['trail', 'string1'], ['dirtroad', 'string2'], ['road', 'string3'], ['highway', 'string4']]}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"categorical\"",
                 MBFunction.FunctionType.CATEGORICAL,
@@ -1094,9 +1119,10 @@ public class MBFunctionTest {
         String jsonStr =
                 "{'property': 'temperature', 'default':'false', 'type': 'interval','stops': [[-1000, 'true'],[0, 'false'],[1000, 'true']]}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"interval\"",
                 MBFunction.FunctionType.INTERVAL,
@@ -1139,9 +1165,10 @@ public class MBFunctionTest {
         String jsonStr =
                 "{'property': 'roadtype', 'type': 'categorical', 'default': 'false', 'stops': [['trail', 'true'], ['dirtroad', 'false'], ['road', 'true']]}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
         assertEquals(
                 "Function type is \"categorical\"",
                 MBFunction.FunctionType.CATEGORICAL,
@@ -1180,9 +1207,10 @@ public class MBFunctionTest {
         String jsonStr =
                 "{'property': 'temperature',  'stops': [[0, 'string1'], [100, 'string2'], [200, 'string3'], [300, 'string4']]}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
 
         assertEquals(
                 "The default function type for String returns should be interval",
@@ -1199,9 +1227,10 @@ public class MBFunctionTest {
         String jsonStr =
                 "{'property': 'temperature',  'stops': [[0, 'true'], [100, 'false'], [200, 'true'], [300, 'false']]}";
         MBFunction function = new MBFunction(MapboxTestUtils.object(jsonStr));
-        assertTrue(
+        assertEquals(
                 "Function category is \"property\"",
-                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY),
+                function.category());
 
         assertEquals(
                 "The default function type for Boolean returns should be interval",

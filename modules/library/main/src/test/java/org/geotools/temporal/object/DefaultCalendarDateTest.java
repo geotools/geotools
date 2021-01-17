@@ -18,7 +18,9 @@ package org.geotools.temporal.object;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
@@ -58,7 +60,7 @@ public class DefaultCalendarDateTest {
     @Test
     public void testGetCalendarEraName() {
         InternationalString result = calendarDate1.getCalendarEraName();
-        assertTrue(calendarDate2.getCalendarEraName().equals(result));
+        assertEquals(calendarDate2.getCalendarEraName(), result);
     }
 
     /** Test of getCalendarDate method, of class DefaultCalendarDate. */
@@ -74,7 +76,7 @@ public class DefaultCalendarDateTest {
         InternationalString result = calendarDate1.getCalendarEraName();
         ((DefaultCalendarDate) calendarDate1)
                 .setCalendarEraName(new SimpleInternationalString("new Era"));
-        assertFalse(calendarDate1.getCalendarEraName().equals(result));
+        assertNotEquals(calendarDate1.getCalendarEraName(), result);
     }
 
     /** Test of setCalendarDate method, of class DefaultCalendarDate. */
@@ -89,7 +91,7 @@ public class DefaultCalendarDateTest {
     /** Test of equals method, of class DefaultCalendarDate. */
     @Test
     public void testEquals() {
-        assertFalse(calendarDate1.equals(null));
+        assertNotEquals(null, calendarDate1);
         assertEquals(calendarDate1, calendarDate1);
     }
 
@@ -97,13 +99,13 @@ public class DefaultCalendarDateTest {
     @Test
     public void testHashCode() {
         int result = calendarDate1.hashCode();
-        assertFalse(calendarDate2.hashCode() == result);
+        assertNotEquals(calendarDate2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultCalendarDate. */
     @Test
     public void testToString() {
         String result = calendarDate1.toString();
-        assertFalse(calendarDate2.toString().equals(result));
+        assertNotEquals(calendarDate2.toString(), result);
     }
 }

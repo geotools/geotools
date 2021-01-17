@@ -16,13 +16,15 @@
  */
 package org.geotools.wmts.v1;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -151,8 +153,8 @@ public class WMTSConfigurationTest {
             p.parse(is);
         }
         if (!p.getValidationErrors().isEmpty()) {
-            for (Iterator e = p.getValidationErrors().iterator(); e.hasNext(); ) {
-                SAXParseException ex = (SAXParseException) e.next();
+            for (Exception exception : p.getValidationErrors()) {
+                SAXParseException ex = (SAXParseException) exception;
                 LOGGER.log(
                         Level.SEVERE,
                         ex.getLineNumber() + "," + ex.getColumnNumber() + " -" + ex.toString());
@@ -183,8 +185,6 @@ public class WMTSConfigurationTest {
         encoder.getNamespaces().declarePrefix("wmts", WMTS.NAMESPACE);
         encoder.getNamespaces().declarePrefix("xlink", XLINK.NAMESPACE);
         Document doc = encoder.encodeAsDOM(caps, WMTS.Capabilities);
-
-        print(doc);
 
         // Now evaluate what was encoded
         Map<String, String> namespaces = new HashMap<>();

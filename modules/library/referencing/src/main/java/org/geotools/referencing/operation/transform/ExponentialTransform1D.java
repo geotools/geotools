@@ -33,7 +33,7 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform1D;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * A one dimensional exponentional transform. Input values <var>x</var> are converted into output
@@ -301,13 +301,13 @@ public class ExponentialTransform1D extends AbstractMathTransform
          * The operation parameter descriptor for the {@link #base base} parameter value. Valid
          * values range from 0 to infinity. The default value is 10.
          */
-        public static final ParameterDescriptor BASE = LogarithmicTransform1D.Provider.BASE;
+        public static final ParameterDescriptor<Double> BASE = LogarithmicTransform1D.Provider.BASE;
 
         /**
          * The operation parameter descriptor for the {@link #scale scale} parameter value. Valid
          * values range is unrestricted. The default value is 1.
          */
-        public static final ParameterDescriptor SCALE =
+        public static final ParameterDescriptor<Double> SCALE =
                 DefaultParameterDescriptor.create(
                         "scale",
                         1,

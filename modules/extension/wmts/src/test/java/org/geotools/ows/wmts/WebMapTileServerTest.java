@@ -16,8 +16,12 @@
  */
 package org.geotools.ows.wmts;
 
-import static junit.framework.TestCase.*;
 import static org.geotools.ows.wmts.WMTSTestUtils.createCapabilities;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 import org.geotools.geometry.GeneralEnvelope;
@@ -40,7 +44,7 @@ public class WebMapTileServerTest {
         WMTSCapabilities caps = createCapabilities("nasa.getcapa.xml");
         WebMapTileServer wmts = new WebMapTileServer(caps);
 
-        Layer layer = (Layer) caps.getLayer("AMSRE_Surface_Rain_Rate_Night");
+        Layer layer = caps.getLayer("AMSRE_Surface_Rain_Rate_Night");
         // urn:ogc:def:crs:OGC:1.3:CRS84
 
         // <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
@@ -68,7 +72,7 @@ public class WebMapTileServerTest {
         WMTSCapabilities caps = createCapabilities("admin_ch.getcapa.xml");
         WebMapTileServer wmts = new WebMapTileServer(caps);
 
-        Layer layer = (Layer) caps.getLayer("ch.are.alpenkonvention");
+        Layer layer = caps.getLayer("ch.are.alpenkonvention");
         // <ows:SupportedCRS>urn:ogc:def:crs:EPSG:2056</ows:SupportedCRS>
         // <ows:WGS84BoundingBox>
         // <ows:LowerCorner>5.140242 45.398181</ows:LowerCorner>
@@ -161,6 +165,32 @@ public class WebMapTileServerTest {
 
             assertEquals("EPSG:3857", recvdTileCRS);
         }
+    }
+
+    /**
+     * Check that servers that don't support KVP work
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testGEOT6741() throws Exception {
+        WebMapTileServer server = createServer("linz.xml");
+
+        GetTileRequest tileRequest = server.createGetTileRequest();
+        WMTSLayer layer = server.getCapabilities().getLayer("layer-50767");
+        tileRequest.setLayer(layer);
+        String url = tileRequest.getFinalURL().toString();
+        assertFalse(url.contains("REQUEST=GetTile"));
+    }
+
+    /** Add ability to parse "broken" URN from WMTS Spec urn:ogc:def:crs:EPSG:6.18:3:3857 */
+    @Test
+    public void testGEOT6742() throws Exception {
+        WebMapTileServer server = createServer("noaa-tileserver.xml");
+        GetTileRequest tileRequest = server.createGetTileRequest();
+        WMTSLayer layer = server.getCapabilities().getLayer("83637_2");
+        tileRequest.setLayer(layer);
+        String url = tileRequest.getFinalURL().toString();
     }
 
     private WebMapTileServer createServer(String resourceName) throws Exception {

@@ -69,11 +69,13 @@ public class OrphanNodeValidation extends DefaultIntegrityValidation {
      * @return <code>true</code> if all the features pass this test.
      */
     public boolean validate(
-            Map layers, ReferencedEnvelope envelope, final ValidationResults results)
+            Map<String, SimpleFeatureSource> layers,
+            ReferencedEnvelope envelope,
+            final ValidationResults results)
             throws Exception {
 
         LineStringGraphGenerator lgb = new LineStringGraphGenerator();
-        SimpleFeatureSource fs = (SimpleFeatureSource) layers.get(typeName);
+        SimpleFeatureSource fs = layers.get(typeName);
         SimpleFeatureCollection fr = fs.getFeatures();
         SimpleFeatureCollection fc = fr;
         try (SimpleFeatureIterator f = fc.features()) {

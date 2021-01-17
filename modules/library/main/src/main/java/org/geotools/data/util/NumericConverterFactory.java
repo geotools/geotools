@@ -19,6 +19,8 @@ package org.geotools.data.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
@@ -43,6 +45,9 @@ import org.geotools.util.factory.Hints;
  * @since 2.4
  */
 public class NumericConverterFactory implements ConverterFactory {
+
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(NumericConverterFactory.class);
 
     public Converter createConverter(Class source, Class target, Hints hints) {
         // convert to non-primitive class
@@ -80,31 +85,37 @@ public class NumericConverterFactory implements ConverterFactory {
     }
 
     class SafeNumericConverter implements Converter {
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
+            return (T) convertInternal(source, target);
+        }
+
+        public Object convertInternal(Object source, Class<?> target) {
             target = primitiveToWrapperClass(target);
             if (source instanceof Number) {
                 Number number = (Number) source;
                 Class c = number.getClass();
 
                 if (BigDecimal.class.equals(target)) {
-                    return (T) new BigDecimal(source.toString());
+                    return new BigDecimal(source.toString());
                 } else if (Double.class.equals(target)) {
                     if (c != BigDecimal.class && c != BigInteger.class) {
                         if (c == Float.class) {
                             // this is done to avoid coordinate drift
-                            return (T) Double.valueOf(number.toString());
+                            return Double.valueOf(number.toString());
                         }
 
-                        return (T) Double.valueOf(number.doubleValue());
-                        // return (T) Double.valueOf(source.toString());
+                        return Double.valueOf(number.doubleValue());
+                        // return Double.valueOf(source.toString());
                     }
                 } else if (Float.class.equals(target)) {
                     if (c == Float.class
                             || c == Integer.class
                             || c == Short.class
                             || c == Byte.class) {
-                        return (T) Float.valueOf(number.floatValue());
-                        // return (T) Float.valueOf(source.toString());
+                        return Float.valueOf(number.floatValue());
+                        // return Float.valueOf(source.toString());
                     }
                 } else if (BigInteger.class.equals(target)) {
                     if (BigInteger.class.isAssignableFrom(c)
@@ -112,61 +123,61 @@ public class NumericConverterFactory implements ConverterFactory {
                             || c == Integer.class
                             || c == Short.class
                             || c == Byte.class) {
-                        return (T) new BigInteger(number.toString());
-                        // return (T) new BigInteger(source.toString());
+                        return new BigInteger(number.toString());
+                        // return new BigInteger(source.toString());
                     }
                 } else if (Long.class.equals(target)) {
                     if (c == Long.class
                             || c == Integer.class
                             || c == Short.class
                             || c == Byte.class) {
-                        return (T) Long.valueOf(number.longValue());
-                        // return (T) Long.valueOf(source.toString());
+                        return Long.valueOf(number.longValue());
+                        // return Long.valueOf(source.toString());
                     }
                 } else if (Integer.class.equals(target)) {
                     if (c == Integer.class || c == Short.class || c == Byte.class) {
-                        return (T) Integer.valueOf(number.intValue());
-                        // return (T) Integer.valueOf(source.toString());
+                        return Integer.valueOf(number.intValue());
+                        // return Integer.valueOf(source.toString());
                     }
                 } else if (Short.class.equals(target)) {
                     if (c == Short.class || c == Byte.class) {
-                        return (T) Short.valueOf(number.shortValue());
-                        // return (T) Short.valueOf(source.toString());
+                        return Short.valueOf(number.shortValue());
+                        // return Short.valueOf(source.toString());
                     }
                 } else if (Byte.class.equals(target)) {
                     if (c == Byte.class) {
-                        return (T) Byte.valueOf(number.byteValue());
-                        // return (T) Byte.valueOf(source.toString());
+                        return Byte.valueOf(number.byteValue());
+                        // return Byte.valueOf(source.toString());
                     }
                 }
             } else if (source instanceof String) {
                 String src = (String) source;
                 try {
                     if (BigDecimal.class.isAssignableFrom(target)) {
-                        return (T) new BigDecimal(src);
+                        return new BigDecimal(src);
                         // if (x.toString().equals(src))
-                        //    return (T) x;
+                        //    return x;
                     } else if (target == Double.class) {
                         Double x = Double.valueOf(src);
-                        if (x.toString().equals(src)) return (T) x;
+                        if (x.toString().equals(src)) return x;
                     } else if (target == Float.class) {
                         Float x = Float.valueOf(src);
-                        if (x.toString().equals(src)) return (T) x;
+                        if (x.toString().equals(src)) return x;
                     } else if (BigInteger.class.isAssignableFrom(target)) {
                         BigInteger x = new BigInteger(src);
-                        if (x.toString().equals(src)) return (T) x;
+                        if (x.toString().equals(src)) return x;
                     } else if (target == Long.class) {
                         Long x = Long.valueOf(src);
-                        if (x.toString().equals(src)) return (T) x;
+                        if (x.toString().equals(src)) return x;
                     } else if (target == Integer.class) {
                         Integer x = Integer.valueOf(src);
-                        if (x.toString().equals(src)) return (T) x;
+                        if (x.toString().equals(src)) return x;
                     } else if (target == Short.class) {
                         Short x = Short.valueOf(src);
-                        if (x.toString().equals(src)) return (T) x;
+                        if (x.toString().equals(src)) return x;
                     } else if (target == Byte.class) {
                         Byte x = Byte.valueOf(src);
-                        if (x.toString().equals(src)) return (T) x;
+                        if (x.toString().equals(src)) return x;
                     }
                 } catch (Exception ex) {
                     return null;
@@ -179,8 +190,16 @@ public class NumericConverterFactory implements ConverterFactory {
 
     class NumericConverter implements Converter {
 
-        public Object convert(Object source, Class target) throws Exception {
+        // target.cast won't work for both the object wrapper and the primitive class
+        @SuppressWarnings("unchecked")
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            return (T) convertInternal(source, target);
+        }
+
+        public Object convertInternal(Object source, Class<?> target) {
             target = primitiveToWrapperClass(target);
+            source = cleanSource(source, target);
+
             if (source instanceof Number) {
                 Number s = (Number) source;
 
@@ -325,7 +344,45 @@ public class NumericConverterFactory implements ConverterFactory {
         }
     }
 
-    static HashMap<Class, Class> primitiveToWrapper = new HashMap();
+    /**
+     * Clean the source handling possible edge cases:
+     *
+     * <ol>
+     *   <li>Scientific notation conversions
+     * </ol>
+     *
+     * @return the cleaned source
+     */
+    static Object cleanSource(Object source, Class target) {
+        BigDecimal bigDecimal = getBigDecimalFromScientificNotation(source, target);
+        return bigDecimal != null ? bigDecimal : source;
+    }
+
+    /**
+     * @return a BigDecimal in case the source is a String in scientific notation and the target is
+     *     an integral number, null otherwise
+     */
+    static BigDecimal getBigDecimalFromScientificNotation(Object source, Class target) {
+        if (source instanceof String
+                && (Long.class.equals(target)
+                        || Integer.class.equals(target)
+                        || Short.class.equals(target)
+                        || Byte.class.equals(target)
+                        || BigInteger.class.equals(target))) {
+            try {
+                return ((String) source).toUpperCase().contains("E")
+                        ? new BigDecimal((String) source)
+                        : null;
+            } catch (NumberFormatException ex) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.finest("NumberFormatException for source=" + source);
+                }
+            }
+        }
+        return null;
+    }
+
+    static HashMap<Class, Class> primitiveToWrapper = new HashMap<>();
 
     static {
         primitiveToWrapper.put(Byte.TYPE, Byte.class);

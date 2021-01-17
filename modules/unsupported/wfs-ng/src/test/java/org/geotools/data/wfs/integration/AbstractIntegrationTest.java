@@ -142,7 +142,7 @@ public abstract class AbstractIntegrationTest {
     protected abstract TestDataType createSecondType() throws Exception;
 
     private void completeTestDataType(TestDataType test) throws IOException {
-        FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
         SimpleFeatureSource source = data.getFeatureSource(test.typeName);
         test.features = grabArray(source.getFeatures());
@@ -198,14 +198,14 @@ public abstract class AbstractIntegrationTest {
             store1.setTransaction(transaction);
             class Listener implements FeatureListener {
 
-                List<FeatureEvent> events = new ArrayList<FeatureEvent>();
+                List<FeatureEvent> events = new ArrayList<>();
 
                 public void changed(FeatureEvent featureEvent) {
                     this.events.add(featureEvent);
                 }
 
                 FeatureEvent getEvent(int i) {
-                    return (FeatureEvent) events.get(i);
+                    return events.get(i);
                 }
             }
 
@@ -311,8 +311,8 @@ public abstract class AbstractIntegrationTest {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(expected)) {
+        for (Object o : array) {
+            if (o.equals(expected)) {
                 return true;
             }
         }
@@ -347,8 +347,8 @@ public abstract class AbstractIntegrationTest {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (isFeatureEqual((SimpleFeature) array[i], (SimpleFeature) expected)) {
+        for (Object o : array) {
+            if (isFeatureEqual((SimpleFeature) o, (SimpleFeature) expected)) {
                 return true;
             }
         }
@@ -402,8 +402,8 @@ public abstract class AbstractIntegrationTest {
 
         // SimpleFeatureType type = expected.getFeatureType();
 
-        for (int i = 0; i < array.length; i++) {
-            if (match(array[i], expected)) {
+        for (SimpleFeature simpleFeature : array) {
+            if (match(simpleFeature, expected)) {
                 return true;
             }
         }
@@ -476,7 +476,7 @@ public abstract class AbstractIntegrationTest {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         reader = data.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertCovered(first.features, reader);
-        assertEquals(false, reader.hasNext());
+        assertFalse(reader.hasNext());
     }
 
     @Test
@@ -487,7 +487,7 @@ public abstract class AbstractIntegrationTest {
         SimpleFeature feature;
 
         while (reader.hasNext()) {
-            feature = (SimpleFeature) reader.next();
+            feature = reader.next();
             feature.setAttribute(first.stringAttribute, null);
         }
 
@@ -496,7 +496,7 @@ public abstract class AbstractIntegrationTest {
         reader = data.getFeatureReader(query, Transaction.AUTO_COMMIT);
 
         while (reader.hasNext()) {
-            feature = (SimpleFeature) reader.next();
+            feature = reader.next();
             assertNotNull(feature.getAttribute(first.stringAttribute));
         }
 
@@ -505,8 +505,7 @@ public abstract class AbstractIntegrationTest {
         try {
             reader.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
     }
 
@@ -534,22 +533,19 @@ public abstract class AbstractIntegrationTest {
         try {
             reader1.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
 
         try {
             reader2.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
 
         try {
             reader3.next();
             fail("next should fail with an IOException or NoSuchElementException");
-        } catch (IOException expected) {
-        } catch (NoSuchElementException expected) {
+        } catch (IOException | NoSuchElementException expected) {
         }
 
         reader1.close();
@@ -657,17 +653,14 @@ public abstract class AbstractIntegrationTest {
 
         SimpleFeature feature;
         int count = 0;
-        SimpleFeatureIterator i = features.features();
-        try {
+        try (SimpleFeatureIterator i = features.features()) {
             while (i.hasNext()) {
-                feature = (SimpleFeature) i.next();
+                feature = i.next();
                 if (!containsFeature(array, feature)) {
                     return false;
                 }
                 count++;
             }
-        } finally {
-            i.close();
         }
         return count == array.length;
     }
@@ -831,11 +824,11 @@ public abstract class AbstractIntegrationTest {
         SimpleFeature feature;
 
         while (writer.hasNext()) {
-            feature = (SimpleFeature) writer.next();
+            feature = writer.next();
         }
 
         assertFalse(writer.hasNext());
-        feature = (SimpleFeature) writer.next();
+        feature = writer.next();
         feature.setAttributes(first.newFeature.getAttributes());
         writer.write();
         assertFalse(writer.hasNext());
@@ -961,7 +954,7 @@ public abstract class AbstractIntegrationTest {
             // -------------------------------
             // - tests transaction independence from DataStore
             while (writer1.hasNext()) {
-                feature = (SimpleFeature) writer1.next();
+                feature = writer1.next();
                 assertEquals(first.features[0].getID(), feature.getID());
                 writer1.remove();
             }
@@ -988,7 +981,7 @@ public abstract class AbstractIntegrationTest {
             // writer 2 adds road.rd4 on t2
             // ----------------------------
             // - tests transaction independence from each other
-            feature = (SimpleFeature) writer2.next();
+            feature = writer2.next();
             feature.setAttributes(first.newFeature.getAttributes());
             writer2.write();
 
@@ -1450,7 +1443,7 @@ public abstract class AbstractIntegrationTest {
             assertEquals("AdditionalErrorMessage", exceptionData.get(0).getTexts().get(1));
             return;
         }
-        assertTrue(false);
+        fail();
     }
 
     /**
@@ -1499,7 +1492,7 @@ public abstract class AbstractIntegrationTest {
 
     protected static SimpleFeature[] grabArray(SimpleFeatureCollection features) {
         SimpleFeature array[] = new SimpleFeature[features.size()];
-        array = (SimpleFeature[]) features.toArray(array);
+        array = features.toArray(array);
         assertNotNull(array);
 
         return array;

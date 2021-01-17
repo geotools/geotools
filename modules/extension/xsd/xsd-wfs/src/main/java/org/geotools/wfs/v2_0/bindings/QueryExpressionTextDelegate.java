@@ -50,7 +50,7 @@ public class QueryExpressionTextDelegate extends CopyingHandler implements Parse
                 result.setIsPrivate("true".equalsIgnoreCase(isPrivate) || "1".equals(isPrivate));
             }
 
-            result.setReturnFeatureTypes(new ArrayList<QName>());
+            result.setReturnFeatureTypes(new ArrayList<>());
             for (String returnType : attributes.getValue("returnFeatureTypes").split(" +")) {
                 QName typeName = null;
                 String[] split = returnType.split(":");

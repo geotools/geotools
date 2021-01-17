@@ -108,26 +108,17 @@ public class GraphicViewer {
     Listener sync = new Listener();
     private SelectionListener listener;
 
-    /**
-     * Accepts a listener that will be notified when content changes.
-     *
-     */
+    /** Accepts a listener that will be notified when content changes. */
     public void addListener(SelectionListener listener1) {
         this.listener = listener1;
     }
 
-    /**
-     * Remove listener.
-     *
-     */
+    /** Remove listener. */
     public void removeListener(SelectionListener listener1) {
         if (this.listener == listener1) this.listener = null;
     }
 
-    /**
-     * TODO summary sentence for fire ...
-     *
-     */
+    /** TODO summary sentence for fire ... */
     protected void fire(SelectionEvent event) {
         if (this.listener == null) return;
         this.listener.widgetSelected(event);
@@ -185,10 +176,7 @@ public class GraphicViewer {
         return graphic;
     }
 
-    /**
-     * TODO summary sentence for setGraphic ...
-     *
-     */
+    /** TODO summary sentence for setGraphic ... */
     public void setGraphic(Graphic graphic, Mode mode, Color defaultColor) {
         boolean enabled = true;
         if (graphic == null) {

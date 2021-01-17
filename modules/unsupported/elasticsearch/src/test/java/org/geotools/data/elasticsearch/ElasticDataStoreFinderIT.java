@@ -16,7 +16,12 @@
  */
 package org.geotools.data.elasticsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -72,34 +77,34 @@ public class ElasticDataStoreFinderIT extends ElasticTestSupport {
         ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
         assertTrue(factory.isAvailable());
 
-        assertTrue(
-                !factory.canProcess(
+        assertFalse(
+                factory.canProcess(
                         ImmutableMap.of(
                                 ElasticDataStoreFactory.HOSTNAME.key,
                                 "localhost",
                                 ElasticDataStoreFactory.HOSTPORT.key,
                                 port)));
-        assertTrue(
-                !factory.canProcess(
+        assertFalse(
+                factory.canProcess(
                         ImmutableMap.of(
                                 ElasticDataStoreFactory.HOSTNAME.key,
                                 "localhost",
                                 ElasticDataStoreFactory.INDEX_NAME.key,
                                 "test")));
-        assertTrue(
-                !factory.canProcess(
+        assertFalse(
+                factory.canProcess(
                         ImmutableMap.of(ElasticDataStoreFactory.HOSTNAME.key, "localhost")));
-        assertTrue(
-                !factory.canProcess(
+        assertFalse(
+                factory.canProcess(
                         ImmutableMap.of(
                                 ElasticDataStoreFactory.HOSTPORT.key,
                                 port,
                                 ElasticDataStoreFactory.INDEX_NAME.key,
                                 "test")));
-        assertTrue(
-                !factory.canProcess(ImmutableMap.of(ElasticDataStoreFactory.HOSTPORT.key, port)));
-        assertTrue(
-                !factory.canProcess(
+        assertFalse(
+                factory.canProcess(ImmutableMap.of(ElasticDataStoreFactory.HOSTPORT.key, port)));
+        assertFalse(
+                factory.canProcess(
                         ImmutableMap.of(ElasticDataStoreFactory.INDEX_NAME.key, "test")));
     }
 

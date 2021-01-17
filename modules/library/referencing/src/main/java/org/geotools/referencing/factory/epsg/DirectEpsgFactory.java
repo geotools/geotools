@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
@@ -46,7 +46,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Length;
 import javax.sql.DataSource;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -141,8 +144,7 @@ import org.opengis.util.InternationalString;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.unit.MetricPrefix;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * A coordinate reference system factory backed by the EPSG database tables.
@@ -417,8 +419,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * HashMap} because the keys will always be the exact same object, namely the hard-coded
      * argument given to calls to {@link #prepareStatement} in this class.
      */
-    private final Map<String, PreparedStatement> statements =
-            new IdentityHashMap<String, PreparedStatement>();
+    private final Map<String, PreparedStatement> statements = new IdentityHashMap<>();
 
     /**
      * The set of authority codes for different types. This map is used by the {@link
@@ -435,8 +436,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * this map, and returns {@code false} if some are found (thus blocking the call to {@link
      * #dispose} by the {@link ThreadedEpsgFactory} timer).
      */
-    private final Map<Class<?>, Reference<AuthorityCodes>> authorityCodes =
-            new HashMap<Class<?>, Reference<AuthorityCodes>>();
+    private final Map<Class<?>, Reference<AuthorityCodes>> authorityCodes = new HashMap<>();
 
     /**
      * Cache for axis names. This service is not provided by {@link BufferedAuthorityFactory} since
@@ -444,7 +444,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *
      * @see #getAxisName
      */
-    private final Map<String, AxisName> axisNames = new HashMap<String, AxisName>();
+    private final Map<String, AxisName> axisNames = new HashMap<>();
 
     /**
      * Cache for axis numbers. This service is not provided by {@link BufferedAuthorityFactory}
@@ -452,7 +452,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *
      * @see #getDimensionForCRS
      */
-    private final Map<String, Short> axisCounts = new HashMap<String, Short>();
+    private final Map<String, Short> axisCounts = new HashMap<>();
 
     /**
      * Cache for projection checks. This service is not provided by {@link BufferedAuthorityFactory}
@@ -460,16 +460,16 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *
      * @see #isProjection
      */
-    private final Map<String, Boolean> codeProjection = new HashMap<String, Boolean>();
+    private final Map<String, Boolean> codeProjection = new HashMap<>();
 
     /** Pool of naming systems, used for caching. There is usually few of them (about 15). */
-    private final Map<String, LocalName> scopes = new HashMap<String, LocalName>();
+    private final Map<String, LocalName> scopes = new HashMap<>();
 
     /**
      * The properties to be given the objects to construct. Reused every time {@link
      * #createProperties} is invoked.
      */
-    private final Map<String, Object> properties = new HashMap<String, Object>();
+    private final Map<String, Object> properties = new HashMap<>();
 
     /**
      * A safety guard for preventing never-ending loops in recursive calls to {@link #createDatum}.
@@ -477,7 +477,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * target datum could have its own Bursa-Wolf parameters, with one of them pointing again to the
      * source datum.
      */
-    private final Set<String> safetyGuard = new HashSet<String>();
+    private final Set<String> safetyGuard = new HashSet<>();
 
     /**
      * The buffered authority factory, or {@code this} if none. This field is set to a different
@@ -656,7 +656,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * @param type The spatial reference objects type (may be {@code Object.class}).
      * @return The set of authority codes for spatial reference objects of the given type. If this
      *     factory doesn't contains any object of the given type, then this method returns an
-     *     {@linkplain java.util.Collections#EMPTY_SET empty set}.
+     *     {@linkplain java.util.Collections.emptySet() empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
@@ -680,8 +680,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             return candidate;
         }
         Set<String> result = Collections.emptySet();
-        for (int i = 0; i < TABLES_INFO.length; i++) {
-            final TableInfo table = TABLES_INFO[i];
+        for (final TableInfo table : TABLES_INFO) {
             /*
              * We test 'isAssignableFrom' in the two ways, which may seems strange but try
              * to catch the following use cases:
@@ -704,7 +703,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                  * type computed by AuthorityCodes itself.
                  */
                 final AuthorityCodes codes;
-                codes = new AuthorityCodes(TABLES_INFO[i], type, this);
+                codes = new AuthorityCodes(table, type, this);
                 reference = authorityCodes.get(codes.type);
                 candidate = (reference != null) ? reference.get() : null;
                 final boolean cache;
@@ -717,7 +716,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     cache = !(reference instanceof SoftReference);
                 }
                 if (cache) {
-                    reference = new SoftReference<AuthorityCodes>(candidate);
+                    reference = new SoftReference<>(candidate);
                     authorityCodes.put(codes.type, reference);
                 }
                 /*
@@ -729,7 +728,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     result = candidate;
                 } else {
                     if (result instanceof AuthorityCodes) {
-                        result = new LinkedHashSet<String>(result);
+                        result = new LinkedHashSet<>(result);
                     }
                     result.addAll(candidate);
                 }
@@ -749,8 +748,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         final String primaryKey = trimAuthority(code);
-        for (int i = 0; i < TABLES_INFO.length; i++) {
-            final Set codes = getAuthorityCodes0(TABLES_INFO[i].type);
+        for (TableInfo tableInfo : TABLES_INFO) {
+            final Set<String> codes = getAuthorityCodes0(tableInfo.type);
             if (codes instanceof AuthorityCodes) {
                 final String text = ((AuthorityCodes) codes).asMap().get(primaryKey);
                 if (text != null) {
@@ -987,7 +986,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * Returns the name for the {@link IdentifiedObject} to construct. This method also search for
      * alias.
      *
-     * @param name The name for the {@link IndentifiedObject} to construct.
+     * @param name The name for the {@link IdentifiedObject} to construct.
      * @param code The EPSG code of the object to construct.
      * @param remarks Remarks, or {@code null} if none.
      * @return The name together with a set of properties.
@@ -1040,7 +1039,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     generic = new ScopedName(cached, local);
                 }
                 if (alias == null) {
-                    alias = new ArrayList<GenericName>();
+                    alias = new ArrayList<>();
                 }
                 alias.add(generic);
             }
@@ -1056,7 +1055,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * Returns the name for the {@link IdentifiedObject} to construct. This method also search for
      * alias.
      *
-     * @param name The name for the {@link IndentifiedObject} to construct.
+     * @param name The name for the {@link IdentifiedObject} to construct.
      * @param code The EPSG code of the object to construct.
      * @param area The area of use, or {@code null} if none.
      * @param scope The scope, or {@code null} if none.
@@ -1317,7 +1316,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     final double semiMinorAxis = result.getDouble(5);
                     final String unitCode = getString(result, 6, code);
                     final String remarks = result.getString(7);
-                    final Unit unit = buffered.createUnit(unitCode);
+                    @SuppressWarnings("unchecked")
+                    final Unit<Length> unit = (Unit<Length>) buffered.createUnit(unitCode);
                     final Map<String, Object> properties = createProperties(name, epsg, remarks);
                     final Ellipsoid ellipsoid;
                     if (inverseFlattening == 0) {
@@ -1408,7 +1408,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     final double longitude = getDouble(result, 3, code);
                     final String unit_code = getString(result, 4, code);
                     final String remarks = result.getString(5);
-                    final Unit unit = buffered.createUnit(unit_code);
+                    @SuppressWarnings("unchecked")
+                    final Unit<Angle> unit = (Unit<Angle>) buffered.createUnit(unit_code);
                     final Map<String, Object> properties = createProperties(name, epsg, remarks);
                     PrimeMeridian primeMeridian =
                             factories
@@ -1554,7 +1555,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 final int method = getInt(result, 2, code);
                 final String datum = getString(result, 3, code);
                 if (bwInfos == null) {
-                    bwInfos = new ArrayList<Object>();
+                    bwInfos = new ArrayList<>();
                 }
                 bwInfos.add(new BursaWolfInfo(operation, method, datum));
             }
@@ -1574,9 +1575,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             final BursaWolfInfo[] codes = bwInfos.toArray(new BursaWolfInfo[size]);
             sort(codes);
             bwInfos.clear();
-            final Set<String> added = new HashSet<String>();
-            for (int i = 0; i < codes.length; i++) {
-                final BursaWolfInfo candidate = codes[i];
+            final Set<String> added = new HashSet<>();
+            for (final BursaWolfInfo candidate : codes) {
                 if (added.add(candidate.target)) {
                     bwInfos.add(candidate);
                 }
@@ -1705,8 +1705,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                      *     case, we lost our paranoiac check for duplication.
                      */
                     if (type.equals("geodetic")) {
-                        properties =
-                                new HashMap<String, Object>(properties); // Protect from changes
+                        properties = new HashMap<>(properties); // Protect from changes
                         final Ellipsoid ellipsoid =
                                 buffered.createEllipsoid(getString(result, 9, code));
                         final PrimeMeridian meridian =
@@ -2317,10 +2316,10 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     /*
                      * Now creates the parameter descriptor.
                      */
-                    final ParameterDescriptor descriptor;
+                    final ParameterDescriptor<? extends Object> descriptor;
                     final Map<String, Object> properties = createProperties(name, epsg, remarks);
                     descriptor =
-                            new DefaultParameterDescriptor(
+                            new DefaultParameterDescriptor<>(
                                     properties, type, null, null, null, null, unit, true);
                     returnValue = ensureSingleton(descriptor, returnValue, code);
                 }
@@ -2353,7 +2352,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                 + " ORDER BY SORT_ORDER");
         stmt.setInt(1, Integer.parseInt(method));
         try (ResultSet results = stmt.executeQuery()) {
-            final List<ParameterDescriptor> descriptors = new ArrayList<ParameterDescriptor>();
+            final List<ParameterDescriptor> descriptors = new ArrayList<>();
             while (results.next()) {
                 final String param = getString(results, 1, method);
                 descriptors.add(buffered.createParameterDescriptor(param));
@@ -2370,6 +2369,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * @param parameters The parameter values to fill.
      * @throws SQLException if a SQL statement failed.
      */
+    @SuppressWarnings("unchecked")
     private void fillParameterValues(
             final String method, final String operation, final ParameterValueGroup parameters)
             throws FactoryException, SQLException {
@@ -2563,7 +2563,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             int count = aliases.length;
             value = properties.get(IdentifiedObject.ALIAS_KEY);
             if (value != null) {
-                final Map<String, GenericName> merged = new LinkedHashMap<String, GenericName>();
+                final Map<String, GenericName> merged = new LinkedHashMap<>();
                 putAll(NameFactory.toArray(value), merged);
                 count -= putAll(aliases, merged);
                 final Collection<GenericName> c = merged.values();
@@ -2574,7 +2574,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
              * all our aliases were replaced by user's aliases (count <= 0).
              */
             if (count > 0) {
-                final Map<String, Object> copy = new HashMap<String, Object>(properties);
+                final Map<String, Object> copy = new HashMap<>(properties);
                 copy.put(IdentifiedObject.ALIAS_KEY, aliases);
                 properties = copy;
             }
@@ -2590,8 +2590,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     private static final int putAll(final GenericName[] names, final Map<String, GenericName> map) {
         int ignored = 0;
-        for (int i = 0; i < names.length; i++) {
-            final GenericName name = names[i];
+        for (final GenericName name : names) {
             final GenericName scoped = name.toFullyQualifiedName();
             final String key = toCaseless(scoped.toString());
             final GenericName old = map.put(key, name);
@@ -2627,7 +2626,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                 + " AND SOURCE_CRS_CODE IS NOT NULL"
                                 + " AND TARGET_CRS_CODE IS NOT NULL");
         stmt.setInt(1, Integer.parseInt(code));
-        final Map<Dimensions, Dimensions> dimensions = new HashMap<Dimensions, Dimensions>();
+        final Map<Dimensions, Dimensions> dimensions = new HashMap<>();
         final Dimensions temp = new Dimensions((2 << 16) | 2); // Default to (2,2) dimensions.
         Dimensions max = temp;
         try (ResultSet result = stmt.executeQuery()) {
@@ -2936,7 +2935,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                             + " WHERE (CONCAT_OPERATION_CODE = ?)"
                                             + " ORDER BY OP_PATH_STEP");
                     cstmt.setString(1, epsg);
-                    final List<String> codes = new ArrayList<String>();
+                    final List<String> codes = new ArrayList<>();
                     try (ResultSet cr = cstmt.executeQuery()) {
                         while (cr.next()) {
                             codes.add(cr.getString(1));
@@ -3072,9 +3071,11 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *     for what we want (put operations with unknow accuracy last). Unfortunatly, I don't know
      *     yet how to instruct Access to put null values last using standard SQL ("IIF" is not
      *     standard, and Access doesn't seem to understand "CASE ... THEN" clauses).
+     * @return
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public synchronized Set createFromCoordinateReferenceSystemCodes(
+    public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
         ensureNonNull("sourceCode", sourceCode);
         ensureNonNull("targetCode", targetCode);
@@ -3206,7 +3207,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     @Override
     public IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class /*<? extends IdentifiedObject>*/ type) throws FactoryException {
+            final Class<? extends IdentifiedObject> type) throws FactoryException {
         return new Finder(buffered, type);
     }
 
@@ -3221,7 +3222,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         /** Creates a new finder backed by the specified <em>buffered</em> authority factory. */
         Finder(
                 final AbstractAuthorityFactory buffered,
-                final Class /*<? extends IdentifiedObject>*/ type) {
+                final Class<? extends IdentifiedObject> type) {
             super(buffered, type);
         }
 
@@ -3302,7 +3303,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 }
             }
             sql = adaptSQL(sql);
-            final Set<String> result = new LinkedHashSet<String>();
+            final Set<String> result = new LinkedHashSet<>();
             try (final Statement s = getConnection().createStatement();
                     final ResultSet r = s.executeQuery(sql)) {
                 while (r.next()) {
@@ -3339,13 +3340,14 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     }
 
     /** Constructs an exception for recursive calls. */
-    private static FactoryException recursiveCall(final Class type, final String code) {
+    private static FactoryException recursiveCall(
+            final Class<? extends IdentifiedObject> type, final String code) {
         return new FactoryException(Errors.format(ErrorKeys.RECURSIVE_CALL_$2, type, code));
     }
 
     /** Constructs an exception for a database failure. */
     private static FactoryException databaseFailure(
-            final Class type, final String code, final SQLException cause) {
+            final Class<? extends Object> type, final String code, final SQLException cause) {
         return new FactoryException(
                 Errors.format(ErrorKeys.DATABASE_FAILURE_$2, type, code), cause);
     }
@@ -3428,11 +3430,11 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 // statement as key). So we need to manage a pool of references for avoiding
                 // duplication.
                 if (pool == null) {
-                    pool = new IdentityHashMap<SoftReference, WeakReference<AuthorityCodes>>();
+                    pool = new IdentityHashMap<>();
                 }
                 WeakReference<AuthorityCodes> weak = pool.get(reference);
                 if (weak == null) {
-                    weak = new WeakReference<AuthorityCodes>(codes);
+                    weak = new WeakReference<>(codes);
                     pool.put((SoftReference) reference, weak);
                 }
                 entry.setValue(weak);
@@ -3459,8 +3461,9 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 }
                 it.remove();
             }
-            for (final Iterator it = statements.values().iterator(); it.hasNext(); ) {
-                ((PreparedStatement) it.next()).close();
+            for (final Iterator<PreparedStatement> it = statements.values().iterator();
+                    it.hasNext(); ) {
+                (it.next()).close();
                 it.remove();
             }
             shutdown(true);

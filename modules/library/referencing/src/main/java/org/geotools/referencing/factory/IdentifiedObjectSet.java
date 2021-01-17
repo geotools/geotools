@@ -86,7 +86,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * The map of object codes (keys), and the actual identified objects (values) when it has been
      * created. Each entry has a null value until the corresponding object is created.
      */
-    private final Map /*<String,IdentifiedObject>*/ objects = new LinkedHashMap();
+    private final Map<String, IdentifiedObject> objects = new LinkedHashMap<>();
 
     /**
      * The factory to use for creating {@linkplain IdentifiedObject identified objects} when first
@@ -127,7 +127,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      */
     public boolean addAuthorityCode(final String code) {
         final boolean already = objects.containsKey(code);
-        final IdentifiedObject old = (IdentifiedObject) objects.put(code, null);
+        final IdentifiedObject old = objects.put(code, null);
         if (old != null) {
             // A fully created object was already there. Keep it.
             objects.put(code, old);
@@ -145,7 +145,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      */
     public boolean add(final Object object) {
         final String code = getAuthorityCode((IdentifiedObject) object);
-        return !Utilities.equals(objects.put(code, object), object);
+        return !Utilities.equals(objects.put(code, (IdentifiedObject) object), object);
     }
 
     /**
@@ -155,7 +155,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * @throws BackingStoreException if the object creation failed.
      */
     private IdentifiedObject get(final String code) throws BackingStoreException {
-        IdentifiedObject object = (IdentifiedObject) objects.get(code);
+        IdentifiedObject object = objects.get(code);
         if (object == null && objects.containsKey(code)) {
             try {
                 object = createObject(code);
@@ -197,8 +197,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      */
     public boolean removeAll(final Collection collection) {
         boolean modified = false;
-        for (final Iterator it = collection.iterator(); it.hasNext(); ) {
-            if (remove(it.next())) {
+        for (Object o : collection) {
+            if (remove(o)) {
                 modified = true;
             }
         }
@@ -226,11 +226,11 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      *     {@linkplain #size set's size}, then the creation of all objects is garantee successful.
      * @throws FactoryException if an {@linkplain #createObject object creation} failed.
      */
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void resolve(int n) throws FactoryException {
         if (n > 0)
             try {
-                for (final Iterator it = iterator(); it.hasNext(); ) {
-                    it.next();
+                for (Object o : this) {
                     if (--n == 0) {
                         break;
                     }
@@ -253,8 +253,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * iteration order on the basis of authority codes.
      */
     public String[] getAuthorityCodes() {
-        final Set codes = objects.keySet();
-        return (String[]) codes.toArray(new String[codes.size()]);
+        final Set<String> codes = objects.keySet();
+        return codes.toArray(new String[codes.size()]);
     }
 
     /**
@@ -271,11 +271,10 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * @see #addAuthorityCode
      */
     public void setAuthorityCodes(final String[] codes) {
-        final Map copy = new HashMap(objects);
+        final Map<String, IdentifiedObject> copy = new HashMap<>(objects);
         objects.clear();
-        for (int i = 0; i < codes.length; i++) {
-            final String code = codes[i];
-            objects.put(code, (IdentifiedObject) copy.get(code));
+        for (final String code : codes) {
+            objects.put(code, copy.get(code));
         }
     }
 
@@ -341,6 +340,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * serialization. The serialised set of identified objects is disconnected from the {@linkplain
      * #factory underlying factory}.
      */
+    @SuppressWarnings("unchecked")
     protected Object writeReplace() throws ObjectStreamException {
         return new LinkedHashSet(this);
     }
@@ -371,6 +371,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
          * @throws BackingStoreException if the underlying factory failed to creates the coordinate
          *     operation.
          */
+        @SuppressWarnings("unchecked")
         private void toNext() throws BackingStoreException {
             while (iterator.hasNext()) {
                 final Map.Entry entry = (Map.Entry) iterator.next();

@@ -274,34 +274,32 @@ public class SimpleTypeHandler extends XSIElementHandler {
     }
 
     static SimpleType[] getSimpleTypes(UnionHandler union, SchemaHandler parent) {
-        List l = new LinkedList();
+        List<SimpleType> l = new LinkedList<>();
 
         if (union.getMemberTypes() != null) {
             String[] qNames = union.getMemberTypes().split("\\s");
 
-            for (int i = 0; i < qNames.length; i++) l.add(parent.lookUpSimpleType(qNames[i]));
+            for (String qName : qNames) l.add(parent.lookUpSimpleType(qName));
         }
 
         if (union.getSimpleTypes() != null) {
-            Iterator i = union.getSimpleTypes().iterator();
-
-            while (i.hasNext()) {
-                l.add(((SimpleTypeHandler) i.next()).compress(parent));
+            for (SimpleTypeHandler sth : union.getSimpleTypes()) {
+                l.add(sth.compress(parent));
             }
         }
 
-        return (SimpleType[]) l.toArray(new SimpleType[l.size()]);
+        return l.toArray(new SimpleType[l.size()]);
     }
 
     static Facet[] getFacets(RestrictionHandler rh) {
-        List contraints = rh.getConstraints();
+        List constraints = rh.getConstraints();
 
-        if ((contraints == null) || (contraints.size() == 0)) {
+        if ((constraints == null) || (constraints.isEmpty())) {
             return null;
         }
 
-        Facet[] facets = new Facet[contraints.size()];
-        Iterator i = contraints.iterator();
+        Facet[] facets = new Facet[constraints.size()];
+        Iterator i = constraints.iterator();
         int index = 0;
 
         while (i.hasNext()) {

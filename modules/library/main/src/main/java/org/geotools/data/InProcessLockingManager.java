@@ -46,7 +46,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public class InProcessLockingManager implements LockingManager {
     /** lockTable access by typeName stores Transactions or MemoryLocks */
-    protected Map lockTables = new HashMap();
+    protected Map<String, Map<String, Lock>> lockTables = new HashMap<>();
 
     /**
      * Aquire lock on featureID.
@@ -117,13 +117,13 @@ public class InProcessLockingManager implements LockingManager {
      * @return Lock if exists, or null
      */
     protected Lock getLock(String typeName, String featureID) {
-        Map locks = locks(typeName);
+        Map<String, Lock> locks = locks(typeName);
         // LOGGER.info("checking for lock " + typeName + ", " + featureID
         //    + " in locks " + locks);
 
         synchronized (locks) {
             if (locks.containsKey(featureID)) {
-                Lock lock = (Lock) locks.get(featureID);
+                Lock lock = locks.get(featureID);
 
                 if (lock.isExpired()) {
                     locks.remove(featureID);
@@ -181,12 +181,12 @@ public class InProcessLockingManager implements LockingManager {
      * @param typeName typeName
      * @return Map of Transaction or MemoryLock by featureID
      */
-    public Map locks(String typeName) {
+    public Map<String, Lock> locks(String typeName) {
         synchronized (lockTables) {
             if (lockTables.containsKey(typeName)) {
-                return (Map) lockTables.get(typeName);
+                return lockTables.get(typeName);
             } else {
-                Map locks = new HashMap();
+                Map<String, Lock> locks = new HashMap<>();
                 lockTables.put(typeName, locks);
 
                 return locks;
@@ -199,13 +199,13 @@ public class InProcessLockingManager implements LockingManager {
      *
      * @return Set of all locks
      */
-    public Set allLocks() {
+    public Set<Lock> allLocks() {
         synchronized (lockTables) {
-            Set set = new HashSet();
-            Map fidLocks;
+            Set<Lock> set = new HashSet<>();
+            Map<String, Lock> fidLocks;
 
-            for (Iterator i = lockTables.values().iterator(); i.hasNext(); ) {
-                fidLocks = (Map) i.next();
+            for (Map<String, Lock> stringLockMap : lockTables.values()) {
+                fidLocks = stringLockMap;
                 set.addAll(fidLocks.values());
             }
 
@@ -346,8 +346,8 @@ public class InProcessLockingManager implements LockingManager {
         Lock lock;
         boolean refresh = false;
 
-        for (Iterator i = allLocks().iterator(); i.hasNext(); ) {
-            lock = (Lock) i.next();
+        for (Iterator<Lock> i = allLocks().iterator(); i.hasNext(); ) {
+            lock = i.next();
 
             if (lock.isExpired()) {
                 i.remove();
@@ -397,13 +397,11 @@ public class InProcessLockingManager implements LockingManager {
         // was only iterating through the values of a map, which I believe
         // java just copies, so it's immutable.  Or perhaps we just moved
         // through too many iterator layers...
-        for (Iterator i = lockTables.values().iterator(); i.hasNext(); ) {
-            Map fidMap = (Map) i.next();
-            Set unLockedFids = new HashSet();
+        for (Map<String, Lock> fidMap : lockTables.values()) {
+            Set<String> unLockedFids = new HashSet<>();
 
-            for (Iterator j = fidMap.keySet().iterator(); j.hasNext(); ) {
-                String fid = (String) j.next();
-                lock = (Lock) fidMap.get(fid);
+            for (String fid : fidMap.keySet()) {
+                lock = fidMap.get(fid);
                 // LOGGER.info("checking lock " + lock + ", is match "
                 //    + lock.isMatch(authID));
 
@@ -426,8 +424,8 @@ public class InProcessLockingManager implements LockingManager {
                 }
             }
 
-            for (Iterator k = unLockedFids.iterator(); k.hasNext(); ) {
-                fidMap.remove(k.next());
+            for (String unLockedFid : unLockedFids) {
+                fidMap.remove(unLockedFid);
             }
         }
 
@@ -452,8 +450,8 @@ public class InProcessLockingManager implements LockingManager {
 
         Lock lock;
 
-        for (Iterator i = allLocks().iterator(); i.hasNext(); ) {
-            lock = (Lock) i.next();
+        for (Iterator<Lock> i = allLocks().iterator(); i.hasNext(); ) {
+            lock = i.next();
 
             if (lock.isExpired()) {
                 i.remove();

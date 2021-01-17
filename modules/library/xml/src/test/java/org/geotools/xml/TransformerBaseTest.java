@@ -20,77 +20,85 @@ package org.geotools.xml;
 import java.io.FileNotFoundException;
 import java.io.StringWriter;
 import javax.xml.transform.TransformerException;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class TransformerBaseTest extends TestCase {
+public class TransformerBaseTest {
 
+    @Test
     public void testUnbufferedUsageNoErrors() throws FileNotFoundException, TransformerException {
         String expected =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>";
         ExampleTransformer tx = new ExampleTransformer(0, 0, false);
         String actual = tx.transform(10);
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testUnbufferedUsageOneError() throws FileNotFoundException, TransformerException {
         StringWriter w = new StringWriter();
         try {
             ExampleTransformer tx = new ExampleTransformer(0, 10, false);
             tx.transform(10, w);
-            fail("Should have thrown an exception before reaching this point");
+            Assert.fail("Should have thrown an exception before reaching this point");
         } catch (TransformerException e) {
             String expected =
                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer>";
             String actual = w.toString();
-            assertEquals(expected, actual);
+            Assert.assertEquals(expected, actual);
         }
     }
 
+    @Test
     public void testBufferedUsageNoErrors() throws FileNotFoundException, TransformerException {
         String expected =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>";
         ExampleTransformer tx = new ExampleTransformer(1, 0, false);
         String actual = tx.transform(10);
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testBufferedUsageOneError() throws FileNotFoundException, TransformerException {
         StringWriter w = new StringWriter();
         try {
             ExampleTransformer tx = new ExampleTransformer(1, 10, false);
             tx.transform(10, w);
-            fail("Should have thrown an exception before reaching this point!");
+            Assert.fail("Should have thrown an exception before reaching this point!");
         } catch (TransformerException e) {
             String expected =
                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer>";
             String actual = w.toString();
-            assertEquals(expected, actual);
+            Assert.assertEquals(expected, actual);
         }
     }
 
+    @Test
     public void testBufferedUsageIgnoringOneError()
             throws FileNotFoundException, TransformerException {
         ExampleTransformer tx = new ExampleTransformer(1, 10, true);
         String expected =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer></test:integers>";
         String actual = tx.transform(10);
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testBufferedUsageIgnoringMultipleErrors()
             throws FileNotFoundException, TransformerException {
         ExampleTransformer tx = new ExampleTransformer(1, 2, true);
         String expected =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>3</test:integer><test:integer>5</test:integer><test:integer>7</test:integer><test:integer>9</test:integer></test:integers>";
         String actual = tx.transform(10);
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testPassingInNull() throws FileNotFoundException, TransformerException {
         ExampleTransformer tx = new ExampleTransformer(0, 0, true);
         try {
             tx.transform(null);
-            fail("Expected NullPointerException but none was thrown.");
+            Assert.fail("Expected NullPointerException but none was thrown.");
         } catch (TransformerException e) {
             // Swallow exception IFF it was due to a NullPointerException; otherwise rethrow
             if (!(e.getCause() instanceof NullPointerException)) throw e;

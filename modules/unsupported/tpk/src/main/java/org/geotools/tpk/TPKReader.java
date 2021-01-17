@@ -145,8 +145,8 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         Rectangle dim = null;
 
         if (parameters != null) {
-            for (int i = 0; i < parameters.length; i++) {
-                final ParameterValue param = (ParameterValue) parameters[i];
+            for (GeneralParameterValue parameter : parameters) {
+                final ParameterValue param = (ParameterValue) parameter;
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
@@ -357,6 +357,7 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         }
     }
 
+    @SuppressWarnings("PMD.ReplaceHashtableWithMap")
     protected BufferedImage getStartImage(BufferedImage copyFrom, int width, int height) {
         Hashtable<String, Object> properties = null;
 

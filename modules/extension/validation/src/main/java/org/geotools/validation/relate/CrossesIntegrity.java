@@ -52,23 +52,26 @@ import org.opengis.filter.Filter;
 public class CrossesIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(CrossesIntegrity.class);
-    private HashSet usedIDs;
+    private HashSet<String> usedIDs;
 
     /** CrossesIntegrity Constructor */
     public CrossesIntegrity() {
         super();
-        usedIDs = new HashSet(); // TODO: remove me later, memory inefficient
+        usedIDs = new HashSet<>(); // TODO: remove me later, memory inefficient
     }
 
     /* (non-Javadoc)
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map, org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, ReferencedEnvelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers,
+            ReferencedEnvelope envelope,
+            ValidationResults results)
             throws Exception {
         LOGGER.finer("Starting test " + getName() + " (" + getClass().getName() + ")");
         String typeRef1 = getGeomTypeRefA();
         LOGGER.finer(typeRef1 + ": looking up SimpleFeatureSource ");
-        SimpleFeatureSource geomSource1 = (SimpleFeatureSource) layers.get(typeRef1);
+        SimpleFeatureSource geomSource1 = layers.get(typeRef1);
         LOGGER.finer(typeRef1 + ": found " + geomSource1.getSchema().getTypeName());
 
         String typeRef2 = getGeomTypeRefB();
@@ -76,7 +79,7 @@ public class CrossesIntegrity extends RelationIntegrity {
             return validateSingleLayer(geomSource1, isExpected(), results, envelope);
         else {
             LOGGER.finer(typeRef2 + ": looking up SimpleFeatureSource ");
-            SimpleFeatureSource geomSource2 = (SimpleFeatureSource) layers.get(typeRef2);
+            SimpleFeatureSource geomSource2 = layers.get(typeRef2);
             LOGGER.finer(typeRef2 + ": found " + geomSource2.getSchema().getTypeName());
             return validateMultipleLayers(
                     geomSource1, geomSource2, isExpected(), results, envelope);

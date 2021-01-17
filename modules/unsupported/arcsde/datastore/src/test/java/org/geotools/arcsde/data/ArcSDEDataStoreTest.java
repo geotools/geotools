@@ -112,14 +112,14 @@ public class ArcSDEDataStoreTest {
         sdeDs = DataStoreFinder.getDataStore(testData.getConProps());
         assertNotNull(sdeDs);
         String failMsg = sdeDs + " is not an ArcSDEDataStore";
-        assertTrue(failMsg, (sdeDs instanceof ArcSDEDataStore));
+        assertTrue(failMsg, sdeDs instanceof ArcSDEDataStore);
         LOGGER.fine("testFinder OK :" + sdeDs.getClass().getName());
     }
 
     @Test
     public void testDataAccessFinderFindsIt() throws IOException {
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.putAll(testData.getConProps());
 
         DataAccess<? extends FeatureType, ? extends Feature> dataStore;
@@ -215,12 +215,13 @@ public class ArcSDEDataStoreTest {
             throws IOException, SchemaException, SeException, UnavailableConnectionException {
         final String typeName;
         {
-            ISessionPool connectionPool = testData.getConnectionPool();
-            ISession session = connectionPool.getSession();
-            final String user;
-            user = session.getUser();
-            session.dispose();
-            typeName = user + ".GT_TEST_CREATE";
+            try (ISessionPool connectionPool = testData.getConnectionPool()) {
+                ISession session = connectionPool.getSession();
+                final String user;
+                user = session.getUser();
+                session.dispose();
+                typeName = user + ".GT_TEST_CREATE";
+            }
         }
 
         SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
@@ -236,7 +237,7 @@ public class ArcSDEDataStoreTest {
         DataStore ds = testData.getDataStore();
         testData.deleteTable(typeName);
 
-        Map<String, String> hints = new HashMap<String, String>();
+        Map<String, String> hints = new HashMap<>();
         hints.put("configuration.keyword", testData.getConfigKeyword());
         ((ArcSDEDataStore) ds).createSchema(type, hints);
 
@@ -261,7 +262,7 @@ public class ArcSDEDataStoreTest {
         ArcSDEDataStore ds = testData.getDataStore();
 
         testData.deleteTable(typeName);
-        Map<String, String> hints = new HashMap<String, String>();
+        Map<String, String> hints = new HashMap<>();
         hints.put("configuration.keyword", testData.getConfigKeyword());
         ds.createSchema(type, hints);
         testData.deleteTable(typeName);
@@ -275,8 +276,8 @@ public class ArcSDEDataStoreTest {
      * "SDE.SDE.TEST_POINT")
      */
     private void testTypeExists(String[] featureTypes, String table) {
-        for (int i = 0; i < featureTypes.length; i++) {
-            if (featureTypes[i].equalsIgnoreCase(table.toUpperCase())) {
+        for (String featureType : featureTypes) {
+            if (featureType.equalsIgnoreCase(table.toUpperCase())) {
                 LOGGER.fine("testTypeExists OK: " + table);
 
                 return;

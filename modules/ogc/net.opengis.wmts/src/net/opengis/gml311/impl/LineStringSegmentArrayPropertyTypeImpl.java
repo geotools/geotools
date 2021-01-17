@@ -70,7 +70,7 @@ public class LineStringSegmentArrayPropertyTypeImpl extends MinimalEObjectImpl.C
      */
     public EList<LineStringSegmentType> getLineStringSegment() {
         if (lineStringSegment == null) {
-            lineStringSegment = new EObjectContainmentEList<LineStringSegmentType>(LineStringSegmentType.class, this, Gml311Package.LINE_STRING_SEGMENT_ARRAY_PROPERTY_TYPE__LINE_STRING_SEGMENT);
+            lineStringSegment = new EObjectContainmentEList<>(LineStringSegmentType.class, this, Gml311Package.LINE_STRING_SEGMENT_ARRAY_PROPERTY_TYPE__LINE_STRING_SEGMENT);
         }
         return lineStringSegment;
     }

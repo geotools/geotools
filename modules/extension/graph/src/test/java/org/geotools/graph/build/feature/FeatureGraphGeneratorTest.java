@@ -18,12 +18,14 @@ package org.geotools.graph.build.feature;
 
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.graph.build.line.LineStringGraphGenerator;
 import org.geotools.graph.structure.Edge;
+import org.geotools.graph.structure.Graphable;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -31,8 +33,9 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class FeatureGraphGeneratorTest extends TestCase {
+public class FeatureGraphGeneratorTest {
 
+    @Test
     public void test() throws Exception {
         LineStringGraphGenerator lsgg = new LineStringGraphGenerator();
         FeatureGraphGenerator fgg = new FeatureGraphGenerator(new LineStringGraphGenerator());
@@ -40,8 +43,8 @@ public class FeatureGraphGeneratorTest extends TestCase {
         LineString[] lines = lines();
         SimpleFeature[] features = features(lines);
 
-        List el1 = new ArrayList();
-        List el2 = new ArrayList();
+        List<Graphable> el1 = new ArrayList<>();
+        List<Graphable> el2 = new ArrayList<>();
         for (int i = 0; i < lines.length; i++) {
             el1.add(lsgg.add(lines[i]));
             el2.add(fgg.add(features[i]));
@@ -51,13 +54,13 @@ public class FeatureGraphGeneratorTest extends TestCase {
             Edge e1 = (Edge) el1.get(i);
             Edge e2 = (Edge) el2.get(i);
 
-            assertTrue(e1.getObject() instanceof LineString);
-            assertTrue(e2.getObject() instanceof SimpleFeature);
+            Assert.assertTrue(e1.getObject() instanceof LineString);
+            Assert.assertTrue(e2.getObject() instanceof SimpleFeature);
 
             LineString line = (LineString) e1.getObject();
             SimpleFeature feature = (SimpleFeature) e2.getObject();
 
-            assertEquals(line, feature.getDefaultGeometry());
+            Assert.assertEquals(line, feature.getDefaultGeometry());
         }
     }
 

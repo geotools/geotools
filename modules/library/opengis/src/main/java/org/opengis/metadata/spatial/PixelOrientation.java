@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.spatial;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public final class PixelOrientation extends CodeList<PixelOrientation> {
     private static final long serialVersionUID = 7885677198357949308L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<PixelOrientation> VALUES = new ArrayList<PixelOrientation>(5);
+    private static final List<PixelOrientation> VALUES = new ArrayList<>(5);
 
     /**
      * Point in a pixel corresponding to the Earth location of the pixel.

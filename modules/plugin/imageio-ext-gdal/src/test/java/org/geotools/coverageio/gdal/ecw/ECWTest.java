@@ -17,13 +17,12 @@
  */
 package org.geotools.coverageio.gdal.ecw;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -85,10 +84,7 @@ public final class ECWTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }
@@ -106,7 +102,7 @@ public final class ECWTest extends GDALTestCase {
         final ParameterValue<Boolean> jai =
                 ((AbstractGridFormat) reader.getFormat()).USE_JAI_IMAGEREAD.createValue();
         jai.setValue(true);
-        GridCoverage2D gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {jai});
+        GridCoverage2D gc = reader.read(new GeneralParameterValue[] {jai});
         LOGGER.info(gc.toString());
         forceDataLoading(gc);
 
@@ -143,16 +139,14 @@ public final class ECWTest extends GDALTestCase {
                                         (int) (range.width / 4.0 / cropFactor),
                                         (int) (range.height / 4.0 / cropFactor))),
                         cropEnvelope));
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
+        gc = reader.read(new GeneralParameterValue[] {gg});
         Assert.assertNotNull(gc);
         // NOTE: in some cases might be too restrictive
         Assert.assertTrue(
                 cropEnvelope.equals(
                         gc.getEnvelope(),
                         XAffineTransform.getScale(
-                                        ((AffineTransform)
-                                                ((GridGeometry2D) gc.getGridGeometry())
-                                                        .getGridToCRS2D()))
+                                        ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
                                 / 2,
                         true));
 
@@ -181,11 +175,10 @@ public final class ECWTest extends GDALTestCase {
                 ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         gg2.setValue(
                 new GridGeometry2D(
-                        new GridEnvelope2D(
-                                new Rectangle(0, 0, (int) (range.width), (int) (range.height))),
+                        new GridEnvelope2D(new Rectangle(0, 0, range.width, range.height)),
                         wrongEnvelope));
 
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg2});
+        gc = reader.read(new GeneralParameterValue[] {gg2});
         Assert.assertNull("Wrong envelope requested", gc);
     }
 
@@ -226,10 +219,7 @@ public final class ECWTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }
@@ -243,8 +233,7 @@ public final class ECWTest extends GDALTestCase {
         ParameterValue<String> footprint = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprint.setValue(FootprintBehavior.Transparent.toString());
 
-        GridCoverage2D gc =
-                (GridCoverage2D) reader.read(new GeneralParameterValue[] {jai, footprint});
+        GridCoverage2D gc = reader.read(new GeneralParameterValue[] {jai, footprint});
         LOGGER.info(gc.toString());
         forceDataLoading(gc);
 
@@ -254,10 +243,10 @@ public final class ECWTest extends GDALTestCase {
 
         // Assert point in Greenland is masked out
         gc.evaluate(pointInGreenland, pixel);
-        assertTrue((pixel[3] & 0xFF) == 0);
+        assertEquals(0, (pixel[3] & 0xFF));
 
         // Assert point in Africa is present
         gc.evaluate(pointInAfrica, pixel);
-        assertTrue((pixel[3] & 0xFF) == 255);
+        assertEquals(255, (pixel[3] & 0xFF));
     }
 }

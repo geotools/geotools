@@ -136,7 +136,7 @@ public class QuickTileViewer {
                                 FileOutputStream fos = new FileOutputStream(tempFile)) {
                             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 
-                            Map<String, Object> params = new HashMap<String, Object>();
+                            Map<String, Object> params = new HashMap<>();
                             params.put(
                                     GeoPkgDataStoreFactory.DBTYPE.key,
                                     GeoPkgDataStoreFactory.DBTYPE.sample);

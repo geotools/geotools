@@ -15,7 +15,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 
-/** Tests for checking {@link NotBinding} encoding. */
 public class NotBindingTest {
 
     /** Test checking correct encoding for Not operator */
@@ -35,10 +34,12 @@ public class NotBindingTest {
         assertEquals("prop", prop);
     }
 
+    @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
     private void defaultNamespaceContext(XPath xpath) {
         xpath.setNamespaceContext(
                 new NamespaceContext() {
                     @Override
+                    @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
                     public Iterator getPrefixes(String namespaceURI) {
                         return null;
                     }

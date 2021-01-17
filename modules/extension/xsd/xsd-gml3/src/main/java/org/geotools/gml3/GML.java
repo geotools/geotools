@@ -27,6 +27,7 @@ import org.geotools.gml3.smil.SMIL20;
 import org.geotools.gml3.smil.SMIL20LANG;
 import org.geotools.xlink.XLINK;
 import org.geotools.xsd.XSD;
+import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
 
 /**
@@ -3434,7 +3435,7 @@ public final class GML extends XSD {
     public Schema buildTypeMappingProfile(Schema typeSchema) {
         // set with guaranteed iteration order, so that we can put deprecated elements only
         // after the ones that replaced them
-        Set profile = new LinkedHashSet();
+        Set<Name> profile = new LinkedHashSet<>();
 
         // basic
         profile.add(name(GML.MeasureType));
@@ -3462,7 +3463,7 @@ public final class GML extends XSD {
         return typeSchema.profile(profile);
     }
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         // add xlink dependency
         dependencies.add(XLINK.getInstance());
 

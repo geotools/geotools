@@ -16,6 +16,7 @@
  */
 package org.geotools.data.view;
 
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -208,21 +209,20 @@ public class DefaultView implements SimpleFeatureSource {
             }
         } else {
             String[] queriedAtts = query.getPropertyNames();
-            int queriedAttCount = queriedAtts.length;
-            List allowedAtts = new LinkedList();
+            List<String> allowedAtts = new LinkedList<>();
 
-            for (int i = 0; i < queriedAttCount; i++) {
-                if (schema.getDescriptor(queriedAtts[i]) != null) {
-                    allowedAtts.add(queriedAtts[i]);
+            for (String queriedAtt : queriedAtts) {
+                if (schema.getDescriptor(queriedAtt) != null) {
+                    allowedAtts.add(queriedAtt);
                 } else {
                     LOGGER.info(
                             "queried a not allowed property: "
-                                    + queriedAtts[i]
+                                    + queriedAtt
                                     + ". Ommitting it from query");
                 }
             }
 
-            propNames = (String[]) allowedAtts.toArray(new String[allowedAtts.size()]);
+            propNames = allowedAtts.toArray(new String[allowedAtts.size()]);
         }
 
         return propNames;
@@ -389,7 +389,7 @@ public class DefaultView implements SimpleFeatureSource {
 
     public ResourceInfo getInfo() {
         return new ResourceInfo() {
-            final Set<String> words = new HashSet<String>();
+            final Set<String> words = new HashSet<>();
 
             {
                 words.add("features");
@@ -516,7 +516,7 @@ public class DefaultView implements SimpleFeatureSource {
         }
     }
 
-    public Set getSupportedHints() {
+    public Set<RenderingHints.Key> getSupportedHints() {
         return source.getSupportedHints();
     }
 

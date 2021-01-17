@@ -45,10 +45,39 @@ import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.*;
-import org.opengis.referencing.cs.*;
-import org.opengis.referencing.datum.*;
-import org.opengis.referencing.operation.*;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CompoundCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.DerivedCRS;
+import org.opengis.referencing.crs.EngineeringCRS;
+import org.opengis.referencing.crs.GeocentricCRS;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.ImageCRS;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.TemporalCRS;
+import org.opengis.referencing.crs.VerticalCRS;
+import org.opengis.referencing.cs.CSAuthorityFactory;
+import org.opengis.referencing.cs.CartesianCS;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.CylindricalCS;
+import org.opengis.referencing.cs.EllipsoidalCS;
+import org.opengis.referencing.cs.PolarCS;
+import org.opengis.referencing.cs.SphericalCS;
+import org.opengis.referencing.cs.TimeCS;
+import org.opengis.referencing.cs.VerticalCS;
+import org.opengis.referencing.datum.Datum;
+import org.opengis.referencing.datum.DatumAuthorityFactory;
+import org.opengis.referencing.datum.Ellipsoid;
+import org.opengis.referencing.datum.EngineeringDatum;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.datum.ImageDatum;
+import org.opengis.referencing.datum.PrimeMeridian;
+import org.opengis.referencing.datum.TemporalDatum;
+import org.opengis.referencing.datum.VerticalDatum;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.util.InternationalString;
 
 /**
@@ -84,8 +113,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
     volatile AbstractAuthorityFactory backingStore;
 
     /** The pool of cached objects. */
-    private final LinkedHashMap<Object, Object> pool =
-            new LinkedHashMap<Object, Object>(32, 0.75f, true);
+    private final LinkedHashMap<Object, Object> pool = new LinkedHashMap<>(32, 0.75f, true);
 
     /**
      * The maximum number of objects to keep by strong reference. If a greater amount of objects are
@@ -94,8 +122,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
     private final int maxStrongReferences;
 
     /** The pool of objects identified by {@link #find}. */
-    private final Map<IdentifiedObject, IdentifiedObject> findPool =
-            new WeakHashMap<IdentifiedObject, IdentifiedObject>();
+    private final Map<IdentifiedObject, IdentifiedObject> findPool = new WeakHashMap<>();
 
     /**
      * Constructs an instance wrapping the specified factory with a default number of entries to
@@ -303,7 +330,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @param type The spatial reference objects type.
      * @return The set of authority codes for spatial reference objects of the given type. If this
      *     factory doesn't contains any object of the given type, then this method returns an
-     *     {@linkplain java.util.Collections#EMPTY_SET empty set}.
+     *     {@linkplain java.util.Collections.emptySet() empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
@@ -984,7 +1011,9 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
         final CodePair key = new CodePair(trimAuthority(sourceCRS), trimAuthority(targetCRS));
         final Object cached = get(key);
         if (cached instanceof Set) {
-            operations = (Set<CoordinateOperation>) cached;
+            @SuppressWarnings("unchecked")
+            Set<CoordinateOperation> cast = (Set<CoordinateOperation>) cached;
+            operations = cast;
         } else {
             operations =
                     Collections.unmodifiableSet(
@@ -1161,7 +1190,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
                     }
                     continue;
                 }
-                entry.setValue(new WeakReference<Object>(value));
+                entry.setValue(new WeakReference<>(value));
                 if (--toReplace == 0) {
                     break;
                 }

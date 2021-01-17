@@ -145,7 +145,7 @@ public class ParameterExpressionTypeImpl extends EObjectImpl implements Paramete
    */
     public EList<TitleType> getTitle() {
     if (title == null) {
-      title = new EObjectContainmentEList<TitleType>(TitleType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE);
+      title = new EObjectContainmentEList<>(TitleType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE);
     }
     return title;
   }
@@ -157,7 +157,7 @@ public class ParameterExpressionTypeImpl extends EObjectImpl implements Paramete
    */
     public EList<AbstractType> getAbstract() {
     if (abstract_ == null) {
-      abstract_ = new EObjectContainmentEList<AbstractType>(AbstractType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT);
+      abstract_ = new EObjectContainmentEList<>(AbstractType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT);
     }
     return abstract_;
   }
@@ -169,7 +169,7 @@ public class ParameterExpressionTypeImpl extends EObjectImpl implements Paramete
    */
     public EList<MetadataType> getMetadata() {
     if (metadata == null) {
-      metadata = new EObjectContainmentEList<MetadataType>(MetadataType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA);
+      metadata = new EObjectContainmentEList<>(MetadataType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA);
     }
     return metadata;
   }

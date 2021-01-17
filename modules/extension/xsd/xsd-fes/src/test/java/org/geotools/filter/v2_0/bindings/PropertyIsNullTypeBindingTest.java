@@ -15,7 +15,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 
-/** Tests for checking {@link PropertyIsNullTypeBinding} on FES 2.0 configuration. */
 public class PropertyIsNullTypeBindingTest {
 
     private static final String PROP = "prop";
@@ -36,6 +35,7 @@ public class PropertyIsNullTypeBindingTest {
         assertEquals(PROP, prop);
     }
 
+    @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
     private void defaultNamespaceContext(XPath xpath) {
         xpath.setNamespaceContext(
                 new NamespaceContext() {

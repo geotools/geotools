@@ -52,7 +52,7 @@ class FactoryAdapter {
     }
 
     public DataStore getStore(File curr, URI namespaceURI) throws IOException {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         if (nsParam != null) {
             if (String.class.isAssignableFrom(nsParam.type))
                 params.put(nsParam.key, namespaceURI.toString());

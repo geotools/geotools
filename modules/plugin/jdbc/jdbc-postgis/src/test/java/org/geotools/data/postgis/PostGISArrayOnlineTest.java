@@ -16,8 +16,8 @@
  */
 package org.geotools.data.postgis;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
 import static org.opengis.filter.MultiValuedFilter.MatchAction;
 
 import java.io.IOException;

@@ -40,7 +40,7 @@ public final class GPKG extends XSD {
     /** private constructor */
     private GPKG() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(FES.getInstance());
     }
 
@@ -84,6 +84,8 @@ public final class GPKG extends XSD {
     /* Elements */
     /** @generated */
     public static final QName geopackage = new QName("http://www.opengis.net/gpkg", "geopackage");
+
+    public static final QName overview = new QName("http://www.opengis.net/gpkg", "overview");
 
     /* Attributes */
 

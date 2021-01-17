@@ -115,22 +115,22 @@ public class WMSComplexTypes {
 
             org.geotools.data.ows.OperationType operationType = null;
 
-            List formatStrings = new ArrayList();
+            List<String> formatStrings = new ArrayList<>();
 
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[0], value[i])) {
-                    Object[] stringValues = (Object[]) value[i].getValue();
-                    for (int ii = 0; ii < stringValues.length; ii++) {
-                        formatStrings.add((String) stringValues[ii]);
+            for (ElementValue elementValue : value) {
+                if (sameName(elems[0], elementValue)) {
+                    Object[] stringValues = (Object[]) elementValue.getValue();
+                    for (Object stringValue : stringValues) {
+                        formatStrings.add((String) stringValue);
                     }
                 }
 
-                if (sameName(elems[1], value[i])) {
-                    operationType = (org.geotools.data.ows.OperationType) value[i].getValue();
+                if (sameName(elems[1], elementValue)) {
+                    operationType = (org.geotools.data.ows.OperationType) elementValue.getValue();
                 }
             }
             if (operationType != null) {
-                operationType.setFormats(new ArrayList(formatStrings));
+                operationType.setFormats(new ArrayList<>(formatStrings));
             }
 
             return operationType;
@@ -224,13 +224,13 @@ public class WMSComplexTypes {
             WMSCapabilities capabilities = null;
             Service service = null;
 
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[0], value[i])) {
-                    service = ((Service) value[i].getValue());
+            for (ElementValue elementValue : value) {
+                if (sameName(elems[0], elementValue)) {
+                    service = ((Service) elementValue.getValue());
                 }
 
-                if (sameName(elems[1], value[i])) {
-                    capabilities = (WMSCapabilities) value[i].getValue();
+                if (sameName(elems[1], elementValue)) {
+                    capabilities = (WMSCapabilities) elementValue.getValue();
                 }
             }
 
@@ -353,13 +353,13 @@ public class WMSComplexTypes {
             WMSCapabilities capabilities = null;
             Service service = null;
 
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[0], value[i])) {
-                    service = ((Service) value[i].getValue());
+            for (ElementValue elementValue : value) {
+                if (sameName(elems[0], elementValue)) {
+                    service = ((Service) elementValue.getValue());
                 }
 
-                if (sameName(elems[1], value[i])) {
-                    capabilities = (WMSCapabilities) value[i].getValue();
+                if (sameName(elems[1], elementValue)) {
+                    capabilities = (WMSCapabilities) elementValue.getValue();
                 }
             }
 
@@ -483,12 +483,13 @@ public class WMSComplexTypes {
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
-            ArrayList strings = new ArrayList();
+            List<String> strings = new ArrayList<>();
 
-            for (int i = 0; i < value.length; i++) {
+            for (ElementValue elementValue : value) {
                 // System.out.println("Strings adding: "+value[i].getValue());
-                if (value[i].getValue() != null && ((String) value[i].getValue()).length() != 0) {
-                    strings.add(value[i].getValue());
+                if (elementValue.getValue() != null
+                        && ((String) elementValue.getValue()).length() != 0) {
+                    strings.add((String) elementValue.getValue());
                 }
             }
 
@@ -622,30 +623,31 @@ public class WMSComplexTypes {
 
             Service service = new Service();
 
-            for (int i = 0; i < value.length; i++) {
+            for (ElementValue elementValue : value) {
 
-                if (sameName(elems[0], value[i])) {
-                    service.setName((String) value[i].getValue());
+                if (sameName(elems[0], elementValue)) {
+                    service.setName((String) elementValue.getValue());
                 }
 
-                if (sameName(elems[1], value[i])) {
-                    service.setTitle((String) value[i].getValue());
+                if (sameName(elems[1], elementValue)) {
+                    service.setTitle((String) elementValue.getValue());
                 }
 
-                if (sameName(elems[2], value[i])) {
-                    service.set_abstract((String) value[i].getValue());
+                if (sameName(elems[2], elementValue)) {
+                    service.set_abstract((String) elementValue.getValue());
                 }
 
-                if (sameName(elems[3], value[i]) || sameName(elems[11], value[i])) {
-                    service.setKeywordList((String[]) value[i].getValue());
+                if (sameName(elems[3], elementValue) || sameName(elems[11], elementValue)) {
+                    service.setKeywordList((String[]) elementValue.getValue());
                 }
 
-                if (sameName(elems[4], value[i])) {
-                    service.setOnlineResource((URL) value[i].getValue());
+                if (sameName(elems[4], elementValue)) {
+                    service.setOnlineResource((URL) elementValue.getValue());
                 }
 
-                if (sameName(elems[5], value[i])) {
-                    ResponsiblePartyImpl contactInfo = (ResponsiblePartyImpl) value[i].getValue();
+                if (sameName(elems[5], elementValue)) {
+                    ResponsiblePartyImpl contactInfo =
+                            (ResponsiblePartyImpl) elementValue.getValue();
                     service.setContactInformation(contactInfo);
                 }
 
@@ -657,16 +659,16 @@ public class WMSComplexTypes {
                 // //TODO access constraints not implemented, ignoring
                 // }
 
-                if (sameName(elems[8], value[i])) {
-                    service.setLayerLimit(((Integer) value[i].getValue()).intValue());
+                if (sameName(elems[8], elementValue)) {
+                    service.setLayerLimit(((Integer) elementValue.getValue()).intValue());
                 }
 
-                if (sameName(elems[9], value[i])) {
-                    service.setMaxWidth(((Integer) value[i].getValue()).intValue());
+                if (sameName(elems[9], elementValue)) {
+                    service.setMaxWidth(((Integer) elementValue.getValue()).intValue());
                 }
 
-                if (sameName(elems[10], value[i])) {
-                    service.setMaxHeight(((Integer) value[i].getValue()).intValue());
+                if (sameName(elems[10], elementValue)) {
+                    service.setMaxHeight(((Integer) elementValue.getValue()).intValue());
                 }
             }
 
@@ -1067,9 +1069,9 @@ public class WMSComplexTypes {
                 throws SAXException, OperationNotSupportedException {
 
             ResponsiblePartyImpl contactPerson = null;
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[0], value[i])) {
-                    contactPerson = (ResponsiblePartyImpl) value[i].getValue();
+            for (ElementValue elementValue1 : value) {
+                if (sameName(elems[0], elementValue1)) {
+                    contactPerson = (ResponsiblePartyImpl) elementValue1.getValue();
                 }
             }
             if (contactPerson == null) {
@@ -1080,29 +1082,29 @@ public class WMSComplexTypes {
             AddressImpl address = null;
             ContactImpl contact = new ContactImpl();
 
-            for (int i = 0; i < value.length; i++) {
+            for (ElementValue item : value) {
 
                 contactPerson.setContactInfo(contact);
 
-                if (sameName(elems[1], value[i])) {
-                    String positionName = (String) value[i].getValue();
+                if (sameName(elems[1], item)) {
+                    String positionName = (String) item.getValue();
                     contactPerson.setPositionName(new SimpleInternationalString(positionName));
                 }
 
-                if (sameName(elems[2], value[i])) {
-                    address = (AddressImpl) value[i].getValue();
+                if (sameName(elems[2], item)) {
+                    address = (AddressImpl) item.getValue();
                 }
 
-                if (sameName(elems[3], value[i])) {
-                    Collection voices = Collections.singleton(value[i].getValue());
+                if (sameName(elems[3], item)) {
+                    Collection<String> voices = Collections.singleton((String) item.getValue());
                     if (telephone == null) {
                         telephone = new TelephoneImpl();
                     }
                     telephone.setVoices(voices);
                 }
 
-                if (sameName(elems[4], value[i])) {
-                    Collection fax = Collections.singleton(value[i].getValue());
+                if (sameName(elems[4], item)) {
+                    Collection<String> fax = Collections.singleton((String) item.getValue());
                     if (telephone == null) {
                         telephone = new TelephoneImpl();
                     }
@@ -1112,9 +1114,9 @@ public class WMSComplexTypes {
                 contact.setPhone(telephone);
             }
 
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[5], value[i])) {
-                    String email = (String) value[i].getValue();
+            for (ElementValue elementValue : value) {
+                if (sameName(elems[5], elementValue)) {
+                    String email = (String) elementValue.getValue();
 
                     if (address == null) {
                         address = new AddressImpl();
@@ -1222,14 +1224,14 @@ public class WMSComplexTypes {
 
             ResponsiblePartyImpl responsibleParty = new ResponsiblePartyImpl();
 
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[0], value[i])) {
-                    String name = (String) value[i].getValue();
+            for (ElementValue elementValue : value) {
+                if (sameName(elems[0], elementValue)) {
+                    String name = (String) elementValue.getValue();
                     responsibleParty.setIndividualName(name);
                 }
 
-                if (sameName(elems[1], value[i])) {
-                    String organization = (String) value[i].getValue();
+                if (sameName(elems[1], elementValue)) {
+                    String organization = (String) elementValue.getValue();
                     responsibleParty.setOrganisationName(
                             new SimpleInternationalString(organization));
                 }
@@ -1330,35 +1332,36 @@ public class WMSComplexTypes {
                 throws SAXException, OperationNotSupportedException {
             AddressImpl address = new AddressImpl();
 
-            for (int i = 0; i < value.length; i++) {
+            for (ElementValue elementValue : value) {
                 //				if (sameName(elems[0], value[i])) {
                 //					String addressType = (String) value[0].getValue();
-                //					//nothing to do with address Type - it does not fit into the GeoAPI citation
+                //					//nothing to do with address Type - it does not fit into the
+                //					GeoAPI citation
                 // model
                 //				}
 
-                if (sameName(elems[1], value[i])) {
-                    String address1 = (String) value[i].getValue();
+                if (sameName(elems[1], elementValue)) {
+                    String address1 = (String) elementValue.getValue();
                     address.setDeliveryPoints(Collections.singleton(address1));
                 }
 
-                if (sameName(elems[2], value[i])) {
-                    String city = (String) value[i].getValue();
+                if (sameName(elems[2], elementValue)) {
+                    String city = (String) elementValue.getValue();
                     address.setCity(new SimpleInternationalString(city));
                 }
 
-                if (sameName(elems[3], value[i])) {
-                    String state = (String) value[i].getValue();
+                if (sameName(elems[3], elementValue)) {
+                    String state = (String) elementValue.getValue();
                     address.setAdministrativeArea(new SimpleInternationalString(state));
                 }
 
-                if (sameName(elems[4], value[i])) {
-                    String postalCode = (String) value[i].getValue();
+                if (sameName(elems[4], elementValue)) {
+                    String postalCode = (String) elementValue.getValue();
                     address.setPostalCode(postalCode);
                 }
 
-                if (sameName(elems[5], value[i])) {
-                    String country = (String) value[i].getValue();
+                if (sameName(elems[5], elementValue)) {
+                    String country = (String) elementValue.getValue();
                     address.setCountry(new SimpleInternationalString(country));
                 }
             }
@@ -1475,13 +1478,13 @@ public class WMSComplexTypes {
                 throws SAXException, OperationNotSupportedException {
             WMSCapabilities capabilities = new WMSCapabilities();
 
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[0], value[i])) {
-                    capabilities.setRequest((WMSRequest) value[i].getValue());
+            for (ElementValue elementValue : value) {
+                if (sameName(elems[0], elementValue)) {
+                    capabilities.setRequest((WMSRequest) elementValue.getValue());
                 }
 
-                if (sameName(elems[1], value[i])) {
-                    capabilities.setExceptions((String[]) value[i].getValue());
+                if (sameName(elems[1], elementValue)) {
+                    capabilities.setExceptions((String[]) elementValue.getValue());
                 }
 
                 // if (sameName(elems[2], value[i])) {
@@ -1494,9 +1497,9 @@ public class WMSComplexTypes {
                 // TODO UserDefinedSymbolization ignored
                 // }
 
-                if (sameName(elems[5], value[i])) {
+                if (sameName(elems[5], elementValue)) {
 
-                    Layer layer = (Layer) value[i].getValue();
+                    Layer layer = (Layer) elementValue.getValue();
 
                     capabilities.setLayer(layer);
                 }
@@ -1949,40 +1952,43 @@ public class WMSComplexTypes {
 
             WMSRequest request = new WMSRequest();
 
-            for (int i = 0; i < value.length; i++) {
+            for (ElementValue elementValue : value) {
                 // System.out.println("OpType ValueName:"
                 // +value[i].getElement().getName());
 
-                if (sameName(elems[0], value[i]) || sameName(elems[8], value[i])) {
+                if (sameName(elems[0], elementValue) || sameName(elems[8], elementValue)) {
                     request.setGetCapabilities(
-                            (org.geotools.data.ows.OperationType) value[i].getValue());
+                            (org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
-                if (sameName(elems[1], value[i]) || sameName(elems[9], value[i])) {
-                    request.setGetMap((org.geotools.data.ows.OperationType) value[i].getValue());
+                if (sameName(elems[1], elementValue) || sameName(elems[9], elementValue)) {
+                    request.setGetMap(
+                            (org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
-                if (sameName(elems[2], value[i]) || sameName(elems[10], value[i])) {
+                if (sameName(elems[2], elementValue) || sameName(elems[10], elementValue)) {
                     request.setGetFeatureInfo(
-                            (org.geotools.data.ows.OperationType) value[i].getValue());
+                            (org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
-                if (sameName(elems[3], value[i])) {
+                if (sameName(elems[3], elementValue)) {
                     request.setDescribeLayer(
-                            (org.geotools.data.ows.OperationType) value[i].getValue());
+                            (org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
-                if (sameName(elems[4], value[i])) {
+                if (sameName(elems[4], elementValue)) {
                     request.setGetLegendGraphic(
-                            (org.geotools.data.ows.OperationType) value[i].getValue());
+                            (org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
-                if (sameName(elems[5], value[i])) {
-                    request.setGetStyles((org.geotools.data.ows.OperationType) value[i].getValue());
+                if (sameName(elems[5], elementValue)) {
+                    request.setGetStyles(
+                            (org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
-                if (sameName(elems[6], value[i])) {
-                    request.setPutStyles((org.geotools.data.ows.OperationType) value[i].getValue());
+                if (sameName(elems[6], elementValue)) {
+                    request.setPutStyles(
+                            (org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
                 // TODO extended operations here
@@ -2176,13 +2182,13 @@ public class WMSComplexTypes {
             org.geotools.data.ows.OperationType operationType =
                     new org.geotools.data.ows.OperationType();
 
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[0], value[i])) {
-                    operationType.setGet((URL) value[i].getValue());
+            for (ElementValue elementValue : value) {
+                if (sameName(elems[0], elementValue)) {
+                    operationType.setGet((URL) elementValue.getValue());
                 }
 
-                if (sameName(elems[1], value[i])) {
-                    operationType.setPost((URL) value[i].getValue());
+                if (sameName(elems[1], elementValue)) {
+                    operationType.setPost((URL) elementValue.getValue());
                 }
             }
 
@@ -2299,7 +2305,7 @@ public class WMSComplexTypes {
             } catch (MalformedURLException e) {
             }
 
-            return (URL) value[0].getValue();
+            return value[0].getValue();
         }
 
         /*
@@ -2411,7 +2417,7 @@ public class WMSComplexTypes {
             } catch (MalformedURLException e) {
             }
 
-            return (URL) value[0].getValue();
+            return value[0].getValue();
         }
 
         /*
@@ -2510,8 +2516,8 @@ public class WMSComplexTypes {
 
             for (int i = 0; i < value.length; i++) {
                 Object[] stringValues = (Object[]) value[i].getValue();
-                for (int ii = 0; ii < stringValues.length; ii++) {
-                    formatStrings[i] = (String) stringValues[ii];
+                for (Object stringValue : stringValues) {
+                    formatStrings[i] = (String) stringValue;
                 }
             }
 
@@ -2705,56 +2711,56 @@ public class WMSComplexTypes {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
-            List childLayers = new ArrayList();
+            List<Layer> childLayers = new ArrayList<>();
 
             Layer layer = new Layer();
 
-            Set crs = new TreeSet();
-            HashMap boundingBoxes = new HashMap();
+            Set<String> crs = new TreeSet<>();
+            Map<String, CRSEnvelope> boundingBoxes = new HashMap<>();
             Map<String, Dimension> dimensions = new HashMap<>();
-            HashMap extents = new HashMap();
-            List styles = new ArrayList();
-            List metadataURLS = new ArrayList();
+            Map<String, Extent> extents = new HashMap<>();
+            List<StyleImpl> styles = new ArrayList<>();
+            List<MetadataURL> metadataURLS = new ArrayList<>();
 
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[0], value[i])) {
-                    layer.setName((String) value[i].getValue());
+            for (ElementValue elementValue : value) {
+                if (sameName(elems[0], elementValue)) {
+                    layer.setName((String) elementValue.getValue());
                 }
 
-                if (sameName(elems[1], value[i])) {
-                    layer.setTitle((String) value[i].getValue());
+                if (sameName(elems[1], elementValue)) {
+                    layer.setTitle((String) elementValue.getValue());
                 }
 
-                if (sameName(elems[2], value[i])) {
-                    layer.set_abstract((String) value[i].getValue());
+                if (sameName(elems[2], elementValue)) {
+                    layer.set_abstract((String) elementValue.getValue());
                 }
-                if (sameName(elems[3], value[i])) {
-                    layer.setKeywords((String[]) value[i].getValue());
+                if (sameName(elems[3], elementValue)) {
+                    layer.setKeywords((String[]) elementValue.getValue());
                 }
 
-                if (sameName(elems[4], value[i]) || sameName(elems[19], value[i])) {
-                    String[] crss = ((String) value[i].getValue()).split(" ");
-                    for (int j = 0; j < crss.length; j++) {
-                        crs.add(crss[j].toUpperCase());
+                if (sameName(elems[4], elementValue) || sameName(elems[19], elementValue)) {
+                    String[] crss = ((String) elementValue.getValue()).split(" ");
+                    for (String s : crss) {
+                        crs.add(s.toUpperCase());
                     }
                 }
 
-                if (sameName(elems[5], value[i]) || sameName(elems[20], value[i])) {
-                    layer.setLatLonBoundingBox((CRSEnvelope) value[i].getValue());
+                if (sameName(elems[5], elementValue) || sameName(elems[20], elementValue)) {
+                    layer.setLatLonBoundingBox((CRSEnvelope) elementValue.getValue());
                 }
 
-                if (sameName(elems[6], value[i])) {
-                    CRSEnvelope bbox = (CRSEnvelope) value[i].getValue();
+                if (sameName(elems[6], elementValue)) {
+                    CRSEnvelope bbox = (CRSEnvelope) elementValue.getValue();
 
                     boundingBoxes.put(bbox.getEPSGCode(), bbox);
                 }
 
-                if (sameName(elems[7], value[i])) {
-                    Dimension dim = (Dimension) value[i].getValue();
+                if (sameName(elems[7], elementValue)) {
+                    Dimension dim = (Dimension) elementValue.getValue();
                     dimensions.put(dim.getName(), dim);
                 }
-                if (sameName(elems[8], value[i])) {
-                    Extent ext = (Extent) value[i].getValue();
+                if (sameName(elems[8], elementValue)) {
+                    Extent ext = (Extent) elementValue.getValue();
                     extents.put(ext.getName(), ext);
                     // NOTE: dim might be null here, because at this point a sublayer without
                     // dimension tags may not yet have inherited parent dimensions.
@@ -2764,8 +2770,8 @@ public class WMSComplexTypes {
                         dim.setExtent(ext);
                     }
                 }
-                if (sameName(elems[9], value[i])) {
-                    layer.setAttribution((Attribution) value[i].getValue());
+                if (sameName(elems[9], elementValue)) {
+                    layer.setAttribution((Attribution) elementValue.getValue());
                 }
                 // if (sameName(elems[10], value[i])) {
                 // //TODO authorityURL ignored
@@ -2773,8 +2779,8 @@ public class WMSComplexTypes {
                 // if (sameName(elems[11], value[i])) {
                 // //TODO identifier ignored
                 // }
-                if (sameName(elems[12], value[i])) {
-                    MetadataURL metadataUrl = (MetadataURL) value[i].getValue();
+                if (sameName(elems[12], elementValue)) {
+                    MetadataURL metadataUrl = (MetadataURL) elementValue.getValue();
                     metadataURLS.add(metadataUrl);
                 }
                 // if (sameName(elems[13], value[i])) {
@@ -2784,24 +2790,24 @@ public class WMSComplexTypes {
                 // //TODO featureLIstURL ignored
                 // }
 
-                if (sameName(elems[15], value[i])) {
-                    styles.add(value[i].getValue());
+                if (sameName(elems[15], elementValue)) {
+                    styles.add((StyleImpl) elementValue.getValue());
                 }
-                if (sameName(elems[16], value[i])) {
-                    Double min = (Double) value[i].getValue();
+                if (sameName(elems[16], elementValue)) {
+                    Double min = (Double) elementValue.getValue();
                     layer.setScaleDenominatorMin(min.doubleValue());
                 }
-                if (sameName(elems[17], value[i])) {
-                    Double max = (Double) value[i].getValue();
+                if (sameName(elems[17], elementValue)) {
+                    Double max = (Double) elementValue.getValue();
                     layer.setScaleDenominatorMax(max.doubleValue());
                 }
-                if (sameName(elems[18], value[i])) {
-                    Layer childLayer = (Layer) value[i].getValue();
+                if (sameName(elems[18], elementValue)) {
+                    Layer childLayer = (Layer) elementValue.getValue();
                     childLayer.setParent(layer);
                     childLayers.add(childLayer);
                 }
-                if (sameName(elems[21], value[i])) {
-                    double[] scaleHint = (double[]) value[i].getValue();
+                if (sameName(elems[21], elementValue)) {
+                    double[] scaleHint = (double[]) elementValue.getValue();
 
                     layer.setScaleDenominatorMin(scaleHint[0]);
                     layer.setScaleDenominatorMax(scaleHint[1]);
@@ -2815,7 +2821,7 @@ public class WMSComplexTypes {
             layer.setStyles(styles);
             layer.setMetadataURL(metadataURLS);
 
-            layer.setChildren((Layer[]) childLayers.toArray(new Layer[childLayers.size()]));
+            layer.setChildren(childLayers.toArray(new Layer[childLayers.size()]));
 
             // Attributes -- only do queryable for now
 
@@ -2937,18 +2943,18 @@ public class WMSComplexTypes {
                 throws SAXException, OperationNotSupportedException {
             CRSEnvelope bbox = new CRSEnvelope();
 
-            for (int i = 0; i < value.length; i++) {
-                if (sameName(elems[0], value[i])) {
-                    bbox.setMinX(((Double) value[i].getValue()).doubleValue());
+            for (ElementValue elementValue : value) {
+                if (sameName(elems[0], elementValue)) {
+                    bbox.setMinX(((Double) elementValue.getValue()).doubleValue());
                 }
-                if (sameName(elems[1], value[i])) {
-                    bbox.setMaxX(((Double) value[i].getValue()).doubleValue());
+                if (sameName(elems[1], elementValue)) {
+                    bbox.setMaxX(((Double) elementValue.getValue()).doubleValue());
                 }
-                if (sameName(elems[2], value[i])) {
-                    bbox.setMinY(((Double) value[i].getValue()).doubleValue());
+                if (sameName(elems[2], elementValue)) {
+                    bbox.setMinY(((Double) elementValue.getValue()).doubleValue());
                 }
-                if (sameName(elems[3], value[i])) {
-                    bbox.setMaxY(((Double) value[i].getValue()).doubleValue());
+                if (sameName(elems[3], elementValue)) {
+                    bbox.setMaxY(((Double) elementValue.getValue()).doubleValue());
                 }
             }
 
@@ -3381,7 +3387,8 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, OperationNotSupportedException {
             String name = attrs.getValue("name");
             if (name == null || name.length() == 0) {
@@ -4457,27 +4464,27 @@ public class WMSComplexTypes {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             StyleImpl style = new StyleImpl();
-            List legendURLS = new ArrayList();
+            List<String> legendURLS = new ArrayList<>();
 
-            for (int i = 0; i < value.length; i++) {
+            for (ElementValue elementValue : value) {
 
-                if (sameName(elems[0], value[i])) {
-                    String name = (String) value[i].getValue();
+                if (sameName(elems[0], elementValue)) {
+                    String name = (String) elementValue.getValue();
                     style.setName(name);
                 }
 
-                if (sameName(elems[1], value[i])) {
-                    String title = (String) value[i].getValue();
+                if (sameName(elems[1], elementValue)) {
+                    String title = (String) elementValue.getValue();
                     style.setTitle(new SimpleInternationalString(title));
                 }
 
-                if (sameName(elems[2], value[i])) {
-                    String _abstract = (String) value[i].getValue();
+                if (sameName(elems[2], elementValue)) {
+                    String _abstract = (String) elementValue.getValue();
                     style.setAbstract(new SimpleInternationalString(_abstract));
                 }
 
-                if (sameName(elems[3], value[i])) {
-                    legendURLS.add((String) value[i].getValue());
+                if (sameName(elems[3], elementValue)) {
+                    legendURLS.add((String) elementValue.getValue());
                 }
 
                 //                if (sameName(elems[4], value[i])) {
@@ -5171,10 +5178,10 @@ public class WMSComplexTypes {
             /*
              * ServiceExceptions with codes get bumped to the top of the list.
              */
-            List codes = new ArrayList();
-            List noCodes = new ArrayList();
-            for (int i = 0; i < value.length; i++) {
-                ServiceException exception = (ServiceException) value[i].getValue();
+            List<ServiceException> codes = new ArrayList<>();
+            List<ServiceException> noCodes = new ArrayList<>();
+            for (ElementValue elementValue : value) {
+                ServiceException exception = (ServiceException) elementValue.getValue();
                 if (exception.getCode() != null && exception.getCode().length() != 0) {
                     codes.add(exception);
                 } else {
@@ -5187,8 +5194,7 @@ public class WMSComplexTypes {
              */
             ServiceException firstException = null;
             ServiceException recentException = null;
-            for (int i = 0; i < codes.size(); i++) {
-                ServiceException exception = (ServiceException) codes.get(i);
+            for (ServiceException exception : codes) {
                 if (firstException == null) {
                     firstException = exception;
                     recentException = exception;
@@ -5198,8 +5204,7 @@ public class WMSComplexTypes {
                 }
             }
             codes = null;
-            for (int i = 0; i < noCodes.size(); i++) {
-                ServiceException exception = (ServiceException) noCodes.get(i);
+            for (ServiceException exception : noCodes) {
                 if (firstException == null) {
                     firstException = exception;
                     recentException = exception;

@@ -38,6 +38,7 @@ class ExtractMultiBoundsFilterVisitor extends ExtractBoundsFilterVisitor {
 
     static final ExtractMultiBoundsFilterVisitor INSTANCE = new ExtractMultiBoundsFilterVisitor();
 
+    @SuppressWarnings("unchecked")
     public static List<Envelope> getBounds(Filter filter) {
         Object result = filter.accept(INSTANCE, null);
         if (result instanceof List) {
@@ -61,7 +62,9 @@ class ExtractMultiBoundsFilterVisitor extends ExtractBoundsFilterVisitor {
             if (result instanceof Envelope) {
                 envelopes.add(Collections.singletonList((Envelope) result));
             } else if (result instanceof List) {
-                envelopes.add((List) result);
+                @SuppressWarnings("unchecked")
+                List<Envelope> list = (List) result;
+                envelopes.add(list);
             }
         }
 
@@ -106,7 +109,9 @@ class ExtractMultiBoundsFilterVisitor extends ExtractBoundsFilterVisitor {
             if (result instanceof Envelope) {
                 envelopes.add((Envelope) result);
             } else if (result instanceof List) {
-                envelopes.addAll((List) result);
+                @SuppressWarnings("unchecked")
+                List<Envelope> list = (List) result;
+                envelopes.addAll(list);
             }
         }
 

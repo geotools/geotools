@@ -1,5 +1,8 @@
 package org.geotools.wps.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import javax.xml.namespace.QName;
 import net.opengis.wps10.DefaultType2;
 import net.opengis.wps10.LanguagesType;
@@ -8,11 +11,14 @@ import net.opengis.wps10.Wps10Factory;
 import org.geotools.ows.v1_1.OWS;
 import org.geotools.wps.WPS;
 import org.geotools.wps.WPSTestSupport;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class LanguagesBindingTest extends WPSTestSupport {
 
+    @SuppressWarnings("unchecked")
+    @Test
     public void testEncode() throws Exception {
         Wps10Factory f = Wps10Factory.eINSTANCE;
         LanguagesType1 languages = f.createLanguagesType1();

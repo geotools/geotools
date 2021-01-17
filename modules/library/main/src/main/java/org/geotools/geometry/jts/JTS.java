@@ -16,7 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
-import java.awt.*;
+import java.awt.Shape;
 import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
@@ -61,7 +61,6 @@ import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.operation.CoordinateOperation;
@@ -111,7 +110,7 @@ public final class JTS {
      * {@link GeodeticCalculator} keep a reference to the CRS which is used as the key.
      */
     private static final Map<CoordinateReferenceSystem, GeodeticCalculator> CALCULATORS =
-            new HashMap<CoordinateReferenceSystem, GeodeticCalculator>();
+            new HashMap<>();
 
     /** Do not allow instantiation of this class. */
     private JTS() {}
@@ -612,7 +611,7 @@ public final class JTS {
          * shared instances of GeodeticCalculator and GeneralDirectPosition (POSITIONS). None of
          * them are thread-safe.
          */
-        GeodeticCalculator gc = (GeodeticCalculator) CALCULATORS.get(crs);
+        GeodeticCalculator gc = CALCULATORS.get(crs);
 
         if (gc == null) {
             gc = new GeodeticCalculator(crs);
@@ -741,8 +740,8 @@ public final class JTS {
         final PathIterator iterator =
                 shape.getPathIterator(null, ShapeUtilities.getFlatness(shape));
         final double[] buffer = new double[6];
-        final List<Coordinate> coords = new ArrayList<Coordinate>();
-        final List<LineString> lines = new ArrayList<LineString>();
+        final List<Coordinate> coords = new ArrayList<>();
+        final List<LineString> lines = new ArrayList<>();
 
         while (!iterator.isDone()) {
             switch (iterator.currentSegment(buffer)) {
@@ -756,8 +755,7 @@ public final class JTS {
                             coords.add(coords.get(0));
                             lines.add(
                                     factory.createLinearRing(
-                                            (Coordinate[])
-                                                    coords.toArray(new Coordinate[coords.size()])));
+                                            coords.toArray(new Coordinate[coords.size()])));
                             coords.clear();
                         }
                         break;
@@ -772,8 +770,7 @@ public final class JTS {
                         if (!coords.isEmpty()) {
                             lines.add(
                                     factory.createLineString(
-                                            (Coordinate[])
-                                                    coords.toArray(new Coordinate[coords.size()])));
+                                            coords.toArray(new Coordinate[coords.size()])));
                             coords.clear();
                         }
 
@@ -798,9 +795,7 @@ public final class JTS {
          * End of loops: create the last LineString if any, then create the MultiLineString.
          */
         if (!coords.isEmpty()) {
-            lines.add(
-                    factory.createLineString(
-                            (Coordinate[]) coords.toArray(new Coordinate[coords.size()])));
+            lines.add(factory.createLineString(coords.toArray(new Coordinate[coords.size()])));
         }
 
         switch (lines.size()) {
@@ -808,7 +803,7 @@ public final class JTS {
                 return null;
 
             case 1:
-                return (LineString) lines.get(0);
+                return lines.get(0);
 
             default:
                 return factory.createMultiLineString(GeometryFactory.toLineStringArray(lines));
@@ -963,8 +958,6 @@ public final class JTS {
         } else if (srsName != null) {
             try {
                 crs = CRS.decode(srsName);
-            } catch (NoSuchAuthorityCodeException e) {
-                // e.printStackTrace();
             } catch (FactoryException e) {
                 // e.printStackTrace();
             }
@@ -1144,10 +1137,12 @@ public final class JTS {
         // check each coordinate
         Coordinate[] c = geom.getCoordinates();
 
-        for (int i = 0; i < c.length; i++) {
-            if (!xUnbounded && ((c[i].x < x.getMinimumValue()) || (c[i].x > x.getMaximumValue()))) {
+        for (Coordinate coordinate : c) {
+            if (!xUnbounded
+                    && ((coordinate.x < x.getMinimumValue())
+                            || (coordinate.x > x.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(
-                        c[i].x
+                        coordinate.x
                                 + " outside of ("
                                 + x.getMinimumValue()
                                 + ","
@@ -1155,9 +1150,11 @@ public final class JTS {
                                 + ")");
             }
 
-            if (!yUnbounded && ((c[i].y < y.getMinimumValue()) || (c[i].y > y.getMaximumValue()))) {
+            if (!yUnbounded
+                    && ((coordinate.y < y.getMinimumValue())
+                            || (coordinate.y > y.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(
-                        c[i].y
+                        coordinate.y
                                 + " outside of ("
                                 + y.getMinimumValue()
                                 + ","
@@ -1406,7 +1403,7 @@ public final class JTS {
         final int N = ls.getNumPoints();
         final boolean isLinearRing = ls instanceof LinearRing;
 
-        List<Coordinate> retain = new ArrayList<Coordinate>();
+        List<Coordinate> retain = new ArrayList<>();
         retain.add(ls.getCoordinateN(0));
 
         int i0 = 0, i1 = 1, i2 = 2;
@@ -1469,7 +1466,7 @@ public final class JTS {
         }
 
         // work on the holes
-        List<LineString> holes = new ArrayList<LineString>();
+        List<LineString> holes = new ArrayList<>();
         final int size = polygon.getNumInteriorRing();
         for (int i = 0; i < size; i++) {
             LineString hole = polygon.getInteriorRingN(i);
@@ -1585,7 +1582,8 @@ public final class JTS {
                     }
                 });
 
-        List<Polygon> result = new ArrayList<Polygon>(p.getPolygons());
+        @SuppressWarnings("unchecked")
+        List<Polygon> result = new ArrayList<>(p.getPolygons());
 
         // if necessary throw away the holes and return just the shells
         if (removeHoles) {
@@ -1593,8 +1591,7 @@ public final class JTS {
                 Polygon item = result.get(i);
                 if (item.getNumInteriorRing() > 0) {
                     GeometryFactory factory = item.getFactory();
-                    Polygon noHoles =
-                            factory.createPolygon((LinearRing) item.getExteriorRing(), null);
+                    Polygon noHoles = factory.createPolygon(item.getExteriorRing(), null);
                     result.set(i, noHoles);
                 }
             }

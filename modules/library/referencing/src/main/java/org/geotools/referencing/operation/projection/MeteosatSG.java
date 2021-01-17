@@ -20,7 +20,13 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import static java.lang.Math.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan;
+import static java.lang.Math.cos;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
 import java.util.logging.Level;
@@ -161,7 +167,7 @@ public class MeteosatSG extends MapProjection {
         /* calculate the geocentric latitude from the */
         /* geographic one using equations on page 24, Ref. [1] */
 
-        c_lat = atan(((double) 0.993243 * (sin(y) / cos(y))));
+        c_lat = atan((0.993243 * (sin(y) / cos(y))));
 
         // Pre-compute some values
         double cos_c_lat = cos(c_lat);
@@ -171,7 +177,7 @@ public class MeteosatSG extends MapProjection {
         /* centre to the surface of the Earth ellipsoid */
         /* equations on page 23, Ref. [1] */
 
-        re = R_POL / sqrt(((double) 1.0 - (double) 0.00675701 * cos_c_lat * cos_c_lat));
+        re = R_POL / sqrt((1.0 - 0.00675701 * cos_c_lat * cos_c_lat));
 
         /* calculate the forward projection using equations on */
         /* page 24, Ref. [1] */
@@ -317,11 +323,8 @@ public class MeteosatSG extends MapProjection {
         sd =
                 sqrt(
                         pow((SAT_HEIGHT * cos_x1 * cos_y1), 2)
-                                - (cos_y1 * cos_y1 + (double) 1.006803 * sin_y1 * sin_y1)
-                                        * (double) 1737121856.);
-        sn =
-                (SAT_HEIGHT * cos_x1 * cos_y1 - sd)
-                        / (cos_y1 * cos_y1 + (double) 1.006803 * sin_y1 * sin_y1);
+                                - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.);
+        sn = (SAT_HEIGHT * cos_x1 * cos_y1 - sd) / (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1);
 
         s1 = SAT_HEIGHT - sn * cos_x1 * cos_y1;
         s2 = sn * sin(x1) * cos_y1;
@@ -334,7 +337,7 @@ public class MeteosatSG extends MapProjection {
         /* the pixel row and column by equations on page 25, Ref [1]. */
 
         lon = atan(s2 / s1) + SUB_LON;
-        lat = atan(((double) 1.006803 * s3) / sxy);
+        lat = atan((1.006803 * s3) / sxy);
 
         if (ptDst != null) {
             ptDst.setLocation(lon, lat);

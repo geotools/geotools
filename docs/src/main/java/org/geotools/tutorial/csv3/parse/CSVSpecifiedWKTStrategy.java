@@ -71,7 +71,7 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.featureType = featureType;
 
-        List<String> header = new ArrayList<String>();
+        List<String> header = new ArrayList<>();
 
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) {
@@ -93,7 +93,7 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
     // docs start encode
     @Override
     public String[] encode(SimpleFeature feature) {
-        List<String> csvRecord = new ArrayList<String>();
+        List<String> csvRecord = new ArrayList<>();
         for (Property property : feature.getProperties()) {
             String name = property.getName().getLocalPart();
             Object value = property.getValue();

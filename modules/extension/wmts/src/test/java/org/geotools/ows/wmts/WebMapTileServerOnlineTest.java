@@ -16,11 +16,6 @@
  */
 package org.geotools.ows.wmts;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -137,7 +132,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
         // request.setVersion("1.1.1");
 
-        WMTSLayer layer = (WMTSLayer) capabilities.getLayer("topp:states");
+        WMTSLayer layer = capabilities.getLayer("topp:states");
         assertNotNull(layer);
         request.setLayer(layer);
 
@@ -148,7 +143,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         request.setRequestedBBox(re);
 
         // System.out.println(request.getFinalURL());
-        Set<Tile> responses = (Set<Tile>) wmts.issueRequest(request);
+        Set<Tile> responses = wmts.issueRequest(request);
         assertFalse(responses.isEmpty());
         for (Tile response : responses) {
             // System.out.println("Content Type: " + response.getContentType());
@@ -163,7 +158,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
         WMTSCapabilities caps = wms.getCapabilities();
 
-        Layer layer = (Layer) caps.getLayer("topp:states");
+        Layer layer = caps.getLayer("topp:states");
         assertNotNull("test server doesn't have topp:states", layer);
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
 
@@ -285,9 +280,9 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
                 new ReferencedEnvelope(-80, 80, -180.0, 180.0, DefaultGeographicCRS.WGS84);
         int million = (int) 1e6;
         int scales[] = {100 * million, 25 * million, 10 * million, million, 500000};
-        for (int i = 0; i < services.length; i++) {
-            for (int k = 0; k < scales.length; k++) {
-                Set<Tile> tiles = services[i].findTilesInExtent(env, scales[k], true, 100);
+        for (WMTSTileService service : services) {
+            for (int scale : scales) {
+                Set<Tile> tiles = service.findTilesInExtent(env, scale, true, 100);
                 // System.out.println(tiles.size());
                 assertTrue(tiles.size() > 0);
             }

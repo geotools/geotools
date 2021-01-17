@@ -53,7 +53,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-/** Check GML abilities */
 public class GMLTest {
     /** Check if we can encode a SimpleFeatureType using GML2 */
     @Test
@@ -244,7 +243,7 @@ public class GMLTest {
         assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
 
         List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
-        List<String> names = new ArrayList<String>(attributes.size());
+        List<String> names = new ArrayList<>(attributes.size());
         for (AttributeDescriptor desc : attributes) {
             names.add(desc.getLocalName());
         }
@@ -266,7 +265,7 @@ public class GMLTest {
         assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
 
         List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
-        List<String> names = new ArrayList<String>(attributes.size());
+        List<String> names = new ArrayList<>(attributes.size());
         for (AttributeDescriptor desc : attributes) {
             names.add(desc.getLocalName());
         }

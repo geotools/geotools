@@ -20,7 +20,7 @@ import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.junit.Assert.assertNotNull;
 
 import java.net.URL;
-import javax.swing.*;
+import javax.swing.Icon;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.MockHttpClient;
 import org.geotools.data.ows.MockHttpResponse;

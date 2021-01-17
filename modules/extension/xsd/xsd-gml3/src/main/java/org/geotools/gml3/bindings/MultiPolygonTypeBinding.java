@@ -87,9 +87,9 @@ public class MultiPolygonTypeBinding extends AbstractComplexBinding implements C
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List polys = node.getChildValues(Polygon.class);
+        List<Polygon> polys = node.getChildValues(Polygon.class);
 
-        return gFactory.createMultiPolygon((Polygon[]) polys.toArray(new Polygon[polys.size()]));
+        return gFactory.createMultiPolygon(polys.toArray(new Polygon[polys.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

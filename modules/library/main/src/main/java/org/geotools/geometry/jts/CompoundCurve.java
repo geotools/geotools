@@ -81,7 +81,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
 
     @Override
     public int getCoordinatesDimension() {
-        if (components.size() == 0) {
+        if (components.isEmpty()) {
             return 2;
         }
         int dimension = Integer.MAX_VALUE;
@@ -187,11 +187,16 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return "CompoundCurve";
     }
 
-    public Geometry reverse() {
+    public CompoundCurve reverse() {
+        return (CompoundCurve) super.reverse();
+    }
+
+    // should be protected when fixed in LinearRing
+    public CompoundCurve reverseInternal() {
         // reverse the component, and reverse each component internal elements
         List<LineString> reversedComponents = new ArrayList<>(components.size());
         for (LineString ls : components) {
-            LineString reversed = (LineString) ls.reverse();
+            LineString reversed = ls.reverse();
             reversedComponents.add(0, reversed);
         }
         return new CompoundCurve(reversedComponents, getFactory(), tolerance);
@@ -330,7 +335,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     public String toCurvedText() {
         StringBuilder sb = new StringBuilder("COMPOUNDCURVE ");
 
-        if (components.size() == 0) {
+        if (components.isEmpty()) {
             sb.append("EMPTY");
         } else {
             sb.append("(");

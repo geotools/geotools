@@ -627,7 +627,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    */
     public EList<Map> getViewParams() {
     if (viewParams == null) {
-      viewParams = new EDataTypeEList<Map>(Map.class, this, Wfs20Package.GET_FEATURE_TYPE__VIEW_PARAMS);
+      viewParams = new EDataTypeEList<>(Map.class, this, Wfs20Package.GET_FEATURE_TYPE__VIEW_PARAMS);
     }
     return viewParams;
   }

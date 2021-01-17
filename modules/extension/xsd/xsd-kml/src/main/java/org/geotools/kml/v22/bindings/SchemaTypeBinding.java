@@ -18,7 +18,6 @@
 
 package org.geotools.kml.v22.bindings;
 
-import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -106,7 +105,7 @@ public class SchemaTypeBinding extends AbstractComplexBinding {
         tb.setName(featureTypeName);
         // TODO: crs
 
-        for (Node n : (List<Node>) node.getChildren("SimpleField")) {
+        for (Node n : node.getChildren("SimpleField")) {
             String name = (String) n.getAttributeValue("name");
             String typeName = (String) n.getAttributeValue("type");
             if (name != null && typeName != null) {

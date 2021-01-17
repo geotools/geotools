@@ -95,7 +95,7 @@ public class PrimeMeridianTypeImpl extends PrimeMeridianBaseTypeImpl implements 
      */
     public EList<IdentifierType> getMeridianID() {
         if (meridianID == null) {
-            meridianID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.PRIME_MERIDIAN_TYPE__MERIDIAN_ID);
+            meridianID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.PRIME_MERIDIAN_TYPE__MERIDIAN_ID);
         }
         return meridianID;
     }

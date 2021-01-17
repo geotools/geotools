@@ -16,12 +16,15 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link DisjointSet} class.
@@ -33,9 +36,9 @@ public final class DisjointSetTest {
     /** Tests the set. */
     @Test
     public void testDisjointSet() {
-        DisjointSet<String> t1 = new DisjointSet<String>(true);
-        DisjointSet<String> t2 = new DisjointSet<String>(t1);
-        DisjointSet<String> t3 = new DisjointSet<String>(t2);
+        DisjointSet<String> t1 = new DisjointSet<>(true);
+        DisjointSet<String> t2 = new DisjointSet<>(t1);
+        DisjointSet<String> t3 = new DisjointSet<>(t2);
 
         assertNotNull(t1.getTrash());
         assertSame(t1.getTrash(), t2.getTrash());
@@ -50,7 +53,7 @@ public final class DisjointSetTest {
         assertTrue(t2.remove("bêta"));
 
         assertEquals(Collections.singleton("epsilon"), t1);
-        assertEquals(new HashSet<String>(Arrays.asList(new String[] {"alpha", "delta"})), t2);
+        assertEquals(new HashSet<>(Arrays.asList(new String[] {"alpha", "delta"})), t2);
         assertEquals(Collections.singleton("gamma"), t3);
         assertEquals(Collections.singleton("bêta"), t1.getTrash());
     }

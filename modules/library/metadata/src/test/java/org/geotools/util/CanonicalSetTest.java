@@ -16,12 +16,17 @@
  */
 package org.geotools.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link CanonicalSet}. A standard {@link HashSet} object is used for comparaison
@@ -40,7 +45,7 @@ public final class CanonicalSetTest {
         final Random random = new Random();
         for (int pass = 0; pass < 20; pass++) {
             final CanonicalSet<Integer> weakSet = CanonicalSet.newInstance(Integer.class);
-            final HashSet<Integer> strongSet = new HashSet<Integer>();
+            final HashSet<Integer> strongSet = new HashSet<>();
             for (int i = 0; i < 1000; i++) {
                 final Integer value = random.nextInt(500);
                 if (random.nextBoolean()) {
@@ -79,7 +84,7 @@ public final class CanonicalSetTest {
         final Random random = new Random();
         for (int pass = 0; pass < 2; pass++) {
             final CanonicalSet<UUID> weakSet = CanonicalSet.newInstance(UUID.class);
-            final HashSet<UUID> strongSet = new HashSet<UUID>();
+            final HashSet<UUID> strongSet = new HashSet<>();
             for (int i = 0; i < 500; i++) {
                 final UUID value = UUID.randomUUID(); // Really need new instances
                 if (random.nextBoolean()) {
@@ -94,7 +99,7 @@ public final class CanonicalSetTest {
                         // (otherwise GC should not have cleared it).
                         assertTrue("add:", strongModified);
                     } else {
-                        assertTrue(value != weakSet.get(value));
+                        assertNotSame(value, weakSet.get(value));
                         if (strongModified) {
                             // If the element was already in the CanonicalSet but not in the
                             // HashSet, this is because GC has not cleared it yet. Replace it

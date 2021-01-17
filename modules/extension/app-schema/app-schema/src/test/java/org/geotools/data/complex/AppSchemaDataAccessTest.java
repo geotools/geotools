@@ -92,7 +92,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
                 tf.createAttributeDescriptor(
                         targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
         targetName = targetFeature.getName();
-        List mappings = TestData.createMappingsColumnsAndValues(targetFeature);
+        List<AttributeMapping> mappings = TestData.createMappingsColumnsAndValues(targetFeature);
 
         Name sourceName = TestData.WATERSAMPLE_TYPENAME;
         FeatureSource<SimpleFeatureType, SimpleFeature> source = ds.getFeatureSource(sourceName);
@@ -149,7 +149,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         dataStore = new AppSchemaDataAccess(mappings);
         FeatureSource<FeatureType, Feature> source = dataStore.getFeatureSource(typeName);
 
-        FeatureTypeMapping mapping = (FeatureTypeMapping) mappings.iterator().next();
+        FeatureTypeMapping mapping = mappings.iterator().next();
 
         FeatureSource<?, ?> mappedSource = mapping.getSource();
         Envelope expected = getBounds(mappedSource);
@@ -165,14 +165,11 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         try {
             ReferencedEnvelope boundingBox = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
             FeatureCollection features = source.getFeatures();
-            FeatureIterator iterator = features.features();
-            try {
+            try (FeatureIterator iterator = features.features()) {
                 while (iterator.hasNext()) {
                     Feature f = iterator.next();
                     boundingBox.include(f.getBounds());
                 }
-            } finally {
-                iterator.close();
             }
             return boundingBox;
         } catch (IOException e) {
@@ -195,7 +192,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         FeatureIterator<Feature> features = reader.features();
         assertTrue(features.hasNext());
 
-        Feature complexFeature = (Feature) features.next();
+        Feature complexFeature = features.next();
         assertNotNull(complexFeature);
         assertEquals(targetType, complexFeature.getType());
 
@@ -279,7 +276,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
                         ff.property("sample/measurement[1]/value"), ff.literal(Integer.valueOf(3)));
 
         while (reader.hasNext()) {
-            Feature f = (Feature) reader.next();
+            Feature f = reader.next();
             assertNotNull(f);
             assertTrue(filter.evaluate(f));
             assertFalse(badFilter.evaluate(f));
@@ -302,8 +299,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
         AppSchemaDataAccessDTO config = new XMLConfigDigester().parse(configUrl);
 
-        Set /* <FeatureTypeMapping> */ mappings =
-                AppSchemaDataAccessConfigurator.buildMappings(config);
+        Set<FeatureTypeMapping> mappings = AppSchemaDataAccessConfigurator.buildMappings(config);
 
         dataStore = new AppSchemaDataAccess(mappings);
         FeatureSource<FeatureType, Feature> source = dataStore.getFeatureSource(typeName);
@@ -376,7 +372,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         int count2 = 0;
         try {
             while (features2.hasNext()) {
-                Feature f = (Feature) features2.next();
+                Feature f = features2.next();
                 LOGGER.finest(String.valueOf(f));
                 ++count2;
             }

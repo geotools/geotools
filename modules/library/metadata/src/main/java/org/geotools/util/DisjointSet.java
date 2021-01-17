@@ -114,8 +114,8 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
      * @see #getTrash
      */
     public DisjointSet(final boolean hasTrash) {
-        map = new LinkedHashMap<E, DisjointSet<E>>();
-        trash = (hasTrash) ? new DisjointSet<E>(map) : null;
+        map = new LinkedHashMap<>();
+        trash = (hasTrash) ? new DisjointSet<>(map) : null;
     }
 
     /**
@@ -155,8 +155,8 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     public int size() {
         synchronized (map) {
             int count = 0;
-            for (final Iterator it = map.values().iterator(); it.hasNext(); ) {
-                if (it.next() == this) {
+            for (DisjointSet<E> es : map.values()) {
+                if (es == this) {
                     count++;
                 }
             }

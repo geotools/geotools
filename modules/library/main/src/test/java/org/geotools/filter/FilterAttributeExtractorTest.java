@@ -20,12 +20,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.function.EnvFunction;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -48,7 +49,7 @@ import org.opengis.filter.spatial.Equals;
  *
  * @author Andrea Aime, SATA
  */
-public class FilterAttributeExtractorTest extends TestCase {
+public class FilterAttributeExtractorTest {
     boolean set = false;
     FilterAttributeExtractor fae;
     org.opengis.filter.FilterFactory2 fac;
@@ -56,33 +57,13 @@ public class FilterAttributeExtractorTest extends TestCase {
     /** Test suite for this test case */
     TestSuite suite = null;
 
-    /** Constructor with test name. */
-    public FilterAttributeExtractorTest(String testName) {
-        super(testName);
-    }
-
-    /** Main for test runner. */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /**
-     * Required suite builder.
-     *
-     * @return A test suite for this unit test.
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(FilterAttributeExtractorTest.class);
-
-        return suite;
-    }
-
     /**
      * Sets up a schema and a test feature.
      *
      * @throws SchemaException If there is a problem setting up the schema.
      */
-    protected void setUp() throws SchemaException {
+    @Before
+    public void setUp() throws SchemaException {
         if (set) {
             return;
         }
@@ -94,6 +75,7 @@ public class FilterAttributeExtractorTest extends TestCase {
         fac = CommonFactoryFinder.getFilterFactory2(null);
     }
 
+    @Test
     public void testPropertyNameSet() throws IllegalFilterException {
         Filter filter = fac.equals(fac.property("testString"), fac.literal("test string data"));
         Expression expression1 = fac.property("code");
@@ -101,7 +83,7 @@ public class FilterAttributeExtractorTest extends TestCase {
 
         FilterAttributeExtractor extract = new FilterAttributeExtractor(null);
 
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
         // used to collect names from expression1, expression2, and filter
 
         expression1.accept(extract, names);
@@ -112,15 +94,16 @@ public class FilterAttributeExtractorTest extends TestCase {
         Set<String> attributes = extract.getAttributeNameSet();
         Set<PropertyName> properties = extract.getPropertyNameSet();
 
-        assertEquals(3, array.length);
-        assertEquals(3, attributes.size());
-        assertEquals(3, properties.size());
+        Assert.assertEquals(3, array.length);
+        Assert.assertEquals(3, attributes.size());
+        Assert.assertEquals(3, properties.size());
     }
     /**
      * Sets up a schema and a test feature.
      *
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
+    @Test
     public void testCompare() throws IllegalFilterException {
         PropertyIsEqualTo filter =
                 fac.equals(fac.property("testString"), fac.literal("test string data"));
@@ -137,20 +120,20 @@ public class FilterAttributeExtractorTest extends TestCase {
 
         Set<String> attNames = fae.getAttributeNameSet();
 
-        assertNotNull(attNames);
-        assertEquals(attNames.size(), names.length);
+        Assert.assertNotNull(attNames);
+        Assert.assertEquals(attNames.size(), names.length);
 
-        for (int i = 0; i < names.length; i++) {
-            assertTrue(attNames.contains(names[i]));
+        for (String name : names) {
+            Assert.assertTrue(attNames.contains(name));
         }
 
         // make sure the property name set is aligned
         Set<PropertyName> propNames = fae.getPropertyNameSet();
-        assertNotNull(propNames);
-        assertEquals(attNames.size(), propNames.size());
+        Assert.assertNotNull(propNames);
+        Assert.assertEquals(attNames.size(), propNames.size());
 
         for (PropertyName pn : propNames) {
-            assertTrue(attNames.contains(pn.getPropertyName()));
+            Assert.assertTrue(attNames.contains(pn.getPropertyName()));
         }
     }
 
@@ -159,6 +142,7 @@ public class FilterAttributeExtractorTest extends TestCase {
      *
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
+    @Test
     public void testLike() throws IllegalFilterException {
         PropertyIsLike filter = fac.like(fac.property("testString"), "abc");
         assertAttributeName(filter, "testString");
@@ -169,6 +153,7 @@ public class FilterAttributeExtractorTest extends TestCase {
      *
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
+    @Test
     public void testNull() throws IllegalFilterException {
         PropertyIsNull filter = fac.isNull(fac.property("foo"));
         assertAttributeName(filter, new String[] {"foo"});
@@ -179,6 +164,7 @@ public class FilterAttributeExtractorTest extends TestCase {
      *
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
+    @Test
     public void testBetween() throws IllegalFilterException {
         // Set up the integer
         Literal lower = fac.literal(1001);
@@ -201,6 +187,7 @@ public class FilterAttributeExtractorTest extends TestCase {
      *
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
+    @Test
     public void testGeometry() throws IllegalFilterException {
         Coordinate[] coords = new Coordinate[3];
         coords[0] = new Coordinate(1, 2);
@@ -222,6 +209,7 @@ public class FilterAttributeExtractorTest extends TestCase {
         assertAttributeName(filter, "testGeometry");
     }
 
+    @Test
     public void testDistanceGeometry() throws Exception {
         Coordinate[] coords2 = new Coordinate[5];
         coords2[0] = new Coordinate(10, 10);
@@ -237,6 +225,7 @@ public class FilterAttributeExtractorTest extends TestCase {
         assertAttributeName(filter, "testGeometry");
     }
 
+    @Test
     public void testFid() {
         Id filter = fac.id(Collections.singleton(fac.featureId("fakeId")));
         assertAttributeName(filter, new String[0]);
@@ -247,6 +236,7 @@ public class FilterAttributeExtractorTest extends TestCase {
      *
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
+    @Test
     public void testLogic() throws IllegalFilterException {
 
         PropertyName testAttribute = fac.property("testString");
@@ -259,15 +249,12 @@ public class FilterAttributeExtractorTest extends TestCase {
                 fac.equals(testAttribute, fac.literal("incorrect test string data"));
 
         // Test OR for false negatives
-        Or filter =
-                fac.or(
-                        Arrays.asList(
-                                (org.opengis.filter.Filter) filterFalse,
-                                (org.opengis.filter.Filter) filterTrue));
+        Or filter = fac.or(Arrays.asList(filterFalse, filterTrue));
 
         assertAttributeName(filter, "testString");
     }
 
+    @Test
     public void testDynamicProperty() throws Exception {
         Function func = fac.function("property", fac.function("env", fac.literal("pname")));
         PropertyIsEqualTo filter = fac.equals(func, fac.literal("test"));

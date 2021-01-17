@@ -82,25 +82,29 @@ public class DescriptionTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        DescriptionType dt;
 
         // DescriptionType description;
         if (!(value instanceof DescriptionType)) {
-            value = Ows11Factory.eINSTANCE.createDescriptionType();
+            dt = Ows11Factory.eINSTANCE.createDescriptionType();
+        } else {
+            dt = (DescriptionType) value;
         }
 
         List<Node> children2 = node.getChildren("Keywords");
         for (Node c : children2) {
-            ((DescriptionType) value).getKeywords().add(c.getValue());
+            dt.getKeywords().add(c.getValue());
         }
         List<Node> children3 = node.getChildren("Title");
         for (Node c : children3) {
-            ((DescriptionType) value).getTitle().add(c.getValue());
+            dt.getTitle().add(c.getValue());
         }
         List<Node> children4 = node.getChildren("Abstract");
         for (Node c : children4) {
-            ((DescriptionType) value).getAbstract().add(c.getValue());
+            dt.getAbstract().add(c.getValue());
         }
-        return value;
+        return dt;
     }
 }

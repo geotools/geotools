@@ -17,7 +17,11 @@
 package org.geotools.geopkg.mosaic;
 
 import it.geosolutions.jaiext.mosaic.MosaicRIF;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -89,7 +93,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
     protected File sourceFile;
 
-    protected Map<String, TileEntry> tiles = new LinkedHashMap<String, TileEntry>();
+    protected Map<String, TileEntry> tiles = new LinkedHashMap<>();
 
     GeoPackage file;
 
@@ -203,8 +207,8 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         Rectangle dim = null;
 
         if (parameters != null) {
-            for (int i = 0; i < parameters.length; i++) {
-                final ParameterValue param = (ParameterValue) parameters[i];
+            for (GeneralParameterValue parameter : parameters) {
+                final ParameterValue param = (ParameterValue) parameter;
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
@@ -371,6 +375,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
      * Fast lane mosaicker, basically builds an OpImage that returns translated versions of the
      * source images, without actually copying pixels around
      */
+    @SuppressWarnings("PMD.UseArrayListInsteadOfVector") // old API asking for Vector
     private OpImage mosaicUniformImages(List<ImageInTile> sources) {
         // compute bounds
         int minx = sources.stream().mapToInt(it -> it.posx).min().getAsInt();
@@ -394,7 +399,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         // simple
         RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
         hints.putAll(GeoTools.getDefaultHints());
-        return new OpImage(new Vector(sourceImages), il, hints, false) {
+        return new OpImage(new Vector<>(sourceImages), il, hints, false) {
 
             @Override
             public Raster computeTile(int tileX, int tileY) {
@@ -432,6 +437,12 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             public Rectangle mapDestRect(Rectangle destRect, int sourceIndex) {
                 // should not really be used
                 return destRect;
+            }
+
+            @Override
+            @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
+            public Vector<RenderedImage> getSources() {
+                return super.getSources();
             }
         };
     }
@@ -561,7 +572,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         final int numSources = sources.size();
 
         // get first image as reference
-        RenderedImage first = (RenderedImage) sources.get(0);
+        RenderedImage first = sources.get(0);
         ColorModel firstColorModel = first.getColorModel();
         SampleModel firstSampleModel = first.getSampleModel();
 
@@ -586,7 +597,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         boolean hasUnsupportedTypes = false;
         int maxBands = firstBands;
         for (int i = 1; i < numSources; i++) {
-            RenderedImage source = (RenderedImage) sources.get(i);
+            RenderedImage source = sources.get(i);
             SampleModel sourceSampleModel = source.getSampleModel();
             ColorModel sourceColorModel = source.getColorModel();
             int sourceBands = sourceSampleModel.getNumBands();

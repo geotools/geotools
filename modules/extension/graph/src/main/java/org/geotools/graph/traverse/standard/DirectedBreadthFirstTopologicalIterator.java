@@ -55,10 +55,11 @@ public class DirectedBreadthFirstTopologicalIterator extends AbstractGraphIterat
 
     @Override
     public Graphable next(GraphTraversal traversal) {
-        return (!m_queue.isEmpty() ? (Graphable) m_queue.remove() : null);
+        return (!m_queue.isEmpty() ? m_queue.remove() : null);
     }
 
     @Override
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public void cont(Graphable current, GraphTraversal traversal) {
         // increment the count of all adjacent nodes by one
         // if the result count equal to the degree, place it into the queue

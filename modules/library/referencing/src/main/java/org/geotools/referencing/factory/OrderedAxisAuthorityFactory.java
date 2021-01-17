@@ -97,7 +97,7 @@ import systems.uom.common.USCustomary;
  * @see Hints#FORCE_STANDARD_AXIS_UNITS
  */
 public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
-        implements CSAuthorityFactory, CRSAuthorityFactory, Comparator /*<CoordinateSystemAxis>*/ {
+        implements CSAuthorityFactory, CRSAuthorityFactory, Comparator<CoordinateSystemAxis> {
     /**
      * The default order for axis directions. Note that this array needs to contain only the
      * "{@linkplain AxisDirection#absolute absolute}" directions.
@@ -213,7 +213,7 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
         if (userHints != null) {
             final Boolean value = (Boolean) userHints.get(key);
             if (value != null) {
-                return value.booleanValue();
+                return value;
             }
         }
         return false;
@@ -224,8 +224,8 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
      * invoked by constructors only.
      */
     private void completeHints() {
-        hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.valueOf(forceStandardUnits));
-        hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, Boolean.valueOf(forceStandardDirections));
+        hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, forceStandardUnits);
+        hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, forceStandardDirections);
         // The following hint has no effect on this class behaviour,
         // but tells to the user what this factory do about axis order.
         if (compare(DefaultCoordinateSystemAxis.EASTING, DefaultCoordinateSystemAxis.NORTHING)
@@ -247,12 +247,14 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
             axisOrder = DEFAULT_ORDER;
         }
         int length = 0;
-        for (int i = 0; i < axisOrder.length; i++) {
-            final int ordinal = axisOrder[i].absolute().ordinal() + 1;
+
+        for (AxisDirection axisDirection : axisOrder) {
+            final int ordinal = axisDirection.absolute().ordinal() + 1;
             if (ordinal > length) {
                 length = ordinal;
             }
         }
+
         final int[] directionRanks = new int[length];
         Arrays.fill(directionRanks, length);
         for (int i = 0; i < axisOrder.length; i++) {
@@ -299,8 +301,9 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
      *     allowed to compile for J2SE 1.5.
      * @since 2.3
      */
-    public int compare(final Object axis1, final Object axis2) {
-        return rank((CoordinateSystemAxis) axis1) - rank((CoordinateSystemAxis) axis2);
+    @Override
+    public int compare(CoordinateSystemAxis axis1, CoordinateSystemAxis axis2) {
+        return rank(axis1) - rank(axis2);
     }
 
     /**
@@ -313,17 +316,17 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
      * <p>
      *
      * <ul>
-     *   <li>Any linear units converted to {@linkplain SI#METER meters}
-     *   <li>{@linkplain SI#RADIAN Radians} and {@linkplain NonSI#GRADE grades} converted to
+     *   <li>Any linear units converted to {@linkplain SI#METRE meters}
+     *   <li>{@linkplain SI#RADIAN Radians} and {@linkplain USCustomary#GRADE grades} converted to
      *       {@linkplain NonSI#DEGREE_ANGLE decimal degrees}
      * </ul>
      *
-     * <p>This default substitution table may be expanded in future Geotools versions.
+     * <p>This default substitution table may be expanded in future GeoTools versions.
      *
      * @since 2.3
      */
     @Override
-    protected Unit<?> replace(final Unit<?> units) {
+    public Unit<?> replace(final Unit<?> units) {
         if (forceStandardUnits) {
             if (units.isCompatible(SI.METRE)) {
                 return SI.METRE;

@@ -52,7 +52,7 @@ public final class NetCDFCFTest extends Assert {
         // Testing entries
         Set<String> entries = parser.getEntryIds();
         assertNotNull(entries);
-        assertTrue(!entries.isEmpty());
+        assertFalse(entries.isEmpty());
         assertTrue(entries.contains("air_potential_temperature"));
     }
 }

@@ -21,7 +21,6 @@ package org.geotools.filter.function;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,7 +56,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
     private volatile Map<Name, FunctionDescriptor> functionCache;
 
     public List<FunctionName> getFunctionNames() {
-        ArrayList<FunctionName> list = new ArrayList<FunctionName>(functionCache().size());
+        ArrayList<FunctionName> list = new ArrayList<>(functionCache().size());
         for (FunctionDescriptor fd : functionCache().values()) {
             list.add(fd.name);
             //            if( "rint".equals(fd.name.getName())){
@@ -138,16 +137,14 @@ public class DefaultFunctionFactory implements FunctionFactory {
     }
 
     private Map<Name, FunctionDescriptor> loadFunctions() {
-        Map<Name, FunctionDescriptor> functionMap = new HashMap<Name, FunctionDescriptor>();
+        Map<Name, FunctionDescriptor> functionMap = new HashMap<>();
 
         Set<Function> functions = CommonFactoryFinder.getFunctions(null);
-        for (Iterator<Function> i = functions.iterator(); i.hasNext(); ) {
-            Function function = (Function) i.next();
+        for (Function function : functions) {
             FunctionName functionName = getFunctionName(function);
             Name name = functionName.getFunctionName();
 
-            FunctionDescriptor fd =
-                    new FunctionDescriptor(functionName, (Class<Function>) function.getClass());
+            FunctionDescriptor fd = new FunctionDescriptor(functionName, function.getClass());
 
             // needed to insert justin's name hack here to ensure consistent lookup
             Name key = functionName(name);
@@ -191,9 +188,9 @@ public class DefaultFunctionFactory implements FunctionFactory {
 
     static class FunctionDescriptor {
         FunctionName name;
-        Class<Function> clazz;
+        Class<? extends Function> clazz;
 
-        FunctionDescriptor(FunctionName name, Class<Function> clazz) {
+        FunctionDescriptor(FunctionName name, Class<? extends Function> clazz) {
             this.name = name;
             this.clazz = clazz;
         }
@@ -222,7 +219,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
                 return function;
             }
             // Function function = (Function) functionClass.newInstance();
-            Constructor<Function> constructor =
+            Constructor<? extends Function> constructor =
                     clazz.getConstructor(new Class[] {List.class, Literal.class});
             return constructor.newInstance(parameters, fallback);
         }

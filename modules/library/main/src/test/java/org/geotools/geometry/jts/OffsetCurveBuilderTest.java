@@ -21,7 +21,11 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -194,13 +198,13 @@ public class OffsetCurveBuilderTest {
     @Test
     public void testHorizontalSegmentPositiveOffset() throws ParseException {
         Geometry offset = simpleOffsetTest("LINESTRING(0 0, 10 0)", 2);
-        assertTrue(offset.getEnvelopeInternal().getMinY() == 2);
+        assertEquals(2, offset.getEnvelopeInternal().getMinY(), 0.0);
     }
 
     @Test
     public void testHorizontalSegmentNegativeOffset() throws ParseException {
         Geometry offset = simpleOffsetTest("LINESTRING(0 0, 10 0)", -2);
-        assertTrue(offset.getEnvelopeInternal().getMinY() == -2);
+        assertEquals(offset.getEnvelopeInternal().getMinY(), -2, 0.0);
     }
 
     @Test

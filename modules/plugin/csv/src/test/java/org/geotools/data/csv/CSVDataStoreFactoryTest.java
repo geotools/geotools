@@ -57,7 +57,7 @@ public class CSVDataStoreFactoryTest {
 
     @Test
     public void testCreateDataStoreFileParams() throws Exception {
-        Map<String, Serializable> fileParams = new HashMap<String, Serializable>(1);
+        Map<String, Serializable> fileParams = new HashMap<>(1);
         fileParams.put("file", file);
         FileDataStore dataStore = csvDataStoreFactory.createDataStore(fileParams);
         assertNotNull("Could not create datastore from file params", dataStore);
@@ -65,7 +65,7 @@ public class CSVDataStoreFactoryTest {
 
     @Test
     public void testCreateDataStoreURLParams() throws Exception {
-        Map<String, Serializable> urlParams = new HashMap<String, Serializable>(1);
+        Map<String, Serializable> urlParams = new HashMap<>(1);
         urlParams.put("url", locationsResource);
         FileDataStore dataStore = csvDataStoreFactory.createDataStore(urlParams);
         assertNotNull("Could not create datastore from url params", dataStore);
@@ -87,14 +87,14 @@ public class CSVDataStoreFactoryTest {
 
     @Test
     public void testCanProcessFileParams() {
-        Map<String, Serializable> fileParams = new HashMap<String, Serializable>(1);
+        Map<String, Serializable> fileParams = new HashMap<>(1);
         fileParams.put("file", file);
         assertTrue("Did not process file params", csvDataStoreFactory.canProcess(fileParams));
     }
 
     @Test
     public void testCanProcessURLParams() {
-        Map<String, Serializable> urlParams = new HashMap<String, Serializable>(1);
+        Map<String, Serializable> urlParams = new HashMap<>(1);
         urlParams.put("url", locationsResource);
         assertTrue("Did not process url params", csvDataStoreFactory.canProcess(urlParams));
     }
@@ -117,9 +117,7 @@ public class CSVDataStoreFactoryTest {
         File f = File.createTempFile("does-not-exist", ".csv");
         CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStoreFromFile(f);
 
-        assertTrue(
-                "Did not throw illegal argument exception for non-existent file",
-                datastore != null);
+        assertNotNull("Did not throw illegal argument exception for non-existent file", datastore);
     }
 
     @Test
@@ -134,7 +132,7 @@ public class CSVDataStoreFactoryTest {
 
     @Test
     public void testCSVStrategyGuess() throws Exception {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("strategy", "guess");
         params.put("file", file);
         CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStore(params);
@@ -144,7 +142,7 @@ public class CSVDataStoreFactoryTest {
 
     @Test
     public void testCSVStrategySpecifiedBadParams() throws Exception {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("strategy", "specify");
         params.put("file", file);
         try {
@@ -157,7 +155,7 @@ public class CSVDataStoreFactoryTest {
 
     @Test
     public void testCSVStrategySpecified() throws Exception {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("strategy", "specify");
         params.put("file", file);
         params.put("latField", "foo");
@@ -169,7 +167,7 @@ public class CSVDataStoreFactoryTest {
 
     @Test
     public void testCSVStrategyWKTMissingWktField() throws IOException {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("strategy", "wkt");
         params.put("file", file);
         try {
@@ -182,7 +180,7 @@ public class CSVDataStoreFactoryTest {
 
     @Test
     public void testCSVStrategyWKT() throws IOException {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("strategy", "wkt");
         params.put("wktField", "whatever");
         params.put("file", file);
@@ -193,7 +191,7 @@ public class CSVDataStoreFactoryTest {
 
     @Test
     public void testNamespace() throws IOException {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         String namespaceURI = "http://www.geotools.org/csv";
         params.put("namespace", namespaceURI);
         params.put("wktField", "whatever");

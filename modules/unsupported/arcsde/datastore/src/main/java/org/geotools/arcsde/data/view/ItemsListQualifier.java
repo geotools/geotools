@@ -18,7 +18,6 @@
 package org.geotools.arcsde.data.view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.sf.jsqlparser.expression.Expression;
@@ -40,16 +39,16 @@ class ItemsListQualifier implements ItemsListVisitor {
 
     private ISession session;
 
-    private Map<String, Object> tableAliases;
+    private Map<String, ?> tableAliases;
 
     /** Creates a new ItemsListQualifier object. */
-    public ItemsListQualifier(ISession session, Map<String, Object> tableAliases) {
+    public ItemsListQualifier(ISession session, Map<String, ?> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;
     }
 
     public static ItemsList qualify(
-            ISession session, Map<String, Object> tableAliases, ItemsList items) {
+            ISession session, Map<String, ?> tableAliases, ItemsList items) {
         if (items == null) {
             return null;
         }
@@ -68,10 +67,9 @@ class ItemsListQualifier implements ItemsListVisitor {
     @SuppressWarnings("unchecked")
     public void visit(ExpressionList expressionList) {
         List<Expression> expressions = expressionList.getExpressions();
-        List<Expression> qualifiedList = new ArrayList<Expression>(expressions.size());
+        List<Expression> qualifiedList = new ArrayList<>(expressions.size());
 
-        for (Iterator<Expression> it = expressions.iterator(); it.hasNext(); ) {
-            Expression exp = (Expression) it.next();
+        for (Expression exp : expressions) {
             Expression qExp = ExpressionQualifier.qualify(session, tableAliases, exp);
 
             qualifiedList.add(qExp);

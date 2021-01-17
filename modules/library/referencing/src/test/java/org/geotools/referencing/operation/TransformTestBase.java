@@ -16,14 +16,16 @@
  */
 package org.geotools.referencing.operation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.util.Random;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.factory.Hints;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.referencing.crs.CRSFactory;
 import org.opengis.referencing.datum.DatumFactory;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
@@ -92,8 +94,8 @@ public abstract class TransformTestBase {
         if (transform.getTargetDimensions() != dim) {
             dim = 0;
         }
-        assertTrue("MathTransform1D", (dim == 1) == (transform instanceof MathTransform1D));
-        assertTrue("MathTransform2D", (dim == 2) == (transform instanceof MathTransform2D));
+        assertEquals("MathTransform1D", (dim == 1), (transform instanceof MathTransform1D));
+        assertEquals("MathTransform2D", (dim == 2), (transform instanceof MathTransform2D));
     }
 
     /**

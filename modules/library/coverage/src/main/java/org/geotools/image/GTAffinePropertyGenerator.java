@@ -139,7 +139,7 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
                 dstROI = srcROI.performImageOp("Affine", paramBlock, 0, localHints);
             } else {
                 // let the geometry based ROIs do their work at the vector level
-                dstROI = srcROI.transform((AffineTransform) transform);
+                dstROI = srcROI.transform(transform);
             }
 
             // Retrieve the destination bounds.

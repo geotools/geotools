@@ -17,7 +17,7 @@
 package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BandedSampleModel;
 import java.awt.image.ColorModel;
@@ -140,8 +140,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     String defaultName = null;
 
-    private SoftValueHashMap<String, CoverageSource> coverages =
-            new SoftValueHashMap<String, CoverageSource>();
+    private SoftValueHashMap<String, CoverageSource> coverages = new SoftValueHashMap<>();
 
     public NetCDFReader(Object input, Hints uHints) throws DataSourceException {
         super(input, uHints);
@@ -153,10 +152,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
         // getting access to the source
         try {
-            access =
-                    (NetCDFAccess)
-                            DRIVER.process(
-                                    DriverCapabilities.CONNECT, sourceURL, null, uHints, null);
+            access = DRIVER.process(DriverCapabilities.CONNECT, sourceURL, null, uHints, null);
         } catch (IOException e) {
             throw new DataSourceException("Unable to connect", e);
         }
@@ -168,7 +164,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
         // get the names
         names = access.getNames(null);
-        setNames = new TreeSet<String>();
+        setNames = new TreeSet<>();
         for (Name name : names) {
             String nameString = name.toString();
             if (defaultName == null) {
@@ -196,7 +192,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     @Override
     public String[] getMetadataNames(String coverageName) {
         checkIsSupported(coverageName);
-        final List<String> metadataNames = new ArrayList<String>();
+        final List<String> metadataNames = new ArrayList<>();
 
         // standard metadata
         metadataNames.add(GridCoverage2DReader.HAS_TIME_DOMAIN);
@@ -336,7 +332,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     @Override
     public String[] getGridCoverageNames() {
-        return (String[]) setNames.toArray(new String[setNames.size()]);
+        return setNames.toArray(new String[setNames.size()]);
     }
 
     @Override
@@ -440,9 +436,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     }
 
     private String buildTemporalList(SortedSet<? extends DateRange> temporalElements) {
-        Iterator<DateRange> iterator = (Iterator<DateRange>) temporalElements.iterator();
-        //        LinkedHashSet<String> result = new LinkedHashSet<String>();
-
+        Iterator<? extends DateRange> iterator = temporalElements.iterator();
         final StringBuilder buff = new StringBuilder("");
         while (iterator.hasNext()) {
             DateRange range = iterator.next();
@@ -459,10 +453,8 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     /** Setup a String containing vertical domain by doing a scan of a set of vertical Elements */
     private String buildVerticalList(SortedSet<? extends NumberRange<Double>> verticalElements) {
-        Iterator<NumberRange<Double>> iterator =
-                (Iterator<NumberRange<Double>>) verticalElements.iterator();
-        LinkedHashSet<String> ranges = new LinkedHashSet<String>();
-
+        Iterator<? extends NumberRange<Double>> iterator = verticalElements.iterator();
+        LinkedHashSet<String> ranges = new LinkedHashSet<>();
         while (iterator.hasNext()) {
             NumberRange<Double> range = iterator.next();
             ranges.add((range.getMinValue() + "/" + range.getMaxValue()));
@@ -476,11 +468,11 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
      * @return TODO: improve that to deal with multiple types
      */
     private String buildElementsList(Set<Object> elements) {
-        Iterator<Object> iterator = (Iterator<Object>) elements.iterator();
-        LinkedHashSet<String> ranges = new LinkedHashSet<String>();
+        Iterator<Object> iterator = elements.iterator();
+        LinkedHashSet<String> ranges = new LinkedHashSet<>();
 
         while (iterator.hasNext()) {
-            Object value = (Object) iterator.next();
+            Object value = iterator.next();
             ranges.add(ConvertersHack.convert(value, String.class));
         }
         return buildResultsString(ranges);
@@ -586,12 +578,14 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
                 for (Object val : values) {
                     if (val instanceof Number) {
                         verticalSubset.add(
-                                new NumberRange<Double>(
+                                new NumberRange<>(
                                         Double.class,
                                         ((Number) val).doubleValue(),
                                         ((Number) val).doubleValue()));
                     } else if (val instanceof NumberRange) {
-                        verticalSubset.add((NumberRange<Double>) val);
+                        @SuppressWarnings("unchecked")
+                        NumberRange<Double> casted = (NumberRange<Double>) val;
+                        verticalSubset.add(casted);
                     }
                 }
                 // TODO IMPROVE THAT TO DEAL ON RANGES
@@ -621,17 +615,18 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
             if (value == null) {
                 return;
             }
-            final Set values = new HashSet();
+            final Set<Object> values = new HashSet<>();
             if (value instanceof Collection) {
-                values.addAll((Collection) value); // we are assuming it is a list !!!
-
+                @SuppressWarnings("unchecked")
+                Collection<Object> other = (Collection<Object>) value;
+                values.addAll(other);
             } else {
                 values.add(value);
             }
             // remove last comma
             Map<String, Set<?>> domainsSubset = request.getAdditionalDomainsSubset();
             if (domainsSubset == null) {
-                domainsSubset = new HashMap<String, Set<?>>();
+                domainsSubset = new HashMap<>();
                 request.setAdditionalDomainsSubset(domainsSubset);
             }
             domainsSubset.put(paramName, values);
@@ -706,7 +701,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     /** Build a String containing comma separated values from the result set */
     private String buildResultsString(Set<String> result) {
-        if (result.size() <= 0) {
+        if (result.isEmpty()) {
             return "";
         }
 
@@ -936,7 +931,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     @Override
     public List<DimensionDescriptor> getDimensionDescriptors(String coverageName)
             throws IOException {
-        final CoverageSource source = (CoverageSource) getGridCoverageSource(coverageName);
+        final CoverageSource source = getGridCoverageSource(coverageName);
         return source.getDimensionDescriptors();
     }
 

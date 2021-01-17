@@ -16,7 +16,9 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -41,10 +43,10 @@ public class PolygonHandler2Test extends org.geotools.data.shapefile.TestCaseSup
         c[2] = new Coordinate(1, 2, 3);
 
         PolygonHandler handler = new PolygonHandler(new GeometryFactory());
-        assertTrue(handler.getShapeType() == ShapeType.POLYGON);
+        assertSame(handler.getShapeType(), ShapeType.POLYGON);
 
-        for (int i = 0, ii = c.length; i < ii; i++) {
-            assertTrue(handler.pointInList(c[i], c));
+        for (Coordinate coordinate : c) {
+            assertTrue(handler.pointInList(coordinate, c));
         }
     }
 
@@ -82,7 +84,7 @@ public class PolygonHandler2Test extends org.geotools.data.shapefile.TestCaseSup
 
         PolygonHandler ph = new PolygonHandler(new GeometryFactory());
         List<List<LinearRing>> assigned = ph.assignHolesToShells(shells, holes);
-        assertEquals(((ArrayList<?>) assigned.get(0)).size(), holes.size());
+        assertEquals(assigned.get(0).size(), holes.size());
     }
 
     public static LinearRing rectangle(PrecisionModel pm, int SRID) {

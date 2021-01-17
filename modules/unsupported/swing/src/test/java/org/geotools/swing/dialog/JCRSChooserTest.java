@@ -16,7 +16,11 @@
  */
 package org.geotools.swing.dialog;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.AWTEvent;
 import java.awt.Dialog;
@@ -81,12 +85,12 @@ public class JCRSChooserTest extends GraphicsTestBase<DialogFixture, Dialog, Dia
                 ReferencingFactoryFinder.getCRSAuthorityFactory(
                         JCRSChooser.DEFAULT_AUTHORITY, hints);
 
-        CODES = new ArrayList<String>(FACTORY.getAuthorityCodes(CoordinateReferenceSystem.class));
+        CODES = new ArrayList<>(FACTORY.getAuthorityCodes(CoordinateReferenceSystem.class));
     }
 
     @Before
     public void setup() {
-        listener = new WindowActivatedListener(JCRSChooser.CRSDialog.class);
+        listener = new WindowActivatedListener<>(JCRSChooser.CRSDialog.class);
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
     }
 
@@ -276,6 +280,7 @@ public class JCRSChooserTest extends GraphicsTestBase<DialogFixture, Dialog, Dia
      * @param title custom title (may be {@code null}
      * @return the Future for the dialog task
      */
+    @SuppressWarnings("unchecked")
     private Future<CoordinateReferenceSystem> showDialog(final String title) throws Exception {
         Future<CoordinateReferenceSystem> future =
                 executor.submit(

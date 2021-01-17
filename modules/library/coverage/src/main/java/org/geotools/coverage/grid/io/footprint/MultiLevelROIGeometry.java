@@ -54,8 +54,7 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
 
     private FootprintInsetPolicy insetPolicy;
 
-    private SoftValueHashMap<AffineTransform, ROIGeometry> roiCache =
-            new SoftValueHashMap<AffineTransform, ROIGeometry>(10);
+    private SoftValueHashMap<AffineTransform, ROIGeometry> roiCache = new SoftValueHashMap<>(10);
 
     private boolean empty;
 
@@ -187,7 +186,7 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
             if (roi instanceof ROIGeometry) {
                 return ((ROIGeometry) roi).getAsGeometry();
             } else if (roi instanceof ROIShape) {
-                final Shape shape = ((ROIShape) roi).getAsShape();
+                final Shape shape = roi.getAsShape();
                 final Geometry geom = ShapeReader.read(shape, 0, new GeometryFactory());
                 geom.apply(Y_INVERSION);
                 return geom;

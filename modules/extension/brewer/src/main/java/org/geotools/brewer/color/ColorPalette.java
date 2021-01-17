@@ -84,8 +84,8 @@ public class ColorPalette {
 
         int count = 0;
 
-        for (int i = 0; i < colors.length; i++)
-            if (colors[i] != null) {
+        for (Color color : colors)
+            if (color != null) {
                 count++;
             }
 

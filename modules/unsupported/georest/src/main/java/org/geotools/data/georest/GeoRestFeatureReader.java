@@ -35,7 +35,6 @@ import org.opengis.filter.sort.SortOrder;
  * FeatureReader for the {@link GeoRestDataStore}.
  *
  * @author Pieter De Graef, Geosparc
-
  */
 public class GeoRestFeatureReader implements SimpleFeatureReader {
 

@@ -18,19 +18,23 @@ package org.geotools.data.util;
 
 import java.nio.charset.Charset;
 import java.util.Set;
-import junit.framework.TestCase;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class CharsetConverterFactoryTest extends TestCase {
+public class CharsetConverterFactoryTest {
 
     CharsetConverterFactory factory;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         factory = new CharsetConverterFactory();
     }
 
+    @Test
     public void testLookupStringToCharset() {
         Set<ConverterFactory> s = Converters.getConverterFactories(String.class, Charset.class);
         for (ConverterFactory cf : s) {
@@ -39,9 +43,10 @@ public class CharsetConverterFactoryTest extends TestCase {
             }
         }
 
-        fail("CharsetConverterFactory not found");
+        Assert.fail("CharsetConverterFactory not found");
     }
 
+    @Test
     public void testLookupCharsetToString() {
         Set<ConverterFactory> s = Converters.getConverterFactories(Charset.class, String.class);
         for (ConverterFactory cf : s) {
@@ -50,25 +55,27 @@ public class CharsetConverterFactoryTest extends TestCase {
             }
         }
 
-        fail("CharsetConverterFactory not found");
+        Assert.fail("CharsetConverterFactory not found");
     }
 
+    @Test
     public void testStringToCharset() throws Exception {
         Converter c = factory.createConverter(String.class, Charset.class, null);
-        assertNotNull(c);
+        Assert.assertNotNull(c);
 
         Charset charset = c.convert("UTF-8", Charset.class);
-        assertNotNull(charset);
-        assertEquals("UTF-8", charset.name());
+        Assert.assertNotNull(charset);
+        Assert.assertEquals("UTF-8", charset.name());
 
-        assertNull(c.convert("FOO", Charset.class));
+        Assert.assertNull(c.convert("FOO", Charset.class));
     }
 
+    @Test
     public void testCharsetToString() throws Exception {
         Converter c = factory.createConverter(Charset.class, String.class, null);
-        assertNotNull(c);
+        Assert.assertNotNull(c);
 
         String charset = c.convert(Charset.forName("UTF-8"), String.class);
-        assertEquals("UTF-8", charset);
+        Assert.assertEquals("UTF-8", charset);
     }
 }

@@ -130,11 +130,7 @@ class NetCDFRequest extends CoverageReadRequest {
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(bbox);
         try {
             wgs84Envelope = wgs84Envelope.transform(DefaultGeographicCRS.WGS84, true);
-        } catch (TransformException e) {
-            IOException ioe = new IOException();
-            ioe.initCause(e);
-            throw ioe;
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             IOException ioe = new IOException();
             ioe.initCause(e);
             throw ioe;
@@ -232,7 +228,7 @@ class NetCDFRequest extends CoverageReadRequest {
                     && NetCDFUtilities.getParameterBehaviour(NetCDFUtilities.ELEVATION_DIM)
                             == ParameterBehaviour.DO_NOTHING) {
                 if (verticalExtent != null) {
-                    verticalSubset = new HashSet<NumberRange<Double>>(verticalExtent);
+                    verticalSubset = new HashSet<>(verticalExtent);
                 }
                 request.setVerticalSubset(verticalSubset);
             } else {
@@ -256,7 +252,7 @@ class NetCDFRequest extends CoverageReadRequest {
                             minimumDistance = distance;
                         }
                     }
-                    verticalSubset = new HashSet<NumberRange<Double>>(1);
+                    verticalSubset = new HashSet<>(1);
                     verticalSubset.add(nearestEnvelope);
                     request.setVerticalSubset(verticalSubset);
                 }

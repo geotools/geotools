@@ -20,9 +20,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.TestCase;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -31,26 +31,31 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
-public class KMLParsingTest extends TestCase {
+public class KMLParsingTest {
 
+    @Test
     public void testParse() throws Exception {
         Parser parser = new Parser(new KMLConfiguration());
         SimpleFeature f =
                 (SimpleFeature) parser.parse(getClass().getResourceAsStream("states.kml"));
-        assertNotNull(f);
+        Assert.assertNotNull(f);
 
-        assertEquals("topp:states", f.getAttribute("name"));
+        Assert.assertEquals("topp:states", f.getAttribute("name"));
 
         Collection placemarks = (Collection) f.getAttribute("Feature");
-        assertEquals(49, placemarks.size());
+        Assert.assertEquals(49, placemarks.size());
     }
 
+    @Test
     public void testStream() throws Exception {
         StreamingParser parser =
                 new StreamingParser(
@@ -62,16 +67,17 @@ public class KMLParsingTest extends TestCase {
 
         while ((f = (SimpleFeature) parser.parse()) != null) {
             FeatureTypeStyle style = (FeatureTypeStyle) f.getAttribute("Style");
-            assertNotNull(style);
+            Assert.assertNotNull(style);
 
-            assertEquals(3, style.rules().get(0).symbolizers().size());
+            Assert.assertEquals(3, style.rules().get(0).symbolizers().size());
 
             count++;
         }
 
-        assertEquals(49, count);
+        Assert.assertEquals(49, count);
     }
 
+    @Test
     public void testEncodeFeatureCollection() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("foo");
@@ -101,11 +107,13 @@ public class KMLParsingTest extends TestCase {
 
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document d = db.parse(new ByteArrayInputStream(out.toByteArray()));
-        assertEquals("kml:kml", d.getDocumentElement().getNodeName());
-        assertEquals(2, d.getElementsByTagName("kml:Placemark").getLength());
+        Assert.assertEquals("kml:kml", d.getDocumentElement().getNodeName());
+        Assert.assertEquals(2, d.getElementsByTagName("kml:Placemark").getLength());
     }
 
-    public void XtestEncodeFeature() throws Exception {
+    @Test
+    @Ignore
+    public void testEncodeFeature() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("foo");
         tb.add("name", String.class);
@@ -114,7 +122,7 @@ public class KMLParsingTest extends TestCase {
 
         GeometryFactory gf = new GeometryFactory();
         SimpleFeatureBuilder sb = new SimpleFeatureBuilder(tb.buildFeatureType());
-        ArrayList features = new ArrayList();
+        List<SimpleFeature> features = new ArrayList<>();
 
         sb.add("one");
         sb.add("the first feature");
@@ -137,7 +145,7 @@ public class KMLParsingTest extends TestCase {
 
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document d = db.parse(new ByteArrayInputStream(out.toByteArray()));
-        assertEquals("kml:kml", d.getDocumentElement().getNodeName());
-        assertEquals(2, d.getElementsByTagName("kml:Placemark").getLength());
+        Assert.assertEquals("kml:kml", d.getDocumentElement().getNodeName());
+        Assert.assertEquals(2, d.getElementsByTagName("kml:Placemark").getLength());
     }
 }

@@ -238,7 +238,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
 
     /** Returns the date that the metadata was created. */
     public Date getDateStamp() {
-        return (dateStamp != Long.MIN_VALUE) ? new Date(dateStamp) : (Date) null;
+        return (dateStamp != Long.MIN_VALUE) ? new Date(dateStamp) : null;
     }
 
     /** Set the date that the metadata was created. */

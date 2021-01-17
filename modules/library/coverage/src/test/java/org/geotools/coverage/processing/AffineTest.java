@@ -16,7 +16,9 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.Range;
@@ -31,7 +33,8 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
 
 /**
@@ -152,6 +155,7 @@ public class AffineTest extends GridProcessingTestBase {
             assertNotNull(PlanarImage.wrapRenderedImage(scaledImage).getTiles());
         }
         // Ensure a new ROI property has been created
+        @SuppressWarnings("unchecked")
         Map<String, Object> properties = scaled.getProperties();
         if (jaiextAffine && roi != null) {
             assertNotNull(properties);

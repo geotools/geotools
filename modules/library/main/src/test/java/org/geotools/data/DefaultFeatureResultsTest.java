@@ -21,13 +21,15 @@ import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 
-import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class DefaultFeatureResultsTest extends TestCase {
+public class DefaultFeatureResultsTest {
 
+    @Test
     public void testMaxFeatureOptimized() throws Exception {
         Query q = new Query("roads");
         q.setMaxFeatures(10);
@@ -41,16 +43,17 @@ public class DefaultFeatureResultsTest extends TestCase {
         replay(fs);
 
         DefaultFeatureResults results = new DefaultFeatureResults(fs, q);
-        assertEquals(10, results.size());
+        Assert.assertEquals(10, results.size());
     }
 
+    @Test
     public void testMaxfeaturesHandCount() throws Exception {
         Query q = new Query("roads");
         q.setMaxFeatures(1);
 
-        // mock up the feature source so that it'll return a count of -1 (too
-        // expensive)
+        // mock up the feature source so that it'll return a count of -1 (too expensive)
         // and then will return a reader
+        @SuppressWarnings("unchecked")
         FeatureReader<SimpleFeatureType, SimpleFeature> fr = createNiceMock(FeatureReader.class);
         expect(fr.hasNext()).andReturn(true).times(2).andReturn(false);
         replay(fr);
@@ -68,6 +71,6 @@ public class DefaultFeatureResultsTest extends TestCase {
         replay(fs);
 
         DefaultFeatureResults results = new DefaultFeatureResults(fs, q);
-        assertEquals(1, results.size());
+        Assert.assertEquals(1, results.size());
     }
 }

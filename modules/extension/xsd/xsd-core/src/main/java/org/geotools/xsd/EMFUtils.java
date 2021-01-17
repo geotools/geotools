@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -144,6 +143,7 @@ public class EMFUtils {
      * @param feature The multi-valued feature.
      * @param value The value to add.
      */
+    @SuppressWarnings("unchecked") // playing with generic collections, contents unknown
     public static void add(EObject eobject, EStructuralFeature feature, Object value) {
         if (isCollection(eobject, feature)) {
             Collection collection = (Collection) eobject.eGet(feature);
@@ -180,9 +180,10 @@ public class EMFUtils {
      *     value is an array.
      * @see #add(EObject, String, Object)
      */
+    @SuppressWarnings("unchecked") // playing with generic collections/arrays
     private static Collection collection(Object value) {
         if (null == value) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         } else if (value.getClass().isArray()) {
             final int len = java.lang.reflect.Array.getLength(value);
             List list = new ArrayList(len);
@@ -261,9 +262,8 @@ public class EMFUtils {
         }
 
         // do a case insentive check, need to do the walk up the type hierarchy
-        for (Iterator itr = eobject.eClass().getEAllStructuralFeatures().iterator();
-                itr.hasNext(); ) {
-            feature = (EStructuralFeature) itr.next();
+        for (EStructuralFeature eStructuralFeature : eobject.eClass().getEAllStructuralFeatures()) {
+            feature = eStructuralFeature;
 
             if (feature.getName().equalsIgnoreCase(property)) {
                 return feature;
@@ -280,13 +280,11 @@ public class EMFUtils {
      * @param propertyType The type of the properties.
      * @return The list of structure features, or an empty list if none are found.
      */
-    public static List /*<EStructuralFeature>*/ features(EObject eobject, Class propertyType) {
-        List match = new ArrayList();
-        List features = eobject.eClass().getEAllStructuralFeatures();
+    public static List<EStructuralFeature> features(EObject eobject, Class<?> propertyType) {
+        List<EStructuralFeature> match = new ArrayList<>();
+        List<EStructuralFeature> features = eobject.eClass().getEAllStructuralFeatures();
 
-        for (Iterator itr = features.iterator(); itr.hasNext(); ) {
-            EStructuralFeature feature = (EStructuralFeature) itr.next();
-
+        for (EStructuralFeature feature : features) {
             if (feature.getEType().getInstanceClass().isAssignableFrom(propertyType)) {
                 match.add(feature);
             }
@@ -323,8 +321,8 @@ public class EMFUtils {
      * @param value The value to set on each eobjct in <code>objects</code>
      */
     public static void set(List objects, String property, Object value) {
-        for (int i = 0; i < objects.size(); i++) {
-            EObject eobject = (EObject) objects.get(i);
+        for (Object object : objects) {
+            EObject eobject = (EObject) object;
             set(eobject, property, value);
         }
     }
@@ -336,11 +334,11 @@ public class EMFUtils {
      * @param property The property to obtain.
      * @return The list of values.
      */
-    public static List get(List objects, String property) {
-        List values = new ArrayList();
+    public static List<Object> get(List objects, String property) {
+        List<Object> values = new ArrayList<>();
 
-        for (int i = 0; i < objects.size(); i++) {
-            EObject eobject = (EObject) objects.get(i);
+        for (Object object : objects) {
+            EObject eobject = (EObject) object;
             EStructuralFeature feature = feature(eobject, property);
 
             values.add(eobject.eGet(feature));
@@ -371,8 +369,8 @@ public class EMFUtils {
      *     </code>
      */
     public static boolean isSet(List objects, String property) {
-        for (int i = 0; i < objects.size(); i++) {
-            EObject eobject = (EObject) objects.get(i);
+        for (Object object : objects) {
+            EObject eobject = (EObject) object;
 
             if (!isSet(eobject, property)) {
                 return false;
@@ -390,8 +388,8 @@ public class EMFUtils {
      * @return <code>true</code> if every element in the list is unset, otherwise <code>false</code>
      */
     public static boolean isUnset(List objects, String property) {
-        for (int i = 0; i < objects.size(); i++) {
-            EObject eobject = (EObject) objects.get(i);
+        for (Object object : objects) {
+            EObject eobject = (EObject) object;
 
             if (isSet(eobject, property)) {
                 return false;
@@ -413,8 +411,7 @@ public class EMFUtils {
     public static EObject clone(EObject prototype, EFactory factory, boolean deep) {
         EObject clone = factory.create(prototype.eClass());
 
-        for (Iterator i = clone.eClass().getEStructuralFeatures().iterator(); i.hasNext(); ) {
-            EStructuralFeature feature = (EStructuralFeature) i.next();
+        for (EStructuralFeature feature : clone.eClass().getEStructuralFeatures()) {
             Object value = prototype.eGet(feature);
             if (deep && value instanceof EObject) {
                 EObject evalue = (EObject) value;
@@ -436,8 +433,7 @@ public class EMFUtils {
      * @param target The object to copy to.
      */
     public static void copy(EObject source, EObject target) {
-        for (Iterator i = source.eClass().getEStructuralFeatures().iterator(); i.hasNext(); ) {
-            EStructuralFeature feature = (EStructuralFeature) i.next();
+        for (EStructuralFeature feature : source.eClass().getEStructuralFeatures()) {
             target.eSet(feature, source.eGet(feature));
         }
     }

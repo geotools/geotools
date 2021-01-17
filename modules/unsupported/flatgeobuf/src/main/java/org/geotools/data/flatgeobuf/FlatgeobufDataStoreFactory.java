@@ -16,10 +16,9 @@
  */
 package org.geotools.data.flatgeobuf;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.data.DataStore;
@@ -43,7 +42,7 @@ public class FlatgeobufDataStoreFactory implements DataStoreFactorySpi {
     public FlatgeobufDataStoreFactory() {}
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> map) throws IOException {
+    public DataStore createDataStore(Map<String, ?> map) throws IOException {
         File file = (File) FILE_PARAM.lookUp(map);
         if (file.isDirectory()) {
             return new FlatgeobufDirectoryDataStore(file);
@@ -53,7 +52,7 @@ public class FlatgeobufDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> map) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> map) throws IOException {
         File file = (File) FILE_PARAM.lookUp(map);
         if (file.isDirectory()) {
             return new FlatgeobufDirectoryDataStore(file);
@@ -81,7 +80,7 @@ public class FlatgeobufDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public boolean canProcess(Map<String, Serializable> map) {
+    public boolean canProcess(Map<String, ?> map) {
         try {
             File file = (File) FILE_PARAM.lookUp(map);
             if (file != null) {

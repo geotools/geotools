@@ -51,7 +51,7 @@ public class WCSConfiguration extends Configuration {
     }
 
     @Override
-    protected void registerBindings(Map bindings) {
+    protected void registerBindings(Map<QName, Object> bindings) {
         super.registerBindings(bindings);
 
         final EFactory wcsFactory = Wcs111Factory.eINSTANCE;
@@ -71,7 +71,7 @@ public class WCSConfiguration extends Configuration {
         bindings.put(WCS.TimeSequenceType, new TimeSequenceTypeBinding());
     }
 
-    private void register(Map bindings, EFactory factory, QName qname) {
+    private void register(Map<QName, Object> bindings, EFactory factory, QName qname) {
         bindings.put(qname, new ComplexEMFBinding(factory, qname));
     }
 

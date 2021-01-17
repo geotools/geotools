@@ -51,9 +51,9 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     /** Last set visited */
-    protected Set<String> attributeNames = new HashSet<String>();
+    protected Set<String> attributeNames = new HashSet<>();
 
-    protected Set<PropertyName> propertyNames = new HashSet<PropertyName>();
+    protected Set<PropertyName> propertyNames = new HashSet<>();
     protected boolean usingVolatileFunctions;
     protected boolean usingDynamicProperties;
 
@@ -91,18 +91,20 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
      * @return an array of the attribute names found so far during the visit
      */
     public String[] getAttributeNames() {
-        return (String[]) attributeNames.toArray(new String[attributeNames.size()]);
+        return attributeNames.toArray(new String[attributeNames.size()]);
     }
 
     /** Resets the attributes found so that a new attribute search can be performed */
     public void clear() {
-        attributeNames = new HashSet<String>();
+        attributeNames = new HashSet<>();
         usingVolatileFunctions = false;
     }
 
     public Object visit(PropertyName expression, Object data) {
-        if (data != null && data != attributeNames) {
-            attributeNames = (Set<String>) data;
+        if (data instanceof Set && data != attributeNames) {
+            @SuppressWarnings("unchecked")
+            Set<String> cast = (Set<String>) data;
+            attributeNames = cast;
         }
         propertyNames.add(expression);
 

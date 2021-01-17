@@ -24,7 +24,7 @@ import org.opengis.filter.expression.Expression;
 public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplacement> {
     private Expression propertyName;
 
-    private List<Expression> mapping = new ArrayList<Expression>();
+    private List<Expression> mapping = new ArrayList<>();
 
     public ColorReplacementBuilder() {
         this(null);
@@ -68,8 +68,8 @@ public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplaceme
                 && replacement.getRecoding().getParameters().size() > 0) {
             List<Expression> params = replacement.getRecoding().getParameters();
             propertyName = params.get(0);
-            for (int i = 0; i < params.size(); i++) {
-                mapping.add(params.get(i));
+            for (Expression param : params) {
+                mapping.add(param);
             }
         }
 

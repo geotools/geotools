@@ -17,10 +17,12 @@
 package org.geotools.gml3.v3_2.bindings;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class LinearRingTypeBindingTest extends GML32TestSupport {
@@ -49,7 +51,7 @@ public class LinearRingTypeBindingTest extends GML32TestSupport {
     //        assertEquals(new Coordinate(5d, 6d), line.getPointN(2).getCoordinate());
     //        assertEquals(new Coordinate(1d, 2d), line.getPointN(3).getCoordinate());
     //    }
-
+    @Test
     public void testEncode() throws Exception {
         Document d = encode(GML3MockData.linearRing(), GML.LinearRing);
 

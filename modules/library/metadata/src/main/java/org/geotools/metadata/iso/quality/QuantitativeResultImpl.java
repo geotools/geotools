@@ -104,9 +104,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
         private final java.util.Map<org.opengis.util.MemberName, Object> map;
 
         public SimpleRecord(final double value) {
-            map =
-                    java.util.Collections.singletonMap(
-                            (org.opengis.util.MemberName) null, (Object) value);
+            map = java.util.Collections.singletonMap(null, value);
         }
 
         public RecordType getRecordType() {

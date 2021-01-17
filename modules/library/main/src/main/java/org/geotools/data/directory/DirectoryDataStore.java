@@ -69,7 +69,7 @@ public class DirectoryDataStore implements DataStore {
         } else if (fs instanceof FeatureStore) {
             return new DirectoryFeatureStore((SimpleFeatureStore) fs);
         } else {
-            return new DirectoryFeatureSource((SimpleFeatureSource) fs);
+            return new DirectoryFeatureSource(fs);
         }
     }
 
@@ -111,7 +111,7 @@ public class DirectoryDataStore implements DataStore {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         File f = new File(cache.directory, featureType.getTypeName() + ".shp");
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("url", URLs.fileToUrl(f));
         params.put("filetype", "shapefile");
         DataStore ds = null;
@@ -152,7 +152,7 @@ public class DirectoryDataStore implements DataStore {
 
     public List<Name> getNames() throws IOException {
         String[] typeNames = getTypeNames();
-        List<Name> names = new ArrayList<Name>(typeNames.length);
+        List<Name> names = new ArrayList<>(typeNames.length);
         for (String typeName : typeNames) {
             names.add(new NameImpl(typeName));
         }

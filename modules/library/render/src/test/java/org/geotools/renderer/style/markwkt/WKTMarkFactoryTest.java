@@ -18,13 +18,14 @@ package org.geotools.renderer.style.markwkt;
 
 import java.io.File;
 import java.net.URL;
-import junit.framework.TestCase;
 import org.geotools.TestData;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -38,7 +39,7 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Luca Morandini lmorandini@ieee.org
  */
-public class WKTMarkFactoryTest extends TestCase {
+public class WKTMarkFactoryTest {
 
     private static final SimpleFeature feature;
     private static final FilterFactory ff;
@@ -75,6 +76,7 @@ public class WKTMarkFactoryTest extends TestCase {
         }
     }
 
+    @Test
     public void testWellKnownTextLineString() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
@@ -84,13 +86,14 @@ public class WKTMarkFactoryTest extends TestCase {
                                     + "LINESTRING(0.0 0.25, 0.25 0.25, 0.5 0.75, 0.75 0.25, 1.00 0.25)");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
             return;
         }
 
-        assertTrue(true);
+        Assert.assertTrue(true);
     }
 
+    @Test
     public void testWellKnownTextMultiLineString() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
@@ -100,13 +103,14 @@ public class WKTMarkFactoryTest extends TestCase {
                                     + "MULTILINESTRING((0.25 0.25, 0.5 0.75, 0.75 0.25, 0.25 0.25), (0.25 0.75, 0.5 0.25, 0.75 0.75, 0.25 0.75))");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
             return;
         }
 
-        assertTrue(true);
+        Assert.assertTrue(true);
     }
 
+    @Test
     public void testWellKnownTextPolygon() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
@@ -116,13 +120,14 @@ public class WKTMarkFactoryTest extends TestCase {
                                     + "POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25, 0.25 0.25))");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
             return;
         }
 
-        assertTrue(true);
+        Assert.assertTrue(true);
     }
 
+    @Test
     public void testWellKnownTextCurve() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
@@ -132,13 +137,14 @@ public class WKTMarkFactoryTest extends TestCase {
                                     + "CURVEPOLYGON(COMPOUNDCURVE(CIRCULARSTRING(0 0,2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
             return;
         }
 
-        assertTrue(true);
+        Assert.assertTrue(true);
     }
 
+    @Test
     public void testWellKnownTextPolygonError() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
@@ -148,64 +154,69 @@ public class WKTMarkFactoryTest extends TestCase {
                                     + "POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25,     ))");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
-            assertTrue(true);
+            Assert.assertTrue(true);
             return;
         }
 
-        assertTrue(false);
+        Assert.fail();
     }
 
+    @Test
     public void testUnknownProtocol() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
             Literal exp = ff.literal("xxx://POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25,))");
             if (wmf.getShape(null, exp, feature) == null) {
-                assertTrue(true);
+                Assert.assertTrue(true);
                 return;
             }
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
             return;
         }
-        assertTrue(false);
+        Assert.fail();
     }
 
+    @Test
     public void testWellKnownTextFromNotExistingFile() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         wmf.setRoot(rootDir);
         Literal exp = ff.literal(WKTMarkFactory.WKTLIB_PREFIX + "xxx.properties#xxx");
         try {
             wmf.getShape(null, exp, feature);
-            assertTrue(false);
+            Assert.fail();
         } catch (Exception e) {
-            assertTrue(true);
+            Assert.assertTrue(true);
         }
     }
 
+    @Test
     public void testNotExistingWellKnownTextFromFile() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         wmf.setRoot(rootDir);
         Literal exp = ff.literal(WKTMarkFactory.WKTLIB_PREFIX + "wkt.properties#xxx");
         try {
             wmf.getShape(null, exp, feature);
-            assertTrue(false);
+            Assert.fail();
         } catch (Exception e) {
-            assertTrue(true);
+            Assert.assertTrue(true);
         }
     }
 
+    @Test
     public void testWellKnownTextFromFile() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         wmf.setRoot(rootDir);
         Literal exp = ff.literal(WKTMarkFactory.WKTLIB_PREFIX + "wkt.properties#ls");
         try {
             wmf.getShape(null, exp, feature);
-            assertTrue(true);
+            Assert.assertTrue(true);
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
         }
     }
 
+    @Test
     public void testCacheSingleLibrary() {
 
         WKTMarkFactoryPublic wmfp = new WKTMarkFactoryPublic();
@@ -217,19 +228,20 @@ public class WKTMarkFactoryTest extends TestCase {
             wmfp.addToCachePublic(exp.evaluate(feature, String.class));
 
             // Check "ls" has been loaded
-            assertEquals(
+            Assert.assertEquals(
                     wmfp.getFromCachePublic("wkt.properties", "ls"),
                     "LINESTRING(0.0 0.25, 0.25 0.25, 0.5 0.75, 0.75 0.25, 1.00 0.25)");
 
             // Check "xx" has not been loaded
-            assertEquals(wmfp.getFromCachePublic("wkt.properties", "xx"), null);
+            Assert.assertNull(wmfp.getFromCachePublic("wkt.properties", "xx"));
 
-            assertTrue(true);
+            Assert.assertTrue(true);
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
         }
     }
 
+    @Test
     public void testCacheMultipleLibraries() {
 
         WKTMarkFactoryPublic wmfp = new WKTMarkFactoryPublic();
@@ -245,18 +257,18 @@ public class WKTMarkFactoryTest extends TestCase {
             wmfp.addToCachePublic(exp.evaluate(feature, String.class));
 
             // Check "ls" has been loaded
-            assertEquals(
+            Assert.assertEquals(
                     wmfp.getFromCachePublic("wkt.properties", "ls"),
                     "LINESTRING(0.0 0.25, 0.25 0.25, 0.5 0.75, 0.75 0.25, 1.00 0.25)");
 
             // Check "ls2" has been loaded
-            assertEquals(
+            Assert.assertEquals(
                     wmfp.getFromCachePublic("wkt2.properties", "ls2"),
                     "LINESTRING(0.0 0.5, 0.5 0.5, 0.75 1.0, 1.0 0.5, 1.25 0.5)");
 
-            assertTrue(true);
+            Assert.assertTrue(true);
         } catch (Exception e) {
-            assertTrue(false);
+            Assert.fail();
         }
     }
 }

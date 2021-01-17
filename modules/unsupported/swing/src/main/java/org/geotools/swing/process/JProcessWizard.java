@@ -18,7 +18,7 @@ package org.geotools.swing.process;
 
 import java.awt.Dialog;
 import java.awt.HeadlessException;
-import org.geotools.swing.wizard.*;
+import org.geotools.swing.wizard.JWizard;
 
 /**
  * Wizard to walk users through running a process.

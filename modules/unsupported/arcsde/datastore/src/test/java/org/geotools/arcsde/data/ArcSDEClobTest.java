@@ -57,23 +57,24 @@ public class ArcSDEClobTest {
             SimpleFeatureType ftype = dstore.getSchema(typeName);
             // The row id column is not returned, but the geometry column is (x+1-1=x)
             assertEquals("Verify attribute count.", columnNames.length, ftype.getAttributeCount());
-            ArcSDEQuery query =
+            try (ArcSDEQuery query =
                     ArcSDEQuery.createQuery(
                             session,
                             ftype,
                             Query.ALL,
                             FIDReader.NULL_READER,
-                            ArcSdeVersionHandler.NONVERSIONED_HANDLER);
-            query.execute();
-            SdeRow row = query.fetch();
-            assertNotNull("Verify first result is returned.", row);
-            Object longString = row.getObject(0);
-            assertNotNull("Verify the non-nullity of first CLOB.", longString);
-            assertEquals("Verify stringiness.", longString.getClass(), String.class);
-            row = query.fetch();
-            longString = row.getObject(0);
-            assertNotNull("Verify the non-nullity of second CLOB.", longString);
-            query.close();
+                            ArcSdeVersionHandler.NONVERSIONED_HANDLER)) {
+                query.execute();
+                SdeRow row = query.fetch();
+                assertNotNull("Verify first result is returned.", row);
+                Object longString = row.getObject(0);
+                assertNotNull("Verify the non-nullity of first CLOB.", longString);
+                assertEquals("Verify stringiness.", longString.getClass(), String.class);
+                row = query.fetch();
+                longString = row.getObject(0);
+                assertNotNull("Verify the non-nullity of second CLOB.", longString);
+                query.close();
+            }
         } finally {
             if (session != null) {
                 session.dispose();

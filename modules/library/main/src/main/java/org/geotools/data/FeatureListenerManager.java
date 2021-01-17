@@ -54,7 +54,7 @@ public class FeatureListenerManager {
         WeakReference<FeatureListener> reference;
 
         public WeakFeatureListener(FeatureListener listener) {
-            reference = new WeakReference<FeatureListener>(listener);
+            reference = new WeakReference<>(listener);
         }
 
         public void changed(FeatureEvent featureEvent) {
@@ -72,8 +72,7 @@ public class FeatureListenerManager {
      * up after their FeatureSource is no longer referenced.
      */
     Map<FeatureSource<? extends FeatureType, ? extends Feature>, EventListenerList> listenerMap =
-            new WeakHashMap<
-                    FeatureSource<? extends FeatureType, ? extends Feature>, EventListenerList>();
+            new WeakHashMap<>();
 
     /** Used by FeaureSource implementations to provide listener support. */
     public void addFeatureListener(
@@ -137,8 +136,7 @@ public class FeatureListenerManager {
      */
     Map<SimpleFeatureSource, FeatureListener[]> getListeners(
             String typeName, Transaction transaction) {
-        Map<SimpleFeatureSource, FeatureListener[]> map =
-                new HashMap<SimpleFeatureSource, FeatureListener[]>();
+        Map<SimpleFeatureSource, FeatureListener[]> map = new HashMap<>();
         // Map.Entry<SimpleFeatureSource,FeatureListener[]> entry;
         SimpleFeatureSource featureSource;
         EventListenerList listenerList;
@@ -160,7 +158,7 @@ public class FeatureListenerManager {
                 }
 
                 listenerList = (EventListenerList) entry.getValue();
-                listeners = (FeatureListener[]) listenerList.getListeners(FeatureListener.class);
+                listeners = listenerList.getListeners(FeatureListener.class);
 
                 if (listeners.length != 0) {
                     map.put(featureSource, listeners);
@@ -364,8 +362,8 @@ public class FeatureListenerManager {
 
             event = new FeatureEvent(featureSource, type, bounds);
 
-            for (int l = 0; l < listeners.length; l++) {
-                listeners[l].changed(event);
+            for (FeatureListener listener : listeners) {
+                listener.changed(event);
             }
         }
     }
@@ -375,19 +373,19 @@ public class FeatureListenerManager {
             Transaction transaction,
             FeatureEvent.Type type,
             ReferencedEnvelope bounds) {
-        FeatureSource<? extends FeatureType, ? extends Feature> featureSource;
+        SimpleFeatureSource featureSource;
         FeatureListener[] listeners;
         FeatureEvent event;
         Map<SimpleFeatureSource, FeatureListener[]> map = getListeners(typeName, transaction);
 
-        for (Map.Entry entry : map.entrySet()) {
-            featureSource = (FeatureSource) entry.getKey();
-            listeners = (FeatureListener[]) entry.getValue();
+        for (Map.Entry<SimpleFeatureSource, FeatureListener[]> entry : map.entrySet()) {
+            featureSource = entry.getKey();
+            listeners = entry.getValue();
 
             event = new FeatureEvent(featureSource, type, bounds);
 
-            for (int l = 0; l < listeners.length; l++) {
-                listeners[l].changed(event);
+            for (FeatureListener listener : listeners) {
+                listener.changed(event);
             }
         }
     }

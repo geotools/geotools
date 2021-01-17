@@ -30,13 +30,14 @@ import org.opengis.filter.expression.Function;
  * @author Jesse
  */
 class FilterNameTypeMapping {
-    static Map spatialFiltersMap = loadSpatialFiltersMap();
-    static Map comparisonsMap = loadComparisonFilterMap();
-    static Map filterTypeToFilterCapabilitiesMap = loadFilterTypeToFilterCapabilitiesMap();
-    static Map functionNameMap = loadFunctionNameMap();
+    static Map<String, FilterCapabilities> spatialFiltersMap = loadSpatialFiltersMap();
+    static Map<String, FilterCapabilities> comparisonsMap = loadComparisonFilterMap();
+    static Map<Short, FilterCapabilities> filterTypeToFilterCapabilitiesMap =
+            loadFilterTypeToFilterCapabilitiesMap();
+    static Map<String, FilterCapabilities> functionNameMap = loadFunctionNameMap();
 
-    public static Map loadSpatialFiltersMap() {
-        spatialFiltersMap = new HashMap();
+    public static Map<String, FilterCapabilities> loadSpatialFiltersMap() {
+        spatialFiltersMap = new HashMap<>();
         spatialFiltersMap.put("", NO_OP_CAPS);
         spatialFiltersMap.put("BBOX", new FilterCapabilities(FilterCapabilities.SPATIAL_BBOX));
         spatialFiltersMap.put("Equals", new FilterCapabilities(FilterCapabilities.SPATIAL_EQUALS));
@@ -60,8 +61,8 @@ class FilterNameTypeMapping {
         return spatialFiltersMap;
     }
 
-    public static Map loadComparisonFilterMap() {
-        comparisonsMap = new HashMap();
+    public static Map<String, FilterCapabilities> loadComparisonFilterMap() {
+        comparisonsMap = new HashMap<>();
         comparisonsMap.put("", NO_OP_CAPS);
         comparisonsMap.put("Logical", new FilterCapabilities(FilterCapabilities.LOGICAL));
         comparisonsMap.put(
@@ -77,8 +78,8 @@ class FilterNameTypeMapping {
         return comparisonsMap;
     }
 
-    public static Map loadFilterTypeToFilterCapabilitiesMap() {
-        Map conversionMap = new HashMap();
+    public static Map<Short, FilterCapabilities> loadFilterTypeToFilterCapabilitiesMap() {
+        Map<Short, FilterCapabilities> conversionMap = new HashMap<>();
         conversionMap.put(
                 Short.valueOf(FilterType.BETWEEN),
                 new FilterCapabilities(FilterCapabilities.BETWEEN));
@@ -152,8 +153,8 @@ class FilterNameTypeMapping {
         return conversionMap;
     }
 
-    public static Map loadFunctionNameMap() {
-        functionNameMap = new HashMap();
+    public static Map<String, FilterCapabilities> loadFunctionNameMap() {
+        functionNameMap = new HashMap<>();
         functionNameMap.put("", NO_OP_CAPS);
         Iterator<Function> functions = CommonFactoryFinder.getFunctions(null).iterator();
         while (functions.hasNext()) {
@@ -165,7 +166,7 @@ class FilterNameTypeMapping {
     }
 
     public static FilterCapabilities findFunction(String name) {
-        FilterCapabilities filterCapabilities = (FilterCapabilities) functionNameMap.get(name);
+        FilterCapabilities filterCapabilities = functionNameMap.get(name);
         if (filterCapabilities != null) {
             return filterCapabilities;
         }
@@ -181,11 +182,11 @@ class FilterNameTypeMapping {
     public static FilterCapabilities findOperation(String s) {
 
         if (spatialFiltersMap.containsKey(s)) {
-            return (FilterCapabilities) spatialFiltersMap.get(s);
+            return spatialFiltersMap.get(s);
         }
 
         if (comparisonsMap.containsKey(s)) {
-            return (FilterCapabilities) comparisonsMap.get(s);
+            return comparisonsMap.get(s);
         }
 
         return FilterNameTypeMapping.NO_OP_CAPS;

@@ -21,10 +21,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -53,7 +55,7 @@ public class ColorBrewer {
     public static final PaletteType QUALITATIVE = new PaletteType(false, true, "QUALITATIVE");
     String name = null;
     String description = null;
-    Hashtable<String, BrewerPalette> palettes = new Hashtable<String, BrewerPalette>();
+    Map<String, BrewerPalette> palettes = new HashMap<>();
 
     /** Creates a new instance of ColorBrewer */
     public ColorBrewer() {}
@@ -102,7 +104,7 @@ public class ColorBrewer {
         BrewerPalette[] palettes = new BrewerPalette[entry.length];
 
         for (int i = 0; i < entry.length; i++) {
-            palettes[i] = (BrewerPalette) getPalette(entry[i].toString());
+            palettes[i] = getPalette(entry[i].toString());
         }
 
         return palettes;
@@ -113,11 +115,11 @@ public class ColorBrewer {
     }
 
     public BrewerPalette[] getPalettes(PaletteType type, int numClasses) {
-        List<BrewerPalette> palettes = new ArrayList<BrewerPalette>();
+        List<BrewerPalette> palettes = new ArrayList<>();
         Object[] entry = this.palettes.keySet().toArray();
 
-        for (int i = 0; i < entry.length; i++) {
-            BrewerPalette pal = (BrewerPalette) getPalette(entry[i].toString());
+        for (Object o : entry) {
+            BrewerPalette pal = getPalette(o.toString());
             boolean match = true;
 
             // filter by number of classes
@@ -136,15 +138,15 @@ public class ColorBrewer {
             }
         }
 
-        return (BrewerPalette[]) palettes.toArray(new BrewerPalette[palettes.size()]);
+        return palettes.toArray(new BrewerPalette[palettes.size()]);
     }
 
     public BrewerPalette[] getPalettes(PaletteType type, int numClasses, int requiredViewers) {
-        List<BrewerPalette> palettes = new ArrayList<BrewerPalette>();
+        List<BrewerPalette> palettes = new ArrayList<>();
         Object[] entry = this.palettes.keySet().toArray();
 
-        for (int i = 0; i < entry.length; i++) {
-            BrewerPalette pal = (BrewerPalette) getPalette(entry[i].toString());
+        for (Object o : entry) {
+            BrewerPalette pal = getPalette(o.toString());
             boolean match = true;
 
             // filter by number of classes
@@ -191,7 +193,7 @@ public class ColorBrewer {
             }
         }
 
-        return (BrewerPalette[]) palettes.toArray(new BrewerPalette[palettes.size()]);
+        return palettes.toArray(new BrewerPalette[palettes.size()]);
     }
 
     /**
@@ -220,11 +222,11 @@ public class ColorBrewer {
      */
     public String[] getPaletteNames(int minClasses, int maxClasses) {
         Object[] keys = palettes.keySet().toArray();
-        Set<String> paletteSet = new HashSet<String>();
+        Set<String> paletteSet = new HashSet<>();
 
         // generate the set of palette names
-        for (int i = 0; i < keys.length; i++) {
-            BrewerPalette thisPalette = (BrewerPalette) palettes.get(keys[i]);
+        for (Object key : keys) {
+            BrewerPalette thisPalette = palettes.get(key);
             int numColors = thisPalette.getMaxColors();
 
             if ((numColors >= minClasses) && (numColors <= maxClasses)) {
@@ -244,7 +246,7 @@ public class ColorBrewer {
     }
 
     public BrewerPalette getPalette(String name) {
-        return (BrewerPalette) palettes.get(name);
+        return palettes.get(name);
     }
 
     /** Loads the default ColorBrewer palettes. */
@@ -454,7 +456,7 @@ public class ColorBrewer {
     public void reset() {
         name = null;
         description = null;
-        palettes = new Hashtable<String, BrewerPalette>();
+        palettes = new Hashtable<>();
     }
 
     public boolean isSet(int singleValue, int multipleValue) {

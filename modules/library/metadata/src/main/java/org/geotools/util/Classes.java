@@ -50,7 +50,7 @@ public final class Classes {
             OTHER = 0;
 
     /** Mapping between a primitive type and its wrapper, if any. */
-    private static final Map<Class<?>, Classes> MAPPING = new HashMap<Class<?>, Classes>(16);
+    private static final Map<Class<?>, Classes> MAPPING = new HashMap<>(16);
 
     static {
         new Classes(Double.TYPE, Double.class, true, false, (byte) Double.SIZE, DOUBLE);
@@ -199,7 +199,7 @@ public final class Classes {
 
     /** Returns all classes implemented by the given set of objects. */
     private static Set<Class<?>> getClasses(final Collection<?> objects) {
-        final Set<Class<?>> types = new LinkedHashSet<Class<?>>();
+        final Set<Class<?>> types = new LinkedHashSet<>();
         for (final Object object : objects) {
             if (object != null) {
                 types.add(object.getClass());
@@ -253,7 +253,7 @@ public final class Classes {
      */
     private static Class<?> commonSuperClass(final Collection<Class<?>> types) {
         // Build a list of all super classes.
-        final Set<Class<?>> superTypes = new LinkedHashSet<Class<?>>();
+        final Set<Class<?>> superTypes = new LinkedHashSet<>();
         for (Class<?> type : types) {
             while ((type = type.getSuperclass()) != null) {
                 if (!superTypes.add(type)) {
@@ -338,8 +338,7 @@ public final class Classes {
          * loops j=[0..n].
          */
         int n = 0;
-        for (int i = 0; i < c2.length; i++) {
-            final Class<?> c = c2[i];
+        for (Class<?> c : c2) {
             if (base.isAssignableFrom(c)) {
                 c2[n++] = c;
             }
@@ -349,8 +348,7 @@ public final class Classes {
          * this interface exists also in the 'c2' array. Order doesn't matter.
          */
         compare:
-        for (int i = 0; i < c1.length; i++) {
-            final Class<?> c = c1[i];
+        for (final Class<?> c : c1) {
             if (base.isAssignableFrom(c)) {
                 for (int j = 0; j < n; j++) {
                     if (c.equals(c2[j])) {

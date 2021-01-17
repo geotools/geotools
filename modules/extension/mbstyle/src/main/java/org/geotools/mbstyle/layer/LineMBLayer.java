@@ -17,7 +17,7 @@
  */
 package org.geotools.mbstyle.layer;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,11 +66,11 @@ import org.opengis.style.Symbolizer;
  * @author Reggie Beckwith (Boundless)
  */
 public class LineMBLayer extends MBLayer {
-    private JSONObject layout;
+    private final JSONObject layout;
 
-    private JSONObject paint;
+    private final JSONObject paint;
 
-    private static String TYPE = "line";
+    private static final String TYPE = "line";
 
     public LineMBLayer(JSONObject json) {
         super(json, new MBObjectParser(LineMBLayer.class));
@@ -518,12 +518,12 @@ public class LineMBLayer extends MBLayer {
 
     /** @return True if the layer has a line-pattern explicitly provided. */
     public boolean hasLinePattern() {
-        return parse.isPropertyDefined(paint, "line-pattern");
+        return parse.isDefined(paint, "line-pattern");
     }
 
     /** @return True if the layer has a line-gap-width explicitly provided. */
     public boolean hasLineGapWidth() {
-        return parse.isPropertyDefined(paint, "line-gap-width");
+        return parse.isDefined(paint, "line-gap-width");
     }
 
     /**

@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
@@ -40,7 +40,7 @@ import org.opengis.filter.expression.Literal;
  * @param <T> Class of the style object
  */
 public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
-    Deque<Map<String, Object>> stack = new ArrayDeque<Map<String, Object>>();
+    Deque<Map<String, Object>> stack = new ArrayDeque<>();
 
     public YsldEncodeHandler() {
         reset();
@@ -281,7 +281,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     }
 
     Map<String, Object> newMap() {
-        return new LinkedHashMap<String, Object>();
+        return new LinkedHashMap<>();
     }
 
     boolean isNull(Expression expr) {

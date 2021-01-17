@@ -837,7 +837,7 @@ public class GMLSchema implements Schema {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#cache() */
-        public boolean cache(Element e, Map m) {
+        public boolean cache(Element e, Map<String, Object> hints) {
             return true;
         }
     }
@@ -1001,7 +1001,8 @@ public class GMLSchema implements Schema {
         }
 
         /** @see schema.Type#getValue(java.lang.String) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attr, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attr, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1) || (value[0].getValue() == null)) {
                 return null;
@@ -1025,8 +1026,8 @@ public class GMLSchema implements Schema {
         }
 
         private boolean contains(String[] enumeration, String text) {
-            for (int i = 0; i < enumeration.length; i++) {
-                if (enumeration[i].equalsIgnoreCase(text)) return true;
+            for (String s : enumeration) {
+                if (s.equalsIgnoreCase(text)) return true;
             }
             return false;
         }
@@ -1040,7 +1041,8 @@ public class GMLSchema implements Schema {
          * @see org.geotools.xml.schema.SimpleType#toAttribute(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
-        public AttributeValue toAttribute(Attribute attribute, Object value, Map hints) {
+        public AttributeValue toAttribute(
+                Attribute attribute, Object value, Map<String, Object> hints) {
             final String[] enumeration = {"inapplicable", "unknown", "unavailable", "missing"};
 
             if (Arrays.binarySearch(enumeration, value) < 0) {
@@ -1056,7 +1058,8 @@ public class GMLSchema implements Schema {
          *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canCreateAttributes(Attribute attribute, Object value, Map hints) {
+        public boolean canCreateAttributes(
+                Attribute attribute, Object value, Map<String, Object> hints) {
             final String[] enumeration = {"inapplicable", "unknown", "unavailable", "missing"};
 
             return Arrays.binarySearch(enumeration, value) < 0;
@@ -1066,7 +1069,7 @@ public class GMLSchema implements Schema {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             final String[] enumeration = {"inapplicable", "unknown", "unavailable", "missing"};
 
             return Arrays.binarySearch(enumeration, value) < 0;
@@ -1076,7 +1079,8 @@ public class GMLSchema implements Schema {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException {
             output.startElement(element.getNamespace(), element.getName(), null);
             output.characters(value.toString());
@@ -1112,7 +1116,7 @@ public class GMLSchema implements Schema {
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 }

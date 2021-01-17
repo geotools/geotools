@@ -84,7 +84,7 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.OperationMethod;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Parser for <A
@@ -191,11 +191,9 @@ public class Parser extends MathTransformParser {
         this.csFactory = csFactory;
         this.crsFactory = crsFactory;
         final AxisDirection[] values = AxisDirection.values();
-        directions =
-                new HashMap<String, AxisDirection>(
-                        (int) Math.ceil((values.length + 1) / 0.75f), 0.75f);
-        for (int i = 0; i < values.length; i++) {
-            directions.put(values[i].name().trim().toUpperCase(), values[i]);
+        directions = new HashMap<>((int) Math.ceil((values.length + 1) / 0.75f), 0.75f);
+        for (AxisDirection value : values) {
+            directions.put(value.name().trim().toUpperCase(), value);
         }
     }
 
@@ -347,10 +345,10 @@ public class Parser extends MathTransformParser {
         Map<String, Object> properties;
         if (element == null) {
             if (isRoot) {
-                properties = new HashMap<String, Object>(4);
+                properties = new HashMap<>(4);
                 properties.put(IdentifiedObject.NAME_KEY, name);
             } else {
-                properties = singletonMap(IdentifiedObject.NAME_KEY, (Object) name);
+                properties = singletonMap(IdentifiedObject.NAME_KEY, name);
             }
         } else {
             final String auth = element.pullString("name");
@@ -362,7 +360,7 @@ public class Parser extends MathTransformParser {
             }
             element.close();
             final Citation authority = Citations.fromName(auth);
-            properties = new HashMap<String, Object>(4);
+            properties = new HashMap<>(4);
             properties.put(IdentifiedObject.NAME_KEY, new NamedIdentifier(authority, name));
             properties.put(IdentifiedObject.IDENTIFIERS_KEY, new NamedIdentifier(authority, code));
         }
@@ -700,7 +698,7 @@ public class Parser extends MathTransformParser {
         element.close();
         if (toWGS84 != null) {
             if (!(properties instanceof HashMap)) {
-                properties = new HashMap<String, Object>(properties);
+                properties = new HashMap<>(properties);
             }
             properties.put(DefaultGeodeticDatum.BURSA_WOLF_KEY, toWGS84);
         }
@@ -799,7 +797,7 @@ public class Parser extends MathTransformParser {
         EngineeringDatum datum = parseLocalDatum(element);
         Unit<Length> linearUnit = parseUnit(element, SI.METRE);
         CoordinateSystemAxis axis = parseAxis(element, linearUnit, true);
-        List<CoordinateSystemAxis> list = new ArrayList<CoordinateSystemAxis>();
+        List<CoordinateSystemAxis> list = new ArrayList<>();
         do {
             list.add(axis);
             axis = parseAxis(element, linearUnit, false);
@@ -995,6 +993,8 @@ public class Parser extends MathTransformParser {
                 axis0 = createAxis(null, "X", AxisDirection.EAST, linearUnit);
                 axis1 = createAxis(null, "Y", AxisDirection.NORTH, linearUnit);
             }
+            element.pullOptionalElement(
+                    "EXTENSION"); // application specific extensions can be ignored
             element.close();
             final Conversion conversion = new DefiningConversion(name, projection);
             return crsFactory.createProjectedCRS(
@@ -1089,9 +1089,7 @@ public class Parser extends MathTransformParser {
                             toBase.inverse());
             final CoordinateSystem cs = new AbstractCS(properties, axis);
             return crsFactory.createDerivedCRS(properties, base, conversion, cs);
-        } catch (FactoryException exception) {
-            throw element.parseFailed(exception, null);
-        } catch (NoninvertibleTransformException exception) {
+        } catch (FactoryException | NoninvertibleTransformException exception) {
             throw element.parseFailed(exception, null);
         }
     }
@@ -1137,7 +1135,7 @@ public class Parser extends MathTransformParser {
     /** Returns the type map. */
     private static Map<String, Class<?>> getTypeMap() {
         if (TYPES == null) {
-            final Map<String, Class<?>> map = new LinkedHashMap<String, Class<?>>(25);
+            final Map<String, Class<?>> map = new LinkedHashMap<>(25);
             map.put("GEOGCS", GeographicCRS.class);
             map.put("PROJCS", ProjectedCRS.class);
             map.put("GEOCCS", GeocentricCRS.class);

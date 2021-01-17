@@ -46,7 +46,7 @@ public class PropertyDumper {
         writer.append("Generate from EPSG database version " + ThreadedHsqlEpsgFactory.VERSION);
 
         Properties props = new Properties();
-        List<String> codes = new ArrayList(CRS.getSupportedCodes("EPSG"));
+        List<String> codes = new ArrayList<>(CRS.getSupportedCodes("EPSG"));
         Collections.sort(
                 codes,
                 new Comparator<String>() {

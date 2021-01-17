@@ -113,7 +113,7 @@ public final class CoordinateHandlerFinder {
      */
     public static synchronized Set<CoordinateHandler> findHandlers(CoordinateAxis axis) {
         final Set<CoordinateHandlerSpi> availableHandlersSpi = getAvailableHandlers();
-        final Set<CoordinateHandler> handlers = new HashSet<CoordinateHandler>();
+        final Set<CoordinateHandler> handlers = new HashSet<>();
         final Iterator<CoordinateHandlerSpi> it = availableHandlersSpi.iterator();
         while (it.hasNext()) {
             // get the spi

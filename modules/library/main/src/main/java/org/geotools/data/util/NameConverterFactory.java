@@ -33,9 +33,9 @@ public class NameConverterFactory implements ConverterFactory {
         if (target.equals(String.class) && source.equals(Name.class)) {
             return new Converter() {
 
-                public Object convert(Object source, Class target) throws Exception {
+                public <T> T convert(Object source, Class<T> target) throws Exception {
                     Name name = (Name) source;
-                    return name.getURI();
+                    return target.cast(name.getURI());
                 }
             };
 
@@ -47,9 +47,9 @@ public class NameConverterFactory implements ConverterFactory {
                     String str = (String) source;
                     String[] split = str.split(":");
                     if (split.length == 2) {
-                        return (T) new NameImpl(split[0], split[1]);
+                        return target.cast(new NameImpl(split[0], split[1]));
                     } else if (split.length == 1) {
-                        return (T) new NameImpl(str);
+                        return target.cast(new NameImpl(str));
                     }
 
                     return null;

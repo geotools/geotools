@@ -82,7 +82,7 @@ public class UnmodifiableArrayList<E> extends AbstractList<E>
      * @since 2.5
      */
     public static <E> UnmodifiableArrayList<E> wrap(final E[] array) {
-        return new UnmodifiableArrayList<E>(array);
+        return new UnmodifiableArrayList<>(array);
     }
 
     /**

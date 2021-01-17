@@ -17,6 +17,7 @@
 
 package org.geotools.referencing.factory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
@@ -69,8 +70,7 @@ final class URN_Parser extends URI_Parser {
     public static URN_Parser buildParser(final String urn) throws NoSuchAuthorityCodeException {
         final String code = urn.trim();
         String type = urn; // To be really assigned later.
-        for (int i = 0; i < URN_BASES.length; i++) {
-            final String urnBase = URN_BASES[i];
+        for (final String urnBase : URN_BASES) {
             final int typeStart = urnBase.length();
             if (code.regionMatches(true, 0, urnBase, 0, typeStart)) {
                 final int typeEnd = code.indexOf(URN_SEPARATOR, typeStart);
@@ -102,6 +102,8 @@ final class URN_Parser extends URI_Parser {
                                 urnAuthority = code.substring(typeEnd + 1, nameEnd).trim();
                                 urnCode = code.substring(lastEnd + 1).trim();
                             }
+                            // handle empty version
+                            urnVersion = (StringUtils.isEmpty(urnVersion)) ? null : urnVersion;
                             if (urnCode.contains("CRS")) {
                                 urnAuthority = "CRS";
                                 urnCode = urnCode.substring(3);

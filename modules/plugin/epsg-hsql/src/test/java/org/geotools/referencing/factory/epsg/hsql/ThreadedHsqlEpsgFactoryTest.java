@@ -259,16 +259,16 @@ public class ThreadedHsqlEpsgFactoryTest {
         DefaultGeodeticDatum datum = (DefaultGeodeticDatum) crs.getDatum();
         BursaWolfParameters[] params = datum.getBursaWolfParameters();
         boolean wgs84Found = false;
-        for (int i = 0; i < params.length; i++) {
-            if (DefaultGeodeticDatum.isWGS84(params[i].targetDatum)) {
+        for (BursaWolfParameters param : params) {
+            if (DefaultGeodeticDatum.isWGS84(param.targetDatum)) {
                 wgs84Found = true;
-                assertEquals(0.0, params[i].dx, EPS);
-                assertEquals(0.0, params[i].dy, EPS);
-                assertEquals(0.0, params[i].dz, EPS);
-                assertEquals(0.0, params[i].ex, EPS);
-                assertEquals(0.0, params[i].ey, EPS);
-                assertEquals(0.0, params[i].ez, EPS);
-                assertEquals(0.0, params[i].ppm, EPS);
+                assertEquals(0.0, param.dx, EPS);
+                assertEquals(0.0, param.dy, EPS);
+                assertEquals(0.0, param.dz, EPS);
+                assertEquals(0.0, param.ex, EPS);
+                assertEquals(0.0, param.ey, EPS);
+                assertEquals(0.0, param.ez, EPS);
+                assertEquals(0.0, param.ppm, EPS);
             }
         }
         assertTrue(wgs84Found);

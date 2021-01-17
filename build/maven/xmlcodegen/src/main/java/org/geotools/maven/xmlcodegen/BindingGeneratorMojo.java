@@ -174,68 +174,70 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
 		}
 		
 		//list of urls to use as class loading locations
-		Set urls = new HashSet();
+		Set<URL> urls = new HashSet<>();
 		
 		try {
 		    //get the ones from the project
 			List l = project.getCompileClasspathElements();
-			for ( Iterator i = l.iterator(); i.hasNext(); ) {
-				String element = (String) i.next();
-				File d = new File( element );
-			
-				if ( d.exists() && d.isDirectory() ) {
-					urls.add( d.toURI().toURL() );
-				}
-			}
+            for (Object item : l) {
+                String element = (String) item;
+                File d = new File(element);
+
+                if (d.exists() && d.isDirectory()) {
+                    urls.add(d.toURI().toURL());
+                }
+            }
 			
 			//get the ones from project dependencies
 			List d = project.getDependencies();
-			
-			for ( Iterator i = d.iterator(); i.hasNext(); ) {
-			    Dependency dep = (Dependency) i.next();
-			    if ( "jar".equals( dep.getType() ) ) {
-			        Artifact artifact = artifactFactory.createArtifact( 
-	                    dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), 
-	                    dep.getScope(), dep.getType()
-	                );
-			        Set artifacts = project.createArtifacts( artifactFactory, null, null);
-			        ArtifactResolutionResult result = 
-			            artifactResolver.resolveTransitively(artifacts, artifact, remoteRepositories, localRepository, artifactMetadataSource);
-			        artifacts = result.getArtifacts();
-			        for ( Iterator a = artifacts.iterator(); a.hasNext(); ) {
-			            Artifact dartifact = (Artifact) a.next();
-			            urls.add(dartifact.getFile().toURI().toURL());
-			        }
-			        
-			    }
-			}
+
+            for (Object value : d) {
+                Dependency dep = (Dependency) value;
+                if ("jar".equals(dep.getType())) {
+                    Artifact artifact = artifactFactory.createArtifact(
+                            dep.getGroupId(), dep.getArtifactId(), dep.getVersion(),
+                            dep.getScope(), dep.getType()
+                    );
+                    Set artifacts = project.createArtifacts(artifactFactory, null, null);
+                    ArtifactResolutionResult result =
+                            artifactResolver.resolveTransitively(artifacts, artifact,
+                                    remoteRepositories, localRepository, artifactMetadataSource);
+                    artifacts = result.getArtifacts();
+                    for (Object o : artifacts) {
+                        Artifact dartifact = (Artifact) o;
+                        urls.add(dartifact.getFile().toURI().toURL());
+                    }
+
+                }
+            }
 			
 		} catch (Exception e) {
 			getLog().error( e );
 			return;
 		}
 		
-		ClassLoader cl = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ) );
+		ClassLoader cl = new URLClassLoader(urls.toArray( new URL[ urls.size() ] ));
 		if ( bindingConstructorArguments != null ) {
 			HashMap map = new HashMap();
-			
-			for ( int i = 0; i < bindingConstructorArguments.length; i++) {
-				String name = bindingConstructorArguments[i].getName();
-				String type = bindingConstructorArguments[i].getType();
-				
-				try {
-				    bindingConstructorArguments[i].clazz = cl.loadClass( type );
-				} catch (ClassNotFoundException e) {
-					getLog().error( "Could not locate class:" + type );
-					return;
-				}
-			}
+
+            for (BindingConstructorArgument bindingConstructorArgument :
+                    bindingConstructorArguments) {
+                String name = bindingConstructorArgument.getName();
+                String type = bindingConstructorArgument.getType();
+
+                try {
+                    bindingConstructorArgument.clazz = cl.loadClass(type);
+                } catch (ClassNotFoundException e) {
+                    getLog().error("Could not locate class:" + type);
+                    return;
+                }
+            }
 			
 			generator.setBindingConstructorArguments( bindingConstructorArguments );
 		}
 		
 		if ( includes != null && includes.length > 0 ) {
-			HashSet included = new HashSet( Arrays.asList( includes ) );
+			Set<String> included = new HashSet<>( Arrays.asList( includes ) );
 			getLog().info( "Including: " + included ); 
 			generator.setIncluded( included );
 		}

@@ -142,12 +142,12 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
      * Used by methods that visited a filter that produced one or more filters over the surrogate
      * feature type to combine them in an Or filter if necessary.
      */
-    private Filter combineOred(List combinedFilters) {
+    private Filter combineOred(List<Filter> combinedFilters) {
         switch (combinedFilters.size()) {
             case 0:
                 throw new IllegalArgumentException("No filters to combine");
             case 1:
-                return (Filter) combinedFilters.get(0);
+                return combinedFilters.get(0);
             default:
                 return ff.or(combinedFilters);
         }
@@ -166,11 +166,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         List leftExpressions = (List) left.accept(this, null);
         List rightExpressions = (List) right.accept(this, null);
 
-        if (leftExpressions.size() == 0) {
+        if (leftExpressions.isEmpty()) {
             throw new IllegalStateException(left + " mapping not found");
         }
 
-        if (rightExpressions.size() == 0) {
+        if (rightExpressions.isEmpty()) {
             throw new IllegalStateException(right + " mapping not found");
         }
 
@@ -186,12 +186,12 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
                 new Expression[leftExpressions.size() * rightExpressions.size()][2];
 
         int index = 0;
-        for (Iterator lefts = leftExpressions.iterator(); lefts.hasNext(); ) {
-            left = (Expression) lefts.next();
+        for (Object leftExpression : leftExpressions) {
+            left = (Expression) leftExpression;
             int rightIndex = 0;
-            for (Iterator rights = rightExpressions.iterator(); rights.hasNext(); ) {
+            for (Object rightExpression : rightExpressions) {
                 index = index + rightIndex;
-                right = (Expression) rights.next();
+                right = (Expression) rightExpression;
                 product[index][0] = left;
                 product[index][1] = right;
                 rightIndex++;
@@ -208,11 +208,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         List leftExpressions = (List) left.accept(this, null);
         List rightExpressions = (List) right.accept(this, null);
 
-        if (leftExpressions.size() == 0) {
+        if (leftExpressions.isEmpty()) {
             throw new IllegalStateException(left + " mapping not found");
         }
 
-        if (rightExpressions.size() == 0) {
+        if (rightExpressions.isEmpty()) {
             throw new IllegalStateException(right + " mapping not found");
         }
 
@@ -221,12 +221,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return product;
     }
 
-    public List /* <Filter> */ visitBinaryLogicOp(BinaryLogicOperator filter) {
+    public List<Filter> visitBinaryLogicOp(BinaryLogicOperator filter) {
 
-        List unrolledFilers = new ArrayList();
+        List<Filter> unrolledFilers = new ArrayList<>();
         try {
-            for (Iterator it = filter.getChildren().iterator(); it.hasNext(); ) {
-                Filter next = (Filter) it.next();
+            for (Filter next : filter.getChildren()) {
                 Filter unrolled = (Filter) next.accept(this, null);
                 unrolledFilers.add(unrolled);
             }
@@ -259,7 +258,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     }
 
     public Object visit(And filter, Object arg1) {
-        List list = visitBinaryLogicOp(filter);
+        List<Filter> list = visitBinaryLogicOp(filter);
         Filter unrolled = ff.and(list);
         return unrolled;
     }
@@ -276,14 +275,13 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         Expression fidExpression = null;
 
-        for (Iterator it = mappings.getAttributeMappings().iterator(); it.hasNext(); ) {
-            AttributeMapping attMapping = (AttributeMapping) it.next();
+        for (AttributeMapping attMapping : mappings.getAttributeMappings()) {
             StepList targetXPath = attMapping.getTargetXPath();
             if (targetXPath.size() > 1) {
                 continue;
             }
 
-            Step step = (Step) targetXPath.get(0);
+            Step step = targetXPath.get(0);
             QName stepName = step.getName();
             if (namespace.equals(stepName.getNamespaceURI())) {
                 if (name.equals(stepName.getLocalPart())) {
@@ -314,10 +312,10 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         UnmappingFilterVisitor.LOGGER.finest("fid mapping expression is " + fidExpression);
         Filter unrolled = null;
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
         try {
-            for (Iterator it = fids.iterator(); it.hasNext(); ) {
-                Identifier fid = (Identifier) it.next();
+            for (Object o : fids) {
+                Identifier fid = (Identifier) o;
                 Filter comparison =
                         UnmappingFilterVisitor.ff.equals(
                                 fidExpression, UnmappingFilterVisitor.ff.literal(fid.toString()));
@@ -342,7 +340,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     }
 
     public Object visit(Or filter, Object arg1) {
-        List list = visitBinaryLogicOp(filter);
+        List<Filter> list = visitBinaryLogicOp(filter);
         Filter unrolled = ff.or(list);
         return unrolled;
     }
@@ -358,14 +356,14 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         final int combinedSize =
                 expressions.size() * lowerExpressions.size() * upperExpressions.size();
-        List combinedFilters = new ArrayList(combinedSize);
+        List<Filter> combinedFilters = new ArrayList<>(combinedSize);
 
-        for (Iterator lowers = lowerExpressions.iterator(); lowers.hasNext(); ) {
-            Expression floor = (Expression) lowers.next();
-            for (Iterator exprs = expressions.iterator(); exprs.hasNext(); ) {
-                Expression prop = (Expression) exprs.next();
-                for (Iterator uppers = upperExpressions.iterator(); uppers.hasNext(); ) {
-                    Expression roof = (Expression) uppers.next();
+        for (Object lowerExpression : lowerExpressions) {
+            Expression floor = (Expression) lowerExpression;
+            for (Object o : expressions) {
+                Expression prop = (Expression) o;
+                for (Object upperExpression : upperExpressions) {
+                    Expression roof = (Expression) upperExpression;
                     Filter newFilter = ff.between(prop, floor, roof, filter.getMatchAction());
                     combinedFilters.add(newFilter);
                 }
@@ -379,11 +377,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(PropertyIsEqualTo filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
-        List combinedFilters = new ArrayList(expressions.length);
+        List<Filter> combinedFilters = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Filter unrolled =
                     ff.equal(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -396,11 +394,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(PropertyIsNotEqualTo filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
-        List combinedFilters = new ArrayList(expressions.length);
+        List<Filter> combinedFilters = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Filter unrolled =
                     ff.notEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -413,11 +411,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(PropertyIsGreaterThan filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
-        List combinedFilters = new ArrayList(expressions.length);
+        List<Filter> combinedFilters = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Filter unrolled =
                     ff.greater(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -430,11 +428,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
-        List combinedFilters = new ArrayList(expressions.length);
+        List<Filter> combinedFilters = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Filter unrolled =
                     ff.greaterOrEqual(
                             left, right, filter.isMatchingCase(), filter.getMatchAction());
@@ -448,11 +446,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(PropertyIsLessThan filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
-        List combinedFilters = new ArrayList(expressions.length);
+        List<Filter> combinedFilters = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Filter unrolled =
                     ff.less(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -465,11 +463,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
-        List combinedFilters = new ArrayList(expressions.length);
+        List<Filter> combinedFilters = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Filter unrolled =
                     ff.lessOrEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -481,7 +479,8 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
     public Object visit(PropertyIsLike filter, Object arg1) {
         Expression value = filter.getExpression();
-        List unrolledValues = (List) value.accept(this, null);
+        @SuppressWarnings("unchecked")
+        List<Expression> unrolledValues = (List) value.accept(this, null);
 
         String literal = filter.getLiteral();
         String wildcard = filter.getWildCard();
@@ -490,9 +489,8 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         boolean matchCase = filter.isMatchingCase();
         MatchAction matchAction = filter.getMatchAction();
 
-        List combined = new ArrayList(unrolledValues.size());
-        for (Iterator it = unrolledValues.iterator(); it.hasNext(); ) {
-            Expression sourceValue = (Expression) it.next();
+        List<Filter> combined = new ArrayList<>(unrolledValues.size());
+        for (Expression sourceValue : unrolledValues) {
             Filter newFilter =
                     ff.like(sourceValue, literal, wildcard, single, escape, matchCase, matchAction);
             combined.add(newFilter);
@@ -503,12 +501,12 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
     public Object visit(PropertyIsNull filter, Object arg1) {
         Expression nullCheck = filter.getExpression();
-        List sourceChecks = (List) nullCheck.accept(this, null);
+        @SuppressWarnings("unchecked")
+        List<Expression> sourceChecks = (List) nullCheck.accept(this, null);
 
-        List combined = new ArrayList(sourceChecks.size());
+        List<Filter> combined = new ArrayList<>(sourceChecks.size());
 
-        for (Iterator it = sourceChecks.iterator(); it.hasNext(); ) {
-            Expression sourceValue = (Expression) it.next();
+        for (Expression sourceValue : sourceChecks) {
             Filter newFilter = ff.isNull(sourceValue);
             combined.add(newFilter);
         }
@@ -531,16 +529,13 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             return filter;
         }
         Expression name = ff.property(propertyName);
-        final List sourceNames = (List) name.accept(this, null);
+        @SuppressWarnings("unchecked")
+        final List<Expression> sourceNames = (List) name.accept(this, null);
 
-        final List combined = new ArrayList(sourceNames.size());
+        final List<Filter> combined = new ArrayList<>(sourceNames.size());
 
-        for (Iterator it = sourceNames.iterator(); it.hasNext(); ) {
-            Expression sourceName = (Expression) it.next();
-            Filter unrolled;
-
-            unrolled = ff.bbox(sourceName, filter.getBounds(), filter.getMatchAction());
-
+        for (Expression sourceName : sourceNames) {
+            Filter unrolled = ff.bbox(sourceName, filter.getBounds(), filter.getMatchAction());
             combined.add(unrolled);
         }
 
@@ -552,11 +547,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Beyond filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled =
                     ff.beyond(
@@ -575,11 +570,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Contains filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled = ff.contains(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -592,11 +587,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Crosses filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled = ff.crosses(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -609,11 +604,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Disjoint filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled = ff.disjoint(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -626,11 +621,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(DWithin filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled =
                     ff.dwithin(
@@ -649,11 +644,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Equals filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled = ff.equal(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -666,11 +661,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Intersects filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled = ff.intersects(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -683,11 +678,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Overlaps filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled = ff.overlaps(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -700,11 +695,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Touches filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled = ff.touches(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -717,11 +712,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Within filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
-        List combinedFilters = new ArrayList(exps.length);
+        List<Filter> combinedFilters = new ArrayList<>(exps.length);
 
-        for (int i = 0; i < exps.length; i++) {
-            Expression left = exps[i][0];
-            Expression right = exps[i][1];
+        for (Expression[] exp : exps) {
+            Expression left = exp[0];
+            Expression right = exp[1];
 
             Filter unrolled = ff.within(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
@@ -742,11 +737,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Add expr, Object arg1) {
         Expression[][] expressions = visitBinaryExpression(expr);
 
-        List combinedExpressions = new ArrayList(expressions.length);
+        List<Expression> combinedExpressions = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Expression sourceExpression = ff.add(left, right);
             combinedExpressions.add(sourceExpression);
         }
@@ -757,11 +752,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Divide expr, Object arg1) {
         Expression[][] expressions = visitBinaryExpression(expr);
 
-        List combinedExpressions = new ArrayList(expressions.length);
+        List<Expression> combinedExpressions = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Expression sourceExpression = ff.divide(left, right);
             combinedExpressions.add(sourceExpression);
         }
@@ -777,12 +772,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
      */
     public Object visit(Function function, Object arg1) {
 
-        final List expressions = function.getParameters();
+        final List<Expression> expressions = function.getParameters();
 
-        List arguments = new ArrayList(expressions.size());
+        List<Expression> arguments = new ArrayList<>(expressions.size());
 
-        for (Iterator it = expressions.iterator(); it.hasNext(); ) {
-            Expression mappingExpression = (Expression) it.next();
+        for (Expression mappingExpression : expressions) {
             List sourceExpressions = (List) mappingExpression.accept(this, null);
             if (sourceExpressions.size() > 1) {
                 throw new UnsupportedOperationException(
@@ -795,7 +789,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         }
 
         Expression[] unmapped = new Expression[arguments.size()];
-        unmapped = (Expression[]) arguments.toArray(unmapped);
+        unmapped = arguments.toArray(unmapped);
 
         Function unmappedFunction = ff.function(function.getName(), unmapped);
 
@@ -809,11 +803,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Multiply expr, Object arg1) {
         Expression[][] expressions = visitBinaryExpression(expr);
 
-        List combinedExpressions = new ArrayList(expressions.length);
+        List<Expression> combinedExpressions = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Expression sourceExpression = ff.multiply(left, right);
             combinedExpressions.add(sourceExpression);
         }
@@ -865,7 +859,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         matchingMappings.remove(Expression.NIL);
 
-        if (matchingMappings.size() == 0) {
+        if (matchingMappings.isEmpty()) {
             throw new IllegalArgumentException("Can't find source expression for: " + targetXPath);
         }
 
@@ -875,11 +869,11 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     public Object visit(Subtract expr, Object arg1) {
         Expression[][] expressions = visitBinaryExpression(expr);
 
-        List combinedExpressions = new ArrayList(expressions.length);
+        List<Expression> combinedExpressions = new ArrayList<>(expressions.length);
 
-        for (int i = 0; i < expressions.length; i++) {
-            Expression left = expressions[i][0];
-            Expression right = expressions[i][1];
+        for (Expression[] expression : expressions) {
+            Expression left = expression[0];
+            Expression right = expression[1];
             Expression sourceExpression = ff.subtract(left, right);
             combinedExpressions.add(sourceExpression);
         }

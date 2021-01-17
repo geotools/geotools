@@ -18,6 +18,7 @@
 package org.geotools.mbstyle.expression;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
@@ -50,7 +51,12 @@ public abstract class MBExpression extends FunctionImpl {
     protected final MBObjectParser parse;
     protected final MBStyleTransformer transformer;
 
-    public MBExpression(JSONArray json) {
+    /**
+     * Please use factory method {@link #create(JSONArray)}
+     *
+     * @param json definition
+     */
+    protected MBExpression(JSONArray json) {
         this.json = json;
         this.name = (String) json.get(0);
         this.ff = CommonFactoryFinder.getFilterFactory2();
@@ -63,47 +69,65 @@ public abstract class MBExpression extends FunctionImpl {
     }
 
     /* A list of color expression names */
-    public static List colors = Arrays.asList("rgb", "rgba", "to-rgba");
+    public static final List<String> colors;
+
+    static {
+        colors = Collections.unmodifiableList(Arrays.asList("rgb", "rgba", "to-rgba"));
+    }
 
     /* A list of decision expression names */
-    public static List decisions =
-            Arrays.asList(
-                    "!",
-                    "!=",
-                    "<",
-                    "<=",
-                    "==",
-                    ">",
-                    ">=",
-                    "all",
-                    "any",
-                    "case",
-                    "coalesce",
-                    "match");
+    public static final List<String> decisions;
+
+    static {
+        decisions =
+                Collections.unmodifiableList(
+                        Arrays.asList(
+                                "!",
+                                "!=",
+                                "<",
+                                "<=",
+                                "==",
+                                ">",
+                                ">=",
+                                "all",
+                                "any",
+                                "case",
+                                "coalesce",
+                                "match"));
+    }
 
     /* A list of feature data expression names */
-    public static List featureData = Arrays.asList("geometry-type", "id", "properties");
+    public static final List featureData;
+
+    static {
+        featureData =
+                Collections.unmodifiableList(Arrays.asList("geometry-type", "id", "properties"));
+    }
 
     /* A list of heatmap expression names */
-    public static List heatMap = Arrays.asList("heatmap-density");
+    public static final List heatMap;
+
+    static {
+        heatMap = Collections.unmodifiableList(Arrays.asList("heatmap-density"));
+    }
 
     /* A list of lookup expression names */
-    public static List lookUp = Arrays.asList("at", "length", "has", "get");
+    public static final List lookUp = Arrays.asList("at", "length", "has", "get");
 
     /* A list of math expression names */
-    public static List math =
+    public static final List math =
             Arrays.asList(
                     "-", "*", "/", "%", "^", "+", "acos", "asin", "atan", "cos", "e", "ln", "ln2",
                     "log10", "log2", "max", "min", "pi", "sin", "sqrt", "tan");
 
     /* A list of ramps expression names */
-    public static List ramps = Arrays.asList("interpolate", "step");
+    public static final List ramps = Arrays.asList("interpolate", "step");
 
     /* A list of string expression names */
-    public static List string = Arrays.asList("concat", "downcase", "upcase");
+    public static final List string = Arrays.asList("concat", "downcase", "upcase");
 
     /* A list of types expression names */
-    public static List types =
+    public static final List types =
             Arrays.asList(
                     "array",
                     "boolean",
@@ -118,11 +142,17 @@ public abstract class MBExpression extends FunctionImpl {
                     "typeof");
 
     /* A list of variable bindings expression names */
-    public static List variableBindings = Arrays.asList("let", "var");
+    public static final List variableBindings = Arrays.asList("let", "var");
 
     /* A list of zoom expression names */
-    public static List zoom = Arrays.asList("zoom");
+    public static final List zoom = Arrays.asList("zoom");
 
+    /**
+     * Factory method used to produce the correct MBExpression subclass for the provided JSONArray.
+     *
+     * @param json definition
+     * @return MBExpression
+     */
     public static MBExpression create(JSONArray json) {
         String name;
         if (json.get(0) instanceof String) {
@@ -151,24 +181,29 @@ public abstract class MBExpression extends FunctionImpl {
             } else if (zoom.contains(name)) {
                 return new MBZoom(json);
             } else {
-                throw new MBFormatException("Expression \"" + name + "\" invalid.");
+                throw new MBFormatException(
+                        "Data expression \""
+                                + name
+                                + "\" invalid. It may be misspelled or not supported by this implementation:"
+                                + json);
             }
         }
-        throw new MBFormatException("Requires a string name of the expression at position 0");
+        throw new MBFormatException("Requires a string name of the data expression at position 0");
     }
 
     public static boolean canCreate(final String name) {
-        return colors.contains(name)
-                || decisions.contains(name)
-                || featureData.contains(name)
-                || heatMap.contains(name)
-                || lookUp.contains(name)
-                || math.contains(name)
-                || ramps.contains(name)
-                || string.contains(name)
-                || types.contains(name)
-                || variableBindings.contains(name)
-                || zoom.contains(name);
+        return name != null
+                && (colors.contains(name)
+                        || decisions.contains(name)
+                        || featureData.contains(name)
+                        || heatMap.contains(name)
+                        || lookUp.contains(name)
+                        || math.contains(name)
+                        || ramps.contains(name)
+                        || string.contains(name)
+                        || types.contains(name)
+                        || variableBindings.contains(name)
+                        || zoom.contains(name));
     }
 
     /** Determines which expression to use. */

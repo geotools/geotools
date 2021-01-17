@@ -57,7 +57,7 @@ final class ArcTransactionState implements Transaction.State {
     private final FeatureListenerManager listenerManager;
 
     /** Set of typename changed to fire changed events for at commit and rollback. */
-    private final Set<String> typesChanged = new HashSet<String>();
+    private final Set<String> typesChanged = new HashSet<>();
 
     public SeState currentVersionState;
 

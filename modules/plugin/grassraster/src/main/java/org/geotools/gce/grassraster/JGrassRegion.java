@@ -468,7 +468,7 @@ public class JGrassRegion {
         int subregRows = (int) Math.floor(tmpR / (double) subregionsNum);
         int subregCols = (int) Math.floor(tmpC / (double) subregionsNum);
 
-        List<JGrassRegion> regions = new ArrayList<JGrassRegion>();
+        List<JGrassRegion> regions = new ArrayList<>();
 
         double runningEasting = tmpWest;
         double runningNorthing = tmpSouth;
@@ -512,7 +512,7 @@ public class JGrassRegion {
 
         BufferedReader windReader = new BufferedReader(new FileReader(filePath));
         try {
-            LinkedHashMap<String, String> store = new LinkedHashMap<String, String>();
+            LinkedHashMap<String, String> store = new LinkedHashMap<>();
             while ((line = windReader.readLine()) != null) {
                 if (line.matches(".*reclass.*")) {
                     /*
@@ -764,7 +764,7 @@ public class JGrassRegion {
                 }
             }
         }
-        LinkedHashMap<String, String> store = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> store = new LinkedHashMap<>();
         try (BufferedReader windReader = new BufferedReader(new FileReader(file))) {
             while ((line = windReader.readLine()) != null) {
                 StringTokenizer tok = new StringTokenizer(line, ":"); // $NON-NLS-1$

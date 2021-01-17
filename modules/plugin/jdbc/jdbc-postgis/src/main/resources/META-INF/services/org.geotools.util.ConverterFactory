@@ -1,2 +1,3 @@
 org.geotools.data.postgis.HStoreConverterFactory
 org.geotools.data.postgis.SQLArrayConverterFactory
+org.geotools.data.postgis.BigDateConverterFactory

@@ -175,12 +175,12 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
             }
             validSRS = layer.getSrs();
         } else {
-            Set<String> intersection = new HashSet<String>(validSRS);
+            Set<String> intersection = new HashSet<>(validSRS);
             intersection.retainAll(layer.getSrs());
 
             // can we reuse what we have?
             if (!intersection.contains(srsName)) {
-                if (intersection.size() == 0) {
+                if (intersection.isEmpty()) {
                     throw new IllegalArgumentException(
                             "The layer being appended does "
                                     + "not have any SRS in common with the ones already "
@@ -213,7 +213,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
             throws IOException {
         GetFeatureInfoRequest request = wms.createGetFeatureInfoRequest(getmap);
         request.setFeatureCount(1);
-        LinkedHashSet<Layer> queryLayers = new LinkedHashSet<Layer>();
+        LinkedHashSet<Layer> queryLayers = new LinkedHashSet<>();
         for (LayerStyle ls : layers) {
             queryLayers.add(ls.getLayer());
         }

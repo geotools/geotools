@@ -174,8 +174,7 @@ public class FeatureClassStats implements VectorProcess {
         }
 
         // calculate all the stats
-        FeatureIterator it = features.features();
-        try {
+        try (FeatureIterator it = features.features()) {
             while (it.hasNext()) {
                 Feature f = it.next();
                 Object val = f.getProperty(attribute).getValue();
@@ -188,7 +187,8 @@ public class FeatureClassStats implements VectorProcess {
                 if (dubVal == null) {
                     LOG.warning(
                             String.format(
-                                    "Unable to convert value %s (attribute '%s') to Double, skipping",
+                                    "Unable to convert value %s (attribute '%s') to Double, "
+                                            + "skipping",
                                     val, attribute));
                     continue;
                 }
@@ -196,8 +196,6 @@ public class FeatureClassStats implements VectorProcess {
                 int slot = rc.classify(dubVal);
                 sampleStats[slot].offer(dubVal);
             }
-        } finally {
-            it.close();
         }
 
         return new Results(ranges, sampleStats);

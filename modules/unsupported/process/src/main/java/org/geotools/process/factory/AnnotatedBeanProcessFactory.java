@@ -88,7 +88,7 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
      * @return class map from process name to implementing class.
      */
     static Map<String, Class<?>> classMap(Class<?>... beanClasses) {
-        Map<String, Class<?>> map = new HashMap<String, Class<?>>();
+        Map<String, Class<?>> map = new HashMap<>();
         for (Class<?> c : beanClasses) {
             String name = c.getSimpleName();
             if (name.endsWith("Process")) {
@@ -112,7 +112,7 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
         if (c == null) {
             return null;
         } else {
-            return (DescribeProcess) c.getAnnotation(DescribeProcess.class);
+            return c.getAnnotation(DescribeProcess.class);
         }
     }
 
@@ -126,7 +126,7 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
         Class<?> c = classMap.get(className);
         if (c != null) {
 
-            List<Method> candidates = new ArrayList<Method>();
+            List<Method> candidates = new ArrayList<>();
             for (Method m : c.getMethods()) {
                 if ("execute".equals(m.getName())) {
                     candidates.add(m);
@@ -188,8 +188,8 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
 
     /** List of processes published; generated from the classMap created in the constructuor. */
     public Set<Name> getNames() {
-        Set<Name> result = new LinkedHashSet<Name>();
-        List<String> names = new ArrayList<String>(classMap.keySet());
+        Set<Name> result = new LinkedHashSet<>();
+        List<String> names = new ArrayList<>(classMap.keySet());
         Collections.sort(names);
         for (String name : names) {
             result.add(new NameImpl(namespace, name));
@@ -227,14 +227,20 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
         }
 
         public Class<T> getBeanClass() {
-            return (Class<T>)
-                    streamCategories().findFirst().orElseThrow(NoSuchElementException::new);
+            @SuppressWarnings("unchecked")
+            Class<T> result =
+                    (Class<T>)
+                            streamCategories().findFirst().orElseThrow(NoSuchElementException::new);
+            return result;
         }
 
         public Class<? extends T>[] lookupBeanClasses() {
-            return getFactories(getBeanClass(), null, null)
-                    .map(Object::getClass)
-                    .toArray(Class[]::new);
+            @SuppressWarnings("unchecked")
+            Class<? extends T>[] classes =
+                    getFactories(getBeanClass(), null, null)
+                            .map(Object::getClass)
+                            .toArray(Class[]::new);
+            return classes;
         }
     }
 }

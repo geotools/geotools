@@ -20,7 +20,11 @@ package org.geotools.ysld.parse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.styling.*;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.Rule;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
@@ -36,7 +40,7 @@ public class RootParser extends YsldParseHandler {
     Style style;
 
     public RootParser() {
-        this(Collections.<ZoomContextFinder>emptyList());
+        this(Collections.emptyList());
     }
 
     public RootParser(List<ZoomContextFinder> zCtxtFinders) {

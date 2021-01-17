@@ -20,12 +20,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.CRS;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.Filter;
@@ -34,15 +36,15 @@ import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
-public class FilterTransformerTest extends TestCase {
+public class FilterTransformerTest {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     FilterTransformer transform = new FilterTransformer();
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         // init xmlunit
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("ogc", "http://www.opengis.net/ogc");
         namespaces.put("gml", "http://www.opengis.net/gml");
         namespaces.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -50,32 +52,35 @@ public class FilterTransformerTest extends TestCase {
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }
 
+    @Test
     public void testIdEncode() throws Exception {
-        HashSet<FeatureId> set = new LinkedHashSet<FeatureId>();
+        HashSet<FeatureId> set = new LinkedHashSet<>();
         set.add(ff.featureId("FID.1"));
         set.add(ff.featureId("FID.2"));
         Filter filter = ff.id(set);
 
         String output = transform.transform(filter);
-        assertNotNull("got xml", output);
+        Assert.assertNotNull("got xml", output);
         String xml =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:FeatureId xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\" fid=\"FID.1\"/><ogc:FeatureId fid=\"FID.2\"/>";
-        assertEquals("expected id filters", xml, output);
+        Assert.assertEquals("expected id filters", xml, output);
     }
 
+    @Test
     public void testEncodeLong() throws Exception {
         Filter filter = ff.greater(ff.property("MYATT"), ff.literal(50000000l));
         String output = transform.transform(filter);
-        assertNotNull("got xml", output);
+        Assert.assertNotNull("got xml", output);
         String xml =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:PropertyIsGreaterThan "
                         + "xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" "
                         + "xmlns:gml=\"http://www.opengis.net/gml\">"
                         + "<ogc:PropertyName>MYATT</ogc:PropertyName>"
                         + "<ogc:Literal>50000000</ogc:Literal></ogc:PropertyIsGreaterThan>";
-        assertEquals(xml, output);
+        Assert.assertEquals(xml, output);
     }
 
+    @Test
     public void testEncodeSRSNameLonLat() throws Exception {
         // create a georeferenced geometry
         CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
@@ -89,6 +94,7 @@ public class FilterTransformerTest extends TestCase {
         XMLAssert.assertXpathEvaluatesTo("EPSG:4326", "//gml:Point/@srsName", doc);
     }
 
+    @Test
     public void testEncodeSRSNameLatLon() throws Exception {
         // create a georeferenced geometry
         CoordinateReferenceSystem wgs84 = CRS.decode("urn:ogc:def:crs:EPSG::4326");
@@ -102,10 +108,11 @@ public class FilterTransformerTest extends TestCase {
         XMLAssert.assertXpathEvaluatesTo("urn:ogc:def:crs:EPSG::4326", "//gml:Point/@srsName", doc);
     }
 
+    @Test
     public void testEncodeBBox() throws Exception {
         Filter filter = ff.bbox("geom", -1.0, 50.0, 1.0, 51, "EPSG:4326");
         String output = transform.transform(filter);
-        assertNotNull("got xml", output);
+        Assert.assertNotNull("got xml", output);
         String xml =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:BBOX "
                         + "xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" "
@@ -113,6 +120,6 @@ public class FilterTransformerTest extends TestCase {
                         + "<ogc:PropertyName>geom</ogc:PropertyName>"
                         + "<gml:Box><gml:coordinates xmlns:gml=\"http://www.opengis.net/gml\" decimal=\".\" cs=\",\" ts=\" \">-1,50 1,51</gml:coordinates></gml:Box>"
                         + "</ogc:BBOX>";
-        assertEquals(xml, output);
+        Assert.assertEquals(xml, output);
     }
 }

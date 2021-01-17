@@ -71,7 +71,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     @Override
     public boolean startObject() throws ParseException, IOException {
         if (properties == NULL_LIST) {
-            properties = new ArrayList();
+            properties = new ArrayList<>();
         } else if (properties != null) {
             // start of a new object in properties means a geometry
             delegate = new GeometryHandler(new GeometryFactory());
@@ -80,6 +80,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
         return super.startObject();
     }
 
+    @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         if ("id".equals(key) && properties == null) {
             id = "";
@@ -93,7 +94,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
             return true;
         } else if ("properties".equals(key) && delegate == NULL) {
             properties = NULL_LIST;
-            values = new ArrayList();
+            values = new ArrayList<>();
         } else if (properties != null && delegate == NULL) {
             properties.add(key);
             return true;
@@ -125,10 +126,11 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     @Override
     public boolean endObject() throws ParseException, IOException {
         if (delegate instanceof IContentHandler) {
-            ((IContentHandler) delegate).endObject();
+            delegate.endObject();
 
             if (delegate instanceof GeometryHandler) {
-                Geometry g = ((IContentHandler<Geometry>) delegate).getValue();
+                GeometryHandler geometryHandler = (GeometryHandler) delegate;
+                Geometry g = geometryHandler.getValue();
                 if (g != null
                         || !(((GeometryHandler) delegate).getDelegate()
                                 instanceof GeometryCollectionHandler)) {

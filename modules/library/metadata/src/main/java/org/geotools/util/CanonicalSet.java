@@ -66,7 +66,7 @@ public class CanonicalSet<E> extends WeakHashSet<E> {
      * @since 2.5
      */
     public static <E> CanonicalSet<E> newInstance(final Class<E> type) {
-        return new CanonicalSet<E>(type);
+        return new CanonicalSet<>(type);
     }
 
     /**

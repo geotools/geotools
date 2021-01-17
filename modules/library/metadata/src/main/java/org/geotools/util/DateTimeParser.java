@@ -72,7 +72,7 @@ public class DateTimeParser {
     public static final int FLAG_SINGLE_DATE_AS_DATERANGE = 65536;
 
     private static final Set<String> CURRENT_TIME_NAMES =
-            new HashSet<String>(Arrays.asList("current", "now", "present"));
+            new HashSet<>(Arrays.asList("current", "now", "present"));
 
     private static final String SIMPLIFIED_FORMAT_MILLISECOND = "yyyyMMdd'T'HHmmssSSS";
 
@@ -449,7 +449,7 @@ public class DateTimeParser {
     }
 
     /** Tries to avoid insertion of multiple time values. */
-    private static void addPeriod(Collection result, DateRange newRange) {
+    private static void addPeriod(Collection<Object> result, DateRange newRange) {
         for (Iterator it = result.iterator(); it.hasNext(); ) {
             final Object element = it.next();
             if (element instanceof Date) {
@@ -468,9 +468,8 @@ public class DateTimeParser {
         result.add(newRange);
     }
 
-    private static void addDate(Collection result, Date newDate) {
-        for (Iterator<?> it = result.iterator(); it.hasNext(); ) {
-            final Object element = it.next();
+    private static void addDate(Collection<Object> result, Date newDate) {
+        for (final Object element : result) {
             if (element instanceof Date) {
                 if (newDate.equals(element)) return;
             } else if (((DateRange) element).contains(newDate)) {

@@ -65,14 +65,14 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
      * The map of hard or soft references. Values are either direct reference to the objects, or
      * wrapped in a {@code Reference} object.
      */
-    private final Map<K, Object> hash = new ConcurrentHashMap<K, Object>();
+    private final Map<K, Object> hash = new ConcurrentHashMap<>();
 
     /**
      * The FIFO list of keys to hard references. Newest elements are first, and latest elements are
      * last. Note that in a highly concurrent environments the exact total number of strong
      * references may differ slightly from {@link #hardReferencesCount}.
      */
-    private final Queue<K> hardCache = new ConcurrentLinkedQueue<K>();
+    private final Queue<K> hardCache = new ConcurrentLinkedQueue<>();
 
     /** The number of hard references to hold internally. */
     private final int hardReferencesCount;
@@ -234,7 +234,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
             else
                 hash.put(
                         (K) replaceNull(toRemove),
-                        new Reference<K, V>(hash, (K) replaceNull(toRemove), v, cleaner));
+                        new Reference<>(hash, (K) replaceNull(toRemove), v, cleaner));
         }
     }
 
@@ -265,7 +265,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
              *
              * In highly concurrent environments, key could have been already removed.
              */
-            hardCache.remove((K) replaceNull(key));
+            hardCache.remove(replaceNull(key));
         }
         retainStrongly((K) replaceNull(key));
         final V v = (V) oldValue;
@@ -353,7 +353,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
     private final class Entries extends AbstractSet<Map.Entry<K, V>> {
         /** Returns an iterator over the elements contained in this collection. */
         public Iterator<Map.Entry<K, V>> iterator() {
-            return new Iter<K, V>(hash);
+            return new Iter<>(hash);
         }
 
         /** Returns the number of elements in this collection. */
@@ -462,14 +462,14 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
                 if (value instanceof Reference) {
                     value = ((Reference<K, V>) value).get();
                     entry =
-                            new MapEntry<K, V>(
+                            new MapEntry<>(
                                     (K) SoftValueHashMap.resolveNull(candidate.getKey()),
                                     (V) value);
                     return true;
                 }
                 if (value != null) {
                     entry =
-                            new MapEntry<K, V>(
+                            new MapEntry<>(
                                     (K) SoftValueHashMap.resolveNull(candidate.getKey()),
                                     (V) value);
                     return true;
@@ -554,6 +554,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
          * SoftReference#clear} method because it is invoked by {@link WeakCollectionCleaner}.
          */
         @Override
+        @SuppressWarnings("unchecked")
         public void clear() {
             if (cleaner != null) {
                 final Object value = get();
@@ -589,9 +590,9 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
      *
      * @author Andrea Aime - OpenGeo
      */
-    public static interface ValueCleaner {
+    public static interface ValueCleaner<K, V> {
         /** Cleans the specified object */
-        public void clean(Object key, Object object);
+        public void clean(K key, V object);
     }
 
     /** Define placeholder to deal with null key values */

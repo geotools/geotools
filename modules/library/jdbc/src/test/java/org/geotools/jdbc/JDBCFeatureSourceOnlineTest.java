@@ -147,7 +147,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
 
-            SimpleFeature feature = (SimpleFeature) iterator.next();
+            SimpleFeature feature = iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
             assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
         }
@@ -179,7 +179,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
 
-            SimpleFeature feature = (SimpleFeature) iterator.next();
+            SimpleFeature feature = iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
             assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
         }
@@ -210,7 +210,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
 
-            SimpleFeature feature = (SimpleFeature) iterator.next();
+            SimpleFeature feature = iterator.next();
             assertEquals(2, feature.getAttributeCount());
 
             assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
@@ -244,15 +244,15 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
 
-            f = (SimpleFeature) iterator.next();
+            f = iterator.next();
             assertEquals("one", f.getAttribute(aname("stringProperty")));
 
             assertTrue(iterator.hasNext());
-            f = (SimpleFeature) iterator.next();
+            f = iterator.next();
             assertEquals("two", f.getAttribute(aname("stringProperty")));
 
             assertTrue(iterator.hasNext());
-            f = (SimpleFeature) iterator.next();
+            f = iterator.next();
             assertEquals("zero", f.getAttribute(aname("stringProperty")));
         }
 
@@ -263,15 +263,15 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
 
-            f = (SimpleFeature) iterator.next();
+            f = iterator.next();
             assertEquals("zero", f.getAttribute(aname("stringProperty")));
 
             assertTrue(iterator.hasNext());
-            f = (SimpleFeature) iterator.next();
+            f = iterator.next();
             assertEquals("two", f.getAttribute(aname("stringProperty")));
 
             assertTrue(iterator.hasNext());
-            f = (SimpleFeature) iterator.next();
+            f = iterator.next();
             assertEquals("one", f.getAttribute(aname("stringProperty")));
         }
     }

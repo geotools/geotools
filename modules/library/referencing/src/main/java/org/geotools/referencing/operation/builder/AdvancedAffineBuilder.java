@@ -84,7 +84,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
     private int steps = 100;
 
     /** Map of constrains - parameter name as key and its required value */
-    private Map<String, Double> valueConstrain = new HashMap<String, Double>();
+    private Map<String, Double> valueConstrain = new HashMap<>();
 
     /** Affine transformation for approximate values */
     private final AffineTransform2D affineTrans;
@@ -477,13 +477,13 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
         /** Runs calculation of parameter values */
         double[] param = getDxMatrix().getElements()[0];
 
-        /** calcuates matrix coefficients form geometric coefficients */
+        /** calculates matrix coefficients from geometric coefficients */
         double a11 = sx * Math.cos(phix);
         double a12 = -sy * Math.sin(phiy);
         double a21 = sx * Math.sin(phix);
         double a22 = sy * Math.cos(phiy);
 
-        /** Fill the metrix */
+        /** Fill the matrix */
         double[] m0 = {a11, a12, param[4]};
         double[] m1 = {a21, a22, param[5]};
         double[] m2 = {0, 0, 1};
@@ -496,7 +496,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
 
     @Override
     protected MathTransform computeMathTransform() throws FactoryException {
-        if (valueConstrain.size() == 0) {
+        if (valueConstrain.isEmpty()) {
             return affineTrans;
         }
 

@@ -79,7 +79,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      * <p>This use will result in collections that are sorted by FID, in keeping with shapefile
      * etc...
      */
-    private SortedMap<String, SimpleFeature> contents = new TreeMap<String, SimpleFeature>();
+    private SortedMap<String, SimpleFeature> contents = new TreeMap<>();
 
     /** Internal envelope of bounds. */
     private ReferencedEnvelope bounds = null;
@@ -95,7 +95,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
     /** FeatureCollection schema will be defined by the first added feature. */
     public TreeSetFeatureCollection() {
-        this((String) null, (SimpleFeatureType) null);
+        this(null, null);
     }
 
     /**
@@ -134,8 +134,8 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         if (bounds == null) {
             bounds = new ReferencedEnvelope();
 
-            for (Iterator i = contents.values().iterator(); i.hasNext(); ) {
-                BoundingBox geomBounds = ((SimpleFeature) i.next()).getBounds();
+            for (SimpleFeature simpleFeature : contents.values()) {
+                BoundingBox geomBounds = simpleFeature.getBounds();
                 // IanS - as of 1.3, JTS expandToInclude ignores "null" Envelope
                 // and simply adds the new bounds...
                 // This check ensures this behavior does not occur.
@@ -176,7 +176,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         if (this.schema == null) {
             this.schema = feature.getFeatureType();
         }
-        SimpleFeatureType childType = (SimpleFeatureType) getSchema();
+        SimpleFeatureType childType = getSchema();
         // if ( childType==null ){
         // //this.childType=
         // }else{
@@ -208,7 +208,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         try {
             List featuresAdded = new ArrayList(collection.size());
             while (iterator.hasNext()) {
-                SimpleFeature f = (SimpleFeature) iterator.next();
+                SimpleFeature f = iterator.next();
                 boolean added = add(f);
                 changed |= added;
 
@@ -225,9 +225,8 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         // TODO check inheritance with FeatureType here!!!
         boolean changed = false;
 
-        FeatureIterator<?> iterator = collection.features();
-        try {
-            List<SimpleFeature> featuresAdded = new ArrayList<SimpleFeature>(collection.size());
+        try (FeatureIterator<?> iterator = collection.features()) {
+            List<SimpleFeature> featuresAdded = new ArrayList<>(collection.size());
             while (iterator.hasNext()) {
                 SimpleFeature f = (SimpleFeature) iterator.next();
                 boolean added = add(f);
@@ -236,8 +235,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
                 if (added) featuresAdded.add(f);
             }
             return changed;
-        } finally {
-            iterator.close();
         }
     }
 
@@ -249,7 +246,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         if (contents.isEmpty()) return;
 
         SimpleFeature[] oldFeatures = new SimpleFeature[contents.size()];
-        oldFeatures = (SimpleFeature[]) contents.values().toArray(oldFeatures);
+        oldFeatures = contents.values().toArray(oldFeatures);
 
         contents.clear();
         // fireChange(oldFeatures, CollectionEvent.FEATURES_REMOVED);
@@ -322,7 +319,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
             }
 
             public SimpleFeature next() {
-                currFeature = (SimpleFeature) iterator.next();
+                currFeature = iterator.next();
                 return currFeature;
             }
 
@@ -481,9 +478,10 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *     enough; otherwise, a new array of the same runtime type is allocated for this purpose.
      * @return an array containing the elements of this collection
      */
-    @SuppressWarnings("unchecked")
-    public Object[] toArray(Object[] a) {
-        return contents.values().toArray(a != null ? a : new Object[contents.size()]);
+    public <O> O[] toArray(O[] a) {
+        @SuppressWarnings("unchecked")
+        O[] cast = (O[]) new Object[contents.size()];
+        return contents.values().toArray(a != null ? a : cast);
     }
 
     public void close(FeatureIterator<SimpleFeature> close) {
@@ -526,9 +524,8 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
     public SimpleFeatureCollection collection() throws IOException {
         TreeSetFeatureCollection copy = new TreeSetFeatureCollection(null, getSchema());
-        List<SimpleFeature> list = new ArrayList<SimpleFeature>(contents.size());
-        SimpleFeatureIterator iterator = features();
-        try {
+        List<SimpleFeature> list = new ArrayList<>(contents.size());
+        try (SimpleFeatureIterator iterator = features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 SimpleFeature duplicate;
@@ -539,8 +536,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
                 }
                 list.add(duplicate);
             }
-        } finally {
-            iterator.close();
         }
         copy.addAll(list);
         return copy;

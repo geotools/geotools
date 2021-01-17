@@ -71,7 +71,7 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T> {
      * A sample value; often used as a default when prompting the end-user to fill in the details
      * before executing a process.
      */
-    public final Object sample;
+    public final T sample;
 
     /** Hints for the user interface */
 
@@ -274,7 +274,7 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T> {
             boolean required,
             int min,
             int max,
-            Object sample,
+            T sample,
             Map<String, Object> metadata) {
         this.key = key;
         this.title = title;
@@ -285,7 +285,7 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T> {
         this.maxOccurs = max;
         this.sample = sample;
         this.metadata =
-                metadata == null ? Collections.EMPTY_MAP : Collections.unmodifiableMap(metadata);
+                metadata == null ? Collections.emptyMap() : Collections.unmodifiableMap(metadata);
     }
 
     /**
@@ -339,7 +339,7 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T> {
     }
 
     public T getDefaultValue() {
-        return (T) sample;
+        return sample;
     }
 
     /**

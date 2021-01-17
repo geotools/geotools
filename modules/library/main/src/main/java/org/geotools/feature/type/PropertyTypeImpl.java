@@ -71,7 +71,7 @@ public abstract class PropertyTypeImpl implements PropertyType {
 
         this.superType = superType;
         this.description = description;
-        this.userData = new HashMap<Object, Object>();
+        this.userData = new HashMap<>();
     }
 
     public Name getName() {
@@ -142,12 +142,12 @@ public abstract class PropertyTypeImpl implements PropertyType {
 
     /**
      * Convenience method for testing two lists for equality. One or both objects may be null, and
-     * considers null and emtpy list as equal
+     * considers null and empty list as equal
      */
     private boolean equals(final List object1, final List object2) {
         if ((object1 == object2) || (object1 != null && object1.equals(object2))) return true;
-        if (object1 == null && object2.size() == 0) return true;
-        if (object2 == null && object1.size() == 0) return true;
+        if (object1 == null && object2.isEmpty()) return true;
+        if (object2 == null && object1.isEmpty()) return true;
         return false;
     }
 

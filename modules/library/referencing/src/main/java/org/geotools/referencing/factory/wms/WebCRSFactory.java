@@ -17,7 +17,6 @@
 package org.geotools.referencing.factory.wms;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -59,8 +58,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
     private static final String PREFIX = "CRS";
 
     /** The map of pre-defined CRS. */
-    private final Map<Integer, CoordinateReferenceSystem> crsMap =
-            new TreeMap<Integer, CoordinateReferenceSystem>();
+    private final Map<Integer, CoordinateReferenceSystem> crsMap = new TreeMap<>();
 
     /** Constructs a default factory for the {@code CRS} authority. */
     public WebCRSFactory() {
@@ -98,7 +96,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
     private void add(final int code, final String name, final Ellipsoid ellipsoid)
             throws FactoryException {
         assert Thread.holdsLock(this);
-        final Map properties = new HashMap();
+        final Map<String, Object> properties = new HashMap<>();
         final Citation authority = getAuthority();
         final String text = String.valueOf(code);
         properties.put(IdentifiedObject.NAME_KEY, name);
@@ -139,11 +137,13 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
      * org.geotools.referencing.factory.AllAuthoritiesFactory#getAuthorityCodes all authorities
      * factory}.
      */
-    public Set getAuthorityCodes(final Class type) throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         ensureInitialized();
-        final Set set = new LinkedHashSet();
-        for (final Iterator it = crsMap.entrySet().iterator(); it.hasNext(); ) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        final Set<String> set = new LinkedHashSet<>();
+        for (Map.Entry<Integer, CoordinateReferenceSystem> integerCoordinateReferenceSystemEntry :
+                crsMap.entrySet()) {
+            final Map.Entry entry = (Map.Entry) integerCoordinateReferenceSystemEntry;
             final CoordinateReferenceSystem crs = (CoordinateReferenceSystem) entry.getValue();
             if (type.isAssignableFrom(crs.getClass())) {
                 final Integer code = (Integer) entry.getKey();

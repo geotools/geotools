@@ -86,8 +86,9 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
         LinearRing[] inner = null;
 
         if (node.hasChild("innerBoundaryIs")) {
-            List l = node.getChildValues("innerBoundaryIs");
-            inner = (LinearRing[]) l.toArray(new LinearRing[l.size()]);
+            @SuppressWarnings("unchecked")
+            List<LinearRing> l = node.getChildValues("innerBoundaryIs");
+            inner = l.toArray(new LinearRing[l.size()]);
         }
 
         return geometryFactory.createPolygon(outer, inner);
@@ -101,7 +102,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
             if (p.getNumInteriorRing() > 0) {
                 LinearRing[] interior = new LinearRing[p.getNumInteriorRing()];
                 for (int i = 0; i < interior.length; i++) {
-                    interior[i] = (LinearRing) p.getInteriorRingN(i);
+                    interior[i] = p.getInteriorRingN(i);
                 }
 
                 return interior;

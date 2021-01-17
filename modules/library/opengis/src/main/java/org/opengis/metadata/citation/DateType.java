@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.citation;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class DateType extends CodeList<DateType> {
     private static final long serialVersionUID = 9031571038833329544L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<DateType> VALUES = new ArrayList<DateType>(3);
+    private static final List<DateType> VALUES = new ArrayList<>(3);
 
     /** Date identifies when the resource was brought into existence. */
     @UML(identifier = "creation", obligation = CONDITIONAL, specification = ISO_19115)

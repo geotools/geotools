@@ -17,10 +17,12 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.geotools.util.URLs.fileToUrl;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,7 +76,7 @@ public class PropertiesCollectorTest {
         final Set<PropertiesCollectorSPI> spis =
                 PropertiesCollectorFinder.getPropertiesCollectorSPI();
         assertNotNull(spis);
-        assertTrue(!spis.isEmpty());
+        assertFalse(spis.isEmpty());
         assertEquals(15, spis.size());
     }
 
@@ -85,7 +87,7 @@ public class PropertiesCollectorTest {
         final Set<PropertiesCollectorSPI> spis =
                 PropertiesCollectorFinder.getPropertiesCollectorSPI();
         assertNotNull(spis);
-        assertTrue(!spis.isEmpty());
+        assertFalse(spis.isEmpty());
         URL testUrl = TestData.url(this, "time_geotiff/stringregex.properties");
         // test a regex
         PropertiesCollectorSPI spi;
@@ -99,7 +101,7 @@ public class PropertiesCollectorTest {
             }
         }
 
-        assertTrue(false);
+        fail();
     }
 
     @Test
@@ -109,7 +111,7 @@ public class PropertiesCollectorTest {
         final Set<PropertiesCollectorSPI> spis =
                 PropertiesCollectorFinder.getPropertiesCollectorSPI();
         assertNotNull(spis);
-        assertTrue(!spis.isEmpty());
+        assertFalse(spis.isEmpty());
         URL testUrl = TestData.url(this, "time_geotiff/timeregex.properties");
         // test a regex
         PropertiesCollectorSPI spi;
@@ -122,7 +124,7 @@ public class PropertiesCollectorTest {
                 return;
             }
         }
-        assertTrue(false);
+        fail();
     }
 
     @Test

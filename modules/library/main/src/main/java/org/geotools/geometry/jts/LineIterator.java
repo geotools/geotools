@@ -308,8 +308,8 @@ public final class LineIterator extends AbstractLiteIterator {
     /** @see java.awt.geom.PathIterator#currentSegment(double[]) */
     public int currentSegment(double[] coords) {
         if (currentCoord == 0) {
-            coords[0] = (double) coordinates.getX(0);
-            coords[1] = (double) coordinates.getY(0);
+            coords[0] = coordinates.getX(0);
+            coords[1] = coordinates.getY(0);
             at.transform(coords, 0, coords, 0, 1);
             return SEG_MOVETO;
         } else if ((currentCoord == coordinateCount) && isClosed) {

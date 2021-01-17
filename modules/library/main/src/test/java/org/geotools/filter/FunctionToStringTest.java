@@ -128,7 +128,7 @@ public class FunctionToStringTest {
             return null;
         }
 
-        List<Expression> parameters = new ArrayList<Expression>();
+        List<Expression> parameters = new ArrayList<>();
         Literal fallback = null;
 
         // Retrieve default parameters for function
@@ -166,9 +166,7 @@ public class FunctionToStringTest {
         } else {
             List<Parameter<?>> functionParamList = functionName.getArguments();
 
-            for (int paramIndex = 0; paramIndex < functionParamList.size(); paramIndex++) {
-                Parameter<?> param = functionParamList.get(paramIndex);
-
+            for (Parameter<?> param : functionParamList) {
                 Class<?> type = param.getType();
                 if (type == Object.class) {
                     parameters.add(ff.literal(""));

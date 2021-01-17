@@ -50,30 +50,31 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
     protected XpathEngine xpath;
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         this.gtEncoder = new Encoder(createConfiguration());
         this.xpath = XMLUnit.newXpathEngine();
     }
 
-    protected Document encode(GeometryEncoder encoder, Geometry geometry) throws Exception {
+    protected <T extends Geometry> Document encode(GeometryEncoder<T> encoder, T geometry)
+            throws Exception {
         return encode(encoder, geometry, null);
     }
 
-    protected Document encode(GeometryEncoder encoder, Geometry geometry, String gmlId)
-            throws Exception {
+    protected <T extends Geometry> Document encode(
+            GeometryEncoder<T> encoder, T geometry, String gmlId) throws Exception {
         return encode(encoder, geometry, true, gmlId, 6, false, false);
     }
 
-    protected Document encode(
-            GeometryEncoder encoder, Geometry geometry, boolean encodeMeasures, String gmlId)
+    protected <T extends Geometry> Document encode(
+            GeometryEncoder<T> encoder, T geometry, boolean encodeMeasures, String gmlId)
             throws Exception {
         return encode(encoder, geometry, encodeMeasures, gmlId, 6, false, false);
     }
 
-    protected Document encode(
-            GeometryEncoder encoder,
-            Geometry geometry,
+    protected <T extends Geometry> Document encode(
+            GeometryEncoder<T> encoder,
+            T geometry,
             boolean encodeMeasures,
             String gmlId,
             int numDecimals,

@@ -101,7 +101,7 @@ public class CreatedOrModifiedFeatureTypeImpl extends EObjectImpl implements Cre
    */
     public EList<FeatureId> getResourceId() {
     if (resourceId == null) {
-      resourceId = new EDataTypeUniqueEList<FeatureId>(FeatureId.class, this, Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID);
+      resourceId = new EDataTypeUniqueEList<>(FeatureId.class, this, Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID);
     }
     return resourceId;
   }

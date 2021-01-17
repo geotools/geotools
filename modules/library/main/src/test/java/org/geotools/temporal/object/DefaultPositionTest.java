@@ -16,7 +16,8 @@
  */
 package org.geotools.temporal.object;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -60,7 +61,7 @@ public class DefaultPositionTest {
     @Test
     public void testGetDate() {
         Date result = position1.getDate();
-        assertFalse(position2.getDate().equals(result));
+        assertNotEquals(position2.getDate(), result);
     }
 
     /** Test of getTime method, of class DefaultPosition. */
@@ -74,28 +75,28 @@ public class DefaultPositionTest {
     @Test
     public void testGetDateTime() {
         InternationalString result = position1.getDateTime();
-        assertFalse(position2.getDateTime().equals(result));
+        assertNotEquals(position2.getDateTime(), result);
     }
 
     /** Test of equals method, of class DefaultPosition. */
     @Test
     public void testEquals() {
-        assertFalse(position1.equals(null));
+        assertNotEquals(null, position1);
         assertEquals(position1, position1);
-        assertFalse(position1.equals(position2));
+        assertNotEquals(position1, position2);
     }
 
     /** Test of hashCode method, of class DefaultPosition. */
     @Test
     public void testHashCode() {
         int result = position1.hashCode();
-        assertFalse(position2.hashCode() == result);
+        assertNotEquals(position2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultPosition. */
     @Test
     public void testToString() {
         String result = position1.toString();
-        assertFalse(position2.toString().equals(result));
+        assertNotEquals(position2.toString(), result);
     }
 }

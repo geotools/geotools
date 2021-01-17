@@ -16,6 +16,10 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -32,6 +36,7 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.wfs.PropertyValueCollection;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -46,16 +51,18 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
     private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2();
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         registerNamespaceMapping("gt", "http://geotools.org");
     }
 
+    @Test
     public void testNothing() {
         // just to prevent build failure
     }
 
+    @Test
     public void testEncode() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("feature");
@@ -113,7 +120,7 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
         NodeList strs = getElementsByQName(doc, new QName("http://geotools.org", "str"));
         assertEquals(2, strs.getLength());
 
-        Set vals = new HashSet(Arrays.asList("zero", "one"));
+        Set<String> vals = new HashSet<>(Arrays.asList("zero", "one"));
         vals.remove(strs.item(0).getFirstChild().getNodeValue());
         vals.remove(strs.item(1).getFirstChild().getNodeValue());
         assertTrue(vals.isEmpty());

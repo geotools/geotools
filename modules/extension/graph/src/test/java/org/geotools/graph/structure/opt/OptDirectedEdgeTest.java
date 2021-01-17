@@ -17,9 +17,11 @@
 package org.geotools.graph.structure.opt;
 
 import java.util.Iterator;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class OptDirectedEdgeTest extends TestCase {
+public class OptDirectedEdgeTest {
 
     private OptDirectedNode m_inNode;
     private OptDirectedNode m_outNode;
@@ -40,11 +42,8 @@ public class OptDirectedEdgeTest extends TestCase {
     private OptDirectedEdge m_inoutEdge;
     private OptDirectedEdge m_outinEdge;
 
-    public OptDirectedEdgeTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         m_inNode = new OptDirectedNode();
         m_inNode.setInDegree(1);
         m_inNode.setOutDegree(1);
@@ -200,44 +199,49 @@ public class OptDirectedEdgeTest extends TestCase {
         m_otherInNode.addOut(m_outinEdge);
     }
 
+    @Test
     public void test_getInNode() {
-        assertTrue(m_inNode == m_edge.getNodeA());
-        assertTrue(m_inNode == m_edge.getInNode());
+        Assert.assertSame(m_inNode, m_edge.getNodeA());
+        Assert.assertSame(m_inNode, m_edge.getInNode());
     }
 
+    @Test
     public void test_getOutNode() {
-        assertTrue(m_outNode == m_edge.getNodeB());
-        assertTrue(m_outNode == m_edge.getOutNode());
+        Assert.assertSame(m_outNode, m_edge.getNodeB());
+        Assert.assertSame(m_outNode, m_edge.getOutNode());
     }
 
+    @Test
     public void test_getOtherNode() {
-        assertTrue(m_inNode == m_edge.getOtherNode(m_outNode));
-        assertTrue(m_outNode == m_edge.getOtherNode(m_inNode));
-        assertTrue(null == m_edge.getOtherNode(new OptDirectedNode()));
+        Assert.assertSame(m_inNode, m_edge.getOtherNode(m_outNode));
+        Assert.assertSame(m_outNode, m_edge.getOtherNode(m_inNode));
+        Assert.assertNull(m_edge.getOtherNode(new OptDirectedNode()));
     }
 
+    @Test
     public void test_reverse() {
-        assertTrue(m_edge.getInNode().getOutEdges().contains(m_edge));
-        assertTrue(m_edge.getOutNode().getInEdges().contains(m_edge));
+        Assert.assertTrue(m_edge.getInNode().getOutEdges().contains(m_edge));
+        Assert.assertTrue(m_edge.getOutNode().getInEdges().contains(m_edge));
 
         try {
             m_edge.reverse();
-            assertTrue(false);
+            Assert.fail();
         } catch (UnsupportedOperationException e) {
-            assertTrue(true);
+            Assert.assertTrue(true);
         }
     }
 
+    @Test
     public void test_getRelated() {
         Iterator itr = m_edge.getRelated();
 
         OptDirectedEdge de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add an edge that has the same nodes, in the same direction
         addSame();
@@ -245,15 +249,15 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_same);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_same);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_same);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_same);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_same);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_same);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add another edge in the same direction
         addSame2();
@@ -261,18 +265,18 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_same || de == m_same2);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_same || de == m_same2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_same || de == m_same2);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_same || de == m_same2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_same || de == m_same2);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_same || de == m_same2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_same || de == m_same2);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_same || de == m_same2);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         addOpp();
         // add an edge that has the same nodes, opposite direction
@@ -282,15 +286,15 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add another edge in opposite direction
         addOpp2();
@@ -298,18 +302,18 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp || de == m_opp2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp || de == m_opp2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp || de == m_opp2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_opp || de == m_opp2);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add loops
         addLoops();
@@ -317,18 +321,18 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_inloop || de == m_outloop);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inloop || de == m_outloop);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_inloop || de == m_outloop);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inloop || de == m_outloop);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_inloop || de == m_outloop);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inloop || de == m_outloop);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_inloop || de == m_outloop);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inloop || de == m_outloop);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add an incoming edge to the out node and an outgoing edge to the in node
         addInOutEdges();
@@ -336,27 +340,32 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(
+                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(
+                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(
+                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(
+                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
     }
 
+    @Test
     public void test_getInRelated() {
         Iterator itr = m_edge.getInRelated();
 
         OptDirectedEdge de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge);
+        Assert.assertSame(de, m_inEdge);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add same edge (shouldn't show up in iterator this time)
         addSame();
@@ -364,9 +373,9 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getInRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge);
+        Assert.assertSame(de, m_inEdge);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add multiple same edges
         addSame2();
@@ -374,9 +383,9 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getInRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge);
+        Assert.assertSame(de, m_inEdge);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add opposite edge
         addOpp();
@@ -384,12 +393,12 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getInRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_opp);
+        Assert.assertTrue(de == m_inEdge || de == m_opp);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_opp);
+        Assert.assertTrue(de == m_inEdge || de == m_opp);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add multiple opposites
         addOpp2();
@@ -397,15 +406,15 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getInRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_inEdge || de == m_opp || de == m_opp2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_inEdge || de == m_opp || de == m_opp2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_inEdge || de == m_opp || de == m_opp2);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         addLoops();
 
@@ -416,21 +425,22 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getInRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_inloop);
+        Assert.assertTrue(de == m_inEdge || de == m_inloop);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_inEdge || de == m_inloop);
+        Assert.assertTrue(de == m_inEdge || de == m_inloop);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
     }
 
+    @Test
     public void test_getOutRelated() {
         Iterator itr = m_edge.getOutRelated();
 
         OptDirectedEdge de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge);
+        Assert.assertSame(de, m_outEdge);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add same edge (shouldn't show up in iterator this time)
         addSame();
@@ -438,9 +448,9 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getOutRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge);
+        Assert.assertSame(de, m_outEdge);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add multiple same edge (shouldn't show up in iterator this time)
         addSame2();
@@ -448,9 +458,9 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getOutRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge);
+        Assert.assertSame(de, m_outEdge);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add opposite edge
         addOpp();
@@ -458,12 +468,12 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getOutRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge || de == m_opp);
+        Assert.assertTrue(de == m_outEdge || de == m_opp);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge || de == m_opp);
+        Assert.assertTrue(de == m_outEdge || de == m_opp);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add another opposite edge
         addOpp2();
@@ -471,15 +481,15 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getOutRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_outEdge || de == m_opp || de == m_opp2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_outEdge || de == m_opp || de == m_opp2);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge || de == m_opp || de == m_opp2);
+        Assert.assertTrue(de == m_outEdge || de == m_opp || de == m_opp2);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
 
         // add loop
         addLoops();
@@ -487,11 +497,11 @@ public class OptDirectedEdgeTest extends TestCase {
         itr = m_edge.getOutRelated();
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge || de == m_outloop);
+        Assert.assertTrue(de == m_outEdge || de == m_outloop);
 
         de = (OptDirectedEdge) itr.next();
-        assertTrue(de == m_outEdge || de == m_outloop);
+        Assert.assertTrue(de == m_outEdge || de == m_outloop);
 
-        assertTrue(!itr.hasNext());
+        Assert.assertFalse(itr.hasNext());
     }
 }

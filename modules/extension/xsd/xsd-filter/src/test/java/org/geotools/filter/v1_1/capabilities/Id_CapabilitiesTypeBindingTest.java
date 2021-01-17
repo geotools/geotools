@@ -16,9 +16,14 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.IdCapabilities;
 import org.w3c.dom.Document;
 
@@ -42,14 +47,17 @@ import org.w3c.dom.Document;
  * @generated
  */
 public class Id_CapabilitiesTypeBindingTest extends OGCTestSupport {
+    @Test
     public void testType() {
         assertEquals(IdCapabilities.class, binding(OGC.Id_CapabilitiesType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.Id_CapabilitiesType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         FilterMockData.idCapabilities(document, document);
 
@@ -59,6 +67,7 @@ public class Id_CapabilitiesTypeBindingTest extends OGCTestSupport {
         assertTrue(id.hasFID());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom =
                 encode(

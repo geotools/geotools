@@ -161,9 +161,9 @@ public class FilterTransformer extends TransformerBase {
         }
 
         public Object visit(PropertyIsBetween filter, Object extraData) {
-            Expression left = (Expression) filter.getLowerBoundary();
-            Expression mid = (Expression) filter.getExpression();
-            Expression right = (Expression) filter.getUpperBoundary();
+            Expression left = filter.getLowerBoundary();
+            Expression mid = filter.getExpression();
+            Expression right = filter.getUpperBoundary();
 
             String type = "PropertyIsBetween";
 
@@ -280,7 +280,7 @@ public class FilterTransformer extends TransformerBase {
         }
 
         public Object visit(PropertyIsNull filter, Object extraData) {
-            Expression expr = (Expression) filter.getExpression();
+            Expression expr = filter.getExpression();
 
             String type = "PropertyIsNull";
             start(type);
@@ -290,7 +290,7 @@ public class FilterTransformer extends TransformerBase {
         }
 
         public Object visit(PropertyIsNil filter, Object extraData) {
-            Expression expr = (Expression) filter.getExpression();
+            Expression expr = filter.getExpression();
 
             AttributesImpl atts = new AttributesImpl();
             if (filter.getNilReason() != null) {
@@ -505,7 +505,7 @@ public class FilterTransformer extends TransformerBase {
         }
 
         public Object visit(Function expression, Object extraData) {
-            String type = (String) "Function";
+            String type = "Function";
 
             AttributesImpl atts = new AttributesImpl();
             atts.addAttribute("", "name", "name", "", expression.getName());
@@ -558,59 +558,59 @@ public class FilterTransformer extends TransformerBase {
         }
 
         public Object visit(After after, Object extraData) {
-            return visit((BinaryTemporalOperator) after, After.NAME, extraData);
+            return visit(after, After.NAME, extraData);
         }
 
         public Object visit(AnyInteracts anyInteracts, Object extraData) {
-            return visit((BinaryTemporalOperator) anyInteracts, AnyInteracts.NAME, extraData);
+            return visit(anyInteracts, AnyInteracts.NAME, extraData);
         }
 
         public Object visit(Before before, Object extraData) {
-            return visit((BinaryTemporalOperator) before, Before.NAME, extraData);
+            return visit(before, Before.NAME, extraData);
         }
 
         public Object visit(Begins begins, Object extraData) {
-            return visit((BinaryTemporalOperator) begins, Begins.NAME, extraData);
+            return visit(begins, Begins.NAME, extraData);
         }
 
         public Object visit(BegunBy begunBy, Object extraData) {
-            return visit((BinaryTemporalOperator) begunBy, BegunBy.NAME, extraData);
+            return visit(begunBy, BegunBy.NAME, extraData);
         }
 
         public Object visit(During during, Object extraData) {
-            return visit((BinaryTemporalOperator) during, During.NAME, extraData);
+            return visit(during, During.NAME, extraData);
         }
 
         public Object visit(EndedBy endedBy, Object extraData) {
-            return visit((BinaryTemporalOperator) endedBy, EndedBy.NAME, extraData);
+            return visit(endedBy, EndedBy.NAME, extraData);
         }
 
         public Object visit(Ends ends, Object extraData) {
-            return visit((BinaryTemporalOperator) ends, Ends.NAME, extraData);
+            return visit(ends, Ends.NAME, extraData);
         }
 
         public Object visit(Meets meets, Object extraData) {
-            return visit((BinaryTemporalOperator) meets, Meets.NAME, extraData);
+            return visit(meets, Meets.NAME, extraData);
         }
 
         public Object visit(MetBy metBy, Object extraData) {
-            return visit((BinaryTemporalOperator) metBy, MetBy.NAME, extraData);
+            return visit(metBy, MetBy.NAME, extraData);
         }
 
         public Object visit(OverlappedBy overlappedBy, Object extraData) {
-            return visit((BinaryTemporalOperator) overlappedBy, OverlappedBy.NAME, extraData);
+            return visit(overlappedBy, OverlappedBy.NAME, extraData);
         }
 
         public Object visit(TContains contains, Object extraData) {
-            return visit((BinaryTemporalOperator) contains, TContains.NAME, extraData);
+            return visit(contains, TContains.NAME, extraData);
         }
 
         public Object visit(TEquals equals, Object extraData) {
-            return visit((BinaryTemporalOperator) equals, TEquals.NAME, extraData);
+            return visit(equals, TEquals.NAME, extraData);
         }
 
         public Object visit(TOverlaps contains, Object extraData) {
-            return visit((BinaryTemporalOperator) contains, TOverlaps.NAME, extraData);
+            return visit(contains, TOverlaps.NAME, extraData);
         }
 
         protected Object visit(BinaryTemporalOperator filter, String name, Object data) {

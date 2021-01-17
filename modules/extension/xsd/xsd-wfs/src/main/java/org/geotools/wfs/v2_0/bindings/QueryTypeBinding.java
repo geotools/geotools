@@ -49,10 +49,11 @@ public class QueryTypeBinding extends ComplexEMFBinding {
                 QueryType q = (QueryType) eObject;
 
                 // turn into list of qname
-                List qNames = new ArrayList();
+                List<QName> qNames = new ArrayList<>();
                 for (Object s : q.getTypeNames()) {
                     try {
-                        qNames.add(new XSQNameBinding(namespaceContext).parse(null, s));
+                        QName parsed = (QName) new XSQNameBinding(namespaceContext).parse(null, s);
+                        qNames.add(parsed);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -67,7 +68,7 @@ public class QueryTypeBinding extends ComplexEMFBinding {
     public Object getProperty(Object object, QName name) throws Exception {
         if ("aliases".equalsIgnoreCase(name.getLocalPart())) {
             List aliases = ((QueryType) object).getAliases();
-            if (aliases.size() == 0) return null;
+            if (aliases.isEmpty()) return null;
 
             StringBuffer ret = new StringBuffer();
             for (Object o : aliases) {

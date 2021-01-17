@@ -16,9 +16,17 @@
  */
 package org.geotools.filter.expression;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
 import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.feature.AttributeImpl;
@@ -35,7 +43,13 @@ import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
-import org.opengis.feature.type.*;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.ComplexType;
+import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.FeatureTypeFactory;
+import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -81,7 +95,7 @@ public class FeaturePropertyAccessorTest {
         ComplexType rootAttType = (ComplexType) rootDesc.getType();
 
         // feature properties
-        Collection<Property> properties = new ArrayList<Property>(fType.getDescriptors().size());
+        Collection<Property> properties = new ArrayList<>(fType.getDescriptors().size());
 
         /** Build the feature properties */
         // eg:simpleAttribute
@@ -91,7 +105,7 @@ public class FeaturePropertyAccessorTest {
                 new AttributeImpl("simple value", simpleAttributeDesc, null);
         properties.add(simpleAttribute);
         // eg:complexAttribute/eg:rootAttribute[1]
-        Collection<Property> rootPropertiesOne = new ArrayList<Property>();
+        Collection<Property> rootPropertiesOne = new ArrayList<>();
         AttributeDescriptor multiLeafDesc =
                 (AttributeDescriptor) rootAttType.getDescriptor(MULTI_LEAF_ATTRIBUTE);
         // eg:complexAttribute/eg:rootAttribute[1]/eg:multiLeafAttribute[1]
@@ -107,26 +121,26 @@ public class FeaturePropertyAccessorTest {
         rootPropertiesOne.add(singleLeaf);
 
         // NC- add, test xml-attribute
-        Map<Name, Object> userData = new HashMap<Name, Object>();
+        Map<Name, Object> userData = new HashMap<>();
         singleLeaf.getUserData().put(Attributes.class, userData);
         userData.put(Types.typeName(EG, "att"), "test attribute");
 
         AttributeImpl rootOne = new ComplexAttributeImpl(rootPropertiesOne, rootDesc, null);
 
         // eg:complexAttribute/eg:rootAttribute[2]
-        Collection<Property> rootPropertiesTwo = new ArrayList<Property>();
+        Collection<Property> rootPropertiesTwo = new ArrayList<>();
         // eg:complexAttribute/eg:rootAttribute[2]/eg:multiLeafAttribute[1]
         rootPropertiesTwo.add(leafOne);
         rootPropertiesTwo.add(singleLeaf);
         AttributeImpl rootTwo = new ComplexAttributeImpl(rootPropertiesTwo, rootDesc, null);
 
         // eg:complexAttribute/eg:rootAttribute[3]
-        Collection<Property> rootPropertiesThree = new ArrayList<Property>();
+        Collection<Property> rootPropertiesThree = new ArrayList<>();
         // eg:complexAttribute/eg:rootAttribute[3]/eg:singleLeafAttribute
         rootPropertiesThree.add(singleLeaf);
         AttributeImpl rootThree = new ComplexAttributeImpl(rootPropertiesThree, rootDesc, null);
 
-        Collection<Property> complexProperties = new ArrayList<Property>(2);
+        Collection<Property> complexProperties = new ArrayList<>(2);
         complexProperties.add(rootOne);
         complexProperties.add(rootTwo);
         complexProperties.add(rootThree);
@@ -201,7 +215,7 @@ public class FeaturePropertyAccessorTest {
                 new AttributeExpressionImpl(
                         "eg:complexAttribute/eg:rootAttribute[3]/eg:multiLeafAttribute",
                         new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals(null, ex.evaluate(feature));
+        assertNull(ex.evaluate(feature));
 
         // deeper nesting
         ex =
@@ -215,13 +229,13 @@ public class FeaturePropertyAccessorTest {
                 new AttributeExpressionImpl(
                         "eg:complexAttribute/eg:rootAttribute[2]/eg:multiLeafAttribute[2]",
                         new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals(null, ex.evaluate(feature));
+        assertNull(ex.evaluate(feature));
 
         // expect an exception when object supplied is not a complex attribute
         boolean exceptionThrown = false;
         try {
             ex.setLenient(false); // NC -added, only exception if lenient off
-            assertEquals(null, ex.evaluate(singleLeaf));
+            assertNull(ex.evaluate(singleLeaf));
         } catch (Exception e) {
             exceptionThrown = true;
         }
@@ -234,8 +248,8 @@ public class FeaturePropertyAccessorTest {
                 new AttributeExpressionImpl(
                         "randomAttribute",
                         new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals(null, ex.evaluate(feature));
-        assertEquals(null, ex.evaluate(fType));
+        assertNull(ex.evaluate(feature));
+        assertNull(ex.evaluate(fType));
 
         // NC - test xml attribute
         ex =
@@ -282,7 +296,7 @@ public class FeaturePropertyAccessorTest {
         FeatureTypeFactory tfac = new UniqueNameFeatureTypeFactoryImpl();
         Name fName = new NameImpl(EG, "complexFeatureType");
 
-        Collection<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        Collection<PropertyDescriptor> schema = new ArrayList<>();
 
         // add simple attribute
         AttributeType attType =
@@ -291,7 +305,7 @@ public class FeaturePropertyAccessorTest {
                         String.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 
@@ -302,7 +316,7 @@ public class FeaturePropertyAccessorTest {
 
         // build nested attributes
 
-        Collection<PropertyDescriptor> rootProperties = new ArrayList<PropertyDescriptor>();
+        Collection<PropertyDescriptor> rootProperties = new ArrayList<>();
 
         attType =
                 new AttributeTypeImpl(
@@ -310,7 +324,7 @@ public class FeaturePropertyAccessorTest {
                         String.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
         attDesc = new AttributeDescriptorImpl(attType, SINGLE_LEAF_ATTRIBUTE, 0, 1, true, null);
@@ -322,7 +336,7 @@ public class FeaturePropertyAccessorTest {
                         String.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
         attDesc = new AttributeDescriptorImpl(attType, MULTI_LEAF_ATTRIBUTE, 0, -1, true, null);
@@ -334,12 +348,12 @@ public class FeaturePropertyAccessorTest {
                         rootProperties,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
         attDesc = new AttributeDescriptorImpl(attType, ROOT_ATTRIBUTE, 0, -1, true, null);
 
-        Collection<PropertyDescriptor> nestedProperties = new ArrayList<PropertyDescriptor>(1);
+        Collection<PropertyDescriptor> nestedProperties = new ArrayList<>(1);
         nestedProperties.add(attDesc);
 
         // add nested properties to complex attribute
@@ -349,7 +363,7 @@ public class FeaturePropertyAccessorTest {
                         nestedProperties,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 
@@ -359,6 +373,6 @@ public class FeaturePropertyAccessorTest {
         schema.add(attDesc);
 
         return tfac.createFeatureType(
-                fName, schema, null, false, Collections.EMPTY_LIST, null, null);
+                fName, schema, null, false, Collections.emptyList(), null, null);
     }
 }

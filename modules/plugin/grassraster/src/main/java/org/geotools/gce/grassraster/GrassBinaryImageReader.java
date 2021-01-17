@@ -59,8 +59,8 @@ public class GrassBinaryImageReader extends ImageReader {
             boolean found = false;
             if (originatingProvider != null) {
                 Class<?>[] classes = originatingProvider.getInputTypes();
-                for (int i = 0; i < classes.length; i++) {
-                    if (classes[i].isInstance(input)) {
+                for (Class<?> aClass : classes) {
+                    if (aClass.isInstance(input)) {
                         found = true;
                         break;
                     }
@@ -106,7 +106,7 @@ public class GrassBinaryImageReader extends ImageReader {
     private ImageTypeSpecifier imageType;
 
     /** the hashmap holding reference of all the available images. */
-    private HashMap<Integer, BufferedImage> imagesMap = new HashMap<Integer, BufferedImage>();
+    private HashMap<Integer, BufferedImage> imagesMap = new HashMap<>();
 
     private boolean useSubSamplingAsRequestedRowcols = false;
     private boolean castDoubleToFloating = false;
@@ -176,7 +176,7 @@ public class GrassBinaryImageReader extends ImageReader {
         ensureOpen();
         csm = rasterHandler.getSampleModel();
         ccmdl = PlanarImage.createColorModel(csm);
-        final List<ImageTypeSpecifier> l = new ArrayList<ImageTypeSpecifier>();
+        final List<ImageTypeSpecifier> l = new ArrayList<>();
 
         if (imageType == null) {
             imageType = new ImageTypeSpecifier(ccmdl, csm);

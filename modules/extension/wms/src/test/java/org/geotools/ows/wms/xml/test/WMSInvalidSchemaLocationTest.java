@@ -21,16 +21,18 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import junit.framework.TestCase;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.WMSCapabilities;
 import org.geotools.ows.wms.xml.WMSSchema;
 import org.geotools.test.TestData;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.handlers.DocumentHandler;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class WMSInvalidSchemaLocationTest extends TestCase {
+public class WMSInvalidSchemaLocationTest {
 
+    @Test
     public void testGetCapabilities() throws Exception {
         // pointing to a file that has an invalid schema location reference
         File getCaps = TestData.file(this, "mapserverSchemaExtension.xml");
@@ -48,12 +50,12 @@ public class WMSInvalidSchemaLocationTest extends TestCase {
         // to the GetSchemaExtension request, forcing it to time out
         Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
-        assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
+        Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
 
         WMSCapabilities capabilities = (WMSCapabilities) object;
 
-        Layer Layer_with_Abstract_in_Style = (Layer) capabilities.getLayerList().get(1);
-        assertEquals(Layer_with_Abstract_in_Style.getName(), "states");
-        assertEquals(Layer_with_Abstract_in_Style.getTitle(), "states");
+        Layer Layer_with_Abstract_in_Style = capabilities.getLayerList().get(1);
+        Assert.assertEquals(Layer_with_Abstract_in_Style.getName(), "states");
+        Assert.assertEquals(Layer_with_Abstract_in_Style.getTitle(), "states");
     }
 }

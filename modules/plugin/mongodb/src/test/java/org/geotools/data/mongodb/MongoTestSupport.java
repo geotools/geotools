@@ -97,8 +97,8 @@ public abstract class MongoTestSupport extends OnlineTestCase {
         assertNotNull(f.getDefaultGeometry());
 
         Point p = (Point) f.getDefaultGeometry();
-        assertEquals((double) i, p.getX(), 0.1);
-        assertEquals((double) i, p.getY(), 0.1);
+        assertEquals(i, p.getX(), 0.1);
+        assertEquals(i, p.getY(), 0.1);
 
         if (checkAttributes) {
             assertNotNull(f.getAttribute("properties.intProperty"));

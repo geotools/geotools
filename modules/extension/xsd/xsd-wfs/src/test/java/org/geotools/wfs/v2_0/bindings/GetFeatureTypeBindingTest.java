@@ -1,5 +1,9 @@
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigInteger;
 import java.net.URI;
 import javax.xml.namespace.QName;
@@ -11,12 +15,14 @@ import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.ResultTypeType;
 import net.opengis.wfs20.StoredQueryType;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
+import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Disjoint;
 
 public class GetFeatureTypeBindingTest extends WFSTestSupport {
-
+    @Test
     public void testParse1() throws Exception {
         String xml =
                 "<wfs:GetFeature "
@@ -58,6 +64,7 @@ public class GetFeatureTypeBindingTest extends WFSTestSupport {
         assertEquals("InWaterA_1M.1234", f.getIdentifiers().iterator().next().getID());
     }
 
+    @Test
     public void testParse2() throws Exception {
         String xml =
                 "<wfs:GetFeature count='100'"
@@ -101,6 +108,7 @@ public class GetFeatureTypeBindingTest extends WFSTestSupport {
                 new QName("http://www.someserver.com/myns", "facId"), q.getPropertyNames().get(2));
     }
 
+    @Test
     public void testParse3() throws Exception {
         String xml =
                 "<GetFeature "
@@ -141,6 +149,7 @@ public class GetFeatureTypeBindingTest extends WFSTestSupport {
                 new QName("http://demo.cubewerx.com/yourns", "RoadL_1M"), q.getTypeNames().get(0));
     }
 
+    @Test
     public void testParse4() throws Exception {
         String xml =
                 "<GetFeature "
@@ -205,6 +214,46 @@ public class GetFeatureTypeBindingTest extends WFSTestSupport {
         assertEquals(2, q.getSortBy().size());
     }
 
+    @Test
+    public void testParse5() throws Exception {
+        String xml =
+                "<GetFeature "
+                        + "   version='2.0.0' "
+                        + "   service='WFS' "
+                        + "   count='10' "
+                        + "   xmlns:wfs='http://www.opengis.net/wfs/2.0'"
+                        + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
+                        + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
+                        + "   xmlns:tiger='http://www.census.gov'> "
+                        + "   <wfs:Query typeNames='tiger:tiger_roads'> "
+                        + "      <PropertyName>tiger:the_geom</PropertyName> "
+                        + "      <fes:Filter> "
+                        + "         <fes:DWithin> "
+                        + "             <fes:ValueReference>the_geom</fes:ValueReference> "
+                        + "             <gml:Point srsName='urn:ogc:def:crs:EPSG:3067'> "
+                        + "                 <gml:pos>219158.795 6800828.901</gml:pos> "
+                        + "             </gml:Point> "
+                        + "             <fes:Distance uom='m'>100</fes:Distance> "
+                        + "        </fes:DWithin> "
+                        + "      </fes:Filter> "
+                        + "   </wfs:Query> "
+                        + "</GetFeature> ";
+        buildDocument(xml);
+
+        GetFeatureType gf = (GetFeatureType) parse();
+        assertNotNull(gf);
+
+        assertEquals(1, gf.getAbstractQueryExpression().size());
+        QueryType q = (QueryType) gf.getAbstractQueryExpression().get(0);
+        assertNotNull(q);
+
+        DWithin f = (DWithin) q.getFilter();
+        assertNotNull(f);
+        assertEquals(100.0, f.getDistance(), 0d);
+        assertEquals("m", f.getDistanceUnits());
+    }
+
+    @Test
     public void testParseGetFeatureWithLock() throws Exception {
         String xml =
                 "<wfs:GetFeatureWithLock "
@@ -248,6 +297,7 @@ public class GetFeatureTypeBindingTest extends WFSTestSupport {
         assertEquals("InWaterA_1M.1234", f.getIdentifiers().iterator().next().getID());
     }
 
+    @Test
     public void testParseStoredQuery() throws Exception {
         String xml =
                 "<wfs:GetFeature "
@@ -287,6 +337,7 @@ public class GetFeatureTypeBindingTest extends WFSTestSupport {
         assertTrue(p.getValue().contains("gml:Polygon"));
     }
 
+    @Test
     public void testParseJoinQuery() throws Exception {
         String xml =
                 "<GetFeature "

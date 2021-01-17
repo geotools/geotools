@@ -16,10 +16,14 @@
  */
 package org.geotools.geometry;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 
@@ -91,7 +95,7 @@ public final class GeneralEnvelopeTest {
         }
         assertFalse(e1.isNull());
         assertFalse(e1.isEmpty());
-        assertFalse(e1.getLowerCorner().equals(e1.getUpperCorner()));
+        assertNotEquals(e1.getLowerCorner(), e1.getUpperCorner());
         /*
          * Creates a new envelope initialized with the same coordinate values. The two envelope
          * should be equals.
@@ -113,20 +117,20 @@ public final class GeneralEnvelopeTest {
         e2.setRange(2, e2.getMinimum(2) + 3E-5, e2.getMaximum(2) - 3E-5);
         assertTrue(e1.contains(e2, true));
         assertFalse(e1.contains(e2, false));
-        assertFalse(e1.equals(e2));
+        assertNotEquals(e1, e2);
         assertTrue(e1.equals(e2, 1E-4, true));
         assertTrue(e1.equals(e2, 1E-4, false));
-        assertFalse(e1.hashCode() == e2.hashCode());
+        assertNotEquals(e1.hashCode(), e2.hashCode());
         /*
          * Apply a greater offset. Should not be equals, even when comparing with a tolerance value.
          */
         e2.setRange(1, e2.getMinimum(1) + 3, e2.getMaximum(1) - 3);
         assertTrue(e1.contains(e2, true));
         assertFalse(e1.contains(e2, false));
-        assertFalse(e1.equals(e2));
+        assertNotEquals(e1, e2);
         assertFalse(e1.equals(e2, 1E-4, true));
         assertFalse(e1.equals(e2, 1E-4, false));
-        assertFalse(e1.hashCode() == e2.hashCode());
+        assertNotEquals(e1.hashCode(), e2.hashCode());
     }
 
     /** Compares the specified corners. */

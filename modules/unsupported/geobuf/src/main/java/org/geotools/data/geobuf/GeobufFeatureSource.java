@@ -59,23 +59,17 @@ public class GeobufFeatureSource extends ContentFeatureSource {
 
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        InputStream in = new FileInputStream(getDataStore().getFile());
-        try {
+        try (InputStream in = new FileInputStream(getDataStore().getFile())) {
             GeobufFeatureCollection geobufFeatureCollection = new GeobufFeatureCollection();
             return geobufFeatureCollection.getBounds(in);
-        } finally {
-            in.close();
         }
     }
 
     @Override
     protected int getCountInternal(Query query) throws IOException {
-        InputStream in = new FileInputStream(getDataStore().getFile());
-        try {
+        try (InputStream in = new FileInputStream(getDataStore().getFile())) {
             GeobufFeatureCollection geobufFeatureCollection = new GeobufFeatureCollection();
             return geobufFeatureCollection.countFeatures(in);
-        } finally {
-            in.close();
         }
     }
 

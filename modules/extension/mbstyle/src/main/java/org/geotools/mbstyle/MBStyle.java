@@ -16,7 +16,7 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.*;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,12 +81,12 @@ public class MBStyle {
      * <p>All methods act as accessors on this JSON document, no other state is maintained. This
      * allows modifications to be made cleaning with out chance of side-effect.
      */
-    public JSONObject json;
+    public final JSONObject json;
 
     /**
      * Helper class used to perform JSON traversal and perform Expression and Filter conversions.
      */
-    MBObjectParser parse = new MBObjectParser(MBStyle.class);
+    final MBObjectParser parse = new MBObjectParser(MBStyle.class);
 
     /**
      * MBStyle wrapper on the provided json
@@ -142,31 +142,17 @@ public class MBStyle {
         int labelPriority = 0;
         for (Object obj : layers) {
             if (obj instanceof JSONObject) {
+
+                JSONObject jsonObject = (JSONObject) obj;
+
                 MBLayer mbLayer = null;
-                if (((JSONObject) obj).containsKey("ref")) {
-                    String refLayer = ((JSONObject) obj).get("ref").toString();
-                    JSONObject refObject = new JSONObject();
-                    for (Object layer : layers) {
-                        if (refLayer.equalsIgnoreCase(((JSONObject) layer).get("id").toString())) {
-                            refObject = (JSONObject) layer;
-                        }
-                    }
+                if (jsonObject.containsKey("ref")) {
+                    String refLayer = jsonObject.get("ref").toString();
+                    JSONObject refObject = referenceLayer(layers, refLayer);
                     if (refObject.size() > 0) {
                         // At a minimum, a type is needed to create a layer
-                        ((JSONObject) obj).put("type", refObject.get("type"));
-                        ((JSONObject) obj).put("source", refObject.get("source"));
-                        ((JSONObject) obj).put("source-layer", refObject.get("source-layer"));
-                        ((JSONObject) obj).put("minzoom", refObject.get("minzoom"));
-                        ((JSONObject) obj).put("maxzoom", refObject.get("maxzoom"));
-                        ((JSONObject) obj).put("filter", refObject.get("filter"));
-                        if (!((JSONObject) obj).containsKey("layout")) {
-                            ((JSONObject) obj).put("layout", refObject.get("layout"));
-                        }
-                        if (!((JSONObject) obj).containsKey("paint")) {
-                            ((JSONObject) obj).put("paint", refObject.get("paint"));
-                        }
-
-                        mbLayer = MBLayer.create((JSONObject) obj);
+                        applyReferenceObject(jsonObject, refObject);
+                        mbLayer = MBLayer.create(jsonObject);
                     }
                 } else {
                     mbLayer = MBLayer.create((JSONObject) obj);
@@ -184,6 +170,36 @@ public class MBStyle {
         return layersList;
     }
 
+    private JSONObject referenceLayer(JSONArray layers, String refLayer) {
+        JSONObject refObject = new JSONObject();
+        for (Object check : layers) {
+            if (check instanceof JSONObject
+                    && refLayer.equalsIgnoreCase(((JSONObject) check).get("id").toString())) {
+                refObject = (JSONObject) check;
+            }
+        }
+        return refObject;
+    }
+
+    @SuppressWarnings("unchecked")
+    private JSONObject applyReferenceObject(JSONObject layer, JSONObject refLayer) {
+        HashMap<String, Object> jsonObject = (HashMap<String, Object>) layer;
+
+        jsonObject.put("type", refLayer.get("type"));
+        jsonObject.put("source", refLayer.get("source"));
+        jsonObject.put("source-layer", refLayer.get("source-layer"));
+        jsonObject.put("minzoom", refLayer.get("minzoom"));
+        jsonObject.put("maxzoom", refLayer.get("maxzoom"));
+        jsonObject.put("filter", refLayer.get("filter"));
+        if (!jsonObject.containsKey("layout")) {
+            jsonObject.put("layout", refLayer.get("layout"));
+        }
+        if (!jsonObject.containsKey("paint")) {
+            jsonObject.put("paint", refLayer.get("paint"));
+        }
+        return layer;
+    }
+
     /**
      * Access layers matching provided source.
      *
@@ -195,34 +211,24 @@ public class MBStyle {
         List<MBLayer> layersList = new ArrayList<>();
         for (Object obj : layers) {
             if (obj instanceof JSONObject) {
-                if (((JSONObject) obj).containsKey("ref")) {
-                    String refLayer = ((JSONObject) obj).get("ref").toString();
-                    JSONObject refObject = new JSONObject();
-                    for (Object layer : layers) {
-                        if (refLayer.equalsIgnoreCase(((JSONObject) layer).get("id").toString())) {
-                            refObject = (JSONObject) layer;
-                        }
-                    }
-                    if (refObject.size() > 0) {
-                        ((JSONObject) obj).put("type", refObject.get("type"));
-                        ((JSONObject) obj).put("source", refObject.get("source"));
-                        ((JSONObject) obj).put("source-layer", refObject.get("source-layer"));
-                        ((JSONObject) obj).put("minzoom", refObject.get("minzoom"));
-                        ((JSONObject) obj).put("maxzoom", refObject.get("maxzoom"));
-                        ((JSONObject) obj).put("filter", refObject.get("filter"));
-                        if (!((JSONObject) obj).containsKey("layout")) {
-                            ((JSONObject) obj).put("layout", refObject.get("layout"));
-                        }
-                        if (!((JSONObject) obj).containsKey("paint")) {
-                            ((JSONObject) obj).put("paint", refObject.get("paint"));
-                        }
+                JSONObject jsonObject = (JSONObject) obj;
+                if (jsonObject.containsKey("ref")) {
+                    String refLayer = jsonObject.get("ref").toString();
+                    JSONObject refObject = referenceLayer(layers, refLayer);
 
-                        MBLayer layer = MBLayer.create((JSONObject) obj);
-                        layersList.add(layer);
+                    if (refObject.size() > 0) {
+                        applyReferenceObject(jsonObject, refObject);
+
+                        MBLayer layer = MBLayer.create(jsonObject);
+                        if (source.equals(layer.getSource())) {
+                            layersList.add(layer);
+                        }
                     }
                 } else {
-                    MBLayer layer = MBLayer.create((JSONObject) obj);
-                    layersList.add(layer);
+                    MBLayer layer = MBLayer.create(jsonObject);
+                    if (source.equals(layer.getSource())) {
+                        layersList.add(layer);
+                    }
                 }
             } else {
                 throw new MBFormatException("Unexpected layer definition " + obj);

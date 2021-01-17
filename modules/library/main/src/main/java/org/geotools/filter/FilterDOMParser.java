@@ -19,6 +19,7 @@
 package org.geotools.filter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,13 +59,13 @@ public final class FilterDOMParser {
     private static final int NUM_BETWEEN_CHILDREN = 3;
 
     /** Map of comparison names to their filter types. */
-    private static java.util.Map comparisions = new java.util.HashMap();
+    private static java.util.Map<String, Integer> comparisions = new HashMap<>();
 
     /** Map of spatial filter names to their filter types. */
-    private static java.util.Map spatial = new java.util.HashMap();
+    private static java.util.Map<String, Integer> spatial = new HashMap<>();
 
     /** Map of logical filter names to their filter types. */
-    private static java.util.Map logical = new java.util.HashMap();
+    private static java.util.Map<String, Integer> logical = new HashMap<>();
 
     static {
         comparisions.put("PropertyIsEqualTo", Integer.valueOf(FilterType.COMPARE_EQUALS));
@@ -141,12 +142,12 @@ public final class FilterDOMParser {
             // boolean like = false;
             // boolean between = false;
             try {
-                short type = ((Integer) comparisions.get(childName)).shortValue();
+                short type = comparisions.get(childName).shortValue();
                 // CompareFilter filter = null;
                 LOGGER.finer("type is " + type);
 
                 if (type == AbstractFilter.FID) {
-                    Set<FeatureId> ids = new HashSet<FeatureId>();
+                    Set<FeatureId> ids = new HashSet<>();
                     Element fidElement = (Element) child;
                     ids.add(FILTER_FACT.featureId(fidElement.getAttribute("fid")));
 
@@ -384,7 +385,7 @@ public final class FilterDOMParser {
             LOGGER.finest("a spatial filter " + childName);
 
             try {
-                short type = ((Integer) spatial.get(childName)).shortValue();
+                short type = spatial.get(childName).shortValue();
                 //  GeometryFilter filter = FILTER_FACT.createGeometryFilter(type);
                 Node value = child.getFirstChild();
 
@@ -527,8 +528,7 @@ public final class FilterDOMParser {
             LOGGER.finest("a logical filter " + childName);
 
             try {
-                List<org.opengis.filter.Filter> children =
-                        new ArrayList<org.opengis.filter.Filter>();
+                List<org.opengis.filter.Filter> children = new ArrayList<>();
                 NodeList map = child.getChildNodes();
 
                 for (int i = 0; i < map.getLength(); i++) {

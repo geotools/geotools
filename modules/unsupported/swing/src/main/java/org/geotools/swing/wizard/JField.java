@@ -99,7 +99,7 @@ public class JField extends ParamField {
     }
 
     public void setValue(Object value) {
-        String txt = (String) Converters.convert(value, String.class);
+        String txt = Converters.convert(value, String.class);
         text.setText(txt);
     }
 

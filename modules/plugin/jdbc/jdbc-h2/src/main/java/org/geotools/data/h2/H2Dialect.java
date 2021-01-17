@@ -181,7 +181,9 @@ public class H2Dialect extends SQLDialect {
             for (PropertyDescriptor ad : featureType.getDescriptors()) {
                 if (ad instanceof GeometryDescriptor) {
                     GeometryDescriptor gd = (GeometryDescriptor) ad;
-                    Class binding = ad.getType().getBinding();
+                    @SuppressWarnings("unchecked")
+                    Class<? extends Geometry> binding =
+                            (Class<? extends Geometry>) ad.getType().getBinding();
                     String propertyName = ad.getName().getLocalPart();
 
                     // create a spatial index
@@ -489,11 +491,10 @@ public class H2Dialect extends SQLDialect {
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
 
-        Statement st = cx.createStatement();
-        try {
+        try (Statement st = cx.createStatement()) {
             // figure out which sequence to query
             String sequence = null;
-            ResultSet rs =
+            try (ResultSet rs =
                     st.executeQuery(
                             "SELECT b.COLUMN_DEFAULT "
                                     + " FROM INFORMATION_SCHEMA.INDEXES A, INFORMATION_SCHEMA.COLUMNS B "
@@ -505,35 +506,26 @@ public class H2Dialect extends SQLDialect {
                                     + " AND a.COLUMN_NAME = '"
                                     + columnName
                                     + "' "
-                                    + " AND a.PRIMARY_KEY = TRUE");
-            try {
+                                    + " AND a.PRIMARY_KEY = TRUE")) {
                 if (!rs.next()) {
                     throw new SQLException("Could not grab the next auto generated value");
                 }
 
                 String string = rs.getString(1);
                 sequence = string.substring(string.indexOf("SYSTEM_SEQUENCE"), string.length() - 1);
-            } finally {
-                dataStore.closeSafe(rs);
             }
 
-            try {
-                if (schemaName != null) {
-                    rs = st.executeQuery("SELECT CURRVAL('" + schemaName + "','" + sequence + "')");
-                } else {
-                    rs = st.executeQuery("SELECT CURRVAL('" + sequence + "')");
-                }
-
+            try (ResultSet rs =
+                    schemaName != null
+                            ? st.executeQuery(
+                                    "SELECT CURRVAL('" + schemaName + "','" + sequence + "')")
+                            : st.executeQuery("SELECT CURRVAL('" + sequence + "')")) {
                 rs.next();
 
                 int value = rs.getInt(1);
 
                 return Integer.valueOf(value + 1);
-            } finally {
-                dataStore.closeSafe(rs);
             }
-        } finally {
-            dataStore.closeSafe(st);
         }
     }
 

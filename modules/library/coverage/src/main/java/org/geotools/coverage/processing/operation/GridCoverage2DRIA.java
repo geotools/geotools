@@ -259,6 +259,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
                 hints);
     }
 
+    @SuppressWarnings("PMD.ReplaceVectorWithList")
     protected GridCoverage2DRIA(
             final GridCoverage2D src,
             final GridGeometry2D dst,
@@ -301,9 +302,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
             src2dstCRSTransform = CRS.findMathTransform(sourceCRS, targetCRS, true);
             dst2srcCRSTransform = src2dstCRSTransform.inverse();
-        } catch (FactoryException e) {
-            throw new IllegalArgumentException("Can't create a transform between CRS", e);
-        } catch (NoninvertibleTransformException e) {
+        } catch (FactoryException | NoninvertibleTransformException e) {
             throw new IllegalArgumentException("Can't create a transform between CRS", e);
         }
 
@@ -1577,5 +1576,12 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
             return java.awt.Image.UndefinedProperty;
         }
+    }
+
+    @Override
+    // PlanarImage does not have generics, overrides this method
+    @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
+    public Vector<RenderedImage> getSources() {
+        return super.getSources();
     }
 }

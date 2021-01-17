@@ -63,7 +63,7 @@ public final class IndexQueryUtils {
      */
     public static List<String> getAttributesOnFilter(Filter filter) {
         String[] attrs = DataUtilities.attributeNames(filter);
-        return new ArrayList<String>(Arrays.asList(attrs));
+        return new ArrayList<>(Arrays.asList(attrs));
     }
 
     /** Checks if Expression is empty or Null */

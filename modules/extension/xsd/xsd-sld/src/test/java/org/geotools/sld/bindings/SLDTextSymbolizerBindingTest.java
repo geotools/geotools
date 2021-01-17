@@ -16,13 +16,19 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.TextSymbolizer;
+import org.junit.Test;
 
 public class SLDTextSymbolizerBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(TextSymbolizer.class, new SLDTextSymbolizerBinding(null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.textSymbolizer(document, document);
 
@@ -36,6 +42,7 @@ public class SLDTextSymbolizerBindingTest extends SLDTestSupport {
         assertNotNull(ts.getLabel());
     }
 
+    @Test
     public void testWithVendorOptions() throws Exception {
         SLDMockData.textSymbolizerWithVendorOptions(document, document);
 

@@ -45,7 +45,7 @@ public class YamlParseContext {
     Map<String, Object> docHints = new HashMap<>();
 
     public YamlParseContext() {
-        stack = new ArrayDeque<Entry>();
+        stack = new ArrayDeque<>();
     }
 
     /**

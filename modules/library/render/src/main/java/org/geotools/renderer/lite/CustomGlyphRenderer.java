@@ -19,11 +19,11 @@ package org.geotools.renderer.lite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.styling.ExternalGraphic;
@@ -64,7 +64,7 @@ public class CustomGlyphRenderer implements GlyphRenderer {
     }
 
     public List getFormats() {
-        Vector ret = new Vector();
+        List<String> ret = new ArrayList<>();
         ret.add("image/hack");
         return ret;
     }

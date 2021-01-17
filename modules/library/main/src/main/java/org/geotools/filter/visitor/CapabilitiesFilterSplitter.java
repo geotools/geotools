@@ -255,7 +255,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                 updateFilter = next;
                 break;
             } else {
-                updateFilter = (Filter) ff.or(updateFilter, next);
+                updateFilter = ff.or(updateFilter, next);
             }
         }
         if (updateFilter == Filter.INCLUDE || f == Filter.INCLUDE) return Filter.INCLUDE;
@@ -532,8 +532,8 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                     Within.class
                 };
 
-        for (int i = 0; i < spatialOps.length; i++) {
-            if (spatialOps[i].isAssignableFrom(filter.getClass())) {
+        for (Class spatialOp : spatialOps) {
+            if (spatialOp.isAssignableFrom(filter.getClass())) {
                 // if (!fcs.supports(spatialOps[i])) {
                 if (!fcs.supports(filter)) {
                     postStack.push(filter);
@@ -550,8 +550,8 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         int i = postStack.size();
 
         Expression leftGeometry, rightGeometry;
-        leftGeometry = ((BinarySpatialOperator) filter).getExpression1();
-        rightGeometry = ((BinarySpatialOperator) filter).getExpression2();
+        leftGeometry = filter.getExpression1();
+        rightGeometry = filter.getExpression2();
 
         if (leftGeometry == null || rightGeometry == null) {
             postStack.push(filter);
@@ -632,9 +632,9 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                 // test if one of its children is supported
                 Iterator<Filter> it = ((And) filter).getChildren().iterator();
                 Filter supportedChild = null;
-                List<Filter> otherChildren = new ArrayList<Filter>();
+                List<Filter> otherChildren = new ArrayList<>();
                 while (it.hasNext()) {
-                    Filter child = (Filter) it.next();
+                    Filter child = it.next();
                     if (supportedChild == null && fcs.supports(child)) {
                         supportedChild = child;
                     } else {
@@ -825,8 +825,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                             + parent.getName());
         }
         if (transactionAccessor != null) {
-            Filter updateFilter =
-                    (Filter) transactionAccessor.getUpdateFilter(expression.getPropertyName());
+            Filter updateFilter = transactionAccessor.getUpdateFilter(expression.getPropertyName());
             if (updateFilter != null) {
                 if (updateFilter == Filter.EXCLUDE) {
                     // property name not encodable to backend
@@ -922,7 +921,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         int j = preStack.size();
 
         for (int k = 0; k < expression.getParameters().size(); k++) {
-            ((Expression) expression.getParameters().get(i)).accept(this, null);
+            expression.getParameters().get(i).accept(this, null);
 
             if (i < postStack.size()) {
                 while (j < preStack.size()) preStack.pop();

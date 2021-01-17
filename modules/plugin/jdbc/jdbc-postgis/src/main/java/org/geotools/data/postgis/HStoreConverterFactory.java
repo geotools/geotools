@@ -33,8 +33,10 @@ public class HStoreConverterFactory implements ConverterFactory {
         if (HStore.class.equals(target) && Map.class.isAssignableFrom(source)) {
             return new Converter() {
 
-                public Object convert(Object source, Class target) throws Exception {
-                    return new HStore((Map<String, String>) source);
+                public <T> T convert(Object source, Class<T> target) throws Exception {
+                    @SuppressWarnings("unchecked")
+                    Map<String, String> cast = (Map<String, String>) source;
+                    return target.cast(new HStore(cast));
                 }
             };
         }

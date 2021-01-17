@@ -66,7 +66,7 @@ public class ScaleToExtentTypeImpl extends EObjectImpl implements ScaleToExtentT
 	 */
     public EList<TargetAxisExtentType> getTargetAxisExtent() {
 		if (targetAxisExtent == null) {
-			targetAxisExtent = new EObjectResolvingEList<TargetAxisExtentType>(TargetAxisExtentType.class, this, Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT);
+			targetAxisExtent = new EObjectResolvingEList<>(TargetAxisExtentType.class, this, Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT);
 		}
 		return targetAxisExtent;
 	}

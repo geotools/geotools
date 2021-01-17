@@ -58,7 +58,7 @@ class WFSRemoteTransactionState implements State {
 
     public WFSRemoteTransactionState(WFSDataStore dataStore) {
         this.dataStore = dataStore;
-        this.localStates = new HashMap<Name, WFSContentState>();
+        this.localStates = new HashMap<>();
     }
 
     public synchronized WFSDiff getDiff(final Name typeName) {
@@ -109,7 +109,7 @@ class WFSRemoteTransactionState implements State {
         WFSClient wfs = dataStore.getWfsClient();
         TransactionRequest transactionRequest = wfs.createTransaction();
 
-        List<MutableFeatureId> requestedInsertFids = new ArrayList<MutableFeatureId>();
+        List<MutableFeatureId> requestedInsertFids = new ArrayList<>();
 
         for (Name typeName : localStates.keySet()) {
             List<MutableFeatureId> addedFids = applyDiff(typeName, transactionRequest);
@@ -154,7 +154,7 @@ class WFSRemoteTransactionState implements State {
                 localState.getLocalTransactionState();
         final WFSDiff diff = localTransactionState.getDiff();
 
-        List<MutableFeatureId> addedFeatureIds = new LinkedList<MutableFeatureId>();
+        List<MutableFeatureId> addedFeatureIds = new LinkedList<>();
 
         final QName remoteTypeName = dataStore.getRemoteTypeName(localTypeName);
 
@@ -166,7 +166,7 @@ class WFSRemoteTransactionState implements State {
 
         // Create a single insert element with all the inserts for this type
         final Map<String, SimpleFeature> added = diff.getAdded();
-        if (added.size() > 0) {
+        if (!added.isEmpty()) {
             Insert insert = transactionRequest.createInsert(remoteTypeName);
 
             SimpleFeatureBuilder builder = new SimpleFeatureBuilder(remoteType);
@@ -188,7 +188,7 @@ class WFSRemoteTransactionState implements State {
         final Map<String, SimpleFeature> modified = diff.getModified();
 
         // Create a single delete element with all the deletes for this type
-        Set<Identifier> ids = new LinkedHashSet<Identifier>();
+        Set<Identifier> ids = new LinkedHashSet<>();
         for (Map.Entry<String, SimpleFeature> entry : modified.entrySet()) {
             if (!(Diff.NULL == entry.getValue())) {
                 continue; // not a delete
@@ -234,8 +234,8 @@ class WFSRemoteTransactionState implements State {
 
         Collection<Property> properties = feature.getProperties();
 
-        List<QName> propertyNames = new ArrayList<QName>();
-        List<Object> newValues = new ArrayList<Object>();
+        List<QName> propertyNames = new ArrayList<>();
+        List<Object> newValues = new ArrayList<>();
 
         for (Property p : properties) {
             QName attName = new QName(remoteTypeName.getNamespaceURI(), p.getName().getLocalPart());
@@ -260,7 +260,7 @@ class WFSRemoteTransactionState implements State {
 
         for (BatchUpdate batch : batchUpdates) {
 
-            List<QName> propertyNames = new ArrayList<QName>(batch.properties.length);
+            List<QName> propertyNames = new ArrayList<>(batch.properties.length);
             for (Name attName : batch.properties) {
                 propertyNames.add(
                         new QName(remoteTypeName.getNamespaceURI(), attName.getLocalPart()));

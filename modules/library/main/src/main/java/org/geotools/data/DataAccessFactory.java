@@ -17,7 +17,6 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -107,8 +106,8 @@ public interface DataAccessFactory extends Factory {
      * @throws IOException if there were any problems setting up (creating or connecting) the
      *     datasource.
      */
-    DataAccess<? extends FeatureType, ? extends Feature> createDataStore(
-            Map<String, Serializable> params) throws IOException;
+    DataAccess<? extends FeatureType, ? extends Feature> createDataStore(Map<String, ?> params)
+            throws IOException;
 
     /**
      * Name suitable for display to end user.
@@ -176,13 +175,12 @@ public interface DataAccessFactory extends Factory {
      * @return booean true if and only if this factory can process the resource indicated by the
      *     param set and all the required params are pressent.
      */
-    default boolean canProcess(java.util.Map<String, Serializable> params) {
+    default boolean canProcess(java.util.Map<String, ?> params) {
         if (params == null) {
             return false;
         }
         Param arrayParameters[] = getParametersInfo();
-        for (int i = 0; i < arrayParameters.length; i++) {
-            Param param = arrayParameters[i];
+        for (Param param : arrayParameters) {
             Object value;
             if (!params.containsKey(param.key)) {
                 if (param.required) {
@@ -211,8 +209,8 @@ public interface DataAccessFactory extends Factory {
                 if (param.metadata != null) {
                     // check metadata
                     if (param.metadata.containsKey(Param.OPTIONS)) {
-                        java.util.List<Object> options =
-                                (List<Object>) param.metadata.get(Param.OPTIONS);
+                        @SuppressWarnings("unchecked")
+                        List<Object> options = (List<Object>) param.metadata.get(Param.OPTIONS);
                         if (options != null && !options.contains(value)) {
                             return false; // invalid option
                         }
@@ -515,7 +513,7 @@ public interface DataAccessFactory extends Factory {
             // parsing be tried on each element, then build the array as a result
             if (type.isArray()) {
                 StringTokenizer tokenizer = new StringTokenizer(text, " ");
-                List<Object> result = new ArrayList<Object>();
+                List<Object> result = new ArrayList<>();
 
                 while (tokenizer.hasMoreTokens()) {
                     String token = tokenizer.nextToken();
@@ -584,31 +582,22 @@ public interface DataAccessFactory extends Factory {
 
             try {
                 constructor = type.getConstructor(new Class[] {String.class});
-            } catch (SecurityException e) {
+            } catch (SecurityException | NoSuchMethodException e) {
                 //  type( String ) constructor is not public
                 throw new IOException("Could not create " + type.getName() + " from text");
-            } catch (NoSuchMethodException e) {
-                // No type( String ) constructor
-                throw new IOException("Could not create " + type.getName() + " from text");
-            }
+            } // No type( String ) constructor
 
             try {
                 return constructor.newInstance(
                         new Object[] {
                             text,
                         });
-            } catch (IllegalArgumentException illegalArgumentException) {
+            } catch (IllegalArgumentException
+                    | IllegalAccessException
+                    | InstantiationException illegalArgumentException) {
                 throw new DataSourceException(
                         "Could not create " + type.getName() + ": from '" + text + "'",
                         illegalArgumentException);
-            } catch (InstantiationException instantiaionException) {
-                throw new DataSourceException(
-                        "Could not create " + type.getName() + ": from '" + text + "'",
-                        instantiaionException);
-            } catch (IllegalAccessException illegalAccessException) {
-                throw new DataSourceException(
-                        "Could not create " + type.getName() + ": from '" + text + "'",
-                        illegalAccessException);
             } catch (InvocationTargetException targetException) {
                 throw targetException.getCause();
             }

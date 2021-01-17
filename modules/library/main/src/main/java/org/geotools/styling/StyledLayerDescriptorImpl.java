@@ -61,7 +61,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     /** Holds value of property abstract. */
     private String abstractStr;
 
-    private List<StyledLayer> layers = new ArrayList<StyledLayer>();
+    private List<StyledLayer> layers = new ArrayList<>();
 
     /**
      * Convenience method for grabbing the default style from the StyledLayerDescriptor.
@@ -70,19 +70,17 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
      */
     public Style getDefaultStyle() {
         // descend into the layers
-        for (int i = 0; i < layers.size(); i++) {
-            StyledLayer layer = (StyledLayer) layers.get(i);
-
+        for (StyledLayer layer : layers) {
             if (layer instanceof UserLayer) {
                 UserLayer userLayer = (UserLayer) layer;
 
                 // descend into the styles
                 Style[] styles = userLayer.getUserStyles();
 
-                for (int j = 0; j < styles.length; j++) {
+                for (Style style : styles) {
                     // return the first style that claims to be the default
-                    if (styles[j].isDefault()) {
-                        return styles[j];
+                    if (style.isDefault()) {
+                        return style;
                     }
                 }
             }
@@ -92,14 +90,14 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     }
 
     public StyledLayer[] getStyledLayers() {
-        return (StyledLayerImpl[]) layers.toArray(new StyledLayerImpl[layers.size()]);
+        return layers.toArray(new StyledLayerImpl[layers.size()]);
     }
 
     public void setStyledLayers(StyledLayer[] layers) {
         this.layers.clear();
 
-        for (int i = 0; i < layers.length; i++) {
-            addStyledLayer(layers[i]);
+        for (StyledLayer layer : layers) {
+            addStyledLayer(layer);
         }
 
         LOGGER.fine("StyleLayerDescriptorImpl added " + this.layers.size() + " styled layers");
@@ -110,7 +108,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     }
 
     public void addStyledLayer(StyledLayer layer) {
-        layers.add((StyledLayerImpl) layer);
+        layers.add(layer);
     }
 
     /**

@@ -18,11 +18,14 @@ package org.geotools.styling;
 
 import java.util.Arrays;
 import java.util.Collections;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.metadata.citation.OnLineResource;
@@ -33,19 +36,15 @@ import org.opengis.util.Cloneable;
  *
  * @author Sean Geoghegan
  */
-public class StyleObjectTest extends TestCase {
+public class StyleObjectTest {
     private StyleFactory styleFactory;
     private FilterFactory filterFactory;
-
-    /** Constructor for StyleCloneTest. */
-    public StyleObjectTest(String arg0) {
-        super(arg0);
-    }
 
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         styleFactory = CommonFactoryFinder.getStyleFactory();
         filterFactory = CommonFactoryFinder.getFilterFactory(null);
     }
@@ -53,10 +52,12 @@ public class StyleObjectTest extends TestCase {
     /*
      * @see TestCase#tearDown()
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         styleFactory = null;
     }
 
+    @Test
     public void testStyle() throws Exception {
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
         fts.featureTypeNames().add(new NameImpl("feature-type-1"));
@@ -86,6 +87,7 @@ public class StyleObjectTest extends TestCase {
         return fts2;
     }
 
+    @Test
     public void testFeatureTypeStyle() throws Exception {
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
         fts.featureTypeNames().add(new NameImpl("feature-type"));
@@ -115,6 +117,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, notEq, fts);
     }
 
+    @Test
     public void testRule() throws Exception {
         Symbolizer symb1 =
                 styleFactory.createLineSymbolizer(styleFactory.getDefaultStroke(), "geometry");
@@ -140,9 +143,10 @@ public class StyleObjectTest extends TestCase {
         symb1 = styleFactory.createLineSymbolizer(styleFactory.getDefaultStroke(), "geometry");
         clone.symbolizers().clear();
         clone.symbolizers().add(symb1);
-        assertTrue(!rule.equals(clone));
+        Assert.assertFalse(rule.equals(clone));
     }
 
+    @Test
     public void testPointSymbolizer() throws Exception {
         PointSymbolizer pointSymb = styleFactory.createPointSymbolizer();
         PointSymbolizer clone = (PointSymbolizer) ((Cloneable) pointSymb).clone();
@@ -153,6 +157,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, notEq, pointSymb);
     }
 
+    @Test
     public void testTextSymbolizer() {
         TextSymbolizer textSymb = styleFactory.createTextSymbolizer();
         Expression offset = filterFactory.literal(10);
@@ -170,6 +175,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, notEq, textSymb);
     }
 
+    @Test
     public void testFont() {
         Font font = styleFactory.getDefaultFont();
         Font clone = (Font) ((Cloneable) font).clone();
@@ -185,6 +191,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, other, font);
     }
 
+    @Test
     public void testHalo() {
         Halo halo =
                 styleFactory.createHalo(styleFactory.getDefaultFill(), filterFactory.literal(10));
@@ -196,6 +203,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, other, halo);
     }
 
+    @Test
     public void testLinePlacement() throws Exception {
         LinePlacement linePlacement = styleFactory.createLinePlacement(filterFactory.literal(12));
         LinePlacement clone = (LinePlacement) ((Cloneable) linePlacement).clone();
@@ -205,6 +213,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, other, linePlacement);
     }
 
+    @Test
     public void testAnchorPoint() {
         AnchorPoint anchorPoint =
                 styleFactory.createAnchorPoint(filterFactory.literal(1), filterFactory.literal(2));
@@ -216,6 +225,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, other, anchorPoint);
     }
 
+    @Test
     public void testDisplacement() {
         Displacement displacement =
                 styleFactory.createDisplacement(filterFactory.literal(1), filterFactory.literal(2));
@@ -227,6 +237,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, other, displacement);
     }
 
+    @Test
     public void testPointPlacement() {
         PointPlacement pointPl = styleFactory.getDefaultPointPlacement();
         PointPlacement clone = (PointPlacement) ((Cloneable) pointPl).clone();
@@ -237,6 +248,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, other, pointPl);
     }
 
+    @Test
     public void testPolygonSymbolizer() {
         PolygonSymbolizer polygonSymb = styleFactory.createPolygonSymbolizer();
         PolygonSymbolizer clone = (PolygonSymbolizer) ((Cloneable) polygonSymb).clone();
@@ -247,6 +259,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, notEq, polygonSymb);
     }
 
+    @Test
     public void testLineSymbolizer() {
         LineSymbolizer lineSymb = styleFactory.createLineSymbolizer();
         LineSymbolizer clone = (LineSymbolizer) ((Cloneable) lineSymb).clone();
@@ -257,6 +270,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, notEq, lineSymb);
     }
 
+    @Test
     public void testGraphic() {
         Graphic graphic = styleFactory.getDefaultGraphic();
         graphic.graphicalSymbols().add(styleFactory.getDefaultMark());
@@ -264,12 +278,13 @@ public class StyleObjectTest extends TestCase {
         Graphic clone = (Graphic) ((Cloneable) graphic).clone();
         assertClone(graphic, clone);
         assertEqualsContract(clone, graphic);
-        assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
+        Assert.assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
 
         Graphic notEq = styleFactory.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);
     }
 
+    @Test
     public void testExternalGraphic() {
         ExternalGraphic exGraphic =
                 styleFactory.createExternalGraphic("http://somewhere", "image/png");
@@ -286,6 +301,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, notEq2, exGraphic);
     }
 
+    @Test
     public void testMark() {
         Mark mark = styleFactory.getCircleMark();
         Mark clone = (Mark) ((Cloneable) mark).clone();
@@ -295,6 +311,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, notEq, mark);
     }
 
+    @Test
     public void testFill() {
         Fill fill = styleFactory.getDefaultFill();
         Fill clone = (Fill) ((Cloneable) fill).clone();
@@ -304,6 +321,7 @@ public class StyleObjectTest extends TestCase {
         assertEqualsContract(clone, notEq, fill);
     }
 
+    @Test
     public void testStroke() {
         Stroke stroke = styleFactory.getDefaultStroke();
         DuplicatingStyleVisitor duplicate = new DuplicatingStyleVisitor(styleFactory);
@@ -328,65 +346,66 @@ public class StyleObjectTest extends TestCase {
     }
 
     private static void assertClone(Object real, Object clone) {
-        assertNotNull("Real was null", real);
-        assertNotNull("Clone was null", clone);
-        assertTrue("" + real.getClass().getName() + " was not cloned", real != clone);
+        Assert.assertNotNull("Real was null", real);
+        Assert.assertNotNull("Clone was null", clone);
+        Assert.assertNotSame("" + real.getClass().getName() + " was not cloned", real, clone);
     }
 
     private static void assertEqualsContract(Object controlEqual, Object controlNe, Object test) {
-        assertNotNull(controlEqual);
-        assertNotNull(controlNe);
-        assertNotNull(test);
+        Assert.assertNotNull(controlEqual);
+        Assert.assertNotNull(controlNe);
+        Assert.assertNotNull(test);
 
         // check reflexivity
-        assertTrue("Reflexivity test failed", test.equals(test));
+        Assert.assertEquals("Reflexivity test failed", test, test);
 
         // check symmetric
-        assertTrue("Symmetry test failed", controlEqual.equals(test));
-        assertTrue("Symmetry test failed", test.equals(controlEqual));
-        assertTrue("Symmetry test failed", !test.equals(controlNe));
-        assertTrue("Symmetry test failed", !controlNe.equals(test));
+        Assert.assertEquals("Symmetry test failed", controlEqual, test);
+        Assert.assertEquals("Symmetry test failed", test, controlEqual);
+        Assert.assertFalse("Symmetry test failed", test.equals(controlNe));
+        Assert.assertFalse("Symmetry test failed", controlNe.equals(test));
 
         // check transitivity
-        assertTrue("Transitivity test failed", !controlEqual.equals(controlNe));
-        assertTrue("Transitivity test failed", !test.equals(controlNe));
-        assertTrue("Transitivity test failed", !controlNe.equals(controlEqual));
-        assertTrue("Transitivity test failed", !controlNe.equals(test));
+        Assert.assertFalse("Transitivity test failed", controlEqual.equals(controlNe));
+        Assert.assertFalse("Transitivity test failed", test.equals(controlNe));
+        Assert.assertFalse("Transitivity test failed", controlNe.equals(controlEqual));
+        Assert.assertFalse("Transitivity test failed", controlNe.equals(test));
 
         // check non-null
-        assertTrue("Non-null test failed", !test.equals(null));
+        Assert.assertFalse("Non-null test failed", test.equals(null));
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();
         int testHash = test.hashCode();
-        assertTrue("Equal objects should return equal hashcodes", controlEqHash == testHash);
+        Assert.assertEquals("Equal objects should return equal hashcodes", controlEqHash, testHash);
     }
 
     private static void assertEqualsContract(Object controlEqual, Object test) {
-        assertNotNull(controlEqual);
-        assertNotNull(test);
+        Assert.assertNotNull(controlEqual);
+        Assert.assertNotNull(test);
 
         // check reflexivity
-        assertTrue("Reflexivity test failed", test.equals(test));
+        Assert.assertEquals("Reflexivity test failed", test, test);
 
         // check symmetric
-        assertTrue("Symmetry test failed", controlEqual.equals(test));
-        assertTrue("Symmetry test failed", test.equals(controlEqual));
+        Assert.assertEquals("Symmetry test failed", controlEqual, test);
+        Assert.assertEquals("Symmetry test failed", test, controlEqual);
 
         // check non-null
-        assertTrue("Non-null test failed", !test.equals(null));
+        Assert.assertFalse("Non-null test failed", test.equals(null));
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();
         int testHash = test.hashCode();
-        assertTrue("Equal objects should return equal hashcodes", controlEqHash == testHash);
+        Assert.assertEquals("Equal objects should return equal hashcodes", controlEqHash, testHash);
     }
 
+    @Test
     public void testFeatureStyleImplCopy() throws Exception {
         // create FeatureTypeStyleImpl
         FeatureTypeStyle fts = new FeatureTypeStyleImpl();
-        assertNull(fts.getTransformation());
-        assertNull(fts.getOnlineResource());
+        Assert.assertNull(fts.getTransformation());
+        Assert.assertNull(fts.getOnlineResource());
 
         // Create OnlineResource and transformation
         OnLineResource impl = new OnLineResourceImpl();
@@ -397,14 +416,14 @@ public class StyleObjectTest extends TestCase {
         fts.setOnlineResource(impl);
 
         // test if set
-        assertEquals(fts.getTransformation(), filterFactory.literal("square"));
-        assertEquals(fts.getOnlineResource(), new OnLineResourceImpl());
+        Assert.assertEquals(fts.getTransformation(), filterFactory.literal("square"));
+        Assert.assertEquals(fts.getOnlineResource(), new OnLineResourceImpl());
 
         // create copy fts2 from fts
         FeatureTypeStyleImpl fts2 = new FeatureTypeStyleImpl(fts);
 
         // test if values are equal and thus copied
-        assertEquals(fts.getTransformation(), fts2.getTransformation());
-        assertEquals(fts.getOnlineResource(), fts2.getOnlineResource());
+        Assert.assertEquals(fts.getTransformation(), fts2.getTransformation());
+        Assert.assertEquals(fts.getOnlineResource(), fts2.getOnlineResource());
     }
 }

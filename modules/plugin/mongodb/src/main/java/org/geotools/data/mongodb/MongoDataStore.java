@@ -41,6 +41,8 @@ import org.bson.BsonString;
 import org.bson.Document;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
+import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
+import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.data.mongodb.data.SchemaStoreDirectoryProvider;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.store.ContentDataStore;
@@ -165,7 +167,8 @@ public class MongoDataStore extends ContentDataStore {
                             .getDatabase(dataStoreClientURI.getDatabase())
                             .runCommand(new BsonDocument("buildinfo", new BsonString("")));
             if (result.containsKey("versionArray")) {
-                List<Integer> versionArray = (List<Integer>) result.get("versionArray");
+                @SuppressWarnings("unchecked")
+                List<Integer> versionArray = (List) result.get("versionArray");
                 // if MongoDB server version < 2.6.0 disable native $or operator
                 if (versionArray.get(0) < 2
                         || (versionArray.get(0) == 2 && versionArray.get(1) < 6)) {
@@ -212,14 +215,7 @@ public class MongoDataStore extends ContentDataStore {
         if (schemaStoreURI.startsWith("file:")) {
             try {
                 return new MongoSchemaFileStore(schemaStoreURI);
-            } catch (URISyntaxException e) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        "Unable to create file-based schema store with URI \""
-                                + schemaStoreURI
-                                + "\"",
-                        e);
-            } catch (IOException e) {
+            } catch (URISyntaxException | IOException e) {
                 LOGGER.log(
                         Level.SEVERE,
                         "Unable to create file-based schema store with URI \""
@@ -270,14 +266,7 @@ public class MongoDataStore extends ContentDataStore {
         } else {
             try {
                 return new MongoSchemaFileStore("file:" + schemaStoreURI);
-            } catch (URISyntaxException e) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        "Unable to create file-based schema store with URI \""
-                                + schemaStoreURI
-                                + "\"",
-                        e);
-            } catch (IOException e) {
+            } catch (URISyntaxException | IOException e) {
                 LOGGER.log(
                         Level.SEVERE,
                         "Unable to create file-based schema store with URI \""
@@ -317,6 +306,8 @@ public class MongoDataStore extends ContentDataStore {
         capabilities.addType(Within.class);
 
         capabilities.addType(Id.class);
+        capabilities.addType(JsonSelectFunction.class);
+        capabilities.addType(JsonSelectAllFunction.class);
 
         /*
         capabilities.addType(IncludeFilter.class);
@@ -391,8 +382,8 @@ public class MongoDataStore extends ContentDataStore {
     @Override
     protected List<Name> createTypeNames() throws IOException {
 
-        Set<String> collectionNames = new LinkedHashSet<String>(dataStoreDB.getCollectionNames());
-        Set<String> typeNameSet = new LinkedHashSet<String>();
+        Set<String> collectionNames = new LinkedHashSet<>(dataStoreDB.getCollectionNames());
+        Set<String> typeNameSet = new LinkedHashSet<>();
 
         for (String candidateTypeName : getSchemaStore().typeNames()) {
             try {
@@ -456,7 +447,7 @@ public class MongoDataStore extends ContentDataStore {
         }
 
         // Create set of collections w/o named schema
-        Collection<String> collectionsToCheck = new LinkedList<String>(collectionNames);
+        Collection<String> collectionsToCheck = new LinkedList<>(collectionNames);
         collectionsToCheck.removeAll(typeNameSet);
 
         // Check collection set to see if we can use any of them
@@ -477,7 +468,7 @@ public class MongoDataStore extends ContentDataStore {
             }
         }
 
-        List<Name> typeNameList = new ArrayList<Name>();
+        List<Name> typeNameList = new ArrayList<>();
         for (String name : typeNameSet) {
             typeNameList.add(name(name));
         }

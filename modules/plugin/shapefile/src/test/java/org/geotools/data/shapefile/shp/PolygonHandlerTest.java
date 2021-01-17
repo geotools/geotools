@@ -16,7 +16,9 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +42,9 @@ public class PolygonHandlerTest extends TestCaseSupport {
         c[1] = new Coordinate(1, 1, Double.NaN);
         c[2] = new Coordinate(1, 2, 3);
         PolygonHandler handler = new PolygonHandler(new GeometryFactory());
-        assertTrue(handler.getShapeType() == ShapeType.POLYGON);
-        for (int i = 0, ii = c.length; i < ii; i++) {
-            assertTrue(handler.pointInList(c[i], c));
+        assertSame(handler.getShapeType(), ShapeType.POLYGON);
+        for (Coordinate coordinate : c) {
+            assertTrue(handler.pointInList(coordinate, c));
         }
     }
 

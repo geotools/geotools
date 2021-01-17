@@ -20,7 +20,6 @@
 package org.geotools.referencing.factory;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,7 +73,7 @@ public class IdentifiedObjectFinder {
      * @param type The type of objects to lookup.
      */
     protected IdentifiedObjectFinder(
-            final AuthorityFactory factory, final Class /*<? extends IdentifiedObject>*/ type) {
+            final AuthorityFactory factory, final Class<? extends IdentifiedObject> type) {
         setProxy(AuthorityFactoryProxy.getInstance(factory, type));
     }
 
@@ -230,8 +229,8 @@ public class IdentifiedObjectFinder {
             throws FactoryException {
         final Citation authority = getProxy().getAuthorityFactory().getAuthority();
         final boolean isAll = ReferencingFactory.ALL.equals(authority);
-        for (final Iterator it = object.getIdentifiers().iterator(); it.hasNext(); ) {
-            final Identifier id = (Identifier) it.next();
+        for (ReferenceIdentifier referenceIdentifier : object.getIdentifiers()) {
+            final Identifier id = (Identifier) referenceIdentifier;
             if (!isAll && !Citations.identifierMatches(authority, id.getAuthority())) {
                 // The identifier is not for this authority. Looks the other ones.
                 continue;
@@ -283,8 +282,7 @@ public class IdentifiedObjectFinder {
              *       name found, etc.).
              */
         }
-        for (final Iterator it = object.getAlias().iterator(); it.hasNext(); ) {
-            final GenericName id = (GenericName) it.next();
+        for (final GenericName id : object.getAlias()) {
             try {
                 candidate = getProxy().create(id.toString());
             } catch (FactoryException e) {
@@ -321,10 +319,10 @@ public class IdentifiedObjectFinder {
      */
     final IdentifiedObject createFromCodes(final IdentifiedObject object, boolean specific)
             throws FactoryException {
-        final Set /*<String>*/ codes =
+        @SuppressWarnings("unchecked")
+        final Set<String> codes =
                 specific ? getSpecificCodeCandidates(object) : getCodeCandidates(object);
-        for (final Iterator it = codes.iterator(); it.hasNext(); ) {
-            final String code = (String) it.next();
+        for (final String code : codes) {
             IdentifiedObject candidate;
             try {
                 candidate = getProxy().create(code);
@@ -372,8 +370,7 @@ public class IdentifiedObjectFinder {
      * @return A set of code candidates.
      * @throws FactoryException if an error occured while fetching the set of code candidates.
      */
-    protected Set /*<String>*/ getCodeCandidates(final IdentifiedObject object)
-            throws FactoryException {
+    protected Set<String> getCodeCandidates(final IdentifiedObject object) throws FactoryException {
         return getProxy().getAuthorityCodes();
     }
 
@@ -457,7 +454,7 @@ public class IdentifiedObjectFinder {
          * the specified one. The default implementation delegates to the backing finder.
          */
         @Override
-        protected Set /*<String>*/ getCodeCandidates(final IdentifiedObject object)
+        protected Set<String> getCodeCandidates(final IdentifiedObject object)
                 throws FactoryException {
             return finder.getCodeCandidates(object);
         }

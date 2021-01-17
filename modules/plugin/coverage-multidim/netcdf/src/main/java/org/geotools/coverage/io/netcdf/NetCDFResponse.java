@@ -24,8 +24,14 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
@@ -221,7 +227,7 @@ class NetCDFResponse extends CoverageResponse {
         if (!temporalSubset.isEmpty()) {
             tempSubset = temporalSubset;
         } else {
-            tempSubset = new HashSet<DateRange>();
+            tempSubset = new HashSet<>();
             tempSubset.add(null);
         }
 
@@ -229,7 +235,7 @@ class NetCDFResponse extends CoverageResponse {
         if (!verticalSubset.isEmpty()) {
             vertSubset = verticalSubset;
         } else {
-            vertSubset = new HashSet<NumberRange<Double>>();
+            vertSubset = new HashSet<>();
             vertSubset.add(null);
         }
 
@@ -360,13 +366,13 @@ class NetCDFResponse extends CoverageResponse {
             Filter requestFilter,
             String timeFilterAttribute,
             String elevationFilterAttribute) {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
 
         // //
         // Setting up time filter
         // //
         if (time != null) {
-            final Range range = (Range) time;
+            final Range range = time;
             // schema with only one time attribute. Consider adding code for schema with begin,end
             // attributes
             filters.add(
@@ -387,7 +393,7 @@ class NetCDFResponse extends CoverageResponse {
         // Setting up elevation filter
         // //
         if (elevation != null) {
-            final Range range = (Range) elevation;
+            final Range range = elevation;
             // schema with only one elevation attribute. Consider adding code for schema with
             // begin,end attributes
             filters.add(
@@ -528,7 +534,7 @@ class NetCDFResponse extends CoverageResponse {
         final double resY = coverageFullResolution[1];
         final double[] requestRes = request.spatialRequestHelper.getRequestedResolution();
 
-        g2w = new AffineTransform((AffineTransform) baseGridToWorld);
+        g2w = new AffineTransform(baseGridToWorld);
         g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
         if ((requestRes[0] < resX || requestRes[1] < resY)) {
@@ -568,7 +574,7 @@ class NetCDFResponse extends CoverageResponse {
     private GridCoverage2D prepareCoverage(
             RenderedImage image, GridSampleDimension[] sampleDimensions, double[] noData)
             throws IOException {
-        Map<String, Object> properties = new HashMap<String, Object>();
+        Map<String, Object> properties = new HashMap<>();
         if (noData != null && noData.length > 0) {
             CoverageUtilities.setNoDataProperty(properties, noData[0]);
         }
@@ -817,20 +823,18 @@ class NetCDFResponse extends CoverageResponse {
             if (hints != null && hints.containsKey(JAI.KEY_TILE_CACHE)) {
                 final Object cache = hints.get(JAI.KEY_TILE_CACHE);
                 if (cache != null && cache instanceof TileCache)
-                    localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, (TileCache) cache));
+                    localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
             }
             if (hints != null && hints.containsKey(JAI.KEY_TILE_SCHEDULER)) {
                 final Object scheduler = hints.get(JAI.KEY_TILE_SCHEDULER);
                 if (scheduler != null && scheduler instanceof TileScheduler)
-                    localHints.add(
-                            new RenderingHints(JAI.KEY_TILE_SCHEDULER, (TileScheduler) scheduler));
+                    localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
             }
             boolean addBorderExtender = true;
             if (hints != null && hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
                 final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
                 if (extender != null && extender instanceof BorderExtender) {
-                    localHints.add(
-                            new RenderingHints(JAI.KEY_BORDER_EXTENDER, (BorderExtender) extender));
+                    localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, extender));
                     addBorderExtender = false;
                 }
             }
@@ -844,19 +848,6 @@ class NetCDFResponse extends CoverageResponse {
             iw.affine(finalRaster2Model, interpolation, noData);
             return iw.getRenderedImage();
 
-        } catch (IllegalStateException e) {
-            if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
-                LOGGER.log(
-                        java.util.logging.Level.WARNING,
-                        new StringBuilder("Unable to load raster for granuleDescriptor ")
-                                .append(this.toString())
-                                .append(" with request ")
-                                .append(request.toString())
-                                .append(" Resulting in no granule loaded: Empty result")
-                                .toString(),
-                        e);
-            }
-            return null;
         } catch (org.opengis.referencing.operation.NoninvertibleTransformException e) {
             if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
                 LOGGER.log(
@@ -870,10 +861,10 @@ class NetCDFResponse extends CoverageResponse {
                         e);
             }
             return null;
-        } catch (TransformException e) {
-            if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
+        } catch (IllegalStateException | TransformException e) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(
-                        java.util.logging.Level.WARNING,
+                        Level.WARNING,
                         new StringBuilder("Unable to load raster for granuleDescriptor ")
                                 .append(this.toString())
                                 .append(" with request ")

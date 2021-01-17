@@ -94,7 +94,6 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     /**
      * Be sure to call close when you are finished with this reader; as it must close the file it
      * has open.
-     *
      */
     @Override
     public void close() throws IOException {

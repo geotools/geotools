@@ -54,7 +54,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     /** DiffFeatureWriter construction. */
     public DiffFeatureWriter(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff, Filter filter) {
-        this.reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, diff, filter);
+        this.reader = new DiffFeatureReader<>(reader, diff, filter);
         this.diff = diff;
     }
 
@@ -186,9 +186,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
         if (reader.hasNext()) {
             try {
                 next = reader.next();
-            } catch (NoSuchElementException e) {
-                throw new DataSourceException("No more content", e);
-            } catch (IllegalAttributeException e) {
+            } catch (NoSuchElementException | IllegalAttributeException e) {
                 throw new DataSourceException("No more content", e);
             }
 

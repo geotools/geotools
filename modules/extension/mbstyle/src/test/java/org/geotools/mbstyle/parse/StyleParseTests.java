@@ -16,19 +16,34 @@
  */
 package org.geotools.mbstyle.parse;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.Arrays;
-import org.geotools.mbstyle.*;
-import org.geotools.mbstyle.layer.*;
-import org.geotools.mbstyle.layer.SymbolMBLayer.*;
+import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.MapboxTestUtils;
+import org.geotools.mbstyle.layer.BackgroundMBLayer;
+import org.geotools.mbstyle.layer.FillMBLayer;
+import org.geotools.mbstyle.layer.LineMBLayer;
+import org.geotools.mbstyle.layer.MBLayer;
+import org.geotools.mbstyle.layer.RasterMBLayer;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
+import org.geotools.mbstyle.layer.SymbolMBLayer.Alignment;
+import org.geotools.mbstyle.layer.SymbolMBLayer.IconTextFit;
+import org.geotools.mbstyle.layer.SymbolMBLayer.Justification;
+import org.geotools.mbstyle.layer.SymbolMBLayer.SymbolPlacement;
+import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
+import org.geotools.mbstyle.layer.SymbolMBLayer.TextTransform;
+import org.geotools.mbstyle.layer.SymbolMBLayer.TranslateAnchor;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class StyleParseTests {
@@ -173,7 +188,7 @@ public class StyleParseTests {
         assertEquals(1.0, l.getIconSize().doubleValue(), .00001);
         assertEquals(IconTextFit.NONE, l.getIconTextFit());
         // assertEquals( l.getIconTextFitPadding());
-        assertEquals(null, l.getIconImage());
+        assertNull(l.getIconImage());
         assertEquals(0.0, l.getIconRotate().doubleValue(), .00001);
         assertEquals(2.0, l.getIconPadding().doubleValue(), .00001);
         assertEquals(false, l.getIconKeepUpright());
@@ -250,7 +265,7 @@ public class StyleParseTests {
         assertEquals(new Color(0x0099ff), l.getLineColor());
         assertEquals(0.5, l.getLineOpacity());
         assertEquals(LineMBLayer.LineTranslateAnchor.VIEWPORT, l.getLineTranslateAnchor());
-        Assert.assertThat(l.getLineDasharray(), IsIterableContainingInOrder.contains(5.0, 5.0));
+        assertThat(l.getLineDasharray(), IsIterableContainingInOrder.contains(5.0, 5.0));
         // line-offset can be either an integer or double.
         assertEquals(4, l.getLineOffset().intValue());
         assertEquals(4.0, l.getLineOffset().doubleValue(), .00001);

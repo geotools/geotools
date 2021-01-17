@@ -421,8 +421,8 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 try (FeatureReader<SimpleFeatureType, SimpleFeature> preReader =
                         getReader(preQuery)) {
                     // wrap with post filter
-                    try (FilteringFeatureReader reader =
-                            new FilteringFeatureReader(preReader, postFilter)) {
+                    try (FilteringFeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                            new FilteringFeatureReader<>(preReader, postFilter)) {
                         while (reader.hasNext()) {
                             reader.next();
                             count++;
@@ -485,8 +485,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // grab a reader
                 Query q = new Query(query);
                 q.setFilter(postFilter);
-                FeatureReader<SimpleFeatureType, SimpleFeature> i = getReader(q);
-                try {
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> i = getReader(q)) {
                     if (i.hasNext()) {
                         SimpleFeature f = i.next();
                         bounds.init(f.getBounds());
@@ -496,8 +495,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                             bounds.include(f.getBounds());
                         }
                     }
-                } finally {
-                    i.close();
                 }
 
                 return bounds;
@@ -630,9 +627,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
         // if post filter, wrap it
         if (postFilterRequired) {
-            reader =
-                    new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, postFilter);
+            reader = new FilteringFeatureReader<>(reader, postFilter);
             if (!returnedSchema.equals(querySchema)) {
                 reader = new ReTypeFeatureReader(reader, returnedSchema);
             }
@@ -648,9 +643,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
             // max feature limit
             if (query.getMaxFeatures() >= 0 && query.getMaxFeatures() < Integer.MAX_VALUE) {
-                reader =
-                        new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                reader, query.getMaxFeatures());
+                reader = new MaxFeatureReader<>(reader, query.getMaxFeatures());
             }
         }
 
@@ -674,8 +667,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
                 String[] extraAttributes = extractor.getAttributeNames();
                 if (extraAttributes != null && extraAttributes.length > 0) {
-                    List<String> allAttributes =
-                            new ArrayList<String>(Arrays.asList(propertyNames));
+                    List<String> allAttributes = new ArrayList<>(Arrays.asList(propertyNames));
                     for (String extraAttribute : extraAttributes) {
                         if (!allAttributes.contains(extraAttribute))
                             allAttributes.add(extraAttribute);
@@ -765,7 +757,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     List<ColumnMetadata> getColumnMetadata(
             Connection cx, String databaseSchema, String tableName, SQLDialect dialect)
             throws SQLException {
-        List<ColumnMetadata> result = new ArrayList<ColumnMetadata>();
+        List<ColumnMetadata> result = new ArrayList<>();
 
         DatabaseMetaData metaData = cx.getMetaData();
 
@@ -829,7 +821,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     static List<ColumnMetadata> getColumnMetadata(
             Connection cx, VirtualTable vtable, SQLDialect dialect, JDBCDataStore store)
             throws SQLException {
-        List<ColumnMetadata> result = new ArrayList<ColumnMetadata>();
+        List<ColumnMetadata> result = new ArrayList<>();
 
         Statement st = null;
         ResultSet rs = null;

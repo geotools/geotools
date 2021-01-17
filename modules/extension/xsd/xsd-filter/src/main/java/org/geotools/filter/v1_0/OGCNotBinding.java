@@ -76,10 +76,10 @@ public class OGCNotBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Filter filter = (Filter) node.getChildValue(Filter.class);
+        Filter filter = node.getChildValue(Filter.class);
         if (filter == null) {
             // look for an Identifier, not in the spec but something we handle
-            Identifier id = (Identifier) node.getChildValue(Identifier.class);
+            Identifier id = node.getChildValue(Identifier.class);
             if (id != null) {
                 filter = filterfactory.id(Collections.singleton(id));
             }

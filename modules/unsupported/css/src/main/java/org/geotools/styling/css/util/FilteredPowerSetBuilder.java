@@ -36,7 +36,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      * Signatures that have been rejected, that we already know won't generate an entry in the
      * result
      */
-    private List<List<Signature>> rejects = new ArrayList();
+    private List<List<Signature>> rejects = new ArrayList<>();
 
     /** Initializes the power set builds with the initial domain values */
     public FilteredPowerSetBuilder(List<T> domain) {

@@ -45,7 +45,6 @@ import org.geotools.data.DataStoreFactorySpi;
  * For a more detailed description, look up the projects documentation.
  *
  * @author Pieter De Graef, Geosparc
-
  */
 public class GeoRestDataStoreFactory implements DataStoreFactorySpi {
 

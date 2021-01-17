@@ -392,7 +392,7 @@ public class ogcComplexTypes {
             super(null, child, attrs, elems, null, false, false);
         }
 
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if (element.getType() != null && getName().equals(element.getType().getName())) {
                 for (int i = 0;
                         i < ogcSimpleTypes.CapabilitiesSectionType.getInstance().getFacets().length;
@@ -411,7 +411,8 @@ public class ogcComplexTypes {
             return super.canEncode(element, value, hints);
         }
 
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
 
             if (canEncode(element, value, hints)) {
@@ -430,7 +431,7 @@ public class ogcComplexTypes {
             }
         }
 
-        public Class getInstanceType() {
+        public Class<?> getInstanceType() {
             return String.class;
         }
 

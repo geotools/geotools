@@ -20,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -31,7 +30,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import junit.framework.TestCase;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
@@ -44,6 +42,7 @@ import org.geotools.xsd.impl.BindingLoader;
 import org.geotools.xsd.impl.BindingWalkerFactoryImpl;
 import org.geotools.xsd.impl.NamespaceSupportWrapper;
 import org.geotools.xsd.impl.SchemaIndexImpl;
+import org.junit.Before;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Document;
@@ -140,7 +139,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-public abstract class XMLTestSupport extends TestCase {
+public abstract class XMLTestSupport {
     /** Logging instance */
     protected static Logger logger =
             org.geotools.util.logging.Logging.getLogger(XMLTestSupport.class);
@@ -149,14 +148,16 @@ public abstract class XMLTestSupport extends TestCase {
     protected Document document;
 
     /** additional namespace mappings */
-    protected HashMap namespaceMappings;
+    protected Map<String, String> namespaceMappings;
+
     /** Creates an empty xml document. */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 
         document = docFactory.newDocumentBuilder().newDocument();
-        namespaceMappings = new HashMap();
+        namespaceMappings = new HashMap<>();
     }
 
     /**
@@ -202,8 +203,8 @@ public abstract class XMLTestSupport extends TestCase {
 
         // register additional namespaces
         root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        for (Iterator e = namespaceMappings.entrySet().iterator(); e.hasNext(); ) {
-            Map.Entry mapping = (Map.Entry) e.next();
+        for (Map.Entry<String, String> stringStringEntry : namespaceMappings.entrySet()) {
+            Map.Entry mapping = (Map.Entry) stringStringEntry;
             String prefix = (String) mapping.getKey();
             String uri = (String) mapping.getValue();
 
@@ -276,8 +277,8 @@ public abstract class XMLTestSupport extends TestCase {
         Encoder encoder = new Encoder(configuration, schema);
 
         // additional namespaces
-        for (Iterator e = namespaceMappings.entrySet().iterator(); e.hasNext(); ) {
-            Map.Entry mapping = (Map.Entry) e.next();
+        for (Map.Entry<String, String> stringStringEntry : namespaceMappings.entrySet()) {
+            Map.Entry mapping = (Map.Entry) stringStringEntry;
             String prefix = (String) mapping.getKey();
             String uri = (String) mapping.getValue();
 
@@ -328,7 +329,7 @@ public abstract class XMLTestSupport extends TestCase {
         context = configuration.setupContext(context);
 
         // create the binding container
-        Map bindings = configuration.setupBindings();
+        Map<QName, Object> bindings = configuration.setupBindings();
         BindingLoader bindingLoader = new BindingLoader(bindings);
         //        MutablePicoContainer container = bindingLoader.getContainer();
         //        container = configuration.setupBindings(container);
@@ -345,11 +346,10 @@ public abstract class XMLTestSupport extends TestCase {
 
         // setup the namespace support
         NamespaceSupport namespaces = new NamespaceSupport();
-        HashMap mappings = new HashMap();
+        Map<String, String> mappings = new HashMap<>();
 
         try {
-            for (Iterator d = configuration.getXSD().getDependencies().iterator(); d.hasNext(); ) {
-                XSD xsd = (XSD) d.next();
+            for (XSD xsd : configuration.getXSD().getDependencies()) {
                 XSDSchema schema = xsd.getSchema();
 
                 mappings.putAll(schema.getQNamePrefixToNamespaceMap());
@@ -360,8 +360,8 @@ public abstract class XMLTestSupport extends TestCase {
             throw new RuntimeException(e);
         }
 
-        for (Iterator m = mappings.entrySet().iterator(); m.hasNext(); ) {
-            Map.Entry mapping = (Map.Entry) m.next();
+        for (Map.Entry<String, String> stringStringEntry : mappings.entrySet()) {
+            Map.Entry mapping = (Map.Entry) stringStringEntry;
             String key = (String) mapping.getKey();
 
             if (key == null) {

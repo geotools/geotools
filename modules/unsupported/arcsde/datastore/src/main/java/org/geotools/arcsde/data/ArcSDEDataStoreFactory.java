@@ -36,7 +36,6 @@ import com.esri.sde.sdk.pe.PeCoordinateSystem;
 import com.esri.sde.sdk.pe.PeFactory;
 import java.awt.RenderingHints;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +69,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
     /** friendly factory description */
     public static final String FACTORY_DESCRIPTION = "ESRI(tm) ArcSDE 9.2+ vector data store";
 
-    private static List<Param> paramMetadata = new ArrayList<Param>(10);
+    private static List<Param> paramMetadata = new ArrayList<>(10);
 
     public static final int JSDE_VERSION_DUMMY = -1;
 
@@ -245,7 +244,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
      * @throws UnsupportedOperationException always as the operation is not supported
      * @see DataStoreFactorySpi#createNewDataStore(Map)
      */
-    public DataStore createNewDataStore(java.util.Map<String, Serializable> map) {
+    public DataStore createNewDataStore(java.util.Map<String, ?> map) {
         throw new UnsupportedOperationException(
                 "ArcSDE DataStore does not support the creation of new databases. "
                         + "This should be done through database's specific tools");
@@ -280,8 +279,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
      *     </code>
      * @throws java.io.IOException if something goes wrong creating the datastore.
      */
-    public DataStore createDataStore(final Map<String, Serializable> params)
-            throws java.io.IOException {
+    public DataStore createDataStore(final Map<String, ?> params) throws java.io.IOException {
         if (JSDE_CLIENT_VERSION == JSDE_VERSION_DUMMY) {
             throw new DataSourceException("Can't connect to ArcSDE with the dummy jar.");
         }
@@ -403,7 +401,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
         return FACTORY_DESCRIPTION;
     }
 
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
         if (JSDE_CLIENT_VERSION == JSDE_VERSION_DUMMY) {
             return false;
         }
@@ -411,9 +409,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
 
         try {
             new ArcSDEDataStoreConfig(params);
-        } catch (NullPointerException ex) {
-            canProcess = false;
-        } catch (IllegalArgumentException ex) {
+        } catch (NullPointerException | IllegalArgumentException ex) {
             canProcess = false;
         }
 
@@ -456,7 +452,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
      * @see DataStoreFactorySpi#getImplementationHints()
      */
     public Map<RenderingHints.Key, ?> getImplementationHints() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     public static int getSdeClientVersion() {

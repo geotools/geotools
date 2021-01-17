@@ -51,7 +51,7 @@ public class GrowableInternationalString extends AbstractInternationalString
      * The set of locales created in this virtual machine through methods of this class. Used in
      * order to get a {@linkplain #unique unique} instance of {@link Locale} objects.
      */
-    private static final Map<Locale, Locale> LOCALES = new HashMap<Locale, Locale>();
+    private static final Map<Locale, Locale> LOCALES = new HashMap<>();
 
     /**
      * The string values in different locales (never {@code null}). Keys are {@link Locale} objects
@@ -109,7 +109,7 @@ public class GrowableInternationalString extends AbstractInternationalString
                     }
                 case 1:
                     {
-                        localMap = new HashMap<Locale, String>(localMap);
+                        localMap = new HashMap<>(localMap);
                         break;
                     }
             }
@@ -163,7 +163,7 @@ public class GrowableInternationalString extends AbstractInternationalString
             if (position == length) {
                 final Locale locale =
                         (i == 0)
-                                ? (Locale) null
+                                ? null
                                 : unique(
                                         new Locale(
                                                 parts[0] /* language */,
@@ -204,8 +204,7 @@ public class GrowableInternationalString extends AbstractInternationalString
         if (LOCALES.isEmpty())
             try {
                 final Field[] fields = Locale.class.getFields();
-                for (int i = 0; i < fields.length; i++) {
-                    final Field field = fields[i];
+                for (final Field field : fields) {
                     if (Modifier.isStatic(field.getModifiers())) {
                         if (Locale.class.isAssignableFrom(field.getType())) {
                             final Locale toAdd = (Locale) field.get(null);
@@ -378,8 +377,7 @@ public class GrowableInternationalString extends AbstractInternationalString
             localMap = Collections.singletonMap(unique(entry.getKey()), entry.getValue());
         } else {
             localMap.clear();
-            for (int i = 0; i < entries.length; i++) {
-                final Map.Entry<Locale, String> entry = entries[i];
+            for (final Map.Entry<Locale, String> entry : entries) {
                 localMap.put(unique(entry.getKey()), entry.getValue());
             }
         }

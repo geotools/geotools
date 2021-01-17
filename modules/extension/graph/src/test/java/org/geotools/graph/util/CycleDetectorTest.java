@@ -16,21 +16,19 @@
  */
 package org.geotools.graph.util;
 
-import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
 import org.geotools.graph.util.graph.CycleDetector;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class CycleDetectorTest extends TestCase {
+public class CycleDetectorTest {
     private GraphBuilder m_builder;
 
-    public CycleDetectorTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
     }
@@ -40,11 +38,12 @@ public class CycleDetectorTest extends TestCase {
      * <br>
      * Expected: 1. containsCycle() returns false
      */
+    @Test
     public void test_0() {
         GraphTestUtil.buildNoBifurcations(builder(), 100);
 
         CycleDetector detector = new CycleDetector(builder().getGraph());
-        assertTrue(!detector.containsCycle());
+        Assert.assertFalse(detector.containsCycle());
     }
 
     /**
@@ -52,11 +51,12 @@ public class CycleDetectorTest extends TestCase {
      * <br>
      * Expected: 1. containsCycle returns true
      */
+    @Test
     public void test_1() {
         GraphTestUtil.buildCircular(builder(), 100);
 
         CycleDetector detector = new CycleDetector(builder().getGraph());
-        assertTrue(detector.containsCycle());
+        Assert.assertTrue(detector.containsCycle());
     }
 
     protected GraphBuilder createBuilder() {

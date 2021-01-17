@@ -17,7 +17,12 @@
 package org.geotools.data.sqlserver;
 
 import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.INSTANCE;
-import static org.geotools.jdbc.JDBCDataStoreFactory.*;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PORT;
+import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +52,7 @@ public class SQLServerDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
         // db.load(getClass().getResourceAsStream("factory.properties"));
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         if (includedb) {
             params.put(DATABASE.key, db.getProperty(DATABASE.key));

@@ -76,7 +76,7 @@ public class ParameterTypeFactory {
         ParameterMappingContext mappingContext =
                 new ParameterMappingContext(filter, viewParams, featureTypeInfo);
 
-        List<ParameterType> ret = new ArrayList<ParameterType>();
+        List<ParameterType> ret = new ArrayList<>();
 
         for (ParameterExpressionType parameter : desc.getParameter()) {
             String value = null;

@@ -174,7 +174,7 @@ public class LonLatEnvelopeBaseTypeBinding extends AbstractComplexBinding {
             }
 
             if (spatialCRS != null) {
-                List<DirectPosition> envelopePositions = new LinkedList<DirectPosition>();
+                List<DirectPosition> envelopePositions = new LinkedList<>();
 
                 GeneralDirectPosition lowerCorner =
                         new GeneralDirectPosition(envelope.getCoordinateReferenceSystem());

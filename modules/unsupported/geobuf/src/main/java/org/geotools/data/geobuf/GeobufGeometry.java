@@ -23,7 +23,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.geometry.jts.JTSFactoryFinder;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateArrays;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
@@ -120,7 +131,7 @@ public class GeobufGeometry {
                 builder.addLengths(polygon.getExteriorRing().getCoordinates().length);
                 addCoords(builder, polygon.getExteriorRing().getCoordinates());
                 for (int j = 0; j < polygon.getNumInteriorRing(); j++) {
-                    LinearRing ring = (LinearRing) polygon.getInteriorRingN(j);
+                    LinearRing ring = polygon.getInteriorRingN(j);
                     builder.addLengths(ring.getCoordinates().length);
                     addCoords(builder, ring.getCoordinates());
                 }
@@ -219,7 +230,7 @@ public class GeobufGeometry {
     }
 
     protected List<Geometry> getGeometries(Geobuf.Data.Geometry g) {
-        List<Geometry> geometries = new ArrayList<Geometry>();
+        List<Geometry> geometries = new ArrayList<>();
         getGeometries(geometries, g);
         return geometries;
     }
@@ -264,7 +275,7 @@ public class GeobufGeometry {
     }
 
     protected List<Coordinate[]> getCoordinates(Geobuf.Data.Geometry g) {
-        List<Coordinate[]> listOfCoordinates = new ArrayList<Coordinate[]>();
+        List<Coordinate[]> listOfCoordinates = new ArrayList<>();
         int numberOfLengths = g.getLengthsCount();
         if (numberOfLengths == 0) {
             listOfCoordinates.add(getAllCoordinates(g));

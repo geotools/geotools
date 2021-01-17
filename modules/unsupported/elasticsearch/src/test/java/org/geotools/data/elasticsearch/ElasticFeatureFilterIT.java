@@ -17,11 +17,20 @@
 
 package org.geotools.data.elasticsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -183,7 +192,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         SimpleFeatureIterator iterator = features.features();
         while (iterator.hasNext()) {
             SimpleFeature f = iterator.next();
-            assertTrue(!f.getAttribute("vendor_s").equals("D-Link"));
+            assertFalse(f.getAttribute("vendor_s").equals("D-Link"));
         }
     }
 
@@ -695,7 +704,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         SimpleFeatureIterator it = featureSource.getFeatures(q).features();
         assertTrue(it.hasNext());
         it.next();
-        assertTrue(!it.hasNext());
+        assertFalse(it.hasNext());
         it.next();
     }
 

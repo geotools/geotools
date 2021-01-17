@@ -74,14 +74,13 @@ public class SolrDataStore extends ContentDataStore {
     private List<Name> nativeTypeNames;
 
     // Attributes present in SOLR schema
-    private ArrayList<SolrAttribute> solrAttributes = new ArrayList<SolrAttribute>();
+    private ArrayList<SolrAttribute> solrAttributes = new ArrayList<>();
 
     // SOLR uuid attributes
     private SolrAttribute pk = null;
 
     // Attributes configurations of the store entries
-    private Map<String, SolrLayerConfiguration> solrConfigurations =
-            new ConcurrentHashMap<String, SolrLayerConfiguration>();
+    private Map<String, SolrLayerConfiguration> solrConfigurations = new ConcurrentHashMap<>();
 
     HttpSolrClient solrServer;
 
@@ -150,7 +149,7 @@ public class SolrDataStore extends ContentDataStore {
      */
     public ArrayList<SolrAttribute> getSolrAttributes(String layerName) {
         if (solrAttributes.isEmpty()) {
-            solrAttributes = new ArrayList<SolrAttribute>();
+            solrAttributes = new ArrayList<>();
             try {
                 LukeRequest lq = new LukeRequest();
                 lq.setShowSchema(true);
@@ -160,7 +159,7 @@ public class SolrDataStore extends ContentDataStore {
                 lq.setShowSchema(false);
                 LukeResponse processField = lq.process(solrServer);
                 Map<String, FieldInfo> fis = processField.getFieldInfo();
-                SortedSet<String> keys = new TreeSet<String>(fis.keySet());
+                SortedSet<String> keys = new TreeSet<>(fis.keySet());
                 for (String k : keys) {
                     FieldInfo fieldInfo = fis.get(k);
                     String name = fieldInfo.getName();
@@ -199,14 +198,18 @@ public class SolrDataStore extends ContentDataStore {
                     }
                 }
                 // Reorder fields: empty after
-                Comparator sortFields =
-                        new BeanComparator("empty").thenComparing(new BeanComparator("name"));
+                Comparator<SolrAttribute> sortFields = getEmptyComparator();
                 solrAttributes.sort(sortFields);
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
         return solrAttributes;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Comparator<SolrAttribute> getEmptyComparator() {
+        return new BeanComparator("empty").thenComparing(new BeanComparator("name"));
     }
 
     @Override
@@ -449,8 +452,8 @@ public class SolrDataStore extends ContentDataStore {
         String fqViewParamers = null;
         Hints hints = q.getHints();
         if (hints != null) {
-            Map<String, String> parameters =
-                    (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS);
+            @SuppressWarnings("unchecked")
+            Map<String, String> parameters = (Map) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS);
             if (parameters != null) {
                 for (String param : parameters.keySet()) {
                     // Accepts only q and fq query parameters

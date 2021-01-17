@@ -35,12 +35,11 @@
                 "visibility": "visible",
                 "line-cap": "square",
                 "line-join": "round",
-                "line-round-limit" 1.2,
+                "line-round-limit": 1.2
             },
             "paint": {
                 "line-color": "rebeccapurple",
                 "line-opacity": 0.80,
-                "line-translate-anchor": "viewport",
                 "line-dasharray": [50, 10, 20, 10],
                 "line-offset": 0,
                 "line-gap-width": 8,
@@ -48,7 +47,7 @@
                     0,
                     0
                 ],
-                "line-translate-anchor": "map",                
+                "line-translate-anchor": "map",
                 "line-width": 5,
                 "line-blur": 2
             }

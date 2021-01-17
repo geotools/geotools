@@ -129,7 +129,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      */
     public EList<StyleType> getStyle() {
         if (style == null) {
-            style = new EObjectContainmentEList<StyleType>(StyleType.class, this, wmtsv_1Package.LAYER_TYPE__STYLE);
+            style = new EObjectContainmentEList<>(StyleType.class, this, wmtsv_1Package.LAYER_TYPE__STYLE);
         }
         return style;
     }
@@ -141,7 +141,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      */
     public EList<String> getFormat() {
         if (format == null) {
-            format = new EDataTypeEList<String>(String.class, this, wmtsv_1Package.LAYER_TYPE__FORMAT);
+            format = new EDataTypeEList<>(String.class, this, wmtsv_1Package.LAYER_TYPE__FORMAT);
         }
         return format;
     }
@@ -153,7 +153,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      */
     public EList<String> getInfoFormat() {
         if (infoFormat == null) {
-            infoFormat = new EDataTypeEList<String>(String.class, this, wmtsv_1Package.LAYER_TYPE__INFO_FORMAT);
+            infoFormat = new EDataTypeEList<>(String.class, this, wmtsv_1Package.LAYER_TYPE__INFO_FORMAT);
         }
         return infoFormat;
     }
@@ -165,7 +165,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      */
     public EList<DimensionType> getDimension() {
         if (dimension == null) {
-            dimension = new EObjectContainmentEList<DimensionType>(DimensionType.class, this, wmtsv_1Package.LAYER_TYPE__DIMENSION);
+            dimension = new EObjectContainmentEList<>(DimensionType.class, this, wmtsv_1Package.LAYER_TYPE__DIMENSION);
         }
         return dimension;
     }
@@ -177,7 +177,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      */
     public EList<TileMatrixSetLinkType> getTileMatrixSetLink() {
         if (tileMatrixSetLink == null) {
-            tileMatrixSetLink = new EObjectContainmentEList<TileMatrixSetLinkType>(TileMatrixSetLinkType.class, this, wmtsv_1Package.LAYER_TYPE__TILE_MATRIX_SET_LINK);
+            tileMatrixSetLink = new EObjectContainmentEList<>(TileMatrixSetLinkType.class, this, wmtsv_1Package.LAYER_TYPE__TILE_MATRIX_SET_LINK);
         }
         return tileMatrixSetLink;
     }
@@ -189,7 +189,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      */
     public EList<URLTemplateType> getResourceURL() {
         if (resourceURL == null) {
-            resourceURL = new EObjectContainmentEList<URLTemplateType>(URLTemplateType.class, this, wmtsv_1Package.LAYER_TYPE__RESOURCE_URL);
+            resourceURL = new EObjectContainmentEList<>(URLTemplateType.class, this, wmtsv_1Package.LAYER_TYPE__RESOURCE_URL);
         }
         return resourceURL;
     }

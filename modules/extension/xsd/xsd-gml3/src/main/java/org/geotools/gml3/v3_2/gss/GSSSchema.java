@@ -71,7 +71,7 @@ public class GSSSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.ABSTRACTGEOMETRYTYPE_TYPE,
@@ -196,7 +196,7 @@ public class GSSSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.POINTTYPE_TYPE,

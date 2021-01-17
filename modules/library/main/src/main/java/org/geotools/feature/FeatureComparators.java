@@ -97,8 +97,9 @@ public final class FeatureComparators {
          * @param att2 The second attribute to compare.
          * @return A value indicating less than, equal, or greater than.
          */
+        @SuppressWarnings("unchecked")
         protected int compareAtts(Object att1, Object att2) {
-            return ((Comparable) att1).compareTo((Comparable) att2);
+            return ((Comparable) att1).compareTo(att2);
         }
     }
 
@@ -137,6 +138,7 @@ public final class FeatureComparators {
          * @param att2 The second attribute to compare.
          * @return A value indicating less than, equal, or greater than.
          */
+        @SuppressWarnings("unchecked")
         protected int compareAtts(Object att1, Object att2) {
             if ((att1 == null) && (att2 == null)) {
                 return 0;
@@ -150,7 +152,7 @@ public final class FeatureComparators {
                 return 1;
             }
 
-            return ((Comparable) att1).compareTo((Comparable) att2);
+            return ((Comparable) att1).compareTo(att2);
         }
     }
 }

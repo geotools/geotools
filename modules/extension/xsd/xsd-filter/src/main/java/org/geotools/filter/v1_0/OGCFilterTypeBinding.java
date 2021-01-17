@@ -17,6 +17,8 @@
 package org.geotools.filter.v1_0;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -24,6 +26,7 @@ import org.geotools.xsd.Node;
 import org.geotools.xsd.filter.FilterParsingUtils;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.identity.Identifier;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -90,8 +93,10 @@ public class OGCFilterTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         if (node.hasChild("FeatureId")) {
             // round up into a featureId filter
-            HashSet fids = new HashSet();
-            fids.addAll(node.getChildValues("FeatureId"));
+            Set<Identifier> fids = new HashSet<>();
+            @SuppressWarnings("unchecked")
+            List<Identifier> featureId = node.getChildValues("FeatureId");
+            fids.addAll(featureId);
 
             return factory.id(fids);
         }

@@ -16,7 +16,14 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.floor;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toDegrees;
+import static java.lang.Math.toRadians;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -184,7 +191,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
      */
     @Override
     public ParameterValueGroup getParameterValues() {
-        final ParameterValue<Integer> dim = new Parameter<Integer>(Provider.DIM);
+        final ParameterValue<Integer> dim = new Parameter<>(Provider.DIM);
         dim.setValue(getSourceDimensions());
         return new ParameterGroup(
                 getParameterDescriptors(),

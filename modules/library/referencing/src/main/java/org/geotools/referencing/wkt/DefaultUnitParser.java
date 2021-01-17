@@ -18,13 +18,11 @@ package org.geotools.referencing.wkt;
 
 import java.util.HashMap;
 import java.util.Objects;
-import javax.measure.IncommensurableException;
 import javax.measure.Quantity;
-import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import org.geotools.measure.Units;
 import org.geotools.referencing.wkt.GeoToolsCRSUnitFormat.BaseGT2Format;
-import tec.uom.se.unit.TransformedUnit;
+import tech.units.indriya.unit.TransformedUnit;
 
 /**
  * UnitFormat configured to parse units. Since usually we don't know the citation in use for a
@@ -34,8 +32,7 @@ import tec.uom.se.unit.TransformedUnit;
 public class DefaultUnitParser extends BaseGT2Format {
 
     private static final DefaultUnitParser UNITPARSER = new DefaultUnitParser();
-    protected HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap =
-            new HashMap<UnitWrapper, Unit<?>>();
+    protected HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap = new HashMap<>();
 
     //    /**
     //     * Gets a UnitFormat configured to parse units. Since usually we don't know the citation
@@ -67,15 +64,16 @@ public class DefaultUnitParser extends BaseGT2Format {
 
     /**
      * Returns an equivalent unit instance based on the provided unit. First, it tries to get one of
-     * the reference units defined in the JSR363 implementation in use. If no equivalent reference
+     * the reference units defined in the JSR 385 implementation in use. If no equivalent reference
      * unit is defined, it returns the provided unit
      */
+    @SuppressWarnings("unchecked")
     public <Q extends Quantity<Q>> Unit<Q> getEquivalentUnit(Unit<Q> unit) {
         return (Unit<Q>) unitWrapperToUnitMap.getOrDefault(new UnitWrapper(unit), unit);
     }
 
     /**
-     * This wrapper is used to compare equivalent units using the {@link Units.equals} method. It
+     * This wrapper is used to compare equivalent units using the {@link Units#equals} method. It
      * implements hashCode and equals method in a coherent way, so it can be used in a HashMap to
      * retrieve equivalent units.
      *
@@ -107,7 +105,6 @@ public class DefaultUnitParser extends BaseGT2Format {
                 try {
                     float factor1 = (float) unit.getConverterToAny(systemUnit).convert(1.0);
                     return Objects.hash(systemUnit, Float.floatToIntBits(factor1));
-                } catch (UnconvertibleException | IncommensurableException e) {
                 } catch (Throwable e) {
                 }
             }

@@ -20,8 +20,15 @@ import static java.lang.Math.abs;
 
 import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
+import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -285,7 +292,7 @@ public class StreamingRenderer implements GTRenderer {
 
     private BlockingQueue<RenderingRequest> requests;
 
-    private List<RenderListener> renderListeners = new CopyOnWriteArrayList<RenderListener>();
+    private List<RenderListener> renderListeners = new CopyOnWriteArrayList<>();
 
     private RenderingHints java2dHints;
 
@@ -406,7 +413,7 @@ public class StreamingRenderer implements GTRenderer {
      * the SLD towards the native CRS) assume the geometries are expressed with the axis order
      * suggested by the official EPSG database, regardless of how the CRS system might be configured
      */
-    private Map rendererHints = null;
+    private Map<?, ?> rendererHints = null;
 
     private AffineTransform worldToScreenTransform = null;
 
@@ -492,10 +499,10 @@ public class StreamingRenderer implements GTRenderer {
             }
             return;
         }
-        if (renderListeners.size() > 0) {
+        if (!renderListeners.isEmpty()) {
             RenderListener listener;
-            for (int i = 0; i < renderListeners.size(); i++) {
-                listener = renderListeners.get(i);
+            for (RenderListener renderListener : renderListeners) {
+                listener = renderListener;
                 listener.featureRenderer((SimpleFeature) feature);
             }
         }
@@ -503,7 +510,7 @@ public class StreamingRenderer implements GTRenderer {
 
     private void fireErrorEvent(Throwable t) {
         LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
-        if (renderListeners.size() > 0) {
+        if (!renderListeners.isEmpty()) {
             Exception e;
             if (t instanceof Exception) {
                 e = (Exception) t;
@@ -511,8 +518,8 @@ public class StreamingRenderer implements GTRenderer {
                 e = new Exception(t);
             }
             RenderListener listener;
-            for (int i = 0; i < renderListeners.size(); i++) {
-                listener = renderListeners.get(i);
+            for (RenderListener renderListener : renderListeners) {
+                listener = renderListener;
                 listener.errorOccurred(e);
             }
         }
@@ -656,7 +663,7 @@ public class StreamingRenderer implements GTRenderer {
             ReferencedEnvelope envelope,
             Rectangle paintArea,
             AffineTransform worldToScreen,
-            Map hints) {
+            Map<?, ?> hints) {
         if (getScaleComputationMethod().equals(SCALE_ACCURATE)) {
             try {
                 return RendererUtilities.calculateScale(
@@ -1064,6 +1071,7 @@ public class StreamingRenderer implements GTRenderer {
             AffineTransform worldToScreenTransform,
             boolean hasRenderingTransformation)
             throws IllegalFilterException, IOException, FactoryException {
+        @SuppressWarnings("unchecked")
         FeatureSource<FeatureType, Feature> source =
                 (FeatureSource<FeatureType, Feature>) layer.getFeatureSource();
         FeatureType schema = source.getSchema();
@@ -1115,7 +1123,7 @@ public class StreamingRenderer implements GTRenderer {
             List<ReferencedEnvelope> envelopes = null;
             // enable advanced projection handling with the updated map extent
             if (isAdvancedProjectionHandlingEnabled()) {
-                Map projectionHints = new HashMap();
+                Map<String, Object> projectionHints = new HashMap<>();
                 if (isAdvancedProjectionDensificationEnabled()
                         && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
                     double tolerance = getAdvancedProjectionDensificationTolerance();
@@ -1298,7 +1306,7 @@ public class StreamingRenderer implements GTRenderer {
             CoordinateReferenceSystem featCrs,
             Rectangle screenSize,
             AffineTransform worldToScreenTransform,
-            Map projectionHints,
+            Map<String, Object> projectionHints,
             double tolerance,
             ReferencedEnvelope sourceEnvelope)
             throws NoninvertibleTransformException, FactoryException {
@@ -1474,7 +1482,7 @@ public class StreamingRenderer implements GTRenderer {
         ReferencedEnvelope result = new ReferencedEnvelope(envelope);
         if (styles != null) {
             for (LiteFeatureTypeStyle lts : styles) {
-                List<Rule> rules = new ArrayList<Rule>();
+                List<Rule> rules = new ArrayList<>();
                 rules.addAll(Arrays.asList(lts.ruleList));
                 rules.addAll(Arrays.asList(lts.elseRules));
                 for (Rule r : rules) {
@@ -1629,7 +1637,7 @@ public class StreamingRenderer implements GTRenderer {
             // filter2 OR filter3);
 
             final int maxFilters = getMaxFiltersToSendToDatastore();
-            final List<Filter> filtersToDS = new ArrayList<Filter>();
+            final List<Filter> filtersToDS = new ArrayList<>();
             // look at each featuretypestyle
             for (LiteFeatureTypeStyle style : styles) {
                 if (style.elseRules.length > 0) // uh-oh has elseRule
@@ -1768,12 +1776,12 @@ public class StreamingRenderer implements GTRenderer {
 
         for (LiteFeatureTypeStyle lfts : styles) {
             Rule[] rules = lfts.elseRules;
-            for (int j = 0; j < rules.length; j++) {
-                rbe.visit(rules[j]);
+            for (Rule value : rules) {
+                rbe.visit(value);
             }
             rules = lfts.ruleList;
-            for (int j = 0; j < rules.length; j++) {
-                rbe.visit(rules[j]);
+            for (Rule rule : rules) {
+                rbe.visit(rule);
             }
         }
 
@@ -1828,7 +1836,7 @@ public class StreamingRenderer implements GTRenderer {
          * default? I will add them, but don't really know what's the expected
          * behavior
          */
-        List<PropertyName> atts = new ArrayList<PropertyName>(attributes);
+        List<PropertyName> atts = new ArrayList<>(attributes);
         Collection<PropertyDescriptor> attTypes = schema.getDescriptors();
         Name attName;
 
@@ -1910,13 +1918,12 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         Filter filter = Filter.INCLUDE;
-        final int length = attributes.size();
         Object attType;
 
-        for (int j = 0; j < length; j++) {
+        for (PropertyName attribute : attributes) {
             // NC - support nested attributes -> use evaluation for getting descriptor
             // result is not necessary a descriptor, is Name in case of @attribute
-            attType = attributes.get(j).evaluate(schema);
+            attType = attribute.evaluate(schema);
 
             // the attribute type might be missing because of rendering transformations, skip it
             if (attType == null) {
@@ -1924,7 +1931,7 @@ public class StreamingRenderer implements GTRenderer {
             }
 
             if (attType instanceof GeometryDescriptor) {
-                Filter gfilter = new FastBBOX(attributes.get(j), bboxes.get(0), filterFactory);
+                Filter gfilter = new FastBBOX(attribute, bboxes.get(0), filterFactory);
 
                 if (filter == Filter.INCLUDE) {
                     filter = gfilter;
@@ -1932,15 +1939,14 @@ public class StreamingRenderer implements GTRenderer {
                     filter = filterFactory.or(filter, gfilter);
                 }
 
-                if (bboxes.size() > 0) {
+                if (!bboxes.isEmpty()) {
                     for (int k = 1; k < bboxes.size(); k++) {
                         // filter = filterFactory.or( filter, new FastBBOX(localName, bboxes.get(k),
                         // filterFactory) );
                         filter =
                                 filterFactory.or(
                                         filter,
-                                        new FastBBOX(
-                                                attributes.get(j), bboxes.get(k), filterFactory));
+                                        new FastBBOX(attribute, bboxes.get(k), filterFactory));
                     }
                 }
             }
@@ -1973,7 +1979,7 @@ public class StreamingRenderer implements GTRenderer {
             LOGGER.fine(
                     "creating rules for scale denominator - "
                             + NumberFormat.getNumberInstance().format(scaleDenominator));
-        ArrayList<LiteFeatureTypeStyle> result = new ArrayList<LiteFeatureTypeStyle>();
+        ArrayList<LiteFeatureTypeStyle> result = new ArrayList<>();
 
         LiteFeatureTypeStyle lfts;
         boolean foundComposite = false;
@@ -2082,8 +2088,8 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     private List<List<Rule>> splitRules(FeatureTypeStyle fts) {
-        List<Rule> ruleList = new ArrayList<Rule>();
-        List<Rule> elseRuleList = new ArrayList<Rule>();
+        List<Rule> ruleList = new ArrayList<>();
+        List<Rule> elseRuleList = new ArrayList<>();
 
         for (Rule r : fts.rules())
             if (isWithInScale(r)) {
@@ -2271,7 +2277,9 @@ public class StreamingRenderer implements GTRenderer {
             List<LiteFeatureTypeStyle> featureTypeStyles)
             throws IOException, FactoryException, NoninvertibleTransformException, SchemaException,
                     TransformException {
-        final FeatureSource featureSource = layer.getFeatureSource();
+        @SuppressWarnings("unchecked")
+        final FeatureSource<FeatureType, Feature> featureSource =
+                (FeatureSource<FeatureType, Feature>) layer.getFeatureSource();
         Expression transform = featureTypeStyles.get(0).transformation;
 
         // grab the source crs and geometry attribute
@@ -2376,8 +2384,8 @@ public class StreamingRenderer implements GTRenderer {
      * @return A List of List of LiteFeatureTypeStyles
      */
     List<List<LiteFeatureTypeStyle>> classifyByFeatureProduction(List<LiteFeatureTypeStyle> lfts) {
-        List<List<LiteFeatureTypeStyle>> txClassified = new ArrayList<List<LiteFeatureTypeStyle>>();
-        txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
+        List<List<LiteFeatureTypeStyle>> txClassified = new ArrayList<>();
+        txClassified.add(new ArrayList<>());
         Expression transformation = null;
         SortBy[] sortBy = null;
         for (int i = 0; i < lfts.size(); i++) {
@@ -2407,7 +2415,7 @@ public class StreamingRenderer implements GTRenderer {
                 }
                 if (differentTransformation || incompatibleSort) {
                     // create a new slot (we always add the lfts into the last one)
-                    txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
+                    txClassified.add(new ArrayList<>());
                     transformation = curr.transformation;
                     sortBy = curr.sortBy;
                 }
@@ -2429,7 +2437,7 @@ public class StreamingRenderer implements GTRenderer {
         for (PropertyName attribute : query.getProperties()) {
             if (attribute.evaluate(schema) == null) {
                 if (schema instanceof SimpleFeatureType) {
-                    List<Name> allNames = new ArrayList<Name>();
+                    List<Name> allNames = new ArrayList<>();
                     for (PropertyDescriptor pd : schema.getDescriptors()) {
                         allNames.add(pd.getName());
                     }
@@ -2623,8 +2631,7 @@ public class StreamingRenderer implements GTRenderer {
 
         // for each lite feature type style, scan the whole collection and draw
         for (LiteFeatureTypeStyle liteFeatureTypeStyle : lfts) {
-            try (FeatureIterator<?> featureIterator =
-                    ((FeatureCollection<?, ?>) features).features()) {
+            try (FeatureIterator<?> featureIterator = features.features()) {
                 if (featureIterator == null) {
                     return; // nothing to do
                 }
@@ -2637,23 +2644,48 @@ public class StreamingRenderer implements GTRenderer {
                 // Handler
                 CoordinateReferenceSystem featureCrs =
                         features.getSchema().getCoordinateReferenceSystem();
-                if (liteFeatureTypeStyle.projectionHandler != null
+                ScreenMap screenMap = liteFeatureTypeStyle.screenMap;
+                if (handler != null
                         && featureCrs != null
-                        && !CRS.equalsIgnoreMetadata(
-                                liteFeatureTypeStyle.projectionHandler.getSourceCRS(),
-                                featureCrs)) {
+                        && !CRS.equalsIgnoreMetadata(handler.getSourceCRS(), featureCrs)) {
                     try {
                         handler =
                                 ProjectionHandlerFinder.getHandler(
-                                        mapExtent,
-                                        features.getSchema().getCoordinateReferenceSystem(),
-                                        isMapWrappingEnabled());
-                    } catch (FactoryException e) {
+                                        mapExtent, featureCrs, isMapWrappingEnabled());
+                        if (screenMap != null) {
+                            Envelope mapArea = mapExtent;
+                            if (getRenderingBuffer() == 0) {
+                                int metaBuffer = findRenderingBuffer(lfts);
+                                if (metaBuffer > 0) {
+                                    mapArea =
+                                            expandEnvelope(
+                                                    mapArea, worldToScreenTransform, metaBuffer);
+                                }
+                            }
+                            ReferencedEnvelope envelope =
+                                    expandEnvelopeByTransformations(
+                                            lfts, new ReferencedEnvelope(mapArea, destinationCrs));
+                            envelope = new ReferencedEnvelope(envelope, destinationCrs);
+                            SingleCRS crs2D = CRS.getHorizontalCRS(featureCrs);
+                            MathTransform sourceToScreen =
+                                    buildFullTransform(
+                                            crs2D, destinationCrs, worldToScreenTransform);
+                            double[] spans =
+                                    getGeneralizationSpans(
+                                            envelope,
+                                            sourceToScreen,
+                                            worldToScreenTransform,
+                                            featureCrs,
+                                            screenSize);
+                            screenMap.setTransform(sourceToScreen);
+                            screenMap.setSpans(spans[0], spans[1]);
+                        }
+                    } catch (FactoryException | TransformException e) {
                         fireErrorEvent(e);
                     }
                 }
 
-                rf.setScreenMap(liteFeatureTypeStyle.screenMap);
+                rf.setScreenMap(screenMap);
                 // loop exit condition tested inside try catch
                 // make sure we test hasNext() outside of the try/cath that follows, as that
                 // one is there to make sure a single feature error does not ruin the rendering
@@ -2738,8 +2770,8 @@ public class StreamingRenderer implements GTRenderer {
         // original geometry as well, thus we need cloning
         StyleAttributeExtractor extractor = new StyleAttributeExtractor();
         FeatureType featureType = layer.getFeatureSource().getSchema();
-        Set<String> plainGeometries = new java.util.HashSet<String>();
-        Set<String> txGeometries = new java.util.HashSet<String>();
+        Set<String> plainGeometries = new java.util.HashSet<>();
+        Set<String> txGeometries = new java.util.HashSet<>();
         for (LiteFeatureTypeStyle lft : lfts) {
             for (Rule r : lft.ruleList) {
                 for (Symbolizer s : r.symbolizers()) {
@@ -2816,10 +2848,9 @@ public class StreamingRenderer implements GTRenderer {
             Filter filter;
             Graphics2D graphics = fts.graphics;
             // applicable rules
-            final int length = ruleList.length;
             int paintCommands = 0;
-            for (int t = 0; t < length; t++) {
-                r = ruleList[t];
+            for (Rule value : ruleList) {
+                r = value;
                 filter = r.getFilter();
 
                 if (filter == null || filter.evaluate(rf.feature)) {
@@ -2834,9 +2865,8 @@ public class StreamingRenderer implements GTRenderer {
             }
 
             if (doElse) {
-                final int elseLength = elseRuleList.length;
-                for (int tt = 0; tt < elseLength; tt++) {
-                    r = elseRuleList[tt];
+                for (Rule rule : elseRuleList) {
+                    r = rule;
 
                     paintCommands += processSymbolizers(graphics, rf, r.symbolizers());
                 }
@@ -3247,7 +3277,7 @@ public class StreamingRenderer implements GTRenderer {
         return java2dHints;
     }
 
-    public void setRendererHints(Map hints) {
+    public void setRendererHints(Map<?, ?> hints) {
         if (hints != null && hints.containsKey(LABEL_CACHE_KEY)) {
             LabelCache cache = (LabelCache) hints.get(LABEL_CACHE_KEY);
             if (cache == null)
@@ -3272,8 +3302,9 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @see org.geotools.renderer.GTRenderer#getRendererHints()
      */
-    public Map getRendererHints() {
-        return rendererHints;
+    @SuppressWarnings("unchecked")
+    public Map<Object, Object> getRendererHints() {
+        return (Map<Object, Object>) rendererHints;
     }
 
     public void setMapContent(MapContent mapContent) {
@@ -3292,10 +3323,7 @@ public class StreamingRenderer implements GTRenderer {
             CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem destCRS) {
         try {
             return CRS.findMathTransform(sourceCRS, destCRS, true);
-        } catch (OperationNotFoundException e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-
-        } catch (FactoryException e) {
+        } catch (OperationNotFoundException | FactoryException e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return null;
@@ -3329,12 +3357,12 @@ public class StreamingRenderer implements GTRenderer {
         boolean inMemoryGeneralization;
         ProjectionHandler projectionHandler;
         int metaBuffer;
-        private IdentityHashMap symbolizerAssociationHT =
-                new IdentityHashMap(); // associate a value
-        private List geometries = new ArrayList();
-        private List shapes = new ArrayList();
+        private IdentityHashMap<Symbolizer, SymbolizerAssociation> symbolizerAssociationHT =
+                new IdentityHashMap<>(); // associate a value
+        private List<Geometry> geometries = new ArrayList<>();
+        private List<Shape> shapes = new ArrayList<>();
         private boolean clone;
-        private IdentityHashMap decimators = new IdentityHashMap();
+        private IdentityHashMap<MathTransform, Decimator> decimators = new IdentityHashMap<>();
         private ScreenMap screenMap;
         private String layerId;
 
@@ -3391,8 +3419,7 @@ public class StreamingRenderer implements GTRenderer {
                         }
                 }
 
-                SymbolizerAssociation sa =
-                        (SymbolizerAssociation) symbolizerAssociationHT.get(symbolizer);
+                SymbolizerAssociation sa = symbolizerAssociationHT.get(symbolizer);
                 MathTransform crsTransform = null;
                 MathTransform atTransform = null;
                 MathTransform fullTransform = null;
@@ -3459,13 +3486,9 @@ public class StreamingRenderer implements GTRenderer {
                 } else {
                     return getTransformedShape(g, sa, clone);
                 }
-            } catch (TransformException te) {
+            } catch (TransformException | AssertionError te) {
                 LOGGER.log(Level.FINE, te.getLocalizedMessage(), te);
                 fireErrorEvent(te);
-                return null;
-            } catch (AssertionError ae) {
-                LOGGER.log(Level.FINE, ae.getLocalizedMessage(), ae);
-                fireErrorEvent(ae);
                 return null;
             }
         }
@@ -3561,7 +3584,7 @@ public class StreamingRenderer implements GTRenderer {
             // already done full generalization at the desired level
             if (generalizationDistance == 0 || !inMemoryGeneralization) return NULL_DECIMATOR;
 
-            Decimator decimator = (Decimator) decimators.get(mathTransform);
+            Decimator decimator = decimators.get(mathTransform);
             if (decimator == null) {
                 try {
                     if (mathTransform != null && !mathTransform.isIdentity())
@@ -3996,8 +4019,7 @@ public class StreamingRenderer implements GTRenderer {
             boolean done = false;
             while (!done) {
                 try {
-                    List<RenderingRequest> localRequests =
-                            new ArrayList<StreamingRenderer.RenderingRequest>();
+                    List<RenderingRequest> localRequests = new ArrayList<>();
                     RenderingRequest request = requests.take();
 
                     requests.drainTo(localRequests);

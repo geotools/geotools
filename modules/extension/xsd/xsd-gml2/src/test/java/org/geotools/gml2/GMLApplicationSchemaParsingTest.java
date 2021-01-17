@@ -25,13 +25,15 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import junit.framework.TestCase;
 import org.geotools.xsd.StreamingParser;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
-public class GMLApplicationSchemaParsingTest extends TestCase {
+public class GMLApplicationSchemaParsingTest {
+    @Test
     public void testStreamFeatureWithIncorrectSchemaLocation() throws Exception {
         InputStream in = getClass().getResourceAsStream("feature.xml");
 
@@ -59,10 +61,10 @@ public class GMLApplicationSchemaParsingTest extends TestCase {
         for (int i = 0; i < 3; i++) {
             SimpleFeature f = (SimpleFeature) parser.parse();
 
-            assertNotNull(f);
+            Assert.assertNotNull(f);
         }
 
-        assertNull(parser.parse());
+        Assert.assertNull(parser.parse());
 
         try {
             in.close();
@@ -71,6 +73,7 @@ public class GMLApplicationSchemaParsingTest extends TestCase {
         }
     }
 
+    @Test
     public void testStreamPointWithIncorrectSchemaLocation() throws Exception {
         InputStream in = getClass().getResourceAsStream("feature.xml");
 
@@ -98,12 +101,12 @@ public class GMLApplicationSchemaParsingTest extends TestCase {
         for (int i = 0; i < 3; i++) {
             Point p = (Point) parser.parse();
 
-            assertNotNull(p);
-            assertEquals(i, p.getX(), 0d);
-            assertEquals(i, p.getY(), 0d);
+            Assert.assertNotNull(p);
+            Assert.assertEquals(i, p.getX(), 0d);
+            Assert.assertEquals(i, p.getY(), 0d);
         }
 
-        assertNull(parser.parse());
+        Assert.assertNull(parser.parse());
 
         try {
             in.close();
@@ -112,6 +115,7 @@ public class GMLApplicationSchemaParsingTest extends TestCase {
         }
     }
 
+    @Test
     public void testWithCorrectSchemaLocation() throws Exception {
         InputStream in = getClass().getResourceAsStream("feature.xml");
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -138,15 +142,15 @@ public class GMLApplicationSchemaParsingTest extends TestCase {
 
         for (int i = 0; i < 3; i++) {
             SimpleFeature f = (SimpleFeature) parser.parse();
-            assertNotNull(f);
+            Assert.assertNotNull(f);
 
-            assertEquals(i + "", f.getID());
-            assertEquals(i, ((Point) f.getDefaultGeometry()).getX(), 0d);
-            assertEquals(i, ((Point) f.getDefaultGeometry()).getY(), 0d);
-            assertEquals(i, ((Integer) f.getAttribute("count")).intValue());
+            Assert.assertEquals(i + "", f.getID());
+            Assert.assertEquals(i, ((Point) f.getDefaultGeometry()).getX(), 0d);
+            Assert.assertEquals(i, ((Point) f.getDefaultGeometry()).getY(), 0d);
+            Assert.assertEquals(i, ((Integer) f.getAttribute("count")).intValue());
         }
 
-        assertNull(parser.parse());
+        Assert.assertNull(parser.parse());
 
         try {
             in.close();

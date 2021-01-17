@@ -374,7 +374,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      */
     public EList<KnotPropertyType> getKnot() {
         if (knot == null) {
-            knot = new EObjectContainmentEList<KnotPropertyType>(KnotPropertyType.class, this, Gml311Package.BSPLINE_TYPE__KNOT);
+            knot = new EObjectContainmentEList<>(KnotPropertyType.class, this, Gml311Package.BSPLINE_TYPE__KNOT);
         }
         return knot;
     }

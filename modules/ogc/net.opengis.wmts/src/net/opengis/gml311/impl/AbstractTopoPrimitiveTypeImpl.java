@@ -83,7 +83,7 @@ public abstract class AbstractTopoPrimitiveTypeImpl extends AbstractTopologyType
      */
     public EList<IsolatedPropertyType> getIsolated() {
         if (isolated == null) {
-            isolated = new EObjectContainmentEList<IsolatedPropertyType>(IsolatedPropertyType.class, this, Gml311Package.ABSTRACT_TOPO_PRIMITIVE_TYPE__ISOLATED);
+            isolated = new EObjectContainmentEList<>(IsolatedPropertyType.class, this, Gml311Package.ABSTRACT_TOPO_PRIMITIVE_TYPE__ISOLATED);
         }
         return isolated;
     }

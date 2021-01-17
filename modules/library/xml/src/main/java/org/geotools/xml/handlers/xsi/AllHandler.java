@@ -42,7 +42,7 @@ public class AllHandler extends ElementGroupingHandler {
     private String id;
     private int minOccurs;
     private int maxOccurs;
-    private List elements;
+    private List<ElementTypeHandler> elements;
     private DefaultAll cache = null;
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -54,7 +54,7 @@ public class AllHandler extends ElementGroupingHandler {
             // element
             if (ElementTypeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (elements == null) {
-                    elements = new LinkedList();
+                    elements = new LinkedList<>();
                 }
 
                 ElementTypeHandler eh = new ElementTypeHandler();
@@ -126,8 +126,7 @@ public class AllHandler extends ElementGroupingHandler {
             cache.elements = new Element[elements.size()];
 
             for (int i = 0; i < cache.elements.length; i++) {
-                cache.elements[i] =
-                        (Element) ((ElementTypeHandler) elements.get(i)).compress(parent);
+                cache.elements[i] = (Element) elements.get(i).compress(parent);
             }
         }
 
@@ -173,8 +172,8 @@ public class AllHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++) {
-                Element t = elements[i].findChildElement(name);
+            for (Element element : elements) {
+                Element t = element.findChildElement(name);
 
                 if (t != null) { // found it
 
@@ -215,8 +214,8 @@ public class AllHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < elements.length; i++) {
-                Element t = elements[i].findChildElement(localName, namespaceURI);
+            for (Element element : elements) {
+                Element t = element.findChildElement(localName, namespaceURI);
 
                 if (t != null) { // found it
 

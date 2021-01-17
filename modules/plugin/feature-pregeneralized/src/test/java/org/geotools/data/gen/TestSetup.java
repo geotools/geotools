@@ -69,12 +69,12 @@ public class TestSetup {
             createShapeFilePyramd();
 
             REPOSITORY = new DefaultRepository();
-            POINTMAP = new HashMap<Double, Map<String, Integer>>();
-            POINTMAP.put(0.0, new HashMap<String, Integer>());
-            POINTMAP.put(5.0, new HashMap<String, Integer>());
-            POINTMAP.put(10.0, new HashMap<String, Integer>());
-            POINTMAP.put(20.0, new HashMap<String, Integer>());
-            POINTMAP.put(50.0, new HashMap<String, Integer>());
+            POINTMAP = new HashMap<>();
+            POINTMAP.put(0.0, new HashMap<>());
+            POINTMAP.put(5.0, new HashMap<>());
+            POINTMAP.put(10.0, new HashMap<>());
+            POINTMAP.put(20.0, new HashMap<>());
+            POINTMAP.put(50.0, new HashMap<>());
 
             URL url = TestData.url("shapes/streams.shp");
 
@@ -138,7 +138,7 @@ public class TestSetup {
             SimpleFeatureType typ, String name, String fname) throws IOException {
         MemoryDataStore memDS = new MemoryDataStore();
 
-        List<AttributeDescriptor> attrs = new ArrayList<AttributeDescriptor>();
+        List<AttributeDescriptor> attrs = new ArrayList<>();
         attrs.addAll(typ.getAttributeDescriptors());
         // have a non linear mapping between source attributes and target attributes
         Collections.shuffle(attrs, new Random(1));
@@ -161,7 +161,7 @@ public class TestSetup {
     private static MemoryDataStore createMemStoreMixed(
             SimpleFeatureType typ, String name, String fname) throws IOException {
         MemoryDataStore memDS = new MemoryDataStore();
-        List<AttributeDescriptor> attrs = new ArrayList<AttributeDescriptor>();
+        List<AttributeDescriptor> attrs = new ArrayList<>();
         attrs.addAll(typ.getAttributeDescriptors());
         // have a non linear mapping between source attributes and target attributes
         Collections.shuffle(attrs, new Random(1));
@@ -194,7 +194,7 @@ public class TestSetup {
             SimpleFeatureType typ, String name, String fname) throws IOException {
         MemoryDataStore memDS = new MemoryDataStore();
 
-        List<AttributeDescriptor> attrs = new ArrayList<AttributeDescriptor>();
+        List<AttributeDescriptor> attrs = new ArrayList<>();
         attrs.addAll(typ.getAttributeDescriptors());
         // have a non linear mapping between source attributes and target attributes
         Collections.shuffle(attrs, new Random(1));
@@ -328,7 +328,7 @@ public class TestSetup {
         ShapefileDataStore shapeDS =
                 (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(url);
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         FileDataStoreFactorySpi factory = new ShapefileDataStoreFactory();
         params.put(
                 ShapefileDataStoreFactory.URLP.key,
@@ -342,16 +342,13 @@ public class TestSetup {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 ds.getFeatureWriter(ds.getTypeNames()[0], Transaction.AUTO_COMMIT);
 
-        SimpleFeatureIterator it = fs.getFeatures().features();
-        try {
+        try (SimpleFeatureIterator it = fs.getFeatures().features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 SimpleFeature fNew = writer.next();
                 fNew.setAttributes(f.getAttributes());
                 writer.write();
             }
-        } finally {
-            it.close();
         }
         writer.close();
         ds.dispose();

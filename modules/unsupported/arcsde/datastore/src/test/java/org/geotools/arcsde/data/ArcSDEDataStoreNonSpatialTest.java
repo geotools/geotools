@@ -100,9 +100,9 @@ public class ArcSDEDataStoreNonSpatialTest {
         seRowidSdeTable = baseTypeName + "_ROWID_SDE";
         seRowidUserTable = baseTypeName + "_ROWID_USER";
 
-        ISessionPool sessionPool = testData.getConnectionPool();
-        ISession session = sessionPool.getSession();
-        try {
+        try (ISessionPool sessionPool = testData.getConnectionPool()) {
+            ISession session = sessionPool.getSession();
+
             SeDBMSInfo dbInfo = session.getDBMSInfo();
             databaseIsMsSqlServer = dbInfo.dbmsId == SeDBMSInfo.SE_DBMS_IS_SQLSERVER;
 
@@ -148,7 +148,6 @@ public class ArcSDEDataStoreNonSpatialTest {
                             return null;
                         }
                     });
-        } finally {
             session.dispose();
         }
     }
@@ -158,15 +157,10 @@ public class ArcSDEDataStoreNonSpatialTest {
 
     @Before
     public void setUp() throws Exception {
-        ISessionPool sessionPool = testData.newSessionPool();
-        final boolean allowNonSpatialTables = true;
-        ds = new ArcSDEDataStore(sessionPool, null, null, allowNonSpatialTables);
-
-        // List<String> typeNames = new ArrayList<String>(Arrays.asList(ds.getTypeNames()));
-        // Collections.sort(typeNames);
-        // for (String s : typeNames) {
-        // System.out.println(s);
-        // }
+        try (ISessionPool sessionPool = testData.newSessionPool()) {
+            final boolean allowNonSpatialTables = true;
+            ds = new ArcSDEDataStore(sessionPool, null, null, allowNonSpatialTables);
+        }
     }
 
     @After
@@ -256,22 +250,19 @@ public class ArcSDEDataStoreNonSpatialTest {
     public void testFeatureWriter_RowIDSDE_Transaction()
             throws IOException, UnavailableConnectionException {
         final String tableName = seRowidSdeTable;
-        final Transaction transaction = new DefaultTransaction();
-        try {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
-
-            writer = addFeatures(tableName, transaction);
+        try (Transaction transaction = new DefaultTransaction();
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                        addFeatures(tableName, transaction)) {
             /*
              * This one works regardless of the database being MSSQL or not because the table IS
-             * being created as versioned by testData.createTestTable.
-             * <http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190>
+             * being created as versioned by
+             * testData.createTestTable. <http://support.esri.com/index.cfm?fa=knowledgebase
+             * .techarticles.articleShow&d=32190>
              */
             assertEquals(0, ds.getFeatureSource(tableName).getCount(Query.ALL));
             transaction.commit();
-            writer.close();
+
             assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
-        } finally {
-            transaction.close();
         }
     }
 
@@ -283,49 +274,49 @@ public class ArcSDEDataStoreNonSpatialTest {
 
     private void testFeatureWriterAutoCommit(final String tableName)
             throws IOException, CQLException, UnavailableConnectionException {
-        final Transaction transaction = Transaction.AUTO_COMMIT;
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        try (final Transaction transaction = Transaction.AUTO_COMMIT) {
+            Query query = new Query(tableName, CQL.toFilter("STRING_COL = 'modified'"));
+            Filter f = CQL.toFilter("INT_COL = 1000");
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    addFeatures(tableName, transaction)) {
+                writer.close();
+                assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
 
-        writer = addFeatures(tableName, transaction);
-        writer.close();
-        assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
+                assertEquals(0, ds.getFeatureSource(tableName).getCount(query));
+            }
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    ds.getFeatureWriter(tableName, f, transaction)) {
+                assertTrue(writer.hasNext());
+                writer.next().setAttribute("STRING_COL", "modified");
+                writer.write();
 
-        Query query = new Query(tableName, CQL.toFilter("STRING_COL = 'modified'"));
-        assertEquals(0, ds.getFeatureSource(tableName).getCount(query));
+                assertEquals(1, ds.getFeatureSource(tableName).getCount(query));
+            }
 
-        Filter f = CQL.toFilter("INT_COL = 1000");
-        writer = ds.getFeatureWriter(tableName, f, transaction);
-        assertTrue(writer.hasNext());
-        writer.next().setAttribute("STRING_COL", "modified");
-        writer.write();
-        writer.close();
-
-        assertEquals(1, ds.getFeatureSource(tableName).getCount(query));
-
-        writer = ds.getFeatureWriter(tableName, f, transaction);
-        assertTrue(writer.hasNext());
-        assertNotNull(writer.next());
-        writer.remove();
-        assertFalse(writer.hasNext());
-        writer.close();
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    ds.getFeatureWriter(tableName, f, transaction)) {
+                assertTrue(writer.hasNext());
+                assertNotNull(writer.next());
+                writer.remove();
+                assertFalse(writer.hasNext());
+            }
+        }
     }
 
     @Test
     public void testFeatureWriter_RowID_USER_Transaction()
             throws IOException, UnavailableConnectionException {
         final String tableName = seRowidUserTable;
-        final Transaction transaction = new DefaultTransaction();
-        try {
+        try (Transaction transaction = new DefaultTransaction()) {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
 
             writer = addFeatures(tableName, transaction);
             if (databaseIsMsSqlServer) {
                 /*
                  * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not
-                 * versioned. And this one can't be versioned cause it has no sde maintained row id
-                 * <
-                 * http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190
-                 * >
+                 * versioned. And this one can't be versioned cause it
+                 * has no sde maintained row id < http://support.esri.com/index
+                 * .cfm?fa=knowledgebase.techarticles.articleShow&d=32190 >
                  */
                 assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
             } else {
@@ -334,8 +325,6 @@ public class ArcSDEDataStoreNonSpatialTest {
             transaction.commit();
             writer.close();
             assertEquals(2, ds.getFeatureSource(tableName).getCount(Query.ALL));
-        } finally {
-            transaction.close();
         }
     }
 
@@ -387,16 +376,13 @@ public class ArcSDEDataStoreNonSpatialTest {
             throws IOException, UnavailableConnectionException {
         String tableName = seRowidSdeTable;
 
-        Transaction transaction = new DefaultTransaction();
-        try {
+        try (Transaction transaction = new DefaultTransaction()) {
             List<FeatureId> fids = testFeatureStore(tableName, transaction);
             assertEquals(1, fids.size());
 
             assertEquals(0, ds.getFeatureSource(tableName).getCount(Query.ALL));
             transaction.commit();
             assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));
-        } finally {
-            transaction.close();
         }
     }
 
@@ -416,18 +402,16 @@ public class ArcSDEDataStoreNonSpatialTest {
             throws IOException, UnavailableConnectionException {
         String tableName = seRowidUserTable;
 
-        Transaction transaction = new DefaultTransaction();
-        try {
+        try (Transaction transaction = new DefaultTransaction()) {
             List<FeatureId> fids = testFeatureStore(tableName, transaction);
             assertEquals(1, fids.size());
 
             if (databaseIsMsSqlServer) {
                 /*
                  * SQL Server always is at READ UNCOMMITTED isolation level iff the table is not
-                 * versioned. And this one can't be versioned cause it has no sde maintained row id
-                 * <
-                 * http://support.esri.com/index.cfm?fa=knowledgebase.techarticles.articleShow&d=32190
-                 * >
+                 * versioned. And this one can't be versioned cause it
+                 * has no sde maintained row id < http://support.esri.com/index
+                 * .cfm?fa=knowledgebase.techarticles.articleShow&d=32190 >
                  */
                 assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));
             } else {
@@ -435,8 +419,6 @@ public class ArcSDEDataStoreNonSpatialTest {
             }
             transaction.commit();
             assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));
-        } finally {
-            transaction.close();
         }
     }
 
@@ -474,23 +456,20 @@ public class ArcSDEDataStoreNonSpatialTest {
     public void testCreateGeometrylessSchema() throws Exception {
         final String typeName = testData.getTempTableName() + "_CREATE_GEOMLESS";
         testData.deleteTable(typeName);
-        try {
-            SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
-            b.setName(typeName);
 
-            b.add("STRING_COL", String.class);
-            b.add("INT_COL", Integer.class);
-            b.add("LONG_COL", Long.class);
+        SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+        b.setName(typeName);
 
-            final SimpleFeatureType type = b.buildFeatureType();
+        b.add("STRING_COL", String.class);
+        b.add("INT_COL", Integer.class);
+        b.add("LONG_COL", Long.class);
 
-            ds.createSchema(type);
+        final SimpleFeatureType type = b.buildFeatureType();
 
-            SimpleFeatureType schema = ds.getSchema(typeName);
-            assertNotNull(schema);
-            assertEquals(3, schema.getAttributeCount());
-        } finally {
-            // testData.deleteTable(typeName);
-        }
+        ds.createSchema(type);
+
+        SimpleFeatureType schema = ds.getSchema(typeName);
+        assertNotNull(schema);
+        assertEquals(3, schema.getAttributeCount());
     }
 }

@@ -440,6 +440,7 @@ public class WarpTransform2D extends AbstractMathTransform
     }
 
     /** Returns the parameter values for this math transform. */
+    @SuppressWarnings("unchecked")
     @Override
     public ParameterValueGroup getParameterValues() {
         if (warp instanceof WarpPolynomial) {
@@ -447,19 +448,19 @@ public class WarpTransform2D extends AbstractMathTransform
             final ParameterValue[] p = new ParameterValue[7];
             int c = 0;
             p[c++] =
-                    new Parameter(
+                    new Parameter<>(
                             WarpTransform2DProvider.DEGREE, Integer.valueOf(poly.getDegree()));
             p[c++] = new Parameter(WarpTransform2DProvider.X_COEFFS, poly.getXCoeffs());
             p[c++] = new Parameter(WarpTransform2DProvider.Y_COEFFS, poly.getYCoeffs());
             float s;
             if ((s = poly.getPreScaleX()) != 1)
-                p[c++] = new Parameter(WarpTransform2DProvider.PRE_SCALE_X, s);
+                p[c++] = new Parameter<>(WarpTransform2DProvider.PRE_SCALE_X, s);
             if ((s = poly.getPreScaleY()) != 1)
-                p[c++] = new Parameter(WarpTransform2DProvider.PRE_SCALE_Y, s);
+                p[c++] = new Parameter<>(WarpTransform2DProvider.PRE_SCALE_Y, s);
             if ((s = poly.getPostScaleX()) != 1)
-                p[c++] = new Parameter(WarpTransform2DProvider.POST_SCALE_X, s);
+                p[c++] = new Parameter<>(WarpTransform2DProvider.POST_SCALE_X, s);
             if ((s = poly.getPostScaleY()) != 1)
-                p[c++] = new Parameter(WarpTransform2DProvider.POST_SCALE_Y, s);
+                p[c++] = new Parameter<>(WarpTransform2DProvider.POST_SCALE_Y, s);
             return new ParameterGroup(getParameterDescriptors(), XArray.resize(p, c));
         } else {
             return super.getParameterValues();

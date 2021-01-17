@@ -16,7 +16,7 @@
  */
 package org.geotools.data.postgis;
 
-import static org.geotools.data.postgis.PostgisNGDataStoreFactory.*;
+import static org.geotools.data.postgis.PostgisNGDataStoreFactory.PORT;
 import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
@@ -115,7 +115,7 @@ public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
         Properties db = fixture;
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, CREATE_DROP_TESTDB);
         params.put(PORT.key, db.getProperty(PORT.key));

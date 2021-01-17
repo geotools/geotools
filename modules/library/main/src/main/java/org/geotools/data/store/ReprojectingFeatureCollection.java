@@ -137,7 +137,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
     }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema(), features());
+        return new DelegateFeatureReader<>(getSchema(), features());
     }
 
     public SimpleFeatureIterator features() {
@@ -181,15 +181,12 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
 
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
-        List<T> list = new ArrayList<T>();
-        SimpleFeatureIterator i = features();
-        try {
+        List<T> list = new ArrayList<>();
+        try (SimpleFeatureIterator i = features()) {
             while (i.hasNext()) {
                 list.add((T) i.next());
             }
             return list.toArray(a);
-        } finally {
-            i.close();
         }
     }
 
@@ -209,8 +206,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
      * @see org.geotools.data.FeatureResults#getBounds()
      */
     public ReferencedEnvelope getBounds() {
-        SimpleFeatureIterator r = features();
-        try {
+        try (SimpleFeatureIterator r = features()) {
             Envelope newBBox = new Envelope();
             Envelope internal;
             SimpleFeature feature;
@@ -226,8 +222,6 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
             return new ReferencedEnvelope(newBBox, target);
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred while computing reprojected bounds", e);
-        } finally {
-            r.close();
         }
     }
 

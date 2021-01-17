@@ -100,14 +100,14 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * if you are only planning on working with 50 CoordinateReferenceSystems please keep in mind
      * that you will need larger cache size in order to prevent a bottleneck.
      */
-    protected ObjectCache cache;
+    protected ObjectCache<Object, Object> cache;
 
     /**
      * The findCache is used to store search results; often match a "raw" CoordinateReferenceSystem
      * created from WKT (as the key) with a "real" CoordinateReferenceSystem as defined by this
      * authority.
      */
-    ObjectCache findCache;
+    ObjectCache<Object, Object> findCache;
 
     /** A container of the "real factories" actually used to construct objects. */
     protected ReferencingFactoryContainer factories;
@@ -144,7 +144,9 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * @param cache The cache to use
      */
     protected AbstractCachedAuthorityFactory(
-            int priority, ObjectCache cache, ReferencingFactoryContainer container) {
+            int priority,
+            ObjectCache<Object, Object> cache,
+            ReferencingFactoryContainer container) {
         super(priority);
         this.factories = container;
         this.cache = cache;
@@ -212,12 +214,15 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     //
     public abstract Citation getAuthority();
 
-    public Set getAuthorityCodes(Class type) throws FactoryException {
-        Set codes = (Set) cache.get(type);
+    public Set<String> getAuthorityCodes(Class type) throws FactoryException {
+        @SuppressWarnings("unchecked")
+        Set<String> codes = (Set) cache.get(type);
         if (codes == null) {
             try {
                 cache.writeLock(type);
-                codes = (Set) cache.peek(type);
+                @SuppressWarnings("unchecked")
+                Set<String> peek = (Set) cache.peek(type);
+                codes = peek;
                 if (codes == null) {
                     codes = generateAuthorityCodes(type);
                     cache.put(type, codes);
@@ -229,7 +234,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         return codes;
     }
 
-    protected abstract Set generateAuthorityCodes(Class type) throws FactoryException;
+    protected abstract Set<String> generateAuthorityCodes(Class type) throws FactoryException;
 
     public abstract InternationalString getDescriptionText(String code) throws FactoryException;
 
@@ -640,7 +645,8 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     protected abstract CoordinateOperation generateCoordinateOperation(String code)
             throws FactoryException;
 
-    public synchronized Set /*<CoordinateOperation>*/ createFromCoordinateReferenceSystemCodes(
+    @SuppressWarnings("unchecked")
+    public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
 
         final Object key = ObjectCaches.toKey(getAuthority(), sourceCode, targetCode);
@@ -680,7 +686,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      */
     @Override
     public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class /*<? extends IdentifiedObject>*/ type) throws FactoryException {
+            final Class<? extends IdentifiedObject> type) throws FactoryException {
         return new CachedFinder(type);
     }
 
@@ -699,7 +705,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      */
     private final class CachedFinder extends IdentifiedObjectFinder {
         /** Creates a finder for the underlying backing store. */
-        CachedFinder(Class type) {
+        CachedFinder(Class<? extends IdentifiedObject> type) {
             super(AbstractCachedAuthorityFactory.this, type);
         }
 

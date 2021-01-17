@@ -41,7 +41,7 @@ public class SolrLayerConfiguration implements Serializable {
     private List<SolrAttribute> attributes;
 
     public SolrLayerConfiguration() {
-        attributes = new ArrayList<SolrAttribute>();
+        attributes = new ArrayList<>();
     }
 
     public SolrLayerConfiguration(ArrayList<SolrAttribute> attributes) {

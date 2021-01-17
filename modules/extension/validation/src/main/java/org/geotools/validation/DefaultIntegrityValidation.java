@@ -17,6 +17,7 @@
 package org.geotools.validation;
 
 import java.util.Map;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
@@ -117,7 +118,10 @@ public class DefaultIntegrityValidation implements IntegrityValidation {
      * @param results Used to coallate results information
      * @return <code>true</code> if all the features pass this test.
      */
-    public boolean validate(Map layers, ReferencedEnvelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers,
+            ReferencedEnvelope envelope,
+            ValidationResults results)
             throws Exception {
         results.warning(null, "Validation not yet implemented");
 

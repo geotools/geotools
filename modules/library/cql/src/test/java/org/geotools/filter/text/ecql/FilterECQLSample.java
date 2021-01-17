@@ -19,7 +19,6 @@ package org.geotools.filter.text.ecql;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.factory.Hints;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Not;
@@ -39,8 +38,7 @@ import org.opengis.filter.expression.Subtract;
  * @since 2.6
  */
 final class FilterECQLSample {
-    protected static final FilterFactory FACTORY =
-            CommonFactoryFinder.getFilterFactory((Hints) null);
+    protected static final FilterFactory FACTORY = CommonFactoryFinder.getFilterFactory(null);
 
     // ECQL Samples
     public static final String ABS_FUNCTION_LESS_PROPERTY = "abs(10) < aProperty";
@@ -94,7 +92,7 @@ final class FilterECQLSample {
     public static final String EXPRESSIONS_WITH_PROPERTIES = "(x+4) > (y - 5)";
 
     /** Maintains the ECQL predicates (input) and the expected filters (output) */
-    public static Map<String, Object> SAMPLES = new HashMap<String, Object>();
+    public static Map<String, Object> SAMPLES = new HashMap<>();
 
     static {
         Filter filter;

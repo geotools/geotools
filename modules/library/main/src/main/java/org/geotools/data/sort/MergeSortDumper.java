@@ -97,7 +97,8 @@ class MergeSortDumper {
         if (maxFeatures < 0) {
             maxFeatures = getMaxFeatures(Query.ALL);
         }
-        Comparator<SimpleFeature> comparator = SortedFeatureReader.getComparator(sortBy);
+        Comparator<SimpleFeature> comparator =
+                SortedFeatureReader.getComparator(sortBy, reader.getFeatureType());
 
         // easy case, no sorting needed
         if (comparator == null) {
@@ -118,8 +119,8 @@ class MergeSortDumper {
         int count = 0;
         File file = null;
         SimpleFeatureIO io = null;
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
-        List<FeatureBlockReader> readers = new ArrayList<FeatureBlockReader>();
+        List<SimpleFeature> features = new ArrayList<>();
+        List<FeatureBlockReader> readers = new ArrayList<>();
         boolean cleanFile = true;
         try {
             // read and store into files as necessary

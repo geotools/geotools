@@ -1,6 +1,6 @@
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.util.Collections;
@@ -54,7 +54,7 @@ public class SpatialFilterTest {
 
     int errorCount = 0;
 
-    Set<String> renderedIds = new HashSet<String>();
+    Set<String> renderedIds = new HashSet<>();
 
     RenderListener listener;
 

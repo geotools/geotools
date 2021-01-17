@@ -68,7 +68,7 @@ public class ToDirectPositionFunction implements Function {
     public static final Expression SRS_NAME = ff.literal("SRS_NAME");
 
     public ToDirectPositionFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public ToDirectPositionFunction(List<Expression> parameters, Literal fallback) {
@@ -117,7 +117,7 @@ public class ToDirectPositionFunction implements Function {
             }
             String srsName = parameters.get(1).evaluate(object, String.class);
             try {
-                crs = CRS.decode((String) srsName);
+                crs = CRS.decode(srsName);
             } catch (NoSuchAuthorityCodeException e) {
                 throw new IllegalArgumentException(
                         "Invalid or unsupported SRS name detected for toDirectPosition function: "

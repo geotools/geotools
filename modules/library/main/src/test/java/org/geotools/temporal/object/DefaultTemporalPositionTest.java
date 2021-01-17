@@ -16,7 +16,8 @@
  */
 package org.geotools.temporal.object;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
@@ -54,14 +55,14 @@ public class DefaultTemporalPositionTest {
     @Test
     public void testGetIndeterminatePosition() {
         IndeterminateValue result = temporalPosition1.getIndeterminatePosition();
-        assertFalse(temporalPosition2.getIndeterminatePosition().equals(result));
+        assertNotEquals(temporalPosition2.getIndeterminatePosition(), result);
     }
 
     /** Test of getFrame method, of class DefaultTemporalPosition. */
     @Test
     public void testGetFrame() {
         TemporalReferenceSystem result = ((DefaultTemporalPosition) temporalPosition1).getFrame();
-        assertFalse(((DefaultTemporalPosition) temporalPosition2).getFrame().equals(result));
+        assertNotEquals(((DefaultTemporalPosition) temporalPosition2).getFrame(), result);
     }
 
     /** Test of setFrame method, of class DefaultTemporalPosition. */
@@ -71,7 +72,7 @@ public class DefaultTemporalPositionTest {
         NamedIdentifier name = new NamedIdentifier(Citations.CRS, "Babylonian calendar");
         ((DefaultTemporalPosition) temporalPosition1)
                 .setFrame(new DefaultTemporalReferenceSystem(name, null));
-        assertFalse(((DefaultTemporalPosition) temporalPosition1).getFrame().equals(result));
+        assertNotEquals(((DefaultTemporalPosition) temporalPosition1).getFrame(), result);
     }
 
     /** Test of setIndeterminatePosition method, of class DefaultTemporalPosition. */
@@ -80,28 +81,28 @@ public class DefaultTemporalPositionTest {
         IndeterminateValue result = temporalPosition1.getIndeterminatePosition();
         ((DefaultTemporalPosition) temporalPosition1)
                 .setIndeterminatePosition(IndeterminateValue.BEFORE);
-        assertFalse(temporalPosition1.getIndeterminatePosition().equals(result));
+        assertNotEquals(temporalPosition1.getIndeterminatePosition(), result);
     }
 
     /** Test of equals method, of class DefaultTemporalPosition. */
     @Test
     public void testEquals() {
-        assertFalse(temporalPosition1.equals(null));
+        assertNotEquals(null, temporalPosition1);
         assertEquals(temporalPosition1, temporalPosition1);
-        assertFalse(temporalPosition1.equals(temporalPosition2));
+        assertNotEquals(temporalPosition1, temporalPosition2);
     }
 
     /** Test of hashCode method, of class DefaultTemporalPosition. */
     @Test
     public void testHashCode() {
         int result = temporalPosition1.hashCode();
-        assertFalse(temporalPosition2.hashCode() == result);
+        assertNotEquals(temporalPosition2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultTemporalPosition. */
     @Test
     public void testToString() {
         String result = temporalPosition1.toString();
-        assertFalse(temporalPosition2.toString().equals(result));
+        assertNotEquals(temporalPosition2.toString(), result);
     }
 }

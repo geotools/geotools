@@ -16,9 +16,10 @@
  */
 package org.geotools.validation;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -156,31 +157,31 @@ public class UniqueFIDIntegrityValidation implements IntegrityValidation {
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, ReferencedEnvelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers,
+            ReferencedEnvelope envelope,
+            ValidationResults results)
             throws Exception {
 
-        HashMap FIDs = new HashMap();
+        Set<String> FIDs = new HashSet<>();
         boolean result = true;
-        Iterator it = layers.values().iterator();
+        Iterator<SimpleFeatureSource> it = layers.values().iterator();
 
         while (it.hasNext()) // for each layer
         {
-            SimpleFeatureSource featureSource = (SimpleFeatureSource) it.next();
-            SimpleFeatureIterator features = featureSource.getFeatures().features();
-            try {
+            SimpleFeatureSource featureSource = it.next();
+            try (SimpleFeatureIterator features = featureSource.getFeatures().features()) {
 
                 while (features.hasNext()) // for each feature
                 {
                     SimpleFeature feature = features.next();
                     String fid = feature.getID();
-                    if (FIDs.containsKey(fid)) // if a FID like this one already exists
+                    if (FIDs.contains(fid)) // if a FID like this one already exists
                     {
                         results.error(feature, "FID already exists.");
                         result = false;
-                    } else FIDs.put(fid, fid);
+                    } else FIDs.add(fid);
                 }
-            } finally {
-                features.close(); // this is an important line
             }
         }
 

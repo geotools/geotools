@@ -54,11 +54,11 @@ public class LinesNotOverlapValidation extends LineLineAbstractValidation {
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource lineSource1 = (SimpleFeatureSource) layers.get(getLineTypeRef());
-        SimpleFeatureSource lineSource2 =
-                (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
+        SimpleFeatureSource lineSource1 = layers.get(getLineTypeRef());
+        SimpleFeatureSource lineSource2 = layers.get(getRestrictedLineTypeRef());
 
         Object[] lines1 = lineSource1.getFeatures().toArray();
         Object[] lines2 = lineSource2.getFeatures().toArray();
@@ -81,12 +81,12 @@ public class LinesNotOverlapValidation extends LineLineAbstractValidation {
 
         boolean r = true;
 
-        for (int i = 0; i < lines2.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) lines2[i];
+        for (Object value : lines2) {
+            SimpleFeature tmp = (SimpleFeature) value;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
-            for (int j = 0; j < lines1.length; j++) {
-                SimpleFeature tmp2 = (SimpleFeature) lines1[j];
+            for (Object o : lines1) {
+                SimpleFeature tmp2 = (SimpleFeature) o;
                 Geometry gt2 = (Geometry) tmp2.getDefaultGeometry();
 
                 if (gt.overlaps(gt2)) {

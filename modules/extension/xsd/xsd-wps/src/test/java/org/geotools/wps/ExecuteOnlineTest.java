@@ -22,15 +22,17 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.UnknownHostException;
 import javax.xml.parsers.ParserConfigurationException;
-import junit.framework.TestCase;
 import org.geotools.xsd.Parser;
+import org.junit.Assert;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
-public class ExecuteOnlineTest extends TestCase {
+public class ExecuteOnlineTest {
 
     /*
      * Try doing an execute request from the example xsd and parse it
      */
+    @Test
     public void testExecute() throws IOException, SAXException, ParserConfigurationException {
         URL url =
                 new URL(
@@ -39,7 +41,7 @@ public class ExecuteOnlineTest extends TestCase {
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
             Parser parser = new Parser(new WPSConfiguration());
             Object obj = parser.parse(in);
-            assertNotNull(obj);
+            Assert.assertNotNull(obj);
         } catch (UnknownHostException notFound) {
             System.out.println(
                     "WARNING " + notFound.getClass().getName() + ":" + notFound.getMessage());

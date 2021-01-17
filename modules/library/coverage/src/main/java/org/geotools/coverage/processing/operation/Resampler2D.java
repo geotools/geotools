@@ -26,7 +26,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -136,7 +135,7 @@ final class Resampler2D extends GridCoverage2D {
             final PlanarImage image,
             final GridGeometry2D geometry,
             final GridSampleDimension[] sampleDimensions,
-            final Map<String, Serializable> properties,
+            final Map<String, Object> properties,
             final Hints hints) {
         super(
                 source.getName(),
@@ -164,7 +163,7 @@ final class Resampler2D extends GridCoverage2D {
             final String operation,
             final Warp warp,
             final Hints hints,
-            final Map<String, Serializable> inProperties) {
+            final Map<String, Object> inProperties) {
         GridSampleDimension[] sampleDimensions = source.getSampleDimensions();
 
         // Ensure no SampleDimension is defined if the ColorModel must be expanded
@@ -177,7 +176,7 @@ final class Resampler2D extends GridCoverage2D {
          * it wants to actually do the resample (which might take hours with WarpAdapter on very
          * large grids) or not
          */
-        Map<String, Serializable> properties = new HashMap<String, Serializable>();
+        Map<String, Object> properties = new HashMap<>();
         if (operation != null) {
             properties.put(Resample.OPERATION, operation);
             if (warp != null) {
@@ -388,7 +387,8 @@ final class Resampler2D extends GridCoverage2D {
         assert sourceCoverage.getCoordinateReferenceSystem() == sourceCRS : sourceCoverage;
 
         // Getting optional ROI and NoData as properties
-        Map sourceProps = sourceCoverage.getProperties();
+        @SuppressWarnings("unchecked")
+        Map<String, Object> sourceProps = sourceCoverage.getProperties();
         sourceProps = sourceProps != null ? new HashMap<>(sourceProps) : new HashMap<>();
         Object roiProp = sourceProps.get("GC_ROI");
         NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
@@ -623,7 +623,7 @@ final class Resampler2D extends GridCoverage2D {
         w.setRenderingHints(targetHints);
         ROI newROI = null;
         Range newNoData = null;
-        final Map<String, Object> imageProperties = new HashMap<String, Object>();
+        final Map<String, Object> imageProperties = new HashMap<>();
         Warp warp = null;
         if (allSteps.isIdentity()
                 || (allSteps instanceof AffineTransform
@@ -794,9 +794,7 @@ final class Resampler2D extends GridCoverage2D {
         final GridEnvelope targetGR = targetGG.getGridRange();
         final int[] lower = targetGR.getLow().getCoordinateValues();
         final int[] upper = targetGR.getHigh().getCoordinateValues();
-        for (int i = 0; i < upper.length; i++) {
-            upper[i]++; // Make them exclusive.
-        }
+        offsetUpper(upper);
         lower[targetGG.gridDimensionX] = targetImage.getMinX();
         lower[targetGG.gridDimensionY] = targetImage.getMinY();
         upper[targetGG.gridDimensionX] = targetImage.getMaxX();
@@ -864,6 +862,13 @@ final class Resampler2D extends GridCoverage2D {
         }
 
         return targetCoverage;
+    }
+
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
+    private static void offsetUpper(int[] upper) {
+        for (int i = 0; i < upper.length; i++) {
+            upper[i]++; // Make them exclusive.
+        }
     }
 
     /*

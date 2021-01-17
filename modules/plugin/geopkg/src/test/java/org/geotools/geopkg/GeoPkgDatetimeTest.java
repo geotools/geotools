@@ -17,16 +17,21 @@
 package org.geotools.geopkg;
 
 import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -219,7 +224,7 @@ public class GeoPkgDatetimeTest {
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures();
         features.accepts(visitor, NULL_LISTENER);
-        Map results = (Map) visitor.getResult().toMap();
+        Map results = visitor.getResult().toMap();
         assertEquals(java.sql.Date.valueOf("2020-02-19"), results.get(singletonList("1")));
         assertEquals(java.sql.Date.valueOf("2020-02-20"), results.get(singletonList("2")));
     }
@@ -237,7 +242,7 @@ public class GeoPkgDatetimeTest {
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures();
         features.accepts(visitor, NULL_LISTENER);
-        Map results = (Map) visitor.getResult().toMap();
+        Map results = visitor.getResult().toMap();
 
         assertEquals(5, results.size());
 

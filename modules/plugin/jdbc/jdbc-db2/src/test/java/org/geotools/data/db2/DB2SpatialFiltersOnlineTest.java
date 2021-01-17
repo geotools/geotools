@@ -16,7 +16,7 @@
  */
 package org.geotools.data.db2;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -72,14 +72,14 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
         PropertyName p = ff.property(aname("geom"));
         Literal collect = ff.literal(ml);
 
-        DWithin dwithinGeomCo = ((FilterFactory2) ff).dwithin(p, collect, 5, "meter");
+        DWithin dwithinGeomCo = ff.dwithin(p, collect, 5, "meter");
         Query dq = new Query(tname("road"), dwithinGeomCo);
         SimpleFeatureCollection features =
                 dataStore.getFeatureSource(tname("road")).getFeatures(dq);
         int numFeatures = features.size();
         assertEquals(2, numFeatures);
 
-        Beyond beyondGeomCo = ((FilterFactory2) ff).beyond(p, collect, 5, "meter");
+        Beyond beyondGeomCo = ff.beyond(p, collect, 5, "meter");
         dq = new Query(tname("road"), beyondGeomCo);
         features = dataStore.getFeatureSource(tname("road")).getFeatures(dq);
         numFeatures = features.size();
@@ -103,8 +103,8 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
     }
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
-        HashMap params = super.createDataStoreFactoryParams();
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         params.put(DB2NGDataStoreFactory.USE_SELECTIVITY.key, true);
         return params;
     }

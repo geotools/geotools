@@ -17,9 +17,12 @@
  */
 package org.geotools.process.raster;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
@@ -318,13 +321,12 @@ public class RasterAsPointCollectionProcessTest {
         MathTransform2D w2g =
                 coverage.getGridGeometry().getCRSToGrid2D(PixelOrientation.UPPER_LEFT);
         // Iterator on the FeatureCollection
-        SimpleFeatureIterator it = collection.features();
         // Iterator on the input image
-        RandomIter imageIterator = RandomIterFactory.create(coverage.getRenderedImage(), null);
         // Boolean indicating that the TargetCRS is not null
-        boolean crsExists = targetCRS != null;
         // Cycle on the Collection
-        try {
+        try (SimpleFeatureIterator it = collection.features()) {
+            RandomIter imageIterator = RandomIterFactory.create(coverage.getRenderedImage(), null);
+            boolean crsExists = targetCRS != null;
             while (it.hasNext()) {
                 // Selection of the feature
                 SimpleFeature ft = it.next();
@@ -352,10 +354,6 @@ public class RasterAsPointCollectionProcessTest {
                     double angle = (double) ft.getAttribute("gridConvergenceAngleCorrection");
                     Assert.assertTrue(angle != 0);
                 }
-            }
-        } finally {
-            if (it != null) {
-                it.close();
             }
         }
     }
@@ -409,15 +407,21 @@ public class RasterAsPointCollectionProcessTest {
 
         Raster raster = image.getData(new Rectangle(minX, 0, reducedWidth, reducedHeight));
 
-        int whiteSamples = 0;
+        int blackSamples = 0;
+        int graySamples = 0;
         for (int i = 0; i < reducedWidth; i++) {
             for (int j = 0; j < reducedHeight; j++) {
-                whiteSamples += raster.getSample(minX + i, j, 0) == 255 ? 1 : 0;
+                blackSamples += raster.getSample(minX + i, j, 0) == 0 ? 1 : 0;
+                graySamples += raster.getSample(minX + i, j, 0) == 128 ? 1 : 0;
             }
         }
         // Check that we aren't getting a whole white image on a big part of the rightern
         // side of the image. this was happening before the fix on wrapping on rendering
         // transformation since it was only rendering a smaller area (NO wrapping at all)
-        assertFalse(whiteSamples == reducedHeight * reducedWidth);
+        assertNotEquals(0, blackSamples);
+        // Confirm that the NODATA values (-32767.0 in the test image) were preserved
+        // by checking for samples in the image that are not black (non-NODATA values)
+        // or white (background).
+        assertNotEquals(0, graySamples);
     }
 }

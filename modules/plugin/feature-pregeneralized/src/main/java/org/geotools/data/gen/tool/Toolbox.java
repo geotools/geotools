@@ -149,14 +149,12 @@ public class Toolbox {
         DataStore[] dataStores = createDataStores(shapeFile, targetDir, ftype, distanceArray);
 
         SimpleFeatureCollection fcoll = fs.getFeatures();
-        SimpleFeatureIterator it = fcoll.features();
-        List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers =
-                new ArrayList<FeatureWriter<SimpleFeatureType, SimpleFeature>>();
-        try {
+        List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers = new ArrayList<>();
+        try (SimpleFeatureIterator it = fcoll.features()) {
             int countTotal = fcoll.size();
 
-            for (int i = 0; i < dataStores.length; i++) {
-                writers.add(dataStores[i].getFeatureWriter(typeName, Transaction.AUTO_COMMIT));
+            for (DataStore dataStore : dataStores) {
+                writers.add(dataStore.getFeatureWriter(typeName, Transaction.AUTO_COMMIT));
             }
 
             int counter = 0;
@@ -183,7 +181,6 @@ public class Toolbox {
                     // ignore on purpose and move on
                 }
             }
-            it.close();
         }
 
         for (DataStore ds : dataStores) {
@@ -217,7 +214,7 @@ public class Toolbox {
 
             File file = new File(newShapeFileDirName + newShapeFileRelativeName);
 
-            Map<String, Serializable> params = new HashMap<String, Serializable>();
+            Map<String, Serializable> params = new HashMap<>();
             params.put(ShapefileDataStoreFactory.URLP.key, file.toURI().toURL());
             result[i] = factory.createNewDataStore(params);
             result[i].createSchema(ft);

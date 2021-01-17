@@ -16,7 +16,11 @@
  */
 package org.geotools.referencing.wkt;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -25,13 +29,16 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.ScriptRunner;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
+import org.geotools.referencing.operation.projection.CylindricalEqualArea;
 import org.geotools.test.TestData;
-import org.junit.*;
+import org.junit.Test;
+import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -39,6 +46,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransformFactory;
 
 /**
  * Tests the WKT {@link Parser} implementation.
@@ -321,6 +329,36 @@ public final class ParserTest {
         assertEquals(wkt, check.toWKT());
     }
 
+    @Test
+    public void testCylindricalEqualAreaStandardParallel() throws FactoryException {
+        MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
+        CylindricalEqualArea.LambertCylindricalEqualAreaProvider
+                lambertCylindricalEqualAreaProvider =
+                        new CylindricalEqualArea.LambertCylindricalEqualAreaProvider();
+        DefaultMathTransformFactory factory = new DefaultMathTransformFactory();
+
+        ParameterDescriptorGroup parameterDescriptorGroup =
+                lambertCylindricalEqualAreaProvider.getParameters();
+        ParameterValueGroup parameters = parameterDescriptorGroup.createValue();
+        final double majorAxis = 6.3712e+6;
+        final double minorAxis = 6.3712e+6;
+        parameters.parameter("semi_major").setValue(majorAxis);
+        parameters.parameter("semi_minor").setValue(minorAxis);
+        parameters.parameter("longitude_of_origin").setValue(25.0);
+        parameters.parameter("standard_parallel_1").setValue(22.2);
+        parameters.parameter("false_easting").setValue(0.0);
+        parameters.parameter("false_northing").setValue(0.0);
+        GeographicCRS base = DefaultGeographicCRS.WGS84;
+        MathTransform mt = factory.createParameterizedTransform(parameters);
+        CartesianCS cs = DefaultCartesianCS.PROJECTED;
+        CoordinateReferenceSystem crs =
+                new DefaultProjectedCRS("Cylindrical_Equal_Area", base, mt, cs);
+
+        final String wkt = crs.toWKT();
+        assertTrue(wkt.contains("standard_parallel_1"));
+        assertTrue(wkt.contains("22.2"));
+    }
+
     /** Tests parsing of math transforms. */
     @Test
     public void testMathTransform() throws IOException, ParseException {
@@ -344,7 +382,7 @@ public final class ParserTest {
         if (reader == null) {
             throw new FileNotFoundException(filename);
         }
-        final Collection<Object> pool = new HashSet<Object>();
+        final Collection<Object> pool = new HashSet<>();
         String line;
         while ((line = reader.readLine()) != null) {
             line = line.trim();
@@ -426,9 +464,14 @@ public final class ParserTest {
                         expected.getCoordinateSystem(), observed.getCoordinateSystem()));
 
         assertTrue(CRS.equalsIgnoreMetadata(expected, observed));
-        assertTrue(expected.equals(observed));
+        assertEquals(expected, observed);
         assertEquals("Incorrect reading", expected, observed);
         assertFalse(check.contains("semi_major"));
         assertFalse(check.contains("semi_minor"));
+    }
+
+    @Test
+    public void testExtension() throws IOException, ParseException {
+        testParsing(new Parser(), "wkt/Extension.txt");
     }
 }

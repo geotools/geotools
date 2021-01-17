@@ -18,7 +18,8 @@ package org.geotools.gce.gtopo30;
 
 // J2SE dependencies
 
-import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
@@ -28,6 +29,7 @@ import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.awt.image.renderable.ParameterBlock;
 import java.awt.image.renderable.RenderedImageFactory;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.media.jai.CRIFImpl;
@@ -291,5 +293,12 @@ public final class NoDataReplacerOpImage extends PointOpImage {
             record.setThrown(exception);
             AbstractGridCoverage.LOGGER.log(record);
         }
+    }
+
+    @Override
+    // PlanarImage does not have generics, overrides this method
+    @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
+    public Vector<RenderedImage> getSources() {
+        return super.getSources();
     }
 }

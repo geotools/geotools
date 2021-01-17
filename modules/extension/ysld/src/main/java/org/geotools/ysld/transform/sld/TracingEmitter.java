@@ -22,14 +22,23 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.yaml.snakeyaml.emitter.Emitable;
-import org.yaml.snakeyaml.events.*;
+import org.yaml.snakeyaml.events.DocumentEndEvent;
+import org.yaml.snakeyaml.events.DocumentStartEvent;
+import org.yaml.snakeyaml.events.Event;
+import org.yaml.snakeyaml.events.MappingEndEvent;
+import org.yaml.snakeyaml.events.MappingStartEvent;
+import org.yaml.snakeyaml.events.ScalarEvent;
+import org.yaml.snakeyaml.events.SequenceEndEvent;
+import org.yaml.snakeyaml.events.SequenceStartEvent;
+import org.yaml.snakeyaml.events.StreamEndEvent;
+import org.yaml.snakeyaml.events.StreamStartEvent;
 
 /** Wrapper for a yaml {@link Emitable} which logs {@link Event}s. */
 public class TracingEmitter implements Emitable {
 
     Emitable delegate;
 
-    List<Pair> events = new ArrayList();
+    List<Pair> events = new ArrayList<>();
 
     int stack = 0;
 

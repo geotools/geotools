@@ -323,9 +323,7 @@ public class UomRescaleStyleVisitorTest {
             lineSymb.accept(visitor);
             LineSymbolizer rescaledLineSymb = (LineSymbolizer) visitor.getCopy();
             String rescaledDynamicDashArray =
-                    (String)
-                            ((Expression) rescaledLineSymb.getStroke().dashArray().get(0))
-                                    .evaluate(null);
+                    (String) rescaledLineSymb.getStroke().dashArray().get(0).evaluate(null);
 
             assertEquals(expectedDashArray, rescaledDynamicDashArray);
             assertNotSame(rescaledLineSymb, lineSymb);
@@ -808,5 +806,32 @@ public class UomRescaleStyleVisitorTest {
         UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(1);
         // used to throw an exception here
         style.accept(visitor);
+    }
+
+    @Test
+    public void visitNullOption() {
+
+        try {
+            UomRescaleStyleVisitor visitor = null;
+            Unit<Length> uom = Units.PIXEL;
+
+            StyleBuilder styleBuilder = new StyleBuilder();
+
+            TextSymbolizerImpl textSymb = (TextSymbolizerImpl) styleBuilder.createTextSymbolizer();
+            textSymb.setUnitOfMeasure(uom);
+
+            // check for IntArrayOption
+            textSymb.getOptions().put(TextSymbolizer.GRAPHIC_MARGIN_KEY, null);
+            // check for IntOption
+            textSymb.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, null);
+
+            visitor = new UomRescaleStyleVisitor(10);
+
+            textSymb.accept(visitor);
+
+        } catch (Exception e2) {
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
+            fail(e2.getClass().getSimpleName() + " should not be thrown.");
+        }
     }
 }

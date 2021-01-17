@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema targetNamespace="http://www.opengis.net/gpkg" xmlns:gpkg="http://www.opengis.net/gpkg" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fes="http://www.opengis.net/fes/2.0" elementFormDefault="qualified">
 
-  <xs:import namespace="http://www.opengis.net/fes/2.0" schemaLocation="http://schemas.opengis.net/filter/2.0/filter.xsd" />
+  <xs:import namespace="http://www.opengis.net/fes/2.0" schemaLocation="http://schemas.opengis.net/filter/2.0/filterAll.xsd" />
   
   <xs:element name="geopackage" type="gpkg:geopkgtype"/>
 
@@ -72,6 +72,21 @@
     </xs:all>
   </xs:complexType>
 
+  <xs:complexType name="overview">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="distance" type="xs:double" minOccurs="0"/>
+      <xs:element name="scaleDenominator" type="xs:double" minOccurs="0"/>
+      <xs:element name="filter" minOccurs="0" type="fes:FilterType" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="overviews">
+    <xs:sequence>
+      <xs:element name="overview" type="gpkg:overview" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="geopkgtype">
     <xs:sequence>
       <xs:element name="features" minOccurs="0" maxOccurs="unbounded">
@@ -82,7 +97,11 @@
                 <xs:element name="featuretype" type="xs:string" />
                 <xs:element name="propertynames" minOccurs="0" type="xs:string" />
                 <xs:element name="filter" minOccurs="0" type="fes:FilterType" />
+                <xs:element name="sort" minOccurs="0" maxOccurs="1" type="fes:SortByType" />
       			<xs:element name="indexed" type="xs:boolean" minOccurs="0" />
+                <xs:element name="styles" type="xs:boolean" minOccurs="0" />
+                <xs:element name="metadata" type="xs:boolean" minOccurs="0" />
+                <xs:element name="overviews" type="gpkg:overviews" minOccurs="0"/>
               </xs:sequence>
             </xs:extension>
           </xs:complexContent>

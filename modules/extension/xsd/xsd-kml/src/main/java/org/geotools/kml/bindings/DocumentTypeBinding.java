@@ -31,8 +31,10 @@ import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.FeatureType;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:DocumentType.
@@ -115,13 +117,15 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
         return b.buildFeature(feature.getID());
     }
 
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         Object[] prop = new Object[2];
         prop[0] = getPlacemarkName();
         if (object instanceof FeatureCollection) {
-            FeatureCollection fc = (FeatureCollection) object;
+            @SuppressWarnings("unchecked")
+            FeatureCollection<FeatureType, Feature> fc = (FeatureCollection) object;
             // TODO: this does not close the iterator!!
-            Iterator iterator = DataUtilities.iterator(fc.features());
+            Iterator<Feature> iterator = DataUtilities.iterator(fc.features());
 
             prop[1] = iterator;
         } else if (object instanceof Collection) {
@@ -130,7 +134,7 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
             SimpleFeature feature = (SimpleFeature) object;
             prop[1] = feature.getAttribute("Feature");
         }
-        ArrayList l = new ArrayList();
+        List<Object[]> l = new ArrayList<>();
         l.add(prop);
         return l;
     }

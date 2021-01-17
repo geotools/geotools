@@ -16,9 +16,53 @@
  */
 package org.geotools.renderer.label;
 
-import static org.geotools.styling.TextSymbolizer.*;
+import static org.geotools.styling.TextSymbolizer.ALLOW_OVERRUNS_KEY;
+import static org.geotools.styling.TextSymbolizer.AUTO_WRAP_KEY;
+import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_ALLOW_OVERRUNS;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_AUTO_WRAP;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_CONFLICT_RESOLUTION;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_FOLLOW_LINE;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_FONT_SHRINK_SIZE_MIN;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_FORCE_LEFT_TO_RIGHT;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_GOODNESS_OF_FIT;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_LABEL_ALL_GROUP;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_LABEL_REPEAT;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_MAX_ANGLE_DELTA;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_MIN_GROUP_DISTANCE;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_PARTIALS;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_POLYGONALIGN;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_REMOVE_OVERLAPS;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_SPACE_AROUND;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_STRIKETHROUGH_TEXT;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_UNDERLINE_TEXT;
+import static org.geotools.styling.TextSymbolizer.DEFAULT_WORD_SPACING;
+import static org.geotools.styling.TextSymbolizer.DISPLACEMENT_MODE_KEY;
+import static org.geotools.styling.TextSymbolizer.FOLLOW_LINE_KEY;
+import static org.geotools.styling.TextSymbolizer.FONT_SHRINK_SIZE_MIN;
+import static org.geotools.styling.TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY;
+import static org.geotools.styling.TextSymbolizer.GOODNESS_OF_FIT_KEY;
+import static org.geotools.styling.TextSymbolizer.GRAPHIC_PLACEMENT_KEY;
+import static org.geotools.styling.TextSymbolizer.LABEL_ALL_GROUP_KEY;
+import static org.geotools.styling.TextSymbolizer.LABEL_REPEAT_KEY;
+import static org.geotools.styling.TextSymbolizer.MAX_ANGLE_DELTA_KEY;
+import static org.geotools.styling.TextSymbolizer.MAX_DISPLACEMENT_KEY;
+import static org.geotools.styling.TextSymbolizer.MIN_GROUP_DISTANCE_KEY;
+import static org.geotools.styling.TextSymbolizer.PARTIALS_KEY;
+import static org.geotools.styling.TextSymbolizer.POLYGONALIGN_KEY;
+import static org.geotools.styling.TextSymbolizer.REMOVE_OVERLAPS_KEY;
+import static org.geotools.styling.TextSymbolizer.SPACE_AROUND_KEY;
+import static org.geotools.styling.TextSymbolizer.STRIKETHROUGH_TEXT_KEY;
+import static org.geotools.styling.TextSymbolizer.UNDERLINE_TEXT_KEY;
+import static org.geotools.styling.TextSymbolizer.WORD_SPACING_KEY;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -47,6 +91,8 @@ import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer.DisplacementMode;
+import org.geotools.styling.TextSymbolizer.GraphicPlacement;
 import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
@@ -133,14 +179,13 @@ public class LabelCacheImpl implements LabelCache {
     public static double MIN_CURVED_DELTA = Math.PI / 60;
 
     /** Used to locate grouped labels quickly */
-    protected Map<LabelCacheItem, LabelCacheItem> groupedLabelsLookup =
-            new HashMap<LabelCacheItem, LabelCacheItem>();
+    protected Map<LabelCacheItem, LabelCacheItem> groupedLabelsLookup = new HashMap<>();
 
     /** labels get thrown in here, in insertion order */
-    protected ArrayList<LabelCacheItem> labelCache = new ArrayList<LabelCacheItem>();
+    protected ArrayList<LabelCacheItem> labelCache = new ArrayList<>();
 
     /** List of reserved areas of the screen for which labels should fear to tread */
-    private List<Rectangle2D> reserved = new ArrayList<Rectangle2D>();
+    private List<Rectangle2D> reserved = new ArrayList<>();
 
     // Anchor candidate values used when looping to find a point label that can be drawn
     static final double[] RIGHT_ANCHOR_CANDIDATES = new double[] {0, 0.5, 0, 0, 0, 1};
@@ -164,9 +209,9 @@ public class LabelCacheImpl implements LabelCache {
 
     boolean stop = false;
 
-    Set<String> enabledLayers = new HashSet<String>();
+    Set<String> enabledLayers = new HashSet<>();
 
-    Set<String> activeLayers = new HashSet<String>();
+    Set<String> activeLayers = new HashSet<>();
 
     LineLengthComparator lineLengthComparator = new LineLengthComparator();
 
@@ -178,7 +223,7 @@ public class LabelCacheImpl implements LabelCache {
 
     private VendorOptionParser voParser = new VendorOptionParser();
 
-    private List<RenderListener> renderListeners = new CopyOnWriteArrayList<RenderListener>();
+    private List<RenderListener> renderListeners = new CopyOnWriteArrayList<>();
 
     private BiFunction<Graphics2D, LabelRenderingMode, LabelPainter> constructPainter =
             LabelPainter::new;
@@ -431,7 +476,7 @@ public class LabelCacheImpl implements LabelCache {
     /** Returns a list of all active labels */
     public List<LabelCacheItem> getActiveLabels() {
         // fill a list with the active labels
-        List<LabelCacheItem> al = new ArrayList<LabelCacheItem>();
+        List<LabelCacheItem> al = new ArrayList<>();
         for (LabelCacheItem item : labelCache) {
             if (isActive(item.getLayerIds())) al.add(item);
         }
@@ -678,7 +723,7 @@ public class LabelCacheImpl implements LabelCache {
                         labelItem.removeGroupOverlaps(),
                         labelItem.isPartialsEnabled());
 
-        if (lines == null || lines.size() == 0) return false;
+        if (lines == null || lines.isEmpty()) return false;
 
         // if we just want to label the longest line, remove the others
         if (!labelItem.labelAllGroup() && lines.size() > 1) {
@@ -900,7 +945,7 @@ public class LabelCacheImpl implements LabelCache {
                         labelItem.removeGroupOverlaps(),
                         labelItem.isPartialsEnabled());
 
-        if (lines == null || lines.size() == 0) return false;
+        if (lines == null || lines.isEmpty()) return false;
 
         // if we just want to label the longest line, remove the others
         if (!labelItem.labelAllGroup() && lines.size() > 1) {
@@ -1698,7 +1743,7 @@ public class LabelCacheImpl implements LabelCache {
     Point getPointSetRepresentativeLocation(
             List<Geometry> geoms, Rectangle displayArea, boolean partialsEnabled) {
         // points that are inside the displayGeometry
-        ArrayList<Point> pts = new ArrayList<Point>();
+        ArrayList<Point> pts = new ArrayList<>();
 
         for (Geometry g : geoms) {
             if (!((g instanceof Point) || (g instanceof MultiPoint))) // handle
@@ -1717,7 +1762,7 @@ public class LabelCacheImpl implements LabelCache {
                 }
             }
         }
-        if (pts.size() == 0) return null;
+        if (pts.isEmpty()) return null;
 
         // do better metric than this:
         return pts.get(0);
@@ -1750,14 +1795,14 @@ public class LabelCacheImpl implements LabelCache {
         // if its a polygon or multipolygon, get the boundary (reduce to a line)
         // if its a line, add it to "lines"
         // if its a multiline, add each component line to "lines"
-        List<LineString> lines = new ArrayList<LineString>();
+        List<LineString> lines = new ArrayList<>();
         for (Geometry g : geoms) {
             accumulateLineStrings(g, lines);
         }
-        if (lines.size() == 0) return null;
+        if (lines.isEmpty()) return null;
 
         // clip all the lines to the current bounds
-        List<LineString> clippedLines = new ArrayList<LineString>();
+        List<LineString> clippedLines = new ArrayList<>();
         for (LineString ls : lines) {
             // If we want labels to be entirely in the display area, clip the linestring
             if (!partialsEnabled) {
@@ -1775,8 +1820,8 @@ public class LabelCacheImpl implements LabelCache {
         }
 
         if (removeOverlaps) {
-            List<LineString> cleanedLines = new ArrayList<LineString>();
-            List<Geometry> bufferCache = new ArrayList<Geometry>();
+            List<LineString> cleanedLines = new ArrayList<>();
+            List<Geometry> bufferCache = new ArrayList<>();
             for (LineString ls : clippedLines) {
                 Geometry g = ls;
                 for (int i = 0; i < cleanedLines.size(); i++) {
@@ -1798,16 +1843,16 @@ public class LabelCacheImpl implements LabelCache {
             clippedLines = cleanedLines;
         }
 
-        if (clippedLines == null || clippedLines.size() == 0) return null;
+        if (clippedLines == null || clippedLines.isEmpty()) return null;
 
         // at this point "lines" now is a list of linestring
         // join this algo doesnt always do what you want it to do, but its
         // pretty good
         List<LineString> merged = mergeLines(clippedLines);
 
-        // clippedLines is a list of LineString, all cliped (hopefully) to the
+        // clippedLines is a list of LineString, all clipped (hopefully) to the
         // display geometry. we choose longest one
-        if (merged.size() == 0) return null;
+        if (merged.isEmpty()) return null;
 
         // sort have the longest lines first
         Collections.sort(merged, new LineLengthComparator());
@@ -1895,7 +1940,7 @@ public class LabelCacheImpl implements LabelCache {
      */
     Polygon getPolySetRepresentativeLocation(
             List<Geometry> geoms, Rectangle displayArea, boolean partialsEnabled) {
-        List<Polygon> polys = new ArrayList<Polygon>(); // points that are
+        List<Polygon> polys = new ArrayList<>(); // points that are
         // inside the
         Geometry displayGeometry = gf.toGeometry(toEnvelope(displayArea));
 
@@ -1916,10 +1961,10 @@ public class LabelCacheImpl implements LabelCache {
                 }
             }
         }
-        if (polys.size() == 0) return null;
+        if (polys.isEmpty()) return null;
 
         // at this point "polys" is a list of polygons. Clip them
-        List<Polygon> clippedPolys = new ArrayList<Polygon>();
+        List<Polygon> clippedPolys = new ArrayList<>();
         Envelope displayGeomEnv = displayGeometry.getEnvelopeInternal();
         for (Polygon p : polys) {
             // If we want labels to be entirely in the display area, clip polygons
@@ -1938,14 +1983,14 @@ public class LabelCacheImpl implements LabelCache {
 
         // clippedPolys is a list of Polygon, all cliped (hopefully) to the
         // display geometry. we choose largest one
-        if (clippedPolys.size() == 0) {
+        if (clippedPolys.isEmpty()) {
             return null;
         }
         double maxSize = -1;
         Polygon maxPoly = null;
         Polygon cpoly;
-        for (int t = 0; t < clippedPolys.size(); t++) {
-            cpoly = clippedPolys.get(t);
+        for (Polygon clippedPoly : clippedPolys) {
+            cpoly = clippedPoly;
             final double area = cpoly.getArea();
             if (area > maxSize) {
                 maxPoly = cpoly;
@@ -2003,7 +2048,7 @@ public class LabelCacheImpl implements LabelCache {
 
         // its a GC
         GeometryCollection gc = (GeometryCollection) clip;
-        List<Polygon> polys = new ArrayList<Polygon>();
+        List<Polygon> polys = new ArrayList<>();
         Geometry g;
         for (int t = 0; t < gc.getNumGeometries(); t++) {
             g = gc.getGeometryN(t);
@@ -2012,7 +2057,7 @@ public class LabelCacheImpl implements LabelCache {
         }
 
         // convert to multipoly
-        if (polys.size() == 0) return null;
+        if (polys.isEmpty()) return null;
 
         return poly.getFactory().createMultiPolygon(polys.toArray(new Polygon[1]));
     }
@@ -2026,9 +2071,10 @@ public class LabelCacheImpl implements LabelCache {
         LineMerger lm = new LineMerger();
         lm.add(lines);
         // build merged lines
-        List<LineString> merged = new ArrayList<LineString>(lm.getMergedLineStrings());
+        @SuppressWarnings("unchecked")
+        List<LineString> merged = new ArrayList<>(lm.getMergedLineStrings());
 
-        if (merged.size() == 0) {
+        if (merged.isEmpty()) {
             return null; // shouldnt happen
         } else if (merged.size() == 1) { // simple case - no need to continue
             // merging
@@ -2036,14 +2082,13 @@ public class LabelCacheImpl implements LabelCache {
         }
 
         // coordinate -> list of incoming/outgoing lines
-        Map<Coordinate, List<LineString>> nodes =
-                new HashMap<Coordinate, List<LineString>>(merged.size() * 2);
+        Map<Coordinate, List<LineString>> nodes = new HashMap<>(merged.size() * 2);
         for (LineString ls : merged) {
             putInNodeHash(ls.getCoordinateN(0), ls, nodes);
             putInNodeHash(ls.getCoordinateN(ls.getNumPoints() - 1), ls, nodes);
         }
 
-        List<LineString> merged_list = new ArrayList<LineString>(merged);
+        List<LineString> merged_list = new ArrayList<>(merged);
 
         // SORT -- sorting is important because order does matter.
         // sorted long->short
@@ -2059,7 +2104,7 @@ public class LabelCacheImpl implements LabelCache {
      */
     public List<LineString> processNodes(
             List<LineString> edges, Map<Coordinate, List<LineString>> nodes) {
-        List<LineString> result = new ArrayList<LineString>();
+        List<LineString> result = new ArrayList<>();
         int index = 0; // index into edges
         while (index < edges.size()) // still more to do
         {
@@ -2080,19 +2125,19 @@ public class LabelCacheImpl implements LabelCache {
             List<LineString> nodeList2 = nodes.get(key2);
 
             // case 1 -- this line is independent
-            if ((nodeList.size() == 0) && (nodeList2.size() == 0)) {
+            if ((nodeList.isEmpty()) && (nodeList2.isEmpty())) {
                 result.add(ls);
                 index++; // move to next line
                 continue;
             }
 
-            if (nodeList.size() > 0) // touches something at the start
+            if (!nodeList.isEmpty()) // touches something at the start
             {
                 LineString ls2 = getLongest(nodeList); // merge with this one
                 ls = merge(ls, ls2);
                 removeFromHash(nodes, ls2);
             }
-            if (nodeList2.size() > 0) // touches something at the start
+            if (!nodeList2.isEmpty()) // touches something at the start
             {
                 LineString ls2 = getLongest(nodeList2); // merge with this one
                 ls = merge(ls, ls2);
@@ -2137,7 +2182,7 @@ public class LabelCacheImpl implements LabelCache {
             Coordinate node, LineString ls, Map<Coordinate, List<LineString>> nodes) {
         List<LineString> nodeList = nodes.get(node);
         if (nodeList == null) {
-            nodeList = new ArrayList<LineString>();
+            nodeList = new ArrayList<>();
             nodeList.add(ls);
             nodes.put(node, nodeList);
         } else {
@@ -2181,7 +2226,7 @@ public class LabelCacheImpl implements LabelCache {
 
     /** simple linestring merge - l1 points then l2 points */
     private LineString mergeSimple(LineString l1, LineString l2) {
-        List<Coordinate> clist = new ArrayList<Coordinate>(Arrays.asList(l1.getCoordinates()));
+        List<Coordinate> clist = new ArrayList<>(Arrays.asList(l1.getCoordinates()));
         clist.addAll(Arrays.asList(l2.getCoordinates()));
 
         return l1.getFactory().createLineString(clist.toArray(new Coordinate[1]));

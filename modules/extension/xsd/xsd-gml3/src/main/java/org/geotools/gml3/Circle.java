@@ -275,7 +275,7 @@ public class Circle {
     private List<Coordinate> linearizeInternal(
             List<Coordinate> coordinates, Arc arc, double tolerence) {
         if (coordinates == null) {
-            coordinates = new ArrayList<Coordinate>();
+            coordinates = new ArrayList<>();
         }
         double arcHt = arc.getArcHeight();
         if (Double.compare(arcHt, tolerence) <= 0

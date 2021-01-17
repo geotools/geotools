@@ -16,7 +16,13 @@
  */
 package org.geotools.referencing.factory.wms;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import org.geotools.metadata.iso.citation.Citations;
@@ -26,7 +32,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.CachedCRSAuthorityDecorator;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -77,7 +84,7 @@ public final class CRSTest {
         assertSame(crs, factory.createGeographicCRS("CRS:CRS84"));
         assertSame(crs, factory.createGeographicCRS("crs : crs84"));
         assertNotSame(crs, factory.createGeographicCRS("CRS:83"));
-        assertFalse(DefaultGeographicCRS.WGS84.equals(crs));
+        assertNotEquals(DefaultGeographicCRS.WGS84, crs);
         assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs));
     }
 
@@ -113,7 +120,7 @@ public final class CRSTest {
                 finder.find(CRS84));
 
         assertNotSame("Required condition for next test.", CRS84, DefaultGeographicCRS.WGS84);
-        assertFalse("Required condition for next test.", CRS84.equals(DefaultGeographicCRS.WGS84));
+        assertNotEquals("Required condition for next test.", CRS84, DefaultGeographicCRS.WGS84);
         assertTrue(
                 "Required condition for next test.",
                 CRS.equalsIgnoreMetadata(CRS84, DefaultGeographicCRS.WGS84));
@@ -144,7 +151,7 @@ public final class CRSTest {
                         + "  PRIMEM[\"Greenwich\", 0.0],\n"
                         + "  UNIT[\"degree\", 0.017453292519943295]]";
         CoordinateReferenceSystem search = CRS.parseWKT(wkt);
-        assertFalse("Required condition for next test.", CRS84.equals(search));
+        assertNotEquals("Required condition for next test.", CRS84, search);
         assertTrue("Required condition for next test.", CRS.equalsIgnoreMetadata(CRS84, search));
 
         finder.setFullScanAllowed(false);

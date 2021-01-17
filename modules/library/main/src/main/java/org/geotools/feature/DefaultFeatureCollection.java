@@ -66,7 +66,7 @@ public class DefaultFeatureCollection
      * <p>This use will result in collections that are sorted by FID, in keeping with shapefile
      * etc...
      */
-    private SortedMap<String, SimpleFeature> contents = new TreeMap<String, SimpleFeature>();
+    private SortedMap<String, SimpleFeature> contents = new TreeMap<>();
 
     /** Internal listener storage list */
     // private List listeners = new ArrayList(2);
@@ -134,8 +134,8 @@ public class DefaultFeatureCollection
         if (bounds == null) {
             bounds = new ReferencedEnvelope();
 
-            for (Iterator i = contents.values().iterator(); i.hasNext(); ) {
-                BoundingBox geomBounds = ((SimpleFeature) i.next()).getBounds();
+            for (SimpleFeature simpleFeature : contents.values()) {
+                BoundingBox geomBounds = simpleFeature.getBounds();
                 // IanS - as of 1.3, JTS expandToInclude ignores "null" Envelope
                 // and simply adds the new bounds...
                 // This check ensures this behavior does not occur.
@@ -180,7 +180,7 @@ public class DefaultFeatureCollection
         if (this.schema == null) {
             this.schema = feature.getFeatureType();
         }
-        SimpleFeatureType childType = (SimpleFeatureType) getSchema();
+        SimpleFeatureType childType = getSchema();
         if (!feature.getFeatureType().equals(childType)) {
             LOGGER.warning("Feature Collection contains a heterogeneous" + " mix of features");
         }
@@ -223,16 +223,13 @@ public class DefaultFeatureCollection
         // TODO check inheritance with FeatureType here!!!
         boolean changed = false;
 
-        FeatureIterator<?> iterator = collection.features();
-        try {
+        try (FeatureIterator<?> iterator = collection.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature f = (SimpleFeature) iterator.next();
                 boolean added = add(f, false);
                 changed |= added;
             }
             return changed;
-        } finally {
-            iterator.close();
         }
     }
 
@@ -313,7 +310,7 @@ public class DefaultFeatureCollection
             }
 
             public SimpleFeature next() {
-                currFeature = (SimpleFeature) iterator.next();
+                currFeature = iterator.next();
                 return currFeature;
             }
 
@@ -507,9 +504,8 @@ public class DefaultFeatureCollection
 
     public SimpleFeatureCollection collection() throws IOException {
         DefaultFeatureCollection copy = new DefaultFeatureCollection(null, getSchema());
-        List<SimpleFeature> list = new ArrayList<SimpleFeature>(contents.size());
-        SimpleFeatureIterator iterator = features();
-        try {
+        List<SimpleFeature> list = new ArrayList<>(contents.size());
+        try (SimpleFeatureIterator iterator = features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 SimpleFeature duplicate;
@@ -520,8 +516,6 @@ public class DefaultFeatureCollection
                 }
                 list.add(duplicate);
             }
-        } finally {
-            iterator.close();
         }
         copy.addAll(list);
         return copy;

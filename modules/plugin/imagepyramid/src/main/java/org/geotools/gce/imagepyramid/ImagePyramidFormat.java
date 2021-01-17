@@ -18,7 +18,6 @@ package org.geotools.gce.imagepyramid;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.util.HashMap;
@@ -61,7 +60,7 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
 
     /** Sets the metadata information for this format */
     private void setInfo() {
-        HashMap<String, String> info = new HashMap<String, String>();
+        HashMap<String, String> info = new HashMap<>();
         info.put("name", "ImagePyramid");
         info.put("description", "Image pyramidal plugin");
         info.put("vendor", "Geotools");
@@ -228,14 +227,6 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
         try {
 
             return new ImagePyramidReader(source, hints);
-        } catch (MalformedURLException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.severe(
-                        new StringBuffer(
-                                        "impossible to get a reader for the provided source. The error is ")
-                                .append(e.getLocalizedMessage())
-                                .toString());
-            return null;
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.SEVERE))
                 LOGGER.severe(

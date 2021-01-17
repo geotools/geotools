@@ -44,7 +44,7 @@ public class FilterFunction_setCRS extends FunctionExpressionImpl {
         CoordinateReferenceSystem crs;
 
         try { // attempt to get value and perform conversion
-            geom = (Geometry) getExpression(0).evaluate(feature, Geometry.class);
+            geom = getExpression(0).evaluate(feature, Geometry.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

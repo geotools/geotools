@@ -16,8 +16,18 @@
  */
 package org.geotools.ows;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.mockito.Mockito.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.isNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -101,8 +111,7 @@ public class MultithreadedHttpClientTest {
         System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "localhost");
         MultithreadedHttpClient sut = new MultithreadedHttpTestClient();
-        when(mockHttpClient.executeMethod((HostConfiguration) isNull(), any(HttpMethod.class)))
-                .thenReturn(200);
+        when(mockHttpClient.executeMethod(isNull(), any(HttpMethod.class))).thenReturn(200);
         sut.get(new URL("http://localhost"));
 
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "\"localhost|www.geotools.org\"");

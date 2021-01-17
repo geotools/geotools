@@ -77,8 +77,7 @@ public class JParameterListWizard extends JWizard {
             List<Parameter<?>> contents,
             Map<String, Object> connectionParams) {
         super(title);
-        this.connectionParameters =
-                connectionParams == null ? new HashMap<String, Object>() : connectionParams;
+        this.connectionParameters = connectionParams == null ? new HashMap<>() : connectionParams;
         fillInDefaults(contents, this.connectionParameters);
 
         List<Parameter<?>> userContents = contentsForLevel(contents, "user");
@@ -89,7 +88,7 @@ public class JParameterListWizard extends JWizard {
 
         List<Parameter<?>> advancedContents = contentsForLevel(contents, "advanced");
 
-        if (advancedContents.size() > 0) {
+        if (!advancedContents.isEmpty()) {
             advancedPage =
                     new JParameterListPage(
                             title, description, advancedContents, connectionParameters);
@@ -111,7 +110,7 @@ public class JParameterListWizard extends JWizard {
      * @param contents a {@code List} of {@code Parameter} objects defining the data being requested
      */
     public JParameterListWizard(String title, String description, List<Parameter<?>> contents) {
-        this(title, description, contents, new HashMap<String, Object>());
+        this(title, description, contents, new HashMap<>());
     }
 
     /**
@@ -132,7 +131,7 @@ public class JParameterListWizard extends JWizard {
     }
 
     List<Parameter<?>> contentsForLevel(List<Parameter<?>> contents, String level) {
-        List<Parameter<?>> list = new ArrayList<Parameter<?>>();
+        List<Parameter<?>> list = new ArrayList<>();
         if (level == null) {
             level = "user";
         }

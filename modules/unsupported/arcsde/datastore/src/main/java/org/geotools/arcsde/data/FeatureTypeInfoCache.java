@@ -119,9 +119,9 @@ final class FeatureTypeInfoCache {
             boolean allowNonSpatialTables)
             throws IOException {
 
-        availableLayerNames = new TreeSet<String>();
-        featureTypeInfos = new HashMap<String, FeatureTypeInfo>();
-        inProcessFeatureTypeInfos = new HashMap<String, FeatureTypeInfo>();
+        availableLayerNames = new TreeSet<>();
+        featureTypeInfos = new HashMap<>();
+        inProcessFeatureTypeInfos = new HashMap<>();
         this.sessionPool = sessionPool;
         this.allowNonSpatialTables = allowNonSpatialTables;
         this.namespace = namespace;
@@ -177,7 +177,7 @@ final class FeatureTypeInfoCache {
 
         List<String> layerNames;
         try {
-            layerNames = new ArrayList<String>(availableLayerNames);
+            layerNames = new ArrayList<>(availableLayerNames);
         } finally {
             cacheLock.readLock().unlock();
         }
@@ -188,7 +188,7 @@ final class FeatureTypeInfoCache {
 
     public List<Name> getNames() {
         final List<String> typeNames = getTypeNames();
-        List<Name> names = new ArrayList<Name>(typeNames.size());
+        List<Name> names = new ArrayList<>(typeNames.size());
         for (String typeName : typeNames) {
             NameImpl name =
                     namespace == null ? new NameImpl(typeName) : new NameImpl(namespace, typeName);
@@ -287,14 +287,14 @@ final class FeatureTypeInfoCache {
             final Set<String> removed;
             { // just some logging..
                 cacheLock.readLock().lock();
-                Set<String> added = new TreeSet<String>(typeNames);
+                Set<String> added = new TreeSet<>(typeNames);
                 added.removeAll(availableLayerNames);
-                if (added.size() > 0) {
+                if (!added.isEmpty()) {
                     LOGGER.finest("FeatureTypeCache: added the following layers: " + added);
                 }
-                removed = new TreeSet<String>(availableLayerNames);
+                removed = new TreeSet<>(availableLayerNames);
                 removed.removeAll(typeNames);
-                if (removed.size() > 0) {
+                if (!removed.isEmpty()) {
                     LOGGER.finest(
                             "FeatureTypeCache: the following layers are no "
                                     + "longer available: "
@@ -358,7 +358,7 @@ final class FeatureTypeInfoCache {
                                 + sdeDbaName
                                 + ".";
                 systemTables =
-                        new HashSet<String>(
+                        new HashSet<>(
                                 Arrays.asList( //
                                         prefix + "GDB_ITEMRELATIONSHIPS", //
                                         prefix + "GDB_ITEMRELATIONSHIPTYPES", //
@@ -381,7 +381,7 @@ final class FeatureTypeInfoCache {
              */
             final List<String> rasterColumns = session.getRasterColumns();
 
-            final List<String> typeNames = new ArrayList<String>(registeredTables.size());
+            final List<String> typeNames = new ArrayList<>(registeredTables.size());
             for (SeTable table : registeredTables) {
                 final String tableName = table.getQualifiedName().toUpperCase();
                 if (rasterColumns.contains(tableName)) {

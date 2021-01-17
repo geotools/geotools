@@ -27,7 +27,11 @@ import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -48,7 +52,7 @@ public class MBStyleTransformer {
 
     private final List<String> defaultFonts;
 
-    protected static Pattern mapboxTokenPattern = Pattern.compile("\\{(.*?)\\}");
+    protected static final Pattern mapboxTokenPattern = Pattern.compile("\\{(.*?)\\}");
 
     private static final Logger LOGGER = Logging.getLogger(MBStyleTransformer.class);
 

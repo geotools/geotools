@@ -16,7 +16,9 @@
  */
 package org.geotools.coverage.grid;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.round;
 
 import java.awt.image.DataBuffer;
 import java.util.Arrays;
@@ -36,8 +38,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public final class LookupTableFactory {
     /** The pool of {@link LookupTableJAI} objects already created. */
-    private static final Map<LookupTableFactory, LookupTableJAI> pool =
-            new WeakValueHashMap<LookupTableFactory, LookupTableJAI>();
+    private static final Map<LookupTableFactory, LookupTableJAI> pool = new WeakValueHashMap<>();
 
     /** The source data type. Should be one of {@link DataBuffer} constants. */
     private final int sourceType;
@@ -79,8 +80,8 @@ public final class LookupTableFactory {
          * Argument check. Null values are legal but can't be processed by this method.
          */
         final int nbands = transforms.length;
-        for (int i = 0; i < nbands; i++) {
-            if (transforms[i] == null) {
+        for (MathTransform1D transform : transforms) {
+            if (transform == null) {
                 return null;
             }
         }

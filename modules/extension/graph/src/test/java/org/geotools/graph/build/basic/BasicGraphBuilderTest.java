@@ -18,53 +18,55 @@ package org.geotools.graph.build.basic;
 
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class BasicGraphBuilderTest extends TestCase {
+public class BasicGraphBuilderTest {
 
     private BasicGraphBuilder m_builder;
 
-    public BasicGraphBuilderTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         m_builder = createBuilder();
     }
 
+    @Test
     public void test_buildNode() {
-        assertTrue(m_builder.getNodes().isEmpty());
+        Assert.assertTrue(m_builder.getNodes().isEmpty());
 
         Node n = m_builder.buildNode();
 
-        assertTrue(n != null);
+        Assert.assertNotNull(n);
     }
 
+    @Test
     public void test_buildEdge() {
         Node n1 = m_builder.buildNode();
         Node n2 = m_builder.buildNode();
 
-        assertTrue(m_builder.getEdges().isEmpty());
+        Assert.assertTrue(m_builder.getEdges().isEmpty());
 
         Edge e = m_builder.buildEdge(n1, n2);
 
-        assertTrue(e != null);
-        assertTrue(e.getNodeA() == n1 || e.getNodeA() == n2);
-        assertTrue(e.getNodeB() == n1 || e.getNodeB() == n2);
+        Assert.assertNotNull(e);
+        Assert.assertTrue(e.getNodeA() == n1 || e.getNodeA() == n2);
+        Assert.assertTrue(e.getNodeB() == n1 || e.getNodeB() == n2);
     }
 
+    @Test
     public void test_addNode() {
         Node n1 = m_builder.buildNode();
         m_builder.addNode(n1);
-        assertTrue(m_builder.getNodes().size() == 1);
-        assertTrue(m_builder.getNodes().contains(n1));
+        Assert.assertEquals(1, m_builder.getNodes().size());
+        Assert.assertTrue(m_builder.getNodes().contains(n1));
     }
 
+    @Test
     public void test_addEdge_0() {
         Node n1 = m_builder.buildNode();
         Node n2 = m_builder.buildNode();
@@ -76,13 +78,14 @@ public class BasicGraphBuilderTest extends TestCase {
 
         m_builder.addEdge(e);
 
-        assertTrue(m_builder.getEdges().size() == 1);
-        assertTrue(m_builder.getEdges().contains(e));
+        Assert.assertEquals(1, m_builder.getEdges().size());
+        Assert.assertTrue(m_builder.getEdges().contains(e));
 
-        assertTrue(n1.getEdges().contains(e));
-        assertTrue(n2.getEdges().contains(e));
+        Assert.assertTrue(n1.getEdges().contains(e));
+        Assert.assertTrue(n2.getEdges().contains(e));
     }
 
+    @Test
     public void test_addEdge_1() {
         // add a loop edge, edge list size ==1 but degree == 2
         Node n1 = m_builder.buildNode();
@@ -91,20 +94,22 @@ public class BasicGraphBuilderTest extends TestCase {
         m_builder.addNode(n1);
         m_builder.addEdge(loop);
 
-        assertTrue(n1.getEdges().size() == 1);
-        assertTrue(n1.getDegree() == 2);
+        Assert.assertEquals(1, n1.getEdges().size());
+        Assert.assertEquals(2, n1.getDegree());
     }
 
+    @Test
     public void test_removeNode() {
         Node n1 = m_builder.buildNode();
         m_builder.addNode(n1);
 
-        assertTrue(m_builder.getNodes().contains(n1));
+        Assert.assertTrue(m_builder.getNodes().contains(n1));
 
         m_builder.removeNode(n1);
-        assertTrue(m_builder.getNodes().isEmpty());
+        Assert.assertTrue(m_builder.getNodes().isEmpty());
     }
 
+    @Test
     public void test_removeNodes() {
         Node n1 = m_builder.buildNode();
         Node n2 = m_builder.buildNode();
@@ -112,19 +117,20 @@ public class BasicGraphBuilderTest extends TestCase {
         m_builder.addNode(n1);
         m_builder.addNode(n2);
 
-        assertTrue(m_builder.getNodes().size() == 2);
-        assertTrue(m_builder.getNodes().contains(n1));
-        assertTrue(m_builder.getNodes().contains(n2));
+        Assert.assertEquals(2, m_builder.getNodes().size());
+        Assert.assertTrue(m_builder.getNodes().contains(n1));
+        Assert.assertTrue(m_builder.getNodes().contains(n2));
 
-        List toRemove = new ArrayList();
+        List<Node> toRemove = new ArrayList<>();
         toRemove.add(n1);
         toRemove.add(n2);
 
         m_builder.removeNodes(toRemove);
 
-        assertTrue(m_builder.getNodes().isEmpty());
+        Assert.assertTrue(m_builder.getNodes().isEmpty());
     }
 
+    @Test
     public void test_removeEdge_0() {
         Node n1 = m_builder.buildNode();
         Node n2 = m_builder.buildNode();
@@ -135,15 +141,16 @@ public class BasicGraphBuilderTest extends TestCase {
         m_builder.addNode(n2);
         m_builder.addEdge(e);
 
-        assertTrue(n1.getEdges().contains(e));
-        assertTrue(n2.getEdges().contains(e));
+        Assert.assertTrue(n1.getEdges().contains(e));
+        Assert.assertTrue(n2.getEdges().contains(e));
 
         m_builder.removeEdge(e);
-        assertTrue(!n1.getEdges().contains(e));
-        assertTrue(!n2.getEdges().contains(e));
-        assertTrue(m_builder.getEdges().isEmpty());
+        Assert.assertFalse(n1.getEdges().contains(e));
+        Assert.assertFalse(n2.getEdges().contains(e));
+        Assert.assertTrue(m_builder.getEdges().isEmpty());
     }
 
+    @Test
     public void test_removeEdge_1() {
         // test a loop edge
         Node n1 = m_builder.buildNode();
@@ -153,13 +160,14 @@ public class BasicGraphBuilderTest extends TestCase {
         m_builder.addNode(n1);
         m_builder.addEdge(e);
 
-        assertTrue(n1.getEdges().contains(e));
+        Assert.assertTrue(n1.getEdges().contains(e));
 
         m_builder.removeEdge(e);
-        assertTrue(!n1.getEdges().contains(e));
-        assertTrue(m_builder.getEdges().isEmpty());
+        Assert.assertFalse(n1.getEdges().contains(e));
+        Assert.assertTrue(m_builder.getEdges().isEmpty());
     }
 
+    @Test
     public void test_removeEdges() {
         Node n1 = m_builder.buildNode();
         Node n2 = m_builder.buildNode();
@@ -177,21 +185,22 @@ public class BasicGraphBuilderTest extends TestCase {
         m_builder.addEdge(e1);
         m_builder.addEdge(e2);
 
-        List toRemove = new ArrayList();
+        List<Edge> toRemove = new ArrayList<>();
         toRemove.add(e1);
         toRemove.add(e2);
 
-        assertTrue(m_builder.getEdges().contains(e1));
-        assertTrue(m_builder.getEdges().contains(e2));
+        Assert.assertTrue(m_builder.getEdges().contains(e1));
+        Assert.assertTrue(m_builder.getEdges().contains(e2));
 
         m_builder.removeEdges(toRemove);
 
-        assertTrue(m_builder.getEdges().isEmpty());
+        Assert.assertTrue(m_builder.getEdges().isEmpty());
     }
 
+    @Test
     public void test_getGraph() {
         Graph graph = m_builder.getGraph();
-        assertTrue(graph != null);
+        Assert.assertNotNull(graph);
     }
 
     private BasicGraphBuilder createBuilder() {

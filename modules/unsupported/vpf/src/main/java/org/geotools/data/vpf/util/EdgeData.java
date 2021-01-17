@@ -33,7 +33,8 @@ import org.opengis.geometry.DirectPosition;
  * @source $URL$
  */
 /** @source $URL$ */
-public class EdgeData extends HashMap {
+public class EdgeData extends HashMap<Object, Object> {
+    @Override
     public Object put(Object key, Object value) {
         if (key instanceof String) {
             GeometryFactory geofactory = new GeometryFactory();
@@ -67,9 +68,9 @@ public class EdgeData extends HashMap {
                     Object tmp = ((RowField) value).getValue();
 
                     if (tmp instanceof TripletId) {
-                        return super.put(key_s, (TripletId) tmp);
+                        return super.put(key_s, tmp);
                     } else if (tmp instanceof Integer) {
-                        return super.put(key_s, ((Integer) tmp));
+                        return super.put(key_s, tmp);
                     } else {
                         VPFLogger.log("DYNGE I TRIPLETGENERERING!!!");
                     }

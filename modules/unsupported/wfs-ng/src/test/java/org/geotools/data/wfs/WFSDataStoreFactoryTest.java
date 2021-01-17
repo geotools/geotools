@@ -47,7 +47,7 @@ public class WFSDataStoreFactoryTest {
     @Before
     public void setUp() throws Exception {
         dsf = new WFSDataStoreFactory();
-        params = new HashMap<String, Serializable>();
+        params = new HashMap<>();
     }
 
     @After
@@ -108,7 +108,7 @@ public class WFSDataStoreFactoryTest {
     private WFSDataStore testCreateDataStore(
             final String capabilitiesFile, final Version expectedVersion) throws IOException {
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("TESTING", Boolean.TRUE);
 
         final URL capabilitiesUrl = getClass().getResource("test-data/" + capabilitiesFile);

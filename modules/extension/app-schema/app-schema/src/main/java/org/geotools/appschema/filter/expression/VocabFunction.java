@@ -62,7 +62,7 @@ public class VocabFunction implements Function {
     public static final FunctionName NAME = new FunctionNameImpl("Vocab", "expr", "vocab");
 
     public VocabFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public VocabFunction(List<Expression> parameters, Literal fallback) {
@@ -104,8 +104,7 @@ public class VocabFunction implements Function {
         return Converters.convert(lookup.get(key), context);
     }
 
-    static Map<String, Properties> cache =
-            Collections.synchronizedMap(new SoftValueHashMap<String, Properties>());
+    static Map<String, Properties> cache = Collections.synchronizedMap(new SoftValueHashMap<>());
 
     public static synchronized Properties lookup(String urn) {
         // We should look up in our Registery
@@ -123,22 +122,12 @@ public class VocabFunction implements Function {
         properties = new Properties();
         File file = new File(urn);
         if (file.exists()) {
-            InputStream input = null;
-            try {
-                input = new BufferedInputStream(new FileInputStream(file));
+            try (InputStream input = new BufferedInputStream(new FileInputStream(file))) {
                 properties.load(input);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException("Could not find file for lookup table " + urn);
             } catch (IOException e) {
                 throw new RuntimeException("Difficulty parsing lookup table " + urn);
-            } finally {
-                if (input != null) {
-                    try {
-                        input.close();
-                    } catch (IOException e) {
-                        // we tried;
-                    }
-                }
             }
         } else {
             cache.put(urn, null); // don't check again and waste our time

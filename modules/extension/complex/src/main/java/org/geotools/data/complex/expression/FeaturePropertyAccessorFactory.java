@@ -130,9 +130,11 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             return object instanceof Attribute && FID_PATTERN.matcher(xpath).matches();
         }
 
-        public Object get(Object object, String xpath, Class target) {
+        @SuppressWarnings("unchecked")
+        public <T> T get(Object object, String xpath, Class<T> target)
+                throws IllegalArgumentException {
             Attribute feature = (Attribute) object;
-            return feature.getIdentifier().toString();
+            return (T) feature.getIdentifier().toString();
         }
 
         public void set(Object object, String xpath, Object value, Class target) {
@@ -152,8 +154,11 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             return (object instanceof Feature || object instanceof FeatureType);
         }
 
-        public Object get(Object object, String xpath, Class target) {
-            if (object instanceof Feature) return ((Feature) object).getDefaultGeometryProperty();
+        @SuppressWarnings("unchecked")
+        public <T> T get(Object object, String xpath, Class<T> target)
+                throws IllegalArgumentException {
+            if (object instanceof Feature)
+                return (T) ((Feature) object).getDefaultGeometryProperty();
             if (object instanceof FeatureType) {
                 FeatureType ft = (FeatureType) object;
                 GeometryDescriptor gd = ft.getGeometryDescriptor();
@@ -161,11 +166,11 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                     // look for any geometry descriptor
                     for (PropertyDescriptor pd : ft.getDescriptors()) {
                         if (Geometry.class.isAssignableFrom(pd.getType().getBinding())) {
-                            return pd;
+                            return (T) pd;
                         }
                     }
                 }
-                return gd;
+                return (T) gd;
             }
             return null;
         }
@@ -242,7 +247,9 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                     || object instanceof AttributeDescriptor;
         }
 
-        public Object get(Object object, String xpath, Class target) {
+        @SuppressWarnings("unchecked")
+        public <T> T get(Object object, String xpath, Class<T> target)
+                throws IllegalArgumentException {
 
             JXPathContext context = JXPathContext.newContext(object);
             Enumeration declaredPrefixes = namespaces.getDeclaredPrefixes();
@@ -253,7 +260,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             }
 
             Iterator it = context.iteratePointers(xpath);
-            List results = new ArrayList<Object>();
+            List results = new ArrayList<>();
             while (it.hasNext()) {
                 Pointer pointer = (Pointer) it.next();
                 if (pointer instanceof AttributeNodePointer) {
@@ -263,12 +270,12 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                 }
             }
 
-            if (results.size() == 0) {
+            if (results.isEmpty()) {
                 throw new IllegalArgumentException("x-path gives no results.");
             } else if (results.size() == 1) {
-                return results.get(0);
+                return (T) results.get(0);
             } else {
-                return results;
+                return (T) results;
             }
         }
 

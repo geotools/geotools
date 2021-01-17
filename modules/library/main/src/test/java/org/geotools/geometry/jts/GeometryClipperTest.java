@@ -18,6 +18,7 @@
 package org.geotools.geometry.jts;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -293,7 +294,7 @@ public class GeometryClipperTest {
         // System.out.println(g.getNumPoints());
         Geometry clipped = clipper.clip(g, false);
         assertNotNull(clipped);
-        assertTrue(!clipped.isEmpty());
+        assertFalse(clipped.isEmpty());
         //        System.out.println(clipped);
     }
 
@@ -309,7 +310,7 @@ public class GeometryClipperTest {
         clipper = new GeometryClipper(new Envelope(-12, 780.0, -12, 396.0));
 
         Geometry result = clipper.clipSafe(g, true, 1); // mimic streaming renderer
-        assertTrue(!result.isEmpty());
+        assertFalse(result.isEmpty());
         assertTrue(result.getArea() > 0);
     }
 

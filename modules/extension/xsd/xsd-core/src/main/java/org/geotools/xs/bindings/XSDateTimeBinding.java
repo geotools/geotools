@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import javax.xml.namespace.QName;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.util.Converters;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xs.XS;
@@ -99,7 +100,9 @@ public class XSDateTimeBinding implements SimpleBinding {
      * @generated modifiable
      */
     public Timestamp parse(InstanceComponent instance, Object value) throws Exception {
-        Calendar calendar = DatatypeConverterImpl.getInstance().parseDateTime((String) value, true);
+        String str = (String) value;
+        if (StringUtils.isEmpty(str)) return null;
+        Calendar calendar = DatatypeConverterImpl.getInstance().parseDateTime(str, true);
         Timestamp dateTime = new Timestamp(calendar.getTimeInMillis());
         return dateTime;
     }

@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xlink.XLINK;
 import org.geotools.xsd.XSD;
+import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
 
 /**
@@ -356,7 +357,7 @@ public final class GML extends XSD {
 
     @Override
     protected Schema buildTypeMappingProfile(Schema typeSchema) {
-        Set profile = new LinkedHashSet();
+        Set<Name> profile = new LinkedHashSet<>();
         profile.add(name(GML.PointPropertyType));
         profile.add(name(GML.MultiPointPropertyType));
         profile.add(name(GML.LineStringPropertyType));
@@ -367,7 +368,7 @@ public final class GML extends XSD {
         return typeSchema.profile(profile);
     }
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         // add xlink dependency
         dependencies.add(XLINK.getInstance());
     }

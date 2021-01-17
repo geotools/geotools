@@ -1,17 +1,22 @@
 package org.geotools.kml.v22;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.PullParser;
 import org.geotools.xsd.StreamingParser;
+import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class KMLParsingTest extends KMLTestSupport {
-
+    @Test
     public void testParseDocument() throws Exception {
         SimpleFeature doc = parseSamples("KML_Samples.kml");
 
@@ -21,6 +26,7 @@ public class KMLParsingTest extends KMLTestSupport {
         assertEquals(6, ((List) doc.getAttribute("Feature")).size());
     }
 
+    @Test
     public void testParseFolder() throws Exception {
         SimpleFeature doc = parseSamples("KML_Samples.kml");
         SimpleFeature folder = (SimpleFeature) ((List) doc.getAttribute("Feature")).get(0);
@@ -30,6 +36,7 @@ public class KMLParsingTest extends KMLTestSupport {
         assertEquals(3, ((List) folder.getAttribute("Feature")).size());
     }
 
+    @Test
     public void testParsePlacemark() throws Exception {
         SimpleFeature doc = parseSamples("KML_Samples.kml");
         SimpleFeature folder = (SimpleFeature) ((List) doc.getAttribute("Feature")).get(0);
@@ -46,8 +53,10 @@ public class KMLParsingTest extends KMLTestSupport {
         assertEquals(37.42229, p.getY(), 0.0001);
     }
 
+    @Test
     public void testParseWithSchema() throws Exception {}
 
+    @Test
     public void testStreamParse() throws Exception {
         StreamingParser p =
                 new StreamingParser(
@@ -61,6 +70,7 @@ public class KMLParsingTest extends KMLTestSupport {
         assertEquals(20, count);
     }
 
+    @Test
     public void testPullParse() throws Exception {
         PullParser p =
                 new PullParser(
@@ -75,6 +85,7 @@ public class KMLParsingTest extends KMLTestSupport {
         assertEquals(20, count);
     }
 
+    @Test
     public void testPullParseOrHandler() throws Exception {
         PullParser p =
                 new PullParser(
@@ -90,6 +101,7 @@ public class KMLParsingTest extends KMLTestSupport {
         assertEquals(28, count);
     }
 
+    @Test
     public void testParseExtendedData() throws Exception {
         String xml =
                 " <Placemark> "
@@ -122,6 +134,7 @@ public class KMLParsingTest extends KMLTestSupport {
         assertEquals("4", untypedData.get("holePar"));
     }
 
+    @Test
     public void testExtendedDataTyped() throws Exception {
         String xml =
                 "<kml xmlns='http://www.opengis.net/kml/2.2'> "
@@ -183,7 +196,8 @@ public class KMLParsingTest extends KMLTestSupport {
         buildDocument(xml);
 
         SimpleFeature doc = (SimpleFeature) parse();
-        List<SimpleFeature> features = (List<SimpleFeature>) doc.getAttribute("Feature");
+        @SuppressWarnings("unchecked")
+        List<SimpleFeature> features = (List) doc.getAttribute("Feature");
         assertEquals(2, features.size());
 
         SimpleFeature f = features.get(0);
@@ -197,9 +211,11 @@ public class KMLParsingTest extends KMLTestSupport {
         assertEquals(Integer.class, t.getDescriptor("ElevationGain").getType().getBinding());
     }
 
+    @Test
     public void testDecodeSchemalessExtendedData() throws Exception {
         SimpleFeature doc = parseSamples("schemalessExtendedData.kml");
-        List<SimpleFeature> features = (List<SimpleFeature>) doc.getAttribute("Feature");
+        @SuppressWarnings("unchecked")
+        List<SimpleFeature> features = (List) doc.getAttribute("Feature");
 
         for (SimpleFeature f : features) {
             Map<Object, Object> ud = f.getUserData();

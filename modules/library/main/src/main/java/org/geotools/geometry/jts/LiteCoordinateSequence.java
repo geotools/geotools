@@ -313,10 +313,10 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
     /** changes this to a new CSF -- more efficient than the JTS way */
     private static final Geometry cloneGeometry(Polygon geom, int dimension) {
-        LinearRing lr = (LinearRing) cloneGeometry((LinearRing) geom.getExteriorRing(), dimension);
+        LinearRing lr = (LinearRing) cloneGeometry(geom.getExteriorRing(), dimension);
         LinearRing[] rings = new LinearRing[geom.getNumInteriorRing()];
         for (int t = 0; t < rings.length; t++) {
-            rings[t] = (LinearRing) cloneGeometry((LinearRing) geom.getInteriorRingN(t), dimension);
+            rings[t] = (LinearRing) cloneGeometry(geom.getInteriorRingN(t), dimension);
         }
         return geomFac.createPolygon(lr, rings);
     }
@@ -378,7 +378,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
             return geomFac.createGeometryCollection(gs);
         }
 
-        ArrayList gs = new ArrayList(geom.getNumGeometries());
+        ArrayList<Geometry> gs = new ArrayList<>(geom.getNumGeometries());
         int n = geom.getNumGeometries();
         for (int t = 0; t < n; t++) {
             gs.add(cloneGeometry(geom.getGeometryN(t), dimension));

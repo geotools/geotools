@@ -285,16 +285,16 @@ public class GeometryClipper {
     private Geometry clipPolygon(Polygon polygon) {
         final GeometryFactory gf = polygon.getFactory();
 
-        LinearRing exterior = (LinearRing) polygon.getExteriorRing();
+        LinearRing exterior = polygon.getExteriorRing();
         LinearRing shell = polygonClip(exterior);
         shell = cleanupRings(shell);
         if (shell == null) {
             return null;
         }
 
-        List<LinearRing> holes = new ArrayList<LinearRing>();
+        List<LinearRing> holes = new ArrayList<>();
         for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
-            LinearRing hole = (LinearRing) polygon.getInteriorRingN(i);
+            LinearRing hole = polygon.getInteriorRingN(i);
             hole = polygonClip(hole);
             hole = cleanupRings(hole);
             if (hole != null) {
@@ -302,7 +302,7 @@ public class GeometryClipper {
             }
         }
 
-        return gf.createPolygon(shell, (LinearRing[]) holes.toArray(new LinearRing[holes.size()]));
+        return gf.createPolygon(shell, holes.toArray(new LinearRing[holes.size()]));
     }
 
     /**
@@ -534,7 +534,7 @@ public class GeometryClipper {
         if (gc.getNumGeometries() == 1) {
             return clip(gc.getGeometryN(0), ensureValid);
         } else {
-            List<Geometry> result = new ArrayList<Geometry>(gc.getNumGeometries());
+            List<Geometry> result = new ArrayList<>(gc.getNumGeometries());
             for (int i = 0; i < gc.getNumGeometries(); i++) {
                 Geometry clipped = clip(gc.getGeometryN(i), ensureValid);
                 if (clipped != null) {
@@ -552,7 +552,7 @@ public class GeometryClipper {
                 result = filterCollection(Polygon.class, result);
             }
 
-            if (result.size() == 0) {
+            if (result.isEmpty()) {
                 return null;
             } else if (result.size() == 1) {
                 return result.get(0);
@@ -561,19 +561,16 @@ public class GeometryClipper {
             flattenCollection(result);
 
             if (gc instanceof MultiPoint) {
-                return gc.getFactory()
-                        .createMultiPoint((Point[]) result.toArray(new Point[result.size()]));
+                return gc.getFactory().createMultiPoint(result.toArray(new Point[result.size()]));
             } else if (gc instanceof MultiLineString) {
                 return gc.getFactory()
-                        .createMultiLineString(
-                                (LineString[]) result.toArray(new LineString[result.size()]));
+                        .createMultiLineString(result.toArray(new LineString[result.size()]));
             } else if (gc instanceof MultiPolygon) {
                 return gc.getFactory()
-                        .createMultiPolygon((Polygon[]) result.toArray(new Polygon[result.size()]));
+                        .createMultiPolygon(result.toArray(new Polygon[result.size()]));
             } else {
                 return gc.getFactory()
-                        .createGeometryCollection(
-                                (Geometry[]) result.toArray(new Geometry[result.size()]));
+                        .createGeometryCollection(result.toArray(new Geometry[result.size()]));
             }
         }
     }
@@ -601,7 +598,7 @@ public class GeometryClipper {
     /** Clips a linestring using the Cohen-Sutherlan segment clipping helper method */
     Geometry clipLineString(LineString line) {
         // the result
-        List<LineString> clipped = new ArrayList<LineString>();
+        List<LineString> clipped = new ArrayList<>();
 
         // grab all the factories a
         final GeometryFactory gf = line.getFactory();
@@ -710,8 +707,7 @@ public class GeometryClipper {
 
         // return the results
         if (clipped.size() > 1) {
-            return gf.createMultiLineString(
-                    (LineString[]) clipped.toArray(new LineString[clipped.size()]));
+            return gf.createMultiLineString(clipped.toArray(new LineString[clipped.size()]));
         } else if (clipped.size() == 1) {
             return clipped.get(0);
         } else {

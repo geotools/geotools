@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -68,7 +67,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
     }
 
     public List properties(Object object, XSDElementDeclaration element) {
-        final List properties = new ArrayList();
+        final List<Object[]> properties = new ArrayList<>();
 
         // first get all the properties that can be inferred from the schema
         final List<XSDParticle> children =
@@ -78,8 +77,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
         if (isUnboundedSequence(object, element)) {
             processUnboundedSequence(object, properties, children);
         } else {
-            for (Iterator<XSDParticle> itr = children.iterator(); itr.hasNext(); ) {
-                XSDParticle particle = itr.next();
+            for (XSDParticle particle : children) {
                 XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
 
                 if (child.isElementDeclarationReference()) {
@@ -104,20 +102,17 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     object, encoder.getBindingWalker(), element, executor, context);
 
             if (!executor.getProperties().isEmpty()) {
-                // group into a map of name, list
-                MultiValuedMap map = new ArrayListValuedHashMap();
+                // group into a map of name, list (name can be a QName or a XSDParticle...)
+                MultiValuedMap<Object, Object> map = new ArrayListValuedHashMap<>();
 
-                for (Iterator p = executor.getProperties().iterator(); p.hasNext(); ) {
-                    Object[] property = (Object[]) p.next();
+                for (Object[] property : executor.getProperties()) {
                     map.put(property[0], property[1]);
                 }
 
                 // turn each map entry into a particle
-                HashMap particles = new HashMap();
+                HashMap<QName, XSDParticle> particles = new HashMap<>();
 
-                for (Iterator e = map.keySet().iterator(); e.hasNext(); ) {
-                    Object key = e.next();
-
+                for (Object key : map.keySet()) {
                     // key could be a name or a particle
                     if (key instanceof XSDParticle) {
                         XSDParticle particle = (XSDParticle) key;
@@ -126,7 +121,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     }
 
                     QName name = (QName) key;
-                    Collection values = map.get(key);
+                    Collection values = map.get(name);
 
                     // check for comment
                     if (Encoder.COMMENT.equals(name)) {
@@ -184,11 +179,8 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     // b) in the same subsittuion group
                     // if found use the particle to dervice multiplicity
                     XSDParticle reference = null;
-                    for (Iterator p =
-                                    Schemas.getChildElementParticles(element.getType(), true)
-                                            .iterator();
-                            p.hasNext(); ) {
-                        XSDParticle particle = (XSDParticle) p.next();
+                    for (XSDParticle particle :
+                            Schemas.getChildElementParticles(element.getType(), true)) {
                         XSDElementDeclaration el = (XSDElementDeclaration) particle.getContent();
                         if (el.isElementDeclarationReference()) {
                             el = el.getResolvedElementDeclaration();
@@ -225,9 +217,8 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                 }
 
                 // process the particles in order in which we got the properties
-                for (Iterator p = executor.getProperties().iterator(); p.hasNext(); ) {
-                    Object[] property = (Object[]) p.next();
-                    Collection values = (Collection) map.get(property[0]);
+                for (Object[] property : executor.getProperties()) {
+                    Collection values = map.get(property[0]);
 
                     QName name;
                     if (property[0] instanceof XSDParticle) {
@@ -236,7 +227,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                         name = (QName) property[0];
                     }
 
-                    XSDParticle particle = (XSDParticle) particles.get(name);
+                    XSDParticle particle = particles.get(name);
 
                     if (particle == null) {
                         continue; // already processed, must be a multi property
@@ -268,7 +259,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
          to maintain the feature properties order, sort the properties to their original order as in "children" list
         */
         if (object instanceof ComplexAttributeImpl && propertiesSortable(properties, children)) {
-            List sortedProperties = new ArrayList();
+            List<Object[]> sortedProperties = new ArrayList<>();
 
             // sort properties according to their XSDParticle order in "children"
             for (int i = 0; i < children.size(); i++) {
@@ -278,8 +269,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     child = child.getResolvedElementDeclaration();
                 }
 
-                for (Iterator itr = properties.iterator(); itr.hasNext(); ) {
-                    Object[] prop = (Object[]) itr.next();
+                for (Object[] prop : properties) {
                     XSDParticle part = (XSDParticle) prop[0];
                     XSDElementDeclaration partContent = (XSDElementDeclaration) part.getContent();
                     if (partContent.getResolvedElementDeclaration() != null) {
@@ -306,7 +296,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
     }
 
     private void processUnboundedSequence(
-            Object object, List properties, List<XSDParticle> children) {
+            Object object, List<Object[]> properties, List<XSDParticle> children) {
         final ComplexAttribute complexAttr = (ComplexAttribute) object;
         final Deque<Attribute> attrDeque = getChildrenAttributes(complexAttr);
         // separate into repeat tuples
@@ -408,16 +398,16 @@ public class BindingPropertyExtractor implements PropertyExtractor {
             return false;
         }
 
-        for (Iterator itr = properties.iterator(); itr.hasNext(); ) {
-            Object[] prop = (Object[]) itr.next();
+        for (Object property : properties) {
+            Object[] prop = (Object[]) property;
             XSDParticle part = (XSDParticle) prop[0];
             XSDElementDeclaration partContent = (XSDElementDeclaration) part.getContent();
             if (partContent.getResolvedElementDeclaration() != null) {
                 partContent = partContent.getResolvedElementDeclaration();
             }
             boolean notFound = true;
-            for (int i = 0; i < children.size(); i++) {
-                XSDParticle particle = (XSDParticle) children.get(i);
+            for (Object o : children) {
+                XSDParticle particle = (XSDParticle) o;
                 XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
                 if (child.getResolvedElementDeclaration() != null) {
                     child = child.getResolvedElementDeclaration();

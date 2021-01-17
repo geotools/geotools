@@ -133,8 +133,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
 
     boolean functionEncodingEnabled = false;
 
-    private static HashMap<Class<?>, String> DB2_SPATIAL_PREDICATES =
-            new HashMap<Class<?>, String>();
+    private static HashMap<Class<?>, String> DB2_SPATIAL_PREDICATES = new HashMap<>();
 
     public DB2FilterToSQL(PreparedStatementSQLDialect dialect) {
         super(dialect);
@@ -272,7 +271,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
                     (DistanceBufferOperator) filter, property, geometry, swapped, extraData);
         } else {
             return visitBinarySpatialOperator(
-                    filter, (Expression) property, (Expression) geometry, swapped, extraData);
+                    filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 

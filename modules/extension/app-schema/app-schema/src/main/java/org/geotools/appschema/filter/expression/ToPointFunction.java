@@ -72,7 +72,7 @@ public class ToPointFunction implements Function {
     public static final Expression GML_ID = ff.literal("gml:id");
 
     public ToPointFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public ToPointFunction(List<Expression> parameters, Literal fallback) {
@@ -121,7 +121,7 @@ public class ToPointFunction implements Function {
             CoordinateReferenceSystem crs = null;
             String srsName = parameters.get(1).evaluate(object, String.class);
             try {
-                crs = CRS.decode((String) srsName);
+                crs = CRS.decode(srsName);
             } catch (NoSuchAuthorityCodeException e) {
                 throw new IllegalArgumentException(
                         "Invalid or unsupported SRS name detected for toPoint function: "
@@ -177,7 +177,7 @@ public class ToPointFunction implements Function {
      * @param gmlId gml:id value
      */
     private void setUserData(Point point, CoordinateReferenceSystem crs, String gmlId) {
-        Map<Object, Object> userData = new HashMap<Object, Object>();
+        Map<Object, Object> userData = new HashMap<>();
         if (gmlId != null) {
             userData.put("gml:id", gmlId);
         }

@@ -17,6 +17,15 @@
  */
 package org.geotools.gce.geotiff;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
@@ -93,7 +102,7 @@ import org.opengis.referencing.operation.Projection;
  *
  * @author Simone Giannecchini
  */
-public class GeoTiffReaderTest extends org.junit.Assert {
+public class GeoTiffReaderTest {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class);
 
@@ -378,11 +387,10 @@ public class GeoTiffReaderTest extends org.junit.Assert {
                 CRS.equalsIgnoreMetadata(
                         coverage.getCoordinateReferenceSystem(),
                         destCoverage.getCoordinateReferenceSystem()));
-        assertTrue(
+        assertEquals(
                 "GridRange comparison failed:" + toString,
-                coverage.getGridGeometry()
-                        .getGridRange()
-                        .equals(destCoverage.getGridGeometry().getGridRange()));
+                coverage.getGridGeometry().getGridRange(),
+                destCoverage.getGridGeometry().getGridRange());
         assertTrue(
                 "Envelope comparison failed:" + toString,
                 ((GeneralEnvelope) coverage.getGridGeometry().getEnvelope())
@@ -653,7 +661,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         Assert.assertEquals(4, layout.getNumInternalOverviews());
         Assert.assertEquals(0, layout.getNumExternalOverviews());
         Assert.assertEquals(0, layout.getNumExternalMaskOverviews());
-        Assert.assertTrue(!layout.getExternalMasks().getAbsolutePath().isEmpty());
+        assertFalse(layout.getExternalMasks().getAbsolutePath().isEmpty());
         Assert.assertNull(layout.getExternalOverviews());
         Assert.assertNull(layout.getExternalMaskOverviews());
 
@@ -843,9 +851,9 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         Assert.assertEquals(4, layout.getNumInternalOverviews());
         Assert.assertEquals(0, layout.getNumExternalOverviews());
         Assert.assertEquals(4, layout.getNumExternalMaskOverviews());
-        Assert.assertTrue(!layout.getExternalMasks().getAbsolutePath().isEmpty());
+        assertFalse(layout.getExternalMasks().getAbsolutePath().isEmpty());
         Assert.assertNull(layout.getExternalOverviews());
-        Assert.assertTrue(!layout.getExternalMaskOverviews().getAbsolutePath().isEmpty());
+        assertFalse(layout.getExternalMaskOverviews().getAbsolutePath().isEmpty());
 
         // Doing a minor Operation in order to make ROI available
         CoverageProcessor processor = CoverageProcessor.getInstance();
@@ -941,20 +949,20 @@ public class GeoTiffReaderTest extends org.junit.Assert {
                 // reading the coverage
                 GridCoverage2D coverage = reader.read(null);
                 assertNotNull(coverage);
-                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 1);
+                assertEquals(1, coverage.getRenderedImage().getSampleModel().getNumBands());
                 final ParameterValue<Color> colorPV =
                         AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
                 colorPV.setValue(Color.BLACK);
                 coverage = reader.read(new GeneralParameterValue[] {colorPV});
                 assertNotNull(coverage);
-                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 2);
+                assertEquals(2, coverage.getRenderedImage().getSampleModel().getNumBands());
 
                 // showing it
                 if (TestData.isInteractiveTest()) coverage.show();
                 else PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
             }
 
-        } else assertFalse(true); // we should not get here
+        } else fail(); // we should not get here
 
         file = TestData.file(GeoTiffReaderTest.class, "gaarc_subset.tiff");
         if (format.accepts(file)) {
@@ -966,20 +974,20 @@ public class GeoTiffReaderTest extends org.junit.Assert {
                 // reading the coverage
                 GridCoverage2D coverage = reader.read(null);
                 assertNotNull(coverage);
-                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 3);
+                assertEquals(3, coverage.getRenderedImage().getSampleModel().getNumBands());
                 final ParameterValue<Color> colorPV =
                         AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
                 colorPV.setValue(new Color(34, 53, 87));
                 coverage = reader.read(new GeneralParameterValue[] {colorPV});
                 assertNotNull(coverage);
-                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 4);
+                assertEquals(4, coverage.getRenderedImage().getSampleModel().getNumBands());
 
                 // showing it
                 if (TestData.isInteractiveTest()) coverage.show();
                 else PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
             }
 
-        } else assertFalse(true); // we should not get here
+        } else fail(); // we should not get here
 
         // now we test that we cannot do colormasking on a non-rendered output
         file = TestData.file(GeoTiffReaderTest.class, "wind.tiff");
@@ -992,13 +1000,13 @@ public class GeoTiffReaderTest extends org.junit.Assert {
                 // reading the coverage
                 GridCoverage2D coverage = reader.read(null);
                 assertNotNull(coverage);
-                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 2);
+                assertEquals(2, coverage.getRenderedImage().getSampleModel().getNumBands());
                 final ParameterValue<Color> colorPV =
                         AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
                 colorPV.setValue(new Color(34, 53, 87));
                 try {
                     coverage = reader.read(new GeneralParameterValue[] {colorPV});
-                    assertFalse(true); // we should not get here
+                    fail(); // we should not get here
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
@@ -1020,7 +1028,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     public void testExternalOverviews() throws Exception {
         final File file = TestData.file(GeoTiffReaderTest.class, "ovr.tif");
         assertNotNull(file);
-        assertEquals(true, file.exists());
+        assertTrue(file.exists());
         GeoTiffReader reader = new GeoTiffReader(file);
         final int nOvrs = reader.getDatasetLayout().getNumExternalOverviews();
         LOGGER.info("Number of external overviews: " + nOvrs);
@@ -1103,13 +1111,13 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     public void testLeakedOpenFileFix() throws Exception {
         final File file = TestData.file(GeoTiffReaderTest.class, "leak.tiff");
         assertNotNull(file);
-        assertEquals(true, file.exists());
+        assertTrue(file.exists());
 
         try {
 
             @SuppressWarnings("unused")
             GeoTiffReader reader = new GeoTiffReader(file);
-            assertTrue(false);
+            fail();
         } catch (Exception e) {
             assertTrue(true);
         }
@@ -1135,7 +1143,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
                 IOException ioException = (IOException) e.getCause();
                 assertTrue(ioException.getMessage().contains("can not be read"));
             } else {
-                assertFalse(true);
+                fail();
             }
         } finally {
             file.setReadable(true);

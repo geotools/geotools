@@ -38,7 +38,7 @@ public class LinesTest {
 
     @Before
     public void setup() {
-        lineDefs = new ArrayList<OrthoLineDef>();
+        lineDefs = new ArrayList<>();
     }
 
     @Test
@@ -77,8 +77,7 @@ public class LinesTest {
             SimpleFeatureSource featureSource, LineOrientation lineOrientation, double minOrdinate)
             throws Exception {
 
-        SimpleFeatureIterator iterator = featureSource.getFeatures().features();
-        try {
+        try (SimpleFeatureIterator iterator = featureSource.getFeatures().features()) {
             Object obj = null;
             while (iterator.hasNext()) {
                 SimpleFeature lineFeature = iterator.next();
@@ -116,8 +115,6 @@ public class LinesTest {
                     fail(String.format("value = %.2f, level = %d", value, level));
                 }
             }
-        } finally {
-            iterator.close();
         }
     }
 }

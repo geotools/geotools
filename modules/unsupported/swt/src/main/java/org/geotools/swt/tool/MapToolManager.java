@@ -39,7 +39,7 @@ public class MapToolManager
         implements MouseListener, MouseMoveListener, MouseWheelListener, MouseTrackListener {
 
     private SwtMapPane mapPane;
-    private Set<MapMouseListener> listeners = new HashSet<MapMouseListener>();
+    private Set<MapMouseListener> listeners = new HashSet<>();
     private CursorTool cursorTool;
 
     /**

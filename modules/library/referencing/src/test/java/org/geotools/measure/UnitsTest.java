@@ -36,8 +36,8 @@ import org.junit.Test;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
-import tec.uom.se.function.MultiplyConverter;
-import tec.uom.se.unit.TransformedUnit;
+import tech.units.indriya.function.MultiplyConverter;
+import tech.units.indriya.unit.TransformedUnit;
 
 /**
  * Test conversions using the units declared in {@link Units}.
@@ -102,31 +102,37 @@ public class UnitsTest {
     }
 
     @Test
-    public void testUnitsMatch() {
+    public void testUnitsMatch1() {
         Unit<Angle> degree =
                 Units.autoCorrect(
-                        new TransformedUnit<Angle>(
-                                SI.RADIAN, new MultiplyConverter((Math.PI * 2.0) / 360.0)));
-        assertEquals("autocorrection of degree definition from jsr275", NonSI.DEGREE_ANGLE, degree);
-        assertTrue("jsr275 deegree definition", isDegreeAngle(degree));
-
-        // UNIT["degree", 0.017453292519943295],
-        degree =
-                Units.autoCorrect(
-                        new TransformedUnit<Angle>(
-                                SI.RADIAN, new MultiplyConverter(0.017453292519943295)));
+                        new TransformedUnit<>(
+                                SI.RADIAN,
+                                MultiplyConverter.ofPiExponent(1)
+                                        .concatenate(MultiplyConverter.ofRational(1, 180))));
         assertEquals(
-                "autocorrection of deegree definition from EsriLookupTest",
+                "auto correction of degree definition from JSR 385", NonSI.DEGREE_ANGLE, degree);
+        assertTrue("JSR 385 degree definition", isDegreeAngle(degree));
+    }
+
+    @Test
+    public void testUnitsMatch2() {
+        // UNIT["degree", 0.017453292519943295],
+        Unit<Angle> degree =
+                Units.autoCorrect(
+                        new TransformedUnit<>(
+                                SI.RADIAN, MultiplyConverter.of(0.017453292519943295)));
+        assertEquals(
+                "auto correction of degree definition from EsriLookupTest",
                 NonSI.DEGREE_ANGLE,
                 degree);
-        assertTrue("deegree definition from EsriLookupTest", isDegreeAngle(degree));
+        assertTrue("degree definition from EsriLookupTest", isDegreeAngle(degree));
+    }
 
-        Unit<Length> feet =
-                Units.autoCorrect(
-                        new TransformedUnit<Length>(
-                                SI.METRE, new MultiplyConverter(0.3048006096012192)));
+    @Test
+    public void testUnitsMatch3() {
+        Unit<Length> feet = Units.autoCorrect(SI.METRE.multiply(1200).divide(3937));
         assertEquals(
-                "autocorrection of US Survey definition from EsriLookupTest",
+                "auto correction of US Survey definition from EsriLookupTest",
                 USCustomary.FOOT_SURVEY,
                 feet);
         assertTrue("survey foot definition from EsriLookupTest", isUSSurveyFoot(feet));
@@ -146,7 +152,7 @@ public class UnitsTest {
             UnitConverter converter = transformed.getConverter();
             if (converter instanceof MultiplyConverter) {
                 MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
-                double factor = multiplyConverter.getFactor();
+                double factor = multiplyConverter.getFactor().doubleValue();
                 // 0.3048006096012192  // observed
                 // 0.3048006096        // expected
                 if (Math.abs(US_SURVEY_FOOT_FACTORY - factor) < US_SURVEY_FOOT_COMPARISON_EPSILON) {
@@ -176,7 +182,7 @@ public class UnitsTest {
             UnitConverter converter = transformed.getConverter();
             if (converter instanceof MultiplyConverter) {
                 MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
-                double factor = multiplyConverter.getFactor();
+                double factor = multiplyConverter.getFactor().doubleValue();
                 if (Math.abs(RADIAN_TO_DEGREE_RATIO - factor) < DEEGREE_RATIO_COMPARISON_EPSILON) {
                     return true;
                 }

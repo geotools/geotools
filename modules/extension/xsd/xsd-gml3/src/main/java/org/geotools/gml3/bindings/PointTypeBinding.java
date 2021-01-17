@@ -109,7 +109,7 @@ public class PointTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         if (node.hasChild(DirectPosition.class)) {
-            DirectPosition dp = (DirectPosition) node.getChildValue(DirectPosition.class);
+            DirectPosition dp = node.getChildValue(DirectPosition.class);
 
             if (dp instanceof DirectPosition2D) {
                 return gFactory.createPoint(new Coordinate(dp.getOrdinate(0), dp.getOrdinate(1)));
@@ -120,12 +120,11 @@ public class PointTypeBinding extends AbstractComplexBinding {
         }
 
         if (node.hasChild(Coordinate.class)) {
-            return gFactory.createPoint((Coordinate) node.getChildValue(Coordinate.class));
+            return gFactory.createPoint(node.getChildValue(Coordinate.class));
         }
 
         if (node.hasChild(CoordinateSequence.class)) {
-            return gFactory.createPoint(
-                    (CoordinateSequence) node.getChildValue(CoordinateSequence.class));
+            return gFactory.createPoint(node.getChildValue(CoordinateSequence.class));
         }
 
         return null;

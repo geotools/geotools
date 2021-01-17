@@ -55,13 +55,13 @@ public abstract class FeatureToFeatureProcessFactory
      * modified by the process or a new FeatureCollection.
      */
     public static final Parameter<FeatureCollection> RESULT =
-            new Parameter<FeatureCollection>(
+            new Parameter<>(
                     "result",
                     FeatureCollection.class,
                     Text.text("Result"),
                     Text.text("Buffered features"));
 
-    static final Map<String, Parameter<?>> resultInfo = new HashMap<String, Parameter<?>>();
+    static final Map<String, Parameter<?>> resultInfo = new HashMap<>();
 
     static {
         resultInfo.put(RESULT.key, RESULT);

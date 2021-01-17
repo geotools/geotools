@@ -86,8 +86,7 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     @Test
     public void testFeaturesData() throws Exception {
         FeatureSource<FeatureType, Feature> fSource =
-                (FeatureSource<FeatureType, Feature>)
-                        mappingDataStore.getFeatureSource(mappedTypeName);
+                mappingDataStore.getFeatureSource(mappedTypeName);
         List<Feature> features = toFeaturesList(fSource.getFeatures());
         // check features count
         assertEquals(2, features.size());
@@ -121,26 +120,20 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
 
     private List<Feature> toFeaturesList(FeatureCollection<FeatureType, Feature> features) {
         List<Feature> result = new ArrayList<>();
-        FeatureIterator<Feature> i = features.features();
-        try {
+        try (FeatureIterator<Feature> i = features.features()) {
             while (i.hasNext()) {
                 result.add(i.next());
             }
-        } finally {
-            i.close();
         }
         return result;
     }
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
         int size = 0;
-        FeatureIterator<Feature> i = features.features();
-        try {
+        try (FeatureIterator<Feature> i = features.features()) {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        } finally {
-            i.close();
         }
         return size;
     }
@@ -154,7 +147,7 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     }
 
     protected void setupDataStore() throws Exception {
-        final Map dsParams = new HashMap();
+        final Map<String, Object> dsParams = new HashMap<>();
         dsParams.put("dbtype", "app-schema");
         final URL url = new URL(new URL("file:"), "./" + testDirStr + "/" + xmlFileName);
         dsParams.put("url", url.toExternalForm());

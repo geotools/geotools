@@ -1,5 +1,8 @@
 package org.geotools.filter.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.opengis.filter.identity.Version.Action.ALL;
 import static org.opengis.filter.identity.Version.Action.FIRST;
 import static org.opengis.filter.identity.Version.Action.LAST;
@@ -15,6 +18,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.ResourceIdImpl;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.geotools.xml.impl.DatatypeConverterImpl;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.Identifier;
@@ -22,7 +26,7 @@ import org.opengis.filter.identity.ResourceId;
 import org.opengis.filter.identity.Version;
 
 public class ResourceIdTypeBindingTest extends FESTestSupport {
-
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<fes:Filter "
@@ -45,7 +49,7 @@ public class ResourceIdTypeBindingTest extends FESTestSupport {
         Id filter = (Id) parse();
         assertNotNull(filter);
         assertEquals(7, filter.getIdentifiers().size());
-        List<ResourceId> ids = new ArrayList<ResourceId>(7);
+        List<ResourceId> ids = new ArrayList<>(7);
         for (Identifier id : filter.getIdentifiers()) {
             assertTrue(id instanceof ResourceId);
             ids.add((ResourceId) id);

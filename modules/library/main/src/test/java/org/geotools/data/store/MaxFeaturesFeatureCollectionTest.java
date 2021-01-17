@@ -16,11 +16,15 @@
  */
 package org.geotools.data.store;
 
+import static org.junit.Assert.*;
+
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.MaxSimpleFeatureCollection;
+import org.junit.Test;
 
 public class MaxFeaturesFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
+    @Test
     public void testSize() throws Exception {
         // in the common case it's as big as the max
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 2);
@@ -35,41 +39,35 @@ public class MaxFeaturesFeatureCollectionTest extends FeatureCollectionWrapperTe
         assertEquals(0, max.size());
     }
 
+    @Test
     public void testIteratorMax() throws Exception {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 2);
-        SimpleFeatureIterator i = max.features();
-        try {
+        try (SimpleFeatureIterator i = max.features()) {
             for (int x = 0; x < 2; x++) {
                 assertTrue(i.hasNext());
                 i.next();
             }
             assertFalse(i.hasNext());
-        } finally {
-            i.close();
         }
     }
 
+    @Test
     public void testIteratorSkipMax() throws Exception {
         MaxSimpleFeatureCollection max =
                 new MaxSimpleFeatureCollection(delegate, delegate.size() - 1, 2);
-        SimpleFeatureIterator i = max.features();
-        try {
+        try (SimpleFeatureIterator i = max.features()) {
             assertTrue(i.hasNext());
             i.next();
             assertFalse(i.hasNext());
-        } finally {
-            i.close();
         }
     }
 
+    @Test
     public void testIteratorSkipMoreSize() throws Exception {
         MaxSimpleFeatureCollection max =
                 new MaxSimpleFeatureCollection(delegate, delegate.size() + 1, 2);
-        SimpleFeatureIterator i = max.features();
-        try {
+        try (SimpleFeatureIterator i = max.features()) {
             assertFalse(i.hasNext());
-        } finally {
-            i.close();
         }
     }
 }

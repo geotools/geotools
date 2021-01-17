@@ -36,6 +36,8 @@ import org.geotools.util.KVP;
 import org.geotools.util.logging.Logging;
 import org.postgresql.jdbc.SslMode;
 
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
 
     static final Logger LOGGER = Logging.getLogger(PostgisNGDataStoreFactory.class);
@@ -119,14 +121,27 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     Boolean.TRUE,
                     new KVP(Param.LEVEL, "advanced"));
 
-    /** Enables usage of ST_Simplify when the queries contain geometry simplification hints */
+    /**
+     * Enables usage of a simplification function, when the queries contain geometry simplification
+     * hints The simplification function used depends on SIMPLIFICATION_METHOD setting, and is
+     * ST_Simplify by default
+     */
     public static final Param SIMPLIFY =
             new Param(
                     "Support on the fly geometry simplification",
                     Boolean.class,
-                    "When enabled, operations such as map rendering will pass a hint that will enable the usage of ST_Simplify",
+                    "When enabled, operations such as map rendering will pass a hint that will enable the usage of a simplification function",
                     false,
                     Boolean.TRUE);
+    /** Simplification method to use if SIMPLIFY is true. By default ST_Simplify is used. */
+    public static final Param SIMPLIFICATION_METHOD =
+            new Param(
+                    "Method used to simplify geometries",
+                    SimplificationMethod.class,
+                    "Allows choosing the PostGIS simplification function to use, between ST_Simplify and ST_SimplifyPreserveTopology",
+                    false,
+                    SimplificationMethod.FAST,
+                    new KVP(Param.OPTIONS, Arrays.asList(SimplificationMethod.values())));
 
     public static final Param SSL_MODE =
             new Param(
@@ -138,7 +153,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     new KVP(Param.OPTIONS, Arrays.asList(SslMode.values())));
 
     @Override
-    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map params) {
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map<String, ?> params) {
         PostGISDialect dialect = new PostGISDialect(dataStore);
         try {
             if (Boolean.TRUE.equals(PREPARED_STATEMENTS.lookUp(params))) {
@@ -180,7 +195,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected boolean checkDBType(Map params) {
+    protected boolean checkDBType(Map<String, ?> params) {
         if (super.checkDBType(params)) {
             // check for old factory
             try {
@@ -198,7 +213,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         }
     }
 
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
 
         // setup loose bbox
@@ -229,6 +244,11 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         // check geometry simplification (on by default)
         Boolean simplify = (Boolean) SIMPLIFY.lookUp(params);
         dialect.setSimplifyEnabled(simplify == null || simplify);
+        // check preserving topology when simplifying geometries (off by default)
+        SimplificationMethod simplificationMethod =
+                (SimplificationMethod) SIMPLIFICATION_METHOD.lookUp(params);
+        dialect.setTopologyPreserved(
+                SimplificationMethod.PRESERVETOPOLOGY.equals(simplificationMethod));
 
         // encode BBOX filter with wrapping ST_Envelope (GEOT-5167)
         Boolean encodeBBOXAsEnvelope = false;
@@ -243,7 +263,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         // NOTE: when adding parameters here remember to add them to PostgisNGJNDIDataStoreFactory
 
         super.setupParameters(parameters);
@@ -257,6 +277,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
         parameters.put(SIMPLIFY.key, SIMPLIFY);
+        parameters.put(SIMPLIFICATION_METHOD.key, SIMPLIFICATION_METHOD);
         parameters.put(CREATE_DB_IF_MISSING.key, CREATE_DB_IF_MISSING);
         parameters.put(CREATE_PARAMS.key, CREATE_PARAMS);
     }
@@ -267,7 +288,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String host = (String) HOST.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         int port = (Integer) PORT.lookUp(params);
@@ -280,7 +301,8 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         return url;
     }
 
-    protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
+            throws IOException {
         DataSource ds = super.createDataSource(params, dialect);
         JDBCDataStore store = new JDBCDataStore();
 

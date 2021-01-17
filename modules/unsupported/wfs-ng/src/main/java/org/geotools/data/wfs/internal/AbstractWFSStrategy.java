@@ -234,7 +234,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
     protected Map<String, String> buildGetFeatureParametersForGET(GetFeatureRequest request) {
         requestDebug("Creating GetFeature request parameters for ", request.getTypeName());
 
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("SERVICE", "WFS");
         Version serviceVersion = getServiceVersion();
         map.put("VERSION", serviceVersion.toString());
@@ -422,7 +422,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
             throw e;
         }
 
-        Map<String, String> kvp = new HashMap<String, String>();
+        Map<String, String> kvp = new HashMap<>();
         kvp.put("SERVICE", "WFS");
         kvp.put("VERSION", getServiceVersion().toString());
         kvp.put("REQUEST", "DescribeFeatureType");
@@ -448,7 +448,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
     protected Map<String, String> buildDescribeStoredQueriesParametersForGET(
             final DescribeStoredQueriesRequest request) {
 
-        Map<String, String> kvp = new HashMap<String, String>();
+        Map<String, String> kvp = new HashMap<>();
         kvp.put("SERVICE", "WFS");
         kvp.put("VERSION", getServiceVersion().toString());
         kvp.put("REQUEST", "DescribeStoredQueries");
@@ -472,7 +472,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
     protected Map<String, String> buildListStoredQueriesParametersForGET(
             ListStoredQueriesRequest request) {
-        Map<String, String> kvp = new HashMap<String, String>();
+        Map<String, String> kvp = new HashMap<>();
         kvp.put("SERVICE", "WFS");
         kvp.put("VERSION", getServiceVersion().toString());
         kvp.put("REQUEST", "ListStoredQueries");
@@ -554,7 +554,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         encoder.setEncoding(charset);
         encoder.setIndentSize(1);
 
-        Set<QName> typeNames = new HashSet<QName>();
+        Set<QName> typeNames = new HashSet<>();
 
         if (request instanceof TransactionRequest) {
             TransactionRequest tx = (TransactionRequest) request;
@@ -738,9 +738,12 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         Map<String, String> requestParams;
 
+        String encoding = "UTF-8";
+
         switch (operation) {
             case GET_FEATURE:
                 requestParams = buildGetFeatureParametersForGET((GetFeatureRequest) request);
+                encoding = Charset.defaultCharset().name();
                 break;
             case DESCRIBE_FEATURETYPE:
                 requestParams =
@@ -762,7 +765,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         URL baseUrl = getOperationURL(operation, GET);
 
-        URL finalURL = URIs.buildURL(baseUrl, requestParams);
+        URL finalURL = URIs.buildURL(baseUrl, requestParams, encoding);
         requestDebug("Built GET request for ", operation, ": ", finalURL);
 
         return finalURL;

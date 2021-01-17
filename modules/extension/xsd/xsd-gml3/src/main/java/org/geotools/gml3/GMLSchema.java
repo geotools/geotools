@@ -38,7 +38,6 @@ import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.Filter;
 
 public class GMLSchema extends SchemaImpl {
 
@@ -82,7 +81,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTCURVESEGMENTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.INTEGER_TYPE,
@@ -113,7 +112,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -146,7 +145,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -179,7 +178,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -213,7 +212,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTPOSITIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         NCNAMELIST_TYPE,
@@ -252,7 +251,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLELIST_TYPE,
                         null);
         return builtType;
@@ -287,7 +286,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VECTORTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         NCNAMELIST_TYPE,
@@ -326,7 +325,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLELIST_TYPE,
                         null);
         return builtType;
@@ -407,7 +406,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_AFFINEPLACEMENTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -446,7 +445,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -479,7 +478,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CLOTHOIDTYPE_REFLOCATION_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         AFFINEPLACEMENTTYPE_TYPE,
@@ -494,7 +493,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -589,7 +588,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CLOTHOIDTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CLOTHOIDTYPE_REFLOCATION_TYPE,
@@ -628,7 +627,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -660,7 +659,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_METADATAPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XLINKSchema._ACTUATE_TYPE,
@@ -739,7 +738,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -770,7 +769,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_STRINGORREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XLINKSchema._ACTUATE_TYPE,
@@ -841,7 +840,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -876,7 +875,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CODETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -891,7 +890,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -923,7 +922,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTGMLTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -962,7 +961,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -1010,7 +1009,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Geometry.class,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -1046,10 +1045,10 @@ public class GMLSchema extends SchemaImpl {
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeometricPrimitiveType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -1089,7 +1088,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COORDINATESTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.STRING_TYPE,
@@ -1120,7 +1119,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -1152,7 +1151,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COORDTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.DECIMAL_TYPE,
@@ -1183,7 +1182,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -1241,7 +1240,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Point.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -1288,7 +1287,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Point.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -1327,7 +1326,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTPOSITIONLISTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         NCNAMELIST_TYPE,
@@ -1374,7 +1373,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLELIST_TYPE,
                         null);
         return builtType;
@@ -1406,7 +1405,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MEASURETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -1421,7 +1420,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.DOUBLE_TYPE,
                         null);
         return builtType;
@@ -1453,10 +1452,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LengthType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -1488,10 +1487,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AngleType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -1538,7 +1537,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -1619,7 +1618,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ARCBYCENTERPOINTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -1706,7 +1705,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -1739,10 +1738,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CircleByCenterPointType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ARCBYCENTERPOINTTYPE_TYPE,
                         null);
         return builtType;
@@ -1779,7 +1778,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DEFINITIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -1818,7 +1817,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -1854,7 +1853,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTREFERENCESYSTEMBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -1886,7 +1885,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -1925,7 +1924,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_IDENTIFIERTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CODETYPE_TYPE,
@@ -1956,7 +1955,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -1988,10 +1987,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractSurfaceType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -2023,10 +2022,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractRingType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -2056,7 +2055,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTRINGPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTRINGTYPE_TYPE,
@@ -2071,7 +2070,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -2111,7 +2110,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -2164,7 +2163,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ENVELOPETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -2243,7 +2242,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -2276,10 +2275,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimeObjectType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -2316,10 +2315,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimePrimitiveType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEOBJECTTYPE_TYPE,
                         null);
         return builtType;
@@ -2355,7 +2354,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTTIMEGEOMETRICPRIMITIVETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -2371,7 +2370,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -2416,7 +2415,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -2455,7 +2454,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -2494,7 +2493,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEPOSITIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -2525,7 +2524,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         TIMEPOSITIONUNION_TYPE,
                         null);
         return builtType;
@@ -2558,7 +2557,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEINSTANTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPOSITIONTYPE_TYPE,
@@ -2573,7 +2572,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -2601,7 +2600,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEINSTANTPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEINSTANTTYPE_TYPE,
@@ -2680,7 +2679,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -2728,7 +2727,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -2767,7 +2766,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEINTERVALLENGTHTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEUNITTYPE_TYPE,
@@ -2798,7 +2797,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.DECIMAL_TYPE,
                         null);
         return builtType;
@@ -2836,7 +2835,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEPERIODTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPOSITIONTYPE_TYPE,
@@ -2891,7 +2890,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -2949,7 +2948,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_EXTENTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         STRINGORREFTYPE_TYPE,
@@ -2996,7 +2995,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -3041,7 +3040,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTREFERENCESYSTEMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -3080,7 +3079,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMBASETYPE_TYPE,
                         null);
         return builtType;
@@ -3116,7 +3115,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTCOORDINATESYSTEMBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -3148,7 +3147,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -3188,7 +3187,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COORDINATESYSTEMAXISBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -3219,7 +3218,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -3265,7 +3264,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COORDINATESYSTEMAXISTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -3312,7 +3311,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         COORDINATESYSTEMAXISBASETYPE_TYPE,
                         null);
         return builtType;
@@ -3343,7 +3342,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COORDINATESYSTEMAXISREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COORDINATESYSTEMAXISTYPE_TYPE,
@@ -3422,7 +3421,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -3470,7 +3469,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTCOORDINATESYSTEMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -3501,7 +3500,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMBASETYPE_TYPE,
                         null);
         return builtType;
@@ -3533,10 +3532,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EllipsoidalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -3566,7 +3565,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ELLIPSOIDALCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ELLIPSOIDALCSTYPE_TYPE,
@@ -3645,7 +3644,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -3680,7 +3679,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTDATUMBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -3711,7 +3710,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -3757,7 +3756,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTDATUMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -3812,7 +3811,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMBASETYPE_TYPE,
                         null);
         return builtType;
@@ -3847,7 +3846,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PRIMEMERIDIANBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -3878,7 +3877,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -3913,7 +3912,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.NONNEGATIVEINTEGER_TYPE,
                         null);
         return builtType;
@@ -3963,10 +3962,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DegreesType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEGREEVALUETYPE_TYPE,
                         null);
         return builtType;
@@ -4002,7 +4001,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.DECIMAL_TYPE,
                         null);
         return builtType;
@@ -4037,7 +4036,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.NONNEGATIVEINTEGER_TYPE,
                         null);
         return builtType;
@@ -4073,7 +4072,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.DECIMAL_TYPE,
                         null);
         return builtType;
@@ -4109,7 +4108,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DMSANGLETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DEGREESTYPE_TYPE,
@@ -4148,7 +4147,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4178,7 +4177,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ANGLECHOICETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MEASURETYPE_TYPE,
@@ -4201,7 +4200,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4244,7 +4243,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PRIMEMERIDIANTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -4275,7 +4274,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         PRIMEMERIDIANBASETYPE_TYPE,
                         null);
         return builtType;
@@ -4305,7 +4304,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PRIMEMERIDIANREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         PRIMEMERIDIANTYPE_TYPE,
@@ -4384,7 +4383,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4419,7 +4418,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ELLIPSOIDBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -4450,7 +4449,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -4482,7 +4481,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -4514,7 +4513,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SECONDDEFININGPARAMETERTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MEASURETYPE_TYPE,
@@ -4545,7 +4544,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4589,7 +4588,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ELLIPSOIDTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -4628,7 +4627,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ELLIPSOIDBASETYPE_TYPE,
                         null);
         return builtType;
@@ -4658,7 +4657,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ELLIPSOIDREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ELLIPSOIDTYPE_TYPE,
@@ -4737,7 +4736,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4771,7 +4770,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEODETICDATUMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         PRIMEMERIDIANREFTYPE_TYPE,
@@ -4794,7 +4793,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -4824,7 +4823,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEODETICDATUMREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GEODETICDATUMTYPE_TYPE,
@@ -4903,7 +4902,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -4937,7 +4936,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOGRAPHICCRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ELLIPSOIDALCSREFTYPE_TYPE,
@@ -4960,7 +4959,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -4990,7 +4989,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOGRAPHICCRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GEOGRAPHICCRSTYPE_TYPE,
@@ -5069,7 +5068,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5134,7 +5133,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.LinearRing.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTRINGTYPE_TYPE,
                         null);
         return builtType;
@@ -5170,7 +5169,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.LinearRing.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5202,10 +5201,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractSolidType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -5240,7 +5239,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SOLIDPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTSOLIDTYPE_TYPE,
@@ -5319,7 +5318,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5365,7 +5364,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COMPOSITESOLIDTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SOLIDPROPERTYTYPE_TYPE,
@@ -5380,7 +5379,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSOLIDTYPE_TYPE,
                         null);
         return builtType;
@@ -5408,7 +5407,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COMPOSITESOLIDPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COMPOSITESOLIDTYPE_TYPE,
@@ -5487,7 +5486,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5520,7 +5519,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -5552,7 +5551,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_BOUNDINGSHAPETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ENVELOPETYPE_TYPE,
@@ -5575,7 +5574,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5613,7 +5612,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_LOCATIONPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTGEOMETRYTYPE_TYPE,
@@ -5716,7 +5715,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5756,7 +5755,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTFEATURETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         BOUNDINGSHAPETYPE_TYPE,
@@ -5779,7 +5778,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -5818,7 +5817,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DOMAINSETTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTGEOMETRYTYPE_TYPE,
@@ -5905,7 +5904,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -5942,10 +5941,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompositeValueType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -5976,7 +5975,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VALUEARRAYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -5999,7 +5998,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         COMPOSITEVALUETYPE_TYPE,
                         null);
         return builtType;
@@ -6032,7 +6031,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -6065,7 +6064,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -6100,7 +6099,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CODEORNULLLISTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -6115,7 +6114,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         NAMEORNULLLIST_TYPE,
                         null);
         return builtType;
@@ -6149,10 +6148,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CategoryExtentType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         CODEORNULLLISTTYPE_TYPE,
                         null);
         return builtType;
@@ -6185,7 +6184,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -6219,7 +6218,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MEASUREORNULLLISTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -6234,7 +6233,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLEORNULLLIST_TYPE,
                         null);
         return builtType;
@@ -6268,10 +6267,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "QuantityExtentType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASUREORNULLLISTTYPE_TYPE,
                         null);
         return builtType;
@@ -6304,7 +6303,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -6339,7 +6338,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         INTEGERORNULLLIST_TYPE,
                         null);
         return builtType;
@@ -6371,7 +6370,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_RANGEPARAMETERSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.BOOLEAN_TYPE,
@@ -6538,7 +6537,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -6568,7 +6567,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DATABLOCKTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         RANGEPARAMETERSTYPE_TYPE,
@@ -6599,7 +6598,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -6634,7 +6633,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -6664,7 +6663,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_FILETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         RANGEPARAMETERSTYPE_TYPE,
@@ -6711,7 +6710,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -6756,7 +6755,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_RANGESETTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         VALUEARRAYTYPE_TYPE,
@@ -6819,7 +6818,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -6854,7 +6853,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTCOVERAGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DOMAINSETTYPE_TYPE,
@@ -6885,7 +6884,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -6925,7 +6924,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -6963,7 +6962,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -6991,7 +6990,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SEQUENCERULETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         INCREMENTORDER_TYPE,
@@ -7006,7 +7005,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SEQUENCERULENAMES_TYPE,
                         null);
         return builtType;
@@ -7039,7 +7038,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -7077,7 +7076,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GRIDFUNCTIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SEQUENCERULETYPE_TYPE,
@@ -7100,7 +7099,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7131,7 +7130,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COVERAGEFUNCTIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         STRINGORREFTYPE_TYPE,
@@ -7154,7 +7153,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7188,7 +7187,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTDISCRETECOVERAGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COVERAGEFUNCTIONTYPE_TYPE,
@@ -7203,7 +7202,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -7233,7 +7232,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GRIDENVELOPETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         INTEGERLIST_TYPE,
@@ -7256,7 +7255,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7282,7 +7281,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GRIDLIMITSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GRIDENVELOPETYPE_TYPE,
@@ -7297,7 +7296,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7332,7 +7331,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GRIDTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GRIDLIMITSTYPE_TYPE,
@@ -7363,7 +7362,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -7397,7 +7396,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_RECTIFIEDGRIDTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         POINTPROPERTYTYPE_TYPE,
@@ -7420,7 +7419,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         GRIDTYPE_TYPE,
                         null);
         return builtType;
@@ -7452,7 +7451,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_RECTIFIEDGRIDDOMAINTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         RECTIFIEDGRIDTYPE_TYPE,
@@ -7531,7 +7530,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -7566,7 +7565,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_RECTIFIEDGRIDCOVERAGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -7629,7 +7628,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -7660,7 +7659,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GRIDDOMAINTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GRIDTYPE_TYPE,
@@ -7739,7 +7738,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -7773,7 +7772,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GRIDCOVERAGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -7836,7 +7835,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -7868,10 +7867,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SpeedType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -7905,10 +7904,10 @@ public class GMLSchema extends SchemaImpl {
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeometricAggregateType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -7939,7 +7938,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_POINTARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         POINTTYPE_TYPE,
@@ -7954,7 +7953,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -7998,7 +7997,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPoint.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -8040,7 +8039,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPoint.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -8119,7 +8118,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ARCSTRINGBYBULGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -8198,7 +8197,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -8270,7 +8269,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ARCBYBULGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -8341,7 +8340,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ARCSTRINGBYBULGETYPE_TYPE,
                         null);
         return builtType;
@@ -8377,7 +8376,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTCOORDINATEOPERATIONBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -8410,7 +8409,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -8440,7 +8439,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTPOSITIONALACCURACYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CODETYPE_TYPE,
@@ -8456,7 +8455,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -8486,7 +8485,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
@@ -8565,7 +8564,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -8618,7 +8617,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTCOORDINATEOPERATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -8690,7 +8689,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONBASETYPE_TYPE,
                         null);
         return builtType;
@@ -8736,7 +8735,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTGENERALTRANSFORMATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -8832,7 +8831,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -8868,7 +8867,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONMETHODBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -8899,7 +8898,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -8933,7 +8932,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.NONNEGATIVEINTEGER_TYPE,
@@ -8950,7 +8949,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -8981,7 +8980,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTGENERALOPERATIONPARAMETERREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE,
@@ -9062,7 +9061,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -9112,7 +9111,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONMETHODTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -9167,7 +9166,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         OPERATIONMETHODBASETYPE_TYPE,
                         null);
         return builtType;
@@ -9198,7 +9197,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONMETHODREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         OPERATIONMETHODTYPE_TYPE,
@@ -9277,7 +9276,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -9311,10 +9310,10 @@ public class GMLSchema extends SchemaImpl {
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeneralParameterValueType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -9347,7 +9346,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MEASURELISTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -9362,7 +9361,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOUBLELIST_TYPE,
                         null);
         return builtType;
@@ -9399,7 +9398,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONPARAMETERBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -9438,7 +9437,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE,
                         null);
         return builtType;
@@ -9481,7 +9480,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONPARAMETERTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -9504,7 +9503,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         OPERATIONPARAMETERBASETYPE_TYPE,
                         null);
         return builtType;
@@ -9535,7 +9534,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONPARAMETERREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         OPERATIONPARAMETERTYPE_TYPE,
@@ -9614,7 +9613,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -9657,7 +9656,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PARAMETERVALUETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MEASURETYPE_TYPE,
@@ -9736,7 +9735,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALPARAMETERVALUETYPE_TYPE,
                         null);
         return builtType;
@@ -9776,7 +9775,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TRANSFORMATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         OPERATIONMETHODREFTYPE_TYPE,
@@ -9799,7 +9798,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALTRANSFORMATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -9829,7 +9828,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TRANSFORMATIONREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TRANSFORMATIONTYPE_TYPE,
@@ -9908,7 +9907,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -9939,7 +9938,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COORDINATEREFERENCESYSTEMREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
@@ -10019,7 +10018,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10062,7 +10061,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTGENERALCONVERSIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -10133,7 +10132,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -10164,7 +10163,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GENERALCONVERSIONREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTGENERALCONVERSIONTYPE_TYPE,
@@ -10243,7 +10242,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10278,7 +10277,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTGENERALDERIVEDCRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COORDINATEREFERENCESYSTEMREFTYPE_TYPE,
@@ -10301,7 +10300,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -10336,7 +10335,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DERIVEDCRSTYPETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -10351,7 +10350,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         CODETYPE_TYPE,
                         null);
         return builtType;
@@ -10382,7 +10381,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COORDINATESYSTEMREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
@@ -10461,7 +10460,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10495,7 +10494,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DERIVEDCRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DERIVEDCRSTYPETYPE_TYPE,
@@ -10518,7 +10517,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALDERIVEDCRSTYPE_TYPE,
                         null);
         return builtType;
@@ -10548,7 +10547,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DERIVEDCRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DERIVEDCRSTYPE_TYPE,
@@ -10627,7 +10626,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10663,7 +10662,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.STRING_TYPE,
@@ -10679,7 +10678,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -10707,7 +10706,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEPERIODPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPERIODTYPE_TYPE,
@@ -10786,7 +10785,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -10849,7 +10848,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMECALENDARERATYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         STRINGORREFTYPE_TYPE,
@@ -10888,7 +10887,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -10916,7 +10915,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMECALENDARERAPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMECALENDARERATYPE_TYPE,
@@ -10995,7 +10994,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11034,7 +11033,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMECALENDARTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMECALENDARERAPROPERTYTYPE_TYPE,
@@ -11049,7 +11048,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -11077,7 +11076,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMECALENDARPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMECALENDARTYPE_TYPE,
@@ -11156,7 +11155,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11209,7 +11208,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMECLOCKTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         STRINGORREFTYPE_TYPE,
@@ -11248,7 +11247,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -11275,7 +11274,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMECLOCKPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMECLOCKTYPE_TYPE,
@@ -11354,7 +11353,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11395,7 +11394,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11425,7 +11424,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SURFACEARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTSURFACETYPE_TYPE,
@@ -11440,7 +11439,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11484,7 +11483,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -11516,7 +11515,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTISURFACEDOMAINTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MULTISURFACETYPE_TYPE,
@@ -11595,7 +11594,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -11633,7 +11632,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTISURFACECOVERAGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -11696,7 +11695,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -11730,7 +11729,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_RELATIVEINTERNALPOSITIONALACCURACYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MEASURETYPE_TYPE,
@@ -11747,7 +11746,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTPOSITIONALACCURACYTYPE_TYPE,
                         null);
         return builtType;
@@ -11778,10 +11777,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractSurfacePatchType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11815,10 +11814,10 @@ public class GMLSchema extends SchemaImpl {
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractParametricCurveSurfaceType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACEPATCHTYPE_TYPE,
                         null);
         return builtType;
@@ -11845,7 +11844,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTGRIDDEDSURFACETYPE_ROW_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONLISTTYPE_TYPE,
@@ -11877,7 +11876,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -11955,7 +11954,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTGRIDDEDSURFACETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTGRIDDEDSURFACETYPE_ROW_TYPE,
@@ -11986,7 +11985,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTPARAMETRICCURVESURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -12052,7 +12051,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SPHERETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CURVEINTERPOLATIONTYPE_TYPE,
@@ -12075,7 +12074,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGRIDDEDSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -12108,10 +12107,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractCurveType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -12183,7 +12182,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.LineString.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVETYPE_TYPE,
                         null);
         return builtType;
@@ -12232,7 +12231,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.LineString.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12271,7 +12270,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiLineString.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -12314,7 +12313,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiLineString.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12352,7 +12351,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COMPOSITESURFACETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SURFACEPROPERTYTYPE_TYPE,
@@ -12367,7 +12366,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -12395,7 +12394,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COMPOSITESURFACEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COMPOSITESURFACETYPE_TYPE,
@@ -12474,7 +12473,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12508,7 +12507,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_UNITDEFINITIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         STRINGORREFTYPE_TYPE,
@@ -12531,7 +12530,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -12559,7 +12558,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_REFERENCETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XLINKSchema._ACTUATE_TYPE,
@@ -12630,7 +12629,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12663,7 +12662,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_BASEUNITTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         REFERENCETYPE_TYPE,
@@ -12678,7 +12677,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITDEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -12725,7 +12724,7 @@ public class GMLSchema extends SchemaImpl {
                         CurvedGeometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -12763,7 +12762,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -12806,7 +12805,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ORIENTABLECURVETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CURVEPROPERTYTYPE_TYPE,
@@ -12829,7 +12828,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVETYPE_TYPE,
                         null);
         return builtType;
@@ -12859,7 +12858,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VALUEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.BOOLEAN_TYPE,
@@ -13042,7 +13041,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13077,7 +13076,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SCALARVALUEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.BOOLEAN_TYPE,
@@ -13116,7 +13115,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -13158,7 +13157,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13186,7 +13185,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEPRIMITIVEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTTIMEPRIMITIVETYPE_TYPE,
@@ -13265,7 +13264,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13295,7 +13294,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_FEATUREPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTFEATURETYPE_TYPE,
@@ -13374,7 +13373,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13407,7 +13406,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TARGETPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTFEATURETYPE_TYPE,
@@ -13494,7 +13493,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13534,7 +13533,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ASSOCIATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYTYPE_TYPE,
@@ -13613,7 +13612,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13646,7 +13645,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OBSERVATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPRIMITIVEPROPERTYTYPE_TYPE,
@@ -13685,7 +13684,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -13718,7 +13717,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTIONVECTORTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         VECTORTYPE_TYPE,
@@ -13749,7 +13748,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13797,7 +13796,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -13830,7 +13829,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTIONPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTIONVECTORTYPE_TYPE,
@@ -13933,7 +13932,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -13964,7 +13963,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTEDOBSERVATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTIONPROPERTYTYPE_TYPE,
@@ -13979,7 +13978,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         OBSERVATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -14010,7 +14009,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTEDOBSERVATIONATDISTANCETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MEASURETYPE_TYPE,
@@ -14026,7 +14025,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DIRECTEDOBSERVATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -14063,7 +14062,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COMPOUNDCRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COORDINATEREFERENCESYSTEMREFTYPE_TYPE,
@@ -14078,7 +14077,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -14108,7 +14107,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COMPOUNDCRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COMPOUNDCRSTYPE_TYPE,
@@ -14187,7 +14186,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -14225,7 +14224,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -14256,7 +14255,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COORDINATEOPERATIONREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
@@ -14335,7 +14334,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -14375,7 +14374,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_RINGTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CURVEPROPERTYTYPE_TYPE,
@@ -14390,7 +14389,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTRINGTYPE_TYPE,
                         null);
         return builtType;
@@ -14419,7 +14418,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_RINGPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         RINGTYPE_TYPE,
@@ -14434,7 +14433,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -14465,7 +14464,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTIPOINTDOMAINTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MULTIPOINTTYPE_TYPE,
@@ -14544,7 +14543,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -14582,7 +14581,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTIPOINTCOVERAGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -14645,7 +14644,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -14678,7 +14677,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COUNTPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.INTEGER_TYPE,
@@ -14693,7 +14692,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -14736,7 +14735,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CONETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CURVEINTERPOLATIONTYPE_TYPE,
@@ -14759,7 +14758,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGRIDDEDSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -14794,7 +14793,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ENVELOPEWITHTIMEPERIODTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPOSITIONTYPE_TYPE,
@@ -14817,7 +14816,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ENVELOPETYPE_TYPE,
                         null);
         return builtType;
@@ -14850,7 +14849,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CATEGORYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CODETYPE_TYPE,
@@ -14865,7 +14864,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -14895,7 +14894,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SURFACEPATCHARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTSURFACEPATCHTYPE_TYPE,
@@ -14910,7 +14909,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -14954,7 +14953,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -15000,7 +14999,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -15039,7 +15038,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_POLYGONPATCHTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTRINGPROPERTYTYPE_TYPE,
@@ -15070,7 +15069,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACEPATCHTYPE_TYPE,
                         null);
         return builtType;
@@ -15105,7 +15104,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_POLYGONPATCHARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         POLYGONPATCHTYPE_TYPE,
@@ -15120,7 +15119,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SURFACEPATCHARRAYPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -15162,7 +15161,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_POLYHEDRALSURFACETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -15201,7 +15200,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -15232,7 +15231,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SINGLEOPERATIONREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
@@ -15311,7 +15310,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -15349,7 +15348,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CONCATENATEDOPERATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SINGLEOPERATIONREFTYPE_TYPE,
@@ -15364,7 +15363,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -15395,7 +15394,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CONCATENATEDOPERATIONREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CONCATENATEDOPERATIONTYPE_TYPE,
@@ -15474,7 +15473,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -15512,7 +15511,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COMPOSITECURVETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CURVEPROPERTYTYPE_TYPE,
@@ -15527,7 +15526,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVETYPE_TYPE,
                         null);
         return builtType;
@@ -15555,7 +15554,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COMPOSITECURVEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COMPOSITECURVETYPE_TYPE,
@@ -15634,7 +15633,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -15667,10 +15666,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimeComplexType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEOBJECTTYPE_TYPE,
                         null);
         return builtType;
@@ -15704,7 +15703,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTTIMETOPOLOGYPRIMITIVETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         REFERENCETYPE_TYPE,
@@ -15720,7 +15719,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -15754,7 +15753,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMETOPOLOGYPRIMITIVEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTTIMETOPOLOGYPRIMITIVETYPE_TYPE,
@@ -15834,7 +15833,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -15868,7 +15867,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMETOPOLOGYCOMPLEXTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMETOPOLOGYPRIMITIVEPROPERTYTYPE_TYPE,
@@ -15883,7 +15882,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMECOMPLEXTYPE_TYPE,
                         null);
         return builtType;
@@ -15917,7 +15916,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMETOPOLOGYCOMPLEXPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMETOPOLOGYCOMPLEXTYPE_TYPE,
@@ -15997,7 +15996,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -16030,7 +16029,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -16059,10 +16058,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTopologyType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -16097,10 +16096,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTopoPrimitiveType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -16135,7 +16134,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_FACETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SURFACEPROPERTYTYPE_TYPE,
@@ -16150,7 +16149,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -16179,7 +16178,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTEDFACEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         FACETYPE_TYPE,
@@ -16266,7 +16265,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -16299,7 +16298,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOSOLIDTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTEDFACEPROPERTYTYPE_TYPE,
@@ -16314,7 +16313,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -16344,7 +16343,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CONTAINERPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         FACETYPE_TYPE,
@@ -16431,7 +16430,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -16508,7 +16507,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CUBICSPLINETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -16587,7 +16586,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -16620,7 +16619,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -16652,10 +16651,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractStyleType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -16693,7 +16692,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -16726,7 +16725,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SYMBOLTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SYMBOLTYPEENUMERATION_TYPE,
@@ -16821,7 +16820,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -16853,10 +16852,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ScaleType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -16888,7 +16887,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_STYLEVARIATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.STRING_TYPE,
@@ -16911,7 +16910,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -16951,7 +16950,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_BASESTYLEDESCRIPTORTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SCALETYPE_TYPE,
@@ -17006,7 +17005,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -17037,7 +17036,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_LABELTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.STRING_TYPE,
@@ -17060,7 +17059,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17094,7 +17093,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_LABELSTYLETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.STRING_TYPE,
@@ -17117,7 +17116,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BASESTYLEDESCRIPTORTYPE_TYPE,
                         null);
         return builtType;
@@ -17149,7 +17148,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_LABELSTYLEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         LABELSTYLETYPE_TYPE,
@@ -17236,7 +17235,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17280,7 +17279,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOMETRYSTYLETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SYMBOLTYPE_TYPE,
@@ -17327,7 +17326,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BASESTYLEDESCRIPTORTYPE_TYPE,
                         null);
         return builtType;
@@ -17359,7 +17358,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOMETRYSTYLEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GEOMETRYSTYLETYPE_TYPE,
@@ -17446,7 +17445,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17490,7 +17489,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOLOGYSTYLETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SYMBOLTYPE_TYPE,
@@ -17537,7 +17536,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BASESTYLEDESCRIPTORTYPE_TYPE,
                         null);
         return builtType;
@@ -17569,7 +17568,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOLOGYSTYLEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TOPOLOGYSTYLETYPE_TYPE,
@@ -17656,7 +17655,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17694,7 +17693,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -17733,7 +17732,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_FEATURESTYLETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.STRING_TYPE,
@@ -17796,7 +17795,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -17828,7 +17827,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_FEATURESTYLEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         FEATURESTYLETYPE_TYPE,
@@ -17915,7 +17914,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -17951,7 +17950,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -17987,7 +17986,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -18023,7 +18022,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -18069,7 +18068,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -18111,7 +18110,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GRAPHSTYLETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.BOOLEAN_TYPE,
@@ -18190,7 +18189,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BASESTYLEDESCRIPTORTYPE_TYPE,
                         null);
         return builtType;
@@ -18222,7 +18221,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GRAPHSTYLEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GRAPHSTYLETYPE_TYPE,
@@ -18309,7 +18308,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -18343,7 +18342,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_STYLETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         FEATURESTYLEPROPERTYTYPE_TYPE,
@@ -18366,7 +18365,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSTYLETYPE_TYPE,
                         null);
         return builtType;
@@ -18414,7 +18413,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEODESICSTRINGTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONLISTTYPE_TYPE,
@@ -18453,7 +18452,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -18492,10 +18491,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeodesicType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         GEODESICSTRINGTYPE_TYPE,
                         null);
         return builtType;
@@ -18544,10 +18543,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RelatedTimeType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         TIMEPRIMITIVEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -18582,7 +18581,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEEDGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPERIODPROPERTYTYPE_TYPE,
@@ -18597,7 +18596,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMETOPOLOGYPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -18629,7 +18628,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEEDGEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEEDGETYPE_TYPE,
@@ -18708,7 +18707,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -18745,7 +18744,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMENODETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEEDGEPROPERTYTYPE_TYPE,
@@ -18776,7 +18775,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMETOPOLOGYPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -18808,7 +18807,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMENODEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMENODETYPE_TYPE,
@@ -18887,7 +18886,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -18946,7 +18945,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEORDINALERATYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         RELATEDTIMETYPE_TYPE,
@@ -18993,7 +18992,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -19021,7 +19020,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEORDINALERAPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEORDINALERATYPE_TYPE,
@@ -19100,7 +19099,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -19136,7 +19135,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEORDINALREFERENCESYSTEMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEORDINALERAPROPERTYTYPE_TYPE,
@@ -19152,7 +19151,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -19184,10 +19183,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VerticalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -19217,7 +19216,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VERTICALCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         VERTICALCSTYPE_TYPE,
@@ -19296,7 +19295,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -19331,7 +19330,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VERTICALDATUMTYPETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -19346,7 +19345,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         CODETYPE_TYPE,
                         null);
         return builtType;
@@ -19379,7 +19378,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VERTICALDATUMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         VERTICALDATUMTYPETYPE_TYPE,
@@ -19394,7 +19393,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -19424,7 +19423,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VERTICALDATUMREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         VERTICALDATUMTYPE_TYPE,
@@ -19503,7 +19502,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -19537,7 +19536,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VERTICALCRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         VERTICALCSREFTYPE_TYPE,
@@ -19560,7 +19559,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -19590,7 +19589,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VERTICALCRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         VERTICALCRSTYPE_TYPE,
@@ -19669,7 +19668,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -19706,7 +19705,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONPARAMETERGROUPBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -19746,7 +19745,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE,
                         null);
         return builtType;
@@ -19795,7 +19794,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONPARAMETERGROUPTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IDENTIFIERTYPE_TYPE,
@@ -19834,7 +19833,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         OPERATIONPARAMETERGROUPBASETYPE_TYPE,
                         null);
         return builtType;
@@ -19865,7 +19864,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONPARAMETERGROUPREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         OPERATIONPARAMETERGROUPTYPE_TYPE,
@@ -19945,7 +19944,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -19984,7 +19983,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PARAMETERVALUEGROUPTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTGENERALPARAMETERVALUETYPE_TYPE,
@@ -20007,7 +20006,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALPARAMETERVALUETYPE_TYPE,
                         null);
         return builtType;
@@ -20040,7 +20039,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -20082,7 +20081,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.GeometryCollection.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20124,7 +20123,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_RECTANGLETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTRINGPROPERTYTYPE_TYPE,
@@ -20147,7 +20146,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACEPATCHTYPE_TYPE,
                         null);
         return builtType;
@@ -20179,7 +20178,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DEFAULTSTYLEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTSTYLETYPE_TYPE,
@@ -20266,7 +20265,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20301,7 +20300,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_EDGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTEDFACEPROPERTYTYPE_TYPE,
@@ -20324,7 +20323,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -20353,7 +20352,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTEDEDGEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         EDGETYPE_TYPE,
@@ -20440,7 +20439,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20474,7 +20473,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOCURVETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTEDEDGEPROPERTYTYPE_TYPE,
@@ -20489,7 +20488,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -20515,7 +20514,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOCURVEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TOPOCURVETYPE_TYPE,
@@ -20530,7 +20529,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20562,10 +20561,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VolumeType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -20595,7 +20594,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SOLIDARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTSOLIDTYPE_TYPE,
@@ -20610,7 +20609,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -20648,7 +20647,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTISOLIDTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SOLIDPROPERTYTYPE_TYPE,
@@ -20671,7 +20670,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -20702,7 +20701,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTISOLIDDOMAINTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MULTISOLIDTYPE_TYPE,
@@ -20781,7 +20780,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -20819,7 +20818,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTISOLIDCOVERAGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -20882,7 +20881,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -20922,7 +20921,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DICTIONARYENTRYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DEFINITIONTYPE_TYPE,
@@ -21001,7 +21000,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21038,7 +21037,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DEFINITIONPROXYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         REFERENCETYPE_TYPE,
@@ -21053,7 +21052,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -21082,7 +21081,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_INDIRECTENTRYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DEFINITIONPROXYTYPE_TYPE,
@@ -21097,7 +21096,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21141,7 +21140,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DICTIONARYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DICTIONARYENTRYTYPE_TYPE,
@@ -21164,7 +21163,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -21207,7 +21206,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_KNOTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.DOUBLE_TYPE,
@@ -21238,7 +21237,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21267,7 +21266,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_KNOTPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         KNOTTYPE_TYPE,
@@ -21282,7 +21281,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21319,7 +21318,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -21400,7 +21399,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_BSPLINETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -21487,7 +21486,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -21567,7 +21566,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_BEZIERTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -21654,7 +21653,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         BSPLINETYPE_TYPE,
                         null);
         return builtType;
@@ -21684,7 +21683,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DATUMREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTDATUMTYPE_TYPE,
@@ -21763,7 +21762,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21795,10 +21794,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TemporalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -21828,7 +21827,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TEMPORALCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TEMPORALCSTYPE_TYPE,
@@ -21907,7 +21906,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -21945,7 +21944,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TEMPORALDATUMBASETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -22000,7 +21999,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -22033,7 +22032,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TEMPORALDATUMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.DATETIME_TYPE,
@@ -22048,7 +22047,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         TEMPORALDATUMBASETYPE_TYPE,
                         null);
         return builtType;
@@ -22078,7 +22077,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TEMPORALDATUMREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TEMPORALDATUMTYPE_TYPE,
@@ -22157,7 +22156,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22191,7 +22190,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TEMPORALCRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TEMPORALCSREFTYPE_TYPE,
@@ -22214,7 +22213,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -22244,7 +22243,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TEMPORALCRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TEMPORALCRSTYPE_TYPE,
@@ -22323,7 +22322,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22356,7 +22355,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOSURFACETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTEDFACEPROPERTYTYPE_TYPE,
@@ -22371,7 +22370,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -22398,7 +22397,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOSURFACEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TOPOSURFACETYPE_TYPE,
@@ -22413,7 +22412,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22444,7 +22443,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_REFERENCESYSTEMREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
@@ -22523,7 +22522,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22555,10 +22554,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AreaType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -22590,10 +22589,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EngineeringDatumType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -22624,7 +22623,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ENGINEERINGDATUMREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ENGINEERINGDATUMTYPE_TYPE,
@@ -22703,7 +22702,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22740,7 +22739,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ENGINEERINGCRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COORDINATESYSTEMREFTYPE_TYPE,
@@ -22763,7 +22762,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -22793,7 +22792,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ENGINEERINGCRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ENGINEERINGCRSTYPE_TYPE,
@@ -22872,7 +22871,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -22907,7 +22906,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_NODETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTEDEDGEPROPERTYTYPE_TYPE,
@@ -22930,7 +22929,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
                         null);
         return builtType;
@@ -22958,7 +22957,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ISOLATEDPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         NODETYPE_TYPE,
@@ -23045,7 +23044,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -23106,7 +23105,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -23137,7 +23136,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CURVEARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTCURVETYPE_TYPE,
@@ -23152,7 +23151,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -23196,7 +23195,7 @@ public class GMLSchema extends SchemaImpl {
                         MultiCurvedGeometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -23227,7 +23226,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTICURVEDOMAINTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MULTICURVETYPE_TYPE,
@@ -23306,7 +23305,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         DOMAINSETTYPE_TYPE,
                         null);
         return builtType;
@@ -23344,7 +23343,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTICURVECOVERAGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -23407,7 +23406,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDISCRETECOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -23440,7 +23439,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -23474,7 +23473,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CODELISTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -23489,7 +23488,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         NAMELIST_TYPE,
                         null);
         return builtType;
@@ -23522,7 +23521,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_BOOLEANPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.BOOLEAN_TYPE,
@@ -23537,7 +23536,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -23579,7 +23578,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TRIANGLETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTRINGPROPERTYTYPE_TYPE,
@@ -23602,7 +23601,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACEPATCHTYPE_TYPE,
                         null);
         return builtType;
@@ -23637,7 +23636,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TRIANGLEPATCHARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TRIANGLETYPE_TYPE,
@@ -23653,7 +23652,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SURFACEPATCHARRAYPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -23695,7 +23694,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TRIANGULATEDSURFACETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -23734,7 +23733,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         SURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -23795,7 +23794,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_LINESTRINGSEGMENTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -23850,7 +23849,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -23877,7 +23876,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_LINESTRINGSEGMENTARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         LINESTRINGSEGMENTTYPE_TYPE,
@@ -23893,7 +23892,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -23920,7 +23919,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TINTYPE_CONTROLPOINT_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONLISTTYPE_TYPE,
@@ -23951,7 +23950,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24042,7 +24041,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TINTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         LINESTRINGSEGMENTARRAYPROPERTYTYPE_TYPE,
@@ -24081,7 +24080,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         TRIANGULATEDSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -24138,7 +24137,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SOLIDTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SURFACEPROPERTYTYPE_TYPE,
@@ -24161,7 +24160,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSOLIDTYPE_TYPE,
                         null);
         return builtType;
@@ -24190,7 +24189,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTEDNODEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         NODETYPE_TYPE,
@@ -24277,7 +24276,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24310,7 +24309,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOPOINTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTEDNODEPROPERTYTYPE_TYPE,
@@ -24325,7 +24324,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -24351,7 +24350,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOPOINTPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TOPOPOINTTYPE_TYPE,
@@ -24366,7 +24365,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24406,7 +24405,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_BOUNDEDFEATURETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         METADATAPROPERTYTYPE_TYPE,
@@ -24453,7 +24452,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -24485,10 +24484,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GridLengthType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -24518,7 +24517,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OPERATIONREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
@@ -24597,7 +24596,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24636,7 +24635,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PASSTHROUGHOPERATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.POSITIVEINTEGER_TYPE,
@@ -24659,7 +24658,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
                         null);
         return builtType;
@@ -24690,7 +24689,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PASSTHROUGHOPERATIONREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         PASSTHROUGHOPERATIONTYPE_TYPE,
@@ -24769,7 +24768,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24799,7 +24798,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_FEATUREARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTFEATURETYPE_TYPE,
@@ -24814,7 +24813,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -24849,7 +24848,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTFEATURECOLLECTIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         FEATUREPROPERTYTYPE_TYPE,
@@ -24872,7 +24871,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -24904,10 +24903,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FeatureCollectionType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURECOLLECTIONTYPE_TYPE,
                         null);
         return builtType;
@@ -24943,7 +24942,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTTIMESLICETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPRIMITIVEPROPERTYTYPE_TYPE,
@@ -24966,7 +24965,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -24995,7 +24994,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_HISTORYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTTIMESLICETYPE_TYPE,
@@ -25010,7 +25009,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25042,7 +25041,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DYNAMICFEATURECOLLECTIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPRIMITIVEPROPERTYTYPE_TYPE,
@@ -25073,7 +25072,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         FEATURECOLLECTIONTYPE_TYPE,
                         null);
         return builtType;
@@ -25104,7 +25103,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DYNAMICFEATURETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPRIMITIVEPROPERTYTYPE_TYPE,
@@ -25135,7 +25134,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTFEATURETYPE_TYPE,
                         null);
         return builtType;
@@ -25167,10 +25166,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolarCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -25200,7 +25199,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_POLARCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         POLARCSTYPE_TYPE,
@@ -25279,7 +25278,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25313,7 +25312,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSOLUTEEXTERNALPOSITIONALACCURACYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MEASURETYPE_TYPE,
@@ -25330,7 +25329,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTPOSITIONALACCURACYTYPE_TYPE,
                         null);
         return builtType;
@@ -25362,7 +25361,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ARRAYASSOCIATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYTYPE_TYPE,
@@ -25377,7 +25376,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25423,7 +25422,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_BAGTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ASSOCIATIONTYPE_TYPE,
@@ -25446,7 +25445,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -25478,10 +25477,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CartesianCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -25511,7 +25510,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CARTESIANCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CARTESIANCSTYPE_TYPE,
@@ -25590,7 +25589,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25622,10 +25621,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SphericalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -25655,7 +25654,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_SPHERICALCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SPHERICALCSTYPE_TYPE,
@@ -25734,7 +25733,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25771,7 +25770,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOCENTRICCRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CARTESIANCSREFTYPE_TYPE,
@@ -25802,7 +25801,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -25832,7 +25831,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOCENTRICCRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GEOCENTRICCRSTYPE_TYPE,
@@ -25911,7 +25910,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -25976,7 +25975,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ARCSTRINGTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -26039,7 +26038,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -26098,7 +26097,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ARCTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTPOSITIONTYPE_TYPE,
@@ -26153,7 +26152,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ARCSTRINGTYPE_TYPE,
                         null);
         return builtType;
@@ -26185,10 +26184,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CircleType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ARCTYPE_TYPE,
                         null);
         return builtType;
@@ -26221,7 +26220,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_QUANTITYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MEASURETYPE_TYPE,
@@ -26236,7 +26235,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         VALUEPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -26274,7 +26273,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMECOORDINATESYSTEMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TIMEPOSITIONTYPE_TYPE,
@@ -26305,7 +26304,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -26341,7 +26340,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MULTISOLIDPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MULTISOLIDTYPE_TYPE,
@@ -26420,7 +26419,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -26448,7 +26447,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TIMEGEOMETRICPRIMITIVEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTTIMEGEOMETRICPRIMITIVETYPE_TYPE,
@@ -26528,7 +26527,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -26561,7 +26560,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -26594,7 +26593,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_INDEXMAPTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         INTEGERLIST_TYPE,
@@ -26609,7 +26608,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         GRIDFUNCTIONTYPE_TYPE,
                         null);
         return builtType;
@@ -26651,7 +26650,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ORIENTABLESURFACETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         SURFACEPROPERTYTYPE_TYPE,
@@ -26674,7 +26673,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -26707,7 +26706,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -26739,7 +26738,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_UNITOFMEASURETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -26754,7 +26753,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -26786,7 +26785,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_FORMULATYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.DOUBLE_TYPE,
@@ -26825,7 +26824,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -26868,7 +26867,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CONVERSIONTOPREFERREDUNITTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.DOUBLE_TYPE,
@@ -26891,7 +26890,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITOFMEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -26923,7 +26922,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DERIVATIONUNITTERMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.INTEGER_TYPE,
@@ -26938,7 +26937,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITOFMEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -26975,7 +26974,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CONVENTIONALUNITTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CONVERSIONTOPREFERREDUNITTYPE_TYPE,
@@ -27007,7 +27006,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITDEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -27039,10 +27038,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LinearCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -27072,7 +27071,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_LINEARCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         LINEARCSTYPE_TYPE,
@@ -27151,7 +27150,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27184,7 +27183,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PROJECTEDCRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CARTESIANCSREFTYPE_TYPE,
@@ -27199,7 +27198,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALDERIVEDCRSTYPE_TYPE,
                         null);
         return builtType;
@@ -27229,7 +27228,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PROJECTEDCRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         PROJECTEDCRSTYPE_TYPE,
@@ -27308,7 +27307,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27339,7 +27338,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOPRIMITIVEMEMBERTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
@@ -27418,7 +27417,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27454,7 +27453,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOPRIMITIVEARRAYASSOCIATIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTTOPOPRIMITIVETYPE_TYPE,
@@ -27470,7 +27469,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27508,7 +27507,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOCOMPLEXTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TOPOPRIMITIVEMEMBERTYPE_TYPE,
@@ -27539,7 +27538,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -27569,7 +27568,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOCOMPLEXMEMBERTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TOPOCOMPLEXTYPE_TYPE,
@@ -27648,7 +27647,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27681,10 +27680,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ObliqueCartesianCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -27715,7 +27714,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OBLIQUECARTESIANCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         OBLIQUECARTESIANCSTYPE_TYPE,
@@ -27794,7 +27793,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -27829,7 +27828,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PIXELINCELLTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ANYURI_TYPE,
@@ -27844,7 +27843,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         CODETYPE_TYPE,
                         null);
         return builtType;
@@ -27877,7 +27876,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_IMAGEDATUMTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         PIXELINCELLTYPE_TYPE,
@@ -27892,7 +27891,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTDATUMTYPE_TYPE,
                         null);
         return builtType;
@@ -27922,7 +27921,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_IMAGEDATUMREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IMAGEDATUMTYPE_TYPE,
@@ -28001,7 +28000,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28038,7 +28037,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_IMAGECRSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CARTESIANCSREFTYPE_TYPE,
@@ -28069,7 +28068,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTREFERENCESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -28099,7 +28098,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_IMAGECRSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         IMAGECRSTYPE_TYPE,
@@ -28178,7 +28177,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28210,10 +28209,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "UserDefinedCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -28243,7 +28242,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_USERDEFINEDCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         USERDEFINEDCSTYPE_TYPE,
@@ -28322,7 +28321,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28365,7 +28364,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOMETRICPRIMITIVEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE,
@@ -28445,7 +28444,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28478,7 +28477,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOMETRICCOMPLEXTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GEOMETRICPRIMITIVEPROPERTYTYPE_TYPE,
@@ -28493,7 +28492,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRYTYPE_TYPE,
                         null);
         return builtType;
@@ -28535,7 +28534,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOMETRICCOMPLEXPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         GEOMETRICCOMPLEXTYPE_TYPE,
@@ -28638,7 +28637,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28677,7 +28676,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CYLINDERTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CURVEINTERPOLATIONTYPE_TYPE,
@@ -28700,7 +28699,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGRIDDEDSURFACETYPE_TYPE,
                         null);
         return builtType;
@@ -28733,7 +28732,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -28776,7 +28775,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.STRING_TYPE,
                         null);
         return builtType;
@@ -28818,7 +28817,7 @@ public class GMLSchema extends SchemaImpl {
                         MultiCurvedGeometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -28859,7 +28858,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_MOVINGOBJECTSTATUSTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         LOCATIONPROPERTYTYPE_TYPE,
@@ -28914,7 +28913,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTIMESLICETYPE_TYPE,
                         null);
         return builtType;
@@ -28947,7 +28946,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TRACKTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         MOVINGOBJECTSTATUSTYPE_TYPE,
@@ -28962,7 +28961,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         HISTORYPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -28994,10 +28993,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         MEASURETYPE_TYPE,
                         null);
         return builtType;
@@ -29039,7 +29038,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29078,7 +29077,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -29122,7 +29121,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29155,7 +29154,7 @@ public class GMLSchema extends SchemaImpl {
                         java.lang.Object.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYSIMPLETYPE_TYPE,
                         null);
         return builtType;
@@ -29182,7 +29181,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTMETADATATYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.ID_TYPE,
@@ -29197,7 +29196,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29233,10 +29232,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GenericMetaDataType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTMETADATATYPE_TYPE,
                         null);
         return builtType;
@@ -29267,7 +29266,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COVARIANCEELEMENTTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.POSITIVEINTEGER_TYPE,
@@ -29298,7 +29297,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29340,7 +29339,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_COVARIANCEMATRIXTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         UNITOFMEASURETYPE_TYPE,
@@ -29363,7 +29362,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTPOSITIONALACCURACYTYPE_TYPE,
                         null);
         return builtType;
@@ -29393,7 +29392,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CURVESEGMENTARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
@@ -29408,7 +29407,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29453,7 +29452,7 @@ public class GMLSchema extends SchemaImpl {
                         CurvedGeometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVETYPE_TYPE,
                         null);
         return builtType;
@@ -29486,7 +29485,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ARRAYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ARRAYASSOCIATIONTYPE_TYPE,
@@ -29501,7 +29500,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGMLTYPE_TYPE,
                         null);
         return builtType;
@@ -29531,7 +29530,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_VALUEARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.BOOLEAN_TYPE,
@@ -29650,7 +29649,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29684,7 +29683,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_ABSTRACTCONTINUOUSCOVERAGETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         COVERAGEFUNCTIONTYPE_TYPE,
@@ -29700,7 +29699,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         true,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOVERAGETYPE_TYPE,
                         null);
         return builtType;
@@ -29733,7 +29732,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_PRIORITYLOCATIONPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.STRING_TYPE,
@@ -29748,7 +29747,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         LOCATIONPROPERTYTYPE_TYPE,
                         null);
         return builtType;
@@ -29781,7 +29780,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DERIVEDUNITTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DERIVATIONUNITTERMTYPE_TYPE,
@@ -29796,7 +29795,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         UNITDEFINITIONTYPE_TYPE,
                         null);
         return builtType;
@@ -29836,7 +29835,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CONVERSIONTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         OPERATIONMETHODREFTYPE_TYPE,
@@ -29859,7 +29858,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGENERALCONVERSIONTYPE_TYPE,
                         null);
         return builtType;
@@ -29889,7 +29888,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CONVERSIONREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CONVERSIONTYPE_TYPE,
@@ -29968,7 +29967,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -29997,7 +29996,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_DIRECTEDTOPOSOLIDPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TOPOSOLIDTYPE_TYPE,
@@ -30084,7 +30083,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30117,7 +30116,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOVOLUMETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         DIRECTEDTOPOSOLIDPROPERTYTYPE_TYPE,
@@ -30132,7 +30131,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTTOPOLOGYTYPE_TYPE,
                         null);
         return builtType;
@@ -30159,7 +30158,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_TOPOVOLUMEPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         TOPOVOLUMETYPE_TYPE,
@@ -30174,7 +30173,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30205,7 +30204,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GENERALTRANSFORMATIONREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTGENERALTRANSFORMATIONTYPE_TYPE,
@@ -30284,7 +30283,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30332,7 +30331,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.Geometry.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30363,7 +30362,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_GEOMETRYARRAYPROPERTYTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         ABSTRACTGEOMETRYTYPE_TYPE,
@@ -30378,7 +30377,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30422,7 +30421,7 @@ public class GMLSchema extends SchemaImpl {
                         org.locationtech.jts.geom.GeometryCollection.class,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTGEOMETRICAGGREGATETYPE_TYPE,
                         null);
         return builtType;
@@ -30454,10 +30453,10 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CylindricalCSType"),
-                        Collections.<PropertyDescriptor>emptyList(),
+                        Collections.emptyList(),
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
                         null);
         return builtType;
@@ -30487,7 +30486,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_CYLINDRICALCSREFTYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CYLINDRICALCSTYPE_TYPE,
@@ -30566,7 +30565,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
         return builtType;
@@ -30651,7 +30650,7 @@ public class GMLSchema extends SchemaImpl {
 
     private static ComplexType build_OFFSETCURVETYPE_TYPE() {
         ComplexType builtType;
-        List<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         CURVEPROPERTYTYPE_TYPE,
@@ -30682,7 +30681,7 @@ public class GMLSchema extends SchemaImpl {
                         schema,
                         false,
                         false,
-                        Collections.<Filter>emptyList(),
+                        Collections.emptyList(),
                         ABSTRACTCURVESEGMENTTYPE_TYPE,
                         null);
         return builtType;
@@ -31675,7 +31674,7 @@ public class GMLSchema extends SchemaImpl {
      * @return Subset of GMLSchema capturing a unique mapping of Java classes
      */
     public ProfileImpl profile() {
-        Set<Name> profile = new LinkedHashSet<Name>();
+        Set<Name> profile = new LinkedHashSet<>();
         profile.add(new NameImpl(GML.MeasureType));
         profile.add(new NameImpl(GML.PointPropertyType));
         profile.add(new NameImpl(GML.MultiPointPropertyType));

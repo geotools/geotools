@@ -16,20 +16,27 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.MultiPoint;
 import org.w3c.dom.Document;
 
 public class GMLMultiPointTypeBinding2Test extends GMLTestSupport {
+
+    @Test
     public void testType() {
         assertEquals(MultiPoint.class, binding(GML.MultiPointType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(GML.MultiPointType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         GML2MockData.multiPoint(document, document);
 
@@ -37,6 +44,7 @@ public class GMLMultiPointTypeBinding2Test extends GMLTestSupport {
         assertEquals(2, mp.getNumGeometries());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.multiPoint(), GML.MultiPoint);
         // print(doc);

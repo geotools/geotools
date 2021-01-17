@@ -95,7 +95,7 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
         final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         writer = dataStore.getFeatureWriterAppend(typeName, transaction);
         final FeatureIterator<SimpleFeature> iterator = collection.features();
-        List<FeatureId> featureIds = new LinkedList<FeatureId>();
+        List<FeatureId> featureIds = new LinkedList<>();
         try {
             SimpleFeature toAdd;
             SimpleFeature newFeature;

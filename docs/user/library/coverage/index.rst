@@ -56,9 +56,6 @@ Format plugins:
    grassraster
    image
    imageio
-   jdbc/index
-   oracle
-   pgraster
    mosaic
    pyramid
    multidim

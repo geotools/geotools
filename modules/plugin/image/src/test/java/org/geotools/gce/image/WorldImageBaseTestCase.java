@@ -21,12 +21,9 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashSet;
 import java.util.Iterator;
-import junit.framework.TestCase;
+import java.util.Set;
 
-public abstract class WorldImageBaseTestCase extends TestCase {
-    public WorldImageBaseTestCase(String name) {
-        super(name);
-    }
+public abstract class WorldImageBaseTestCase {
 
     /**
      * Helper class used to filter files basing the decision on the file extensions. It is not so
@@ -35,7 +32,7 @@ public abstract class WorldImageBaseTestCase extends TestCase {
      * @author giannecchini
      */
     class MyFileFilter implements FilenameFilter {
-        private HashSet extensions = new HashSet();
+        private Set<String> extensions = new HashSet<>();
 
         public MyFileFilter() {
             String[] extensions =
@@ -52,7 +49,7 @@ public abstract class WorldImageBaseTestCase extends TestCase {
             if (extensions != null) {
                 this.extensions.clear();
 
-                for (int i = 0; i < extensions.length; i++) this.extensions.add(extensions[i]);
+                for (String extension : extensions) this.extensions.add(extension);
             }
         }
 

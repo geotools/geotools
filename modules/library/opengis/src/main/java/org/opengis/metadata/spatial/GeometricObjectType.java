@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.spatial;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public final class GeometricObjectType extends CodeList<GeometricObjectType> {
     private static final long serialVersionUID = -8910485325021913980L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<GeometricObjectType> VALUES = new ArrayList<GeometricObjectType>(6);
+    private static final List<GeometricObjectType> VALUES = new ArrayList<>(6);
 
     /**
      * Set of geometric primitives such that their boundaries can be represented as a union of other

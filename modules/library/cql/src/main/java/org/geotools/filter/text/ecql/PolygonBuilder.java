@@ -53,7 +53,7 @@ class PolygonBuilder extends GeometryBuilder {
             // Retrieve the liner ring for shell and holes
             final List<Geometry> geometryList = popGeometry(linestringNode);
 
-            assert geometryList.size() >= 1;
+            assert !geometryList.isEmpty();
 
             // retrieves the shell
             LineString line = (LineString) geometryList.get(0);
@@ -63,7 +63,7 @@ class PolygonBuilder extends GeometryBuilder {
             LinearRing[] holes = new LinearRing[0];
             if (geometryList.size() > 1) {
 
-                List<LinearRing> holeList = new LinkedList<LinearRing>();
+                List<LinearRing> holeList = new LinkedList<>();
                 for (int i = 1; i < geometryList.size(); i++) {
 
                     LineString holeLines = (LineString) geometryList.get(i);

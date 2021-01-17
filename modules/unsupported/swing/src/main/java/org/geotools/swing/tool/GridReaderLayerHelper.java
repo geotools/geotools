@@ -16,7 +16,7 @@
  */
 package org.geotools.swing.tool;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.lang.ref.WeakReference;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -64,7 +64,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         }
 
         super.setLayer(layer);
-        sourceRef = new WeakReference<GridCoverage2DReader>(((GridReaderLayer) layer).getReader());
+        sourceRef = new WeakReference<>(((GridReaderLayer) layer).getReader());
     }
 
     @Override
@@ -116,7 +116,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
             return false;
         }
         GeneralParameterValue parameter =
-                new Parameter(
+                new Parameter<>(
                         AbstractGridFormat.READ_GRIDGEOMETRY2D,
                         new GridGeometry2D(
                                 new GridEnvelope2D(queryRect),
@@ -124,7 +124,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
                                 reader.getCoordinateReferenceSystem()));
 
         try {
-            cachedCoverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {parameter});
+            cachedCoverage = reader.read(new GeneralParameterValue[] {parameter});
             return cachedCoverage != null;
 
         } catch (Exception ex) {

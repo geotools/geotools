@@ -83,6 +83,7 @@ public class DataTypeBinding extends AbstractComplexBinding {
     }
 
     public Object getProperty(Object object, QName name) throws Exception {
+        @SuppressWarnings("unchecked")
         Map.Entry<Name, Object> data = (Map.Entry<Name, Object>) object;
 
         if ("name".equals(name.getLocalPart())) {

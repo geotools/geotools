@@ -24,7 +24,8 @@ import static org.geotools.coverage.io.catalog.CoverageSlice.Attributes.LOCATION
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import it.geosolutions.imageio.stream.input.URIImageInputStream;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BandedSampleModel;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -131,7 +132,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     /** Summary set of coverage names */
     // TODO this duplicates the info that we have in the AncillaryFileManager
-    final List<Name> coverages = new ArrayList<Name>();
+    final List<Name> coverages = new ArrayList<>();
 
     // allow image mosaic to share the current request with this reader, currently
     // a new reader is instantiated per request if that behavior changes this code
@@ -178,7 +179,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     /** Internal Cache for CoverageSourceDescriptor.* */
     private final SoftValueHashMap<String, VariableAdapter> coverageSourceDescriptorsCache =
-            new SoftValueHashMap<String, VariableAdapter>();
+            new SoftValueHashMap<>();
 
     public NetCDFImageReader(ImageReaderSpi originatingProvider) {
         super(originatingProvider);
@@ -195,14 +196,13 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      * @param input the input object.
      * @return the dataset or <code>null</code>.
      */
+    @SuppressWarnings("PMD.CloseResource")
     private NetcdfDataset extractDataset(Object input) throws IOException {
         NetcdfDataset dataset = null;
         if (input instanceof URIImageInputStream) {
-            @SuppressWarnings("PMD.CloseResource") // not managed here
             URIImageInputStream uriInStream = (URIImageInputStream) input;
             dataset = NetCDFUtilities.acquireDataset(uriInStream.getUri());
-        }
-        if (input instanceof URL) {
+        } else if (input instanceof URL) {
             final URL tempURL = (URL) input;
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("dods")) {
@@ -241,7 +241,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     @Override
     public Iterator<ImageTypeSpecifier> getImageTypes(int imageIndex) throws IOException {
-        final List<ImageTypeSpecifier> l = new java.util.ArrayList<ImageTypeSpecifier>();
+        final List<ImageTypeSpecifier> l = new java.util.ArrayList<>();
         final VariableAdapter wrapper = getCoverageDescriptor(imageIndex);
         if (wrapper != null) {
             final SampleModel sampleModel = wrapper.getSampleModel();
@@ -629,6 +629,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     /** @see javax.imageio.ImageReader#read(int, javax.imageio.ImageReadParam) */
     @Override
+    @SuppressWarnings("PMD.ReplaceHashtableWithMap") // needed for BufferedImageConstructor
     public BufferedImage read(int imageIndex, ImageReadParam param) throws IOException {
         clearAbortRequest();
 
@@ -685,7 +686,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
          * build the ranges that need to be read from each
          * dimension based on the source region
          */
-        final List<Range> ranges = new LinkedList<Range>();
+        final List<Range> ranges = new LinkedList<>();
         try {
 
             // Eventual ignored dimensions are at the beginning (lower index)
@@ -766,10 +767,12 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         final ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
 
         final WritableRaster raster = Raster.createWritableRaster(sampleModel, new Point(0, 0));
-        Hashtable<String, Object> properties = getNoDataProperties(wrapper);
         final BufferedImage image =
                 new BufferedImage(
-                        colorModel, raster, colorModel.isAlphaPremultiplied(), properties);
+                        colorModel,
+                        raster,
+                        colorModel.isAlphaPremultiplied(),
+                        getNoDataProperties(wrapper));
 
         CoordinateSystem cs = wrapper.variableDS.getCoordinateSystems().get(0);
         CoordinateAxis axis = georeferencing.isLonLat() ? cs.getLatAxis() : cs.getYaxis();
@@ -945,6 +948,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         return flipYAxis;
     }
 
+    @SuppressWarnings("PMD.ReplaceHashtableWithMap")
     private Hashtable<String, Object> getNoDataProperties(VariableAdapter wrapper) {
         RangeType range = wrapper.getRangeType();
         if (range != null) {
@@ -957,7 +961,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                         SampleDimension sampleDimension = sampleDims.iterator().next();
                         double[] noData = sampleDimension.getNoDataValues();
                         if (noData != null && noData.length > 0) {
-                            Hashtable<String, Object> table = new Hashtable<String, Object>();
+                            Hashtable<String, Object> table = new Hashtable<>();
                             CoverageUtilities.setNoDataProperty(table, noData[0]);
                             return table;
                         }

@@ -76,6 +76,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Version;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+@SuppressWarnings({"PMD.UseArrayListInsteadOfVector", "PMD.ReplaceVectorWithList"})
 public class JniOGR implements OGR {
 
     private static final Method GET_FIELD_METHOD;
@@ -105,7 +106,7 @@ public class JniOGR implements OGR {
     }
 
     Vector<String> vector(String[] opts) {
-        return opts != null && opts.length > 0 ? new Vector<String>(Arrays.asList(opts)) : null;
+        return opts != null && opts.length > 0 ? new Vector<>(Arrays.asList(opts)) : null;
     }
 
     @Override

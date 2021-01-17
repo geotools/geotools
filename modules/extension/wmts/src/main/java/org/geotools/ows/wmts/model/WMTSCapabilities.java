@@ -232,18 +232,20 @@ public class WMTSCapabilities extends Capabilities {
         request.setGetCapabilities(operationType);
         OperationsMetadataType operationsMetadata = caps.getOperationsMetadata();
         setType(WMTSServiceType.REST);
+        boolean isKVP = false;
+        boolean isREST = false;
         if (operationsMetadata != null) {
             for (Object op : operationsMetadata.getOperation()) {
                 OperationType opt = operationType;
                 net.opengis.ows11.OperationType opx = (net.opengis.ows11.OperationType) op;
 
                 EList dcps = opx.getDCP();
-                for (int i = 0; i < dcps.size(); i++) {
-                    DCPType dcp = (DCPType) dcps.get(i);
+                for (Object item : dcps) {
+                    DCPType dcp = (DCPType) item;
 
                     EList gets = dcp.getHTTP().getGet();
-                    for (int j = 0; j < gets.size(); j++) {
-                        RequestMethodType get = (RequestMethodType) gets.get(j);
+                    for (Object value : gets) {
+                        RequestMethodType get = (RequestMethodType) value;
                         try {
                             opt.setGet(new URL(get.getHref()));
                             if (!get.getConstraint().isEmpty()) {
@@ -253,10 +255,10 @@ public class WMTSCapabilities extends Capabilities {
                                     for (Object v : t.getValue()) {
                                         ValueType vt = (ValueType) v;
                                         if (vt.getValue().equalsIgnoreCase("KVP")) {
-                                            setType(WMTSServiceType.KVP);
+                                            isKVP = true;
                                         } else if (vt.getValue().equalsIgnoreCase("REST")
                                                 || vt.getValue().equalsIgnoreCase("RESTful")) {
-                                            setType(WMTSServiceType.REST);
+                                            isREST = true;
                                         }
                                     }
                                 }
@@ -267,8 +269,8 @@ public class WMTSCapabilities extends Capabilities {
                         }
                     }
                     EList posts = dcp.getHTTP().getPost();
-                    for (int j = 0; j < posts.size(); j++) {
-                        RequestMethodType post = (RequestMethodType) posts.get(j);
+                    for (Object o : posts) {
+                        RequestMethodType post = (RequestMethodType) o;
                         try {
                             opt.setPost(new URL(post.getHref()));
                             if (!post.getConstraint().isEmpty()) {
@@ -278,10 +280,10 @@ public class WMTSCapabilities extends Capabilities {
                                     for (Object v : t.getValue()) {
                                         ValueType vt = (ValueType) v;
                                         if (vt.getValue().equalsIgnoreCase("KVP")) {
-                                            setType(WMTSServiceType.KVP);
+                                            isKVP = true;
                                         } else if (vt.getValue().equalsIgnoreCase("REST")
                                                 || vt.getValue().equalsIgnoreCase("RESTful")) {
-                                            setType(WMTSServiceType.REST);
+                                            isREST = true;
                                         }
                                     }
                                 }
@@ -292,7 +294,11 @@ public class WMTSCapabilities extends Capabilities {
                         }
                     }
                 }
-
+                if (isREST) { // Given the choice we prefer REST (it's less likely to be broken)
+                    setType(WMTSServiceType.REST);
+                } else if (isKVP) {
+                    setType(WMTSServiceType.KVP);
+                }
                 if (opx.getName().equalsIgnoreCase("GetCapabilities")) {
                     request.setGetCapabilities(opt);
                 } else if (opx.getName().equalsIgnoreCase("GetTile")) {

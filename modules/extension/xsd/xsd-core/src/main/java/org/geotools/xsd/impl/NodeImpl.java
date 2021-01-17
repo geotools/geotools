@@ -27,14 +27,14 @@ import org.geotools.xsd.Text;
 public class NodeImpl implements Node {
     private InstanceComponent component;
     private Object value;
-    List children;
-    List attributes;
+    List<Node> children;
+    List<Node> attributes;
     Node parent;
 
     public NodeImpl(InstanceComponent component) {
         this.component = component;
-        children = new ArrayList();
-        attributes = new ArrayList();
+        children = new ArrayList<>();
+        attributes = new ArrayList<>();
     }
 
     public NodeImpl(InstanceComponent component, Object value) {
@@ -59,9 +59,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (int i = 0; i < children.size(); i++) {
-            Node child = (Node) children.get(i);
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 return true;
             }
@@ -70,14 +68,12 @@ public class NodeImpl implements Node {
         return false;
     }
 
-    public boolean hasChild(Class clazz) {
+    public boolean hasChild(Class<?> clazz) {
         if (clazz == null) {
             return false;
         }
 
-        for (int i = 0; i < children.size(); i++) {
-            Node child = (Node) children.get(i);
-
+        for (Node child : children) {
             if (child.getValue() == null) {
                 continue;
             }
@@ -98,7 +94,7 @@ public class NodeImpl implements Node {
      *
      * @see Node#getChildren()
      */
-    public List getChildren() {
+    public List<Node> getChildren() {
         return Collections.unmodifiableList(children);
     }
 
@@ -106,16 +102,14 @@ public class NodeImpl implements Node {
         return children.size();
     }
 
-    public List getChildren(String name) {
-        ArrayList matches = new ArrayList();
+    public List<Node> getChildren(String name) {
+        List<Node> matches = new ArrayList<>();
 
         if (name == null) {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 matches.add(child);
             }
@@ -124,16 +118,14 @@ public class NodeImpl implements Node {
         return matches;
     }
 
-    public List getChildren(Class clazz) {
-        ArrayList matches = new ArrayList();
+    public List<Node> getChildren(Class<?> clazz) {
+        List<Node> matches = new ArrayList<>();
 
         if (clazz == null) {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (child.getValue() == null) {
                 continue;
             }
@@ -151,9 +143,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 return child;
             }
@@ -162,14 +152,12 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public Node getChild(Class clazz) {
+    public Node getChild(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (child.getValue() == null) {
                 continue;
             }
@@ -182,14 +170,12 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public boolean hasAttribute(Class clazz) {
+    public boolean hasAttribute(Class<?> clazz) {
         if (clazz == null) {
             return false;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -207,9 +193,7 @@ public class NodeImpl implements Node {
             return false;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (name.equals(att.getComponent().getName())) {
                 return true;
             }
@@ -218,20 +202,18 @@ public class NodeImpl implements Node {
         return false;
     }
 
-    public List getAttributes() {
-        return new ArrayList(attributes);
+    public List<Node> getAttributes() {
+        return new ArrayList<>(attributes);
     }
 
-    public List getAttributes(Class clazz) {
-        ArrayList matches = new ArrayList();
+    public List<Node> getAttributes(Class<?> clazz) {
+        List<Node> matches = new ArrayList<>();
 
         if (clazz == null) {
             return matches;
         }
 
-        for (Iterator a = attributes.iterator(); a.hasNext(); ) {
-            Node att = (Node) a.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -253,9 +235,7 @@ public class NodeImpl implements Node {
             return null;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (name.equals(att.getComponent().getName())) {
                 return att;
             }
@@ -264,14 +244,12 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public Node getAttribute(Class clazz) {
+    public Node getAttribute(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
 
-        for (Iterator itr = attributes.iterator(); itr.hasNext(); ) {
-            Node att = (Node) itr.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -294,14 +272,12 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public Object getAttributeValue(Class clazz) {
+    public Object getAttributeValue(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
 
-        for (Iterator a = attributes.iterator(); a.hasNext(); ) {
-            Node att = (Node) a.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -314,16 +290,14 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public List getAttributeValues(Class clazz) {
-        ArrayList matches = new ArrayList();
+    public List<Object> getAttributeValues(Class<?> clazz) {
+        List<Object> matches = new ArrayList<>();
 
         if (clazz == null) {
             return matches;
         }
 
-        for (Iterator a = attributes.iterator(); a.hasNext(); ) {
-            Node att = (Node) a.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -341,7 +315,7 @@ public class NodeImpl implements Node {
     }
 
     public Object getChildValue(int index) {
-        return ((Node) children.get(index)).getValue();
+        return children.get(index).getValue();
     }
 
     public Object getChildValue(String name) {
@@ -354,26 +328,24 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public Object getChildValue(Class clazz) {
+    public <T> T getChildValue(Class<T> clazz) {
         Node node = getChild(clazz);
 
         if (node != null) {
-            return node.getValue();
+            return clazz.cast(node.getValue());
         }
 
         return null;
     }
 
-    public List getChildValues(String name) {
-        ArrayList matches = new ArrayList();
+    public List<Object> getChildValues(String name) {
+        List<Object> matches = new ArrayList<>();
 
         if (name == null) {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 matches.add(child.getValue());
             }
@@ -382,15 +354,14 @@ public class NodeImpl implements Node {
         return matches;
     }
 
-    public List getChildValues(Class clazz) {
-        ArrayList matches = new ArrayList();
+    public <T> List<T> getChildValues(Class<T> clazz) {
+        List<T> matches = new ArrayList<>();
 
         if (clazz == null) {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
+        for (Node child : children) {
             Object parsed = child.getValue();
 
             if (parsed == null) {
@@ -398,7 +369,7 @@ public class NodeImpl implements Node {
             }
 
             if (clazz.isAssignableFrom(parsed.getClass())) {
-                matches.add(parsed);
+                matches.add(clazz.cast(parsed));
             }
         }
 
@@ -435,14 +406,14 @@ public class NodeImpl implements Node {
         return o;
     }
 
-    public Object getChildValue(Class clazz, Object defaultValue) {
+    public <T> T getChildValue(Class<T> clazz, T defaultValue) {
         Object o = getChildValue(clazz);
 
         if (o == null) {
             o = defaultValue;
         }
 
-        return o;
+        return clazz.cast(o);
     }
 
     // additional methods, not part of public api
@@ -493,7 +464,7 @@ public class NodeImpl implements Node {
 
     public void collapseWhitespace() {
         // leading whitespace
-        for (Iterator<Node> it = ((List<Node>) children).iterator(); it.hasNext(); ) {
+        for (Iterator<Node> it = children.iterator(); it.hasNext(); ) {
             Text t = text(it.next());
             if (t == null) break;
 
@@ -507,7 +478,7 @@ public class NodeImpl implements Node {
 
         // trailing whitespace
         for (int i = children.size() - 1; i > -1; i--) {
-            Text t = text((Node) children.get(i));
+            Text t = text(children.get(i));
             if (t == null) break;
 
             if (t.isWhitespace()) {
@@ -520,7 +491,7 @@ public class NodeImpl implements Node {
 
         // inner whitespace
         boolean remove = false;
-        for (Iterator<Node> it = ((List<Node>) children).iterator(); it.hasNext(); ) {
+        for (Iterator<Node> it = children.iterator(); it.hasNext(); ) {
             Text t = text(it.next());
             if (t == null) continue;
 

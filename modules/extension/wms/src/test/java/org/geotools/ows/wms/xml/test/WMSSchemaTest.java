@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import junit.framework.TestCase;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.WMSCapabilities;
@@ -35,17 +34,21 @@ import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.handlers.DocumentHandler;
 import org.geotools.xml.schema.Schema;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class WMSSchemaTest extends TestCase {
+public class WMSSchemaTest {
 
+    @Test
     public void testSchema() throws URISyntaxException {
         Schema v1 = SchemaFactory.getInstance(new URI("http://www.opengis.net/wms"));
-        assertNotNull(v1);
+        Assert.assertNotNull(v1);
         Schema v2 = WMSSchema.getInstance();
-        assertNotNull(v2);
-        assertEquals(v1, v2);
+        Assert.assertNotNull(v2);
+        Assert.assertEquals(v1, v2);
     }
 
+    @Test
     public void testGetCapabilities() throws Exception {
 
         File getCaps = TestData.file(this, "1.3.0Capabilities.xml");
@@ -56,191 +59,196 @@ public class WMSSchemaTest extends TestCase {
         Schema schema = WMSSchema.getInstance();
         SchemaFactory.getInstance(WMSSchema.NAMESPACE);
 
-        assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
+        Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
 
         WMSCapabilities capabilities = (WMSCapabilities) object;
 
-        assertEquals(capabilities.getVersion(), "1.3.0");
-        assertEquals(capabilities.getService().getName(), "WMS");
-        assertEquals(capabilities.getService().getTitle(), "World Map");
-        assertEquals(capabilities.getService().get_abstract(), "None");
-        assertEquals(
+        Assert.assertEquals(capabilities.getVersion(), "1.3.0");
+        Assert.assertEquals(capabilities.getService().getName(), "WMS");
+        Assert.assertEquals(capabilities.getService().getTitle(), "World Map");
+        Assert.assertEquals(capabilities.getService().get_abstract(), "None");
+        Assert.assertEquals(
                 capabilities.getService().getOnlineResource(), new URL("http://www2.demis.nl"));
 
-        assertEquals(capabilities.getService().getLayerLimit(), 40);
-        assertEquals(capabilities.getService().getMaxWidth(), 2000);
-        assertEquals(capabilities.getService().getMaxHeight(), 2000);
+        Assert.assertEquals(capabilities.getService().getLayerLimit(), 40);
+        Assert.assertEquals(capabilities.getService().getMaxWidth(), 2000);
+        Assert.assertEquals(capabilities.getService().getMaxHeight(), 2000);
 
-        assertEquals(
+        Assert.assertEquals(
                 capabilities.getRequest().getGetCapabilities().getFormats().get(0), "text/xml");
-        assertEquals(
+        Assert.assertEquals(
                 capabilities.getRequest().getGetCapabilities().getGet(),
                 new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
-        assertEquals(
+        Assert.assertEquals(
                 capabilities.getRequest().getGetCapabilities().getPost(),
                 new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
 
-        assertEquals(capabilities.getRequest().getGetMap().getFormats().size(), 5);
-        assertEquals(capabilities.getRequest().getGetMap().getFormats().get(0), "image/gif");
-        assertEquals(capabilities.getRequest().getGetMap().getFormats().get(1), "image/png");
-        assertEquals(capabilities.getRequest().getGetMap().getFormats().get(2), "image/jpeg");
-        assertEquals(capabilities.getRequest().getGetMap().getFormats().get(3), "image/bmp");
-        assertEquals(capabilities.getRequest().getGetMap().getFormats().get(4), "image/swf");
-        assertEquals(
+        Assert.assertEquals(capabilities.getRequest().getGetMap().getFormats().size(), 5);
+        Assert.assertEquals(capabilities.getRequest().getGetMap().getFormats().get(0), "image/gif");
+        Assert.assertEquals(capabilities.getRequest().getGetMap().getFormats().get(1), "image/png");
+        Assert.assertEquals(
+                capabilities.getRequest().getGetMap().getFormats().get(2), "image/jpeg");
+        Assert.assertEquals(capabilities.getRequest().getGetMap().getFormats().get(3), "image/bmp");
+        Assert.assertEquals(capabilities.getRequest().getGetMap().getFormats().get(4), "image/swf");
+        Assert.assertEquals(
                 capabilities.getRequest().getGetMap().getGet(),
                 new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
 
-        assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().size(), 4);
-        assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().get(0), "text/xml");
-        assertEquals(
+        Assert.assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().size(), 4);
+        Assert.assertEquals(
+                capabilities.getRequest().getGetFeatureInfo().getFormats().get(0), "text/xml");
+        Assert.assertEquals(
                 capabilities.getRequest().getGetFeatureInfo().getFormats().get(1), "text/plain");
-        assertEquals(
+        Assert.assertEquals(
                 capabilities.getRequest().getGetFeatureInfo().getFormats().get(2), "text/html");
-        assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().get(3), "text/swf");
-        assertEquals(
+        Assert.assertEquals(
+                capabilities.getRequest().getGetFeatureInfo().getFormats().get(3), "text/swf");
+        Assert.assertEquals(
                 capabilities.getRequest().getGetFeatureInfo().getGet(),
                 new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
 
-        Layer topLayer = (Layer) capabilities.getLayerList().get(0);
-        assertNotNull(topLayer);
-        assertNull(topLayer.getParent());
-        assertFalse(topLayer.isQueryable());
-        assertEquals(topLayer.getTitle(), "World Map");
-        assertEquals(topLayer.getSrs().size(), 1);
-        assertTrue(topLayer.getSrs().contains("CRS:84"));
+        Layer topLayer = capabilities.getLayerList().get(0);
+        Assert.assertNotNull(topLayer);
+        Assert.assertNull(topLayer.getParent());
+        Assert.assertFalse(topLayer.isQueryable());
+        Assert.assertEquals(topLayer.getTitle(), "World Map");
+        Assert.assertEquals(topLayer.getSrs().size(), 1);
+        Assert.assertTrue(topLayer.getSrs().contains("CRS:84"));
 
         CRSEnvelope llbbox = topLayer.getLatLonBoundingBox();
-        assertNotNull(llbbox);
-        assertEquals(llbbox.getMinX(), -180, 0.0);
-        assertEquals(llbbox.getMaxX(), 180, 0.0);
-        assertEquals(llbbox.getMinY(), -90, 0.0);
-        assertEquals(llbbox.getMaxY(), 90, 0.0);
+        Assert.assertNotNull(llbbox);
+        Assert.assertEquals(llbbox.getMinX(), -180, 0.0);
+        Assert.assertEquals(llbbox.getMaxX(), 180, 0.0);
+        Assert.assertEquals(llbbox.getMinY(), -90, 0.0);
+        Assert.assertEquals(llbbox.getMaxY(), 90, 0.0);
 
-        assertEquals(topLayer.getBoundingBoxes().size(), 1);
+        Assert.assertEquals(topLayer.getBoundingBoxes().size(), 1);
 
-        CRSEnvelope bbox = (CRSEnvelope) topLayer.getBoundingBoxes().get("CRS:84");
-        assertNotNull(bbox);
-        assertEquals(bbox.getEPSGCode(), "CRS:84");
-        assertEquals(bbox.getMinX(), -184, 0.0);
-        assertEquals(bbox.getMaxX(), 180, 0.0);
-        assertEquals(bbox.getMinY(), -90.0000000017335, 0.0);
-        assertEquals(bbox.getMaxY(), 90, 0.0);
+        CRSEnvelope bbox = topLayer.getBoundingBoxes().get("CRS:84");
+        Assert.assertNotNull(bbox);
+        Assert.assertEquals(bbox.getEPSGCode(), "CRS:84");
+        Assert.assertEquals(bbox.getMinX(), -184, 0.0);
+        Assert.assertEquals(bbox.getMaxX(), 180, 0.0);
+        Assert.assertEquals(bbox.getMinY(), -90.0000000017335, 0.0);
+        Assert.assertEquals(bbox.getMaxY(), 90, 0.0);
 
-        Layer layer = (Layer) capabilities.getLayerList().get(1);
-        assertEquals(layer.getParent(), topLayer);
-        assertTrue(layer.isQueryable());
-        assertEquals(layer.getName(), "Bathymetry");
-        assertEquals(layer.getTitle(), "Bathymetry");
-        assertEquals(layer.getMetadataURL().get(0).getUrl().toString(), "http://www.example.com/?");
-        assertEquals(layer.getMetadataURL().get(0).getFormat(), "text/html");
-        assertEquals(layer.getMetadataURL().get(0).getType(), "FGDC");
-        assertEquals(
+        Layer layer = capabilities.getLayerList().get(1);
+        Assert.assertEquals(layer.getParent(), topLayer);
+        Assert.assertTrue(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "Bathymetry");
+        Assert.assertEquals(layer.getTitle(), "Bathymetry");
+        Assert.assertEquals(
+                layer.getMetadataURL().get(0).getUrl().toString(), "http://www.example.com/?");
+        Assert.assertEquals(layer.getMetadataURL().get(0).getFormat(), "text/html");
+        Assert.assertEquals(layer.getMetadataURL().get(0).getType(), "FGDC");
+        Assert.assertEquals(
                 layer.getStyles().get(0).getLegendURLs().get(0),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
 
         // Added test for Attribution parameter
         Attribution attribution = layer.getAttribution();
-        assertNotNull(attribution);
-        assertEquals(attribution.getTitle(), "test");
-        assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
+        Assert.assertNotNull(attribution);
+        Assert.assertEquals(attribution.getTitle(), "test");
+        Assert.assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
         LogoURL logoURL = attribution.getLogoURL();
-        assertNotNull(logoURL);
-        assertEquals(logoURL.getFormat(), "image/png");
-        assertEquals(
+        Assert.assertNotNull(logoURL);
+        Assert.assertEquals(logoURL.getFormat(), "image/png");
+        Assert.assertEquals(
                 logoURL.getOnlineResource().toString(),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
-        assertEquals(logoURL.getHeight(), 100);
-        assertEquals(logoURL.getWidth(), 100);
+        Assert.assertEquals(logoURL.getHeight(), 100);
+        Assert.assertEquals(logoURL.getWidth(), 100);
 
         // Added test to verify inheritance, should be same as previous llbbox
         llbbox = layer.getLatLonBoundingBox();
-        assertNotNull(llbbox);
-        assertEquals(llbbox.getMinX(), -180, 0.0);
-        assertEquals(llbbox.getMaxX(), 180, 0.0);
-        assertEquals(llbbox.getMinY(), -90, 0.0);
-        assertEquals(llbbox.getMaxY(), 90, 0.0);
+        Assert.assertNotNull(llbbox);
+        Assert.assertEquals(llbbox.getMinX(), -180, 0.0);
+        Assert.assertEquals(llbbox.getMaxX(), 180, 0.0);
+        Assert.assertEquals(llbbox.getMinY(), -90, 0.0);
+        Assert.assertEquals(llbbox.getMaxY(), 90, 0.0);
 
-        bbox = (CRSEnvelope) layer.getBoundingBoxes().get("CRS:84");
-        assertNotNull(bbox);
-        assertEquals(bbox.getEPSGCode(), "CRS:84");
-        assertEquals(bbox.getMinX(), -180, 0.0);
-        assertEquals(bbox.getMaxX(), 180, 0.0);
-        assertEquals(bbox.getMinY(), -90, 0.0);
-        assertEquals(bbox.getMaxY(), 90, 0.0);
+        bbox = layer.getBoundingBoxes().get("CRS:84");
+        Assert.assertNotNull(bbox);
+        Assert.assertEquals(bbox.getEPSGCode(), "CRS:84");
+        Assert.assertEquals(bbox.getMinX(), -180, 0.0);
+        Assert.assertEquals(bbox.getMaxX(), 180, 0.0);
+        Assert.assertEquals(bbox.getMinY(), -90, 0.0);
+        Assert.assertEquals(bbox.getMaxY(), 90, 0.0);
 
-        assertEquals(capabilities.getLayerList().size(), 21);
+        Assert.assertEquals(capabilities.getLayerList().size(), 21);
 
-        layer = (Layer) capabilities.getLayerList().get(2);
-        assertEquals(layer.getParent(), topLayer);
-        assertTrue(layer.isQueryable());
-        assertEquals(layer.getName(), "Countries");
-        assertEquals(layer.getTitle(), "Countries");
-
-        attribution = layer.getAttribution();
-        assertNotNull(attribution);
-        assertEquals(attribution.getTitle(), "test");
-        assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
-        logoURL = attribution.getLogoURL();
-        assertNull(logoURL);
-
-        layer = (Layer) capabilities.getLayerList().get(3);
-        assertEquals(layer.getParent(), topLayer);
-        assertTrue(layer.isQueryable());
-        assertEquals(layer.getName(), "Topography");
-        assertEquals(layer.getTitle(), "Topography");
+        layer = capabilities.getLayerList().get(2);
+        Assert.assertEquals(layer.getParent(), topLayer);
+        Assert.assertTrue(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "Countries");
+        Assert.assertEquals(layer.getTitle(), "Countries");
 
         attribution = layer.getAttribution();
-        assertNotNull(attribution);
-        assertEquals(attribution.getTitle(), "test");
-        assertNull(attribution.getOnlineResource());
+        Assert.assertNotNull(attribution);
+        Assert.assertEquals(attribution.getTitle(), "test");
+        Assert.assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
         logoURL = attribution.getLogoURL();
-        assertNull(logoURL);
+        Assert.assertNull(logoURL);
 
-        layer = (Layer) capabilities.getLayerList().get(4);
-        assertEquals(layer.getParent(), topLayer);
-        assertFalse(layer.isQueryable());
-        assertEquals(layer.getName(), "Hillshading");
-        assertEquals(layer.getTitle(), "Hillshading");
+        layer = capabilities.getLayerList().get(3);
+        Assert.assertEquals(layer.getParent(), topLayer);
+        Assert.assertTrue(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "Topography");
+        Assert.assertEquals(layer.getTitle(), "Topography");
 
         attribution = layer.getAttribution();
-        assertNotNull(attribution);
-        assertNull(attribution.getTitle());
-        assertNotNull(attribution.getOnlineResource());
-        assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
+        Assert.assertNotNull(attribution);
+        Assert.assertEquals(attribution.getTitle(), "test");
+        Assert.assertNull(attribution.getOnlineResource());
         logoURL = attribution.getLogoURL();
-        assertNotNull(logoURL);
-        assertEquals(logoURL.getFormat(), "image/png");
-        assertEquals(
+        Assert.assertNull(logoURL);
+
+        layer = capabilities.getLayerList().get(4);
+        Assert.assertEquals(layer.getParent(), topLayer);
+        Assert.assertFalse(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "Hillshading");
+        Assert.assertEquals(layer.getTitle(), "Hillshading");
+
+        attribution = layer.getAttribution();
+        Assert.assertNotNull(attribution);
+        Assert.assertNull(attribution.getTitle());
+        Assert.assertNotNull(attribution.getOnlineResource());
+        Assert.assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
+        logoURL = attribution.getLogoURL();
+        Assert.assertNotNull(logoURL);
+        Assert.assertEquals(logoURL.getFormat(), "image/png");
+        Assert.assertEquals(
                 logoURL.getOnlineResource().toString(),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
-        assertEquals(logoURL.getHeight(), 0);
-        assertEquals(logoURL.getWidth(), 0);
+        Assert.assertEquals(logoURL.getHeight(), 0);
+        Assert.assertEquals(logoURL.getWidth(), 0);
 
-        layer = (Layer) capabilities.getLayerList().get(20);
-        assertEquals(layer.getParent(), topLayer);
-        assertTrue(layer.isQueryable());
-        assertEquals(layer.getName(), "Ocean features");
-        assertEquals(layer.getTitle(), "Ocean features");
+        layer = capabilities.getLayerList().get(20);
+        Assert.assertEquals(layer.getParent(), topLayer);
+        Assert.assertTrue(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "Ocean features");
+        Assert.assertEquals(layer.getTitle(), "Ocean features");
         attribution = layer.getAttribution();
-        assertNull(attribution);
+        Assert.assertNull(attribution);
 
         // Added test to verify inheritance, should be same as previous llbbox
         llbbox = layer.getLatLonBoundingBox();
-        assertNotNull(llbbox);
-        assertEquals(llbbox.getMinX(), -180, 0.0);
-        assertEquals(llbbox.getMaxX(), 180, 0.0);
-        assertEquals(llbbox.getMinY(), -90, 0.0);
-        assertEquals(llbbox.getMaxY(), 90, 0.0);
+        Assert.assertNotNull(llbbox);
+        Assert.assertEquals(llbbox.getMinX(), -180, 0.0);
+        Assert.assertEquals(llbbox.getMaxX(), 180, 0.0);
+        Assert.assertEquals(llbbox.getMinY(), -90, 0.0);
+        Assert.assertEquals(llbbox.getMaxY(), 90, 0.0);
 
-        bbox = (CRSEnvelope) layer.getBoundingBoxes().get("CRS:84");
-        assertNotNull(bbox);
-        assertEquals(bbox.getEPSGCode(), "CRS:84");
-        assertEquals(bbox.getMinX(), -180, 0.0);
-        assertEquals(bbox.getMaxX(), 179.999420166016, 0.0);
-        assertEquals(bbox.getMinY(), -62.9231796264648, 0.0);
-        assertEquals(bbox.getMaxY(), 68.6906585693359, 0.0);
+        bbox = layer.getBoundingBoxes().get("CRS:84");
+        Assert.assertNotNull(bbox);
+        Assert.assertEquals(bbox.getEPSGCode(), "CRS:84");
+        Assert.assertEquals(bbox.getMinX(), -180, 0.0);
+        Assert.assertEquals(bbox.getMaxX(), 179.999420166016, 0.0);
+        Assert.assertEquals(bbox.getMinY(), -62.9231796264648, 0.0);
+        Assert.assertEquals(bbox.getMaxY(), 68.6906585693359, 0.0);
     }
 
+    @Test
     public void testGetCapabilities110() throws Exception {
 
         File getCaps = TestData.file(this, "1.1.0Capabilities.xml");
@@ -249,99 +257,99 @@ public class WMSSchemaTest extends TestCase {
         hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
         Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
-        assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
+        Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
 
         WMSCapabilities capabilities = (WMSCapabilities) object;
 
-        assertEquals(capabilities.getVersion(), "1.1.0");
-        assertEquals(capabilities.getService().getName(), "OGC:WMS");
-        assertEquals(capabilities.getService().getTitle(), "GMap WMS Demo Server");
-        assertTrue(
+        Assert.assertEquals(capabilities.getVersion(), "1.1.0");
+        Assert.assertEquals(capabilities.getService().getName(), "OGC:WMS");
+        Assert.assertEquals(capabilities.getService().getTitle(), "GMap WMS Demo Server");
+        Assert.assertTrue(
                 capabilities
                         .getService()
                         .get_abstract()
                         .contains("This demonstration server was setup by DM Solutions Group"));
-        assertEquals(
+        Assert.assertEquals(
                 capabilities.getService().getOnlineResource(),
                 new URL("http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"));
 
-        assertEquals(
+        Assert.assertEquals(
                 capabilities.getRequest().getGetCapabilities().getFormats().get(0),
                 "application/vnd.ogc.wms_xml");
 
-        Layer topLayer = (Layer) capabilities.getLayerList().get(0);
-        assertNotNull(topLayer);
-        assertNull(topLayer.getParent());
-        assertFalse(topLayer.isQueryable());
-        assertEquals(topLayer.getTitle(), "GMap WMS Demo Server");
-        assertEquals(topLayer.getSrs().size(), 4);
+        Layer topLayer = capabilities.getLayerList().get(0);
+        Assert.assertNotNull(topLayer);
+        Assert.assertNull(topLayer.getParent());
+        Assert.assertFalse(topLayer.isQueryable());
+        Assert.assertEquals(topLayer.getTitle(), "GMap WMS Demo Server");
+        Assert.assertEquals(topLayer.getSrs().size(), 4);
 
         // Added test for Attribution parameter
         Attribution attribution = topLayer.getAttribution();
-        assertNotNull(attribution);
-        assertEquals(attribution.getTitle(), "test");
-        assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
+        Assert.assertNotNull(attribution);
+        Assert.assertEquals(attribution.getTitle(), "test");
+        Assert.assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
         LogoURL logoURL = attribution.getLogoURL();
-        assertNotNull(logoURL);
-        assertEquals(logoURL.getFormat(), "image/png");
-        assertEquals(
+        Assert.assertNotNull(logoURL);
+        Assert.assertEquals(logoURL.getFormat(), "image/png");
+        Assert.assertEquals(
                 logoURL.getOnlineResource().toString(),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
-        assertEquals(logoURL.getHeight(), 100);
-        assertEquals(logoURL.getWidth(), 100);
+        Assert.assertEquals(logoURL.getHeight(), 100);
+        Assert.assertEquals(logoURL.getWidth(), 100);
 
-        Layer layer = (Layer) capabilities.getLayerList().get(1);
-        assertEquals(layer.getParent(), topLayer);
-        assertFalse(layer.isQueryable());
-        assertEquals(layer.getName(), "bathymetry");
-        assertEquals(layer.getTitle(), "Elevation/Bathymetry");
-
-        attribution = layer.getAttribution();
-        assertNotNull(attribution);
-        assertEquals(attribution.getTitle(), "test");
-        assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
-        logoURL = attribution.getLogoURL();
-        assertNull(logoURL);
-
-        layer = (Layer) capabilities.getLayerList().get(2);
-        assertEquals(layer.getParent(), topLayer);
-        assertFalse(layer.isQueryable());
-        assertEquals(layer.getName(), "land_fn");
-        assertEquals(layer.getTitle(), "Foreign Lands");
+        Layer layer = capabilities.getLayerList().get(1);
+        Assert.assertEquals(layer.getParent(), topLayer);
+        Assert.assertFalse(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "bathymetry");
+        Assert.assertEquals(layer.getTitle(), "Elevation/Bathymetry");
 
         attribution = layer.getAttribution();
-        assertNotNull(attribution);
-        assertEquals(attribution.getTitle(), "test");
-        assertNull(attribution.getOnlineResource());
+        Assert.assertNotNull(attribution);
+        Assert.assertEquals(attribution.getTitle(), "test");
+        Assert.assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
         logoURL = attribution.getLogoURL();
-        assertNull(logoURL);
+        Assert.assertNull(logoURL);
 
-        layer = (Layer) capabilities.getLayerList().get(3);
-        assertEquals(layer.getParent(), topLayer);
-        assertTrue(layer.isQueryable());
-        assertEquals(layer.getName(), "park");
-        assertEquals(layer.getTitle(), "Parks");
+        layer = capabilities.getLayerList().get(2);
+        Assert.assertEquals(layer.getParent(), topLayer);
+        Assert.assertFalse(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "land_fn");
+        Assert.assertEquals(layer.getTitle(), "Foreign Lands");
 
         attribution = layer.getAttribution();
-        assertNotNull(attribution);
-        assertNull(attribution.getTitle());
-        assertNotNull(attribution.getOnlineResource());
-        assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
+        Assert.assertNotNull(attribution);
+        Assert.assertEquals(attribution.getTitle(), "test");
+        Assert.assertNull(attribution.getOnlineResource());
         logoURL = attribution.getLogoURL();
-        assertNotNull(logoURL);
-        assertEquals(logoURL.getFormat(), "image/png");
-        assertEquals(
+        Assert.assertNull(logoURL);
+
+        layer = capabilities.getLayerList().get(3);
+        Assert.assertEquals(layer.getParent(), topLayer);
+        Assert.assertTrue(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "park");
+        Assert.assertEquals(layer.getTitle(), "Parks");
+
+        attribution = layer.getAttribution();
+        Assert.assertNotNull(attribution);
+        Assert.assertNull(attribution.getTitle());
+        Assert.assertNotNull(attribution.getOnlineResource());
+        Assert.assertEquals(attribution.getOnlineResource().toString(), "http://www.example.com");
+        logoURL = attribution.getLogoURL();
+        Assert.assertNotNull(logoURL);
+        Assert.assertEquals(logoURL.getFormat(), "image/png");
+        Assert.assertEquals(
                 logoURL.getOnlineResource().toString(),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
-        assertEquals(logoURL.getHeight(), 0);
-        assertEquals(logoURL.getWidth(), 0);
+        Assert.assertEquals(logoURL.getHeight(), 0);
+        Assert.assertEquals(logoURL.getWidth(), 0);
 
-        layer = (Layer) capabilities.getLayerList().get(4);
-        assertEquals(layer.getParent(), topLayer);
-        assertFalse(layer.isQueryable());
-        assertEquals(layer.getName(), "drain_fn");
-        assertEquals(layer.getTitle(), "Water");
+        layer = capabilities.getLayerList().get(4);
+        Assert.assertEquals(layer.getParent(), topLayer);
+        Assert.assertFalse(layer.isQueryable());
+        Assert.assertEquals(layer.getName(), "drain_fn");
+        Assert.assertEquals(layer.getTitle(), "Water");
         attribution = layer.getAttribution();
-        assertNull(attribution);
+        Assert.assertNull(attribution);
     }
 }

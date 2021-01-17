@@ -271,9 +271,13 @@ public class WKTWriter2 extends WKTWriter {
         } else if (geometry instanceof CircularRing) {
             appendCircularStringTaggedText((CircularRing) geometry, level, writer);
         } else if (geometry instanceof CompoundCurve) {
-            appendCompoundCurveTaggedText((CompoundCurvedGeometry) geometry, level, writer);
+            @SuppressWarnings("unchecked")
+            CompoundCurvedGeometry<LineString> cast = (CompoundCurvedGeometry) geometry;
+            appendCompoundCurveTaggedText(cast, level, writer);
         } else if (geometry instanceof CompoundRing) {
-            appendCompoundCurveTaggedText((CompoundCurvedGeometry) geometry, level, writer);
+            @SuppressWarnings("unchecked")
+            CompoundCurvedGeometry<LineString> cast = (CompoundCurvedGeometry) geometry;
+            appendCompoundCurveTaggedText(cast, level, writer);
         } else if (geometry instanceof LinearRing) {
             appendLinearRingTaggedText((LinearRing) geometry, level, writer);
         } else if (geometry instanceof LineString) {
@@ -626,7 +630,7 @@ public class WKTWriter2 extends WKTWriter {
                     indentCoords(i, level + 1, writer);
                 }
                 writer.write("(");
-                appendCoordinate(((Point) multiPoint.getGeometryN(i)).getCoordinate(), writer);
+                appendCoordinate(multiPoint.getGeometryN(i).getCoordinate(), writer);
                 writer.write(")");
             }
             writer.write(")");
@@ -660,9 +664,14 @@ public class WKTWriter2 extends WKTWriter {
     private void appendPotentialCurveText(
             LineString component, int level, boolean doIndent, Writer writer) throws IOException {
         if (component instanceof SingleCurvedGeometry) {
-            appendCircularStringTaggedText((SingleCurvedGeometry) component, level, writer);
+            @SuppressWarnings("unchecked")
+            SingleCurvedGeometry<LineString> cast = (SingleCurvedGeometry<LineString>) component;
+            appendCircularStringTaggedText(cast, level, writer);
         } else if (component instanceof CompoundCurvedGeometry) {
-            appendCompoundCurveTaggedText((CompoundCurvedGeometry) component, level, writer);
+            @SuppressWarnings("unchecked")
+            CompoundCurvedGeometry<LineString> cast =
+                    (CompoundCurvedGeometry<LineString>) component;
+            appendCompoundCurveTaggedText(cast, level, writer);
         } else {
             appendLineStringText(component, level, doIndent, writer);
         }

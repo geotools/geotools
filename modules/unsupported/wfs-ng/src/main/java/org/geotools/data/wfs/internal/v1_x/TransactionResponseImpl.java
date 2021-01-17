@@ -55,7 +55,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
 
         super(originatingRequest, response);
 
-        inserted = new ArrayList<FeatureId>();
+        inserted = new ArrayList<>();
 
         Object parsed;
         try {
@@ -67,9 +67,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
                 parser.setEntityResolver(resolver);
             }
             parsed = parser.parse(in);
-        } catch (SAXException e) {
-            throw new IOException(e);
-        } catch (ParserConfigurationException e) {
+        } catch (SAXException | ParserConfigurationException e) {
             throw new IOException(e);
         } finally {
             response.dispose();

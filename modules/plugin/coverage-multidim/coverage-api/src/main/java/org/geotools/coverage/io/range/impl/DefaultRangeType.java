@@ -59,8 +59,8 @@ public class DefaultRangeType implements RangeType {
             final Set<FieldType> fieldTypes) {
         this.name = name;
         this.description = description;
-        this.fieldTypes = new LinkedHashSet<FieldType>(fieldTypes);
-        fieldTypesNames = new LinkedHashSet<Name>(fieldTypes.size());
+        this.fieldTypes = new LinkedHashSet<>(fieldTypes);
+        fieldTypesNames = new LinkedHashSet<>(fieldTypes.size());
         for (FieldType fieldType : fieldTypes) {
             fieldTypesNames.add(fieldType.getName());
         }

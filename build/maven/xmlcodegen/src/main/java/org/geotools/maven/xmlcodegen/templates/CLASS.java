@@ -100,14 +100,14 @@ public class CLASS
     stringBuffer.append(TEXT_2);
     
 	if ( constructorArgs != null ) {
-		for ( int i = 0;i < constructorArgs.length; i++ ) {
-			Class arg = constructorArgs[i].clazz;
+        for (BindingConstructorArgument constructorArg : constructorArgs) {
+            Class arg = constructorArg.clazz;
 
-    stringBuffer.append(TEXT_3);
-    stringBuffer.append(arg.getName());
-    stringBuffer.append(TEXT_4);
-    		
-		}
+            stringBuffer.append(TEXT_3);
+            stringBuffer.append(arg.getName());
+            stringBuffer.append(TEXT_4);
+
+        }
 	}
 
     stringBuffer.append(TEXT_5);
@@ -141,12 +141,12 @@ public class CLASS
     }
     
 	String[] lines = writer.getBuffer().toString().split("\n");
-	for (int i = 0; i < lines.length; i++) {
+      for (String line : lines) {
 
-    stringBuffer.append(TEXT_9);
-    stringBuffer.append(lines[i].replaceAll("<","&lt;").replaceAll(">","&gt;"));
-    
-	}
+          stringBuffer.append(TEXT_9);
+          stringBuffer.append(line.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+
+      }
 
     stringBuffer.append(TEXT_10);
     
@@ -162,44 +162,44 @@ public class CLASS
     stringBuffer.append(TEXT_13);
     
 	if ( constructorArgs != null ) {
-		List fieldNames = new ArrayList();
+		List<String> fieldNames = new ArrayList<>();
 		
 		StringBuffer constructor = new StringBuffer();
 		constructor.append("public " + className + "( ");
-		
-		for ( int i = 0; i < constructorArgs.length; i++ ) {
-		    
-			String fieldName = constructorArgs[i].getName();
-			Class arg = constructorArgs[i].clazz;
-			
-			String typeName = arg.getName();
-			
-			if ( typeName.lastIndexOf( '.' ) != -1 ) {
-				typeName = typeName.substring( typeName.lastIndexOf( '.') + 1 );
-			}
-			
-			fieldNames.add( fieldName );
-			
-			if ( "member".equals(constructorArgs[i].getMode() ) ) {
 
-    stringBuffer.append(TEXT_14);
-    stringBuffer.append(typeName);
-    stringBuffer.append(TEXT_15);
-    stringBuffer.append(fieldName);
-    stringBuffer.append(TEXT_16);
-    
+        for (BindingConstructorArgument constructorArg : constructorArgs) {
+
+            String fieldName = constructorArg.getName();
+            Class arg = constructorArg.clazz;
+
+            String typeName = arg.getName();
+
+            if (typeName.lastIndexOf('.') != -1) {
+                typeName = typeName.substring(typeName.lastIndexOf('.') + 1);
             }
-            
-			constructor.append( typeName + " " + fieldName );
-			constructor.append( "," );
-		}
+
+            fieldNames.add(fieldName);
+
+            if ("member".equals(constructorArg.getMode())) {
+
+                stringBuffer.append(TEXT_14);
+                stringBuffer.append(typeName);
+                stringBuffer.append(TEXT_15);
+                stringBuffer.append(fieldName);
+                stringBuffer.append(TEXT_16);
+
+            }
+
+            constructor.append(typeName + " " + fieldName);
+            constructor.append(",");
+        }
 		constructor.setLength( constructor.length()-1 );
 		
 		constructor.append( " ) {\n");
 		constructor.append( "\t\tsuper(");
 		boolean trim = false;
 		for ( int i = 0; i < constructorArgs.length; i++ ) {
-            String fieldName = (String) fieldNames.get(i);
+            String fieldName = fieldNames.get(i);
             if ( "parent".equals( constructorArgs[i].getMode() ) ) {
               constructor.append(fieldName + ",");
               trim = true;
@@ -211,7 +211,7 @@ public class CLASS
 		constructor.append( ");\n");
 		
 		for ( int i = 0; i < constructorArgs.length; i++ ) {
-            String fieldName = (String) fieldNames.get(i);
+            String fieldName = fieldNames.get(i);
             if ( "member".equals( constructorArgs[i].getMode() ) ) {
                 constructor.append( "\t\tthis." + fieldName + " = " + fieldName + ";\n");
             }

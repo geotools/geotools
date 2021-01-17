@@ -16,8 +16,12 @@
  */
 package org.geotools.renderer.lite;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataTestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
@@ -29,6 +33,7 @@ public class FilterMemoizerTest extends DataTestCase {
 
     static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
+    @Test
     public void testMemoizeFilter() throws Exception {
         SimpleFeature rf0 = Mockito.spy(roadFeatures[0]);
         SimpleFeature rf1 = Mockito.spy(roadFeatures[1]);
@@ -50,6 +55,7 @@ public class FilterMemoizerTest extends DataTestCase {
         Mockito.verify(rf0, Mockito.times(2)).getAttribute("name");
     }
 
+    @Test
     public void testVolatileFunction() throws Exception {
         Function random = FF.function("random");
         Function spy = Mockito.spy(random);

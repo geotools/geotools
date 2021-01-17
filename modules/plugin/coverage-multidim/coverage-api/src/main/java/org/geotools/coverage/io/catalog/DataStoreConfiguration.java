@@ -111,7 +111,7 @@ public class DataStoreConfiguration {
     public static Map<String, Serializable> getDefaultParams(String database, File parentLocation) {
         Utilities.ensureNonNull("database", database);
         Utilities.ensureNonNull("parentLocation", parentLocation);
-        final Map<String, Serializable> params = new HashMap<String, Serializable>();
+        final Map<String, Serializable> params = new HashMap<>();
         params.put(Utils.SCAN_FOR_TYPENAMES, "true");
         final String url = URLs.fileToUrl(parentLocation).toExternalForm();
         String updatedDB;

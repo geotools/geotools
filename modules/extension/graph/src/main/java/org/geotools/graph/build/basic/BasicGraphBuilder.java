@@ -19,7 +19,7 @@ package org.geotools.graph.build.basic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Set;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
@@ -42,15 +42,15 @@ public class BasicGraphBuilder implements GraphBuilder {
     private Graph m_graph;
 
     /** nodes of graph being built * */
-    private HashSet m_nodes;
+    private Set<Node> m_nodes;
 
     /** edges of graph being built * */
-    private HashSet m_edges;
+    private Set<Edge> m_edges;
 
     /** Constructs a new empty graph builder. */
     public BasicGraphBuilder() {
-        m_nodes = new HashSet();
-        m_edges = new HashSet();
+        m_nodes = new HashSet<>();
+        m_edges = new HashSet<>();
         m_graph = buildGraph();
     }
 
@@ -86,15 +86,15 @@ public class BasicGraphBuilder implements GraphBuilder {
     /** @see GraphBuilder#removeNode(Node) */
     public void removeNode(Node node) {
         // prevents concurrent modification
-        ArrayList toRemove = new ArrayList(node.getEdges());
+        ArrayList toRemove = new ArrayList<>(node.getEdges());
         removeEdges(toRemove);
         m_nodes.remove(node);
     }
 
     /** @see GraphBuilder#removeNodes(Collection) */
     public void removeNodes(Collection nodes) {
-        for (Iterator itr = nodes.iterator(); itr.hasNext(); ) {
-            Node n = (Node) itr.next();
+        for (Object node : nodes) {
+            Node n = (Node) node;
             removeNode(n);
         }
     }
@@ -108,8 +108,8 @@ public class BasicGraphBuilder implements GraphBuilder {
 
     /** @see GraphBuilder#removeEdges(Collection) */
     public void removeEdges(Collection edges) {
-        for (Iterator itr = edges.iterator(); itr.hasNext(); ) {
-            Edge e = (Edge) itr.next();
+        for (Object edge : edges) {
+            Edge e = (Edge) edge;
             removeEdge(e);
         }
     }
@@ -121,7 +121,7 @@ public class BasicGraphBuilder implements GraphBuilder {
 
     /** @see GraphBuilder#clone(boolean) */
     public Object clone(boolean deep) throws Exception {
-        GraphBuilder builder = (GraphBuilder) getClass().getDeclaredConstructor().newInstance();
+        GraphBuilder builder = getClass().getDeclaredConstructor().newInstance();
         if (deep) builder.importGraph(getGraph());
 
         return (builder);
@@ -129,8 +129,8 @@ public class BasicGraphBuilder implements GraphBuilder {
 
     /** @see GraphBuilder#importGraph(Graph) */
     public void importGraph(Graph g) {
-        m_nodes = new HashSet(g.getNodes());
-        m_edges = new HashSet(g.getEdges());
+        m_nodes = new HashSet<>(g.getNodes());
+        m_edges = new HashSet<>(g.getEdges());
         m_graph = buildGraph();
     }
 
@@ -139,7 +139,7 @@ public class BasicGraphBuilder implements GraphBuilder {
      *
      * @return A collection of nodes.
      */
-    public Collection getNodes() {
+    public Collection<Node> getNodes() {
         return (m_nodes);
     }
 
@@ -148,7 +148,7 @@ public class BasicGraphBuilder implements GraphBuilder {
      *
      * @return A collection of edges.
      */
-    public Collection getEdges() {
+    public Collection<Edge> getEdges() {
         return (m_edges);
     }
 

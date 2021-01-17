@@ -126,23 +126,24 @@ public class EmfAppSchemaParser {
             throws DataSourceException {
         List<PropertyDescriptor> attributes;
         Collection<PropertyDescriptor> descriptors = realType.getDescriptors();
-        attributes = new ArrayList<PropertyDescriptor>(descriptors);
-        List<String> simpleProperties = new ArrayList<String>();
+        attributes = new ArrayList<>(descriptors);
+        List<String> simpleProperties = new ArrayList<>();
 
         // HACK HACK!! the parser sets no namespace to the properties so we're
         // doing a hardcode property name black list
         final Set<String> ignoreList =
-                new HashSet<String>(
+                new HashSet<>(
                         Arrays.asList(
                                 new String[] {
                                     GML.location.getLocalPart(),
-                                            GML.metaDataProperty.getLocalPart(),
-                                    GML.description.getLocalPart(), GML.name.getLocalPart(),
+                                    GML.metaDataProperty.getLocalPart(),
+                                    GML.description.getLocalPart(),
+                                    GML.name.getLocalPart(),
                                     GML.boundedBy.getLocalPart()
                                 }));
 
         if (attributes.size() > ignoreList.size()) {
-            Set<String> firstAtts = new HashSet<String>();
+            Set<String> firstAtts = new HashSet<>();
             for (int i = 0; i < ignoreList.size(); i++) {
                 firstAtts.add(attributes.get(i).getName().getLocalPart());
             }
@@ -209,7 +210,7 @@ public class EmfAppSchemaParser {
             throws IOException {
         XSDElementDeclaration elementDecl = parseFeatureType(featureName, schemaLocation);
 
-        Map bindings = wfsConfiguration.setupBindings();
+        Map<QName, Object> bindings = wfsConfiguration.setupBindings();
         if (mappedBindings != null) {
             bindings.putAll(mappedBindings);
         }

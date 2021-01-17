@@ -60,7 +60,7 @@ public class FormatDateTimezoneFunction implements Function {
     private final List<Expression> parameters;
 
     public FormatDateTimezoneFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public FormatDateTimezoneFunction(List<Expression> parameters, Literal fallback) {
@@ -95,7 +95,7 @@ public class FormatDateTimezoneFunction implements Function {
             throw new RuntimeException(
                     getName()
                             + ": could not parse date: "
-                            + (String) parameters.get(1).evaluate(object, String.class));
+                            + parameters.get(1).evaluate(object, String.class));
         }
         // if timezone is not understood it is silently set to UTC
         TimeZone timezone = TimeZone.getTimeZone(parameters.get(2).evaluate(object, String.class));

@@ -74,6 +74,9 @@ public class MySQLDialect extends SQLDialect {
      */
     protected boolean usePreciseSpatialOps;
 
+    /** flag indicating we are using MySQL v8.0 or higher. */
+    protected boolean isMySqlVersion80OrAbove;
+
     public MySQLDialect(JDBCDataStore dataStore) {
         super(dataStore);
     }
@@ -94,6 +97,14 @@ public class MySQLDialect extends SQLDialect {
         return usePreciseSpatialOps;
     }
 
+    public boolean isMySqlVersion80OrAbove() {
+        return this.isMySqlVersion80OrAbove;
+    }
+
+    public void setMySqlVersion80OrAbove(boolean mySqlVersion80OrAbove) {
+        this.isMySqlVersion80OrAbove = mySqlVersion80OrAbove;
+    }
+
     @Override
     public boolean includeTable(String schemaName, String tableName, Connection cx)
             throws SQLException {
@@ -104,7 +115,7 @@ public class MySQLDialect extends SQLDialect {
     }
 
     public String getNameEscape() {
-        return "";
+        return (usePreciseSpatialOps ? "`" : "");
     }
 
     public String getGeometryTypeName(Integer type) {
@@ -186,7 +197,11 @@ public class MySQLDialect extends SQLDialect {
 
         // execute SELECT srid(<columnName>) FROM <tableName> LIMIT 1;
         sql = new StringBuffer();
-        sql.append("SELECT srid(");
+        if (this.usePreciseSpatialOps) {
+            sql.append("SELECT ST_SRID(");
+        } else {
+            sql.append("SELECT srid(");
+        }
         encodeColumnName(null, columnName, sql);
         sql.append(") ");
         sql.append("FROM ");
@@ -225,28 +240,66 @@ public class MySQLDialect extends SQLDialect {
     @Override
     public void encodeGeometryColumn(
             GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
-        sql.append("asWKB(");
+        if (this.usePreciseSpatialOps) {
+            sql.append("ST_asWKB(");
+        } else {
+            sql.append("asWKB(");
+        }
         encodeColumnName(prefix, gatt.getLocalName(), sql);
         sql.append(")");
     }
 
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
-        sql.append("asWKB(");
-        sql.append("envelope(");
-        encodeColumnName(null, geometryColumn, sql);
+        if (this.usePreciseSpatialOps) {
+            if (this.isMySqlVersion80OrAbove) {
+                // since mysql 8 fails to execute st_envelope on geography we need to
+                // work around that casting to srid:0 and back. Example:
+                //
+                //            SELECT ST_asWkB(
+                //                -- restore srid
+                //                ST_srid(
+                //                    -- get envelope
+                //                    ST_Envelope(
+                //                            -- cast to cartesian/srid 0
+                //                            ST_srid(geom, 0)
+                //                    ),
+                //                    ST_SRID(geom)
+                //                )
+                //            ) FROM `road`
+                sql.append("ST_asWKB(ST_SRID(ST_Envelope(ST_SRID(");
+                encodeColumnName(null, geometryColumn, sql);
+                sql.append(",0)),ST_SRID(");
+                encodeColumnName(null, geometryColumn, sql);
+                sql.append(")");
+            } else {
+                // 5.6/5.7 has a different syntax for ST_SRID so we can't use the above
+                // also it doesn't care about projections
+                sql.append("ST_asWKB(ST_Envelope(");
+                encodeColumnName(null, geometryColumn, sql);
+            }
+        } else {
+            sql.append("asWKB(");
+            sql.append("envelope(");
+            encodeColumnName(null, geometryColumn, sql);
+        }
         sql.append("))");
     }
 
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
             throws SQLException, IOException {
-        // String wkb = rs.getString( column );
         byte[] wkb = rs.getBytes(column);
 
         try {
+            /**
+             * As of MySQL 5.7.6, if the argument is a point or a vertical or horizontal line
+             * segment, ST_Envelope() returns the point or the line segment as its MBR rather than
+             * returning an invalid polygon therefore we must override behavior and check for a
+             * geometry and not a polygon
+             */
             // TODO: srid
-            Polygon polygon = (Polygon) new WKBReader().read(wkb);
+            Geometry geom = new WKBReader().read(wkb);
 
-            return polygon.getEnvelopeInternal();
+            return geom.getEnvelopeInternal();
         } catch (ParseException e) {
             String msg = "Error decoding wkb for envelope";
             throw (IOException) new IOException(msg).initCause(e);
@@ -307,7 +360,7 @@ public class MySQLDialect extends SQLDialect {
         mappings.put("MULTILINESTRING", MultiLineString.class);
         mappings.put("MULTIPOLYGON", MultiPolygon.class);
         mappings.put("GEOMETRY", Geometry.class);
-        mappings.put("GEOMETRYCOLLETION", GeometryCollection.class);
+        mappings.put("GEOMETRYCOLLECTION", GeometryCollection.class);
     }
 
     @Override
@@ -401,7 +454,7 @@ public class MySQLDialect extends SQLDialect {
             }
 
             CoordinateReferenceSystem crs = gd.getCoordinateReferenceSystem();
-            int srid = -1;
+            int srid = 0;
             if (crs != null) {
                 Integer i = null;
                 try {
@@ -434,8 +487,9 @@ public class MySQLDialect extends SQLDialect {
             sql.append("2, ");
             sql.append(srid).append(", ");
 
-            Geometries g =
-                    Geometries.getForBinding((Class<? extends Geometry>) gd.getType().getBinding());
+            @SuppressWarnings("unchecked")
+            Class<? extends Geometry> gc = (Class<? extends Geometry>) gd.getType().getBinding();
+            Geometries g = Geometries.getForBinding(gc);
             sql.append("'").append(g != null ? g.getName().toUpperCase() : "GEOMETRY").append("')");
 
             LOGGER.fine(sql.toString());

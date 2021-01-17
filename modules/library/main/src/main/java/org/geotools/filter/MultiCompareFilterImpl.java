@@ -57,13 +57,16 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
     }
 
     private Collection<Object> toCollection(Object obj) {
+        Object collection = null;
         if (obj instanceof Collection) {
-            return (Collection<Object>) obj;
+            collection = obj;
         }
         if (obj != null && obj.getClass().isArray()) {
-            return (Collection<Object>) Converters.convert(obj, List.class);
+            collection = Converters.convert(obj, List.class);
         }
-        return null;
+        @SuppressWarnings("unchecked")
+        Collection<Object> cast = (Collection<Object>) collection;
+        return cast;
     }
 
     public final boolean evaluate(Object feature) {
@@ -80,11 +83,11 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
         Collection<Object> leftValues =
                 collection1 instanceof Collection
                         ? collection1
-                        : Collections.<Object>singletonList(object1);
+                        : Collections.singletonList(object1);
         Collection<Object> rightValues =
                 collection2 instanceof Collection
                         ? collection2
-                        : Collections.<Object>singletonList(object2);
+                        : Collections.singletonList(object2);
 
         int count = 0;
 

@@ -17,13 +17,15 @@
  */
 package org.geotools.mbstyle.function;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -117,7 +119,7 @@ public class MBFunctionFactoryTest {
         assertEquals(0, (int) expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential( 5, 0.7, 0,0, 10,100)");
-        assertTrue(50 < (int) expr.evaluate(null, Integer.class));
+        assertTrue(50 < expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential(10, 0.7, 0,0, 10,100)");
         assertEquals(100, (int) expr.evaluate(null, Integer.class));
@@ -129,7 +131,7 @@ public class MBFunctionFactoryTest {
         assertEquals(0, (int) expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential( 5, 1.4, 0,0, 10,100)");
-        assertTrue(50 > (int) expr.evaluate(null, Integer.class));
+        assertTrue(50 > expr.evaluate(null, Integer.class));
 
         expr = (Function) ECQL.toExpression("Exponential(10, 1.5, 0,0, 10,100)");
         assertEquals(100, (int) expr.evaluate(null, Integer.class));
@@ -311,7 +313,7 @@ public class MBFunctionFactoryTest {
         assertEquals("SoMeString", f.evaluate(null, String.class));
 
         f = ff.function("StringTransform", ff.literal(null), ff.literal(null));
-        assertTrue(null == f.evaluate(null, String.class));
+        assertNull(f.evaluate(null, String.class));
     }
 
     @Test
@@ -329,8 +331,12 @@ public class MBFunctionFactoryTest {
 
         // check alternatives
         Function alternatives = ff.function("fontAlternatives", ff.literal("Droid"));
+
+        @SuppressWarnings("unchecked")
+        List<String> listAlternatives = (List<String>) alternatives.evaluate(null, List.class);
+
         assertThat(
-                (List<String>) alternatives.evaluate(null, List.class),
+                listAlternatives,
                 hasItems("Droid Arabic Naskh", "Droid Sans Armenian", "Droid Sans Fallback"));
 
         Literal regularFont = ff.literal("Droid Sans Regular");

@@ -37,7 +37,7 @@ public final class ContrastMethod extends CodeList<ContrastMethod> {
     private static final long serialVersionUID = -7328502367911363577L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<ContrastMethod> VALUES = new ArrayList<ContrastMethod>(5);
+    private static final List<ContrastMethod> VALUES = new ArrayList<>(5);
 
     /**
      * Normalize enchancement. “Normalize” means to stretch the contrast so that the dimmest color

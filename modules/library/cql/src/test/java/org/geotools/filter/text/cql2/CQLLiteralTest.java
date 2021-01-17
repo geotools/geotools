@@ -18,7 +18,7 @@
 package org.geotools.filter.text.cql2;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.text.commons.CompilerUtil;
@@ -234,9 +234,7 @@ public class CQLLiteralTest {
         // special characters
         final String otherChars = "üä";
 
-        filter =
-                (PropertyIsEqualTo)
-                        CompilerUtil.parseFilter(language, "NAME = '" + otherChars + "'");
+        filter = CompilerUtil.parseFilter(language, "NAME = '" + otherChars + "'");
 
         Assert.assertNotNull(filter);
         Assert.assertTrue(filter instanceof PropertyIsEqualTo);
@@ -266,8 +264,7 @@ public class CQLLiteralTest {
 
     private void testCharacterString(final String str) throws Exception {
 
-        Filter filter =
-                (PropertyIsEqualTo) CompilerUtil.parseFilter(language, "NAME = '" + str + "'");
+        Filter filter = CompilerUtil.parseFilter(language, "NAME = '" + str + "'");
 
         Assert.assertNotNull(filter);
         Assert.assertTrue(filter instanceof PropertyIsEqualTo);

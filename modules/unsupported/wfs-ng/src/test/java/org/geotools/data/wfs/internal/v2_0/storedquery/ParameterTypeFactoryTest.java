@@ -16,7 +16,7 @@
  */
 package org.geotools.data.wfs.internal.v2_0.storedquery;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,8 +65,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        List<ParameterType> params =
-                factory.buildStoredQueryParameters(new HashMap<String, String>(), null);
+        List<ParameterType> params = factory.buildStoredQueryParameters(new HashMap<>(), null);
 
         assertEquals(0, params.size());
     }
@@ -81,7 +80,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        Map<String, String> viewParams = new HashMap<String, String>();
+        Map<String, String> viewParams = new HashMap<>();
         viewParams.put("foo", "bar");
 
         List<ParameterType> params = factory.buildStoredQueryParameters(viewParams, null);
@@ -103,7 +102,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        Map<String, String> viewParams = new HashMap<String, String>();
+        Map<String, String> viewParams = new HashMap<>();
         viewParams.put("not-defined-in-spec", "bar");
 
         List<ParameterType> params = factory.buildStoredQueryParameters(viewParams, null);
@@ -127,7 +126,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        Map<String, String> viewParams = new HashMap<String, String>();
+        Map<String, String> viewParams = new HashMap<>();
 
         List<ParameterType> params = factory.buildStoredQueryParameters(viewParams, null);
 
@@ -154,7 +153,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        Map<String, String> viewParams = new HashMap<String, String>();
+        Map<String, String> viewParams = new HashMap<>();
         viewParams.put("foo", "bar");
 
         List<ParameterType> params = factory.buildStoredQueryParameters(viewParams, null);
@@ -183,7 +182,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        Map<String, String> viewParams = new HashMap<String, String>();
+        Map<String, String> viewParams = new HashMap<>();
 
         List<ParameterType> params = factory.buildStoredQueryParameters(viewParams, null);
 
@@ -215,7 +214,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        Map<String, String> viewParams = new HashMap<String, String>();
+        Map<String, String> viewParams = new HashMap<>();
 
         Filter f = new FilterFactoryImpl().bbox("nada", -10.0, -5.0, 10.0, 5.0, "EPSG:4326");
 
@@ -272,7 +271,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        Map<String, String> viewParams = new HashMap<String, String>();
+        Map<String, String> viewParams = new HashMap<>();
 
         List<ParameterType> params = factory.buildStoredQueryParameters(viewParams, null);
 
@@ -301,7 +300,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        Map<String, String> viewParams = new HashMap<String, String>();
+        Map<String, String> viewParams = new HashMap<>();
 
         viewParams.put("mapped", "stuff");
 
@@ -330,7 +329,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        Map<String, String> viewParams = new HashMap<String, String>();
+        Map<String, String> viewParams = new HashMap<>();
 
         List<ParameterType> params = factory.buildStoredQueryParameters(viewParams, null);
 

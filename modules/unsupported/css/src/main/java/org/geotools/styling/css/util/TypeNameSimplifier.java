@@ -79,7 +79,7 @@ public class TypeNameSimplifier implements SelectorVisitor {
             }
         }
 
-        if (selectors.size() == 0) {
+        if (selectors.isEmpty()) {
             return Selector.ACCEPT;
         } else if (selectors.size() == 1) {
             return selectors.get(0);
@@ -100,7 +100,7 @@ public class TypeNameSimplifier implements SelectorVisitor {
             }
         }
 
-        if (selectors.size() == 0) {
+        if (selectors.isEmpty()) {
             return Selector.REJECT;
         } else if (selectors.size() == 1) {
             return selectors.get(0);

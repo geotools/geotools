@@ -16,15 +16,19 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import net.opengis.wfs20.CreateStoredQueryType;
 import net.opengis.wfs20.DropStoredQueryType;
 import net.opengis.wfs20.QueryExpressionTextType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 
 public class CreateStoredQueryTypeBindingTest extends WFSTestSupport {
-
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<wfs:DropStoredQuery "
@@ -40,6 +44,7 @@ public class CreateStoredQueryTypeBindingTest extends WFSTestSupport {
         assertEquals("foobar", dsq.getId());
     }
 
+    @Test
     public void testParseUnqualified() throws Exception {
         String xml =
                 "<CreateStoredQuery xmlns=\"http://www.opengis.net/wfs/2.0\" service=\"WFS\" "
@@ -73,6 +78,7 @@ public class CreateStoredQueryTypeBindingTest extends WFSTestSupport {
                 text.getValue().trim());
     }
 
+    @Test
     public void testParseRepeatedNamespaces() throws Exception {
         String xml =
                 "<CreateStoredQuery xmlns=\"http://www.opengis.net/wfs/2.0\" service=\"WFS\" "
@@ -128,6 +134,7 @@ public class CreateStoredQueryTypeBindingTest extends WFSTestSupport {
                 text.getValue().trim());
     }
 
+    @Test
     public void testParseRepeatedNamespacesWithFilters() throws Exception {
         String xml =
                 "<CreateStoredQuery xmlns=\"http://www.opengis.net/wfs/2.0\" service=\"WFS\" "

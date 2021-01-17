@@ -45,12 +45,12 @@ public class NullPropertyAccessorFactory implements PropertyAccessorFactory {
             return "Expression/NIL".equals(xpath); // case sensitive
         }
 
-        public Object get(Object object, String xpath, Class target)
+        public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
             return null;
         }
 
-        public void set(Object object, String xpath, Object value, Class target)
+        public <T> void set(Object object, String xpath, T value, Class<T> target)
                 throws IllegalArgumentException {
             throw new IllegalArgumentException("Cannot assign a value to Expression/NIL.");
         }

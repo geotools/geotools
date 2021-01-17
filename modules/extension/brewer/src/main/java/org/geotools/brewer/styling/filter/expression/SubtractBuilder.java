@@ -41,21 +41,21 @@ public class SubtractBuilder implements Builder<Subtract> {
 
     public SubtractBuilder reset() {
         unset = false;
-        expr1 = new ChildExpressionBuilder<SubtractBuilder>(this);
-        expr2 = new ChildExpressionBuilder<SubtractBuilder>(this);
+        expr1 = new ChildExpressionBuilder<>(this);
+        expr2 = new ChildExpressionBuilder<>(this);
         return this;
     }
 
     public SubtractBuilder reset(Subtract original) {
         unset = false;
-        expr1 = new ChildExpressionBuilder<SubtractBuilder>(this, original.getExpression1());
-        expr2 = new ChildExpressionBuilder<SubtractBuilder>(this, original.getExpression2());
+        expr1 = new ChildExpressionBuilder<>(this, original.getExpression1());
+        expr2 = new ChildExpressionBuilder<>(this, original.getExpression2());
         return this;
     }
 
     public SubtractBuilder unset() {
         unset = true;
-        expr1 = new ChildExpressionBuilder<SubtractBuilder>(this).unset();
+        expr1 = new ChildExpressionBuilder<>(this).unset();
         expr2 = null;
         return this;
     }

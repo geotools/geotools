@@ -120,12 +120,13 @@ public class GMLAbstractFeatureTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         return GML2EncodingUtils.AbstractFeatureType_getProperties(
                 object,
                 element,
                 schemaIndex,
-                new HashSet<String>(Arrays.asList("name", "description", "boundedBy")),
+                new HashSet<>(Arrays.asList("name", "description", "boundedBy")),
                 configuration);
     }
 }

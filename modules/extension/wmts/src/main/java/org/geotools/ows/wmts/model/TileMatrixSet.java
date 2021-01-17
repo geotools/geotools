@@ -96,8 +96,14 @@ public class TileMatrixSet {
     protected CoordinateReferenceSystem parseCoordinateReferenceSystem(String crs)
             throws NoSuchAuthorityCodeException, FactoryException {
 
+        /**
+         * Take care of various badly behaved CRS that persist in the Web Mapping Community
+         * urn:ogc:def:crs:EPSG:6.18:3:3857 - comes from a typo in the WMTS spec
+         * (https://portal.ogc.org/files/?artifact_id=50398)
+         */
         if (crs.equalsIgnoreCase("epsg:900913")
-                || crs.equalsIgnoreCase("urn:ogc:def:crs:EPSG::900913")) {
+                || crs.equalsIgnoreCase("urn:ogc:def:crs:EPSG::900913")
+                || crs.equalsIgnoreCase("urn:ogc:def:crs:EPSG:6.18:3:3857")) {
             return WEB_MERCATOR_CRS;
         }
 

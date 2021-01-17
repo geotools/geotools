@@ -79,7 +79,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     public ContrastEnhancementImpl(FilterFactory factory) {
-        this(factory, (ContrastMethod) null);
+        this(factory, null);
     }
 
     public ContrastEnhancementImpl(FilterFactory factory, ContrastMethod method) {
@@ -155,7 +155,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     @Override
     public Map<String, Expression> getOptions() {
         if (this.options == null) {
-            this.options = new HashMap<String, Expression>();
+            this.options = new HashMap<>();
         }
         return this.options;
     }
@@ -163,7 +163,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     @Override
     public boolean hasOption(String key) {
         if (this.options == null) {
-            this.options = new HashMap<String, Expression>();
+            this.options = new HashMap<>();
         }
         return options.containsKey(key);
     }
@@ -176,7 +176,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     @Override
     public void addOption(String key, Expression value) {
         if (this.options == null) {
-            this.options = new HashMap<String, Expression>();
+            this.options = new HashMap<>();
         }
         options.put(key, value);
     }

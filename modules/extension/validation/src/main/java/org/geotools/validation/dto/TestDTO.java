@@ -40,7 +40,7 @@ public class TestDTO {
     private PlugInDTO plugIn;
 
     /** The set of runtime args for this particular test to override the defaults in the plug-in */
-    private Map args;
+    private Map<String, ArgumentDTO> args;
 
     /**
      * TestConfig constructor.
@@ -60,7 +60,7 @@ public class TestDTO {
         name = t.getName();
         description = t.getDescription();
         plugIn = new PlugInDTO(t.getPlugIn());
-        args = new HashMap();
+        args = new HashMap<>();
 
         if (t.getArgs() != null) {
             Iterator i = t.getArgs().keySet().iterator();
@@ -69,7 +69,7 @@ public class TestDTO {
                 String key = (String) i.next();
 
                 // TODO clone value.
-                args.put(key, new ArgumentDTO((ArgumentDTO) t.getArgs().get(key)));
+                args.put(key, new ArgumentDTO(t.getArgs().get(key)));
             }
         }
     }
@@ -166,7 +166,7 @@ public class TestDTO {
      *
      * @return Returns the args.
      */
-    public Map getArgs() {
+    public Map<String, ArgumentDTO> getArgs() {
         return args;
     }
 
@@ -175,7 +175,7 @@ public class TestDTO {
      *
      * @param args The args to set.
      */
-    public void setArgs(Map args) {
+    public void setArgs(Map<String, ArgumentDTO> args) {
         this.args = args;
     }
 

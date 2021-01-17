@@ -378,8 +378,7 @@ public class MonolineFormatter extends Formatter {
         MonolineFormatter monoline = null;
         boolean foundConsoleHandler = false;
         Handler[] handlers = logger.getHandlers();
-        for (int i = 0; i < handlers.length; i++) {
-            final Handler handler = handlers[i];
+        for (final Handler handler : handlers) {
             if (handler.getClass().equals(ConsoleHandler.class)) {
                 foundConsoleHandler = true;
                 final Formatter formatter = handler.getFormatter();
@@ -427,8 +426,7 @@ public class MonolineFormatter extends Formatter {
                 break;
             }
             handlers = parent.getHandlers();
-            for (int i = 0; i < handlers.length; i++) {
-                Handler handler = handlers[i];
+            for (Handler handler : handlers) {
                 if (handler.getClass().equals(ConsoleHandler.class)) {
                     if (!foundConsoleHandler) {
                         // We have already set a ConsoleHandler and we don't want a second one.

@@ -138,8 +138,7 @@ class ImageLevelsMapper {
     }
 
     /** Cache of {@link ImageMosaicReader} objects for the different levels. */
-    ConcurrentHashMap<Integer, ImageMosaicReader> readers =
-            new ConcurrentHashMap<Integer, ImageMosaicReader>();
+    ConcurrentHashMap<Integer, ImageMosaicReader> readers = new ConcurrentHashMap<>();
 
     public void dispose() {
         for (Entry<Integer, ImageMosaicReader> element : readers.entrySet()) {

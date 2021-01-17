@@ -1,6 +1,10 @@
 package org.geotools.process.raster;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -48,7 +52,9 @@ public class RasterProcessFactoryTest {
                     @Override
                     public <T> Iterator<T> iterator(Class<T> category) {
                         if (category == RasterProcess.class) {
-                            return (Iterator<T>) Arrays.asList(new CustomProcess()).iterator();
+                            @SuppressWarnings("unchecked")
+                            T customProcess = (T) new CustomProcess();
+                            return Arrays.asList(customProcess).iterator();
                         }
                         return null;
                     }

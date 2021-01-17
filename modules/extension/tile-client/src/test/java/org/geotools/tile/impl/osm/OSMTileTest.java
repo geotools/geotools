@@ -16,11 +16,6 @@
  */
 package org.geotools.tile.impl.osm;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
@@ -53,18 +48,5 @@ public class OSMTileTest {
     public void testGetURL() {
         Assert.assertEquals(
                 "http://tile.openstreetmap.org/5/10/12.png", this.tile.getUrl().toString());
-    }
-
-    /**
-     * Make sure we can actually fetch the image of the tile for display.
-     *
-     * @throws IOException
-     */
-    @Test
-    public void testFetchTile() throws IOException {
-        BufferedImage img = tile.loadImageTileImage(tile);
-        assertNotNull(img);
-        assertEquals("wrong height", OSMTile.DEFAULT_TILE_SIZE, img.getHeight());
-        assertEquals("wrong width", OSMTile.DEFAULT_TILE_SIZE, img.getWidth());
     }
 }

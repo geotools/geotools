@@ -27,7 +27,6 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.swing.Icon;
@@ -171,7 +170,7 @@ class RandomFillBuilder {
                 while ((p = ps.getNextPosition()) != null) {
                     at.setToTranslation(p.x, p.y);
                     at.rotate(Math.toRadians(p.rotation));
-                    List<AffineTransform2D> transforms = new ArrayList<AffineTransform2D>();
+                    List<AffineTransform2D> transforms = new ArrayList<>();
                     AffineTransform2D at2d = new AffineTransform2D(at);
                     transforms.add(at2d);
 
@@ -343,7 +342,7 @@ class RandomFillBuilder {
         @Override
         public boolean checkAndReserve(List<AffineTransform2D> transforms)
                 throws MismatchedDimensionException, TransformException {
-            List<Geometry> transformedConflictBounds = new ArrayList<Geometry>();
+            List<Geometry> transformedConflictBounds = new ArrayList<>();
             boolean conflict = false;
             for (AffineTransform2D tx2d : transforms) {
                 if (conflict) {
@@ -352,8 +351,8 @@ class RandomFillBuilder {
                 Geometry cbTransformed = JTS.transform(conflictBounds, tx2d);
                 transformedConflictBounds.add(cbTransformed);
                 List results = qt.query(cbTransformed.getEnvelopeInternal());
-                for (Iterator it = results.iterator(); it.hasNext(); ) {
-                    Geometry candidate = (Geometry) it.next();
+                for (Object result : results) {
+                    Geometry candidate = (Geometry) result;
                     if (candidate.intersects(cbTransformed)) {
                         // location conflict
                         conflict = true;

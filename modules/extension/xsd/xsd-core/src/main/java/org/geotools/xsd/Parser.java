@@ -21,7 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -332,7 +331,7 @@ public class Parser {
      *
      * @return A list of errors, or an empty list if none.
      */
-    public List getValidationErrors() {
+    public List<Exception> getValidationErrors() {
         return handler.getValidationErrors();
     }
 
@@ -451,9 +450,7 @@ public class Parser {
         // set the schema sources of this configuration, and all dependent ones
         StringBuffer schemaLocation = new StringBuffer();
 
-        for (Iterator d = handler.getConfiguration().allDependencies().iterator(); d.hasNext(); ) {
-            Configuration dependency = (Configuration) d.next();
-
+        for (Configuration dependency : handler.getConfiguration().allDependencies()) {
             // ignore xs namespace
             if (XS.NAMESPACE.equals(dependency.getNamespaceURI())) {
                 continue;

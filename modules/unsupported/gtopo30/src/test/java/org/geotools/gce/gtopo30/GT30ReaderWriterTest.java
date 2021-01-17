@@ -17,6 +17,10 @@
  */
 package org.geotools.gce.gtopo30;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.net.URL;
 import javax.media.jai.ImageLayout;
@@ -24,6 +28,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.test.TestData;
+import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageWriter;
 
 /**
@@ -33,21 +38,18 @@ import org.opengis.coverage.grid.GridCoverageWriter;
  * @author Simone Giannecchini
  */
 public class GT30ReaderWriterTest extends GT30TestBase {
-    /** Constructor for GT30ReaderTest. */
-    public GT30ReaderWriterTest(String arg0) {
-        super(arg0);
-    }
 
     /**
      * Testing reader and writer for gtopo. This test first of all read an existing gtopo tessel
      * into a coverage object, therefore it writes it back onto the disk. Once the coverage is
      * written back\ it loads it again building a new coverage which is finally visualized.
      */
+    @Test
     public void test() throws Exception {
 
         URL statURL =
                 TestData.url(this, (new StringBuffer(this.fileName).append(".DEM").toString()));
-        AbstractGridFormat format = (AbstractGridFormat) new GTopo30FormatFactory().createFormat();
+        AbstractGridFormat format = new GTopo30FormatFactory().createFormat();
 
         if (format.accepts(statURL)) {
 
@@ -70,7 +72,7 @@ public class GT30ReaderWriterTest extends GT30TestBase {
             assertTrue(layout.getTileWidth(null) > 0);
 
             // get a grid coverage
-            gc = ((GridCoverage2D) reader.read(null));
+            gc = reader.read(null);
             if (TestData.isInteractiveTest()) gc.show();
 
             // preparing to write it down
@@ -88,7 +90,7 @@ public class GT30ReaderWriterTest extends GT30TestBase {
 
             // read it again
             reader = format.getReader(statURL);
-            GridCoverage2D gc1 = ((GridCoverage2D) reader.read(null));
+            GridCoverage2D gc1 = reader.read(null);
 
             /**
              * STEP 3 Visualizing the lcoverage we just read in order to see if everything is fine.
@@ -102,9 +104,5 @@ public class GT30ReaderWriterTest extends GT30TestBase {
                 gc1.getRenderedImage().getData();
             }
         }
-    }
-
-    public static final void main(String[] args) throws Exception {
-        junit.textui.TestRunner.run(GT30ReaderWriterTest.class);
     }
 }

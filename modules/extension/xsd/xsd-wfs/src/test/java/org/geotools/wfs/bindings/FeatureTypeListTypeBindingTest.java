@@ -16,6 +16,11 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.net.URL;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -32,22 +37,18 @@ import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.ows.OWS;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/**
- * Unit test suite for {@link FeatureTypeListTypeBinding}
- *
- * @author Gabriel Roldan
- * @version $Id: FeatureTypeListTypeBindingTest.java 27749 2007-11-05 09:51:33Z groldan $
- * @since 2.5.x
- */
 public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
     public FeatureTypeListTypeBindingTest() {
         super(WFS.FeatureTypeListType, FeatureTypeListType.class, Binding.OVERRIDE);
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
     public void testEncode() throws Exception {
         FeatureTypeListType ftl = factory.createFeatureTypeListType();
         {
@@ -137,6 +138,7 @@ public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
         assertEquals("Query", ops.item(2).getFirstChild().getNodeValue());
     }
 
+    @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "FeatureTypeListTypeBindingTest.xml");
         buildDocument(resource);

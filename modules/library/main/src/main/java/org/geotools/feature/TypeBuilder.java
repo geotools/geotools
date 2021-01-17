@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.geotools.feature.type.Types;
@@ -393,7 +392,7 @@ public class TypeBuilder {
     private AttributeType referenceType;
 
     /** Members of a collection() */
-    protected Collection members;
+    protected Collection<PropertyDescriptor> members;
 
     /**
      * Type used when creating descriptor.
@@ -883,7 +882,7 @@ public class TypeBuilder {
      * @return A HashSet.
      */
     protected List<Filter> createRestrictionSet() {
-        return new ArrayList<Filter>();
+        return new ArrayList<>();
     }
 
     /**
@@ -922,7 +921,7 @@ public class TypeBuilder {
      * @throws IllegalArgumentExcception if class is not bound to a prototype
      */
     public AttributeType getBinding(Class binding) {
-        AttributeType type = (AttributeType) bindings().get(binding);
+        AttributeType type = bindings().get(binding);
         if (type == null) {
             throw new IllegalArgumentException("No type bound to: " + binding);
         }
@@ -944,8 +943,7 @@ public class TypeBuilder {
      * prevent binding conflicts).
      */
     public void load(Schema schema) {
-        for (Iterator itr = schema.values().iterator(); itr.hasNext(); ) {
-            AttributeType type = (AttributeType) itr.next();
+        for (AttributeType type : schema.values()) {
             addBinding(type.getBinding(), type);
         }
     }
@@ -1099,8 +1097,8 @@ public class TypeBuilder {
 
     public static boolean contains(Collection collection, PropertyDescriptor descriptor) {
         // check for a descriptor with the same name
-        for (Iterator itr = collection.iterator(); itr.hasNext(); ) {
-            PropertyDescriptor d = (PropertyDescriptor) itr.next();
+        for (Object o : collection) {
+            PropertyDescriptor d = (PropertyDescriptor) o;
             if (d.getName().equals(descriptor.getName())) {
                 return true;
             }
@@ -1156,8 +1154,8 @@ public class TypeBuilder {
      *
      * @return Collection (subclass may override)
      */
-    protected Collection<PropertyDescriptor> newCollection() {
-        return new HashSet<PropertyDescriptor>();
+    protected <T> Collection<T> newCollection() {
+        return new HashSet<>();
     }
 
     /**
@@ -1175,12 +1173,14 @@ public class TypeBuilder {
      * @param origional Origional collection
      * @return New instance of the originoal Collection
      */
-    protected Collection newCollection(Collection origional) {
+    protected <T> Collection<T> newCollection(Collection<T> origional) {
         if (origional == null) {
             return newCollection();
         }
         try {
-            return (Collection) origional.getClass().getDeclaredConstructor().newInstance();
+            @SuppressWarnings("unchecked")
+            Collection<T> result = origional.getClass().getDeclaredConstructor().newInstance();
+            return result;
         } catch (Exception e) {
             return newCollection();
         }
@@ -1203,9 +1203,9 @@ public class TypeBuilder {
     }
 
     /** Accessor for bindings. */
-    protected Map bindings() {
+    protected Map<Class<?>, AttributeType> bindings() {
         if (bindings == null) {
-            bindings = new HashMap();
+            bindings = new HashMap<>();
         }
         return bindings;
     }
@@ -1320,7 +1320,7 @@ public class TypeBuilder {
     }
 
     /** Provide collection class used organize collection members */
-    public void setMembers(Collection members) {
+    public void setMembers(Collection<PropertyDescriptor> members) {
         this.members = members;
     }
 
@@ -1330,7 +1330,7 @@ public class TypeBuilder {
      * <p>This may return a copy as needed, since most calls to a factory method end up with a reset
      * this seems not be needed at present.
      */
-    protected Collection members() {
+    protected Collection<PropertyDescriptor> members() {
         if (members == null) {
             members = newCollection();
         }
@@ -1360,7 +1360,7 @@ public class TypeBuilder {
      *
      * <p>Calls clear to reset cardinality after use.
      */
-    public void addMemberType(Name name, AssociationType /* <FeatureType> */ memberType) {
+    public void addMemberType(Name name, AssociationType memberType) {
         member(name, memberType);
     }
 

@@ -23,11 +23,11 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.Mail;
 import org.geotools.ml.bindings.MLSchemaLocationResolver;
 import org.geotools.xsd.impl.Handler;
+import org.junit.Assert;
 import org.junit.Test;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -36,7 +36,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.EntityResolver2;
 
-public class ParserTest extends TestCase {
+public class ParserTest {
+    @Test
     public void testParse() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
         List mails =
@@ -44,23 +45,25 @@ public class ParserTest extends TestCase {
                         parser.parse(
                                 MLSchemaLocationResolver.class.getResourceAsStream("mails.xml"));
 
-        assertEquals(2, mails.size());
+        Assert.assertEquals(2, mails.size());
 
         Mail mail = (Mail) mails.get(0);
-        assertEquals(0, mail.getId().intValue());
+        Assert.assertEquals(0, mail.getId().intValue());
 
         mail = (Mail) mails.get(1);
-        assertEquals(1, mail.getId().intValue());
+        Assert.assertEquals(1, mail.getId().intValue());
     }
 
+    @Test
     public void testParseValid() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
         parser.setValidating(true);
         parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails.xml"));
 
-        assertEquals(0, parser.getValidationErrors().size());
+        Assert.assertEquals(0, parser.getValidationErrors().size());
     }
 
+    @Test
     public void testParseNull() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
         parser.setValidating(true);
@@ -70,59 +73,62 @@ public class ParserTest extends TestCase {
                                 MLSchemaLocationResolver.class.getResourceAsStream(
                                         "null-mail.xml"));
 
-        assertEquals(0, parser.getValidationErrors().size());
-        assertEquals(1, mails.size());
+        Assert.assertEquals(0, parser.getValidationErrors().size());
+        Assert.assertEquals(1, mails.size());
 
         Mail mail = (Mail) mails.get(0);
-        assertNull(mail.getBody());
+        Assert.assertNull(mail.getBody());
     }
 
+    @Test
     public void testParseInValid() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
         parser.setValidating(true);
         parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
 
-        assertFalse(0 == parser.getValidationErrors().size());
+        Assert.assertFalse(0 == parser.getValidationErrors().size());
 
         // test immeediate failure case
         parser.setFailOnValidationError(true);
         try {
             parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
-            fail("should have thrown an error with setFailOnValidationError set");
+            Assert.fail("should have thrown an error with setFailOnValidationError set");
         } catch (SAXException e) {
         }
     }
 
+    @Test
     public void testValidate() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
         parser.validate(MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
 
-        assertFalse(0 == parser.getValidationErrors().size());
+        Assert.assertFalse(0 == parser.getValidationErrors().size());
 
         // test immeediate failure case
         parser.setFailOnValidationError(true);
         try {
             parser.validate(
                     MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
-            fail("should have thrown an error with setFailOnValidationError set");
+            Assert.fail("should have thrown an error with setFailOnValidationError set");
         } catch (SAXException e) {
         }
     }
 
+    @Test
     public void testParserDelegate() throws Exception {
         MLConfiguration config = new MLConfiguration();
 
         MyParserDelegate delegate = new MyParserDelegate();
-        assertFalse(delegate.foo);
-        assertFalse(delegate.bar);
+        Assert.assertFalse(delegate.foo);
+        Assert.assertFalse(delegate.bar);
 
         config.getContext().registerComponentInstance(delegate);
 
         Parser parser = new Parser(config);
         Object o = parser.parse(ParserTest.class.getResourceAsStream("parserDelegate.xml"));
 
-        assertTrue(delegate.foo);
-        assertTrue(delegate.bar);
+        Assert.assertTrue(delegate.foo);
+        Assert.assertTrue(delegate.bar);
     }
 
     static class MyParserDelegate implements ParserDelegate, ParserDelegate2 {
@@ -178,6 +184,7 @@ public class ParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testMixedContent() throws Exception {
         final StringBuffer sb = new StringBuffer();
         XSD xsd =
@@ -195,7 +202,7 @@ public class ParserTest extends TestCase {
         Configuration cfg =
                 new Configuration(xsd) {
                     @Override
-                    protected void registerBindings(Map bindings) {
+                    protected void registerBindings(Map<QName, Object> bindings) {
                         bindings.put(
                                 new QName("http://geotools.org/test", "MixedType"),
                                 new MixedTypeBinding(sb));
@@ -210,11 +217,11 @@ public class ParserTest extends TestCase {
         Parser p = new Parser(cfg);
 
         p.parse(getClass().getResourceAsStream("mixed1.xml"));
-        assertEquals("Hello 'there' how are 'you'?", sb.toString());
+        Assert.assertEquals("Hello 'there' how are 'you'?", sb.toString());
 
         sb.setLength(0);
         p.parse(getClass().getResourceAsStream("mixed2.xml"));
-        assertEquals("Hello 'there' how are 'you' ?", sb.toString());
+        Assert.assertEquals("Hello 'there' how are 'you' ?", sb.toString());
     }
 
     public static class MixedTypeBinding extends AbstractComplexBinding {
@@ -234,7 +241,7 @@ public class ParserTest extends TestCase {
 
         @Override
         public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-            for (Node n : ((List<Node>) node.getChildren())) {
+            for (Node n : node.getChildren()) {
                 if (n.getValue() instanceof Text) {
                     sb.append(((Text) n.getValue()).getValue());
                 } else {
@@ -249,6 +256,7 @@ public class ParserTest extends TestCase {
      * Test Parser with an XML document containing an external entity: <!ENTITY c SYSTEM
      * "file:///this/file/does/not/exist">
      */
+    @Test
     public void testParseWithEntityResolver() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
 
@@ -256,14 +264,15 @@ public class ParserTest extends TestCase {
             parser.parse(
                     MLSchemaLocationResolver.class.getResourceAsStream(
                             "mails-external-entities.xml"));
-            fail("parsing should throw an exception since referenced file does not exist");
+            Assert.fail("parsing should throw an exception since referenced file does not exist");
         } catch (FileNotFoundException e) {
         }
         try {
             parser.validate(
                     MLSchemaLocationResolver.class.getResourceAsStream(
                             "mails-external-entities.xml"));
-            fail("validating should throw an exception since referenced file does not exist");
+            Assert.fail(
+                    "validating should throw an exception since referenced file does not exist");
         } catch (FileNotFoundException e) {
         }
 
@@ -296,14 +305,16 @@ public class ParserTest extends TestCase {
             parser.parse(
                     MLSchemaLocationResolver.class.getResourceAsStream(
                             "mails-external-entities.xml"));
-            fail("parsing an XML with external entities should throw a MalformedURLException");
+            Assert.fail(
+                    "parsing an XML with external entities should throw a MalformedURLException");
         } catch (MalformedURLException e) {
         }
         try {
             parser.validate(
                     MLSchemaLocationResolver.class.getResourceAsStream(
                             "mails-external-entities.xml"));
-            fail("validating an XML with external entities should throw a MalformedURLException");
+            Assert.fail(
+                    "validating an XML with external entities should throw a MalformedURLException");
         } catch (MalformedURLException e) {
         }
 
@@ -365,7 +376,7 @@ public class ParserTest extends TestCase {
         Configuration cfg =
                 new Configuration(xsd) {
                     @Override
-                    protected void registerBindings(Map bindings) {
+                    protected void registerBindings(Map<QName, Object> bindings) {
                         bindings.put(
                                 new QName("http://geotools.org/test", "MixedType"),
                                 new MixedTypeBinding(sb));
@@ -385,9 +396,9 @@ public class ParserTest extends TestCase {
         } catch (SAXParseException ex) {
             expected = ex;
         }
-        assertNotNull(expected);
+        Assert.assertNotNull(expected);
         // check for the entity expansion limit error code in exception message
-        assertTrue(expected.getMessage().contains("JAXP00010001"));
+        Assert.assertTrue(expected.getMessage().contains("JAXP00010001"));
     }
 
     /** Tests entity expansion limit configuration on Parser. */
@@ -409,7 +420,7 @@ public class ParserTest extends TestCase {
         Configuration cfg =
                 new Configuration(xsd) {
                     @Override
-                    protected void registerBindings(Map bindings) {
+                    protected void registerBindings(Map<QName, Object> bindings) {
                         bindings.put(
                                 new QName("http://geotools.org/test", "MixedType"),
                                 new MixedTypeBinding(sb));
@@ -429,6 +440,6 @@ public class ParserTest extends TestCase {
         } catch (SAXParseException ex) {
             unexpected = ex;
         }
-        assertNull(unexpected);
+        Assert.assertNull(unexpected);
     }
 }

@@ -27,7 +27,7 @@ public class RasterProcessFactory extends AnnotatedBeanProcessFactory {
         if (registry == null) {
             synchronized (RasterProcessFactory.class) {
                 if (registry == null) {
-                    registry = new BeanFactoryRegistry<RasterProcess>(RasterProcess.class);
+                    registry = new BeanFactoryRegistry<>(RasterProcess.class);
                 }
             }
         }

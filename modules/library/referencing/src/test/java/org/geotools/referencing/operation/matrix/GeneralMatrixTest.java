@@ -17,7 +17,12 @@
 
 package org.geotools.referencing.operation.matrix;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.AffineTransform;
 import org.junit.Test;
@@ -308,12 +313,12 @@ public class GeneralMatrixTest {
         GeneralMatrix gm1 = new GeneralMatrix(affineMatrix);
         GeneralMatrix gm2 = new GeneralMatrix(affineMatrix);
 
-        assertTrue(gm1.equals(gm2));
+        assertEquals(gm1, gm2);
 
         gm2.setElement(2, 2, gm2.getElement(2, 2) + 0.0001);
         assertTrue(gm1.equals(gm2, 0.001));
         assertTrue(GeneralMatrix.epsilonEquals(gm1, gm2, 0.001));
-        assertFalse(gm1.equals(gm2));
+        assertNotEquals(gm1, gm2);
     }
 
     @Test
@@ -331,6 +336,6 @@ public class GeneralMatrixTest {
         assertArrayEquals(m22.getElements(), sub22);
 
         big.copySubMatrix(0, 0, 2, 2, 0, 0, second);
-        assertTrue(m22.equals(second));
+        assertEquals(m22, second);
     }
 }

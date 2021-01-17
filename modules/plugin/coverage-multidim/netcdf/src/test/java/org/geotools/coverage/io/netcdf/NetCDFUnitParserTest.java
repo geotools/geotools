@@ -16,23 +16,28 @@
  */
 package org.geotools.coverage.io.netcdf;
 
+import static javax.measure.MetricPrefix.CENTI;
+import static javax.measure.MetricPrefix.MICRO;
+import static javax.measure.MetricPrefix.MILLI;
+import static javax.measure.MetricPrefix.NANO;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static tec.uom.se.unit.Units.GRAM;
-import static tec.uom.se.unit.Units.JOULE;
-import static tec.uom.se.unit.Units.KELVIN;
-import static tec.uom.se.unit.Units.KILOGRAM;
-import static tec.uom.se.unit.Units.METRE;
-import static tec.uom.se.unit.Units.MOLE;
-import static tec.uom.se.unit.Units.PASCAL;
-import static tec.uom.se.unit.Units.SECOND;
-import static tec.uom.se.unit.Units.WATT;
+import static tech.units.indriya.unit.Units.GRAM;
+import static tech.units.indriya.unit.Units.JOULE;
+import static tech.units.indriya.unit.Units.KELVIN;
+import static tech.units.indriya.unit.Units.KILOGRAM;
+import static tech.units.indriya.unit.Units.METRE;
+import static tech.units.indriya.unit.Units.MOLE;
+import static tech.units.indriya.unit.Units.PASCAL;
+import static tech.units.indriya.unit.Units.SECOND;
+import static tech.units.indriya.unit.Units.STERADIAN;
+import static tech.units.indriya.unit.Units.WATT;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import javax.measure.Unit;
-import javax.measure.format.ParserException;
+import javax.measure.format.MeasurementParseException;
 import org.geotools.imageio.netcdf.NetCDFUnitFormat;
 import org.junit.After;
 import org.junit.Test;
@@ -41,9 +46,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.format.SimpleUnitFormat;
-import tec.uom.se.function.LogConverter;
+import tech.units.indriya.AbstractUnit;
+import tech.units.indriya.format.SimpleUnitFormat;
+import tech.units.indriya.function.LogConverter;
 
 @RunWith(Enclosed.class)
 public class NetCDFUnitParserTest {
@@ -55,19 +60,16 @@ public class NetCDFUnitParserTest {
         public static Collection<Object[]> data() {
             return Arrays.asList(
                     new Object[][] {
-                        {"microgram", GRAM.divide(1_000_000)},
-                        {"microgram/m3", GRAM.divide(1_000_000).divide(METRE.pow(3))},
-                        {"nanograms/m3", GRAM.divide(1_000_000_000).divide(METRE.pow(3))},
-                        {
-                            "microgrammes per cubic meter",
-                            GRAM.divide(1_000_000).divide(METRE.pow(3))
-                        },
+                        {"microgram", MICRO(GRAM)},
+                        {"microgram/m3", MICRO(GRAM).divide(METRE.pow(3))},
+                        {"nanograms/m3", NANO(GRAM).divide(METRE.pow(3))},
+                        {"microgrammes per cubic meter", MICRO(GRAM).divide(METRE.pow(3))},
                         {"m2", METRE.pow(2)},
                         {"m3", METRE.pow(3)},
-                        {"µmol", SI.MOLE.divide(1_000_000)},
+                        {"µmol", MICRO(MOLE)},
                         {"g m-3", GRAM.multiply(METRE.pow(-3))},
-                        {"mg", GRAM.divide(1_000)},
-                        {"mol m-2", SI.MOLE.multiply(METRE.pow(-2))},
+                        {"mg", MILLI(GRAM)},
+                        {"mol m-2", MOLE.multiply(METRE.pow(-2))},
                         {"Pa", SI.PASCAL},
                         {"unitless", AbstractUnit.ONE},
                         {"m/s", METRE.divide(SI.SECOND)},
@@ -78,18 +80,16 @@ public class NetCDFUnitParserTest {
                         },
                         {
                             "mW m^-2 sr^-1 nm^-1",
-                            WATT.divide(1000)
+                            MILLI(WATT)
                                     .multiply(METRE.pow(-2))
-                                    .multiply(SI.STERADIAN.pow(-1))
-                                    .multiply(METRE.divide(1_000_000_000).pow(-1))
+                                    .multiply(STERADIAN.pow(-1))
+                                    .multiply(NANO(METRE).pow(-1))
                         },
                         {
                             "mW m^-2 nm^-1",
-                            WATT.divide(1000)
-                                    .multiply(METRE.pow(-2))
-                                    .multiply(METRE.divide(1_000_000_000).pow(-1))
+                            MILLI(WATT).multiply(METRE.pow(-2)).multiply(NANO(METRE).pow(-1))
                         },
-                        {"mol cm-3", MOLE.multiply(METRE.divide(100).pow(-3))},
+                        {"mol cm-3", MOLE.divide(CENTI(METRE).pow(3))},
                         {"Pa", SI.PASCAL},
                         {"percentage", AbstractUnit.ONE.divide(100)},
                         {"Meter", METRE},
@@ -99,7 +99,7 @@ public class NetCDFUnitParserTest {
                         {"m2/m2", METRE.pow(2).divide(METRE.pow(2))},
                         {"m-1 s", METRE.pow(-1).multiply(SECOND)},
                         {"kg m-3", KILOGRAM.multiply(METRE.pow(-3))},
-                        {"K m-1", SI.KELVIN.multiply(METRE.pow(-1))},
+                        {"K m-1", KELVIN.multiply(METRE.pow(-1))},
                         {"mol kg-1", MOLE.multiply(KILOGRAM.pow(-1))},
                         {"J kg-1", JOULE.multiply(KILOGRAM.pow(-1))},
                         {"kg m-2 s-1", KILOGRAM.multiply(METRE.pow(-2).multiply(SECOND.pow(-1)))},
@@ -113,10 +113,11 @@ public class NetCDFUnitParserTest {
                         {"W m-2", WATT.multiply(METRE.pow(-2))},
                         {
                             "mol m-2 s-1 m-1 sr-1",
-                            MOLE.multiply(METRE.pow(-2))
-                                    .multiply(SECOND.pow(-1))
-                                    .multiply(METRE.pow(-1))
-                                    .multiply(SI.STERADIAN.pow(-1))
+                            MOLE.divide(
+                                    METRE.pow(2)
+                                            .multiply(SECOND)
+                                            .multiply(METRE)
+                                            .multiply(STERADIAN))
                         },
                         {
                             "K m2 kg-1 s-1",
@@ -129,7 +130,7 @@ public class NetCDFUnitParserTest {
 
         private String input;
 
-        private Unit expected;
+        private Unit<?> expected;
 
         public UnitConversionTest(String input, Unit expected) {
             this.input = input;
@@ -159,10 +160,10 @@ public class NetCDFUnitParserTest {
         public void testDU() throws Exception {
             // could not find a way to make this work with the above test, so doing it another way
             Unit<?> unit = NetCDFUnitFormat.parse("DU");
-            assertEquals("µmol·(1/m²)*446.2", unit.toString());
+            assertEquals("(1/m²)*446.2·μmol", unit.toString());
         }
 
-        @Test(expected = ParserException.class)
+        @Test(expected = MeasurementParseException.class)
         public void testIsolation() {
             // the normal instance should be isolated, the configuration of the the NetCDF
             // unit parse should not affect the normal parser

@@ -56,7 +56,7 @@ public abstract class InfoToolHelper<T> {
      *     this helper
      */
     protected InfoToolHelper(MapContent content, CoordinateReferenceSystem dataCRS) {
-        this.contentRef = new WeakReference<MapContent>(content);
+        this.contentRef = new WeakReference<>(content);
         setCRS(dataCRS);
     }
 
@@ -93,7 +93,6 @@ public abstract class InfoToolHelper<T> {
      *     helper = new VectorLayerHelper(context, layer);
      * }
      * </code></pre>
-     *
      */
     public abstract boolean isValid();
 

@@ -108,7 +108,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         // build the parameter descriptions by using the DescribeParameter
         // annotations
         Method method = method(name.getLocalPart());
-        Map<String, Parameter<?>> input = new LinkedHashMap<String, Parameter<?>>();
+        Map<String, Parameter<?>> input = new LinkedHashMap<>();
         Annotation[][] params = method.getParameterAnnotations();
         Class<?>[] paramTypes = getMethodParamTypes(method);
         for (int i = 0; i < paramTypes.length; i++) {
@@ -142,7 +142,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         // look for the DescribeResult annotations (the result could be a
         // key/value
         // map holding multiple results)
-        Map<String, Parameter<?>> result = new LinkedHashMap<String, Parameter<?>>();
+        Map<String, Parameter<?>> result = new LinkedHashMap<>();
         for (Annotation annotation : method.getAnnotations()) {
             if (annotation instanceof DescribeResult) {
                 DescribeResult info = (DescribeResult) annotation;
@@ -181,13 +181,14 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         Map<String, Object> metadata = null;
         if (info.meta() != null && info.meta().length > 0) {
             String[] meta = info.meta();
-            metadata = new HashMap<String, Object>();
+            metadata = new HashMap<>();
             fillParameterMetadata(meta, metadata);
         }
 
         int min = info.primary() ? 0 : 1;
-        Parameter resultParam =
-                new Parameter(
+        @SuppressWarnings("unchecked")
+        Parameter<?> resultParam =
+                new Parameter<>(
                         info.name(),
                         resultType,
                         new SimpleInternationalString(info.name()),
@@ -296,7 +297,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                             + process.getName());
         }
 
-        HashMap<String, Object> metadata = new HashMap<String, Object>();
+        HashMap<String, Object> metadata = new HashMap<>();
         if (info != null) {
             double minValue = info.minValue();
             if (minValue != Double.NEGATIVE_INFINITY) {
@@ -643,7 +644,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 // handle the case the implementor used a positional array for
                 // returning multiple outputs
                 Object values[] = (Object[]) value;
-                Map<String, Object> result = new LinkedHashMap<String, Object>();
+                Map<String, Object> result = new LinkedHashMap<>();
                 int i = 0;
                 for (Annotation annotation : method.getAnnotations()) {
                     if (i >= values.length) break; // no more values to encode
@@ -662,7 +663,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 }
                 return result;
             } else if (value instanceof Map) {
-                Map<String, Object> result = new LinkedHashMap<String, Object>();
+                Map<String, Object> result = new LinkedHashMap<>();
                 Map<String, Object> map = (Map<String, Object>) value;
                 for (Annotation annotation : method.getAnnotations()) {
                     if (annotation instanceof DescribeResult) {
@@ -685,7 +686,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 return result;
             } else if (!Void.class.equals(method.getReturnType())) {
                 // handle the single result case
-                Map<String, Object> result = new LinkedHashMap<String, Object>();
+                Map<String, Object> result = new LinkedHashMap<>();
                 DescribeResult dr = method.getAnnotation(DescribeResult.class);
                 if (dr != null) {
                     result.put(dr.name(), value);

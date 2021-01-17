@@ -64,8 +64,7 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
 
     protected static final Logger LOGGER = Logging.getLogger(ArcSDERasterFormat.class);
 
-    private final Map<String, ArcSDEConnectionConfig> connectionConfigs =
-            new WeakHashMap<String, ArcSDEConnectionConfig>();
+    private final Map<String, ArcSDEConnectionConfig> connectionConfigs = new WeakHashMap<>();
 
     private static final ArcSDERasterFormat instance = new ArcSDERasterFormat();
 
@@ -82,7 +81,7 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
 
     /** Sets the metadata information. */
     private void setInfo() {
-        Map<String, String> info = new HashMap<String, String>();
+        Map<String, String> info = new HashMap<>();
 
         info.put("name", "ArcSDE Raster");
         info.put("description", "ArcSDE Raster Format");
@@ -111,7 +110,7 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
     }
 
     private static final WeakHashMap<String, ArcSDEGridCoverage2DReaderJAI> readerCache =
-            new WeakHashMap<String, ArcSDEGridCoverage2DReaderJAI>();
+            new WeakHashMap<>();
 
     private static final ReadWriteLock readersLock = new ReentrantReadWriteLock();
 
@@ -465,7 +464,7 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
                 }
             }
         }
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ArcSDEConnectionConfig.SERVER_NAME_PARAM_NAME, sdeHost);
         params.put(ArcSDEConnectionConfig.PORT_NUMBER_PARAM_NAME, String.valueOf(sdePort));
         params.put(ArcSDEConnectionConfig.INSTANCE_NAME_PARAM_NAME, sdeDBName);

@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.distribution;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class MediumFormat extends CodeList<MediumFormat> {
     private static final long serialVersionUID = 413822250362716958L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<MediumFormat> VALUES = new ArrayList<MediumFormat>(6);
+    private static final List<MediumFormat> VALUES = new ArrayList<>(6);
 
     /** CoPy In / Out (UNIX file format and command). */
     @UML(identifier = "cpio", obligation = CONDITIONAL, specification = ISO_19115)

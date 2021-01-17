@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.Feature;
+import org.opengis.feature.type.FeatureType;
 
 public class LRSGeocodeProcessTest {
     private DataStore featureSource;
@@ -120,9 +121,10 @@ public class LRSGeocodeProcessTest {
     @Test
     public void testNoFeaturesGiven() throws Exception {
         LRSGeocodeProcess process = new LRSGeocodeProcess();
-        FeatureCollection origional = new DefaultFeatureCollection();
+        DefaultFeatureCollection origional = new DefaultFeatureCollection();
 
-        FeatureCollection result = process.execute(origional, "from_lrs", "to_lrs", 1.0);
+        FeatureCollection<? extends FeatureType, ? extends Feature> result =
+                process.execute(origional, "from_lrs", "to_lrs", 1.0);
         Assert.assertEquals(0, result.size());
     }
 

@@ -55,7 +55,7 @@ public class UnitRescaleTest {
         Rule[] rules = new Rule[] {rule};
         FeatureTypeStyle featureTypeStyle = sf.createFeatureTypeStyle(rules);
 
-        List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
+        List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
         featureTypeStyles.add(featureTypeStyle);
 
         double dpi90 = 25.4 / 0.28;
@@ -73,17 +73,17 @@ public class UnitRescaleTest {
 
     private double getStrokeWidth(
             List<FeatureTypeStyle> featureTypeStyles, Rule[] rules, double dpi) {
-        ArrayList<LiteFeatureTypeStyle> lfts = new ArrayList<LiteFeatureTypeStyle>();
+        ArrayList<LiteFeatureTypeStyle> lfts = new ArrayList<>();
         for (FeatureTypeStyle fts : featureTypeStyles) {
-            List<Rule> ruleList = new ArrayList<Rule>(Arrays.asList(rules));
-            List<Rule> elseRuleList = new ArrayList<Rule>();
+            List<Rule> ruleList = new ArrayList<>(Arrays.asList(rules));
+            List<Rule> elseRuleList = new ArrayList<>();
             LiteFeatureTypeStyle s =
                     new LiteFeatureTypeStyle(
                             null, null, ruleList, elseRuleList, fts.getTransformation());
             lfts.add(s);
         }
 
-        Map hints = new HashMap();
+        Map<Object, Object> hints = new HashMap<>();
         hints.put("dpi", Double.valueOf(dpi));
 
         StreamingRenderer renderer = new StreamingRenderer();

@@ -16,21 +16,31 @@
  */
 package org.geotools.renderer.lite;
 
+import static org.junit.Assert.*;
+
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.geotools.data.DataTestCase;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.function.FilterFunction_strConcat;
+import org.geotools.filter.function.InFunction;
 import org.geotools.renderer.lite.MemoryFilterOptimizer.IndexPropertyName;
+import org.junit.Test;
 import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
 public class MemoryFilterOptimizerTest extends DataTestCase {
@@ -41,8 +51,8 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
     private PropertyIsEqualTo equalId;
     private And and;
 
-    public void setUp() throws Exception {
-        super.setUp();
+    public void init() throws Exception {
+        super.init();
 
         name = ff.property("name");
         equalName = ff.equal(name, ff.literal("r1"), false);
@@ -51,6 +61,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         and = ff.and(equalName, equalId);
     }
 
+    @Test
     public void testDuplicateWithoutTargets() {
         MemoryFilterOptimizer optimizer =
                 new MemoryFilterOptimizer(roadType, Collections.emptySet());
@@ -81,6 +92,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertEquals(id, indexedId.delegate);
     }
 
+    @Test
     public void testDuplicateAndMemoize() {
         MemoryFilterOptimizer optimizer =
                 new MemoryFilterOptimizer(
@@ -98,6 +110,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         checkPropertiesIndexed(equalNameCopy, equalIdCopy);
     }
 
+    @Test
     public void testMemoizeDefaultGeometry() {
         PropertyName property = ff.property("");
 
@@ -113,6 +126,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         Mockito.verify(spy, Mockito.times(1)).getDefaultGeometry();
     }
 
+    @Test
     public void testMemoizeNonExistingProperty() {
         // Property accessors would return null instead of an exception, check this behavior has
         // been replicated
@@ -124,6 +138,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertNull(memoized.evaluate(roadFeatures[0]));
     }
 
+    @Test
     public void testEqualFeatureTypes() throws Exception {
         String name = "name";
         PropertyName property = ff.property(name);
@@ -143,5 +158,106 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertSame(retyped.getAttribute(name), memoized.evaluate(spy));
         Mockito.verify(spy, Mockito.times(0)).getAttribute(name);
         Mockito.verify(spy, Mockito.times(1)).getAttribute(0);
+    }
+
+    @Test
+    public void testInFunctionOptimizer() throws Exception {
+        String name = "name";
+        PropertyName property = ff.property(name);
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        Filter nameR1 = ff.equal(property, ff.literal("r1"), true);
+        Filter nameR2 = ff.equal(property, ff.literal("r2"), true);
+        Filter nameR3 = ff.equal(ff.property(name), ff.literal("r3"), true);
+        List<Filter> filters = Arrays.asList(nameR1, nameR2, nameR3);
+        Or or = ff.or(filters);
+        MemoryFilterOptimizer optimizer =
+                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        Object object = or.accept(optimizer, null);
+        assertTrue(object instanceof PropertyIsEqualTo);
+        PropertyIsEqualTo eq = (PropertyIsEqualTo) object;
+        assertTrue(eq.getExpression1() instanceof InFunction);
+        InFunction inFunction = (InFunction) eq.getExpression1();
+        assertEquals(4, inFunction.getParameters().size());
+        PropertyName propname = (PropertyName) inFunction.getParameters().get(0);
+        assertEquals(name, propname.getPropertyName());
+        List<String> inLiterals =
+                inFunction
+                        .getParameters()
+                        .stream()
+                        .filter(ex -> ex instanceof Literal)
+                        .map(ex -> ((Literal) ex).evaluate(null, String.class))
+                        .collect(Collectors.toList());
+        assertTrue(inLiterals.contains("r1"));
+        assertTrue(inLiterals.contains("r2"));
+        assertTrue(inLiterals.contains("r3"));
+    }
+
+    @Test
+    public void testInFunctionOptimizerNotUsed() throws Exception {
+        String name = "name";
+        PropertyName property = ff.property(name);
+        PropertyName property2 = ff.property("other");
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        Filter nameR1 = ff.equal(property, ff.literal("r1"), true);
+        Filter nameR2 = ff.equal(property2, ff.literal("r2"), true);
+        Filter nameR3 = ff.equal(property, ff.literal("r3"), true);
+        List<Filter> filters = Arrays.asList(nameR1, nameR2, nameR3);
+        Or or = ff.or(filters);
+        MemoryFilterOptimizer optimizer =
+                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        Object object = or.accept(optimizer, null);
+        assertTrue(object instanceof Or);
+    }
+
+    @Test
+    public void testInFunctionOptimizerNotUsedOtherFilter() throws Exception {
+        String name = "name";
+        PropertyName property = ff.property(name);
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        Filter nameR1 = ff.equal(property, ff.literal("r1"), true);
+        Filter nameR2 = ff.notEqual(property, ff.literal("r2"), true);
+        Filter nameR3 = ff.equal(property, ff.literal("r3"), true);
+        List<Filter> filters = Arrays.asList(nameR1, nameR2, nameR3);
+        Or or = ff.or(filters);
+        MemoryFilterOptimizer optimizer =
+                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        Object object = or.accept(optimizer, null);
+        assertTrue(object instanceof Or);
+    }
+
+    @Test
+    public void testInFunctionOptimizerExpression() throws Exception {
+        String name = "name";
+        PropertyName property = ff.property(name);
+        FilterFunction_strConcat concat = new FilterFunction_strConcat();
+        List<Expression> propExpressions = new ArrayList<>();
+        propExpressions.add(property);
+        propExpressions.add(ff.literal("-id"));
+        concat.setParameters(propExpressions);
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        Filter nameR1 = ff.equal(concat, ff.literal("r1"), true);
+        Filter nameR2 = ff.equal(concat, ff.literal("r2"), true);
+        Filter nameR3 = ff.equal(concat, ff.literal("r3"), true);
+        List<Filter> filters = Arrays.asList(nameR1, nameR2, nameR3);
+        Or or = ff.or(filters);
+        MemoryFilterOptimizer optimizer =
+                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        Object object = or.accept(optimizer, null);
+        assertTrue(object instanceof PropertyIsEqualTo);
+        PropertyIsEqualTo eq = (PropertyIsEqualTo) object;
+        assertTrue(eq.getExpression1() instanceof InFunction);
+        InFunction inFunction = (InFunction) eq.getExpression1();
+        assertEquals(4, inFunction.getParameters().size());
+        assertTrue(inFunction.getParameters().get(0) instanceof FilterFunction_strConcat);
+        List<String> inLiterals =
+                inFunction
+                        .getParameters()
+                        .stream()
+                        .filter(ex -> ex instanceof Literal)
+                        .map(ex -> ((Literal) ex).evaluate(null, String.class))
+                        .collect(Collectors.toList());
+        assertTrue(inLiterals.contains("r1"));
+        assertTrue(inLiterals.contains("r2"));
+        assertTrue(inLiterals.contains("r3"));
     }
 }

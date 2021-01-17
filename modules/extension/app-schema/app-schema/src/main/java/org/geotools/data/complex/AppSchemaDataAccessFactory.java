@@ -17,16 +17,22 @@
 
 package org.geotools.data.complex;
 
+import java.awt.RenderingHints;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import org.geotools.data.*;
+import org.geotools.data.DataAccess;
+import org.geotools.data.DataAccessFactory;
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.data.Parameter;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.DataAccessMap;
@@ -70,9 +76,9 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
 
     public AppSchemaDataAccessFactory() {}
 
-    public DataAccess<FeatureType, Feature> createDataStore(Map params) throws IOException {
-        final Set<AppSchemaDataAccess> registeredAppSchemaStores =
-                new HashSet<AppSchemaDataAccess>();
+    public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params)
+            throws IOException {
+        final Set<AppSchemaDataAccess> registeredAppSchemaStores = new HashSet<>();
         try {
             return createDataStore(params, false, new DataAccessMap(), registeredAppSchemaStores);
         } catch (Exception ex) {
@@ -85,7 +91,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     }
 
     public DataAccess<FeatureType, Feature> createDataStore(
-            Map params,
+            Map<String, ?> params,
             boolean hidden,
             DataAccessMap sourceDataStoreMap,
             final Set<AppSchemaDataAccess> registeredAppSchemaStores)
@@ -101,15 +107,16 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         // this is when the related types are not feature types, so they don't appear
         // on getCapabilities, and getFeature also shouldn't return anything etc.
         List<String> includes = config.getIncludes();
-        for (Iterator<String> it = includes.iterator(); it.hasNext(); ) {
-            params.put("url", buildIncludeUrl(configFileUrl, it.next()));
+        Map<String, Object> extendedParams = new HashMap<>(params);
+        for (String include : includes) {
+            extendedParams.put("url", buildIncludeUrl(configFileUrl, include));
             // this will register the related data access, to enable feature chaining;
             // sourceDataStoreMap is passed on to keep track of the already created source data
             // stores
             // and avoid creating the same data store twice (this enables feature iterators sharing
             // the same transaction to re-use the connection instead of opening a new one for each
             // joined type)
-            createDataStore(params, true, sourceDataStoreMap, registeredAppSchemaStores);
+            createDataStore(extendedParams, true, sourceDataStoreMap, registeredAppSchemaStores);
         }
 
         mappings = AppSchemaDataAccessConfigurator.buildMappings(config, sourceDataStoreMap);
@@ -148,7 +155,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         return url;
     }
 
-    public DataStore createNewDataStore(Map params) throws IOException {
+    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -166,7 +173,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         };
     }
 
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
         try {
             Object dbType = AppSchemaDataAccessFactory.DBTYPE.lookUp(params);
             Object configUrl = AppSchemaDataAccessFactory.URL.lookUp(params);
@@ -181,7 +188,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         return true;
     }
 
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 }

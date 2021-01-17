@@ -58,7 +58,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
             if (value instanceof String) {
                 stringValue = (String) value;
             } else if (value instanceof URI) {
-                stringValue = ((URI) value).toString();
+                stringValue = value.toString();
             }
 
             if (stringValue != null) {
@@ -71,22 +71,22 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
         } else if ("OtherSRS".equals(property)) {
             if (value instanceof Collection) {
                 Collection<URI> formatListAsUris = (Collection<URI>) value;
-                List<String> formatListAsString = new ArrayList<String>();
+                List<String> formatListAsString = new ArrayList<>();
                 for (URI uri : formatListAsUris) {
                     formatListAsString.add(uri.toString());
                 }
                 value = formatListAsString;
             } else {
                 if (value instanceof URI) {
-                    value = ((URI) value).toString();
+                    value = value.toString();
                 }
             }
         } else if ("Keywords".equals(property)) {
             if (value instanceof String) {
                 String[] split = ((String) value).split(",");
                 KeywordsType kwd = Ows11Factory.eINSTANCE.createKeywordsType();
-                for (int i = 0; i < split.length; i++) {
-                    String kw = split[i].trim();
+                for (String s : split) {
+                    String kw = s.trim();
                     kwd.getKeyword().add(kw);
                 }
                 ((FeatureTypeType) object).getKeywords().add(kwd);
@@ -97,7 +97,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
                 OutputFormatListType oflt = ((FeatureTypeType) object).getOutputFormats();
 
                 if (oflt == null) {
-                    oflt = ((Wfs20Factory) factory).createOutputFormatListType();
+                    oflt = factory.createOutputFormatListType();
                 }
 
                 if (value instanceof Map<?, ?>) {

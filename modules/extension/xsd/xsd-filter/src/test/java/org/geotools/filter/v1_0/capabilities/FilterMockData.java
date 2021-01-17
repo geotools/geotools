@@ -131,7 +131,7 @@ public class FilterMockData {
     }
 
     static ComparisonOperators comparison(boolean simple) {
-        List o = new ArrayList();
+        List<Operator> o = new ArrayList<>();
 
         if (simple) {
             o.add(ff.operator("LessThan"));
@@ -146,7 +146,7 @@ public class FilterMockData {
         o.add(ff.operator("Between"));
         o.add(ff.operator("NullCheck"));
 
-        return ff.comparisonOperators((Operator[]) o.toArray(new Operator[o.size()]));
+        return ff.comparisonOperators(o.toArray(new Operator[o.size()]));
     }
 
     static Element scalarCapabilities(Document document, Node parent) {
@@ -192,7 +192,7 @@ public class FilterMockData {
     }
 
     static SpatialOperators spatial() {
-        List o = new ArrayList();
+        List<SpatialOperator> o = new ArrayList<>();
 
         o.add(ff.spatialOperator("BBOX", null));
         o.add(ff.spatialOperator("Equals", null));
@@ -206,7 +206,7 @@ public class FilterMockData {
         o.add(ff.spatialOperator("Beyond", null));
         o.add(ff.spatialOperator("DWithin", null));
 
-        return ff.spatialOperators((SpatialOperator[]) o.toArray(new SpatialOperator[o.size()]));
+        return ff.spatialOperators(o.toArray(new SpatialOperator[o.size()]));
     }
 
     static SpatialCapabilities spatialCapabilities() {

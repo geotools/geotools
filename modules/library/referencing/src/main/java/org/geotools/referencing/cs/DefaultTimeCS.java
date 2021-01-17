@@ -20,6 +20,7 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import org.geotools.measure.Measure;
 import org.geotools.metadata.i18n.VocabularyKeys;
@@ -29,7 +30,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.cs.TimeCS;
 import org.opengis.util.InternationalString;
 import si.uom.SI;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * A one-dimensional coordinate system containing a single time axis, used to describe the temporal
@@ -52,7 +52,7 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
 
     /**
      * A one-dimensional temporal CS with <var>{@linkplain DefaultCoordinateSystemAxis#TIME
-     * time}</var>, axis in {@linkplain javax.measure.unit.NonSI#DAY day} units.
+     * time}</var>, axis in {@linkplain SI#DAY day} units.
      *
      * @see org.geotools.referencing.crs.DefaultTemporalCRS#JULIAN
      * @see org.geotools.referencing.crs.DefaultTemporalCRS#MODIFIED_JULIAN
@@ -63,7 +63,7 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
 
     /**
      * A one-dimensional temporal CS with <var>{@linkplain DefaultCoordinateSystemAxis#TIME
-     * time}</var>, axis in {@linkplain javax.measure.unit.SI#SECOND second} units.
+     * time}</var>, axis in {@linkplain SI#SECOND second} units.
      *
      * @see org.geotools.referencing.crs.DefaultTemporalCRS#UNIX
      * @since 2.5
@@ -79,7 +79,7 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
      */
     public static final DefaultTimeCS MILLISECONDS;
 
-    /** Creates the constants, reusing some intermediate constructs for efficienty. */
+    /** Creates the constants, reusing some intermediate constructs for efficiency. */
     static {
         final Map<String, Object> properties = name(VocabularyKeys.TEMPORAL);
         CoordinateSystemAxis axis = DefaultCoordinateSystemAxis.TIME;

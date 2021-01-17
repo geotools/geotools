@@ -16,14 +16,16 @@
  */
 package org.geotools.filter;
 
-import junit.framework.TestCase;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class AttributeExpressionTest extends TestCase {
+public class AttributeExpressionTest {
 
+    @Test
     public void testFeature() {
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
 
@@ -41,9 +43,9 @@ public class AttributeExpressionTest extends TestCase {
         SimpleFeature feature = builder.buildFeature("fid");
 
         AttributeExpressionImpl ex = new AttributeExpressionImpl("foo");
-        assertEquals(Integer.valueOf(1), ex.evaluate(feature));
+        Assert.assertEquals(Integer.valueOf(1), ex.evaluate(feature));
 
         ex = new AttributeExpressionImpl("@id");
-        assertEquals("fid", ex.evaluate(feature));
+        Assert.assertEquals("fid", ex.evaluate(feature));
     }
 }

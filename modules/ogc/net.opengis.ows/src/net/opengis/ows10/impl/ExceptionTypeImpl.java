@@ -114,7 +114,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    */
 	public EList<String> getExceptionText() {
     if (exceptionText == null) {
-      exceptionText = new EDataTypeUniqueEList<String>(String.class, this, Ows10Package.EXCEPTION_TYPE__EXCEPTION_TEXT);
+      exceptionText = new EDataTypeUniqueEList<>(String.class, this, Ows10Package.EXCEPTION_TYPE__EXCEPTION_TEXT);
     }
     return exceptionText;
   }

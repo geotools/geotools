@@ -16,7 +16,10 @@
  */
 package org.geotools.mbstyle.parse;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collections;
 import java.util.Set;
@@ -52,7 +55,7 @@ public class MBFilterTest {
                         "['all',['==', 'class', 'street_limited'],['>=', 'admin_level', 3],['!in', '$type', 'Polygon']]");
         MBFilter mbfilter = new MBFilter(json);
         Set<SemanticType> types = mbfilter.semanticTypeIdentifiers();
-        assertTrue(!types.contains(SemanticType.POLYGON));
+        assertFalse(types.contains(SemanticType.POLYGON));
         Filter filter = mbfilter.filter();
         assertEquals(
                 "class = 'street_limited' AND admin_level >= 3 AND NOT ((dimension(geometry()) = 2 AND NOT (isCoverage() = true)))",
@@ -209,6 +212,46 @@ public class MBFilterTest {
     }
 
     @Test
+    public void comparisonFilterExpressions() throws ParseException {
+        JSONArray json;
+        MBFilter mbfilter;
+
+        json = array("['==', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        PropertyIsEqualTo equal = (PropertyIsEqualTo) mbfilter.filter();
+        assertEquals("key", ((PropertyName) equal.getExpression1()).getPropertyName());
+        assertEquals("value", ((Literal) equal.getExpression2()).getValue());
+
+        // okay that takes too long just check ECQL
+        assertEquals("key = 'value'", ECQL.toCQL(equal));
+
+        json = array("['!=', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        Filter filter = mbfilter.filter();
+        assertEquals("key <> 'value'", ECQL.toCQL(filter));
+
+        json = array("['>', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("key > 'value'", ECQL.toCQL(filter));
+
+        json = array("['<', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("key < 'value'", ECQL.toCQL(filter));
+
+        json = array("['>=', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("key >= 'value'", ECQL.toCQL(filter));
+
+        json = array("['<=', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("key <= 'value'", ECQL.toCQL(filter));
+    }
+
+    @Test
     public void membership() throws ParseException {
         JSONArray json = array("['in', 'a', 1, 2, 3]");
 
@@ -239,6 +282,29 @@ public class MBFilterTest {
         mbfilter = new MBFilter(json);
         filter = mbfilter.filter();
         assertEquals("NOT (a = 1) AND NOT (b = 2)", ECQL.toCQL(filter));
+    }
+
+    @Test
+    public void decisionExpression() throws ParseException {
+        // Examples from expressionMBDecisionTest.json
+        JSONArray json = array("['case', true, 10, false, 'aString', true]");
+        MBFilter mbfilter = new MBFilter(json);
+        Filter filter = mbfilter.filter();
+        assertEquals("case(true,10,false,'aString',true) = true", ECQL.toCQL(filter));
+
+        json = array("['coalesce', 'aString', false, 5]");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("coalesce('aString',false,5) = true", ECQL.toCQL(filter));
+
+        json =
+                array(
+                        "[\"match\",'bLabel','aLabel', 'firstLabel','bLabel','secondLabel','defaultLabel']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals(
+                "match('bLabel','aLabel','firstLabel','bLabel','secondLabel','defaultLabel') = true",
+                ECQL.toCQL(filter));
     }
 
     @Test

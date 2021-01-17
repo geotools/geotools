@@ -39,7 +39,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.apache.maven.plugin.AbstractMojo;
@@ -175,8 +174,8 @@ public class JJTreeJavaCC extends AbstractMojo {
          * properly subpackages.
          */
         final Set userNodes = searchNodeFiles();
-        for (final Iterator it = userNodes.iterator(); it.hasNext(); ) {
-            final File nodeFile = (File) it.next();
+        for (Object userNode : userNodes) {
+            final File nodeFile = (File) userNode;
             try {
                 FileUtils.copyFileToDirectory(nodeFile, outputPackageDirectory);
             } catch (IOException e) {
@@ -189,8 +188,8 @@ public class JJTreeJavaCC extends AbstractMojo {
          * javacc output yet, but it will).
          */
         final Set staleTrees = searchStaleGrammars(new File(sourceDirectory), ".jjt");
-        for (final Iterator it = staleTrees.iterator(); it.hasNext(); ) {
-            final File sourceFile = (File) it.next();
+        for (Object staleTree : staleTrees) {
+            final File sourceFile = (File) staleTree;
             final JJTree parser = new JJTree();
             final String[] args = generateJJTreeArgumentList(sourceFile.getPath());
             final int status = parser.main(args);
@@ -207,8 +206,8 @@ public class JJTreeJavaCC extends AbstractMojo {
          * Reprocess the .jj files found in the generated-sources directory.
          */
         final Set staleGrammars = searchStaleGrammars(new File(outputDirectory), ".jj");
-        for (final Iterator it = staleGrammars.iterator(); it.hasNext(); ) {
-            final File sourceFile = (File) it.next();
+        for (Object staleGrammar : staleGrammars) {
+            final File sourceFile = (File) staleGrammar;
             try {
                 if (windowsOs) {
                     fixHeader(sourceFile);
@@ -239,9 +238,9 @@ public class JJTreeJavaCC extends AbstractMojo {
             try {
                 String[] files =
                         FileUtils.getFilesFromExtension(outputDirectory, new String[] {"java"});
-                for (int i = 0; i < files.length; i++) {
-                    System.out.println("Fixing " + files[i]);
-                    fixHeader(new File(files[i]));
+                for (String file : files) {
+                    System.out.println("Fixing " + file);
+                    fixHeader(new File(file));
                 }
             } catch (IOException e) {
                 throw new MojoExecutionException("Failed to fix header for java file.", e);
@@ -322,7 +321,7 @@ public class JJTreeJavaCC extends AbstractMojo {
             directory = new File(directory, nodePackage.replace('.', '/'));
         }
         if (!directory.isDirectory()) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         final File outDir = new File(timestampDirectory);
         try {
@@ -366,14 +365,14 @@ public class JJTreeJavaCC extends AbstractMojo {
      * @return The arguments to pass to {@code jjtree}.
      */
     private String[] generateJJTreeArgumentList(final String sourceFilename) {
-        final List argsList = new ArrayList();
+        final List<String> argsList = new ArrayList<>();
         if (nodePackage != null && nodePackage.trim().length() != 0) {
             argsList.add("-NODE_PACKAGE:" + nodePackage);
         }
         argsList.add("-OUTPUT_DIRECTORY:" + outputPackageDirectory.getPath());
         argsList.add(sourceFilename);
         getLog().debug("jjtree arguments list: " + argsList.toString());
-        return (String[]) argsList.toArray(new String[argsList.size()]);
+        return argsList.toArray(new String[argsList.size()]);
     }
 
     /**
@@ -383,10 +382,10 @@ public class JJTreeJavaCC extends AbstractMojo {
      * @return The arguments to pass to {@code javacc}.
      */
     private String[] generateJavaCCArgumentList(final String sourceInput) {
-        final List argsList = new ArrayList();
+        final List<String> argsList = new ArrayList<>();
         argsList.add("-OUTPUT_DIRECTORY:" + outputPackageDirectory.getPath());
         argsList.add(sourceInput);
         getLog().debug("javacc arguments list: " + argsList.toString());
-        return (String[]) argsList.toArray(new String[argsList.size()]);
+        return argsList.toArray(new String[argsList.size()]);
     }
 }

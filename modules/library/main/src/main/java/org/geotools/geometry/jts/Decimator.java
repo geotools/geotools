@@ -134,7 +134,7 @@ public final class Decimator {
             MathTransform screenToWorld, Rectangle paintArea, double pixelDistance)
             throws TransformException {
         try {
-            // init the spans with the upper left corner
+            // init the spans with the upper right corner
             double[] spans =
                     getGeneralizationSpans(
                             paintArea.x + paintArea.width / 2,
@@ -263,7 +263,7 @@ public final class Decimator {
                     if (holes == null) {
                         holes = new LinearRing[length];
                         for (int j = 0; j < i; j++) {
-                            holes[j] = (LinearRing) polygon.getInteriorRingN(j);
+                            holes[j] = polygon.getInteriorRingN(j);
                         }
                     }
                     holes[i] = generalized;
@@ -280,6 +280,7 @@ public final class Decimator {
             double spany = this.spany;
             LineString ls = (LineString) geometry;
             if (ls instanceof CurvedGeometry<?>) {
+                @SuppressWarnings("unchecked")
                 CurvedGeometry<LineString> curved = (CurvedGeometry<LineString>) ls;
                 ls = curved.linearize(Math.min(Math.abs(spanx), Math.abs(spany)));
                 // do not generalize further, we already got a good representation
@@ -310,7 +311,7 @@ public final class Decimator {
         }
     }
 
-    private Class accumulateGeometryType(Class elementType, Geometry generalized) {
+    private Class accumulateGeometryType(Class<?> elementType, Geometry generalized) {
         Class<? extends Geometry> geometryType = generalized.getClass();
         if (elementType == null) {
             elementType = geometryType;

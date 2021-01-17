@@ -26,8 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import org.geotools.gce.grassraster.core.color.AttributeTable;
 import org.geotools.gce.grassraster.core.color.AttributeTable.CellAttribute;
@@ -568,13 +568,12 @@ public class JGrassMapEnvironment {
      * @return the list of categories in text format.
      */
     public List<String> getCategories() throws IOException {
-        List<String> categoriesList = new ArrayList<String>();
+        List<String> categoriesList = new ArrayList<>();
         /*
          * File is a standard file where the categories values are stored in
          * the cats directory.
          */
-        BufferedReader rdr = new BufferedReader(new FileReader(getCATS()));
-        try {
+        try (BufferedReader rdr = new BufferedReader(new FileReader(getCATS()))) {
             /* Instantiate attribute table */
             AttributeTable attTable = new AttributeTable();
             /* Ignore first 4 lines. */
@@ -601,13 +600,11 @@ public class JGrassMapEnvironment {
                 // }
             }
 
-            Enumeration<CellAttribute> categories = attTable.getCategories();
-            while (categories.hasMoreElements()) {
-                AttributeTable.CellAttribute object = categories.nextElement();
+            Iterator<CellAttribute> categories = attTable.getCategories();
+            while (categories.hasNext()) {
+                AttributeTable.CellAttribute object = categories.next();
                 categoriesList.add(object.toString());
             }
-        } finally {
-            rdr.close();
         }
 
         return categoriesList;
@@ -632,7 +629,7 @@ public class JGrassMapEnvironment {
         double[] dataRange = new double[2];
         JGrassColorTable colorTable = new JGrassColorTable(this, null);
         List<String> rules = colorTable.getColorRules();
-        if (rules.size() == 0) {
+        if (rules.isEmpty()) {
             return null;
         }
         for (int i = 0; i < rules.size(); i++) {

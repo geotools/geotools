@@ -16,8 +16,11 @@
  */
 package org.geotools.data;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import org.junit.Test;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -31,24 +34,17 @@ import org.opengis.filter.Filter;
 public class FilteringFeatureReaderTest extends DataTestCase {
     FeatureReader<SimpleFeatureType, SimpleFeature> roadReader;
     FeatureReader<SimpleFeatureType, SimpleFeature> riverReader;
-    /** Constructor for FilteringFeatureReaderTest. */
-    public FilteringFeatureReaderTest(String arg0) {
-        super(arg0);
-    }
 
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void init() throws Exception {
+        super.init();
         roadReader = DataUtilities.reader(roadFeatures);
         riverReader = DataUtilities.reader(riverFeatures);
     }
 
-    /*
-     * @see TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         super.tearDown();
         roadReader.close();
         roadReader = null;
@@ -56,33 +52,27 @@ public class FilteringFeatureReaderTest extends DataTestCase {
         riverReader = null;
     }
 
+    @Test
     public void testFilteringFeatureReaderALL() throws IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-        reader =
-                new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                        DataUtilities.reader(roadFeatures), Filter.EXCLUDE);
+        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.EXCLUDE);
         try {
             assertFalse(reader.hasNext());
         } finally {
             reader.close();
         }
-        reader =
-                new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                        DataUtilities.reader(roadFeatures), Filter.EXCLUDE);
+        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.EXCLUDE);
         assertEquals(0, count(reader));
 
-        reader =
-                new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                        DataUtilities.reader(roadFeatures), Filter.EXCLUDE);
+        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.EXCLUDE);
         assertContents(new SimpleFeature[0], reader);
     }
 
+    @Test
     public void testFilteringFeatureReaderNONE() throws IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        reader =
-                new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                        DataUtilities.reader(roadFeatures), Filter.INCLUDE);
+        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.INCLUDE);
         try {
             assertTrue(reader.hasNext());
         } finally {
@@ -91,14 +81,10 @@ public class FilteringFeatureReaderTest extends DataTestCase {
         reader = DataUtilities.reader(roadFeatures);
         assertEquals(roadFeatures.length, count(reader));
 
-        reader =
-                new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                        DataUtilities.reader(roadFeatures), Filter.INCLUDE);
+        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.INCLUDE);
         assertEquals(roadFeatures.length, count(reader));
 
-        reader =
-                new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                        DataUtilities.reader(roadFeatures), Filter.INCLUDE);
+        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.INCLUDE);
         assertContents(roadFeatures, reader);
     }
 
@@ -110,11 +96,11 @@ public class FilteringFeatureReaderTest extends DataTestCase {
         SimpleFeature feature;
         int count = 0;
         try {
-            for (int i = 0; i < expected.length; i++) {
+            for (SimpleFeature simpleFeature : expected) {
                 assertTrue(reader.hasNext());
                 feature = reader.next();
                 assertNotNull(feature);
-                assertEquals(expected[i], feature);
+                assertEquals(simpleFeature, feature);
                 count++;
             }
             assertFalse(reader.hasNext());
@@ -127,12 +113,4 @@ public class FilteringFeatureReaderTest extends DataTestCase {
             reader.close();
         }
     }
-
-    public void testNext() {}
-
-    public void testClose() {}
-
-    public void testGetFeatureType() {}
-
-    public void testHasNext() {}
 }

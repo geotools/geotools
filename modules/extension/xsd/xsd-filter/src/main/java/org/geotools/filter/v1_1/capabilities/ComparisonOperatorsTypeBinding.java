@@ -63,7 +63,7 @@ public class ComparisonOperatorsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<?> getType() {
         return ComparisonOperators.class;
     }
 
@@ -75,9 +75,9 @@ public class ComparisonOperatorsTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List ops = node.getChildValues(Operator.class);
+        List<Operator> ops = node.getChildValues(Operator.class);
 
-        return factory.comparisonOperators((Operator[]) ops.toArray(new Operator[ops.size()]));
+        return factory.comparisonOperators(ops.toArray(new Operator[ops.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

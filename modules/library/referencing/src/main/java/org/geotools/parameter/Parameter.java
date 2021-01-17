@@ -38,7 +38,7 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.util.CodeList;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * A parameter value used by an operation method. Most CRS parameter values are numeric, but other
@@ -107,7 +107,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
     public static Parameter<Integer> create(final String name, final int value) {
         final ParameterDescriptor<Integer> descriptor =
                 DefaultParameterDescriptor.create(name, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        final Parameter<Integer> parameter = new Parameter<Integer>(descriptor);
+        final Parameter<Integer> parameter = new Parameter<>(descriptor);
         parameter.value = value;
         return parameter;
     }
@@ -134,7 +134,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         final ParameterDescriptor<Double> descriptor =
                 DefaultParameterDescriptor.create(
                         name, Double.NaN, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, unit);
-        final Parameter<Double> parameter = new Parameter<Double>(descriptor);
+        final Parameter<Double> parameter = new Parameter<>(descriptor);
         parameter.value = value;
         parameter.unit = unit;
         return parameter;
@@ -157,7 +157,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             final String name, final Class<T> type, final T value) {
         final ParameterDescriptor<T> descriptor =
                 DefaultParameterDescriptor.create(name, null, type, null, true);
-        final Parameter<T> parameter = new Parameter<T>(descriptor);
+        final Parameter<T> parameter = new Parameter<>(descriptor);
         parameter.value = value;
         return parameter;
     }
@@ -252,8 +252,8 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      *
      * <p>Note: It is difficult to differentiate scale and angular units, since both of them are
      * dimensionless. However, in EPSG database version 6.7, there is only 3 scale units and all of
-     * them maps to {@link Unit#ONE} or {@link Units#PPM}. Consequently, they are hard-coded and
-     * treated especially by this method.
+     * them maps to {@link AbstractUnit#ONE} or {@link Units#PPM}. Consequently, they are hard-coded
+     * and treated especially by this method.
      *
      * @todo Provides a better way to differentiate scale units (currently AbstractUnit.ONE) and
      *     angular units. Both are dimensionless...

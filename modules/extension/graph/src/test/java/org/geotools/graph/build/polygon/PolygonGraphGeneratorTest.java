@@ -17,21 +17,23 @@
 package org.geotools.graph.build.polygon;
 
 import java.util.StringTokenizer;
-import junit.framework.TestCase;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 
-public class PolygonGraphGeneratorTest extends TestCase {
+public class PolygonGraphGeneratorTest {
 
     static GeometryFactory gf = new GeometryFactory();
     PolygonGraphGenerator gg;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         PolygonGraphGenerator.PolygonRelationship rel =
                 new PolygonGraphGenerator.PolygonRelationship() {
 
@@ -47,6 +49,7 @@ public class PolygonGraphGeneratorTest extends TestCase {
         gg = new PolygonGraphGenerator(new BasicGraphBuilder(), rel);
     }
 
+    @Test
     public void testAdd() {
         Polygon p1 = createPolygon("0 0,1 1,2 2,0 0");
         Polygon p2 = createPolygon("3 3,4 4,5 5,3 3");
@@ -56,20 +59,21 @@ public class PolygonGraphGeneratorTest extends TestCase {
         Node n2 = (Node) gg.add(p2);
         Node n3 = (Node) gg.add(p3);
 
-        assertNotNull(n1);
-        assertEquals(n1.getObject(), p1);
+        Assert.assertNotNull(n1);
+        Assert.assertEquals(n1.getObject(), p1);
 
-        assertNotNull(n2);
-        assertEquals(n2.getObject(), p2);
+        Assert.assertNotNull(n2);
+        Assert.assertEquals(n2.getObject(), p2);
 
-        assertNotNull(n3);
-        assertEquals(n3.getObject(), p3);
+        Assert.assertNotNull(n3);
+        Assert.assertEquals(n3.getObject(), p3);
 
         Graph g = gg.getGraph();
-        assertEquals(3, g.getNodes().size());
-        assertEquals(0, g.getEdges().size());
+        Assert.assertEquals(3, g.getNodes().size());
+        Assert.assertEquals(0, g.getEdges().size());
     }
 
+    @Test
     public void testRelationships() {
         Polygon p1 = createPolygon("0 0,5 0,5 5,0 5,0 0");
         Polygon p2 = createPolygon("4 4,9 4,9 9,4 9,4 4");
@@ -79,17 +83,17 @@ public class PolygonGraphGeneratorTest extends TestCase {
         Node n2 = (Node) gg.add(p2);
         Node n3 = (Node) gg.add(p3);
 
-        assertNotNull(n1.getEdge(n2));
-        assertNotNull(n2.getEdge(n1));
-        assertNotNull(n1.getEdge(n3));
-        assertNotNull(n2.getEdge(n1));
+        Assert.assertNotNull(n1.getEdge(n2));
+        Assert.assertNotNull(n2.getEdge(n1));
+        Assert.assertNotNull(n1.getEdge(n3));
+        Assert.assertNotNull(n2.getEdge(n1));
 
-        assertNull(n2.getEdge(n3));
-        assertNull(n2.getEdge(n2));
+        Assert.assertNull(n2.getEdge(n3));
+        Assert.assertNull(n2.getEdge(n2));
 
         Graph g = gg.getGraph();
-        assertEquals(3, g.getNodes().size());
-        assertEquals(2, g.getEdges().size());
+        Assert.assertEquals(3, g.getNodes().size());
+        Assert.assertEquals(2, g.getEdges().size());
     }
 
     protected Polygon createPolygon(String coordinates) {

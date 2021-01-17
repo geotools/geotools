@@ -9,7 +9,7 @@
  */
 package org.opengis.feature.type;
 
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Specification.ISO_19103;
 
 import java.util.Set;
 import org.opengis.annotation.UML;

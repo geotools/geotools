@@ -18,15 +18,19 @@ package org.geotools.geopkg.wps.xml;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest.Layer;
+import org.geotools.geopkg.wps.GeoPackageProcessRequest.Overview;
 import org.geotools.xs.bindings.XSQNameBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.opengis.filter.Filter;
+import org.opengis.filter.sort.SortBy;
 
 /**
  * Binding object for the type http://www.opengis.net/gpkg:geopkgtype_features.
@@ -70,20 +74,28 @@ public class Geopkgtype_featuresBinding extends LayertypeBinding {
         XSQNameBinding nameBinding = new XSQNameBinding(namespaceContext);
 
         GeoPackageProcessRequest.FeaturesLayer layer = new GeoPackageProcessRequest.FeaturesLayer();
-        layer.setFeatureType(
-                (QName) nameBinding.parse(null, (String) node.getChildValue("featuretype")));
+        layer.setFeatureType((QName) nameBinding.parse(null, node.getChildValue("featuretype")));
         String pns = (String) node.getChildValue("propertynames");
         if (pns != null) {
-            Set<QName> qnames = new HashSet<QName>();
+            Set<QName> qnames = new HashSet<>();
             for (String pn : Arrays.asList(pns.split(","))) {
                 qnames.add((QName) nameBinding.parse(null, pn.trim()));
             }
             layer.setPropertyNames(qnames);
         }
         layer.setFilter((Filter) node.getChildValue("filter"));
+        layer.setSort((SortBy[]) node.getChildValue("sort"));
         Boolean indexed = (Boolean) node.getChildValue("indexed");
         if (indexed != null) {
             layer.setIndexed(indexed);
+        }
+        Object overviews = node.getChildValue("overviews");
+        if (overviews instanceof Overview) {
+            layer.setOverviews(Arrays.asList((Overview) overviews));
+        } else if (overviews instanceof Map) {
+            @SuppressWarnings("unchecked")
+            List<Overview> overview = (List<Overview>) ((Map<?, ?>) overviews).get("overview");
+            layer.setOverviews(overview);
         }
         return layer;
     }

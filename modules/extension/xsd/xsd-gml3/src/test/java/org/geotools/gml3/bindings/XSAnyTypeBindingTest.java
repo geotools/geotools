@@ -16,6 +16,9 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +35,7 @@ import org.geotools.xs.XSSchema;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaLocator;
 import org.geotools.xsd.XSD;
+import org.junit.Test;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -102,7 +106,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         registerNamespaceMapping("test", "http://www.geotools.org/anytypetest");
     }
@@ -112,6 +116,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         return new MyConfiguration();
     }
 
+    @Test
     public void testEncode() throws Exception {
         QName observation = ANYTYPETEST.OBSERVATION;
         ComplexAttribute myCode = testAnyTypeTest(observation, SAMPLE_CLASS_VALUE);
@@ -133,6 +138,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
                         .getNodeValue());
     }
 
+    @Test
     public void testEncodeUnrestricted() throws Exception {
         QName typeName = ANYTYPETEST.UNRESTRICTED;
         ComplexAttribute unrestricted = createUnrestrictedAttr(typeName, SAMPLE_UNRESTRICTED_VALUE);
@@ -145,8 +151,8 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     public ComplexAttribute testAnyTypeTest(QName typeName, String classValue) {
         Name myType = new NameImpl(typeName.getNamespaceURI(), typeName.getLocalPart());
 
-        List<Property> properties = new ArrayList<Property>();
-        List<PropertyDescriptor> propertyDescriptors = new ArrayList<PropertyDescriptor>();
+        List<Property> properties = new ArrayList<>();
+        List<PropertyDescriptor> propertyDescriptors = new ArrayList<>();
 
         // assume attributes from same namespace as typename
 
@@ -166,7 +172,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 
@@ -178,8 +184,8 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     public ComplexAttribute createUnrestrictedAttr(QName typeName, String contents) {
         Name unrestrictedType = new NameImpl(typeName.getNamespaceURI(), typeName.getLocalPart());
 
-        List<Property> properties = new ArrayList<Property>();
-        List<PropertyDescriptor> propertyDescriptors = new ArrayList<PropertyDescriptor>();
+        List<Property> properties = new ArrayList<>();
+        List<PropertyDescriptor> propertyDescriptors = new ArrayList<>();
 
         // create fake attribute simpleContent
         Name attName = new NameImpl(null, "simpleContent");
@@ -196,7 +202,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
 

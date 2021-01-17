@@ -71,13 +71,13 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
 
     static {
         // png
-        Set<String> tempSet = new HashSet<String>(2);
+        Set<String> tempSet = new HashSet<>(2);
         tempSet.add(".pgw");
         tempSet.add(".pngw");
         PNG_WFILE_EXT = Collections.unmodifiableSet(tempSet);
 
         // jpeg
-        tempSet = new HashSet<String>(3);
+        tempSet = new HashSet<>(3);
         tempSet.add(".jpw");
         tempSet.add(".jgw");
         tempSet.add(".jpgw");
@@ -85,19 +85,19 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
         JPG_WFILE_EXT = Collections.unmodifiableSet(tempSet);
 
         // gif
-        tempSet = new HashSet<String>(2);
+        tempSet = new HashSet<>(2);
         tempSet.add(".gifw");
         tempSet.add(".gfw");
         GIF_WFILE_EXT = Collections.unmodifiableSet(tempSet);
 
         // png
-        tempSet = new HashSet<String>(2);
+        tempSet = new HashSet<>(2);
         tempSet.add(".tfw");
         tempSet.add(".tiffw");
         TIFF_WFILE_EXT = Collections.unmodifiableSet(tempSet);
 
         // bmp
-        tempSet = new HashSet<String>(2);
+        tempSet = new HashSet<>(2);
         tempSet.add(".bmw");
         tempSet.add(".bmpw");
         BMP_WFILE_EXT = Collections.unmodifiableSet(tempSet);
@@ -126,7 +126,7 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
 
     private void setInfo() {
         // information for this format
-        HashMap<String, String> info = new HashMap<String, String>();
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("name", "WorldImage");
         info.put("description", "A raster file accompanied by a spatial data file");

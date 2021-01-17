@@ -25,7 +25,7 @@ import org.geotools.styling.Symbolizer;
 import org.opengis.filter.Filter;
 
 public class RuleBuilder extends AbstractStyleBuilder<Rule> {
-    List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+    List<Symbolizer> symbolizers = new ArrayList<>();
 
     Builder<? extends Symbolizer> symbolizerBuilder;
 
@@ -162,7 +162,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         if (unset) {
             return null;
         }
-        if (symbolizerBuilder == null && symbolizers.size() == 0) {
+        if (symbolizerBuilder == null && symbolizers.isEmpty()) {
             symbolizerBuilder = new PointSymbolizerBuilder();
         }
         if (symbolizerBuilder != null) {

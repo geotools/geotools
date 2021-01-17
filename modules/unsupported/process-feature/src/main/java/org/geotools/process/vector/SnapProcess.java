@@ -20,7 +20,6 @@ package org.geotools.process.vector;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import org.geotools.data.Parameter;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -66,7 +65,7 @@ public class SnapProcess implements VectorProcess {
 
     @SuppressWarnings("unchecked")
     public Map<String, Parameter<?>> getResultInfo(Map<String, Object> inputs) {
-        Map<String, Parameter<?>> outputInfo = new HashMap<String, Parameter<?>>();
+        Map<String, Parameter<?>> outputInfo = new HashMap<>();
         outputInfo.put(
                 "result",
                 new Parameter(
@@ -128,15 +127,12 @@ public class SnapProcess implements VectorProcess {
 
             DefaultFeatureCollection results = new DefaultFeatureCollection();
             FeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
-            Unit fromUnit = SI.METRE;
-            Unit toUnit = USCustomary.MILE;
-            UnitConverter unitConvert = fromUnit.getConverterTo(toUnit);
+            UnitConverter unitConvert = SI.METRE.getConverterTo(USCustomary.MILE);
             Feature nearestFeature = null;
             double nearestDistance = 9e9;
             double nearestBearing = 0;
             double[] nearestPoint = new double[2];
-            FeatureIterator featureIterator = featureCollection.features();
-            try {
+            try (FeatureIterator featureIterator = featureCollection.features()) {
                 while (featureIterator.hasNext()) {
                     SimpleFeature f = (SimpleFeature) featureIterator.next();
                     if (f.getDefaultGeometryProperty().getValue() == null) continue;
@@ -166,8 +162,6 @@ public class SnapProcess implements VectorProcess {
                     nearestPoint[0] = geo1[0];
                     nearestPoint[1] = geo1[1];
                 }
-            } finally {
-                featureIterator.close();
             }
             if (nearestFeature != null) {
                 nearestDistance = unitConvert.convert(nearestDistance);

@@ -125,7 +125,7 @@ public class MongoUtil {
     }
 
     public static Set<String> findIndexedFields(DBCollection dbc, String type) {
-        Set<String> fields = new LinkedHashSet<String>();
+        Set<String> fields = new LinkedHashSet<>();
         List<DBObject> indices = dbc.getIndexInfo();
         for (DBObject index : indices) {
             Object key = index.get("key");
@@ -158,7 +158,7 @@ public class MongoUtil {
         if (dbo == null) {
             return Collections.emptyMap();
         }
-        Map<String, Class<?>> map = new LinkedHashMap<String, Class<?>>();
+        Map<String, Class<?>> map = new LinkedHashMap<>();
         for (Map.Entry<?, ?> e : ((Map<?, ?>) dbo.toMap()).entrySet()) {
             Object k = e.getKey();
             if (k instanceof String) {

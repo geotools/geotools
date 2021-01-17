@@ -86,7 +86,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
     public Id buildFilterId(final int nodeFeatureId) throws CQLException {
 
         // retrieves the id from stack
-        List<FeatureId> idList = new LinkedList<FeatureId>();
+        List<FeatureId> idList = new LinkedList<>();
         while (!getResultStack().empty()) {
 
             Result result = getResultStack().peek();
@@ -99,11 +99,11 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
             idList.add(id);
             getResultStack().popResult();
         }
-        assert idList.size() >= 1 : "must have one or more FeatureIds";
+        assert !idList.isEmpty() : "must have one or more FeatureIds";
 
         // shorts the id list and builds the filter Id
         Collections.reverse(idList);
-        Set<FeatureId> idSet = new LinkedHashSet<FeatureId>(idList);
+        Set<FeatureId> idSet = new LinkedHashSet<>(idList);
         Id filter = getFilterFactory().id(idSet);
 
         return filter;
@@ -153,7 +153,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
      */
     public Or buildInPredicate(final int nodeExpression) throws CQLException {
         // retrieves the expressions from stack
-        List<Expression> exprList = new LinkedList<Expression>();
+        List<Expression> exprList = new LinkedList<>();
         while (!getResultStack().empty()) {
 
             Result result = getResultStack().peek();
@@ -164,18 +164,18 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
             }
             getResultStack().popResult();
 
-            Expression expr = (Expression) getResultStack().popExpression();
+            Expression expr = getResultStack().popExpression();
             exprList.add(expr);
         }
 
-        assert exprList.size() >= 1 : "must have one or more expressions";
+        assert !exprList.isEmpty() : "must have one or more expressions";
 
         // retrieve the left hand expression from the stack
         final Expression leftHandExpr = getResultStack().popExpression();
 
         // makes one comparison for each expression in the expression list,
         // associated by the Or filter.
-        List<Filter> filterList = new LinkedList<Filter>();
+        List<Filter> filterList = new LinkedList<>();
         for (Expression expression : exprList) {
             PropertyIsEqualTo eq = getFilterFactory().equals(leftHandExpr, expression);
             filterList.add(eq);
@@ -434,8 +434,8 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
             char character = patternUC.charAt(i);
 
             boolean found = false;
-            for (int j = 0; j < validFlags.length; j++) {
-                if (validFlags[j] == character) {
+            for (char validFlag : validFlags) {
+                if (validFlag == character) {
                     found = true;
                     break;
                 }

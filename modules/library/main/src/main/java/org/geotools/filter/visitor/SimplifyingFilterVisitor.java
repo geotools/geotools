@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
@@ -157,14 +158,14 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     @Override
     public Object visit(And filter, Object extraData) {
         // drill down and flatten
-        List<Filter> filters = collect(filter, And.class, extraData, new ArrayList<Filter>());
+        List<Filter> filters = collect(filter, And.class, extraData, new ArrayList<>());
 
         filters = basicAndSimplification(filters);
 
         filters = extraAndSimplification(extraData, filters);
 
         // we might end up with an empty list
-        if (filters.size() == 0) {
+        if (filters.isEmpty()) {
             return Filter.INCLUDE;
         }
 
@@ -184,13 +185,13 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         }
 
         // eliminate include and exclude
-        List<Filter> simplified = new ArrayList<Filter>(filters.size());
+        List<Filter> simplified = new ArrayList<>(filters.size());
         for (Filter child : filters) {
             // if any of the child filters is exclude,
             // the whole chain of AND is equivalent to
             // EXCLUDE
             if (child == Filter.EXCLUDE) {
-                return Arrays.asList((Filter) Filter.EXCLUDE);
+                return Arrays.asList(Filter.EXCLUDE);
             }
 
             // these can be skipped
@@ -209,7 +210,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 if (f1.equals(f2)) {
                     simplified.remove(j);
                 } else if (dualFilters(f1, f2)) {
-                    return Arrays.asList((Filter) Filter.EXCLUDE);
+                    return Arrays.asList(Filter.EXCLUDE);
                 } else {
                     j++;
                 }
@@ -222,11 +223,13 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             T filter, Class<T> type, Object extraData, List<Filter> collected) {
         for (Filter child : filter.getChildren()) {
             if (type.isInstance(child)) {
+                @SuppressWarnings("unchecked")
                 T and = (T) child;
                 collect(and, type, extraData, collected);
             } else {
                 Filter cloned = (Filter) child.accept(this, extraData);
                 if (type.isInstance(cloned)) {
+                    @SuppressWarnings("unchecked")
                     T and = (T) cloned;
                     collect(and, type, extraData, collected);
                 } else {
@@ -277,14 +280,14 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     @Override
     public Object visit(Or filter, Object extraData) {
         // scan, clone and simplify the children
-        List<Filter> filters = collect(filter, Or.class, extraData, new ArrayList<Filter>());
+        List<Filter> filters = collect(filter, Or.class, extraData, new ArrayList<>());
 
         filters = basicOrSimplification(filters);
 
         filters = extraOrSimplification(extraData, filters);
 
         // we might end up with an empty list
-        if (filters.size() == 0) {
+        if (filters.isEmpty()) {
             return Filter.EXCLUDE;
         }
 
@@ -305,13 +308,13 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         }
 
         // eliminate include and exclude
-        List<Filter> simplified = new ArrayList<Filter>(filters.size());
+        List<Filter> simplified = new ArrayList<>(filters.size());
         for (Filter child : filters) {
             // if any of the child filters is INCLUDE,
             // the whole chain of OR is equivalent to
             // INCLUDE
             if (child == Filter.INCLUDE) {
-                return Arrays.asList((Filter) Filter.INCLUDE);
+                return Arrays.asList(Filter.INCLUDE);
             }
 
             // these can be skipped
@@ -330,7 +333,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 if (f1.equals(f2)) {
                     simplified.remove(j);
                 } else if (dualFilters(f1, f2)) {
-                    return Arrays.asList((Filter) Filter.INCLUDE);
+                    return Arrays.asList(Filter.INCLUDE);
                 } else {
                     j++;
                 }
@@ -357,11 +360,11 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     @Override
     public Object visit(Id filter, Object extraData) {
         // if the set of ID is empty, it's actually equivalent to Filter.EXCLUDE
-        if (filter.getIDs().size() == 0) {
+        if (filter.getIDs().isEmpty()) {
             return Filter.EXCLUDE;
         }
 
-        Set<Identifier> validFids = new HashSet<Identifier>();
+        Set<Identifier> validFids = new HashSet<>();
 
         for (Identifier id : filter.getIdentifiers()) {
             if (id instanceof FeatureId || id instanceof GmlObjectId) {
@@ -375,7 +378,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         }
 
         Filter validIdFilter;
-        if (validFids.size() == 0) {
+        if (validFids.isEmpty()) {
             validIdFilter = Filter.EXCLUDE;
         } else {
             validIdFilter = getFactory(extraData).id(validFids);
@@ -415,10 +418,19 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             } else if (simplified == Filter.EXCLUDE) {
                 return Filter.INCLUDE;
             } else if (simplified instanceof PropertyIsBetween) {
+                List<Filter> orFilters = new ArrayList<>();
                 PropertyIsBetween pb = (PropertyIsBetween) simplified;
                 Filter lt = ff.less(pb.getExpression(), pb.getLowerBoundary());
                 Filter gt = ff.greater(pb.getExpression(), pb.getUpperBoundary());
-                return ff.or(lt, gt);
+                orFilters.add(lt);
+                orFilters.add(gt);
+                PropertyName pn = (PropertyName) pb.getExpression();
+                String pName = pn.getPropertyName();
+                if (isNillable(pName)) {
+                    // the property may have a NULL value, we need to vouch for it
+                    orFilters.add(ff.isNull(pb.getExpression()));
+                }
+                return ff.or(orFilters);
             } else if (simplified instanceof PropertyIsEqualTo) {
                 PropertyIsEqualTo pe = (PropertyIsEqualTo) simplified;
                 return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
@@ -610,5 +622,18 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
      */
     public void setRangeSimplicationEnabled(boolean rangeSimplicationEnabled) {
         this.rangeSimplicationEnabled = rangeSimplicationEnabled;
+    }
+
+    /**
+     * Returns if a property can contain null values, or not. If we don't have the featureType
+     * information, or we don't know the property, we are going to assume the property is nillable
+     * to stay on the safe side
+     */
+    private boolean isNillable(String name) {
+        if (featureType == null) {
+            return true;
+        }
+        PropertyDescriptor descriptor = featureType.getDescriptor(name);
+        return descriptor == null || descriptor.isNillable();
     }
 }

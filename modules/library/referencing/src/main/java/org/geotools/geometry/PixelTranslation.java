@@ -16,7 +16,12 @@
  */
 package org.geotools.geometry;
 
-import static org.opengis.metadata.spatial.PixelOrientation.*;
+import static org.opengis.metadata.spatial.PixelOrientation.CENTER;
+import static org.opengis.metadata.spatial.PixelOrientation.LOWER_LEFT;
+import static org.opengis.metadata.spatial.PixelOrientation.LOWER_RIGHT;
+import static org.opengis.metadata.spatial.PixelOrientation.UPPER_LEFT;
+import static org.opengis.metadata.spatial.PixelOrientation.UPPER_RIGHT;
+import static org.opengis.metadata.spatial.PixelOrientation.valueOf;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -66,8 +71,7 @@ public final class PixelTranslation implements Serializable {
     public final double dy;
 
     /** The offset for various pixel orientations. Keys must be upper-case names. */
-    private static Map<PixelOrientation, PixelTranslation> ORIENTATIONS =
-            new HashMap<PixelOrientation, PixelTranslation>(12);
+    private static Map<PixelOrientation, PixelTranslation> ORIENTATIONS = new HashMap<>(12);
 
     static {
         new PixelTranslation(CENTER, 0.0, 0.0);

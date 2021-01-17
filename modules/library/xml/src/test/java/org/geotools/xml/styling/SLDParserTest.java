@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -349,6 +349,31 @@ public class SLDParserTest {
                     + "\n\t<Parameter name=\"maxValue\"/>"
                     + "\n\t</Normalize>"
                     + "\n\t</ContrastEnhancement>";
+
+    static String SLD_NULL_VENDOR_OPTION =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<StyledLayerDescriptor version=\"1.0.0\" \n"
+                    + "        xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" \n"
+                    + "        xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" \n"
+                    + "        xmlns:xlink=\"http://www.w3.org/1999/xlink\" \n"
+                    + "        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
+                    + "    <UserStyle>\n"
+                    + "        <Name>Default Styler</Name>\n"
+                    + "        <Title>Default Styler</Title>\n"
+                    + "        <Abstract></Abstract>\n"
+                    + "        <FeatureTypeStyle>\n"
+                    + "            <FeatureTypeName>Feature</FeatureTypeName>\n"
+                    + "            <Rule>\n"
+                    + "                <PointSymbolizer>\n"
+                    + "                    <Graphic>\n"
+                    + "                    </Graphic>\n"
+                    + "					   <VendorOption name=\"NullVendor\"/>  \n"
+                    + "					   <VendorOption name=\"OkVendor\">TEST_OK</VendorOption>  \n"
+                    + "                </PointSymbolizer>\n"
+                    + "            </Rule>\n"
+                    + "        </FeatureTypeStyle>\n"
+                    + "    </UserStyle>\n"
+                    + "</StyledLayerDescriptor>";
 
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
 
@@ -754,6 +779,23 @@ public class SLDParserTest {
         assertNotNull(params);
 
         assertTrue("Params should be empty", params.isEmpty());
+    }
+
+    @Test
+    public void testNullVendorObject() throws Exception {
+
+        final String OK_KEY = "OkVendor";
+
+        SLDParser parser = new SLDParser(styleFactory, input(SLD_NULL_VENDOR_OPTION));
+        Style[] styles = parser.readXML();
+        List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
+        List<Rule> rules = fts.get(0).rules();
+        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+
+        PointSymbolizer ps = (PointSymbolizer) symbolizers.get(0);
+
+        assertEquals(1, ps.getOptions().size());
+        assertTrue(ps.getOptions().containsKey(OK_KEY));
     }
 
     void assertStyles(Style[] styles) {

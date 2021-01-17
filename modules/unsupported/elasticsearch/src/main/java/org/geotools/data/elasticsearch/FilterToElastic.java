@@ -169,7 +169,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
     public FilterToElastic() {
         queryBuilder = ElasticConstants.MATCH_ALL;
-        nativeQueryBuilder = ImmutableMap.of("match_all", Collections.EMPTY_MAP);
+        nativeQueryBuilder = ImmutableMap.of("match_all", Collections.emptyMap());
         helper = new FilterToElasticHelper(this);
     }
 
@@ -1194,12 +1194,24 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     // END IMPLEMENTING org.opengis.filter.ExpressionVisitor METHODS
 
     private void updateDateFormatter(AttributeDescriptor attType) {
-        dateFormatter = DEFAULT_DATE_FORMATTER;
         if (attType != null) {
-            final String format = (String) attType.getUserData().get(ElasticConstants.DATE_FORMAT);
-            if (format != null) {
-                dateFormatter = Joda.forPattern(format).printer();
+            @SuppressWarnings("unchecked")
+            final List<String> validFormats =
+                    (List<String>) attType.getUserData().get(ElasticConstants.DATE_FORMAT);
+            if (validFormats != null) {
+                for (String format : validFormats) {
+                    try {
+                        dateFormatter = Joda.forPattern(format).printer();
+                        break;
+                    } catch (Exception e) {
+                        LOGGER.fine(
+                                "Unable to parse date format ('" + format + "') for " + attType);
+                    }
+                }
             }
+        }
+        if (dateFormatter == null) {
+            dateFormatter = DEFAULT_DATE_FORMATTER;
         }
     }
 

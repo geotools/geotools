@@ -46,12 +46,12 @@ public class BooleanConverterFactory implements ConverterFactory {
             if (source.equals(String.class)) {
                 return new Converter() {
 
-                    public Object convert(Object source, Class target) throws Exception {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
                         if ("true".equals(source) || "1".equals(source)) {
-                            return Boolean.TRUE;
+                            return target.cast(Boolean.TRUE);
                         }
                         if ("false".equals(source) || "0".equals(source)) {
-                            return Boolean.FALSE;
+                            return target.cast(Boolean.FALSE);
                         }
 
                         return null;
@@ -63,12 +63,12 @@ public class BooleanConverterFactory implements ConverterFactory {
             if (source.equals(Integer.class)) {
                 return new Converter() {
 
-                    public Object convert(Object source, Class target) throws Exception {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (Integer.valueOf(1).equals(source)) {
-                            return Boolean.TRUE;
+                            return target.cast(Boolean.TRUE);
                         }
                         if (Integer.valueOf(0).equals(source)) {
-                            return Boolean.FALSE;
+                            return target.cast(Boolean.FALSE);
                         }
 
                         return null;

@@ -65,7 +65,8 @@ public abstract class AbstractManageableDataSource implements ManageableDataSour
         return false;
     }
 
-    public Object unwrap(Class arg0) throws SQLException {
+    @Override
+    public <T> T unwrap(Class<T> arg0) throws SQLException {
         throw new SQLException("This implementation cannot unwrap anything");
     }
 

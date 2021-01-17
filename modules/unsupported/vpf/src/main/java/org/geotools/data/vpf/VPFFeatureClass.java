@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.Vector;
 import java.util.logging.Level;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
@@ -50,11 +49,14 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
@@ -72,7 +74,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     private SimpleFeatureType featureType;
 
     /** The columns that are part of this feature class */
-    private final List<VPFColumn> columns = new Vector<VPFColumn>();
+    private final List<VPFColumn> columns = new ArrayList<>();
 
     private final Map<String, ColumnSet> columnSet = new LinkedHashMap<>();
     private final Map<String, TableRelation> relations = new LinkedHashMap<>();
@@ -103,7 +105,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
     private boolean enableFeatureCache = true;
 
-    private final List<SimpleFeature> featureCache = new ArrayList<SimpleFeature>();
+    private final List<SimpleFeature> featureCache = new ArrayList<>();
 
     private int cacheRow = 0;
 
@@ -153,7 +155,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         String fcsFileName = directoryName + File.separator + TABLE_FCS;
 
         try {
-            VPFFile fcsFile = (VPFFile) VPFFileFactory.getInstance().getFile(fcsFileName);
+            VPFFile fcsFile = VPFFileFactory.getInstance().getFile(fcsFileName);
 
             Iterator<SimpleFeature> iter = fcsFile.readAllRows().iterator();
 
@@ -163,7 +165,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
             }
 
             while (iter.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) iter.next();
+                SimpleFeature feature = iter.next();
                 String featureClassName = feature.getAttribute("feature_class").toString().trim();
 
                 if (typeName.equals(featureClassName)) {
@@ -182,7 +184,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
             String geometryName = null;
 
             while (iter2.hasNext()) {
-                column = (VPFColumn) iter2.next();
+                column = iter2.next();
                 if (column == null) continue;
                 if (column.isGeometry()) {
                     geometryName = column.getName();
@@ -311,7 +313,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
     public synchronized void reset() {
 
-        if (!this.enableFeatureCache || this.featureCache.size() == 0) {
+        if (!this.enableFeatureCache || this.featureCache.isEmpty()) {
             Iterator<Map.Entry<String, ColumnSet>> itr = columnSet.entrySet().iterator();
             Map.Entry<String, ColumnSet> first = itr.next();
 
@@ -355,7 +357,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
     public synchronized boolean hasNext() {
 
-        if (this.enableFeatureCache && this.featureCache.size() > 0) {
+        if (this.enableFeatureCache && !this.featureCache.isEmpty()) {
             return this.cacheRow < this.featureCache.size();
         } else {
             return this.internalHasNext();
@@ -390,14 +392,14 @@ public class VPFFeatureClass implements SimpleFeatureType {
     public synchronized SimpleFeature readNext(SimpleFeatureType featureType) {
 
         SimpleFeature nextFeature = null;
-        if (this.enableFeatureCache && this.featureCache.size() == 0) {
+        if (this.enableFeatureCache && this.featureCache.isEmpty()) {
             this.reset();
             while (this.internalHasNext()) {
                 SimpleFeature feature = joinRows(featureType);
 
                 this.featureCache.add(feature);
             }
-            if (this.featureCache.size() > 0) {
+            if (!this.featureCache.isEmpty()) {
                 this.closeFiles();
             }
         }
@@ -428,7 +430,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
                 for (int inx = 0; inx < vpfFile.getAttributeCount(); inx++) {
                     VPFColumn col = vpfFile.getColumn(inx);
                     String colName = col.getName();
-                    if (columns.size() > 0 && colName.equalsIgnoreCase("id")) continue;
+                    if (!columns.isEmpty() && colName.equalsIgnoreCase("id")) continue;
                     columns.add(col);
                 }
             }
@@ -534,7 +536,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
         Geometry geometry = null;
 
-        List<Object> vlist = new ArrayList<Object>();
+        List<Object> vlist = new ArrayList<>();
 
         // List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
 
@@ -550,7 +552,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
                 int colCount = cs.colNames.size();
                 for (int inx = 0; inx < colCount; inx++) {
                     String colName = cs.colNames.get(inx);
-                    if (vlist.size() > 0 && colName.equalsIgnoreCase("id")) continue;
+                    if (!vlist.isEmpty() && colName.equalsIgnoreCase("id")) continue;
                     Object value = row != null ? row.getAttribute(colName) : null;
                     vlist.add(value);
                 }
@@ -656,10 +658,9 @@ public class VPFFeatureClass implements SimpleFeatureType {
     public synchronized List<VPFFile> getFileList() {
         // return fileList;
 
-        List<ColumnSet> csets = new ArrayList<ColumnSet>(columnSet.values());
-        List<VPFFile> fileList = new ArrayList<VPFFile>();
-        for (int i = 0; i < csets.size(); i++) {
-            ColumnSet cs = csets.get(i);
+        List<ColumnSet> csets = new ArrayList<>(columnSet.values());
+        List<VPFFile> fileList = new ArrayList<>();
+        for (ColumnSet cs : csets) {
             fileList.add(cs.table);
         }
         return fileList;
@@ -719,7 +720,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return featureType.getDescriptor(index);
     }
 
-    public List getAttributeDescriptors() {
+    public List<AttributeDescriptor> getAttributeDescriptors() {
         return featureType.getAttributeDescriptors();
     }
 
@@ -735,7 +736,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return featureType.getType(index);
     }
 
-    public List getTypes() {
+    public List<AttributeType> getTypes() {
         return featureType.getTypes();
     }
 
@@ -747,11 +748,11 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return featureType.getGeometryDescriptor();
     }
 
-    public Class getBinding() {
+    public Class<Collection<Property>> getBinding() {
         return featureType.getBinding();
     }
 
-    public Collection getDescriptors() {
+    public Collection<PropertyDescriptor> getDescriptors() {
         return featureType.getDescriptors();
     }
 

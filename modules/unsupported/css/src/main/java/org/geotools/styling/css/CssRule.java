@@ -73,7 +73,7 @@ public class CssRule {
         this.setSelector(selector);
         PseudoClassExtractor extractor = new PseudoClassExtractor();
         selector.accept(extractor);
-        this.setProperties(new HashMap<PseudoClass, List<Property>>());
+        this.setProperties(new HashMap<>());
         Set<PseudoClass> pseudoClasses = extractor.getPseudoClasses();
         for (PseudoClass ps : pseudoClasses) {
             this.getProperties().put(ps, properties);
@@ -313,7 +313,7 @@ public class CssRule {
                         }
                     }
                     // if we collected any, add to the result
-                    if (zIndexProperties.size() > 0) {
+                    if (!zIndexProperties.isEmpty()) {
                         zProperties.put(entry.getKey(), zIndexProperties);
                     }
                 }
@@ -330,7 +330,7 @@ public class CssRule {
                             .collect(Collectors.toList());
         }
 
-        if (zProperties.size() > 0) {
+        if (!zProperties.isEmpty()) {
             // if the properties had an original z-index, mark it, we'll need it
             // to figure out if a combination of rules can be applied at a z-index > 0, or not
             if (zIndex != null && zIndexes.contains(zIndex)) {
@@ -342,7 +342,7 @@ public class CssRule {
                 rootProperties.add(
                         new Property(
                                 "z-index",
-                                Arrays.asList((Value) new Value.Literal(String.valueOf(zIndex)))));
+                                Arrays.asList(new Value.Literal(String.valueOf(zIndex)))));
             }
             CssRule zRule = new CssRule(this.getSelector(), zProperties, this.getComment());
             zRule.nestedRules = nestedByZIndex;
@@ -367,12 +367,12 @@ public class CssRule {
 
     /** Returns the z-index values, in the order they are submitted */
     void collectZIndexesInProperties(List<Property> properties, List<Integer> zIndexes) {
-        if (zIndexes.size() > 0) {
+        if (!zIndexes.isEmpty()) {
             zIndexes.clear();
         }
         for (Property property : properties) {
             if (isZIndex(property)) {
-                if (zIndexes.size() > 0) {
+                if (!zIndexes.isEmpty()) {
                     // we have two z-index in the same set of properties? keep the latest
                     zIndexes.clear();
                 }

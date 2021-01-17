@@ -16,6 +16,7 @@
  */
 package org.geotools.gml;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 import org.xml.sax.SAXException;
@@ -62,13 +63,13 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
     private static final String Z_NAME = "Z";
 
     /** Sub geometry elements that may be passed in GML */
-    private static final java.util.Collection SUB_GEOMETRY_TYPES =
-            new java.util.Vector(
+    private static final java.util.Collection<String> SUB_GEOMETRY_TYPES =
+            new ArrayList<>(
                     java.util.Arrays.asList(new String[] {"outerBoundaryIs", "innerBoundaryIs"}));
 
     /** Base geometry elements that may be passed in GML */
-    private static final java.util.Collection BASE_GEOMETRY_TYPES =
-            new java.util.Vector(
+    private static final java.util.Collection<String> BASE_GEOMETRY_TYPES =
+            new ArrayList<>(
                     java.util.Arrays.asList(
                             new String[] {
                                 "Point",

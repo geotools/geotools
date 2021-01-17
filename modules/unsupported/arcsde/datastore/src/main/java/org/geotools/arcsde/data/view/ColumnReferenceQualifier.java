@@ -36,16 +36,16 @@ public class ColumnReferenceQualifier implements ColumnReferenceVisitor {
 
     private ISession session;
 
-    private Map<String, Object> tableAliases;
+    private Map<String, ?> tableAliases;
 
     /** Creates a new ColumnReferenceQualifier object. */
-    private ColumnReferenceQualifier(ISession session, Map<String, Object> tableAliases) {
+    private ColumnReferenceQualifier(ISession session, Map<String, ?> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;
     }
 
     public static ColumnReference qualify(
-            ISession session, Map<String, Object> tableAliases, ColumnReference colRef) {
+            ISession session, Map<String, ?> tableAliases, ColumnReference colRef) {
         if (colRef == null) {
             return null;
         }

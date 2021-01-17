@@ -18,12 +18,29 @@
 package org.geotools.process.vector;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.visitor.*;
+import org.geotools.feature.visitor.AbstractCalcResult;
+import org.geotools.feature.visitor.AverageVisitor;
+import org.geotools.feature.visitor.CalcResult;
+import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.FeatureCalc;
+import org.geotools.feature.visitor.GroupByVisitor;
+import org.geotools.feature.visitor.GroupByVisitorBuilder;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MedianVisitor;
+import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.StandardDeviationVisitor;
+import org.geotools.feature.visitor.SumAreaVisitor;
+import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
@@ -159,8 +176,8 @@ public class AggregateProcess implements VectorProcess {
         if (functions == null) {
             throw new NullPointerException("Aggregate function to call is required");
         }
-        List<AggregationFunction> functionList = new ArrayList<AggregationFunction>(functions);
-        List<FeatureCalc> visitors = new ArrayList<FeatureCalc>();
+        List<AggregationFunction> functionList = new ArrayList<>(functions);
+        List<FeatureCalc> visitors = new ArrayList<>();
 
         for (AggregationFunction function : functionList) {
             FeatureCalc calc;
@@ -188,11 +205,11 @@ public class AggregateProcess implements VectorProcess {
             visitors.add(calc);
         }
 
-        EnumMap<AggregationFunction, Number> results =
-                new EnumMap<AggregationFunction, Number>(AggregationFunction.class);
+        EnumMap<AggregationFunction, Number> results = new EnumMap<>(AggregationFunction.class);
         if (singlePass) {
             AggregateFeatureCalc calc = new AggregateFeatureCalc(visitors);
             features.accepts(calc, new NullProgressListener());
+            @SuppressWarnings("unchecked")
             List<CalcResult> resultList = (List<CalcResult>) calc.getResult().getValue();
             for (int i = 0; i < functionList.size(); i++) {
                 CalcResult result = resultList.get(i);
@@ -260,13 +277,18 @@ public class AggregateProcess implements VectorProcess {
         List<Map<List<Object>, Object>> results =
                 groupByVisitors
                         .stream()
-                        .map(visitor -> (Map<List<Object>, Object>) visitor.getResult().toMap())
+                        .map(visitor -> getListObjectMap(visitor))
                         .collect(Collectors.toList());
         return new Results(
                 aggAttribute,
                 functions,
                 rawGroupByAttributes,
                 mergeResults(results, rawGroupByAttributes.size()));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<List<Object>, Object> getListObjectMap(GroupByVisitor visitor) {
+        return (Map<List<Object>, Object>) visitor.getResult().toMap();
     }
 
     /**
@@ -300,7 +322,7 @@ public class AggregateProcess implements VectorProcess {
     }
 
     private List<String> attNames(List<AttributeDescriptor> atts) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (AttributeDescriptor ad : atts) {
             result.add(ad.getLocalName());
         }
@@ -321,7 +343,7 @@ public class AggregateProcess implements VectorProcess {
         }
 
         public CalcResult getResult() {
-            final List<CalcResult> results = new ArrayList<CalcResult>();
+            final List<CalcResult> results = new ArrayList<>();
             for (FeatureCalc delegate : delegates) {
                 results.add(delegate.getResult());
             }

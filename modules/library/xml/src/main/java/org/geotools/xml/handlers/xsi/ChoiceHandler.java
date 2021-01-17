@@ -42,7 +42,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
     private String id;
     private int minOccurs;
     private int maxOccurs;
-    private List children; // element, group, choice, sequence, any
+    private List<XSIElementHandler> children; // element, group, choice, sequence, any
     private DefaultChoice cache = null;
 
     /** @see java.lang.Object#hashCode() */
@@ -60,7 +60,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
             // group
             if (GroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (children == null) {
-                    children = new LinkedList();
+                    children = new LinkedList<>();
                 }
 
                 GroupHandler gh = new GroupHandler();
@@ -72,7 +72,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
             // choice
             if (LOCALNAME.equalsIgnoreCase(localName)) {
                 if (children == null) {
-                    children = new LinkedList();
+                    children = new LinkedList<>();
                 }
 
                 GroupHandler gh = new GroupHandler();
@@ -84,7 +84,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
             // sequence
             if (SequenceHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (children == null) {
-                    children = new LinkedList();
+                    children = new LinkedList<>();
                 }
 
                 SequenceHandler gh = new SequenceHandler();
@@ -96,7 +96,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
             // any
             if (AnyHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (children == null) {
-                    children = new LinkedList();
+                    children = new LinkedList<>();
                 }
 
                 AnyHandler gh = new AnyHandler();
@@ -108,7 +108,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
             // element
             if (ElementTypeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (children == null) {
-                    children = new LinkedList();
+                    children = new LinkedList<>();
                 }
 
                 ElementTypeHandler gh = new ElementTypeHandler();
@@ -217,8 +217,8 @@ public class ChoiceHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(name);
+            for (ElementGrouping child : children) {
+                Element t = child.findChildElement(name);
 
                 if (t != null) { // found it
 
@@ -259,8 +259,8 @@ public class ChoiceHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(localName, namespaceURI);
+            for (ElementGrouping child : children) {
+                Element t = child.findChildElement(localName, namespaceURI);
 
                 if (t != null) { // found it
 

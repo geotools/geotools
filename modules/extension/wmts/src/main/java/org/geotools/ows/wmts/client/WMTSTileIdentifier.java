@@ -66,7 +66,7 @@ class WMTSTileIdentifier extends TileIdentifier {
     @Override
     public TileIdentifier getLowerNeighbour() {
         int newY = getY() + 1;
-        if (newY >= ((WMTSZoomLevel) getZoomLevel()).getMaxTilePerColNumber()) return null;
+        if (newY >= getZoomLevel().getMaxTilePerColNumber()) return null;
         else return new WMTSTileIdentifier(getX(), newY, getZoomLevel(), getServiceName());
     }
 }

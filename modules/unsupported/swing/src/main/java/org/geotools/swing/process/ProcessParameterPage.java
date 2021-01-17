@@ -55,7 +55,7 @@ public class ProcessParameterPage extends JPage {
     Map<String, Object> input;
 
     // map of ParamField to keys, but value is a list of ParamFields
-    Map<String, List<ParamField>> fields = new HashMap<String, List<ParamField>>();
+    Map<String, List<ParamField>> fields = new HashMap<>();
 
     // map of keys with values for the input parameters, the value is a list of "values"
     Map<String, Object> paramMap = null;
@@ -97,15 +97,15 @@ public class ProcessParameterPage extends JPage {
      * running an actual process
      */
     private void createParamMap() {
-        if (fields.size() == 0) {
+        if (fields.isEmpty()) {
             return;
         }
-        paramMap = new HashMap<String, Object>();
+        paramMap = new HashMap<>();
         for (String key : fields.keySet()) {
-            List<ParamField> pws = (List<ParamField>) (fields.get(key));
+            List<ParamField> pws = fields.get(key);
             if (pws.size() > 1) {
                 // param has a list of values from multiple widgets
-                List<Object> values = new ArrayList<Object>();
+                List<Object> values = new ArrayList<>();
                 for (ParamField pw : pws) {
                     if (pw.getValue() != null) {
                         values.add(pw.getValue());
@@ -147,7 +147,7 @@ public class ProcessParameterPage extends JPage {
 
             // create a list for the widgets this parameter (even if there is only
             // one widget)
-            List<ParamField> widgets = new ArrayList<ParamField>();
+            List<ParamField> widgets = new ArrayList<>();
 
             // loop through and create the min number of widgets for this param
             for (int i = 0; i < min; i++) {

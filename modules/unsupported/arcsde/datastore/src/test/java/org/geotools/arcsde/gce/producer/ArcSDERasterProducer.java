@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public abstract class ArcSDERasterProducer implements SeRasterProducer {
 
-    ArrayList<SeRasterConsumer> consumers = new ArrayList<SeRasterConsumer>();
+    ArrayList<SeRasterConsumer> consumers = new ArrayList<>();
 
     BufferedImage sourceImage;
 

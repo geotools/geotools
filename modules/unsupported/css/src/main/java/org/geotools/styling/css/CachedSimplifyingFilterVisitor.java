@@ -38,7 +38,7 @@ import org.opengis.filter.Or;
  */
 class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
     // filters we know are already simplified
-    Map<Filter, Filter> cache = new WeakHashMap<Filter, Filter>();
+    Map<Filter, Filter> cache = new WeakHashMap<>();
 
     public CachedSimplifyingFilterVisitor(FeatureType ft) {
         setFeatureType(ft);
@@ -124,7 +124,7 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
                         if (simplified == Filter.EXCLUDE) {
                             continue;
                         } else if (simplified == Filter.INCLUDE) {
-                            return Collections.singletonList((Filter) Filter.INCLUDE);
+                            return Collections.singletonList(Filter.INCLUDE);
                         } else if (reduced == null) {
                             reduced = simplified;
                         } else if (!simplified.equals(reduced)) {
@@ -134,7 +134,7 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
                     }
 
                     if (reduced == null) {
-                        return Collections.singletonList((Filter) Filter.EXCLUDE);
+                        return Collections.singletonList(Filter.EXCLUDE);
                     } else if (!twoOrMore) {
                         filters.clear();
                         if (!(reduced instanceof And)) {
@@ -198,7 +198,7 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
                         Or or = getFactory(extraData).or(newList);
                         Filter simplified = (Filter) or.accept(this, extraData);
                         if (simplified == Filter.EXCLUDE) {
-                            return Collections.singletonList((Filter) Filter.EXCLUDE);
+                            return Collections.singletonList(Filter.EXCLUDE);
                         } else if (simplified == Filter.INCLUDE) {
                             continue;
                         } else if (reduced == null) {
@@ -210,7 +210,7 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
                     }
 
                     if (reduced == null) {
-                        return Collections.singletonList((Filter) Filter.INCLUDE);
+                        return Collections.singletonList(Filter.INCLUDE);
                     } else if (!twoOrMore) {
                         filters.clear();
                         if (!(reduced instanceof Or)) {

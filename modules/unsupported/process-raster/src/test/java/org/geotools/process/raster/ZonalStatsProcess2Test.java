@@ -101,7 +101,7 @@ public class ZonalStatsProcess2Test extends Assert {
 
             iterator = featureCollection.features();
 
-            List<SimpleFeature> zones = new ArrayList<SimpleFeature>(featureCollection.size());
+            List<SimpleFeature> zones = new ArrayList<>(featureCollection.size());
 
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
@@ -197,7 +197,7 @@ public class ZonalStatsProcess2Test extends Assert {
                             false);
 
             // Reverse of the list due to a variation on the code
-            List<ZoneGeometry> zoneList = new ArrayList<ZoneGeometry>(zoneListStart);
+            List<ZoneGeometry> zoneList = new ArrayList<>(zoneListStart);
 
             // Zone 0
             ZoneGeometry geo0 = zoneList.get(0);

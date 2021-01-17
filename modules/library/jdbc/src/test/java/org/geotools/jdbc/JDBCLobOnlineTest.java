@@ -1,11 +1,13 @@
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureStore;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -57,22 +59,16 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
 
-            assertTrue(
-                    Arrays.equals(
-                            new byte[] {1, 2, 3, 4, 5},
-                            (byte[]) f.getAttribute(aname(BLOB_FIELD))));
-            assertTrue(
-                    Arrays.equals(
-                            new byte[] {6, 7, 8, 9, 10},
-                            (byte[]) f.getAttribute(aname(RAW_FIELD))));
+            assertArrayEquals(
+                    new byte[] {1, 2, 3, 4, 5}, (byte[]) f.getAttribute(aname(BLOB_FIELD)));
+            assertArrayEquals(
+                    new byte[] {6, 7, 8, 9, 10}, (byte[]) f.getAttribute(aname(RAW_FIELD)));
             assertEquals("small clob", f.getAttribute(aname(CLOB_FIELD)));
         }
     }
 
     public void testWrite() throws Exception {
-        FeatureStore<SimpleFeatureType, SimpleFeature> fs =
-                (FeatureStore<SimpleFeatureType, SimpleFeature>)
-                        dataStore.getFeatureSource(tname(TESTLOB));
+        SimpleFeatureStore fs = (SimpleFeatureStore) dataStore.getFeatureSource(tname(TESTLOB));
 
         SimpleFeature sf =
                 SimpleFeatureBuilder.build(
@@ -85,12 +81,8 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
         try (FeatureIterator<SimpleFeature> fi = fs.getFeatures(filter).features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
-            assertTrue(
-                    Arrays.equals(
-                            new byte[] {6, 7, 8}, (byte[]) f.getAttribute(aname(BLOB_FIELD))));
-            assertTrue(
-                    Arrays.equals(
-                            new byte[] {11, 12, 13}, (byte[]) f.getAttribute(aname(RAW_FIELD))));
+            assertArrayEquals(new byte[] {6, 7, 8}, (byte[]) f.getAttribute(aname(BLOB_FIELD)));
+            assertArrayEquals(new byte[] {11, 12, 13}, (byte[]) f.getAttribute(aname(RAW_FIELD)));
             assertEquals("newclob", f.getAttribute(aname(CLOB_FIELD)));
         }
     }

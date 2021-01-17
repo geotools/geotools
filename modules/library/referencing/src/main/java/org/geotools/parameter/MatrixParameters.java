@@ -184,9 +184,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
                     final int row = Integer.parseInt(name.substring(prefix.length(), split));
                     final int col = Integer.parseInt(name.substring(split + 1));
                     return parameter(row, col);
-                } catch (NumberFormatException exception) {
-                    cause = exception;
-                } catch (IndexOutOfBoundsException exception) {
+                } catch (NumberFormatException | IndexOutOfBoundsException exception) {
                     cause = exception;
                 }
         }
@@ -300,7 +298,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
                 }
             }
         }
-        return UnmodifiableArrayList.wrap((GeneralParameterValue[]) XArray.resize(parameters, k));
+        return UnmodifiableArrayList.wrap(XArray.resize(parameters, k));
     }
 
     /**

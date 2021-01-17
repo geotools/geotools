@@ -17,6 +17,7 @@
 package org.geotools.gce.imagemosaic.properties;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,11 +32,11 @@ public abstract class PropertiesCollector {
 
     private PropertiesCollectorSPI spi;
 
-    private List<String> matches = new ArrayList<String>();
+    private List<String> matches = new ArrayList<>();
 
     public PropertiesCollector(final PropertiesCollectorSPI spi, final List<String> propertyNames) {
         this.spi = spi;
-        this.propertyNames = new ArrayList<String>(propertyNames);
+        this.propertyNames = new ArrayList<>(propertyNames);
     }
 
     public PropertiesCollectorSPI getSpi() {
@@ -43,6 +44,10 @@ public abstract class PropertiesCollector {
     }
 
     public PropertiesCollector collect(final File file) {
+        return this;
+    }
+
+    public PropertiesCollector collect(final URL url) {
         return this;
     }
 
@@ -59,7 +64,7 @@ public abstract class PropertiesCollector {
     public abstract void setProperties(final Map<String, Object> map);
 
     public void reset() {
-        matches = new ArrayList<String>();
+        matches = new ArrayList<>();
     }
 
     public List<String> getPropertyNames() {

@@ -134,7 +134,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
          * changes for clearing their cache.
          */
         if (authorityNames == null) {
-            authorityNames = new LinkedHashSet<String>();
+            authorityNames = new LinkedHashSet<>();
             final Hints hints = EMPTY_HINTS;
             loop:
             for (int i = 0; ; i++) {
@@ -180,7 +180,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
     private static synchronized <T extends Factory> Set<T> getFactories(
             final Class<T> category, Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<T>(getServiceRegistry().getFactories(category, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(category, null, hints));
     }
 
     /**
@@ -648,8 +648,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
                 // be specified explicitly through a hint (e.g. Hints.CRS_AUTHORITY_FACTORY).
                 return false;
             }
-            return Citations.identifierMatches(
-                    ((AuthorityFactory) provider).getAuthority(), authority);
+            return Citations.identifierMatches(provider.getAuthority(), authority);
         }
     }
 

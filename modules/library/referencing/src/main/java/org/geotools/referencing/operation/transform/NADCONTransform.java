@@ -210,10 +210,10 @@ public class NADCONTransform extends AbstractMathTransform
      */
     @Override
     public ParameterValueGroup getParameterValues() {
-        final ParameterValue lat_diff_file = new Parameter(Provider.LAT_DIFF_FILE);
+        final ParameterValue lat_diff_file = new Parameter<>(Provider.LAT_DIFF_FILE);
         lat_diff_file.setValue(latGridName);
 
-        final ParameterValue long_diff_file = new Parameter(Provider.LONG_DIFF_FILE);
+        final ParameterValue long_diff_file = new Parameter<>(Provider.LONG_DIFF_FILE);
         long_diff_file.setValue(longGridName);
 
         return new ParameterGroup(
@@ -519,15 +519,16 @@ public class NADCONTransform extends AbstractMathTransform
          * The operation parameter descriptor for the "Latitude_difference_file" parameter value.
          * The default value is "conus.las".
          */
-        public static final ParameterDescriptor LAT_DIFF_FILE =
-                new DefaultParameterDescriptor("Latitude difference file", URI.class, null, null);
+        public static final ParameterDescriptor<URI> LAT_DIFF_FILE =
+                new DefaultParameterDescriptor<>("Latitude difference file", URI.class, null, null);
 
         /**
          * The operation parameter descriptor for the "Longitude_difference_file" parameter value.
          * The default value is "conus.los".
          */
-        public static final ParameterDescriptor LONG_DIFF_FILE =
-                new DefaultParameterDescriptor("Longitude difference file", URI.class, null, null);
+        public static final ParameterDescriptor<URI> LONG_DIFF_FILE =
+                new DefaultParameterDescriptor<>(
+                        "Longitude difference file", URI.class, null, null);
 
         /** The parameters group. */
         static final ParameterDescriptorGroup PARAMETERS =
@@ -564,8 +565,8 @@ public class NADCONTransform extends AbstractMathTransform
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException, FactoryException {
             return new NADCONTransform(
-                    (URI) getParameter(LAT_DIFF_FILE, values).getValue(),
-                    (URI) getParameter(LONG_DIFF_FILE, values).getValue());
+                    getParameter(LAT_DIFF_FILE, values).getValue(),
+                    getParameter(LONG_DIFF_FILE, values).getValue());
         }
     }
 }

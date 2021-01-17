@@ -16,7 +16,7 @@
  */
 package org.geotools.image.palette;
 
-import static org.geotools.image.palette.ColorUtils.*;
+import static org.geotools.image.palette.ColorUtils.color;
 
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
@@ -245,11 +245,11 @@ final class ColorMap implements Iterable<ColorEntry> {
         int empty = 0;
         int largest = 0;
         int sum = 0;
-        for (int i = 0; i < table.length; i++) {
-            if (table[i] == null) {
+        for (ColorEntry colorEntry : table) {
+            if (colorEntry == null) {
                 empty++;
             } else {
-                ColorEntry ce = table[i];
+                ColorEntry ce = colorEntry;
                 int count = 0;
                 while (ce != null) {
                     count++;

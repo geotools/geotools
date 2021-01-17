@@ -16,6 +16,9 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.Collections;
@@ -28,17 +31,11 @@ import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.Id;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Unit test suite for {@link LockFeatureTypeBinding}
- *
- * @author Gabriel Roldan (TOPP)
- * @version $Id$
- * @since 2.5.x
- */
 public class LockFeatureTypeBindingTest extends WFSTestSupport {
 
     public LockFeatureTypeBindingTest() {
@@ -46,6 +43,8 @@ public class LockFeatureTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    @Test
     public void testEncode() throws Exception {
         LockFeatureType lockFeature = factory.createLockFeatureType();
         lockFeature.setExpiry(BigInteger.valueOf(1000));
@@ -72,6 +71,7 @@ public class LockFeatureTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "LockFeatureTypeBindingTest.xml");
         buildDocument(resource);

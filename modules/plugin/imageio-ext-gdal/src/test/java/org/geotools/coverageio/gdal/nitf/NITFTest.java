@@ -20,7 +20,6 @@ package org.geotools.coverageio.gdal.nitf;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.media.jai.ImageLayout;
@@ -70,11 +69,7 @@ public final class NITFTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning(
-                    "Test File not found, please download it at: http://dl.maptools.org/dl/gdal/data/nitf/cadrg/001zc013.on1");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning(
                     "Test File not found, please download it at: http://dl.maptools.org/dl/gdal/data/nitf/cadrg/001zc013.on1");
             return;
@@ -94,7 +89,7 @@ public final class NITFTest extends GDALTestCase {
         // read once
         //
         // /////////////////////////////////////////////////////////////////////
-        GridCoverage2D gc = (GridCoverage2D) reader.read(null);
+        GridCoverage2D gc = reader.read(null);
         forceDataLoading(gc);
 
         // /////////////////////////////////////////////////////////////////////
@@ -122,8 +117,7 @@ public final class NITFTest extends GDALTestCase {
         cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg =
-                (ParameterValue)
-                        ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         gg.setValue(
                 new GridGeometry2D(
                         new GridEnvelope2D(
@@ -133,7 +127,7 @@ public final class NITFTest extends GDALTestCase {
                                         (int) (range.width / 2.0 / cropFactor),
                                         (int) (range.height / 2.0 / cropFactor))),
                         cropEnvelope));
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
+        gc = reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
     }
 

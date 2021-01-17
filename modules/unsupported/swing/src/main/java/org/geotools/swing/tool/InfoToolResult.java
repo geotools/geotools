@@ -41,7 +41,7 @@ public class InfoToolResult {
 
         ResultItem(String id) {
             this.id = id;
-            data = new LinkedHashMap<String, Object>();
+            data = new LinkedHashMap<>();
         }
 
         boolean isEmpty() {
@@ -72,7 +72,7 @@ public class InfoToolResult {
     private ResultItem currentItem;
 
     public InfoToolResult() {
-        items = new ArrayList<ResultItem>();
+        items = new ArrayList<>();
     }
 
     /**

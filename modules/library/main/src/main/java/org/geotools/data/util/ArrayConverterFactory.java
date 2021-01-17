@@ -46,7 +46,7 @@ public class ArrayConverterFactory implements ConverterFactory {
             if (Array.getLength(source) != 1) {
                 return null;
             }
-            return (T) Array.get(source, 0);
+            return target.cast(Array.get(source, 0));
         }
     }
 
@@ -55,7 +55,7 @@ public class ArrayConverterFactory implements ConverterFactory {
         public <T> T convert(Object source, Class<T> target) throws Exception {
             Object result = Array.newInstance(target.getComponentType(), 1);
             Array.set(result, 0, source);
-            return (T) result;
+            return target.cast(result);
         }
     }
 
@@ -75,7 +75,7 @@ public class ArrayConverterFactory implements ConverterFactory {
                 }
                 Array.set(result, count, converted);
             }
-            return (T) result;
+            return target.cast(result);
         }
     }
 }

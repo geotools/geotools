@@ -45,7 +45,7 @@ public class DCConfiguration extends Configuration {
     }
 
     /** Registers the bindings for the configuration. */
-    protected void registerBindings(Map bindings) {
+    protected void registerBindings(Map<QName, Object> bindings) {
         bindings.put(
                 DC.elementContainer,
                 new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.elementContainer));

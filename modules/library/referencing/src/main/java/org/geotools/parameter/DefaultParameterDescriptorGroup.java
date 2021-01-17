@@ -209,7 +209,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
         @Override
         public boolean contains(final Object object) {
             if (asSet == null) {
-                asSet = new HashSet<GeneralParameterDescriptor>(this);
+                asSet = new HashSet<>(this);
             }
             return asSet.contains(object);
         }
@@ -258,11 +258,11 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
             for (final GeneralParameterDescriptor param : parameters) {
                 if (param instanceof ParameterDescriptor) {
                     if (nameMatches(param, name)) {
-                        return (ParameterDescriptor) param;
+                        return param;
                     }
                 } else if (param instanceof DefaultParameterDescriptorGroup) {
                     if (subgroups == null) {
-                        subgroups = new LinkedList<DefaultParameterDescriptorGroup>();
+                        subgroups = new LinkedList<>();
                     }
                     assert !subgroups.contains(param) : param;
                     subgroups.add((DefaultParameterDescriptorGroup) param);
@@ -313,8 +313,8 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
     public int hashCode() {
         int code = super.hashCode();
         // TODO: We should use Arrays.deepHashCode instead in J2SE 1.5.
-        for (int i = 0; i < parameters.length; i++) {
-            code = code * 37 + parameters[i].hashCode();
+        for (GeneralParameterDescriptor parameter : parameters) {
+            code = code * 37 + parameter.hashCode();
         }
         return code;
     }

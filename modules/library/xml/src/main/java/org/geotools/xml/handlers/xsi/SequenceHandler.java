@@ -42,7 +42,7 @@ public class SequenceHandler extends ElementGroupingHandler {
     private String id;
     private int maxOccurs;
     private int minOccurs;
-    private List children; // element, group, choice, sequence or any
+    private List<XSIElementHandler> children; // element, group, choice, sequence or any
     private DefaultSequence cache = null;
 
     /** @see java.lang.Object#hashCode() */
@@ -61,7 +61,7 @@ public class SequenceHandler extends ElementGroupingHandler {
         // any
         if (AnyHandler.LOCALNAME.equalsIgnoreCase(localName)) {
             if (children == null) {
-                children = new LinkedList();
+                children = new LinkedList<>();
             }
 
             AnyHandler ah = new AnyHandler();
@@ -73,7 +73,7 @@ public class SequenceHandler extends ElementGroupingHandler {
         // choice
         if (ChoiceHandler.LOCALNAME.equalsIgnoreCase(localName)) {
             if (children == null) {
-                children = new LinkedList();
+                children = new LinkedList<>();
             }
 
             ChoiceHandler ah = new ChoiceHandler();
@@ -85,7 +85,7 @@ public class SequenceHandler extends ElementGroupingHandler {
         // element
         if (ElementTypeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
             if (children == null) {
-                children = new LinkedList();
+                children = new LinkedList<>();
             }
 
             ElementTypeHandler ah = new ElementTypeHandler();
@@ -97,7 +97,7 @@ public class SequenceHandler extends ElementGroupingHandler {
         // group
         if (GroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
             if (children == null) {
-                children = new LinkedList();
+                children = new LinkedList<>();
             }
 
             GroupHandler ah = new GroupHandler();
@@ -109,7 +109,7 @@ public class SequenceHandler extends ElementGroupingHandler {
         // sequence
         if (LOCALNAME.equalsIgnoreCase(localName)) {
             if (children == null) {
-                children = new LinkedList();
+                children = new LinkedList<>();
             }
 
             SequenceHandler ah = new SequenceHandler();
@@ -234,8 +234,8 @@ public class SequenceHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(name);
+            for (ElementGrouping child : children) {
+                Element t = child.findChildElement(name);
 
                 if (t != null) { // found it
 
@@ -276,8 +276,8 @@ public class SequenceHandler extends ElementGroupingHandler {
                 return null;
             }
 
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(localName, namespaceURI);
+            for (ElementGrouping child : children) {
+                Element t = child.findChildElement(localName, namespaceURI);
 
                 if (t != null) { // found it
 

@@ -147,7 +147,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      */
     public EList<String> getAxisName() {
         if (axisName == null) {
-            axisName = new EDataTypeEList<String>(String.class, this, Gml311Package.GRID_TYPE__AXIS_NAME);
+            axisName = new EDataTypeEList<>(String.class, this, Gml311Package.GRID_TYPE__AXIS_NAME);
         }
         return axisName;
     }

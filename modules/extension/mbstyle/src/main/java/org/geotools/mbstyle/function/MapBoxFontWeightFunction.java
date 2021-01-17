@@ -25,7 +25,7 @@ import org.opengis.filter.capability.FunctionName;
 /** Returns "bold" or "normal" based on the font name */
 public class MapBoxFontWeightFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "mbFontWeight",
                     parameter("weight", Boolean.class),

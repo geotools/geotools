@@ -16,6 +16,8 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.XpathEngine;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
@@ -24,6 +26,7 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xsd.Configuration;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.io.WKTReader;
@@ -43,11 +46,13 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
         return configuration;
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.point(), GML.geometryMember);
         assertEquals(1, dom.getElementsByTagNameNS(GML.NAMESPACE, "Point").getLength());
     }
 
+    @Test
     public void testEncodeCurve() throws Exception {
         LineString curve =
                 new CurvedGeometryFactory(0.1)
@@ -66,6 +71,7 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
         assertEquals("1 1 2 2 3 1 5 5 7 3", xpath.evaluate(basePath + "/gml:posList", dom));
     }
 
+    @Test
     public void testEncodePointWithDecimals() throws Exception {
         Geometry geometry = new WKTReader().read("POINT(1.234 5.678)");
 

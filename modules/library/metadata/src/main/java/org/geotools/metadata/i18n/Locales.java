@@ -54,8 +54,7 @@ public final class Locales {
         final Locale[] languages = getAvailableLanguages();
         Locale[] locales = Locale.getAvailableLocales();
         int count = 0;
-        for (int i = 0; i < locales.length; i++) {
-            final Locale locale = locales[i];
+        for (Locale locale : locales) {
             if (containsLanguage(languages, locale)) {
                 locales[count++] = locale;
             }
@@ -70,8 +69,8 @@ public final class Locales {
      */
     private static boolean containsLanguage(final Locale[] locales, final Locale language) {
         final String code = language.getLanguage();
-        for (int i = 0; i < locales.length; i++) {
-            if (code.equals(locales[i].getLanguage())) {
+        for (Locale locale : locales) {
+            if (code.equals(locale.getLanguage())) {
                 return true;
             }
         }
@@ -103,8 +102,8 @@ public final class Locales {
         final Arguments arguments = new Arguments(args);
         arguments.getRemainingArguments(0);
         final String[] locales = getAvailableLocales(arguments.locale);
-        for (int i = 0; i < locales.length; i++) {
-            arguments.out.println(locales[i]);
+        for (String locale : locales) {
+            arguments.out.println(locale);
         }
     }
 }

@@ -53,7 +53,7 @@ import ucar.unidata.geoloc.LatLonPointImpl;
 public class NetCDFProjection {
 
     /** A Custom {@link CRSAuthorityFactory} used to parse custom NetCDF/GRIB CRSs */
-    private static List<CRSAuthorityFactory> crsFactories = new LinkedList<CRSAuthorityFactory>();
+    private static List<CRSAuthorityFactory> crsFactories = new LinkedList<>();
 
     public static final String PARAMS_SEPARATOR = "#";
 
@@ -164,7 +164,7 @@ public class NetCDFProjection {
                     handleParam(paramsMapping, netcdfParameters, ogcParameterKey, var);
                 }
 
-                Map<String, Object> map = new HashMap<String, Object>(crsProperties);
+                Map<String, Object> map = new HashMap<>(crsProperties);
                 map.put(NetCDFUtilities.NAME, projectionName);
                 return ProjectionBuilder.buildCRS(
                         map,
@@ -254,8 +254,7 @@ public class NetCDFProjection {
     public static final NetCDFProjection ROTATED_POLE;
 
     /** The map of currently supported NetCDF CF Grid mappings */
-    private static final Map<String, NetCDFProjection> supportedProjections =
-            new HashMap<String, NetCDFProjection>();
+    private static final Map<String, NetCDFProjection> supportedProjections = new HashMap<>();
 
     static {
 
@@ -266,7 +265,7 @@ public class NetCDFProjection {
         // latitude of origin maps on both latitude_of_projection_origin and standard_parallel
 
         // Setting up Albers conical equal area
-        Map<String, String> alberseq_mapping = new HashMap<String, String>();
+        Map<String, String> alberseq_mapping = new HashMap<>();
         alberseq_mapping.put(NetCDFUtilities.CENTRAL_MERIDIAN, CF.LONGITUDE_OF_CENTRAL_MERIDIAN);
         alberseq_mapping.put(NetCDFUtilities.LATITUDE_OF_ORIGIN, CF.LATITUDE_OF_PROJECTION_ORIGIN);
         alberseq_mapping.put(NetCDFUtilities.STANDARD_PARALLEL_1, CF.STANDARD_PARALLEL);
@@ -278,7 +277,7 @@ public class NetCDFProjection {
                         CF.ALBERS_CONICAL_EQUAL_AREA, "Albers_Conic_Equal_Area", alberseq_mapping);
 
         // Setting up Lambert Azimuthal equal area
-        Map<String, String> lazeq_mapping = new HashMap<String, String>();
+        Map<String, String> lazeq_mapping = new HashMap<>();
         lazeq_mapping.put(NetCDFUtilities.CENTRAL_MERIDIAN, CF.LONGITUDE_OF_PROJECTION_ORIGIN);
         lazeq_mapping.put(NetCDFUtilities.LATITUDE_OF_ORIGIN, CF.LATITUDE_OF_PROJECTION_ORIGIN);
         lazeq_mapping.put(NetCDFUtilities.FALSE_EASTING, CF.FALSE_EASTING);
@@ -290,7 +289,7 @@ public class NetCDFProjection {
                         lazeq_mapping);
 
         // Setting up Transverse Mercator
-        Map<String, String> tm_mapping = new HashMap<String, String>();
+        Map<String, String> tm_mapping = new HashMap<>();
         tm_mapping.put(NetCDFUtilities.SCALE_FACTOR, CF.SCALE_FACTOR_AT_CENTRAL_MERIDIAN);
         tm_mapping.put(NetCDFUtilities.CENTRAL_MERIDIAN, CF.LONGITUDE_OF_CENTRAL_MERIDIAN);
         tm_mapping.put(NetCDFUtilities.LATITUDE_OF_ORIGIN, CF.LATITUDE_OF_PROJECTION_ORIGIN);
@@ -300,7 +299,7 @@ public class NetCDFProjection {
                 new NetCDFProjection(CF.TRANSVERSE_MERCATOR, CF.TRANSVERSE_MERCATOR, tm_mapping);
 
         // Setting up Orthographic
-        Map<String, String> ortho_mapping = new HashMap<String, String>();
+        Map<String, String> ortho_mapping = new HashMap<>();
         ortho_mapping.put(NetCDFUtilities.CENTRAL_MERIDIAN, CF.LONGITUDE_OF_PROJECTION_ORIGIN);
         ortho_mapping.put(NetCDFUtilities.LATITUDE_OF_ORIGIN, CF.LATITUDE_OF_PROJECTION_ORIGIN);
         ortho_mapping.put(NetCDFUtilities.FALSE_EASTING, CF.FALSE_EASTING);
@@ -308,7 +307,7 @@ public class NetCDFProjection {
         ORTHOGRAPHIC = new NetCDFProjection(CF.ORTHOGRAPHIC, CF.ORTHOGRAPHIC, ortho_mapping);
 
         // Setting up Polar Stereographic
-        Map<String, String> polarstereo_mapping = new HashMap<String, String>();
+        Map<String, String> polarstereo_mapping = new HashMap<>();
         polarstereo_mapping.put(
                 NetCDFUtilities.CENTRAL_MERIDIAN, CF.STRAIGHT_VERTICAL_LONGITUDE_FROM_POLE);
         polarstereo_mapping.put(
@@ -321,7 +320,7 @@ public class NetCDFProjection {
                         CF.POLAR_STEREOGRAPHIC, CF.POLAR_STEREOGRAPHIC, polarstereo_mapping);
 
         // Setting up Stereographic
-        Map<String, String> stereo_mapping = new HashMap<String, String>();
+        Map<String, String> stereo_mapping = new HashMap<>();
         stereo_mapping.put(NetCDFUtilities.CENTRAL_MERIDIAN, CF.LONGITUDE_OF_PROJECTION_ORIGIN);
         stereo_mapping.put(NetCDFUtilities.LATITUDE_OF_ORIGIN, CF.LATITUDE_OF_PROJECTION_ORIGIN);
         stereo_mapping.put(NetCDFUtilities.SCALE_FACTOR, CF.SCALE_FACTOR_AT_PROJECTION_ORIGIN);
@@ -330,14 +329,14 @@ public class NetCDFProjection {
         STEREOGRAPHIC = new NetCDFProjection(CF.STEREOGRAPHIC, CF.STEREOGRAPHIC, stereo_mapping);
 
         // Setting up Lambert Conformal Conic base params
-        Map<String, String> lcc_mapping = new HashMap<String, String>();
+        Map<String, String> lcc_mapping = new HashMap<>();
         lcc_mapping.put(NetCDFUtilities.CENTRAL_MERIDIAN, CF.LONGITUDE_OF_CENTRAL_MERIDIAN);
         lcc_mapping.put(NetCDFUtilities.LATITUDE_OF_ORIGIN, CF.LATITUDE_OF_PROJECTION_ORIGIN);
         lcc_mapping.put(NetCDFUtilities.FALSE_EASTING, CF.FALSE_EASTING);
         lcc_mapping.put(NetCDFUtilities.FALSE_NORTHING, CF.FALSE_NORTHING);
 
         // Setting up Lambert Conformal Conic 1SP
-        Map<String, String> lcc_1sp_mapping = new HashMap<String, String>();
+        Map<String, String> lcc_1sp_mapping = new HashMap<>();
         lcc_1sp_mapping.putAll(lcc_mapping);
         lcc_1sp_mapping.put(
                 NetCDFUtilities.LATITUDE_OF_ORIGIN,
@@ -349,7 +348,7 @@ public class NetCDFProjection {
                         lcc_1sp_mapping);
 
         // Setting up Lambert Conformal Conic 2SP
-        Map<String, String> lcc_2sp_mapping = new HashMap<String, String>();
+        Map<String, String> lcc_2sp_mapping = new HashMap<>();
         lcc_2sp_mapping.putAll(lcc_mapping);
         lcc_2sp_mapping.put(NetCDFUtilities.STANDARD_PARALLEL_1, CF.STANDARD_PARALLEL);
         lcc_2sp_mapping.put(NetCDFUtilities.STANDARD_PARALLEL_2, CF.STANDARD_PARALLEL);
@@ -360,14 +359,14 @@ public class NetCDFProjection {
                         lcc_2sp_mapping);
 
         // Settinc up Mercator base params
-        Map<String, String> mercator_mapping = new HashMap<String, String>();
+        Map<String, String> mercator_mapping = new HashMap<>();
         mercator_mapping.put(NetCDFUtilities.CENTRAL_MERIDIAN, CF.LONGITUDE_OF_CENTRAL_MERIDIAN);
         mercator_mapping.put(NetCDFUtilities.LATITUDE_OF_ORIGIN, CF.LATITUDE_OF_PROJECTION_ORIGIN);
         mercator_mapping.put(NetCDFUtilities.FALSE_EASTING, CF.FALSE_EASTING);
         mercator_mapping.put(NetCDFUtilities.FALSE_NORTHING, CF.FALSE_NORTHING);
 
         // Setting up Mercator 1SP
-        Map<String, String> mercator_1sp_mapping = new HashMap<String, String>();
+        Map<String, String> mercator_1sp_mapping = new HashMap<>();
         mercator_1sp_mapping.putAll(mercator_mapping);
         mercator_1sp_mapping.put(
                 NetCDFUtilities.SCALE_FACTOR, CF.SCALE_FACTOR_AT_PROJECTION_ORIGIN);
@@ -375,14 +374,14 @@ public class NetCDFProjection {
                 new NetCDFProjection(CF.MERCATOR, CF.MERCATOR + "_1SP", mercator_1sp_mapping);
 
         // Setting up Mercator 2SP
-        Map<String, String> mercator_2sp_mapping = new HashMap<String, String>();
+        Map<String, String> mercator_2sp_mapping = new HashMap<>();
         mercator_2sp_mapping.putAll(mercator_mapping);
         mercator_2sp_mapping.put(NetCDFUtilities.STANDARD_PARALLEL_1, CF.STANDARD_PARALLEL);
         MERCATOR_2SP =
                 new NetCDFProjection(CF.MERCATOR, CF.MERCATOR + "_2SP", mercator_2sp_mapping);
 
         // Setting up Rotated Pole
-        Map<String, String> rotated_pole_mapping = new HashMap<String, String>();
+        Map<String, String> rotated_pole_mapping = new HashMap<>();
         rotated_pole_mapping.put(NetCDFUtilities.CENTRAL_MERIDIAN, CF.GRID_NORTH_POLE_LONGITUDE);
         rotated_pole_mapping.put(NetCDFUtilities.LATITUDE_OF_ORIGIN, CF.GRID_NORTH_POLE_LATITUDE);
         ROTATED_POLE =
@@ -473,7 +472,7 @@ public class NetCDFProjection {
         for (final CRSAuthorityFactory factory :
                 ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
             // Retrieve the registered custom factory
-            final CRSAuthorityFactory f = (CRSAuthorityFactory) factory;
+            final CRSAuthorityFactory f = factory;
 
             // There may be multiple factories. Let take them in prioritized order
             // using the linkedList
@@ -608,7 +607,7 @@ public class NetCDFProjection {
 
         // Preparing ellipsoid params to be sent to the NetCDFProjectionBuilder class
         // in order to get back an Ellipsoid
-        Map<String, Number> ellipsoidParams = new HashMap<String, Number>();
+        Map<String, Number> ellipsoidParams = new HashMap<>();
 
         // Looking for semiMajorAxis first
         Attribute semiMajorAxisAttribute = gridMappingVariable.findAttribute(CF.SEMI_MAJOR_AXIS);

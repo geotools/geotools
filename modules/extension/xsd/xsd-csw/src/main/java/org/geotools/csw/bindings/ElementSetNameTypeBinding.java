@@ -38,7 +38,9 @@ public class ElementSetNameTypeBinding extends SimpleContentComplexEMFBinding {
         result.setValue(ElementSetType.get((String) value));
         Node typeNames = node.getAttribute("typeNames");
         if (typeNames != null) {
-            result.setTypeNames((List<QName>) typeNames.getValue());
+            @SuppressWarnings("unchecked")
+            List<QName> qnames = (List<QName>) typeNames.getValue();
+            result.setTypeNames(qnames);
         }
 
         return result;

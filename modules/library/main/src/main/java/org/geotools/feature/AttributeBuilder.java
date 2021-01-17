@@ -20,7 +20,6 @@ package org.geotools.feature;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.geotools.feature.type.AttributeDescriptorImpl;
@@ -58,7 +57,7 @@ public class AttributeBuilder {
                     null,
                     false,
                     true,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
 
@@ -81,7 +80,7 @@ public class AttributeBuilder {
     AttributeDescriptor descriptor;
 
     /** Contained properties (associations + attributes) */
-    List properties;
+    List<Property> properties;
 
     /** The crs of the attribute. */
     CoordinateReferenceSystem crs;
@@ -137,9 +136,7 @@ public class AttributeBuilder {
 
         if (attribute instanceof ComplexAttribute) {
             ComplexAttribute complex = (ComplexAttribute) attribute;
-            Collection properties = (Collection) complex.getValue();
-            for (Iterator itr = properties.iterator(); itr.hasNext(); ) {
-                Property property = (Property) itr.next();
+            for (Property property : toPropertyCollection(complex.getValue())) {
                 if (property instanceof Attribute) {
                     Attribute att = (Attribute) property;
                     add(
@@ -201,7 +198,7 @@ public class AttributeBuilder {
      */
     public void setDescriptor(AttributeDescriptor descriptor) {
         this.descriptor = descriptor;
-        this.type = (AttributeType) descriptor.getType();
+        this.type = descriptor.getType();
     }
 
     /** @return The type of the attribute being built. */
@@ -379,9 +376,9 @@ public class AttributeBuilder {
     }
 
     /** Convenience accessor for properties list which does the null check. */
-    protected List properties() {
+    protected List<Property> properties() {
         if (properties == null) {
-            properties = new ArrayList();
+            properties = new ArrayList<>();
         }
 
         return properties;
@@ -426,7 +423,7 @@ public class AttributeBuilder {
     protected Attribute create(
             Object value, AttributeType type, AttributeDescriptor descriptor, String id) {
         if (descriptor != null) {
-            type = (AttributeType) descriptor.getType();
+            type = descriptor.getType();
         }
         // if (type instanceof FeatureCollectionType) {
         // attribute = descriptor != null ? attributeFactory.createFeatureCollection(
@@ -435,10 +432,12 @@ public class AttributeBuilder {
         // } else
         if (type instanceof FeatureType) {
             return descriptor != null
-                    ? attributeFactory.createFeature((Collection) value, descriptor, id)
-                    : attributeFactory.createFeature((Collection) value, (FeatureType) type, id);
+                    ? attributeFactory.createFeature(toPropertyCollection(value), descriptor, id)
+                    : attributeFactory.createFeature(
+                            toPropertyCollection(value), (FeatureType) type, id);
         } else if (type instanceof ComplexType) {
-            return createComplexAttribute((Collection) value, (ComplexType) type, descriptor, id);
+            return createComplexAttribute(
+                    toPropertyCollection(value), (ComplexType) type, descriptor, id);
         } else if (type instanceof GeometryType) {
             return attributeFactory.createGeometryAttribute(
                     value, (GeometryDescriptor) descriptor, id, getCRS(value));
@@ -447,12 +446,18 @@ public class AttributeBuilder {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private Collection<Property> toPropertyCollection(Object value) {
+        return (Collection<Property>) value;
+    }
+
     /** Create complex attribute */
     public ComplexAttribute createComplexAttribute(
             Object value, ComplexType type, AttributeDescriptor descriptor, String id) {
         return descriptor != null
-                ? attributeFactory.createComplexAttribute((Collection) value, descriptor, id)
-                : attributeFactory.createComplexAttribute((Collection) value, type, id);
+                ? attributeFactory.createComplexAttribute(
+                        toPropertyCollection(value), descriptor, id)
+                : attributeFactory.createComplexAttribute(toPropertyCollection(value), type, id);
     }
 
     /**
@@ -490,11 +495,10 @@ public class AttributeBuilder {
             Feature feature = (Feature) built;
             // FIXME feature.setCRS(getCRS());
             if (defaultGeometry != null) {
-                for (Iterator itr = feature.getProperties().iterator(); itr.hasNext(); ) {
-                    Attribute att = (Attribute) itr.next();
-                    if (att instanceof GeometryAttribute) {
-                        if (defaultGeometry.equals(att.getValue())) {
-                            feature.setDefaultGeometryProperty((GeometryAttribute) att);
+                for (Property p : feature.getProperties()) {
+                    if (p instanceof GeometryAttribute) {
+                        if (defaultGeometry.equals(p.getValue())) {
+                            feature.setDefaultGeometryProperty((GeometryAttribute) p);
                         }
                     }
                 }
@@ -554,9 +558,9 @@ public class AttributeBuilder {
     }
 
     /** Convenience accessor for properties list which does the null check. */
-    protected List getProperties() {
+    protected List<Property> getProperties() {
         if (this.properties == null) {
-            this.properties = new ArrayList();
+            this.properties = new ArrayList<>();
         }
 
         return this.properties;

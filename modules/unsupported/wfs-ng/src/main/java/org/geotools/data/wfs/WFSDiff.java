@@ -16,7 +16,7 @@
  */
 package org.geotools.data.wfs;
 
-import static org.geotools.data.wfs.internal.Loggers.*;
+import static org.geotools.data.wfs.internal.Loggers.MODULE;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,8 +60,8 @@ public class WFSDiff extends Diff {
 
     public WFSDiff() {
         super();
-        batchModified = new HashSet<String>();
-        batchCommands = new ArrayList<WFSDiff.BatchUpdate>();
+        batchModified = new HashSet<>();
+        batchCommands = new ArrayList<>();
     }
 
     @Override

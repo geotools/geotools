@@ -79,8 +79,8 @@ public final class CategoryListTest {
             for (int i = 0; i < categories.length; i++) {
                 array[i] = categories[i].minimum;
             }
-            for (int i = 0; i < categories.length; i++) {
-                final double expected = categories[i].minimum;
+            for (Category category : categories) {
+                final double expected = category.minimum;
                 final int foundAt = CategoryList.binarySearch(array, expected);
                 final double actual = categories[foundAt].minimum;
                 assertEquals("binarySearch", toHexString(expected), toHexString(actual));
@@ -147,8 +147,8 @@ public final class CategoryListTest {
             final Range range = list.getRange();
             assertEquals("min", 0, ((Number) range.getMinValue()).doubleValue(), 0);
             assertEquals("max", 120, ((Number) range.getMaxValue()).doubleValue(), 0);
-            assertTrue("min included", range.isMinIncluded() == true);
-            assertTrue("max included", range.isMaxIncluded() == false);
+            assertEquals("min included", true, range.isMinIncluded());
+            assertEquals("max included", false, range.isMaxIncluded());
             /*
              * Checks category search.
              */

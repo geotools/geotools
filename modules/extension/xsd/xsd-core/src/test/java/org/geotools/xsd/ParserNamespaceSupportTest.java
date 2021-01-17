@@ -19,25 +19,28 @@ package org.geotools.xsd;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 import org.xml.sax.helpers.NamespaceSupport;
 
-public class ParserNamespaceSupportTest extends TestCase {
+public class ParserNamespaceSupportTest {
 
+    @Test
     public void testLookup() {
         ParserNamespaceSupport nsSupport = new ParserNamespaceSupport();
-        assertNull(nsSupport.getURI("foo"));
+        Assert.assertNull(nsSupport.getURI("foo"));
 
         NamespaceSupport delegate = new NamespaceSupport();
         delegate.declarePrefix("foo", "http://foo.org");
         nsSupport.add(delegate);
 
-        assertEquals("http://foo.org", nsSupport.getURI("foo"));
+        Assert.assertEquals("http://foo.org", nsSupport.getURI("foo"));
 
         nsSupport.declarePrefix("foo", "http://bar.org");
-        assertEquals("http://bar.org", nsSupport.getURI("foo"));
+        Assert.assertEquals("http://bar.org", nsSupport.getURI("foo"));
     }
 
+    @Test
     public void testGetPrefixes() {
         ParserNamespaceSupport nsSupport = new ParserNamespaceSupport();
         nsSupport.declarePrefix("foo", "http://foo.org");
@@ -47,15 +50,16 @@ public class ParserNamespaceSupportTest extends TestCase {
 
         nsSupport.add(delegate);
 
+        @SuppressWarnings("unchecked")
         List<String> prefixes = list(nsSupport.getPrefixes());
-        assertTrue(prefixes.contains("foo"));
-        assertTrue(prefixes.contains("bar"));
+        Assert.assertTrue(prefixes.contains("foo"));
+        Assert.assertTrue(prefixes.contains("bar"));
 
-        assertTrue(prefixes.indexOf("foo") < prefixes.indexOf("bar"));
+        Assert.assertTrue(prefixes.indexOf("foo") < prefixes.indexOf("bar"));
     }
 
     List list(Enumeration e) {
-        List<Object> l = new ArrayList<Object>();
+        List<Object> l = new ArrayList<>();
         while (e.hasMoreElements()) {
             l.add(e.nextElement());
         }

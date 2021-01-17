@@ -185,7 +185,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 transaction);
         this.isFiltered = isFiltered;
         if (isFiltered) {
-            filteredFeatures = new ArrayList<String>();
+            filteredFeatures = new ArrayList<>();
         }
     }
 
@@ -322,7 +322,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      */
     public List<Object> getForeignIdValues(Object source) {
         if (foreignIds != null) {
-            List<Object> foreignIdValues = new ArrayList<Object>();
+            List<Object> foreignIdValues = new ArrayList<>();
             for (int i = 0; i < foreignIds.size(); i++) {
                 foreignIdValues.add(i, peekValue(source, foreignIds.get(i)));
             }
@@ -353,7 +353,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * as one feature and merged.
      */
     public List<Object> getIdValues(Object source) {
-        List<Object> ids = new ArrayList<Object>();
+        List<Object> ids = new ArrayList<>();
         Expression idExpression = mapping.getFeatureIdExpression();
         if (Expression.NIL.equals(idExpression) || idExpression instanceof Literal) {
             // GEOT-4554: if idExpression is not specified, should use PK
@@ -526,7 +526,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     protected String extractIdForAttribute(final Expression idExpression, Object sourceInstance) {
-        String value = (String) idExpression.evaluate(sourceInstance, String.class);
+        String value = idExpression.evaluate(sourceInstance, String.class);
         return value;
     }
 
@@ -666,8 +666,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             }
             // get built feature based on link value
             if (values instanceof Collection) {
-                ArrayList<Attribute> nestedFeatures =
-                        new ArrayList<Attribute>(((Collection) values).size());
+                ArrayList<Attribute> nestedFeatures = new ArrayList<>(((Collection) values).size());
                 for (Object val : (Collection) values) {
                     if (val instanceof Attribute) {
                         val = ((Attribute) val).getValue();
@@ -753,7 +752,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         } else if (values instanceof Collection) {
             // nested feature type could have multiple instances as the whole purpose
             // of feature chaining is to cater for multi-valued properties
-            for (Object singleVal : (Collection<Object>) values) {
+            @SuppressWarnings("unchecked")
+            Collection<Object> cobjs = (Collection<Object>) values;
+            for (Object singleVal : cobjs) {
                 ArrayList<Object> valueList = new ArrayList<>();
                 // copy client properties from input features if they're complex features
                 // wrapped in app-schema data access
@@ -772,7 +773,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         singleVal = ((Attribute) singleVal).getValue();
                     }
                     if (singleVal instanceof Collection) {
-                        valueList.addAll((Collection) singleVal);
+                        @SuppressWarnings("unchecked")
+                        Collection<Object> collection = (Collection) singleVal;
+                        valueList.addAll(collection);
                     }
                     if (singleVal instanceof MultiValueContainer) {
                         MultiValueContainer multiValue = (MultiValueContainer) singleVal;
@@ -844,6 +847,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             final AttributeType targetNodeType,
             StepList xpath,
             Map<Name, Expression> clientPropsMappings) {
+        @SuppressWarnings("unchecked")
         final Collection<MultiValueContainer> multiValues = (Collection) values;
         // generate the parent attribute
         final Attribute parentAttribute =
@@ -894,6 +898,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     private boolean isMultiElement(Object values, final Map<Name, Expression> clientPropsMappings) {
         // values needs to be a collection
         if (!(values instanceof Collection)) return false;
+        @SuppressWarnings("unchecked")
         Collection<Object> collection = (Collection<Object>) values;
         // values should be not-empty and MultiValueContainer instances
         if (collection.isEmpty()
@@ -1032,7 +1037,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (uri != null) {
             Attribute instance =
                     xpathAttributeBuilder.set(target, xpath, null, "", targetNodeType, true, null);
-            Map<Name, Expression> newClientProps = new HashMap<Name, Expression>();
+            Map<Name, Expression> newClientProps = new HashMap<>();
             newClientProps.putAll(clientPropsMappings);
             newClientProps.put(XLINK_HREF_NAME, namespaceAwareFilterFactory.literal(uri));
             setClientProperties(instance, null, newClientProps);
@@ -1062,11 +1067,11 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             Map<Name, Expression> clientPropsMappings)
             throws IOException {
         // process sub-type mapping
-        DataAccess<FeatureType, Feature> da = DataAccessRegistry.getDataAccess((Name) mappingName);
+        DataAccess<FeatureType, Feature> da = DataAccessRegistry.getDataAccess(mappingName);
         if (da instanceof AppSchemaDataAccess) {
             // why wouldn't it be? check just to be safe
             FeatureTypeMapping fTypeMapping =
-                    ((AppSchemaDataAccess) da).getMappingByName((Name) mappingName);
+                    ((AppSchemaDataAccess) da).getMappingByName(mappingName);
             List<AttributeMapping> polymorphicMappings = fTypeMapping.getAttributeMappings();
             AttributeDescriptor attDescriptor = fTypeMapping.getTargetFeature();
             AttributeType type = attDescriptor.getType();
@@ -1166,7 +1171,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     protected List<Feature> setNextFeature(String fId, List<Object> foreignIdValues)
             throws IOException {
-        List<Feature> features = new ArrayList<Feature>();
+        List<Feature> features = new ArrayList<>();
         features.add(curSrcFeature);
         curSrcFeature = null;
 
@@ -1222,7 +1227,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (mapping.getFeatureIdExpression().equals(Expression.NIL)) {
             // no real feature id mapping,
             // so let's find by database row id
-            Set<FeatureId> ids = new HashSet<FeatureId>();
+            Set<FeatureId> ids = new HashSet<>();
             FeatureId featureId = namespaceAwareFilterFactory.featureId(fId);
             ids.add(featureId);
             fidFilter = namespaceAwareFilterFactory.id(ids);
@@ -1241,7 +1246,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         // this is a temporary solution for Bureau of Meteorology
         // requirement for timePositionList
         if (listFilter != null) {
-            List<Filter> filters = new ArrayList<Filter>();
+            List<Filter> filters = new ArrayList<>();
             filters.add(listFilter);
             filters.add(fidFilter);
             fidFilter = namespaceAwareFilterFactory.and(filters);
@@ -1251,7 +1256,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         query.setFilter(fidFilter);
         matchingFeatures = this.mappedSource.getFeatures(query);
 
-        List<Feature> features = new ArrayList<Feature>();
+        List<Feature> features = new ArrayList<>();
         try (FeatureIterator<? extends Feature> iterator = matchingFeatures.features()) {
             while (iterator.hasNext()) {
                 features.add(iterator.next());
@@ -1331,7 +1336,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     private FeatureType reprojectType(FeatureType type) {
-        Collection<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        Collection<PropertyDescriptor> schema = new ArrayList<>();
 
         for (PropertyDescriptor descr : type.getDescriptors()) {
             if (descr instanceof GeometryDescriptor) {
@@ -1408,7 +1413,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                                     null,
                                     selectedProperties.get(attMapping));
                     if (sources.size() > 1 && instance != null) {
-                        List<Object> values = new ArrayList<Object>();
+                        List<Object> values = new ArrayList<>();
                         Expression sourceExpr = attMapping.getSourceExpression();
                         for (Feature source : sources) {
                             values.add(getValue(sourceExpr, source));
@@ -1534,9 +1539,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     protected void cleanEmptyElements(Feature target) throws DataSourceException {
         try {
-            ArrayList values = new ArrayList<Property>();
-            for (Iterator i = target.getValue().iterator(); i.hasNext(); ) {
-                Property property = (Property) i.next();
+            List<Property> values = new ArrayList<>();
+            for (Property property : target.getValue()) {
                 if (hasChild(property)
                         || property.getDescriptor().getMinOccurs() > 0
                         || getEncodeIfEmpty(property)) {
@@ -1562,19 +1566,20 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 return true;
             }
 
-            ArrayList values = new ArrayList();
+            List<Property> values = new ArrayList<>();
             for (Object o : collection) {
                 if (o instanceof Property) {
-                    if (hasChild((Property) o)) {
-                        values.add(o);
+                    Property p = (Property) o;
+                    if (hasChild(p)) {
+                        values.add(p);
                         result = true;
-                    } else if (getEncodeIfEmpty((Property) o)) {
-                        values.add(o);
+                    } else if (getEncodeIfEmpty(p)) {
+                        values.add(p);
                         result = true;
-                    } else if (((Property) o).getDescriptor().getMinOccurs() > 0) {
-                        if (((Property) o).getDescriptor().isNillable()) {
+                    } else if ((p).getDescriptor().getMinOccurs() > 0) {
+                        if ((p).getDescriptor().isNillable()) {
                             // add nil mandatory property
-                            values.add(o);
+                            values.add(p);
                         }
                     }
                 }
@@ -1593,6 +1598,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (property.getUserData() != null
                 && property.getUserData().containsKey(Attributes.class)
                 && property.getUserData().get(Attributes.class) instanceof Map) {
+            @SuppressWarnings("unchecked")
             Map<Object, Object> childsMap =
                     (Map<Object, Object>) property.getUserData().get(Attributes.class);
             // check if we have at least one ComplexNameImpl on keys
@@ -1669,12 +1675,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         Step step = null;
         if (stepsIterator.hasNext()) {
             step = stepsIterator.next();
-            properties = ((ComplexAttribute) root).getProperties(Types.toTypeName(step.getName()));
+            properties = root.getProperties(Types.toTypeName(step.getName()));
         }
 
         while (stepsIterator.hasNext()) {
             step = stepsIterator.next();
-            Collection<Property> nestedProperties = new ArrayList<Property>();
+            Collection<Property> nestedProperties = new ArrayList<>();
             for (Property property : properties) {
                 assert property instanceof ComplexAttribute;
                 Collection<Property> tempProperties =

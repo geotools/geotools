@@ -18,7 +18,6 @@
 package org.geotools.process.vector;
 
 import java.util.logging.Logger;
-import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -102,14 +101,11 @@ public class NearestProcess implements VectorProcess {
 
             DefaultFeatureCollection results = new DefaultFeatureCollection();
             FeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
-            Unit fromUnit = SI.METRE;
-            Unit toUnit = USCustomary.MILE;
-            UnitConverter unitConvert = fromUnit.getConverterTo(toUnit);
+            UnitConverter unitConvert = SI.METRE.getConverterTo(USCustomary.MILE);
             Feature nearestFeature = null;
             double nearestDistance = 9e9;
             double nearestBearing = 0;
-            FeatureIterator featureIterator = featureCollection.features();
-            try {
+            try (FeatureIterator featureIterator = featureCollection.features()) {
                 while (featureIterator.hasNext()) {
                     SimpleFeature f = (SimpleFeature) featureIterator.next();
                     if (f.getDefaultGeometryProperty().getValue() == null) continue;
@@ -137,8 +133,6 @@ public class NearestProcess implements VectorProcess {
                     nearestDistance = m.doubleValue();
                     nearestBearing = calcBearing(co);
                 }
-            } finally {
-                featureIterator.close();
             }
             if (nearestFeature != null) {
                 nearestDistance = unitConvert.convert(nearestDistance);

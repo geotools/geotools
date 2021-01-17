@@ -1,9 +1,9 @@
 package org.geotools.gce.geotiff;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileFilter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import org.junit.Test;
 public class GeoTiffDeadlockTest {
 
     /** Increase this value to get more threads than files */
-    int multiplier = 1;
+    int multiplier = 2;
 
     @Test
     public void testForDeadlock() throws Exception {
@@ -24,10 +24,14 @@ public class GeoTiffDeadlockTest {
         final File dir = TestData.file(GeoTiffReaderTest.class, "");
         final File files[] =
                 dir.listFiles(
-                        new FilenameFilter() {
+                        new FileFilter() {
 
-                            public boolean accept(File dir, String name) {
-                                if (name.startsWith("no_crs_no_envelope")) {
+                            public boolean accept(File file) {
+                                String name = file.getName();
+                                if (name.startsWith("no_crs_no_envelope")
+                                        || name.startsWith("ovr")
+                                        || name.startsWith("leak")
+                                        || file.isDirectory()) {
                                     return false;
                                 }
                                 return true;
@@ -40,11 +44,11 @@ public class GeoTiffDeadlockTest {
 
         // start them
         // System.out.println("Testing with " + numFiles + " files");
-        final List<Thread> threads = new ArrayList<Thread>();
+        final List<Thread> threads = new ArrayList<>();
         final int total = numFiles * multiplier;
         // System.out.println("Testing with " + total + " threads");
         for (int index = 0; index < total; index++) {
-            final File file = files[index % multiplier];
+            final File file = files[index % numFiles];
             Runnable testRunner =
                     new Runnable() {
                         public void run() {

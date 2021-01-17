@@ -113,7 +113,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      */
     public EList<SimpleLiteral> getIdentifier() {
         if (identifier == null) {
-            identifier = new EObjectResolvingEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER);
+            identifier = new EObjectResolvingEList<>(SimpleLiteral.class, this, Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER);
         }
         return identifier;
     }
@@ -125,7 +125,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      */
     public EList<SimpleLiteral> getTitle() {
         if (title == null) {
-            title = new EObjectResolvingEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.BRIEF_RECORD_TYPE__TITLE);
+            title = new EObjectResolvingEList<>(SimpleLiteral.class, this, Csw20Package.BRIEF_RECORD_TYPE__TITLE);
         }
         return title;
     }
@@ -175,7 +175,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      */
     public EList<BoundingBoxType> getBoundingBox() {
         if (boundingBox == null) {
-            boundingBox = new EObjectResolvingEList<BoundingBoxType>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);
+            boundingBox = new EObjectResolvingEList<>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);
         }
         return boundingBox;
     }

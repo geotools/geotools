@@ -22,18 +22,20 @@ import java.net.URI;
 import java.util.logging.Level;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.TestCase;
 import org.geotools.TestData;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /** @author dzwiers www.refractions.net */
-public class SchemaParserTest extends TestCase {
+public class SchemaParserTest {
     protected SAXParser parser;
 
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -41,22 +43,27 @@ public class SchemaParserTest extends TestCase {
         parser = spf.newSAXParser();
     }
 
+    @Test
     public void testMail() {
         runit("xml/mails.xsd");
     }
 
+    @Test
     public void testWFS() {
         runit("xml/wfs/WFS-basic.xsd");
     }
 
+    @Test
     public void testGMLFeature() {
         runit("xml/gml/feature.xsd");
     }
 
+    @Test
     public void testGMLGeometry() {
         runit("xml/gml/geometry.xsd");
     }
 
+    @Test
     public void testGMLXLinks() {
         runit("xml/gml/xlinks.xsd");
     }
@@ -73,19 +80,19 @@ public class SchemaParserTest extends TestCase {
                 parser.parse(f, contentHandler);
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-                fail(e.toString());
+                Assert.fail(e.toString());
             }
 
             try {
-                assertNotNull("Schema missing", contentHandler.getSchema());
+                Assert.assertNotNull("Schema missing", contentHandler.getSchema());
                 // System.out.println(contentHandler.getSchema());
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-                fail(e.toString());
+                Assert.fail(e.toString());
             }
         } catch (IOException e1) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
-            fail(e1.toString());
+            Assert.fail(e1.toString());
         }
     }
 }

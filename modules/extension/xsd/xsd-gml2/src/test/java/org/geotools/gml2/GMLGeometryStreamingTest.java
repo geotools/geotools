@@ -17,14 +17,16 @@
 package org.geotools.gml2;
 
 import java.io.InputStream;
-import junit.framework.TestCase;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.StreamingParser;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-public class GMLGeometryStreamingTest extends TestCase {
+public class GMLGeometryStreamingTest {
+    @Test
     public void testStreamByXpath() throws Exception {
         Configuration configuration = new GMLConfiguration();
         InputStream input = getClass().getResourceAsStream("geometry.xml");
@@ -45,18 +47,18 @@ public class GMLGeometryStreamingTest extends TestCase {
     //    }
     private void makeAssertions(StreamingParser parser) {
         Object o = parser.parse();
-        assertNotNull(o);
-        assertTrue(o instanceof Point);
+        Assert.assertNotNull(o);
+        Assert.assertTrue(o instanceof Point);
 
         o = parser.parse();
-        assertNotNull(o);
-        assertTrue(o instanceof LineString);
+        Assert.assertNotNull(o);
+        Assert.assertTrue(o instanceof LineString);
 
         o = parser.parse();
-        assertNotNull(o);
-        assertTrue(o instanceof Polygon);
+        Assert.assertNotNull(o);
+        Assert.assertTrue(o instanceof Polygon);
 
         o = parser.parse();
-        assertNull(o);
+        Assert.assertNull(o);
     }
 }

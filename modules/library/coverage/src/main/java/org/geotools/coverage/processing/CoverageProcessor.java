@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -112,7 +111,7 @@ public class CoverageProcessor {
     private static CoverageProcessor DEFAULT;
 
     private static final SoftValueHashMap<Hints, CoverageProcessor> processorsPool =
-            new SoftValueHashMap<Hints, CoverageProcessor>();
+            new SoftValueHashMap<>();
 
     /**
      * Cacheable instance of the {@link CoverageProcessor}. It prevents users to add operations
@@ -179,7 +178,7 @@ public class CoverageProcessor {
      * the sorted map.
      */
     private final Map<String, Operation> operations =
-            Collections.synchronizedMap(new TreeMap<String, Operation>(COMPARATOR));
+            Collections.synchronizedMap(new TreeMap<>(COMPARATOR));
 
     /**
      * The rendering hints for JAI operations (never {@code null}). This field is usually given as
@@ -374,10 +373,8 @@ public class CoverageProcessor {
     public void listOperations(final Writer out) throws IOException {
         final Collection<Operation> operations = getOperations();
         final CoverageParameterWriter writer = new CoverageParameterWriter(out);
-        final List<ParameterDescriptorGroup> descriptors =
-                new ArrayList<ParameterDescriptorGroup>(operations.size());
-        for (final Iterator<Operation> it = operations.iterator(); it.hasNext(); ) {
-            final Operation operation = it.next();
+        final List<ParameterDescriptorGroup> descriptors = new ArrayList<>(operations.size());
+        for (final Operation operation : operations) {
             if (operation instanceof AbstractOperation) {
                 descriptors.add(((AbstractOperation) operation).descriptor);
             }
@@ -400,8 +397,8 @@ public class CoverageProcessor {
         final CoverageParameterWriter writer = new CoverageParameterWriter(out);
         final String lineSeparator = System.getProperty("line.separator", "\n");
         if (names != null) {
-            for (int i = 0; i < names.length; i++) {
-                final Operation operation = getOperation(names[i]);
+            for (String name : names) {
+                final Operation operation = getOperation(name);
                 if (operation instanceof AbstractOperation) {
                     out.write(lineSeparator);
                     writer.format(((AbstractOperation) operation).descriptor);
@@ -409,8 +406,7 @@ public class CoverageProcessor {
             }
         } else {
             final Collection<Operation> operations = getOperations();
-            for (final Iterator<Operation> it = operations.iterator(); it.hasNext(); ) {
-                final Operation operation = it.next();
+            for (final Operation operation : operations) {
                 if (operation instanceof AbstractOperation) {
                     out.write(lineSeparator);
                     writer.format(((AbstractOperation) operation).descriptor);

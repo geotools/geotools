@@ -25,9 +25,12 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.response.WMSGetCapabilitiesResponse;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class GetCapabilitiesRequestTest extends ServerTestCase {
+public class GetCapabilitiesRequestTest {
 
+    @Test
     public void testGetCapabilitiesRequest() throws Exception {
         URL testURL =
                 new URL(
@@ -39,7 +42,7 @@ public class GetCapabilitiesRequestTest extends ServerTestCase {
         String urlWithoutQuery = null;
         urlWithoutQuery = finalURL.toExternalForm().substring(0, index);
 
-        assertEquals(urlWithoutQuery, "http://office.refractions.net:4001/cgi-bin/mapserv");
+        Assert.assertEquals(urlWithoutQuery, "http://office.refractions.net:4001/cgi-bin/mapserv");
 
         HashMap<String, String> map = new HashMap<>();
         map.put("VERSION", "1.1.1");
@@ -53,7 +56,7 @@ public class GetCapabilitiesRequestTest extends ServerTestCase {
             String token = tokenizer.nextToken();
             String[] param = token.split("=");
 
-            assertEquals((String) map.get(param[0]), param[1]);
+            Assert.assertEquals(map.get(param[0]), param[1]);
         }
     }
 

@@ -37,7 +37,7 @@ public class MultiLineHandler extends GeometryHandlerBase<MultiLineString> {
     @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         if ("coordinates".equals(key)) {
-            lines = new ArrayList();
+            lines = new ArrayList<>();
         }
         return true;
     }
@@ -45,9 +45,9 @@ public class MultiLineHandler extends GeometryHandlerBase<MultiLineString> {
     @Override
     public boolean startArray() throws ParseException, IOException {
         if (coordinates == null) {
-            coordinates = new ArrayList();
+            coordinates = new ArrayList<>();
         } else if (ordinates == null) {
-            ordinates = new ArrayList();
+            ordinates = new ArrayList<>();
         }
         return true;
     }

@@ -1,6 +1,7 @@
 package org.geotools.wcs.v2_0;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -130,7 +131,7 @@ public class GetCoverageTest {
 
     private Map<String, Object> getExtensionsMap(GetCoverageType gc) {
         // collect extensions
-        Map<String, Object> extensions = new HashMap<String, Object>();
+        Map<String, Object> extensions = new HashMap<>();
         for (ExtensionItemType item : gc.getExtension().getContents()) {
             Object value =
                     item.getSimpleContent() != null

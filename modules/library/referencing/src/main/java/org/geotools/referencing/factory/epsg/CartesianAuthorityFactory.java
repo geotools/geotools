@@ -62,7 +62,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
                     true);
 
     static Map<String, ?> buildProperties(String name, Citation authority, String code) {
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put(IdentifiedObject.NAME_KEY, name);
         props.put(IdentifiedObject.IDENTIFIERS_KEY, new NamedIdentifier(authority, code));
         return props;
@@ -84,11 +84,11 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
     public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
             throws FactoryException {
         if (type.isAssignableFrom(EngineeringCRS.class)) {
-            final Set set = new LinkedHashSet();
+            final Set<String> set = new LinkedHashSet<>();
             set.add(GENERIC_2D_CODE);
             return set;
         } else {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
     }
 

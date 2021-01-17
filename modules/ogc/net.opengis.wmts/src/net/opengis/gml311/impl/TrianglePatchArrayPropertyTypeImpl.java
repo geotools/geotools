@@ -68,7 +68,7 @@ public class TrianglePatchArrayPropertyTypeImpl extends SurfacePatchArrayPropert
      */
     public EList<TriangleType> getTriangle() {
         if (triangle == null) {
-            triangle = new EObjectContainmentEList<TriangleType>(TriangleType.class, this, Gml311Package.TRIANGLE_PATCH_ARRAY_PROPERTY_TYPE__TRIANGLE);
+            triangle = new EObjectContainmentEList<>(TriangleType.class, this, Gml311Package.TRIANGLE_PATCH_ARRAY_PROPERTY_TYPE__TRIANGLE);
         }
         return triangle;
     }

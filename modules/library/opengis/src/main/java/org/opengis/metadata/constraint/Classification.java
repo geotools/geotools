@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.constraint;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class Classification extends CodeList<Classification> {
     private static final long serialVersionUID = -549174931332214797L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<Classification> VALUES = new ArrayList<Classification>(5);
+    private static final List<Classification> VALUES = new ArrayList<>(5);
 
     /** Available for general disclosure. */
     @UML(identifier = "unclassified", obligation = CONDITIONAL, specification = ISO_19115)

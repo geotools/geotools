@@ -16,11 +16,12 @@
  */
 package org.geotools.mbtiles;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -40,9 +41,8 @@ import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
 import org.hamcrest.Matchers;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.function.ThrowingRunnable;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -56,31 +56,39 @@ public class MBTilesDataStoreTest {
 
     private static final String DATATYPES = "datatypes";
 
-    @Rule public ExpectedException expectedException = ExpectedException.none();
+    // @Rule public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testRasterTiles() throws Exception {
-        expectedException.expect(DataSourceException.class);
-        expectedException.expectMessage("Expected 'PBF' as the format, but found PNG");
-        File file =
-                URLs.urlToFile(
-                        MBTilesFileVectorTileTest.class.getResource("mosaic/world_lakes.mbtiles"));
-        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+        File file = URLs.urlToFile(this.getClass().getResource("mosaic/world_lakes.mbtiles"));
+        assertThrows(
+                DataSourceException.class,
+                new ThrowingRunnable() {
+
+                    @Override
+                    public void run() throws Throwable {
+                        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+                    }
+                });
     }
 
     @Test
     public void testPBFNoSchemaFile() throws Exception {
-        expectedException.expect(DataSourceException.class);
-        expectedException.expectMessage(
-                "Cannot find 'json' metadata field, required to load the layers and their structure");
-        File file = URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("planet.mbtiles"));
-        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+        File file = URLs.urlToFile(this.getClass().getResource("planet.mbtiles"));
+        assertThrows(
+                DataSourceException.class,
+                new ThrowingRunnable() {
+
+                    @Override
+                    public void run() throws Throwable {
+                        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+                    }
+                });
     }
 
     @Test
     public void testDataTypes() throws IOException, FactoryException {
-        File file =
-                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("datatypes.mbtiles"));
+        File file = URLs.urlToFile(this.getClass().getResource("datatypes.mbtiles"));
         MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
         assertThat(store.getTypeNames(), arrayContaining("datatypes"));
 
@@ -110,8 +118,7 @@ public class MBTilesDataStoreTest {
 
     @Test
     public void readSingle() throws IOException, ParseException {
-        File file =
-                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("datatypes.mbtiles"));
+        File file = URLs.urlToFile(this.getClass().getResource("datatypes.mbtiles"));
         MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 store.getFeatureReader(new Query("datatypes"), Transaction.AUTO_COMMIT);
@@ -140,8 +147,7 @@ public class MBTilesDataStoreTest {
     @Test
     public void testFactory() throws IOException {
         String namespaceURI = "http://geotools.org/mbtiles";
-        File file =
-                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("datatypes.mbtiles"));
+        File file = URLs.urlToFile(this.getClass().getResource("datatypes.mbtiles"));
         Map<String, Serializable> params = new HashMap<>();
         params.put(MBTilesDataStoreFactory.DBTYPE.key, "mbtiles");
         params.put(MBTilesDataStoreFactory.DATABASE.key, file);

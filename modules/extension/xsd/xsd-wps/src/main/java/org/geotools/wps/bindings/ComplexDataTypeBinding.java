@@ -18,7 +18,6 @@
 package org.geotools.wps.bindings;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import net.opengis.wps10.ComplexDataType;
@@ -81,6 +80,7 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding {
     /*
     	NodeImpl -> JTS.Polygon
     */
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ComplexDataType data = factory.createComplexDataType();
 
@@ -94,8 +94,7 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding {
             data.setEncoding(node.getAttributeValue("encoding").toString());
         }
 
-        for (Iterator i = node.getChildren().iterator(); i.hasNext(); ) {
-            Node c = (Node) i.next();
+        for (Node c : node.getChildren()) {
             data.getData().add(c.getValue());
         }
 
@@ -103,13 +102,13 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         ComplexDataType complex = (ComplexDataType) object;
         if (!complex.getData().isEmpty() && complex.getData().get(0) instanceof EncoderDelegate) {
             EncoderDelegate delegate = (EncoderDelegate) complex.getData().get(0);
-            List properties = new ArrayList();
+            List<Object[]> properties = new ArrayList<>();
             properties.add(new Object[] {XS.ANYTYPE, delegate});
-
             return properties;
         }
 

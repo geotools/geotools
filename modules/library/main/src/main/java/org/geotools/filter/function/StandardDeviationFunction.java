@@ -16,16 +16,20 @@
  */
 package org.geotools.filter.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.StandardDeviationVisitor;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 
 /**
  * Breaks a SimpleFeatureCollection into classes using the standard deviation classification method.
@@ -39,7 +43,8 @@ public class StandardDeviationFunction extends ClassificationFunction {
                     "StandardDeviation",
                     RangedClassifier.class,
                     parameter("value", Double.class),
-                    parameter("classes", Integer.class));
+                    parameter("classes", Integer.class),
+                    parameter("percentages", Boolean.class, 0, 1));
 
     public StandardDeviationFunction() {
         super(NAME);
@@ -73,7 +78,17 @@ public class StandardDeviationFunction extends ClassificationFunction {
                 min[i] = getMin(i, classNum, sdVisit.getMean(), standardDeviation);
                 max[i] = getMax(i, classNum, sdVisit.getMean(), standardDeviation);
             }
-            return new RangedClassifier(min, max);
+            RangedClassifier classifier = new RangedClassifier(min, max);
+            if (percentages()) {
+                double[] percentages =
+                        getPercentages(
+                                featureCollection,
+                                classifier,
+                                getParameters().get(0),
+                                standardDeviation);
+                classifier.setPercentages(percentages);
+            }
+            return classifier;
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "StandardDeviationFunction calculate failed", e);
             return null;
@@ -95,5 +110,52 @@ public class StandardDeviationFunction extends ClassificationFunction {
     private Double getMax(int index, int numClasses, double average, double standardDeviation) {
         if (index < 0 || index >= numClasses - 1) return null;
         return Double.valueOf(average - (((numClasses / 2.0) - 1 - index) * standardDeviation));
+    }
+
+    private double[] getPercentages(
+            FeatureCollection features,
+            RangedClassifier classifier,
+            Expression attr,
+            double standardDeviation)
+            throws IOException {
+        int classSize = classifier.getSize();
+        Object firstMax = classifier.getMax(0);
+        int totalSize = features.size();
+        Filter greaterThanOrEqualTo = FF.greaterOrEqual(attr, FF.literal(firstMax));
+        FeatureCollection subCollection = features.subCollection(greaterThanOrEqualTo);
+        int sizeFirstClass = totalSize - subCollection.size();
+        double[] percentages = new double[classSize];
+        // we don't know the min value in the collection because the
+        // the first interval is open to infinity to the left.
+        // needs a query to get the classMembers
+        percentages[0] = ((double) sizeFirstClass / (double) totalSize) * 100;
+
+        double min = ((Number) classifier.getMin(1)).doubleValue();
+        percentages =
+                computeGroupByPercentages(
+                        subCollection, percentages, totalSize, min, standardDeviation);
+        computeLastPercentage(percentages, totalSize);
+        return percentages;
+    }
+
+    private void computeLastPercentage(double[] percentages, double totalSize) {
+        double sum = Arrays.stream(percentages).sum();
+        percentages[percentages.length - 1] = 100.0 - sum;
+    }
+
+    @Override
+    protected void computePercentage(
+            double[] percentages, double classMembers, double totalSize, int index) {
+        index += 1;
+        if (index < percentages.length - 1) percentages[index] = (classMembers / totalSize) * 100;
+    }
+
+    protected boolean percentages() {
+        boolean percentages = false;
+        if (getParameters().size() > 2) {
+            Literal literal = (Literal) getParameters().get(2);
+            percentages = ((Boolean) literal.getValue()).booleanValue();
+        }
+        return percentages;
     }
 }

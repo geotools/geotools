@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -52,7 +53,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
 
     AppSchemaDataAccessFactory factory;
 
-    Map params;
+    Map<String, Serializable> params;
 
     private static final String NSURI = "http://online.socialchange.net.au";
 
@@ -61,7 +62,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
     @Before
     public void setUp() throws Exception {
         factory = new AppSchemaDataAccessFactory();
-        params = new HashMap();
+        params = new HashMap<>();
         params.put("dbtype", "app-schema");
         URL resource = getClass().getResource("/test-data/roadsegments.xml");
         if (resource == null) {
@@ -81,7 +82,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
      */
     @Test
     public void testCreateDataStorePreconditions() {
-        Map badParams = new HashMap();
+        Map<String, Serializable> badParams = new HashMap<>();
         try {
             factory.createDataStore(badParams);
             fail("allowed bad params");
@@ -135,7 +136,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
     @Test
     public void testCreateNewDataStore() throws IOException {
         try {
-            factory.createNewDataStore(Collections.EMPTY_MAP);
+            factory.createNewDataStore(Collections.emptyMap());
             fail("unsupported?");
         } catch (UnsupportedOperationException e) {
             // OK
@@ -157,7 +158,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
     /** Test method for 'org.geotools.data.complex.AppSchemaDataAccessFactory.canProcess(Map)' */
     @Test
     public void testCanProcess() {
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         assertFalse(factory.canProcess(params));
         params.put("dbtype", "arcsde");
         params.put("url", "http://somesite.net/config.xml");
@@ -190,7 +191,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
     public static class AppSchemaDataAccessFactoryFailureTest extends AppSchemaTestSupport {
 
         private AppSchemaDataAccessFactory factory;
-        private Map params;
+        private Map<String, Serializable> params;
 
         /**
          * Checks that App-schema data store factory unregisters correctly the included mappings
@@ -199,7 +200,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
         @Test
         public void testUnregisterOnFailure() throws Exception {
             factory = new AppSchemaDataAccessFactory();
-            params = new HashMap();
+            params = new HashMap<>();
             params.put("dbtype", "app-schema");
             URL resource =
                     getClass().getResource("/test-data/creation_failure/roadsegments_bad.xml");

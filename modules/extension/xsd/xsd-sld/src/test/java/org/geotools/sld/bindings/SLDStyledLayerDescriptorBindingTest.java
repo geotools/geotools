@@ -16,14 +16,20 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.StyledLayerDescriptor;
+import org.junit.Test;
 
 public class SLDStyledLayerDescriptorBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(
                 StyledLayerDescriptor.class, new SLDStyledLayerDescriptorBinding(null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.styledLayerDescriptor(document, document);
 

@@ -63,13 +63,14 @@ public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstra
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
 
         LOGGER.finer("Starting test " + getName() + " (" + getClass().getName() + ")");
         String typeRef1 = getPolygonTypeRef();
         LOGGER.finer(typeRef1 + ": looking up SimpleFeatureSource ");
-        SimpleFeatureSource polySource1 = (SimpleFeatureSource) layers.get(typeRef1);
+        SimpleFeatureSource polySource1 = layers.get(typeRef1);
         LOGGER.finer(typeRef1 + ": found " + polySource1.getSchema().getTypeName());
 
         SimpleFeatureCollection collection1 = polySource1.getFeatures(); // limit with envelope
@@ -77,7 +78,7 @@ public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstra
 
         String typeRef2 = getRestrictedPolygonTypeRef();
         LOGGER.finer(typeRef2 + ": looking up SimpleFeatureSource ");
-        SimpleFeatureSource polySource2 = (SimpleFeatureSource) layers.get(typeRef2);
+        SimpleFeatureSource polySource2 = layers.get(typeRef2);
         LOGGER.finer(typeRef2 + ": found " + polySource2.getSchema().getTypeName());
 
         SimpleFeatureCollection collection2 = polySource2.getFeatures(); // limit with envelope
@@ -95,13 +96,13 @@ public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstra
             return true;
         }*/
         boolean success = true;
-        for (int i = 0; i < poly1.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) poly1[i];
+        for (Object value : poly1) {
+            SimpleFeature tmp = (SimpleFeature) value;
             LOGGER.finest("Polgon overlap test for:" + tmp.getID());
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
-            for (int j = 0; j < poly2.length; j++) {
-                SimpleFeature tmp2 = (SimpleFeature) poly2[j];
+            for (Object o : poly2) {
+                SimpleFeature tmp2 = (SimpleFeature) o;
                 LOGGER.finest("Polgon overlap test against:" + tmp2.getID());
                 Geometry gt2 = (Geometry) tmp2.getDefaultGeometry();
 

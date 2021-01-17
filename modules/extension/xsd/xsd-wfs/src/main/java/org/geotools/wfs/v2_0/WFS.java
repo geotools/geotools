@@ -43,7 +43,7 @@ public final class WFS extends XSD {
     /** private constructor */
     private WFS() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
         dependencies.add(FES.getInstance());
     }

@@ -17,7 +17,13 @@
 package org.geotools.data.oracle;
 
 import static org.geotools.data.oracle.OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE;
-import static org.geotools.jdbc.JDBCDataStoreFactory.*;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PORT;
+import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
+import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -48,7 +54,7 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
     public void testGeometryMetadata() throws IOException {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         Properties db = FixtureUtilities.loadFixture("oracle");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(SCHEMA.key, db.getProperty(SCHEMA.key));
@@ -75,7 +81,7 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
     private void checkCreateConnection(OracleNGDataStoreFactory factory, String dbtype)
             throws IOException {
         Properties db = FixtureUtilities.loadFixture("oracle");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(SCHEMA.key, db.getProperty(SCHEMA.key));

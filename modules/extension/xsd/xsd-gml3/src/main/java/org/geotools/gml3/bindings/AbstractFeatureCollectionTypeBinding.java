@@ -86,6 +86,7 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
         }
 
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:featureMember"/&gt;
+        @SuppressWarnings("unchecked")
         List<SimpleFeature> childValues = node.getChildValues(SimpleFeature.class);
 
         // example ListFeatureCollection
@@ -93,12 +94,11 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
         collection.addAll(childValues);
 
         // &lt;element minOccurs="0" ref="gml:featureMembers"/&gt;
-        SimpleFeature[] featureMembers =
-                (SimpleFeature[]) node.getChildValue(SimpleFeature[].class);
+        SimpleFeature[] featureMembers = node.getChildValue(SimpleFeature[].class);
 
         if (featureMembers != null) {
-            for (int i = 0; i < featureMembers.length; i++) {
-                collection.add(featureMembers[i]);
+            for (SimpleFeature featureMember : featureMembers) {
+                collection.add(featureMember);
             }
         }
 

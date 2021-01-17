@@ -34,7 +34,7 @@ import org.opengis.style.StyleVisitor;
 public class VendorSymbolizerImpl extends AbstractSymbolizer implements ExtensionSymbolizer {
 
     private String extensionName;
-    private Map<String, Expression> parameters = new HashMap<String, Expression>();
+    private Map<String, Expression> parameters = new HashMap<>();
 
     /** Creates a new instance of DefaultPolygonStyler */
     protected VendorSymbolizerImpl() {}

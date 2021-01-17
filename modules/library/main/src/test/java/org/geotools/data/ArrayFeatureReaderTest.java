@@ -19,10 +19,12 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -32,14 +34,15 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author jones
  */
-public class ArrayFeatureReaderTest extends TestCase {
+public class ArrayFeatureReaderTest {
     private CollectionFeatureReader arrayReader;
     private CollectionFeatureReader collectionReader;
     private CollectionFeatureReader featureCollectionReader;
     private SimpleFeatureType type;
     private SimpleFeature[] features;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         type = DataUtilities.createType("TestType", "geom:Geometry");
         features =
                 new SimpleFeature[] {
@@ -61,37 +64,40 @@ public class ArrayFeatureReaderTest extends TestCase {
     }
 
     /** Test method for 'org.geotools.data.ArrayFeatureReader.getFeatureType()' */
+    @Test
     public void testGetFeatureType() {
-        assertEquals(type, arrayReader.getFeatureType());
-        assertEquals(type, collectionReader.getFeatureType());
-        assertEquals(type, featureCollectionReader.getFeatureType());
+        Assert.assertEquals(type, arrayReader.getFeatureType());
+        Assert.assertEquals(type, collectionReader.getFeatureType());
+        Assert.assertEquals(type, featureCollectionReader.getFeatureType());
     }
 
     /** Test method for 'org.geotools.data.ArrayFeatureReader.next()' */
+    @Test
     public void testNext() throws Exception {
-        assertEquals(features[0], arrayReader.next());
-        assertEquals(features[1], arrayReader.next());
-        assertEquals(features[2], arrayReader.next());
-        assertEquals(features[3], arrayReader.next());
-        assertEquals(features[4], arrayReader.next());
-        assertEquals(features[5], arrayReader.next());
+        Assert.assertEquals(features[0], arrayReader.next());
+        Assert.assertEquals(features[1], arrayReader.next());
+        Assert.assertEquals(features[2], arrayReader.next());
+        Assert.assertEquals(features[3], arrayReader.next());
+        Assert.assertEquals(features[4], arrayReader.next());
+        Assert.assertEquals(features[5], arrayReader.next());
 
-        assertEquals(features[0], collectionReader.next());
-        assertEquals(features[1], collectionReader.next());
-        assertEquals(features[2], collectionReader.next());
-        assertEquals(features[3], collectionReader.next());
-        assertEquals(features[4], collectionReader.next());
-        assertEquals(features[5], collectionReader.next());
+        Assert.assertEquals(features[0], collectionReader.next());
+        Assert.assertEquals(features[1], collectionReader.next());
+        Assert.assertEquals(features[2], collectionReader.next());
+        Assert.assertEquals(features[3], collectionReader.next());
+        Assert.assertEquals(features[4], collectionReader.next());
+        Assert.assertEquals(features[5], collectionReader.next());
 
-        assertEquals(features[0], featureCollectionReader.next());
-        assertEquals(features[1], featureCollectionReader.next());
-        assertEquals(features[2], featureCollectionReader.next());
-        assertEquals(features[3], featureCollectionReader.next());
-        assertEquals(features[4], featureCollectionReader.next());
-        assertEquals(features[5], featureCollectionReader.next());
+        Assert.assertEquals(features[0], featureCollectionReader.next());
+        Assert.assertEquals(features[1], featureCollectionReader.next());
+        Assert.assertEquals(features[2], featureCollectionReader.next());
+        Assert.assertEquals(features[3], featureCollectionReader.next());
+        Assert.assertEquals(features[4], featureCollectionReader.next());
+        Assert.assertEquals(features[5], featureCollectionReader.next());
     }
 
     /** Test method for 'org.geotools.data.ArrayFeatureReader.hasNext()' */
+    @Test
     public void testHasNext() throws Exception {
         testHasNext(arrayReader);
         testHasNext(collectionReader);
@@ -100,49 +106,50 @@ public class ArrayFeatureReaderTest extends TestCase {
 
     private void testHasNext(FeatureReader<SimpleFeatureType, SimpleFeature> arrayReader)
             throws IOException, IllegalAttributeException {
-        assertTrue(arrayReader.hasNext());
+        Assert.assertTrue(arrayReader.hasNext());
         arrayReader.next();
-        assertTrue(arrayReader.hasNext());
+        Assert.assertTrue(arrayReader.hasNext());
         arrayReader.next();
-        assertTrue(arrayReader.hasNext());
+        Assert.assertTrue(arrayReader.hasNext());
         arrayReader.next();
-        assertTrue(arrayReader.hasNext());
+        Assert.assertTrue(arrayReader.hasNext());
         arrayReader.next();
-        assertTrue(arrayReader.hasNext());
+        Assert.assertTrue(arrayReader.hasNext());
         arrayReader.next();
-        assertTrue(arrayReader.hasNext());
+        Assert.assertTrue(arrayReader.hasNext());
         arrayReader.next();
-        assertFalse(arrayReader.hasNext());
+        Assert.assertFalse(arrayReader.hasNext());
     }
 
     /** Test method for 'org.geotools.data.ArrayFeatureReader.close()' */
+    @Test
     public void testClose() throws Exception {
         arrayReader.close();
-        assertFalse(arrayReader.hasNext());
+        Assert.assertFalse(arrayReader.hasNext());
 
         try {
             arrayReader.next();
-            fail();
+            Assert.fail();
         } catch (Exception e) {
             // good
         }
 
         collectionReader.close();
-        assertFalse(collectionReader.hasNext());
+        Assert.assertFalse(collectionReader.hasNext());
 
         try {
             collectionReader.next();
-            fail();
+            Assert.fail();
         } catch (Exception e) {
             // good
         }
 
         featureCollectionReader.close();
-        assertFalse(featureCollectionReader.hasNext());
+        Assert.assertFalse(featureCollectionReader.hasNext());
 
         try {
             featureCollectionReader.next();
-            fail();
+            Assert.fail();
         } catch (Exception e) {
             // good
         }

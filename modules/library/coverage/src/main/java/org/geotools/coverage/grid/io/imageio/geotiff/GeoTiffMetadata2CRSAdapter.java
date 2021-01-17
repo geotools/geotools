@@ -43,6 +43,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Quantity;
 import javax.measure.Unit;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Length;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTransformationsCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffPCSCodes;
@@ -384,7 +386,7 @@ public final class GeoTiffMetadata2CRSAdapter {
                     gcs =
                             new DefaultGeographicCRS(
                                     DefaultEllipsoidalCS.getName(gcs, new CitationImpl("EPSG")),
-                                    (GeodeticDatum) gcs.getDatum(),
+                                    gcs.getDatum(),
                                     DefaultEllipsoidalCS.GEODETIC_2D.usingUnit(angularUnit));
                 }
             } catch (FactoryException fe) {
@@ -804,7 +806,7 @@ public final class GeoTiffMetadata2CRSAdapter {
             throw new IllegalArgumentException(
                     "Error when trying to create a PCS using this linear UoM "
                             + linearUnit.toString());
-        final Map<String, String> props = new HashMap<String, String>();
+        final Map<String, String> props = new HashMap<>();
         props.put("name", Vocabulary.formatInternational(VocabularyKeys.PROJECTED).toString());
         props.put("alias", Vocabulary.formatInternational(VocabularyKeys.PROJECTED).toString());
         return new DefaultCartesianCS(
@@ -858,9 +860,11 @@ public final class GeoTiffMetadata2CRSAdapter {
                         if (pmNumeric == 0) {
                             return DefaultPrimeMeridian.GREENWICH;
                         }
-                        final Map<String, String> props = new HashMap<String, String>();
+                        final Map<String, String> props = new HashMap<>();
                         props.put("name", name);
-                        pm = datumObjFactory.createPrimeMeridian(props, pmNumeric, linearUnit);
+                        @SuppressWarnings("unchecked")
+                        Unit<Angle> angleUnit = linearUnit;
+                        pm = datumObjFactory.createPrimeMeridian(props, pmNumeric, angleUnit);
                     } catch (NumberFormatException nfe) {
                         final IOException io =
                                 new GeoTiffException(
@@ -1015,8 +1019,10 @@ public final class GeoTiffMetadata2CRSAdapter {
                 inverseFlattening = semiMajorAxis / (semiMajorAxis - semiMinorAxis);
             }
             // look for the Ellipsoid first then build the datum
+            @SuppressWarnings("unchecked")
+            Unit<Length> lengthUnit = unit;
             return DefaultEllipsoid.createFlattenedSphere(
-                    name, semiMajorAxis, inverseFlattening, unit);
+                    name, semiMajorAxis, inverseFlattening, lengthUnit);
         }
 
         try {
@@ -1070,7 +1076,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 
         // coordinate reference system
         // property map is reused
-        final Map<String, String> props = new HashMap<String, String>();
+        final Map<String, String> props = new HashMap<>();
         // make the user defined GCS from all the components...
         props.put("name", name);
         return new DefaultGeographicCRS(
@@ -1588,7 +1594,10 @@ public final class GeoTiffMetadata2CRSAdapter {
         } else {
             try {
                 // using epsg code for this unit
-                return (Unit<Q>) this.allAuthoritiesFactory.createUnit("EPSG:" + unitCode);
+                @SuppressWarnings("unchecked")
+                Unit<Q> result =
+                        (Unit<Q>) this.allAuthoritiesFactory.createUnit("EPSG:" + unitCode);
+                return result;
             } catch (FactoryException fe) {
                 final IOException io = new GeoTiffException(metadata, fe.getLocalizedMessage(), fe);
                 throw io;

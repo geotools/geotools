@@ -16,7 +16,9 @@
  */
 package org.geotools.renderer.style;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -46,7 +48,7 @@ public class FontCache {
     static volatile FontCache defaultInstance;
 
     /** Set containing the font families known of this machine */
-    Set<String> systemFonts = new HashSet<String>();
+    volatile Set<String> systemFonts = new HashSet<>();
 
     /** Fonts already loaded */
     Map<String, Font> loadedFonts = new ConcurrentHashMap<>();
@@ -65,7 +67,7 @@ public class FontCache {
         return defaultInstance;
     }
 
-    public synchronized Font getFont(String requestedFont) {
+    public Font getFont(String requestedFont) {
         // see if the font has already been loaded
         java.awt.Font javaFont = null;
         if (LOGGER.isLoggable(Level.FINEST)) {
@@ -209,11 +211,11 @@ public class FontCache {
     /** Lazily loads up the system fonts cache */
     private Set<String> getSystemFonts() {
         // make sure we load the known font families once.
-        if (systemFonts.size() == 0) {
+        if (systemFonts.isEmpty()) {
             synchronized (systemFonts) {
-                if (systemFonts.size() == 0) {
+                if (systemFonts.isEmpty()) {
                     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                    Set<String> fontset = new HashSet<String>();
+                    Set<String> fontset = new HashSet<>();
 
                     // register both faces and families
                     Font[] fonts = ge.getAllFonts();
@@ -239,7 +241,7 @@ public class FontCache {
      * loaded into the cache
      */
     public Set<String> getAvailableFonts() {
-        Set<String> availableFonts = new HashSet<String>();
+        Set<String> availableFonts = new HashSet<>();
 
         availableFonts.addAll(getSystemFonts());
         availableFonts.addAll(loadedFonts.keySet());

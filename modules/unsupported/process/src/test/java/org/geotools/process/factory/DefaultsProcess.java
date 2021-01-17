@@ -63,7 +63,7 @@ public class DefaultsProcess {
                                 "org.geotools.process.factory.BeanProcessFactoryTest#DEFAULT_RECTANGLE"
                     )
                     Rectangle rect) {
-        Map<String, Object> results = new HashMap<String, Object>();
+        Map<String, Object> results = new HashMap<>();
         results.put("string", string);
         results.put("geometry", geometry);
         results.put("int", i);

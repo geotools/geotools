@@ -68,7 +68,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
         implements AuthorityFactory, CRSAuthorityFactory, BufferedFactory {
 
     /** Cache to be used for referencing objects. */
-    ObjectCache cache;
+    ObjectCache<Object, Object> cache;
 
     /** The delegate authority for coordinate reference systems. */
     private CRSAuthorityFactory crsAuthority;
@@ -103,15 +103,17 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      * @param factory The factory to cache. Can not be {@code null}.
      * @param cache The underlying cache
      */
-    protected CachedCRSAuthorityDecorator(CRSAuthorityFactory factory, ObjectCache cache) {
+    protected CachedCRSAuthorityDecorator(
+            CRSAuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
-        crsAuthority = (CRSAuthorityFactory) factory;
+        crsAuthority = factory;
         this.delegate = (AbstractAuthorityFactory) factory;
     }
 
     /** Utility method used to produce cache based on hint */
-    protected static ObjectCache createCache(final Hints hints) throws FactoryRegistryException {
+    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints)
+            throws FactoryRegistryException {
         return ObjectCaches.create(hints);
     }
 
@@ -147,7 +149,8 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
         return crsAuthority.getAuthority();
     }
 
-    public Set getAuthorityCodes(Class type) throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return crsAuthority.getAuthorityCodes(type);
     }
 
@@ -361,7 +364,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      */
     @Override
     public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class /*<? extends IdentifiedObject>*/ type) throws FactoryException {
+            final Class<? extends IdentifiedObject> type) throws FactoryException {
         return new Finder(
                 delegate.getIdentifiedObjectFinder(type), ObjectCaches.create("weak", 250));
     }
@@ -381,10 +384,10 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      */
     private final class Finder extends IdentifiedObjectFinder.Adapter {
         /** Cache used when finding */
-        private ObjectCache findCache;
+        private ObjectCache<Object, Object> findCache;
 
         /** Creates a finder for the underlying backing store. */
-        Finder(final IdentifiedObjectFinder finder, ObjectCache tempCache) {
+        Finder(final IdentifiedObjectFinder finder, ObjectCache<Object, Object> tempCache) {
             super(finder);
             this.findCache = tempCache;
         }
@@ -405,8 +408,8 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
              *       is not a big deal if the same object is searched twice; it is "just" a
              *       waste of CPU.
              */
-            IdentifiedObject candidate;
-            candidate = (IdentifiedObject) findCache.get(object);
+            @SuppressWarnings("unchecked")
+            IdentifiedObject candidate = (IdentifiedObject) findCache.get(object);
 
             if (candidate == null) {
                 // Must delegates to 'finder' (not to 'super') in order to take

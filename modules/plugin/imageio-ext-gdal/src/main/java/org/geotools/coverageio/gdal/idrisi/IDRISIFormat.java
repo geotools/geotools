@@ -52,7 +52,7 @@ public final class IDRISIFormat extends BaseGDALGridFormat implements Format {
 
     /** Sets the metadata information. */
     protected void setInfo() {
-        final HashMap<String, String> info = new HashMap<String, String>();
+        final HashMap<String, String> info = new HashMap<>();
         info.put("name", "RST");
         info.put("description", "IDRIS (RST) Coverage Format");
         info.put("vendor", "Geotools");
@@ -71,11 +71,7 @@ public final class IDRISIFormat extends BaseGDALGridFormat implements Format {
     public IDRISIReader getReader(Object source, Hints hints) {
         try {
             return new IDRISIReader(source, hints);
-        } catch (MismatchedDimensionException e) {
-            final RuntimeException re = new RuntimeException();
-            re.initCause(e);
-            throw re;
-        } catch (DataSourceException e) {
+        } catch (MismatchedDimensionException | DataSourceException e) {
             final RuntimeException re = new RuntimeException();
             re.initCause(e);
             throw re;

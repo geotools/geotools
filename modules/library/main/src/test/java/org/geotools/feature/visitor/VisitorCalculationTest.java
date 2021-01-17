@@ -16,6 +16,13 @@
  */
 package org.geotools.feature.visitor;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -39,6 +46,7 @@ import org.geotools.feature.visitor.MedianVisitor.MedianResult;
 import org.geotools.feature.visitor.MinVisitor.MinResult;
 import org.geotools.feature.visitor.UniqueVisitor.UniqueResult;
 import org.geotools.filter.IllegalFilterException;
+import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -67,12 +75,8 @@ public class VisitorCalculationTest extends DataTestCase {
     SimpleFeatureCollection fc6;
     SimpleFeatureType ft6;
 
-    public VisitorCalculationTest(String arg0) {
-        super(arg0);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void init() throws Exception {
+        super.init();
         empty = new DefaultFeatureCollection();
         fc = DataUtilities.collection(roadFeatures);
         invfc = new TreeSetFeatureCollection(fc).sort(SortBy.REVERSE_ORDER);
@@ -102,6 +106,7 @@ public class VisitorCalculationTest extends DataTestCase {
     }
 
     // test only the visitor functions themselves, and try the merge operation
+    @Test
     public void testMin() throws IllegalFilterException, IOException {
         // index 0 is the id field, so the data isn't terribly exciting (1,2,3).
         MinVisitor minVisitor = new MinVisitor(0, ft);
@@ -120,13 +125,13 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult minResult3 = minResult1.merge(minResult2);
         assertEquals(1, minResult3.toInt());
         // test for destruction during merge
-        CalcResult minResult4 = new MinResult((Comparable) Integer.valueOf(10));
+        CalcResult minResult4 = new MinResult(Integer.valueOf(10));
         CalcResult minResult5 = minResult4.merge(minResult1);
         assertEquals(1, minResult5.toInt());
         assertEquals(10, minResult4.toInt());
         // test negative result
-        CalcResult minResult6 = new MinResult((Comparable) Integer.valueOf(-5));
-        CalcResult minResult7 = (MinResult) minResult1.merge(minResult6);
+        CalcResult minResult6 = new MinResult(Integer.valueOf(-5));
+        CalcResult minResult7 = minResult1.merge(minResult6);
         assertEquals(-5, minResult7.toInt());
         assertEquals(-5, minResult6.toInt());
         // test a mock optimization
@@ -149,6 +154,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(minResult2, minResult2.merge(minVisitor.getResult()));
     }
 
+    @Test
     public void testMax() throws IllegalFilterException, IOException {
         // index 0 is the id field, so the data isn't terribly exciting
         MaxVisitor maxVisitor = new MaxVisitor(0, ft);
@@ -160,20 +166,20 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(3, value1);
         // 4.5 is max
         double value2 = maxVisitor2.getResult().toDouble();
-        assertEquals((double) 4.5, value2, 0);
+        assertEquals(4.5, value2, 0);
         // max of 3 and 4.5 is 4.5
-        CalcResult maxResult1 = (MaxResult) maxVisitor.getResult();
-        CalcResult maxResult2 = (MaxResult) maxVisitor2.getResult();
-        CalcResult maxResult3 = (MaxResult) maxResult1.merge(maxResult2);
-        assertEquals((double) 4.5, maxResult3.toDouble(), 0);
+        CalcResult maxResult1 = maxVisitor.getResult();
+        CalcResult maxResult2 = maxVisitor2.getResult();
+        CalcResult maxResult3 = maxResult1.merge(maxResult2);
+        assertEquals(4.5, maxResult3.toDouble(), 0);
         // test for destruction during merge
-        CalcResult maxResult4 = new MaxResult((Comparable) Double.valueOf(2));
-        CalcResult maxResult5 = (MaxResult) maxResult4.merge(maxResult1);
+        CalcResult maxResult4 = new MaxResult(Double.valueOf(2));
+        CalcResult maxResult5 = maxResult4.merge(maxResult1);
         assertEquals(3, maxResult5.toDouble(), 0);
         assertEquals(2, maxResult4.toDouble(), 0);
         // test negative result
-        CalcResult maxResult6 = new MaxResult((Comparable) Integer.valueOf(-5));
-        CalcResult maxResult7 = (MaxResult) maxResult1.merge(maxResult6);
+        CalcResult maxResult6 = new MaxResult(Integer.valueOf(-5));
+        CalcResult maxResult7 = maxResult1.merge(maxResult6);
         assertEquals(3, maxResult7.toDouble(), 0);
         assertEquals(-5, maxResult6.toDouble(), 0);
         // test a mock optimization
@@ -196,6 +202,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(maxResult2, maxResult2.merge(maxVisitor.getResult()));
     }
 
+    @Test
     public void testMedian() throws IllegalFilterException, IOException {
         MedianVisitor medianVisitor1 = new MedianVisitor(0, ft);
         fc.accepts(medianVisitor1, null); // 1,2,3
@@ -210,7 +217,7 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult medianResult3 = medianResult1.merge(medianResult2);
         assertEquals(2, medianResult3.toDouble(), 0);
         // test for destruction during merge
-        List vals = new ArrayList();
+        List<Comparable> vals = new ArrayList<>();
         vals.add(Double.valueOf(2.5));
         vals.add(Double.valueOf(3.5));
         vals.add(Double.valueOf(4.5));
@@ -236,6 +243,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(medianResult2, medianResult2.merge(medianVisitor1.getResult()));
     }
 
+    @Test
     public void testSum() throws IllegalFilterException, IOException {
         SumVisitor sumVisitor = new SumVisitor(0, ft);
         fc.accepts(sumVisitor, null); // 1,2,3
@@ -246,12 +254,12 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(6, value1);
         // 7.5 is sum
         double value2 = sumVisitor2.getResult().toDouble();
-        assertEquals((double) 7.5, value2, 0);
+        assertEquals(7.5, value2, 0);
         // sum of 6 and 7.5 is 13.5
         CalcResult sumResult1 = sumVisitor.getResult();
         CalcResult sumResult2 = sumVisitor2.getResult();
         CalcResult sumResult3 = sumResult1.merge(sumResult2);
-        assertEquals((double) 13.5, sumResult3.toDouble(), 0);
+        assertEquals(13.5, sumResult3.toDouble(), 0);
         // test a mock optimization
         sumVisitor2.setValue(Integer.valueOf(-42));
         CalcResult sumResult4 = sumVisitor2.getResult();
@@ -269,6 +277,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(sumResult2, sumResult2.merge(sumVisitor.getResult()));
     }
 
+    @Test
     public void testArea() throws IllegalFilterException, IOException {
         SumAreaVisitor areaVisitor = new SumAreaVisitor(1, ft4);
         fc4.accepts(areaVisitor, null);
@@ -277,24 +286,26 @@ public class VisitorCalculationTest extends DataTestCase {
         fc5.accepts(areaVisitor2, null);
 
         double value1 = areaVisitor.getResult().toDouble();
-        assertEquals(10.0, value1);
+        assertEquals(10.0, value1, 0d);
 
         double value2 = areaVisitor2.getResult().toDouble();
-        assertEquals(12.0, value2);
+        assertEquals(12.0, value2, 0d);
 
         CalcResult areaResult1 = areaVisitor.getResult();
         CalcResult areaResult2 = areaVisitor2.getResult();
         CalcResult areaResult3 = areaResult1.merge(areaResult2);
-        assertEquals((double) 22.0, areaResult3.toDouble(), 0);
+        assertEquals(22.0, areaResult3.toDouble(), 0);
     }
 
+    @Test
     public void testAreaInvalidPolygon() throws IllegalFilterException, IOException {
         SumAreaVisitor areaVisitor = new SumAreaVisitor(1, ft6);
         fc6.accepts(areaVisitor, null);
         double value1 = areaVisitor.getResult().toDouble();
-        assertEquals(0.0, value1);
+        assertEquals(0.0, value1, 0d);
     }
 
+    @Test
     public void testCount() throws IllegalFilterException, IOException {
         CountVisitor countVisitor = new CountVisitor();
         fc.accepts(countVisitor, null);
@@ -329,6 +340,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(countResult2, countResult2.merge(countVisitor.getResult()));
     }
 
+    @Test
     public void testAverage() throws IllegalFilterException, IOException {
         AverageVisitor averageVisitor = new AverageVisitor(0, ft);
         fc.accepts(averageVisitor, null); // 1,2,3
@@ -339,23 +351,23 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(2, value1);
         // 3.75 is average
         double value2 = averageVisitor2.getResult().toDouble();
-        assertEquals((double) 3.75, value2, 0);
+        assertEquals(3.75, value2, 0);
         // average of 1,2,3,3,4.5 is 2.7
         CalcResult averageResult1 = averageVisitor.getResult();
         CalcResult averageResult2 = averageVisitor2.getResult();
         CalcResult averageResult3 = averageResult1.merge(averageResult2);
-        assertEquals((double) 2.7, averageResult3.toDouble(), 0);
+        assertEquals(2.7, averageResult3.toDouble(), 0);
         // test for destruction during merge
-        assertEquals((double) 3.75, averageResult2.toDouble(), 0);
+        assertEquals(3.75, averageResult2.toDouble(), 0);
         // test mock optimizations
         averageVisitor2.setValue(5, Integer.valueOf(100)); // mergeable optimization
         averageResult2 = averageVisitor2.getResult();
         assertEquals(20, averageResult2.toInt());
         averageResult3 = averageResult1.merge(averageResult2);
-        assertEquals((double) 13.25, averageResult3.toDouble(), 0);
+        assertEquals(13.25, averageResult3.toDouble(), 0);
         averageVisitor2.setValue(Double.valueOf(15.4)); // un-mergeable optimization
         averageResult2 = averageVisitor2.getResult();
-        assertEquals((double) 15.4, averageResult2.toDouble(), 0);
+        assertEquals(15.4, averageResult2.toDouble(), 0);
         try {
             averageResult3 = averageResult1.merge(averageResult2);
             fail(); // merge should throw an exception
@@ -368,7 +380,7 @@ public class VisitorCalculationTest extends DataTestCase {
         averageVisitor2.setValue(5, Double.valueOf(33.3));
         averageResult2 = averageVisitor2.getResult();
         averageResult3 = averageResult1.merge(averageResult2); // int + double --> double?
-        assertEquals((double) 4.33, averageResult3.toDouble(), 0);
+        assertEquals(4.33, averageResult3.toDouble(), 0);
         // test empty collection
         averageVisitor.reset();
         empty.accepts(averageVisitor, null);
@@ -378,6 +390,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(averageResult2, averageResult2.merge(averageVisitor.getResult()));
     }
 
+    @Test
     public void testUniquePreserveOrder() throws IOException {
         UniqueVisitor uniqueVisitor = new UniqueVisitor(0, ft);
         uniqueVisitor.setPreserveOrder(true);
@@ -391,6 +404,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(3, value1.iterator().next());
     }
 
+    @Test
     public void testUniquePagination() throws IOException {
         UniqueVisitor uniqueVisitor = new UniqueVisitor(0, ft);
         uniqueVisitor.setPreserveOrder(true);
@@ -426,6 +440,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertNull(value1);
     }
 
+    @Test
     public void testUnique() throws IllegalFilterException, IOException {
         UniqueVisitor uniqueVisitor = new UniqueVisitor(0, ft);
         fc.accepts(uniqueVisitor, null);
@@ -447,7 +462,7 @@ public class VisitorCalculationTest extends DataTestCase {
         // ensure merge was not destructive
         assertEquals(3, uniqueResult1.toSet().size());
         // test a merge with duplicate elements
-        Set anotherSet = new HashSet();
+        Set<Object> anotherSet = new HashSet<>();
         anotherSet.add(Integer.valueOf(2));
         anotherSet.add(Integer.valueOf(4));
         CalcResult uniqueResult4 = new UniqueResult(anotherSet);
@@ -459,8 +474,9 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(anotherSet, uniqueResult1.toSet());
         // int + double --> ?
         uniqueResult3 = uniqueResult2.merge(uniqueResult1);
+        @SuppressWarnings("unchecked")
         Set<Object> set = uniqueResult3.toSet();
-        assertTrue(set.size() == 4);
+        assertEquals(4, set.size());
         assertTrue(set.contains(3.0));
         assertTrue(set.contains(4.5));
         assertTrue(set.contains(2));
@@ -475,6 +491,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(uniqueResult2, uniqueResult2.merge(uniqueVisitor.getResult()));
     }
 
+    @Test
     public void testBounds() throws IOException {
         BoundsVisitor boundsVisitor1 = new BoundsVisitor();
         fc.accepts(boundsVisitor1, null);
@@ -498,6 +515,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(boundsResult2, boundsResult2.merge(boundsVisitor1.getResult()));
     }
 
+    @Test
     public void testQuantileList() throws Exception {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         Expression expr = factory.property(ft.getDescriptor(0).getLocalName());
@@ -517,6 +535,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertSame(result, result.merge(emptyVisitor.getResult()));
     }
 
+    @Test
     public void testStandardDeviation() throws Exception {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         Expression expr = factory.property(ft3.getDescriptor(0).getLocalName());
@@ -542,6 +561,7 @@ public class VisitorCalculationTest extends DataTestCase {
     }
 
     // try merging a count and sum to get an average, both count+sum and sum+count
+    @Test
     public void testCountSumMerge() throws IllegalFilterException, IOException {
         CountVisitor countVisitor = new CountVisitor();
         fc2.accepts(countVisitor, null); // count = 2
@@ -552,14 +572,15 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult averageResult1 = countResult.merge(sumResult);
         CalcResult averageResult2 = sumResult.merge(countResult);
         // both average results were correct?
-        assertEquals((double) 3.75, averageResult1.toDouble(), 0);
-        assertEquals((double) 3.75, averageResult2.toDouble(), 0);
+        assertEquals(3.75, averageResult1.toDouble(), 0);
+        assertEquals(3.75, averageResult2.toDouble(), 0);
         // neither sum nor count was destroyed?
         assertEquals(2, countResult.toInt());
-        assertEquals((double) 7.5, sumResult.toDouble(), 0);
+        assertEquals(7.5, sumResult.toDouble(), 0);
     }
 
     // try merging 2 incompatible CalcResults and check for the exception
+    @Test
     public void testBadMerge() throws IllegalFilterException, IOException {
         // count + max = boom!
         CountVisitor countVisitor = new CountVisitor();
@@ -576,6 +597,7 @@ public class VisitorCalculationTest extends DataTestCase {
         }
     }
 
+    @Test
     public void testNearest() throws Exception {
         SimpleFeatureType type =
                 DataUtilities.createType(

@@ -41,7 +41,6 @@ import javax.media.jai.ROI;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
@@ -93,7 +92,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
      */
     static {
         // load the contrast enhancement operations
-        final HashSet<String> heAlg = new HashSet<String>(2, 1.0f);
+        final HashSet<String> heAlg = new HashSet<>(2, 1.0f);
         heAlg.add("NORMALIZE");
         heAlg.add("HISTOGRAM");
         heAlg.add("LOGARITHMIC");
@@ -391,7 +390,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                     final ImageLayout imageLayout = new ImageLayout();
                     imageLayout.setColorModel(IHS.getColorModel());
                     imageLayout.setSampleModel(IHS.getSampleModel());
-                    final RenderingHints rendHints = new RenderingHints(Collections.EMPTY_MAP);
+                    final RenderingHints rendHints = new RenderingHints(Collections.emptyMap());
                     rendHints.add(hints);
                     rendHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, imageLayout));
 
@@ -442,7 +441,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 final RenderedImage finalImage = intensityWorker.getRenderedImage();
                 final int numActualBands = finalImage.getSampleModel().getNumBands();
                 final GridCoverageFactory factory = getCoverageFactory();
-                final HashMap<Object, Object> props = new HashMap<Object, Object>();
+                final HashMap<Object, Object> props = new HashMap<>();
                 if (source.getProperties() != null) {
                     props.putAll(source.getProperties());
                 }
@@ -462,20 +461,19 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                             factory.create(
                                     name,
                                     finalImage,
-                                    (GridGeometry2D) source.getGridGeometry(),
+                                    source.getGridGeometry(),
                                     source.getSampleDimensions(),
                                     new GridCoverage[] {source},
                                     props);
                 } else {
                     // replicate input bands
                     final GridSampleDimension sd[] = new GridSampleDimension[numActualBands];
-                    for (int i = 0; i < numActualBands; i++)
-                        sd[i] = (GridSampleDimension) source.getSampleDimension(0);
+                    for (int i = 0; i < numActualBands; i++) sd[i] = source.getSampleDimension(0);
                     output =
                             factory.create(
                                     "ce_coverage" + source.getName().toString(),
                                     finalImage,
-                                    (GridGeometry2D) source.getGridGeometry(),
+                                    source.getGridGeometry(),
                                     sd,
                                     new GridCoverage[] {source},
                                     props);

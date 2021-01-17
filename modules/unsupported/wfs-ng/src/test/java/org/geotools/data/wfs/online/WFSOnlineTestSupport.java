@@ -60,7 +60,7 @@ public class WFSOnlineTestSupport {
 
     public static WFSDataStore getDataStore(URL server, Boolean post) throws IOException {
 
-        Map<String, Serializable> m = new HashMap<String, Serializable>();
+        Map<String, Serializable> m = new HashMap<>();
         m.put(WFSDataStoreFactory.URL.key, server);
         m.put(WFSDataStoreFactory.PROTOCOL.key, false);
         m.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, true);
@@ -236,7 +236,7 @@ public class WFSOnlineTestSupport {
         assertEquals(count1 + insert.size(), count2);
 
         FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
-        Set<FeatureId> featureIds = new HashSet<FeatureId>();
+        Set<FeatureId> featureIds = new HashSet<>();
         for (FeatureId id : fids1) {
             featureIds.add(id);
         }
@@ -323,7 +323,7 @@ public class WFSOnlineTestSupport {
             fr.next();
         }
         fr.close();
-        assertTrue(count2 == count3);
+        assertEquals(count2, count3);
     }
 
     public static void doUpdate(

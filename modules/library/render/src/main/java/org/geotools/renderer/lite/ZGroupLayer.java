@@ -16,7 +16,8 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.*;
+import java.awt.Composite;
+import java.awt.Graphics2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -265,8 +266,8 @@ class ZGroupLayer extends Layer {
                                         + sortByToString(style, styleClasses));
                     } else {
                         for (int i = 0; i < styleClasses.length; i++) {
-                            Class currClass = styleClasses[i];
-                            Class referenceClass = referenceClasses[i];
+                            Class<?> currClass = styleClasses[i];
+                            Class<?> referenceClass = referenceClasses[i];
                             if (!currClass.equals(referenceClass)
                                     && !currClass.isAssignableFrom(referenceClass)
                                     && !referenceClass.isAssignableFrom(currClass)) {
@@ -425,8 +426,7 @@ class ZGroupLayer extends Layer {
             StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 
             // create a style that does nothing, but matching the "right" background
-            List<org.opengis.style.FeatureTypeStyle> featureTypeStyles =
-                    new ArrayList<org.opengis.style.FeatureTypeStyle>();
+            List<org.opengis.style.FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
             style = sf.style(title, null, false, featureTypeStyles, null);
             style.setBackground(getBackgroundFromLayers());
 

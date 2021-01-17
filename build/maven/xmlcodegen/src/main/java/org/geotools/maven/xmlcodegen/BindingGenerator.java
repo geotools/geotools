@@ -106,17 +106,17 @@ public class BindingGenerator extends AbstractGenerator {
     }
     
     public void generate(XSDSchema schema) {
-        List components = new ArrayList();
+        List<Object> components = new ArrayList<>();
 
         if (generateElements) {
             List elements = schema.getElementDeclarations();
 
-            for (Iterator e = elements.iterator(); e.hasNext();) {
-                XSDElementDeclaration element = (XSDElementDeclaration) e.next();
+            for (Object o : elements) {
+                XSDElementDeclaration element = (XSDElementDeclaration) o;
                 generate(element, schema);
 
                 if (target(element, schema)) {
-                	components.add(element);
+                    components.add(element);
                 }
             }
         }
@@ -124,10 +124,10 @@ public class BindingGenerator extends AbstractGenerator {
         if (generateTypes) {
         	List types = GeneratorUtils.allTypes( schema );
 
-            for (Iterator t = types.iterator(); t.hasNext();) {
-                XSDTypeDefinition type = (XSDTypeDefinition) t.next();
-                generate( type, schema );
-                
+            for (Object o : types) {
+                XSDTypeDefinition type = (XSDTypeDefinition) o;
+                generate(type, schema);
+
                 if (target(type, schema)) {
                     components.add(type);
                 }
@@ -137,9 +137,8 @@ public class BindingGenerator extends AbstractGenerator {
         if (generateAttributes) {
             List attributes = schema.getAttributeDeclarations();
 
-            for (Iterator a = attributes.iterator(); a.hasNext();) {
-                XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) a
-                    .next();
+            for (Object o : attributes) {
+                XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) o;
                 generate(attribute, schema);
 
                 if (target(attribute, schema)) {
@@ -171,7 +170,7 @@ public class BindingGenerator extends AbstractGenerator {
             }
             
             //copy over all included schemas
-            ArrayList includes = new ArrayList();
+            List<File> includes = new ArrayList<>();
            
             File file = null;
             try {
@@ -187,33 +186,30 @@ public class BindingGenerator extends AbstractGenerator {
             else {
                 logger.log( Level.SEVERE, "Could not find: " + schema.getSchemaLocation() + " to copy." );          
             }
-            
-            for (Iterator i = Schemas.getIncludes(schema).iterator(); i.hasNext();) {
-                XSDInclude include = (XSDInclude) i.next();
-                
+
+            for (Object o : Schemas.getIncludes(schema)) {
+                XSDInclude include = (XSDInclude) o;
+
                 file = null;
                 try {
-                    file = findSchemaFile( include.getSchemaLocation() );
-                } 
-                catch (IOException e) {
-                    logger.log(Level.SEVERE, "", e );
+                    file = findSchemaFile(include.getSchemaLocation());
+                } catch (IOException e) {
+                    logger.log(Level.SEVERE, "", e);
                 }
-                
-                if ( file != null ) {
-                    includes.add( file );
-                }
-                else {
-                    logger.log( Level.SEVERE, "Could not find: " + include.getSchemaLocation() + " to copy." );         
+
+                if (file != null) {
+                    includes.add(file);
+                } else {
+                    logger.log(Level.SEVERE, "Could not find: " + include.getSchemaLocation() + 
+                            " to copy.");
                 }
             }
 
-            for (Iterator i = includes.iterator(); i.hasNext();) {
-                File include = (File) i.next();
+            for (File include : includes) {
                 try {
-                    copy(include,resourceLocation);
-                } 
-                catch (IOException e) {
-                    logger.log( Level.WARNING, "Could not copy file " + include , e );
+                    copy(include, resourceLocation);
+                } catch (IOException e) {
+                    logger.log(Level.WARNING, "Could not copy file " + include, e);
                 }
             }
         }

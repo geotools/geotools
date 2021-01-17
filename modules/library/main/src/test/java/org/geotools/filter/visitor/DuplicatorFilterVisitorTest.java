@@ -18,10 +18,12 @@ package org.geotools.filter.visitor;
 
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.expression.InternalVolatileFunction;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -35,19 +37,17 @@ import org.opengis.filter.expression.InternalFunction;
  *
  * @author Cory Horner, Refractions Research Inc.
  */
-public class DuplicatorFilterVisitorTest extends TestCase {
+public class DuplicatorFilterVisitorTest {
     FilterFactory fac;
 
-    public DuplicatorFilterVisitorTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         fac = CommonFactoryFinder.getFilterFactory(null);
     }
 
+    @Test
     public void testLogicFilterDuplication() throws IllegalFilterException {
-        List filters = new ArrayList();
+        List<Filter> filters = new ArrayList<>();
         // create a filter
         Filter filter1 = fac.greater(fac.literal(2), fac.literal(1));
         filters.add(filter1);
@@ -60,10 +60,11 @@ public class DuplicatorFilterVisitorTest extends TestCase {
         Filter newFilter = (Filter) oldFilter.accept(visitor, null);
 
         // compare it
-        assertNotNull(newFilter);
+        Assert.assertNotNull(newFilter);
         // TODO: a decent comparison
     }
 
+    @Test
     public void testDuplicateInternalFunction() throws IllegalFilterException {
         class TestInternalFunction extends InternalVolatileFunction {
 
@@ -84,10 +85,10 @@ public class DuplicatorFilterVisitorTest extends TestCase {
         DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory2) fac);
         Filter newFilter = (Filter) filter.accept(visitor, null);
 
-        assertTrue(newFilter instanceof PropertyIsNull);
+        Assert.assertTrue(newFilter instanceof PropertyIsNull);
         Expression newExpression = ((PropertyIsNull) newFilter).getExpression();
-        assertNotNull(newExpression);
-        assertTrue(newExpression instanceof TestInternalFunction);
-        assertNotSame(internalFunction, newExpression);
+        Assert.assertNotNull(newExpression);
+        Assert.assertTrue(newExpression instanceof TestInternalFunction);
+        Assert.assertNotSame(internalFunction, newExpression);
     }
 }

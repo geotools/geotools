@@ -46,7 +46,6 @@ import net.opengis.ows10.DCPType;
 import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.OperationType;
 import net.opengis.ows10.OperationsMetadataType;
-import net.opengis.ows10.RequestMethodType;
 import net.opengis.ows10.ServiceIdentificationType;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.FeatureTypeListType;
@@ -127,26 +126,26 @@ public class WFSParsingTest {
 
         assertEquals(6, om.getOperation().size());
 
-        OperationType getCapsOp = (OperationType) om.getOperation().get(2);
+        OperationType getCapsOp = om.getOperation().get(2);
         assertEquals("GetCapabilities", getCapsOp.getName());
         assertEquals(1, getCapsOp.getDCP().size());
 
-        DCPType dcp = (DCPType) getCapsOp.getDCP().get(0);
+        DCPType dcp = getCapsOp.getDCP().get(0);
         assertEquals(1, dcp.getHTTP().getGet().size());
         assertEquals(1, dcp.getHTTP().getPost().size());
 
         assertEquals(
                 "http://demo.deegree.org/deegree-wfs/services?",
-                ((RequestMethodType) dcp.getHTTP().getGet().get(0)).getHref());
+                dcp.getHTTP().getGet().get(0).getHref());
         assertEquals(
                 "http://demo.deegree.org/deegree-wfs/services",
-                ((RequestMethodType) dcp.getHTTP().getPost().get(0)).getHref());
+                dcp.getHTTP().getPost().get(0).getHref());
 
-        assertEquals("GetFeature", ((OperationType) om.getOperation().get(0)).getName());
-        assertEquals("DescribeFeatureType", ((OperationType) om.getOperation().get(1)).getName());
-        assertEquals("GetFeatureWithLock", ((OperationType) om.getOperation().get(3)).getName());
-        assertEquals("LockFeature", ((OperationType) om.getOperation().get(4)).getName());
-        assertEquals("Transaction", ((OperationType) om.getOperation().get(5)).getName());
+        assertEquals("GetFeature", om.getOperation().get(0).getName());
+        assertEquals("DescribeFeatureType", om.getOperation().get(1).getName());
+        assertEquals("GetFeatureWithLock", om.getOperation().get(3).getName());
+        assertEquals("LockFeature", om.getOperation().get(4).getName());
+        assertEquals("Transaction", om.getOperation().get(5).getName());
     }
 
     void assertServiceIdentification(WFSCapabilitiesType caps) {
@@ -155,7 +154,7 @@ public class WFSParsingTest {
 
         assertEquals(1, sa.getKeywords().size());
 
-        KeywordsType keywords = (KeywordsType) sa.getKeywords().get(0);
+        KeywordsType keywords = sa.getKeywords().get(0);
         assertTrue(keywords.getKeyword().contains("WFS"));
         assertTrue(keywords.getKeyword().contains("NY"));
         assertTrue(keywords.getKeyword().contains("New York"));
@@ -170,31 +169,29 @@ public class WFSParsingTest {
 
         assertEquals(6, om.getOperation().size());
 
-        OperationType getCapsOp = (OperationType) om.getOperation().get(0);
+        OperationType getCapsOp = om.getOperation().get(0);
         assertEquals("GetCapabilities", getCapsOp.getName());
         assertEquals(1, getCapsOp.getDCP().size());
 
-        DCPType dcp = (DCPType) getCapsOp.getDCP().get(0);
+        DCPType dcp = getCapsOp.getDCP().get(0);
         assertEquals(1, dcp.getHTTP().getGet().size());
         assertEquals(1, dcp.getHTTP().getPost().size());
 
         assertEquals(
-                "http://localhost:8080/geoserver/wfs",
-                ((RequestMethodType) dcp.getHTTP().getGet().get(0)).getHref());
+                "http://localhost:8080/geoserver/wfs", dcp.getHTTP().getGet().get(0).getHref());
         assertEquals(
-                "http://localhost:8080/geoserver/wfs",
-                ((RequestMethodType) dcp.getHTTP().getPost().get(0)).getHref());
+                "http://localhost:8080/geoserver/wfs", dcp.getHTTP().getPost().get(0).getHref());
 
-        assertEquals("DescribeFeatureType", ((OperationType) om.getOperation().get(1)).getName());
-        assertEquals(1, ((OperationType) om.getOperation().get(1)).getDCP().size());
-        assertEquals("GetFeature", ((OperationType) om.getOperation().get(2)).getName());
-        assertEquals(1, ((OperationType) om.getOperation().get(2)).getDCP().size());
-        assertEquals("LockFeature", ((OperationType) om.getOperation().get(3)).getName());
-        assertEquals(1, ((OperationType) om.getOperation().get(3)).getDCP().size());
-        assertEquals("GetFeatureWithLock", ((OperationType) om.getOperation().get(4)).getName());
-        assertEquals(1, ((OperationType) om.getOperation().get(4)).getDCP().size());
-        assertEquals("Transaction", ((OperationType) om.getOperation().get(5)).getName());
-        assertEquals(1, ((OperationType) om.getOperation().get(5)).getDCP().size());
+        assertEquals("DescribeFeatureType", om.getOperation().get(1).getName());
+        assertEquals(1, om.getOperation().get(1).getDCP().size());
+        assertEquals("GetFeature", om.getOperation().get(2).getName());
+        assertEquals(1, om.getOperation().get(2).getDCP().size());
+        assertEquals("LockFeature", om.getOperation().get(3).getName());
+        assertEquals(1, om.getOperation().get(3).getDCP().size());
+        assertEquals("GetFeatureWithLock", om.getOperation().get(4).getName());
+        assertEquals(1, om.getOperation().get(4).getDCP().size());
+        assertEquals("Transaction", om.getOperation().get(5).getName());
+        assertEquals(1, om.getOperation().get(5).getDCP().size());
     }
 
     void assertFeatureTypeListOperations(WFSCapabilitiesType caps) {
@@ -231,14 +228,13 @@ public class WFSParsingTest {
     }
 
     void assertFilterCapabilities(WFSCapabilitiesType caps) {
-        FilterCapabilities fc = (FilterCapabilities) caps.getFilterCapabilities();
+        FilterCapabilities fc = caps.getFilterCapabilities();
         assertTrue(fc.getIdCapabilities().hasEID());
         assertTrue(fc.getIdCapabilities().hasFID());
 
         assertEquals(4, fc.getSpatialCapabilities().getGeometryOperands().size());
 
-        SpatialOperators spatial =
-                (SpatialOperators) fc.getSpatialCapabilities().getSpatialOperators();
+        SpatialOperators spatial = fc.getSpatialCapabilities().getSpatialOperators();
         assertEquals(10, spatial.getOperators().size());
         assertNotNull(spatial.getOperator("BBOX"));
         assertNotNull(spatial.getOperator("Intersects"));
@@ -317,9 +313,7 @@ public class WFSParsingTest {
         assertEquals(5, featureCollection.size());
         assertNotNull(featureCollection.getBounds().getCoordinateReferenceSystem());
 
-        SimpleFeatureIterator features = featureCollection.features();
-
-        try {
+        try (SimpleFeatureIterator features = featureCollection.features()) {
             assertTrue(features.hasNext());
 
             SimpleFeature f = features.next();
@@ -342,10 +336,6 @@ public class WFSParsingTest {
             assertEquals(Float.valueOf(12765.0f), f.getAttribute("measurand"));
             assertTrue(f.getAttribute("dateProperty") instanceof Date);
             assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));
-        } finally {
-            if (features != null) {
-                features.close();
-            }
         }
     }
 

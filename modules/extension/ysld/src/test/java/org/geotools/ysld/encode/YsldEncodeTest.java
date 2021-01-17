@@ -24,12 +24,12 @@ import static org.geotools.ysld.TestUtils.numEqualTo;
 import static org.geotools.ysld.TestUtils.yHasEntry;
 import static org.geotools.ysld.TestUtils.yHasItem;
 import static org.geotools.ysld.TestUtils.yTuple;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -68,8 +68,9 @@ import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.YamlUtil;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.parse.YsldParser;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.function.ThrowingRunnable;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -84,7 +85,6 @@ public class YsldEncodeTest {
 
     private static final double EPSILON = 0.0000000001;
 
-    @org.junit.Rule public ExpectedException exception = ExpectedException.none();
     Logger LOG = Logging.getLogger("org.geotools.ysld.Ysld");
 
     @Test
@@ -530,7 +530,7 @@ public class YsldEncodeTest {
         Stroke stroke = sf.stroke(ff.literal("#555555"), null, null, null, null, null, null);
         rule.symbolizers().add(sf.lineSymbolizer("line", null, null, null, stroke, null));
         Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
-        List<GraphicalSymbol> symbols = new ArrayList<GraphicalSymbol>();
+        List<GraphicalSymbol> symbols = new ArrayList<>();
         symbols.add(mark);
         TextSymbolizer2 text =
                 (TextSymbolizer2)
@@ -1027,7 +1027,7 @@ public class YsldEncodeTest {
         style.featureTypeStyles().get(0).rules().add(rule);
 
         PointSymbolizer p = styleFactory.createPointSymbolizer();
-        rule.symbolizers().add((Symbolizer) p);
+        rule.symbolizers().add(p);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
@@ -1060,7 +1060,7 @@ public class YsldEncodeTest {
         style.featureTypeStyles().get(0).rules().add(rule);
 
         PointSymbolizer p = styleFactory.createPointSymbolizer();
-        rule.symbolizers().add((Symbolizer) p);
+        rule.symbolizers().add(p);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
@@ -1433,7 +1433,7 @@ public class YsldEncodeTest {
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
         fts.rules().add(rule);
 
-        rule.symbolizers().add((Symbolizer) sym);
+        rule.symbolizers().add(sym);
         return fts;
     }
 
@@ -1748,8 +1748,16 @@ public class YsldEncodeTest {
 
         StringWriter out = new StringWriter();
 
-        exception.expect(IllegalArgumentException.class);
-        Ysld.encode(sld(fts), out);
+        Assert.assertThrows(
+                IllegalArgumentException.class,
+                new ThrowingRunnable() {
+
+                    @Override
+                    public void run() throws Throwable {
+
+                        Ysld.encode(sld(fts), out);
+                    }
+                });
     }
 
     @Test

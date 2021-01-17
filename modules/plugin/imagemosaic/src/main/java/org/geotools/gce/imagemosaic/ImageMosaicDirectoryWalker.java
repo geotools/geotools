@@ -59,9 +59,12 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
      * @author Simone Giannecchini, GeoSolutions SAS
      * @author Daniele Romagnoli, GeoSolutions SAS
      */
-    final class MosaicDirectoryWalker extends DirectoryWalker {
+    final class MosaicDirectoryWalker extends DirectoryWalker
+            implements ImageMosaicElementConsumer<File> {
 
         private ImageMosaicWalker walker;
+
+        private ImageMosaicElementConsumer consumer;
 
         @Override
         protected void handleCancelled(
@@ -93,21 +96,22 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                 final File fileBeingProcessed, final int depth, final Collection results)
                 throws IOException {
 
-            walker.handleFile(fileBeingProcessed);
-
+            handleElement(fileBeingProcessed, walker);
             super.handleFile(fileBeingProcessed, depth, results);
         }
 
         public MosaicDirectoryWalker(
                 final List<String> indexingDirectories,
                 final FileFilter filter,
-                ImageMosaicWalker walker)
+                ImageMosaicWalker walker,
+                ImageMosaicElementConsumer consumer)
                 throws IOException {
             super(
                     filter,
                     Integer.MAX_VALUE); // runConfiguration.isRecursive()?Integer.MAX_VALUE:0);
 
             this.walker = walker;
+            this.consumer = consumer;
             startTransaction();
             configHandler.indexingPreamble();
 
@@ -154,6 +158,16 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                 }
             }
         }
+
+        @Override
+        public boolean checkElement(File element, ImageMosaicWalker provider) {
+            return consumer.checkElement(element, provider);
+        }
+
+        @Override
+        public void handleElement(File element, ImageMosaicWalker provider) throws IOException {
+            consumer.handleElement(element, provider);
+        }
     }
 
     private IOFileFilter fileFilter;
@@ -197,10 +211,14 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
             // walk over the files that have filtered out
             //
             if (numFiles > 0) {
-                setNumFiles(numFiles);
+                setNumElements(numFiles);
                 final List<String> indexingDirectories =
-                        new ArrayList<String>(Arrays.asList(indexDirectories));
-                new MosaicDirectoryWalker(indexingDirectories, finalFilter, this);
+                        new ArrayList<>(Arrays.asList(indexDirectories));
+                new MosaicDirectoryWalker(
+                        indexingDirectories,
+                        finalFilter,
+                        this,
+                        new ImageMosaicFileFeatureConsumer.ImageMosaicFileConsumer());
 
             } else {
                 LOGGER.log(Level.INFO, "No files to process!");

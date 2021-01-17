@@ -16,9 +16,14 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.ComparisonOperators;
 import org.w3c.dom.Document;
 
@@ -41,14 +46,17 @@ import org.w3c.dom.Document;
  * @generated
  */
 public class ComparisonOperatorsTypeBindingTest extends OGCTestSupport {
+    @Test
     public void testType() {
         assertEquals(ComparisonOperators.class, binding(OGC.ComparisonOperatorsType).getType());
     }
 
+    @Test
     public void testExectionMode() {
         assertEquals(Binding.OVERRIDE, binding(OGC.ComparisonOperatorsType).getExecutionMode());
     }
 
+    @Test
     public void testParse1() throws Exception {
         FilterMockData.comparison(document, document);
 
@@ -65,6 +73,7 @@ public class ComparisonOperatorsTypeBindingTest extends OGCTestSupport {
         assertNotNull(comparison.getOperator("NullCheck"));
     }
 
+    @Test
     public void testParse2() throws Exception {
         FilterMockData.comparison(document, document, false);
 
@@ -81,6 +90,7 @@ public class ComparisonOperatorsTypeBindingTest extends OGCTestSupport {
         assertNotNull(comparison.getOperator("NullCheck"));
     }
 
+    @Test
     public void testEncode() throws Exception {
         Document dom =
                 encode(

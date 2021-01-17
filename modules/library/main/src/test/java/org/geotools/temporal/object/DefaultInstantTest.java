@@ -16,7 +16,8 @@
  */
 package org.geotools.temporal.object;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -60,7 +61,7 @@ public class DefaultInstantTest {
     @Test
     public void testGetPosition() {
         Position result = instant1.getPosition();
-        assertFalse(instant2.getPosition().equals(result));
+        assertNotEquals(instant2.getPosition(), result);
     }
 
     /** Test of getBegunBy method, of class DefaultInstant. */
@@ -83,7 +84,7 @@ public class DefaultInstantTest {
         Position result = instant1.getPosition();
         Position position = new DefaultPosition(new Date());
         ((DefaultInstant) instant1).setPosition(position);
-        assertFalse(instant1.getPosition().equals(result));
+        assertNotEquals(instant1.getPosition(), result);
     }
 
     /** Test of setBegunBy method, of class DefaultInstant. */
@@ -117,22 +118,22 @@ public class DefaultInstantTest {
     public void testEquals() {
         cal.set(2000, 1, 1);
 
-        assertFalse(instant1.equals(null));
+        assertNotEquals(null, instant1);
         assertEquals(cal.getTime().getTime(), instant1.getPosition().getDate().getTime());
-        assertFalse(instant1.equals(instant2));
+        assertNotEquals(instant1, instant2);
     }
 
     /** Test of hashCode method, of class DefaultInstant. */
     @Test
     public void testHashCode() {
         int result = instant1.hashCode();
-        assertFalse(instant2.hashCode() == result);
+        assertNotEquals(instant2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultInstant. */
     @Test
     public void testToString() {
         String result = instant1.toString();
-        assertFalse(instant2.toString().equals(result));
+        assertNotEquals(instant2.toString(), result);
     }
 }

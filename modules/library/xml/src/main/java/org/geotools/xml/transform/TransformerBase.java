@@ -413,7 +413,7 @@ public abstract class TransformerBase {
          * The queue of write operations pending for this translator. This should be empty if no
          * mark is set.
          */
-        private List<Action> pending = new ArrayList<Action>();
+        private List<Action> pending = new ArrayList<>();
 
         /**
          * An Action records a call to one of the SAX-event-generating methods on this translator.
@@ -859,7 +859,7 @@ public abstract class TransformerBase {
      *     a SchemaLocation if the namespace actually exists.
      */
     public static class SchemaLocationSupport {
-        private Map locations = new HashMap();
+        private Map<String, String> locations = new HashMap<>();
 
         public void setLocation(String nsURI, String uri) {
             locations.put(nsURI, uri);
@@ -870,7 +870,7 @@ public abstract class TransformerBase {
         }
 
         public String getSchemaLocation(String nsURI) {
-            String uri = (String) locations.get(nsURI);
+            String uri = locations.get(nsURI);
 
             if (uri == null) {
                 return "";

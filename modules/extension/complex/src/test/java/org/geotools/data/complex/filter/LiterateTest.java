@@ -35,7 +35,7 @@ public class LiterateTest {
     public void testLiterate() {
         List<Integer> list1 = Arrays.asList(1, 2, 3, 4);
         List<Integer> list2 = Arrays.asList(4, 3, 2, 1);
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("list1", list1);
         map.put("list2", list2);
 
@@ -49,13 +49,13 @@ public class LiterateTest {
                                 ff.function("litem", ff.property("list2"), ff.property("index"))));
         Object value = exp.evaluate(map);
         assertTrue(value instanceof List);
-        assertEquals(Arrays.asList(4.0, 6.0, 6.0, 4.0), ((List<?>) value));
+        assertEquals(Arrays.asList(4.0, 6.0, 6.0, 4.0), value);
     }
 
     @Test
     public void testEmptyList() {
         List<Integer> list = Arrays.asList();
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("list1", list);
 
         Function exp =
@@ -66,6 +66,6 @@ public class LiterateTest {
                         ff.function("litem", ff.property("list1"), ff.property("index")));
         Object value = exp.evaluate(map);
         assertTrue(value instanceof List);
-        assertEquals(Arrays.asList(), ((List<?>) value));
+        assertEquals(Arrays.asList(), value);
     }
 }

@@ -16,7 +16,10 @@
  */
 package org.geotools.ows.wmts.map;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -300,6 +303,11 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             ReferencedEnvelope global = null;
             for (Tile tile : responses) {
                 ReferencedEnvelope extent = tile.getExtent();
+                // ensure the extent has EAST_NORTH axis order because otherwise
+                // RendererUtilities.worldToScreenTransform will produce
+                // incorrect results:
+                extent = toEastNorthAxisOrder(extent);
+
                 if (global == null) {
                     global = new ReferencedEnvelope(extent);
                 } else {
@@ -323,9 +331,29 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             renderTiles(responses, image.createGraphics(), requestedEnvelope, targetTransform);
 
             return gcf.create(layer.getTitle(), image, global);
-        } catch (ServiceException e) {
+        } catch (ServiceException | FactoryException | TransformException e) {
             throw new IOException("GetMap failed", e);
         }
+    }
+
+    /**
+     * Checks if a referenced envelope has EAST_NORTH axis order and if not creates a copy with
+     * EAST_NORTH axis order.
+     *
+     * @param envelope The referenced envelope.
+     * @return The referenced envelope eith EAST_NORTH axis order.
+     * @throws FactoryException
+     * @throws TransformException
+     */
+    private ReferencedEnvelope toEastNorthAxisOrder(ReferencedEnvelope envelope)
+            throws FactoryException, TransformException {
+        CoordinateReferenceSystem crsExtent = envelope.getCoordinateReferenceSystem();
+        if (CRS.getAxisOrder(crsExtent) == CRS.AxisOrder.NORTH_EAST) {
+            String srsExtent = CRS.toSRS(crsExtent);
+            crsExtent = CRS.decode(srsExtent, true);
+            envelope = envelope.transform(crsExtent, false);
+        }
+        return envelope;
     }
 
     protected void renderTiles(

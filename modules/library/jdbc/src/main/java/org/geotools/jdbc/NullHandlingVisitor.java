@@ -111,7 +111,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
         }
         // this list contains a name -> List<filter> entry for any simple property name comparison,
         // and a filter -> visit(Filter) for any other case
-        LinkedHashMap<Object, Object> grouped = new LinkedHashMap();
+        LinkedHashMap<Object, Object> grouped = new LinkedHashMap<>();
         int maxListSize = 0;
         for (Filter child : filter.getChildren()) {
             // not equal comparisons are simplified another way
@@ -121,9 +121,9 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
             } else {
                 String name = getComparisonPropertyName((BinaryComparisonOperator) child);
                 if (name == null) {
-                    // not a case we can simplify, visit and accumulate
                     grouped.put(child, child.accept(this, null));
                 } else {
+                    @SuppressWarnings("unchecked")
                     List<Filter> filters = (List<Filter>) grouped.get(name);
                     if (filters == null) {
                         filters = new ArrayList<>();
@@ -146,6 +146,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
         for (Map.Entry<Object, Object> entry : grouped.entrySet()) {
             if (entry.getKey() instanceof String) {
                 Not notNull = ff.not(ff.isNull(ff.property((String) entry.getKey())));
+                @SuppressWarnings("unchecked")
                 List<Filter> filters = (List<Filter>) entry.getValue();
                 if (filters.size() == 1) {
                     children.add(ff.and(filters.get(0), notNull));

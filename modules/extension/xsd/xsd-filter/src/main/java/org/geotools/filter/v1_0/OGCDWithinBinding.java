@@ -77,7 +77,7 @@ public class OGCDWithinBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] operands = OGCUtils.spatial(node, filterFactory, geometryFactory);
-        DistanceUnits distance = ((DistanceUnits) node.getChildValue(DistanceUnits.class));
+        DistanceUnits distance = node.getChildValue(DistanceUnits.class);
         return filterFactory.dwithin(
                 operands[0], operands[1], distance.getDistance(), distance.getUnits());
     }

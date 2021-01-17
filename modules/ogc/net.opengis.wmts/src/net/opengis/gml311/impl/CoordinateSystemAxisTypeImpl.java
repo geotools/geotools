@@ -127,7 +127,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      */
     public EList<IdentifierType> getAxisID() {
         if (axisID == null) {
-            axisID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.COORDINATE_SYSTEM_AXIS_TYPE__AXIS_ID);
+            axisID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.COORDINATE_SYSTEM_AXIS_TYPE__AXIS_ID);
         }
         return axisID;
     }

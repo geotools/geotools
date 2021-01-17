@@ -17,14 +17,26 @@
 package org.geotools.styling.css;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import it.geosolutions.jaiext.classifier.LinearColorMap;
+import it.geosolutions.jaiext.classifier.LinearColorMapElement;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.renderer.lite.gridcoverage2d.SLDColorMapBuilder;
+import org.geotools.styling.ColorMap;
+import org.geotools.styling.ColorMapEntry;
+import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.css.selector.Accept;
 import org.geotools.styling.css.selector.And;
 import org.geotools.styling.css.selector.Data;
@@ -35,6 +47,9 @@ import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.TypeName;
 import org.junit.Test;
+import org.opengis.style.FeatureTypeStyle;
+import org.opengis.style.Rule;
+import org.opengis.style.Style;
 import org.parboiled.errors.ParseError;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
@@ -245,7 +260,7 @@ public class ParserSyntheticTest extends CssBaseTest {
                 0,
                 "mark",
                 new Value.Function(
-                        "symbol", Collections.singletonList((Value) new Value.Literal("circle"))));
+                        "symbol", Collections.singletonList(new Value.Literal("circle"))));
     }
 
     @Test
@@ -814,6 +829,60 @@ public class ParserSyntheticTest extends CssBaseTest {
 
     private <T extends Selector> T assertSelector(Selector selector, Class<T> clazz) {
         assertThat(selector, instanceOf(clazz));
-        return (T) selector;
+        return clazz.cast(selector);
+    }
+
+    @Test
+    public void testDynamicColorMapEntryFromCss() throws Exception {
+        String css =
+                "* { raster-channels: 'auto'; "
+                        + "raster-color-map-type: values; "
+                        + "raster-color-map: color-map-entry("
+                        + "[env('color','#FF0000')], "
+                        + "[env('min', 1) + 2 * (env('max',10) - env('min',1)) / 3],"
+                        + "[env('customOpacity', 1)])  ;}";
+        LinearColorMap colorMap = buildColorMapFromCss(css);
+        assertColorMap(colorMap, 255, 0, 0, 7, 255);
+
+        EnvFunction.setGlobalValue("min", 10);
+        EnvFunction.setGlobalValue("max", 40);
+        EnvFunction.setGlobalValue("customOpacity", 0.5);
+        EnvFunction.setGlobalValue("color", "#0000FF");
+
+        colorMap = buildColorMapFromCss(css);
+        assertColorMap(colorMap, 0, 0, 255, 30, 128);
+    }
+
+    private LinearColorMap buildColorMapFromCss(String css) {
+        Stylesheet ss = CssParser.parse(css);
+        CssTranslator translator = new CssTranslator();
+        Style style = translator.translate(ss);
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        Rule rule = fts.rules().get(0);
+        RasterSymbolizer rs = (RasterSymbolizer) rule.symbolizers().get(0);
+        ColorMap cm = rs.getColorMap();
+
+        assertEquals(1, cm.getColorMapEntries().length);
+        assertEquals(ColorMap.TYPE_VALUES, cm.getType());
+        ColorMapEntry colorMapEntry = cm.getColorMapEntry(0);
+
+        SLDColorMapBuilder builder = new SLDColorMapBuilder("test");
+        builder.setNumberColorMapEntries(1);
+        builder.setLinearColorMapType(LinearColorMap.LinearColorMapType.TYPE_VALUES);
+        builder.addColorMapEntry(colorMapEntry);
+        return builder.buildLinearColorMap();
+    }
+
+    private void assertColorMap(
+            LinearColorMap colorMap, int red, int green, int blue, int quantity, int opacity) {
+        LinearColorMapElement element = colorMap.get(0);
+        Color[] colors = element.getColors();
+        assertEquals(1, colors.length);
+        Color color = colors[0];
+        assertEquals(red, color.getRed());
+        assertEquals(green, color.getGreen());
+        assertEquals(blue, color.getBlue());
+        assertEquals(opacity, color.getAlpha());
+        assertEquals(quantity, element.getRange().getMin().intValue());
     }
 }

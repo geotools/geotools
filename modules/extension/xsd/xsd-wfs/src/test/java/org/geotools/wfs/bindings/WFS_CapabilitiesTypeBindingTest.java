@@ -16,6 +16,9 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import javax.xml.namespace.QName;
 import net.opengis.wfs.FeatureTypeListType;
 import net.opengis.wfs.GMLObjectTypeListType;
@@ -26,6 +29,7 @@ import org.geotools.gml3.GML;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.opengis.filter.capability.ArithmeticOperators;
 import org.opengis.filter.capability.ComparisonOperators;
 import org.opengis.filter.capability.FilterCapabilities;
@@ -41,18 +45,12 @@ import org.opengis.filter.capability.SpatialOperators;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Unit test suite for {@link WFS_CapabilitiesTypeBinding}
- *
- * @author Justin Deoliveira
- * @version $Id: WFS_CapabilitiesTypeBindingTest.java 27749 2007-11-05 09:51:33Z groldan $
- * @since 2.5.x
- */
 public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
     public WFS_CapabilitiesTypeBindingTest() {
         super(WFS.WFS_CapabilitiesType, WFSCapabilitiesType.class, Binding.OVERRIDE);
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<WFS_Capabilities version=\"1.1.0\">"
@@ -66,6 +64,8 @@ public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
         assertNotNull(caps.getFeatureTypeList());
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
     public void testEncode() throws Exception {
         WFSCapabilitiesType caps = factory.createWFSCapabilitiesType();
         caps.setVersion("1.1.0");

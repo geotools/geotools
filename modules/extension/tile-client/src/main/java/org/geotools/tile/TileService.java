@@ -17,12 +17,20 @@
  */
 package org.geotools.tile;
 
-import java.util.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.impl.ScaleZoomLevelMatcher;
@@ -44,7 +52,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Ugo Taddei
  * @since 12
  */
-public abstract class TileService {
+public abstract class TileService implements ImageLoader {
 
     protected static final Logger LOGGER = Logging.getLogger(TileService.class);
 
@@ -53,7 +61,7 @@ public abstract class TileService {
      *
      * <p>Because we are using SoftReference, we won't run out of Memory, the GC will free space.
      */
-    private ObjectCache tiles = ObjectCaches.create("soft", 50); // $NON-NLS-1$
+    private final ObjectCache<String, Tile> tiles = ObjectCaches.create("soft", 50); // $NON-NLS-1$
 
     private String baseURL;
 
@@ -321,6 +329,17 @@ public abstract class TileService {
         return tileList;
     }
 
+    /** Fetches the image from url given by tile. */
+    @Override
+    public BufferedImage loadImageTileImage(Tile tile) throws IOException {
+        final HTTPResponse response = getHttpClient().get(tile.getUrl());
+        try {
+            return ImageIOExt.readBufferedImage(response.getResponseStream());
+        } finally {
+            response.dispose();
+        }
+    }
+
     /**
      * Add a tile to the cache.
      *
@@ -338,7 +357,7 @@ public abstract class TileService {
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.fine("Tile already in cache: " + id);
             }
-            return (Tile) tiles.get(id);
+            return tiles.get(id);
         } else {
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.fine("Tile added to cache: " + id);
@@ -373,9 +392,7 @@ public abstract class TileService {
 
             return _mapExtent.transform(DefaultGeographicCRS.WGS84, true);
 
-        } catch (TransformException e) {
-            throw new RuntimeException(e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new RuntimeException(e);
         }
     }

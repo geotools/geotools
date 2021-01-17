@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -31,7 +32,6 @@ import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.operation.Matrix;
 import si.uom.SI;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * Tests the {@link AbstractCS} class.

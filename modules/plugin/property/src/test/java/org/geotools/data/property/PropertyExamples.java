@@ -91,9 +91,9 @@ public class PropertyExamples {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             File list[] = tmp.listFiles();
-            for (int i = 0; i < list.length; i++) {
-                list[i].delete();
-                System.out.println("remove " + list[i]);
+            for (File file : list) {
+                file.delete();
+                System.out.println("remove " + file);
             }
             tmp.delete();
             System.out.println("remove " + tmp);
@@ -118,7 +118,7 @@ public class PropertyExamples {
     private static void transactionExample() throws Exception {
         System.out.println("transactionExample start\n");
         // transactionExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -213,24 +213,21 @@ public class PropertyExamples {
     private static void removeAllExample() throws Exception {
         System.out.println("removeAllExample start\n");
         // removeAllExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         Transaction t = new DefaultTransaction("transaction");
         try {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                    store.getFeatureWriter("example", Filter.INCLUDE, t);
 
-            SimpleFeature feature;
-            try {
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    store.getFeatureWriter("example", Filter.INCLUDE, t)) {
+                SimpleFeature feature;
                 while (writer.hasNext()) {
                     feature = writer.next();
                     System.out.println("remove " + feature.getID());
                     writer.remove(); // marking contents for removal
                 }
-            } finally {
-                writer.close();
             }
             System.out.println("commit " + t); // only now are the contents
             // removed
@@ -249,7 +246,7 @@ public class PropertyExamples {
     private void replaceAll() throws Exception {
         System.out.println("replaceAll start\n");
         // replaceAll start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -291,7 +288,7 @@ public class PropertyExamples {
     private static void appendContent() throws Exception {
         System.out.println("copyContent start\n");
         // copyContent start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 

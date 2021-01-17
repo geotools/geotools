@@ -16,16 +16,20 @@
  */
 package org.geotools.data;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.After;
+import org.junit.Before;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -52,7 +56,7 @@ import org.opengis.filter.Id;
  * @author Jody Garnett, Refractions Research
  * @todo It should be possible to move this class in the {@code sample-data} module.
  */
-public class DataTestCase extends TestCase {
+public abstract class DataTestCase {
     protected GeometryFactory gf;
     protected SimpleFeatureType roadType; // road: id,geom,name
     protected SimpleFeatureType subRoadType; // road: id,geom
@@ -86,11 +90,6 @@ public class DataTestCase extends TestCase {
 
     public DataTestCase() {}
 
-    /** Creates a default test case with the given name. */
-    public DataTestCase(final String name) {
-        super(name);
-    }
-
     protected int expected(Filter filter) {
         if (filter instanceof Id) {
             Id id = (Id) filter;
@@ -100,18 +99,19 @@ public class DataTestCase extends TestCase {
     }
 
     /** Invoked before a test is run. The default implementation invokes {@link #dataSetUp}. */
-    protected void setUp() throws Exception {
-        ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory2(null);
+    @Before
+    public void init() throws Exception {
+        ff = CommonFactoryFinder.getFilterFactory2(null);
         dataSetUp();
     }
 
     /**
      * Loads the data.
      *
-     * @see #setUp()
+     * @see #init()
      */
     protected void dataSetUp() throws Exception {
-        String namespace = getName();
+        String namespace = getClass().getSimpleName();
         roadType =
                 DataUtilities.createType(
                         namespace + ".road", "id:0,geom:LineString,name:String,uuid:UUID");
@@ -174,7 +174,7 @@ public class DataTestCase extends TestCase {
 
         Id create =
                 ff.id(
-                        new HashSet(
+                        new HashSet<>(
                                 Arrays.asList(ff.featureId("road.rd1"), ff.featureId("road.rd2"))));
 
         rd12Filter = create;
@@ -333,7 +333,8 @@ public class DataTestCase extends TestCase {
      * Set all data references to {@code null}, allowing garbage collection. This method is
      * automatically invoked after each test.
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         gf = null;
         roadType = null;
         subRoadType = null;
@@ -420,7 +421,7 @@ public class DataTestCase extends TestCase {
     }
 
     /** Compares two geometries for equality. */
-    protected void assertEquals(Geometry expected, Geometry actual) {
+    protected void assertGeometryEquals(Geometry expected, Geometry actual) {
         if (expected == actual) {
             return;
         }
@@ -430,7 +431,7 @@ public class DataTestCase extends TestCase {
     }
 
     /** Compares two geometries for equality. */
-    protected void assertEquals(String message, Geometry expected, Geometry actual) {
+    protected void assertGeometryEquals(String message, Geometry expected, Geometry actual) {
         if (expected == actual) {
             return;
         }

@@ -185,12 +185,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
             final int sourceDimensions,
             final int targetDimensions,
             final ParameterDescriptorGroup parameters) {
-        this(
-                properties,
-                new HashMap<String, Object>(),
-                sourceDimensions,
-                targetDimensions,
-                parameters);
+        this(properties, new HashMap<>(), sourceDimensions, targetDimensions, parameters);
     }
 
     /**

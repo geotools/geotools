@@ -17,7 +17,6 @@
 package org.geotools.ml.bindings;
 
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
@@ -78,8 +77,8 @@ public class MLEnvelopeTypeBinding extends AbstractComplexBinding {
 
         int i = 0;
 
-        for (Iterator itr = headerElements.iterator(); itr.hasNext(); ) {
-            Map headerObject = (Map) itr.next();
+        for (Object headerElement : headerElements) {
+            Map headerObject = (Map) headerElement;
             headers[i++] =
                     new Header((String) headerObject.get("name"), (String) headerObject.get(null));
         }

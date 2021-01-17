@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,16 +77,15 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         /** Load data access */
         final Name EXAMPLE_TYPE = Types.typeName("http://example.com", "FirstParentFeature");
         final String schemaBase = "/test-data/";
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         dsParams.put("dbtype", "app-schema");
         URL url = getClass().getResource(schemaBase + "VocabFunctionsTest.xml");
         assertNotNull(url);
         dsParams.put("url", url.toExternalForm());
         dataAccess = DataAccessFinder.getDataStore(dsParams);
 
-        FeatureSource<FeatureType, Feature> fSource =
-                (FeatureSource) dataAccess.getFeatureSource(EXAMPLE_TYPE);
-        exCollection = (FeatureCollection<FeatureType, Feature>) fSource.getFeatures();
+        FeatureSource<FeatureType, Feature> fSource = dataAccess.getFeatureSource(EXAMPLE_TYPE);
+        exCollection = fSource.getFeatures();
 
         assertEquals(3, size(exCollection));
     }
@@ -106,8 +106,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                         put("sc.3", "c");
                     }
                 };
-        FeatureIterator<Feature> features = exCollection.features();
-        try {
+        try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
                 Feature feature = features.next();
                 String fId = feature.getIdentifier().getID();
@@ -122,21 +121,16 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                                 GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
                 assertEquals(recodedName, value);
             }
-        } finally {
-            features.close();
         }
     }
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
         // return features.size(); // JG: why are you not doing this?
         int size = 0;
-        FeatureIterator<Feature> i = features.features();
-        try {
+        try (FeatureIterator<Feature> i = features.features()) {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        } finally {
-            i.close();
         }
         return size;
     }
@@ -152,8 +146,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                         put("sc.3", "a valid value");
                     }
                 };
-        FeatureIterator<Feature> features = exCollection.features();
-        try {
+        try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
                 Feature feature = features.next();
                 String fId = feature.getIdentifier().getID();
@@ -161,8 +154,6 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                 // <OCQL>Categorize(getID(), 'missing value', 2, 'a valid value')</OCQL>
                 assertEquals(attribute.getValue(), VALUE_MAP.get(fId));
             }
-        } finally {
-            features.close();
         }
     }
 
@@ -207,13 +198,13 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                         put("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment");
                     }
                 };
-        FeatureIterator<Feature> features = exCollection.features();
-        try {
+        try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
                 Feature feature = features.next();
                 String fId = feature.getIdentifier().getID();
                 // gml[2]: <OCQL>Vocab(URN_ID,
-                // 'src/test/java/org/geotools/filter/test-data/minoc_lithology_mapping.properties')</OCQL>
+                // 'src/test/java/org/geotools/filter/test-data/minoc_lithology_mapping
+                // .properties')</OCQL>
                 ComplexAttribute complexAttribute =
                         (ComplexAttribute) ff.property("gml:name[2]").evaluate(feature);
                 String value =
@@ -221,8 +212,6 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                                 GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
                 assertEquals(VALUE_MAP.get(fId), value);
             }
-        } finally {
-            features.close();
         }
     }
 
@@ -241,8 +230,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                         put("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment");
                     }
                 };
-        FeatureIterator<Feature> features = exCollection.features();
-        try {
+        try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
                 Feature feature = features.next();
                 String fid = feature.getIdentifier().getID();
@@ -253,8 +241,6 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                                 GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
                 assertEquals(expectedValues.get(fid), value);
             }
-        } finally {
-            features.close();
         }
     }
 }

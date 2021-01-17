@@ -42,7 +42,10 @@ package org.geotools.feature.type;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Utility class supplying static methods. Date serialization is based on the algorithms published
@@ -64,7 +67,7 @@ public abstract class DateUtil {
     private static final int MSPERDAY = MSPERHOUR * 24;
 
     /** Number of milliseconds in a day as a long. */
-    private static final long LMSPERDAY = (long) MSPERDAY;
+    private static final long LMSPERDAY = MSPERDAY;
 
     /** Number of milliseconds in a (non-leap) year. */
     private static final long MSPERYEAR = LMSPERDAY * 365;

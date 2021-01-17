@@ -27,9 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.IllegalAttributeException;
@@ -56,19 +58,11 @@ import org.xml.sax.InputSource;
  * @author $Author: sploreg $ (last modification)
  * @version $Id$
  */
-public class GazetteerNameValidationOnlineTest extends TestCase {
-
-    public GazetteerNameValidationOnlineTest() {
-        super("");
-    }
-
-    public GazetteerNameValidationOnlineTest(String s) {
-        super(s);
-    }
+public class GazetteerNameValidationOnlineTest {
 
     public void XtestValidate() {
         class TestFeature implements SimpleFeature {
-            Map attrs = new HashMap();
+            Map<String, Object> attrs = new HashMap<>();
 
             public SimpleFeatureCollection getParent() {
                 return null;
@@ -232,8 +226,7 @@ public class GazetteerNameValidationOnlineTest extends TestCase {
                 return null;
             }
 
-            public List getAttributes() {
-
+            public List<Object> getAttributes() {
                 return null;
             }
 
@@ -321,6 +314,8 @@ public class GazetteerNameValidationOnlineTest extends TestCase {
 
     }
 
+    @Test
+    @Ignore // server is not more available
     public void testURLConnection() {
         String place = "Vancouver";
         try {
@@ -370,7 +365,7 @@ public class GazetteerNameValidationOnlineTest extends TestCase {
             return; // ignore server must be down
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
     }
 

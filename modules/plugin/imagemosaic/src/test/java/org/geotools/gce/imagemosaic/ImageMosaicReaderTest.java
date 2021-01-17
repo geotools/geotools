@@ -19,21 +19,33 @@ package org.geotools.gce.imagemosaic;
 import static org.geotools.gce.imagemosaic.TestUtils.getReader;
 import static org.geotools.gce.imagemosaic.TestUtils.setupTestDirectory;
 import static org.geotools.util.URLs.fileToUrl;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -87,7 +99,7 @@ import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
 import javax.media.jai.RenderedOp;
-import javax.swing.*;
+import javax.swing.JFrame;
 import junit.framework.JUnit4TestAdapter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -135,6 +147,7 @@ import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -182,7 +195,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de
  * @since 2.3
  */
-public class ImageMosaicReaderTest extends Assert {
+public class ImageMosaicReaderTest {
 
     private static final String OS_NAME = System.getProperty("os.name");
 
@@ -237,7 +250,7 @@ public class ImageMosaicReaderTest extends Assert {
 
     private URL imposedEnvelopeURL;
 
-    private static final String H2_SAMPLE_PROPERTIES =
+    static final String H2_SAMPLE_PROPERTIES =
             "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
                     + "dbtype=h2\n"
                     + "Loose\\ bbox=true #important for performances\n"
@@ -517,7 +530,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         Date date = sdf.parse("2008-10-31T00:00:00.000Z");
@@ -633,6 +646,11 @@ public class ImageMosaicReaderTest extends Assert {
         try (FileInputStream fin = new FileInputStream(mosaicFile)) {
             properties.load(fin);
         }
+        assertTrue(properties.containsKey(Prop.SUGGESTED_FORMAT));
+        assertTrue(
+                "org.geotools.gce.geotiff.GeoTiffFormat"
+                        .equalsIgnoreCase((String) properties.get(Prop.SUGGESTED_FORMAT)));
+
         try (FileWriter fw = new FileWriter(mosaicFile)) {
             assertNotNull(properties.remove("TypeName"));
             properties.store(fw, "");
@@ -700,7 +718,9 @@ public class ImageMosaicReaderTest extends Assert {
             props.load(is);
         }
         props.put("database", new File(workDir, "imagemosaic").getPath());
-        JDBCDataStore store = (JDBCDataStore) DataStoreFinder.getDataStore(props);
+        JDBCDataStore store =
+                (JDBCDataStore)
+                        DataStoreFinder.getDataStore(DataUtilities.toConnectionParameters(props));
         // H2 seems to return the table names in alphabetical order
         store.createSchema(DataUtilities.createType("aaa_noFootprint", "a:String,b:Integer"));
         store.createSchema(DataUtilities.createType("bbb_noLocation", "geom:Polygon,b:String"));
@@ -785,7 +805,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         Date date = sdf.parse("2008-11-01T00:00:00.000Z");
@@ -968,7 +988,7 @@ public class ImageMosaicReaderTest extends Assert {
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2004-02-01T00:00:00.000Z");
         time.setValue(
-                new ArrayList() {
+                new ArrayList<Date>() {
                     {
                         add(timeD);
                     }
@@ -982,7 +1002,7 @@ public class ImageMosaicReaderTest extends Assert {
         // Test the output coverage
         reader = getReader(timeURL, format);
         time.setValue(
-                new ArrayList() {
+                new ArrayList<DateRange>() {
                     {
                         add(
                                 new DateRange(
@@ -1047,7 +1067,7 @@ public class ImageMosaicReaderTest extends Assert {
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2008-10-31T00:00:00.000Z");
         time.setValue(
-                new ArrayList() {
+                new ArrayList<Date>() {
                     {
                         add(timeD);
                     }
@@ -1059,9 +1079,12 @@ public class ImageMosaicReaderTest extends Assert {
         ParameterValue<List<String>> depthValue = null;
         final String selectedWaveLength = "020";
         final String selectedDate = "20081031T0000000";
-        for (ParameterDescriptor param : params) {
+        for (ParameterDescriptor<List> param : params) {
             if (param.getName().getCode().equalsIgnoreCase("DATE")) {
-                dateValue = param.createValue();
+                @SuppressWarnings("unchecked")
+                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+
+                dateValue = value;
                 dateValue.setValue(
                         new ArrayList<String>() {
                             {
@@ -1069,7 +1092,9 @@ public class ImageMosaicReaderTest extends Assert {
                             }
                         });
             } else if (param.getName().getCode().equalsIgnoreCase("DEPTH")) {
-                depthValue = param.createValue();
+                @SuppressWarnings("unchecked")
+                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                depthValue = value;
                 depthValue.setValue(
                         new ArrayList<String>() {
                             {
@@ -1149,7 +1174,7 @@ public class ImageMosaicReaderTest extends Assert {
             final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
             final Date timeD = parseTimeStamp("2008-11-01T00:00:00.000Z");
             time.setValue(
-                    new ArrayList() {
+                    new ArrayList<Date>() {
                         {
                             add(timeD);
                         }
@@ -1157,9 +1182,9 @@ public class ImageMosaicReaderTest extends Assert {
 
             final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
             elevation.setValue(
-                    new ArrayList() {
+                    new ArrayList<Double>() {
                         {
-                            add(34); // Elevation
+                            add(34d); // Elevation
                         }
                     });
 
@@ -1171,7 +1196,9 @@ public class ImageMosaicReaderTest extends Assert {
             final String selectedDate = "20081031T000000";
             for (ParameterDescriptor param : params) {
                 if (param.getName().getCode().equalsIgnoreCase("DATE")) {
-                    dateValue = param.createValue();
+                    @SuppressWarnings("unchecked")
+                    ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                    dateValue = value;
                     dateValue.setValue(
                             new ArrayList<String>() {
                                 {
@@ -1179,7 +1206,9 @@ public class ImageMosaicReaderTest extends Assert {
                                 }
                             });
                 } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
-                    waveLength = param.createValue();
+                    @SuppressWarnings("unchecked")
+                    ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                    waveLength = value;
                     waveLength.setValue(
                             new ArrayList<String>() {
                                 {
@@ -1212,8 +1241,7 @@ public class ImageMosaicReaderTest extends Assert {
 
     /** Simple test method to test emptyMosaic creation support followed by harvesting. dataset */
     @Test
-    // @Ignore
-    public void testEmpytMosaic() throws Exception {
+    public void testEmptyMosaic() throws Exception {
 
         final File workDir = new File(TestData.file(this, "."), "emptyMosaic");
         if (!workDir.mkdir()) {
@@ -1277,8 +1305,7 @@ public class ImageMosaicReaderTest extends Assert {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(1, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 String expected =
@@ -1288,8 +1315,6 @@ public class ImageMosaicReaderTest extends Assert {
                 assertEquals(
                         "2008-11-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
 
         } finally {
@@ -1392,8 +1417,7 @@ public class ImageMosaicReaderTest extends Assert {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(1, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 String expected =
@@ -1403,8 +1427,6 @@ public class ImageMosaicReaderTest extends Assert {
                 assertEquals(
                         "2008-10-31T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
 
         } finally {
@@ -1466,7 +1488,7 @@ public class ImageMosaicReaderTest extends Assert {
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         final Date timeD = parseTimeStamp("2008-11-01T00:00:00.000Z");
         time.setValue(
-                new ArrayList() {
+                new ArrayList<Date>() {
                     {
                         add(timeD);
                     }
@@ -1474,9 +1496,9 @@ public class ImageMosaicReaderTest extends Assert {
 
         final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
         elevation.setValue(
-                new ArrayList() {
+                new ArrayList<Double>() {
                     {
-                        add(34); // Elevation
+                        add(34d); // Elevation
                     }
                 });
 
@@ -1488,7 +1510,9 @@ public class ImageMosaicReaderTest extends Assert {
         final String selectedDate = "20081031T000000";
         for (ParameterDescriptor param : params) {
             if (param.getName().getCode().equalsIgnoreCase("DATE")) {
-                dateValue = param.createValue();
+                @SuppressWarnings("unchecked")
+                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                dateValue = value;
                 dateValue.setValue(
                         new ArrayList<String>() {
                             {
@@ -1496,7 +1520,9 @@ public class ImageMosaicReaderTest extends Assert {
                             }
                         });
             } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
-                waveLength = param.createValue();
+                @SuppressWarnings("unchecked")
+                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                waveLength = value;
                 waveLength.setValue(
                         new ArrayList<String>() {
                             {
@@ -1548,7 +1574,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertNotNull(descriptors);
         assertEquals(4, descriptors.size());
 
-        Map<String, DimensionDescriptor> dds = new HashMap<String, DimensionDescriptor>();
+        Map<String, DimensionDescriptor> dds = new HashMap<>();
         for (DimensionDescriptor dd : descriptors) {
             dds.put(dd.getName(), dd);
         }
@@ -1675,9 +1701,9 @@ public class ImageMosaicReaderTest extends Assert {
 
         final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
         elevation.setValue(
-                new ArrayList() {
+                new ArrayList<Double>() {
                     {
-                        add(34); // Elevation
+                        add(34d); // Elevation
                     }
                 });
 
@@ -1687,7 +1713,9 @@ public class ImageMosaicReaderTest extends Assert {
         final String selectedWaveLength = "20";
         for (ParameterDescriptor param : params) {
             if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
-                waveLength = param.createValue();
+                @SuppressWarnings("unchecked")
+                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                waveLength = value;
                 waveLength.setValue(
                         new ArrayList<String>() {
                             {
@@ -1711,8 +1739,6 @@ public class ImageMosaicReaderTest extends Assert {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    // @Ignore
-    @SuppressWarnings("rawtypes")
     public void multipleDimensionsStacked() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);
@@ -1725,6 +1751,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertEquals("20081031T0000000,20081101T0000000", reader.getMetadataValue("DATE_DOMAIN"));
         assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
 
+        // the images will stack on depth
         assertEquals("true", reader.getMetadataValue("HAS_DEPTH_DOMAIN"));
         assertEquals("false", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
         assertEquals("20,100", reader.getMetadataValue("DEPTH_DOMAIN"));
@@ -1742,44 +1769,74 @@ public class ImageMosaicReaderTest extends Assert {
         final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2008-10-31T00:00:00.000Z");
-        time.setValue(
-                new ArrayList() {
-                    {
-                        add(timeD);
-                    }
-                });
-
-        // specify additional Dimensions
-        Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
-        ParameterValue<List<String>> dateValue = null;
-        final String selectedDate = "20081031T0000000";
-        for (ParameterDescriptor param : params) {
-            if (param.getName().getCode().equalsIgnoreCase("DATE")) {
-                dateValue = param.createValue();
-                dateValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedDate);
-                            }
-                        });
-            }
-        }
+        time.setValue(Arrays.asList(timeD));
 
         // Stacked bands
-        final ParameterValue<String> paramStacked = ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
-        paramStacked.setValue(MergeBehavior.STACK.toString());
+        final ParameterValue<String> mergeStack = ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
+        mergeStack.setValue(MergeBehavior.STACK.toString());
+
+        // Ensure predictable order with a sort
+        final ParameterValue<String> sort = ImageMosaicFormat.SORT_BY.createValue();
+        sort.setValue("depth A");
 
         // Test the output coverage
         GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, tileSize, time, dateValue, paramStacked};
+                new GeneralParameterValue[] {useJai, tileSize, time, mergeStack, sort};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, false);
         assertNotNull(coverage);
 
+        // Check that we got the expected files as inputs to the coverage. It's a comma separated
+        // value, test it so that it won't fail even if the directories contain a comma inside them.
+        // Also ensure the other two files were not used
+        String fileLocation =
+                (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertThat(fileLocation, containsString("NCOM_wattemp_020_20081031T0000000_12.tiff,"));
+        assertThat(fileLocation, endsWith("NCOM_wattemp_100_20081031T0000000_12.tiff"));
+        assertThat(fileLocation, not(containsString("NCOM_wattemp_100_20081101T0000000_12.tiff")));
+        assertThat(fileLocation, not(containsString("NCOM_wattemp_020_20081101T0000000_12.tiff")));
+
         // inspect reanderedImage
         final RenderedImage image = coverage.getRenderedImage();
-        assertEquals("wrong number of bands detected", 1, image.getSampleModel().getNumBands());
+        assertEquals("wrong number of bands detected", 2, image.getSampleModel().getNumBands());
+
+        // grab a reference for the first band, and make sure the values are the same
+        GeneralParameterValue[] values20 = {
+            useJai, tileSize, time, dynamicParameter(reader, "depth", 20)
+        };
+        final GridCoverage2D coverage20 = TestUtils.getCoverage(reader, values20, false);
+        assertBandEqual(image, 0, coverage20.getRenderedImage());
+
+        // do the same for the second
+        GeneralParameterValue[] values100 = {
+            useJai, tileSize, time, dynamicParameter(reader, "depth", 100)
+        };
+        final GridCoverage2D coverage100 = TestUtils.getCoverage(reader, values20, false);
+        assertBandEqual(image, 1, coverage100.getRenderedImage());
 
         reader.dispose();
+    }
+
+    private void assertBandEqual(RenderedImage image, int band, RenderedImage expected) {
+        ImageWorker iw = new ImageWorker(image);
+        iw.retainBands(new int[] {band});
+        iw.subtract(expected);
+        double[] maximums = iw.getMaximums();
+        assertArrayEquals(new double[] {0}, maximums, 0d);
+    }
+
+    private GeneralParameterValue dynamicParameter(
+            ImageMosaicReader reader, String parameterName, Object parameterValue) {
+        // specify additional Dimensions
+        Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
+        ParameterValue<List> depthParam = null;
+        for (ParameterDescriptor<List> param : params) {
+            if (param.getName().getCode().equalsIgnoreCase(parameterName)) {
+                depthParam = param.createValue();
+                depthParam.setValue(Arrays.asList(parameterValue));
+            }
+        }
+
+        return depthParam;
     }
 
     /**
@@ -2441,7 +2498,7 @@ public class ImageMosaicReaderTest extends Assert {
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2008-10-31T00:00:00.000Z");
         time.setValue(
-                new ArrayList() {
+                new ArrayList<Date>() {
                     {
                         add(timeD);
                     }
@@ -2449,11 +2506,11 @@ public class ImageMosaicReaderTest extends Assert {
 
         // specify additional Dimensions
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
-        ParameterValue<List<String>> dateValue = null;
-        ParameterValue<List<String>> depthValue = null;
+        ParameterValue<List> dateValue = null;
+        ParameterValue<List> depthValue = null;
         final String selectedWaveLength = "030";
         final String selectedDate = "20081031T0000000";
-        for (ParameterDescriptor param : params) {
+        for (ParameterDescriptor<List> param : params) {
             if (param.getName().getCode().equalsIgnoreCase("DATE")) {
                 dateValue = param.createValue();
                 dateValue.setValue(
@@ -2485,8 +2542,6 @@ public class ImageMosaicReaderTest extends Assert {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    // @Ignore
-    @SuppressWarnings("rawtypes")
     public void multipleDimensionsStackedSar() throws Exception {
 
         final URL sourceURL = TestData.file(this, "merge").toURI().toURL();
@@ -2526,27 +2581,15 @@ public class ImageMosaicReaderTest extends Assert {
         final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2012-01-01T00:00:00.000Z");
-        time.setValue(
-                new ArrayList() {
-                    {
-                        add(timeD);
-                    }
-                });
+        time.setValue(Arrays.asList(timeD));
 
         // specify additional Dimensions
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
-        ParameterValue<List<String>> polariz = null;
-        for (ParameterDescriptor param : params) {
+        ParameterValue<List> polariz = null;
+        for (ParameterDescriptor<List> param : params) {
             if (param.getName().getCode().equalsIgnoreCase("POLARIZATION")) {
                 polariz = param.createValue();
-                polariz.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add("HH");
-                                add("HV");
-                                add("VV");
-                            }
-                        });
+                polariz.setValue(Arrays.asList("HH", "HV", "VV"));
             }
         }
 
@@ -2554,16 +2597,51 @@ public class ImageMosaicReaderTest extends Assert {
         final ParameterValue<String> paramStacked = ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
         paramStacked.setValue(MergeBehavior.STACK.toString());
 
+        // Ensure predictable order with a sort
+        final ParameterValue<String> sort = ImageMosaicFormat.SORT_BY.createValue();
+        sort.setValue("polarization A");
+
         // Test the output coverage
         GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, tileSize, time, polariz, paramStacked};
+                new GeneralParameterValue[] {useJai, tileSize, time, polariz, paramStacked, sort};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, false);
         assertNotNull(coverage);
+
+        // Check that we got the expected files as inputs to the coverage. It's a comma separated
+        // value, test it so that it won't fail even if the directories contain a comma inside them.
+        // Also ensure the other file was not used
+        String fileLocation =
+                (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertThat(fileLocation, containsString("imagery_HH_2012.tif,"));
+        assertThat(fileLocation, containsString("imagery_HV_2012.tif,"));
+        assertThat(fileLocation, endsWith("imagery_VV_2012.tif"));
+        assertThat(fileLocation, not(containsString("imagery_VH_2012.tif")));
 
         // inspect reanderedImage
         final RenderedImage image = coverage.getRenderedImage();
         assertEquals("wrong number of bands detected", 3, image.getSampleModel().getNumBands());
         assertEquals(DataBuffer.TYPE_SHORT, image.getSampleModel().getDataType());
+
+        // grab a reference for the first band, and make sure the values are the same
+        GeneralParameterValue[] valuesHH = {
+            useJai, tileSize, time, dynamicParameter(reader, "polarization", "HH")
+        };
+        final GridCoverage2D coverageHH = TestUtils.getCoverage(reader, valuesHH, false);
+        assertBandEqual(image, 0, coverageHH.getRenderedImage());
+
+        // do the same for the second
+        GeneralParameterValue[] valuesHV = {
+            useJai, tileSize, time, dynamicParameter(reader, "polarization", "HV")
+        };
+        final GridCoverage2D coverageHV = TestUtils.getCoverage(reader, valuesHV, false);
+        assertBandEqual(image, 1, coverageHV.getRenderedImage());
+
+        // do the same for the third
+        GeneralParameterValue[] valuesVV = {
+            useJai, tileSize, time, dynamicParameter(reader, "polarization", "VV")
+        };
+        final GridCoverage2D coverageVV = TestUtils.getCoverage(reader, valuesVV, false);
+        assertBandEqual(image, 2, coverageVV.getRenderedImage());
 
         reader.dispose();
     }
@@ -2632,8 +2710,7 @@ public class ImageMosaicReaderTest extends Assert {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(2, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 assertEquals("world.200402.3x5400x2700.tiff", f.getAttribute("location"));
@@ -2648,8 +2725,6 @@ public class ImageMosaicReaderTest extends Assert {
                 assertEquals(
                         "2004-05-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
 
         } finally {
@@ -2834,8 +2909,7 @@ public class ImageMosaicReaderTest extends Assert {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(2, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 assertEquals("passA2006128194218.tiff", f.getAttribute("location"));
@@ -2844,8 +2918,6 @@ public class ImageMosaicReaderTest extends Assert {
                         "../singleHarvestRGBA2/passA2006128211927.tiff"
                                 .replace('/', File.separatorChar);
                 assertEquals(expected, f.getAttribute("location"));
-            } finally {
-                fi.close();
             }
         } finally {
             reader.dispose();
@@ -2920,67 +2992,145 @@ public class ImageMosaicReaderTest extends Assert {
 
     @Test
     public void testHarvestMultipleFiles() throws Exception {
-        File source = URLs.urlToFile(timeURL);
-        File testDataDir = TestData.file(this, ".");
-        File directory1 = new File(testDataDir, "harvest1");
-        File directory2 = new File(testDataDir, "harvest2");
-        if (directory1.exists()) {
-            FileUtils.deleteDirectory(directory1);
-        }
-        FileUtils.copyDirectory(source, directory1);
-        if (directory2.exists()) {
-            FileUtils.deleteDirectory(directory2);
-        }
-        directory2.mkdirs();
-        // Creation of a File Collection
-        Collection<File> files = new ArrayList<File>();
+        // setup mosaic with just one file, get a list of the excluded ones for later harvest
+        MultipleHarvestSetup multipleHarvestSetup = new MultipleHarvestSetup().invoke();
+        Collection<File> files = multipleHarvestSetup.getFiles();
+        ImageMosaicReader reader = multipleHarvestSetup.getReader();
 
-        // move all files besides month 2 and 5 to the second directory and store them into a
-        // Collection
-        for (File file :
-                FileUtils.listFiles(
-                        directory1, new RegexFileFilter("world\\.20040[^25].*\\.tiff"), null)) {
-            File renamed = new File(directory2, file.getName());
-            assertTrue(file.renameTo(renamed));
-            files.add(renamed);
-        }
-        // remove all mosaic related files
-        for (File file :
-                FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
-            assertTrue(file.delete());
-        }
-
-        // ok, let's create a mosaic with the two original granules
-        URL harvestSingleURL = fileToUrl(directory1);
-        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
-        ImageMosaicReader reader = getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
-            String[] metadataNames = reader.getMetadataNames();
-            assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
-
-            // now go and harvest the other directory
-            List<HarvestedSource> summary = reader.harvest(null, files, null);
-            assertSame(originalCatalog, reader.granuleCatalog);
-            assertEquals(2, summary.size());
-            for (HarvestedSource hf : summary) {
-                assertTrue(hf.success());
-            }
-
-            // the harvest put the file in the same coverage
-            assertEquals(1, reader.getGridCoverageNames().length);
-            metadataNames = reader.getMetadataNames();
-            assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
+            assertMultipleFileHarvest(files, reader, originalCatalog);
         } finally {
             reader.dispose();
+        }
+    }
+
+    @Test
+    public void testHarvestMultipleFilesOnStoredProperties() throws Exception {
+        // force mosaic creation
+        MultipleHarvestSetup multipleHarvestSetup = new MultipleHarvestSetup().invoke();
+        Collection<File> files = multipleHarvestSetup.getFiles();
+        multipleHarvestSetup.getReader().dispose();
+
+        // open it again, it will have to work against the stored config
+        ImageMosaicReader reader = multipleHarvestSetup.getReader();
+
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
+        try {
+            assertMultipleFileHarvest(files, reader, originalCatalog);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testHarvestMultipleFilesWithoutCRS() throws Exception {
+        // force mosaic creation
+        MultipleHarvestSetup multipleHarvestSetup = new MultipleHarvestSetup().invoke();
+        Collection<File> files = multipleHarvestSetup.getFiles();
+        ImageMosaicReader tempReader = multipleHarvestSetup.getReader();
+        File directory = URLs.urlToFile((URL) tempReader.getSource());
+        tempReader.dispose();
+
+        // remove the MosaicCRS property from the mosaic configuration
+        File config = new File(directory, directory.getName() + ".properties");
+        Properties p = new Properties();
+        try (FileInputStream fis = new FileInputStream(config)) {
+            p.load(fis);
+        }
+        p.remove(Prop.MOSAIC_CRS);
+        try (FileOutputStream fos = new FileOutputStream(config)) {
+            p.store(fos, null);
+        }
+
+        // open it again, it will have to work against the stored config without the CRS
+        ImageMosaicReader reader = multipleHarvestSetup.getReader();
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
+        try {
+            assertMultipleFileHarvest(files, reader, originalCatalog);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    public void assertMultipleFileHarvest(
+            Collection<File> files, ImageMosaicReader reader, GranuleCatalog originalCatalog)
+            throws IOException {
+        String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+        assertEquals(
+                "2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
+                reader.getMetadataValue(metadataNames[0]));
+
+        // now go and harvest the other directory
+        List<HarvestedSource> summary = reader.harvest(null, files, null);
+        assertSame(originalCatalog, reader.granuleCatalog);
+        assertEquals(2, summary.size());
+        for (HarvestedSource hf : summary) {
+            assertTrue(hf.success());
+        }
+
+        // the harvest put the file in the same coverage
+        assertEquals(1, reader.getGridCoverageNames().length);
+        metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+        assertEquals(
+                "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,"
+                        + "2004-05-01T00:00:00.000Z",
+                reader.getMetadataValue(metadataNames[0]));
+    }
+
+    private class MultipleHarvestSetup {
+        private Collection<File> files;
+        private URL harvestSingleURL;
+        private AbstractGridFormat format;
+        private ImageMosaicReader reader;
+
+        public Collection<File> getFiles() {
+            return files;
+        }
+
+        public ImageMosaicReader getReader() throws FactoryException {
+            return TestUtils.getReader(harvestSingleURL, format);
+        }
+
+        public MultipleHarvestSetup invoke() throws IOException, FactoryException {
+            File source = URLs.urlToFile(timeURL);
+            File testDataDir = TestData.file(ImageMosaicReaderTest.this, ".");
+            File directory1 = new File(testDataDir, "harvest1");
+            File directory2 = new File(testDataDir, "harvest2");
+            if (directory1.exists()) {
+                FileUtils.deleteDirectory(directory1);
+            }
+            FileUtils.copyDirectory(source, directory1);
+            if (directory2.exists()) {
+                FileUtils.deleteDirectory(directory2);
+            }
+            directory2.mkdirs();
+            // Creation of a File Collection
+            files = new ArrayList<>();
+
+            // move all files besides month 2 and 5 to the second directory and store them into a
+            // Collection
+            for (File file :
+                    FileUtils.listFiles(
+                            directory1, new RegexFileFilter("world\\.20040[^25].*\\.tiff"), null)) {
+                File renamed = new File(directory2, file.getName());
+                assertTrue(file.renameTo(renamed));
+                files.add(renamed);
+            }
+            // remove all mosaic related files
+            for (File file :
+                    FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
+                assertTrue(file.delete());
+            }
+
+            // ok, let's create a mosaic with the two original granules
+            harvestSingleURL = fileToUrl(directory1);
+            format = TestUtils.getFormat(harvestSingleURL);
+            return this;
         }
     }
 
@@ -3018,7 +3168,7 @@ public class ImageMosaicReaderTest extends Assert {
         GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
             // now go and harvest the other files
-            Collection<File> files = new ArrayList<File>();
+            Collection<File> files = new ArrayList<>();
             for (File file :
                     FileUtils.listFiles(directory2, FileFilterUtils.prefixFileFilter("c"), null)) {
                 files.add(file);
@@ -3092,7 +3242,8 @@ public class ImageMosaicReaderTest extends Assert {
             assertNotNull(metadataNames);
             assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
             assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
+                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,"
+                            + "2004-05-01T00:00:00.000Z",
                     reader.getMetadataValue(metadataNames[0]));
         } finally {
             reader.dispose();
@@ -3128,7 +3279,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // Create a List of Files containing only the directory to harvest and check if the Reader
         // reads it as a Directory
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         files.add(directory2);
 
         // ok, let's create a mosaic with the two original granules
@@ -3137,29 +3288,7 @@ public class ImageMosaicReaderTest extends Assert {
         ImageMosaicReader reader = getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
-            String[] metadataNames = reader.getMetadataNames();
-            assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
-
-            // now go and harvest the file list
-            List<HarvestedSource> summary = reader.harvest(null, files, null);
-            assertSame(originalCatalog, reader.granuleCatalog);
-            assertEquals(2, summary.size());
-            for (HarvestedSource hf : summary) {
-                assertTrue(hf.success());
-            }
-
-            // the harvest put the files in the same coverage
-            assertEquals(1, reader.getGridCoverageNames().length);
-            metadataNames = reader.getMetadataNames();
-            assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
+            assertMultipleFileHarvest(files, reader, originalCatalog);
         } finally {
             reader.dispose();
         }
@@ -3302,8 +3431,7 @@ public class ImageMosaicReaderTest extends Assert {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(2, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
 
@@ -3316,8 +3444,6 @@ public class ImageMosaicReaderTest extends Assert {
                 assertEquals(
                         "2004-05-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
         } finally {
             reader.dispose();
@@ -3653,8 +3779,7 @@ public class ImageMosaicReaderTest extends Assert {
             GranuleSource granules = reader.getGranules(coverageName, true);
             assertEquals(2, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
-            SimpleFeatureIterator fi = granules.getGranules(q).features();
-            try {
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 assertEquals("world.200402.3x5400x2700.tiff", f.getAttribute("location"));
@@ -3669,8 +3794,6 @@ public class ImageMosaicReaderTest extends Assert {
                 assertEquals(
                         "2004-05-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
-            } finally {
-                fi.close();
             }
 
         } finally {
@@ -3792,7 +3915,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date date = sdf.parse("2008-10-31T00:00:00.000Z");
@@ -3805,12 +3928,12 @@ public class ImageMosaicReaderTest extends Assert {
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
         bkg.setValue(new double[] {-9999.0});
 
-        ParameterValue<List<String>> dateValue = null;
-        ParameterValue<List<String>> depthValue = null;
+        ParameterValue<List> dateValue = null;
+        ParameterValue<List> depthValue = null;
         final String selectedWaveLength = "020";
         final String selectedDate = "20081031T0000000";
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
-        for (ParameterDescriptor param : params) {
+        for (ParameterDescriptor<List> param : params) {
             if (param.getName().getCode().equalsIgnoreCase("DAT")) {
                 dateValue = param.createValue();
                 dateValue.setValue(
@@ -4012,7 +4135,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         Date date = sdf.parse("2008-10-31T00:00:00.000Z");
@@ -4359,7 +4482,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertNotNull(fileLocation);
         assertTrue(fileLocation instanceof String);
         String path = (String) fileLocation;
-        assertTrue(!path.isEmpty());
+        assertFalse(path.isEmpty());
         assertTrue(path.endsWith(".ovr"));
         reader.dispose();
     }
@@ -4399,7 +4522,10 @@ public class ImageMosaicReaderTest extends Assert {
             h2Connection.load(fr);
         }
         h2Connection.put("database", new File(testMosaic, "imagemosaic").getCanonicalPath());
-        JDBCDataStore store = (JDBCDataStore) DataStoreFinder.getDataStore(h2Connection);
+        JDBCDataStore store =
+                (JDBCDataStore)
+                        DataStoreFinder.getDataStore(
+                                DataUtilities.toConnectionParameters(h2Connection));
         try (Connection c = store.getConnection(Transaction.AUTO_COMMIT);
                 Statement st = c.createStatement()) {
             st.execute("ALTER TABLE \"existingStore\" RENAME TO \"testMosaic\"");
@@ -4677,7 +4803,7 @@ public class ImageMosaicReaderTest extends Assert {
                             new Coordinate(0, 0)
                         });
         f.setDefaultGeometry(gf.createPolygon(shell));
-        List<SimpleFeature> granules = new LinkedList<SimpleFeature>();
+        List<SimpleFeature> granules = new LinkedList<>();
         granules.add(f);
         reader.granuleCatalog.addGranules("empty_mosaic", granules, null);
         manager.initialize(false);
@@ -4842,9 +4968,9 @@ public class ImageMosaicReaderTest extends Assert {
         assertTrue(info instanceof FileResourceInfo);
         FileResourceInfo fileInfo = (FileResourceInfo) info;
         CloseableIterator<FileGroup> files = fileInfo.getFiles(null);
-        List<FileGroup> fileGroups = new ArrayList<FileGroup>();
-        Set<File> mainFiles = new HashSet<File>();
-        Set<File> supportFiles = new HashSet<File>();
+        List<FileGroup> fileGroups = new ArrayList<>();
+        Set<File> mainFiles = new HashSet<>();
+        Set<File> supportFiles = new HashSet<>();
         while (files.hasNext()) {
             FileGroup group = files.next();
             fileGroups.add(group);
@@ -4886,9 +5012,9 @@ public class ImageMosaicReaderTest extends Assert {
         assertTrue(info instanceof FileResourceInfo);
         FileResourceInfo fileInfo = (FileResourceInfo) info;
         CloseableIterator<FileGroup> files = fileInfo.getFiles(null);
-        List<FileGroup> fileGroups = new ArrayList<FileGroup>();
-        Set<File> mainFiles = new HashSet<File>();
-        Set<File> supportFiles = new HashSet<File>();
+        List<FileGroup> fileGroups = new ArrayList<>();
+        Set<File> mainFiles = new HashSet<>();
+        Set<File> supportFiles = new HashSet<>();
         while (files.hasNext()) {
             FileGroup group = files.next();
             fileGroups.add(group);
@@ -5153,6 +5279,7 @@ public class ImageMosaicReaderTest extends Assert {
             GranuleSource passA = reader.getGranules("passA", true);
             UniqueVisitor visitor = new UniqueVisitor("location");
             passA.getGranules(Query.ALL).accepts(visitor, null);
+            @SuppressWarnings("unchecked")
             Set<String> locations = visitor.getUnique();
             // System.out.println(locations);
             assertThat(locations, hasItem(equalTo("passA2006128211927.tiff")));
@@ -5357,7 +5484,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
         directory2.mkdirs();
         // Creation of a File Collection
-        Collection<File> files = new ArrayList<File>();
+        Collection<File> files = new ArrayList<>();
 
         // move all files besides month 2 into the second directory and store them into a
         // Collection
@@ -5395,36 +5522,35 @@ public class ImageMosaicReaderTest extends Assert {
             CountDownLatch latch = new CountDownLatch(1);
             for (File file : files) {
                 Filter filter = FF.like(FF.property("location"), "*" + file.getName() + "*");
-                Callable callable =
-                        (Callable<Integer>)
-                                () -> {
-                                    // make all callables start toghether
-                                    latch.await();
-                                    int removedCount = 0;
+                Callable<Integer> callable =
+                        () -> {
+                            // make all callables start toghether
+                            latch.await();
+                            int removedCount = 0;
 
-                                    // remove if necessary
-                                    GranuleStore store =
-                                            (GranuleStore) reader.getGranules(coverageName, false);
+                            // remove if necessary
+                            GranuleStore store =
+                                    (GranuleStore) reader.getGranules(coverageName, false);
 
-                                    for (int i = 0; i < loops; i++) {
-                                        final Query query = new Query(null, filter);
-                                        if (store.getCount(query) > 0) {
-                                            store.removeGranules(filter);
-                                            removedCount++;
-                                        }
-                                        // and harvest back
-                                        final List<HarvestedSource> harvested =
-                                                reader.harvest(coverageName, file, null);
-                                        assertThat(harvested, hasSize(1));
-                                        assertTrue(
-                                                "Feature not found after successful harvest? Loop is "
-                                                        + i
-                                                        + " and filter "
-                                                        + filter,
-                                                store.getCount(query) > 0);
-                                    }
-                                    return removedCount;
-                                };
+                            for (int i = 0; i < loops; i++) {
+                                final Query query = new Query(null, filter);
+                                if (store.getCount(query) > 0) {
+                                    store.removeGranules(filter);
+                                    removedCount++;
+                                }
+                                // and harvest back
+                                final List<HarvestedSource> harvested =
+                                        reader.harvest(coverageName, file, null);
+                                assertThat(harvested, hasSize(1));
+                                assertTrue(
+                                        "Feature not found after successful harvest? Loop is "
+                                                + i
+                                                + " and filter "
+                                                + filter,
+                                        store.getCount(query) > 0);
+                            }
+                            return removedCount;
+                        };
                 final Future<Integer> future = executor.submit(callable);
                 futures.add(future);
             }
@@ -5546,6 +5672,7 @@ public class ImageMosaicReaderTest extends Assert {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGranuleFileViewSidecars() throws Exception {
         // copy the data and get the reader
         File directory = setupTestDirectory(this, this.rgbURL, "rbgFileView");
@@ -5659,5 +5786,33 @@ public class ImageMosaicReaderTest extends Assert {
         } finally {
             reader.dispose();
         }
+    }
+
+    @Test
+    public void testWrongSuggestedFormat() throws IOException {
+        File workDir = new File(TestData.file(this, "."), "testWrong");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            workDir = new File(workDir, "rgba");
+            if (!workDir.mkdir()) {
+                FileUtils.deleteDirectory(workDir);
+            }
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        final File source = TestData.file(this, "rgba");
+        FileUtils.copyDirectory(source, workDir);
+
+        // Having a properties file with ArcGridFormat as suggested Format
+        // although images are RGBA. The bad format will not be used
+        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"), true)) {
+            out.write("SuggestedFormat=org.geotools.gce.arcgrid.ArcGridFormat");
+            out.flush();
+        }
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(workDir);
+
+        GridCoverage2D gc = reader.read(null);
+        Assert.assertNotNull(gc);
+        reader.dispose();
     }
 }

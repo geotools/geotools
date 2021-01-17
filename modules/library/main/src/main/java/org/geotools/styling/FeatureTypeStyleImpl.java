@@ -51,10 +51,10 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     /** Only the first matching rule gets executed, all the others are skipped */
     public static String VALUE_EVALUATION_MODE_FIRST = "first";
 
-    private List<Rule> rules = new ArrayList<Rule>();
-    private Set<SemanticType> semantics = new LinkedHashSet<SemanticType>();
+    private List<Rule> rules = new ArrayList<>();
+    private Set<SemanticType> semantics = new LinkedHashSet<>();
     private Id featureInstances = null;
-    private Set<Name> featureTypeNames = new LinkedHashSet<Name>();
+    private Set<Name> featureTypeNames = new LinkedHashSet<>();
 
     private DescriptionImpl description = new DescriptionImpl();
     private String name = "name";
@@ -69,27 +69,27 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     }
 
     protected FeatureTypeStyleImpl(List<Rule> arules) {
-        rules = new ArrayList<Rule>();
+        rules = new ArrayList<>();
         rules.addAll(arules);
     }
 
     /** Creates a new instance of FeatureTypeStyleImpl */
     protected FeatureTypeStyleImpl() {
-        rules = new ArrayList<Rule>();
+        rules = new ArrayList<>();
     }
 
     public FeatureTypeStyleImpl(org.opengis.style.FeatureTypeStyle fts) {
         this.description = new DescriptionImpl(fts.getDescription());
         this.featureInstances = fts.getFeatureInstanceIDs();
-        this.featureTypeNames = new LinkedHashSet<Name>(fts.featureTypeNames());
+        this.featureTypeNames = new LinkedHashSet<>(fts.featureTypeNames());
         this.name = fts.getName();
-        this.rules = new ArrayList<Rule>();
+        this.rules = new ArrayList<>();
         if (fts.rules() != null) {
             for (org.opengis.style.Rule rule : fts.rules()) {
                 rules.add(RuleImpl.cast(rule)); // need to deep copy?
             }
         }
-        this.semantics = new LinkedHashSet<SemanticType>(fts.semanticTypeIdentifiers());
+        this.semantics = new LinkedHashSet<>(fts.semanticTypeIdentifiers());
         this.online = fts.getOnlineResource();
         this.transformation = fts.getTransformation();
     }
@@ -144,16 +144,16 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
             throw new AssertionError(e); // this should never happen.
         }
 
-        final List<Rule> rulesCopy = new ArrayList<Rule>();
+        final List<Rule> rulesCopy = new ArrayList<>();
 
         for (final Rule rl : rules) {
             rulesCopy.add((Rule) ((Cloneable) rl).clone());
         }
 
-        clone.rules = new ArrayList<Rule>();
-        clone.featureTypeNames = new LinkedHashSet<Name>();
-        clone.semantics = new LinkedHashSet<SemanticType>();
-        final List<Rule> cloneRules = (List<Rule>) clone.rules();
+        clone.rules = new ArrayList<>();
+        clone.featureTypeNames = new LinkedHashSet<>();
+        clone.semantics = new LinkedHashSet<>();
+        final List<Rule> cloneRules = clone.rules();
         cloneRules.addAll(rulesCopy);
         clone.featureTypeNames().addAll(featureTypeNames);
         clone.semanticTypeIdentifiers().addAll(semantics);
@@ -255,7 +255,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         buf.append(", rules=<");
         buf.append(rules.size());
         buf.append(">");
-        if (rules.size() > 0) {
+        if (!rules.isEmpty()) {
             buf.append("(");
             buf.append(rules.get(0));
             if (rules.size() > 1) {
@@ -304,7 +304,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
     public Map<String, String> getOptions() {
         if (options == null) {
-            options = new LinkedHashMap<String, String>();
+            options = new LinkedHashMap<>();
         }
         return options;
     }

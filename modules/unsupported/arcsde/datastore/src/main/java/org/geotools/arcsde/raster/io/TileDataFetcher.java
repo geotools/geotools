@@ -45,8 +45,7 @@ import org.geotools.arcsde.raster.info.RasterCellType;
  */
 abstract class TileDataFetcher {
 
-    private static Map<RasterCellType, TileDataFetcher> tileDataSetters =
-            new HashMap<RasterCellType, TileDataFetcher>();
+    private static Map<RasterCellType, TileDataFetcher> tileDataSetters = new HashMap<>();
 
     static {
         final ByteTileSetter byteTileSetter = new ByteTileSetter();

@@ -65,14 +65,14 @@ public abstract class Operation2D extends AbstractOperation {
      * {@code "Source"} (as specified in OGC implementation specification) and the alias is {@code
      * "source0"} (for compatibility with <cite>Java Advanced Imaging</cite>).
      */
-    public static final ParameterDescriptor SOURCE_0;
+    public static final ParameterDescriptor<GridCoverage2D> SOURCE_0;
 
     static {
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         properties.put(IdentifiedObject.NAME_KEY, new NamedIdentifier(Citations.OGC, "Source"));
         properties.put(IdentifiedObject.ALIAS_KEY, new NamedIdentifier(Citations.JAI, "source0"));
         SOURCE_0 =
-                new DefaultParameterDescriptor(
+                new DefaultParameterDescriptor<>(
                         properties, GridCoverage2D.class, null, null, null, null, null, true);
     }
 

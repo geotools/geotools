@@ -9,8 +9,8 @@
  */
 package org.opengis.coverage.processing;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.MANDATORY;
+import static org.opengis.annotation.Specification.OGC_01004;
 
 import java.util.Collection;
 import org.opengis.annotation.UML;

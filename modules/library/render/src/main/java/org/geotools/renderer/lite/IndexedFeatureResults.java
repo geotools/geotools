@@ -50,11 +50,9 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
         super(null, results.getSchema());
 
         // load features into the index
-        SimpleFeatureIterator reader = null;
         bounds = new Envelope();
         count = 0;
-        try {
-            reader = results.features();
+        try (SimpleFeatureIterator reader = results.features()) {
             SimpleFeature f;
             Envelope env;
             while (reader.hasNext()) {
@@ -64,8 +62,6 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
                 count++;
                 index.insert(env, f);
             }
-        } finally {
-            if (reader != null) reader.close();
         }
     }
 
@@ -110,9 +106,10 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
     /** @see org.geotools.data.FeatureResults#collection() */
     public SimpleFeatureCollection collection() throws IOException {
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        @SuppressWarnings("unchecked")
         List<SimpleFeature> results = index.query(bounds);
-        for (Iterator<SimpleFeature> it = results.iterator(); it.hasNext(); ) {
-            fc.add(it.next());
+        for (SimpleFeature result : results) {
+            fc.add(result);
         }
         return fc;
     }

@@ -66,7 +66,7 @@ public class XPathUtil {
         public String toString() {
             StringBuffer sb = new StringBuffer();
             for (Iterator<Step> it = iterator(); it.hasNext(); ) {
-                Step s = (Step) it.next();
+                Step s = it.next();
                 sb.append(s.toString());
                 if (it.hasNext()) {
                     sb.append("/");
@@ -76,8 +76,8 @@ public class XPathUtil {
         }
 
         public boolean containsPredicate() {
-            for (int i = 0; i < size(); i++) {
-                if (get(i).getPredicate() != null) {
+            for (Step step : this) {
+                if (step.getPredicate() != null) {
                     return true;
                 }
             }
@@ -117,7 +117,7 @@ public class XPathUtil {
         public StepList clone() {
             StepList copy = new StepList();
             for (Step step : this) {
-                copy.add((Step) step.clone());
+                copy.add(step.clone());
             }
             return copy;
         }
@@ -347,7 +347,7 @@ public class XPathUtil {
      * @return list of string steps
      */
     private static List<String> splitPath(String s) {
-        ArrayList<String> parts = new ArrayList<String>();
+        ArrayList<String> parts = new ArrayList<>();
 
         StringBuffer b = new StringBuffer();
         int insideIndex = 0;
@@ -434,7 +434,7 @@ public class XPathUtil {
 
         final List<String> partialSteps = splitPath(expression);
 
-        if (partialSteps.size() == 0) {
+        if (partialSteps.isEmpty()) {
             throw new IllegalArgumentException("no steps provided");
         }
 
@@ -502,7 +502,7 @@ public class XPathUtil {
         // root
         // node as it is redundant
         if (root != null && steps.size() > 1) {
-            Step step = (Step) steps.get(0);
+            Step step = steps.get(0);
             Name rootName = root.getName();
             QName stepName = step.getName();
             if (Types.equals(rootName, stepName)) {

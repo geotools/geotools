@@ -80,12 +80,11 @@ public final class JP2KTest extends GDALTestCase {
 
         final BaseGDALGridCoverage2DReader reader = new JP2KReader(file);
         final ParameterValue gg =
-                (ParameterValue)
-                        ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
         gg.setValue(new GridGeometry2D(reader.getOriginalGridRange(), oldEnvelope));
 
-        final GridCoverage2D gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
+        final GridCoverage2D gc = reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
 
         if (TestData.isInteractiveTest()) {

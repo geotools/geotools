@@ -40,6 +40,7 @@ public final class Compiler {
     private Compiler() {}
 
     /** Run the resource compiler. */
+    @SuppressWarnings("unchecked")
     public static void main(final String[] args) {
         IndexedResourceCompiler.main(args, SOURCE_DIRECTORY, RESOURCES_TO_PROCESS);
         System.out.println(SOURCE_DIRECTORY.getAbsolutePath());

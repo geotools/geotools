@@ -69,9 +69,9 @@ public class ArgHelper {
             throw new NullPointerException("A Typename must be specified.");
         }
 
-        for (int i = 0; i < argumentTypeMappings.length; i++) {
-            if (elementName.equals(argumentTypeMappings[i].getElementName())) {
-                return argumentTypeMappings[i].getInstance(value);
+        for (Mapping argumentTypeMapping : argumentTypeMappings) {
+            if (elementName.equals(argumentTypeMapping.getElementName())) {
+                return argumentTypeMapping.getInstance(value);
             }
         }
 
@@ -93,9 +93,9 @@ public class ArgHelper {
             throw new NullPointerException("A Typename must be specified.");
         }
 
-        for (int i = 0; i < argumentTypeMappings.length; i++) {
-            if (elementName.equals(argumentTypeMappings[i].getType())) {
-                return argumentTypeMappings[i].getInstance(value);
+        for (Mapping argumentTypeMapping : argumentTypeMappings) {
+            if (elementName.equals(argumentTypeMapping.getType())) {
+                return argumentTypeMapping.getInstance(value);
             }
         }
 
@@ -116,14 +116,14 @@ public class ArgHelper {
         }
 
         if (o instanceof Class) {
-            for (int i = 0; i < argumentTypeMappings.length; i++)
-                if (argumentTypeMappings[i].isClass((Class) o)) {
-                    return argumentTypeMappings[i].getType();
+            for (Mapping argumentTypeMapping : argumentTypeMappings)
+                if (argumentTypeMapping.isClass((Class) o)) {
+                    return argumentTypeMapping.getType();
                 }
         } else {
-            for (int i = 0; i < argumentTypeMappings.length; i++)
-                if (argumentTypeMappings[i].isClassInstance(o)) {
-                    return argumentTypeMappings[i].getType();
+            for (Mapping argumentTypeMapping : argumentTypeMappings)
+                if (argumentTypeMapping.isClassInstance(o)) {
+                    return argumentTypeMapping.getType();
                 }
         }
 
@@ -143,9 +143,9 @@ public class ArgHelper {
             throw new NullPointerException("An argument instance must be specified.");
         }
 
-        for (int i = 0; i < argumentTypeMappings.length; i++)
-            if (argumentTypeMappings[i].isClassInstance(o)) {
-                return argumentTypeMappings[i].encode(o);
+        for (Mapping argumentTypeMapping : argumentTypeMappings)
+            if (argumentTypeMapping.isClassInstance(o)) {
+                return argumentTypeMapping.encode(o);
             }
 
         return "";
@@ -156,9 +156,9 @@ public class ArgHelper {
             throw new NullPointerException("An argument instance must be specified.");
         }
 
-        for (int i = 0; i < argumentTypeMappings.length; i++)
-            if (argumentTypeMappings[i].isClassInstance(o)) {
-                return argumentTypeMappings[i].toString(o);
+        for (Mapping argumentTypeMapping : argumentTypeMappings)
+            if (argumentTypeMapping.isClassInstance(o)) {
+                return argumentTypeMapping.toString(o);
             }
 
         return "";
@@ -290,17 +290,7 @@ public class ArgHelper {
 
             try (StringReader sr = new StringReader(elem)) {
                 value = ReaderUtils.loadConfig(sr);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-
-                return null;
-            } catch (ParserConfigurationException e) {
-                // TODO Auto-generated catch block
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-
-                return null;
-            } catch (SAXException e) {
+            } catch (IOException | SAXException | ParserConfigurationException e) {
                 // TODO Auto-generated catch block
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
@@ -435,17 +425,7 @@ public class ArgHelper {
 
             try (StringReader sr = new StringReader(value)) {
                 elem = ReaderUtils.loadConfig(sr);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-
-                return null;
-            } catch (ParserConfigurationException e) {
-                // TODO Auto-generated catch block
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-
-                return null;
-            } catch (SAXException e) {
+            } catch (IOException | SAXException | ParserConfigurationException e) {
                 // TODO Auto-generated catch block
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
@@ -1021,7 +1001,7 @@ public class ArgHelper {
                 throw new ClassCastException("Object of type Long was expected.");
             }
 
-            return "<float>" + ((Float) obj).toString() + "</float>\n";
+            return "<float>" + obj.toString() + "</float>\n";
         }
 
         public String toString(Object o) {
@@ -1114,7 +1094,7 @@ public class ArgHelper {
                 throw new ClassCastException("Object of type Long was expected.");
             }
 
-            return "<double>" + ((Double) obj).toString() + "</double>\n";
+            return "<double>" + obj.toString() + "</double>\n";
         }
 
         public String toString(Object o) {
@@ -1324,7 +1304,7 @@ public class ArgHelper {
                 throw new ClassCastException("Object of type Long was expected.");
             }
 
-            return "<anyURI>" + ((URI) obj).toString() + "</anyURI>\n";
+            return "<anyURI>" + obj.toString() + "</anyURI>\n";
         }
 
         public String toString(Object o) {

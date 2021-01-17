@@ -19,7 +19,7 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.plugins.tiff.TIFFImageWriteParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriter;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.BufferedWriter;
@@ -80,7 +80,7 @@ import org.w3c.dom.Node;
 public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCoverageWriter {
     private static final Logger LOGGER = Logging.getLogger(GeoTiffWriter.class);
 
-    private final Map<String, String> metadataKeyValue = new HashMap<String, String>();
+    private final Map<String, String> metadataKeyValue = new HashMap<>();
 
     /** Constructor for a {@link GeoTiffWriter}. */
     public GeoTiffWriter(Object destination) throws IOException {
@@ -119,7 +119,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
 
         } else if (destination instanceof OutputStream) {
 
-            this.outStream = ImageIOExt.createImageOutputStream(null, (OutputStream) destination);
+            this.outStream = ImageIOExt.createImageOutputStream(null, destination);
 
         } else if (destination instanceof ImageOutputStream)
             this.outStream = (ImageOutputStream) destination;
@@ -169,9 +169,8 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         // /////////////////////////////////////////////////////////////////////
         if (params != null) {
             Parameter<?> param;
-            final int length = params.length;
-            for (int i = 0; i < length; i++) {
-                param = (Parameter) params[i];
+            for (GeneralParameterValue generalParameterValue : params) {
+                param = (Parameter) generalParameterValue;
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName())) {
                     gtParams = (GeoToolsWriteParams) param.getValue();
@@ -239,12 +238,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         // write image
         //
-        writeImage(
-                ((GridCoverage2D) gc).getRenderedImage(),
-                this.outStream,
-                metadata,
-                gtParams,
-                listener);
+        writeImage(gc.getRenderedImage(), this.outStream, metadata, gtParams, listener);
 
         //
         // write tfw

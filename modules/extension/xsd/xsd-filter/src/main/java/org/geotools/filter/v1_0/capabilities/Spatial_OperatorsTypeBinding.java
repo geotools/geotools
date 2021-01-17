@@ -17,7 +17,6 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.xsd.AbstractComplexBinding;
@@ -86,15 +85,13 @@ public class Spatial_OperatorsTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List ops = new ArrayList();
+        List<SpatialOperator> ops = new ArrayList<>();
 
-        for (Iterator i = node.getChildren().iterator(); i.hasNext(); ) {
-            Node child = (Node) i.next();
+        for (Node child : node.getChildren()) {
             ops.add(factory.spatialOperator(child.getComponent().getName(), null));
         }
 
-        return factory.spatialOperators(
-                (SpatialOperator[]) ops.toArray(new SpatialOperator[ops.size()]));
+        return factory.spatialOperators(ops.toArray(new SpatialOperator[ops.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

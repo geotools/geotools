@@ -17,7 +17,7 @@
 package org.geotools.coverage.grid.io.imageio;
 
 import com.sun.media.jai.util.DataBufferUtils;
-import java.awt.*;
+import java.awt.Point;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -109,7 +109,7 @@ public class RecyclingTileFactory extends java.util.Observable
      * </code> to the internal data banks of <code>DataBuffer</code>s of tiles wherein the data bank
      * array has the type and dimensions implied by the key.
      */
-    private HashMap recycledArrays = new HashMap(32);
+    private HashMap<Long, ArrayList> recycledArrays = new HashMap<>(32);
 
     /** The amount of memory currrently used for array storage. */
     private long memoryUsed = 0L;
@@ -379,11 +379,13 @@ public class RecyclingTileFactory extends java.util.Observable
 
         synchronized (recycledArrays) {
             Object value = recycledArrays.get(key);
-            ArrayList arrays = null;
+            ArrayList<Object> arrays = null;
             if (value != null) {
-                arrays = (ArrayList) value;
+                @SuppressWarnings("unchecked")
+                ArrayList<Object> cast = (ArrayList) value;
+                arrays = cast;
             } else {
-                arrays = new ArrayList(10);
+                arrays = new ArrayList<>(10);
             }
 
             memoryUsed += getDataBankSize(db.getDataType(), db.getNumBanks(), db.getSize());

@@ -41,11 +41,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -191,10 +193,10 @@ import org.opengis.util.ProgressListener;
  */
 public class DataUtilities {
     /** Typemap used by {@link #createType(String, String)} methods */
-    static Map<String, Class> typeMap = new HashMap<String, Class>();
+    static Map<String, Class> typeMap = new HashMap<>();
 
     /** Reverse type map used by {@link #encodeType(FeatureType)} */
-    static Map<Class, String> typeEncode = new HashMap<Class, String>();
+    static Map<Class, String> typeEncode = new HashMap<>();
 
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
@@ -715,21 +717,22 @@ public class DataUtilities {
 
         if (src instanceof List) {
             List list = (List) src;
-            List<Object> copy = new ArrayList<Object>(list.size());
+            List<Object> copy = new ArrayList<>(list.size());
 
-            for (Iterator i = list.iterator(); i.hasNext(); ) {
-                copy.add(duplicate(i.next()));
+            for (Object o : list) {
+                copy.add(duplicate(o));
             }
 
             return Collections.unmodifiableList(copy);
         }
 
         if (src instanceof Map) {
-            Map map = (Map) src;
-            Map copy = new HashMap(map.size());
+            @SuppressWarnings("unchecked")
+            Map<Object, Object> map = (Map) src;
+            Map<Object, Object> copy = new HashMap<>(map.size());
 
-            for (Iterator i = map.entrySet().iterator(); i.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) i.next();
+            for (Map.Entry<Object, Object> objectObjectEntry : map.entrySet()) {
+                Map.Entry entry = (Map.Entry) objectObjectEntry;
                 copy.put(entry.getKey(), duplicate(entry.getValue()));
             }
 
@@ -1166,9 +1169,8 @@ public class DataUtilities {
     public static SimpleFeatureCollection collection(SimpleFeature[] features) {
         // JG: There may be some performance to be gained by using ListFeatureCollection here
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
-        final int length = features.length;
-        for (int i = 0; i < length; i++) {
-            collection.add(features[i]);
+        for (SimpleFeature feature : features) {
+            collection.add(feature);
         }
         return collection;
     }
@@ -1212,8 +1214,7 @@ public class DataUtilities {
         if (featureCollection == null) {
             return null;
         }
-        FeatureIterator<F> iter = featureCollection.features();
-        try {
+        try (FeatureIterator<F> iter = featureCollection.features()) {
             while (iter.hasNext()) {
                 F feature = iter.next();
                 if (feature != null) {
@@ -1221,8 +1222,6 @@ public class DataUtilities {
                 }
             }
             return null; // not found!
-        } finally {
-            iter.close();
         }
     }
 
@@ -1289,7 +1288,9 @@ public class DataUtilities {
             return (SimpleFeatureSource) source;
         }
         if (source.getSchema() instanceof SimpleFeatureType) {
-            return new SimpleFeatureSourceBridge(source);
+            @SuppressWarnings("unchecked")
+            FeatureSource<SimpleFeatureType, SimpleFeature> cast = source;
+            return new SimpleFeatureSourceBridge(cast);
         }
         throw new IllegalArgumentException(
                 "The provided feature source contains complex features, cannot be bridged to a simple one");
@@ -1313,7 +1314,9 @@ public class DataUtilities {
             return (SimpleFeatureStore) store;
         }
         if (store.getSchema() instanceof SimpleFeatureType) {
-            return new SimpleFeatureStoreBridge(store);
+            @SuppressWarnings("unchecked")
+            FeatureStore<SimpleFeatureType, SimpleFeature> cast = store;
+            return new SimpleFeatureStoreBridge(cast);
         }
         throw new IllegalArgumentException(
                 "The provided feature store contains complex features, cannot be bridged to a simple one");
@@ -1336,10 +1339,10 @@ public class DataUtilities {
         //
         List<PropertyDescriptor> attributes;
         Collection<PropertyDescriptor> descriptors = featureType.getDescriptors();
-        attributes = new ArrayList<PropertyDescriptor>(descriptors);
+        attributes = new ArrayList<>(descriptors);
 
-        List<String> simpleProperties = new ArrayList<String>();
-        List<AttributeDescriptor> simpleAttributes = new ArrayList<AttributeDescriptor>();
+        List<String> simpleProperties = new ArrayList<>();
+        List<AttributeDescriptor> simpleAttributes = new ArrayList<>();
 
         // HACK HACK!! the parser sets no namespace to the properties so we're
         // doing a hardcode property name black list
@@ -1422,7 +1425,9 @@ public class DataUtilities {
             return (SimpleFeatureLocking) locking;
         }
         if (locking.getSchema() instanceof SimpleFeatureType) {
-            return new SimpleFeatureLockingBridge(locking);
+            @SuppressWarnings("unchecked")
+            FeatureLocking<SimpleFeatureType, SimpleFeature> cast = locking;
+            return new SimpleFeatureLockingBridge(cast);
         }
         throw new IllegalArgumentException(
                 "The provided feature store contains complex features, cannot be bridged to a simple one");
@@ -1436,15 +1441,12 @@ public class DataUtilities {
      * @return List of features copied into memory
      */
     public static <F extends Feature> List<F> list(FeatureCollection<?, F> featureCollection) {
-        final ArrayList<F> list = new ArrayList<F>();
-        FeatureIterator<F> iter = featureCollection.features();
-        try {
+        final ArrayList<F> list = new ArrayList<>();
+        try (FeatureIterator<F> iter = featureCollection.features()) {
             while (iter.hasNext()) {
                 F feature = iter.next();
                 list.add(feature);
             }
-        } finally {
-            iter.close();
         }
         return list;
     }
@@ -1456,15 +1458,12 @@ public class DataUtilities {
      */
     public static <F extends Feature> List<F> list(
             FeatureCollection<?, F> featureCollection, int maxFeatures) {
-        final ArrayList<F> list = new ArrayList<F>();
-        FeatureIterator<F> iter = featureCollection.features();
-        try {
+        final ArrayList<F> list = new ArrayList<>();
+        try (FeatureIterator<F> iter = featureCollection.features()) {
             for (int count = 0; iter.hasNext() && count < maxFeatures; count++) {
                 F feature = iter.next();
                 list.add(feature);
             }
-        } finally {
-            iter.close();
         }
         return list;
     }
@@ -1475,7 +1474,7 @@ public class DataUtilities {
      * @return Iterator wrapped around provided FeatureIterator, implements Closeable
      */
     public static <F extends Feature> Iterator<F> iterator(FeatureIterator<F> featureIterator) {
-        return new BridgeIterator<F>(featureIterator);
+        return new BridgeIterator<>(featureIterator);
     }
 
     /**
@@ -1484,7 +1483,7 @@ public class DataUtilities {
      * <p>This method can be slurp an in memory record of the contents of a
      */
     public static Set<String> fidSet(FeatureCollection<?, ?> featureCollection) {
-        final HashSet<String> fids = new HashSet<String>();
+        final HashSet<String> fids = new HashSet<>();
         try {
             featureCollection.accepts(
                     new FeatureVisitor() {
@@ -1786,9 +1785,9 @@ public class DataUtilities {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName(featureType.getName());
         tb.setCRS(null); // not interested in warnings from this simple method
-        for (int i = 0; i < properties.length; i++) {
+        for (String property : properties) {
             // let's get the attribute descriptor corresponding to the current property
-            AttributeDescriptor attributeDescriptor = featureType.getDescriptor(properties[i]);
+            AttributeDescriptor attributeDescriptor = featureType.getDescriptor(property);
             if (attributeDescriptor != null) {
                 // if the property doesn't map to an attribute descriptor we ignore it
                 // an attribute descriptor may be omitted for security proposes for example
@@ -1953,8 +1952,7 @@ public class DataUtilities {
         if (crs == null || crs.getIdentifiers() == null) {
             return -1; // not found
         }
-        for (Iterator<ReferenceIdentifier> it = crs.getIdentifiers().iterator(); it.hasNext(); ) {
-            ReferenceIdentifier id = it.next();
+        for (ReferenceIdentifier id : crs.getIdentifiers()) {
             Citation authority = id.getAuthority();
             if (authority != null && authority.getTitle().equals(Citations.EPSG.getTitle())) {
                 try {
@@ -2493,16 +2491,16 @@ public class DataUtilities {
             return null;
         }
 
-        List<PropertyName> atts = new LinkedList<PropertyName>();
+        List<PropertyName> atts = new LinkedList<>();
 
         if (atts1 != null) {
             atts.addAll(atts1);
         }
 
         if (atts2 != null) {
-            for (int i = 0; i < atts2.size(); i++) {
-                if (!atts.contains(atts2.get(i))) {
-                    atts.add(atts2.get(i));
+            for (PropertyName propertyName : atts2) {
+                if (!atts.contains(propertyName)) {
+                    atts.add(propertyName);
                 }
             }
         }
@@ -2521,7 +2519,7 @@ public class DataUtilities {
             SimpleFeatureType type, List<PropertyName> oldProps) {
         Iterator<PropertyDescriptor> ii = type.getDescriptors().iterator();
 
-        List<PropertyName> properties = new ArrayList<PropertyName>();
+        List<PropertyName> properties = new ArrayList<>();
 
         while (ii.hasNext()) {
 
@@ -2666,18 +2664,13 @@ public class DataUtilities {
     public static int count(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
         int count = 0;
-        FeatureIterator<? extends Feature> i = collection.features();
-        try {
+        try (FeatureIterator<? extends Feature> i = collection.features()) {
             while (i.hasNext()) {
                 @SuppressWarnings("unused")
-                Feature feature = (Feature) i.next();
+                Feature feature = i.next();
                 count++;
             }
             return count;
-        } finally {
-            if (i != null) {
-                i.close();
-            }
         }
     }
     /**
@@ -2722,8 +2715,7 @@ public class DataUtilities {
      */
     public static ReferencedEnvelope bounds(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
-        FeatureIterator<? extends Feature> i = collection.features();
-        try {
+        try (FeatureIterator<? extends Feature> i = collection.features()) {
             // Implementation taken from DefaultFeatureCollection implementation - thanks IanS
             CoordinateReferenceSystem crs = collection.getSchema().getCoordinateReferenceSystem();
             ReferencedEnvelope bounds = new ReferencedEnvelope(crs);
@@ -2741,10 +2733,6 @@ public class DataUtilities {
                 }
             }
             return bounds;
-        } finally {
-            if (i != null) {
-                i.close();
-            }
         }
     }
 
@@ -2883,12 +2871,11 @@ public class DataUtilities {
      * @return true if params is in agreement with getParametersInfo, override for additional
      *     checks.
      */
-    public static boolean canProcess(Map params, Param[] arrayParameters) {
+    public static boolean canProcess(Map<String, ?> params, Param[] arrayParameters) {
         if (params == null) {
             return false;
         }
-        for (int i = 0; i < arrayParameters.length; i++) {
-            Param param = arrayParameters[i];
+        for (Param param : arrayParameters) {
             Object value;
             if (!params.containsKey(param.key)) {
                 if (param.required) {
@@ -2917,6 +2904,7 @@ public class DataUtilities {
                 if (param.metadata != null) {
                     // check metadata
                     if (param.metadata.containsKey(Param.OPTIONS)) {
+                        @SuppressWarnings("unchecked")
                         List<Object> options = (List<Object>) param.metadata.get(Param.OPTIONS);
                         if (options != null && !options.contains(value)) {
                             return false; // invalid option
@@ -2986,7 +2974,7 @@ public class DataUtilities {
      */
     public static Feature templateFeature(FeatureType schema) {
         FeatureFactory ff = CommonFactoryFinder.getFeatureFactory(null);
-        Collection<Property> value = new ArrayList<Property>();
+        Collection<Property> value = new ArrayList<>();
 
         for (PropertyDescriptor pd : schema.getDescriptors()) {
             if (pd instanceof AttributeDescriptor) {
@@ -3006,7 +2994,18 @@ public class DataUtilities {
             }
         }
 
-        return ff.createFeature(
-                value, (FeatureType) schema, SimpleFeatureBuilder.createDefaultFeatureId());
+        return ff.createFeature(value, schema, SimpleFeatureBuilder.createDefaultFeatureId());
+    }
+
+    /**
+     * Converts a {@link java.util.Properties} object into a Map suitable for usage for {@link
+     * DataAccess} or {@link DataStore} creation. The code assumes the properties do contain {@link
+     * String} keys, and may contain any kind of object as values.
+     */
+    public static Map<String, Object> toConnectionParameters(Properties properties) {
+        return properties
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> (String) e.getKey(), e -> e.getValue()));
     }
 }

@@ -54,8 +54,8 @@ public class SpatialAttributeSupplementImpl extends MetadataEntity
     }
 
     /** Creates a spatial attribute supplement initialized to the given values. */
-    public SpatialAttributeSupplementImpl(final Collection featureTypeList) {
-        setFeatureTypeList(featureTypeList);
+    public SpatialAttributeSupplementImpl(final Collection<? extends FeatureTypeList> newValues) {
+        setFeatureTypeList(newValues);
     }
 
     /**

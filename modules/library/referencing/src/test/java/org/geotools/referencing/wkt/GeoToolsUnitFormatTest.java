@@ -27,7 +27,7 @@ import org.junit.Test;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
-import tec.uom.se.format.SimpleUnitFormat;
+import tech.units.indriya.format.SimpleUnitFormat;
 
 /** @author ian */
 public class GeoToolsUnitFormatTest {
@@ -37,10 +37,10 @@ public class GeoToolsUnitFormatTest {
     private UnitFormat esriUnitFormat = GeoToolsCRSUnitFormat.getInstance(Citations.ESRI);
 
     /**
-     * Test method for {@link javax.measure.unit.UnitFormat#format(javax.measure.unit.Unit,
-     * java.lang.Appendable)} for units that have labels or aliases defined in the default format.
-     * The goal is ensuring that the label and alias definitions have been correctly cloned from the
-     * default format instance to the GT format instances
+     * Test method for {@link UnitFormat#format(javax.measure.Unit, java.lang.Appendable)} for units
+     * that have labels or aliases defined in the default format. The goal is ensuring that the
+     * label and alias definitions have been correctly cloned from the default format instance to
+     * the GT format instances
      */
     @Test
     public void testFormatUnitOfQAppendable() throws IOException {
@@ -58,9 +58,8 @@ public class GeoToolsUnitFormatTest {
     }
 
     /**
-     * Test method for {@link javax.measure.unit.UnitFormat#format(javax.measure.unit.Unit,
-     * java.lang.Appendable)} for units that have labels or aliases defined only in the custom GT
-     * formats
+     * Test method for {@link UnitFormat#format(javax.measure.Unit, java.lang.Appendable)} for units
+     * that have labels or aliases defined only in the custom GT formats
      */
     @Test
     public void testGTDefinedFormats() throws IOException {
@@ -73,9 +72,8 @@ public class GeoToolsUnitFormatTest {
     }
 
     /**
-     * Test method for {@link javax.measure.unit.UnitFormat#format(javax.measure.unit.Unit,
-     * java.lang.Appendable)} for units that have labels or aliases defined by GT in the default
-     * format
+     * Test method for {@link UnitFormat#format(javax.measure.Unit, java.lang.Appendable)} for units
+     * that have labels or aliases defined by GT in the default format
      */
     @Test
     public void testFormatForGTDefinedUnits() throws IOException {

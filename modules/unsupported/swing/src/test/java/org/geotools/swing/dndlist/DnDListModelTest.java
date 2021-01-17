@@ -59,13 +59,13 @@ public class DnDListModelTest {
 
     @Test
     public void testDnDListModel() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         assertNotNull(model);
     }
 
     @Test
     public void testSetNofifyListeners() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         Watcher watcher = new Watcher();
         model.addListDataListener(watcher);
 
@@ -82,7 +82,7 @@ public class DnDListModelTest {
 
     @Test
     public void testGetSize() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
@@ -91,7 +91,7 @@ public class DnDListModelTest {
 
     @Test
     public void testGetElementAt() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
@@ -100,7 +100,7 @@ public class DnDListModelTest {
 
     @Test
     public void testGetElementsAtIntArray() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
@@ -111,11 +111,11 @@ public class DnDListModelTest {
 
     @Test
     public void testGetElementsAtCollectionOfInteger() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
-        List<Integer> indexs = new ArrayList<Integer>();
+        List<Integer> indexs = new ArrayList<>();
         indexs.add(0);
         indexs.add(1);
         indexs.add(0);
@@ -126,7 +126,7 @@ public class DnDListModelTest {
 
     @Test
     public void testAddItemsTArray() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItems(new String[] {"one", "two"});
 
         assertEquals("one", model.getElementAt(0));
@@ -135,7 +135,7 @@ public class DnDListModelTest {
 
     @Test
     public void testAddItemsCollectionOfT() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItems(Arrays.asList(new String[] {"one", "two"}));
 
         assertEquals("one", model.getElementAt(0));
@@ -144,7 +144,7 @@ public class DnDListModelTest {
 
     @Test
     public void testInsertItem() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
@@ -156,7 +156,7 @@ public class DnDListModelTest {
 
     @Test
     public void testInsertItemsIntTArray() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
@@ -168,7 +168,7 @@ public class DnDListModelTest {
 
     @Test
     public void testInsertItemsIntCollectionOfT() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
@@ -180,7 +180,7 @@ public class DnDListModelTest {
 
     @Test
     public void testMoveItems() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
         model.addItem("three");
@@ -193,7 +193,7 @@ public class DnDListModelTest {
 
     @Test
     public void testRemoveAt() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
         model.addItem("three");
@@ -205,7 +205,7 @@ public class DnDListModelTest {
 
     @Test
     public void testRemoveItem() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
         model.addItem("three");
@@ -217,7 +217,7 @@ public class DnDListModelTest {
 
     @Test
     public void testClear() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
@@ -227,7 +227,7 @@ public class DnDListModelTest {
 
     @Test
     public void testContains() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 
@@ -237,7 +237,7 @@ public class DnDListModelTest {
 
     @Test
     public void testIndexOf() {
-        DnDListModel<String> model = new DnDListModel<String>();
+        DnDListModel<String> model = new DnDListModel<>();
         model.addItem("one");
         model.addItem("two");
 

@@ -16,18 +16,18 @@
  */
 package org.geotools.data.vpf;
 
-import static org.geotools.data.vpf.ifc.FileConstants.*;
-import static org.geotools.data.vpf.ifc.VPFLibraryIfc.*;
+import static org.geotools.data.vpf.ifc.FileConstants.LIBRARY_ATTTIBUTE_TABLE;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_LIB_NAME;
 
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
@@ -37,7 +37,6 @@ import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.feature.SchemaException;
-import org.geotools.util.KVP;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -66,6 +65,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#getDisplayName()
      */
+    @Override
     public String getDisplayName() {
         return "Vector Product Format Library";
     }
@@ -73,6 +73,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#getDescription()
      */
+    @Override
     public String getDescription() {
         return "Vector Product Format Library data store implementation.";
     }
@@ -80,7 +81,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#canProcess(java.util.Map)
      */
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
 
         boolean result = false;
         try {
@@ -100,12 +101,13 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
     @Override
-    public DataStore createDataStore(Map params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         return create(params);
     }
 
     public DataStore createDataStore(URL url) throws IOException {
-        Map<String, Object> params = new KVP("url", url);
+        Map<String, Object> params = new HashMap<>();
+        params.put("url", url);
         return createDataStore(params);
     }
 
@@ -114,7 +116,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *
      * @param params A <code>Map</code> of parameters which must be verified and
      */
-    private DataStore create(Map params) throws IOException {
+    private DataStore create(Map<String, ?> params) throws IOException {
         DataStore result = null;
 
         File file = getLhtFile(params);
@@ -151,8 +153,8 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         }
 
         VPFFile latTable = VPFFileFactory.getInstance().getFile(latTableName);
-        Iterator iter = latTable.readAllRows().iterator();
-        SimpleFeature feature = iter.hasNext() ? (SimpleFeature) iter.next() : null;
+        Iterator<SimpleFeature> iter = latTable.readAllRows().iterator();
+        SimpleFeature feature = iter.hasNext() ? iter.next() : null;
 
         String directoryName = file.getPath();
         String folderName = directoryName.substring(directoryName.lastIndexOf(File.separator) + 1);
@@ -175,7 +177,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
                 VPFFeatureType.debugFeature(feature);
             }
 
-            feature = iter.hasNext() ? (SimpleFeature) iter.next() : null;
+            feature = iter.hasNext() ? iter.next() : null;
         }
 
         try {
@@ -194,7 +196,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      * file - canProcess just returns true if it's there, and eats the
      * exception, create makes the store.
      */
-    private File getLhtFile(Map params) throws IOException {
+    private File getLhtFile(Map<String, ?> params) throws IOException {
         URL url = (URL) DIR.lookUp(params);
         File file = null;
         if (url.getProtocol().equals("file")) {
@@ -225,7 +227,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#createNewDataStore(java.util.Map)
      */
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
 
         return create(params);
     }
@@ -240,6 +242,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
      */
+    @Override
     public Param[] getParametersInfo() {
         return new Param[] {
             DIR,
@@ -249,14 +252,16 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#isAvailable()
      */
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
-    /*public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    /*public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }*/
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

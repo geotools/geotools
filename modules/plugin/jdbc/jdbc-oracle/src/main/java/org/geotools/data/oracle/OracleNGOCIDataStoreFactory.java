@@ -57,12 +57,14 @@ public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked") // temporary workaround
     protected String getJDBCUrl(Map params) throws IOException {
         String alias = (String) ALIAS.lookUp(params);
         return "jdbc:oracle:oci:@" + alias;
     }
 
     @Override
+    @SuppressWarnings("unchecked") // temporary workaround
     protected void setupParameters(Map parameters) {
         // a full override is needed to make sure we get a good looking param order
 

@@ -16,7 +16,8 @@
  */
 package org.geotools.renderer.label;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineBreakMeasurer;
@@ -74,7 +75,7 @@ class LabelSplitter {
         // first split along the newlines
         String[] splitted = NEWLINE_SPLITTER.split(text);
 
-        List<LineInfo> lines = new ArrayList<LineInfo>();
+        List<LineInfo> lines = new ArrayList<>();
         if (labelItem.getAutoWrap() <= 0) {
             // no need for auto-wrapping, we already have the proper split
             for (String line : splitted) {
@@ -99,12 +100,12 @@ class LabelSplitter {
             // some extra objects
 
             // setup the attributes
-            Map<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
+            Map<TextAttribute, Object> map = new HashMap<>();
             map.put(TextAttribute.FONT, fonts[0]);
 
             // accumulate the lines
-            for (int i = 0; i < splitted.length; i++) {
-                String lineText = checkForEmptyLine(splitted[i]);
+            for (String s : splitted) {
+                String lineText = checkForEmptyLine(s);
 
                 // build the line break iterator that will split lines at word
                 // boundaries when the wrapping length is exceeded
@@ -261,7 +262,7 @@ class LabelSplitter {
     private AttributedString buildAttributedLine(String line, List<FontRange> ranges) {
         if (ranges.size() == 1) {
             // create a uniform attribute AttributedString
-            Map<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
+            Map<TextAttribute, Object> map = new HashMap<>();
             map.put(TextAttribute.FONT, ranges.get(0).font);
             AttributedString as = new AttributedString(line, map);
             return as;
@@ -360,8 +361,7 @@ class LabelSplitter {
                 boolean foundFont = false;
                 while (start < chars.length && !foundFont) {
                     char curr = chars[start];
-                    for (int i = 0; i < fonts.length; i++) {
-                        Font font = fonts[i];
+                    for (Font font : fonts) {
                         if (font.canDisplay(curr)) {
                             foundFont = true;
                             result.add(new FontRange(text, base, start, fonts[0]));

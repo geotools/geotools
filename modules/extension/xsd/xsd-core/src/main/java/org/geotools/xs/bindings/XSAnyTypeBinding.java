@@ -18,7 +18,6 @@ package org.geotools.xs.bindings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
@@ -125,7 +124,7 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
 
         // if there is a single attribute, return it
         if ((node.getAttributes().size() == 1) && node.getChildren().isEmpty() && (text == null)) {
-            return ((Node) node.getAttributes().get(0)).getValue();
+            return node.getAttributes().get(0).getValue();
         }
 
         // create a map of the elements and attributes
@@ -143,8 +142,8 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
     }
 
     private void mapBinding(Map<String, Object> map, List attributes) {
-        for (Iterator i = attributes.iterator(); i.hasNext(); ) {
-            Node attribute = (Node) i.next();
+        for (Object o : attributes) {
+            Node attribute = (Node) o;
             String name = attribute.getComponent().getName();
             Object value = attribute.getValue();
 
@@ -153,9 +152,11 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
                 Object obj = map.get(name);
 
                 if (obj instanceof List) {
-                    values = (List<Object>) obj;
+                    @SuppressWarnings("unchecked")
+                    List<Object> cast = (List<Object>) obj;
+                    values = cast;
                 } else {
-                    values = new ArrayList<Object>();
+                    values = new ArrayList<>();
                     values.add(obj);
                     map.put(name, values);
                 }

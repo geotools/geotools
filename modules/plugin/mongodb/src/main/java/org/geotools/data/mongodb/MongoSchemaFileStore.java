@@ -62,12 +62,9 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
             return;
         }
         File schemaFile = schemaFile(schema.getTypeName());
-        BufferedWriter writer = new BufferedWriter(new FileWriter(schemaFile));
-        try {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(schemaFile))) {
             BasicDBObject dbObject = FeatureTypeDBObject.convert(schema);
             writer.write(dbObject.toJson());
-        } finally {
-            writer.close();
         }
     }
 
@@ -95,7 +92,7 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
 
     @Override
     public List<String> typeNames() {
-        List<String> typeNames = new ArrayList<String>();
+        List<String> typeNames = new ArrayList<>();
         File[] files = schemaStoreFile.listFiles(new SchemaFilter());
         if (files != null) {
             for (File schemaFile : files) {

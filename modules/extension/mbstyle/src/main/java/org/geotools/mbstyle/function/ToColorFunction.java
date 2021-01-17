@@ -16,7 +16,7 @@
  */
 package org.geotools.mbstyle.function;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.filter.FunctionExpressionImpl;
@@ -37,9 +37,9 @@ import org.opengis.filter.expression.Expression;
  * value should be between 0-1, and is converted to a 0-255 alpha value.
  */
 class ToColorFunction extends FunctionExpressionImpl {
-    MBObjectParser parse = new MBObjectParser(ToColorFunction.class);
+    final MBObjectParser parse = new MBObjectParser(ToColorFunction.class);
 
-    public static FunctionName NAME = new FunctionNameImpl("toColor");
+    public static final FunctionName NAME = new FunctionNameImpl("toColor");
 
     ToColorFunction() {
         super(NAME);
@@ -71,6 +71,7 @@ class ToColorFunction extends FunctionExpressionImpl {
                             c = new Color(r.intValue(), g.intValue(), b.intValue());
                             return c;
                         } catch (Exception e) {
+                            // ignore, try the next
                         }
                     }
                     if (je.size() == 4) {
@@ -80,6 +81,7 @@ class ToColorFunction extends FunctionExpressionImpl {
                             c = new Color(r.intValue(), g.intValue(), b.intValue(), alpha);
                             return c;
                         } catch (Exception e) {
+                            // ignore, try the next
                         }
                     }
                 }
@@ -88,6 +90,7 @@ class ToColorFunction extends FunctionExpressionImpl {
                 try {
                     return parse.convertToColor(evaluation.toString());
                 } catch (Exception e) {
+                    // ignore, try the next
                 }
             }
         }

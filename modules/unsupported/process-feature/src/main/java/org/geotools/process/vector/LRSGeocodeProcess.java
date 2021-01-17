@@ -56,9 +56,9 @@ public class LRSGeocodeProcess implements VectorProcess {
      * @throws ProcessException error
      */
     @DescribeResult(name = "result", description = "Output feature collection")
-    public FeatureCollection execute(
+    public FeatureCollection<? extends FeatureType, ? extends Feature> execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
-                    FeatureCollection featureCollection,
+                    FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection,
             @DescribeParameter(
                         name = "from_measure_attb",
                         description = "Attribute providing start measure of feature"
@@ -96,9 +96,8 @@ public class LRSGeocodeProcess implements VectorProcess {
             SimpleFeatureType targetFeatureType =
                     createTargetFeatureType(featureCollection.getSchema());
 
-            FeatureIterator<Feature> featureIterator = null;
-            try {
-                featureIterator = featureCollection.features();
+            try (FeatureIterator<? extends Feature> featureIterator =
+                    featureCollection.features()) {
                 Feature feature = featureIterator.next();
                 Double featureFromMeasure =
                         (Double) feature.getProperty(fromMeasureAttb).getValue();
@@ -121,8 +120,6 @@ public class LRSGeocodeProcess implements VectorProcess {
                 Coordinate point =
                         lengthIndexedLine.extractPoint(startOffset * calcLength / featureLength);
                 results.add(createTargetFeature(feature, targetFeatureType, point));
-            } finally {
-                if (featureIterator != null) featureIterator.close();
             }
             return results;
         } catch (ProcessException e) {

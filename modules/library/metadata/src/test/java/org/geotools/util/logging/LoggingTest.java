@@ -16,11 +16,14 @@
  */
 package org.geotools.util.logging;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests the {@link Logging} class.

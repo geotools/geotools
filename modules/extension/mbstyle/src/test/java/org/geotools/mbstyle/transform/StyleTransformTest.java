@@ -17,15 +17,15 @@
 package org.geotools.mbstyle.transform;
 
 import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -75,7 +75,6 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -151,7 +150,7 @@ public class StyleTransformTest {
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("composite");
+        List<MBLayer> layers = mbStyle.layers();
 
         assertEquals(2, layers.size());
 
@@ -278,7 +277,7 @@ public class StyleTransformTest {
         List<Integer> expectedDashes = Arrays.asList(50, 50); // 5 times 10, the line width
         assertEquals(expectedDashes.size(), lsym.getStroke().dashArray().size());
         for (int i = 0; i < expectedDashes.size(); i++) {
-            Integer n = (Integer) lsym.getStroke().dashArray().get(i).evaluate(null, Integer.class);
+            Integer n = lsym.getStroke().dashArray().get(i).evaluate(null, Integer.class);
             assertEquals(expectedDashes.get(i), n);
         }
     }
@@ -383,7 +382,7 @@ public class StyleTransformTest {
         assertEquals(Integer.valueOf(1), lsym.getStroke().getWidth().evaluate(null, Integer.class));
         assertEquals(
                 Integer.valueOf(0), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
-        assertTrue(lsym.getStroke().dashArray() == null);
+        assertNull(lsym.getStroke().dashArray());
     }
 
     @Test
@@ -407,7 +406,7 @@ public class StyleTransformTest {
         assertTrue(symbolizer instanceof PointSymbolizer);
         PointSymbolizer psym = (PointSymbolizer) symbolizer;
 
-        assertTrue(psym.getGraphic() != null);
+        assertNotNull(psym.getGraphic());
 
         assertEquals(
                 Integer.valueOf(30), psym.getGraphic().getSize().evaluate(null, Integer.class));
@@ -434,16 +433,12 @@ public class StyleTransformTest {
 
         assertNotNull(m.getFill());
         assertEquals(Color.RED, m.getFill().getColor().evaluate(null, Color.class));
-        assertEquals(
-                Double.valueOf(.5), m.getFill().getOpacity().evaluate(null, Double.class), .0001);
+        assertEquals(.5, m.getFill().getOpacity().evaluate(null, Double.class), .0001);
 
         assertNotNull(m.getStroke());
         assertEquals(Color.GREEN, m.getStroke().getColor().evaluate(null, Color.class));
         assertEquals(Integer.valueOf(2), m.getStroke().getWidth().evaluate(null, Integer.class));
-        assertEquals(
-                Double.valueOf(.75),
-                m.getStroke().getOpacity().evaluate(null, Double.class),
-                .0001);
+        assertEquals(.75, m.getStroke().getOpacity().evaluate(null, Double.class), .0001);
     }
 
     @Test
@@ -467,7 +462,7 @@ public class StyleTransformTest {
         assertTrue(symbolizer instanceof PointSymbolizer);
         PointSymbolizer psym = (PointSymbolizer) symbolizer;
 
-        assertTrue(psym.getGraphic() != null);
+        assertNotNull(psym.getGraphic());
 
         assertEquals(
                 Integer.valueOf(10), psym.getGraphic().getSize().evaluate(null, Integer.class));
@@ -515,7 +510,7 @@ public class StyleTransformTest {
         Fill fill = ((BackgroundMBLayer) layers.get(0)).getFill(mbStyle);
 
         assertEquals(Color.GREEN, fill.getColor().evaluate(null, Color.class));
-        assertEquals(Double.valueOf(.45), fill.getOpacity().evaluate(null, Double.class), .0001);
+        assertEquals(.45, fill.getOpacity().evaluate(null, Double.class), .0001);
     }
 
     @Test
@@ -537,7 +532,7 @@ public class StyleTransformTest {
     public void testBackgroundPattern() throws IOException, ParseException {
         JSONObject jsonObject = parseTestStyle("backgroundImgStyleTest.json");
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("geoserver-states");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof BackgroundMBLayer);
         Fill fill = ((BackgroundMBLayer) layers.get(0)).getFill(mbStyle);
@@ -550,7 +545,7 @@ public class StyleTransformTest {
     public void testSymbolFont() throws IOException, ParseException {
         JSONObject jsonObject = parseTestStyle("symbolTextTest.json");
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("testsource");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof SymbolMBLayer);
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
@@ -579,7 +574,7 @@ public class StyleTransformTest {
     public void testSymbolTextAndIcon() throws IOException, ParseException {
         JSONObject jsonObject = parseTestStyle("symbolTextAndIconTest.json");
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         // only one symbolizer
@@ -602,11 +597,11 @@ public class StyleTransformTest {
         assertNull(layout.get("symbol-avoid-edges"));
 
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
-        assertEquals("false", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
+        assertEquals("false", symbolizer.getOptions().get("partials"));
     }
 
     @Test
@@ -619,11 +614,11 @@ public class StyleTransformTest {
         assertEquals(false, layout.get("symbol-avoid-edges"));
 
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
-        assertEquals("false", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
+        assertEquals("false", symbolizer.getOptions().get("partials"));
     }
 
     @Test
@@ -636,11 +631,11 @@ public class StyleTransformTest {
         assertEquals(true, layout.get("symbol-avoid-edges"));
 
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
-        assertEquals("false", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
+        assertEquals("false", symbolizer.getOptions().get("partials"));
     }
 
     @Test
@@ -653,7 +648,7 @@ public class StyleTransformTest {
         assertNull(layout.get("icon-ignore-placement"));
 
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -671,7 +666,7 @@ public class StyleTransformTest {
         assertEquals(true, layout.get("icon-ignore-placement"));
 
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -689,7 +684,7 @@ public class StyleTransformTest {
         assertNull(layout.get("text-ignore-placement"));
 
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
@@ -711,11 +706,11 @@ public class StyleTransformTest {
         SLDTransformer styleTransform = new SLDTransformer();
         String xml = styleTransform.transform(sld);
         // System.out.print(xml);
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
-        assertNull("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("labelObstacle"));
+        assertNull("true", symbolizer.getOptions().get("labelObstacle"));
     }
 
     /** Read a test Mapbox Style file (json) and parse it into a {@link JSONObject}. */
@@ -747,7 +742,7 @@ public class StyleTransformTest {
         JSONObject jsonObject = parseTestStyle("textFontTest.json");
         MBStyle mbStyle = new MBStyle(jsonObject);
 
-        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<MBLayer> layers = mbStyle.layers();
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof SymbolMBLayer);
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
@@ -874,6 +869,7 @@ public class StyleTransformTest {
         assertEquals(4000, (int) ts3.getPriority().evaluate(null, Integer.class));
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends Symbolizer> T getFirstSymbolizer(FeatureTypeStyle fts) {
         return (T) fts.rules().get(0).symbolizers().get(0);
     }

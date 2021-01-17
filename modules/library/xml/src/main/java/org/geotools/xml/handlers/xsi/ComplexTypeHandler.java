@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.naming.OperationNotSupportedException;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.XSIElementHandler;
@@ -76,7 +77,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
     private boolean mixed;
     private int block;
     private int finaL;
-    private List attrDecs = new LinkedList(); // attr or attrGrps
+    private List<XSIElementHandler> attrDecs = new LinkedList<>(); // attr or attrGrps
     private AnyAttributeHandler anyAttribute;
     private Object child; // should be either a ComplexType or a SimpleType,
     private int hashCodeOffset = getOffset();
@@ -163,7 +164,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             // attribute
             if (AttributeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (attrDecs == null) {
-                    attrDecs = new LinkedList();
+                    attrDecs = new LinkedList<>();
                 }
 
                 AttributeHandler ah = new AttributeHandler();
@@ -175,7 +176,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             // attributeGroup
             if (AttributeGroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (attrDecs == null) {
-                    attrDecs = new LinkedList();
+                    attrDecs = new LinkedList<>();
                 }
 
                 AttributeGroupHandler ah = new AttributeGroupHandler();
@@ -373,7 +374,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
         dct.abstracT = abstracT;
         dct.anyAttributeNameSpace = (anyAttribute != null) ? anyAttribute.getNamespace() : null;
 
-        HashSet attr = new HashSet();
+        Set<Attribute> attr = new HashSet<>();
 
         if (child instanceof SimpleContentHandler || child instanceof ComplexContentHandler) {
             if (child instanceof SimpleContentHandler) {
@@ -463,8 +464,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
                     if (ct != null && ct.getAttributes() != null) {
                         Attribute[] it = ct.getAttributes();
 
-                        for (int i = 0; i < it.length; i++) {
-                            attr.add(it[i]);
+                        for (Attribute attribute : it) {
+                            attr.add(attribute);
                         }
                     }
 
@@ -572,7 +573,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             }
         }
 
-        dct.attributes = (Attribute[]) attr.toArray(new Attribute[attr.size()]);
+        dct.attributes = attr.toArray(new Attribute[attr.size()]);
         dct.namespace = parent.getTargetNamespace();
         dct.block = block;
         dct.finaL = finaL;
@@ -772,8 +773,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
             if (children == null) {
                 return null;
             }
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(name);
+            for (ElementGrouping elementGrouping : children) {
+                Element t = elementGrouping.findChildElement(name);
                 if (t != null) { // found it
 
                     return t;
@@ -787,8 +788,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
             if (children == null) {
                 return null;
             }
-            for (int i = 0; i < children.length; i++) {
-                Element t = children[i].findChildElement(localName, namespaceURI);
+            for (ElementGrouping elementGrouping : children) {
+                Element t = elementGrouping.findChildElement(localName, namespaceURI);
                 if (t != null) { // found it
 
                     return t;
@@ -839,17 +840,17 @@ public class ComplexTypeHandler extends XSIElementHandler {
 
                 case ElementGrouping.CHOICE:
                     ElementGrouping[] children = ((Choice) child11).getChildren();
-                    List l = new LinkedList();
+                    List<Element> l = new LinkedList<>();
 
-                    for (int i = 0; i < children.length; i++) {
-                        Element[] t = getChildElements(children[i]);
+                    for (ElementGrouping grouping : children) {
+                        Element[] t = getChildElements(grouping);
 
                         if (t != null) {
                             l.addAll(Arrays.asList(t));
                         }
                     }
 
-                    return (l.size() > 0) ? (Element[]) l.toArray(new Element[l.size()]) : null;
+                    return (l.isEmpty()) ? null : l.toArray(new Element[l.size()]);
 
                 case ElementGrouping.ELEMENT:
                     return new Element[] {
@@ -863,10 +864,10 @@ public class ComplexTypeHandler extends XSIElementHandler {
 
                 case ElementGrouping.SEQUENCE:
                     children = ((Sequence) child11).getChildren();
-                    l = new LinkedList();
+                    l = new LinkedList<>();
                     if (children != null) {
-                        for (int i = 0; i < children.length; i++) {
-                            Element[] t = getChildElements(children[i]);
+                        for (ElementGrouping elementGrouping : children) {
+                            Element[] t = getChildElements(elementGrouping);
 
                             if (t != null) {
                                 l.addAll(Arrays.asList(t));
@@ -874,7 +875,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                         }
                     }
 
-                    return (l.size() > 0) ? (Element[]) l.toArray(new Element[l.size()]) : null;
+                    return (l.isEmpty()) ? null : l.toArray(new Element[l.size()]);
             }
 
             return null;
@@ -950,7 +951,10 @@ public class ComplexTypeHandler extends XSIElementHandler {
          *     org.geotools.xml.xsi.ElementValue[], org.xml.sax.Attributes)
          */
         public Object getValue(
-                Element element, ElementValue[] value, final Attributes attrs, Map hints)
+                Element element,
+                ElementValue[] value,
+                final Attributes attrs,
+                Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             Object[] values = null;
 
@@ -1020,7 +1024,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((parent != null) && parent.canEncode(element, value, hints)) {
                 return true;
             }
@@ -1032,7 +1036,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((parent != null) && parent.canEncode(element, value, hints)) {
                 parent.encode(element, value, output, hints);
@@ -1046,8 +1051,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                     ComplexType complex = (ComplexType) type;
                     Element[] children = complex.getChildElements();
                     boolean found = false;
-                    for (int i = 0; i < children.length; i++) {
-                        Element child = children[i];
+                    for (Element child : children) {
                         if (child.getType().canEncode(child, value, hints)) {
                             child.getType().encode(child, value, output, hints);
                             found = true;

@@ -19,7 +19,11 @@ package org.geotools.data.complex;
 import java.util.List;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.MultipleValue;
+import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureType;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -29,8 +33,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class FeatureTypeMappingFactory {
 
     public static FeatureTypeMapping getInstance(
-            FeatureSource source,
-            FeatureSource indexSource,
+            FeatureSource<? extends FeatureType, ? extends Feature> source,
+            FeatureSource<SimpleFeatureType, SimpleFeature> indexSource,
             AttributeDescriptor target,
             String defaultGeometryXPath,
             List<AttributeMapping> mappings,
@@ -67,8 +71,8 @@ public class FeatureTypeMappingFactory {
     }
 
     public static FeatureTypeMapping getInstance(
-            FeatureSource source,
-            FeatureSource indexSource,
+            FeatureSource<? extends FeatureType, ? extends Feature> source,
+            FeatureSource<SimpleFeatureType, SimpleFeature> indexSource,
             AttributeDescriptor target,
             String defaultGeometryXPath,
             List<AttributeMapping> mappings,

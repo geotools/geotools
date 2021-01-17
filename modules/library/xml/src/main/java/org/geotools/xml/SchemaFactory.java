@@ -74,7 +74,7 @@ public class SchemaFactory {
      * not really, but the JVM might be better ... use the class to make
      * instances
      */
-    private Map schemas = loadSchemas();
+    private Map<URI, Schema> schemas = loadSchemas();
 
     /** Schema Resolver: uses local versions of schemas or cached ones if available. */
     File cacheDir;
@@ -117,20 +117,21 @@ public class SchemaFactory {
 
     /*
      */
-    private Map loadSchemas() {
-        schemas = new HashMap();
+    private Map<URI, Schema> loadSchemas() {
+        schemas = new HashMap<>();
 
         ClassLoader[] cls = findLoaders();
         String serviceId = "META-INF/services/" + Schema.class.getName();
 
-        for (int i = 0; i < cls.length; i++) {
+        for (ClassLoader cl : cls) {
             try {
-                Enumeration e = cls[i].getResources(serviceId);
+                Enumeration e = cl.getResources(serviceId);
 
                 while (e.hasMoreElements()) {
                     URL res = (URL) e.nextElement();
                     try (BufferedReader rd =
-                            new BufferedReader(new InputStreamReader(res.openStream(), "UTF-8"))) {
+                            new BufferedReader(
+                                    new InputStreamReader(res.openStream(), "UTF" + "-8"))) {
 
                         while (rd.ready()) {
                             String factoryClassName = rd.readLine().trim();
@@ -138,22 +139,17 @@ public class SchemaFactory {
                             try {
                                 Schema s =
                                         (Schema)
-                                                cls[i].loadClass(factoryClassName)
+                                                cl.loadClass(factoryClassName)
                                                         .getDeclaredMethod(
                                                                 "getInstance", new Class[0])
                                                         .invoke(null, new Object[0]);
                                 schemas.put(s.getTargetNamespace(), s);
-                            } catch (IllegalArgumentException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (SecurityException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (IllegalAccessException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (InvocationTargetException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (NoSuchMethodException e1) {
-                                XSISAXHandler.logger.warning(e1.toString());
-                            } catch (ClassNotFoundException e1) {
+                            } catch (IllegalArgumentException
+                                    | ClassNotFoundException
+                                    | NoSuchMethodException
+                                    | InvocationTargetException
+                                    | IllegalAccessException
+                                    | SecurityException e1) {
                                 XSISAXHandler.logger.warning(e1.toString());
                             }
                         }
@@ -234,16 +230,16 @@ public class SchemaFactory {
         if (prefix == null) return null;
         SchemaFactory sf = getInstance();
         Iterator i = sf.schemas.values().iterator();
-        List l = new LinkedList();
+        List<Schema> l = new LinkedList<>();
         while (i.hasNext()) {
             Schema s = (Schema) i.next();
             if (prefix.equals(s.getPrefix())) l.add(s);
         }
-        return (Schema[]) l.toArray(new Schema[l.size()]);
+        return l.toArray(new Schema[l.size()]);
     }
 
     private synchronized Schema getRealInstance(URI targetNamespace) {
-        Schema r = (Schema) schemas.get(targetNamespace);
+        Schema r = schemas.get(targetNamespace);
 
         if (r != null) {
             return r;
@@ -306,13 +302,13 @@ public class SchemaFactory {
             }
 
             if (schemas.get(targetNamespace) != null) {
-                schema = merge(schema, (Schema) schemas.get(targetNamespace));
+                schema = merge(schema, schemas.get(targetNamespace));
             }
             schemas.put(targetNamespace, schema);
             return schema;
         } else {
-            if (!((Schema) schemas.get(targetNamespace)).includesURI(desiredSchema)) {
-                Schema sh = (Schema) schemas.get(targetNamespace);
+            if (!schemas.get(targetNamespace).includesURI(desiredSchema)) {
+                Schema sh = schemas.get(targetNamespace);
                 setParser();
 
                 XSISAXHandler contentHandler = getSAXHandler(desiredSchema);
@@ -329,7 +325,7 @@ public class SchemaFactory {
             }
         }
 
-        return (Schema) schemas.get(targetNamespace);
+        return schemas.get(targetNamespace);
     }
 
     /** */
@@ -359,19 +355,19 @@ public class SchemaFactory {
 
             Schema schema = contentHandler.getSchema();
             if (schemas.get(targetNamespace) != null) {
-                schema = merge(schema, (Schema) schemas.get(targetNamespace));
+                schema = merge(schema, schemas.get(targetNamespace));
             }
 
             schemas.put(targetNamespace, schema);
 
         } else {
-            Schema sh = (Schema) schemas.get(targetNamespace);
+            Schema sh = schemas.get(targetNamespace);
             XSISAXHandler contentHandler = parseSchema(is1, level);
 
             sh = merge(sh, contentHandler.getSchema());
             schemas.put(targetNamespace, sh); // over-write
         }
-        return (Schema) schemas.get(targetNamespace);
+        return schemas.get(targetNamespace);
     }
 
     private XSISAXHandler parseSchema(InputStream is1, Level level) throws SAXException {
@@ -422,9 +418,7 @@ public class SchemaFactory {
 
             try {
                 parser = spf.newSAXParser();
-            } catch (ParserConfigurationException e) {
-                throw new SAXException(e);
-            } catch (SAXException e) {
+            } catch (ParserConfigurationException | SAXException e) {
                 throw new SAXException(e);
             }
         }
@@ -501,7 +495,7 @@ public class SchemaFactory {
             aForm = s1.isAttributeFormDefault() || s2.isAttributeFormDefault();
             eForm = s1.isElementFormDefault() || s2.isElementFormDefault();
 
-            HashMap m = new HashMap();
+            Map<Object, Object> m = new HashMap<>();
 
             AttributeGroup[] ag1 = s1.getAttributeGroups();
 
@@ -515,11 +509,12 @@ public class SchemaFactory {
                 ag2 = new AttributeGroup[0];
             }
 
-            for (int i = 0; i < ag1.length; i++) m.put(ag1[i].getName(), ag1[i]);
+            for (AttributeGroup attributeGroup1 : ag1)
+                m.put(attributeGroup1.getName(), attributeGroup1);
 
-            for (int i = 0; i < ag2.length; i++)
-                if (!m.containsKey(ag2[i].getName())) {
-                    m.put(ag2[i].getName(), ag2[i]);
+            for (AttributeGroup attributeGroup : ag2)
+                if (!m.containsKey(attributeGroup.getName())) {
+                    m.put(attributeGroup.getName(), attributeGroup);
                 }
 
             attributeGroups = new AttributeGroup[m.size()];
@@ -528,7 +523,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) attributeGroups[i] = (AttributeGroup) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             Attribute[] a1 = s1.getAttributes();
 
@@ -542,11 +537,11 @@ public class SchemaFactory {
                 a2 = new Attribute[0];
             }
 
-            for (int i = 0; i < a1.length; i++) m.put(a1[i].getName(), a1[i]);
+            for (Attribute attribute1 : a1) m.put(attribute1.getName(), attribute1);
 
-            for (int i = 0; i < a2.length; i++)
-                if (!m.containsKey(a2[i].getName())) {
-                    m.put(a2[i].getName(), a2[i]);
+            for (Attribute attribute : a2)
+                if (!m.containsKey(attribute.getName())) {
+                    m.put(attribute.getName(), attribute);
                 }
 
             attributes = new Attribute[m.size()];
@@ -557,7 +552,7 @@ public class SchemaFactory {
             block = s1.getBlockDefault() | s2.getBlockDefault();
             finaL = s1.getFinalDefault() | s2.getFinalDefault();
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             ComplexType[] c1 = s1.getComplexTypes();
 
@@ -571,11 +566,11 @@ public class SchemaFactory {
                 c2 = new ComplexType[0];
             }
 
-            for (int i = 0; i < c1.length; i++) m.put(c1[i].getName(), c1[i]);
+            for (ComplexType complexType1 : c1) m.put(complexType1.getName(), complexType1);
 
-            for (int i = 0; i < c2.length; i++)
-                if (!m.containsKey(c2[i].getName())) {
-                    m.put(c2[i].getName(), c2[i]);
+            for (ComplexType complexType : c2)
+                if (!m.containsKey(complexType.getName())) {
+                    m.put(complexType.getName(), complexType);
                 }
 
             complexTypes = new ComplexType[m.size()];
@@ -583,7 +578,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) complexTypes[i] = (ComplexType) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             SimpleType[] ss1 = s1.getSimpleTypes();
 
@@ -597,11 +592,11 @@ public class SchemaFactory {
                 ss2 = new SimpleType[0];
             }
 
-            for (int i = 0; i < ss1.length; i++) m.put(ss1[i].getName(), ss1[i]);
+            for (SimpleType type : ss1) m.put(type.getName(), type);
 
-            for (int i = 0; i < ss2.length; i++)
-                if (!m.containsKey(ss2[i].getName())) {
-                    m.put(ss2[i].getName(), ss2[i]);
+            for (SimpleType simpleType : ss2)
+                if (!m.containsKey(simpleType.getName())) {
+                    m.put(simpleType.getName(), simpleType);
                 }
 
             simpleTypes = new SimpleType[m.size()];
@@ -609,7 +604,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) simpleTypes[i] = (SimpleType) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             Element[] e1 = s1.getElements();
 
@@ -623,11 +618,11 @@ public class SchemaFactory {
                 e2 = new Element[0];
             }
 
-            for (int i = 0; i < e1.length; i++) m.put(e1[i].getName(), e1[i]);
+            for (Element element1 : e1) m.put(element1.getName(), element1);
 
-            for (int i = 0; i < e2.length; i++)
-                if (!m.containsKey(e2[i].getName())) {
-                    m.put(e2[i].getName(), e2[i]);
+            for (Element element : e2)
+                if (!m.containsKey(element.getName())) {
+                    m.put(element.getName(), element);
                 }
 
             elements = new Element[m.size()];
@@ -635,7 +630,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) elements[i] = (Element) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             Group[] g1 = s1.getGroups();
 
@@ -649,11 +644,11 @@ public class SchemaFactory {
                 g2 = new Group[0];
             }
 
-            for (int i = 0; i < g1.length; i++) m.put(g1[i].getName(), g1[i]);
+            for (Group item : g1) m.put(item.getName(), item);
 
-            for (int i = 0; i < g2.length; i++)
-                if (!m.containsKey(g2[i].getName())) {
-                    m.put(g2[i].getName(), g2[i]);
+            for (Group group : g2)
+                if (!m.containsKey(group.getName())) {
+                    m.put(group.getName(), group);
                 }
 
             groups = new Group[m.size()];
@@ -661,7 +656,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) groups[i] = (Group) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             Schema[] i1 = s1.getImports();
 
@@ -675,11 +670,11 @@ public class SchemaFactory {
                 i2 = new Schema[0];
             }
 
-            for (int i = 0; i < i1.length; i++) m.put(i1[i].getTargetNamespace(), i1[i]);
+            for (Schema value : i1) m.put(value.getTargetNamespace(), value);
 
-            for (int i = 0; i < i2.length; i++)
-                if (!m.containsKey(i2[i].getTargetNamespace())) {
-                    m.put(i2[i].getTargetNamespace(), i2[i]);
+            for (Schema schema : i2)
+                if (!m.containsKey(schema.getTargetNamespace())) {
+                    m.put(schema.getTargetNamespace(), schema);
                 }
 
             imports = new Schema[m.size()];
@@ -797,8 +792,8 @@ public class SchemaFactory {
         }
 
         /** Returns the implementation hints. The default implementation returns en empty map. */
-        public Map getImplementationHints() {
-            return Collections.EMPTY_MAP;
+        public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+            return Collections.emptyMap();
         }
     }
 }

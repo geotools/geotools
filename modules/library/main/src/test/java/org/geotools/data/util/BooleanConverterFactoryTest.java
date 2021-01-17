@@ -16,31 +16,35 @@
  */
 package org.geotools.data.util;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class BooleanConverterFactoryTest extends TestCase {
+public class BooleanConverterFactoryTest {
 
     BooleanConverterFactory factory;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         factory = new BooleanConverterFactory();
     }
 
+    @Test
     public void testFromString() throws Exception {
-        assertEquals(Boolean.TRUE, convert("true"));
-        assertEquals(Boolean.TRUE, convert("1"));
-        assertEquals(Boolean.FALSE, convert("false"));
-        assertEquals(Boolean.FALSE, convert("0"));
+        Assert.assertEquals(Boolean.TRUE, convert("true"));
+        Assert.assertEquals(Boolean.TRUE, convert("1"));
+        Assert.assertEquals(Boolean.FALSE, convert("false"));
+        Assert.assertEquals(Boolean.FALSE, convert("0"));
     }
 
+    @Test
     public void testFromInteger() throws Exception {
-        assertEquals(Boolean.TRUE, convert(Integer.valueOf(1)));
-        assertEquals(Boolean.FALSE, convert(Integer.valueOf(0)));
+        Assert.assertEquals(Boolean.TRUE, convert(Integer.valueOf(1)));
+        Assert.assertEquals(Boolean.FALSE, convert(Integer.valueOf(0)));
     }
 
     Boolean convert(Object value) throws Exception {
-        return (Boolean)
-                factory.createConverter(value.getClass(), Boolean.class, null)
-                        .convert(value, Boolean.class);
+        return factory.createConverter(value.getClass(), Boolean.class, null)
+                .convert(value, Boolean.class);
     }
 }

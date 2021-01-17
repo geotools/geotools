@@ -66,7 +66,7 @@ public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<?> getType() {
         return ComparisonOperators.class;
     }
 
@@ -78,7 +78,7 @@ public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List comparisons = new ArrayList();
+        List<Operator> comparisons = new ArrayList<>();
 
         // &lt;xsd:element ref="ogc:Simple_Comparisons"/&gt;
         if (node.hasChild("Simple_Comparisons")) {
@@ -105,8 +105,7 @@ public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
             comparisons.add(factory.operator("NullCheck"));
         }
 
-        return factory.comparisonOperators(
-                (Operator[]) comparisons.toArray(new Operator[comparisons.size()]));
+        return factory.comparisonOperators(comparisons.toArray(new Operator[comparisons.size()]));
     }
 
     public Object getProperty(Object object, QName name) throws Exception {

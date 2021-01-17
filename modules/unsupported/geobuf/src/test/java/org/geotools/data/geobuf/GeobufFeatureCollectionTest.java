@@ -18,7 +18,11 @@ package org.geotools.data.geobuf;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -80,8 +84,7 @@ public class GeobufFeatureCollectionTest {
         inputStream.close();
 
         assertEquals(2, decodedFeatureCollection.size());
-        SimpleFeatureIterator it = decodedFeatureCollection.features();
-        try {
+        try (SimpleFeatureIterator it = decodedFeatureCollection.features()) {
             int c = 0;
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
@@ -96,8 +99,6 @@ public class GeobufFeatureCollectionTest {
                 }
                 c++;
             }
-        } finally {
-            it.close();
         }
     }
 }

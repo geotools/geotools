@@ -124,12 +124,11 @@ public class EmfComplexFeatureReader {
         // parse some of the instance document to find out the
         // schema location
         URL resolvedLocation = new URL(resolver.resolve(location.toExternalForm()));
-        InputStream input = resolvedLocation.openStream();
 
         // create stream parser
-        XmlPullParser parser = null;
 
-        try {
+        try (InputStream input = resolvedLocation.openStream()) {
+            XmlPullParser parser = null;
             // parse root element
             parser = new MXParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
@@ -148,8 +147,6 @@ public class EmfComplexFeatureReader {
         } catch (XmlPullParserException e) {
             String msg = "Cannot find target namespace for schema document " + resolvedLocation;
             throw (RuntimeException) new RuntimeException(msg).initCause(e);
-        } finally {
-            input.close();
         }
         if (targetNamespace == null) {
             throw new IllegalArgumentException(

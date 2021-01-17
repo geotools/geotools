@@ -9,8 +9,9 @@
  */
 package org.opengis.referencing.datum;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19111;
+import static org.opengis.annotation.Specification.OGC_01009;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public final class VerticalDatumType extends CodeList<VerticalDatumType> {
     private static final long serialVersionUID = -8161084528823937553L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<VerticalDatumType> VALUES = new ArrayList<VerticalDatumType>(6);
+    private static final List<VerticalDatumType> VALUES = new ArrayList<>(6);
 
     /**
      * In some cases, e.g. oil exploration and production, a geological feature, such as the top or

@@ -21,7 +21,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -114,7 +117,7 @@ public class LabelPainterTest {
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
         // should default to 0 with no lines to paint
-        assertTrue(painter.getLineHeightForAnchorY(0) == 0.0);
+        assertEquals(0.0, painter.getLineHeightForAnchorY(0), 0.0);
     }
 
     @Test
@@ -128,12 +131,13 @@ public class LabelPainterTest {
         assertTrue(painter.getLineHeightForAnchorY(0) > 0.0);
 
         // should get line height of first line
-        assertTrue(painter.lines.get(0).getLineHeight() == painter.getLineHeightForAnchorY(1));
+        assertEquals(painter.lines.get(0).getLineHeight(), painter.getLineHeightForAnchorY(1), 0.0);
 
         // should get line height of last line
-        assertTrue(
-                painter.lines.get(painter.getLineCount() - 1).getLineHeight()
-                        == painter.getLineHeightForAnchorY(1));
+        assertEquals(
+                painter.lines.get(painter.getLineCount() - 1).getLineHeight(),
+                painter.getLineHeightForAnchorY(1),
+                0.0);
     }
 
     @Test

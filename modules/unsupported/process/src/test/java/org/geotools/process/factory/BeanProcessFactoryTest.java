@@ -94,7 +94,10 @@ public class BeanProcessFactoryTest {
 
                     public <T> Iterator<T> iterator(Class<T> category) {
                         if (ProcessFactory.class.isAssignableFrom(category)) {
-                            return (Iterator<T>) Collections.singletonList(factory).iterator();
+                            @SuppressWarnings("unchecked")
+                            Iterator<T> result =
+                                    (Iterator<T>) Collections.singletonList(factory).iterator();
+                            return result;
                         } else {
                             return null;
                         }
@@ -118,9 +121,9 @@ public class BeanProcessFactoryTest {
                 IdentityProcess.class.getAnnotation(DescribeProcess.class);
 
         InternationalString desc = factory.getDescription(name);
-        assertTrue(desc.toString().equals(describeProcessAnno.description()));
+        assertEquals(desc.toString(), describeProcessAnno.description());
         InternationalString title = factory.getTitle(name);
-        assertTrue(title.toString().equals(describeProcessAnno.title()));
+        assertEquals(title.toString(), describeProcessAnno.title());
 
         Map<String, Parameter<?>> params = factory.getParameterInfo(name);
         assertEquals(1, params.size());
@@ -143,7 +146,7 @@ public class BeanProcessFactoryTest {
         final ReferencedEnvelope re = new ReferencedEnvelope(-10, 10, -10, 10, null);
 
         org.geotools.process.Process p = factory.create(new NameImpl("bean", "Identity"));
-        Map<String, Object> inputs = new HashMap<String, Object>();
+        Map<String, Object> inputs = new HashMap<>();
         inputs.put("input", re);
         Map<String, Object> result = p.execute(inputs, null);
 
@@ -171,7 +174,7 @@ public class BeanProcessFactoryTest {
 
         org.geotools.process.Process transformation =
                 factory.create(new NameImpl("bean", "VectorIdentityRT"));
-        Map<String, Object> inputs = new HashMap<String, Object>();
+        Map<String, Object> inputs = new HashMap<>();
         inputs.put("data", data);
         inputs.put("value", 10);
 
@@ -192,7 +195,7 @@ public class BeanProcessFactoryTest {
     @Test
     public void testDefaultValues() throws Exception {
         Process defaults = factory.create(new NameImpl("bean", "Defaults"));
-        Map<String, Object> results = defaults.execute(Collections.EMPTY_MAP, null);
+        Map<String, Object> results = defaults.execute(Collections.emptyMap(), null);
 
         // double check all defaults have been applied
         assertEquals("default string", results.get("string"));
@@ -210,14 +213,14 @@ public class BeanProcessFactoryTest {
         // test that the annotation is correctly generating the parameter metadata
         Map<String, Parameter<?>> params =
                 factory.getParameterInfo(new NameImpl("bean", "Defaults"));
-        assertEquals(2.0, ((Parameter) params.get("int")).metadata.get(Parameter.MAX));
-        assertEquals(-1.0, ((Parameter) params.get("int")).metadata.get(Parameter.MIN));
-        assertEquals(2.5, ((Parameter) params.get("double")).metadata.get(Parameter.MAX));
-        assertEquals(-1.5, ((Parameter) params.get("double")).metadata.get(Parameter.MIN));
+        assertEquals(2.0, params.get("int").metadata.get(Parameter.MAX));
+        assertEquals(-1.0, params.get("int").metadata.get(Parameter.MIN));
+        assertEquals(2.5, params.get("double").metadata.get(Parameter.MAX));
+        assertEquals(-1.5, params.get("double").metadata.get(Parameter.MIN));
         // check the null values with a  parameter that does not have that annotation parameter
         // filled
-        assertNull(((Parameter) params.get("short")).metadata.get(Parameter.MAX));
-        assertNull(((Parameter) params.get("short")).metadata.get(Parameter.MIN));
+        assertNull(params.get("short").metadata.get(Parameter.MAX));
+        assertNull(params.get("short").metadata.get(Parameter.MIN));
     }
 
     @Test

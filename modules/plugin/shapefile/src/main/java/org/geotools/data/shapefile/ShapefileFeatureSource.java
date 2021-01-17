@@ -195,7 +195,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
     public ShapefileFeatureSource(ContentEntry entry, ShpFiles shpFiles) {
         super(entry, Query.ALL);
         this.shpFiles = shpFiles;
-        HashSet<Key> hints = new HashSet<Hints.Key>();
+        HashSet<Key> hints = new HashSet<>();
         hints.add(Hints.FEATURE_DETACHED);
         hints.add(Hints.JTS_GEOMETRY_FACTORY);
         hints.add(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
@@ -338,7 +338,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             }
             List<Data> records = indexManager.queryFidIndex(fidFilter);
             if (records != null) {
-                goodRecs = new CloseableIteratorWrapper<Data>(records.iterator());
+                goodRecs = new CloseableIteratorWrapper<>(records.iterator());
             }
         } else if (getDataStore().isIndexed()
                 && !bbox.isNull()
@@ -361,7 +361,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                             + resultSchema.getName().getLocalPart()
                             + ", skipping read");
             goodRecs.close();
-            return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(resultSchema);
+            return new EmptyFeatureReader<>(resultSchema);
         }
 
         // get the .fix file reader, if we have a .fix file
@@ -376,7 +376,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         DbaseFileReader dbfReader = null;
         List<AttributeDescriptor> attributes = readSchema.getAttributeDescriptors();
-        if (attributes.size() < 1
+        if (attributes.isEmpty()
                 || (attributes.size() == 1 && readSchema.getGeometryDescriptor() != null)) {
             LOGGER.fine("The DBF file won't be opened since no attributes will be read from it");
         } else {
@@ -435,7 +435,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             return getSchema();
         }
         // Step 1: start with requested property names
-        LinkedHashSet<String> attributes = new LinkedHashSet<String>();
+        LinkedHashSet<String> attributes = new LinkedHashSet<>();
         attributes.addAll(Arrays.asList(q.getPropertyNames()));
 
         Filter filter = q.getFilter();
@@ -446,7 +446,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             filter.accept(fat, null);
             attributes.addAll(fat.getAttributeNameSet());
         }
-        return SimpleFeatureTypeBuilder.retype(getSchema(), new ArrayList<String>(attributes));
+        return SimpleFeatureTypeBuilder.retype(getSchema(), new ArrayList<>(attributes));
     }
 
     /** Builds the most appropriate geometry factory depending on the available query hints */
@@ -517,7 +517,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         CoordinateReferenceSystem crs = null;
 
         AttributeTypeBuilder build = new AttributeTypeBuilder();
-        List<AttributeDescriptor> attributes = new ArrayList<AttributeDescriptor>();
+        List<AttributeDescriptor> attributes = new ArrayList<>();
         try {
             shp = shpManager.openShapeReader(new GeometryFactory(), false);
             dbf = shpManager.openDbfReader(false);
@@ -541,7 +541,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             GeometryType geometryType = build.buildGeometryType();
             attributes.add(
                     build.buildDescriptor(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME, geometryType));
-            Set<String> usedNames = new HashSet<String>(); // record names in
+            Set<String> usedNames = new HashSet<>(); // record names in
             // case of
             // duplicates
             usedNames.add(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME);

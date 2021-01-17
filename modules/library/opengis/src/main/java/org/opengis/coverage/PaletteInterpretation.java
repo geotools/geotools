@@ -9,8 +9,8 @@
  */
 package org.opengis.coverage;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.OGC_01004;
 
 import java.awt.color.ColorSpace;
 import java.util.ArrayList;
@@ -33,8 +33,7 @@ public final class PaletteInterpretation extends CodeList<PaletteInterpretation>
     private static final long serialVersionUID = -7387623392932592485L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<PaletteInterpretation> VALUES =
-            new ArrayList<PaletteInterpretation>(4);
+    private static final List<PaletteInterpretation> VALUES = new ArrayList<>(4);
 
     /**
      * Gray Scale color palette.

@@ -22,7 +22,7 @@ import static org.apache.commons.io.filefilter.FileFilterUtils.nameFileFilter;
 import static org.apache.commons.io.filefilter.FileFilterUtils.notFileFilter;
 import static org.apache.commons.io.filefilter.FileFilterUtils.suffixFileFilter;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
@@ -119,11 +119,11 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /** Filter tiles based on attributes from the input coverage */
     public static final ParameterDescriptor<Filter> FILTER =
-            new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
+            new DefaultParameterDescriptor<>("Filter", Filter.class, null, null);
 
     /** Control the type of the final mosaic. */
     public static final ParameterDescriptor<Boolean> FADING =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "Fading",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -131,22 +131,21 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /** Control the transparency of the output coverage. */
     public static final ParameterDescriptor<Color> OUTPUT_TRANSPARENT_COLOR =
-            new DefaultParameterDescriptor<Color>(
-                    "OutputTransparentColor", Color.class, null, null);
+            new DefaultParameterDescriptor<>("OutputTransparentColor", Color.class, null, null);
 
     /** Control the thresholding on the input coverage */
     public static final ParameterDescriptor<Integer> MAX_ALLOWED_TILES =
-            new DefaultParameterDescriptor<Integer>(
+            new DefaultParameterDescriptor<>(
                     "MaxAllowedTiles", Integer.class, null, Integer.valueOf(-1));
 
     /** Control the default artifact filter luminance thresholding on the input coverages */
     public static final ParameterDescriptor<Integer> DEFAULT_ARTIFACTS_FILTER_THRESHOLD =
-            new DefaultParameterDescriptor<Integer>(
+            new DefaultParameterDescriptor<>(
                     "DefaultArtifactsFilterThreshold", Integer.class, null, Integer.MIN_VALUE);
 
     /** Control the artifact filter ptile thresholding */
     public static final ParameterDescriptor<Double> ARTIFACTS_FILTER_PTILE_THRESHOLD =
-            new DefaultParameterDescriptor<Double>(
+            new DefaultParameterDescriptor<>(
                     "ArtifactsFilterPtileThreshold",
                     Double.class,
                     null,
@@ -162,12 +161,11 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
      * always positive.
      */
     public static final ParameterDescriptor<double[]> VIRTUAL_NATIVE_RESOLUTION =
-            new DefaultParameterDescriptor<double[]>(
-                    "VirtualNativeResolution", double[].class, null, null);
+            new DefaultParameterDescriptor<>("VirtualNativeResolution", double[].class, null, null);
 
     /** Control the threading behavior for this plugin. */
     public static final ParameterDescriptor<Boolean> ALLOW_MULTITHREADING =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "AllowMultithreading",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -175,8 +173,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /** Control the background values for the output coverage */
     public static final ParameterDescriptor<double[]> BACKGROUND_VALUES =
-            new DefaultParameterDescriptor<double[]>(
-                    "BackgroundValues", double[].class, null, null);
+            new DefaultParameterDescriptor<>("BackgroundValues", double[].class, null, null);
 
     /** Control the interpolation to be used in mosaicking */
     public static final ParameterDescriptor<Interpolation> INTERPOLATION =
@@ -184,7 +181,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /** Control the requested resolution calculation. */
     public static final ParameterDescriptor<Boolean> ACCURATE_RESOLUTION =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "Accurate resolution computation",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -198,7 +195,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
      * #GridCoverage2DReader@getCoordinateReferenceSystem will be produced in output
      */
     public static final ParameterDescriptor<Boolean> OUTPUT_TO_ALTERNATIVE_CRS =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "Output To Alternative CRS",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -212,7 +209,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
      * <p>It does work only with DBMS as indexes
      */
     public static final ParameterDescriptor<String> SORT_BY =
-            new DefaultParameterDescriptor<String>("SORTING", String.class, null, null);
+            new DefaultParameterDescriptor<>("SORTING", String.class, null, null);
 
     /**
      * Merging behavior for the various granules of the mosaic we are going to produce.
@@ -223,7 +220,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
      * into the final mosaic.
      */
     public static final ParameterDescriptor<String> MERGE_BEHAVIOR =
-            new DefaultParameterDescriptor<String>(
+            new DefaultParameterDescriptor<>(
                     "MergeBehavior",
                     String.class,
                     MergeBehavior.valuesAsStrings(),
@@ -239,7 +236,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
      * useful only if granules are overlapping, do not enable otherwise.
      */
     public static final ParameterDescriptor<ExcessGranulePolicy> EXCESS_GRANULE_REMOVAL =
-            new DefaultParameterDescriptor<ExcessGranulePolicy>(
+            new DefaultParameterDescriptor<>(
                     "ExcessGranuleRemoval",
                     ExcessGranulePolicy.class,
                     new ExcessGranulePolicy[] {ExcessGranulePolicy.NONE, ExcessGranulePolicy.ROI},
@@ -250,11 +247,11 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
      * moment, it will be ignored in case of Heterogeneous CRS.
      */
     public static final ParameterDescriptor<Geometry> GEOMETRY_MASK =
-            new DefaultParameterDescriptor<Geometry>("GeometryMask", Geometry.class, null, null);
+            new DefaultParameterDescriptor<>("GeometryMask", Geometry.class, null, null);
 
     /** Control the Masking buffering (in raster size) */
     public static final ParameterDescriptor<Double> MASKING_BUFFER_PIXELS =
-            new DefaultParameterDescriptor<Double>(
+            new DefaultParameterDescriptor<>(
                     "MaskingBufferPixels", Double.class, null, Double.valueOf(-1));
 
     /**
@@ -262,7 +259,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
      * background values are set which usually results into setting a null ROI after the mosaic)
      */
     public static final ParameterDescriptor<Boolean> SET_ROI_PROPERTY =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "SetRoiProperty",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -275,7 +272,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /** Sets the metadata information. */
     private void setInfo() {
-        final HashMap<String, String> info = new HashMap<String, String>();
+        final HashMap<String, String> info = new HashMap<>();
         info.put("name", "ImageMosaic");
         info.put("description", "Image mosaicking plugin");
         info.put("vendor", "Geotools");
@@ -418,7 +415,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             try {
                 final File sourceF = URLs.urlToFile(sourceURL);
                 if (FilenameUtils.getName(sourceF.getAbsolutePath())
-                        .equalsIgnoreCase("datastore.properties")) {
+                        .equalsIgnoreCase(Utils.DATASTORE_PROPERTIES)) {
                     shapefile = false;
                     // load spi anche check it
                     // read the properties file
@@ -435,7 +432,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                                     Class.forName(SPIClass).getDeclaredConstructor().newInstance();
 
                     // get the params
-                    final Map<String, Serializable> params = new HashMap<String, Serializable>();
+                    final Map<String, Serializable> params = new HashMap<>();
                     final Param[] paramsInfo = spi.getParametersInfo();
                     for (Param p : paramsInfo) {
                         // search for this param and set the value if found
@@ -493,7 +490,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                                                     and(
                                                             notFileFilter(
                                                                     nameFileFilter(
-                                                                            "datastore.properties")),
+                                                                            Utils
+                                                                                    .DATASTORE_PROPERTIES)),
                                                             makeFileOnly(
                                                                     suffixFileFilter(
                                                                             ".properties")))));

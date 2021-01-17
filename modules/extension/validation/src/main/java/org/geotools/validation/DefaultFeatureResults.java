@@ -22,8 +22,8 @@ import org.opengis.feature.simple.SimpleFeature;
 
 public final class DefaultFeatureResults implements ValidationResults {
     Validation trial;
-    public List error = new ArrayList();
-    public List warning = new ArrayList();
+    public List<String> error = new ArrayList<>();
+    public List<String> warning = new ArrayList<>();
 
     public void setValidation(Validation validation) {
         trial = validation;

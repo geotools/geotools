@@ -117,19 +117,19 @@ public class JAboutDialog extends AbstractSimpleDialog {
     /*
      * Model for the dialog list control which displays categories.
      */
-    private class CategoryListModel extends AbstractListModel {
+    private class CategoryListModel extends AbstractListModel<String> {
         @Override
         public int getSize() {
             return Category.values().length - (hasApplicationInfo ? 0 : 1);
         }
 
         @Override
-        public Object getElementAt(int index) {
+        public String getElementAt(int index) {
             return Category.getByIndex(index, hasApplicationInfo).toString();
         }
     }
 
-    private JList categoryList;
+    private JList<String> categoryList;
     private JTextArea textArea;
 
     /** Creates a new dialog to display environment information but no application details. */
@@ -172,7 +172,7 @@ public class JAboutDialog extends AbstractSimpleDialog {
     public JPanel createControlPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        categoryList = new JList(new CategoryListModel());
+        categoryList = new JList<>(new CategoryListModel());
         categoryList.setPreferredSize(new Dimension(LIST_WIDTH, DEFAULT_HEIGHT));
         categoryList.setBorder(BorderFactory.createTitledBorder("Categories"));
 

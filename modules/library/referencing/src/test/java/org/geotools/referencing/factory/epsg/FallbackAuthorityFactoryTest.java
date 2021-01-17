@@ -16,15 +16,20 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.net.URL;
-import java.util.Iterator;
 import java.util.Set;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.WKT;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -77,8 +82,7 @@ public final class FallbackAuthorityFactoryTest {
         }
         boolean foundWkt = false;
         boolean foundExtra = false;
-        for (Iterator<CRSAuthorityFactory> it = factories.iterator(); it.hasNext(); ) {
-            CRSAuthorityFactory factory = (CRSAuthorityFactory) it.next();
+        for (CRSAuthorityFactory factory : factories) {
             Class<?> type = factory.getClass();
             if (VERBOSE) {
                 // System.out.println(type);

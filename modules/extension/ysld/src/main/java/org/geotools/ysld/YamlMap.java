@@ -40,6 +40,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
      *
      * @return Map
      */
+    @SuppressWarnings("unchecked")
     static Map<String, Object> cast(Object obj) {
         if (!(obj instanceof Map)) {
             throw new IllegalArgumentException(obj + " is not a map");
@@ -202,11 +203,11 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
      */
     public String key(int i) {
         int index = 0;
-        for (Iterator<String> iterator = iterator(); iterator.hasNext(); index++) {
-            String key = iterator.next();
+        for (String key : this) {
             if (index == i) {
                 return key;
             }
+            index++;
         }
         throw new IndexOutOfBoundsException("Index: " + i + ", Size: " + this.raw.size());
     }

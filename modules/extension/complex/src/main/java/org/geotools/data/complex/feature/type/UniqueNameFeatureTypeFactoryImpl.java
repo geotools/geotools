@@ -25,6 +25,8 @@ import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.filter.Filter;
 import org.opengis.util.InternationalString;
 
 /**
@@ -54,10 +56,10 @@ public class UniqueNameFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
     @Override
     public FeatureType createFeatureType(
             Name name,
-            Collection schema,
+            Collection<PropertyDescriptor> schema,
             GeometryDescriptor defaultGeometry,
             boolean isAbstract,
-            List restrictions,
+            List<Filter> restrictions,
             AttributeType superType,
             InternationalString description) {
         return new UniqueNameFeatureTypeImpl(

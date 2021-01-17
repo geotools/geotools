@@ -34,6 +34,8 @@ import org.geotools.jdbc.PrimaryKeyFinder;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.logging.Logging;
 
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
     public static final Logger LOGGER = Logging.getLogger(TeradataDataStoreFactory.class);
@@ -126,13 +128,13 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected boolean checkDBType(Map params) {
+    protected boolean checkDBType(Map<String, ?> params) {
         return checkDBType(params, "teradata");
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, final Map params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(
+            JDBCDataStore dataStore, final Map<String, ?> params) throws IOException {
 
         // setup loose bbox
         TeradataDialect dialect = (TeradataDialect) dataStore.getSQLDialect();
@@ -142,7 +144,9 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         // NOTE: this will not appear updated in geoserver's UI however
         if (lobWorkaround == null && params.containsKey("LOB Workaround")) {
             lobWorkaround = (Boolean) LOBWORKAROUND.handle((String) params.get("LOB Workaround"));
-            params.put(LOBWORKAROUND.key, lobWorkaround.toString());
+            @SuppressWarnings("unchecked")
+            Map<String, Object> workaround = (Map<String, Object>) params;
+            workaround.put(LOBWORKAROUND.key, lobWorkaround.toString());
         }
         dialect.setLobWorkaroundEnabled(lobWorkaround == null || !lobWorkaround);
 
@@ -175,9 +179,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             } else if (dataSource instanceof DBCPDataSource) {
                 try {
                     username =
-                            ((BasicDataSource)
-                                            ((DBCPDataSource) dataSource).unwrap(DataSource.class))
-                                    .getUsername();
+                            ((BasicDataSource) dataSource.unwrap(DataSource.class)).getUsername();
                 } catch (SQLException e) {
                     throw (IOException) new IOException().initCause(e);
                 }
@@ -192,7 +194,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Object> parameters) {
         super.setupParameters(parameters);
 
         parameters.put(DBTYPE.key, DBTYPE);
@@ -211,7 +213,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected String getJDBCUrl(Map params) throws IOException {
+    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String host = (String) HOST.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         int port = (Integer) PORT.lookUp(params);

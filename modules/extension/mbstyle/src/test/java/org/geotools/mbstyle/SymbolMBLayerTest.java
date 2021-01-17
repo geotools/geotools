@@ -16,9 +16,10 @@
  */
 package org.geotools.mbstyle;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
@@ -233,9 +234,8 @@ public class SymbolMBLayerTest {
     @Test
     public void testTextFont() {
         // check the json
-        MBLayer fontLayer = (SymbolMBLayer) fontStyle.layer("text-font");
-        assertEquals(
-                true, ((JSONObject) fontLayer.getLayout().get("text-font")).containsKey("stops"));
+        MBLayer fontLayer = fontStyle.layer("text-font");
+        assertTrue(((JSONObject) fontLayer.getLayout().get("text-font")).containsKey("stops"));
         JSONArray stops =
                 (JSONArray) ((JSONObject) fontLayer.getLayout().get("text-font")).get("stops");
         assertEquals("Apple-Chancery", ((JSONArray) ((JSONArray) stops.get(0)).get(1)).get(0));
@@ -248,11 +248,14 @@ public class SymbolMBLayerTest {
         Expression family = font.getFamily().get(0);
         assertThat(family, instanceOf(FontAlternativesFunction.class));
         FontAlternativesFunction fontAlternatives = (FontAlternativesFunction) family;
-        assertThat(firstParameter(fontAlternatives), instanceOf(MapBoxFontBaseNameFunction.class));
-        MapBoxFontBaseNameFunction baseNameFunction = firstParameter(fontAlternatives);
+        assertThat(
+                firstParameter(fontAlternatives, MapBoxFontBaseNameFunction.class),
+                instanceOf(MapBoxFontBaseNameFunction.class));
+        MapBoxFontBaseNameFunction baseNameFunction =
+                firstParameter(fontAlternatives, MapBoxFontBaseNameFunction.class);
         assertEquals(
                 "Apple-Chancery",
-                ((CategorizeFunction) firstParameter(baseNameFunction))
+                firstParameter(baseNameFunction, CategorizeFunction.class)
                         .getParameters()
                         .get(1)
                         .toString());
@@ -262,17 +265,20 @@ public class SymbolMBLayerTest {
         MapBoxFontWeightFunction fontWeight = (MapBoxFontWeightFunction) weight;
         assertEquals(
                 "Apple-Chancery",
-                ((CategorizeFunction) firstParameter(fontWeight))
+                firstParameter(fontWeight, CategorizeFunction.class)
                         .getParameters()
                         .get(1)
                         .toString());
         // style
         Expression style = font.getStyle();
         assertThat(style, instanceOf(MapBoxFontStyleFunction.class));
-        MapBoxFontStyleFunction fontStyle = (MapBoxFontStyleFunction) style;
+
         assertEquals(
                 "Apple-Chancery",
-                ((CategorizeFunction) firstParameter(fontStyle)).getParameters().get(1).toString());
+                firstParameter(fontWeight, CategorizeFunction.class)
+                        .getParameters()
+                        .get(1)
+                        .toString());
     }
 
     @Test
@@ -284,11 +290,11 @@ public class SymbolMBLayerTest {
         Expression family = font.getFamily().get(0);
         assertThat(family, instanceOf(FontAlternativesFunction.class));
         FontAlternativesFunction fontAlternatives = (FontAlternativesFunction) family;
-        assertThat(firstParameter(fontAlternatives), instanceOf(Literal.class));
-        assertEquals("Open Sans", firstParameter(fontAlternatives).toString());
+        assertThat(firstParameter(fontAlternatives, Literal.class), instanceOf(Literal.class));
+        assertEquals("Open Sans", firstParameter(fontAlternatives, Literal.class).toString());
     }
 
-    public <T> T firstParameter(Function function) {
-        return (T) function.getParameters().get(0);
+    public <T> T firstParameter(Function function, Class<T> type) {
+        return type.cast(function.getParameters().get(0));
     }
 }

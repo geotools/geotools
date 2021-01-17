@@ -113,7 +113,7 @@ public class Capabilities {
     private static Map<Class<?>, String> scalarNames;
 
     static {
-        scalarNames = new HashMap<Class<?>, String>();
+        scalarNames = new HashMap<>();
         scalarNames.put(PropertyIsEqualTo.class, PropertyIsEqualTo.NAME);
         scalarNames.put(PropertyIsNotEqualTo.class, PropertyIsNotEqualTo.NAME);
         scalarNames.put(PropertyIsGreaterThan.class, PropertyIsGreaterThan.NAME);
@@ -128,7 +128,7 @@ public class Capabilities {
     private static Map<Class<?>, String> spatialNames;
 
     static {
-        spatialNames = new HashMap<Class<?>, String>();
+        spatialNames = new HashMap<>();
         spatialNames.put(BBOX.class, BBOX.NAME);
         spatialNames.put(Equals.class, Equals.NAME);
         spatialNames.put(Disjoint.class, Disjoint.NAME);
@@ -165,7 +165,7 @@ public class Capabilities {
     private static Map<Class<?>, String> logicalNames;
 
     static {
-        logicalNames = new HashMap<Class<?>, String>();
+        logicalNames = new HashMap<>();
         logicalNames.put(
                 And.class,
                 "And"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
@@ -180,7 +180,7 @@ public class Capabilities {
     private static Map<Class<?>, String> filterNames;
 
     static {
-        filterNames = new HashMap<Class<?>, String>();
+        filterNames = new HashMap<>();
         filterNames.putAll(scalarNames);
         filterNames.putAll(spatialNames);
         filterNames.putAll(temporalNames);
@@ -193,7 +193,7 @@ public class Capabilities {
     private static Map<Class<? extends Expression>, String> arithmaticNames;
 
     static {
-        arithmaticNames = new HashMap<Class<? extends Expression>, String>();
+        arithmaticNames = new HashMap<>();
         arithmaticNames.put(Add.class, Add.NAME);
         arithmaticNames.put(Subtract.class, Subtract.NAME);
         arithmaticNames.put(Multiply.class, Multiply.NAME);
@@ -203,7 +203,7 @@ public class Capabilities {
     private static Map<Class<? extends Expression>, String> exprNames;
 
     static {
-        exprNames = new HashMap<Class<? extends Expression>, String>();
+        exprNames = new HashMap<>();
         exprNames.putAll(arithmaticNames);
 
         // while function is an expression, we should check the name

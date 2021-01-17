@@ -185,7 +185,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
         final ParameterValue[] parameters = new ParameterValue[hasHeight ? 2 : 3];
         int index = 0;
         if (!hasHeight) {
-            final ParameterValue p = new org.geotools.parameter.Parameter(Provider.DIM);
+            final ParameterValue p = new org.geotools.parameter.Parameter<>(Provider.DIM);
             p.setValue(2);
             parameters[index++] = p;
         }

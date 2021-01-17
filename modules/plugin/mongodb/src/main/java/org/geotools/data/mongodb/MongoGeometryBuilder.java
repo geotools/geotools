@@ -117,7 +117,7 @@ public class MongoGeometryBuilder {
     }
 
     public GeometryCollection toGeometryCollection(BasicDBList obj) {
-        List<Geometry> geoms = new ArrayList<Geometry>();
+        List<Geometry> geoms = new ArrayList<>();
         for (Object o : obj) {
             geoms.add(toGeometry((DBObject) o)); // JG: changed from toGeometry( obj )
         }
@@ -129,7 +129,7 @@ public class MongoGeometryBuilder {
     }
 
     public MultiPolygon toMultiPolygon(List<?> list) {
-        List<Polygon> polys = new ArrayList<Polygon>();
+        List<Polygon> polys = new ArrayList<>();
         for (Object o : list) {
             polys.add(toPolygon((List<?>) o));
         }
@@ -148,7 +148,7 @@ public class MongoGeometryBuilder {
     }
 
     public MultiLineString toMultiLineString(List<?> list) {
-        List<LineString> lines = new ArrayList<LineString>();
+        List<LineString> lines = new ArrayList<>();
         for (Object o : list) {
             lines.add(toLineString((List<?>) o));
         }
@@ -170,7 +170,7 @@ public class MongoGeometryBuilder {
     }
 
     public MultiPoint toMultiPoint(List<?> list) {
-        List<Point> points = new ArrayList<Point>();
+        List<Point> points = new ArrayList<>();
         for (Object o : list) {
             points.add(toPoint((List<?>) o));
         }
@@ -189,7 +189,7 @@ public class MongoGeometryBuilder {
 
     public Polygon toPolygon(List<?> list) {
         LinearRing outer = (LinearRing) toLineString((List<?>) list.get(0));
-        List<LinearRing> inner = new ArrayList<LinearRing>();
+        List<LinearRing> inner = new ArrayList<>();
         for (int i = 1; i < list.size(); i++) {
             inner.add((LinearRing) toLineString((List<?>) list.get(i)));
         }
@@ -204,7 +204,7 @@ public class MongoGeometryBuilder {
     }
 
     public LineString toLineString(List<?> list) {
-        List<Coordinate> coordList = new ArrayList<Coordinate>(list.size());
+        List<Coordinate> coordList = new ArrayList<>(list.size());
         for (Object o : list) {
             coordList.add(toCoordinate((List<?>) o));
         }
@@ -260,10 +260,10 @@ public class MongoGeometryBuilder {
 
     List<?> toList(Coordinate[] cs) {
         BasicDBList l = new BasicDBList();
-        for (int i = 0; i < cs.length; i++) {
+        for (Coordinate c : cs) {
             BasicDBList m = new BasicDBList();
-            m.add(cs[i].x);
-            m.add(cs[i].y);
+            m.add(c.x);
+            m.add(c.y);
             l.add(m);
         }
         return l;

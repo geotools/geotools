@@ -56,8 +56,8 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
     public static final String SOURCES_NAME = "Sources";
 
     /** The parameter descriptor for the Sources. */
-    public static final ParameterDescriptor SOURCES =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Collection> SOURCES =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     SOURCES_NAME,
                     Collection.class, // Value class (mandatory)
@@ -71,7 +71,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
     private static Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
 
     static {
-        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<ParameterDescriptor>();
+        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<>();
         replacedDescriptors.add(SOURCES);
         REPLACED_DESCRIPTORS = Collections.unmodifiableSet(replacedDescriptors);
     }
@@ -117,9 +117,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
         super(
                 getOperationDescriptor(JAIExt.getOperationName(name)),
                 new ExtendedImagingParameterDescriptors(
-                        name,
-                        operationDescriptor,
-                        new HashSet<ParameterDescriptor>(REPLACED_DESCRIPTORS)));
+                        name, operationDescriptor, new HashSet<>(REPLACED_DESCRIPTORS)));
     }
 
     /**
@@ -131,8 +129,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
         super(
                 getOperationDescriptor(name),
                 new ImagingParameterDescriptors(
-                        getOperationDescriptor(name),
-                        new HashSet<ParameterDescriptor>(REPLACED_DESCRIPTORS)));
+                        getOperationDescriptor(name), new HashSet<>(REPLACED_DESCRIPTORS)));
     }
 
     protected void extractSources(
@@ -158,6 +155,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
                         srcCoverages);
             }
             // Collection of the sources to use
+            @SuppressWarnings("unchecked")
             Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
             sources.addAll(sourceCoverages);
         }

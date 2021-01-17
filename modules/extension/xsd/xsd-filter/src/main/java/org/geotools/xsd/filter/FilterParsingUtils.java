@@ -122,7 +122,7 @@ public class FilterParsingUtils {
 
     public static List<Filter> parseExtendedOperators(
             Node node, org.opengis.filter.FilterFactory factory) {
-        List<Filter> extOps = new ArrayList();
+        List<Filter> extOps = new ArrayList<>();
 
         // TODO: this doesn't actually handle the case of an extended operator that does not take
         // any arguments
@@ -144,7 +144,7 @@ public class FilterParsingUtils {
                         new NameImpl(n.getComponent().getNamespace(), n.getComponent().getName());
                 Map map = (Map) n.getValue();
 
-                List<Expression> expressions = new ArrayList();
+                List<Expression> expressions = new ArrayList<>();
                 for (Object o : map.values()) {
                     if (o instanceof Expression) {
                         expressions.add((Expression) o);

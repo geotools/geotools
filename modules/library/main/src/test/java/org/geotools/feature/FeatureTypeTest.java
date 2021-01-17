@@ -18,6 +18,8 @@
  */
 package org.geotools.feature;
 
+import static org.junit.Assert.*;
+
 import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.ArrayList;
@@ -27,13 +29,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -49,20 +50,7 @@ import org.opengis.feature.type.FeatureType;
  * @author jgarnett
  */
 public class FeatureTypeTest extends DataTestCase {
-
-    public FeatureTypeTest(String testName) {
-        super(testName);
-    }
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite(FeatureTypeTest.class);
-        return suite;
-    }
-
+    @Test
     public void testAbstractType() throws Exception {
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -93,18 +81,17 @@ public class FeatureTypeTest extends DataTestCase {
         try {
             SimpleFeatureBuilder.build(abstractType, new Object[0], null);
             fail("abstract type allowed create");
-        } catch (IllegalArgumentException iae) {
-        } catch (UnsupportedOperationException uoe) {
+        } catch (IllegalArgumentException | UnsupportedOperationException iae) {
         }
 
         try {
             SimpleFeatureBuilder.build(abstractType2, new Object[0], null);
             fail("abstract type allowed create");
-        } catch (IllegalArgumentException iae) {
-        } catch (UnsupportedOperationException uoe) {
+        } catch (IllegalArgumentException | UnsupportedOperationException iae) {
         }
     }
 
+    @Test
     public void testEquals() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("Thing");
@@ -121,15 +108,16 @@ public class FeatureTypeTest extends DataTestCase {
         assertEquals(ft, ft2);
 
         tb.setName("Thingee");
-        assertTrue(!ft.equals(tb.buildFeatureType()));
+        assertFalse(ft.equals(tb.buildFeatureType()));
 
         tb.init(ft);
         tb.setNamespaceURI("http://www.somewhereelse.net");
 
-        assertTrue(!ft.equals(tb.buildFeatureType()));
-        assertTrue(!ft.equals(null));
+        assertFalse(ft.equals(tb.buildFeatureType()));
+        assertFalse(ft.equals(null));
     }
 
+    @Test
     public void testCopyFeature() throws Exception {
         SimpleFeature feature = lakeFeatures[0];
         assertDuplicate("feature", feature, SimpleFeatureBuilder.copy(feature));
@@ -142,6 +130,7 @@ public class FeatureTypeTest extends DataTestCase {
      * <p>UML type hierarchy of test types: Feature <|-- A <|-- B <|-- C
      */
     @SuppressWarnings("serial")
+    @Test
     public void testAncestors() throws Exception {
         URI uri = new URI("http://www.geotools.org/example");
         SimpleFeatureTypeBuilder tb;
@@ -202,6 +191,7 @@ public class FeatureTypeTest extends DataTestCase {
                 FeatureTypes.getAncestors(typeC));
     }
 
+    @Test
     public void testDeepCopy() throws Exception {
         // primative
         String str = "FooBar";
@@ -227,12 +217,12 @@ public class FeatureTypeTest extends DataTestCase {
                 new int[] {
                     1, 2, 3, 4,
                 };
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<>();
         list.add(str);
         list.add(i);
         list.add(f);
         list.add(d);
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("a", str);
         map.put("b", i);
         map.put("c", f);
@@ -256,10 +246,10 @@ public class FeatureTypeTest extends DataTestCase {
         assertDuplicate("point", point, DataUtilities.duplicate(point));
     }
 
-    static Set immutable;
+    static Set<Class<?>> immutable;
 
     static {
-        immutable = new HashSet();
+        immutable = new HashSet<>();
         immutable.add(String.class);
         immutable.add(Integer.class);
         immutable.add(Double.class);

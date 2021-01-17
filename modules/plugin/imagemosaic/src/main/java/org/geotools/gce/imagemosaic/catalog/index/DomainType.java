@@ -75,7 +75,7 @@ public class DomainType {
      */
     public List<AttributeType> getAttributes() {
         if (attributes == null) {
-            attributes = new ArrayList<AttributeType>();
+            attributes = new ArrayList<>();
         }
         return this.attributes;
     }

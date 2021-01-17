@@ -18,7 +18,10 @@ package org.geotools.data.shapefile;
 
 import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -60,11 +63,8 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
     private void writeDataToFiles() throws IOException {
         Set<Entry<ShpFileType, File>> entries = map.entrySet();
         for (Entry<ShpFileType, File> entry : entries) {
-            FileWriter out = new FileWriter(entry.getValue());
-            try {
+            try (FileWriter out = new FileWriter(entry.getValue())) {
                 out.write(entry.getKey().name());
-            } finally {
-                out.close();
             }
         }
     }
@@ -165,12 +165,10 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
         ShpFileType[] types = ShpFileType.values();
         for (ShpFileType shpFileType : types) {
 
-            OutputStream out = files.getOutputStream(shpFileType, this);
-            assertEquals(1, files.numberOfLocks());
-            try {
+            try (OutputStream out = files.getOutputStream(shpFileType, this)) {
+                assertEquals(1, files.numberOfLocks());
                 out.write((byte) 2);
             } finally {
-                out.close();
                 assertEquals(0, files.numberOfLocks());
             }
         }

@@ -72,7 +72,7 @@ public class ZonalStatsProcessTest extends Assert {
     private static Map<String, String> results = null;
 
     static {
-        results = new HashMap<String, String>();
+        results = new HashMap<>();
         results.put(
                 "testpolygon.11",
                 "SimpleFeatureImpl:testpolygon=[SimpleFeatureImpl.Attribute: z_the_geom<z_the_geom id=testpolygon.1>=MULTIPOLYGON (((11.89513017802011 46.20793481460109, 11.895809089115916 46.20792743071521, 11.895112009452415 46.2070509839355, 11.89513017802011 46.20793481460109))), SimpleFeatureImpl.Attribute: z_name<z_name id=testpolygon.1>=, SimpleFeatureImpl.Attribute: classification<classification id=testpolygon.1>=1, SimpleFeatureImpl.Attribute: count<count id=testpolygon.1>=661, SimpleFeatureImpl.Attribute: min<min id=testpolygon.1>=1251.0, SimpleFeatureImpl.Attribute: max<max id=testpolygon.1>=1630.0, SimpleFeatureImpl.Attribute: sum<sum id=testpolygon.1>=894829.0, SimpleFeatureImpl.Attribute: avg<avg id=testpolygon.1>=1353.7503782148278, SimpleFeatureImpl.Attribute: stddev<stddev id=testpolygon.1>=69.14742498772046]");
@@ -190,12 +190,9 @@ public class ZonalStatsProcessTest extends Assert {
 
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                assertTrue(
-                        (feature.toString())
-                                .equals(
-                                        results.get(
-                                                feature.getID()
-                                                        + feature.getAttribute("classification"))));
+                assertEquals(
+                        (feature.toString()),
+                        results.get(feature.getID() + feature.getAttribute("classification")));
             }
 
         } finally {

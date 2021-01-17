@@ -16,11 +16,13 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
-import static org.custommonkey.xmlunit.XMLAssert.*;
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
@@ -45,6 +47,7 @@ public class LineStringTypeBindingTest extends GML32TestSupport {
     //        assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
     //    }
     //
+    @Test
     public void testEncode() throws Exception {
         LineString line = GML3MockData.lineString();
         Document d = encode(line, GML.LineString);

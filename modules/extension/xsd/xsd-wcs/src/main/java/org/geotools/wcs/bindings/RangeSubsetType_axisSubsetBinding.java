@@ -78,6 +78,7 @@ public class RangeSubsetType_axisSubsetBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         AxisSubsetType axis = Wcs10Factory.eINSTANCE.createAxisSubsetType();
 

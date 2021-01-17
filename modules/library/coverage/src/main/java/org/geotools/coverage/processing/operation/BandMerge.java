@@ -105,8 +105,8 @@ public class BandMerge extends OperationJAI {
     public static final String GEOMETRY = "geometry";
 
     /** The parameter descriptor for the Sources. */
-    public static final ParameterDescriptor SOURCES =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Collection> SOURCES =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     "Sources",
                     Collection.class, // Value class (mandatory)
@@ -118,8 +118,8 @@ public class BandMerge extends OperationJAI {
                     true);
 
     /** The parameter descriptor for the Transformation Choice. */
-    public static final ParameterDescriptor TRANSFORM_CHOICE_PARAM =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<String> TRANSFORM_CHOICE_PARAM =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     TRANSFORM_CHOICE,
                     String.class, // Value class (mandatory)
@@ -134,8 +134,8 @@ public class BandMerge extends OperationJAI {
      * The parameter descriptor for the Source index to use for selecting the Affine Transformation
      * to use.
      */
-    public static final ParameterDescriptor INDEX =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Integer> INDEX =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     COVERAGE_INDEX,
                     Integer.class, // Value class (mandatory)
@@ -147,8 +147,8 @@ public class BandMerge extends OperationJAI {
                     false);
 
     /** The parameter descriptor for the Transformation Choice. */
-    public static final ParameterDescriptor GEOMETRY_PARAM =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Geometry> GEOMETRY_PARAM =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     GEOMETRY,
                     Geometry.class, // Value class (mandatory)
@@ -166,7 +166,7 @@ public class BandMerge extends OperationJAI {
     // Replace the old parameter descriptor group with a new one with the old parameters and the new
     // ones defined above.
     static {
-        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<ParameterDescriptor>();
+        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<>();
         replacedDescriptors.add(SOURCES);
         replacedDescriptors.add(INDEX);
         replacedDescriptors.add(TRANSFORM_CHOICE_PARAM);
@@ -249,7 +249,7 @@ public class BandMerge extends OperationJAI {
          */
         public List<AffineTransform> getTransformationList(List<GridGeometry2D> list, int index) {
             // Creation of a List of Transformations
-            List<AffineTransform> transforms = new ArrayList<AffineTransform>();
+            List<AffineTransform> transforms = new ArrayList<>();
             // Get the g2w transform to use for the remapping
             AffineTransform g2w = getGridToCRS2D(list, index);
             // Get all the other w2g transforms to concatenate for the remapping
@@ -322,7 +322,7 @@ public class BandMerge extends OperationJAI {
         /*
          * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockJAI (as RenderedImages) later.
          */
-        final Collection<GridCoverage2D> sourceCollection = new ArrayList<GridCoverage2D>();
+        final Collection<GridCoverage2D> sourceCollection = new ArrayList<>();
         extractSources(parameters, sourceCollection);
         // Selection of the first coverage
         GridCoverage2D coverage = sourceCollection.iterator().next();
@@ -343,7 +343,7 @@ public class BandMerge extends OperationJAI {
         int size = sourceCollection.size();
 
         // GridGeometry List for all the sources
-        List<GridGeometry2D> gg2D = new ArrayList<GridGeometry2D>(size);
+        List<GridGeometry2D> gg2D = new ArrayList<>(size);
 
         // Loop through the
         for (GridCoverage2D source : sourceCollection) {
@@ -372,11 +372,7 @@ public class BandMerge extends OperationJAI {
         ParameterBlockJAI block;
         try {
             block = prepareParameters(parameters, sources, tr, crsToGrid);
-        } catch (MismatchedDimensionException e) {
-            throw new CoverageProcessingException(e);
-        } catch (ParameterNotFoundException e) {
-            throw new CoverageProcessingException(e);
-        } catch (TransformException e) {
+        } catch (MismatchedDimensionException | TransformException | ParameterNotFoundException e) {
             throw new CoverageProcessingException(e);
         }
         /*
@@ -422,6 +418,7 @@ public class BandMerge extends OperationJAI {
                     srcCoverages);
         }
         // Collection of the sources to use
+        @SuppressWarnings("unchecked")
         Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
         // Cycle on all the Sources
         for (GridCoverage2D source : sourceCoverages) {
@@ -550,6 +547,7 @@ public class BandMerge extends OperationJAI {
         layout.setHeight(gridRange2D.height);
     }
 
+    @SuppressWarnings("unchecked")
     protected Map getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,
@@ -589,7 +587,7 @@ public class BandMerge extends OperationJAI {
             return null;
         }
         // Creation of a new GridSampleDimension array
-        List<GridSampleDimension> sampleDims = new ArrayList<GridSampleDimension>(numDim);
+        List<GridSampleDimension> sampleDims = new ArrayList<>(numDim);
 
         for (GridSampleDimension[] array : list) {
             for (GridSampleDimension sample : array) {

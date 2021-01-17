@@ -141,7 +141,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             }
 
             // build query against the metadata table
-            List<String> parameters = new ArrayList<String>();
+            List<String> parameters = new ArrayList<>();
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT * FROM ");
             if (metadataSchema != null) {
@@ -173,7 +173,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             }
             rs = st.executeQuery();
 
-            List<PrimaryKeyColumn> columns = new ArrayList<PrimaryKeyColumn>();
+            List<PrimaryKeyColumn> columns = new ArrayList<>();
             Set<String> colNames = null;
             while (rs.next()) {
                 String colName = rs.getString("pk_column");
@@ -215,7 +215,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             }
 
             // see if we accumulated any info about this table
-            if (columns.size() > 0) return new PrimaryKey(table, columns);
+            if (!columns.isEmpty()) return new PrimaryKey(table, columns);
             else return null;
         } catch (SQLException e) {
             LOGGER.log(
@@ -231,7 +231,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             JDBCDataStore store, DatabaseMetaData metaData, String schema, String table)
             throws SQLException {
         ResultSet rs = null;
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         try {
             rs =
                     metaData.getColumns(

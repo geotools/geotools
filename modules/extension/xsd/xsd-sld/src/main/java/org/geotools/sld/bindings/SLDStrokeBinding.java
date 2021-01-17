@@ -16,7 +16,6 @@
  */
 package org.geotools.sld.bindings;
 
-import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.geotools.filter.Filters;
 import org.geotools.sld.CssParameter;
@@ -160,8 +159,7 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
         Expression dashArray = null;
         Expression dashOffset = null;
 
-        for (Iterator i = node.getChildValues(CssParameter.class).iterator(); i.hasNext(); ) {
-            CssParameter css = (CssParameter) i.next();
+        for (CssParameter css : node.getChildValues(CssParameter.class)) {
             Expression exp = css.getExpression();
             if (exp == null) {
                 continue;

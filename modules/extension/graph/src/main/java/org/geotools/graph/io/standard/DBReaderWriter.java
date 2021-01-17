@@ -20,7 +20,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Iterator;
 import org.geotools.graph.build.GraphGenerator;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
@@ -106,15 +105,15 @@ public abstract class DBReaderWriter extends AbstractReaderWriter {
 
             // write nodes if property set
             if (getProperty(NODES) != null) {
-                for (Iterator itr = g.getNodes().iterator(); itr.hasNext(); ) {
-                    writeNode(st, (Node) itr.next());
+                for (Node node : g.getNodes()) {
+                    writeNode(st, node);
                 }
             }
 
             // write edges if property set
             if (getProperty(EDGES) != null) {
-                for (Iterator itr = g.getEdges().iterator(); itr.hasNext(); ) {
-                    writeEdge(st, (Edge) itr.next());
+                for (Edge edge : g.getEdges()) {
+                    writeEdge(st, edge);
                 }
             }
         }

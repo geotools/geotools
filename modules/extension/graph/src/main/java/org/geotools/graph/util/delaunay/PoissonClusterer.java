@@ -16,10 +16,13 @@
  */
 package org.geotools.graph.util.delaunay;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
+import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
+import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.basic.BasicGraph;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
@@ -34,10 +37,10 @@ public class PoissonClusterer {
 
     public static Graph findClusters(
             Graph incoming, Expression base, Expression target, double meanRate, int distance) {
-        Collection nodes = incoming.getNodes();
-        Iterator nodeIt = nodes.iterator();
-        Vector clusterNodes = new Vector();
-        Vector clusterEdges = new Vector();
+        Collection<Node> nodes = incoming.getNodes();
+        Iterator<Node> nodeIt = nodes.iterator();
+        List<Node> clusterNodes = new ArrayList<>();
+        List<Edge> clusterEdges = new ArrayList<>();
         // System.out.println("x, y, actual, expected, probability");
         while (nodeIt.hasNext()) {
             DelaunayNode next = (DelaunayNode) nodeIt.next();
@@ -62,16 +65,16 @@ public class PoissonClusterer {
             double totalBase = ((Number) baseObj).doubleValue();
             double totalTarget = ((Number) targetObj).doubleValue();
 
-            Collection newEdges = new Vector();
-            Vector newNodes = new Vector();
+            Collection<Edge> newEdges = new ArrayList<>();
+            List<Node> newNodes = new ArrayList<>();
             newNodes.add(next);
 
             if (distance == 1) {
 
                 newEdges = next.getEdges();
                 //                System.out.println("this node has " + newEdges.size() + " edges");
-                Iterator edgeIt = newEdges.iterator();
-                Vector removals = new Vector();
+                Iterator<Edge> edgeIt = newEdges.iterator();
+                List<Edge> removals = new ArrayList<>();
                 while (edgeIt.hasNext()) {
                     DelaunayEdge nextEdge = (DelaunayEdge) edgeIt.next();
                     if (nextEdge.getEuclideanDistance() > 30) {
@@ -112,16 +115,16 @@ public class PoissonClusterer {
                 newEdges.removeAll(removals);
             } else {
                 for (int i = 0; i <= distance; i++) {
-                    Iterator nodeIt2 = newNodes.iterator();
-                    Vector nodesToAdd = new Vector();
-                    Vector edgesToAdd = new Vector();
+                    Iterator<Node> nodeIt2 = newNodes.iterator();
+                    List<Node> nodesToAdd = new ArrayList<>();
+                    List<Edge> edgesToAdd = new ArrayList<>();
                     while (nodeIt2.hasNext()) {
                         DelaunayNode next2 = (DelaunayNode) nodeIt2.next();
                         //                        System.out.println("expanding from " + next2);
-                        Collection edges = next2.getEdges();
+                        Collection<Edge> edges = next2.getEdges();
                         //                        System.out.println("its edges are " + edges);
                         newEdges.addAll(edges);
-                        Iterator another = edges.iterator();
+                        Iterator<Edge> another = edges.iterator();
                         while (another.hasNext()) {
                             DelaunayEdge nextEdge = (DelaunayEdge) another.next();
                             DelaunayNode farNode = (DelaunayNode) nextEdge.getOtherNode(next2);
@@ -143,7 +146,7 @@ public class PoissonClusterer {
                 //                System.out.println(newEdges);
 
                 totalBase = totalTarget = 0;
-                Iterator newNodeIt = newNodes.iterator();
+                Iterator<Node> newNodeIt = newNodes.iterator();
                 while (newNodeIt.hasNext()) {
                     DelaunayNode nextNode = (DelaunayNode) newNodeIt.next();
                     SimpleFeature nextFeature2 = nextNode.getFeature();

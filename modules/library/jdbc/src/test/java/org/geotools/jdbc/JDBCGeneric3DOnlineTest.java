@@ -139,7 +139,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
             Point p = (Point) fr.next().getDefaultGeometry();
-            assertTrue(new Coordinate(1, 1, 1).equals(p.getCoordinate()));
+            assertEquals(new Coordinate(1, 1, 1), p.getCoordinate());
         }
     }
 
@@ -199,8 +199,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         List<FeatureId> fids = fs.addFeatures(DataUtilities.collection(newFeature));
 
         // retrieve it back
-        try (SimpleFeatureIterator fi =
-                fs.getFeatures(FF.id(new HashSet<FeatureId>(fids))).features()) {
+        try (SimpleFeatureIterator fi = fs.getFeatures(FF.id(new HashSet<>(fids))).features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
             assertTrue(ls.equalsExact((Geometry) f.getDefaultGeometry()));
@@ -331,15 +330,14 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
      */
     private static boolean hasMatchingZValues(Geometry g1, Geometry g2) {
         Coordinate[] pt1 = g1.getCoordinates();
-        Map<Coordinate, Double> coordZMap = new HashMap<Coordinate, Double>();
-        for (int i = 0; i < pt1.length; i++) {
-            coordZMap.put(pt1[i], pt1[i].getZ());
+        Map<Coordinate, Double> coordZMap = new HashMap<>();
+        for (Coordinate coordinate : pt1) {
+            coordZMap.put(coordinate, coordinate.getZ());
         }
 
         Coordinate[] pt2 = g2.getCoordinates();
 
-        for (int i2 = 0; i2 < pt2.length; i2++) {
-            Coordinate p2 = pt2[i2];
+        for (Coordinate p2 : pt2) {
             double z = coordZMap.get(p2);
             boolean isEqualZ = p2.getZ() == z || (Double.isNaN(p2.getZ()) && Double.isNaN(z));
             if (!isEqualZ) return false;

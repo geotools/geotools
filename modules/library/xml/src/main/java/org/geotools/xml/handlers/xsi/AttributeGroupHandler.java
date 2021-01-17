@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import org.geotools.xml.XSIElementHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.AttributeGroup;
@@ -46,7 +47,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
     private String name;
     private String ref;
     private AnyAttributeHandler anyAttribute;
-    private List attrDecs;
+    private List<XSIElementHandler> attrDecs;
     private int hashCodeOffset = getOffset();
     private AttributeGroup cache = null;
 
@@ -75,7 +76,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
             // attribute
             if (AttributeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (attrDecs == null) {
-                    attrDecs = new LinkedList();
+                    attrDecs = new LinkedList<>();
                 }
 
                 AttributeHandler ah = new AttributeHandler();
@@ -87,7 +88,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
             // attributeGroup
             if (AttributeGroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (attrDecs == null) {
-                    attrDecs = new LinkedList();
+                    attrDecs = new LinkedList<>();
                 }
 
                 AttributeGroupHandler ah = new AttributeGroupHandler();
@@ -159,7 +160,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
 
         if (attrDecs != null) {
             Iterator i = attrDecs.iterator();
-            HashSet h = new HashSet();
+            Set<Attribute> h = new HashSet<>();
 
             while (i.hasNext()) {
                 Object o = i.next();
@@ -173,12 +174,12 @@ public class AttributeGroupHandler extends XSIElementHandler {
                     if ((ag != null) && (ag.getAttributes() != null)) {
                         Attribute[] aa = ag.getAttributes();
 
-                        for (int j = 0; j < aa.length; j++) h.add(aa[j]);
+                        for (Attribute attribute : aa) h.add(attribute);
                     }
                 }
             }
 
-            attributes = (Attribute[]) h.toArray(new Attribute[h.size()]);
+            attributes = h.toArray(new Attribute[h.size()]);
         }
 
         String name1 = this.name;

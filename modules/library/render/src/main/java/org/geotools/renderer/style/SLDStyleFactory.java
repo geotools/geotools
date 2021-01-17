@@ -16,7 +16,16 @@
  */
 package org.geotools.renderer.style;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.TexturePaint;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -31,7 +40,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.renderer.VendorOptionParser;
@@ -92,17 +102,18 @@ public class SLDStyleFactory {
     private static final int MAX_RASTERIZATION_SIZE = 512;
 
     /** Holds a lookup bewteen SLD names and java constants. */
-    private static final java.util.Map JOIN_LOOKUP = new java.util.HashMap();
+    private static final java.util.Map<String, Integer> JOIN_LOOKUP = new java.util.HashMap<>();
 
     /** Holds a lookup bewteen SLD names and java constants. */
-    private static final java.util.Map CAP_LOOKUP = new java.util.HashMap();
+    private static final java.util.Map<String, Integer> CAP_LOOKUP = new java.util.HashMap<>();
 
     /** Holds a lookup bewteen SLD names and java constants. */
-    private static final java.util.Map FONT_STYLE_LOOKUP = new java.util.HashMap();
+    private static final java.util.Map<String, Integer> FONT_STYLE_LOOKUP =
+            new java.util.HashMap<>();
 
     /** Holds a lookup bewteen alpha composite names and AlphaComposite constants. */
     private static final java.util.Map<String, Integer> ALPHA_COMPOSITE_LOOKUP =
-            new java.util.LinkedHashMap<String, Integer>();
+            new java.util.LinkedHashMap<>();
 
     /** Allow mitering of angles of 70 degrees and above */
     private static final float MITER_LIMIT = 1.75f;
@@ -143,10 +154,10 @@ public class SLDStyleFactory {
     }
 
     /** Symbolizers that depend on attributes */
-    Map dynamicSymbolizers = new SoftValueHashMap();
+    Map<SymbolizerKey, Boolean> dynamicSymbolizers = new SoftValueHashMap<>();
 
     /** Symbolizers that do not depend on attributes */
-    Map staticSymbolizers = new SoftValueHashMap();
+    Map<SymbolizerKey, Style2D> staticSymbolizers = new SoftValueHashMap<>();
 
     /** Build a default rendering hint to avoid NPE */
     RenderingHints renderingHints =
@@ -271,7 +282,7 @@ public class SLDStyleFactory {
         Style2D style = null;
 
         SymbolizerKey key = new SymbolizerKey(symbolizer, scaleRange);
-        style = (Style2D) staticSymbolizers.get(key);
+        style = staticSymbolizers.get(key);
 
         requests++;
 
@@ -295,7 +306,7 @@ public class SLDStyleFactory {
                 sae.visit(symbolizer);
 
                 Set nameSet = sae.getAttributeNameSet();
-                boolean noAttributes = (nameSet == null) || (nameSet.size() == 0);
+                boolean noAttributes = (nameSet == null) || (nameSet.isEmpty());
                 if (noAttributes && !sae.isUsingVolatileFunctions()) {
                     staticSymbolizers.put(key, style);
                 } else {
@@ -853,7 +864,7 @@ public class SLDStyleFactory {
         int styleCode;
 
         if (FONT_STYLE_LOOKUP.containsKey(reqStyle)) {
-            styleCode = ((Integer) FONT_STYLE_LOOKUP.get(reqStyle)).intValue();
+            styleCode = FONT_STYLE_LOOKUP.get(reqStyle).intValue();
         } else {
             styleCode = java.awt.Font.PLAIN;
         }
@@ -924,7 +935,7 @@ public class SLDStyleFactory {
         joinType = evalToString(stroke.getLineJoin(), feature, "miter");
 
         if (JOIN_LOOKUP.containsKey(joinType)) {
-            joinCode = ((Integer) JOIN_LOOKUP.get(joinType)).intValue();
+            joinCode = JOIN_LOOKUP.get(joinType).intValue();
         } else {
             joinCode = java.awt.BasicStroke.JOIN_MITER;
         }
@@ -936,7 +947,7 @@ public class SLDStyleFactory {
         capType = evalToString(stroke.getLineCap(), feature, "square");
 
         if (CAP_LOOKUP.containsKey(capType)) {
-            capCode = ((Integer) CAP_LOOKUP.get(capType)).intValue();
+            capCode = CAP_LOOKUP.get(capType).intValue();
         } else {
             capCode = java.awt.BasicStroke.CAP_SQUARE;
         }
@@ -1427,7 +1438,7 @@ public class SLDStyleFactory {
     /** */
     public static int lookUpJoin(String joinType) {
         if (SLDStyleFactory.JOIN_LOOKUP.containsKey(joinType)) {
-            return ((Integer) JOIN_LOOKUP.get(joinType)).intValue();
+            return JOIN_LOOKUP.get(joinType).intValue();
         } else {
             return java.awt.BasicStroke.JOIN_MITER;
         }
@@ -1436,7 +1447,7 @@ public class SLDStyleFactory {
     /** */
     public static int lookUpCap(String capType) {
         if (SLDStyleFactory.CAP_LOOKUP.containsKey(capType)) {
-            return ((Integer) CAP_LOOKUP.get(capType)).intValue();
+            return CAP_LOOKUP.get(capType).intValue();
         } else {
             return java.awt.BasicStroke.CAP_SQUARE;
         }
@@ -1621,7 +1632,8 @@ public class SLDStyleFactory {
         if (exp == null) {
             return fallback;
         }
-        List l = exp.evaluate(f, List.class);
+        @SuppressWarnings("unchecked")
+        List<T> l = exp.evaluate(f, List.class);
         if (l != null) {
             return l;
         }

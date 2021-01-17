@@ -16,7 +16,11 @@
  */
 package org.geotools.geometry.jts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -181,14 +185,14 @@ public class WKTReader2Test {
         WKT = "MULTICURVE((0 0, 5 5),CIRCULARSTRING(4 0, 4 4, 8 4))";
         ml = (MultiLineString) reader.read(WKT);
         assertEquals(2, ml.getNumGeometries());
-        assertTrue(ml.getGeometryN(0).getClass() == LineString.class);
+        assertSame(ml.getGeometryN(0).getClass(), LineString.class);
         assertTrue(ml.getGeometryN(1) instanceof CircularString);
 
         WKT =
                 "MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))";
         ml = (MultiLineString) reader.read(WKT);
         assertEquals(2, ml.getNumGeometries());
-        assertTrue(ml.getGeometryN(0).getClass() == LineString.class);
+        assertSame(ml.getGeometryN(0).getClass(), LineString.class);
         assertTrue(ml.getGeometryN(1) instanceof CompoundRing);
     }
 

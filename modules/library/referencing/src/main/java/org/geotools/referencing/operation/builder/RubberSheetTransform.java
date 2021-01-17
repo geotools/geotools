@@ -18,8 +18,7 @@ package org.geotools.referencing.operation.builder;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.opengis.geometry.DirectPosition;
@@ -52,7 +51,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      * The HashMap where the keys are the original {@link Polygon} and values are {@link
      * #org.opengis.referencing.operation.MathTransform}.
      */
-    private HashMap trianglesToKeysMap;
+    private Map<TINTriangle, Object> trianglesToKeysMap;
 
     /**
      * Constructs the RubberSheetTransform.
@@ -61,7 +60,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      *     org.geotools.referencing.operation.builder.algorithm.TINTriangle} and values are
      *     {@linkplain org.opengis.referencing.operation.MathTransform}.
      */
-    public RubberSheetTransform(HashMap trianglesToAffineTransform) {
+    public RubberSheetTransform(Map<TINTriangle, Object> trianglesToAffineTransform) {
         this.trianglesToKeysMap = trianglesToAffineTransform;
     }
 
@@ -95,8 +94,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
         final String lineSeparator = System.getProperty("line.separator", "\n");
         final StringBuilder buffer = new StringBuilder();
 
-        for (final Iterator i = trianglesToKeysMap.keySet().iterator(); i.hasNext(); ) {
-            TINTriangle trian = (TINTriangle) i.next();
+        for (TINTriangle trian : trianglesToKeysMap.keySet()) {
             MathTransform mt = (MathTransform) trianglesToKeysMap.get(trian);
             buffer.append(trian.toString());
             buffer.append(lineSeparator);
@@ -113,7 +111,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
     public void transform(double[] srcPts, int srcOff, final double[] dstPt, int dstOff, int numPts)
             throws TransformException {
         for (int i = srcOff; i < numPts; i++) {
-            Point2D pos = (Point2D) (new DirectPosition2D(srcPts[2 * i], srcPts[(2 * i) + 1]));
+            Point2D pos = new DirectPosition2D(srcPts[2 * i], srcPts[(2 * i) + 1]);
 
             TINTriangle triangle = searchTriangle((DirectPosition) pos);
 
@@ -146,9 +144,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
             return potentialTriangle;
         }
 
-        for (Iterator i = trianglesToKeysMap.keySet().iterator(); i.hasNext(); ) {
-            TINTriangle triangle = (TINTriangle) i.next();
-
+        for (TINTriangle triangle : trianglesToKeysMap.keySet()) {
             if (triangle.containsOrIsVertex(p)) {
                 previousTriangle = triangle;
 

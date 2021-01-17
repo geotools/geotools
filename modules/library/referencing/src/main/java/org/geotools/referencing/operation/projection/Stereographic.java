@@ -20,7 +20,8 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
 
 import java.util.Objects;
 import org.geotools.metadata.i18n.Vocabulary;

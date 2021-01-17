@@ -56,11 +56,11 @@ public class PointInsidePolygonValidation extends PointPolygonAbstractValidation
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource pointSource = (SimpleFeatureSource) layers.get(getPointTypeRef());
-        SimpleFeatureSource polySource =
-                (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+        SimpleFeatureSource pointSource = layers.get(getPointTypeRef());
+        SimpleFeatureSource polySource = layers.get(getRestrictedPolygonTypeRef());
 
         Object[] polys = polySource.getFeatures().toArray();
         Object[] points = pointSource.getFeatures().toArray();
@@ -81,8 +81,8 @@ public class PointInsidePolygonValidation extends PointPolygonAbstractValidation
             return false;
         }
 
-        for (int i = 0; i < points.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) points[i];
+        for (Object point : points) {
+            SimpleFeature tmp = (SimpleFeature) point;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
             if (gt instanceof Polygon) {

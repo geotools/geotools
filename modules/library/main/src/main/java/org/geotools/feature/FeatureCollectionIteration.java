@@ -102,7 +102,7 @@ public class FeatureCollectionIteration {
      */
     protected void iterate(FeatureIterator<?> iterator) {
         while (iterator.hasNext()) {
-            walker((Feature) iterator.next());
+            walker(iterator.next());
         }
         iterator.close();
     }

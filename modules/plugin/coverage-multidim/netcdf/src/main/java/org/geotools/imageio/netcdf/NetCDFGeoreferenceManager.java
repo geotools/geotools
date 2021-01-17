@@ -60,7 +60,7 @@ class NetCDFGeoreferenceManager {
         protected Map<String, ReferencedEnvelope> boundingBoxes;
 
         public BBoxGetter() throws FactoryException, IOException {
-            boundingBoxes = new HashMap<String, ReferencedEnvelope>();
+            boundingBoxes = new HashMap<>();
             init();
         }
 
@@ -69,7 +69,7 @@ class NetCDFGeoreferenceManager {
             double[] yLat = new double[2];
             byte set = 0;
             isLonLat = false;
-            Map<String, Object> crsProperties = new HashMap<String, Object>();
+            Map<String, Object> crsProperties = new HashMap<>();
             String axisUnit = null;
             // Scan over coordinateVariables
             for (CoordinateVariable<?> cv : getCoordinatesVariables()) {
@@ -170,10 +170,10 @@ class NetCDFGeoreferenceManager {
         class CoordinatesManager {
 
             // Map for longitude/easting coordinates
-            private Map<String, double[]> xLonCoords = new HashMap<String, double[]>();
+            private Map<String, double[]> xLonCoords = new HashMap<>();
 
             // Map for latitude/northing coordinates
-            private Map<String, double[]> yLatCoords = new HashMap<String, double[]>();
+            private Map<String, double[]> yLatCoords = new HashMap<>();
 
             /** Set latitude/northing coordinates */
             public void setYLat(CoordinateVariable<?> cv) throws IOException {
@@ -393,8 +393,8 @@ class NetCDFGeoreferenceManager {
             int coordinates2Dx = 0;
             int coordinates2Dy = 0;
 
-            dimensions = new HashMap<String, String>();
-            Set<String> coordinateKeys = new TreeSet<String>(coordinates.keySet());
+            dimensions = new HashMap<>();
+            Set<String> coordinateKeys = new TreeSet<>(coordinates.keySet());
             for (String key : coordinateKeys) {
                 // get from coordinate vars
                 final CoordinateVariable<?> cv = getCoordinateVariable(key);
@@ -550,7 +550,7 @@ class NetCDFGeoreferenceManager {
         } else {
             String coordinates = getCoordinatesForVariable(shortName);
             String coords[] = coordinates.split(" ");
-            List<CoordinateVariable<?>> coordVar = new ArrayList<CoordinateVariable<?>>();
+            List<CoordinateVariable<?>> coordVar = new ArrayList<>();
             for (String coord : coords) {
                 coordVar.add(coordinatesVariables.get(coord));
             }
@@ -571,10 +571,8 @@ class NetCDFGeoreferenceManager {
         initCoordinates();
         try {
             initBBox();
-        } catch (IOException ioe) {
+        } catch (IOException | FactoryException ioe) {
             throw new RuntimeException(ioe);
-        } catch (FactoryException fe) {
-            throw new RuntimeException(fe);
         }
     }
 
@@ -584,8 +582,7 @@ class NetCDFGeoreferenceManager {
      */
     private void initCoordinates() {
         // get the coordinate variables
-        Map<String, CoordinateVariable<?>> coordinates =
-                new HashMap<String, CoordinateVariable<?>>();
+        Map<String, CoordinateVariable<?>> coordinates = new HashMap<>();
         Set<String> unsupported = NetCDFUtilities.getUnsupportedDimensions();
         Set<String> ignored = NetCDFUtilities.getIgnoredDimensions();
         for (CoordinateAxis axis : dataset.getCoordinateAxes()) {

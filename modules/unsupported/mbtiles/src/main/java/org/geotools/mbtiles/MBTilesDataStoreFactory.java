@@ -24,7 +24,6 @@ import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -81,13 +80,13 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public Param[] getParametersInfo() {
-        LinkedHashMap map = new LinkedHashMap();
+        LinkedHashMap<String, Param> map = new LinkedHashMap<>();
         setupParameters(map);
 
-        return (Param[]) map.values().toArray(new Param[map.size()]);
+        return map.values().toArray(new Param[map.size()]);
     }
 
-    protected void setupParameters(Map parameters) {
+    protected void setupParameters(Map<String, Param> parameters) {
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(DATABASE.key, DATABASE);
         parameters.put(NAMESPACE.key, NAMESPACE);
@@ -108,12 +107,12 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         return null;
     }
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         // datasource
         // check if the DATASOURCE parameter was supplied, it takes precendence
         DataSource ds = (DataSource) DATASOURCE.lookUp(params);
@@ -128,7 +127,7 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
      * Same as the GeoPackage data store, if you modify this, probably want to check if
      * modifications make sense there too
      */
-    protected DataSource createDataSource(Map<String, Serializable> params, boolean readOnly)
+    protected DataSource createDataSource(Map<String, ?> params, boolean readOnly)
             throws IOException {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
@@ -146,7 +145,7 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
         return ds;
     }
 
-    private String getJDBCUrl(Map params) throws IOException {
+    private String getJDBCUrl(Map<String, ?> params) throws IOException {
         File db = (File) DATABASE.lookUp(params);
         if (db.getPath().startsWith("file:")) {
             db = new File(db.getPath().substring(5));
@@ -154,14 +153,14 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
         return "jdbc:sqlite:" + db;
     }
 
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
         if (!DataUtilities.canProcess(params, getParametersInfo())) {
             return false;
         }
         return checkDBType(params);
     }
 
-    protected final boolean checkDBType(Map params) {
+    protected final boolean checkDBType(Map<String, ?> params) {
         try {
             String type = (String) DBTYPE.lookUp(params);
 

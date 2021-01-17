@@ -61,11 +61,12 @@ public class XmlConverterFactory implements ConverterFactory {
     }
 
     static class XmlConverter implements Converter {
-        public Object convert(Object source, Class target) throws Exception {
+        @SuppressWarnings("unchecked")
+        public <T> T convert(Object source, Class<T> target) throws Exception {
             if (String.class.equals(target)) {
-                return convertToString(source);
+                return (T) convertToString(source);
             }
-            return convertFromString((String) source, target);
+            return (T) convertFromString((String) source, target);
         }
 
         private Object convertFromString(final String source, final Class<?> target) {

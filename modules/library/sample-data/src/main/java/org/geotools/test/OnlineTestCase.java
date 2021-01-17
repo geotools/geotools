@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import junit.framework.TestCase;
+import junit.framework.TestCase; // NOPMD
 import junit.framework.TestResult;
 
 /**
@@ -72,6 +72,11 @@ import junit.framework.TestResult;
  * @author Justin Deoliveira, The Open Planning Project
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  */
+@SuppressWarnings({
+    "PMD.JUnit4TestShouldUseBeforeAnnotation",
+    "PMD.JUnit4TestShouldUseAfterAnnotation",
+    "PMD.DisallowJUnit3"
+})
 public abstract class OnlineTestCase extends TestCase {
     /** System property set to totally disable any online tests */
     public static final String ONLINE_TEST_PROFILE = "onlineTestProfile";
@@ -89,13 +94,13 @@ public abstract class OnlineTestCase extends TestCase {
      * A static map which tracks which fixtures are offline. This prevents continually trying to run
      * a test when an external resource is offline.
      */
-    protected static Map<String, Boolean> online = new HashMap<String, Boolean>();
+    protected static Map<String, Boolean> online = new HashMap<>();
 
     /**
      * A static map which tracks which fixture files can not be found. This prevents continually
      * looking up the file and reporting it not found to the user.
      */
-    protected static Map<String, Boolean> found = new HashMap<String, Boolean>();
+    protected static Map<String, Boolean> found = new HashMap<>();
     /** The test fixture, {@code null} if the fixture is not available. */
     protected Properties fixture;
     /**

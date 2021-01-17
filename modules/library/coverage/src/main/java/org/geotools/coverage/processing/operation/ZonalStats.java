@@ -110,7 +110,7 @@ public class ZonalStats extends BaseStatisticsOperationJAI {
         // /////////////////////////////////////////////////////////////////////
         if (data instanceof RenderedOp) {
             final RenderedOp result = (RenderedOp) data;
-            final Map<String, Object> synthProp = new HashMap<String, Object>();
+            final Map<String, Object> synthProp = new HashMap<>();
 
             // get the properties
             final double[] minimums = (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MIN);

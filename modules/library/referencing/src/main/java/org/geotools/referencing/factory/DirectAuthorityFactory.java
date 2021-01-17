@@ -25,7 +25,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.util.factory.Hints;
-import org.opengis.referencing.*;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.Factory;
 
 /**
  * The base class for authority factories that create referencing object directly. This is in
@@ -107,7 +108,7 @@ public abstract class DirectAuthorityFactory extends AbstractAuthorityFactory {
     @Override
     Collection<? super AuthorityFactory> dependencies() {
         if (factories != null) {
-            final Set<Object> dependencies = new LinkedHashSet<Object>(8);
+            final Set<Object> dependencies = new LinkedHashSet<>(8);
             dependencies.add(factories.getCRSFactory());
             dependencies.add(factories.getCSFactory());
             dependencies.add(factories.getDatumFactory());

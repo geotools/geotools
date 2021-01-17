@@ -16,11 +16,9 @@
  */
 package org.geotools.util.logging;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-
 import java.util.logging.Logger;
-import org.junit.*;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Test the {@link MonolineFormatter} class.
@@ -42,10 +40,10 @@ public final class MonolineFormatterTest {
             "org.geotools.referencing",
             "org.opengis.referencing" // Non-geotools logger should not be affected.
         };
-        for (int i = 0; i < namespaces.length; i++) {
+        for (String namespace : namespaces) {
             // System.out.println();
             // System.out.print("Testing ");
-            final Logger logger = Logging.getLogger(namespaces[i]);
+            final Logger logger = Logging.getLogger(namespace);
             // System.out.println(logger.getName());
             logger.severe("Don't worry, just a test");
             logger.warning("This is an imaginary warning");

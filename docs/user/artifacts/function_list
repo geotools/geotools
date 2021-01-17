@@ -187,12 +187,14 @@ Contains 203 functions.
 
 * ``return``
 
-``StandardDeviation(value, classes)``: returns ``StandardDeviation``
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+``StandardDeviation(value, classes, percentages)``: returns ``StandardDeviation``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 * ``value`` (``Double``) required
 
 * ``classes`` (``Integer``) required
+
+* ``percentages`` (``Boolean``) optional
 
 * ``StandardDeviation`` (``RangedClassifier``)
 

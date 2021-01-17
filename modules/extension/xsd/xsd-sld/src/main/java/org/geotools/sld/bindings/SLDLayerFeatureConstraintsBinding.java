@@ -102,9 +102,10 @@ public class SLDLayerFeatureConstraintsBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List ftc = node.getChildValues("FeatureTypeConstraint");
+        @SuppressWarnings("unchecked")
+        List<FeatureTypeConstraint> ftc = node.getChildValues("FeatureTypeConstraint");
 
         return styleFactory.createLayerFeatureConstraints(
-                (FeatureTypeConstraint[]) ftc.toArray(new FeatureTypeConstraint[ftc.size()]));
+                ftc.toArray(new FeatureTypeConstraint[ftc.size()]));
     }
 }

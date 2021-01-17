@@ -169,8 +169,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      */
     private static synchronized <S extends Comparable<S>> ClassChanger<S, ?> getClassChanger(
             final Class<S> source) throws ClassNotFoundException {
-        for (int i = 0; i < changers.length; i++) {
-            final ClassChanger<?, ?> candidate = changers[i];
+        for (final ClassChanger<?, ?> candidate : changers) {
             if (candidate.source.isAssignableFrom(source)) {
                 @SuppressWarnings("unchecked")
                 final ClassChanger<S, ?> c = (ClassChanger<S, ?>) candidate;
@@ -188,9 +187,9 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      */
     public static synchronized Class<?> getTransformedClass(final Class<?> source) {
         if (source != null) {
-            for (int i = 0; i < changers.length; i++) {
-                if (changers[i].source.isAssignableFrom(source)) {
-                    return changers[i].target;
+            for (ClassChanger<?, ?> changer : changers) {
+                if (changer.source.isAssignableFrom(source)) {
+                    return changer.target;
                 }
             }
         }
@@ -209,14 +208,14 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      * @throws ClassNotFoundException if {@code object} is not an instance of a registered class.
      */
     @SuppressWarnings("unchecked")
-    public static Number toNumber(final Comparable<?> object) throws ClassNotFoundException {
+    public static <K> K toNumber(final Comparable<K> object) throws ClassNotFoundException {
         if (object != null) {
             if (object instanceof Number) {
-                return (Number) object;
+                return (K) object;
             }
             @SuppressWarnings("rawtypes")
             ClassChanger changer = getClassChanger(object.getClass());
-            return changer.convert(object);
+            return (K) changer.convert(object);
         }
         return null;
     }

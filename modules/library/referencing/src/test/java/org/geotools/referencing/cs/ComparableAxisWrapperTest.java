@@ -16,10 +16,11 @@
  */
 package org.geotools.referencing.cs;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import si.uom.SI;
@@ -112,7 +113,7 @@ public final class ComparableAxisWrapperTest {
             final CoordinateSystemAxis[] toTest, final CoordinateSystemAxis[] expected) {
         final boolean same = Arrays.equals(toTest, expected);
         assertEquals(!same, ComparableAxisWrapper.sort(toTest));
-        assertTrue(Arrays.equals(toTest, expected));
+        assertArrayEquals(toTest, expected);
     }
 
     /** Sorts the specified directions and compares against the expected result. */

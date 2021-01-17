@@ -9,8 +9,8 @@
  */
 package org.opengis.metadata.identification;
 
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
+import static org.opengis.annotation.Obligation.CONDITIONAL;
+import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class KeywordType extends CodeList<KeywordType> {
     private static final long serialVersionUID = -4726629268565235927L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<KeywordType> VALUES = new ArrayList<KeywordType>(5);
+    private static final List<KeywordType> VALUES = new ArrayList<>(5);
 
     /** Keyword identifies a branch of instruction or specialized learning. */
     @UML(identifier = "discipline", obligation = CONDITIONAL, specification = ISO_19115)

@@ -21,7 +21,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import javax.imageio.spi.ImageReaderSpi;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -49,9 +53,8 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.DerivedCRS;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Projection;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -190,7 +193,7 @@ public class GribTest extends Assert {
             throws MalformedURLException, IOException {
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
 
         assertTrue(format.accepts(inputFile));
 
@@ -211,7 +214,7 @@ public class GribTest extends Assert {
             // value is not a NaN
             float[] result = new float[1];
             grid.evaluate(validPoint, result);
-            Assert.assertTrue(!Float.isNaN(result[0]));
+            Assert.assertFalse(Float.isNaN(result[0]));
             // Selection of one coordinate from the Coverage and check if the
             // value is NaN
             float[] result_2 = new float[1];
@@ -236,7 +239,7 @@ public class GribTest extends Assert {
         final File inputFile = TestData.file(this, "sampleGrib.grb2");
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
         assertTrue(format.accepts(inputFile));
         AbstractGridCoverage2DReader reader = null;
         assertNotNull(format);
@@ -294,7 +297,7 @@ public class GribTest extends Assert {
         final File inputFile = TestData.file(this, "tpcprblty.2019100912.incremental.grib2");
         // Get format
         final AbstractGridFormat format =
-                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+                GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
         assertTrue(format.accepts(inputFile));
         AbstractGridCoverage2DReader reader = null;
         assertNotNull(format);
@@ -385,10 +388,9 @@ public class GribTest extends Assert {
                     NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS,
                     crsType.getCoordinates());
             assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
-            assertTrue(crs instanceof ProjectedCRS);
-            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
-            Projection projection = projectedCRS.getConversionFromBase();
-            MathTransform transform = projection.getMathTransform();
+            assertTrue(crs instanceof DerivedCRS);
+            DerivedCRS derivedCRS = ((DerivedCRS) crs);
+            MathTransform transform = derivedCRS.getConversionFromBase().getMathTransform();
             assertTrue(transform instanceof RotatedPole);
             RotatedPole rotatedPole = (RotatedPole) transform;
             ParameterValueGroup values = rotatedPole.getParameterValues();

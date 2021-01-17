@@ -41,9 +41,12 @@ import org.picocontainer.defaults.InstanceComponentAdapter;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
+// MutablePicoContainer has no generics, and is dead as a library, no point trying to make this
+// one better
+@SuppressWarnings("unchecked")
 public class PicoMap implements Map, MutablePicoContainer {
 
-    Map delegate;
+    Map<Object, Object> delegate;
 
     public PicoMap(Map delegate) {
         this.delegate = delegate;
@@ -220,8 +223,8 @@ public class PicoMap implements Map, MutablePicoContainer {
     public Collection getComponentAdapters() {
         List adapters = new ArrayList();
 
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
             adapters.add(getComponentAdapter(entry.getKey()));
         }
 
@@ -230,13 +233,13 @@ public class PicoMap implements Map, MutablePicoContainer {
 
     public List getComponentAdaptersOfType(Class componentType) {
         if (componentType == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         List adapters = new ArrayList();
 
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
 
             if (entry.getValue() instanceof Class) {
                 Class clazz = (Class) entry.getValue();
@@ -274,12 +277,12 @@ public class PicoMap implements Map, MutablePicoContainer {
 
     public Object getComponentInstanceOfType(Class componentType) {
         if (componentType == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         // first look for instance
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object value : entrySet()) {
+            Entry entry = (Entry) value;
 
             if (entry.getValue() instanceof Class) {
                 continue;
@@ -290,8 +293,8 @@ public class PicoMap implements Map, MutablePicoContainer {
             }
         }
 
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
 
             if (entry.getValue() instanceof Class) {
                 Class clazz = (Class) entry.getValue();
@@ -307,8 +310,8 @@ public class PicoMap implements Map, MutablePicoContainer {
     public List getComponentInstances() {
         ArrayList instances = new ArrayList();
 
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
             instances.add(getComponentInstance(entry.getKey()));
         }
 
@@ -317,12 +320,12 @@ public class PicoMap implements Map, MutablePicoContainer {
 
     public List getComponentInstancesOfType(Class componentType) {
         if (componentType == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         ArrayList instances = new ArrayList();
-        for (Iterator e = entrySet().iterator(); e.hasNext(); ) {
-            Entry entry = (Entry) e.next();
+        for (Object o : entrySet()) {
+            Entry entry = (Entry) o;
 
             if (entry.getValue() instanceof Class) {
                 Class clazz = (Class) entry.getValue();

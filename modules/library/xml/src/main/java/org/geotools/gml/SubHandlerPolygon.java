@@ -48,7 +48,7 @@ public class SubHandlerPolygon extends SubHandler {
     private LinearRing outerBoundary = null;
 
     /** Stores Polygon's inner boundaries (holes). */
-    private ArrayList innerBoundaries = new ArrayList();
+    private ArrayList<LinearRing> innerBoundaries = new ArrayList<>();
 
     /** Remembers the current location in the parsing stream (inner or outer boundary). */
     private int location = 0;
@@ -138,8 +138,7 @@ public class SubHandlerPolygon extends SubHandler {
      * @return Completed OGC Polygon.
      */
     public Geometry create(GeometryFactory geometryFactory) {
-        for (int i = 0; i < innerBoundaries.size(); i++) {
-            LinearRing hole = (LinearRing) innerBoundaries.get(i);
+        for (LinearRing hole : innerBoundaries) {
             if (hole.crosses(outerBoundary)) {
                 LOGGER.warning("Topology Error building polygon");
 
@@ -147,8 +146,7 @@ public class SubHandlerPolygon extends SubHandler {
             }
         }
 
-        LinearRing[] rings =
-                (LinearRing[]) innerBoundaries.toArray(new LinearRing[innerBoundaries.size()]);
+        LinearRing[] rings = innerBoundaries.toArray(new LinearRing[innerBoundaries.size()]);
         Polygon polygon = geometryFactory.createPolygon(outerBoundary, rings);
         polygon.setUserData(getSRS());
         polygon.setSRID(getSRID());

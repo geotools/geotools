@@ -162,7 +162,7 @@ public class SwtMapFrame extends ApplicationWindow {
         openShapeAction = new OpenShapefileAction();
         openCoverageAction = new OpenGeotiffAction();
 
-        toolSet = new HashSet<Tool>();
+        toolSet = new HashSet<>();
         toolSet.addAll(EnumSet.allOf(Tool.class));
         if (showToolBar) {
             addToolBar(SWT.FLAT | SWT.WRAP);

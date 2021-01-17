@@ -16,7 +16,6 @@
  */
 package org.geotools.data.sort;
 
-import java.util.Comparator;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -24,11 +23,9 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Andrea Aime - GeoSolutions
  */
-class PropertyComparator implements Comparator<SimpleFeature> {
+class PropertyComparator extends AbstractPropertyComparator {
 
     String propertyName;
-
-    boolean ascending;
 
     /**
      * Builds a new comparator
@@ -37,33 +34,15 @@ class PropertyComparator implements Comparator<SimpleFeature> {
      * @param ascending If true the comparator will force an ascending order (descending otherwise)
      */
     public PropertyComparator(String propertyName, boolean ascending) {
+        super(ascending);
         this.propertyName = propertyName;
-        this.ascending = ascending;
     }
 
-    public int compare(SimpleFeature f1, SimpleFeature f2) {
-        int result = compareAscending(f1, f2);
-        if (ascending) {
-            return result;
-        } else {
-            return result * -1;
-        }
-    }
-
-    private int compareAscending(SimpleFeature f1, SimpleFeature f2) {
+    @SuppressWarnings("unchecked")
+    protected int compareAscending(SimpleFeature f1, SimpleFeature f2) {
         Comparable o1 = (Comparable) f1.getAttribute(propertyName);
         Comparable o2 = (Comparable) f2.getAttribute(propertyName);
 
-        if (o1 == null) {
-            if (o2 == null) {
-                return 0;
-            } else {
-                return -1;
-            }
-        } else if (o2 == null) {
-            return 1;
-        } else {
-            return o1.compareTo(o2);
-        }
+        return compareAscending(o1, o2);
     }
 }

@@ -6,12 +6,13 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
+import org.junit.After;
 import org.w3c.dom.Node;
 
 public abstract class GML32TestSupport extends XMLTestSupport {
 
     static {
-        HashMap namespaces = new HashMap();
+        HashMap<String, String> namespaces = new HashMap<>();
         namespaces.put("gml", GML.NAMESPACE);
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }
@@ -29,16 +30,15 @@ public abstract class GML32TestSupport extends XMLTestSupport {
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         GML3MockData.setGML(GML.getInstance());
 
         registerNamespaceMapping("gml", GML.NAMESPACE);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         GML3MockData.setGML(null);
     }
 

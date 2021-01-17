@@ -16,7 +16,10 @@
  */
 package org.geotools.filter.function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -99,7 +102,7 @@ public class FilterFunction_listMultiplyTest {
     public void testEvaluateNull() {
         FilterFunction_listMultiply func =
                 (FilterFunction_listMultiply)
-                        ff.function("listMultiply", ff.literal(2.5), ff.literal((String) null));
+                        ff.function("listMultiply", ff.literal(2.5), ff.literal(null));
         Object evaluate = func.evaluate(null);
         assertNull(evaluate);
     }

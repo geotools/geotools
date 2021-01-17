@@ -38,7 +38,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class DriverTest extends Assert {
@@ -53,8 +52,6 @@ public class DriverTest extends Assert {
     static {
         try {
             WGS84 = CRS.decode("EPSG:4326", true);
-        } catch (NoSuchAuthorityCodeException e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
         } catch (FactoryException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
@@ -67,7 +64,7 @@ public class DriverTest extends Assert {
                 new SimpleInternationalString(TestDriver.TEST_DRIVER);
 
         // Testing main driver capabilities. That's a Dummy Driver, it can only connect
-        Map<String, Serializable> connectionParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> connectionParams = new HashMap<>();
         connectionParams.put(DefaultFileDriver.URL.key, new URL(TestDriver.TEST_URL));
 
         assertEquals(TestDriver.TEST_DRIVER, driver.getName());
@@ -80,7 +77,7 @@ public class DriverTest extends Assert {
 
     @Test
     public void testCoverageAccess() throws IOException {
-        Map<String, Serializable> connectionParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> connectionParams = new HashMap<>();
         connectionParams.put(DefaultFileDriver.URL.key, new URL(TestDriver.TEST_URL));
 
         CoverageAccess access =

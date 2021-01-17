@@ -19,13 +19,14 @@ package org.geotools.filter.function;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -38,7 +39,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.expression.Function;
 
-public class MapGetFunctionTest extends TestCase {
+public class MapGetFunctionTest {
 
     static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
     private SimpleFeatureType sampleDataType;
@@ -47,8 +48,8 @@ public class MapGetFunctionTest extends TestCase {
     private SimpleFeature[] features;
     private GeometryFactory gf;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("map");
         builder.setNamespaceURI(namespace);
@@ -148,29 +149,29 @@ public class MapGetFunctionTest extends TestCase {
     public void testEvaluate() {
         // evaluating on attributes.name
         Function f = FF.function("mapGet", FF.property("attributes"), FF.literal("name"));
-        assertEquals("firstObject", f.evaluate(features[0], String.class));
-        assertEquals("secondObject", f.evaluate(features[1], String.class));
-        assertEquals("thirdObject", f.evaluate(features[2], String.class));
+        Assert.assertEquals("firstObject", f.evaluate(features[0], String.class));
+        Assert.assertEquals("secondObject", f.evaluate(features[1], String.class));
+        Assert.assertEquals("thirdObject", f.evaluate(features[2], String.class));
 
         PropertyIsGreaterThan gt =
                 FF.greater(
                         FF.function("mapGet", FF.property("attributes"), FF.literal("score")),
                         FF.literal(80));
-        assertEquals(true, gt.evaluate(features[0]));
-        assertEquals(false, gt.evaluate(features[1]));
-        assertEquals(false, gt.evaluate(features[2]));
+        Assert.assertTrue(gt.evaluate(features[0]));
+        Assert.assertFalse(gt.evaluate(features[1]));
+        Assert.assertFalse(gt.evaluate(features[2]));
 
         Function f2 = FF.function("mapGet", FF.property("attributes"), FF.literal("valid"));
-        assertFalse(f2.evaluate(features[0], Boolean.class));
-        assertTrue(f2.evaluate(features[1], Boolean.class));
-        assertNull(f2.evaluate(features[2], Boolean.class));
+        Assert.assertFalse(f2.evaluate(features[0], Boolean.class));
+        Assert.assertTrue(f2.evaluate(features[1], Boolean.class));
+        Assert.assertNull(f2.evaluate(features[2], Boolean.class));
 
         Function f3 = FF.function("mapGet", FF.property("attributes"), FF.literal("key1"));
-        assertEquals("value1", f3.evaluate(features[0], String.class));
-        assertEquals(Integer.valueOf(10), f3.evaluate(features[1], Integer.class));
-        assertEquals(Boolean.TRUE, f3.evaluate(features[2], Boolean.class));
+        Assert.assertEquals("value1", f3.evaluate(features[0], String.class));
+        Assert.assertEquals(Integer.valueOf(10), f3.evaluate(features[1], Integer.class));
+        Assert.assertEquals(Boolean.TRUE, f3.evaluate(features[2], Boolean.class));
 
         Function f4 = FF.function("mapGet", FF.property("missingMap"), FF.literal("key1"));
-        assertNull(f4.evaluate(features[0], String.class));
+        Assert.assertNull(f4.evaluate(features[0], String.class));
     }
 }

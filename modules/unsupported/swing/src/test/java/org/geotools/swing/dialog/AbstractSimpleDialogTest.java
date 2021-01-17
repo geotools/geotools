@@ -17,7 +17,9 @@
 
 package org.geotools.swing.dialog;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
@@ -120,7 +122,7 @@ public class AbstractSimpleDialogTest
 
         // FEST requires that the window be shown before we search for
         // the JPanel
-        ((DialogFixture) windowFixture).show();
+        windowFixture.show();
         assertNotNull(windowFixture.panel(CONTROL_PANEL_NAME));
     }
 
@@ -156,7 +158,7 @@ public class AbstractSimpleDialogTest
 
     private void assertButtonHandlerIsCalled(MockDialog.EventType et, String btnText) {
         createWindowFixture();
-        ((DialogFixture) windowFixture).show();
+        windowFixture.show();
 
         dialog.setExpected(et);
         JButtonFixture button = getButton(btnText);

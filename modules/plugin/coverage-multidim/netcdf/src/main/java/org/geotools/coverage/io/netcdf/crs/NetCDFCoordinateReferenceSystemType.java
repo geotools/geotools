@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Unit;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.AlbersEqualArea;
 import org.geotools.referencing.operation.projection.LambertAzimuthalEqualArea;
@@ -158,6 +159,10 @@ public enum NetCDFCoordinateReferenceSystemType {
         NetCDFCoordinateReferenceSystemType crsType = null;
         if (crs instanceof DefaultGeographicCRS) {
             crsType = WGS84;
+        } else if (crs instanceof DefaultDerivedCRS
+                && ((DefaultDerivedCRS) crs).getConversionFromBase().getMathTransform()
+                        instanceof RotatedPole) {
+            return ROTATED_POLE;
         } else if (crs instanceof ProjectedCRS) {
             ProjectedCRS projectedCRS = (ProjectedCRS) crs;
             // NetCDF supports a reduced number of CRS Type (WGS84 + some projection).
@@ -276,15 +281,17 @@ public enum NetCDFCoordinateReferenceSystemType {
             // due to a specific unit in the coordinate axis (as an instance, km
             // of classic meter).
             // Extract the unit of measure from the actual coordinate axis in that case.
-            ProjectedCRS projectedCrs = (ProjectedCRS) crs;
-            if (NetCDFCoordinateReferenceSystemType.hasConcatenatedTransform(projectedCrs)) {
-                Unit unit = crs.getCoordinateSystem().getAxis(0).getUnit();
-                NetCDFCoordinate[] newAxisCoordinates = new NetCDFCoordinate[2];
-                for (int i = 0; i < 2; i++) {
-                    newAxisCoordinates[i] = new NetCDFCoordinate(axisCoordinates[i]);
-                    newAxisCoordinates[i].setUnits(unit.toString());
+            if (crs instanceof ProjectedCRS) {
+                ProjectedCRS projectedCrs = (ProjectedCRS) crs;
+                if (NetCDFCoordinateReferenceSystemType.hasConcatenatedTransform(projectedCrs)) {
+                    Unit unit = crs.getCoordinateSystem().getAxis(0).getUnit();
+                    NetCDFCoordinate[] newAxisCoordinates = new NetCDFCoordinate[2];
+                    for (int i = 0; i < 2; i++) {
+                        newAxisCoordinates[i] = new NetCDFCoordinate(axisCoordinates[i]);
+                        newAxisCoordinates[i].setUnits(unit.toString());
+                    }
+                    axisCoordinates = newAxisCoordinates;
                 }
-                axisCoordinates = newAxisCoordinates;
             }
         }
         return axisCoordinates;

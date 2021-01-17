@@ -82,7 +82,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
 
     private List<Object> getValues(
             Feature feature, NestedAttributeMapping nestedMapping, StepList steps) {
-        List<Object> values = new ArrayList<Object>();
+        List<Object> values = new ArrayList<>();
         FeatureTypeMapping nextFMapping;
         try {
             nextFMapping = nestedMapping.getFeatureTypeMapping(feature);
@@ -99,11 +99,11 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                             + attPath
                             + ". Please revise PropertyName in your filter!");
         }
-        List<Feature> nestedFeatures = new ArrayList<Feature>();
+        List<Feature> nestedFeatures = new ArrayList<>();
         if (nestedMapping.isSameSource()) {
             // same root/database row, different mappings, used in
             // polymorphism
-            nestedFeatures = new ArrayList<Feature>();
+            nestedFeatures = new ArrayList<>();
             nestedFeatures.add(feature);
         } else {
             // get nested features
@@ -224,7 +224,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
     }
 
     private List<Object> getClientProperties(AttributeMapping attMapping, Feature f) {
-        List<Object> values = new ArrayList<Object>();
+        List<Object> values = new ArrayList<>();
         Step lastStep = getLastStep();
         Expression exp = getClientPropertyExpression(attMapping, lastStep);
         if (exp != null) {
@@ -334,7 +334,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
             }
             if (clientProperties.containsKey(lastStepName)) {
                 // end NC - added
-                exp = (Expression) clientProperties.get(lastStepName);
+                exp = clientProperties.get(lastStepName);
             } else if (XPath.isId(lastStep)) {
                 if (mapping.getIdentifierExpression() == Expression.NIL) {
                     // no specific attribute mapping or that idExpression is not mapped

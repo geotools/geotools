@@ -1,6 +1,7 @@
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -102,7 +103,7 @@ public class StreamingRendererDirectLayerTest {
      * TODO: replace this with a PerceptualDiff check or something
      */
     private Map<Integer, Integer> getColorFreq(BufferedImage image) {
-        Map<Integer, Integer> colorFreq = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> colorFreq = new HashMap<>();
         for (int y = image.getMinY(), ny = 0; ny < image.getHeight(); y++, ny++) {
             for (int x = image.getMinX(), nx = 0; nx < image.getWidth(); x++, nx++) {
                 int rgb = image.getRGB(x, y);

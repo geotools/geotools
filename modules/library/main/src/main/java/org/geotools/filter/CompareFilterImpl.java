@@ -72,6 +72,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      *
      * @return same contract as {@link Comparable#compareTo(java.lang.Object)}.
      */
+    @SuppressWarnings("unchecked")
     protected int compare(Comparable leftObj, Comparable rightObj) {
         if (leftObj == null || rightObj == null) {
             throw new NullPointerException("Left and right objects are meant to be non null)");

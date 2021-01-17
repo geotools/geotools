@@ -40,7 +40,7 @@ public class DefaultServiceInfo implements ServiceInfo, Serializable {
 
     public DefaultServiceInfo(ServiceInfo copy) {
         this.description = copy.getDescription();
-        this.keywords = new HashSet<String>();
+        this.keywords = new HashSet<>();
         if (copy.getKeywords() != null) {
             this.keywords.addAll(copy.getKeywords());
         }

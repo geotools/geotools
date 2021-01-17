@@ -1,13 +1,22 @@
 package org.geotools.process.raster;
 
-import java.awt.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import javax.media.jai.RenderedOp;
 import org.geotools.coverage.CoverageFactoryFinder;
+import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.factory.CommonFactoryFinder;
@@ -25,13 +34,23 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
-import org.junit.Assert;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 public class JiffleProcessTest {
 
     private static final GridCoverageFactory covFactory =
             CoverageFactoryFinder.getGridCoverageFactory(null);
+    private static final float[][] ONE_DIAGONAL = {
+        {1, 0, 0},
+        {0, 1, 0},
+        {0, 0, 1},
+    };
+    private static final float[][] TWO_SOLID = {
+        {2, 2, 2},
+        {2, 2, 2},
+        {2, 2, 2},
+    };
 
     private GridCoverage2D buildCoverage(float[][] data) {
         return buildCoverage(
@@ -44,18 +63,18 @@ public class JiffleProcessTest {
         return covFactory.create("coverage", data, envelope);
     }
 
-    float[][] data(GridCoverage2D cov) {
+    float[][] data(GridCoverage2D cov, int band) {
         Raster data = cov.getRenderedImage().getData();
         int w = data.getWidth();
         int h = data.getHeight();
 
-        float[] pixel = new float[1];
+        float[] pixel = new float[data.getNumBands()];
         float[][] grid = new float[h][w];
         for (int r = 0; r < h; r++) {
             grid[r] = new float[w];
             for (int c = 0; c < w; c++) {
                 data.getPixel(c, r, pixel);
-                grid[r][c] = pixel[0];
+                grid[r][c] = pixel[band];
             }
         }
 
@@ -102,26 +121,15 @@ public class JiffleProcessTest {
         inputsCustomizer.accept(inputs);
         Map<String, Object> output = jiffle.execute(inputs, null);
         GridCoverage2D result = (GridCoverage2D) output.get(JiffleProcess.OUT_RESULT);
-        float[][] resultData = data(result);
-        Assert.assertArrayEquals(inputData, resultData);
+        float[][] resultData = data(result, 0);
+        assertArrayEquals(inputData, resultData);
+        assertEquals("jiffle", result.getSampleDimensions()[0].getDescription().toString());
     }
 
     @Test
     public void testMultiply() {
-        GridCoverage2D c1 =
-                buildCoverage(
-                        new float[][] {
-                            {1, 0, 0},
-                            {0, 1, 0},
-                            {0, 0, 1},
-                        });
-        GridCoverage2D c2 =
-                buildCoverage(
-                        new float[][] {
-                            {2, 2, 2},
-                            {2, 2, 2},
-                            {2, 2, 2},
-                        });
+        GridCoverage2D c1 = buildCoverage(ONE_DIAGONAL);
+        GridCoverage2D c2 = buildCoverage(TWO_SOLID);
 
         Process jiffle = Processors.createProcess(new NameImpl("ras", "Jiffle"));
         Map<String, Object> inputs = new HashMap<>();
@@ -130,7 +138,7 @@ public class JiffleProcessTest {
         inputs.put(JiffleProcess.IN_SCRIPT, "dest = a * b;");
         Map<String, Object> output = jiffle.execute(inputs, null);
         GridCoverage2D result = (GridCoverage2D) output.get(JiffleProcess.OUT_RESULT);
-        float[][] resultData = data(result);
+        float[][] resultData = data(result, 0);
 
         float[][] expected =
                 new float[][] {
@@ -138,7 +146,13 @@ public class JiffleProcessTest {
                     {0, 2, 0},
                     {0, 0, 2},
                 };
-        Assert.assertArrayEquals(expected, resultData);
+        assertArrayEquals(expected, resultData);
+
+        // the two coverages have the same grid geometry, no need to resample them via
+        // GridCoverage2DRIA
+        List sources = ((RenderedOp) result.getRenderedImage()).getSources();
+        assertEquals(c1.getRenderedImage(), sources.get(0));
+        assertEquals(c2.getRenderedImage(), sources.get(1));
     }
 
     @Test
@@ -170,5 +184,144 @@ public class JiffleProcessTest {
                 new File(
                         "src/test/resources/org/geotools/process/raster/test-data/ndvi-expected.png");
         ImageAssert.assertEquals(expected, bi, 0);
+    }
+
+    @Test
+    public void testMultiband() {
+        GridCoverage2D c1 = buildCoverage(ONE_DIAGONAL);
+        GridCoverage2D c2 = buildCoverage(TWO_SOLID);
+
+        Process jiffle = Processors.createProcess(new NameImpl("ras", "Jiffle"));
+        Map<String, Object> inputs = new HashMap<>();
+        inputs.put(JiffleProcess.IN_SOURCE_NAME, new String[] {"a", "b"});
+        inputs.put(JiffleProcess.IN_COVERAGE, new GridCoverage2D[] {c1, c2});
+        inputs.put(JiffleProcess.IN_SCRIPT, "dest[0] = a; dest[1] = b; dest[2] = b - a;");
+        Map<String, Object> output = jiffle.execute(inputs, null);
+        GridCoverage2D result = (GridCoverage2D) output.get(JiffleProcess.OUT_RESULT);
+
+        // compare results band by band, first band, input a
+        assertMultibandDifference(result);
+
+        // check band names
+        GridSampleDimension[] sampleDimensions = result.getSampleDimensions();
+        assertEquals("jiffle1", sampleDimensions[0].getDescription().toString());
+        assertEquals("jiffle2", sampleDimensions[1].getDescription().toString());
+        assertEquals("jiffle3", sampleDimensions[2].getDescription().toString());
+    }
+
+    @Test
+    public void testMultibandCustomizeNames() {
+        GridCoverage2D c1 = buildCoverage(ONE_DIAGONAL);
+        GridCoverage2D c2 = buildCoverage(TWO_SOLID);
+
+        Process jiffle = Processors.createProcess(new NameImpl("ras", "Jiffle"));
+        Map<String, Object> inputs = new HashMap<>();
+        inputs.put(JiffleProcess.IN_SOURCE_NAME, new String[] {"a", "b"});
+        inputs.put(JiffleProcess.IN_COVERAGE, new GridCoverage2D[] {c1, c2});
+        inputs.put(JiffleProcess.IN_SCRIPT, "dest[0] = a; dest[1] = b; dest[2] = b - a;");
+        inputs.put(JiffleProcess.OUTPUT_BAND_NAMES, "a,b,difference");
+        Map<String, Object> output = jiffle.execute(inputs, null);
+        GridCoverage2D result = (GridCoverage2D) output.get(JiffleProcess.OUT_RESULT);
+        assertMultibandDifference(result);
+
+        // check band names
+        GridSampleDimension[] sampleDimensions = result.getSampleDimensions();
+        assertEquals("a", sampleDimensions[0].getDescription().toString());
+        assertEquals("b", sampleDimensions[1].getDescription().toString());
+        assertEquals("difference", sampleDimensions[2].getDescription().toString());
+    }
+
+    private void assertMultibandDifference(GridCoverage2D result) {
+        // compare results band by band, first band, input a
+        assertArrayEquals(ONE_DIAGONAL, data(result, 0));
+        // second band, input b
+        assertArrayEquals(TWO_SOLID, data(result, 1));
+        // thid band, difference
+        assertArrayEquals(
+                new float[][] {
+                    {1, 2, 2},
+                    {2, 1, 2},
+                    {2, 2, 1},
+                },
+                data(result, 2));
+    }
+
+    @Test
+    public void testMultibandBandIndexExpressions() {
+        GridCoverage2D c1 = buildCoverage(ONE_DIAGONAL);
+        GridCoverage2D c2 = buildCoverage(TWO_SOLID);
+
+        Process jiffle = Processors.createProcess(new NameImpl("ras", "Jiffle"));
+        Map<String, Object> inputs = new HashMap<>();
+        inputs.put(JiffleProcess.IN_SOURCE_NAME, new String[] {"a", "b"});
+        inputs.put(JiffleProcess.IN_COVERAGE, new GridCoverage2D[] {c1, c2});
+        String script =
+                "dest[x() % 2 == 0 ? 0 : 1] = a;\n"
+                        + "dest[x() % 2 == 0 ? 1 : 0] = b;\n"
+                        + "dest[2] = b - a;";
+        inputs.put(JiffleProcess.IN_SCRIPT, script);
+        // band count mandatory, the lookup is not smart enough to figure out
+        inputs.put(JiffleProcess.OUTPUT_BAND_COUNT, 3);
+        Map<String, Object> output = jiffle.execute(inputs, null);
+        GridCoverage2D result = (GridCoverage2D) output.get(JiffleProcess.OUT_RESULT);
+
+        // compare results band by band, has a where x is even, b where x is odd
+        assertArrayEquals(
+                new float[][] {
+                    {1, 2, 0},
+                    {0, 2, 0},
+                    {0, 2, 1},
+                },
+                data(result, 0));
+        // compare results band by band, has b where x is even, a where x is odd
+        assertArrayEquals(
+                new float[][] {
+                    {2, 0, 2},
+                    {2, 1, 2},
+                    {2, 0, 2},
+                },
+                data(result, 1));
+        // thid band, difference
+        assertArrayEquals(
+                new float[][] {
+                    {1, 2, 2},
+                    {2, 1, 2},
+                    {2, 2, 1},
+                },
+                data(result, 2));
+
+        // check band names
+        GridSampleDimension[] sampleDimensions = result.getSampleDimensions();
+        assertEquals("jiffle1", sampleDimensions[0].getDescription().toString());
+        assertEquals("jiffle2", sampleDimensions[1].getDescription().toString());
+        assertEquals("jiffle3", sampleDimensions[2].getDescription().toString());
+    }
+
+    @Test
+    public void testMultibandBandIndexExpressionsInvalidBandCount() {
+        GridCoverage2D c1 = buildCoverage(ONE_DIAGONAL);
+        GridCoverage2D c2 = buildCoverage(TWO_SOLID);
+
+        Process jiffle = Processors.createProcess(new NameImpl("ras", "Jiffle"));
+        Map<String, Object> inputs = new HashMap<>();
+        inputs.put(JiffleProcess.IN_SOURCE_NAME, new String[] {"a", "b"});
+        inputs.put(JiffleProcess.IN_COVERAGE, new GridCoverage2D[] {c1, c2});
+        String script =
+                "dest[x() % 2 == 0 ? 0 : 1] = a;\n"
+                        + "dest[x() % 2 == 0 ? 1 : 0] = b;\n"
+                        + "dest[2] = b - a;";
+        inputs.put(JiffleProcess.IN_SCRIPT, script);
+        // band count mandatory, but we're feeding in the wrong value
+        inputs.put(JiffleProcess.OUTPUT_BAND_COUNT, 2);
+        try {
+            Map<String, Object> output = jiffle.execute(inputs, null);
+            GridCoverage2D result = (GridCoverage2D) output.get(JiffleProcess.OUT_RESULT);
+
+            // need to force fetch the data in order to trigger actual computation
+            result.getRenderedImage().getData();
+            fail("Should not have reached here");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            assertThat(e.getMessage(), CoreMatchers.containsString("2"));
+        }
     }
 }

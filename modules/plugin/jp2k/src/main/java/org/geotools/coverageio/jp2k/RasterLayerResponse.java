@@ -141,7 +141,7 @@ class RasterLayerResponse {
         /** Default {@link Constructor} */
         public GranuleWorker() {}
 
-        private final List<Future<RenderedImage>> tasks = new ArrayList<Future<RenderedImage>>();
+        private final List<Future<RenderedImage>> tasks = new ArrayList<>();
         private int granulesNumber;
         private boolean doInputTransparency;
         private Color inputTransparentColor;
@@ -182,7 +182,7 @@ class RasterLayerResponse {
                             finalWorldToGridCorner,
                             granule,
                             request.getTileDimensions());
-            tasks.add(new FutureTask<RenderedImage>(loader));
+            tasks.add(new FutureTask<>(loader));
 
             granulesNumber++;
         }
@@ -224,29 +224,14 @@ class RasterLayerResponse {
                         firstGranule = false;
                     }
 
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     if (LOGGER.isLoggable(Level.SEVERE))
                         LOGGER.log(
                                 Level.SEVERE,
                                 "Unable to load the raster for granule " + granuleIndex,
                                 e);
                     continue;
-                } catch (ExecutionException e) {
-                    if (LOGGER.isLoggable(Level.SEVERE))
-                        LOGGER.log(
-                                Level.SEVERE,
-                                "Unable to load the raster for granule " + granuleIndex,
-                                e);
-                    continue;
-                } catch (ImagingException e) {
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine(
-                                "Loading image number "
-                                        + granuleIndex
-                                        + " failed, original request was "
-                                        + request);
-                    continue;
-                } catch (javax.media.jai.util.ImagingException e) {
+                } catch (ImagingException | javax.media.jai.util.ImagingException e) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine(
                                 "Loading image number "
@@ -497,9 +482,7 @@ class RasterLayerResponse {
                         this.rasterManager.getHints());
             }
 
-        } catch (IOException e) {
-            throw new DataSourceException("Unable to create this image", e);
-        } catch (TransformException e) {
+        } catch (IOException | TransformException e) {
             throw new DataSourceException("Unable to create this image", e);
         }
     }

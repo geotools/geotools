@@ -183,7 +183,7 @@ public class TestDriver extends DefaultFileDriver implements Driver {
                 Map<String, Serializable> connectionParameters)
                 throws DataSourceException {
             super(driver, allowedAccessTypes, accessParams, null, connectionParameters);
-            names = new ArrayList<Name>();
+            names = new ArrayList<>();
             names.add(new NameImpl(TestCoverageSourceDescriptor.TEST_COVERAGE));
         }
     }

@@ -46,7 +46,7 @@ public class MockMapPane extends JPanel implements MapPane {
     private MapMouseEventDispatcher mouseEventDispatcher;
 
     public MockMapPane() {
-        mapPaneListeners = new ArrayList<MapPaneListener>();
+        mapPaneListeners = new ArrayList<>();
         mouseEventDispatcher = new DefaultMapMouseEventDispatcher(this);
     }
 

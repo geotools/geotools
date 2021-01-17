@@ -20,43 +20,44 @@ import static org.geotools.data.solr.SolrDataStoreFactory.FIELD;
 import static org.geotools.data.solr.SolrDataStoreFactory.LAYER_MAPPER;
 import static org.geotools.data.solr.SolrDataStoreFactory.URL;
 
-import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.data.solr.SolrLayerMapper.Type;
 import org.geotools.util.KVP;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class SolrDataStoreFactoryTest extends TestCase {
+public class SolrDataStoreFactoryTest {
 
     SolrDataStoreFactory dataStoreFactory;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         dataStoreFactory = new SolrDataStoreFactory();
     }
 
+    @Test
     public void testDefaultMapper() throws Exception {
         SolrDataStore dataStore =
                 (SolrDataStore)
                         dataStoreFactory.createDataStore(
-                                (Map)
-                                        new KVP(
-                                                URL.key,
-                                                "http://localhost:8080/solr/geotools",
-                                                FIELD.key,
-                                                "foo"));
-        assertTrue(dataStore.getLayerMapper() instanceof FieldLayerMapper);
+                                new KVP(
+                                        URL.key,
+                                        "http://localhost:8080/solr/geotools",
+                                        FIELD.key,
+                                        "foo"));
+        Assert.assertTrue(dataStore.getLayerMapper() instanceof FieldLayerMapper);
     }
 
+    @Test
     public void testSingleLayerMapper() throws Exception {
         SolrDataStore dataStore =
                 (SolrDataStore)
                         dataStoreFactory.createDataStore(
-                                (Map)
-                                        new KVP(
-                                                URL.key,
-                                                "http://localhost:8080/solr/geotools",
-                                                LAYER_MAPPER.key,
-                                                Type.SINGLE.name()));
-        assertTrue(dataStore.getLayerMapper() instanceof SingleLayerMapper);
+                                new KVP(
+                                        URL.key,
+                                        "http://localhost:8080/solr/geotools",
+                                        LAYER_MAPPER.key,
+                                        Type.SINGLE.name()));
+        Assert.assertTrue(dataStore.getLayerMapper() instanceof SingleLayerMapper);
     }
 }

@@ -35,16 +35,15 @@ import org.opengis.style.SemanticType;
 public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeStyle> {
     String name;
 
-    List<RuleBuilder> rules = new ArrayList<RuleBuilder>();
+    List<RuleBuilder> rules = new ArrayList<>();
 
     DescriptionBuilder description = new DescriptionBuilder().unset();
 
-    LinkedHashSet<Name> featureTypeNames = new LinkedHashSet<Name>();
+    LinkedHashSet<Name> featureTypeNames = new LinkedHashSet<>();
 
-    private IdBuilder<FeatureTypeStyleBuilder> definedFor =
-            new IdBuilder<FeatureTypeStyleBuilder>(this);
+    private IdBuilder<FeatureTypeStyleBuilder> definedFor = new IdBuilder<>(this);
 
-    private Set<SemanticType> types = new LinkedHashSet<SemanticType>();
+    private Set<SemanticType> types = new LinkedHashSet<>();
 
     Map<String, String> options = new HashMap<>();
 
@@ -158,7 +157,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         if (unset) {
             return null;
         }
-        List<org.opengis.style.Rule> list = new ArrayList<org.opengis.style.Rule>();
+        List<org.opengis.style.Rule> list = new ArrayList<>();
         for (RuleBuilder ruleBuilder : rules) {
             list.add(ruleBuilder.build());
         }

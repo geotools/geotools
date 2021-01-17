@@ -77,7 +77,7 @@ class PerceptualDiff {
 
         try {
             // run it
-            List<String> args = new ArrayList<String>();
+            List<String> args = new ArrayList<>();
             args.add("perceptualdiff");
             args.add(image1.getAbsolutePath());
             args.add(image2.getAbsolutePath());

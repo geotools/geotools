@@ -16,7 +16,7 @@
  */
 package org.geotools.data.oracle;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -42,5 +42,14 @@ public class ColumnEncodingTest {
         OracleDialect dialect = new OracleDialect(null);
         dialect.encodeColumnName(null, "name with space", buffer);
         assertEquals("\"NAME WITH SPACE\"", buffer.toString());
+    }
+
+    /** test for GEOT-6676 reserved words used a column names must be quoted */
+    @Test
+    public void testReservedWords() {
+        StringBuffer buffer = new StringBuffer();
+        OracleDialect dialect = new OracleDialect(null);
+        dialect.encodeColumnName(null, "level", buffer);
+        assertEquals("\"LEVEL\"", buffer.toString());
     }
 }

@@ -16,47 +16,53 @@
  */
 package org.geotools.data.hana.metadata;
 
-import junit.framework.TestCase;
 import org.geotools.data.hana.metadata.Uom.Type;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** @author Stefan Uhrig, SAP SE */
-public class UomTest extends TestCase {
+public class UomTest {
 
+    @Test
     public void testValidUom() {
         Uom uom = new Uom("kilometer", Type.LINEAR, 1000.0);
-        assertEquals("kilometer", uom.getName());
-        assertEquals(Type.LINEAR, uom.getType());
-        assertEquals(1000.0, uom.getFactor());
+        Assert.assertEquals("kilometer", uom.getName());
+        Assert.assertEquals(Type.LINEAR, uom.getType());
+        Assert.assertEquals(1000.0, uom.getFactor(), 0d);
     }
 
+    @Test
     public void testNullName() {
         try {
             new Uom(null, Type.LINEAR, 1000.0);
-            fail("Expected NullPointerException");
+            Assert.fail("Expected NullPointerException");
         } catch (NullPointerException e) {
         }
     }
 
+    @Test
     public void testEmptyName() {
         try {
             new Uom("", Type.LINEAR, 1000.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
     }
 
+    @Test
     public void testNullType() {
         try {
             new Uom("meter", null, 1000.0);
-            fail("Expected NullPointerException");
+            Assert.fail("Expected NullPointerException");
         } catch (NullPointerException e) {
         }
     }
 
+    @Test
     public void testInvalidFactor() {
         try {
             new Uom("kilometer", Type.LINEAR, 0.0);
-            fail("Expected IllegalArgumentException");
+            Assert.fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
     }

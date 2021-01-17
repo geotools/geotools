@@ -132,7 +132,9 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                     if (result != null) {
                         copyUserProperties(sourceGeometry, result);
                     }
-                    return (T) result;
+                    @SuppressWarnings("unchecked")
+                    T converted = (T) result;
+                    return converted;
                 }
             };
         } else if (Geometry.class.isAssignableFrom(source)
@@ -145,19 +147,21 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                  *
                  * @param <T>
                  */
+                @SuppressWarnings("unchecked")
                 public <T> List<T> convertAll(GeometryCollection gc, Class<T> target)
                         throws Exception {
-                    List<T> result = new ArrayList<T>();
+                    List<T> result = new ArrayList<>();
                     for (int count = 0; count < gc.getNumGeometries(); count++) {
-                        T geo = (T) convert(gc.getGeometryN(count), target);
+                        T geo = convert(gc.getGeometryN(count), target);
                         if (geo != null) result.add(geo);
                     }
                     return result;
                 }
 
-                public Object convert(Object source, Class target) throws Exception {
+                @SuppressWarnings("unchecked")
+                public <T> T convert(Object source, Class<T> target) throws Exception {
                     // hierarchy compatible geometries -> nothing to do
-                    if (target.isAssignableFrom(source.getClass())) return source;
+                    if (target.isAssignableFrom(source.getClass())) return (T) source;
                     if (source instanceof Geometry) {
                         Geometry sourceGeometry = (Geometry) source;
 
@@ -179,7 +183,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                                 points =
                                         this.convertAll((GeometryCollection) source, Point.class)
                                                 .toArray(new Point[] {});
-                            else points = new Point[] {(Point) this.convert(source, Point.class)};
+                            else points = new Point[] {this.convert(source, Point.class)};
                             destGeometry = gFac.createMultiPoint(points);
                         } else if (MultiLineString.class.isAssignableFrom(target)) {
                             LineString[] lineStrings;
@@ -195,9 +199,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                                                 .toArray(new LineString[] {});
                             else
                                 lineStrings =
-                                        new LineString[] {
-                                            (LineString) this.convert(source, LineString.class)
-                                        };
+                                        new LineString[] {this.convert(source, LineString.class)};
                             destGeometry = gFac.createMultiLineString(lineStrings);
                         } else if (MultiPolygon.class.isAssignableFrom(target)) {
                             Polygon[] polygons;
@@ -209,11 +211,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                                 polygons =
                                         this.convertAll((GeometryCollection) source, Polygon.class)
                                                 .toArray(new Polygon[] {});
-                            else
-                                polygons =
-                                        new Polygon[] {
-                                            (Polygon) this.convert(source, Polygon.class)
-                                        };
+                            else polygons = new Polygon[] {this.convert(source, Polygon.class)};
                             destGeometry = gFac.createMultiPolygon(polygons);
                         }
 
@@ -294,7 +292,13 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                         // NC - added cloning above for cases where an existing geometry is used
                         // for purpose for changing user data - we don't want any side effects
                         copyUserProperties(sourceGeometry, destGeometry);
-                        return destGeometry;
+
+                        // preserve the SRID
+                        if (destGeometry != null) {
+                            destGeometry.setSRID(sourceGeometry.getSRID());
+                        }
+
+                        return (T) destGeometry;
                     }
 
                     return null;
@@ -358,10 +362,11 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     protected void copyUserProperties(Geometry sourceGeometry, Geometry destGeometry) {
         // NC-added, copy userdata
         if (destGeometry != null) {
-            Map<Object, Object> newUserData = new HashMap<Object, Object>();
+            Map<Object, Object> newUserData = new HashMap<>();
 
             // copy if anything is already in destination data
             if (destGeometry.getUserData() instanceof Map) {

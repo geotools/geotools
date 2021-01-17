@@ -17,7 +17,9 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.*;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Mark;
+import org.geotools.styling.Stroke;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 

@@ -33,14 +33,14 @@ import javax.swing.AbstractListModel;
  * @since 2.6
  * @version $Id$
  */
-public class DnDListModel<T> extends AbstractListModel {
+public class DnDListModel<T> extends AbstractListModel<T> {
     private static final long serialVersionUID = -6110074993686576005L;
     List<T> items;
     private boolean notify;
 
     /** Default constructor */
     public DnDListModel() {
-        items = new ArrayList<T>();
+        items = new ArrayList<>();
         notify = true;
     }
 
@@ -75,9 +75,9 @@ public class DnDListModel<T> extends AbstractListModel {
      * @throws IndexOutOfBoundsException if any of the indices are invalid
      */
     public List<T> getElementsAt(int[] indices) {
-        List<T> refs = new ArrayList<T>();
-        for (int k = 0; k < indices.length; k++) {
-            refs.add(items.get(indices[k]));
+        List<T> refs = new ArrayList<>();
+        for (int index : indices) {
+            refs.add(items.get(index));
         }
 
         return refs;
@@ -91,7 +91,7 @@ public class DnDListModel<T> extends AbstractListModel {
      * @throws IndexOutOfBoundsException if any of the indices are invalid
      */
     public List<T> getElementsAt(Collection<Integer> indices) {
-        List<T> refs = new ArrayList<T>();
+        List<T> refs = new ArrayList<>();
         for (Integer index : indices) {
             refs.add(items.get(index));
         }

@@ -38,8 +38,8 @@ public class CalcUtil {
             int sum = 0;
             int nextValue;
 
-            for (int i = 0; i < numbers.length; i++) {
-                nextValue = numbers[i].intValue();
+            for (Number number : numbers) {
+                nextValue = number.intValue();
                 sum += nextValue;
             }
 
@@ -48,8 +48,8 @@ public class CalcUtil {
             long sum = 0;
             long nextValue;
 
-            for (int i = 0; i < numbers.length; i++) {
-                nextValue = numbers[i].longValue();
+            for (Number number : numbers) {
+                nextValue = number.longValue();
                 sum += nextValue;
             }
 
@@ -58,8 +58,8 @@ public class CalcUtil {
             float sum = 0;
             float nextValue;
 
-            for (int i = 0; i < numbers.length; i++) {
-                nextValue = numbers[i].floatValue();
+            for (Number number : numbers) {
+                nextValue = number.floatValue();
                 sum += nextValue;
             }
 
@@ -68,8 +68,8 @@ public class CalcUtil {
             double sum = 0;
             double nextValue;
 
-            for (int i = 0; i < numbers.length; i++) {
-                nextValue = numbers[i].doubleValue();
+            for (Number number : numbers) {
+                nextValue = number.doubleValue();
                 sum += nextValue;
             }
 
@@ -133,16 +133,16 @@ public class CalcUtil {
         boolean hasDouble = false;
         boolean hasString = false;
 
-        for (int i = 0; i < objects.length; i++) {
-            if (objects[i] instanceof Double) {
+        for (Object object : objects) {
+            if (object instanceof Double) {
                 hasDouble = true;
-            } else if (objects[i] instanceof Float) {
+            } else if (object instanceof Float) {
                 hasFloat = true;
-            } else if (objects[i] instanceof Long) {
+            } else if (object instanceof Long) {
                 hasLong = true;
-            } else if (objects[i] instanceof Integer) {
+            } else if (object instanceof Integer) {
                 hasInt = true;
-            } else if (objects[i] instanceof String) {
+            } else if (object instanceof String) {
                 hasString = true;
             }
         }
@@ -246,6 +246,7 @@ public class CalcUtil {
     }
 
     /** Similar to java.lang.Comparable.compareTo, but can handle 2 different data types. */
+    @SuppressWarnings("unchecked")
     static int compare(Comparable val1, Comparable val2) {
         if (val1.getClass() == val2.getClass()) {
             // both the same type, no conversion is necessary.

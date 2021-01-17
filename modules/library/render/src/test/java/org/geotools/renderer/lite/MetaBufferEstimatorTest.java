@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.Color;
 import org.geotools.data.DataTestCase;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.Graphic;
@@ -35,10 +35,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.NilExpression;
 
 public class MetaBufferEstimatorTest extends DataTestCase {
-
-    public MetaBufferEstimatorTest(String name) {
-        super(name);
-    }
 
     @Test
     public void testExternalGraphic() throws Exception {

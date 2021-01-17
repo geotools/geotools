@@ -34,15 +34,15 @@ import java.util.concurrent.locks.ReentrantLock;
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  */
-final class FixedSizeObjectCache implements ObjectCache {
+final class FixedSizeObjectCache<K, V> implements ObjectCache<K, V> {
 
     private final int LIMIT;
 
     /** The cached values for each key. */
-    private final Map cache;
+    private final Map<K, V> cache;
 
     /** The locks for keys under construction. */
-    private final Map /*<K,ReentrantLock>*/ locks;
+    private final Map<K, ReentrantLock> locks;
 
     /** Creates a new cache. */
     public FixedSizeObjectCache() {
@@ -52,8 +52,8 @@ final class FixedSizeObjectCache implements ObjectCache {
     /** Creates a new cache using the indicated initialSize. */
     public FixedSizeObjectCache(final int initialSize) {
         LIMIT = initialSize;
-        cache = Collections.synchronizedMap(new WeakValueHashMap(initialSize));
-        locks = new HashMap(initialSize);
+        cache = Collections.synchronizedMap(new WeakValueHashMap<>(initialSize));
+        locks = new HashMap<>(initialSize);
     }
 
     /** Removes all entries from this map. */
@@ -78,18 +78,18 @@ final class FixedSizeObjectCache implements ObjectCache {
      *
      * @param key The authority code.
      */
-    public Object get(final Object key) {
+    public V get(final Object key) {
         return cache.get(key);
     }
 
-    public Object peek(final Object key) {
+    public V peek(final K key) {
         return cache.get(key);
     }
 
-    public void writeLock(final Object key) {
+    public void writeLock(final K key) {
         ReentrantLock lock;
         synchronized (locks) {
-            lock = (ReentrantLock) locks.get(key);
+            lock = locks.get(key);
             if (lock == null) {
                 lock = new ReentrantLock();
                 locks.put(key, lock);
@@ -99,9 +99,9 @@ final class FixedSizeObjectCache implements ObjectCache {
         lock.lock();
     }
 
-    public void writeUnLock(final Object key) {
+    public void writeUnLock(final K key) {
         synchronized (locks) {
-            final ReentrantLock lock = (ReentrantLock) locks.get(key);
+            final ReentrantLock lock = locks.get(key);
             if (lock == null) {
                 throw new IllegalMonitorStateException("Cannot unlock prior to locking");
             }
@@ -115,9 +115,9 @@ final class FixedSizeObjectCache implements ObjectCache {
         }
     }
 
-    boolean holdsLock(final Object key) {
+    boolean holdsLock(final K key) {
         synchronized (locks) {
-            final ReentrantLock lock = (ReentrantLock) locks.get(key);
+            final ReentrantLock lock = locks.get(key);
             if (lock != null) {
                 return lock.getHoldCount() != 0;
             }
@@ -125,7 +125,7 @@ final class FixedSizeObjectCache implements ObjectCache {
         return false;
     }
     /** Stores a value */
-    public void put(final Object key, final Object object) {
+    public void put(final K key, final V object) {
         if (cache.size() < LIMIT) {
             writeLock(key);
             cache.put(key, object);
@@ -134,14 +134,12 @@ final class FixedSizeObjectCache implements ObjectCache {
     }
 
     /** @return the keys of the object currently in the set */
-    public Set<Object> getKeys() {
-        Set<Object> keys = null;
-        keys = new HashSet<Object>(cache.keySet());
-        return keys;
+    public Set<K> getKeys() {
+        return new HashSet<>(cache.keySet());
     }
 
     /** Removes the given key from the cache. */
-    public void remove(Object key) {
+    public void remove(K key) {
         // ensure nobody else is writing to this key as we remove it
         synchronized (locks) {
             locks.remove(key);

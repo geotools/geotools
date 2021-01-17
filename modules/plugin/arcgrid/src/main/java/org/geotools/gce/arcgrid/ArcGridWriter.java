@@ -134,8 +134,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         } else if (destination instanceof OutputStream) {
 
             try {
-                super.outStream =
-                        ImageIOExt.createImageOutputStream(null, (OutputStream) destination);
+                super.outStream = ImageIOExt.createImageOutputStream(null, destination);
             } catch (IOException e) {
                 if (LOGGER.isLoggable(Level.SEVERE))
                     LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -190,8 +189,8 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
             final String cellSizeParam =
                     ArcGridFormat.FORCE_CELLSIZE.getName().getCode().toString();
             if (parameters != null) {
-                for (int i = 0; i < parameters.length; i++) {
-                    Parameter param = (Parameter) parameters[i];
+                for (GeneralParameterValue parameter : parameters) {
+                    Parameter param = (Parameter) parameter;
                     String name = param.getDescriptor().getName().toString();
                     if (param.getDescriptor()
                             .getName()
@@ -235,11 +234,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
                 else visibleBand = CoverageUtilities.getVisibleBand(gc);
 
                 final ParameterValueGroup param =
-                        (ParameterValueGroup)
-                                processor
-                                        .getOperation("SelectSampleDimension")
-                                        .getParameters()
-                                        .clone();
+                        processor.getOperation("SelectSampleDimension").getParameters().clone();
                 param.parameter("source").setValue(gc);
                 param.parameter("SampleDimensions").setValue(new int[] {visibleBand});
                 gc =
@@ -266,7 +261,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
 
             // trying to prepare the header
             final AffineTransform gridToWorld =
-                    (AffineTransform) ((GridGeometry2D) gc.getGridGeometry()).getGridToCRS2D();
+                    (AffineTransform) gc.getGridGeometry().getGridToCRS2D();
             final double xl = newEnv.getLowerCorner().getOrdinate(0);
             final double yl = newEnv.getLowerCorner().getOrdinate(1);
             final double cellsizeX = Math.abs(gridToWorld.getScaleX());
@@ -342,8 +337,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         // so much that we need to reshape in order to have square pixels
         //
         // /////////////////////////////////////////////////////////////////////
-        final AffineTransform gridToWorld =
-                (AffineTransform) ((GridGeometry2D) gc.getGridGeometry()).getGridToCRS2D();
+        final AffineTransform gridToWorld = (AffineTransform) gc.getGridGeometry().getGridToCRS2D();
         final double dx = XAffineTransform.getScaleX0(gridToWorld);
         final double dy = XAffineTransform.getScaleY0(gridToWorld);
         if (AsciiGridsImageWriter.resolutionCheck(dx, dy, AsciiGridsImageWriter.EPS)) {
@@ -401,7 +395,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         //
         // /////////////////////////////////////////////////////////////////////
         final ParameterValueGroup param =
-                (ParameterValueGroup) processor.getOperation("Resample").getParameters().clone();
+                processor.getOperation("Resample").getParameters().clone();
         param.parameter("source").setValue(gc);
         param.parameter("CoordinateReferenceSystem").setValue(gc.getCoordinateReferenceSystem2D());
         param.parameter("GridGeometry").setValue(newGridGeometry);
@@ -563,14 +557,14 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
 
     static double getCandidateNoData(GridCoverage2D gc) {
         // no data management
-        final GridSampleDimension sd = (GridSampleDimension) gc.getSampleDimension(0);
+        final GridSampleDimension sd = gc.getSampleDimension(0);
         final List<Category> categories = sd.getCategories();
         final Iterator<Category> it = categories.iterator();
         Category candidate;
         double inNoData = Double.NaN;
         final String noDataName = Vocabulary.format(VocabularyKeys.NODATA);
         while (it.hasNext()) {
-            candidate = (Category) it.next();
+            candidate = it.next();
             final String name = candidate.getName().toString();
             if (name.equalsIgnoreCase("No Data") || name.equalsIgnoreCase(noDataName)) {
                 inNoData = candidate.getRange().getMaximum();

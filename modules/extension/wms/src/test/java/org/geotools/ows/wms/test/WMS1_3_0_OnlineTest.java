@@ -16,6 +16,8 @@
  */
 package org.geotools.ows.wms.test;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,10 +25,15 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 import org.geotools.data.ows.Specification;
-import org.geotools.ows.wms.*;
+import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WMS1_3_0;
+import org.geotools.ows.wms.WMSCapabilities;
+import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetFeatureInfoRequest;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.response.GetFeatureInfoResponse;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 /** @author rgould */
@@ -47,6 +54,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                         "http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?CONFIG=main&REQUEST=GetCapabilities&VERSION=1.3.0");
     }
 
+    @Test
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.3.0");
     }
@@ -57,6 +65,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         assertEquals(properties.get("SERVICE"), "WMS");
     }
 
+    @Test
     public void testCreateParser() throws Exception {
         try {
             WMSCapabilities capabilities = createCapabilities("1.3.0Capabilities.xml");
@@ -107,7 +116,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                     capabilities.getRequest().getGetFeatureInfo().getGet(),
                     new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
 
-            Layer topLayer = (Layer) capabilities.getLayerList().get(0);
+            Layer topLayer = capabilities.getLayerList().get(0);
             assertNotNull(topLayer);
             assertNull(topLayer.getParent());
             assertFalse(topLayer.isQueryable());
@@ -124,7 +133,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
 
             assertEquals(topLayer.getBoundingBoxes().size(), 1);
 
-            CRSEnvelope bbox = (CRSEnvelope) topLayer.getBoundingBoxes().get("CRS:84");
+            CRSEnvelope bbox = topLayer.getBoundingBoxes().get("CRS:84");
             assertNotNull(bbox);
             assertEquals(bbox.getEPSGCode(), "CRS:84");
             assertEquals(bbox.getMinX(), -184, 0.0);
@@ -132,7 +141,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(bbox.getMinY(), -90.0000000017335, 0.0);
             assertEquals(bbox.getMaxY(), 90, 0.0);
 
-            Layer layer = (Layer) capabilities.getLayerList().get(1);
+            Layer layer = capabilities.getLayerList().get(1);
             assertEquals(layer.getParent(), topLayer);
             assertTrue(layer.isQueryable());
             assertEquals(layer.getName(), "Bathymetry");
@@ -146,7 +155,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(llbbox.getMinY(), -90, 0.0);
             assertEquals(llbbox.getMaxY(), 90, 0.0);
 
-            bbox = (CRSEnvelope) layer.getBoundingBoxes().get("CRS:84");
+            bbox = layer.getBoundingBoxes().get("CRS:84");
             assertNotNull(bbox);
             assertEquals(bbox.getEPSGCode(), "CRS:84");
             assertEquals(bbox.getMinX(), -180, 0.0);
@@ -156,7 +165,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
 
             assertEquals(capabilities.getLayerList().size(), 21);
 
-            layer = (Layer) capabilities.getLayerList().get(20);
+            layer = capabilities.getLayerList().get(20);
             assertEquals(layer.getParent(), topLayer);
             assertTrue(layer.isQueryable());
             assertEquals(layer.getName(), "Ocean features");
@@ -170,7 +179,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(llbbox.getMinY(), -90, 0.0);
             assertEquals(llbbox.getMaxY(), 90, 0.0);
 
-            bbox = (CRSEnvelope) layer.getBoundingBoxes().get("CRS:84");
+            bbox = layer.getBoundingBoxes().get("CRS:84");
             assertNotNull(bbox);
             assertEquals(bbox.getEPSGCode(), "CRS:84");
             assertEquals(bbox.getMinX(), -180, 0.0);
@@ -186,6 +195,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }
     }
 
+    @Test
     public void testGEOT4706() {
         try {
             WMSCapabilities capabilities = createCapabilities("envitia-OGC.xml");
@@ -195,7 +205,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(capabilities.getVersion(), "1.3.0");
             assertEquals(capabilities.getService().getName(), "WMS");
 
-            Layer topLayer = (Layer) capabilities.getLayerList().get(0);
+            Layer topLayer = capabilities.getLayerList().get(0);
             assertNotNull(topLayer);
             assertNull(topLayer.getParent());
             assertFalse(topLayer.isQueryable());
@@ -207,6 +217,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }
     }
 
+    @Test
     public void testCreateGetMapRequest() throws Exception {
         WebMapServer wms = new WebMapServer(server2);
         GetMapRequest request = wms.createGetMapRequest();
@@ -216,6 +227,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         assertTrue(request.getFinalURL().toExternalForm().indexOf("image%2Fjpeg") >= 0);
     }
 
+    @Test
     public void testCreateGetFeatureInfoRequest() throws Exception {
         try {
             URL featureURL =
@@ -261,7 +273,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             // System.out.println(request.getFinalURL());
 
             //     TODO   Currently this server rtreturns code 400 !?
-            GetFeatureInfoResponse response = (GetFeatureInfoResponse) wms.issueRequest(request);
+            GetFeatureInfoResponse response = wms.issueRequest(request);
             // System.out.println(response.getContentType());
             assertTrue(response.getContentType().indexOf("text/html") != -1);
             BufferedReader in =
@@ -286,6 +298,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }
     }
 
+    @Test
     public void testCreateDescribeLayerRequest() throws Exception {
         /*try{
 
@@ -326,6 +339,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                 }*/
     }
 
+    @Test
     public void testCreateGetLegendGraphicRequest() throws Exception {
         /*try{
             WebMapServer wms = new CustomWMS(server2);
@@ -370,6 +384,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }*/
     }
 
+    @Test
     public void testParamEncoding() throws Exception {
         // this request does not work because it is encoded properly
         // Let's make sure that this doesn't happen again.

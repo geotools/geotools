@@ -151,7 +151,7 @@ public class TestData {
         if (this.temp_table == null) {
             throw new IllegalArgumentException("temp_table not defined in " + propsFile);
         }
-        this.conProps = new HashMap<String, Serializable>();
+        this.conProps = new HashMap<>();
         for (Map.Entry<Object, Object> e : conProps.entrySet()) {
             this.conProps.put(String.valueOf(e.getKey()), (Serializable) e.getValue());
         }

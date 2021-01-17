@@ -16,7 +16,8 @@
  */
 package org.geotools.temporal.object;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -57,7 +58,7 @@ public class DefaultPeriodTest {
     @Test
     public void testGetBeginning() {
         Instant result = period1.getBeginning();
-        assertFalse(period2.getBeginning().equals(result));
+        assertNotEquals(period2.getBeginning(), result);
     }
 
     /** Test of setBegining method, of class DefaultPeriod. */
@@ -66,7 +67,7 @@ public class DefaultPeriodTest {
         Instant result = period1.getBeginning();
         Instant newInstant = new DefaultInstant(new DefaultPosition(new Date()));
         ((DefaultPeriod) period1).setBegining(newInstant);
-        assertFalse(period1.getBeginning().equals(result));
+        assertNotEquals(period1.getBeginning(), result);
     }
 
     /** Test of setBegining method, of class DefaultPeriod. */
@@ -74,14 +75,14 @@ public class DefaultPeriodTest {
     public void testSetBegining_Date() {
         Date result = period1.getBeginning().getPosition().getDate();
         ((DefaultPeriod) period1).setBegining(new Date());
-        assertFalse(period1.getBeginning().getPosition().getDate().equals(result));
+        assertNotEquals(period1.getBeginning().getPosition().getDate(), result);
     }
 
     /** Test of getEnding method, of class DefaultPeriod. */
     @Test
     public void testGetEnding() {
         Instant result = period1.getEnding();
-        assertFalse(period2.getEnding().equals(result));
+        assertNotEquals(period2.getEnding(), result);
     }
 
     /** Test of setEnding method, of class DefaultPeriod. */
@@ -90,7 +91,7 @@ public class DefaultPeriodTest {
         Instant result = period1.getEnding();
         Instant newInstant = new DefaultInstant(new DefaultPosition(new Date()));
         ((DefaultPeriod) period1).setEnding(newInstant);
-        assertFalse(period1.getEnding().equals(result));
+        assertNotEquals(period1.getEnding(), result);
     }
 
     /** Test of setEnding method, of class DefaultPeriod. */
@@ -98,28 +99,28 @@ public class DefaultPeriodTest {
     public void testSetEnding_Date() {
         Date result = period1.getEnding().getPosition().getDate();
         ((DefaultPeriod) period1).setEnding(new Date());
-        assertFalse(period1.getEnding().getPosition().getDate().equals(result));
+        assertNotEquals(period1.getEnding().getPosition().getDate(), result);
     }
 
     /** Test of equals method, of class DefaultPeriod. */
     @Test
     public void testEquals() {
-        assertFalse(period1.equals(null));
+        assertNotEquals(null, period1);
         assertEquals(period1, period1);
-        assertFalse(period1.equals(period2));
+        assertNotEquals(period1, period2);
     }
 
     /** Test of hashCode method, of class DefaultPeriod. */
     @Test
     public void testHashCode() {
         int result = period1.hashCode();
-        assertFalse(period2.hashCode() == result);
+        assertNotEquals(period2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultPeriod. */
     @Test
     public void testToString() {
         String result = period1.toString();
-        assertFalse(period2.toString().equals(result));
+        assertNotEquals(period2.toString(), result);
     }
 }

@@ -16,9 +16,12 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 
@@ -32,7 +35,7 @@ public class PointTypeBindingTest extends GML32TestSupport {
     //
     //        assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
     //    }
-
+    @Test
     public void testEncode() throws Exception {
         Point p = GML3MockData.point();
         Document dom = encode(p, GML.Point);

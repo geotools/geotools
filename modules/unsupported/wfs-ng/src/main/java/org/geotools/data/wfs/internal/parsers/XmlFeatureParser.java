@@ -153,8 +153,6 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
             parser.nextTag();
             try {
                 parsedValue = parseGeom();
-            } catch (NoSuchAuthorityCodeException e) {
-                throw new DataSourceException(e);
             } catch (FactoryException e) {
                 throw new DataSourceException(e);
             }
@@ -221,7 +219,7 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
         Geometry geom;
         parser.nextTag();
         final QName memberTag = new QName(parser.getNamespace(), parser.getName());
-        List<Point> points = new ArrayList<Point>(4);
+        List<Point> points = new ArrayList<>(4);
         if (GML.pointMembers.equals(memberTag)) {
             while (true) {
                 parser.nextTag();
@@ -273,7 +271,7 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
 
         parser.require(START_TAG, GML.NAMESPACE, GML.MultiLineString.getLocalPart());
 
-        List<LineString> lines = new ArrayList<LineString>(2);
+        List<LineString> lines = new ArrayList<>(2);
 
         while (true) {
             parser.nextTag();
@@ -316,7 +314,7 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
         Geometry geom;
         parser.nextTag();
         final QName memberTag = new QName(parser.getNamespace(), parser.getName());
-        List<Polygon> polygons = new ArrayList<Polygon>(2);
+        List<Polygon> polygons = new ArrayList<>(2);
         if (GML.surfaceMembers.equals(memberTag)) {
             while (true) {
                 parser.nextTag();
@@ -357,7 +355,7 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
         parser.require(START_TAG, GML.NAMESPACE, GML.MultiPolygon.getLocalPart());
 
         Geometry geom;
-        List<Polygon> polygons = new ArrayList<Polygon>(2);
+        List<Polygon> polygons = new ArrayList<>(2);
         parser.nextTag();
         while (true) {
             parser.require(START_TAG, GML.NAMESPACE, GML.polygonMember.getLocalPart());
@@ -422,7 +420,7 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
         if (START_TAG == parser.getEventType()) {
             if (GML.interior.equals(name) || GML.innerBoundaryIs.equals(name)) {
                 // parse interior rings
-                holes = new ArrayList<LinearRing>(2);
+                holes = new ArrayList<>(2);
                 while (true) {
                     parser.require(START_TAG, GML.NAMESPACE, name.getLocalPart());
                     parser.nextTag();
@@ -500,7 +498,7 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
         String tagName = parser.getName();
         if (GML.pos.equals(coordsName)) {
             Coordinate[] point;
-            List<Coordinate> coords = new ArrayList<Coordinate>();
+            List<Coordinate> coords = new ArrayList<>();
             int eventType;
             do {
                 point = parseCoordList(dimension);
@@ -521,7 +519,7 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
             parser.nextTag();
         } else if (GML.coord.equals(coordsName)) {
             Coordinate point;
-            List<Coordinate> coords = new ArrayList<Coordinate>();
+            List<Coordinate> coords = new ArrayList<>();
             int eventType;
             do {
                 point = parseCoord();

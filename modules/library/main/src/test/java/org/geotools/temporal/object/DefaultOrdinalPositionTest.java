@@ -16,7 +16,8 @@
  */
 package org.geotools.temporal.object;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -72,7 +73,7 @@ public class DefaultOrdinalPositionTest {
     @Test
     public void testGetOrdinalPosition() {
         OrdinalEra result = ordinalPosition1.getOrdinalPosition();
-        assertFalse(ordinalPosition2.getOrdinalPosition().equals(result));
+        assertNotEquals(ordinalPosition2.getOrdinalPosition(), result);
     }
 
     /** Test of setOrdinalPosition method, of class DefaultOrdinalPosition. */
@@ -86,28 +87,28 @@ public class DefaultOrdinalPositionTest {
         OrdinalEra ordinalEra =
                 new DefaultOrdinalEra(new SimpleInternationalString("Era"), beginning, end);
         ((DefaultOrdinalPosition) ordinalPosition1).setOrdinalPosition(ordinalEra);
-        assertFalse(ordinalPosition1.getOrdinalPosition().equals(result));
+        assertNotEquals(ordinalPosition1.getOrdinalPosition(), result);
     }
 
     /** Test of equals method, of class DefaultOrdinalPosition. */
     @Test
     public void testEquals() {
-        assertFalse(ordinalPosition1.equals(null));
+        assertNotEquals(null, ordinalPosition1);
         assertEquals(ordinalPosition1, ordinalPosition1);
-        assertFalse(ordinalPosition1.equals(ordinalPosition2));
+        assertNotEquals(ordinalPosition1, ordinalPosition2);
     }
 
     /** Test of hashCode method, of class DefaultOrdinalPosition. */
     @Test
     public void testHashCode() {
         int result = ordinalPosition1.hashCode();
-        assertFalse(ordinalPosition2.hashCode() == result);
+        assertNotEquals(ordinalPosition2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultOrdinalPosition. */
     @Test
     public void testToString() {
         String result = ordinalPosition1.toString();
-        assertFalse(ordinalPosition2.toString().equals(result));
+        assertNotEquals(ordinalPosition2.toString(), result);
     }
 }

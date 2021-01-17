@@ -75,7 +75,7 @@ public class SortByTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element maxOccurs="unbounded" name="SortProperty"
         // type="ogc:SortPropertyType"/&gt;
-        List sortBy = node.getChildValues(SortBy.class);
+        List<SortBy> sortBy = node.getChildValues(SortBy.class);
 
         return sortBy.toArray(new SortBy[sortBy.size()]);
     }

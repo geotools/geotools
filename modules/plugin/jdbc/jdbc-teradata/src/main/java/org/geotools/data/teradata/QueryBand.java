@@ -41,7 +41,7 @@ public class QueryBand {
     static ThreadLocal<Map<String, String>> LOCAL =
             new ThreadLocal<Map<String, String>>() {
                 protected Map<String, String> initialValue() {
-                    return new HashMap<String, String>();
+                    return new HashMap<>();
                 };
             };
 

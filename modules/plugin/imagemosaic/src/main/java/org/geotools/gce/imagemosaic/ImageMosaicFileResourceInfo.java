@@ -176,7 +176,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
             // extract metadata for the available domains
             if (dimensionDescriptors != null && !dimensionDescriptors.isEmpty()) {
                 Filter filter = FF.equals(FF.property("location"), FF.literal(filePath));
-                metadataMap = new HashMap<String, Object>();
+                metadataMap = new HashMap<>();
                 try {
                     // scan dimensions
                     for (DimensionDescriptor descriptor : dimensionDescriptors) {
@@ -250,7 +250,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
                                 ((Number) max).doubleValue(),
                                 true));
             } else {
-                metadataMap.put(name, new Range(String.class, (String) min, (String) max));
+                metadataMap.put(name, new Range<>(String.class, (String) min, (String) max));
             }
         }
 
@@ -329,7 +329,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
                     updatedQuery.setFilter(FF.like(FF.property(attribute), value));
                 }
             }
-            final List<SortBy> clauses = new ArrayList<SortBy>(1);
+            final List<SortBy> clauses = new ArrayList<>(1);
             clauses.add(
                     new SortByImpl(
                             FeatureUtilities.DEFAULT_FILTER_FACTORY.property(locationAttributeName),

@@ -66,14 +66,13 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
      * id'd attributes so that we can refer back to them if they're referred to further down the
      * input stream by a href.
      */
-    private Map<String, Attribute> discoveredComplexAttributes = new HashMap<String, Attribute>();
+    private Map<String, Attribute> discoveredComplexAttributes = new HashMap<>();
 
     /**
      * The placeholder complex attributes object maintains a record of incomplete attributes that
      * relate to a particular hrefed id.
      */
-    private Map<String, ArrayList<Attribute>> placeholderComplexAttributes =
-            new HashMap<String, ArrayList<Attribute>>();
+    private Map<String, ArrayList<Attribute>> placeholderComplexAttributes = new HashMap<>();
 
     private Filter filter;
 
@@ -202,7 +201,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                 // I must maintain a reference back to this object so that I can
                 // change it once its target is found:
                 if (!placeholderComplexAttributes.containsKey(hrefId)) {
-                    placeholderComplexAttributes.put(hrefId, new ArrayList<Attribute>());
+                    placeholderComplexAttributes.put(hrefId, new ArrayList<>());
                 }
 
                 // Adding it to a list allows us to have multiple hrefs pointing
@@ -318,7 +317,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                         Object value = parser.getText();
 
                         // create an empty list
-                        ArrayList<Property> list = new ArrayList<Property>();
+                        ArrayList<Property> list = new ArrayList<>();
 
                         // Add the value to the list if it's not null or if
                         // nulls are allowed by the descriptor.
@@ -349,7 +348,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                                             1,
                                             1,
                                             true,
-                                            (Object) null);
+                                            null);
                             list.add(
                                     new AttributeImpl(
                                             convertedValue, simpleContentDescriptor, null));
@@ -371,7 +370,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                                 innerAttribute.value.getClass())) {
                             // 6a. If it's a Property then we must add it to
                             // a list before sending it to the builder.
-                            ArrayList<Property> properties = new ArrayList<Property>();
+                            ArrayList<Property> properties = new ArrayList<>();
                             properties.add((Property) innerAttribute.value);
                             attributeBuilder.add(
                                     innerAttribute.id, properties, innerAttribute.name);
@@ -398,7 +397,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                     // If this item has an id we'll register it in case
                     // anything else points to it with an xlink:
                     if (id != null) {
-                        this.registerGmlTarget(id, (ComplexAttribute) attribteValue);
+                        this.registerGmlTarget(id, attribteValue);
                     }
 
                     return new ReturnAttribute(id, currentTagName, attribteValue);

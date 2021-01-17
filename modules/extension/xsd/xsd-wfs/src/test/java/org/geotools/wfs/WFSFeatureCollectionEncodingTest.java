@@ -16,7 +16,8 @@
  */
 package org.geotools.wfs;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -24,18 +25,22 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.xsd.Encoder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class WFSFeatureCollectionEncodingTest extends TestCase {
+public class WFSFeatureCollectionEncodingTest {
 
     FeatureCollectionType fc;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    @SuppressWarnings("unchecked")
+    public void setUp() throws Exception {
         fc = WfsFactory.eINSTANCE.createFeatureCollectionType();
         DefaultFeatureCollection features = new DefaultFeatureCollection();
 
@@ -57,6 +62,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         fc.getFeature().add(features);
     }
 
+    @Test
     public void testEncodeFeatureCollection10() throws Exception {
         Encoder e = new Encoder(new org.geotools.wfs.v1_0.WFSConfiguration_1_0());
         e.getNamespaces().declarePrefix("geotools", "http://geotools.org");
@@ -65,24 +71,23 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         Document d = e.encodeAsDOM(fc, WFS.FeatureCollection);
         // XMLTestSupport.print(d);
 
-        assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
-        assertTrue(d.getElementsByTagName("gml:coord").getLength() > 2);
-        assertEquals(0, d.getElementsByTagName("gml:pos").getLength());
+        Assert.assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
+        Assert.assertTrue(d.getElementsByTagName("gml:coord").getLength() > 2);
+        Assert.assertEquals(0, d.getElementsByTagName("gml:pos").getLength());
 
-        assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
-        assertNotNull(
+        Assert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
+        Assert.assertNotNull(
                 ((Element) d.getElementsByTagName("geotools:feature").item(0)).getAttribute("fid"));
     }
 
+    @Test
     public void testEncodeFeatureCollectionCoordinatesFormatting10() throws Exception {
         org.geotools.wfs.v1_0.WFSConfiguration_1_0 configuration =
                 new org.geotools.wfs.v1_0.WFSConfiguration_1_0();
         configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
-        ((GMLConfiguration) configuration.getDependency(GMLConfiguration.class))
-                .setForceDecimalEncoding(true);
-        ((GMLConfiguration) configuration.getDependency(GMLConfiguration.class)).setNumDecimals(4);
-        ((GMLConfiguration) configuration.getDependency(GMLConfiguration.class))
-                .setPadWithZeros(true);
+        configuration.getDependency(GMLConfiguration.class).setForceDecimalEncoding(true);
+        configuration.getDependency(GMLConfiguration.class).setNumDecimals(4);
+        configuration.getDependency(GMLConfiguration.class).setPadWithZeros(true);
         Encoder e = new Encoder(configuration);
         e.getNamespaces().declarePrefix("geotools", "http://geotools.org");
         e.setIndenting(true);
@@ -90,16 +95,17 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         Document d = e.encodeAsDOM(fc, WFS.FeatureCollection);
         // XMLTestSupport.print(d);
 
-        assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
-        assertEquals(4, d.getElementsByTagName("gml:coordinates").getLength());
+        Assert.assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
+        Assert.assertEquals(4, d.getElementsByTagName("gml:coordinates").getLength());
         String coords = d.getElementsByTagName("gml:coordinates").item(1).getTextContent();
-        assertEquals("1.0000,1.0000", coords);
+        Assert.assertEquals("1.0000,1.0000", coords);
 
-        assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
-        assertNotNull(
+        Assert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
+        Assert.assertNotNull(
                 ((Element) d.getElementsByTagName("geotools:feature").item(0)).getAttribute("fid"));
     }
 
+    @Test
     public void testEncodeFeatureCollection11() throws Exception {
         Encoder e = new Encoder(new org.geotools.wfs.v1_1.WFSConfiguration());
         e.getNamespaces().declarePrefix("geotools", "http://geotools.org");
@@ -107,45 +113,45 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
 
         Document d = e.encodeAsDOM(fc, WFS.FeatureCollection);
         // XMLTestSupport.print(d);
-        assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:pos").getLength());
-        assertEquals(0, d.getElementsByTagName("gml:coord").getLength());
+        Assert.assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
+        Assert.assertEquals(2, d.getElementsByTagName("gml:pos").getLength());
+        Assert.assertEquals(0, d.getElementsByTagName("gml:coord").getLength());
 
-        assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
-        assertNotNull(
+        Assert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
+        Assert.assertNotNull(
                 ((Element) d.getElementsByTagName("geotools:feature").item(0))
                         .getAttribute("gml:id"));
     }
 
+    @Test
     public void testEncodeFeatureCollectionCoordinatesFormatting11() throws Exception {
         org.geotools.wfs.v1_1.WFSConfiguration configuration =
                 new org.geotools.wfs.v1_1.WFSConfiguration();
         configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
-        ((org.geotools.gml3.GMLConfiguration)
-                        configuration.getDependency(org.geotools.gml3.GMLConfiguration.class))
+        configuration
+                .getDependency(org.geotools.gml3.GMLConfiguration.class)
                 .setForceDecimalEncoding(true);
-        ((org.geotools.gml3.GMLConfiguration)
-                        configuration.getDependency(org.geotools.gml3.GMLConfiguration.class))
-                .setNumDecimals(4);
-        ((org.geotools.gml3.GMLConfiguration)
-                        configuration.getDependency(org.geotools.gml3.GMLConfiguration.class))
-                .setPadWithZeros(true);
+        configuration.getDependency(org.geotools.gml3.GMLConfiguration.class).setNumDecimals(4);
+        configuration.getDependency(org.geotools.gml3.GMLConfiguration.class).setPadWithZeros(true);
         Encoder e = new Encoder(configuration);
         e.getNamespaces().declarePrefix("geotools", "http://geotools.org");
         e.setIndenting(true);
 
         Document d = e.encodeAsDOM(fc, WFS.FeatureCollection);
         // XMLTestSupport.print(d);
-        assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
-        assertEquals(2, d.getElementsByTagName("gml:pos").getLength());
-        assertEquals(0, d.getElementsByTagName("gml:coord").getLength());
-        assertEquals("1.0000 1.0000", d.getElementsByTagName("gml:pos").item(0).getTextContent());
-        assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
-        assertNotNull(
+        Assert.assertEquals(2, d.getElementsByTagName("gml:Point").getLength());
+        Assert.assertEquals(2, d.getElementsByTagName("gml:pos").getLength());
+        Assert.assertEquals(0, d.getElementsByTagName("gml:coord").getLength());
+        Assert.assertEquals(
+                "1.0000 1.0000", d.getElementsByTagName("gml:pos").item(0).getTextContent());
+        Assert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
+        Assert.assertNotNull(
                 ((Element) d.getElementsByTagName("geotools:feature").item(0))
                         .getAttribute("gml:id"));
     }
 
+    @Test
+    @SuppressWarnings("unchecked")
     public void testEncodeFeatureCollectionMultipleFeatureTypes() throws Exception {
         DefaultFeatureCollection features = new DefaultFeatureCollection();
 
@@ -172,7 +178,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         e.setIndenting(true);
 
         Document d = e.encodeAsDOM(fc, WFS.FeatureCollection);
-        assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
-        assertEquals(2, d.getElementsByTagName("geotools2:feature2").getLength());
+        Assert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
+        Assert.assertEquals(2, d.getElementsByTagName("geotools2:feature2").getLength());
     }
 }

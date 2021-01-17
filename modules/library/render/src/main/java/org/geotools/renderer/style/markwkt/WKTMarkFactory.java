@@ -63,7 +63,7 @@ public class WKTMarkFactory implements MarkFactory {
 
     // Cache used to store libraries of WKT geometries
     protected static final SoftValueHashMap<String, Map<String, String>> CACHE =
-            new SoftValueHashMap<String, Map<String, String>>();
+            new SoftValueHashMap<>();
 
     /*
      * Clears cache. While the cache uses {@link
@@ -93,7 +93,7 @@ public class WKTMarkFactory implements MarkFactory {
     protected String getFromCache(String urlLib, String wktName) {
         Map<String, String> library = CACHE.get(urlLib);
         if (library != null) {
-            return (String) library.get(wktName);
+            return library.get(wktName);
         }
         return null;
     }
@@ -107,7 +107,7 @@ public class WKTMarkFactory implements MarkFactory {
     protected void addToCache(String urlLib) {
         Map<String, String> library = CACHE.get(urlLib);
         if (library == null) {
-            library = new HashMap<String, String>();
+            library = new HashMap<>();
             Properties propLib = null;
             try {
                 propLib = this.loadLibrary(urlLib);
@@ -115,9 +115,10 @@ public class WKTMarkFactory implements MarkFactory {
                 LOGGER.log(Level.FINER, e.getMessage(), e);
                 return;
             }
-            for (Enumeration<String> e = (Enumeration<String>) propLib.propertyNames();
-                    e.hasMoreElements(); ) {
-                String shpName = (String) (e.nextElement());
+            @SuppressWarnings("unchecked")
+            Enumeration<String> names = (Enumeration<String>) propLib.propertyNames();
+            for (Enumeration<String> e = names; e.hasMoreElements(); ) {
+                String shpName = e.nextElement();
                 library.put(shpName, (String) (propLib.get(shpName)));
             }
             CACHE.put(urlLib, library);
@@ -195,16 +196,10 @@ public class WKTMarkFactory implements MarkFactory {
             return properties;
         }
 
-        InputStream in = null;
-        try {
-            in = libUrl.openStream();
+        try (InputStream in = libUrl.openStream()) {
             properties.load(in);
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
-        } finally {
-            if (in != null) {
-                in.close();
-            }
         }
 
         return properties;

@@ -81,12 +81,12 @@ public class OracleDateConverterFactory implements ConverterFactory {
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (ORA_TIMESTAMP.isInstance(source)) {
                 if (java.sql.Date.class.isAssignableFrom(target))
-                    return (T) ORA_TS_DVALUE.invoke(source);
-                else return (T) ORA_TS_TSVALUE.invoke(source);
+                    return target.cast(ORA_TS_DVALUE.invoke(source));
+                else return target.cast(ORA_TS_TSVALUE.invoke(source));
             } else {
                 if (java.sql.Date.class.isAssignableFrom(target))
-                    return (T) ORA_DATE_DVALUE.invoke(source);
-                else return (T) ORA_DATE_TSVALUE.invoke(source);
+                    return target.cast(ORA_DATE_DVALUE.invoke(source));
+                else return target.cast(ORA_DATE_TSVALUE.invoke(source));
             }
         }
     }

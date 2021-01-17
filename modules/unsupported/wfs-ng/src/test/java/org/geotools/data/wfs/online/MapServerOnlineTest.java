@@ -79,13 +79,13 @@ public class MapServerOnlineTest {
         if (url_100 != null) {
             try {
                 Map<String, Serializable> params;
-                params = new HashMap<String, Serializable>();
+                params = new HashMap<>();
                 params.put(WFSDataStoreFactory.URL.key, url_100);
                 params.put(WFSDataStoreFactory.WFS_STRATEGY.key, "mapserver");
                 params.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, Boolean.TRUE);
                 wfs100 = new WFSDataStoreFactory().createDataStore(params);
 
-                params = new HashMap<String, Serializable>();
+                params = new HashMap<>();
                 params.put(WFSDataStoreFactory.URL.key, url_110);
                 params.put(WFSDataStoreFactory.WFS_STRATEGY.key, "mapserver");
                 params.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, Boolean.TRUE);
@@ -94,7 +94,7 @@ public class MapServerOnlineTest {
                 params.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
                 wfs110_with_get = new WFSDataStoreFactory().createDataStore(params);
 
-                params = new HashMap<String, Serializable>();
+                params = new HashMap<>();
                 params.put(WFSDataStoreFactory.URL.key, url_200);
                 params.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
                 wfs200 = new WFSDataStoreFactory().createDataStore(params);
@@ -175,14 +175,11 @@ public class MapServerOnlineTest {
         int size = features.size();
         assertEquals(2, size);
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 // System.out.println(feature.getID());
             }
-        } finally {
-            iterator.close();
         }
     }
 
@@ -223,14 +220,11 @@ public class MapServerOnlineTest {
         int size = features.size();
         assertEquals(308, size);
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 // System.out.println(feature.getID());
             }
-        } finally {
-            iterator.close();
         }
     }
 }

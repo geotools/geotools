@@ -146,7 +146,7 @@ public enum ContrastEnhancementType {
                                 }
                             });
 
-            return new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(
+            return new DefaultPiecewiseTransform1D<>(
                     new DefaultPiecewiseTransform1DElement[] {mainElement}, 0);
         }
     },
@@ -241,7 +241,7 @@ public enum ContrastEnhancementType {
                                 }
                             });
 
-            return new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(
+            return new DefaultPiecewiseTransform1D<>(
                     new DefaultPiecewiseTransform1DElement[] {mainElement}, 0);
         }
     },
@@ -261,7 +261,7 @@ public enum ContrastEnhancementType {
             final Histogram h = inputWorker.removeRenderingHints().getHistogram(null, null, null);
 
             // do the actual lookup
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(KEY_HISTOGRAM, h);
             LookupTable table = createByteLookupTable(params);
             inputWorker.setRenderingHints(hints);
@@ -616,7 +616,7 @@ public enum ContrastEnhancementType {
                         RangeFactory.create(maximum, false, Double.POSITIVE_INFINITY, true),
                         maxValue);
 
-        return new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(
+        return new DefaultPiecewiseTransform1D<>(
                 new DefaultPiecewiseTransform1DElement[] {zeroElement, mainElement, maxElement}, 0);
     }
 
@@ -628,7 +628,7 @@ public enum ContrastEnhancementType {
             throw new IllegalArgumentException(
                     Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_PARAMETERS_$2, KEY_MIN, KEY_MAX));
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         Number minVal = min.evaluate(null, Double.class);
         Number maxVal = max.evaluate(null, Double.class);
         if (minVal == null || maxVal == null) {
@@ -648,7 +648,7 @@ public enum ContrastEnhancementType {
             double min, double max, byte newMin, byte newMax) {
         final byte[] lut = new byte[256];
         for (int i = 1; i < lut.length; i++) {
-            lut[i] = i < min ? (byte) newMin : (i > max ? (byte) newMax : (byte) i);
+            lut[i] = i < min ? newMin : (i > max ? newMax : (byte) i);
         }
         return lut;
     }
@@ -657,17 +657,17 @@ public enum ContrastEnhancementType {
     private static double getMaxValue(int dataType) {
         switch (dataType) {
             case DataBuffer.TYPE_BYTE:
-                return (double) MAX_BYTE;
+                return MAX_BYTE;
             case DataBuffer.TYPE_SHORT:
-                return (double) Short.MAX_VALUE;
+                return Short.MAX_VALUE;
             case DataBuffer.TYPE_USHORT:
                 return 65535.0;
             case DataBuffer.TYPE_INT:
-                return (double) Integer.MAX_VALUE;
+                return Integer.MAX_VALUE;
             case DataBuffer.TYPE_FLOAT:
-                return (double) Float.MAX_VALUE;
+                return Float.MAX_VALUE;
             case DataBuffer.TYPE_DOUBLE:
-                return (double) Double.MAX_VALUE;
+                return Double.MAX_VALUE;
         }
         return Double.NaN;
     }
@@ -800,13 +800,13 @@ public enum ContrastEnhancementType {
                             }
                         });
 
-        return new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(
+        return new DefaultPiecewiseTransform1D<>(
                 new DefaultPiecewiseTransform1DElement[] {mainElement}, 0);
     }
 
     /** Utility method setting up a Parameters Map containing minimum and maximum values. */
     private static Map<String, Object> setMinMaxParams(double minData, double maxData) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(KEY_MIN, minData);
         params.put(KEY_MAX, maxData);
         return params;

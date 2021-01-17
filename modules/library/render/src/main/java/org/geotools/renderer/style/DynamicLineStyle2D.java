@@ -70,9 +70,8 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
 
         // get the other properties needed for the stroke
         float[] dashes = SLDStyleFactory.evaluateDashArray(stroke, feature);
-        float width = ((Float) stroke.getWidth().evaluate(feature, Float.class)).floatValue();
-        float dashOffset =
-                ((Float) stroke.getDashOffset().evaluate(feature, Float.class)).floatValue();
+        float width = stroke.getWidth().evaluate(feature, Float.class).floatValue();
+        float dashOffset = stroke.getDashOffset().evaluate(feature, Float.class).floatValue();
 
         // Simple optimization: let java2d use the fast drawing path if the line width
         // is small enough...
@@ -113,7 +112,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
             return null;
         }
 
-        float opacity = ((Float) stroke.getOpacity().evaluate(feature, Float.class)).floatValue();
+        float opacity = stroke.getOpacity().evaluate(feature, Float.class).floatValue();
         Composite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 
         return composite;
@@ -132,9 +131,9 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         }
 
         // the foreground color
-        Paint contourPaint = (Color) stroke.getColor().evaluate(feature, Color.class);
+        Paint contourPaint = stroke.getColor().evaluate(feature, Color.class);
         if (contourPaint == null) {
-            String text = (String) stroke.getColor().evaluate(feature, String.class);
+            String text = stroke.getColor().evaluate(feature, String.class);
             if (text != null) {
                 contourPaint = Color.decode(text);
             }
@@ -159,7 +158,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         String result = defaultValue;
 
         if (e != null) {
-            result = (String) e.evaluate(feature, defaultValue.getClass());
+            result = e.evaluate(feature, defaultValue.getClass());
 
             if (result == null) {
                 result = defaultValue;

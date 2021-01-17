@@ -48,11 +48,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
 import java.util.logging.Level;
 import org.geotools.data.vpf.VPFColumn;
 import org.geotools.data.vpf.VPFLogger;
@@ -99,7 +99,7 @@ public class VPFFile {
      */
     private char byteOrder = LEAST_SIGNIF_FIRST;
     /** The columns of the file. This list shall contain objects of type <code>VPFColumn</code> */
-    private final List<VPFColumn> columns = new Vector<VPFColumn>();
+    private final List<VPFColumn> columns = new ArrayList<>();
 
     /**
      * Variable <code>description</code> keeps value of text description of the table's contents.
@@ -147,7 +147,7 @@ public class VPFFile {
 
         Iterator<VPFColumn> iter = columns.iterator();
         while (iter.hasNext()) {
-            column = (VPFColumn) iter.next();
+            column = iter.next();
 
             if (column.isGeometry()) {
                 geometryName = column.getName();
@@ -281,7 +281,7 @@ public class VPFFile {
         Iterator<VPFColumn> iter = columns.iterator();
 
         while (iter.hasNext()) {
-            VPFColumn column = (VPFColumn) iter.next();
+            VPFColumn column = iter.next();
             int length = FeatureTypes.getFieldLength(column.getDescriptor());
             if (length > -1) {
                 size += length;
@@ -331,7 +331,7 @@ public class VPFFile {
 
         try {
             // This speeds things up mightily
-            String firstColumnName = ((VPFColumn) columns.get(0)).getName();
+            String firstColumnName = columns.get(0).getName();
 
             if (idName.equals(firstColumnName)) {
                 setPosition(id);
@@ -373,7 +373,7 @@ public class VPFFile {
         int value = -1;
 
         while (iter.hasNext()) {
-            currentFeature = (SimpleFeature) iter.next();
+            currentFeature = iter.next();
             try {
                 value = Integer.parseInt(currentFeature.getAttribute(idName).toString());
 
@@ -439,7 +439,7 @@ public class VPFFile {
      * @exception IOException if an error occurs
      */
     public synchronized AbstractList<SimpleFeature> readAllRows() throws IOException {
-        AbstractList<SimpleFeature> list = new LinkedList<SimpleFeature>();
+        AbstractList<SimpleFeature> list = new LinkedList<>();
 
         try {
             setPosition(1);
@@ -615,7 +615,7 @@ public class VPFFile {
 
         try {
             for (int inx = 0; inx < columns.size(); inx++) {
-                column = (VPFColumn) columns.get(inx);
+                column = columns.get(inx);
                 AttributeDescriptor descriptor = column.getDescriptor();
 
                 if (descriptor.getType().getRestrictions().isEmpty()

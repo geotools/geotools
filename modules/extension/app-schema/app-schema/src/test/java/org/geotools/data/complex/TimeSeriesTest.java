@@ -23,13 +23,13 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -149,7 +149,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
             // assertTrue(superType instanceof FeatureType);
 
             // ensure all needed types were parsed and aren't just empty proxies
-            Map samplingProperties = new HashMap();
+            Map<Name, Name> samplingProperties = new HashMap<>();
 
             // from gml:AbstractFeatureType
             samplingProperties.put(
@@ -190,7 +190,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
             AttributeDescriptor relatedObservation =
                     (AttributeDescriptor)
                             Types.descriptor(testType, name(AWNS, "relatedObservation"));
-            Map relatedObsProps = new HashMap();
+            Map<Name, Name> relatedObsProps = new HashMap<>();
             relatedObsProps.put(
                     name(AWNS, "PhenomenonTimeSeries"), typeName(AWNS, "PhenomenonTimeSeriesType"));
             ComplexType phenomenonTimeSeriesPropertyType =
@@ -204,7 +204,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
                                     phenomenonTimeSeriesPropertyType,
                                     name(AWNS, "PhenomenonTimeSeries"));
             ComplexType phenomenonTimeSeriesType = (ComplexType) phenomenonTimeSeries.getType();
-            Map phenomenonTimeSeriesProps = new HashMap();
+            Map<Name, Name> phenomenonTimeSeriesProps = new HashMap<>();
             // from
             // aw:WaterObservationType/om:TimeSeriesObsType/om:AbstractObservationType
             // phenomenonTimeSeriesProps.put(name(OMNS, "procedure"), typeName(OMNS,
@@ -248,7 +248,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
             assertNotNull(phenomenonType.getSuper());
             assertEquals(typeName(GMLNS, "DefinitionType"), phenomenonType.getSuper().getName());
 
-            Map phenomenonProps = new HashMap();
+            Map<Name, Name> phenomenonProps = new HashMap<>();
             // from gml:DefinitionType
             phenomenonProps.put(name(GMLNS, "metaDataProperty"), null);
             phenomenonProps.put(name(GMLNS, "description"), null);
@@ -263,8 +263,8 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
     private void assertPropertyNamesAndTypeNames(
             ComplexType parentType, Map expectedPropertiesAndTypes) throws Exception {
 
-        for (Iterator it = expectedPropertiesAndTypes.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Entry) it.next();
+        for (Object o : expectedPropertiesAndTypes.entrySet()) {
+            Entry entry = (Entry) o;
             Name dName = (Name) entry.getKey();
             Name expectedDescriptorTypeName = (Name) entry.getValue();
 
@@ -272,12 +272,9 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
             assertNotNull("Descriptor " + dName + " not found for type " + parentType.getName(), d);
             AttributeType type;
             try {
-                type = (AttributeType) d.getType();
+                type = d.getType();
             } catch (Exception e) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        "type not parsed for " + ((AttributeDescriptor) d).getName(),
-                        e);
+                LOGGER.log(Level.SEVERE, "type not parsed for " + d.getName(), e);
                 throw e;
             }
             assertNotNull(type);
@@ -367,7 +364,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
         DataAccess<FeatureType, Feature> mappingDataStore;
         final Name typeName = new NameImpl(AWNS, "SiteSinglePhenomTimeSeries");
         {
-            final Map dsParams = new HashMap();
+            final Map<String, Serializable> dsParams = new HashMap<>();
 
             String configLocation = schemaBase + "TimeSeriesTest_properties.xml";
             final URL url = getClass().getResource(configLocation);
@@ -423,7 +420,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
                 "aw:relatedObservation/aw:PhenomenonTimeSeries/om:observedProperty/swe:Phenomenon/gml:name";
         FeatureIterator it = features.features();
         for (; it.hasNext(); ) {
-            feature = (Feature) it.next();
+            feature = it.next();
             count++;
             {
                 PropertyName gmlName = ffac.property("gml:name");
@@ -468,7 +465,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
         FeatureIterator<? extends Feature> simpleIterator =
                 ((AbstractMappingFeatureIterator) features.features()).getSourceFeatureIterator();
         for (; simpleIterator.hasNext(); ) {
-            feature = (Feature) simpleIterator.next();
+            feature = simpleIterator.next();
             count++;
 
             if (count == 22) {

@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -38,16 +37,16 @@ public class DefaultTransaction implements Transaction {
             org.geotools.util.logging.Logging.getLogger(DefaultTransaction.class);
 
     /** Records State by key */
-    Map stateLookup = new HashMap();
+    Map<Object, Object> stateLookup = new HashMap<>();
 
     /** Records properties by key */
-    Map propertyLookup = new HashMap();
+    Map<Object, Object> propertyLookup = new HashMap<>();
 
     /** Handle used to identify Transaction for the user */
     String handle;
 
     /** Records current Authorizations */
-    Set authorizations = new HashSet();
+    Set<String> authorizations = new HashSet<>();
 
     public DefaultTransaction() {
         Throwable t = new Throwable("who called me?");
@@ -161,8 +160,8 @@ public class DefaultTransaction implements Transaction {
         int problemCount = 0;
         IOException io = null;
 
-        for (Iterator i = stateLookup.values().iterator(); i.hasNext(); ) {
-            state = (State) i.next();
+        for (Object o : stateLookup.values()) {
+            state = (State) o;
 
             try {
                 state.commit();
@@ -198,8 +197,8 @@ public class DefaultTransaction implements Transaction {
         IOException io = null;
         State state;
 
-        for (Iterator i = stateLookup.values().iterator(); i.hasNext(); ) {
-            state = (State) i.next();
+        for (Object o : stateLookup.values()) {
+            state = (State) o;
 
             try {
                 state.rollback();
@@ -222,8 +221,8 @@ public class DefaultTransaction implements Transaction {
 
     /** Frees all State held by this Transaction. */
     public synchronized void close() {
-        for (Iterator i = stateLookup.values().iterator(); i.hasNext(); ) {
-            State state = (State) i.next();
+        for (Object o : stateLookup.values()) {
+            State state = (State) o;
             state.setTransaction(null);
         }
         stateLookup.clear();
@@ -241,7 +240,7 @@ public class DefaultTransaction implements Transaction {
      *
      * @return Set of Authorization IDs
      */
-    public Set getAuthorizations() {
+    public Set<String> getAuthorizations() {
         if (authorizations == null) {
             throw new IllegalStateException("Transaction has been closed");
         }
@@ -267,8 +266,8 @@ public class DefaultTransaction implements Transaction {
         State state;
         authorizations.add(authID);
 
-        for (Iterator i = stateLookup.values().iterator(); i.hasNext(); ) {
-            state = (State) i.next();
+        for (Object o : stateLookup.values()) {
+            state = (State) o;
 
             try {
                 state.addAuthorization(authID);

@@ -134,9 +134,11 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
             return object instanceof SimpleFeature && xpath.matches("@(\\w+:)?id");
         }
 
-        public Object get(Object object, String xpath, Class target) {
+        @SuppressWarnings("unchecked") // target can be null
+        public <T> T get(Object object, String xpath, Class<T> target)
+                throws IllegalArgumentException {
             SimpleFeature feature = (SimpleFeature) object;
-            return feature.getID();
+            return (T) feature.getID();
         }
 
         public void set(Object object, String xpath, Object value, Class target)
@@ -160,7 +162,9 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
             return true;
         }
 
-        public Object get(Object object, String xpath, Class target) {
+        @SuppressWarnings("unchecked") // target can be null, cannot use target.cast
+        public <T> T get(Object object, String xpath, Class<T> target)
+                throws IllegalArgumentException {
             if (object instanceof SimpleFeature) {
                 SimpleFeature f = (SimpleFeature) object;
                 Object defaultGeometry = f.getDefaultGeometry();
@@ -175,7 +179,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
                     }
                 }
 
-                return defaultGeometry;
+                return (T) defaultGeometry;
             }
 
             if (object instanceof SimpleFeatureType) {
@@ -186,12 +190,12 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
                     // look for any geometry descriptor
                     for (AttributeDescriptor ad : ft.getAttributeDescriptors()) {
                         if (Geometry.class.isAssignableFrom(ad.getType().getBinding())) {
-                            return ad;
+                            return (T) ad;
                         }
                     }
                 }
 
-                return gd;
+                return (T) gd;
             }
 
             return null;
@@ -201,7 +205,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
                 throws IllegalAttributeException {
 
             if (object instanceof SimpleFeature) {
-                ((SimpleFeature) object).setDefaultGeometry((Geometry) value);
+                ((SimpleFeature) object).setDefaultGeometry(value);
             }
             if (object instanceof SimpleFeatureType) {
                 throw new IllegalAttributeException("feature type is immutable");
@@ -226,24 +230,26 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
             return false;
         }
 
-        public Object get(Object object, String xpath, Class target) {
+        @SuppressWarnings("unchecked") // target can be null, cannot use target.cast
+        public <T> T get(Object object, String xpath, Class<T> target)
+                throws IllegalArgumentException {
             if (object instanceof SimpleFeature) {
                 SimpleFeatureType type = ((SimpleFeature) object).getType();
                 if (type.indexOf(xpath) >= 0) {
-                    return ((SimpleFeature) object).getAttribute(xpath);
+                    return (T) ((SimpleFeature) object).getAttribute(xpath);
                 } else {
                     String stripped = stripPrefixIndex(xpath);
-                    return ((SimpleFeature) object).getAttribute(stripped);
+                    return (T) ((SimpleFeature) object).getAttribute(stripped);
                 }
             }
 
             if (object instanceof SimpleFeatureType) {
                 SimpleFeatureType type = (SimpleFeatureType) object;
                 if (type.indexOf(xpath) >= 0) {
-                    return type.getDescriptor(xpath);
+                    return (T) type.getDescriptor(xpath);
                 } else {
                     String stripped = stripPrefixIndex(xpath);
-                    return type.getDescriptor(stripped);
+                    return (T) type.getDescriptor(stripped);
                 }
             }
 

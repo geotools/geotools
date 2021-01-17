@@ -27,7 +27,7 @@ public class SchemaRegistry {
     private Map<String, SimpleFeatureType> featureTypes;
 
     public SchemaRegistry() {
-        this.featureTypes = new HashMap<String, SimpleFeatureType>();
+        this.featureTypes = new HashMap<>();
     }
 
     public void add(String featureTypeName, SimpleFeatureType featureType) {

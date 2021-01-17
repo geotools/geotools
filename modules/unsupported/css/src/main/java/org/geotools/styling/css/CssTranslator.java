@@ -59,6 +59,7 @@ import org.geotools.brewer.styling.builder.SymbolizerBuilder;
 import org.geotools.brewer.styling.builder.TextSymbolizerBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.FeatureTypeStyle;
@@ -88,7 +89,6 @@ import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.styling.SLDTransformer;
 import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -429,8 +429,7 @@ public class CssTranslator {
                         FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
 
                 if (featureTypeName != null) {
-                    ftsBuilder.setFeatureTypeNames(
-                            Arrays.asList((Name) new NameImpl(featureTypeName)));
+                    ftsBuilder.setFeatureTypeNames(Arrays.asList(new NameImpl(featureTypeName)));
                 }
                 Collections.sort(combinedRules, CssRuleComparator.DESCENDING);
                 int rulesCount = combinedRules.size();
@@ -647,8 +646,7 @@ public class CssTranslator {
 
                 FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
                 if (featureTypeName != null) {
-                    ftsBuilder.setFeatureTypeNames(
-                            Arrays.asList((Name) new NameImpl(featureTypeName)));
+                    ftsBuilder.setFeatureTypeNames(Arrays.asList(new NameImpl(featureTypeName)));
                 }
 
                 String composite = null;
@@ -839,7 +837,7 @@ public class CssTranslator {
                 if (others.size() == 1) {
                     final CssRule r = deriveWithSelector(rule, others.get(0));
                     result.add(r);
-                } else if (others.size() > 0) {
+                } else if (!others.isEmpty()) {
                     final CssRule r = deriveWithSelector(rule, new Or(others));
                     result.add(r);
                 }
@@ -1246,6 +1244,7 @@ public class CssTranslator {
                                 "font-family",
                                 "font-style",
                                 "font-weight",
+                                "font-size",
                                 "font-family");
                 for (int j = 0; j < maxSize; j++) {
                     FontBuilder fb = tb.newFont();
@@ -1409,10 +1408,13 @@ public class CssTranslator {
                                             + entry);
                         }
                         ColorMapEntryBuilder eb = cmb.entry();
-                        eb.color(f.parameters.get(0).toExpression());
-                        eb.quantity(f.parameters.get(1).toExpression());
+                        eb.colorAsLiteral(
+                                wrapColorMapAttribute(f.parameters.get(0).toExpression()));
+                        eb.quantityAsLiteral(
+                                wrapColorMapAttribute(f.parameters.get(1).toExpression()));
                         if (f.parameters.size() > 2) {
-                            eb.opacity(f.parameters.get(2).toExpression());
+                            eb.opacityAsLiteral(
+                                    wrapColorMapAttribute(f.parameters.get(2).toExpression()));
                         }
                         if (f.parameters.size() == 4) {
                             eb.label(f.parameters.get(3).toLiteral());
@@ -1434,6 +1436,17 @@ public class CssTranslator {
             }
 
             addVendorOptions(rb, RASTER_VENDOR_OPTIONS, values, i);
+        }
+    }
+
+    private String wrapColorMapAttribute(Expression expression) {
+        if (expression instanceof org.opengis.filter.expression.Literal) {
+            // return expression as simple String
+            return expression.toString();
+        } else {
+            // This allows to support CQL Expressions for colorMapEntry attributes
+            // being lately used by SLD ColorMapBuilder
+            return "${" + CQL.toCQL(expression) + "}";
         }
     }
 

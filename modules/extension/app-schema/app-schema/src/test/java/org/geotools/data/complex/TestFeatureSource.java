@@ -20,6 +20,7 @@ import static org.junit.Assert.fail;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class TestFeatureSource implements Closeable {
     private Name mappedTypeName = Types.typeName(null, "stationsIndexed");
 
     private AppSchemaDataAccessFactory factory;
-    private Map params;
+    private Map<String, Serializable> params;
     private DataAccess<FeatureType, Feature> dataStore;
     private MappingFeatureSource mappedSource;
 
@@ -53,7 +54,7 @@ public class TestFeatureSource implements Closeable {
 
     protected void setUp() {
         factory = new AppSchemaDataAccessFactory();
-        params = new HashMap();
+        params = new HashMap<>();
         params.put("dbtype", "app-schema");
         URL resource = getClass().getResource(schemaBase + filename);
         if (resource == null) {

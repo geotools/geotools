@@ -47,9 +47,7 @@ public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesRespon
             throws ServiceException, IOException {
         super(httpResponse);
 
-        InputStream inputStream = null;
-        try {
-            inputStream = httpResponse.getResponseStream();
+        try (InputStream inputStream = httpResponse.getResponseStream()) {
 
             // Map hints = new HashMap();
             // hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WPSSchema.getInstance());
@@ -64,10 +62,7 @@ public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesRespon
             try {
                 // object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
                 object = parser.parse(inputStream);
-            } catch (SAXException e) {
-                throw (ServiceException)
-                        new ServiceException("Error while parsing XML.").initCause(e);
-            } catch (ParserConfigurationException e) {
+            } catch (SAXException | ParserConfigurationException e) {
                 throw (ServiceException)
                         new ServiceException("Error while parsing XML.").initCause(e);
             }
@@ -83,11 +78,6 @@ public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesRespon
             // exception caught on server and returned
             else if (object instanceof ExceptionReportType) {
                 excepResponse = (ExceptionReportType) object;
-            }
-
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
             }
         }
     }

@@ -92,7 +92,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
                 BufferedFactory {
 
     /** Cache to be used for referencing objects. */
-    ObjectCache cache;
+    ObjectCache<Object, Object> cache;
 
     /** The delegate authority. */
     private AuthorityFactory authority;
@@ -139,7 +139,8 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
      * @param factory The factory to cache. Can not be {@code null}.
      * @param cache The cache to use
      */
-    protected CachedAuthorityDecorator(AuthorityFactory factory, ObjectCache cache) {
+    protected CachedAuthorityDecorator(
+            AuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
         authority = factory;
@@ -151,7 +152,8 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /** Utility method used to produce cache based on hint */
-    protected static ObjectCache createCache(final Hints hints) throws FactoryRegistryException {
+    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints)
+            throws FactoryRegistryException {
         return ObjectCaches.create(hints);
     }
 
@@ -187,7 +189,8 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return authority.getAuthority();
     }
 
-    public Set getAuthorityCodes(Class type) throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return authority.getAuthorityCodes(type);
     }
 
@@ -728,15 +731,16 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return operation;
     }
 
-    public synchronized Set /*<CoordinateOperation>*/ createFromCoordinateReferenceSystemCodes(
+    @SuppressWarnings("unchecked")
+    public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
 
         final Object key = ObjectCaches.toKey(getAuthority(), sourceCode, targetCode);
-        Set operations = (Set) cache.get(key);
+        Set<CoordinateOperation> operations = (Set<CoordinateOperation>) cache.get(key);
         if (operations == null) {
             try {
                 cache.writeLock(key);
-                operations = (Set) cache.peek(key);
+                operations = (Set<CoordinateOperation>) cache.peek(key);
                 if (operations == null) {
                     operations =
                             operationAuthority.createFromCoordinateReferenceSystemCodes(
@@ -755,7 +759,8 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     //
     // AbstractAuthorityFactory
     //
-    public IdentifiedObjectFinder getIdentifiedObjectFinder(Class type) throws FactoryException {
+    public IdentifiedObjectFinder getIdentifiedObjectFinder(Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return delegate.getIdentifiedObjectFinder(type);
     }
 

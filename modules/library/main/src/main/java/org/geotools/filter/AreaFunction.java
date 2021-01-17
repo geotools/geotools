@@ -19,7 +19,7 @@
 
 package org.geotools.filter;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.locationtech.jts.geom.Coordinate;
@@ -49,7 +49,7 @@ public class AreaFunction extends FunctionExpressionImpl {
 
     public Object evaluate(Object feature) {
         org.opengis.filter.expression.Expression geom;
-        geom = (org.opengis.filter.expression.Expression) getParameters().get(0);
+        geom = getParameters().get(0);
         Geometry g = (Geometry) geom.evaluate(feature);
 
         return Double.valueOf(getArea(g));
@@ -187,11 +187,11 @@ public class AreaFunction extends FunctionExpressionImpl {
         double maxx = Double.NEGATIVE_INFINITY;
         double miny = Double.POSITIVE_INFINITY;
         double maxy = Double.NEGATIVE_INFINITY;
-        for (int i = 0; i < numberOfExteriorRingCoordinates; i++) {
-            minx = Math.min(minx, exteriorRingCoordinates[i].x);
-            maxx = Math.max(maxx, exteriorRingCoordinates[i].x);
-            miny = Math.min(miny, exteriorRingCoordinates[i].y);
-            maxy = Math.max(maxy, exteriorRingCoordinates[i].y);
+        for (Coordinate exteriorRingCoordinate : exteriorRingCoordinates) {
+            minx = Math.min(minx, exteriorRingCoordinate.x);
+            maxx = Math.max(maxx, exteriorRingCoordinate.x);
+            miny = Math.min(miny, exteriorRingCoordinate.y);
+            maxy = Math.max(maxy, exteriorRingCoordinate.y);
         }
         // Calculate area of each trapezoid formed by dropping lines from
         // each pair of coordinates in exteriorRingCoordinates to the x-axis.

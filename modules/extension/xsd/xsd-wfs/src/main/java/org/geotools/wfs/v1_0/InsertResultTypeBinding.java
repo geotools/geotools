@@ -82,6 +82,7 @@ public class InsertResultTypeBinding extends AbstractComplexEMFBinding {
         return InsertResultsType.class;
     }
 
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) {
 
         InsertResultsType resultType = wfsfactory.createInsertResultsType();

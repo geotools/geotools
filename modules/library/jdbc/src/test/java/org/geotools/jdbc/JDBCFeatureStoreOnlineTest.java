@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
@@ -88,8 +87,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = dataStore.getFilterFactory();
 
-        for (Iterator f = fids.iterator(); f.hasNext(); ) {
-            FeatureId identifier = (FeatureId) f.next();
+        for (FeatureId identifier : fids) {
             String fid = identifier.getID();
             Id filter = ff.id(Collections.singleton(identifier));
 
@@ -99,7 +97,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             try (SimpleFeatureIterator iterator = features.features()) {
                 assertTrue(iterator.hasNext());
 
-                SimpleFeature feature = (SimpleFeature) iterator.next();
+                SimpleFeature feature = iterator.next();
                 assertEquals(fid, feature.getID());
                 assertFalse(iterator.hasNext());
             }
@@ -181,8 +179,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = dataStore.getFilterFactory();
 
-        for (Iterator f = fids.iterator(); f.hasNext(); ) {
-            FeatureId identifier = (FeatureId) f.next();
+        for (FeatureId identifier : fids) {
             String fid = identifier.getID();
             Id filter = ff.id(Collections.singleton(identifier));
 
@@ -307,13 +304,13 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         assertEquals(3, features.size());
 
         try (SimpleFeatureIterator iterator = features.features()) {
-            HashSet<Integer> numbers = new HashSet<Integer>();
+            HashSet<Integer> numbers = new HashSet<>();
             numbers.add(Integer.valueOf(3));
             numbers.add(Integer.valueOf(4));
             numbers.add(Integer.valueOf(5));
 
             for (int i = 3; iterator.hasNext(); i++) {
-                SimpleFeature feature = (SimpleFeature) iterator.next();
+                SimpleFeature feature = iterator.next();
                 assertTrue(
                         numbers.contains(
                                 ((Number) feature.getAttribute(aname("intProperty"))).intValue()));
@@ -341,7 +338,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             assertTrue(i.hasNext());
 
             while (i.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) i.next();
+                SimpleFeature feature = i.next();
                 assertEquals("foo", feature.getAttribute(aname("stringProperty")));
             }
         }
@@ -360,7 +357,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             assertTrue(i.hasNext());
 
             while (i.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) i.next();
+                SimpleFeature feature = i.next();
                 assertTrue(point.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
             }
         }
@@ -384,7 +381,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             assertTrue(i.hasNext());
 
             while (i.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) i.next();
+                SimpleFeature feature = i.next();
                 assertTrue(point.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
             }
         }
@@ -399,7 +396,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             assertTrue(i.hasNext());
 
             while (i.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) i.next();
+                SimpleFeature feature = i.next();
                 assertEquals("foo", feature.getAttribute(aname("stringProperty")));
             }
         }

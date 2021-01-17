@@ -17,8 +17,9 @@
  */
 package org.geotools.data.mongodb.integration;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
@@ -64,8 +65,7 @@ public class MongoTestUtil {
 
     @Test
     public void testConnect() throws UnknownHostException {
-        MongoClient mc = new MongoClient("localhost", PORT);
-        try {
+        try (MongoClient mc = new MongoClient("localhost", PORT)) {
             assertThat(mc, is(notNullValue()));
             DB db = mc.getDB("db");
             DBCollection coll = db.getCollection("dbc");
@@ -77,20 +77,15 @@ public class MongoTestUtil {
 
             coll.insert(bdo);
             // System.out.println(coll.findOne());
-        } finally {
-            mc.close();
         }
     }
 
     @Test
     public void testLoad() throws IOException {
-        MongoClient mc = new MongoClient("localhost", PORT);
-        try {
+        try (MongoClient mc = new MongoClient("localhost", PORT)) {
             DBCollection dbc = grabDBCollection(mc, "db", "dbc", true);
             ShapefileDataStore sds = loadShapefile("shapes/statepop.shp");
             loadFeatures(dbc, sds.getFeatureSource().getFeatures());
-        } finally {
-            mc.close();
         }
     }
 
@@ -100,7 +95,7 @@ public class MongoTestUtil {
         FeatureIterator<?> iterator = collection.features();
         while (iterator.hasNext()) {
             Feature f = iterator.next();
-            Set<Property> pSet = new LinkedHashSet<Property>(f.getProperties());
+            Set<Property> pSet = new LinkedHashSet<>(f.getProperties());
             BasicDBObjectBuilder bdoBuilder = BasicDBObjectBuilder.start();
 
             GeometryAttribute gAttr = f.getDefaultGeometryProperty();

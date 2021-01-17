@@ -21,28 +21,26 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.StringWriter;
 import java.util.logging.Logger;
-import junit.framework.TestCase;
 import org.geotools.TestData;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /** @author Giannecchini */
-public abstract class ArcGridBaseTestCase extends TestCase {
+public abstract class ArcGridBaseTestCase {
 
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ArcGridBaseTestCase.class);
 
     protected File[] testFiles;
 
-    public ArcGridBaseTestCase(String name) {
-
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         // check that it exisits
         File file = TestData.copy(this, "arcgrid/arcgrid.zip");
-        assertTrue(file.exists());
+        Assert.assertTrue(file.exists());
 
         // unzip it
         TestData.unzipFile(this, "arcgrid/arcgrid.zip");
@@ -59,38 +57,39 @@ public abstract class ArcGridBaseTestCase extends TestCase {
                                 });
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         final File[] fileList = TestData.file(this, "").listFiles();
         final int length = fileList.length;
-        for (int i = 0; i < length; i++) {
-            if (fileList[i].isDirectory()) {
-                fileList[i].delete();
+        for (File file : fileList) {
+            if (file.isDirectory()) {
+                file.delete();
 
                 continue;
             }
 
-            if (!fileList[i].getName().endsWith("zip")) {
-                fileList[i].delete();
+            if (!file.getName().endsWith("zip")) {
+                file.delete();
             }
         }
-        super.tearDown();
     }
 
+    @Test
     public void testAll() throws Exception {
 
         final StringBuilder errors = new StringBuilder();
         final int length = testFiles.length;
-        for (int i = 0; i < length; i++) {
+        for (File testFile : testFiles) {
 
             try {
-                runMe(testFiles[i]);
+                runMe(testFile);
 
             } catch (Exception e) {
                 // e.printStackTrace();
                 final StringWriter writer = new StringWriter();
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 errors.append("\nFile ")
-                        .append(testFiles[i].getAbsolutePath())
+                        .append(testFile.getAbsolutePath())
                         .append(" :\n")
                         .append(e.getMessage())
                         .append("\n")
@@ -99,7 +98,7 @@ public abstract class ArcGridBaseTestCase extends TestCase {
         }
 
         if (errors.length() > 0) {
-            fail(errors.toString());
+            Assert.fail(errors.toString());
         }
     }
 

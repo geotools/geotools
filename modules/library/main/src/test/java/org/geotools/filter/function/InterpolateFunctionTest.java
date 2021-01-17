@@ -16,7 +16,10 @@
  */
 package org.geotools.filter.function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -64,7 +67,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Before
     public void setup() {
-        parameters = new ArrayList<Expression>();
+        parameters = new ArrayList<>();
     }
 
     @Test
@@ -74,7 +77,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
         Function fn = finder.findFunction("Interpolate", parameters, fallback);
         Object result = fn.evaluate(feature(0));
 
-        assertFalse("Could not locate 'Interpolate' function", result.equals(fallback.getValue()));
+        assertNotEquals("Could not locate 'Interpolate' function", result, fallback.getValue());
     }
 
     @Test
@@ -272,7 +275,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
     public void testForOutOfRangeColorValues() {
         // System.out.println("   out of range color values");
 
-        parameters = new ArrayList<Expression>();
+        parameters = new ArrayList<>();
         parameters.add(ff2.literal("RasterData"));
 
         // Create interpolation points that will lead to a cubic
@@ -384,7 +387,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
             throw new IllegalArgumentException("data and values arrays should be the same length");
         }
 
-        parameters = new ArrayList<Expression>();
+        parameters = new ArrayList<>();
         parameters.add(ff2.property("value"));
 
         for (int i = 0; i < data.length; i++) {

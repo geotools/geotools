@@ -136,7 +136,7 @@ public class UpdateTypeImpl extends EObjectImpl implements UpdateType {
      */
     public EList<RecordPropertyType> getRecordProperty() {
         if (recordProperty == null) {
-            recordProperty = new EObjectContainmentEList<RecordPropertyType>(RecordPropertyType.class, this, Csw20Package.UPDATE_TYPE__RECORD_PROPERTY);
+            recordProperty = new EObjectContainmentEList<>(RecordPropertyType.class, this, Csw20Package.UPDATE_TYPE__RECORD_PROPERTY);
         }
         return recordProperty;
     }

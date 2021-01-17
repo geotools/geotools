@@ -27,9 +27,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class JDBCClosingFeatureReader
         implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
 
-    FeatureReader reader;
+    FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-    public JDBCClosingFeatureReader(FeatureReader reader) {
+    public JDBCClosingFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
         this.reader = reader;
     }
 
@@ -38,7 +38,7 @@ public class JDBCClosingFeatureReader
     }
 
     public SimpleFeatureType getFeatureType() {
-        return (SimpleFeatureType) reader.getFeatureType();
+        return reader.getFeatureType();
     }
 
     public boolean hasNext() throws IOException {
@@ -47,12 +47,12 @@ public class JDBCClosingFeatureReader
 
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
-        return (SimpleFeature) reader.next();
+        return reader.next();
     }
 
-    @SuppressWarnings("PMD.CloseResource") // we are actually closing
+    @SuppressWarnings({"PMD.CloseResource", "unchecked"}) // we are actually closing
     public void close() throws IOException {
-        FeatureReader r = reader;
+        FeatureReader<SimpleFeatureType, SimpleFeature> r = reader;
         while (r instanceof DelegatingFeatureReader) {
             if (r instanceof JDBCFeatureReader) {
                 break;

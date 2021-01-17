@@ -93,7 +93,7 @@ public class RestElasticClient implements ElasticClient {
                         mapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {});
                 @SuppressWarnings("unchecked")
                 Map<String, Object> ver =
-                        (Map<String, Object>) info.getOrDefault("version", Collections.EMPTY_MAP);
+                        (Map<String, Object>) info.getOrDefault("version", Collections.emptyMap());
                 final Matcher m = pattern.matcher((String) ver.get("number"));
                 if (!m.find()) {
                     version = DEFAULT_VERSION;

@@ -147,7 +147,7 @@ public class RasterLayerRequest {
     /** Flag specifying whether we need to set the ROI in any case in the output mosaic */
     private boolean setRoiProperty;
 
-    private final Map<String, List> requestedAdditionalDomains = new HashMap<String, List>();
+    private final Map<String, List> requestedAdditionalDomains = new HashMap<>();
 
     // the bands parameter define the order and which bands should be returned
     private int[] bands;
@@ -230,7 +230,7 @@ public class RasterLayerRequest {
     }
 
     public Map<String, List> getRequestedAdditionalDomains() {
-        return new HashMap<String, List>(requestedAdditionalDomains);
+        return new HashMap<>(requestedAdditionalDomains);
     }
 
     /**
@@ -852,7 +852,7 @@ public class RasterLayerRequest {
             final Object value = param.getValue();
             if (value == null) return;
             final List<?> dates = (List<?>) value;
-            if (dates == null || dates.size() <= 0) {
+            if (dates == null || dates.isEmpty()) {
                 return;
             }
 
@@ -931,7 +931,7 @@ public class RasterLayerRequest {
         if (name.equals(ImageMosaicFormat.MASKING_BUFFER_PIXELS.getName())) {
             final Object value = param.getValue();
             if (value == null) return;
-            maskingBufferPixels = (double) param.doubleValue();
+            maskingBufferPixels = param.doubleValue();
             return;
         }
 

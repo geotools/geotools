@@ -365,23 +365,42 @@ public class ElasticDataStore extends ContentDataStore {
                     binding = Boolean.class;
                     break;
                 case "date":
-                    String format = (String) map.get("format");
-                    if (format != null) {
-                        try {
-                            Joda.forPattern(format);
-                        } catch (Exception e) {
-                            LOGGER.fine(
-                                    "Unable to parse date format ('"
-                                            + format
-                                            + "') for "
-                                            + propertyKey);
-                            format = null;
+                    List<String> validFormats = new ArrayList<>();
+                    String availableFormat = (String) map.get("format");
+                    if (availableFormat == null) {
+                        validFormats.add("date_optional_time");
+                    } else {
+                        if (!availableFormat.contains("\\|\\|")) {
+                            try {
+                                Joda.forPattern(availableFormat);
+                                validFormats.add(availableFormat);
+                            } catch (Exception e) {
+                                LOGGER.fine(
+                                        "Unable to parse date format ('"
+                                                + availableFormat
+                                                + "') for "
+                                                + propertyKey);
+                            }
+                        } else {
+                            String[] formats = availableFormat.split("\\|\\|");
+                            for (String format : formats) {
+                                try {
+                                    Joda.forPattern(format);
+                                    validFormats.add(format);
+                                } catch (Exception e) {
+                                    LOGGER.fine(
+                                            "Unable to parse date format ('"
+                                                    + format
+                                                    + "') for "
+                                                    + propertyKey);
+                                }
+                            }
                         }
                     }
-                    if (format == null) {
-                        format = "date_optional_time";
+                    if (validFormats.isEmpty()) {
+                        validFormats.add("date_optional_time");
                     }
-                    elasticAttribute.setDateFormat(format);
+                    elasticAttribute.setValidDateFormats(validFormats);
                     binding = Date.class;
                     break;
                 case "binary":

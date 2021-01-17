@@ -183,7 +183,7 @@ public class StreamingParser {
     static StreamingParserHandler createJXpathStreamingParserHandler(
             Configuration configuration, String xpath) throws ParserConfigurationException {
 
-        Class clazz;
+        Class<?> clazz;
         try {
             clazz = Class.forName("org.geotools.xsd.impl.jxpath.JXPathStreamingParserHandler");
         } catch (ClassNotFoundException e) {

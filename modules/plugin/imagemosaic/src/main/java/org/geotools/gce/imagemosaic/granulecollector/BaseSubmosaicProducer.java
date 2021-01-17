@@ -19,7 +19,8 @@ package org.geotools.gce.imagemosaic.granulecollector;
 
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
@@ -44,7 +45,6 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.GranuleLoader;
-import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.MosaicElement;
 import org.geotools.gce.imagemosaic.MosaicInputs;
 import org.geotools.gce.imagemosaic.Mosaicker;
@@ -66,7 +66,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
     /** The final lists for granules to be computed, splitted per dimension value. */
     protected final List<Future<GranuleDescriptor.GranuleLoadingResult>> granulesFutures =
-            new ArrayList<Future<GranuleDescriptor.GranuleLoadingResult>>();
+            new ArrayList<>();
 
     protected final boolean dryRun;
 
@@ -191,7 +191,8 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
                 // path management
                 String fileCanonicalPath = null;
-                File inputFile = URLs.urlToFile(result.getGranuleUrl());
+                URL url = result.getGranuleUrl();
+                File inputFile = URLs.urlToFile(url);
                 if (inputFile != null) {
                     String canonicalPath = inputFile.getCanonicalPath();
                     // Remove ovr extension if present
@@ -200,6 +201,9 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                         fileCanonicalPath = canonicalPath.substring(0, canonicalPath.length() - 4);
                     }
                     paths.append(canonicalPath).append(",");
+                } else {
+                    // Let's go straight using the granuleUrl
+                    paths.append(url.toString()).append(",");
                 }
                 // take only the first source URL found
                 if (sourceUrl == null) {
@@ -223,7 +227,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         }
 
         // collect paths
-        rasterLayerResponse.setGranulesPaths(
+        rasterLayerResponse.addGranulePaths(
                 paths.length() > 1 ? paths.substring(0, paths.length() - 1) : "");
         rasterLayerResponse.setSourceUrl(sourceUrl);
 
@@ -389,7 +393,10 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
     @Override
     public List<MosaicElement> createMosaic() throws IOException {
         final MosaicElement mosaic =
-                (new Mosaicker(this.rasterLayerResponse, collectGranules(), MergeBehavior.FLAT))
+                (new Mosaicker(
+                                this.rasterLayerResponse,
+                                collectGranules(),
+                                rasterLayerResponse.getRequest().getMergeBehavior()))
                         .createMosaic();
         if (mosaic == null) {
             return Collections.emptyList();

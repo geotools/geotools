@@ -143,9 +143,9 @@ public class MBFeatureDataTest extends AbstractMBExpressionTest {
         // build some features
         for (int i = 0; i < intVals.length; ++i) {
             // get the feature values
-            final Integer anInt = Integer.valueOf(i);
-            final Integer anotherInt = Integer.valueOf(intVals[i]);
-            final Double aDouble = Double.valueOf(doubleVals[i]);
+            final Integer anInt = i;
+            final Integer anotherInt = intVals[i];
+            final Double aDouble = doubleVals[i];
             final String aName = "name_" + intVals[i];
             // build the features
             final SimpleFeature multiPoint =

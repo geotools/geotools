@@ -90,7 +90,7 @@ import org.opengis.referencing.crs.GeographicCRS;
 @SuppressWarnings("deprecation")
 public class HanaFilterToSQL extends PreparedFilterToSQL {
 
-    private static final Map<String, Double> UNITS_MAP = new HashMap<String, Double>();
+    private static final Map<String, Double> UNITS_MAP = new HashMap<>();
 
     static {
         UNITS_MAP.put("kilometers", 1000.0);
@@ -194,7 +194,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
             return visitBBOXSpatialOperator((BBOX) filter, property, geometry, extraData);
         } else {
             return visitBinarySpatialOperator(
-                    filter, (Expression) property, (Expression) geometry, swapped, extraData);
+                    filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 

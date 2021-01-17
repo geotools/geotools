@@ -18,7 +18,6 @@ package org.geotools.gml3.complex;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +64,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
     @Override
     public Collection<Schema> getSchemas() {
-        ArrayList<Schema> schemas = new ArrayList<Schema>();
+        ArrayList<Schema> schemas = new ArrayList<>();
         schemas.add(new SMIL20Schema());
         schemas.add(new SMIL20LANGSchema());
         schemas.add(new GMLSchema());
@@ -81,7 +80,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
     @Override
     public Collection<Configuration> getConfigurations() {
-        ArrayList<Configuration> configurations = new ArrayList<Configuration>();
+        ArrayList<Configuration> configurations = new ArrayList<>();
         configurations.add(new GMLConfiguration());
         configurations.add(new org.geotools.gml3.v3_2.GMLConfiguration());
         return configurations;
@@ -150,8 +149,8 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
         final String idAttName = getId().getLocalPart();
 
-        for (Iterator it = attributeUses.iterator(); it.hasNext(); ) {
-            XSDAttributeUse use = (XSDAttributeUse) it.next();
+        for (Object attributeUs : attributeUses) {
+            XSDAttributeUse use = (XSDAttributeUse) attributeUs;
             XSDAttributeUseCategory useCategory = use.getUse();
 
             XSDAttributeDeclaration idAtt = use.getAttributeDeclaration();

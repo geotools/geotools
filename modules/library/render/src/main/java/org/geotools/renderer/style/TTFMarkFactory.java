@@ -108,7 +108,7 @@ public class TTFMarkFactory implements MarkFactory {
 
         // build the shape out of the font
         GlyphVector textGlyphVector =
-                font.createGlyphVector(FONT_RENDER_CONTEXT, new char[] {(char) character});
+                font.createGlyphVector(FONT_RENDER_CONTEXT, new char[] {character});
         Shape s = textGlyphVector.getOutline();
 
         // have the shape be centered in the origin, and sitting in a square of side 1
@@ -159,7 +159,7 @@ public class TTFMarkFactory implements MarkFactory {
 
         Font font = new Font("Webdings", Font.PLAIN, 60);
         for (int i = 0; i < 65536; i++)
-            if (font.canDisplay(i)) System.out.println(((int) i) + ": " + Long.toHexString(i));
+            if (font.canDisplay(i)) System.out.println(i + ": " + Long.toHexString(i));
         GlyphVector textGlyphVector = font.createGlyphVector(FONT_RENDER_CONTEXT, new char[] {,});
         Shape shape = textGlyphVector.getOutline();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

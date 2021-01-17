@@ -22,11 +22,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import junit.framework.TestCase;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.util.factory.Hints;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -35,10 +36,11 @@ import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class InsertionClassifierTest extends TestCase {
+public class InsertionClassifierTest {
 
     private GeometryFactory geometryFactory = new GeometryFactory();
 
+    @Test
     public void testSegregateSimple() throws Exception {
         SimpleFeatureType featureType = buildType();
         Collection<SimpleFeature> features = new ArrayList<>();
@@ -46,16 +48,17 @@ public class InsertionClassifierTest extends TestCase {
         features.add(createFeature(featureType, "tutu", createLineString(), createPolygon()));
         Map<InsertionClassifier, Collection<SimpleFeature>> actual =
                 InsertionClassifier.classify(featureType, features);
-        assertEquals(1, actual.size());
+        Assert.assertEquals(1, actual.size());
         for (InsertionClassifier kind : actual.keySet()) {
-            assertEquals(false, kind.useExisting);
-            assertEquals(2, kind.geometryTypes.size());
-            assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
-            assertEquals(Polygon.class, kind.geometryTypes.get("geom2"));
-            assertEquals(2, actual.get(kind).size());
+            Assert.assertFalse(kind.useExisting);
+            Assert.assertEquals(2, kind.geometryTypes.size());
+            Assert.assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
+            Assert.assertEquals(Polygon.class, kind.geometryTypes.get("geom2"));
+            Assert.assertEquals(2, actual.get(kind).size());
         }
     }
 
+    @Test
     public void testSegregateMultipleGeomKinds() throws Exception {
         SimpleFeatureType featureType = buildType();
         Collection<SimpleFeature> features = new ArrayList<>();
@@ -63,18 +66,20 @@ public class InsertionClassifierTest extends TestCase {
         features.add(createFeature(featureType, "tutu", createLineString(), createLineString()));
         Map<InsertionClassifier, Collection<SimpleFeature>> actual =
                 InsertionClassifier.classify(featureType, features);
-        assertEquals(2, actual.size());
+        Assert.assertEquals(2, actual.size());
         Set<Class<? extends Geometry>> geom2Classes = new HashSet<>();
         for (InsertionClassifier kind : actual.keySet()) {
-            assertEquals(false, kind.useExisting);
-            assertEquals(2, kind.geometryTypes.size());
-            assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
+            Assert.assertFalse(kind.useExisting);
+            Assert.assertEquals(2, kind.geometryTypes.size());
+            Assert.assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
             geom2Classes.add(kind.geometryTypes.get("geom2"));
-            assertEquals(1, actual.get(kind).size());
+            Assert.assertEquals(1, actual.get(kind).size());
         }
-        assertEquals(new HashSet<>(Arrays.asList(LineString.class, Polygon.class)), geom2Classes);
+        Assert.assertEquals(
+                new HashSet<>(Arrays.asList(LineString.class, Polygon.class)), geom2Classes);
     }
 
+    @Test
     public void testSegregateUseExisting() throws Exception {
         SimpleFeatureType featureType = buildType();
         Collection<SimpleFeature> features = new ArrayList<>();
@@ -84,18 +89,19 @@ public class InsertionClassifierTest extends TestCase {
         features.add(createFeature(featureType, "tutu", createLineString(), createPolygon()));
         Map<InsertionClassifier, Collection<SimpleFeature>> actual =
                 InsertionClassifier.classify(featureType, features);
-        assertEquals(2, actual.size());
+        Assert.assertEquals(2, actual.size());
         Set<Boolean> uses = new HashSet<>();
         for (InsertionClassifier kind : actual.keySet()) {
             uses.add(kind.useExisting);
-            assertEquals(2, kind.geometryTypes.size());
-            assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
-            assertEquals(Polygon.class, kind.geometryTypes.get("geom2"));
-            assertEquals(1, actual.get(kind).size());
+            Assert.assertEquals(2, kind.geometryTypes.size());
+            Assert.assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
+            Assert.assertEquals(Polygon.class, kind.geometryTypes.get("geom2"));
+            Assert.assertEquals(1, actual.get(kind).size());
         }
-        assertEquals(new HashSet<>(Arrays.asList(Boolean.FALSE, Boolean.TRUE)), uses);
+        Assert.assertEquals(new HashSet<>(Arrays.asList(Boolean.FALSE, Boolean.TRUE)), uses);
     }
 
+    @Test
     public void testSegregateNullGeom() throws Exception {
         SimpleFeatureType featureType = buildType();
         Collection<SimpleFeature> features = new ArrayList<>();
@@ -103,16 +109,16 @@ public class InsertionClassifierTest extends TestCase {
         features.add(createFeature(featureType, "tutu", createLineString(), null));
         Map<InsertionClassifier, Collection<SimpleFeature>> actual =
                 InsertionClassifier.classify(featureType, features);
-        assertEquals(2, actual.size());
+        Assert.assertEquals(2, actual.size());
         Set<Class<? extends Geometry>> geom2Classes = new HashSet<>();
         for (InsertionClassifier kind : actual.keySet()) {
-            assertEquals(false, kind.useExisting);
-            assertEquals(2, kind.geometryTypes.size());
-            assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
+            Assert.assertFalse(kind.useExisting);
+            Assert.assertEquals(2, kind.geometryTypes.size());
+            Assert.assertEquals(LineString.class, kind.geometryTypes.get("geom1"));
             geom2Classes.add(kind.geometryTypes.get("geom2"));
-            assertEquals(1, actual.get(kind).size());
+            Assert.assertEquals(1, actual.get(kind).size());
         }
-        assertEquals(new HashSet<>(Arrays.asList(null, Polygon.class)), geom2Classes);
+        Assert.assertEquals(new HashSet<>(Arrays.asList(null, Polygon.class)), geom2Classes);
     }
 
     private Polygon createPolygon() {

@@ -100,7 +100,8 @@ public class Rescale extends OperationJAI {
      * @todo Not yet implemented.
      */
     @Override
-    protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
+    protected NumberRange<? extends Number> deriveRange(
+            final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         return super.deriveRange(ranges, parameters);
     }
 

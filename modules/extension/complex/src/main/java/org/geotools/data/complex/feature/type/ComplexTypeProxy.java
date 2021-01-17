@@ -19,6 +19,7 @@ package org.geotools.data.complex.feature.type;
 
 import java.util.Collection;
 import java.util.Map;
+import org.opengis.feature.Property;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -47,5 +48,15 @@ public class ComplexTypeProxy extends AttributeTypeProxy implements ComplexType 
 
     public boolean isInline() {
         return ((ComplexType) getSubject()).isInline();
+    }
+
+    public Class<Collection<Property>> getBinding() {
+        // TODO: dodgy, during tests subject is evaluated to a GeometryTypeImpl
+        // too, casting to a ComplexType results in tests failures
+        // in GeoServer app-schema tests, SimpleAttributeFeatureChainWfsTest
+        @SuppressWarnings("unchecked")
+        Class<Collection<Property>> result =
+                (Class<Collection<Property>>) getSubject().getBinding();
+        return result;
     }
 }

@@ -679,7 +679,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      */
     public EList<AesheticCriteriaType> getAestheticCriteria() {
         if (aestheticCriteria == null) {
-            aestheticCriteria = new EDataTypeEList<AesheticCriteriaType>(AesheticCriteriaType.class, this, Gml311Package.GRAPH_STYLE_TYPE__AESTHETIC_CRITERIA);
+            aestheticCriteria = new EDataTypeEList<>(AesheticCriteriaType.class, this, Gml311Package.GRAPH_STYLE_TYPE__AESTHETIC_CRITERIA);
         }
         return aestheticCriteria;
     }

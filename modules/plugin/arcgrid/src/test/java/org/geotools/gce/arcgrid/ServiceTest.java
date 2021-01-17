@@ -18,9 +18,10 @@
 package org.geotools.gce.arcgrid;
 
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
@@ -30,23 +31,16 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Simone Giannecchini
  * @author ian
  */
-public class ServiceTest extends TestCase {
+public class ServiceTest {
 
-    public ServiceTest(java.lang.String testName) {
-        super(testName);
-    }
-
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(ServiceTest.class);
-    }
-
+    @Test
     public void testIsAvailable() throws NoSuchAuthorityCodeException, FactoryException {
         GridFormatFinder.scanForPlugins();
         Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
         GridFormatFactorySpi fac = null;
         while (list.hasNext()) {
-            fac = (GridFormatFactorySpi) list.next();
+            fac = list.next();
 
             if (fac instanceof ArcGridFormatFactory) {
                 found = true;
@@ -55,8 +49,8 @@ public class ServiceTest extends TestCase {
             }
         }
 
-        assertTrue("ArcGridFormatFactory not registered", found);
-        assertTrue("ArcGridFormatFactory not available", fac.isAvailable());
-        assertNotNull(new ArcGridFormatFactory().createFormat());
+        Assert.assertTrue("ArcGridFormatFactory not registered", found);
+        Assert.assertTrue("ArcGridFormatFactory not available", fac.isAvailable());
+        Assert.assertNotNull(new ArcGridFormatFactory().createFormat());
     }
 }

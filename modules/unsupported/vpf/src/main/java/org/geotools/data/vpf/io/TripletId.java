@@ -205,8 +205,8 @@ public class TripletId extends Number {
 
         int size = 0;
 
-        for (int i = 0; i < pieces.length; i++) {
-            switch (pieces[i]) {
+        for (int piece : pieces) {
+            switch (piece) {
                 case 0:
                     break;
 

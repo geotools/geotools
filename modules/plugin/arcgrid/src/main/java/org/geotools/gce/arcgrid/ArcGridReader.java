@@ -338,9 +338,8 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         Rectangle requestedDim = null;
         OverviewPolicy overviewPolicy = null;
         if (params != null) {
-            final int length = params.length;
-            for (int i = 0; i < length; i++) {
-                final ParameterValue param = (ParameterValue) params[i];
+            for (GeneralParameterValue generalParameterValue : params) {
+                final ParameterValue param = (ParameterValue) generalParameterValue;
                 final String name = param.getDescriptor().getName().getCode();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
@@ -390,11 +389,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         final Integer imageChoice;
         try {
             imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, requestedDim);
-        } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            return null;
-        } catch (TransformException e) {
+        } catch (IOException | TransformException e) {
             if (LOGGER.isLoggable(Level.SEVERE))
                 LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
@@ -480,7 +475,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
 
             final GridSampleDimension band =
                     new GridSampleDimension(coverageName, new Category[] {nan}, uom);
-            final Map<String, Object> properties = new HashMap<String, Object>();
+            final Map<String, Object> properties = new HashMap<>();
             CoverageUtilities.setNoDataProperty(properties, Double.valueOf(inNoData));
 
             //
@@ -611,15 +606,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
                 try (FileChannel channel = new FileInputStream(prjFile).getChannel();
                         PrjFileReader projReader = new PrjFileReader(channel)) {
                     crs = projReader.getCoordinateReferenceSystem();
-                } catch (FileNotFoundException e) {
-                    // warn about the error but proceed, it is not fatal
-                    // we have at least the default crs to use
-                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                } catch (IOException e) {
-                    // warn about the error but proceed, it is not fatal
-                    // we have at least the default crs to use
-                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                } catch (FactoryException e) {
+                } catch (FactoryException | IOException e) {
                     // warn about the error but proceed, it is not fatal
                     // we have at least the default crs to use
                     LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);

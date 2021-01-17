@@ -16,9 +16,12 @@
  */
 package org.geotools.gml2.bindings;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -29,7 +32,7 @@ public class GMLMultiPolygonPropertyTypeBindingTest extends AbstractGMLBindingTe
     ElementInstance association;
     ElementInstance geometry;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         association =
@@ -46,6 +49,7 @@ public class GMLMultiPolygonPropertyTypeBindingTest extends AbstractGMLBindingTe
         container.registerComponentImplementation(GMLMultiPolygonPropertyTypeBinding.class);
     }
 
+    @Test
     public void testWithGeometry() throws Exception {
         Polygon p1 =
                 new GeometryFactory()

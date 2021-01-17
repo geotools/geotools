@@ -46,7 +46,7 @@ public class DCTConfiguration extends Configuration {
      *
      * @generated
      */
-    protected void registerBindings(Map bindings) {
+    protected void registerBindings(Map<QName, Object> bindings) {
         bindings.put(DCT.recordAbstract, new SimpleLiteralBinding(DC.SimpleLiteral));
         bindings.put(DCT.accessRights, new SimpleLiteralBinding(DC.SimpleLiteral));
         bindings.put(DCT.alternative, new SimpleLiteralBinding(DC.SimpleLiteral));

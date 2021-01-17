@@ -341,8 +341,7 @@ public class SimpleFeatureTypeBuilder {
      * @see {@link #addBinding(AttributeType)}.
      */
     public void addBindings(Schema schema) {
-        for (Iterator<AttributeType> itr = schema.values().iterator(); itr.hasNext(); ) {
-            AttributeType type = itr.next();
+        for (AttributeType type : schema.values()) {
             addBinding(type);
         }
     }
@@ -743,8 +742,7 @@ public class SimpleFeatureTypeBuilder {
     }
 
     public AttributeDescriptor get(String attributeName) {
-        for (Iterator<AttributeDescriptor> iterator = attributes.iterator(); iterator.hasNext(); ) {
-            AttributeDescriptor descriptor = iterator.next();
+        for (AttributeDescriptor descriptor : attributes) {
             if (descriptor.getLocalName().equals(attributeName)) {
                 return descriptor;
             }
@@ -779,8 +777,7 @@ public class SimpleFeatureTypeBuilder {
     /** Index of attrbute by name */
     private int indexOf(String attributeName) {
         int i = 0;
-        for (Iterator<AttributeDescriptor> iterator = attributes.iterator(); iterator.hasNext(); ) {
-            AttributeDescriptor d = iterator.next();
+        for (AttributeDescriptor d : attributes) {
             if (d.getLocalName().equals(attributeName)) {
                 return i;
             }
@@ -914,7 +911,7 @@ public class SimpleFeatureTypeBuilder {
         if (origional == null) {
             return newList();
         }
-        if (origional == Collections.EMPTY_LIST) {
+        if (origional == Collections.emptyList()) {
             return newList();
         }
         try {
@@ -998,8 +995,8 @@ public class SimpleFeatureTypeBuilder {
         b.attributes().clear();
 
         // add attributes in order
-        for (int i = 0; i < types.size(); i++) {
-            b.add(original.getDescriptor(types.get(i)));
+        for (String type : types) {
+            b.add(original.getDescriptor(type));
         }
 
         // handle default geometry

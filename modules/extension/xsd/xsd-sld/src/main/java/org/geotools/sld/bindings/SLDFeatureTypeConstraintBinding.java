@@ -107,8 +107,9 @@ public class SLDFeatureTypeConstraintBinding extends AbstractComplexBinding {
         String featureTypeName = (String) node.getChildValue("FeatureTypeName");
         Filter filter = (Filter) node.getChildValue("Filter");
 
-        List extentList = node.getChildValues("Extent");
-        Extent[] extents = (Extent[]) extentList.toArray(new Extent[extentList.size()]);
+        @SuppressWarnings("unchecked")
+        List<Extent> extentList = node.getChildValues("Extent");
+        Extent[] extents = extentList.toArray(new Extent[extentList.size()]);
 
         return styleFactory.createFeatureTypeConstraint(featureTypeName, filter, extents);
     }

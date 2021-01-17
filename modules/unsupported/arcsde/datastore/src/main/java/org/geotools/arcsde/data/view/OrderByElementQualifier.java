@@ -35,16 +35,16 @@ public class OrderByElementQualifier implements OrderByVisitor {
 
     private ISession session;
 
-    private Map<String, Object> tableAliases;
+    private Map<String, ?> tableAliases;
 
     /** Creates a new OrderByElementQualifier object. */
-    private OrderByElementQualifier(ISession session, Map<String, Object> tableAliases) {
+    private OrderByElementQualifier(ISession session, Map<String, ?> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;
     }
 
     public static OrderByElement qualify(
-            ISession session, Map<String, Object> tableAliases, OrderByElement orderBy) {
+            ISession session, Map<String, ?> tableAliases, OrderByElement orderBy) {
         if (orderBy == null) {
             return null;
         }

@@ -173,7 +173,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
    */
     public EList<PropertyType> getProperty() {
     if (property == null) {
-      property = new EObjectContainmentEList<PropertyType>(PropertyType.class, this, Wfs20Package.UPDATE_TYPE__PROPERTY);
+      property = new EObjectContainmentEList<>(PropertyType.class, this, Wfs20Package.UPDATE_TYPE__PROPERTY);
     }
     return property;
   }

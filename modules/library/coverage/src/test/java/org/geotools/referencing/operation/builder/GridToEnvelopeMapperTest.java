@@ -16,21 +16,37 @@
  */
 package org.geotools.referencing.operation.builder;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
-import java.util.Arrays;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
+import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.junit.*;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.junit.Test;
 import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Tests {@link GridToEnvelopeMapper}. This test appears in the coverage module instead of the
@@ -145,7 +161,7 @@ public final class GridToEnvelopeMapperTest {
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         mapper.setEnvelope(envelope);
         assertFalse(mapper.getSwapXY());
-        assertTrue(Arrays.equals(new boolean[] {false, true}, mapper.getReverseAxis()));
+        assertArrayEquals(new boolean[] {false, true}, mapper.getReverseAxis());
         final AffineTransform tr2 = mapper.createAffineTransform();
         assertNotSame("Should be a new transform", tr1, tr2);
         assertEquals(
@@ -178,7 +194,7 @@ public final class GridToEnvelopeMapperTest {
                                 DefaultCoordinateSystemAxis.LONGITUDE)));
         mapper.setEnvelope(envelope);
         assertTrue(mapper.getSwapXY());
-        assertTrue(Arrays.equals(new boolean[] {true, false}, mapper.getReverseAxis()));
+        assertArrayEquals(new boolean[] {true, false}, mapper.getReverseAxis());
         final AffineTransform tr3 = mapper.createAffineTransform();
         assertNotSame("Should be a new transform", tr2, tr3);
         assertEquals(
@@ -228,5 +244,38 @@ public final class GridToEnvelopeMapperTest {
         assertFalse(mapper.isAutomatic(GridToEnvelopeMapper.SWAP_XY));
         assertFalse(mapper.isAutomatic(GridToEnvelopeMapper.REVERSE_AXIS));
         assertEquals(tr1, mapper.createAffineTransform());
+    }
+
+    @Test
+    public void testFittedCS() throws FactoryException {
+        CoordinateReferenceSystem crs =
+                CRS.parseWKT(
+                        "FITTED_CS[\"rotated_latitude_longitude\", INVERSE_MT[PARAM_MT[\"Rotated_Pole\", "
+                                + " PARAMETER[\"semi_major\", 6371229.0],  PARAMETER[\"semi_minor\", "
+                                + "6371229.0],  PARAMETER[\"central_meridian\", -106.0],  "
+                                + "PARAMETER[\"latitude_of_origin\", 54.0],  PARAMETER[\"scale_factor\", "
+                                + "1.0],  PARAMETER[\"false_easting\", 0.0],  "
+                                + "PARAMETER[\"false_northing\", 0.0]]],  GEOGCS[\"unknown\", "
+                                + "DATUM[\"unknown\",  SPHEROID[\"unknown\", 6371229.0, 0.0]],  "
+                                + "PRIMEM[\"Greenwich\", 0.0],  UNIT[\"degree\", 0.017453292519943295],  "
+                                + "AXIS[\"Geodetic longitude\", EAST],  AXIS[\"Geodetic latitude\", NORTH]]]");
+        ReferencedEnvelope envelope = new ReferencedEnvelope(-35, 35, -10, 10, crs);
+        GridToEnvelopeMapper mapper = new GridToEnvelopeMapper();
+        mapper.setEnvelope(envelope);
+        mapper.setGridRange(new GridEnvelope2D(0, 0, 70, 20));
+
+        assertFalse(mapper.getSwapXY());
+
+        // the x axis should not be reversed, the y one does to account for different grid/screen
+        // orientation (grid goes upwards, screen goes downwards)
+        boolean[] reverseAxis = mapper.getReverseAxis();
+        assertFalse(reverseAxis[0]);
+        assertTrue(reverseAxis[1]);
+
+        MathTransform mt = mapper.createTransform();
+        assertThat(mt, instanceOf(AffineTransform2D.class));
+        AffineTransform2D at = (AffineTransform2D) mt;
+        assertEquals(1, at.getScaleX(), 0d);
+        assertEquals(-1, at.getScaleY(), 0d);
     }
 }

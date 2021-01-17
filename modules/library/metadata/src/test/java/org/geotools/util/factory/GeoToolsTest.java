@@ -16,7 +16,12 @@
  */
 package org.geotools.util.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.RenderingHints;
 import java.util.Collections;
@@ -29,8 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Version;
-import org.junit.*;
-import org.locationtech.jts.geom.Geometry;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.xml.sax.EntityResolver;
 
@@ -58,7 +62,7 @@ public final class GeoToolsTest {
         final Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         assertFalse(hints.isEmpty());
 
-        Map<RenderingHints.Key, Object> map = new HashMap<RenderingHints.Key, Object>();
+        Map<RenderingHints.Key, Object> map = new HashMap<>();
         assertNull(map.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
         map = Collections.unmodifiableMap(map);
         assertFalse(map.isEmpty());
@@ -161,10 +165,6 @@ public final class GeoToolsTest {
         version = GeoTools.getVersion(LogFactory.class);
         assertNotNull(version);
         assertEquals("1.1.1", version.toString());
-
-        version = GeoTools.getVersion(Geometry.class);
-        assertNotNull(version);
-        assertTrue(version.toString().startsWith("1.16"));
     }
     /** Tests the use of system properties. */
     @Test

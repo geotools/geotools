@@ -394,7 +394,7 @@ public class LineStringCursor {
 
     /** Returns a line string cursor based on the opposite walking direction. */
     public LineStringCursor reverse() {
-        return new LineStringCursor((LineString) lineString.reverse());
+        return new LineStringCursor(lineString.reverse());
     }
 
     /** The linestrings wrapped by this cursor */

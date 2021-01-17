@@ -41,7 +41,7 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
                         reader.getFeatureType(), new MutableIdentifierFeatureFactory()));
 
         if (autoCommit) {
-            WFSDataStore dataStore = (WFSDataStore) store.getDataStore();
+            WFSDataStore dataStore = store.getDataStore();
             autoCommitState = new WFSRemoteTransactionState(dataStore);
             autoCommitState.watch(localSate.getState());
         } else {

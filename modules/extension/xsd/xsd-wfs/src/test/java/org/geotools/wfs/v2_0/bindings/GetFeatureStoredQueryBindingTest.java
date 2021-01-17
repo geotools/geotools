@@ -17,6 +17,8 @@
 
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.StringWriter;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -28,10 +30,11 @@ import net.opengis.wfs20.StoredQueryType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class GetFeatureStoredQueryBindingTest extends WFSTestSupport {
-
+    @Test
     public void testEncodeGetFeatureWithStoredQueryId() throws Exception {
         Wfs20Factory factory = Wfs20Factory.eINSTANCE;
 

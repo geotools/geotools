@@ -20,7 +20,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -74,7 +75,7 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     protected CRSFactory crsFactory;
 
     /** Cache of parsed CoordinateReferenceSystem WKT by EPSG_NUMBER */
-    private Hashtable cache = new Hashtable();
+    private Map<String, Object> cache = new HashMap<>();
 
     /**
      * Loads from epsg.properties if the file exists, defaults to internal defintions exported from
@@ -223,20 +224,20 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
      *     set.
      * @throws FactoryException if access to the underlying database failed.
      */
-    public Set getAuthorityCodes(Class clazz) throws FactoryException {
+    public Set<String> getAuthorityCodes(Class clazz) throws FactoryException {
         // could cashe this info if it is time consuming to filter
         if (clazz.getName().equalsIgnoreCase(CoordinateReferenceSystem.class.getName())) {
-            Set all = new java.util.TreeSet();
-            for (java.util.Iterator i = epsg.keySet().iterator(); i.hasNext(); ) {
-                String code = (String) i.next();
+            Set<String> all = new java.util.TreeSet<>();
+            for (Object o : epsg.keySet()) {
+                String code = (String) o;
                 all.add(AUTHORITY_PREFIX + code);
             }
             return all;
         } else if (clazz.getName().equalsIgnoreCase(GeographicCRS.class.getName())) {
-            Set all = epsg.keySet();
-            Set geoCRS = new java.util.TreeSet();
-            for (java.util.Iterator i = all.iterator(); i.hasNext(); ) {
-                String code = (String) i.next();
+            Set<Object> all = epsg.keySet();
+            Set<String> geoCRS = new java.util.TreeSet<>();
+            for (Object o : all) {
+                String code = (String) o;
                 String wkt = epsg.getProperty(code);
                 if (wkt.startsWith("GEOGCS")) {
                     geoCRS.add(AUTHORITY_PREFIX + code);
@@ -245,10 +246,10 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
             return geoCRS;
 
         } else if (clazz.getName().equalsIgnoreCase(ProjectedCRS.class.getName())) {
-            Set all = epsg.keySet();
-            Set projCRS = new java.util.TreeSet();
-            for (java.util.Iterator i = all.iterator(); i.hasNext(); ) {
-                String code = (String) i.next();
+            Set<Object> all = epsg.keySet();
+            Set<String> projCRS = new java.util.TreeSet<>();
+            for (Object o : all) {
+                String code = (String) o;
                 String wkt = epsg.getProperty(code);
                 if (wkt.startsWith("PROJCS")) {
                     projCRS.add(AUTHORITY_PREFIX + code);
@@ -257,7 +258,7 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
             return projCRS;
 
         } else {
-            return new java.util.TreeSet();
+            return new java.util.TreeSet<>();
         }
     }
 

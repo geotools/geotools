@@ -105,8 +105,8 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
         if (columnDefs == null) {
             buff.append("null)");
         } else {
-            for (int i = 0; i < columnDefs.size(); i++) {
-                buff.append(endLine + columnDefs.get(i).toString());
+            for (TableColumnDef columnDef : columnDefs) {
+                buff.append(endLine + columnDef.toString());
             }
 
             buff.append(endLine);
@@ -135,9 +135,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
     public int getRecordSize() {
         int size = 0;
 
-        for (int i = 0; i < columnDefs.size(); i++) {
-            TableColumnDef colDef = (TableColumnDef) columnDefs.get(i);
-
+        for (TableColumnDef colDef : columnDefs) {
             //       VPFLogger.log("Column def no. "+i+" column size: "+
             //                          colDef.getColumnSize());
             if (colDef.getColumnSize() < 0) {

@@ -48,12 +48,12 @@ public class CurveArrayPropertyTypeBinding
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        List<LineString> lineStrings = new ArrayList<LineString>();
+        List<LineString> lineStrings = new ArrayList<>();
 
         // This property element contains a list of curves.
         // The order of the elements is significant and shall be preserved when processing the
         // array.
-        for (Node child : (List<Node>) node.getChildren()) {
+        for (Node child : node.getChildren()) {
             Object nodeValue = child.getValue();
             if (nodeValue instanceof MultiLineString) {
                 MultiLineString curve = (MultiLineString) nodeValue;

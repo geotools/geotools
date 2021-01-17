@@ -488,14 +488,12 @@ public class BarnesSurfaceProcess implements VectorProcess {
             SimpleFeatureCollection obsPoints, String attrName, MathTransform trans, int dataLimit)
             throws CQLException {
         Expression attrExpr = ECQL.toExpression(attrName);
-        List<Coordinate> ptList = new ArrayList<Coordinate>();
-        SimpleFeatureIterator obsIt = obsPoints.features();
+        List<Coordinate> ptList = new ArrayList<>();
 
-        double[] srcPt = new double[2];
-        double[] dstPt = new double[2];
-
-        int i = 0;
-        try {
+        try (SimpleFeatureIterator obsIt = obsPoints.features()) {
+            double[] srcPt = new double[2];
+            double[] dstPt = new double[2];
+            int i = 0;
             while (obsIt.hasNext()) {
                 SimpleFeature feature = obsIt.next();
 
@@ -531,8 +529,6 @@ public class BarnesSurfaceProcess implements VectorProcess {
                     // a numeric value", e);
                 }
             }
-        } finally {
-            obsIt.close();
         }
 
         Coordinate[] pts = CoordinateArrays.toCoordinateArray(ptList);

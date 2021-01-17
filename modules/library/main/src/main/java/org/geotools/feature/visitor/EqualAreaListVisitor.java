@@ -35,10 +35,10 @@ public class EqualAreaListVisitor implements FeatureCalc {
 
     /** Combination of value and its area */
     private static class ValueArea implements Comparable<ValueArea> {
-        Comparable value;
+        Comparable<Object> value;
         double area;
 
-        public ValueArea(Comparable value, double area) {
+        public ValueArea(Comparable<Object> value, double area) {
             this.value = value;
             this.area = area;
         }
@@ -69,7 +69,7 @@ public class EqualAreaListVisitor implements FeatureCalc {
         this.expression = expression;
         this.areaExpression = areaExpression;
         this.binCount = bins;
-        this.bins = new ArrayList[bins];
+        this.bins = createBinsArray(bins);
     }
 
     public void init(SimpleFeatureCollection collection) {
@@ -86,7 +86,7 @@ public class EqualAreaListVisitor implements FeatureCalc {
 
         if (binCount > count) { // resize
             binCount = count;
-            this.bins = new ArrayList[binCount];
+            this.bins = createBinsArray(binCount);
         }
 
         // algorithm based off "Greedy 2" version in
@@ -106,16 +106,16 @@ public class EqualAreaListVisitor implements FeatureCalc {
                 currentBin = new ArrayList<>();
             }
         }
-        if (currentBin.size() > 0) {
-            bins[binIndex] = currentBin;
-        } else {
+        if (currentBin.isEmpty()) {
             binIndex--;
+        } else {
+            bins[binIndex] = currentBin;
         }
 
         // it is possible that we have created less bin than requested
         // (happens when the number of classes is close to the number of features being classified)
         if (binIndex < binCount - 1) {
-            List[] reduced = new ArrayList[binIndex + 1];
+            List<Comparable>[] reduced = createBinsArray(binIndex + 1);
             System.arraycopy(bins, 0, reduced, 0, binIndex + 1);
             this.bins = reduced;
         }
@@ -125,6 +125,12 @@ public class EqualAreaListVisitor implements FeatureCalc {
                 return bins;
             }
         };
+    }
+
+    private List<Comparable>[] createBinsArray(int binCount) {
+        @SuppressWarnings("unchecked")
+        List<Comparable>[] result = new ArrayList[binCount];
+        return result;
     }
 
     public void visit(SimpleFeature feature) {
@@ -149,14 +155,16 @@ public class EqualAreaListVisitor implements FeatureCalc {
 
         count++;
         Double area = areaExpression.evaluate(feature, Double.class);
-        items.add(new ValueArea((Comparable) value, area));
+        @SuppressWarnings("unchecked")
+        Comparable<Object> cast = (Comparable<Object>) value;
+        items.add(new ValueArea(cast, area));
     }
 
     public void reset(int bins) {
         this.binCount = bins;
         this.count = 0;
         this.items = new ArrayList<>();
-        this.bins = new ArrayList[bins];
+        this.bins = createBinsArray(bins);
         this.countNull = 0;
         this.countNaN = 0;
     }

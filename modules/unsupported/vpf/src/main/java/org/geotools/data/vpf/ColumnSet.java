@@ -54,7 +54,7 @@ class ColumnSet {
         // this.tableKey = key;
 
         if (table != null) {
-            this.colNames = new ArrayList<String>();
+            this.colNames = new ArrayList<>();
 
             int colCount = this.table.getColumnCount();
 
@@ -93,7 +93,7 @@ class ColumnSet {
         this.geometryFactory = geometryFactory;
         this.geometryColumn = geometryColumn;
         if (geometryColumn != null) {
-            this.colNames = new ArrayList<String>();
+            this.colNames = new ArrayList<>();
             String colName = geometryColumn.getName();
             this.colNames.add(colName);
         }

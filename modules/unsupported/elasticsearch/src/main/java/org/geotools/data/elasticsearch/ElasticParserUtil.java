@@ -22,7 +22,10 @@ import java.awt.geom.Point2D;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -106,8 +109,8 @@ class ElasticParserUtil {
             final Matcher listMatcher = GEO_POINT_PATTERN.matcher((String) obj);
             if (listMatcher.matches()) {
                 // coordinate
-                final double y = Double.valueOf(listMatcher.group(1));
-                final double x = Double.valueOf(listMatcher.group(2));
+                final double y = Double.parseDouble(listMatcher.group(1));
+                final double x = Double.parseDouble(listMatcher.group(2));
                 geometry = geometryFactory.createPoint(new Coordinate(x, y));
             } else if (GEO_HASH_PATTERN.matcher((String) obj).matches()) {
                 // geohash
@@ -136,8 +139,8 @@ class ElasticParserUtil {
                 final double y = ((Number) values.get(1)).doubleValue();
                 geometry = geometryFactory.createPoint(new Coordinate(x, y));
             } else if (values.get(0) instanceof String) {
-                final double x = Double.valueOf((String) values.get(0));
-                final double y = Double.valueOf((String) values.get(1));
+                final double x = Double.parseDouble((String) values.get(0));
+                final double y = Double.parseDouble((String) values.get(1));
                 geometry = geometryFactory.createPoint(new Coordinate(x, y));
             } else {
                 geometry = null;
@@ -254,7 +257,7 @@ class ElasticParserUtil {
                     if (latObj instanceof Number) {
                         lat = ((Number) latObj).doubleValue();
                     } else if (latObj instanceof String) {
-                        lat = new Double((String) latObj);
+                        lat = Double.parseDouble((String) latObj);
                     } else {
                         lat = null;
                     }
@@ -263,7 +266,7 @@ class ElasticParserUtil {
                     if (lonObj instanceof Number) {
                         lon = ((Number) lonObj).doubleValue();
                     } else if (lonObj instanceof String) {
-                        lon = new Double((String) lonObj);
+                        lon = Double.parseDouble((String) lonObj);
                     } else {
                         lon = null;
                     }
@@ -311,8 +314,8 @@ class ElasticParserUtil {
             x = ((Number) posList.get(0)).doubleValue();
             y = ((Number) posList.get(1)).doubleValue();
         } else {
-            x = Double.valueOf(posList.get(0).toString());
-            y = Double.valueOf(posList.get(1).toString());
+            x = Double.parseDouble(posList.get(0).toString());
+            y = Double.parseDouble(posList.get(1).toString());
         }
         return new Coordinate(x, y);
     }
@@ -445,7 +448,7 @@ class ElasticParserUtil {
         }
         final Matcher matcher = ELASTIC_DISTANCE_PATTERN.matcher(distanceWithUnit);
         if (matcher.matches()) {
-            final double distance = Double.valueOf(matcher.group(1));
+            final double distance = Double.parseDouble(matcher.group(1));
             final String unit = matcher.group(3);
             Double conversion = FilterToElasticHelper.UNITS_MAP.get(unit);
             if (conversion == null) {

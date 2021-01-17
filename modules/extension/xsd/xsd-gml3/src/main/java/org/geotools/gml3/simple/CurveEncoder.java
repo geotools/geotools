@@ -88,6 +88,7 @@ class CurveEncoder extends GeometryEncoder<LineString> {
             SingleCurvedGeometry curve = (SingleCurvedGeometry) geometry;
             encodeCurve(curve, handler);
         } else if (geometry instanceof CompoundCurvedGeometry) {
+            @SuppressWarnings("unchecked")
             CompoundCurvedGeometry<LineString> compound = (CompoundCurvedGeometry) geometry;
             for (LineString component : compound.getComponents()) {
                 encodeContents(component, handler);

@@ -41,7 +41,7 @@ public class PropertiesFileInfo {
      */
     public PropertiesFileInfo(String baseName, List<Locale> locales) {
         this.baseName = baseName;
-        this.locales = new ArrayList<Locale>(locales);
+        this.locales = new ArrayList<>(locales);
     }
 
     /**

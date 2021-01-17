@@ -66,14 +66,14 @@ public class BBoxTest extends AppSchemaTestSupport {
         /** Load data access */
         final Name FEATURE_TYPE = Types.typeName(GSML_URI, "MappedFeature");
         final String schemaBase = "/test-data/";
-        Map<String, Serializable> dsParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> dsParams = new HashMap<>();
         dsParams.put("dbtype", "app-schema");
         URL url = BBoxTest.class.getResource(schemaBase + "MappedFeatureAsOccurrence.xml");
         assertNotNull(url);
         dsParams.put("url", url.toExternalForm());
         dataAccess = DataAccessFinder.getDataStore(dsParams);
 
-        fSource = (FeatureSource<FeatureType, Feature>) dataAccess.getFeatureSource(FEATURE_TYPE);
+        fSource = dataAccess.getFeatureSource(FEATURE_TYPE);
     }
 
     @Test
@@ -85,14 +85,11 @@ public class BBoxTest extends AppSchemaTestSupport {
         BBOX filter = ff.bbox(ff.property("gsml:shape"), -1.1, 52.5, -1.1, 52.6, null);
         FeatureCollection<FeatureType, Feature> features = fSource.getFeatures(filter);
         assertEquals(2, size(features));
-        FeatureIterator<Feature> iterator = features.features();
-        try {
+        try (FeatureIterator<Feature> iterator = features.features()) {
             Feature f = iterator.next();
             assertEquals("mf1", f.getIdentifier().toString());
             f = iterator.next();
             assertEquals("mf3", f.getIdentifier().toString());
-        } finally {
-            iterator.close();
         }
         // prove that it would fail when property name is not a geometry attribute
         filter = ff.bbox(ff.property("gml:name[1]"), -1.2, 52.5, -1.1, 52.6, null);
@@ -113,26 +110,20 @@ public class BBoxTest extends AppSchemaTestSupport {
         BBOX filter = ff.bbox(ff.property(""), -1.1, 52.5, -1.1, 52.6, null);
         FeatureCollection<FeatureType, Feature> features = fSource.getFeatures(filter);
         assertEquals(2, size(features));
-        FeatureIterator<Feature> iterator = features.features();
-        try {
+        try (FeatureIterator<Feature> iterator = features.features()) {
             Feature f = iterator.next();
             assertEquals(f.getIdentifier().toString(), "mf1");
             f = iterator.next();
             assertEquals(f.getIdentifier().toString(), "mf3");
-        } finally {
-            iterator.close();
         }
     }
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
         int size = 0;
-        FeatureIterator<Feature> i = features.features();
-        try {
+        try (FeatureIterator<Feature> i = features.features()) {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        } finally {
-            i.close();
         }
         return size;
     }

@@ -23,7 +23,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -308,7 +307,7 @@ public final class CoverageUtilities {
         for (int i = 0; i < background.length; i++) {
             // try to use the no data category if preset
             final List<Category> categories = sampleDimensions[i].getCategories();
-            if (categories != null && categories.size() > 0) {
+            if (categories != null && !categories.isEmpty()) {
                 for (Category category : categories) {
                     if (category.getName().equals(NODATA)) {
                         background[i] = category.getRange().getMinimum();
@@ -320,7 +319,7 @@ public final class CoverageUtilities {
 
             if (!found) {
                 // we don't have a proper no data value, let's try to suggest something
-                // meaningful fro mthe data type for this coverage
+                // meaningful from the data type for this coverage
                 background[i] = suggestNoDataValue(dataType).doubleValue();
             }
 
@@ -553,10 +552,6 @@ public final class CoverageUtilities {
         final Properties properties = new Properties();
         try (InputStream stream = new BufferedInputStream(propsURL.openStream())) {
             properties.load(stream);
-        } catch (FileNotFoundException e) {
-            if (FeatureUtilities.LOGGER.isLoggable(Level.SEVERE))
-                FeatureUtilities.LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            return null;
         } catch (IOException e) {
             if (FeatureUtilities.LOGGER.isLoggable(Level.SEVERE))
                 FeatureUtilities.LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);

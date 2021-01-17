@@ -16,7 +16,9 @@
  */
 package org.geotools.coverage.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageTestBase;
@@ -57,8 +59,8 @@ public class IsCoverageTest extends GridCoverageTestBase {
         build.add("testName");
         build.add(null);
         feature = build.buildFeature(null);
-        assertEquals(false, isCoverage.evaluate(feature));
-        assertEquals(true, isNotCoverage.evaluate(feature));
+        assertFalse(isCoverage.evaluate(feature));
+        assertTrue(isNotCoverage.evaluate(feature));
     }
 
     @Test

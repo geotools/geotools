@@ -17,7 +17,7 @@
 
 package org.geotools.swing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 import org.geotools.swing.testutils.MultiRepTestRunner;

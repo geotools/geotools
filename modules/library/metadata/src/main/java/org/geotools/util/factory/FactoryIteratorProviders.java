@@ -16,7 +16,6 @@
  */
 package org.geotools.util.factory;
 
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.geotools.util.XArray;
@@ -79,7 +78,7 @@ final class FactoryIteratorProviders {
             if (iteratorProviders != null) {
                 iteratorProviders.retainAll(GLOBAL.iteratorProviders);
             } else if (!GLOBAL.iteratorProviders.isEmpty()) {
-                iteratorProviders = new LinkedHashSet<FactoryIteratorProvider>();
+                iteratorProviders = new LinkedHashSet<>();
             }
             /*
              * If 'addFactoryIteratorProvider(...)' has been invoked since the last time
@@ -88,8 +87,7 @@ final class FactoryIteratorProviders {
              * for a immediate scanning.
              */
             int remaining = GLOBAL.iteratorProviders.size();
-            for (final Iterator it = GLOBAL.iteratorProviders.iterator(); it.hasNext(); ) {
-                final FactoryIteratorProvider candidate = (FactoryIteratorProvider) it.next();
+            for (final FactoryIteratorProvider candidate : GLOBAL.iteratorProviders) {
                 if (iteratorProviders.add(candidate)) {
                     if (newProviders == null) {
                         newProviders = new FactoryIteratorProvider[remaining];
@@ -114,7 +112,7 @@ final class FactoryIteratorProviders {
     public static void addFactoryIteratorProvider(FactoryIteratorProvider provider) {
         synchronized (GLOBAL) {
             if (GLOBAL.iteratorProviders == null) {
-                GLOBAL.iteratorProviders = new LinkedHashSet<FactoryIteratorProvider>();
+                GLOBAL.iteratorProviders = new LinkedHashSet<>();
             }
             if (GLOBAL.iteratorProviders.add(provider)) {
                 GLOBAL.modifications++;

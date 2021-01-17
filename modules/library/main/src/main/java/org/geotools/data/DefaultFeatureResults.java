@@ -197,7 +197,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
 
         int maxFeatures = query.getMaxFeatures();
         if (maxFeatures != Integer.MAX_VALUE) {
-            reader = new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(reader, maxFeatures);
+            reader = new MaxFeatureReader<>(reader, maxFeatures);
         }
         if (transform != null) {
             reader = new ReprojectFeatureReader(reader, getSchema(), transform);
@@ -210,7 +210,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * designed for bounds computation
      */
     protected FeatureReader<SimpleFeatureType, SimpleFeature> boundsReader() throws IOException {
-        List attributes = new ArrayList();
+        List<String> attributes = new ArrayList<>();
         SimpleFeatureType schema = featureSource.getSchema();
         for (int i = 0; i < schema.getAttributeCount(); i++) {
             AttributeDescriptor at = schema.getDescriptor(i);
@@ -226,7 +226,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
         if (maxFeatures == Integer.MAX_VALUE) {
             return reader;
         } else {
-            return new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(reader, maxFeatures);
+            return new MaxFeatureReader<>(reader, maxFeatures);
         }
     }
 
@@ -254,19 +254,14 @@ public class DefaultFeatureResults extends DataFeatureCollection {
                 SimpleFeature feature;
                 bounds = new ReferencedEnvelope();
 
-                FeatureReader<SimpleFeatureType, SimpleFeature> reader = boundsReader();
-                try {
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = boundsReader()) {
                     while (reader.hasNext()) {
                         feature = reader.next();
                         bounds.include(feature.getBounds());
                     }
-                } finally {
-                    reader.close();
                 }
-            } catch (IllegalAttributeException e) {
+            } catch (IllegalAttributeException | IOException e) {
                 // throw new DataSourceException("Could not read feature ", e);
-                bounds = new ReferencedEnvelope();
-            } catch (IOException e) {
                 bounds = new ReferencedEnvelope();
             }
         }
@@ -299,13 +294,10 @@ public class DefaultFeatureResults extends DataFeatureCollection {
         try {
             count = 0;
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader();
-            try {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader()) {
                 for (; reader.hasNext(); count++) {
                     reader.next();
                 }
-            } finally {
-                reader.close();
             }
 
             return count;
@@ -318,13 +310,10 @@ public class DefaultFeatureResults extends DataFeatureCollection {
         try {
             DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader();
-            try {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader()) {
                 while (reader.hasNext()) {
                     collection.add(reader.next());
                 }
-            } finally {
-                reader.close();
             }
 
             return collection;

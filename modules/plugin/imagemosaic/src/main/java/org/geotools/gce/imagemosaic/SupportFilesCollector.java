@@ -18,7 +18,11 @@ package org.geotools.gce.imagemosaic;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
@@ -66,7 +70,7 @@ public class SupportFilesCollector {
 
     static {
         // Improve that, to be pluggable in future versions
-        COLLECTORS = new HashMap<String, SupportFilesCollector>();
+        COLLECTORS = new HashMap<>();
         String[] PNG_ = new String[] {WLD_, PRJ_, PGW_, WLD, PGW, PRJ};
         String[] JPG_ = new String[] {WLD_, PRJ_, JGW_, WLD, JGW, PRJ};
         String[] GIF_ = new String[] {WLD_, PRJ_, WLD, PRJ};

@@ -128,8 +128,8 @@ public class SpatialFilterTest {
             Collection<SimpleFeature> c1, Collection<SimpleFeature> c2) {
         assertEquals("Actual feature collection was not the expected size", c1.size(), c2.size());
 
-        ArrayList<SimpleFeature> al1 = new ArrayList<SimpleFeature>(c1);
-        ArrayList<SimpleFeature> al2 = new ArrayList<SimpleFeature>(c2);
+        ArrayList<SimpleFeature> al1 = new ArrayList<>(c1);
+        ArrayList<SimpleFeature> al2 = new ArrayList<>(c2);
         Collections.sort(al1, FEATURE_COMPARATOR);
         Collections.sort(al2, FEATURE_COMPARATOR);
 
@@ -489,8 +489,8 @@ public class SpatialFilterTest {
         FeatureReader<SimpleFeatureType, SimpleFeature> fr =
                 this.dataStore.getFeatureReader(allQuery, Transaction.AUTO_COMMIT);
         FilteringFeatureReader<SimpleFeatureType, SimpleFeature> ffr =
-                new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(fr, filter);
-        ArrayList<SimpleFeature> slowResults = new ArrayList<SimpleFeature>();
+                new FilteringFeatureReader<>(fr, filter);
+        ArrayList<SimpleFeature> slowResults = new ArrayList<>();
         collectResults(ffr, slowResults);
         ffr.close();
 
@@ -505,7 +505,7 @@ public class SpatialFilterTest {
                 new Query(testData.getTempTableName(), filter, safePropertyNames(ft));
         fr = this.dataStore.getFeatureReader(filteringQuery, Transaction.AUTO_COMMIT);
 
-        ArrayList<SimpleFeature> fastResults = new ArrayList<SimpleFeature>();
+        ArrayList<SimpleFeature> fastResults = new ArrayList<>();
         collectResults(fr, fastResults);
         fr.close();
         endTime = System.currentTimeMillis();
@@ -526,7 +526,7 @@ public class SpatialFilterTest {
     }
 
     private String[] safePropertyNames(FeatureType ft) {
-        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<>();
         for (PropertyDescriptor descriptor : ft.getDescriptors()) {
             Class<?> binding = descriptor.getType().getBinding();
             if (Calendar.class.equals(binding)) {

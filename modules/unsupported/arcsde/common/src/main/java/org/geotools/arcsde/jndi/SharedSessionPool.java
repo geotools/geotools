@@ -49,8 +49,7 @@ public final class SharedSessionPool implements ISessionPool {
     private final ISessionPool delegate;
 
     private static final Map<ArcSDEConnectionConfig, SharedSessionPool> instances =
-            Collections.synchronizedMap(
-                    new WeakHashMap<ArcSDEConnectionConfig, SharedSessionPool>());
+            Collections.synchronizedMap(new WeakHashMap<>());
 
     protected SharedSessionPool(final ISessionPool delegate) throws IOException {
         this.delegate = delegate;

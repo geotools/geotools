@@ -181,8 +181,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
              * may have a "South along 180 deg" direction.
              */
             final String name = axis[i].getName().getCode();
-            for (int j = 0; j < DIRECTION_CHECKS.length; j++) {
-                final DefaultCoordinateSystemAxis candidate = DIRECTION_CHECKS[j];
+            for (final DefaultCoordinateSystemAxis candidate : DIRECTION_CHECKS) {
                 if (candidate.nameMatches(name)) {
                     final AxisDirection expected = candidate.getDirection();
                     if (!direction.equals(expected)) {
@@ -219,7 +218,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      * formatted in different locales.
      */
     static Map<String, Object> name(final int key) {
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         final InternationalString name = Vocabulary.formatInternational(key);
         properties.put(NAME_KEY, name.toString());
         properties.put(ALIAS_KEY, name);
@@ -423,8 +422,8 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
     final Unit<?> getDistanceUnit() {
         Unit<?> unit = distanceUnit; // Avoid the need for synchronization.
         if (unit == null) {
-            for (int i = 0; i < axis.length; i++) {
-                final Unit<?> candidate = axis[i].getUnit();
+            for (CoordinateSystemAxis axi : axis) {
+                final Unit<?> candidate = axi.getUnit();
                 if (candidate != null && !candidate.isCompatible(SI.RADIAN)) {
                     // TODO: checks the unit scale type (keeps RATIO only).
                     if (unit != null) {
@@ -564,8 +563,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
         final DefaultCoordinateSystemAxis[] axis0 = getDefaultAxis(this);
         final DefaultCoordinateSystemAxis[] axis1 = getDefaultAxis(userCS);
         next:
-        for (int i = 0; i < axis0.length; i++) {
-            final DefaultCoordinateSystemAxis direct = axis0[i];
+        for (final DefaultCoordinateSystemAxis direct : axis0) {
             final DefaultCoordinateSystemAxis opposite = direct.getOpposite();
             for (int j = 0; j < axis1.length; j++) {
                 final DefaultCoordinateSystemAxis candidate = axis1[j];
@@ -593,8 +591,8 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             checks[i] = userCS.getAxis(i).getDirection().absolute();
         }
         next:
-        for (int i = 0; i < axis.length; i++) {
-            final AxisDirection direction = axis[i].getDirection().absolute();
+        for (CoordinateSystemAxis axi : axis) {
+            final AxisDirection direction = axi.getDirection().absolute();
             for (int j = 0; j < checks.length; j++) {
                 final AxisDirection candidate = checks[j];
                 if (candidate != null && candidate.equals(direction)) {
@@ -637,8 +635,8 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID;
-        for (int i = 0; i < axis.length; i++) {
-            code = code * 37 + axis[i].hashCode();
+        for (CoordinateSystemAxis axi : axis) {
+            code = code * 37 + axi.hashCode();
         }
         return code;
     }
@@ -654,8 +652,8 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      */
     @Override
     protected String formatWKT(final Formatter formatter) {
-        for (int i = 0; i < axis.length; i++) {
-            formatter.append(axis[i]);
+        for (CoordinateSystemAxis axi : axis) {
+            formatter.append(axi);
         }
         formatter.setInvalidWKT(CoordinateSystem.class);
         return super.formatWKT(formatter);

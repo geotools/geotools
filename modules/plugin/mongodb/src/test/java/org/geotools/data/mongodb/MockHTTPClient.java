@@ -31,7 +31,7 @@ import org.geotools.data.ows.HTTPResponse;
 public class MockHTTPClient implements HTTPClient {
 
     /** Mocks HTTP calls */
-    Map<String, HTTPResponse> expectGet = new HashMap<String, HTTPResponse>();
+    Map<String, HTTPResponse> expectGet = new HashMap<>();
 
     public MockHTTPClient() {}
 

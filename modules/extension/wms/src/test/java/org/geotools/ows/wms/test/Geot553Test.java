@@ -18,7 +18,6 @@ package org.geotools.ows.wms.test;
 
 import java.io.IOException;
 import java.net.URL;
-import junit.framework.TestCase;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.ows.MockHttpClient;
 import org.geotools.ows.MockHttpResponse;
@@ -26,11 +25,14 @@ import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.WebMapServer;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class Geot553Test extends TestCase {
+public class Geot553Test {
 
+    @Test
     public void testGeot553() throws Exception {
         // -247941.17083210908,5334613.737657672,-194536.86526633866,5359024.191696413
         double minx = -247941.17083210908;
@@ -62,6 +64,6 @@ public class Geot553Test extends TestCase {
 
         Envelope env = wms.getEnvelope(layer, CRS.decode("EPSG:3005"));
 
-        assertNotNull(env);
+        Assert.assertNotNull(env);
     }
 }

@@ -61,7 +61,7 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
     }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema(), features());
+        return new DelegateFeatureReader<>(getSchema(), features());
     }
 
     public SimpleFeatureIterator features() {

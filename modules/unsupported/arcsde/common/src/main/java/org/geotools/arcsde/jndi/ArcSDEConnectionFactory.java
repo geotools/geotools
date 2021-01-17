@@ -27,7 +27,6 @@ import static org.geotools.arcsde.session.ArcSDEConnectionConfig.SERVER_NAME_PAR
 import static org.geotools.arcsde.session.ArcSDEConnectionConfig.USER_NAME_PARAM_NAME;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -80,6 +79,7 @@ import org.geotools.arcsde.session.SessionPoolFactory;
  * @version $Id$
  * @since 2.5.7
  */
+@SuppressWarnings("PMD.ReplaceHashtableWithMap") // legacy code
 public class ArcSDEConnectionFactory implements ObjectFactory {
 
     private static final Logger LOGGER = Loggers.getLogger("org.geotools.arcsde.jndi");
@@ -126,7 +126,7 @@ public class ArcSDEConnectionFactory implements ObjectFactory {
         return dereferencedObject;
     }
 
-    public ISessionPool getInstance(Map<String, Serializable> properties) throws IOException {
+    public ISessionPool getInstance(Map<String, ?> properties) throws IOException {
         ArcSDEConnectionConfig config = ArcSDEConnectionConfig.fromMap(properties);
         return getInstance(config);
     }

@@ -71,8 +71,8 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
 
     private SimpleFeatureType inlineFeatureType = null;
     RemoteOWS remoteOWS;
-    List<Style> styles = new ArrayList<Style>();
-    List<FeatureTypeConstraint> constraints = new ArrayList<FeatureTypeConstraint>();
+    List<Style> styles = new ArrayList<>();
+    List<FeatureTypeConstraint> constraints = new ArrayList<>();
 
     public RemoteOWS getRemoteOWS() {
         return remoteOWS;
@@ -116,7 +116,7 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
     }
 
     public Style[] getUserStyles() {
-        return (Style[]) styles.toArray(new Style[0]);
+        return styles.toArray(new Style[0]);
     }
 
     public void setUserStyles(Style[] styles) {

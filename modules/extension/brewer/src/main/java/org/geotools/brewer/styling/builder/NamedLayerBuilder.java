@@ -24,12 +24,11 @@ import org.geotools.styling.Style;
 
 public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
 
-    List<FeatureTypeConstraintBuilder> featureTypeConstraint =
-            new ArrayList<FeatureTypeConstraintBuilder>();
+    List<FeatureTypeConstraintBuilder> featureTypeConstraint = new ArrayList<>();
 
     private String name;
 
-    List<StyleBuilder> styles = new ArrayList<StyleBuilder>();
+    List<StyleBuilder> styles = new ArrayList<>();
 
     public NamedLayerBuilder() {
         this(null);
@@ -60,7 +59,7 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         }
         NamedLayer layer = sf.createNamedLayer();
         layer.setName(name);
-        List<FeatureTypeConstraint> list = new ArrayList<FeatureTypeConstraint>();
+        List<FeatureTypeConstraint> list = new ArrayList<>();
         for (FeatureTypeConstraintBuilder constraint : featureTypeConstraint) {
             list.add(constraint.build());
         }

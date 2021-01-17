@@ -16,28 +16,32 @@
  */
 package org.geotools.data.util;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
-public class GeometryConverterFactoryTest extends TestCase {
+public class GeometryConverterFactoryTest {
 
     GeometryConverterFactory factory;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         factory = new GeometryConverterFactory();
     }
 
+    @Test
     public void testEnvelopeToGeometry() throws Exception {
         Geometry geometry =
                 factory.createConverter(Envelope.class, Geometry.class, null)
                         .convert(
                                 new Envelope(new Coordinate(0, 0), new Coordinate(1, 1)),
                                 Geometry.class);
-        assertNotNull(geometry);
-        assertTrue(
+        Assert.assertNotNull(geometry);
+        Assert.assertTrue(
                 new GeometryFactory()
                         .createPolygon(
                                 new GeometryFactory()
@@ -53,6 +57,7 @@ public class GeometryConverterFactoryTest extends TestCase {
                         .equalsTopo(geometry));
     }
 
+    @Test
     public void testGeometryToEnvelope() throws Exception {
         Envelope envelope =
                 factory.createConverter(Geometry.class, Envelope.class, null)
@@ -71,15 +76,16 @@ public class GeometryConverterFactoryTest extends TestCase {
                                                 null),
                                 Envelope.class);
 
-        assertEquals(new Envelope(new Coordinate(0, 0), new Coordinate(1, 1)), envelope);
+        Assert.assertEquals(new Envelope(new Coordinate(0, 0), new Coordinate(1, 1)), envelope);
     }
 
+    @Test
     public void testStringToGeometry() throws Exception {
         Geometry geometry =
                 factory.createConverter(String.class, Geometry.class, null)
                         .convert("POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))", Geometry.class);
-        assertNotNull(geometry);
-        assertTrue(
+        Assert.assertNotNull(geometry);
+        Assert.assertTrue(
                 new GeometryFactory()
                         .createPolygon(
                                 new GeometryFactory()
@@ -95,6 +101,7 @@ public class GeometryConverterFactoryTest extends TestCase {
                         .equalsTopo(geometry));
     }
 
+    @Test
     public void testGeometryToString() throws Exception {
         String wkt =
                 factory.createConverter(Geometry.class, String.class, null)
@@ -113,6 +120,6 @@ public class GeometryConverterFactoryTest extends TestCase {
                                                 null),
                                 String.class);
 
-        assertEquals("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", wkt);
+        Assert.assertEquals("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", wkt);
     }
 }

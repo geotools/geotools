@@ -53,7 +53,7 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * A base class for metadata applicable to reference system objects. When {@link
@@ -631,7 +631,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     public static Map<String, Object> getProperties(
             final IdentifiedObject info, final Citation authority) {
-        final Map<String, Object> properties = new HashMap<String, Object>(getProperties(info));
+        final Map<String, Object> properties = new HashMap<>(getProperties(info));
         properties.put(NAME_KEY, new NamedIdentifier(authority, info.getName().getCode()));
         properties.remove(IDENTIFIERS_KEY);
         return properties;
@@ -746,7 +746,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     public static String getName(final IdentifiedObject info, final Citation authority) {
         if (info instanceof AbstractIdentifiedObject) {
-            // Gives a chances to subclasses to get their overridden method invoked.
+            // Gives a chance for subclasses to get their overridden method invoked.
             return ((AbstractIdentifiedObject) info).getName(authority);
         }
         return getName0(info, authority);
@@ -1071,7 +1071,7 @@ public class AbstractIdentifiedObject extends Formattable
             case 1:
                 return Collections.singleton(array[0]);
             default:
-                return Collections.unmodifiableSet(new LinkedHashSet<E>(Arrays.asList(array)));
+                return Collections.unmodifiableSet(new LinkedHashSet<>(Arrays.asList(array)));
         }
     }
 

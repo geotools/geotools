@@ -56,7 +56,7 @@ public final class GML extends XSD {
     /** private constructor */
     private GML() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(XLINK.getInstance());
         dependencies.add(GMD.getInstance());
     }
@@ -2548,7 +2548,7 @@ public final class GML extends XSD {
         // reuse the regular gml3 type mapping profile bindings, but override
         // the namespace uri
         Schema gml3Profile = org.geotools.gml3.GML.getInstance().getTypeMappingProfile();
-        Set profile = new LinkedHashSet();
+        Set<Name> profile = new LinkedHashSet<>();
         for (Name n : gml3Profile.keySet()) {
             n = new NameImpl(NAMESPACE, n.getLocalPart());
             if (typeSchema.get(n) != null) {
@@ -2571,7 +2571,7 @@ public final class GML extends XSD {
         schema =
                 Schemas.parse(
                         getSchemaLocation(),
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         Collections.singletonList(
                                 new XSDSchemaLocationResolver() {
                                     public String resolveSchemaLocation(
@@ -2593,9 +2593,7 @@ public final class GML extends XSD {
                                                         .resolve(schemaLocationURI)
                                                         .toString();
                                             }
-                                        } catch (URISyntaxException e) {
-                                            throw new RuntimeException(e);
-                                        } catch (MalformedURLException e) {
+                                        } catch (URISyntaxException | MalformedURLException e) {
                                             throw new RuntimeException(e);
                                         }
                                     }

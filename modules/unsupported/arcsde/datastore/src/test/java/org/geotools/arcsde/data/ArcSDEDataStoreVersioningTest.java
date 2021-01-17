@@ -100,8 +100,7 @@ public class ArcSDEDataStoreVersioningTest {
             session.dispose();
         }
 
-        Map<String, Serializable> params =
-                new HashMap<String, Serializable>(testData.getConProps());
+        Map<String, Serializable> params = new HashMap<>(testData.getConProps());
         ArcSDEDataStoreFactory factory = new ArcSDEDataStoreFactory();
         defaultVersionDataStore = factory.createDataStore(params);
 
@@ -141,8 +140,9 @@ public class ArcSDEDataStoreVersioningTest {
 
     @Test
     public void testMultiVersionSupportTransaction() throws IOException {
-        DefaultTransaction transaction = new DefaultTransaction();
-        testMultiVersionSupport(transaction);
+        try (DefaultTransaction transaction = new DefaultTransaction()) {
+            testMultiVersionSupport(transaction);
+        }
     }
 
     private void testMultiVersionSupport(final Transaction transaction) throws IOException {

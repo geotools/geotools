@@ -16,8 +16,13 @@
  */
 package org.geotools.data.elasticsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +51,8 @@ public class ElasticAttributeTest {
 
     private String dateFormat;
 
+    private List<String> validDateFormats;
+
     private boolean analyzed;
 
     private boolean stored;
@@ -65,6 +72,8 @@ public class ElasticAttributeTest {
         srid = 10;
         order = 1;
         dateFormat = "yyyy-mm-dd";
+        validDateFormats = new ArrayList<>();
+        validDateFormats.add(dateFormat);
         analyzed = true;
         stored = true;
         nested = true;
@@ -80,6 +89,7 @@ public class ElasticAttributeTest {
         attr.setSrid(srid);
         attr.setOrder(order);
         attr.setDateFormat(dateFormat);
+        attr.setValidDateFormats(validDateFormats);
         attr.setAnalyzed(analyzed);
         attr.setStored(stored);
         attr.setNested(nested);
@@ -92,6 +102,7 @@ public class ElasticAttributeTest {
         assertEquals(attr.getSrid(), srid, 1e-10);
         assertEquals(attr.getOrder(), Integer.valueOf(order));
         assertEquals(attr.getDateFormat(), dateFormat);
+        assertEquals(attr.getValidDateFormats(), validDateFormats);
         assertEquals(attr.getAnalyzed(), analyzed);
         assertEquals(attr.isStored(), stored);
         assertEquals(attr.isNested(), nested);
@@ -112,7 +123,7 @@ public class ElasticAttributeTest {
     @Test
     public void testEquals() {
         assertEquals(attr, new ElasticAttribute("theName"));
-        assertTrue(!attr.equals(new ElasticAttribute("name")));
+        assertFalse(attr.equals(new ElasticAttribute("name")));
     }
 
     @Test
@@ -150,6 +161,6 @@ public class ElasticAttributeTest {
         attr.setCustomName(customName);
         assertEquals(attr.getCustomName(), normalizedName);
         attr.setCustomName(null);
-        assertEquals(attr.getCustomName(), null);
+        assertNull(attr.getCustomName());
     }
 }

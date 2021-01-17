@@ -50,11 +50,11 @@ public class PolygonNotOverlappingLineValidation extends PolygonLineAbstractVali
      * @param results Used to coallate results information
      * @return <code>true</code> if all the features pass this test.
      */
-    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+    public boolean validate(
+            Map<String, SimpleFeatureSource> layers, Envelope envelope, ValidationResults results)
             throws Exception {
-        SimpleFeatureSource polySource1 = (SimpleFeatureSource) layers.get(getPolygonTypeRef());
-        SimpleFeatureSource polySource2 =
-                (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
+        SimpleFeatureSource polySource1 = layers.get(getPolygonTypeRef());
+        SimpleFeatureSource polySource2 = layers.get(getRestrictedLineTypeRef());
 
         Object[] poly1 = polySource1.getFeatures().toArray();
         Object[] poly2 = polySource2.getFeatures().toArray();
@@ -75,12 +75,12 @@ public class PolygonNotOverlappingLineValidation extends PolygonLineAbstractVali
             return false;
         }
 
-        for (int i = 0; i < poly1.length; i++) {
-            SimpleFeature tmp = (SimpleFeature) poly1[i];
+        for (Object value : poly1) {
+            SimpleFeature tmp = (SimpleFeature) value;
             Geometry gt = (Geometry) tmp.getDefaultGeometry();
 
-            for (int j = 0; j < poly2.length; j++) {
-                SimpleFeature tmp2 = (SimpleFeature) poly2[j];
+            for (Object o : poly2) {
+                SimpleFeature tmp2 = (SimpleFeature) o;
                 Geometry gt2 = (Geometry) tmp2.getDefaultGeometry();
 
                 if (gt2.touches(gt)) {

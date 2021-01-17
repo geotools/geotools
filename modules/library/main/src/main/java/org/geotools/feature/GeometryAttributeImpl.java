@@ -68,7 +68,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
     }
 
     public void setValue(Object newValue) throws IllegalArgumentException, IllegalStateException {
-        super.setValue((Geometry) newValue);
+        super.setValue(newValue);
     }
 
     public void setValue(Geometry geometry) {
@@ -88,7 +88,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         if (bounds == null) {
             ReferencedEnvelope bbox =
                     new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
-            Geometry geom = (Geometry) getValue();
+            Geometry geom = getValue();
             if (geom != null) {
                 bbox.expandToInclude(geom.getEnvelopeInternal());
             } else {

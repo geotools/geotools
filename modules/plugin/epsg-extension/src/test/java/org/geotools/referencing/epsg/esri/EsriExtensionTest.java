@@ -20,12 +20,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Set;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.junit.Assert;
+import org.junit.Before;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -40,152 +39,145 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jody Garnett
  * @author Martin Desruisseaux
  */
-public class EsriExtensionTest extends TestCase {
+public class EsriExtensionTest {
     /** The factory to test. */
     private EsriExtension factory;
 
-    /** Returns the test suite. */
-    public static Test suite() {
-        return new TestSuite(EsriExtensionTest.class);
-    }
-
-    /**
-     * Run the test from the command line. Options: {@code -verbose}.
-     *
-     * @param args the command line arguments.
-     */
-    public static void main(final String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /** Creates a test case with the specified name. */
-    public EsriExtensionTest(final String name) {
-        super(name);
-    }
-
     /** Get the authority factory for ESRI. */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         factory = (EsriExtension) ReferencingFactoryFinder.getCRSAuthorityFactory("ESRI", null);
     }
 
     /** Tests the authority code. */
+    @org.junit.Test
     public void testAuthority() {
         Citation authority = factory.getAuthority();
-        assertNotNull(authority);
-        assertEquals("ESRI", authority.getTitle().toString());
-        assertTrue(factory instanceof EsriExtension);
+        Assert.assertNotNull(authority);
+        Assert.assertEquals("ESRI", authority.getTitle().toString());
+        Assert.assertTrue(factory instanceof EsriExtension);
     }
 
     /** Tests the vendor. */
+    @org.junit.Test
     public void testVendor() {
         Citation vendor = factory.getVendor();
-        assertNotNull(vendor);
-        assertEquals("Geotools", vendor.getTitle().toString());
+        Assert.assertNotNull(vendor);
+        Assert.assertEquals("Geotools", vendor.getTitle().toString());
     }
 
     /** Tests the codes. */
+    @org.junit.Test
     public void testCodes() throws FactoryException {
-        final Set codes = factory.getAuthorityCodes(IdentifiedObject.class);
-        final Set subset = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
-        assertNotNull(codes);
-        assertEquals(codes.size(), subset.size());
-        assertTrue(codes.containsAll(subset));
-        assertFalse(codes.contains("26910")); // This is an EPSG code.
+        final Set<String> codes = factory.getAuthorityCodes(IdentifiedObject.class);
+        final Set<String> subset = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
+        Assert.assertNotNull(codes);
+        Assert.assertEquals(codes.size(), subset.size());
+        Assert.assertTrue(codes.containsAll(subset));
+        Assert.assertFalse(codes.contains("26910")); // This is an EPSG code.
         // The following number may be adjusted if esri.properties is updated.
-        assertEquals(798, codes.size());
+        Assert.assertEquals(798, codes.size());
     }
 
     /** Checks for duplication with EPSG-HSQL. */
+    @org.junit.Test
     public void testDuplication() throws FactoryException {
         final StringWriter buffer = new StringWriter();
         final PrintWriter writer = new PrintWriter(buffer);
         final Set duplicated = factory.reportDuplicatedCodes(writer);
-        assertTrue(buffer.toString(), duplicated.isEmpty());
+        Assert.assertTrue(buffer.toString(), duplicated.isEmpty());
     }
 
     /** Checks for CRS instantiations. */
+    @org.junit.Test
     public void testInstantiation() throws FactoryException {
         final StringWriter buffer = new StringWriter();
         final PrintWriter writer = new PrintWriter(buffer);
         final Set duplicated = factory.reportInstantiationFailures(writer);
         // The following number may be adjusted if esri.properties is updated.
-        assertTrue(buffer.toString(), duplicated.size() <= 87);
+        Assert.assertTrue(buffer.toString(), duplicated.size() <= 87);
     }
 
     /** Tests an EPSG code. */
+    @org.junit.Test
     public void test26910() throws FactoryException {
         try {
             CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("26910");
-            fail();
+            Assert.fail();
         } catch (NoSuchAuthorityCodeException e) {
             // This is the expected exception.
         }
     }
 
     /** Tests an EPSG code. */
+    @org.junit.Test
     public void test4326() throws FactoryException {
         try {
             CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("4326");
-            fail();
+            Assert.fail();
         } catch (NoSuchAuthorityCodeException e) {
             // This is the expected exception.
         }
     }
 
     /** Tests an EPSG code. */
+    @org.junit.Test
     public void test4269() throws FactoryException {
         try {
             CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("4269");
-            fail();
+            Assert.fail();
         } catch (NoSuchAuthorityCodeException e) {
             // This is the expected exception.
         }
     }
 
     /** Tests an extra code (neither EPSG or ESRI). */
+    @org.junit.Test
     public void test42333() throws FactoryException {
         try {
             CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("42333");
-            fail();
+            Assert.fail();
         } catch (NoSuchAuthorityCodeException e) {
             // This is the expected exception.
         }
     }
 
     /** Tests an ESRI code. */
+    @org.junit.Test
     public void test30591() throws FactoryException {
         final CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("30591");
-        assertSame(crs, factory.createCoordinateReferenceSystem("ESRI:30591"));
-        assertSame(crs, factory.createCoordinateReferenceSystem("esri:30591"));
-        assertSame(crs, factory.createCoordinateReferenceSystem(" ESRI : 30591 "));
-        assertSame(crs, factory.createCoordinateReferenceSystem("EPSG:30591"));
-        assertSame(crs, factory.createObject("30591"));
+        Assert.assertSame(crs, factory.createCoordinateReferenceSystem("ESRI:30591"));
+        Assert.assertSame(crs, factory.createCoordinateReferenceSystem("esri:30591"));
+        Assert.assertSame(crs, factory.createCoordinateReferenceSystem(" ESRI : 30591 "));
+        Assert.assertSame(crs, factory.createCoordinateReferenceSystem("EPSG:30591"));
+        Assert.assertSame(crs, factory.createObject("30591"));
         final Set identifiers = crs.getIdentifiers();
-        assertNotNull(identifiers);
-        assertFalse(identifiers.isEmpty());
+        Assert.assertNotNull(identifiers);
+        Assert.assertFalse(identifiers.isEmpty());
 
         String asString = identifiers.toString();
-        assertTrue(asString, identifiers.contains(new NamedIdentifier(Citations.ESRI, "30591")));
-        assertTrue(asString, identifiers.contains(new NamedIdentifier(Citations.EPSG, "30591")));
+        Assert.assertTrue(
+                asString, identifiers.contains(new NamedIdentifier(Citations.ESRI, "30591")));
+        Assert.assertTrue(
+                asString, identifiers.contains(new NamedIdentifier(Citations.EPSG, "30591")));
 
         final Iterator iterator = identifiers.iterator();
         Identifier identifier;
 
         // Checks the first identifier.
-        assertTrue(iterator.hasNext());
+        Assert.assertTrue(iterator.hasNext());
         identifier = (Identifier) iterator.next();
-        assertTrue(identifier instanceof NamedIdentifier);
-        assertEquals(Citations.ESRI, identifier.getAuthority());
-        assertEquals("30591", identifier.getCode());
-        assertEquals("ESRI:30591", identifier.toString());
+        Assert.assertTrue(identifier instanceof NamedIdentifier);
+        Assert.assertEquals(Citations.ESRI, identifier.getAuthority());
+        Assert.assertEquals("30591", identifier.getCode());
+        Assert.assertEquals("ESRI:30591", identifier.toString());
 
         // Checks the second identifier.
-        assertTrue(iterator.hasNext());
+        Assert.assertTrue(iterator.hasNext());
         identifier = (Identifier) iterator.next();
-        assertTrue(identifier instanceof NamedIdentifier);
-        assertEquals(Citations.EPSG, identifier.getAuthority());
-        assertEquals("30591", identifier.getCode());
-        assertEquals("EPSG:30591", identifier.toString());
+        Assert.assertTrue(identifier instanceof NamedIdentifier);
+        Assert.assertEquals(Citations.EPSG, identifier.getAuthority());
+        Assert.assertEquals("30591", identifier.getCode());
+        Assert.assertEquals("EPSG:30591", identifier.toString());
     }
 }

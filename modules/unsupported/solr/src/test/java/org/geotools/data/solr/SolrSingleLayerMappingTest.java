@@ -36,8 +36,8 @@ public class SolrSingleLayerMappingTest extends SolrTestSupport {
     }
 
     @Override
-    protected Map createConnectionParams(String url, Properties fixture) {
-        Map params = new HashMap();
+    protected Map<String, Object> createConnectionParams(String url, Properties fixture) {
+        Map<String, Object> params = new HashMap<>();
         params.put(SolrDataStoreFactory.URL.key, url);
         params.put(SolrDataStoreFactory.LAYER_MAPPER.key, "SINGLE");
         params.put(SolrDataStoreFactory.NAMESPACE.key, SolrDataStoreFactory.NAMESPACE.sample);

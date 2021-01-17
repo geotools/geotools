@@ -71,13 +71,14 @@ public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        FeatureCollection fc = (FeatureCollection) node.getChildValue(FeatureCollection.class);
+        FeatureCollection fc = node.getChildValue(FeatureCollection.class);
         if (fc != null) {
             return fc;
         }
 
-        List features = node.getChildValues(SimpleFeature.class);
+        List<SimpleFeature> features = node.getChildValues(SimpleFeature.class);
         fc = new DelayedSchemaFeatureCollection();
 
         ((Collection) fc).addAll(features);

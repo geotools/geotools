@@ -19,23 +19,26 @@ package org.geotools.gml3.bindings;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
-import junit.framework.TestCase;
+import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xsd.Binding;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** Test {@link GMLConfiguration}. */
-public class GMLConfigurationTest extends TestCase {
+public class GMLConfigurationTest {
 
     /**
      * Check that all bindings in GMLConfiguration have a target (XSD name), and that the GML ones
      * have a Java type.
      */
+    @Test
     @SuppressWarnings("unchecked")
     public void testBindingTypes() throws Exception {
         GMLConfiguration configuration = new GMLConfiguration();
-        assertEquals(GML.NAMESPACE, configuration.getNamespaceURI());
-        Map bindings = configuration.setupBindings();
+        Assert.assertEquals(GML.NAMESPACE, configuration.getNamespaceURI());
+        Map<QName, Object> bindings = configuration.setupBindings();
         for (Object object : bindings.values()) {
             if (object instanceof Class) {
                 Class type = (Class) object;
@@ -43,9 +46,10 @@ public class GMLConfigurationTest extends TestCase {
                     Constructor c = type.getConstructors()[0];
                     Object[] params = new Object[c.getParameterTypes().length];
                     Binding binding = (Binding) c.newInstance(params);
-                    assertNotNull(binding.getTarget());
+                    Assert.assertNotNull(binding.getTarget());
                     if (binding.getTarget().getNamespaceURI().equals(GML.NAMESPACE)) {
-                        assertNotNull(binding.getTarget() + " has a null type", binding.getType());
+                        Assert.assertNotNull(
+                                binding.getTarget() + " has a null type", binding.getType());
                     }
                 }
             }

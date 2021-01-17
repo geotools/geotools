@@ -16,7 +16,12 @@
  */
 package org.geotools.arcsde;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -121,7 +126,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
     @Ignore // TODO: revisit
     public void testCreateDataStore_MapParams() throws IOException {
         String jndiRef = "MyArcSdeResource";
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ArcSDEJNDIDataStoreFactory.JNDI_REFNAME.key, jndiRef);
 
         Map<String, Serializable> config = testData.getConProps();
@@ -150,11 +155,11 @@ public class ArcSDEJNDIDataStoreFactoryTest {
     @Ignore // TODO: revisit
     public void testCreateDataStore_SessionPool() throws IOException {
         String jndiRef = "MyArcSdeResource_SessionPool";
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ArcSDEJNDIDataStoreFactory.JNDI_REFNAME.key, jndiRef);
 
-        ISessionPool pool = testData.getConnectionPool();
-        try {
+        try (ISessionPool pool = testData.getConnectionPool()) {
+
             InitialContext initialContext = GeoTools.getInitialContext(GeoTools.getDefaultHints());
             initialContext.bind(jndiRef, pool);
             assertNotNull(initialContext.lookup(jndiRef));
@@ -173,7 +178,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
     @Test
     public void testCanProcess() {
         assertFalse(factory.canProcess(null));
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         assertFalse(factory.canProcess(params));
         String jndiRef = "java:comp/env/MyArcSdeResource";
         params.put(ArcSDEJNDIDataStoreFactory.JNDI_REFNAME.key, jndiRef);

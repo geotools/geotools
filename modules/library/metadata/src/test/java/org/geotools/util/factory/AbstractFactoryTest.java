@@ -16,10 +16,11 @@
  */
 package org.geotools.util.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.awt.RenderingHints;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests {@link org.geotools.util.factory.AbstractFactory}.
@@ -60,14 +61,14 @@ public final class AbstractFactoryTest {
         f2.hints.put(key2_reference_f3, f3);
         f1.hints.put(key1_reference_f2, f2);
 
-        assertFalse(f1.toString().length() == 0);
+        assertNotEquals(0, f1.toString().length());
 
         assertEquals(f1, f1);
         assertEquals(f2, f2);
         assertEquals(f3, f3);
-        assertFalse(f1.equals(f2)); // Different number of hints.
-        assertFalse(f1.equals(f3)); // Same number of hints, differerent key.
-        assertFalse(f2.equals(f3)); // Different number of hints.
+        assertNotEquals(f1, f2); // Different number of hints.
+        assertNotEquals(f1, f3); // Same number of hints, differerent key.
+        assertNotEquals(f2, f3); // Different number of hints.
 
         // Tests recursivity on a f2 --> f3 --> f1 --> f2 dependency graph.
         final AbstractFactory f1b = new AbstractFactory();
@@ -81,6 +82,6 @@ public final class AbstractFactoryTest {
         assertEquals(f2, f2b);
 
         f1b.hints.put(key1, "Different value");
-        assertFalse(f2.equals(f2b));
+        assertNotEquals(f2, f2b);
     }
 }

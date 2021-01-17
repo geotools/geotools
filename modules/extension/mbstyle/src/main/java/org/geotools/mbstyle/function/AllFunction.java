@@ -61,7 +61,7 @@ import org.opengis.filter.expression.Expression;
  */
 class AllFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("all");
+    public static final FunctionName NAME = new FunctionNameImpl("all");
 
     AllFunction() {
         super(NAME);

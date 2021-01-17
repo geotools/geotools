@@ -20,6 +20,7 @@ package org.geotools.process.vector;
 import java.awt.geom.Point2D;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
+import javax.measure.quantity.Length;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -41,7 +42,7 @@ import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.util.ProgressListener;
 import si.uom.SI;
-import tec.uom.se.AbstractConverter;
+import tech.units.indriya.function.AbstractConverter;
 
 /**
  * Generates a set of polygons, each representing the set of points within a given distance from the
@@ -99,7 +100,8 @@ public class PointBuffers implements VectorProcess {
             if (hor instanceof GeographicCRS) {
                 generator = new GeographicGenerator(center, quadrantSegments, crs);
             } else {
-                Unit unit = hor.getCoordinateSystem().getAxis(0).getUnit();
+                @SuppressWarnings("unchecked")
+                Unit<Length> unit = (Unit<Length>) hor.getCoordinateSystem().getAxis(0).getUnit();
                 UnitConverter converter = SI.METRE.getConverterTo(unit);
                 generator = new MetricGenerator(center, quadrantSegments, converter);
             }

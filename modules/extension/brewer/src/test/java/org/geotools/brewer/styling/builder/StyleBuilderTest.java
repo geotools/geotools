@@ -1,10 +1,10 @@
 package org.geotools.brewer.styling.builder;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -176,7 +176,7 @@ public class StyleBuilderTest {
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
 
-        b = new ExtentBuilder(this);
+        b = new ExtentBuilder<>(this);
     }
 
     @Test
@@ -248,7 +248,7 @@ public class StyleBuilderTest {
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
 
-        b = new LayerFeatureConstraintsBuilder(this);
+        b = new LayerFeatureConstraintsBuilder<>(this);
     }
 
     @Test
@@ -467,7 +467,7 @@ public class StyleBuilderTest {
      * ); properties.add( uom );
      *
      * ComplexType MEASURE_TYPE = factory.createComplexType( new NameImpl("MeasureType"),
-     * properties, true, false, Collections.EMPTY_LIST, null, null );
+     * properties, true, false, Collections.emptyList(), null, null );
      *
      *
      * }

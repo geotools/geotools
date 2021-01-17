@@ -19,9 +19,12 @@ package org.geotools.mbtiles;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static org.geotools.mbtiles.MBTilesDataStore.DEFAULT_CRS;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
@@ -217,7 +220,7 @@ public class MBTilesRenderTest {
         while (j < 166) {
             Color noTrans = getPixelColor(i, j, noTransformationImg);
             Color tansformed = getPixelColor(i, j, transformationImg);
-            assertFalse(noTrans.equals(tansformed));
+            assertNotEquals(noTrans, tansformed);
             j++;
         }
     }

@@ -19,7 +19,6 @@ package org.geotools.xsd;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,6 +30,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceImpl;
+import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.SchemaImpl;
@@ -72,7 +72,7 @@ public abstract class XSD {
 
     /** Sets up a profile which uniquely maps a set of java classes to a schema element. */
     protected Schema buildTypeMappingProfile(Schema typeSchema) {
-        return typeSchema.profile(Collections.EMPTY_SET);
+        return typeSchema.profile(Collections.emptySet());
     }
 
     /**
@@ -114,7 +114,7 @@ public abstract class XSD {
      * schema depends on.
      */
     public final List<Schema> getAllTypeMappingProfiles() {
-        LinkedList profiles = new LinkedList();
+        List<Schema> profiles = new LinkedList<>();
         for (XSD xsd : getAllDependencies()) {
             Schema profile = xsd.getTypeMappingProfile();
             if (!profile.isEmpty()) {
@@ -136,7 +136,7 @@ public abstract class XSD {
         if (dependencies == null) {
             synchronized (this) {
                 if (dependencies == null) {
-                    Set<XSD> newDeps = new LinkedHashSet();
+                    Set<XSD> newDeps = new LinkedHashSet<>();
 
                     // bootstrap, every xsd depends on XS
                     newDeps.add(XS.getInstance());
@@ -156,14 +156,14 @@ public abstract class XSD {
         return allDependencies();
     }
 
-    protected List allDependencies() {
-        LinkedList unpacked = new LinkedList();
+    protected List<XSD> allDependencies() {
+        LinkedList<XSD> unpacked = new LinkedList<>();
 
-        Stack stack = new Stack();
+        Stack<XSD> stack = new Stack<>();
         stack.addAll(getDependencies());
 
         while (!stack.isEmpty()) {
-            XSD xsd = (XSD) stack.pop();
+            XSD xsd = stack.pop();
 
             if (!equals(xsd) && !unpacked.contains(xsd)) {
                 unpacked.addFirst(xsd);
@@ -175,7 +175,7 @@ public abstract class XSD {
     }
 
     /** Subclass hook to add additional dependencies. */
-    protected void addDependencies(Set dependencies) {}
+    protected void addDependencies(Set<XSD> dependencies) {}
 
     /** Returns the XSD object representing the contents of the schema. */
     public final XSDSchema getSchema() throws IOException {
@@ -199,11 +199,10 @@ public abstract class XSD {
     protected XSDSchema buildSchema() throws IOException {
         // grab all the dependencies and create schema locators from the build
         // schemas
-        List locators = new ArrayList();
-        List resolvers = new ArrayList();
+        List<XSDSchemaLocator> locators = new ArrayList<>();
+        List<XSDSchemaLocationResolver> resolvers = new ArrayList<>();
 
-        for (Iterator d = allDependencies().iterator(); d.hasNext(); ) {
-            XSD dependency = (XSD) d.next();
+        for (XSD dependency : allDependencies()) {
             SchemaLocator locator = dependency.createSchemaLocator();
 
             if (locator != null) {

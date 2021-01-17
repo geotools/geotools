@@ -17,35 +17,40 @@
 package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.geotools.xsd.impl.NamespaceSupportWrapper;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.xml.sax.helpers.NamespaceSupport;
 
-public class XSQNameBindingTest extends TestCase {
+public class XSQNameBindingTest {
     XSQNameBinding binding;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         NamespaceSupport ns = new NamespaceSupport();
         ns.declarePrefix("foo", "http://foo");
 
         binding = new XSQNameBinding(new NamespaceSupportWrapper(ns));
     }
 
+    @Test
     public void testWithPrefix() throws Exception {
         QName qName = (QName) binding.parse(null, "foo:bar");
-        assertNotNull(qName);
+        Assert.assertNotNull(qName);
 
-        assertEquals("foo", qName.getPrefix());
-        assertEquals("http://foo", qName.getNamespaceURI());
-        assertEquals("bar", qName.getLocalPart());
+        Assert.assertEquals("foo", qName.getPrefix());
+        Assert.assertEquals("http://foo", qName.getNamespaceURI());
+        Assert.assertEquals("bar", qName.getLocalPart());
     }
 
+    @Test
     public void testWithNoPrefix() throws Exception {
         QName qName = (QName) binding.parse(null, "bar:foo");
-        assertNotNull(qName);
+        Assert.assertNotNull(qName);
 
-        assertEquals("bar", qName.getPrefix());
-        assertEquals("", qName.getNamespaceURI());
-        assertEquals("foo", qName.getLocalPart());
+        Assert.assertEquals("bar", qName.getPrefix());
+        Assert.assertEquals("", qName.getNamespaceURI());
+        Assert.assertEquals("foo", qName.getLocalPart());
     }
 }

@@ -136,7 +136,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
 	 */
     public EList<String> getEoId() {
 		if (eoId == null) {
-			eoId = new EDataTypeEList<String>(String.class, this, Wcs20Package.DESCRIBE_EO_COVERAGE_SET_TYPE__EO_ID);
+			eoId = new EDataTypeEList<>(String.class, this, Wcs20Package.DESCRIBE_EO_COVERAGE_SET_TYPE__EO_ID);
 		}
 		return eoId;
 	}
@@ -212,7 +212,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
 	 */
     public EList<DimensionTrimType> getDimensionTrim() {
 		if (dimensionTrim == null) {
-			dimensionTrim = new EObjectResolvingEList<DimensionTrimType>(DimensionTrimType.class, this, Wcs20Package.DESCRIBE_EO_COVERAGE_SET_TYPE__DIMENSION_TRIM);
+			dimensionTrim = new EObjectResolvingEList<>(DimensionTrimType.class, this, Wcs20Package.DESCRIBE_EO_COVERAGE_SET_TYPE__DIMENSION_TRIM);
 		}
 		return dimensionTrim;
 	}

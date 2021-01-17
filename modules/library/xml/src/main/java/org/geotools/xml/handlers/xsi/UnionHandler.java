@@ -36,7 +36,7 @@ public class UnionHandler extends XSIElementHandler {
 
     private String id;
     private String memberTypes;
-    private List simpleTypes;
+    private List<SimpleTypeHandler> simpleTypes;
 
     /** @see java.lang.Object#hashCode() */
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
@@ -55,7 +55,7 @@ public class UnionHandler extends XSIElementHandler {
             // simpleType
             if (SimpleTypeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (simpleTypes == null) {
-                    simpleTypes = new LinkedList();
+                    simpleTypes = new LinkedList<>();
                 }
 
                 SimpleTypeHandler sth = new SimpleTypeHandler();
@@ -97,7 +97,7 @@ public class UnionHandler extends XSIElementHandler {
     }
 
     /** @return list of simpleTypeHandlers representing the nested simpleTypes */
-    public List getSimpleTypes() {
+    public List<SimpleTypeHandler> getSimpleTypes() {
         return simpleTypes;
     }
 

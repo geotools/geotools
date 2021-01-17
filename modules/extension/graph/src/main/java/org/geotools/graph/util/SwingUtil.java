@@ -41,10 +41,12 @@ public class SwingUtil {
         });
     }
 
+    @SuppressWarnings("unchecked")
     public static ListModel toListModel(Collection elements) {
         return (toListModel(new ArrayList(elements)));
     }
 
+    @SuppressWarnings("unchecked")
     public static List toList(ListModel model) {
         ArrayList list = new ArrayList(model.getSize());
         for (int i = 0; i < model.getSize(); i++) {
@@ -56,7 +58,7 @@ public class SwingUtil {
 
     public static void setSelection(JList list, Object element) {
         for (int i = 0; i < list.getModel().getSize(); i++) {
-            Object value = (Object) list.getModel().getElementAt(i);
+            Object value = list.getModel().getElementAt(i);
             if (value == element) {
                 list.setSelectedIndex(i);
                 list.scrollRectToVisible(list.getCellBounds(i, i));
@@ -72,8 +74,8 @@ public class SwingUtil {
                         JList source = (JList) e.getSource();
                         if (e.getClickCount() == 2) {
                             ListSelectionListener[] listeners = source.getListSelectionListeners();
-                            for (int i = 0; i < listeners.length; i++) {
-                                listeners[i].valueChanged(
+                            for (ListSelectionListener listener : listeners) {
+                                listener.valueChanged(
                                         new ListSelectionEvent(
                                                 source,
                                                 source.getSelectedIndex(),

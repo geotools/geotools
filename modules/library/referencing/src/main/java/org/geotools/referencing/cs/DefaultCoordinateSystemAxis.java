@@ -43,7 +43,7 @@ import org.opengis.referencing.cs.RangeMeaning;
 import org.opengis.util.InternationalString;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Definition of a coordinate system axis. This is used to label axes, and indicate the orientation.
@@ -523,7 +523,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * A default axis for time values in a {@linkplain org.opengis.referencing.cs.TimeCS time CS}.
      *
      * <p>Increasing time go toward {@linkplain AxisDirection#FUTURE future} and units are
-     * {@linkplain NonSI#DAY days}.
+     * {@linkplain SI#DAY days}.
      *
      * <p>The abbreviation is lower case "<var>t</var>".
      */
@@ -585,8 +585,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * name is for. The actual axis instance doesn't matter (the algorithm using this map should
      * work for any axis instance); it is just a way to differentiate latitude and longitude.
      */
-    private static final Map<String, CoordinateSystemAxis> ALIASES =
-            new HashMap<String, CoordinateSystemAxis>(12);
+    private static final Map<String, CoordinateSystemAxis> ALIASES = new HashMap<>(12);
 
     static {
         ALIASES.put("lat", GEODETIC_LATITUDE);
@@ -748,6 +747,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         ensureNonNull("abbreviation", abbreviation);
         ensureNonNull("direction", direction);
         ensureNonNull("unit", unit);
+
         if (unit.isCompatible(NonSI.DEGREE_ANGLE)) {
             UnitConverter fromDegrees;
             try {
@@ -817,7 +817,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * this()/super() call in constructors").
      */
     private static Map<String, Object> toMap(final InternationalString name) {
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         if (name != null) {
             // The "null" locale argument is required for getting the unlocalized version.
             properties.put(NAME_KEY, name.toString(null));

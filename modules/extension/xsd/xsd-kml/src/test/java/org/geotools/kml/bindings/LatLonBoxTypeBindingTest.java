@@ -16,20 +16,26 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 
 public class LatLonBoxTypeBindingTest extends KMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(Envelope.class, binding(KML.LatLonBoxType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.LatLonBoxType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<LatLonBox>"

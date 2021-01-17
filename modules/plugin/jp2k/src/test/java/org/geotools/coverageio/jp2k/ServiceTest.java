@@ -17,6 +17,9 @@
  */
 package org.geotools.coverageio.jp2k;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Iterator;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
@@ -47,7 +50,7 @@ public class ServiceTest extends BaseJP2K {
         GridFormatFactorySpi fac = null;
 
         while (list.hasNext()) {
-            fac = (GridFormatFactorySpi) list.next();
+            fac = list.next();
 
             if (fac instanceof JP2KFormatFactory) {
                 found = true;

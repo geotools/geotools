@@ -83,7 +83,7 @@ public class ParameterValueGroupTypeImpl extends AbstractGeneralParameterValueTy
      */
     public EList<AbstractGeneralParameterValueType> getIncludesValue() {
         if (includesValue == null) {
-            includesValue = new EObjectContainmentEList<AbstractGeneralParameterValueType>(AbstractGeneralParameterValueType.class, this, Gml311Package.PARAMETER_VALUE_GROUP_TYPE__INCLUDES_VALUE);
+            includesValue = new EObjectContainmentEList<>(AbstractGeneralParameterValueType.class, this, Gml311Package.PARAMETER_VALUE_GROUP_TYPE__INCLUDES_VALUE);
         }
         return includesValue;
     }

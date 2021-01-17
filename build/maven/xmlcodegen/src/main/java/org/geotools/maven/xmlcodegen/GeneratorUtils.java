@@ -48,44 +48,41 @@ public class GeneratorUtils {
 	 */
 	public static List allTypes( XSDSchema schema ) {
 		//get the named types
-		List types = new ArrayList( schema.getTypeDefinitions() );
+		List<XSDTypeDefinition> types = new ArrayList<>( schema.getTypeDefinitions() );
     	
 		//get anonymous types
-		List anonymous = new ArrayList();
+		List<XSDTypeDefinition> anonymous = new ArrayList<>();
 		
 		//add any anonymous types of global elements + attributes
-		for ( Iterator e = schema.getElementDeclarations().iterator(); e.hasNext(); ) {
-			XSDElementDeclaration element = (XSDElementDeclaration ) e.next();
-			if ( element.getAnonymousTypeDefinition() != null ) {
-				element.getAnonymousTypeDefinition().setName( "_" + element.getName() );
-				anonymous.add( element.getAnonymousTypeDefinition() );
-			}
-		}
-		for ( Iterator a = schema.getAttributeDeclarations().iterator(); a.hasNext(); ) {
-			XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) a.next();
-			if ( attribute.getAnonymousTypeDefinition() != null ) {
-				attribute.getAnonymousTypeDefinition().setName( "_" + attribute.getName() );
-				anonymous.add( attribute.getAnonymousTypeDefinition() );
-			}
-		}
+        for (XSDElementDeclaration element : schema.getElementDeclarations()) {
+            if (element.getAnonymousTypeDefinition() != null) {
+                element.getAnonymousTypeDefinition().setName("_" + element.getName());
+                anonymous.add(element.getAnonymousTypeDefinition());
+            }
+        }
+        for (XSDAttributeDeclaration attribute : schema.getAttributeDeclarations()) {
+            if (attribute.getAnonymousTypeDefinition() != null) {
+                attribute.getAnonymousTypeDefinition().setName("_" + attribute.getName());
+                anonymous.add(attribute.getAnonymousTypeDefinition());
+            }
+        }
     	//add any anonymous types foudn with type definitions
-    	for ( Iterator t = types.iterator(); t.hasNext(); ) {
-    		XSDTypeDefinition type = (XSDTypeDefinition) t.next();
-    		List particles = Schemas.getChildElementParticles( type, false );
-    		for ( Iterator p = particles.iterator(); p.hasNext(); ) {
-    			XSDParticle particle = (XSDParticle) p.next();
-    			XSDElementDeclaration element = (XSDElementDeclaration) particle.getContent();
-    			
-    			//ignore element references, caught in teh above loop
-    			if ( element.isElementDeclarationReference() )
-    				continue;
-    			
-    			if ( element.getAnonymousTypeDefinition() != null ) {
-    				element.getAnonymousTypeDefinition().setName( type.getName() + "_" + element.getName() );
-    				anonymous.add( element.getAnonymousTypeDefinition() );
-    			}
-    		}
-    	}
+        for (XSDTypeDefinition type : types) {
+            List particles = Schemas.getChildElementParticles(type, false);
+            for (Object o : particles) {
+                XSDParticle particle = (XSDParticle) o;
+                XSDElementDeclaration element = (XSDElementDeclaration) particle.getContent();
+
+                //ignore element references, caught in teh above loop
+                if (element.isElementDeclarationReference())
+                    continue;
+
+                if (element.getAnonymousTypeDefinition() != null) {
+                    element.getAnonymousTypeDefinition().setName(type.getName() + "_" + element.getName());
+                    anonymous.add(element.getAnonymousTypeDefinition());
+                }
+            }
+        }
     	
     	types.addAll( anonymous );
     	return types;

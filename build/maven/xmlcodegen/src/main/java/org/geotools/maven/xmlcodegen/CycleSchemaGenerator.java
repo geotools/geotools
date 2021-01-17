@@ -81,11 +81,11 @@ public class CycleSchemaGenerator extends SchemaGenerator {
     @Override
     protected AttributeType createType(final XSDSimpleTypeDefinition xsdType, int depth) {
         if (types.containsKey(xsdType)) {
-            return (AttributeType) types.get(xsdType);
+            return types.get(xsdType);
         }
         // import?
         if (!xsdType.getTargetNamespace().equals(schema.getTargetNamespace())) {
-            return (AttributeType) findType(xsdType);
+            return findType(xsdType);
         }
         System.err.println("Creating simple type " + name(xsdType));
         AttributeType gtType = new AbstractLazyAttributeTypeImpl(name(xsdType), Object.class,
@@ -114,7 +114,7 @@ public class CycleSchemaGenerator extends SchemaGenerator {
     protected AttributeType createType(final XSDComplexTypeDefinition xsdType, int depth) {
         // already processed?
         if (types.containsKey(xsdType)) {
-            return (AttributeType) types.get(xsdType);
+            return types.get(xsdType);
         }
         // import?
         if (!xsdType.getTargetNamespace().equals(schema.getTargetNamespace())) {
@@ -141,8 +141,8 @@ public class CycleSchemaGenerator extends SchemaGenerator {
                     // might need to generate shallow schema classes while bootstrapping
                     return null;
                 } else {
-                    List<PropertyDescriptor> properties = new ArrayList<PropertyDescriptor>();
-                    for (XSDParticle particle : (List<XSDParticle>) Schemas
+                    List<PropertyDescriptor> properties = new ArrayList<>();
+                    for (XSDParticle particle : Schemas
                             .getChildElementParticles(xsdType, false)) {
                         XSDElementDeclaration element = (XSDElementDeclaration) particle
                                 .getContent();
@@ -175,7 +175,7 @@ public class CycleSchemaGenerator extends SchemaGenerator {
                                 minOccurs, maxOccurs, isNillable, null);
                         properties.add(ad);
                     }
-                    for (XSDAttributeDeclaration attribute : (List<XSDAttributeDeclaration>) Schemas
+                    for (XSDAttributeDeclaration attribute : Schemas
                             .getAttributeDeclarations(xsdType, false)) {
                         if (attribute.isAttributeDeclarationReference()) {
                             attribute = attribute.getResolvedAttributeDeclaration();
@@ -233,8 +233,8 @@ public class CycleSchemaGenerator extends SchemaGenerator {
      */
     @Override
     public List<AttributeType> sort() {
-        List<AttributeType> sorted = new ArrayList<AttributeType>(
-                (Collection<AttributeType>) types.values());
+        List<AttributeType> sorted = new ArrayList<>(
+                types.values());
         Collections.sort(sorted, new Comparator<AttributeType>() {
             @Override
             public int compare(AttributeType at1, AttributeType at2) {

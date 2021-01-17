@@ -30,7 +30,7 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FontAlternativesFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "fontAlternatives",
                     parameter("fontList", List.class),

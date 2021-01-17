@@ -18,26 +18,14 @@
 package org.geotools.gce.image;
 
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class ServiceTest extends TestCase {
+public class ServiceTest {
 
-    public ServiceTest() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-    public ServiceTest(String arg0) {
-        super(arg0);
-        // TODO Auto-generated constructor stub
-    }
-
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(ServiceTest.class);
-    }
-
+    @Test
     public void testIsAvailable() {
         Iterator list = GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
@@ -52,6 +40,6 @@ public class ServiceTest extends TestCase {
             }
         }
 
-        assertTrue("WorldImageFormatFactory not registered", found);
+        Assert.assertTrue("WorldImageFormatFactory not registered", found);
     }
 }

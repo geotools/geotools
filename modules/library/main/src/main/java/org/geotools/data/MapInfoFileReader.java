@@ -55,13 +55,13 @@ public class MapInfoFileReader {
             org.geotools.util.logging.Logging.getLogger(MapInfoFileReader.class);
 
     /** Projection mappings Mapinfo -> WKT */
-    private static Map<Integer, String> PROJECTIONS = new HashMap<Integer, String>();
+    private static Map<Integer, String> PROJECTIONS = new HashMap<>();
 
     /** Datum mappings Mapinfo -> WKT */
-    private static Map<Integer, String> DATUMS = new HashMap<Integer, String>();
+    private static Map<Integer, String> DATUMS = new HashMap<>();
 
     /** Unit mappings Mapinfo -> WKT */
-    private static Map<String, String> UNITS = new HashMap<String, String>();
+    private static Map<String, String> UNITS = new HashMap<>();
 
     /** List of parameters */
     private static final String[] PARAMETERS1 =
@@ -371,7 +371,7 @@ public class MapInfoFileReader {
     }
 
     /** The transform builder */
-    private List<MappedPosition> controlPoints = new ArrayList<MappedPosition>();
+    private List<MappedPosition> controlPoints = new ArrayList<>();
 
     /** The Coordinate Reference System */
     private CoordinateReferenceSystem coordinateReferenceSystem;

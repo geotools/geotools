@@ -16,87 +16,98 @@
  */
 package org.geotools.filter.function.math;
 
-import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
-public class ModuloFunctionTest extends TestCase {
+public class ModuloFunctionTest {
 
     private FilterFactory ff;
 
     private String functionName;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         ff = CommonFactoryFinder.getFilterFactory2(null);
         functionName = ModuloFunction.NAME.getName();
     }
 
+    @Test
     public void testModuloInvalidInitNoArgs() {
         try {
             ff.function(functionName);
         } catch (RuntimeException e) {
-            assertEquals("Unable to find function " + functionName, e.getMessage());
+            Assert.assertEquals("Unable to find function " + functionName, e.getMessage());
             return;
         }
 
-        fail("Exception not thrown");
+        Assert.fail("Exception not thrown");
     }
 
+    @Test
     public void testModuloInvalidInitOneArg() {
         try {
             ff.function(functionName, ff.literal(13));
         } catch (RuntimeException e) {
-            assertEquals("Unable to find function " + functionName, e.getMessage());
+            Assert.assertEquals("Unable to find function " + functionName, e.getMessage());
             return;
         }
 
-        fail("Exception not thrown");
+        Assert.fail("Exception not thrown");
     }
 
+    @Test
     public void testModuloInvalidInitThreeArgs() {
         try {
             ff.function(functionName, ff.literal(13), ff.literal(14), ff.literal(15));
         } catch (RuntimeException e) {
-            assertEquals("Unable to find function " + functionName, e.getMessage());
+            Assert.assertEquals("Unable to find function " + functionName, e.getMessage());
             return;
         }
 
-        fail("Exception not thrown");
+        Assert.fail("Exception not thrown");
     }
 
+    @Test
     public void testModulo() {
         Function function = ff.function(functionName, ff.literal(13), ff.literal(4));
 
-        assertEquals(1, function.evaluate(null));
+        Assert.assertEquals(1, function.evaluate(null));
     }
 
+    @Test
     public void testModuloNegativeDividend() {
         Function function = ff.function(functionName, ff.literal(-13), ff.literal(4));
 
-        assertEquals(3, function.evaluate(null));
+        Assert.assertEquals(3, function.evaluate(null));
     }
 
+    @Test
     public void testModuloNegativeDivisor() {
         Function function = ff.function(functionName, ff.literal(13), ff.literal(-4));
 
-        assertEquals(-3, function.evaluate(null));
+        Assert.assertEquals(-3, function.evaluate(null));
     }
 
+    @Test
     public void testModuloFloat() {
         Function function = ff.function(functionName, ff.literal(13.6), ff.literal(4));
 
-        assertEquals(1, function.evaluate(null));
+        Assert.assertEquals(1, function.evaluate(null));
     }
 
+    @Test
     public void testModuloOneDivisor() {
         Function function = ff.function(functionName, ff.literal(13), ff.literal(1));
 
-        assertEquals(0, function.evaluate(null));
+        Assert.assertEquals(0, function.evaluate(null));
     }
 
+    @Test
     public void testModuloZeroDivisor() {
         Function function = ff.function(functionName, ff.literal(13), ff.literal(0));
 
@@ -106,6 +117,6 @@ public class ModuloFunctionTest extends TestCase {
             return;
         }
 
-        fail("IllegalArgumentException not thrown");
+        Assert.fail("IllegalArgumentException not thrown");
     }
 }

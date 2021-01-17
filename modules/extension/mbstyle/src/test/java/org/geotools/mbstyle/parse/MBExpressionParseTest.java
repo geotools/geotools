@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -220,7 +220,7 @@ public class MBExpressionParseTest {
     }
 
     @Test
-    public void testRgbSldTransformation() {
+    public void testRgbSldTransformation() throws Exception {
         MBStyle rgbTest = MBStyle.create(mbstyle);
         SymbolMBLayer rgbLayer = (SymbolMBLayer) rgbTest.layer("rgbExpression");
         List<FeatureTypeStyle> rgbFeatures = rgbLayer.transformInternal(rgbTest);
@@ -230,16 +230,13 @@ public class MBExpressionParseTest {
                         .getColor()
                         .evaluate(null, Color.class));
         assertEquals(new Color(0, 111, 222), sldColor);
-        try {
-            String xml = new SLDTransformer().transform(rgbFeatures.get(0));
-            assertTrue(
-                    xml.contains(
-                            "<sld:Fill><sld:CssParameter name=\"fill\"><ogc:Function name=\"torgb\">"
-                                    + "<ogc:Function name=\"round_2\"><ogc:Literal>0</ogc:Literal></ogc:Function>"
-                                    + "<ogc:Function name=\"round_2\"><ogc:Literal>111</ogc:Literal></ogc:Function><ogc:Function name=\"round_2\">"
-                                    + "<ogc:Literal>222</ogc:Literal></ogc:Function></ogc:Function></sld:CssParameter></sld:Fill>"));
-        } catch (Exception e) {
-        }
+        String xml = new SLDTransformer().transform(rgbFeatures.get(0));
+        assertTrue(
+                xml.contains(
+                        "<sld:Fill><sld:CssParameter name=\"fill\"><ogc:Function name=\"torgb\">"
+                                + "<ogc:Function name=\"round_2\"><ogc:Literal>0</ogc:Literal></ogc:Function>"
+                                + "<ogc:Function name=\"round_2\"><ogc:Literal>111</ogc:Literal></ogc:Function><ogc:Function name=\"round_2\">"
+                                + "<ogc:Literal>222</ogc:Literal></ogc:Function></ogc:Function></sld:CssParameter></sld:Fill>"));
     }
 
     // ---- DECISION EXPRESSIONS ---------------------------------------------------------

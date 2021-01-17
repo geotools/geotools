@@ -14,23 +14,22 @@
 package org.geotools.ows.wmts.model;
 
 import static org.geotools.ows.wmts.WMTSTestUtils.createCapabilities;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
-import junit.framework.TestCase;
 import org.geotools.data.ows.OperationType;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wmts.WMTSSpecification;
 import org.geotools.ows.wmts.WebMapTileServer;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.metadata.citation.Address;
 import org.xml.sax.SAXException;
 
-public class WMTSCapabilitiesTest extends TestCase {
+public class WMTSCapabilitiesTest {
 
     protected WMTSSpecification spec;
 
@@ -38,26 +37,28 @@ public class WMTSCapabilitiesTest extends TestCase {
         this.spec = new WMTSSpecification();
     }
 
+    @Test
     public void testGetVersion() {
-        assertEquals(spec.getVersion(), "1.0.0");
+        Assert.assertEquals(spec.getVersion(), "1.0.0");
     }
 
     protected void checkProperties(Properties properties) {
-        assertEquals(properties.getProperty("REQUEST"), "GetCapabilities");
-        assertEquals(properties.getProperty("VERSION"), "1.0.0");
+        Assert.assertEquals(properties.getProperty("REQUEST"), "GetCapabilities");
+        Assert.assertEquals(properties.getProperty("VERSION"), "1.0.0");
     }
 
+    @Test
     public void testCreateParser() throws Exception {
         WMTSCapabilities capabilities =
                 createCapabilities("GeoServer_2.2.x/1.0.0/GetCapabilities.xml");
         try {
-            assertEquals("1.0.0", capabilities.getVersion());
-            assertEquals("OGC WMTS", capabilities.getService().getName());
-            assertEquals(
+            Assert.assertEquals("1.0.0", capabilities.getVersion());
+            Assert.assertEquals("OGC WMTS", capabilities.getService().getName());
+            Assert.assertEquals(
                     "Web Map Tile Service - GeoWebCache", capabilities.getService().getTitle());
 
             for (int i = 0; i < capabilities.getService().getKeywordList().length; i++) {
-                assertEquals(
+                Assert.assertEquals(
                         capabilities.getService().getKeywordList()[i],
                         "OpenGIS WMS Web Map Server".split(" ")[i]);
             }
@@ -65,39 +66,39 @@ public class WMTSCapabilitiesTest extends TestCase {
             WMTSRequest request = capabilities.getRequest();
 
             OperationType getTile = request.getGetTile();
-            assertNotNull(getTile);
+            Assert.assertNotNull(getTile);
 
-            assertEquals(110, capabilities.getLayerList().size());
+            Assert.assertEquals(110, capabilities.getLayerList().size());
 
             List<WMTSLayer> layers = capabilities.getLayerList();
             WMTSLayer l0 = layers.get(0);
 
-            assertEquals("OML_Foreshore", l0.getTitle());
-            assertNull(l0.getParent());
-            assertTrue(
+            Assert.assertEquals("OML_Foreshore", l0.getTitle());
+            Assert.assertNull(l0.getParent());
+            Assert.assertTrue(
                     l0.getSrs().contains("urn:ogc:def:crs:EPSG::4326")); // case should not matter
-            assertEquals(4, l0.getBoundingBoxes().size());
+            Assert.assertEquals(4, l0.getBoundingBoxes().size());
 
-            assertEquals(2, l0.getTileMatrixLinks().size());
+            Assert.assertEquals(2, l0.getTileMatrixLinks().size());
             TileMatrixSetLink tmsl0 = l0.getTileMatrixLinks().get("EPSG:4326");
-            assertNotNull(tmsl0);
-            assertEquals("EPSG:4326", tmsl0.getIdentifier());
+            Assert.assertNotNull(tmsl0);
+            Assert.assertEquals("EPSG:4326", tmsl0.getIdentifier());
             List<TileMatrixLimits> tmLimits = tmsl0.getLimits();
-            assertNotNull(tmLimits);
-            assertEquals("Bad size: TileMatrixLimits", 22, tmLimits.size());
+            Assert.assertNotNull(tmLimits);
+            Assert.assertEquals("Bad size: TileMatrixLimits", 22, tmLimits.size());
             TileMatrixLimits tml3 = tmLimits.get(3);
-            assertEquals(1, tml3.getMinrow());
-            assertEquals(1, tml3.getMaxrow());
-            assertEquals(7, tml3.getMincol());
-            assertEquals(7, tml3.getMaxcol());
+            Assert.assertEquals(1, tml3.getMinrow());
+            Assert.assertEquals(1, tml3.getMaxrow());
+            Assert.assertEquals(7, tml3.getMincol());
+            Assert.assertEquals(7, tml3.getMaxcol());
 
-            assertEquals("b_road", layers.get(1).getTitle());
-            assertEquals("meridian:b_road", layers.get(1).getName());
-            assertEquals("b_road_polyline", layers.get(20).getTitle());
-            assertEquals("meridian:b_road_polyline", layers.get(20).getName());
+            Assert.assertEquals("b_road", layers.get(1).getTitle());
+            Assert.assertEquals("meridian:b_road", layers.get(1).getName());
+            Assert.assertEquals("b_road_polyline", layers.get(20).getTitle());
+            Assert.assertEquals("meridian:b_road_polyline", layers.get(20).getName());
 
-            CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
-            assertNotNull(bbox);
+            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
+            Assert.assertNotNull(bbox);
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
@@ -108,61 +109,64 @@ public class WMTSCapabilitiesTest extends TestCase {
         }
     }
 
+    @Test
     public void testParser2() throws Exception {
         WMTSCapabilities capabilities = createCapabilities("admin_ch.getcapa.xml");
         try {
-            assertEquals("1.0.0", capabilities.getVersion());
+            Assert.assertEquals("1.0.0", capabilities.getVersion());
 
             WMTSService service = (WMTSService) capabilities.getService();
-            assertEquals("OGC WMTS", service.getName());
-            assertEquals("WMTS BGDI", service.getTitle());
+            Assert.assertEquals("OGC WMTS", service.getName());
+            Assert.assertEquals("WMTS BGDI", service.getTitle());
 
             String[] keywordList = service.getKeywordList();
-            assertNotNull(keywordList);
-            assertEquals("Switzerland", keywordList[0]);
-            assertEquals("Web Map Service", keywordList[1]);
+            Assert.assertNotNull(keywordList);
+            Assert.assertEquals("Switzerland", keywordList[0]);
+            Assert.assertEquals("Web Map Service", keywordList[1]);
 
             WMTSRequest request = capabilities.getRequest();
 
             OperationType getTile = request.getGetTile();
-            assertNotNull(getTile);
+            Assert.assertNotNull(getTile);
 
-            assertEquals(306, capabilities.getLayerList().size());
+            Assert.assertEquals(306, capabilities.getLayerList().size());
 
             List<WMTSLayer> layers = capabilities.getLayerList();
             WMTSLayer l0 = layers.get(0);
 
-            assertEquals("ch.are.agglomerationen_isolierte_staedte", l0.getName());
-            assertNull(l0.getParent());
-            assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::2056")); // case
+            Assert.assertEquals("ch.are.agglomerationen_isolierte_staedte", l0.getName());
+            Assert.assertNull(l0.getParent());
+            Assert.assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::2056")); // case
             // should
             // not
             // matter
-            assertTrue(l0.getSrs().contains("EPSG:2056")); // case should not
+            Assert.assertTrue(l0.getSrs().contains("EPSG:2056")); // case should not
             // matter
 
-            assertNotNull("Missing dimensions", l0.getDimensions());
-            assertEquals("Bad dimensions size", 1, l0.getDimensions().size());
+            Assert.assertNotNull("Missing dimensions", l0.getDimensions());
+            Assert.assertEquals("Bad dimensions size", 1, l0.getDimensions().size());
             String dimName = l0.getDimensions().keySet().iterator().next();
-            assertTrue(
+            Assert.assertTrue(
                     "Bad dimension name (Time!=" + dimName + ")", "Time".equalsIgnoreCase(dimName));
 
-            assertNotNull(l0.getTileMatrixLinks());
-            assertEquals(1, l0.getTileMatrixLinks().keySet().size());
-            assertEquals("2056_26", l0.getTileMatrixLinks().keySet().iterator().next());
-            assertEquals(
+            Assert.assertNotNull(l0.getTileMatrixLinks());
+            Assert.assertEquals(1, l0.getTileMatrixLinks().keySet().size());
+            Assert.assertEquals("2056_26", l0.getTileMatrixLinks().keySet().iterator().next());
+            Assert.assertEquals(
                     "2056_26", l0.getTileMatrixLinks().values().iterator().next().getIdentifier());
-            assertEquals(0, l0.getTileMatrixLinks().values().iterator().next().getLimits().size());
+            Assert.assertEquals(
+                    0, l0.getTileMatrixLinks().values().iterator().next().getLimits().size());
 
-            assertEquals(12, capabilities.getMatrixSets().size());
-            assertEquals("2056_17", capabilities.getMatrixSets().get(0).getIdentifier());
-            assertEquals(18, capabilities.getMatrixSets().get(0).getMatrices().size());
-            assertEquals(
+            Assert.assertEquals(12, capabilities.getMatrixSets().size());
+            Assert.assertEquals("2056_17", capabilities.getMatrixSets().get(0).getIdentifier());
+            Assert.assertEquals(18, capabilities.getMatrixSets().get(0).getMatrices().size());
+            Assert.assertEquals(
                     14285750.5715,
-                    capabilities.getMatrixSets().get(0).getMatrices().get(0).getDenominator());
+                    capabilities.getMatrixSets().get(0).getMatrices().get(0).getDenominator(),
+                    0d);
 
-            CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
-            assertNotNull(bbox);
+            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
+            Assert.assertNotNull(bbox);
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -174,45 +178,47 @@ public class WMTSCapabilitiesTest extends TestCase {
         }
     }
 
+    @Test
     public void testParser3() throws Exception {
         WMTSCapabilities capabilities = createCapabilities("nasa.getcapa.xml");
         try {
-            assertEquals("1.0.0", capabilities.getVersion());
+            Assert.assertEquals("1.0.0", capabilities.getVersion());
 
             WMTSService service = (WMTSService) capabilities.getService();
-            assertEquals("OGC WMTS", service.getName());
-            assertEquals("NASA Global Imagery Browse Services for EOSDIS", service.getTitle());
+            Assert.assertEquals("OGC WMTS", service.getName());
+            Assert.assertEquals(
+                    "NASA Global Imagery Browse Services for EOSDIS", service.getTitle());
 
             String[] keywordList = service.getKeywordList();
-            assertNotNull(keywordList);
-            assertEquals("World", keywordList[0]);
-            assertEquals("Global", keywordList[1]);
+            Assert.assertNotNull(keywordList);
+            Assert.assertEquals("World", keywordList[0]);
+            Assert.assertEquals("Global", keywordList[1]);
 
             WMTSRequest request = capabilities.getRequest();
 
             OperationType getTile = request.getGetTile();
-            assertNotNull(getTile);
+            Assert.assertNotNull(getTile);
 
-            assertEquals(519, capabilities.getLayerList().size());
+            Assert.assertEquals(519, capabilities.getLayerList().size());
 
             List<WMTSLayer> layers = capabilities.getLayerList();
             WMTSLayer l0 = layers.get(0);
 
-            assertEquals("AMSR2_Snow_Water_Equivalent", l0.getName());
-            assertNull(l0.getParent());
+            Assert.assertEquals("AMSR2_Snow_Water_Equivalent", l0.getName());
+            Assert.assertNull(l0.getParent());
 
             // assertTrue(l0.getSrs().contains("urn:ogc:def:crs:OGC:2:84")); //
             // case should not matter
-            assertTrue(l0.getSrs().contains("CRS:84"));
+            Assert.assertTrue(l0.getSrs().contains("CRS:84"));
 
-            assertNotNull("Missing dimensions", l0.getDimensions());
-            assertEquals("Bad dimensions size", 1, l0.getDimensions().size());
+            Assert.assertNotNull("Missing dimensions", l0.getDimensions());
+            Assert.assertEquals("Bad dimensions size", 1, l0.getDimensions().size());
             String dimName = l0.getDimensions().keySet().iterator().next();
-            assertTrue(
+            Assert.assertTrue(
                     "Bad dimension name (Time!=" + dimName + ")", "Time".equalsIgnoreCase(dimName));
 
-            CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
-            assertNotNull(bbox);
+            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
+            Assert.assertNotNull(bbox);
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -224,19 +230,20 @@ public class WMTSCapabilitiesTest extends TestCase {
         }
     }
 
+    @Test
     public void testParserOLSample() throws Exception {
         WMTSCapabilities capabilities = createCapabilities("ol.getcapa.xml");
         try {
-            assertEquals("1.0.0", capabilities.getVersion());
+            Assert.assertEquals("1.0.0", capabilities.getVersion());
 
             WMTSService service = (WMTSService) capabilities.getService();
-            assertEquals("Koordinates Labs", service.getTitle());
+            Assert.assertEquals("Koordinates Labs", service.getTitle());
 
             List<TileMatrixSet> matrixSets = capabilities.getMatrixSets();
-            assertNotNull(matrixSets);
-            assertFalse(matrixSets.isEmpty());
+            Assert.assertNotNull(matrixSets);
+            Assert.assertFalse(matrixSets.isEmpty());
 
-            assertEquals(
+            Assert.assertEquals(
                     "urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible",
                     matrixSets.get(0).getWellKnownScaleSet());
 
@@ -252,27 +259,28 @@ public class WMTSCapabilitiesTest extends TestCase {
 
     // This particular capabilities response does not contain a ServiceProvider section
     // Make sure things still work
+    @Test
     public void testParser4() throws Exception {
         WMTSCapabilities capabilities = createCapabilities("geodata.nationaalgeoregister.nl.xml");
         try {
-            assertEquals("1.0.0", capabilities.getVersion());
+            Assert.assertEquals("1.0.0", capabilities.getVersion());
 
             WMTSService service = (WMTSService) capabilities.getService();
-            assertEquals("OGC WMTS", service.getName());
-            assertEquals("Web Map Tile Service", service.getTitle());
+            Assert.assertEquals("OGC WMTS", service.getName());
+            Assert.assertEquals("Web Map Tile Service", service.getTitle());
 
             WMTSRequest request = capabilities.getRequest();
 
             OperationType getTile = request.getGetTile();
-            assertNotNull(getTile);
+            Assert.assertNotNull(getTile);
 
-            assertEquals(44, capabilities.getLayerList().size());
+            Assert.assertEquals(44, capabilities.getLayerList().size());
 
             List<WMTSLayer> layers = capabilities.getLayerList();
             WMTSLayer l0 = layers.get(0);
 
-            assertEquals("brtachtergrondkaart", l0.getName());
-            assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::28992")); // case
+            Assert.assertEquals("brtachtergrondkaart", l0.getName());
+            Assert.assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::28992")); // case
 
         } catch (Exception e) {
             // a standard catch block shared with the other tests
@@ -284,15 +292,16 @@ public class WMTSCapabilitiesTest extends TestCase {
         }
     }
 
+    @Test
     public void testParseWithIncompleteAddressMetadata() throws Exception {
         WMTSCapabilities capabilities = createCapabilities("vienna_capa.xml");
         WMTSService service = (WMTSService) capabilities.getService();
         Address address = service.getContactInformation().getContactInfo().getAddress();
-        assertNull(address.getAdministrativeArea());
-        assertNull(address.getPostalCode());
-        assertNotNull(address.getCity());
-        assertNotNull(address.getCountry());
-        assertNotNull(address.getElectronicMailAddresses());
+        Assert.assertNull(address.getAdministrativeArea());
+        Assert.assertNull(address.getPostalCode());
+        Assert.assertNotNull(address.getCity());
+        Assert.assertNotNull(address.getCountry());
+        Assert.assertNotNull(address.getElectronicMailAddresses());
     }
 
     protected WebMapTileServer getCustomWMS(URL featureURL)

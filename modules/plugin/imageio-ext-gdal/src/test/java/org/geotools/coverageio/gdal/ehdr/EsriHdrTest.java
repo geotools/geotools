@@ -21,7 +21,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -71,10 +70,7 @@ public final class EsriHdrTest extends GDALTestCase {
         File file = null;
         try {
             file = TestData.file(this, fileName);
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
-            return;
-        } catch (IOException ioe) {
+        } catch (IOException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }
@@ -98,7 +94,7 @@ public final class EsriHdrTest extends GDALTestCase {
         // read once
         //
         // /////////////////////////////////////////////////////////////////////
-        GridCoverage2D gc = (GridCoverage2D) reader.read(null);
+        GridCoverage2D gc = reader.read(null);
         forceDataLoading(gc);
 
         // /////////////////////////////////////////////////////////////////////
@@ -126,8 +122,7 @@ public final class EsriHdrTest extends GDALTestCase {
         cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg =
-                (ParameterValue)
-                        ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         gg.setValue(
                 new GridGeometry2D(
                         new GridEnvelope2D(
@@ -137,16 +132,14 @@ public final class EsriHdrTest extends GDALTestCase {
                                         (int) (range.width / 4.0 / cropFactor),
                                         (int) (range.height / 4.0 / cropFactor))),
                         cropEnvelope));
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
+        gc = reader.read(new GeneralParameterValue[] {gg});
         Assert.assertNotNull(gc);
         // NOTE: in some cases might be too restrictive
         Assert.assertTrue(
                 cropEnvelope.equals(
                         gc.getEnvelope(),
                         XAffineTransform.getScale(
-                                        ((AffineTransform)
-                                                ((GridGeometry2D) gc.getGridGeometry())
-                                                        .getGridToCRS2D()))
+                                        ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
                                 / 2,
                         true));
 
@@ -172,15 +165,13 @@ public final class EsriHdrTest extends GDALTestCase {
         wrongEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg2 =
-                (ParameterValue)
-                        ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         gg2.setValue(
                 new GridGeometry2D(
-                        new GridEnvelope2D(
-                                new Rectangle(0, 0, (int) (range.width), (int) (range.height))),
+                        new GridEnvelope2D(new Rectangle(0, 0, range.width, range.height)),
                         wrongEnvelope));
 
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg2});
+        gc = reader.read(new GeneralParameterValue[] {gg2});
         Assert.assertNull("Wrong envelope requested", gc);
     }
 

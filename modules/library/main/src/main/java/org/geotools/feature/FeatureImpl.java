@@ -17,7 +17,6 @@
 package org.geotools.feature;
 
 import java.util.Collection;
-import java.util.Iterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
@@ -83,8 +82,7 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
 
         ReferencedEnvelope bounds =
                 new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
-        for (Iterator itr = getValue().iterator(); itr.hasNext(); ) {
-            Property property = (Property) itr.next();
+        for (Property property : getValue()) {
             if (property instanceof GeometryAttribute) {
                 bounds.include(((GeometryAttribute) property).getBounds());
             }
@@ -101,16 +99,14 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
         synchronized (this) {
             if (defaultGeometry == null) {
                 // look it up from the type
-                if (((FeatureType) getType()).getGeometryDescriptor() == null) {
+                if (getType().getGeometryDescriptor() == null) {
                     return null;
                 }
 
-                GeometryType geometryType =
-                        (GeometryType) getType().getGeometryDescriptor().getType();
+                GeometryType geometryType = getType().getGeometryDescriptor().getType();
 
                 if (geometryType != null) {
-                    for (Iterator itr = getValue().iterator(); itr.hasNext(); ) {
-                        Property property = (Property) itr.next();
+                    for (Property property : getValue()) {
                         if (property instanceof GeometryAttribute) {
                             if (property.getType().equals(geometryType)) {
                                 defaultGeometry = (GeometryAttribute) property;

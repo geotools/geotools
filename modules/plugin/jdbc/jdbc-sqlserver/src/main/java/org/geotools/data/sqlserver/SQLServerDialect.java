@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 import org.geotools.data.Query;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
+import org.geotools.feature.visitor.StandardDeviationVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKBReader;
 import org.geotools.geometry.jts.WKTWriter2;
@@ -57,6 +58,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -761,8 +763,8 @@ public class SQLServerDialect extends BasicSQLDialect {
 
             // encode as hex string
             sql.append("0x");
-            for (int i = 0; i < b.length; i++) {
-                sql.append(Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1));
+            for (byte item : b) {
+                sql.append(Integer.toString((item & 0xff) + 0x100, 16).substring(1));
             }
         } else {
             super.encodeValue(value, type, sql);
@@ -863,7 +865,7 @@ public class SQLServerDialect extends BasicSQLDialect {
                         + "'";
         ResultSet indexInfo = null;
         Statement st = null;
-        Map<String, Set<String>> indexes = new HashMap<String, Set<String>>();
+        Map<String, Set<String>> indexes = new HashMap<>();
         try {
             st = cx.createStatement();
             indexInfo = st.executeQuery(sql);
@@ -872,7 +874,7 @@ public class SQLServerDialect extends BasicSQLDialect {
                 String columnName = indexInfo.getString("column_name");
                 Set<String> indexColumns = indexes.get(indexName);
                 if (indexColumns == null) {
-                    indexColumns = new HashSet<String>();
+                    indexColumns = new HashSet<>();
                     indexes.put(indexName, indexColumns);
                 }
                 indexColumns.add(columnName);
@@ -964,7 +966,7 @@ public class SQLServerDialect extends BasicSQLDialect {
         }
 
         // and that those attributes have a spatial index
-        Set<String> indexes = new HashSet<String>();
+        Set<String> indexes = new HashSet<>();
         for (Map.Entry<String, Integer> attribute : attributes.entrySet()) {
             // we can only apply one index on one condition
             if (attribute.getValue() > 1) {
@@ -1000,5 +1002,12 @@ public class SQLServerDialect extends BasicSQLDialect {
         } finally {
             dataStore.closeSafe(rs);
         }
+    }
+
+    @Override
+    public void registerAggregateFunctions(
+            Map<Class<? extends FeatureVisitor>, String> aggregates) {
+        super.registerAggregateFunctions(aggregates);
+        aggregates.put(StandardDeviationVisitor.class, "STDEVP");
     }
 }

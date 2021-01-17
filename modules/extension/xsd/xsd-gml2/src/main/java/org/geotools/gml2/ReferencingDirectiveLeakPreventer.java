@@ -68,10 +68,9 @@ public class ReferencingDirectiveLeakPreventer implements Adapter {
         XSDSchemaDirective newDirective = (XSDSchemaDirective) notification.getNewValue();
         XSDSchema schema = newDirective.getSchema();
         synchronized (target) {
-            ArrayList<Integer> toremove = new ArrayList();
+            ArrayList<Integer> toremove = new ArrayList<>();
             for (int i = 0; i < target.getReferencingDirectives().size(); i++) {
-                XSDSchemaDirective directive =
-                        (XSDSchemaDirective) target.getReferencingDirectives().get(i);
+                XSDSchemaDirective directive = target.getReferencingDirectives().get(i);
                 XSDSchema schema2 = directive.getSchema();
                 if (schema2 == null) {
                     toremove.add(i);

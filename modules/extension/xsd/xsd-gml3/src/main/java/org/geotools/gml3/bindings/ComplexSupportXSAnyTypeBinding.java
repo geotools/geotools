@@ -106,14 +106,14 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
      * @see AbstractComplexBinding#getProperties(java.lang.Object,
      *     org.eclipse.xsd.XSDElementDeclaration)
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         if (object == null) {
             return null;
         }
 
-        List<Object[ /* 2 */]> properties = new ArrayList<Object[ /* 2 */]>();
+        List<Object[ /* 2 */]> properties = new ArrayList<>();
         XSDTypeDefinition typeDef = element.getTypeDefinition();
         boolean isAnyType =
                 typeDef.getName() != null
@@ -158,15 +158,13 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         if (object instanceof ComplexAttribute) {
             ComplexAttribute complex = (ComplexAttribute) object;
             for (XSDParticle childParticle :
-                    (List<XSDParticle>)
-                            Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
+                    Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
                 XSDElementDeclaration childElement =
                         (XSDElementDeclaration) childParticle.getContent();
                 if (childElement.isElementDeclarationReference()) {
                     childElement = childElement.getResolvedElementDeclaration();
                 }
-                for (XSDElementDeclaration e :
-                        (List<XSDElementDeclaration>) childElement.getSubstitutionGroup()) {
+                for (XSDElementDeclaration e : childElement.getSubstitutionGroup()) {
                     Name name = new NameImpl(e.getTargetNamespace(), e.getName());
                     Collection<Property> nameProperties = complex.getProperties(name);
                     if (!nameProperties.isEmpty()) {
@@ -202,9 +200,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                                 if (attType != null && attType instanceof XSDTypeDefinition) {
                                     XSDTypeDefinition attTypeDef = (XSDTypeDefinition) attType;
                                     for (XSDParticle attChild :
-                                            (List<XSDParticle>)
-                                                    Schemas.getChildElementParticles(
-                                                            attTypeDef, true)) {
+                                            Schemas.getChildElementParticles(attTypeDef, true)) {
                                         XSDElementDeclaration childEl =
                                                 (XSDElementDeclaration) attChild.getContent();
                                         if (childEl.isElementDeclarationReference()) {
@@ -230,9 +226,8 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         }
 
         List<XSDParticle> anyElementParticles =
-                new ArrayList<XSDParticle>(
-                        Schemas.getAnyElementParticles(element.getTypeDefinition()));
-        if (anyElementParticles.size() > 0) {
+                new ArrayList<>(Schemas.getAnyElementParticles(element.getTypeDefinition()));
+        if (!anyElementParticles.isEmpty()) {
             Collection complexAtts = null;
             if (object instanceof Collection) {
                 // collection of features
@@ -291,7 +286,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
              */
             else {
                 List<XSDParticle> elementParticles =
-                        new ArrayList<XSDParticle>(
+                        new ArrayList<>(
                                 Schemas.getChildElementParticles(
                                         element.getTypeDefinition(), false));
                 for (Object complex : complexAtts) {
@@ -370,10 +365,12 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                 Object clientProperties = att.getUserData().get(Attributes.class);
                 Map<Name, Object> map = null;
                 if (clientProperties == null) {
-                    map = new HashMap<Name, Object>();
+                    map = new HashMap<>();
                     att.getUserData().put(Attributes.class, map);
                 } else {
-                    map = (Map<Name, Object>) clientProperties;
+                    @SuppressWarnings("unchecked")
+                    Map<Name, Object> cast = (Map<Name, Object>) clientProperties;
+                    map = cast;
                 }
                 map.put(toTypeName(XLINK.HREF), "#" + id.toString());
                 // make sure the value is not encoded

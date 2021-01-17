@@ -83,10 +83,9 @@ public class Collection_SumFunction extends FunctionExpressionImpl {
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      */
-    public void setParameters(List args) {
+    public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        org.opengis.filter.expression.Expression expr =
-                (org.opengis.filter.expression.Expression) args.get(0);
+        org.opengis.filter.expression.Expression expr = args.get(0);
         expr =
                 (org.opengis.filter.expression.Expression)
                         expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
@@ -99,7 +98,7 @@ public class Collection_SumFunction extends FunctionExpressionImpl {
             return Integer.valueOf(0); // no features were visited in the making of this answer
         }
         SimpleFeatureCollection featureCollection = (SimpleFeatureCollection) feature;
-        Expression expr = (Expression) getExpression(0);
+        Expression expr = getExpression(0);
         synchronized (featureCollection) {
             if (featureCollection != previousFeatureCollection) {
                 previousFeatureCollection = featureCollection;
@@ -109,9 +108,7 @@ public class Collection_SumFunction extends FunctionExpressionImpl {
                     if (result != null) {
                         sum = result.getValue();
                     }
-                } catch (IllegalFilterException e) {
-                    LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
-                } catch (IOException e) {
+                } catch (IllegalFilterException | IOException e) {
                     LOGGER.log(Level.FINER, e.getLocalizedMessage(), e);
                 }
             }

@@ -231,9 +231,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
                     return file.toURI().toURL();
                 }
             }
-        } catch (SecurityException exception) {
-            Logging.unexpectedException(LOGGER, exception);
-        } catch (MalformedURLException exception) {
+        } catch (SecurityException | MalformedURLException exception) {
             Logging.unexpectedException(LOGGER, exception);
         }
         return FactoryUsingWKT.class.getResource(FILENAME);
@@ -304,7 +302,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
         out.println();
         final Set<String> wktCodes = this.getAuthorityCodes(IdentifiedObject.class);
         final Set<String> sqlCodes = sqlFactory.getAuthorityCodes(IdentifiedObject.class);
-        final Set<String> duplicated = new TreeSet<String>();
+        final Set<String> duplicated = new TreeSet<>();
         for (String code : wktCodes) {
             code = code.trim();
             if (sqlCodes.contains(code)) {
@@ -342,7 +340,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      */
     public Set reportInstantiationFailures(final PrintWriter out) throws FactoryException {
         final Set<String> codes = getAuthorityCodes(CoordinateReferenceSystem.class);
-        final Map<String, String> failures = new TreeMap<String, String>();
+        final Map<String, String> failures = new TreeMap<>();
         for (final String code : codes) {
             try {
                 createCoordinateReferenceSystem(code);

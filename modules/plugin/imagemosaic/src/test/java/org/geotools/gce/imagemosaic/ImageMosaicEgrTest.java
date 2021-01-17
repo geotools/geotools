@@ -18,7 +18,7 @@ package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -43,7 +43,6 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
@@ -55,6 +54,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 
 public class ImageMosaicEgrTest {
@@ -118,8 +118,8 @@ public class ImageMosaicEgrTest {
         // other entries if available
         boolean foundGridGeometry = false;
         if (entries != null) {
-            for (SimpleEntry<DefaultParameterDescriptor, Object> entry : entries) {
-                ParameterValue<?> pv = entry.getKey().createValue();
+            for (SimpleEntry entry : entries) {
+                ParameterValue<?> pv = ((ParameterDescriptor) entry.getKey()).createValue();
                 pv.setValue(entry.getValue());
                 params.add(pv);
                 foundGridGeometry |= entry.getKey().equals(AbstractGridFormat.READ_GRIDGEOMETRY2D);
@@ -136,8 +136,7 @@ public class ImageMosaicEgrTest {
             params.add(geom);
         }
 
-        GeneralParameterValue[] result =
-                (GeneralParameterValue[]) params.toArray(new GeneralParameterValue[params.size()]);
+        GeneralParameterValue[] result = params.toArray(new GeneralParameterValue[params.size()]);
         return result;
     }
 

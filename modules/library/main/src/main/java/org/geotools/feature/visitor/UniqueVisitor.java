@@ -42,8 +42,8 @@ import org.opengis.filter.expression.Expression;
  */
 public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, LimitingVisitor {
     private Expression expr;
-    Set set = new HashSet();
-    Set skipped = new HashSet();
+    Set<Object> set = new HashSet<>();
+    Set<Object> skipped = new HashSet<>();
     int startIndex = 0;
     int maxFeatures = Integer.MAX_VALUE;
     int currentItem = 0;
@@ -83,7 +83,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     public void setPreserveOrder(boolean preserveOrder) {
         this.preserveOrder = preserveOrder;
-        set = createNewSet(Collections.EMPTY_LIST);
+        set = createNewSet(Collections.emptyList());
     }
 
     @Override
@@ -137,9 +137,12 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     public void setValue(Object newSet) {
 
         if (newSet instanceof Collection) { // convert to set
-            this.set = createNewSet((Collection) newSet);
+            @SuppressWarnings("unchecked")
+            Collection<Object> cast = (Collection<Object>) newSet;
+            this.set = createNewSet(cast);
         } else {
-            Collection collection = Converters.convert(newSet, List.class);
+            @SuppressWarnings("unchecked")
+            List<Object> collection = Converters.convert(newSet, List.class);
             if (collection != null) {
                 this.set = createNewSet(collection);
             } else {
@@ -148,43 +151,43 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         }
     }
 
-    private Set createNewSet(Collection collection) {
+    private Set<Object> createNewSet(Collection<Object> collection) {
         return UniqueResult.createNewSet(collection, preserveOrder);
     }
 
     public void reset() {
         /** Reset the unique and current minimum for the features in the collection */
-        this.set = createNewSet(Collections.EMPTY_LIST);
-        this.skipped = new HashSet();
+        this.set = createNewSet(Collections.emptyList());
+        this.skipped = new HashSet<>();
 
         currentItem = 0;
     }
 
     public CalcResult getResult() {
-        if (set.size() < 1) {
+        if (set.isEmpty()) {
             return CalcResult.NULL_RESULT;
         }
         return new UniqueResult(set, this.preserveOrder);
     }
 
     public static class UniqueResult extends AbstractCalcResult {
-        private Set unique;
+        private Set<Object> unique;
         private boolean preserveOrder = false;
 
-        public UniqueResult(Set newSet) {
+        public UniqueResult(Set<Object> newSet) {
             unique = newSet;
         }
 
-        public UniqueResult(Set newSet, boolean preserveOrder) {
+        public UniqueResult(Set<Object> newSet, boolean preserveOrder) {
             unique = newSet;
             this.preserveOrder = preserveOrder;
         }
 
-        public static Set createNewSet(Collection collection, boolean preserveOrder) {
+        public static <T> Set<T> createNewSet(Collection<T> collection, boolean preserveOrder) {
             if (preserveOrder) {
-                return new LinkedHashSet(collection);
+                return new LinkedHashSet<>(collection);
             } else {
-                return new HashSet(collection);
+                return new HashSet<>(collection);
             }
         }
 
@@ -210,8 +213,10 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
             if (resultsToAdd instanceof UniqueResult) {
                 // add one set to the other (to create one big unique list)
-                Set newSet = createNewSet(unique, preserveOrder);
-                newSet.addAll((Set) resultsToAdd.getValue());
+                Set<Object> newSet = createNewSet(unique, preserveOrder);
+                @SuppressWarnings("unchecked")
+                Set<Object> other = (Set<Object>) resultsToAdd.getValue();
+                newSet.addAll(other);
                 return new UniqueResult(newSet, preserveOrder);
             } else {
                 throw new IllegalArgumentException(

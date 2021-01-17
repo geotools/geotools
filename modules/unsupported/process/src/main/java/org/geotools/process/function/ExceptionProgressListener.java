@@ -28,7 +28,7 @@ import org.opengis.util.ProgressListener;
  */
 class ExceptionProgressListener implements ProgressListener {
 
-    List<Throwable> exceptions = new ArrayList<Throwable>();
+    List<Throwable> exceptions = new ArrayList<>();
 
     public void exceptionOccurred(Throwable exception) {
         exceptions.add(exception);
@@ -39,7 +39,7 @@ class ExceptionProgressListener implements ProgressListener {
     }
 
     public boolean isCanceled() {
-        return exceptions.size() > 0;
+        return !exceptions.isEmpty();
     }
 
     // all other methods we don't care about

@@ -153,14 +153,14 @@ public class GML3ParsingUtils {
         }
 
         if (node.hasChild(Coordinate.class)) {
-            List list = node.getChildValues(Coordinate.class);
-            Coordinate[] coordinates = (Coordinate[]) list.toArray(new Coordinate[list.size()]);
+            List<Coordinate> list = node.getChildValues(Coordinate.class);
+            Coordinate[] coordinates = list.toArray(new Coordinate[list.size()]);
 
             return ring ? gf.createLinearRing(coordinates) : gf.createLineString(coordinates);
         }
 
         if (node.hasChild(DirectPosition[].class)) {
-            DirectPosition[] dps = (DirectPosition[]) node.getChildValue(DirectPosition[].class);
+            DirectPosition[] dps = node.getChildValue(DirectPosition[].class);
 
             CoordinateSequence seq = null;
 
@@ -182,8 +182,7 @@ public class GML3ParsingUtils {
         }
 
         if (node.hasChild(CoordinateSequence.class)) {
-            CoordinateSequence seq =
-                    (CoordinateSequence) node.getChildValue(CoordinateSequence.class);
+            CoordinateSequence seq = node.getChildValue(CoordinateSequence.class);
 
             return ring ? gf.createLinearRing(seq) : gf.createLineString(seq);
         }

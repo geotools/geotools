@@ -24,7 +24,11 @@ import java.util.Map;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.*;
+import org.geotools.grid.DefaultGridFeatureBuilder;
+import org.geotools.grid.GridElement;
+import org.geotools.grid.GridFeatureBuilder;
+import org.geotools.grid.PolygonElement;
+import org.geotools.grid.TestBase;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
@@ -123,9 +127,7 @@ public class OvalsTest extends TestBase {
 
             Ovals.createGrid(env, 0, 1.0, builder);
 
-        } catch (FactoryException ex) {
-            throw new IllegalStateException("Error in test code");
-        } catch (MismatchedDimensionException ex) {
+        } catch (FactoryException | MismatchedDimensionException ex) {
             throw new IllegalStateException("Error in test code");
         }
     }

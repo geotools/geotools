@@ -49,7 +49,7 @@ import org.geotools.validation.dto.TestSuiteDTO;
 public class XMLWriter {
     public static void writePlugIn(PlugInDTO dto, Writer w) {
         WriterUtils cw = new WriterUtils(w);
-        Map m = new HashMap();
+        Map<String, String> m = new HashMap<>();
         m.put("xmlns", "pluginSchema");
         m.put("xmlns:gml", "http://www.opengis.net/gml");
         m.put("xmlns:ogc", "http://www.opengis.net/ogc");
@@ -97,7 +97,7 @@ public class XMLWriter {
                 Iterator i = dto.getArgs().keySet().iterator();
 
                 while (i.hasNext()) {
-                    writeArgument((ArgumentDTO) dto.getArgs().get(i.next()), w);
+                    writeArgument(dto.getArgs().get(i.next()), w);
                 }
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -115,7 +115,7 @@ public class XMLWriter {
 
     public static void writeTestSuite(TestSuiteDTO dto, Writer w) {
         WriterUtils cw = new WriterUtils(w);
-        Map m = new HashMap();
+        Map<String, String> m = new HashMap<>();
         m.put("xmlns", "testSuiteSchema");
         m.put("xmlns:gml", "http://www.opengis.net/gml");
         m.put("xmlns:ogc", "http://www.opengis.net/ogc");
@@ -134,7 +134,7 @@ public class XMLWriter {
                 Iterator i = dto.getTests().keySet().iterator();
 
                 while (i.hasNext()) {
-                    writeTest((TestDTO) dto.getTests().get(i.next()), w);
+                    writeTest(dto.getTests().get(i.next()), w);
                 }
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -152,7 +152,7 @@ public class XMLWriter {
 
     public static void writeArgument(ArgumentDTO dto, Writer w) {
         WriterUtils cw = new WriterUtils(w);
-        Map m = new HashMap();
+        Map<String, Boolean> m = new HashMap<>();
 
         if (dto.isFinal()) {
             m.put("final", Boolean.TRUE);

@@ -48,36 +48,31 @@ public class WMSUtils {
             return null;
         }
 
-        List namedLayersList = new ArrayList();
+        List<Layer> namedLayersList = new ArrayList<>();
 
         Layer[] layers =
-                (Layer[])
-                        capabilities
-                                .getLayerList()
-                                .toArray(new Layer[capabilities.getLayerList().size()]);
+                capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
 
-        for (int i = 0; i < layers.length; i++) {
-            if ((layers[i].getName() != null) && (layers[i].getName().length() != 0)) {
-                namedLayersList.add(layers[i]);
+        for (Layer layer : layers) {
+            if ((layer.getName() != null) && (layer.getName().length() != 0)) {
+                namedLayersList.add(layer);
             }
         }
 
         Layer[] namedLayers = new Layer[namedLayersList.size()];
         for (int i = 0; i < namedLayersList.size(); i++) {
-            namedLayers[i] = (Layer) namedLayersList.get(i);
+            namedLayers[i] = namedLayersList.get(i);
         }
 
         return namedLayers;
     }
 
     public static Set getQueryableLayers(WMSCapabilities capabilities) {
-        Set layers = new TreeSet();
+        Set<Layer> layers = new TreeSet<>();
 
         Layer[] namedLayers = getNamedLayers(capabilities);
 
-        for (int i = 0; i < namedLayers.length; i++) {
-            Layer layer = namedLayers[i];
-
+        for (Layer layer : namedLayers) {
             if (layer.isQueryable()) {
                 layers.add(layer);
             }
@@ -87,17 +82,14 @@ public class WMSUtils {
     }
 
     public static Set getSRSs(WMSCapabilities capabilities) {
-        Set srss = new TreeSet();
+        Set<String> srss = new TreeSet<>();
 
         Layer[] layers =
-                (Layer[])
-                        capabilities
-                                .getLayerList()
-                                .toArray(new Layer[capabilities.getLayerList().size()]);
+                capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
 
-        for (int i = 0; i < layers.length; i++) {
-            if (layers[i].getSrs() != null) {
-                srss.addAll(layers[i].getSrs());
+        for (Layer layer : layers) {
+            if (layer.getSrs() != null) {
+                srss.addAll(layer.getSrs());
             }
         }
 
@@ -111,8 +103,8 @@ public class WMSUtils {
      * @param layers A List of type Layer
      * @return a Set of type String, containin EPSG codes, or empty if none found
      */
-    public static Set findCommonEPSGs(List layers) {
-        TreeSet set = new TreeSet();
+    public static Set<String> findCommonEPSGs(List layers) {
+        TreeSet<String> set = new TreeSet<>();
 
         Layer first = (Layer) layers.get(0);
 
@@ -127,10 +119,10 @@ public class WMSUtils {
     }
 
     // Map<CoordinateReferenceSystem, TreeSet<String>>
-    private static Map crsCache;
+    private static Map<CoordinateReferenceSystem, Set<String>> crsCache;
 
     static {
-        crsCache = new HashMap();
+        crsCache = new HashMap<>();
     }
 
     /**
@@ -170,9 +162,9 @@ public class WMSUtils {
             String epsgCode = ident.toString();
             if (codes.contains(epsgCode)) {
                 if (crsCache.get(crs) == null) {
-                    crsCache.put(crs, new TreeSet());
+                    crsCache.put(crs, new TreeSet<>());
                 }
-                TreeSet set = (TreeSet) crsCache.get(crs);
+                Set<String> set = crsCache.get(crs);
                 set.add(epsgCode);
 
                 return epsgCode;
@@ -203,9 +195,9 @@ public class WMSUtils {
 
             if (transform.isIdentity()) {
                 if (crsCache.get(crs) == null) {
-                    crsCache.put(crs, new TreeSet());
+                    crsCache.put(crs, new TreeSet<>());
                 }
-                TreeSet set = (TreeSet) crsCache.get(crs);
+                Set<String> set = crsCache.get(crs);
                 set.add(epsgCode);
 
                 return epsgCode;

@@ -76,7 +76,7 @@ final class PropertyAccessor {
      * Getters shared between many instances of this class. Two different implementations may share
      * the same getters but different setters.
      */
-    private static final Map<Class<?>, Method[]> SHARED_GETTERS = new HashMap<Class<?>, Method[]>();
+    private static final Map<Class<?>, Method[]> SHARED_GETTERS = new HashMap<>();
 
     /** The implemented metadata interface. */
     final Class<?> type;
@@ -122,7 +122,7 @@ final class PropertyAccessor {
         this.type = type;
         assert type.isAssignableFrom(implementation) : implementation;
         getters = getGetters(type);
-        mapping = new HashMap<String, Integer>(getters.length + (getters.length + 3) / 4);
+        mapping = new HashMap<>(getters.length + (getters.length + 3) / 4);
         Method[] setters = null;
         final Class<?>[] arguments = new Class[1];
         for (int i = 0; i < getters.length; i++) {
@@ -219,7 +219,7 @@ final class PropertyAccessor {
              * Gets every interfaces from the supplied package in declaration order,
              * including the ones declared in the super-class.
              */
-            final Set<Class<?>> interfaces = new LinkedHashSet<Class<?>>();
+            final Set<Class<?>> interfaces = new LinkedHashSet<>();
             do {
                 getInterfaces(implementation, interfacePackage, interfaces);
                 implementation = implementation.getSuperclass();
@@ -279,8 +279,7 @@ final class PropertyAccessor {
             if (getters == null) {
                 getters = type.getMethods();
                 int count = 0;
-                for (int i = 0; i < getters.length; i++) {
-                    final Method candidate = getters[i];
+                for (Method candidate : getters) {
                     if (candidate.getAnnotation(Deprecated.class) != null) {
                         // Ignores deprecated methods.
                         continue;
@@ -312,8 +311,8 @@ final class PropertyAccessor {
 
     /** Returns {@code true} if the specified method is on the exclusion list. */
     private static boolean isExcluded(final String name) {
-        for (int i = 0; i < EXCLUDES.length; i++) {
-            if (name.equals(EXCLUDES[i])) {
+        for (String exclude : EXCLUDES) {
+            if (name.equals(exclude)) {
                 return true;
             }
         }
@@ -666,8 +665,7 @@ final class PropertyAccessor {
             final Object metadata1, final Object metadata2, final boolean skipNulls) {
         assert type.isInstance(metadata1) : metadata1;
         assert type.isInstance(metadata2) : metadata2;
-        for (int i = 0; i < getters.length; i++) {
-            final Method method = getters[i];
+        for (final Method method : getters) {
             final Object value1 = get(method, metadata1);
             final Object value2 = get(method, metadata2);
             final boolean empty1 = isEmpty(value1);
@@ -750,10 +748,10 @@ final class PropertyAccessor {
         if (setters != null) {
             return true;
         }
-        for (int i = 0; i < getters.length; i++) {
+        for (Method getter : getters) {
             // Immutable objects usually don't need to be cloned. So if
             // an object is cloneable, it is probably not immutable.
-            if (Cloneable.class.isAssignableFrom(getters[i].getReturnType())) {
+            if (Cloneable.class.isAssignableFrom(getter.getReturnType())) {
                 return true;
             }
         }
@@ -769,8 +767,8 @@ final class PropertyAccessor {
     public int hashCode(final Object metadata) {
         assert type.isInstance(metadata) : metadata;
         int code = 0;
-        for (int i = 0; i < getters.length; i++) {
-            final Object value = get(getters[i], metadata);
+        for (Method getter : getters) {
+            final Object value = get(getter, metadata);
             if (!isEmpty(value)) {
                 code += value.hashCode();
             }
@@ -782,8 +780,8 @@ final class PropertyAccessor {
     public int count(final Object metadata, final int max) {
         assert type.isInstance(metadata) : metadata;
         int count = 0;
-        for (int i = 0; i < getters.length; i++) {
-            if (!isEmpty(get(getters[i], metadata))) {
+        for (Method getter : getters) {
+            if (!isEmpty(get(getter, metadata))) {
                 if (++count >= max) {
                     break;
                 }

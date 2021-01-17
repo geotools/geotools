@@ -26,6 +26,8 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  *
  * @author Jesse Eichar
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class TeradataJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 
     public TeradataJNDIDataStoreFactory() {

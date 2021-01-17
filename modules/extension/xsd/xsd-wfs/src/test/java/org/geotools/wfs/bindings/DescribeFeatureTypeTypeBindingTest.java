@@ -16,6 +16,10 @@
  */
 package org.geotools.wfs.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.net.URL;
 import javax.xml.namespace.QName;
 import net.opengis.wfs.DescribeFeatureTypeType;
@@ -23,22 +27,17 @@ import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Unit test suite for {@link DescribeFeatureTypeTypeBinding}
- *
- * @author Justin Deoliveira
- * @author Gabriel Roldan
- * @version $Id: DescribeFeatureTypeTypeBindingTest.java 27759 2007-11-05 19:46:45Z groldan $
- * @since 2.5.x
- */
 public class DescribeFeatureTypeTypeBindingTest extends WFSTestSupport {
     public DescribeFeatureTypeTypeBindingTest() {
         super(WFS.DescribeFeatureTypeType, DescribeFeatureTypeType.class, Binding.BEFORE);
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
     public void testEncode() throws Exception {
         final DescribeFeatureTypeType dft = factory.createDescribeFeatureTypeType();
         // set BaseRequestType propertyes (DescribeFeatureType extends
@@ -70,6 +69,7 @@ public class DescribeFeatureTypeTypeBindingTest extends WFSTestSupport {
         assertEquals(name2.getLocalPart(), typeName);
     }
 
+    @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "DescribeFeatureTypeTypeBindingTest.xml");
         buildDocument(resource);

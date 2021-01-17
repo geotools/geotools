@@ -18,24 +18,24 @@ package org.geotools.graph.structure.basic;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import junit.framework.TestCase;
+import java.util.Set;
+import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
+import org.geotools.graph.structure.Node;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class BasicGraphTest extends TestCase {
+public class BasicGraphTest {
 
-    private List m_nodes;
-    private List m_edges;
+    private List<Node> m_nodes;
+    private List<Edge> m_edges;
     private BasicGraph m_graph;
 
-    public BasicGraphTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         BasicNode n1 = new BasicNode();
         BasicNode n2 = new BasicNode();
         BasicNode n3 = new BasicNode();
@@ -52,13 +52,13 @@ public class BasicGraphTest extends TestCase {
         n3.add(e3);
         n4.add(e3);
 
-        m_nodes = new ArrayList();
+        m_nodes = new ArrayList<>();
         m_nodes.add(n1);
         m_nodes.add(n2);
         m_nodes.add(n3);
         m_nodes.add(n4);
 
-        m_edges = new ArrayList();
+        m_edges = new ArrayList<>();
         m_edges.add(e1);
         m_edges.add(e2);
         m_edges.add(e3);
@@ -66,14 +66,17 @@ public class BasicGraphTest extends TestCase {
         m_graph = new BasicGraph(m_nodes, m_edges);
     }
 
+    @Test
     public void test_getNodes() {
-        assertTrue(m_graph.getNodes() == m_nodes);
+        Assert.assertSame(m_graph.getNodes(), m_nodes);
     }
 
+    @Test
     public void test_getEdges() {
-        assertTrue(m_graph.getEdges() == m_edges);
+        Assert.assertSame(m_graph.getEdges(), m_edges);
     }
 
+    @Test
     public void test_queryNodes() {
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -85,11 +88,12 @@ public class BasicGraphTest extends TestCase {
                 };
         List result = m_graph.queryNodes(visitor);
 
-        assertTrue(result.size() == 2);
-        assertTrue(result.get(0) == m_nodes.get(1));
-        assertTrue(result.get(1) == m_nodes.get(2));
+        Assert.assertEquals(2, result.size());
+        Assert.assertSame(result.get(0), m_nodes.get(1));
+        Assert.assertSame(result.get(1), m_nodes.get(2));
     }
 
+    @Test
     public void test_queryEdges() {
         GraphVisitor visitor =
                 new GraphVisitor() {
@@ -101,13 +105,14 @@ public class BasicGraphTest extends TestCase {
                 };
         List result = m_graph.queryEdges(visitor);
 
-        assertTrue(result.size() == 2);
-        assertTrue(result.get(0) == m_edges.get(1));
-        assertTrue(result.get(1) == m_edges.get(2));
+        Assert.assertEquals(2, result.size());
+        Assert.assertSame(result.get(0), m_edges.get(1));
+        Assert.assertSame(result.get(1), m_edges.get(2));
     }
 
+    @Test
     public void test_visitNodes() {
-        final HashSet visited = new HashSet();
+        final Set<Graphable> visited = new HashSet<>();
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
@@ -118,13 +123,14 @@ public class BasicGraphTest extends TestCase {
 
         m_graph.visitNodes(visitor);
 
-        for (Iterator itr = m_nodes.iterator(); itr.hasNext(); ) {
-            assertTrue(visited.contains(itr.next()));
+        for (Node m_node : m_nodes) {
+            Assert.assertTrue(visited.contains(m_node));
         }
     }
 
+    @Test
     public void test_visitEdges() {
-        final HashSet visited = new HashSet();
+        final Set<Graphable> visited = new HashSet<>();
         GraphVisitor visitor =
                 new GraphVisitor() {
                     public int visit(Graphable component) {
@@ -135,78 +141,83 @@ public class BasicGraphTest extends TestCase {
 
         m_graph.visitEdges(visitor);
 
-        for (Iterator itr = m_edges.iterator(); itr.hasNext(); ) {
-            assertTrue(visited.contains(itr.next()));
+        for (Edge m_edge : m_edges) {
+            Assert.assertTrue(visited.contains(m_edge));
         }
     }
 
+    @Test
     public void test_getNodesOfDegree() {
         List nodes = m_graph.getNodesOfDegree(1);
-        assertTrue(nodes.contains(m_nodes.get(0)));
-        assertTrue(nodes.contains(m_nodes.get(m_nodes.size() - 1)));
+        Assert.assertTrue(nodes.contains(m_nodes.get(0)));
+        Assert.assertTrue(nodes.contains(m_nodes.get(m_nodes.size() - 1)));
 
         nodes = m_graph.getNodesOfDegree(2);
-        assertTrue(nodes.contains(m_nodes.get(1)));
-        assertTrue(nodes.contains(m_nodes.get(2)));
+        Assert.assertTrue(nodes.contains(m_nodes.get(1)));
+        Assert.assertTrue(nodes.contains(m_nodes.get(2)));
     }
 
+    @Test
     public void test_getVisitedNodes() {
-        ((BasicNode) m_nodes.get(1)).setVisited(true);
-        ((BasicNode) m_nodes.get(2)).setVisited(true);
+        m_nodes.get(1).setVisited(true);
+        m_nodes.get(2).setVisited(true);
 
         List visited = m_graph.getVisitedNodes(true);
-        assertTrue(visited.size() == 2);
-        assertTrue(visited.contains(m_nodes.get(1)));
-        assertTrue(visited.contains(m_nodes.get(2)));
+        Assert.assertEquals(2, visited.size());
+        Assert.assertTrue(visited.contains(m_nodes.get(1)));
+        Assert.assertTrue(visited.contains(m_nodes.get(2)));
 
         visited = m_graph.getVisitedNodes(false);
-        assertTrue(visited.size() == 2);
-        assertTrue(visited.contains(m_nodes.get(0)));
-        assertTrue(visited.contains(m_nodes.get(3)));
+        Assert.assertEquals(2, visited.size());
+        Assert.assertTrue(visited.contains(m_nodes.get(0)));
+        Assert.assertTrue(visited.contains(m_nodes.get(3)));
     }
 
+    @Test
     public void test_getVisitedEdges() {
-        ((BasicEdge) m_edges.get(1)).setVisited(true);
+        m_edges.get(1).setVisited(true);
 
         List visited = m_graph.getVisitedEdges(true);
-        assertTrue(visited.size() == 1);
-        assertTrue(visited.contains(m_edges.get(1)));
+        Assert.assertEquals(1, visited.size());
+        Assert.assertTrue(visited.contains(m_edges.get(1)));
 
         visited = m_graph.getVisitedEdges(false);
-        assertTrue(visited.size() == 2);
-        assertTrue(visited.contains(m_edges.get(0)));
-        assertTrue(visited.contains(m_edges.get(2)));
+        Assert.assertEquals(2, visited.size());
+        Assert.assertTrue(visited.contains(m_edges.get(0)));
+        Assert.assertTrue(visited.contains(m_edges.get(2)));
     }
 
+    @Test
     public void test_initNodes() {
-        for (Iterator itr = m_nodes.iterator(); itr.hasNext(); ) {
-            BasicNode n = (BasicNode) itr.next();
+        for (Node mNode : m_nodes) {
+            BasicNode n = (BasicNode) mNode;
             n.setVisited(true);
             n.setCount(100);
         }
 
         m_graph.initNodes();
 
-        for (Iterator itr = m_nodes.iterator(); itr.hasNext(); ) {
-            BasicNode n = (BasicNode) itr.next();
-            assertTrue(!n.isVisited());
-            assertTrue(n.getCount() == 0);
+        for (Node m_node : m_nodes) {
+            BasicNode n = (BasicNode) m_node;
+            Assert.assertFalse(n.isVisited());
+            Assert.assertEquals(0, n.getCount());
         }
     }
 
+    @Test
     public void test_initEdges() {
-        for (Iterator itr = m_edges.iterator(); itr.hasNext(); ) {
-            BasicEdge e = (BasicEdge) itr.next();
+        for (Edge mEdge : m_edges) {
+            BasicEdge e = (BasicEdge) mEdge;
             e.setVisited(true);
             e.setCount(100);
         }
 
         m_graph.initEdges();
 
-        for (Iterator itr = m_edges.iterator(); itr.hasNext(); ) {
-            BasicEdge e = (BasicEdge) itr.next();
-            assertTrue(!e.isVisited());
-            assertTrue(e.getCount() == 0);
+        for (Edge m_edge : m_edges) {
+            BasicEdge e = (BasicEdge) m_edge;
+            Assert.assertFalse(e.isVisited());
+            Assert.assertEquals(0, e.getCount());
         }
     }
 }

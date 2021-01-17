@@ -51,7 +51,7 @@ public class MapBoxAnchorFunction extends FunctionExpressionImpl {
         abstract Double evaluate(SymbolMBLayer.TextAnchor anchor);
     }
 
-    public static FunctionName NAME =
+    public static final FunctionName NAME =
             new FunctionNameImpl(
                     "mbAnchor",
                     parameter("anchorPercentage", Double.class),
@@ -72,7 +72,7 @@ public class MapBoxAnchorFunction extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function \"mbAnchor\" argument #0 - expected anchor name, one of: "
                             + Stream.of(SymbolMBLayer.TextAnchor.values())
-                                    .map(a -> a.name())
+                                    .map(Enum::name)
                                     .collect(Collectors.joining()));
         }
 

@@ -29,7 +29,7 @@ public class SolrDataStoreTest extends SolrTestSupport {
         String url = fixture.getProperty(SolrDataStoreFactory.URL.key);
         String field = "status_s";
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put(SolrDataStoreFactory.URL.key, url);
         params.put(SolrDataStoreFactory.FIELD.key, field);
         params.put(SolrDataStoreFactory.NAMESPACE.key, SolrDataStoreFactory.NAMESPACE.sample);
@@ -37,7 +37,7 @@ public class SolrDataStoreTest extends SolrTestSupport {
         SolrDataStoreFactory factory = new SolrDataStoreFactory();
         DataStore dataStore = factory.createDataStore(params);
         String[] typeNames = dataStore.getTypeNames();
-        assertTrue(new HashSet(Arrays.asList(typeNames)).contains(("active")));
+        assertTrue(new HashSet<>(Arrays.asList(typeNames)).contains(("active")));
     }
 
     @Override

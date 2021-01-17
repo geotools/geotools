@@ -34,7 +34,7 @@ public class ClimatologicalTimeHandlerSpi implements CoordinateHandlerSpi {
     private static final Set<String> IGNORED;
 
     static {
-        Set<String> set = new HashSet<String>();
+        Set<String> set = new HashSet<>();
         set.add("n_profiles");
         IGNORED = Collections.unmodifiableSet(set);
         if (LOGGER.isLoggable(Level.FINE)) {

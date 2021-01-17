@@ -112,9 +112,9 @@ public class Diff {
     /** Create an empty Diff */
     public Diff() {
         // private fields
-        modifiedFeatures = new ConcurrentHashMap<String, SimpleFeature>();
-        addedFeatures = new ConcurrentHashMap<String, SimpleFeature>();
-        addedFidList = new CopyOnWriteArrayList<String>();
+        modifiedFeatures = new ConcurrentHashMap<>();
+        addedFeatures = new ConcurrentHashMap<>();
+        addedFidList = new CopyOnWriteArrayList<>();
 
         // public "views" requiring synchronised( mutex )
         modified2 = Collections.unmodifiableMap(modifiedFeatures);
@@ -127,9 +127,9 @@ public class Diff {
     /** Diff copy. */
     public Diff(Diff other) {
         // copy data
-        modifiedFeatures = new ConcurrentHashMap<String, SimpleFeature>(other.modifiedFeatures);
-        addedFeatures = new ConcurrentHashMap<String, SimpleFeature>(other.addedFeatures);
-        addedFidList = new CopyOnWriteArrayList<String>(other.addedFidList);
+        modifiedFeatures = new ConcurrentHashMap<>(other.modifiedFeatures);
+        addedFeatures = new ConcurrentHashMap<>(other.addedFeatures);
+        addedFidList = new CopyOnWriteArrayList<>(other.addedFidList);
 
         // create public "views"
         modified2 = Collections.unmodifiableMap(modifiedFeatures);
@@ -208,11 +208,11 @@ public class Diff {
             SimpleFeature old = null;
 
             if (addedFeatures.containsKey(fid)) {
-                old = (SimpleFeature) addedFeatures.get(fid);
+                old = addedFeatures.get(fid);
                 addedFeatures.remove(fid);
                 addedFidList.remove(fid);
             } else {
-                old = (SimpleFeature) modifiedFeatures.get(fid);
+                old = modifiedFeatures.get(fid);
                 modifiedFeatures.put(fid, Diff.NULL);
             }
             if (old != null) {
@@ -288,7 +288,7 @@ public class Diff {
             Iterator<Entry<String, SimpleFeature>> i = diff.added.entrySet().iterator();
             while (i.hasNext()) {
                 Entry<String, SimpleFeature> e = i.next();
-                SimpleFeature f = (SimpleFeature) e.getValue();
+                SimpleFeature f = e.getValue();
                 if (!diff.modifiedFeatures.containsKey(f.getID())) {
                     tree.insert(ReferencedEnvelope.reference(f.getBounds()), f);
                 }
@@ -296,7 +296,7 @@ public class Diff {
             Iterator<Entry<String, SimpleFeature>> j = diff.getModified().entrySet().iterator();
             while (j.hasNext()) {
                 Entry<String, SimpleFeature> e = j.next();
-                SimpleFeature f = (SimpleFeature) e.getValue();
+                SimpleFeature f = e.getValue();
                 tree.insert(ReferencedEnvelope.reference(f.getBounds()), f);
             }
         }

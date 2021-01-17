@@ -28,7 +28,7 @@ import org.json.simple.parser.ParseException;
  */
 public class RecordingHandler implements ContentHandler {
 
-    LinkedList<Action<?>> actions = new LinkedList<Action<?>>();
+    LinkedList<Action<?>> actions = new LinkedList<>();
 
     @Override
     public void startJSON() throws ParseException, IOException {

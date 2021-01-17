@@ -16,7 +16,10 @@
  */
 package org.geotools.temporal.object;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import java.util.GregorianCalendar;
 import org.geotools.metadata.iso.citation.Citations;
@@ -71,7 +74,7 @@ public class DefaultTemporalCoordinateTest {
     @Test
     public void testGetCoordinateValue() {
         Number result = temporalCoordinate1.getCoordinateValue();
-        assertTrue(temporalCoordinate2.getCoordinateValue() == result);
+        assertSame(temporalCoordinate2.getCoordinateValue(), result);
     }
 
     /** Test of setCoordinateValue method, of class DefaultTemporalCoordinate. */
@@ -79,28 +82,28 @@ public class DefaultTemporalCoordinateTest {
     public void testSetCoordinateValue() {
         Number result = temporalCoordinate1.getCoordinateValue();
         ((DefaultTemporalCoordinate) temporalCoordinate1).setCoordinateValue(250);
-        assertFalse(temporalCoordinate1.getCoordinateValue() == result);
+        assertNotSame(temporalCoordinate1.getCoordinateValue(), result);
     }
 
     /** Test of equals method, of class DefaultTemporalCoordinate. */
     @Test
     public void testEquals() {
-        assertFalse(temporalCoordinate1.equals(null));
+        assertNotEquals(null, temporalCoordinate1);
         assertEquals(temporalCoordinate1, temporalCoordinate1);
-        assertFalse(temporalCoordinate1.equals(temporalCoordinate2));
+        assertNotEquals(temporalCoordinate1, temporalCoordinate2);
     }
 
     /** Test of hashCode method, of class DefaultTemporalCoordinate. */
     @Test
     public void testHashCode() {
         int result = temporalCoordinate1.hashCode();
-        assertFalse(temporalCoordinate2.hashCode() == result);
+        assertNotEquals(temporalCoordinate2.hashCode(), result);
     }
 
     /** Test of toString method, of class DefaultTemporalCoordinate. */
     @Test
     public void testToString() {
         String result = temporalCoordinate1.toString();
-        assertFalse(temporalCoordinate2.toString().equals(result));
+        assertNotEquals(temporalCoordinate2.toString(), result);
     }
 }

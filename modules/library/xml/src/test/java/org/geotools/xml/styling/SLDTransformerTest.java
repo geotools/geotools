@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -124,7 +124,7 @@ public class SLDTransformerTest {
         transformer.setIndentation(4);
 
         // setup xml unit
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("sld", "http://www.opengis.net/sld");
         namespaces.put("ogc", "http://www.opengis.net/ogc");
         namespaces.put("gml", "http://www.opengis.net/gml");
@@ -598,8 +598,7 @@ public class SLDTransformerTest {
 
             PointSymbolizer pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
 
-            assertTrue(
-                    pointSymbolizer.getUnitOfMeasure().equals(pointSymbolizer2.getUnitOfMeasure()));
+            assertEquals(pointSymbolizer.getUnitOfMeasure(), pointSymbolizer2.getUnitOfMeasure());
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
@@ -626,8 +625,7 @@ public class SLDTransformerTest {
 
         PolygonSymbolizer polygonSymbolizer2 = parser.parsePolygonSymbolizer(dom.getFirstChild());
 
-        assertTrue(
-                polygonSymbolizer.getUnitOfMeasure().equals(polygonSymbolizer2.getUnitOfMeasure()));
+        assertEquals(polygonSymbolizer.getUnitOfMeasure(), polygonSymbolizer2.getUnitOfMeasure());
     }
 
     @Test
@@ -651,8 +649,7 @@ public class SLDTransformerTest {
 
         RasterSymbolizer rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
 
-        assertTrue(
-                rasterSymbolizer.getUnitOfMeasure().equals(rasterSymbolizer2.getUnitOfMeasure()));
+        assertEquals(rasterSymbolizer.getUnitOfMeasure(), rasterSymbolizer2.getUnitOfMeasure());
     }
 
     @Test
@@ -710,7 +707,7 @@ public class SLDTransformerTest {
 
         LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
 
-        assertTrue(lineSymbolizer.getUnitOfMeasure().equals(lineSymbolizer2.getUnitOfMeasure()));
+        assertEquals(lineSymbolizer.getUnitOfMeasure(), lineSymbolizer2.getUnitOfMeasure());
     }
 
     @Test
@@ -739,7 +736,7 @@ public class SLDTransformerTest {
 
         TextSymbolizer textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());
 
-        assertTrue(textSymbolizer.getUnitOfMeasure().equals(textSymbolizer2.getUnitOfMeasure()));
+        assertEquals(textSymbolizer.getUnitOfMeasure(), textSymbolizer2.getUnitOfMeasure());
     }
 
     @Test
@@ -763,7 +760,7 @@ public class SLDTransformerTest {
 
             PointSymbolizer pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
 
-            assertTrue(pointSymbolizer2.getUnitOfMeasure() == null);
+            assertNull(pointSymbolizer2.getUnitOfMeasure());
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
@@ -789,7 +786,7 @@ public class SLDTransformerTest {
 
         PolygonSymbolizer polygonSymbolizer2 = parser.parsePolygonSymbolizer(dom.getFirstChild());
 
-        assertTrue(polygonSymbolizer2.getUnitOfMeasure() == null);
+        assertNull(polygonSymbolizer2.getUnitOfMeasure());
     }
 
     @Test
@@ -812,7 +809,7 @@ public class SLDTransformerTest {
 
         RasterSymbolizer rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
 
-        assertTrue(rasterSymbolizer2.getUnitOfMeasure() == null);
+        assertNull(rasterSymbolizer2.getUnitOfMeasure());
     }
 
     @Test
@@ -835,7 +832,7 @@ public class SLDTransformerTest {
 
         LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
 
-        assertTrue(lineSymbolizer2.getUnitOfMeasure() == null);
+        assertNull(lineSymbolizer2.getUnitOfMeasure());
     }
 
     @Test
@@ -858,7 +855,7 @@ public class SLDTransformerTest {
 
         TextSymbolizer textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());
 
-        assertTrue(textSymbolizer2.getUnitOfMeasure() == null);
+        assertNull(textSymbolizer2.getUnitOfMeasure());
     }
 
     /** The displacement tag has not been exported to XML for a while... */
@@ -1727,20 +1724,22 @@ public class SLDTransformerTest {
 
         assertNotNull("style is null", style);
         assertNotNull("feature type styles are null", style.featureTypeStyles());
-        assertTrue(
+        assertEquals(
                 "more or less that one feature type style is available",
-                style.featureTypeStyles().size() == 1);
+                1,
+                style.featureTypeStyles().size());
         assertNotNull("rules are null", style.featureTypeStyles().get(0).rules());
-        assertTrue(
+        assertEquals(
                 "more or less that one rule is available",
-                style.featureTypeStyles().get(0).rules().size() == 1);
+                1,
+                style.featureTypeStyles().get(0).rules().size());
 
         Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         assertNotNull("rule is null", rule);
 
         List<? extends Symbolizer> symbolizers = rule.symbolizers();
         assertNotNull("symbolizers are null", symbolizers);
-        assertTrue("more or less that one symbolizer is available", symbolizers.size() == 1);
+        assertEquals("more or less that one symbolizer is available", 1, symbolizers.size());
 
         LineSymbolizer lineSymbolizer = (LineSymbolizer) symbolizers.get(0);
         assertNotNull("line symbolizer is null", lineSymbolizer);
@@ -1750,11 +1749,11 @@ public class SLDTransformerTest {
         assertNotNull("stroke dasharray is null", stroke.dashArray());
 
         List<Expression> expressions = stroke.dashArray();
-        assertTrue("more or less expressions available", expressions.size() == 4);
-        assertTrue("not expected expression", expressions.get(0).equals(ff.property("stroke1")));
-        assertTrue("not expected expression", expressions.get(1).equals(ff.literal(1.0)));
-        assertTrue("not expected expression", expressions.get(2).equals(ff.property("stroke2")));
-        assertTrue("not expected expression", expressions.get(3).equals(ff.literal(2.0)));
+        assertEquals("more or less expressions available", 4, expressions.size());
+        assertEquals("not expected expression", expressions.get(0), ff.property("stroke1"));
+        assertEquals("not expected expression", expressions.get(1), ff.literal(1.0));
+        assertEquals("not expected expression", expressions.get(2), ff.property("stroke2"));
+        assertEquals("not expected expression", expressions.get(3), ff.literal(2.0));
     }
 
     /**
@@ -1852,33 +1851,36 @@ public class SLDTransformerTest {
         SLDParser sldParser = new SLDParser(sf, stringReader);
         Style[] parsedStyles = sldParser.readXML();
         assertNotNull("parsing xml style returns null", parsedStyles);
-        assertTrue("more or less that one style is available", parsedStyles.length == 1);
+        assertEquals("more or less that one style is available", 1, parsedStyles.length);
         Style style = parsedStyles[0];
 
         assertNotNull("style is null", style);
         assertNotNull("feature type styles are null", style.featureTypeStyles());
-        assertTrue(
+        assertEquals(
                 "more or less that one feature type style is available",
-                style.featureTypeStyles().size() == 1);
+                1,
+                style.featureTypeStyles().size());
         assertNotNull("rules are null", style.featureTypeStyles().get(0).rules());
-        assertTrue(
+        assertEquals(
                 "more or less that one rule is available",
-                style.featureTypeStyles().get(0).rules().size() == 1);
+                1,
+                style.featureTypeStyles().get(0).rules().size());
         Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         assertNotNull("rule is null", rule);
 
         List<? extends Symbolizer> symbolizers = rule.symbolizers();
         assertNotNull("symbolizers are null", symbolizers);
-        assertTrue("more or less that one symbolizer is available", symbolizers.size() == 1);
+        assertEquals("more or less that one symbolizer is available", 1, symbolizers.size());
         PointSymbolizer pointSymbolizer = (PointSymbolizer) symbolizers.get(0);
         assertNotNull("point symbolizer is null", pointSymbolizer);
 
         Graphic graphic = pointSymbolizer.getGraphic();
         assertNotNull("graphic is null", graphic);
         assertNotNull("graphic symbols are null", graphic.graphicalSymbols());
-        assertTrue(
+        assertEquals(
                 "more or less that one graphic symbol is available",
-                graphic.graphicalSymbols().size() == 1);
+                1,
+                graphic.graphicalSymbols().size());
 
         Mark mark = (Mark) graphic.graphicalSymbols().get(0);
         assertNotNull("mark is null", mark);
@@ -1886,27 +1888,28 @@ public class SLDTransformerTest {
         assertTrue("wellKnownName is not a function", mark.getWellKnownName() instanceof Function);
 
         Function function = (Function) mark.getWellKnownName();
-        assertTrue(
-                "wellKnownName function is not strConcat", function.getName().equals("strConcat"));
-        assertTrue(
+        assertEquals("wellKnownName function is not strConcat", "strConcat", function.getName());
+        assertEquals(
                 "wellKnownName function have a wrong number of parameters",
-                function.getParameters().size() == 2);
+                2,
+                function.getParameters().size());
 
         Expression firstParameter = function.getParameters().get(0);
         assertNotNull("first parameter is null", firstParameter);
         assertTrue("first parameter is not a literal", firstParameter instanceof Literal);
 
         Literal literal = (Literal) firstParameter;
-        assertTrue("literal value is different of 'mark-'", literal.getValue().equals("mark-"));
+        assertEquals("literal value is different of 'mark-'", "mark-", literal.getValue());
 
         Expression secondParameter = function.getParameters().get(1);
         assertNotNull("second parameter is null", secondParameter);
         assertTrue("second parameter is", secondParameter instanceof PropertyName);
 
         PropertyName propertyName = (PropertyName) secondParameter;
-        assertTrue(
+        assertEquals(
                 "property name is different of 'MARK_NAME'",
-                propertyName.getPropertyName().equals("MARK_NAME"));
+                "MARK_NAME",
+                propertyName.getPropertyName());
 
         return style;
     }

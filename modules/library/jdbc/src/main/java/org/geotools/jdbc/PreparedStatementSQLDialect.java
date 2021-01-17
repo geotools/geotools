@@ -138,37 +138,37 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
 
         switch (sqlType) {
             case Types.VARCHAR:
-                ps.setString(column, (String) convert(value, String.class));
+                ps.setString(column, convert(value, String.class));
                 break;
             case Types.BOOLEAN:
-                ps.setBoolean(column, (Boolean) convert(value, Boolean.class));
+                ps.setBoolean(column, convert(value, Boolean.class));
                 break;
             case Types.SMALLINT:
-                ps.setShort(column, (Short) convert(value, Short.class));
+                ps.setShort(column, convert(value, Short.class));
                 break;
             case Types.INTEGER:
-                ps.setInt(column, (Integer) convert(value, Integer.class));
+                ps.setInt(column, convert(value, Integer.class));
                 break;
             case Types.BIGINT:
-                ps.setLong(column, (Long) convert(value, Long.class));
+                ps.setLong(column, convert(value, Long.class));
                 break;
             case Types.REAL:
-                ps.setFloat(column, (Float) convert(value, Float.class));
+                ps.setFloat(column, convert(value, Float.class));
                 break;
             case Types.DOUBLE:
-                ps.setDouble(column, (Double) convert(value, Double.class));
+                ps.setDouble(column, convert(value, Double.class));
                 break;
             case Types.NUMERIC:
                 ps.setBigDecimal(column, (BigDecimal) convert(value, BigDecimal.class));
                 break;
             case Types.DATE:
-                ps.setDate(column, (Date) convert(value, Date.class));
+                ps.setDate(column, convert(value, Date.class));
                 break;
             case Types.TIME:
-                ps.setTime(column, (Time) convert(value, Time.class));
+                ps.setTime(column, convert(value, Time.class));
                 break;
             case Types.TIMESTAMP:
-                ps.setTimestamp(column, (Timestamp) convert(value, Timestamp.class));
+                ps.setTimestamp(column, convert(value, Timestamp.class));
                 break;
             case Types.BLOB:
                 ps.setBytes(column, convert(value, byte[].class));
@@ -272,7 +272,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @return The converted value
      * @throws SQLException In case the conversion failed.
      */
-    protected Object convertArrayElement(Object value, Class target) throws SQLException {
+    protected Object convertArrayElement(Object value, Class<?> target) throws SQLException {
         Object converted = Converters.convert(value, target);
         if (converted == null) {
             String message =
@@ -287,7 +287,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      */
     protected <T> T convert(Object value, Class<T> binding) {
         if (value == null) {
-            return (T) value;
+            return null;
         }
         // convert the value if necessary
         if (!binding.isInstance(value)) {
@@ -300,7 +300,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
                         .warning("Unable to convert " + value + " to " + binding.getName());
             }
         }
-        return (T) value;
+        return binding.cast(value);
     }
 
     public PreparedFilterToSQL createPreparedFilterToSQL() {

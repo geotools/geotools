@@ -16,9 +16,13 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -26,14 +30,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class PointTypeBindingTest extends KMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(Point.class, binding(KML.PointType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.PointType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         buildDocument("<Point><coordinates>1,1</coordinates></Point>");
 
@@ -43,6 +50,7 @@ public class PointTypeBindingTest extends KMLTestSupport {
         assertEquals(1d, p.getY(), 0.2);
     }
 
+    @Test
     public void testEncode() throws Exception {
         Point p = new GeometryFactory().createPoint(new Coordinate(1, 1));
         Document dom = encode(p, KML.Point);

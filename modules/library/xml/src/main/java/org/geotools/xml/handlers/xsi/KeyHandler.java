@@ -40,7 +40,7 @@ public class KeyHandler extends XSIElementHandler {
     private String id;
     private String name;
     private SelectorHandler selector;
-    private List fields;
+    private List<FieldHandler> fields;
 
     /** @see java.lang.Object#hashCode() */
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
@@ -58,7 +58,7 @@ public class KeyHandler extends XSIElementHandler {
             // field
             if (FieldHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (fields == null) {
-                    fields = new LinkedList();
+                    fields = new LinkedList<>();
                 }
 
                 FieldHandler fh = new FieldHandler();

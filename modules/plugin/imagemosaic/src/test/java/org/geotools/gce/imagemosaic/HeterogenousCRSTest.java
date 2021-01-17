@@ -18,17 +18,17 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import com.sun.media.jai.operator.ImageReadDescriptor;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
@@ -46,7 +46,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -733,7 +732,7 @@ public class HeterogenousCRSTest {
         CoordinateReferenceSystem wgs84 = DefaultGeographicCRS.WGS84;
         assertTrue(CRS.equalsIgnoreMetadata(wgs84, gc.getCoordinateReferenceSystem()));
         RenderedImage ri = gc.getRenderedImage();
-        Map<String, Set<RenderedOp>> operationsGroups = new HashMap<String, Set<RenderedOp>>();
+        Map<String, Set<RenderedOp>> operationsGroups = new HashMap<>();
         groupOperations(ri, operationsGroups);
 
         Set<RenderedOp> imageReads = operationsGroups.get("ImageRead");
@@ -787,7 +786,7 @@ public class HeterogenousCRSTest {
         assertEquals(1, imageReads.size());
         RenderedOp unwarpedImage = imageReads.iterator().next();
         final ParameterBlock block = unwarpedImage.getParameterBlock();
-        Vector<Object> paramValues = block.getParameters();
+        List<Object> paramValues = block.getParameters();
         // The green.tif is the image with native CRS = 32632 so the only one not being reprojected
         assertTrue(
                 ((FileImageInputStreamExtImpl) paramValues.get(0))
@@ -798,7 +797,7 @@ public class HeterogenousCRSTest {
     }
 
     private void removeImagesBeingWarped(RenderedOp image, Set<RenderedOp> imageReads) {
-        Vector sources = image.getSources();
+        List sources = image.getSources();
         Iterator it = sources.iterator();
         while (it.hasNext()) {
             Object source = it.next();
@@ -825,7 +824,7 @@ public class HeterogenousCRSTest {
             }
             set.add(op);
             operationsSet.put(opName, set);
-            Vector sources = op.getSources();
+            List sources = op.getSources();
             Iterator it = sources.iterator();
             while (it.hasNext()) {
                 Object source = it.next();

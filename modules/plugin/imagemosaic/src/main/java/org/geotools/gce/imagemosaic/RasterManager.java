@@ -420,7 +420,7 @@ public class RasterManager implements Cloneable {
             try {
                 Set<String> result =
                         extractDomain(propertyName, additionalPropertyName, domainType);
-                if (result.size() <= 0) {
+                if (result.isEmpty()) {
                     return "";
                 }
 
@@ -446,7 +446,7 @@ public class RasterManager implements Cloneable {
                 // implicit ordering
                 final Set result = new TreeSet(extractDomain(propertyName));
                 // check result
-                if (result.size() <= 0) {
+                if (result.isEmpty()) {
                     return "";
                 }
 
@@ -478,12 +478,10 @@ public class RasterManager implements Cloneable {
 
             // === create the filter
             // loop values and AND them
-            final int size = values.size();
-            final List<Filter> filters = new ArrayList<Filter>();
+            final List<Filter> filters = new ArrayList<>();
             FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
-            for (int i = 0; i < size; i++) {
+            for (Object value : values) {
                 // checks
-                Object value = values.get(i);
                 if (value == null) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.info("Ignoring null date for the filter:" + this.identifier);
@@ -553,10 +551,9 @@ public class RasterManager implements Cloneable {
      */
     public class DomainManager {
 
-        private final Map<String, DomainDescriptor> domainsMap =
-                new HashMap<String, DomainDescriptor>();
+        private final Map<String, DomainDescriptor> domainsMap = new HashMap<>();
 
-        private final List<DimensionDescriptor> dimensions = new ArrayList<DimensionDescriptor>();
+        private final List<DimensionDescriptor> dimensions = new ArrayList<>();
         private final SimpleFeatureType simpleFeatureType;
 
         private final boolean attributeHasRange(String attribute) {
@@ -793,7 +790,7 @@ public class RasterManager implements Cloneable {
 
         /** Setup the List of metadataNames for this additional domains manager */
         public List<String> getMetadataNames() {
-            final List<String> metadataNames = new ArrayList<String>();
+            final List<String> metadataNames = new ArrayList<>();
             if (!domainsMap.isEmpty()) {
                 for (DomainDescriptor domain : domainsMap.values()) {
                     String domainName = domain.getIdentifier().toUpperCase();
@@ -820,7 +817,7 @@ public class RasterManager implements Cloneable {
             Utilities.ensureNonNull("name", name);
 
             String value = null;
-            if (domainsMap.size() > 0) {
+            if (!domainsMap.isEmpty()) {
                 // is a domain?
                 if (domainsMap.containsKey(name)) {
                     final DomainDescriptor domainDescriptor = domainsMap.get(name);
@@ -879,8 +876,7 @@ public class RasterManager implements Cloneable {
          * reader
          */
         public Set<ParameterDescriptor<List>> getDynamicParameters() {
-            Set<ParameterDescriptor<List>> dynamicParameters =
-                    new HashSet<ParameterDescriptor<List>>();
+            Set<ParameterDescriptor<List>> dynamicParameters = new HashSet<>();
             if (!domainsMap.isEmpty()) {
                 for (DomainDescriptor domain : domainsMap.values()) {
                     dynamicParameters.add(domain.getDomainParameterDescriptor());
@@ -941,7 +937,7 @@ public class RasterManager implements Cloneable {
 
     volatile boolean enableEvents = false; // start disabled
 
-    List<DimensionDescriptor> dimensionDescriptors = new ArrayList<DimensionDescriptor>();
+    List<DimensionDescriptor> dimensionDescriptors = new ArrayList<>();
 
     ImageMosaicReader parentReader;
 
@@ -1276,9 +1272,8 @@ public class RasterManager implements Cloneable {
 
         // check if a policy was provided using hints (check even the
         // deprecated one)
-        if (this.hints != null)
-            if (this.hints.containsKey(Hints.OVERVIEW_POLICY))
-                overviewPolicy = (OverviewPolicy) this.hints.get(Hints.OVERVIEW_POLICY);
+        overviewPolicy =
+                (OverviewPolicy) Utils.getHintIfAvailable(this.hints, Hints.OVERVIEW_POLICY);
 
         // use default if not provided. Default is nearest
         if (overviewPolicy == null) {
@@ -1296,9 +1291,8 @@ public class RasterManager implements Cloneable {
      *     DecimationPolicy#DISALLOW}. Default is {@link DecimationPolicy#ALLOW}.
      */
     private DecimationPolicy extractDecimationPolicy() {
-        if (this.hints != null)
-            if (this.hints.containsKey(Hints.DECIMATION_POLICY))
-                decimationPolicy = (DecimationPolicy) this.hints.get(Hints.DECIMATION_POLICY);
+        decimationPolicy =
+                (DecimationPolicy) Utils.getHintIfAvailable(this.hints, Hints.DECIMATION_POLICY);
 
         // use default if not provided. Default is allow
         if (decimationPolicy == null) {
@@ -1538,7 +1532,7 @@ public class RasterManager implements Cloneable {
                 UniqueVisitor visitor = new UniqueVisitor(parentReader.locationAttributeName);
                 collection.accepts(visitor, null);
                 Set<String> features = visitor.getUnique();
-                if (features.size() > 0) {
+                if (!features.isEmpty()) {
                     return true;
                 }
             }
@@ -1647,10 +1641,7 @@ public class RasterManager implements Cloneable {
                             crs,
                             raster2Model,
                             overviewsController);
-        } catch (TransformException e) {
-            throw new IOException(
-                    "Exception occurred while initializing the SpatialDomainManager", e);
-        } catch (FactoryException e) {
+        } catch (TransformException | FactoryException e) {
             throw new IOException(
                     "Exception occurred while initializing the SpatialDomainManager", e);
         }
@@ -1661,7 +1652,7 @@ public class RasterManager implements Cloneable {
 
     /** Return the metadataNames for this manager */
     String[] getMetadataNames() {
-        final List<String> metadataNames = new ArrayList<String>();
+        final List<String> metadataNames = new ArrayList<>();
         metadataNames.add(GridCoverage2DReader.TIME_DOMAIN);
         metadataNames.add(GridCoverage2DReader.HAS_TIME_DOMAIN);
         metadataNames.add(GridCoverage2DReader.TIME_DOMAIN_MINIMUM);

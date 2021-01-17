@@ -25,7 +25,9 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.measure.Units;
-import org.geotools.styling.*;
+import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.RasterSymbolizer;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
@@ -35,9 +37,9 @@ import org.opengis.style.SemanticType;
 
 public class RasterMBLayer extends MBLayer {
 
-    private JSONObject paintJson;
+    private final JSONObject paintJson;
 
-    private static String TYPE = "raster";
+    private static final String TYPE = "raster";
 
     public RasterMBLayer(JSONObject json) {
         super(json, new MBObjectParser(RasterMBLayer.class));

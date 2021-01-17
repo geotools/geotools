@@ -16,7 +16,13 @@
  */
 package org.geotools.metadata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -24,7 +30,7 @@ import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
-import org.junit.*;
+import org.junit.Test;
 import org.opengis.metadata.quality.ConformanceResult;
 
 /**
@@ -100,10 +106,10 @@ public final class CitationsTest {
         assertNotSame(applied, omitted);
         assertTrue(applied.pass());
         assertFalse(omitted.pass());
-        assertFalse(applied.equals(omitted));
-        assertFalse(appliedResults.equals(omittedResults));
-        assertFalse(
-                PositionalAccuracyImpl.DATUM_SHIFT_APPLIED.equals(
-                        PositionalAccuracyImpl.DATUM_SHIFT_OMITTED));
+        assertNotEquals(applied, omitted);
+        assertNotEquals(appliedResults, omittedResults);
+        assertNotEquals(
+                PositionalAccuracyImpl.DATUM_SHIFT_APPLIED,
+                PositionalAccuracyImpl.DATUM_SHIFT_OMITTED);
     }
 }

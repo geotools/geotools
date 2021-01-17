@@ -17,7 +17,9 @@
 
 package org.geotools.swing.dialog;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Dialog;
 import java.awt.Toolkit;
@@ -169,7 +171,7 @@ public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, Di
                         });
 
         windowFixture = new DialogFixture(dialog);
-        ((DialogFixture) windowFixture).show();
+        windowFixture.show();
     }
 
     private JTextComponentFixture getDialogTextArea() {

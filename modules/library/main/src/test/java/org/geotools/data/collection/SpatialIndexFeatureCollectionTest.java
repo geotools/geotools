@@ -16,6 +16,8 @@
  */
 package org.geotools.data.collection;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,7 +121,7 @@ public class SpatialIndexFeatureCollectionTest extends FeatureCollectionWrapperT
         typeBuilder.setDefaultGeometry("polyGeom");
         typeBuilder.add("someAtt", Integer.class);
 
-        SimpleFeatureType featureType = (SimpleFeatureType) typeBuilder.buildFeatureType();
+        SimpleFeatureType featureType = typeBuilder.buildFeatureType();
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         WKTReader reader = new WKTReader();

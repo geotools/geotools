@@ -92,10 +92,8 @@ public class DocumentFactory {
      * @return Object
      * @see DocumentFactory#getInstance(URI, Map, Level, boolean)
      */
-    public static Object getInstance(
-            URI desiredDocument, @SuppressWarnings("rawtypes") Map hints, Level level)
+    public static Object getInstance(URI desiredDocument, Map<String, Object> hints, Level level)
             throws SAXException {
-        @SuppressWarnings("unchecked")
         SAXParser parser = getParser(hints);
 
         XMLSAXHandler xmlContentHandler = new XMLSAXHandler(desiredDocument, hints);

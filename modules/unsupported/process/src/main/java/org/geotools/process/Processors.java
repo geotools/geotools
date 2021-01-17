@@ -85,7 +85,7 @@ public class Processors extends FactoryFinder {
     public static Set<ProcessFactory> getProcessFactories() {
         Stream<ProcessFactory> serviceProviders =
                 getServiceRegistry().getFactories(ProcessFactory.class, null, null);
-        return new LazySet<ProcessFactory>(serviceProviders);
+        return new LazySet<>(serviceProviders);
     }
 
     /** Cache of last factory found */

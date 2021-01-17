@@ -35,11 +35,11 @@ public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F
     long counter;
 
     public MaxFeaturesIterator(Iterator<F> iterator, long max) {
-        this(new DelegateFeatureIterator<F>(iterator), 0, max);
+        this(new DelegateFeatureIterator<>(iterator), 0, max);
     }
 
     public MaxFeaturesIterator(Iterator<F> iterator, long start, long max) {
-        this(new DelegateFeatureIterator<F>(iterator), start, max);
+        this(new DelegateFeatureIterator<>(iterator), start, max);
     }
 
     public MaxFeaturesIterator(FeatureIterator<F> delegate, long max) {

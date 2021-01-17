@@ -17,6 +17,7 @@
 package org.geotools.gce.imagemosaic;
 
 import java.io.File;
+import java.net.URL;
 import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
@@ -37,8 +38,7 @@ public class ImageMosaicEventHandlers {
             org.geotools.util.logging.Logging.getLogger(ImageMosaicEventHandlers.class);
 
     /** List containing all the objects that want to be notified during processing. */
-    protected List<ProcessingEventListener> notificationListeners =
-            new CopyOnWriteArrayList<ProcessingEventListener>();
+    protected List<ProcessingEventListener> notificationListeners = new CopyOnWriteArrayList<>();
 
     /**
      * Set this to false for command line UIs where the delayed event sending may prevent some
@@ -105,6 +105,32 @@ public class ImageMosaicEventHandlers {
         }
     }
 
+    /** A special ProcessingEvent raised when a url has completed/failed ingestion */
+    public static class URLProcessingEvent extends ProcessingEvent {
+        private URL url;
+
+        private boolean ingested;
+
+        public URLProcessingEvent(
+                final Object source,
+                final URL url,
+                final boolean ingested,
+                final String message,
+                final double percentage) {
+            super(source, message, percentage);
+            this.url = url;
+            this.ingested = ingested;
+        }
+
+        public URL getUrl() {
+            return url;
+        }
+
+        public boolean isIngested() {
+            return ingested;
+        }
+    }
+
     /**
      * Event launched when an exception occurs. Percentage and message may be missing, in this case
      * they will be -1 and the exception message (localized if available, standard otherwise)
@@ -163,14 +189,12 @@ public class ImageMosaicEventHandlers {
 
         /** Run the event launcher */
         public void run() {
-            final int numListeners = listeners.length;
             if (event instanceof ExceptionEvent)
-                for (int i = 0; i < numListeners; i++)
-                    ((ProcessingEventListener) listeners[i])
-                            .exceptionOccurred((ExceptionEvent) this.event);
+                for (Object o : listeners)
+                    ((ProcessingEventListener) o).exceptionOccurred((ExceptionEvent) this.event);
             else
-                for (int i = 0; i < numListeners; i++)
-                    ((ProcessingEventListener) listeners[i]).getNotification(this.event);
+                for (Object listener : listeners)
+                    ((ProcessingEventListener) listener).getNotification(this.event);
         }
     }
 
@@ -234,6 +258,36 @@ public class ImageMosaicEventHandlers {
             message.append(this.getClass().toString()).append(newLine).append(inMessage);
             final FileProcessingEvent evt =
                     new FileProcessingEvent(this, file, ingested, message.toString(), percentage);
+            ProgressEventDispatchThreadEventLauncher eventLauncher =
+                    new ProgressEventDispatchThreadEventLauncher();
+            eventLauncher.setEvent(evt, this.notificationListeners.toArray());
+            sendEvent(eventLauncher);
+        }
+    }
+
+    /**
+     * Firing an event to listeners in order to inform them about what we are doing and about the
+     * percentage of work already carried out.
+     *
+     * @param inMessage The message to show.
+     * @param percentage The percentage for the process.
+     */
+    protected void fireUrlEvent(
+            Level level,
+            final URL url,
+            final boolean ingested,
+            final String inMessage,
+            final double percentage) {
+        if (LOGGER.isLoggable(level)) {
+            LOGGER.log(level, inMessage);
+        }
+        synchronized (notificationListeners) {
+            final String newLine = System.getProperty("line.separator");
+            final StringBuilder message = new StringBuilder("Thread Name ");
+            message.append(Thread.currentThread().getName()).append(newLine);
+            message.append(this.getClass().toString()).append(newLine).append(inMessage);
+            final URLProcessingEvent evt =
+                    new URLProcessingEvent(this, url, ingested, message.toString(), percentage);
             ProgressEventDispatchThreadEventLauncher eventLauncher =
                     new ProgressEventDispatchThreadEventLauncher();
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());

@@ -17,7 +17,6 @@
 package org.geotools.xs.facets;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -108,7 +107,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
     //
     // Fake the ENUM thing for the Java 14 crowd
     //
-    private static List values = new ArrayList();
+    private static List<Whitespace> values = new ArrayList<>();
 
     static {
         values.add(PRESERVE);
@@ -169,9 +168,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
      * whitespace characters are not permitted.)
      */
     public static Whitespace valueOf(String whitespace) {
-        for (Iterator i = values.iterator(); i.hasNext(); ) {
-            Whitespace item = (Whitespace) i.next();
-
+        for (Whitespace item : values) {
             if (whitespace.equals(item.name)) {
                 return item;
             }

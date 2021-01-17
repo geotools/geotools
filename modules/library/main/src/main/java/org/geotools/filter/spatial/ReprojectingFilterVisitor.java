@@ -128,9 +128,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             ReferencedEnvelope envelope = ReferencedEnvelope.reference(boundaries);
             try {
                 envelope = envelope.transform(targetCrs, true);
-            } catch (TransformException e) {
-                throw new RuntimeException(e);
-            } catch (FactoryException e) {
+            } catch (TransformException | FactoryException e) {
                 throw new RuntimeException(e);
             }
             boundaries = envelope;
@@ -319,7 +317,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     public Object visit(Literal expression, Object extraData) {
         Object value = expression.getValue();
         if (value instanceof Geometry) {
-            value = reproject((Geometry) value, featureType.getCoordinateReferenceSystem());
+            value = reproject(value, featureType.getCoordinateReferenceSystem());
         }
 
         return getFactory(extraData).literal(value);
@@ -367,7 +365,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             return new FunctionReprojector(propertyCrs, delegate);
         } else if (expression instanceof Literal) {
             // second expression is a geometry literal
-            Object value = ((Literal) expression).getValue();
+            Geometry value = (Geometry) ((Literal) expression).getValue();
             return ff.literal(reproject(value, propertyCrs));
         } else if (forceReprojection) {
             throw new IllegalArgumentException(
@@ -504,7 +502,9 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
 
         public <T> T evaluate(Object object, Class<T> context) {
             T value = delegate.evaluate(object, context);
-            return (T) reproject(value, propertyCrs);
+            @SuppressWarnings("unchecked")
+            T reprojected = (T) reproject(value, propertyCrs);
+            return reprojected;
         }
 
         public Literal getFallbackValue() {

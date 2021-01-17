@@ -17,8 +17,14 @@
 
 package org.geotools.data.vpf;
 
-import static org.geotools.data.vpf.ifc.FileConstants.*;
-import static org.geotools.data.vpf.ifc.VPFLibraryIfc.*;
+import static org.geotools.data.vpf.ifc.FileConstants.COVERAGE_ATTRIBUTE_TABLE;
+import static org.geotools.data.vpf.ifc.FileConstants.GEOGRAPHIC_REFERENCE_TABLE;
+import static org.geotools.data.vpf.ifc.FileConstants.LIBRARY_HEADER_TABLE;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_TILE_NAME;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_XMAX;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_XMIN;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_YMAX;
+import static org.geotools.data.vpf.ifc.VPFLibraryIfc.FIELD_YMIN;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +34,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.logging.Level;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -99,7 +104,7 @@ public class VPFLibrary extends ContentDataStore {
     /** The name of the library */
     private final String libraryName;
     /** The coverages that are in the library */
-    private final List coverages = new Vector();
+    private final List<VPFCoverage> coverages = new ArrayList<>();
     /** The coordinate reference system used through this library */
     private CoordinateReferenceSystem crs;
     /** Signals if an error has already been logged for a CRS related exception */
@@ -242,8 +247,8 @@ public class VPFLibrary extends ContentDataStore {
 
                 List featureTypes = coverage.getFeatureTypes();
 
-                for (int ift = 0; ift < featureTypes.size(); ift++) {
-                    VPFFeatureType featureType = (VPFFeatureType) featureTypes.get(ift);
+                for (Object type : featureTypes) {
+                    VPFFeatureType featureType = (VPFFeatureType) type;
                     VPFFeatureClass featureClass = featureType.getFeatureClass();
                     String featureTypeName = featureType.getTypeName();
                     if (debug) {
@@ -260,8 +265,8 @@ public class VPFLibrary extends ContentDataStore {
                         VPFLogger.log("   file count :   " + fileList.size());
                     }
 
-                    for (int ifl = 0; ifl < fileList.size(); ifl++) {
-                        VPFFile vpfClassFile = (VPFFile) fileList.get(ifl);
+                    for (Object o : fileList) {
+                        VPFFile vpfClassFile = (VPFFile) o;
                         if (debug) {
                             if (vpfClassFile == null) {
                                 VPFLogger.log("null");
@@ -279,7 +284,7 @@ public class VPFLibrary extends ContentDataStore {
      *
      * @return a <code>List</code> value which contains VPFCoverage objects
      */
-    public List getCoverages() {
+    public List<VPFCoverage> getCoverages() {
         return coverages;
     }
 
@@ -322,6 +327,7 @@ public class VPFLibrary extends ContentDataStore {
      *  (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return String.format(
                 "{"
@@ -334,14 +340,14 @@ public class VPFLibrary extends ContentDataStore {
                 libraryName, getXmin(), getXmax(), getYmin(), getYmax());
     }
     /** A map containing the tiles used by this library */
-    private final Map tileMap = new HashMap();
+    private final Map<Short, String> tileMap = new HashMap<>();
     /**
-     * Returns a map containing the tiles used by this library. The map has string keys and and
+     * Returns a map containing the tiles used by this library. The map has Short keys and and
      * string values.
      *
      * @return a <code>Map</code> value
      */
-    public Map getTileMap() {
+    public Map<Short, String> getTileMap() {
         return tileMap;
     }
     /**
@@ -352,7 +358,7 @@ public class VPFLibrary extends ContentDataStore {
     private void createTilingSchema(VPFCoverage coverage) throws IOException {
         //            File tilefile = new File(directory, "tilereft.tft");
 
-        VPFFeatureType tileType = (VPFFeatureType) coverage.getFeatureTypes().get(0);
+        VPFFeatureType tileType = coverage.getFeatureTypes().get(0);
 
         // VPFFile tileFile = (VPFFile) tileType.getFeatureClass().getFileList().get(0);
         // Iterator rowsIter = tileFile.readAllRows().iterator();
@@ -361,7 +367,7 @@ public class VPFLibrary extends ContentDataStore {
 
         while (rowsIter.hasNext()) {
             SimpleFeature row = (SimpleFeature) rowsIter.next();
-            Short rowId = Short.valueOf(Short.parseShort(row.getAttribute("id").toString()));
+            Short rowId = Short.parseShort(row.getAttribute("id").toString());
             String value = row.getAttribute(FIELD_TILE_NAME).toString();
 
             // Mangle tile directory from DOS style directory splits to a system
@@ -412,15 +418,16 @@ public class VPFLibrary extends ContentDataStore {
     /* (non-Javadoc)
      * @see org.geotools.data.ContentDataStore#getNames()
      */
+    @Override
     public List<Name> getNames() {
         // Get the type names for each coverage
-        ArrayList<Name> result = new ArrayList<Name>();
+        ArrayList<Name> result = new ArrayList<>();
         int coveragesCount = coverages.size();
         int featureTypesCount = 0;
         // int index = 0;
         List[] coverageTypes = new List[coveragesCount];
         for (int inx = 0; inx < coveragesCount; inx++) {
-            coverageTypes[inx] = ((VPFCoverage) coverages.get(inx)).getFeatureTypes();
+            coverageTypes[inx] = coverages.get(inx).getFeatureTypes();
             featureTypesCount += coverageTypes[inx].size();
         }
         // result = new String[featureTypesCount];
@@ -531,12 +538,12 @@ public class VPFLibrary extends ContentDataStore {
     public SimpleFeatureType getTypeSchema(String typeName) throws IOException {
         // Look through all of the coverages to find a matching feature type
         SimpleFeatureType result = null;
-        Iterator coverageIter = coverages.iterator();
+        Iterator<VPFCoverage> coverageIter = coverages.iterator();
         Iterator featureTypesIter;
         SimpleFeatureType temp;
         boolean breakOut = false;
         while (coverageIter.hasNext() && !breakOut) {
-            featureTypesIter = ((VPFCoverage) coverageIter.next()).getFeatureTypes().iterator();
+            featureTypesIter = coverageIter.next().getFeatureTypes().iterator();
             while (featureTypesIter.hasNext()) {
                 temp = (SimpleFeatureType) featureTypesIter.next();
                 if (temp.getTypeName().equals(typeName)) {

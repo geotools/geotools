@@ -107,6 +107,6 @@ public class SLDImageOutlineBinding extends AbstractComplexBinding {
         //  &lt;xsd:element ref="sld:LineSymbolizer"/&gt;
         //  &lt;xsd:element ref="sld:PolygonSymbolizer"/&gt;
         // &lt;/xsd:choice&gt;
-        return styleFactory.createImageOutline((Symbolizer) node.getChildValue(Symbolizer.class));
+        return styleFactory.createImageOutline(node.getChildValue(Symbolizer.class));
     }
 }

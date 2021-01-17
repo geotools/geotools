@@ -16,13 +16,19 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.NamedStyle;
+import org.junit.Test;
 
 public class SLDNamedStyleBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(NamedStyle.class, new SLDNamedStyleBinding(null).getType());
     }
 
+    @Test
     public void test() throws Exception {
         SLDMockData.namedStyle(document, document);
 

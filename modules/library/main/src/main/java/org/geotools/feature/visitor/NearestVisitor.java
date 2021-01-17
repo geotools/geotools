@@ -87,7 +87,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
     }
 
-    private NearestAccumulator getAccumulator(Class attributeClass) {
+    private NearestAccumulator<?> getAccumulator(Class<?> attributeClass) {
         if (Number.class.isAssignableFrom(attributeClass)) {
             Double convertedTarget = Converters.convert(valueToMatch, Double.class);
             return new NumberAccumulator(convertedTarget);
@@ -116,18 +116,20 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
         nearest = null;
     }
 
-    public void setValue(Object nearest) {
+    public void setValue(Comparable nearest) {
         this.nearest = nearest;
         this.visited = true;
     }
 
-    public void setValue(Object maxBelow, Object minAbove) {
+    public void setValue(Comparable maxBelow, Comparable minAbove) {
         if (maxBelow == null) {
             this.nearest = minAbove;
         } else if (minAbove == null) {
             this.nearest = maxBelow;
         } else {
-            NearestAccumulator accumulator = getAccumulator(maxBelow.getClass());
+            @SuppressWarnings("unchecked")
+            NearestAccumulator<Object> accumulator =
+                    (NearestAccumulator<Object>) getAccumulator(maxBelow.getClass());
             accumulator.visit(maxBelow);
             accumulator.visit(minAbove);
             nearest = accumulator.getNearest();
@@ -189,6 +191,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
         public T getNearest();
     }
 
+    @SuppressWarnings("unchecked") // we don't know what type of comparable till runtime
     static class ComparableAccumulator implements NearestAccumulator<Comparable> {
 
         private Comparable minAbove;

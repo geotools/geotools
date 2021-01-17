@@ -116,13 +116,12 @@ public class ProcessFunctionFactory implements FunctionFactory {
     private synchronized void init() {
         if (functionNames == null) {
             // collect and sort the factories to have a reproducable list of function names
-            List<ProcessFactory> factories =
-                    new ArrayList<ProcessFactory>(Processors.getProcessFactories());
+            List<ProcessFactory> factories = new ArrayList<>(Processors.getProcessFactories());
             Collections.sort(factories, FACTORY_COMPARATOR);
 
             // collect name and params of all processes resulting in a single output
-            processToFunction = new HashMap<Name, FunctionName>();
-            functionNames = new ArrayList<FunctionName>();
+            processToFunction = new HashMap<>();
+            functionNames = new ArrayList<>();
             for (ProcessFactory factory : factories) {
                 if (!factory.isAvailable()) {
                     continue;
@@ -136,11 +135,9 @@ public class ProcessFunctionFactory implements FunctionFactory {
                         if (result != null) {
                             Map<String, Parameter<?>> parameterInfo =
                                     factory.getParameterInfo(processName);
-                            List<String> argumentNames =
-                                    new ArrayList<String>(parameterInfo.keySet());
+                            List<String> argumentNames = new ArrayList<>(parameterInfo.keySet());
                             List<org.opengis.parameter.Parameter<?>> args =
-                                    new ArrayList<org.opengis.parameter.Parameter<?>>(
-                                            argumentNames.size());
+                                    new ArrayList<>(argumentNames.size());
                             for (String argumentName : argumentNames) {
                                 args.add(parameterInfo.get(argumentName));
                             }

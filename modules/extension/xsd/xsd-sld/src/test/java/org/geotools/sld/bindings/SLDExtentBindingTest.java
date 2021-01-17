@@ -16,13 +16,19 @@
  */
 package org.geotools.sld.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.styling.Extent;
+import org.junit.Test;
 
 public class SLDExtentBindingTest extends SLDTestSupport {
+    @Test
     public void testType() throws Exception {
         assertEquals(Extent.class, new SLDExtentBinding(null).getType());
     }
 
+    @Test
     public void testNormal() throws Exception {
         SLDMockData.extent(document, document);
 

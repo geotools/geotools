@@ -348,7 +348,7 @@ public class DB2SQLDialect extends SQLDialect {
         Statement st = null;
         ResultSet rs = null;
 
-        List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+        List<ReferencedEnvelope> result = new ArrayList<>();
         try {
             st = cx.createStatement();
 
@@ -735,60 +735,26 @@ public class DB2SQLDialect extends SQLDialect {
     }
 
     private void setIsRowNumberSupported() {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
 
-        try {
-            con = dataStore.getDataSource().getConnection();
-            ps = con.prepareStatement(SELECT_ROWNUMBER);
-            rs = ps.executeQuery();
+        try (Connection con = dataStore.getDataSource().getConnection();
+                PreparedStatement ps = con.prepareStatement(SELECT_ROWNUMBER);
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) isRowNumberSupported = Boolean.TRUE;
             LOGGER.info(ROWNUMBER_MESSAGE);
         } catch (SQLException ex) {
             isRowNumberSupported = Boolean.FALSE;
-        } finally {
-            try {
-                if (rs != null) rs.close();
-            } catch (SQLException ex1) {
-            }
-            try {
-                if (ps != null) ps.close();
-            } catch (SQLException ex1) {
-            }
-            try {
-                if (con != null) con.close();
-            } catch (SQLException ex1) {
-            }
         }
     }
 
     private void setIsLimitOffsetSupported() {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
 
-        try {
-            con = dataStore.getDataSource().getConnection();
-            ps = con.prepareStatement(SELECT_LIMITOFFSET);
-            rs = ps.executeQuery();
+        try (Connection con = dataStore.getDataSource().getConnection();
+                PreparedStatement ps = con.prepareStatement(SELECT_LIMITOFFSET);
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) isLimitOffsetSupported = Boolean.TRUE;
             LOGGER.info(LIMITOFFSET_MESSAGE);
         } catch (SQLException ex) {
             isLimitOffsetSupported = Boolean.FALSE;
-        } finally {
-            try {
-                if (rs != null) rs.close();
-            } catch (SQLException ex1) {
-            }
-            try {
-                if (ps != null) ps.close();
-            } catch (SQLException ex1) {
-            }
-            try {
-                if (con != null) con.close();
-            } catch (SQLException ex1) {
-            }
         }
     }
 

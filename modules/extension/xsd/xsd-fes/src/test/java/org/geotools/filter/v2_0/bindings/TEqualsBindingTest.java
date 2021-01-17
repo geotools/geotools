@@ -1,5 +1,9 @@
 package org.geotools.filter.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Iterator;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
@@ -21,6 +25,7 @@ import org.w3c.dom.Document;
 
 public class TEqualsBindingTest extends FESTestSupport {
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<fes:Filter "
@@ -78,6 +83,7 @@ public class TEqualsBindingTest extends FESTestSupport {
         assertEquals("Any", matchAction);
     }
 
+    @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
     private void defaultNamespaceContext(XPath xpath) {
         xpath.setNamespaceContext(
                 new NamespaceContext() {

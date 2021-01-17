@@ -17,6 +17,11 @@
 
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.QueryType;
@@ -28,13 +33,14 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortOrder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class WfsQueryTypeTest extends WFSTestSupport {
-
+    @Test
     public void testEncode() throws Exception {
         QName typeName = new QName("http://www.test.com/query", "theType");
         QueryType query = Wfs20Factory.eINSTANCE.createQueryType();
@@ -55,7 +61,7 @@ public class WfsQueryTypeTest extends WFSTestSupport {
         assertTrue(attr.indexOf(tmp) != -1);
         assertEquals(attr.length(), attr.indexOf(tmp) + tmp.length()); // 8 == ":theType".length
 
-        HashMap<String, String> m = new HashMap<String, String>();
+        HashMap<String, String> m = new HashMap<>();
         m.put("wfs", WFS.NAMESPACE);
         m.put("fes", FES.NAMESPACE);
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(m));

@@ -16,10 +16,14 @@
  */
 package org.geotools.kml.bindings;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
@@ -27,14 +31,17 @@ import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
 public class PolygonTypeBindingTest extends KMLTestSupport {
+    @Test
     public void testType() {
         assertEquals(Polygon.class, binding(KML.PolygonType).getType());
     }
 
+    @Test
     public void testExecutionMode() {
         assertEquals(Binding.OVERRIDE, binding(KML.PolygonType).getExecutionMode());
     }
 
+    @Test
     public void testParse() throws Exception {
         String xml =
                 "<Polygon>"
@@ -53,6 +60,7 @@ public class PolygonTypeBindingTest extends KMLTestSupport {
         assertEquals(1, p.getNumInteriorRing());
     }
 
+    @Test
     public void testEncode() throws Exception {
         Polygon p =
                 new GeometryFactory()

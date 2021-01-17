@@ -18,8 +18,9 @@ package org.geotools.gce.grassraster;
 
 import java.io.File;
 import java.net.URL;
-import junit.framework.TestCase;
 import org.geotools.util.URLs;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Test the {@link JGrassMapEnvironment} class and the created paths.
@@ -27,8 +28,9 @@ import org.geotools.util.URLs;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @SuppressWarnings("nls")
-public class JGrassMapEnvironmentTest extends TestCase {
+public class JGrassMapEnvironmentTest {
 
+    @Test
     public void test() {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cell/pit");
         File mapFile = URLs.urlToFile(pitUrl);
@@ -42,8 +44,8 @@ public class JGrassMapEnvironmentTest extends TestCase {
 
     private void checkEnvironment(JGrassMapEnvironment jME) {
         File cell = jME.getCELL();
-        assertTrue(cell.exists());
-        assertTrue(
+        Assert.assertTrue(cell.exists());
+        Assert.assertTrue(
                 cell.getAbsolutePath()
                         .endsWith(
                                 "testlocation"
@@ -55,8 +57,8 @@ public class JGrassMapEnvironmentTest extends TestCase {
                                         + "pit"));
 
         File cellFolder = jME.getCellFolder();
-        assertTrue(cellFolder.exists() && cellFolder.isDirectory());
-        assertTrue(
+        Assert.assertTrue(cellFolder.exists() && cellFolder.isDirectory());
+        Assert.assertTrue(
                 cellFolder
                         .getAbsolutePath()
                         .endsWith(
@@ -67,8 +69,8 @@ public class JGrassMapEnvironmentTest extends TestCase {
                                         + "cell"));
 
         File fcell = jME.getFCELL();
-        assertTrue(fcell.exists());
-        assertTrue(
+        Assert.assertTrue(fcell.exists());
+        Assert.assertTrue(
                 fcell.getAbsolutePath()
                         .endsWith(
                                 "testlocation"
@@ -80,8 +82,8 @@ public class JGrassMapEnvironmentTest extends TestCase {
                                         + "pit"));
 
         File fcellFolder = jME.getFcellFolder();
-        assertTrue(fcellFolder.exists() && fcellFolder.isDirectory());
-        assertTrue(
+        Assert.assertTrue(fcellFolder.exists() && fcellFolder.isDirectory());
+        Assert.assertTrue(
                 fcellFolder
                         .getAbsolutePath()
                         .endsWith(
@@ -92,7 +94,7 @@ public class JGrassMapEnvironmentTest extends TestCase {
                                         + "fcell"));
 
         File colr = jME.getCOLR();
-        assertTrue(
+        Assert.assertTrue(
                 colr.getAbsolutePath()
                         .endsWith(
                                 "testlocation"
@@ -104,7 +106,7 @@ public class JGrassMapEnvironmentTest extends TestCase {
                                         + "pit"));
 
         File colrFolder = jME.getColrFolder();
-        assertTrue(
+        Assert.assertTrue(
                 colrFolder
                         .getAbsolutePath()
                         .endsWith(
@@ -115,8 +117,8 @@ public class JGrassMapEnvironmentTest extends TestCase {
                                         + "colr"));
 
         File wind = jME.getWIND();
-        assertTrue(wind.exists());
-        assertTrue(
+        Assert.assertTrue(wind.exists());
+        Assert.assertTrue(
                 wind.getAbsolutePath()
                         .endsWith(
                                 "testlocation"

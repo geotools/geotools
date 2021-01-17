@@ -17,10 +17,15 @@
 
 package org.geotools.data.complex;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+import java.io.Serializable;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
@@ -124,7 +129,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
     /** Load all the data accesses. */
     private static void loadDataAccesses() throws Exception {
         /** Load mapped feature data access */
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url = PolymorphicChainingTest.class.getResource(schemaBase + "artifact_mapping.xml");
         assertNotNull(url);
 
@@ -136,12 +141,12 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
         FeatureType mappedFeatureType = mfDataAccess.getSchema(ARTIFACT);
         assertNotNull(mappedFeatureType);
 
-        artifactSource = (FeatureSource) mfDataAccess.getFeatureSource(ARTIFACT);
+        artifactSource = mfDataAccess.getFeatureSource(ARTIFACT);
     }
 
     protected List<Feature> getFeatures(FeatureCollection<FeatureType, Feature> features) {
         FeatureIterator<Feature> iterator = features.features();
-        List<Feature> retVal = new ArrayList<Feature>();
+        List<Feature> retVal = new ArrayList<>();
         while (iterator.hasNext()) {
             retVal.add(iterator.next());
         }

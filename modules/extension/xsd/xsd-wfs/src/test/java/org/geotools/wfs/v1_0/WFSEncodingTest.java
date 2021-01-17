@@ -39,7 +39,7 @@ public class WFSEncodingTest {
 
     @Before
     public void setup() {
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("xlink", "http://www.w3.org/1999/xlink");
         namespaces.put("wfs", "http://www.opengis.net/wfs");
         namespaces.put("gml", "http://www.opengis.net/gml");
@@ -48,6 +48,7 @@ public class WFSEncodingTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void encodeUpdate()
             throws IOException, SAXException, TransformerException, XpathException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
@@ -98,6 +99,7 @@ public class WFSEncodingTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void encodeInsert()
             throws IOException, SAXException, TransformerException, XpathException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;

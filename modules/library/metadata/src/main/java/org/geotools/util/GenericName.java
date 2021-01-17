@@ -169,11 +169,11 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
         final StringBuilder buffer = new StringBuilder();
         final List<? extends LocalName> parsedNames = getParsedNames();
         final char separator = getSeparator();
-        for (final Iterator<? extends LocalName> it = parsedNames.iterator(); it.hasNext(); ) {
+        for (LocalName parsedName : parsedNames) {
             if (buffer.length() != 0) {
                 buffer.append(separator);
             }
-            buffer.append(it.next());
+            buffer.append(parsedName);
         }
         return buffer.toString();
     }

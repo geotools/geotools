@@ -145,7 +145,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
         if ("OtherSRS".equals(property)) {
             if (value instanceof Collection) {
                 Collection<URI> formatListAsUris = (Collection<URI>) value;
-                List<String> formatListAsString = new ArrayList<String>();
+                List<String> formatListAsString = new ArrayList<>();
                 for (URI uri : formatListAsUris) {
                     formatListAsString.add(uri.toString());
                 }
@@ -161,8 +161,8 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
             if (value instanceof String) {
                 String[] split = ((String) value).split(",");
                 KeywordsType kwd = Ows10Factory.eINSTANCE.createKeywordsType();
-                for (int i = 0; i < split.length; i++) {
-                    String kw = split[i].trim();
+                for (String s : split) {
+                    String kw = s.trim();
                     kwd.getKeyword().add(kw);
                 }
                 ((FeatureTypeType) eObject).getKeywords().add(kwd);

@@ -37,7 +37,11 @@ import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.jdbc.*;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.PreparedFilterToSQL;
+import org.geotools.jdbc.PreparedStatementSQLDialect;
+import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -195,7 +199,7 @@ public class NestedFilterToSQL extends FilterToSQL {
             nestedMappingsExtractor.visit(ff.property(xpath), null);
             List<FeatureChainedAttributeDescriptor> attributes =
                     nestedMappingsExtractor.getFeatureChainedAttributes();
-            if (attributes.size() >= 1) {
+            if (!attributes.isEmpty()) {
                 if (attributes.size() > 1) out.write("(");
                 boolean first = true;
                 for (FeatureChainedAttributeDescriptor nestedAttrDescr : attributes) {
@@ -207,12 +211,8 @@ public class NestedFilterToSQL extends FilterToSQL {
             }
             return extraData;
 
-        } catch (java.io.IOException ioe) {
+        } catch (IOException | FilterToSQLException | SQLException ioe) {
             throw new RuntimeException("Problem writing filter: ", ioe);
-        } catch (SQLException e) {
-            throw new RuntimeException("Problem writing filter: ", e);
-        } catch (FilterToSQLException e) {
-            throw new RuntimeException("Problem writing filter: ", e);
         }
     }
 
@@ -676,7 +676,7 @@ public class NestedFilterToSQL extends FilterToSQL {
 
             List<Expression> matchingMappings = mappings.findMappingsFor(simplifiedSteps, false);
 
-            if (matchingMappings.size() == 0) {
+            if (matchingMappings.isEmpty()) {
                 throw new IllegalArgumentException(
                         "Can't find source expression for: " + targetXPath);
             }

@@ -19,7 +19,6 @@ package org.geotools.referencing.operation.builder;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.geotools.geometry.DirectPosition2D;
 import org.opengis.geometry.DirectPosition;
@@ -119,8 +118,8 @@ class Polygon implements Cloneable {
      * @return whether v is equal to one of the vertices of this Triangle
      */
     public boolean hasVertex(DirectPosition p) {
-        for (int i = 0; i < vertices.length; i++) {
-            if (p == vertices[i]) {
+        for (DirectPosition vertex : vertices) {
+            if (p == vertex) {
                 return true;
             }
         }
@@ -137,9 +136,9 @@ class Polygon implements Cloneable {
         double sumX = 0;
         double sumY = 0;
 
-        for (int i = 0; i < vertices.length; i++) {
-            sumX = sumX + vertices[i].getCoordinate()[0];
-            sumY = sumY + vertices[i].getCoordinate()[1];
+        for (DirectPosition directPosition : vertices) {
+            sumX = sumX + directPosition.getCoordinate()[0];
+            sumY = sumY + directPosition.getCoordinate()[1];
         }
 
         // The center of polygon is calculated.
@@ -147,11 +146,9 @@ class Polygon implements Cloneable {
         sumY = sumY / vertices.length;
 
         // The homothetic transformation is made.
-        for (int i = 0; i < vertices.length; i++) {
-            vertices[i].getCoordinate()[0] =
-                    (scale * (vertices[i].getCoordinate()[0] - sumX)) + sumX;
-            vertices[i].getCoordinate()[1] =
-                    (scale * (vertices[i].getCoordinate()[1] - sumY)) + sumY;
+        for (DirectPosition vertex : vertices) {
+            vertex.getCoordinate()[0] = (scale * (vertex.getCoordinate()[0] - sumX)) + sumX;
+            vertex.getCoordinate()[1] = (scale * (vertex.getCoordinate()[1] - sumY)) + sumY;
         }
     }
 
@@ -162,14 +159,14 @@ class Polygon implements Cloneable {
      */
     protected List<DirectPosition> reduce() {
         // Coordinate[] redCoords = new Coordinate[coordinates.length];
-        ArrayList<DirectPosition> redCoords = new ArrayList<DirectPosition>();
+        ArrayList<DirectPosition> redCoords = new ArrayList<>();
 
-        for (int i = 0; i < vertices.length; i++) {
+        for (DirectPosition vertex : vertices) {
             redCoords.add(
                     new DirectPosition2D(
-                            vertices[i].getCoordinateReferenceSystem(),
-                            vertices[i].getCoordinate()[0] - vertices[0].getCoordinate()[0],
-                            vertices[i].getCoordinate()[1] - vertices[0].getCoordinate()[1]));
+                            vertex.getCoordinateReferenceSystem(),
+                            vertex.getCoordinate()[0] - vertices[0].getCoordinate()[0],
+                            vertex.getCoordinate()[1] - vertices[0].getCoordinate()[1]));
         }
 
         return redCoords;
@@ -182,8 +179,8 @@ class Polygon implements Cloneable {
      * @return whether this Polygon contains the all of the given coordinates
      */
     protected boolean containsAll(List<DirectPosition> coordinate) {
-        for (Iterator<DirectPosition> i = coordinate.iterator(); i.hasNext(); ) {
-            if (!this.containsOrIsVertex((DirectPosition) i.next())) {
+        for (DirectPosition directPosition : coordinate) {
+            if (!this.containsOrIsVertex(directPosition)) {
                 return false;
             }
         }

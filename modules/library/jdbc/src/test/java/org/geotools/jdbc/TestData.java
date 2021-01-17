@@ -18,6 +18,7 @@ package org.geotools.jdbc;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -33,6 +34,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.identity.FeatureId;
 
 public class TestData {
 
@@ -133,7 +135,7 @@ public class TestData {
         rd1Filter = ff.id(Collections.singleton(ff.featureId(ROAD + "." + (initialFidValue))));
         rd2Filter = ff.id(Collections.singleton(ff.featureId(ROAD + "." + (initialFidValue + 1))));
 
-        HashSet fids = new HashSet();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(ff.featureId(ROAD + "." + (initialFidValue)));
         fids.add(ff.featureId(ROAD + "." + (initialFidValue + 1)));
         rd12Filter = ff.id(fids);

@@ -92,6 +92,17 @@
             <artifactId>gt-coverage</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-sample-data</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <!-- The version number is specified in the parent POM. -->
+        </dependency>
     </dependencies>
 
 </project>

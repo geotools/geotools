@@ -128,14 +128,14 @@ You can connect to a Web Feature Server via the DataStore API; the connection pa
   // Step 2 - connection
   DataStore data = DataStoreFinder.getDataStore( connectionParameters );
   
-  // Step 3 - discouvery
+  // Step 3 - discovery
   String typeNames[] = data.getTypeNames();
   String typeName = typeNames[0];
   SimpleFeatureType schema = data.getSchema( typeName );
   
   // Step 4 - target
   FeatureSource<SimpleFeatureType, SimpleFeature> source = data.getFeatureSource( typeName );
-  System.out.println( "Metadata Bounds:"+ source.getBounds() );
+  System.out.println( "Metadata Bounds: " + source.getBounds() );
   
   // Step 5 - query
   String geomName = schema.getDefaultGeometry().getLocalName();
@@ -151,12 +151,11 @@ You can connect to a Web Feature Server via the DataStore API; the connection pa
   ReferencedEnvelope bounds = new ReferencedEnvelope();
   Iterator<SimpleFeature> iterator = features.iterator();
   try {
-      while( iterator.hasNext() ){
+      while( iterator.hasNext() ) {
           Feature feature = (Feature) iterator.next();
-      bounds.include( feature.getBounds() );
-  }
-      System.out.println( "Calculated Bounds:"+ bounds );
-  }
-  finally {
+          bounds.include( feature.getBounds() );
+      }
+      System.out.println( "Calculated Bounds: " + bounds );
+  } finally {
       features.close( iterator );
   }

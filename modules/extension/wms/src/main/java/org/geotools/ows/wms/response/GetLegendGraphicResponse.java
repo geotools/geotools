@@ -24,11 +24,6 @@ import org.geotools.ows.ServiceException;
 /** @author Richard Gould */
 public class GetLegendGraphicResponse extends Response {
 
-    @Deprecated
-    public GetLegendGraphicResponse(org.geotools.data.ows.HTTPResponse httpResponse)
-            throws ServiceException, IOException {
-        this(new org.geotools.http.DelegateOldHTTPResponse(httpResponse));
-    }
 
     public GetLegendGraphicResponse(HTTPResponse httpResponse)
             throws ServiceException, IOException {

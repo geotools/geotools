@@ -376,11 +376,6 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
         super(serverURL, httpClient, null);
     }
 
-    @Deprecated
-    public WebMapServer(final URL serverURL, final org.geotools.data.ows.HTTPClient httpClient)
-            throws IOException, ServiceException {
-        this(serverURL, httpClient, null);
-    }
 
     /**
      * Creates a new WebMapServer instance and attempts to retrieve the Capabilities document
@@ -398,14 +393,6 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
         super(serverURL, httpClient, null, hints);
     }
 
-    @Deprecated
-    public WebMapServer(
-            final URL serverURL,
-            final org.geotools.data.ows.HTTPClient httpClient,
-            Map<String, Object> hints)
-            throws IOException, ServiceException {
-        this(serverURL, new org.geotools.http.DelegateOldHTTPClient(httpClient), hints);
-    }
 
     /**
      * Creates a new WebMapServer instance and attempts to retrieve the Capabilities document

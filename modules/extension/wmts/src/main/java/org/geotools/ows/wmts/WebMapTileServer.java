@@ -74,14 +74,6 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         setType(super.capabilities.getType());
     }
 
-    @Deprecated
-    public WebMapTileServer(
-            URL serverURL,
-            org.geotools.data.ows.HTTPClient httpClient,
-            WMTSCapabilities capabilities)
-            throws ServiceException, IOException {
-        this(serverURL, new org.geotools.http.DelegateOldHTTPClient(httpClient), capabilities);
-    }
 
     /** */
     public WebMapTileServer(URL serverURL) throws IOException, ServiceException {

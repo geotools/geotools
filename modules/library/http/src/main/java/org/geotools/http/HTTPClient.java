@@ -29,8 +29,7 @@ import java.util.Map;
  * @see SimpleHttpClient
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-@SuppressWarnings("deprecation")
-public interface HTTPClient extends org.geotools.data.ows.HTTPClient {
+public interface HTTPClient{
 
     /**
      * Executes an HTTP POST request against the provided URL, sending the contents of {@code
@@ -69,7 +68,6 @@ public interface HTTPClient extends org.geotools.data.ows.HTTPClient {
      * @param url the URL to retrieve
      * @return an {@link HTTPResponse} encapsulating the response to the HTTP GET request
      */
-    @Override
     HTTPResponse get(URL url) throws IOException;
 
     /**

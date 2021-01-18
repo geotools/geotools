@@ -49,22 +49,12 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
     @Override
     public HTTPResponse post(URL url, InputStream postContent, String postContentType)
             throws IOException {
-        LOGGER.info("POST Request URL: " + url);
-        if (LOGGER.isLoggable(Level.FINEST)) {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            copy(postContent, out);
-            LOGGER.finest("POST Request Body: \n" + out.toString(charsetName));
-
-            postContent = new ByteArrayInputStream(out.toByteArray());
-        }
-        return new LoggingHTTPResponse(
-                delegate.post(url, postContent, postContentType), charsetName);
+    	 throw new UnsupportedOperationException("Deprecated method");
     }
 
     @Override
     public HTTPResponse get(URL url) throws IOException {
-        LOGGER.fine("GET Request URL: " + url);
-        return new LoggingHTTPResponse(delegate.get(url), charsetName);
+    	 throw new UnsupportedOperationException("Deprecated method");
     }
 
     static void copy(InputStream input, OutputStream output) throws IOException {

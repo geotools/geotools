@@ -31,8 +31,7 @@ import java.io.InputStream;
  * @author groldan
  * @see HTTPClient
  */
-@SuppressWarnings("deprecation")
-public interface HTTPResponse extends org.geotools.data.ows.HTTPResponse {
+public interface HTTPResponse{
 
     /**
      * Disposes this HTTP response and cleans up any resource being held.

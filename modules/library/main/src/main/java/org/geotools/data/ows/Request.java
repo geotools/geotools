@@ -80,15 +80,6 @@ public interface Request {
                         this.getClass().getName()));
     }
 
-    /**
-     * Added when shifting namespace for HTTPResponse from org.geotools.data.ows to
-     * org.geotools.http
-     */
-    @Deprecated
-    default Response createResponse(org.geotools.data.ows.HTTPResponse response)
-            throws ServiceException, IOException {
-        return createResponse(new org.geotools.http.DelegateOldHTTPResponse(response));
-    }
 
     /**
      * This method indicates whether this request needs to transmit some data to the server using

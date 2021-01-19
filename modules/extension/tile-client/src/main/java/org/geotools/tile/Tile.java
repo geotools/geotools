@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.http.HTTPResponse;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.http.HTTPResponse;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.logging.Logging;
 

@@ -27,17 +27,26 @@ import org.geotools.util.factory.Hints;
 public interface HTTPClientFactory {
 
     /**
-     * Main method to get the client
+     * Method used to check if client is the right one
+     *
+     * @return Client class
+     */
+    Class<? extends HTTPClient> getClientClass();
+
+    /**
+     * Method called to create the client
      *
      * @return default http client
      */
-    HTTPClient getClient();
+    HTTPClient createClient();
 
     /**
-     * Get a client by the given hints. Supersedes the one given by Geotools.getDefaultHints()
+     * Called by HTTPFactoryFinder to create client
      *
-     * @param hints Looks for the key HTTP_CLIENT
+     * <p>Takes care of any delegation
+     *
+     * @param hints Merged with system defaults
      * @return
      */
-    HTTPClient getClient(Hints hints);
+    HTTPClient createClient(Hints hints);
 }

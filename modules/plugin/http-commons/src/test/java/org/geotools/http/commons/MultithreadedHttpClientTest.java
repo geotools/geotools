@@ -40,14 +40,13 @@ import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
-import org.geotools.http.commons.MultithreadedHttpClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 /**
- * Tests for {@link MultithreadedHttpClient}.
+ * Tests for {@link org.geotools.http.commons.MultithreadedHttpClient}.
  *
  * <p>Copied from gt-wms
  *

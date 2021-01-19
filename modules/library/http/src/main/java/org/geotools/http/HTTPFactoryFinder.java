@@ -51,32 +51,31 @@ public class HTTPFactoryFinder extends FactoryFinder {
     }
 
     /**
-     * Get default Http Client factory.
+     * Get HTTP client with system defaults
      *
      * @return
      */
-    public static synchronized HTTPClientFactory getHttpClientFactory() {
-        return getServiceRegistry()
-                .getFactory(
-                        HTTPClientFactory.class,
-                        null,
-                        mergeSystemHints(null),
-                        Hints.HTTP_CLIENT_FACTORY);
+    public static synchronized HTTPClient getClient() {
+        return getClient(null);
     }
 
     /**
-     * Get a special Http Client Factory by specifying hint HTTP_CLIENT_FACTORY
+     * Get a special HTTP client by specifying hint HTTP_CLIENT_FACTORY or HTTP_CLIENT
+     *
+     * <p>Merges with system defaults
      *
      * @param hints
      * @return
      */
-    public static synchronized HTTPClientFactory getHttpClientFactory(Hints hints) {
+    public static synchronized HTTPClient getClient(Hints hints) {
+        final Hints merged = mergeSystemHints(hints);
         return getServiceRegistry()
-                .getFactory(
-                        HTTPClientFactory.class,
-                        null,
-                        mergeSystemHints(hints),
-                        Hints.HTTP_CLIENT_FACTORY);
+                .getFactories(HTTPClientFactory.class, false)
+                .filter((fact) -> matchHttpFactoryHints(merged, fact))
+                .filter((fact) -> matchHttpClientHints(merged, fact.getClientClass()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No HTTPClientFactory matched the hints."))
+                .createClient(merged);
     }
 
     /** Makes sure a call for getServiceRegistry will do a clean scan */
@@ -86,5 +85,26 @@ public class HTTPFactoryFinder extends FactoryFinder {
         if (copy != null) {
             copy.deregisterAll();
         }
+    }
+
+    private static boolean matchHttpFactoryHints(Hints hints, HTTPClientFactory fact) {
+        if (!hints.containsKey(Hints.HTTP_CLIENT_FACTORY)) {
+            return true;
+        }
+        Object val = hints.get(Hints.HTTP_CLIENT_FACTORY);
+        return (val instanceof String
+                ? fact.getClass().getName().equalsIgnoreCase((String) val)
+                : fact.getClass() == (Class<?>) val);
+    }
+
+    private static boolean matchHttpClientHints(
+            Hints hints, Class<? extends HTTPClient> clientCls) {
+        if (!hints.containsKey(Hints.HTTP_CLIENT)) {
+            return true;
+        }
+        Object val = hints.get(Hints.HTTP_CLIENT);
+        return (val instanceof String
+                ? clientCls.getName().equalsIgnoreCase((String) val)
+                : val == clientCls);
     }
 }

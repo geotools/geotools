@@ -35,14 +35,12 @@ HTTPClientFactory
 Main approach to get a http client is through the client factory. That one can be retrived through HTTPFactoryFinder.
 Here is the easiest way::
 
-  HTTPClient client = HTTPFactoryFinder.getHttpClientFactory()
-                                         .getClient();
+  HTTPClient client = HTTPFactoryFinder.getClient();
 
 
 To get a specific client::
 
-  HTTPClient client = HTTPFactoryFinder.getHttpClientFactory()
-                            .getClient(new Hints(Hints.HTTP_CLIENT,
+  HTTPClient client = HTTPFactoryFinder.getClient(new Hints(Hints.HTTP_CLIENT,
                                     CustomHttpClient.class));
 
 For a test case it is possible to set a MockingHttpClientFactory to avoid network traffic.
@@ -55,7 +53,7 @@ The code could look like::
         Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MockingHttpClientFactory.class);
         try {
         .... 
-            HTTPClient client = HTTPFactoryFinder.getHttpClientFactory().getClient();
+            HTTPClient client = HTTPFactoryFinder.getClient();
         ....   
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);

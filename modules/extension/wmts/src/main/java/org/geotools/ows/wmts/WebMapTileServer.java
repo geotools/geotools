@@ -74,10 +74,9 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         setType(super.capabilities.getType());
     }
 
-
     /** */
     public WebMapTileServer(URL serverURL) throws IOException, ServiceException {
-        this(serverURL, HTTPFactoryFinder.getHttpClientFactory().getClient(), null);
+        this(serverURL, HTTPFactoryFinder.getClient(), null);
         setType(capabilities.getType());
     }
 
@@ -85,7 +84,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     public WebMapTileServer(WMTSCapabilities capabilities) throws ServiceException, IOException {
         super(
                 capabilities.getRequest().getGetCapabilities().getGet(),
-                HTTPFactoryFinder.getHttpClientFactory().getClient(),
+                HTTPFactoryFinder.getClient(),
                 capabilities);
         setType(capabilities.getType());
     }

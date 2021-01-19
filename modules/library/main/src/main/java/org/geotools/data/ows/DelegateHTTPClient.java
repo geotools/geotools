@@ -42,12 +42,12 @@ public class DelegateHTTPClient implements HTTPClient {
 
     @Override
     public HTTPResponse get(URL url) throws IOException {
-    	 throw new UnsupportedOperationException("Deprecated method");
+        throw new UnsupportedOperationException("Deprecated method");
     }
 
     @Override
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
-    	 throw new UnsupportedOperationException("Deprecated method");
+        throw new UnsupportedOperationException("Deprecated method");
     }
 
     @Override

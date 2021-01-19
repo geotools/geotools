@@ -18,9 +18,7 @@ package org.geotools.http;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import org.geotools.http.CustomHTTPClientFactory.CustomHttpClient;
 import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +33,7 @@ public class HTTPFactoryFinderTest {
 
     @Test
     public void findingSimpleHttpClientAsDefault() throws Exception {
-        HTTPClient client = HTTPFactoryFinder.getHttpClientFactory().getClient();
+        HTTPClient client = HTTPFactoryFinder.getClient();
 
         assertTrue(client != null);
         assertTrue(client instanceof SimpleHttpClient);
@@ -45,8 +43,7 @@ public class HTTPFactoryFinderTest {
     public void findingCustomHttpClientTestByHints() throws Exception {
 
         HTTPClient client =
-                HTTPFactoryFinder.getHttpClientFactory()
-                        .getClient(new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
+                HTTPFactoryFinder.getClient(new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
 
         assertTrue(client instanceof CustomHttpClient);
     }
@@ -56,7 +53,7 @@ public class HTTPFactoryFinderTest {
 
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
         try {
-            HTTPClient client = HTTPFactoryFinder.getHttpClientFactory().getClient();
+            HTTPClient client = HTTPFactoryFinder.getClient();
             assertTrue(client instanceof LoggingHTTPClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
@@ -67,9 +64,8 @@ public class HTTPFactoryFinderTest {
     public void avoidLoggingInspiteSystemProperty() throws Exception {
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
         try {
-            HTTPClientFactory factory = HTTPFactoryFinder.getHttpClientFactory();
 
-            HTTPClient client = factory.getClient(new Hints(Hints.HTTP_LOGGING, "False"));
+            HTTPClient client = HTTPFactoryFinder.getClient(new Hints(Hints.HTTP_LOGGING, "False"));
             assertTrue(client instanceof SimpleHttpClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
@@ -81,24 +77,10 @@ public class HTTPFactoryFinderTest {
 
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "utf-8");
         try {
-            HTTPClient client = HTTPFactoryFinder.getHttpClientFactory().getClient();
+            HTTPClient client = HTTPFactoryFinder.getClient();
             assertTrue(client instanceof LoggingHTTPClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
-        }
-    }
-
-    static class CustomHttpClient extends AbstractHttpClient {
-
-        @Override
-        public HTTPResponse get(URL url) throws IOException {
-            return null;
-        }
-
-        @Override
-        public HTTPResponse post(URL url, InputStream content, String contentType)
-                throws IOException {
-            return null;
         }
     }
 }

@@ -116,7 +116,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
      * @param properties pre-set properties to be used. Can be null.
      */
     public AbstractGetTileRequest(URL onlineResource, Properties properties) {
-        this(onlineResource, properties, HTTPFactoryFinder.getHttpClientFactory().getClient());
+        this(onlineResource, properties, HTTPFactoryFinder.getClient());
     }
 
     public AbstractGetTileRequest(URL onlineResource, Properties properties, HTTPClient client) {

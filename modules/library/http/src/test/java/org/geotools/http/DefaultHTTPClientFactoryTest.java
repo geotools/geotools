@@ -26,7 +26,7 @@ public class DefaultHTTPClientFactoryTest {
     @Test
     public void testBasicUsage() throws Exception {
 
-        HTTPClient client = new DefaultHTTPClientFactory().getClient();
+        HTTPClient client = new DefaultHTTPClientFactory().createClient();
         assertTrue(client != null);
         assertTrue(client instanceof SimpleHttpClient);
     }
@@ -34,7 +34,7 @@ public class DefaultHTTPClientFactoryTest {
     @Test
     public void testLoggingUsage() throws Exception {
         HTTPClientFactory factory = new DefaultHTTPClientFactory();
-        HTTPClient client = factory.getClient(new Hints(Hints.HTTP_LOGGING, "TRUE"));
+        HTTPClient client = factory.createClient(new Hints(Hints.HTTP_LOGGING, "TRUE"));
         assertTrue(client instanceof LoggingHTTPClient);
     }
 }

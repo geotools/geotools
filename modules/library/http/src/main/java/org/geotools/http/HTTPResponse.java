@@ -31,7 +31,7 @@ import java.io.InputStream;
  * @author groldan
  * @see HTTPClient
  */
-public interface HTTPResponse{
+public interface HTTPResponse {
 
     /**
      * Disposes this HTTP response and cleans up any resource being held.

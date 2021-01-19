@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,22 +14,28 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.http;
+package org.geotools.http.commons;
+
+import org.geotools.http.AbstractHTTPClientFactory;
+import org.geotools.http.HTTPClient;
 
 /**
- * Default factory for generating HTTP client's. Will deliver a SimpleHttpClient.
+ * Factory for MultithreadedHttpClient
+ *
+ * <p>To use client set Hints.HTTP_CLIENT_FACTORY=MultithreadedHttpClientFactory.class, or
+ * Hints.HTTP_CLIENT=MultithreadedHttpClient.class
  *
  * @author Roar Brænden
  */
-public class DefaultHTTPClientFactory extends AbstractHTTPClientFactory {
+public class MultithreadedHttpClientFactory extends AbstractHTTPClientFactory {
 
     @Override
     public Class<? extends HTTPClient> getClientClass() {
-        return SimpleHttpClient.class;
+        return MultithreadedHttpClient.class;
     }
 
     @Override
     public HTTPClient createClient() {
-        return new SimpleHttpClient();
+        return new MultithreadedHttpClient();
     }
 }

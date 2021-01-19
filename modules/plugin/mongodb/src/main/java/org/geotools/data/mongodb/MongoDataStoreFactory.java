@@ -150,7 +150,7 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
         // check if the URI is a URL
         if (!uri.startsWith(MongoSchemaFileStore.PRE_FIX_HTTP)) return null;
 
-        HTTPClient simpleHttpClient = HTTPFactoryFinder.getHttpClientFactory().getClient();
+        HTTPClient simpleHttpClient = HTTPFactoryFinder.getClient();
         // check for credentials
         if (HTTP_USER.lookUp(params) == null || HTTP_PASSWORD.lookUp(params) == null)
             return simpleHttpClient;

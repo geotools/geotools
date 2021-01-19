@@ -16,11 +16,6 @@
  */
 package org.geotools.data.ows;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Map;
-
 /**
  * Defines the inteface by which an {@link AbstractOpenWebService} executes HTTP requests.
  *
@@ -32,6 +27,4 @@ import java.util.Map;
  * @see org.geotools.http.HTTPClient
  */
 @Deprecated
-public interface HTTPClient extends org.geotools.http.HTTPClient {
-
-}
+public interface HTTPClient extends org.geotools.http.HTTPClient {}

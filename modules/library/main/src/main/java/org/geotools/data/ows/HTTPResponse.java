@@ -16,7 +16,6 @@
  */
 package org.geotools.data.ows;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -33,6 +32,4 @@ import java.io.InputStream;
  * @see org.geotools.http.HTTPResponse
  */
 @Deprecated
-public interface HTTPResponse extends org.geotools.http.HTTPResponse {
-
-}
+public interface HTTPResponse extends org.geotools.http.HTTPResponse {}

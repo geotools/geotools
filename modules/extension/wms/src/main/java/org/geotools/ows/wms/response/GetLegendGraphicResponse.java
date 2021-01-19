@@ -24,7 +24,6 @@ import org.geotools.ows.ServiceException;
 /** @author Richard Gould */
 public class GetLegendGraphicResponse extends Response {
 
-
     public GetLegendGraphicResponse(HTTPResponse httpResponse)
             throws ServiceException, IOException {
         super(httpResponse);

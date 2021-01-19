@@ -108,13 +108,7 @@ public class WMTSTileService extends TileService {
             WMTSLayer layer,
             String styleName,
             TileMatrixSet tileMatrixSet) {
-        this(
-                templateURL,
-                type,
-                layer,
-                styleName,
-                tileMatrixSet,
-                HTTPFactoryFinder.getHttpClientFactory().getClient());
+        this(templateURL, type, layer, styleName, tileMatrixSet, HTTPFactoryFinder.getClient());
     }
 
     /**

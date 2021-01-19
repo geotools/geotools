@@ -214,6 +214,7 @@ public class FactoryRegistry {
      * @since 19
      */
     public <T> Stream<T> getFactories(final Class<T> category, final boolean useOrdering) {
+        scanForPluginsIfNeeded(category);
         return registry.streamInstances(category, useOrdering);
     }
 
@@ -231,6 +232,7 @@ public class FactoryRegistry {
             final Class<T> category,
             final Predicate<? super T> factoryFilter,
             final boolean useOrdering) {
+        scanForPluginsIfNeeded(category);
         Stream<T> factories = getFactories(category, useOrdering);
         return factoryFilter == null ? factories : factories.filter(factoryFilter);
     }

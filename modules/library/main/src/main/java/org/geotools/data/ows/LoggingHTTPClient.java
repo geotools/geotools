@@ -49,12 +49,12 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
     @Override
     public HTTPResponse post(URL url, InputStream postContent, String postContentType)
             throws IOException {
-    	 throw new UnsupportedOperationException("Deprecated method");
+        throw new UnsupportedOperationException("Deprecated method");
     }
 
     @Override
     public HTTPResponse get(URL url) throws IOException {
-    	 throw new UnsupportedOperationException("Deprecated method");
+        throw new UnsupportedOperationException("Deprecated method");
     }
 
     static void copy(InputStream input, OutputStream output) throws IOException {

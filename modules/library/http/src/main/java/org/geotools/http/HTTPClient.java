@@ -29,7 +29,7 @@ import java.util.Map;
  * @see SimpleHttpClient
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-public interface HTTPClient{
+public interface HTTPClient {
 
     /**
      * Executes an HTTP POST request against the provided URL, sending the contents of {@code

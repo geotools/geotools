@@ -67,7 +67,7 @@ public class WFSClientTest {
 
     private WFSClient newClient(String resource) throws IOException, ServiceException {
         URL capabilitiesURL = WFSTestData.url(resource);
-        HTTPClient httpClient = HTTPFactoryFinder.getHttpClientFactory().getClient();
+        HTTPClient httpClient = HTTPFactoryFinder.getClient();
 
         WFSClient client = new WFSClient(capabilitiesURL, httpClient, config);
         return client;

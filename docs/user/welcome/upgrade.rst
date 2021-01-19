@@ -45,74 +45,35 @@ The original interfaces HTTPClient and HTTPResponse and their implementations: (
 ``org.geotools.data.ows``, has been moved to namespace ``org.geotools.http``.
 
 
-.. list-table:: Deprecations
-   :widths: 40,40,50
-   :header-rows: 1
-
-   * - Deprecated class 
-     - Module
-     - Replacement (other module)
-   * - org.geotools.data.ows.AbstractHttpClient
-     - gt-main
-     - org.geotools.http.AbstractHttpClient
-   * - org.geotools.data.ows.MockHttpClient
-     - gt-main
-     - org.geotools.http.MockHttpClient
-   * - org.geotools.data.ows.MockHttpResponse 
-     - gt-main 
-     - org.geotools.http.MockHttpResponse
-   * - org.geotools.data.ows.DelegateHTTPClient
-     - gt-main
-     - org.geotools.http.DelegateHTTPClient
-   * - org.geotools.data.ows.DelegateHTTPResponse
-     - gt-main
-     - org.geotools.http.DelegateHTTPResponse
-   * - org.geotools.data.ows.HTTPClient
-     - gt-main
-     - org.geotools.http.HTTPClient
-   * - org.geotools.data.ows.HTTPResponse 
-     - gt-main
-     - org.geotools.http.HTTPResponse
-   * - org.geotools.data.ows.LoggingHTTPClient
-     - gt-main
-     - org.geotools.http.LoggingHTTPClient
-   * - org.geotools.data.ows.SimpleHttpClient
-     - gt-main 
-     - org.geotools.http.SimpleHttpClient
-   * - org.geotools.ows.wms.MultithreadedHttpClient
-     - gt-wms 
-     - org.geotools.http.MultithreadedHttpClient (gt-http-commons)
-   * - org.geotools.ows.MockHttpClient
-     - gt-wms
-     - org.geotools.http.MockHttpClient
-   * - org.geotools.ows.MockHttpResponse
-     - gt-wms
-     - org.geotools.http.MockHttpResponse
-   * - org.geotools.ows.wmts.MockHttpClient
-     - gt-wmts
-     - org.geotools.http.AbstractHttpClient
-   * - org.geotools.data.mongodb.MockHTTPClient
-     - gt-mongodb
-     - org.geotools.http.MockHttpClient
-   * - org.geotools.data.mongodb.MockHttpResponse
-     - gt-mongodb
-     - org.geotools.http.MockHttpResponse
-   * - org.geotools.ows.wfs.MultithreadedHttpClient
-     - gt-wfs-ng
-     - org.geotools.http.MultithreadedHttpClient (gt-http-commons)
-   * - org.geotools.ows.wfs.AbstractTestHTTPClient
-     - gt-wfs-ng
-     - org.geotools.http.AbstractHttpClient
-   * - org.geotools.data.Base64
-     - gt-main
-     - org.geotools.util.Base64 (gt-metadata)
+===============================================  =========================  ===============================================================
+Deprecated class                                 Module                       Replacement (other module)
+===============================================  =========================  ===============================================================
+org.geotools.data.ows.AbstractHttpClient         gt-main                     org.geotools.http.AbstractHttpClient
+org.geotools.data.ows.MockHttpClient             gt-main                     org.geotools.http.MockHttpClient
+org.geotools.data.ows.MockHttpResponse           gt-main                     org.geotools.http.MockHttpResponse
+org.geotools.data.ows.DelegateHTTPClient         gt-main                     org.geotools.http.DelegateHTTPClient
+org.geotools.data.ows.DelegateHTTPResponse       gt-main                     org.geotools.http.DelegateHTTPResponse
+org.geotools.data.ows.HTTPClient                 gt-main                     org.geotools.http.HTTPClient
+org.geotools.data.ows.HTTPResponse               gt-main                     org.geotools.http.HTTPResponse
+org.geotools.data.ows.LoggingHTTPClient          gt-main                     org.geotools.http.LoggingHTTPClient
+org.geotools.data.ows.SimpleHttpClient           gt-main                     org.geotools.http.SimpleHttpClient
+org.geotools.ows.wms.MultithreadedHttpClient     gt-wms                      org.geotools.http.MultithreadedHttpClient (gt-http-commons)
+org.geotools.ows.MockHttpClient                  gt-wms                      org.geotools.http.MockHttpClient
+org.geotools.ows.MockHttpResponse                gt-wms                      org.geotools.http.MockHttpResponse
+org.geotools.ows.wmts.MockHttpClient             gt-wmts                     org.geotools.http.AbstractHttpClient
+org.geotools.data.mongodb.MockHTTPClient         gt-mongodb                  org.geotools.http.MockHttpClient
+org.geotools.data.mongodb.MockHttpResponse       gt-mongodb                  org.geotools.http.MockHttpResponse
+org.geotools.ows.wfs.MultithreadedHttpClient     gt-wfs-ng                   org.geotools.http.MultithreadedHttpClient (gt-http-commons)
+org.geotools.ows.wfs.AbstractTestHTTPClient      gt-wfs-ng                   org.geotools.http.AbstractHttpClient
+org.geotools.data.Base64                         gt-main                     org.geotools.util.Base64 (gt-metadata)
+===============================================  =========================  ===============================================================
 
 
 In addition to namespace changes, there are a new preferred way of acquairing a HTTPClient:
 
 .. code::
 
-  HTTPClient client = HTTPFactoryFinder.getHttpClientFactory().getClient();
+  HTTPClient client = HTTPFactoryFinder.getClient();
 
 In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHttpClient. To acquaire an instance the plugin should be added with Maven:
 
@@ -128,8 +89,7 @@ Then in the code:
 
 .. code::
 
-  HTTPClient client = HTTPFactoryFinder.getHttpClientFactory()
-                                          .getClient(new Hints(Hints.HTTP_CLIENT, MultihreadedHttpClient.class));
+  HTTPClient client = HTTPFactoryFinder.getClient(new Hints(Hints.HTTP_CLIENT, MultihreadedHttpClient.class));
 
 GeoTools 24.x
 -------------

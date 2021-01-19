@@ -682,7 +682,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
             }
         }
 
-        final HTTPClient http = HTTPFactoryFinder.getHttpClientFactory().getClient(); // new
+        final HTTPClient http = HTTPFactoryFinder.getClient(); // new
         // MultithreadedHttpClient();
 
         // TODO: let HTTPClient be configured for gzip

@@ -17,7 +17,6 @@
 package org.geotools.http;
 
 import java.util.logging.Logger;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
@@ -34,15 +33,14 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
     public AbstractHTTPClientFactory() {}
 
     @Override
-    public HTTPClient getClient() {
-        final Hints hints = GeoTools.getDefaultHints();
-        return applyLogging(createClient(hints), hints);
-    }
+    public abstract Class<? extends HTTPClient> getClientClass();
 
     @Override
-    public HTTPClient getClient(Hints hints) {
-        hints = GeoTools.addDefaultHints(hints);
-        return applyLogging(createClient(hints), hints);
+    public abstract HTTPClient createClient();
+
+    @Override
+    public HTTPClient createClient(Hints hints) {
+        return applyLogging(createClient(), hints);
     }
 
     /**
@@ -66,12 +64,4 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
         }
         return client;
     }
-
-    /**
-     * Create the main client.
-     *
-     * @param hints
-     * @return
-     */
-    protected abstract HTTPClient createClient(Hints hints);
 }

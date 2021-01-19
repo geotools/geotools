@@ -146,11 +146,10 @@ public class LocalGeoServerOnlineTest {
                     wms =
                             new WebMapServer(
                                     serverURL,
-                                    HTTPFactoryFinder.getHttpClientFactory()
-                                            .getClient(
-                                                    new Hints(
-                                                            Hints.HTTP_CLIENT,
-                                                            MultithreadedHttpClient.class)));
+                                    HTTPFactoryFinder.getClient(
+                                            new Hints(
+                                                    Hints.HTTP_CLIENT,
+                                                    MultithreadedHttpClient.class)));
                     capabilities = wms.getCapabilities();
                 } catch (Exception eek) {
                     serverURL = null;

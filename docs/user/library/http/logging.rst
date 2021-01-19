@@ -4,8 +4,7 @@ LoggingHttpClient
 You can wrap a HTTPClient with the LoggingHttpClient to log all requests generated.
 This can be accomplished by::
 
-  HTTPClient client = HTTPFactoryFinder.getHttpClientFactory()
-                        .getClient(new Hints(Hints.HTTP_LOGGING,
+  HTTPClient client = HTTPFactoryFinder.getClient(new Hints(Hints.HTTP_LOGGING,
                               "True"));
 
 Or as a system propety::

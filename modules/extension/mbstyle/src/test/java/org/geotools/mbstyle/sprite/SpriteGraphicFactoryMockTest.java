@@ -16,15 +16,11 @@
  */
 package org.geotools.mbstyle.sprite;
 
-import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.net.URL;
 import javax.swing.Icon;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.http.MockHttpClient;
-import org.geotools.http.MockHttpResponse;
 import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Before;
@@ -33,37 +29,19 @@ import org.opengis.filter.FilterFactory2;
 
 public class SpriteGraphicFactoryMockTest {
 
-    private static final URL pngURL =
+    static final URL pngURL =
             SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.png");
-    private static final URL jsonURL =
+    static final URL jsonURL =
             SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.json");
-
-    public static class SpriteMockHttpClient extends MockHttpClient {
-
-        public SpriteMockHttpClient() {
-
-            try {
-                final MockHttpResponse jsonResponse =
-                        new MockHttpResponse(toByteArray(jsonURL), "application/json");
-                expectGet(jsonURL, jsonResponse);
-
-                final MockHttpResponse pngResponse =
-                        new MockHttpResponse(toByteArray(pngURL), "image/png");
-                expectGet(pngURL, pngResponse);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 
     @Before
     public void setup() throws Exception {
-        Hints.putSystemDefault(Hints.HTTP_CLIENT, SpriteMockHttpClient.class);
+        Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, SpriteMockHttpClientFactory.class);
     }
 
     @After
     public void tearDown() throws Exception {
-        Hints.removeSystemDefault(Hints.HTTP_CLIENT);
+        Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
     }
 
     @Test

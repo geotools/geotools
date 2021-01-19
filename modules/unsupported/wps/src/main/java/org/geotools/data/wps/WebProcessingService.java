@@ -145,7 +145,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
             throws IOException, ServiceException {
         super(
                 getOperationURL("getcapabilities", capabilities, true),
-                HTTPFactoryFinder.getHttpClientFactory().getClient(),
+                HTTPFactoryFinder.getClient(),
                 capabilities);
     }
 

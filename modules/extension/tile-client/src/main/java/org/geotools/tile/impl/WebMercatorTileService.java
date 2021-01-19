@@ -63,7 +63,7 @@ public abstract class WebMercatorTileService extends TileService {
     }
 
     protected WebMercatorTileService(String name, String baseURL) {
-        this(name, baseURL, HTTPFactoryFinder.getHttpClientFactory().getClient());
+        this(name, baseURL, HTTPFactoryFinder.getClient());
     }
 
     protected WebMercatorTileService(String name, String baseURL, HTTPClient client) {

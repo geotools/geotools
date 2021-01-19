@@ -80,7 +80,6 @@ public interface Request {
                         this.getClass().getName()));
     }
 
-
     /**
      * This method indicates whether this request needs to transmit some data to the server using
      * POST. If this returns true, performPostOutput() will be called during the connection,

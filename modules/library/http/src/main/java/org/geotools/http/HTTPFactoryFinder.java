@@ -72,7 +72,8 @@ public class HTTPFactoryFinder extends FactoryFinder {
         return getServiceRegistry()
                 .getFactories(HTTPClientFactory.class, null, null)
                 .filter((fact) -> matchHttpFactoryHints(merged, fact))
-                .filter((fact) -> matchHttpClientHints(merged, fact.getClientClass()))
+                .filter((fact) -> matchHttpClientHints(merged, fact))
+                .filter((fact) -> defaultNoHints(merged, fact))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No HTTPClientFactory matched the hints."))
                 .createClient(merged);
@@ -97,14 +98,14 @@ public class HTTPFactoryFinder extends FactoryFinder {
                 : fact.getClass() == (Class<?>) val);
     }
 
-    private static boolean matchHttpClientHints(
-            Hints hints, Class<? extends HTTPClient> clientCls) {
-        if (!hints.containsKey(Hints.HTTP_CLIENT)) {
+    private static boolean matchHttpClientHints(Hints hints, HTTPClientFactory fact) {
+        return fact.willCreate(hints);
+    }
+
+    private static boolean defaultNoHints(Hints hints, HTTPClientFactory fact) {
+        if (hints.containsKey(Hints.HTTP_CLIENT) || hints.containsKey(Hints.HTTP_CLIENT_FACTORY)) {
             return true;
         }
-        Object val = hints.get(Hints.HTTP_CLIENT);
-        return (val instanceof String
-                ? clientCls.getName().equalsIgnoreCase((String) val)
-                : val == clientCls);
+        return fact.getClass() == DefaultHTTPClientFactory.class;
     }
 }

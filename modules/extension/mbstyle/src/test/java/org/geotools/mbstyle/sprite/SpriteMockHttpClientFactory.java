@@ -19,6 +19,8 @@ package org.geotools.mbstyle.sprite;
 import static org.apache.commons.io.IOUtils.toByteArray;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import org.geotools.http.AbstractHTTPClientFactory;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.MockHttpClient;
@@ -34,8 +36,8 @@ import org.geotools.http.MockHttpResponse;
 public class SpriteMockHttpClientFactory extends AbstractHTTPClientFactory {
 
     @Override
-    public Class<? extends HTTPClient> getClientClass() {
-        return SpriteMockHttpClient.class;
+    public List<Class<?>> clientClasses() {
+        return Collections.singletonList(SpriteMockHttpClient.class);
     }
 
     @Override

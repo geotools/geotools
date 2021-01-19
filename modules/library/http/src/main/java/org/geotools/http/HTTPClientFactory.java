@@ -27,11 +27,11 @@ import org.geotools.util.factory.Hints;
 public interface HTTPClientFactory {
 
     /**
-     * Method used to check if client is the right one
+     * Method used to check if client in Hints can be created
      *
      * @return Client class
      */
-    Class<? extends HTTPClient> getClientClass();
+    boolean willCreate(Hints hints);
 
     /**
      * Method called to create the client

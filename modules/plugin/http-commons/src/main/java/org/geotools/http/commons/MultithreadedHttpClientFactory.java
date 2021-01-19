@@ -16,6 +16,8 @@
  */
 package org.geotools.http.commons;
 
+import java.util.Collections;
+import java.util.List;
 import org.geotools.http.AbstractHTTPClientFactory;
 import org.geotools.http.HTTPClient;
 
@@ -30,8 +32,8 @@ import org.geotools.http.HTTPClient;
 public class MultithreadedHttpClientFactory extends AbstractHTTPClientFactory {
 
     @Override
-    public Class<? extends HTTPClient> getClientClass() {
-        return MultithreadedHttpClient.class;
+    public List<Class<?>> clientClasses() {
+        return Collections.singletonList(MultithreadedHttpClient.class);
     }
 
     @Override

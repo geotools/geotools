@@ -3,13 +3,15 @@ package org.geotools.http;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 
 public class CustomHTTPClientFactory extends AbstractHTTPClientFactory {
 
     @Override
-    public Class<? extends HTTPClient> getClientClass() {
+    public List<Class<?>> clientClasses() {
 
-        return CustomHttpClient.class;
+        return Collections.singletonList(CustomHttpClient.class);
     }
 
     @Override

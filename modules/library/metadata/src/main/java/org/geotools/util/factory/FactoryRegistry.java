@@ -214,18 +214,6 @@ public class FactoryRegistry {
      * @since 19
      */
     public <T> Stream<T> getFactories(final Class<T> category, final boolean useOrdering) {
-        /*
-         * The implementation of this method is very similar to the 'getUnfilteredFactories'
-         * one except for filter handling. See the comments in 'getUnfilteredFactories' for
-         * more implementation details.
-         */
-        if (scanningCategories.contains(category)) {
-            // Please note you will get errors here if you accidentally allow
-            // more than one thread to use your FactoryRegistry at a time.
-            throw new RecursiveSearchException(category);
-        }
-        synchronizeIteratorProviders();
-        scanForPluginsIfNeeded(category);
         return registry.streamInstances(category, useOrdering);
     }
 
@@ -263,6 +251,18 @@ public class FactoryRegistry {
      */
     public <T> Stream<T> getFactories(
             final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
+        /*
+         * The implementation of this method is very similar to the 'getUnfilteredFactories'
+         * one except for filter handling. See the comments in 'getUnfilteredFactories' for
+         * more implementation details.
+         */
+        if (scanningCategories.contains(category)) {
+            // Please note you will get errors here if you accidentally allow
+            // more than one thread to use your FactoryRegistry at a time.
+            throw new RecursiveSearchException(category);
+        }
+        synchronizeIteratorProviders();
+        scanForPluginsIfNeeded(category);
         Predicate<T> isAcceptable =
                 factory -> isAcceptable(category.cast(factory), category, hints, filter);
         return getFactories(category, isAcceptable, true);
@@ -297,6 +297,10 @@ public class FactoryRegistry {
          * this method could complete normally but return the wrong plugin. It is safer to
          * thrown an exception so the user is advised that something is wrong.
          */
+        if (scanningCategories.contains(category)) {
+            throw new RecursiveSearchException(category);
+        }
+        scanForPluginsIfNeeded(category);
         return getFactories(category, true);
     }
 

@@ -70,7 +70,7 @@ public class HTTPFactoryFinder extends FactoryFinder {
     public static synchronized HTTPClient getClient(Hints hints) {
         final Hints merged = mergeSystemHints(hints);
         return getServiceRegistry()
-                .getFactories(HTTPClientFactory.class, false)
+                .getFactories(HTTPClientFactory.class, null, null)
                 .filter((fact) -> matchHttpFactoryHints(merged, fact))
                 .filter((fact) -> matchHttpClientHints(merged, fact.getClientClass()))
                 .findFirst()

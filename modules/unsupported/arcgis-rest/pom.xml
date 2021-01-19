@@ -40,6 +40,7 @@
 
     <properties>
         <powermock.version>2.0.9</powermock.version>
+        <additional-switches></additional-switches>
     </properties>
 
     <repositories>
@@ -110,7 +111,7 @@
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-cql</artifactId>
-            <version>25-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -119,21 +120,16 @@
             <version>2.3.1</version>
         </dependency>
     </dependencies>
+
     <profiles>
+
         <profile>
             <id>generateschema</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>11</source>
-                            <target>11</target>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.jsonschema2pojo</groupId>
@@ -182,24 +178,22 @@
         <profile>
             <id>integrationtest</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>!systemtest</name>
+                </property>
             </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>11</source>
-                            <target>11</target>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
                             <argLine>
-                                --add-opens java.base/jdk.internal.loader=ALL-UNNAMED
+                                ${additional-switches}
                             </argLine>
                             <includes>
                                 <include>**/*Test.java</include>
@@ -216,17 +210,15 @@
         <profile>
             <id>systemtest</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>systemtest</name>
+                </property>
             </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>11</source>
-                            <target>11</target>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -240,6 +232,17 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>java11</id>
+            <properties>
+                <additional-switches>--add-opens java.base/jdk.internal.loader=ALL-UNNAMED</additional-switches>
+            </properties>
+            <activation>
+                <jdk>11</jdk>
+            </activation>
+        </profile>
+
     </profiles>
 
 </project>

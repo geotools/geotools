@@ -92,5 +92,5 @@ mvn test
 System tests
 ------------
 
-mvn integration-test -Psystemtest
+mvn integration-test -Dsystemtest=true
 

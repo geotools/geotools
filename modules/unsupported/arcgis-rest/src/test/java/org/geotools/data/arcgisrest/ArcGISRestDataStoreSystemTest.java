@@ -57,7 +57,7 @@ public class ArcGISRestDataStoreSystemTest {
                                 "http://open-darwin.opendata.arcgis.com/data.json");
         List<Name> names = dataStore.createTypeNames();
 
-        assertEquals(32, names.size());
+        assertTrue(names.size() > 30);
         names.forEach(
                 (n) -> {
                     System.out.println(n.getURI());

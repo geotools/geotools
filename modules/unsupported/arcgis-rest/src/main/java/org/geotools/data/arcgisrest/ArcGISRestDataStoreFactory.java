@@ -20,7 +20,6 @@ package org.geotools.data.arcgisrest;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class ArcGISRestDataStoreFactory implements DataStoreFactorySpi {
     public static final String FACTORY_NAME = "ArcGIS ReST";
     public static final String FACTORY_DESCRIPTION = "ESRI ArcGIS ReST API data store";
 
-    private static List<Param> paramMetadata = new ArrayList<Param>(10);
+    private static final List<Param> paramMetadata = new ArrayList<>(10);
 
     public static final Param NAMESPACE_PARAM = new Param("namespace", String.class, "", true);
     public static final Param URL_PARAM =
@@ -84,13 +83,13 @@ public class ArcGISRestDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params)
+    public DataStore createNewDataStore(Map<String, ?> params)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         return new ArcGISRestDataStore(
                 (String) params.get(NAMESPACE_PARAM.key),
                 (String) params.get(URL_PARAM.key),
@@ -115,7 +114,7 @@ public class ArcGISRestDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
 
         try {
             new URL((String) params.get(ArcGISRestDataStoreFactory.NAMESPACE_PARAM.key));

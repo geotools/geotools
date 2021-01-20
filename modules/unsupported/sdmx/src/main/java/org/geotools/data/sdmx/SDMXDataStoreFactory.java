@@ -21,7 +21,6 @@ package org.geotools.data.sdmx;
 import it.bancaditalia.oss.sdmx.exceptions.SdmxException;
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -85,13 +84,13 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params)
+    public DataStore createNewDataStore(Map<String, ?> params)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, ?> params) throws IOException {
         try {
             return new SDMXDataStore(
                     (String) params.get(NAMESPACE_PARAM.key),
@@ -121,7 +120,7 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public boolean canProcess(Map<String, Serializable> params) {
+    public boolean canProcess(Map<String, ?> params) {
 
         try {
             new URL((String) params.get(SDMXDataStoreFactory.NAMESPACE_PARAM.key));

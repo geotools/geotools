@@ -165,8 +165,9 @@ In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHtt
    import org.geotools.http.HTTPClient;
    import org.geotools.http.HTTPResponse;
    import org.geotools.http.HTTPFactoryFinder;
+   import org.geotools.http.commons.MultihreadedHttpClient;
       
-   Hints hints = new Hints(Hints.HTTP_CLIENT, org.geotools.http.commons.MultihreadedHttpClient.class);
+   Hints hints = new Hints(Hints.HTTP_CLIENT, MultihreadedHttpClient.class);
    HTTPClient http = HTTPFactoryFinder.createClient(hints);
    HTTPResponse response = http.get();
 

@@ -55,8 +55,8 @@ public class HTTPFactoryFinder extends FactoryFinder {
      *
      * @return
      */
-    public static synchronized HTTPClient getClient() {
-        return getClient(null);
+    public static synchronized HTTPClient createClient() {
+        return createClient(null);
     }
 
     /**
@@ -67,7 +67,7 @@ public class HTTPFactoryFinder extends FactoryFinder {
      * @param hints
      * @return
      */
-    public static synchronized HTTPClient getClient(Hints hints) {
+    public static synchronized HTTPClient createClient(Hints hints) {
         final Hints merged = mergeSystemHints(hints);
         return getServiceRegistry()
                 .getFactories(HTTPClientFactory.class, null, null)

@@ -91,7 +91,10 @@ public class IntegrationTestWFSClient extends WFSClient {
     public IntegrationTestWFSClient(final String baseDirectory, WFSConfig config)
             throws ServiceException, IOException {
 
-        super(url(baseDirectory + "/GetCapabilities.xml"), HTTPFactoryFinder.getClient(), config);
+        super(
+                url(baseDirectory + "/GetCapabilities.xml"),
+                HTTPFactoryFinder.createClient(),
+                config);
 
         this.baseDirectory = url(baseDirectory);
     }

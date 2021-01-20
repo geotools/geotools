@@ -33,7 +33,7 @@ public class HTTPFactoryFinderTest {
 
     @Test
     public void findingSimpleHttpClientAsDefault() throws Exception {
-        HTTPClient client = HTTPFactoryFinder.getClient();
+        HTTPClient client = HTTPFactoryFinder.createClient();
 
         assertTrue(client != null);
         assertTrue(client instanceof SimpleHttpClient);
@@ -43,7 +43,8 @@ public class HTTPFactoryFinderTest {
     public void findingCustomHttpClientTestByHints() throws Exception {
 
         HTTPClient client =
-                HTTPFactoryFinder.getClient(new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
+                HTTPFactoryFinder.createClient(
+                        new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
 
         assertTrue(client instanceof CustomHttpClient);
     }
@@ -53,7 +54,7 @@ public class HTTPFactoryFinderTest {
 
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
         try {
-            HTTPClient client = HTTPFactoryFinder.getClient();
+            HTTPClient client = HTTPFactoryFinder.createClient();
             assertTrue(client instanceof LoggingHTTPClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
@@ -65,7 +66,8 @@ public class HTTPFactoryFinderTest {
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
         try {
 
-            HTTPClient client = HTTPFactoryFinder.getClient(new Hints(Hints.HTTP_LOGGING, "False"));
+            HTTPClient client =
+                    HTTPFactoryFinder.createClient(new Hints(Hints.HTTP_LOGGING, "False"));
             assertTrue(client instanceof SimpleHttpClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
@@ -77,7 +79,7 @@ public class HTTPFactoryFinderTest {
 
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "utf-8");
         try {
-            HTTPClient client = HTTPFactoryFinder.getClient();
+            HTTPClient client = HTTPFactoryFinder.createClient();
             assertTrue(client instanceof LoggingHTTPClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);

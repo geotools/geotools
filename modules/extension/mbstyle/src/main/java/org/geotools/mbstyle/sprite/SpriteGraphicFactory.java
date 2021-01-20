@@ -310,7 +310,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
     }
 
     protected HTTPClient getHttpClient() {
-        return HTTPFactoryFinder.getClient();
+        return HTTPFactoryFinder.createClient();
     }
 
     /**

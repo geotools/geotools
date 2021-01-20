@@ -347,7 +347,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     public WebMapServer(WMSCapabilities capabilities) throws IOException, ServiceException {
         super(
                 capabilities.getRequest().getGetCapabilities().getGet(),
-                HTTPFactoryFinder.getClient(),
+                HTTPFactoryFinder.createClient(),
                 capabilities);
     }
 
@@ -360,7 +360,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @throws ServiceException if the server responds with an error
      */
     public WebMapServer(final URL serverURL) throws IOException, ServiceException {
-        this(serverURL, HTTPFactoryFinder.getClient());
+        this(serverURL, HTTPFactoryFinder.createClient());
     }
 
     /**
@@ -406,7 +406,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     }
 
     public static HTTPClient getHttpClient(int timeout) {
-        HTTPClient client = HTTPFactoryFinder.getClient();
+        HTTPClient client = HTTPFactoryFinder.createClient();
         client.setReadTimeout(timeout);
         return client;
     }

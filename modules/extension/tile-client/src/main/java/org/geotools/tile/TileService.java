@@ -77,7 +77,7 @@ public abstract class TileService implements ImageLoader {
      *     URL is well-formed.
      */
     protected TileService(String name, String baseURL) {
-        this(name, baseURL, HTTPFactoryFinder.getClient());
+        this(name, baseURL, HTTPFactoryFinder.createClient());
     }
 
     /**

@@ -137,7 +137,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         if (config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)) {
             MultithreadedHttpClient client =
                     (MultithreadedHttpClient)
-                            HTTPFactoryFinder.getClient(
+                            HTTPFactoryFinder.createClient(
                                     new Hints(Hints.HTTP_CLIENT, MultithreadedHttpClient.class));
 
             client.setReadTimeout(config.getTimeoutMillis() / 1000);
@@ -146,7 +146,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
 
             return client;
         } else {
-            return HTTPFactoryFinder.getClient();
+            return HTTPFactoryFinder.createClient();
         }
     }
 

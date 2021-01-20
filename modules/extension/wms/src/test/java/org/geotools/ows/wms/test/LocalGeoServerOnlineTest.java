@@ -146,7 +146,7 @@ public class LocalGeoServerOnlineTest {
                     wms =
                             new WebMapServer(
                                     serverURL,
-                                    HTTPFactoryFinder.getClient(
+                                    HTTPFactoryFinder.createClient(
                                             new Hints(
                                                     Hints.HTTP_CLIENT,
                                                     MultithreadedHttpClient.class)));

@@ -44,6 +44,7 @@ import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPConnectionPooling;
 import org.geotools.http.HTTPResponse;
 import org.geotools.util.logging.Logging;
 
@@ -61,7 +62,7 @@ import org.geotools.util.logging.Logging;
  * @author awaterme
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-public class MultithreadedHttpClient implements HTTPClient {
+public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPooling {
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
 
@@ -280,10 +281,12 @@ public class MultithreadedHttpClient implements HTTPClient {
         connectionManager.getParams().setSoTimeout(readTimeout * 1000);
     }
 
+    @Override
     public int getMaxConnections() {
         return connectionManager.getParams().getDefaultMaxConnectionsPerHost();
     }
 
+    @Override
     public void setMaxConnections(final int maxConnections) {
         connectionManager.getParams().setMaxTotalConnections(maxConnections);
         connectionManager.getParams().setDefaultMaxConnectionsPerHost(maxConnections);

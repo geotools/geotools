@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.http.AbstractHTTPClientFactory;
 import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPConnectionPooling;
+import org.geotools.http.LoggingHTTPClient;
 
 /**
  * Factory for MultithreadedHttpClient
@@ -39,5 +41,34 @@ public class MultithreadedHttpClientFactory extends AbstractHTTPClientFactory {
     @Override
     public HTTPClient createClient() {
         return new MultithreadedHttpClient();
+    }
+
+    @Override
+    protected HTTPClient createLogging(HTTPClient client, String charset) {
+        return (charset == null
+                ? new LoggingConnectionPoolingHTTPClient(client)
+                : new LoggingConnectionPoolingHTTPClient(client, charset));
+    }
+
+    static class LoggingConnectionPoolingHTTPClient extends LoggingHTTPClient
+            implements HTTPConnectionPooling {
+
+        public LoggingConnectionPoolingHTTPClient(HTTPClient delegate) {
+            super(delegate);
+        }
+
+        public LoggingConnectionPoolingHTTPClient(HTTPClient delegate, String charset) {
+            super(delegate, charset);
+        }
+
+        @Override
+        public int getMaxConnections() {
+            return ((HTTPConnectionPooling) delegate).getMaxConnections();
+        }
+
+        @Override
+        public void setMaxConnections(int maxConnections) {
+            ((HTTPConnectionPooling) delegate).setMaxConnections(maxConnections);
+        }
     }
 }

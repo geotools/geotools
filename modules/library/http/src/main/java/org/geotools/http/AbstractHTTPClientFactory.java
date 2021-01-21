@@ -60,8 +60,7 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
     }
 
     /**
-     * Wraps client with a LoggingHTTPClient if the HTTP_LOGGING hint is set. Override if using a
-     * different LoggingHTTPClient.
+     * Wraps client with a LoggingHTTPClient if the HTTP_LOGGING hint is set.
      *
      * @param client
      * @param hints
@@ -73,11 +72,24 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
             final String hint = (String) hints.get(Hints.HTTP_LOGGING);
             final Boolean logging = Boolean.parseBoolean(hint);
             if (logging) {
-                return new LoggingHTTPClient(client);
+                return createLogging(client, null);
             } else if (!"false".equalsIgnoreCase(hint)) {
-                return new LoggingHTTPClient(client, hint);
+                return createLogging(client, hint);
             }
         }
         return client;
+    }
+
+    /**
+     * Creating a LoggingHTTPClient suitable for the factory's clients.
+     *
+     * @param client
+     * @param charset The charset to decode response in
+     * @return
+     */
+    protected HTTPClient createLogging(HTTPClient client, String charset) {
+        return (charset == null
+                ? new LoggingHTTPClient(client)
+                : new LoggingHTTPClient(client, charset));
     }
 }

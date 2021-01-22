@@ -181,7 +181,6 @@ public abstract class Tile implements ImageLoader {
         }
     }
 
-
     /**
      * Implementation of ImageLoader. Has been moved to {@link
      * @see org.geotools.tile.TileService#loadImageTileImage(Tile)}

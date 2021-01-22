@@ -12,10 +12,12 @@
     <artifactId>gt-sdmx</artifactId>
     <name>gt-sdmx</name>
     <url>http://maven.apache.org</url>
+
     <properties>
-        <powermock.version>1.6.6</powermock.version>
-        <mockito.version>1.10.19</mockito.version>
+        <powermock.version>2.0.9</powermock.version>
+        <additional-switches></additional-switches>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.geotools</groupId>
@@ -38,14 +40,7 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -56,9 +51,14 @@
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
+            <artifactId>powermock-api-mockito2</artifactId>
             <version>${powermock.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.ws</groupId>
+            <artifactId>jaxws-api</artifactId>
+            <version>2.3.1</version>
         </dependency>
     </dependencies>
 
@@ -66,23 +66,24 @@
         <profile>
             <id>exclude-systemtest</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>!systemtest</name>
+                </property>
             </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>1.8</source>
-                            <target>1.8</target>
-                        </configuration>
                     </plugin>
 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
+                            <argLine>
+                                ${additional-switches}
+                            </argLine>
                             <excludes>
                                 <exclude>**/SDMXFeatureReaderSystemTest.java</exclude>
                             </excludes>
@@ -98,17 +99,15 @@
         <profile>
             <id>systemtest</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>systemtest</name>
+                </property>
             </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>1.8</source>
-                            <target>1.8</target>
-                        </configuration>
                     </plugin>
 
                     <plugin>
@@ -122,6 +121,19 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+
+        <profile>
+            <id>java11</id>
+            <properties>
+                <additional-switches>
+                    --add-opens java.base/jdk.internal.loader=ALL-UNNAMED
+                    --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
+                </additional-switches>
+            </properties>
+            <activation>
+                <jdk>11</jdk>
+            </activation>
         </profile>
     </profiles>
 

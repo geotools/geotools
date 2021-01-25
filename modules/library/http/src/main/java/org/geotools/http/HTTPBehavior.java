@@ -22,4 +22,4 @@ package org.geotools.http;
  * @author Roar Brænden
  * @see HTTPClientFinder#createClient(behaviors)
  */
-interface HTTPBehavior {}
+public interface HTTPBehavior {}

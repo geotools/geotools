@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.http.AbstractHTTPClientFactory;
+import org.geotools.http.HTTPBehavior;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
@@ -41,7 +42,7 @@ public class SpriteMockHttpClientFactory extends AbstractHTTPClientFactory {
     }
 
     @Override
-    public HTTPClient createClient() {
+    public HTTPClient createClient(List<Class<? extends HTTPBehavior>> behaviors) {
         return new SpriteMockHttpClient();
     }
 

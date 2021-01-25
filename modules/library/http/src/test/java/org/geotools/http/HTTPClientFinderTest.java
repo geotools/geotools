@@ -20,6 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.geotools.http.CustomHTTPClientFactory.CustomHttpClient;
 import org.geotools.util.factory.Hints;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,6 +83,18 @@ public class HTTPClientFinderTest {
             assertTrue(client instanceof LoggingHTTPClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
+        }
+    }
+
+    @Test
+    public void askingForNonExistingBehavior() throws Exception {
+        try {
+            HTTPClientFinder.createClient(HTTPConnectionPooling.class);
+        } catch (RuntimeException ex) {
+            Assert.assertEquals(
+                    "Exception message when asking for non existing behavior.",
+                    "Couldn't create HTTP client.\nBehaviors:HTTPConnectionPooling",
+                    ex.getMessage());
         }
     }
 }

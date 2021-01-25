@@ -17,7 +17,9 @@
 package org.geotools.http;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
@@ -33,30 +35,75 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
 
     public AbstractHTTPClientFactory() {}
 
+    /**
+     * Returns true if a given factory have a HTTP_CLIENT given by the hint, or meets the behaviors.
+     */
     @Override
-    public boolean willCreate(Hints hints) {
-        if (!hints.containsKey(Hints.HTTP_CLIENT)) {
+    public final boolean canProcess(Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+
+        Object val = hints.get(Hints.HTTP_CLIENT);
+        return clientClasses()
+                .stream()
+                .filter(cls -> matchClientHint(cls, val))
+                .anyMatch(
+                        cls ->
+                                behaviors
+                                        .stream()
+                                        .allMatch(behavior -> behavior.isAssignableFrom(cls)));
+    }
+
+    private static boolean matchClientHint(Class<?> cls, Object val) {
+        if (val == null) {
             return true;
         }
 
-        Object val = hints.get(Hints.HTTP_CLIENT);
         if (val instanceof String) {
             final String clsName = (String) val;
-            return clientClasses().stream().anyMatch((cls) -> cls.getName().equals(clsName));
+            return cls.getName().equals(clsName);
         } else {
-            final Class<?> cls = (Class<?>) val;
-            return clientClasses().stream().anyMatch((cls2) -> cls2 == cls);
+            final Class<?> cls2 = (Class<?>) val;
+            return cls2 == cls;
         }
     }
 
+    /**
+     * Return the HTTPClient classes that this factory will create.
+     *
+     * @return
+     */
     protected abstract List<Class<?>> clientClasses();
 
+    /**
+     * Create instance of HTTPClient. Behaviors should be used if factory creates different
+     * client's. Otherwise it's excessive to use.
+     */
     @Override
-    public abstract HTTPClient createClient();
+    public abstract HTTPClient createClient(List<Class<? extends HTTPBehavior>> behaviors);
 
     @Override
-    public HTTPClient createClient(Hints hints) {
-        return applyLogging(createClient(), hints);
+    public final HTTPClient createClient(
+            Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+        HTTPClient client = createClient(behaviors);
+        Set<Class<? extends HTTPBehavior>> missingBehaviors =
+                behaviors
+                        .stream()
+                        .filter(behavior -> !behavior.isInstance(client))
+                        .collect(Collectors.toSet());
+        if (!missingBehaviors.isEmpty()) {
+            throw new RuntimeException(
+                    String.format(
+                            "HTTP client %s doesn't support behaviors: %s",
+                            client.getClass().getName(),
+                            missingBehaviors
+                                    .stream()
+                                    .map(behavior -> behavior.getSimpleName())
+                                    .collect(Collectors.joining(", "))));
+        }
+        if (hints.containsKey(Hints.HTTP_LOGGING)) {
+            return applyLogging(client, hints);
+        } else {
+            return client;
+        }
     }
 
     /**
@@ -67,17 +114,16 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
      * @return
      */
     protected HTTPClient applyLogging(HTTPClient client, Hints hints) {
-        if (hints.containsKey(Hints.HTTP_LOGGING)) {
-            LOGGER.fine("Applying logging to HTTP Client.");
-            final String hint = (String) hints.get(Hints.HTTP_LOGGING);
-            final Boolean logging = Boolean.parseBoolean(hint);
-            if (logging) {
-                return createLogging(client, null);
-            } else if (!"false".equalsIgnoreCase(hint)) {
-                return createLogging(client, hint);
-            }
+        LOGGER.fine("Applying logging to HTTP Client.");
+        final String hint = (String) hints.get(Hints.HTTP_LOGGING);
+        final Boolean logging = Boolean.parseBoolean(hint);
+        if (logging) {
+            return createLogging(client, null);
+        } else if ("false".equalsIgnoreCase(hint)) {
+            return client;
+        } else {
+            return createLogging(client, hint);
         }
-        return client;
     }
 
     /**

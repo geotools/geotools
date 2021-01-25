@@ -18,9 +18,13 @@
 package org.geotools.http;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryFinder;
 import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 
 /**
@@ -50,13 +54,11 @@ public class HTTPClientFinder extends FactoryFinder {
         return registry;
     }
 
-    /**
-     * Get HTTP client with system defaults
-     *
-     * @return
-     */
-    public static synchronized HTTPClient createClient() {
-        return createClient(null);
+    /** Get HTTP client with the given behaviors. */
+    @SafeVarargs
+    public static HTTPClient createClient(Class<? extends HTTPBehavior>... behaviors) {
+        final Hints hints = GeoTools.getDefaultHints();
+        return lookupClient(hints, Arrays.asList(behaviors));
     }
 
     /**
@@ -67,16 +69,56 @@ public class HTTPClientFinder extends FactoryFinder {
      * @param hints
      * @return
      */
-    public static synchronized HTTPClient createClient(Hints hints) {
+    public static HTTPClient createClient(Hints hints) {
         final Hints merged = mergeSystemHints(hints);
+        return lookupClient(merged, new LinkedList<Class<? extends HTTPBehavior>>());
+    }
+
+    private static synchronized HTTPClient lookupClient(
+            Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+        if (hints == null) {
+            throw new IllegalArgumentException("hints can't be null.");
+        }
+        if (behaviors == null) {
+            throw new IllegalArgumentException("behaviors can't be null.");
+        }
+
+        if (System.getProperty("http.proxyHost") != null) {
+            behaviors.add(HTTPProxy.class);
+        }
+
         return getServiceRegistry()
                 .getFactories(HTTPClientFactory.class, null, null)
-                .filter((fact) -> matchHttpFactoryHints(merged, fact))
-                .filter((fact) -> matchHttpClientHints(merged, fact))
-                .filter((fact) -> defaultNoHints(merged, fact))
+                .filter((fact) -> matchHttpFactoryHints(fact, hints))
+                .filter((fact) -> matchHttpClientHintsBehaviors(fact, hints, behaviors))
+                .filter((fact) -> defaultNoHints(hints, fact))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("No HTTPClientFactory matched the hints."))
-                .createClient(merged);
+                .orElseThrow(() -> missingFactoryException(hints, behaviors))
+                .createClient(hints, behaviors);
+    }
+
+    private static RuntimeException missingFactoryException(
+            Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+        String message = "Couldn't create HTTP client.";
+        if (hints.containsKey(Hints.HTTP_CLIENT_FACTORY) || hints.containsKey(Hints.HTTP_CLIENT)) {
+            message =
+                    String.format(
+                            "%s\nHTTP_CLIENT_FACTORY(%s) HTTP_CLIENT(%s)",
+                            message,
+                            hints.get(Hints.HTTP_CLIENT_FACTORY),
+                            hints.get(Hints.HTTP_CLIENT));
+        }
+        if (!behaviors.isEmpty()) {
+            message =
+                    String.format(
+                            "%s\nBehaviors:%s",
+                            message,
+                            behaviors
+                                    .stream()
+                                    .map(behavior -> behavior.getSimpleName())
+                                    .collect(Collectors.joining(",")));
+        }
+        return new RuntimeException(message);
     }
 
     /** Makes sure a call for getServiceRegistry will do a clean scan */
@@ -88,7 +130,7 @@ public class HTTPClientFinder extends FactoryFinder {
         }
     }
 
-    private static boolean matchHttpFactoryHints(Hints hints, HTTPClientFactory fact) {
+    private static boolean matchHttpFactoryHints(HTTPClientFactory fact, Hints hints) {
         if (!hints.containsKey(Hints.HTTP_CLIENT_FACTORY)) {
             return true;
         }
@@ -98,8 +140,9 @@ public class HTTPClientFinder extends FactoryFinder {
                 : fact.getClass() == (Class<?>) val);
     }
 
-    private static boolean matchHttpClientHints(Hints hints, HTTPClientFactory fact) {
-        return fact.willCreate(hints);
+    private static boolean matchHttpClientHintsBehaviors(
+            HTTPClientFactory fact, Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+        return fact.canProcess(hints, behaviors);
     }
 
     private static boolean defaultNoHints(Hints hints, HTTPClientFactory fact) {

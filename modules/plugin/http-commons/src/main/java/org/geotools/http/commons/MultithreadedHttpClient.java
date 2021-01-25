@@ -45,6 +45,7 @@ import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPConnectionPooling;
+import org.geotools.http.HTTPProxy;
 import org.geotools.http.HTTPResponse;
 import org.geotools.util.logging.Logging;
 
@@ -62,7 +63,7 @@ import org.geotools.util.logging.Logging;
  * @author awaterme
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPooling {
+public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPooling, HTTPProxy {
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
 

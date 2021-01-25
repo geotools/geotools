@@ -16,26 +16,10 @@
  */
 package org.geotools.http;
 
-import java.io.Closeable;
-
 /**
- * Interface to support clients that uses a connection pool
+ * To specify a specific behavior for a http client.
  *
  * @author Roar Brænden
+ * @see HTTPClientFinder#createClient(behaviors)
  */
-public interface HTTPConnectionPooling extends HTTPBehavior, Closeable {
-
-    /**
-     * Max connections kept in the pool
-     *
-     * @return
-     */
-    int getMaxConnections();
-
-    /**
-     * Sets max connections kept in the pool
-     *
-     * @param maxConnections
-     */
-    void setMaxConnections(int maxConnections);
-}
+interface HTTPBehavior {}

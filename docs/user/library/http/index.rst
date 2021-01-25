@@ -37,6 +37,10 @@ Here is the easiest way::
 
   HTTPClient client = HTTPClientFinder.createClient();
 
+You could also get a specific behavior::
+
+  HTTPClient client = HTTPClientFinder.createClient(HTTPConnectionPooling.class);
+
 
 To get a specific client::
 

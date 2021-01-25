@@ -17,6 +17,7 @@
  */
 package org.geotools.http;
 
+import java.util.List;
 import org.geotools.util.factory.Hints;
 
 /**
@@ -31,14 +32,14 @@ public interface HTTPClientFactory {
      *
      * @return Client class
      */
-    boolean willCreate(Hints hints);
+    boolean canProcess(Hints hints, List<Class<? extends HTTPBehavior>> behaviors);
 
     /**
      * Method called to create the client
      *
      * @return default http client
      */
-    HTTPClient createClient();
+    HTTPClient createClient(List<Class<? extends HTTPBehavior>> behaviors);
 
     /**
      * Called by HTTPFactoryFinder to create client
@@ -48,5 +49,5 @@ public interface HTTPClientFactory {
      * @param hints Merged with system defaults
      * @return
      */
-    HTTPClient createClient(Hints hints);
+    HTTPClient createClient(Hints hints, List<Class<? extends HTTPBehavior>> behaviors);
 }

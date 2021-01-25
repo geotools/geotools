@@ -15,7 +15,7 @@ public class CustomHTTPClientFactory extends AbstractHTTPClientFactory {
     }
 
     @Override
-    public HTTPClient createClient() {
+    public HTTPClient createClient(List<Class<? extends HTTPBehavior>> behaviors) {
         return new CustomHttpClient();
     }
 

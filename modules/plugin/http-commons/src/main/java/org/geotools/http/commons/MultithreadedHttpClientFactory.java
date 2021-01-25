@@ -19,6 +19,7 @@ package org.geotools.http.commons;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.http.AbstractHTTPClientFactory;
+import org.geotools.http.HTTPBehavior;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPConnectionPooling;
 import org.geotools.http.LoggingHTTPClient;
@@ -39,7 +40,7 @@ public class MultithreadedHttpClientFactory extends AbstractHTTPClientFactory {
     }
 
     @Override
-    public HTTPClient createClient() {
+    public final HTTPClient createClient(List<Class<? extends HTTPBehavior>> behaviors) {
         return new MultithreadedHttpClient();
     }
 

@@ -16,26 +16,9 @@
  */
 package org.geotools.http;
 
-import java.io.Closeable;
-
 /**
- * Interface to support clients that uses a connection pool
+ * Http client implementing this are capable of using a proxy.
  *
  * @author Roar Brænden
  */
-public interface HTTPConnectionPooling extends HTTPBehavior, Closeable {
-
-    /**
-     * Max connections kept in the pool
-     *
-     * @return
-     */
-    int getMaxConnections();
-
-    /**
-     * Sets max connections kept in the pool
-     *
-     * @param maxConnections
-     */
-    void setMaxConnections(int maxConnections);
-}
+public interface HTTPProxy extends HTTPBehavior {}

@@ -60,4 +60,10 @@ public class HTTPFactoryTest {
         Assert.assertTrue(client instanceof LoggingConnectionPoolingHTTPClient);
         ((HTTPConnectionPooling) client).close();
     }
+
+    @Test
+    public void testBehaviors() throws Exception {
+        HTTPClient client = HTTPClientFinder.createClient(HTTPConnectionPooling.class);
+        Assert.assertTrue(client instanceof HTTPConnectionPooling);
+    }
 }

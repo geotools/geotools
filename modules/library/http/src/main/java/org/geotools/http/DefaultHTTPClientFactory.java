@@ -32,7 +32,7 @@ public class DefaultHTTPClientFactory extends AbstractHTTPClientFactory {
     }
 
     @Override
-    public HTTPClient createClient() {
+    public final HTTPClient createClient(List<Class<? extends HTTPBehavior>> behaviors) {
         return new SimpleHttpClient();
     }
 }

@@ -66,7 +66,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
 
-    private MultiThreadedHttpConnectionManager connectionManager;
+    private final MultiThreadedHttpConnectionManager connectionManager;
 
     private HttpClient client;
 
@@ -363,5 +363,10 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     @Override
     public boolean isTryGzip() {
         return tryGzip;
+    }
+
+    @Override
+    public void close() {
+        this.connectionManager.shutdown();
     }
 }

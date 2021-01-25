@@ -16,12 +16,14 @@
  */
 package org.geotools.http;
 
+import java.io.Closeable;
+
 /**
  * Interface to support clients that uses a connection pool
  *
  * @author Roar Brænden
  */
-public interface HTTPConnectionPooling {
+public interface HTTPConnectionPooling extends Closeable {
 
     /**
      * Max connections kept in the pool

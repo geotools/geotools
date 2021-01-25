@@ -47,6 +47,7 @@ public class HTTPFactoryTest {
         ((HTTPConnectionPooling) client).setMaxConnections(CONN_POOL);
         Assert.assertEquals(CONN_POOL, ((HTTPConnectionPooling) client).getMaxConnections());
         Assert.assertTrue(client instanceof MultithreadedHttpClient);
+        ((HTTPConnectionPooling) client).close();
     }
 
     @Test
@@ -57,5 +58,6 @@ public class HTTPFactoryTest {
         ((HTTPConnectionPooling) client).setMaxConnections(CONN_POOL);
         Assert.assertEquals(CONN_POOL, ((HTTPConnectionPooling) client).getMaxConnections());
         Assert.assertTrue(client instanceof LoggingConnectionPoolingHTTPClient);
+        ((HTTPConnectionPooling) client).close();
     }
 }

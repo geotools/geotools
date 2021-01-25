@@ -70,5 +70,8 @@ public class MultithreadedHttpClientFactory extends AbstractHTTPClientFactory {
         public void setMaxConnections(int maxConnections) {
             ((HTTPConnectionPooling) delegate).setMaxConnections(maxConnections);
         }
+
+        @Override
+        public void close() {}
     }
 }

@@ -21,44 +21,43 @@ import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPConnectionPooling;
 import org.geotools.http.commons.MultithreadedHttpClientFactory.LoggingConnectionPoolingHTTPClient;
 import org.geotools.util.factory.Hints;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /** @author Roar Brænden */
-public class HTTPFactoryTest {
-
-    @Before
-    public void setup() throws Exception {
-        Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MultithreadedHttpClientFactory.class);
-    }
-
-    @After
-    public void teardown() throws Exception {
-        Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
-    }
+public class HTTPClientFinderTest {
 
     @Test
     public void testConnectionPooling() throws Exception {
         final int CONN_POOL = 4;
-        HTTPClient client = HTTPClientFinder.createClient();
-        Assert.assertTrue(client instanceof HTTPConnectionPooling);
-        ((HTTPConnectionPooling) client).setMaxConnections(CONN_POOL);
-        Assert.assertEquals(CONN_POOL, ((HTTPConnectionPooling) client).getMaxConnections());
-        Assert.assertTrue(client instanceof MultithreadedHttpClient);
-        ((HTTPConnectionPooling) client).close();
+        Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MultithreadedHttpClientFactory.class);
+        try {
+            HTTPClient client = HTTPClientFinder.createClient();
+            Assert.assertTrue(client instanceof HTTPConnectionPooling);
+            ((HTTPConnectionPooling) client).setMaxConnections(CONN_POOL);
+            Assert.assertEquals(CONN_POOL, ((HTTPConnectionPooling) client).getMaxConnections());
+            Assert.assertTrue(client instanceof MultithreadedHttpClient);
+            ((HTTPConnectionPooling) client).close();
+        } finally {
+            Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
+        }
     }
 
     @Test
     public void testLogging() throws Exception {
         final int CONN_POOL = 3;
-        HTTPClient client = HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "True"));
-        Assert.assertTrue(client instanceof HTTPConnectionPooling);
-        ((HTTPConnectionPooling) client).setMaxConnections(CONN_POOL);
-        Assert.assertEquals(CONN_POOL, ((HTTPConnectionPooling) client).getMaxConnections());
-        Assert.assertTrue(client instanceof LoggingConnectionPoolingHTTPClient);
-        ((HTTPConnectionPooling) client).close();
+        Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MultithreadedHttpClientFactory.class);
+        try {
+            HTTPClient client =
+                    HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "True"));
+            Assert.assertTrue(client instanceof HTTPConnectionPooling);
+            ((HTTPConnectionPooling) client).setMaxConnections(CONN_POOL);
+            Assert.assertEquals(CONN_POOL, ((HTTPConnectionPooling) client).getMaxConnections());
+            Assert.assertTrue(client instanceof LoggingConnectionPoolingHTTPClient);
+            ((HTTPConnectionPooling) client).close();
+        } finally {
+            Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
+        }
     }
 
     @Test

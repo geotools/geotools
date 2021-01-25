@@ -20,7 +20,6 @@ package org.geotools.http;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryFinder;
 import org.geotools.util.factory.FactoryRegistry;
@@ -91,34 +90,13 @@ public class HTTPClientFinder extends FactoryFinder {
                 .getFactories(HTTPClientFactory.class, null, null)
                 .filter((fact) -> matchHttpFactoryHints(fact, hints))
                 .filter((fact) -> matchHttpClientHintsBehaviors(fact, hints, behaviors))
-                .filter((fact) -> defaultNoHints(hints, fact))
+                .filter((fact) -> matchDefault(fact, hints, behaviors))
                 .findFirst()
-                .orElseThrow(() -> missingFactoryException(hints, behaviors))
+                .orElseThrow(
+                        () ->
+                                new HTTPFactoryException(
+                                        "Couldn't create HTTP client.", hints, behaviors))
                 .createClient(hints, behaviors);
-    }
-
-    private static RuntimeException missingFactoryException(
-            Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
-        String message = "Couldn't create HTTP client.";
-        if (hints.containsKey(Hints.HTTP_CLIENT_FACTORY) || hints.containsKey(Hints.HTTP_CLIENT)) {
-            message =
-                    String.format(
-                            "%s\nHTTP_CLIENT_FACTORY(%s) HTTP_CLIENT(%s)",
-                            message,
-                            hints.get(Hints.HTTP_CLIENT_FACTORY),
-                            hints.get(Hints.HTTP_CLIENT));
-        }
-        if (!behaviors.isEmpty()) {
-            message =
-                    String.format(
-                            "%s\nBehaviors:%s",
-                            message,
-                            behaviors
-                                    .stream()
-                                    .map(behavior -> behavior.getSimpleName())
-                                    .collect(Collectors.joining(",")));
-        }
-        return new RuntimeException(message);
     }
 
     /** Makes sure a call for getServiceRegistry will do a clean scan */
@@ -130,6 +108,7 @@ public class HTTPClientFinder extends FactoryFinder {
         }
     }
 
+    /** If HTTP_CLIENT_FACTORY is set we must match */
     private static boolean matchHttpFactoryHints(HTTPClientFactory fact, Hints hints) {
         if (!hints.containsKey(Hints.HTTP_CLIENT_FACTORY)) {
             return true;
@@ -140,13 +119,18 @@ public class HTTPClientFinder extends FactoryFinder {
                 : fact.getClass() == (Class<?>) val);
     }
 
+    /** Check if any of then factory's clients can process the hints and behaviors */
     private static boolean matchHttpClientHintsBehaviors(
             HTTPClientFactory fact, Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
         return fact.canProcess(hints, behaviors);
     }
 
-    private static boolean defaultNoHints(Hints hints, HTTPClientFactory fact) {
-        if (hints.containsKey(Hints.HTTP_CLIENT) || hints.containsKey(Hints.HTTP_CLIENT_FACTORY)) {
+    /** if no hint is specified, and no behaviors, we check if fact is the default */
+    private static boolean matchDefault(
+            HTTPClientFactory fact, Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+        if (hints.containsKey(Hints.HTTP_CLIENT)
+                || hints.containsKey(Hints.HTTP_CLIENT_FACTORY)
+                || !behaviors.isEmpty()) {
             return true;
         }
         return fact.getClass() == DefaultHTTPClientFactory.class;

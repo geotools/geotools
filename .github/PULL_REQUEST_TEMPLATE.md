@@ -2,7 +2,7 @@
 
 # Checklist
 
-> Reviewing is a process done by project maintainers, mostly on a volunteer basis. We try to keep the overhead as small as possible and appreciate if you help us to do so by completing the following items. Feel free to ask in a comment if you have troubles with any of them.
+Reviewing is a process done by project maintainers, **mostly on a volunteer basis** (thus limited in time). We need to keep the review overhead as small as possible, and appreciate if you help us to do so by completing the following items. Feel free to ask in a comment if you have troubles with any of them.
 
 For all pull requests:
 

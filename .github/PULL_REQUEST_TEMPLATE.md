@@ -9,6 +9,7 @@ For all pull requests:
 - [ ] Confirm you have read the [contribution guidelines](https://github.com/geotools/geotools/blob/master/CONTRIBUTING.md)
 - [ ] You have sent a Contribution Licence Agreement (CLA) as necessary (not required for small changes, e.g., fixing typos in documentation)
 - [ ] Make sure the first PR targets the master branch, eventual backports will be managed later. This can be ignored if the PR is fixing an issue that only happens in a specific branch, but not in newer ones.
+- [ ] The changes are not causing two modules to share the same Java packages (to avoid [Java 9+ split package](http://tutorials.jenkov.com/java/modules.html#split-packages-not-allowed) issues)
 - [ ] The changes are not breaking the build in downstream projects using SNAPSHOT dependencies, GeoWebCache and GeoServer (there is an automatic PR check verifying this, check this when it turns green).
 
 The following are required only for core and extension modules (they are welcomed, but not required, for unsupported modules):

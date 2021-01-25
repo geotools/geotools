@@ -2,7 +2,7 @@ HTTP Clients
 ------------
 
 Supports calling external HTTP services by a common client API. The API is defined by two interfaces HTTPClient and HTTPResponse.
-To create an implementation of the HTTPClient we're offering a factory through HTTPFactoryFinder.
+To create an implementation of the HTTPClient we're offering a factory through HTTPClientFinder.
 
 **Maven**::
    
@@ -32,15 +32,15 @@ To create an implementation of the HTTPClient we're offering a factory through H
 HTTPClientFactory
 ^^^^^^^^^^^^^^^^^
 
-Main approach to get a http client is through the client factory. That one can be retrived through HTTPFactoryFinder.
+Main approach to get a http client is through the client factory. That one can be retrived through HTTPClientFinder.
 Here is the easiest way::
 
-  HTTPClient client = HTTPFactoryFinder.createClient();
+  HTTPClient client = HTTPClientFinder.createClient();
 
 
 To get a specific client::
 
-  HTTPClient client = HTTPFactoryFinder.createClient(new Hints(Hints.HTTP_CLIENT,
+  HTTPClient client = HTTPClientFinder.createClient(new Hints(Hints.HTTP_CLIENT,
                                     CustomHttpClient.class));
 
 For a test case it is possible to set a MockingHttpClientFactory to avoid network traffic.
@@ -53,7 +53,7 @@ The code could look like::
         Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MockingHttpClientFactory.class);
         try {
         .... 
-            HTTPClient client = HTTPFactoryFinder.createClient();
+            HTTPClient client = HTTPClientFinder.createClient();
         ....   
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);

@@ -32,8 +32,8 @@ import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPConnectionPooling;
-import org.geotools.http.HTTPFactoryFinder;
 import org.geotools.http.commons.MultithreadedHttpClient;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
@@ -137,7 +137,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         final WFSConfig config = WFSConfig.fromParams(params);
         if (config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)) {
             HTTPClient client =
-                    HTTPFactoryFinder.createClient(
+                    HTTPClientFinder.createClient(
                             new Hints(Hints.HTTP_CLIENT, MultithreadedHttpClient.class));
 
             client.setReadTimeout(config.getTimeoutMillis() / 1000);
@@ -146,7 +146,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
 
             return client;
         } else {
-            return HTTPFactoryFinder.createClient();
+            return HTTPClientFinder.createClient();
         }
     }
 

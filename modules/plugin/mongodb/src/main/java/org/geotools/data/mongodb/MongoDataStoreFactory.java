@@ -25,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.http.HTTPClient;
-import org.geotools.http.HTTPFactoryFinder;
+import org.geotools.http.HTTPClientFinder;
 
 public class MongoDataStoreFactory implements DataStoreFactorySpi {
 
@@ -150,7 +150,7 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
         // check if the URI is a URL
         if (!uri.startsWith(MongoSchemaFileStore.PRE_FIX_HTTP)) return null;
 
-        HTTPClient simpleHttpClient = HTTPFactoryFinder.createClient();
+        HTTPClient simpleHttpClient = HTTPClientFinder.createClient();
         // check for credentials
         if (HTTP_USER.lookUp(params) == null || HTTP_PASSWORD.lookUp(params) == null)
             return simpleHttpClient;

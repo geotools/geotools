@@ -17,8 +17,8 @@
 package org.geotools.http.commons;
 
 import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPConnectionPooling;
-import org.geotools.http.HTTPFactoryFinder;
 import org.geotools.http.commons.MultithreadedHttpClientFactory.LoggingConnectionPoolingHTTPClient;
 import org.geotools.util.factory.Hints;
 import org.junit.After;
@@ -42,7 +42,7 @@ public class HTTPFactoryTest {
     @Test
     public void testConnectionPooling() throws Exception {
         final int CONN_POOL = 4;
-        HTTPClient client = HTTPFactoryFinder.createClient();
+        HTTPClient client = HTTPClientFinder.createClient();
         Assert.assertTrue(client instanceof HTTPConnectionPooling);
         ((HTTPConnectionPooling) client).setMaxConnections(CONN_POOL);
         Assert.assertEquals(CONN_POOL, ((HTTPConnectionPooling) client).getMaxConnections());
@@ -52,7 +52,7 @@ public class HTTPFactoryTest {
     @Test
     public void testLogging() throws Exception {
         final int CONN_POOL = 3;
-        HTTPClient client = HTTPFactoryFinder.createClient(new Hints(Hints.HTTP_LOGGING, "True"));
+        HTTPClient client = HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "True"));
         Assert.assertTrue(client instanceof HTTPConnectionPooling);
         ((HTTPConnectionPooling) client).setMaxConnections(CONN_POOL);
         Assert.assertEquals(CONN_POOL, ((HTTPConnectionPooling) client).getMaxConnections());

@@ -114,10 +114,10 @@ ALTERNATIVE add cast (continue to use deprecated api):
    HTTPClient client = (HTTPClient) wms.getHTTPClient();
 
 
-HTTPFactoryFinder
+HTTPClientFinder
 ^^^^^^^^^^^^^^^^^
 
-To allow the library to be configured with different ``HTTPClient`` implementations ``HTTPFactoryFinder`` is recommend:
+To allow the library to be configured with different ``HTTPClient`` implementations ``HTTPClientFinder`` is recommend:
 
 BEFORE:
 
@@ -145,9 +145,9 @@ AFTER:
 
    import org.geotools.http.HTTPClient;
    import org.geotools.http.HTTPResponse;
-   import org.geotools.http.HTTPFactoryFinder;
+   import org.geotools.http.HTTPClientFinder;
       
-   HTTPClient http = HTTPFactoryFinder.createClient();
+   HTTPClient http = HTTPClientFinder.createClient();
    HTTPResponse response = http.get();
    
 In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHttpClient.
@@ -164,11 +164,11 @@ In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHtt
 
    import org.geotools.http.HTTPClient;
    import org.geotools.http.HTTPResponse;
-   import org.geotools.http.HTTPFactoryFinder;
+   import org.geotools.http.HTTPClientFinder;
    import org.geotools.http.commons.MultihreadedHttpClient;
       
    Hints hints = new Hints(Hints.HTTP_CLIENT, MultihreadedHttpClient.class);
-   HTTPClient http = HTTPFactoryFinder.createClient(hints);
+   HTTPClient http = HTTPClientFinder.createClient(hints);
    HTTPResponse response = http.get();
 
 GeoTools 24.x

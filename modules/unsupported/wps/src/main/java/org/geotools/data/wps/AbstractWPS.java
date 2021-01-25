@@ -35,7 +35,7 @@ import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
 import org.geotools.data.ows.Specification;
 import org.geotools.http.HTTPClient;
-import org.geotools.http.HTTPFactoryFinder;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
@@ -70,7 +70,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
      * @throws ServiceException if the server responds with an error
      */
     public AbstractWPS(final URL serverURL) throws IOException, ServiceException {
-        this(serverURL, HTTPFactoryFinder.createClient(), null);
+        this(serverURL, HTTPClientFinder.createClient(), null);
 
         capabilities = negotiateVersion();
         if (capabilities == null) {

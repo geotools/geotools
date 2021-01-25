@@ -33,17 +33,17 @@ import org.geotools.util.factory.Hints;
  *
  * @author Roar Brænden
  */
-public class HTTPFactoryFinder extends FactoryFinder {
+public class HTTPClientFinder extends FactoryFinder {
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry registry;
 
-    private HTTPFactoryFinder() {
+    private HTTPClientFinder() {
         // singleton
     }
 
     private static FactoryRegistry getServiceRegistry() {
-        assert Thread.holdsLock(HTTPFactoryFinder.class);
+        assert Thread.holdsLock(HTTPClientFinder.class);
         if (registry == null) {
             registry = new FactoryCreator(Arrays.asList(new Class<?>[] {HTTPClientFactory.class}));
         }

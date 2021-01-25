@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.http.HTTPClient;
-import org.geotools.http.HTTPFactoryFinder;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.logging.Logging;
@@ -72,7 +72,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @throws ServiceException if the server responds with an error
      */
     public AbstractOpenWebService(final URL serverURL) throws IOException, ServiceException {
-        this(serverURL, HTTPFactoryFinder.createClient(), null);
+        this(serverURL, HTTPClientFinder.createClient(), null);
     }
 
     public AbstractOpenWebService(

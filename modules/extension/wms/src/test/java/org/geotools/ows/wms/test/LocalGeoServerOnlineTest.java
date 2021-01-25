@@ -39,7 +39,7 @@ import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.http.HTTPFactoryFinder;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.commons.MultithreadedHttpClient;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
@@ -146,7 +146,7 @@ public class LocalGeoServerOnlineTest {
                     wms =
                             new WebMapServer(
                                     serverURL,
-                                    HTTPFactoryFinder.createClient(
+                                    HTTPClientFinder.createClient(
                                             new Hints(
                                                     Hints.HTTP_CLIENT,
                                                     MultithreadedHttpClient.class)));

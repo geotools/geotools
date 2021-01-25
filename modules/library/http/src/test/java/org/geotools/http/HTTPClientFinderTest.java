@@ -24,16 +24,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 /** @author Roar Brænden */
-public class HTTPFactoryFinderTest {
+public class HTTPClientFinderTest {
 
     @Before
     public void resetFactoryRegistry() {
-        HTTPFactoryFinder.reset();
+        HTTPClientFinder.reset();
     }
 
     @Test
     public void findingSimpleHttpClientAsDefault() throws Exception {
-        HTTPClient client = HTTPFactoryFinder.createClient();
+        HTTPClient client = HTTPClientFinder.createClient();
 
         assertTrue(client != null);
         assertTrue(client instanceof SimpleHttpClient);
@@ -43,8 +43,7 @@ public class HTTPFactoryFinderTest {
     public void findingCustomHttpClientTestByHints() throws Exception {
 
         HTTPClient client =
-                HTTPFactoryFinder.createClient(
-                        new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
+                HTTPClientFinder.createClient(new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
 
         assertTrue(client instanceof CustomHttpClient);
     }
@@ -54,7 +53,7 @@ public class HTTPFactoryFinderTest {
 
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
         try {
-            HTTPClient client = HTTPFactoryFinder.createClient();
+            HTTPClient client = HTTPClientFinder.createClient();
             assertTrue(client instanceof LoggingHTTPClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
@@ -67,7 +66,7 @@ public class HTTPFactoryFinderTest {
         try {
 
             HTTPClient client =
-                    HTTPFactoryFinder.createClient(new Hints(Hints.HTTP_LOGGING, "False"));
+                    HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "False"));
             assertTrue(client instanceof SimpleHttpClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
@@ -79,7 +78,7 @@ public class HTTPFactoryFinderTest {
 
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "utf-8");
         try {
-            HTTPClient client = HTTPFactoryFinder.createClient();
+            HTTPClient client = HTTPClientFinder.createClient();
             assertTrue(client instanceof LoggingHTTPClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);

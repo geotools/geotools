@@ -27,7 +27,7 @@ import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.Response;
 import org.geotools.data.ows.Specification;
 import org.geotools.http.HTTPClient;
-import org.geotools.http.HTTPFactoryFinder;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
@@ -62,7 +62,7 @@ public class WMTSSpecification extends Specification {
 
     public GetTileRequest createGetTileRequest(
             URL server, Properties props, WMTSCapabilities caps) {
-        return this.createGetTileRequest(server, props, caps, HTTPFactoryFinder.createClient());
+        return this.createGetTileRequest(server, props, caps, HTTPClientFinder.createClient());
     }
 
     public GetTileRequest createGetTileRequest(
@@ -75,7 +75,7 @@ public class WMTSSpecification extends Specification {
         /** */
         public GetTileRequest(
                 URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
-            this(onlineResource, properties, capabilities, HTTPFactoryFinder.createClient());
+            this(onlineResource, properties, capabilities, HTTPClientFinder.createClient());
         }
 
         public GetTileRequest(

@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClient;
-import org.geotools.http.HTTPFactoryFinder;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPResponse;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
@@ -77,7 +77,7 @@ public abstract class TileService implements ImageLoader {
      *     URL is well-formed.
      */
     protected TileService(String name, String baseURL) {
-        this(name, baseURL, HTTPFactoryFinder.createClient());
+        this(name, baseURL, HTTPClientFinder.createClient());
     }
 
     /**

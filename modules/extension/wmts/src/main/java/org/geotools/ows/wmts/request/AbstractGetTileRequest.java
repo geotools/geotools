@@ -35,7 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.ows.Response;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClient;
-import org.geotools.http.HTTPFactoryFinder;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.StyleImpl;
@@ -116,7 +116,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
      * @param properties pre-set properties to be used. Can be null.
      */
     public AbstractGetTileRequest(URL onlineResource, Properties properties) {
-        this(onlineResource, properties, HTTPFactoryFinder.createClient());
+        this(onlineResource, properties, HTTPClientFinder.createClient());
     }
 
     public AbstractGetTileRequest(URL onlineResource, Properties properties, HTTPClient client) {

@@ -45,10 +45,8 @@ public class MultithreadedHttpClientFactory extends AbstractHTTPClientFactory {
     }
 
     @Override
-    protected HTTPClient createLogging(HTTPClient client, String charset) {
-        return (charset == null
-                ? new LoggingConnectionPoolingHTTPClient(client)
-                : new LoggingConnectionPoolingHTTPClient(client, charset));
+    protected HTTPClient createLogging(HTTPClient client) {
+        return new LoggingConnectionPoolingHTTPClient(client);
     }
 
     static class LoggingConnectionPoolingHTTPClient extends LoggingHTTPClient

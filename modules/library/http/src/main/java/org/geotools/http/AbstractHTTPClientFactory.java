@@ -118,24 +118,15 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
         final String hint = (String) hints.get(Hints.HTTP_LOGGING);
         final Boolean logging = Boolean.parseBoolean(hint);
         if (logging) {
-            return createLogging(client, null);
+            return createLogging(client);
         } else if ("false".equalsIgnoreCase(hint)) {
             return client;
         } else {
-            return createLogging(client, hint);
+            throw new RuntimeException(String.format("HTTP_LOGGING value %s is unknown.", hint));
         }
     }
 
-    /**
-     * Creating a LoggingHTTPClient suitable for the factory's clients.
-     *
-     * @param client
-     * @param charset The charset to decode response in
-     * @return
-     */
-    protected HTTPClient createLogging(HTTPClient client, String charset) {
-        return (charset == null
-                ? new LoggingHTTPClient(client)
-                : new LoggingHTTPClient(client, charset));
+    protected HTTPClient createLogging(HTTPClient client) {
+        return new LoggingHTTPClient(client);
     }
 }

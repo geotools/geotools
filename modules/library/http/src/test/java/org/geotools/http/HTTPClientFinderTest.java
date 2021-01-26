@@ -79,8 +79,16 @@ public class HTTPClientFinderTest {
 
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "utf-8");
         try {
-            HTTPClient client = HTTPClientFinder.createClient();
-            assertTrue(client instanceof LoggingHTTPClient);
+            try {
+                HTTPClientFinder.createClient();
+                Assert.fail("Wrong HTTP_LOGGING should end up with exception.");
+            } catch (RuntimeException ex) {
+                Assert.assertEquals(
+                        "Exception when HTTP_LOGGING set to something else than true/false",
+                        "HTTP_LOGGING value utf-8 is unknown.",
+                        ex.getMessage());
+            }
+
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
         }

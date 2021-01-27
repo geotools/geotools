@@ -53,6 +53,12 @@ public class HTTPClientFinder extends FactoryFinder {
         return registry;
     }
 
+    /** Get default HTTP client. Can be adjusted by setting property "org.geotools.http.client". */
+    public static HTTPClient createClient() {
+        final Hints hints = GeoTools.getDefaultHints();
+        return lookupClient(hints, new LinkedList<Class<? extends HTTPBehavior>>());
+    }
+
     /** Get HTTP client with the given behaviors. */
     @SafeVarargs
     public static HTTPClient createClient(Class<? extends HTTPBehavior>... behaviors) {

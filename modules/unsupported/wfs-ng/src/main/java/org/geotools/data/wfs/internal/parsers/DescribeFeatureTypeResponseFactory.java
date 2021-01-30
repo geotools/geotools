@@ -19,13 +19,13 @@ package org.geotools.data.wfs.internal.parsers;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSResponseFactory;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 public class DescribeFeatureTypeResponseFactory implements WFSResponseFactory {

@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.ows.HTTPClient;
+import org.geotools.http.HTTPClient;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.tile.Tile;

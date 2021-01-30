@@ -21,12 +21,12 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.TransactionRequest;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 public class TransactionResponseFactory extends AbstractWFSResponseFactory {

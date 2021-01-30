@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import org.geotools.data.Base64;
+import org.geotools.util.Base64;
 
 /** Decodes the base64 data and provides an appropriate InputStream. */
 public class DataUrlConnection extends URLConnection {

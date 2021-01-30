@@ -16,59 +16,41 @@
  */
 package org.geotools.mbstyle.sprite;
 
-import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.junit.Assert.assertNotNull;
 
 import java.net.URL;
 import javax.swing.Icon;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.MockHttpClient;
-import org.geotools.data.ows.MockHttpResponse;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.factory.Hints;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 
 public class SpriteGraphicFactoryMockTest {
 
-    static class TestSpriteGraphicFactory extends SpriteGraphicFactory {
+    static final URL pngURL =
+            SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.png");
+    static final URL jsonURL =
+            SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.json");
 
-        URL jsonResource;
-        URL pngResource;
-
-        public TestSpriteGraphicFactory(URL jsonResource, URL pngResource) {
-            this.jsonResource = jsonResource;
-            this.pngResource = pngResource;
-        }
-
-        @Override
-        protected HTTPClient getHttpClient() {
-            MockHttpClient client = new MockHttpClient();
-            try {
-                MockHttpResponse jsonResponse =
-                        new MockHttpResponse(toByteArray(jsonResource), "application/json");
-                jsonResponse.setResponseCharset("UTF-8");
-                client.expectGet(jsonResource, jsonResponse);
-
-                MockHttpResponse pngResponse =
-                        new MockHttpResponse(toByteArray(pngResource), "image/png");
-                client.expectGet(pngResource, pngResponse);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            return client;
-        }
+    @Before
+    public void setup() throws Exception {
+        Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, SpriteMockHttpClientFactory.class);
     }
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    @After
+    public void tearDown() throws Exception {
+        Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
+    }
 
     @Test
     public void testJsonCharset() throws Exception {
-        URL pngURL = this.getClass().getResource("test-data/liberty/osm-liberty.png");
-        URL jsonURL = this.getClass().getResource("test-data/liberty/osm-liberty.json");
         String urlStr = pngURL.toExternalForm();
         String spriteBaseUrl = urlStr.substring(0, urlStr.lastIndexOf(".png"));
+        final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
-        SpriteGraphicFactory factory = new TestSpriteGraphicFactory(jsonURL, pngURL);
+        SpriteGraphicFactory factory = new SpriteGraphicFactory();
         Icon icon =
                 factory.getIcon(null, FF.literal(spriteBaseUrl + "#aerialway_11"), "mbsprite", 15);
         assertNotNull(icon);

@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import org.geotools.data.Base64;
+import org.geotools.util.Base64;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
@@ -35,7 +35,10 @@ import org.geotools.util.logging.Logging;
  * request.
  *
  * @author groldan
+ * @deprecated Copied to org.geotools.http
+ * @see org.geotools.http.SimpleHttpClient
  */
+@Deprecated
 public class SimpleHttpClient implements HTTPClient {
 
     private static final Logger LOGGER = Logging.getLogger(SimpleHttpClient.class);
@@ -51,6 +54,12 @@ public class SimpleHttpClient implements HTTPClient {
     private int readTimeout = DEFAULT_TIMEOUT;
 
     private boolean tryGzip = true;
+
+    /**
+     * A SimpleHttpClient should be initiated by a call to
+     * HTTPFactoryFinder.getHttpClientFactory().getClient();
+     */
+    public SimpleHttpClient() {}
 
     @Override
     public String getUser() {

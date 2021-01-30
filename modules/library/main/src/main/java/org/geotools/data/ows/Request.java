@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /**
@@ -72,7 +73,12 @@ public interface Request {
      * input stream (containin the response data), this method must return an appropriate Response
      * object.
      */
-    Response createResponse(HTTPResponse response) throws ServiceException, IOException;
+    default Response createResponse(HTTPResponse response) throws ServiceException, IOException {
+        throw new UnsupportedOperationException(
+                String.format(
+                        "%s doesn't implement createResponse with org.geotools.http.HTTPResponse.",
+                        this.getClass().getName()));
+    }
 
     /**
      * This method indicates whether this request needs to transmit some data to the server using

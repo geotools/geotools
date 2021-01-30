@@ -19,6 +19,11 @@ package org.geotools.data.ows;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * @deprecated Copied to org.geotools.http
+ * @see org.geotools.http.DelegateHTTPResponse
+ */
+@Deprecated
 public class DelegateHTTPResponse implements HTTPResponse {
 
     protected HTTPResponse delegate;

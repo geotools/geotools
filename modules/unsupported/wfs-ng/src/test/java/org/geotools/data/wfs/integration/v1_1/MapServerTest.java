@@ -25,17 +25,17 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import org.apache.commons.io.IOUtils;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.wfs.AbstractTestHTTPClient;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.feature.NameImpl;
+import org.geotools.http.AbstractHttpClient;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -61,7 +61,7 @@ public class MapServerTest {
 
         WFSDataStore wfs =
                 getWFSDataStore(
-                        new AbstractTestHTTPClient() {
+                        new AbstractHttpClient() {
 
                             @Override
                             public HTTPResponse get(URL url) throws IOException {

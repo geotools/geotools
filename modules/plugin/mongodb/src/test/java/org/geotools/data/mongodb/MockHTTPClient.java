@@ -21,8 +21,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPResponse;
 
 /**
  * @author ImranR

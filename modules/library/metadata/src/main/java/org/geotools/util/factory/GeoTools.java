@@ -238,6 +238,30 @@ public final class GeoTools {
      */
     public static final String ENCODE_WKT = "org.geotools.ecql.ewkt";
 
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default value to be
+     * assigned to the {@link Hints#HTTP_CLIENT} hint.
+     *
+     * <p>This setting specifies whether we wan't to use a special http client
+     *
+     * @see Hints#HTTP_CLIENT
+     * @see #getDefaultHints
+     * @since 25.0
+     */
+    public static final String HTTP_CLIENT = "org.geotools.http.client";
+
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default value to be
+     * assigned to the {@link Hints#HTTP_LOGGING} hint.
+     *
+     * <p>This setting specifies whether we want to log all http requests.
+     *
+     * @see Hints#HTTP_LOGGING
+     * @see #getDefaultHints
+     * @since 25.0
+     */
+    public static final String HTTP_LOGGING = "org.geotools.http.logging";
+
     /** The initial context. Will be created only when first needed. */
     private static InitialContext context;
 
@@ -268,6 +292,8 @@ public final class GeoTools {
         bind(RESAMPLE_TOLERANCE, Hints.RESAMPLE_TOLERANCE, bindings);
         bind(LOCAL_DATE_TIME_HANDLING, Hints.LOCAL_DATE_TIME_HANDLING, bindings);
         bind(DATE_TIME_FORMAT_HANDLING, Hints.DATE_TIME_FORMAT_HANDLING, bindings);
+        bind(HTTP_CLIENT, Hints.HTTP_CLIENT, bindings);
+        bind(HTTP_LOGGING, Hints.HTTP_LOGGING, bindings);
         BINDINGS = Collections.unmodifiableMap(bindings);
     }
 

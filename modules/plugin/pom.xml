@@ -56,6 +56,7 @@
     <module>geopkg</module>
     <module>geotiff</module>
     <module>grassraster</module>
+    <module>http-commons</module>
     <module>image</module>
     <module>imagemosaic</module>
     <module>imageio-ext-gdal</module>

@@ -16,7 +16,6 @@
  */
 package org.geotools.data.ows;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -29,34 +28,8 @@ import java.io.InputStream;
  * connection pool, or any other resource clean up task that needs to be done.
  *
  * @author groldan
- * @see HTTPClient
+ * @deprecated Copied to org.geotools.http
+ * @see org.geotools.http.HTTPResponse
  */
-public interface HTTPResponse {
-
-    /**
-     * Disposes this HTTP response and cleans up any resource being held.
-     *
-     * <p>Multiple invocations of this method shall not raise an exception but return silently.
-     */
-    public void dispose();
-
-    /** Short cut for {@code getResponseHeader("Content-Type")} */
-    public String getContentType();
-
-    /** Returns the value of the requested HTTP response header, or {@code null} if not set. */
-    public String getResponseHeader(String headerName);
-
-    /**
-     * Returns the HTTP response content byte stream, automatically recognizing gzip encoded
-     * responses and returning an uncompressing stream if that's the case.
-     *
-     * @throws IOException if such happens when obtaining the response stream.
-     */
-    public InputStream getResponseStream() throws IOException;
-
-    /**
-     * @return the response charset parsed out of the content type response header, if any, or
-     *     {@code null} otherwise.
-     */
-    public String getResponseCharset();
-}
+@Deprecated
+public interface HTTPResponse extends org.geotools.http.HTTPResponse {}

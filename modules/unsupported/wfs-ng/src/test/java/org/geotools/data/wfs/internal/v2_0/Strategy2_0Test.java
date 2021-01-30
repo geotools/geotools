@@ -23,12 +23,12 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import javax.xml.namespace.QName;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.data.wfs.internal.WFSRequest;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.ows.ServiceException;
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class Strategy2_0Test {
 
     private WFSClient newClient(String resource) throws IOException, ServiceException {
         URL capabilitiesURL = WFSTestData.url(resource);
-        HTTPClient httpClient = new SimpleHttpClient();
+        HTTPClient httpClient = HTTPClientFinder.createClient();
 
         WFSClient client = new WFSClient(capabilitiesURL, httpClient, new WFSConfig());
         return client;

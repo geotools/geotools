@@ -34,9 +34,9 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
@@ -310,7 +310,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
     }
 
     protected HTTPClient getHttpClient() {
-        return new SimpleHttpClient();
+        return HTTPClientFinder.createClient();
     }
 
     /**

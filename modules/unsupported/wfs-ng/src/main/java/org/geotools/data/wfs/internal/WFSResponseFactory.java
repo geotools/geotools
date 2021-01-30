@@ -18,7 +18,7 @@ package org.geotools.data.wfs.internal;
 
 import java.io.IOException;
 import java.util.List;
-import org.geotools.data.ows.HTTPResponse;
+import org.geotools.http.HTTPResponse;
 
 /**
  * A factory interface meant to be used through the usual GeoTools SPI mechanism to dynamically find

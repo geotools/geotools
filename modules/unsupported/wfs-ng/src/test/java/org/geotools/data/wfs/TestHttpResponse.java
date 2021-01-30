@@ -22,8 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import org.geotools.data.ows.HTTPResponse;
+import org.geotools.http.HTTPResponse;
 
+/** Takes a response either as a String or the url to a file with the reponse */
 public class TestHttpResponse implements HTTPResponse {
 
     private String contentType;
@@ -40,27 +41,32 @@ public class TestHttpResponse implements HTTPResponse {
         this.bodyContent = bodyContent;
     }
 
-    public TestHttpResponse(String contentType, String charset, URL contentUrl) {
-        this.contentType = contentType;
-        this.charset = charset;
-        this.contentUrl = contentUrl;
-    }
-
+    /**
+     * @param contentType
+     * @param charset
+     * @param contentInputStream A InputStream read into a String
+     */
     public TestHttpResponse(String contentType, String charset, InputStream contentInputStream) {
         this.contentType = contentType;
         this.charset = charset;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(contentInputStream));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        try {
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(contentInputStream))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
                 sb.append('\n');
             }
+            this.bodyContent = sb.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.bodyContent = sb.toString();
+    }
+
+    public TestHttpResponse(String contentType, String charset, URL contentUrl) {
+        this.contentType = contentType;
+        this.charset = charset;
+        this.contentUrl = contentUrl;
     }
 
     public TestHttpResponse(URL response, String contentType) {

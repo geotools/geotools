@@ -18,23 +18,10 @@ package org.geotools.data.wfs;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import javax.xml.namespace.QName;
-import org.apache.commons.io.IOUtils;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
-import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
-import org.geotools.data.wfs.internal.GetFeatureRequest;
-import org.geotools.data.wfs.internal.GetFeatureResponse;
-import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
-import org.geotools.ows.ServiceException;
-import org.geotools.test.TestData;
 
 /** */
 public class WFSTestData {
@@ -172,95 +159,6 @@ public class WFSTestData {
                     "gubs_StatisticalUnit",
                     "EPSG:4269");
 
-    /**
-     * Creates the test {@link #wfs} with a default connection factory that parses the capabilities
-     * object from the test xml file pointed out by {@code capabilitiesFileName}
-     *
-     * <p>Tests methods call this one to set up a protocolHandler to test
-     *
-     * @param capabilitiesFileName the relative path under {@code test-data} for the file containing
-     *     the WFS_Capabilities document.
-     */
-    public static TestWFSClient createTestProtocol(String capabilitiesFileName)
-            throws ServiceException, FileNotFoundException, IOException {
-        return createTestProtocol(capabilitiesFileName, new MockHTTPClient(null));
-    }
-
-    /**
-     * Creates the test {@link #wfs} with the provided connection factory that parses the
-     * capabilities object from the test xml file pointed out by {@code capabilitiesURL}
-     *
-     * <p>Tests methods call this one to set up a protocolHandler to test
-     */
-    public static TestWFSClient createTestProtocol(URL capabilitiesURL)
-            throws ServiceException, IOException {
-        return new TestWFSClient(capabilitiesURL, new MockHTTPClient(null));
-    }
-
-    /**
-     * Creates the test {@link #wfs} with the provided connection factory that parses the
-     * capabilities object from the test xml file pointed out by {@code capabilitiesFileName}
-     *
-     * <p>Tests methods call this one to set up a protocolHandler to test
-     *
-     * @param capabilitiesFileName the relative path under {@code test-data} for the file containing
-     *     the WFS_Capabilities document.
-     */
-    public static TestWFSClient createTestProtocol(String capabilitiesFileName, HTTPClient http)
-            throws ServiceException, FileNotFoundException, IOException {
-        return createTestProtocol(TestData.url(WFSTestData.class, capabilitiesFileName), http);
-    }
-
-    /**
-     * Creates the test {@link #wfs} with the provided connection factory that parses the
-     * capabilities object from the test xml file pointed out by {@code capabilitiesURL}
-     *
-     * <p>Tests methods call this one to set up a protocolHandler to test
-     */
-    public static TestWFSClient createTestProtocol(URL capabilitiesURL, HTTPClient http)
-            throws ServiceException, IOException {
-        return new TestWFSClient(capabilitiesURL, http);
-    }
-
-    public static class MockHTTPClient extends AbstractTestHTTPClient {
-
-        private HTTPResponse mockResponse;
-
-        public URL targetUrl;
-
-        public String postCallbackContentType;
-
-        public long postCallbackContentLength = -1;
-
-        public ByteArrayOutputStream postCallbackEncodedRequestBody;
-
-        public MockHTTPClient(HTTPResponse mockResponse) {
-            this.mockResponse = mockResponse;
-        }
-
-        @Override
-        public HTTPResponse get(final URL baseUrl) throws IOException {
-            if (baseUrl.getProtocol().equals("file")) {
-                return new TestHttpResponse(baseUrl, "text/xml");
-            }
-            this.targetUrl = baseUrl;
-            return mockResponse;
-        }
-
-        @Override
-        public HTTPResponse post(
-                final URL url, final InputStream postContent, final String postContentType)
-                throws IOException {
-            this.targetUrl = url;
-            this.postCallbackContentType = postContentType;
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            IOUtils.copy(postContent, out);
-            this.postCallbackEncodedRequestBody = out;
-            this.postCallbackContentLength = out.size();
-            return mockResponse;
-        }
-    }
-
     public static URL url(String resource) {
         URL url = WFSTestData.class.getResource("test-data/" + resource);
         assertNotNull("resource not found: " + resource, url);
@@ -311,70 +209,5 @@ public class WFSTestData {
         MutableWFSConfig config = new MutableWFSConfig();
         config.setGmlCompatibleTypeNames(true);
         return config;
-    }
-
-    public static class TestWFSClient extends WFSClient {
-
-        private URL describeFeatureTypeUrlOverride;
-
-        private GetFeatureRequest request;
-
-        public TestWFSClient(URL capabilitiesURL, HTTPClient http)
-                throws IOException, ServiceException {
-            super(capabilitiesURL, http, getGmlCompatibleConfig());
-        }
-
-        /**
-         * Allows to set an overriding url for the {@link #getDescribeFeatureTypeURLGet(String)}
-         * operation, for test purposes so it is not actually needed to download the schema from the
-         * internet but from a resource file
-         */
-        public void setDescribeFeatureTypeURLOverride(URL url) {
-            this.describeFeatureTypeUrlOverride = url;
-        }
-
-        public void setAxisOrderOverride(String axisOrder, String axisOrderFilter) {
-            ((MutableWFSConfig) config).setAxisOrder(axisOrder);
-            ((MutableWFSConfig) config).setAxisOrderFilter(axisOrderFilter);
-        }
-
-        public void setOutputformatOverride(String outputformatOverride) {
-            ((MutableWFSConfig) config).setOutputformatOverride(outputformatOverride);
-        }
-
-        public void setUseDefaultSrs(boolean useDefaultSrs) {
-            ((MutableWFSConfig) config).setUseDefaultSrs(useDefaultSrs);
-        }
-
-        public void setProtocol(Boolean protocol) {
-            ((MutableWFSConfig) config).setProtocol(protocol);
-        }
-
-        @Override
-        public DescribeFeatureTypeResponse issueRequest(DescribeFeatureTypeRequest request)
-                throws IOException {
-            if (describeFeatureTypeUrlOverride == null) {
-                return super.issueRequest(request);
-            }
-            HTTPResponse response =
-                    new TestHttpResponse(
-                            request.getOutputFormat(), "UTF-8", describeFeatureTypeUrlOverride);
-            try {
-                return new DescribeFeatureTypeResponse(request, response);
-            } catch (ServiceException e) {
-                throw new IOException(e);
-            }
-        }
-
-        @Override
-        public GetFeatureResponse issueRequest(GetFeatureRequest request) throws IOException {
-            this.request = request;
-            return super.issueRequest(request);
-        }
-
-        /** @return the request */
-        public GetFeatureRequest getRequest() {
-            return request;
-        }
     }
 }

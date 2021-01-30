@@ -25,14 +25,15 @@ import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.impl.WFSDataAccessFactory;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPConnectionPooling;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -132,9 +133,17 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
     public HTTPClient getHttpClient(final Map<String, ?> params) throws IOException {
         final URL capabilitiesURL = URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);
-        return config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
-                ? new MultithreadedHttpClient(config)
-                : new SimpleHttpClient();
+        if (config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)) {
+            HTTPClient client = HTTPClientFinder.createClient(HTTPConnectionPooling.class);
+
+            client.setReadTimeout(config.getTimeoutMillis() / 1000);
+            client.setConnectTimeout(config.getTimeoutMillis() / 1000);
+            ((HTTPConnectionPooling) client).setMaxConnections(config.getMaxConnectionPoolSize());
+
+            return client;
+        } else {
+            return HTTPClientFinder.createClient();
+        }
     }
 
     private static boolean isHttp(java.net.URL capabilitiesURL) {

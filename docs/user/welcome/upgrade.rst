@@ -31,6 +31,9 @@ But first to upgrade - change your dependency geotools.version to |release| (or 
 GeoTools 25.x
 -------------
 
+DataStore creation parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 The DataAccess and DataStore creation parameters have been switched from ``Map<String, Serializable>``
 to ``Map<String, ?>``, to match actual usage (some stores require non serializable parameters).
 This should not affect end users of the API, but ``DataAccessFactory`` and ``DataStoreFactory``
@@ -39,6 +42,134 @@ implementations will have to be updated to match.
 For those feeding ``Properties`` object to ``DataAccess.getDataStore()`` a new utility method,
 ``DataUtilities.toConnectionParameters`` has been made available, which converts a ``Properties``
 to a ``Map<String, ?>``.
+
+.. code-block:: java
+
+   Map<String,?> connectionParameters = DataUtilities.toConnectionParameters(properties);
+   DataStore dataStore = DataStoreFinder.getDataStore(connectionParameters);
+
+HTTPClient moved to its own module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new module ``gt-http`` has been established for the HTTPClient API.
+
+The original interfaces ``HTTPClient`` and ``HTTPResponse`` and their implementations:
+(``SimpleHttpClient``, ``DelegateHTTPClient``, ``LoggingHTTPClient`` and DelegateHTTPResponse) have moved from 
+``org.geotools.data.ows`` to the ``org.geotools.http`` package.
+
+
+Placeholders for the previous implementations remain in place, with a deprecation reminding you to switch to
+the new import as out outlined in the table below.
+
+===============================================  =========================  ===============================================================
+Deprecated class                                 Module                       Replacement (other module)
+===============================================  =========================  ===============================================================
+org.geotools.data.ows.AbstractHttpClient         gt-main                     org.geotools.http.AbstractHttpClient
+org.geotools.data.ows.MockHttpClient             gt-main                     org.geotools.http.MockHttpClient
+org.geotools.data.ows.MockHttpResponse           gt-main                     org.geotools.http.MockHttpResponse
+org.geotools.data.ows.DelegateHTTPClient         gt-main                     org.geotools.http.DelegateHTTPClient
+org.geotools.data.ows.DelegateHTTPResponse       gt-main                     org.geotools.http.DelegateHTTPResponse
+org.geotools.data.ows.HTTPClient                 gt-main                     org.geotools.http.HTTPClient
+org.geotools.data.ows.HTTPResponse               gt-main                     org.geotools.http.HTTPResponse
+org.geotools.data.ows.LoggingHTTPClient          gt-main                     org.geotools.http.LoggingHTTPClient
+org.geotools.data.ows.SimpleHttpClient           gt-main                     org.geotools.http.SimpleHttpClient
+org.geotools.ows.wms.MultithreadedHttpClient     gt-wms                      org.geotools.http.MultithreadedHttpClient (gt-http-commons)
+org.geotools.ows.MockHttpClient                  gt-wms                      org.geotools.http.MockHttpClient
+org.geotools.ows.MockHttpResponse                gt-wms                      org.geotools.http.MockHttpResponse
+org.geotools.ows.wmts.MockHttpClient             gt-wmts                     org.geotools.http.AbstractHttpClient
+org.geotools.data.mongodb.MockHTTPClient         gt-mongodb                  org.geotools.http.MockHttpClient
+org.geotools.data.mongodb.MockHttpResponse       gt-mongodb                  org.geotools.http.MockHttpResponse
+org.geotools.ows.wfs.MultithreadedHttpClient     gt-wfs-ng                   org.geotools.http.MultithreadedHttpClient (gt-http-commons)
+org.geotools.ows.wfs.AbstractTestHTTPClient      gt-wfs-ng                   org.geotools.http.AbstractHttpClient
+org.geotools.data.Base64                         gt-main                     org.geotools.util.Base64 (gt-metadata)
+===============================================  =========================  ===============================================================
+
+This will result in a compile error in cases where GeoTools returns `org.geotools.http.HTTPClient`.
+
+BEFORE (compile error):
+
+.. code-block:: java
+   
+   import org.geotools.ows.HTTPClient;
+   
+   WebMapServer wms = new WebMapServer("http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
+   HTTPClient client = wms.getHTTPClient();
+
+AFTER change imports (recommended):
+
+.. code-block:: java
+
+   import org.geotools.http.HTTPClient;
+   
+   WebMapServer wms = new WebMapServer("http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
+   HTTPClient client = (HTTPClient) wms.getHTTPClient();
+
+ALTERNATIVE add cast (continue to use deprecated api):
+
+.. code-block:: java
+
+   import org.geotools.data.ows.HTTPClient;
+   
+   WebMapServer wms = new WebMapServer("http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
+   HTTPClient client = (HTTPClient) wms.getHTTPClient();
+
+
+HTTPClientFinder
+^^^^^^^^^^^^^^^^^
+
+To allow the library to be configured with different ``HTTPClient`` implementations ``HTTPClientFinder`` is recommend:
+
+BEFORE:
+
+.. code-block:: java
+   
+   import org.geotools.data.ows.HTTPClient;
+   import org.geotools.data.ows.HTTPResponse;
+   import org.geotools.ows.SimpleHttpClient;
+   
+   
+   HTTPClient http = new SimpleHttpClient();
+   HTTPResponse response = http.get();   
+
+AFTER:
+
+.. code-block:: xml
+
+   <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-http</artifactId>
+      <version>${gt.version}</version>
+   </dependency>
+
+.. code-block:: java
+
+   import org.geotools.http.HTTPClient;
+   import org.geotools.http.HTTPResponse;
+   import org.geotools.http.HTTPClientFinder;
+      
+   HTTPClient http = HTTPClientFinder.createClient();
+   HTTPResponse response = http.get();
+   
+In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHttpClient.
+
+.. code-block:: xml
+
+     <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-http-commons</artifactId>
+        <version>${gt.version}</version>
+     </dependency>
+
+.. code-block:: java
+
+   import org.geotools.http.HTTPClient;
+   import org.geotools.http.HTTPResponse;
+   import org.geotools.http.HTTPClientFinder;
+   import org.geotools.http.commons.MultihreadedHttpClient;
+      
+   Hints hints = new Hints(Hints.HTTP_CLIENT, MultihreadedHttpClient.class);
+   HTTPClient http = HTTPClientFinder.createClient(hints);
+   HTTPResponse response = http.get();
 
 GeoTools 24.x
 -------------

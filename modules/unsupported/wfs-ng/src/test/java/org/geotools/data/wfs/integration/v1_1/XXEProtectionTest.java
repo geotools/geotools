@@ -22,7 +22,6 @@ import static org.junit.Assert.fail;
 
 import java.net.URL;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.wfs.TestHttpResponse;
@@ -30,6 +29,7 @@ import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.http.HTTPResponse;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.xml.sax.SAXException;

@@ -3,15 +3,14 @@ package org.geotools.ows;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
 
 /**
  * Helper class to test WMS cascading
  *
  * @author Andrea Aime - GeoSolutions
  */
-public abstract class MockHttpClient implements HTTPClient {
+@Deprecated
+public abstract class MockHttpClient implements org.geotools.data.ows.HTTPClient {
 
     protected String user;
 
@@ -23,13 +22,13 @@ public abstract class MockHttpClient implements HTTPClient {
 
     protected boolean tryGzip;
 
-    public HTTPResponse post(URL url, InputStream postContent, String postContentType)
-            throws IOException {
+    public org.geotools.data.ows.HTTPResponse post(
+            URL url, InputStream postContent, String postContentType) throws IOException {
         throw new UnsupportedOperationException(
                 "POST not supported, if needed you have to override and implement");
     }
 
-    public HTTPResponse get(URL url) throws IOException {
+    public org.geotools.data.ows.HTTPResponse get(URL url) throws IOException {
         throw new UnsupportedOperationException(
                 "GET not supported, if needed you have to override and implement");
     }

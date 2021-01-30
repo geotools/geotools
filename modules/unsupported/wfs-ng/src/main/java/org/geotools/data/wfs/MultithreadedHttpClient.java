@@ -37,8 +37,6 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.geotools.data.ows.AbstractOpenWebService;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.util.logging.Logging;
 
@@ -53,7 +51,8 @@ import org.geotools.util.logging.Logging;
  * @author groldan
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-public class MultithreadedHttpClient implements HTTPClient {
+@Deprecated
+public class MultithreadedHttpClient implements org.geotools.data.ows.HTTPClient {
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
 
@@ -120,7 +119,7 @@ public class MultithreadedHttpClient implements HTTPClient {
     }
 
     @Override
-    public HTTPResponse post(
+    public org.geotools.data.ows.HTTPResponse post(
             final URL url, final InputStream postContent, final String postContentType)
             throws IOException {
 
@@ -146,12 +145,13 @@ public class MultithreadedHttpClient implements HTTPClient {
     }
 
     @Override
-    public HTTPResponse get(final URL url) throws IOException {
+    public org.geotools.data.ows.HTTPResponse get(final URL url) throws IOException {
         return get(url, null);
     }
 
     @Override
-    public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
+    public org.geotools.data.ows.HTTPResponse get(URL url, Map<String, String> headers)
+            throws IOException {
         GetMethod getMethod = new GetMethod(url.toExternalForm());
         getMethod.setDoAuthentication(user != null && password != null);
 
@@ -237,7 +237,7 @@ public class MultithreadedHttpClient implements HTTPClient {
         connectionManager.getParams().setDefaultMaxConnectionsPerHost(maxConnections);
     }
 
-    private static class HttpMethodResponse implements HTTPResponse {
+    private static class HttpMethodResponse implements org.geotools.data.ows.HTTPResponse {
 
         private HttpMethod methodResponse;
 

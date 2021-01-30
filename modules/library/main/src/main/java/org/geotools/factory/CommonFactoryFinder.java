@@ -72,12 +72,10 @@ public final class CommonFactoryFinder extends FactoryFinder {
                                         StyleFactory.class,
                                         FilterFactory.class,
                                         FileDataStoreFactorySpi.class,
-                                        //                  FunctionImpl.class, // TODO: remove
-                                        //                  FunctionExpression.class,//TODO: remove
                                         Function.class,
                                         FunctionFactory.class,
                                         FeatureFactory.class,
-                                        FeatureTypeFactory.class,
+                                        FeatureTypeFactory.class
                                     }));
         }
         return registry;

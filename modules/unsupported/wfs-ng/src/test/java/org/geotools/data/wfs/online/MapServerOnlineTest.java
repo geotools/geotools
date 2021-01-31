@@ -18,6 +18,7 @@
 package org.geotools.data.wfs.online;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -152,7 +153,6 @@ public class MapServerOnlineTest {
 
         SimpleFeatureCollection features = source.getFeatures();
         features.getBounds();
-        SimpleFeatureType schema = features.getSchema();
 
         GeometryDescriptor geometryDesc = wfs.getSchema(typeName).getGeometryDescriptor();
         CoordinateReferenceSystem crs = geometryDesc.getCoordinateReferenceSystem();
@@ -178,7 +178,7 @@ public class MapServerOnlineTest {
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                // System.out.println(feature.getID());
+                assertNotNull(feature.getID());
             }
         }
     }
@@ -223,7 +223,7 @@ public class MapServerOnlineTest {
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                // System.out.println(feature.getID());
+                assertNotNull(feature.getID());
             }
         }
     }

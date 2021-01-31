@@ -301,7 +301,7 @@ public abstract class AbstractIntegrationTest {
             assertTrue(contains(names, first.typeName));
             assertTrue(contains(names, second.typeName));
         } catch (IOException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            java.util.logging.Logger.getGlobal().log(Level.INFO, "", e);
             fail("Fail with an IOException trying to getTypeNames()");
         }
     }
@@ -653,14 +653,9 @@ public abstract class AbstractIntegrationTest {
             throws Exception {
         int count = 0;
 
-        try {
-            while (reader.hasNext()) {
-                assertTrue(containsFeature(features, reader.next()));
-                count++;
-            }
-        } finally {
-            // This is not a good idea, since later tests try and run a reader.hasNext() !!
-            // reader.close();
+        while (reader.hasNext()) {
+            assertTrue(containsFeature(features, reader.next()));
+            count++;
         }
 
         assertEquals(features.length, count);

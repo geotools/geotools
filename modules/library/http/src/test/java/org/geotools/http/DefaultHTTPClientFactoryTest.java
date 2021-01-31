@@ -15,6 +15,7 @@
  */
 package org.geotools.http;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.LinkedList;
@@ -27,10 +28,8 @@ public class DefaultHTTPClientFactoryTest {
     @Test
     public void testBasicUsage() throws Exception {
 
-        HTTPClient client =
-                new DefaultHTTPClientFactory()
-                        .createClient(new LinkedList<Class<? extends HTTPBehavior>>());
-        assertTrue(client != null);
+        HTTPClient client = new DefaultHTTPClientFactory().createClient(new LinkedList<>());
+        assertNotNull(client);
         assertTrue(client instanceof SimpleHttpClient);
     }
 
@@ -38,9 +37,7 @@ public class DefaultHTTPClientFactoryTest {
     public void testLoggingUsage() throws Exception {
         HTTPClientFactory factory = new DefaultHTTPClientFactory();
         HTTPClient client =
-                factory.createClient(
-                        new Hints(Hints.HTTP_LOGGING, "TRUE"),
-                        new LinkedList<Class<? extends HTTPBehavior>>());
+                factory.createClient(new Hints(Hints.HTTP_LOGGING, "TRUE"), new LinkedList<>());
         assertTrue(client instanceof LoggingHTTPClient);
     }
 }

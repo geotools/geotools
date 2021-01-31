@@ -228,7 +228,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         }
 
         FeatureReader<SimpleFeatureType, SimpleFeature> allFeaturesReader = null;
-        if (originalFeatures.size() > 0) {
+        if (!originalFeatures.isEmpty()) {
             allFeaturesReader = DataUtilities.reader(originalFeatures);
         }
 
@@ -260,7 +260,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
                             FeatureReader<SimpleFeatureType, SimpleFeature> all = null;
                             try {
-                                if (originalFeatures.size() > 0) {
+                                if (!originalFeatures.isEmpty()) {
                                     all = DataUtilities.reader(originalFeatures);
                                 }
                                 final DiffFeatureReader<SimpleFeatureType, SimpleFeature>

@@ -154,25 +154,27 @@ public class DataStoreTest {
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
 
         // use the OtherSRS
+        CoordinateReferenceSystem unknownCrs = CRS.decode("EPSG:3003");
         CoordinateReferenceSystem otherCrs = CRS.decode(CUBEWERX_GOVUNITCE.CRS);
         query.setCoordinateSystem(otherCrs);
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
-        featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        assertNotNull(featureReader);
-        assertEquals(otherCrs, featureReader.getFeatureType().getCoordinateReferenceSystem());
-        GetFeatureRequest request = wfs.getRequest();
-        assertEquals(CUBEWERX_GOVUNITCE.CRS, request.getSrsName());
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            assertNotNull(featureReader);
+            assertEquals(otherCrs, featureReader.getFeatureType().getCoordinateReferenceSystem());
+            GetFeatureRequest request = wfs.getRequest();
+            assertEquals(CUBEWERX_GOVUNITCE.CRS, request.getSrsName());
 
-        // use an SRS not supported by server
-        CoordinateReferenceSystem unknownCrs = CRS.decode("EPSG:3003");
-        query.setCoordinateSystem(unknownCrs);
+            query.setCoordinateSystem(unknownCrs);
+        }
 
-        featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        assertNotNull(featureReader);
-        assertTrue(featureReader instanceof ReprojectFeatureReader);
-        assertEquals(unknownCrs, featureReader.getFeatureType().getCoordinateReferenceSystem());
-        request = wfs.getRequest();
-        assertNull(request.getSrsName());
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            assertNotNull(featureReader);
+            assertTrue(featureReader instanceof ReprojectFeatureReader);
+            assertEquals(unknownCrs, featureReader.getFeatureType().getCoordinateReferenceSystem());
+            GetFeatureRequest request = wfs.getRequest();
+            assertNull(request.getSrsName());
+        }
     }
 
     /**
@@ -193,24 +195,27 @@ public class DataStoreTest {
         // use the OtherSRS
         CoordinateReferenceSystem otherCrs = CRS.decode("EPSG:4326");
         query.setCoordinateSystem(otherCrs);
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
-        featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        assertNotNull(featureReader);
-        assertTrue(featureReader instanceof ReprojectFeatureReader);
-        assertEquals(otherCrs, featureReader.getFeatureType().getCoordinateReferenceSystem());
-        GetFeatureRequest request = wfs.getRequest();
-        assertNull(request.getSrsName());
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            assertNotNull(featureReader);
+            assertTrue(featureReader instanceof ReprojectFeatureReader);
+            assertEquals(otherCrs, featureReader.getFeatureType().getCoordinateReferenceSystem());
+            GetFeatureRequest request = wfs.getRequest();
+            assertNull(request.getSrsName());
+        }
 
         // use an SRS not supported by server
         CoordinateReferenceSystem unknownCrs = CRS.decode("EPSG:3003");
         query.setCoordinateSystem(unknownCrs);
 
-        featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        assertNotNull(featureReader);
-        assertTrue(featureReader instanceof ReprojectFeatureReader);
-        assertEquals(unknownCrs, featureReader.getFeatureType().getCoordinateReferenceSystem());
-        request = wfs.getRequest();
-        assertNull(request.getSrsName());
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            assertNotNull(featureReader);
+            assertTrue(featureReader instanceof ReprojectFeatureReader);
+            assertEquals(unknownCrs, featureReader.getFeatureType().getCoordinateReferenceSystem());
+            GetFeatureRequest request = wfs.getRequest();
+            assertNull(request.getSrsName());
+        }
     }
 
     /**
@@ -230,16 +235,17 @@ public class DataStoreTest {
         // use the OtherSRS
         CoordinateReferenceSystem otherCrs = CRS.decode("EPSG:3857");
         query.setCoordinateSystem(otherCrs);
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
-        featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        assertNotNull(featureReader);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            assertNotNull(featureReader);
 
-        assertEquals(
-                GML2EncodingUtils.epsgCode(otherCrs),
-                GML2EncodingUtils.epsgCode(
-                        featureReader.getFeatureType().getCoordinateReferenceSystem()));
-        // GetFeatureRequest request = wfs.getRequest();
-        // assertEquals("urn:ogc:def:crs:EPSG::3857", request.getSrsName());
+            assertEquals(
+                    GML2EncodingUtils.epsgCode(otherCrs),
+                    GML2EncodingUtils.epsgCode(
+                            featureReader.getFeatureType().getCoordinateReferenceSystem()));
+            // GetFeatureRequest request = wfs.getRequest();
+            // assertEquals("urn:ogc:def:crs:EPSG::3857", request.getSrsName());
+        }
     }
 
     @Test
@@ -249,20 +255,21 @@ public class DataStoreTest {
 
         WFSDataStore ds = new WFSDataStore(wfs);
         Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
-        featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        assertNotNull(featureReader);
-        // test data file contains three features...
-        assertTrue(featureReader.hasNext());
-        assertNotNull(featureReader.next());
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                ds.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            assertNotNull(featureReader);
+            // test data file contains three features...
+            assertTrue(featureReader.hasNext());
+            assertNotNull(featureReader.next());
 
-        assertTrue(featureReader.hasNext());
-        assertNotNull(featureReader.next());
+            assertTrue(featureReader.hasNext());
+            assertNotNull(featureReader.next());
 
-        assertTrue(featureReader.hasNext());
-        assertNotNull(featureReader.next());
+            assertTrue(featureReader.hasNext());
+            assertNotNull(featureReader.next());
 
-        assertFalse(featureReader.hasNext());
+            assertFalse(featureReader.hasNext());
+        }
     }
 
     private TestWFSClient createWFSClient() throws IOException, ServiceException {

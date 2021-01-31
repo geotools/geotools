@@ -23,6 +23,7 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
@@ -64,6 +65,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
     }
 
     @Override
+    @Test
     @Ignore
     public void testDataStoreHandlesAxisFlipping() {
         // disabled, not implemented for 2.0.0

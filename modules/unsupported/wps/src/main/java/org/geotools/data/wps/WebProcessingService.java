@@ -38,14 +38,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.GetCapabilitiesRequest;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.ows.Specification;
 import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
 import org.geotools.data.wps.response.DescribeProcessResponse;
 import org.geotools.data.wps.response.ExecuteProcessResponse;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.wps.WPS;
 
@@ -145,7 +145,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
             throws IOException, ServiceException {
         super(
                 getOperationURL("getcapabilities", capabilities, true),
-                new SimpleHttpClient(),
+                HTTPClientFinder.createClient(),
                 capabilities);
     }
 

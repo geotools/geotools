@@ -29,7 +29,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
+import org.geotools.util.logging.Logging;
 
 /**
  * This abstract class provides a building block for one to implement an Open Web Service (OWS)
@@ -58,8 +62,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     /** Hints, now used for the XML parsing * */
     protected Map<String, Object> hints;
 
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AbstractOpenWebService.class);
+    protected static final Logger LOGGER = Logging.getLogger(AbstractOpenWebService.class);
 
     /**
      * Set up the specifications used and retrieve the Capabilities document given by serverURL.
@@ -69,7 +72,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @throws ServiceException if the server responds with an error
      */
     public AbstractOpenWebService(final URL serverURL) throws IOException, ServiceException {
-        this(serverURL, new SimpleHttpClient(), null);
+        this(serverURL, HTTPClientFinder.createClient(), null);
     }
 
     public AbstractOpenWebService(

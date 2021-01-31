@@ -21,6 +21,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Map;
 
+/**
+ * @deprecated Copied to org.geotools.http
+ * @see org.geotools.http.DelegateHttpClient
+ */
+@Deprecated
 public class DelegateHTTPClient implements HTTPClient {
 
     protected HTTPClient delegate;
@@ -32,17 +37,17 @@ public class DelegateHTTPClient implements HTTPClient {
     @Override
     public HTTPResponse post(URL url, InputStream postContent, String postContentType)
             throws IOException {
-        return delegate.post(url, postContent, postContentType);
+        throw new UnsupportedOperationException("Deprecated method");
     }
 
     @Override
     public HTTPResponse get(URL url) throws IOException {
-        return delegate.get(url);
+        throw new UnsupportedOperationException("Deprecated method");
     }
 
     @Override
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
-        return delegate.get(url, headers);
+        throw new UnsupportedOperationException("Deprecated method");
     }
 
     @Override

@@ -21,3 +21,4 @@ support for common spatial formats such as shapefiles.
    cql/index
    xml/index
    render/index
+   http/index

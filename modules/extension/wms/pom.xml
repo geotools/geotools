@@ -91,11 +91,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <!-- The version number is specified in the parent POM. -->
-        </dependency>
-        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-xml</artifactId>
             <version>${project.version}</version>
@@ -115,6 +110,10 @@
             </exclusions>
         </dependency>
         <dependency>
+          <groupId>commons-httpclient</groupId>
+          <artifactId>commons-httpclient</artifactId>
+        </dependency>
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
@@ -122,6 +121,19 @@
             <groupId>org.geotools</groupId>
             <artifactId>gt-render</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.geotools</groupId>
+        	<artifactId>gt-http</artifactId>
+        	<version>${project.version}</version>
+        	<classifier>tests</classifier>
+        	<scope>test</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.geotools</groupId>
+        	<artifactId>gt-http-commons</artifactId>
+        	<version>${project.version}</version>
+        	<scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>

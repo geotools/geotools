@@ -17,6 +17,7 @@
 package org.geotools.data.ows;
 
 import java.io.IOException;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /**

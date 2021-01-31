@@ -17,10 +17,13 @@
 package org.geotools.data.ows;
 
 /**
- * A base class for HTTPClient
+ * A base class for HTTPClient, that implements everything except the get and post methods.
  *
  * @author Andrea Aime - GeoSolutions
+ * @deprecated Copied to org.geotools.http
+ * @see org.geotools.http.AbstractHttpClient
  */
+@Deprecated
 public abstract class AbstractHttpClient implements HTTPClient {
 
     protected String user;

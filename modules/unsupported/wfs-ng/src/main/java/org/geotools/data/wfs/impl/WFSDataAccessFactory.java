@@ -31,11 +31,11 @@ import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.KVP;
 import org.geotools.util.PreventLocalEntityResolver;
@@ -682,7 +682,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
             }
         }
 
-        final HTTPClient http = new SimpleHttpClient(); // new
+        final HTTPClient http = HTTPClientFinder.createClient(); // new
         // MultithreadedHttpClient();
 
         // TODO: let HTTPClient be configured for gzip

@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import org.geotools.data.ows.Capabilities;
 import org.geotools.data.ows.GetCapabilitiesResponse;
-import org.geotools.data.ows.HTTPResponse;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.xml.WMSSchema;
 import org.geotools.xml.DocumentFactory;

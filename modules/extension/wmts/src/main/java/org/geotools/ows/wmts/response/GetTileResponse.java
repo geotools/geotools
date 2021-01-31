@@ -18,8 +18,8 @@ package org.geotools.ows.wmts.response;
 
 import java.io.IOException;
 import java.net.URL;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 

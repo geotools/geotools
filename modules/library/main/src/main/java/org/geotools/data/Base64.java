@@ -68,7 +68,9 @@ import java.io.IOException;
  * @author Robert Harder
  * @author rob@iharder.net
  * @version 2.1
+ * @deprecated Copied to org.geotools.util of gt-metadata
  */
+@Deprecated
 public class Base64 {
 
     /* ********  P U B L I C   F I E L D S  ******** */

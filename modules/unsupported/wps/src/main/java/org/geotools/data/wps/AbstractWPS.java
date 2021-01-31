@@ -31,12 +31,12 @@ import net.opengis.wps10.WPSCapabilitiesType;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.GetCapabilitiesRequest;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.ows.Specification;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /**
@@ -70,7 +70,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
      * @throws ServiceException if the server responds with an error
      */
     public AbstractWPS(final URL serverURL) throws IOException, ServiceException {
-        this(serverURL, new SimpleHttpClient(), null);
+        this(serverURL, HTTPClientFinder.createClient(), null);
 
         capabilities = negotiateVersion();
         if (capabilities == null) {

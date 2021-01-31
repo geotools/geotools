@@ -16,36 +16,44 @@
  */
 package org.geotools.data.ows;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Helper class to mock HTTP responses
+ * Helper class to mock HTTP responses.
+ *
+ * <p>Taking anything that could be turned into an InputStream as an argument for the constructor.
  *
  * @author Andrea Aime - GeoSolutions
+ * @deprecated Copied to org.geotools.http
+ * @see org.geotools.http.MockHttpResponse
  */
+@Deprecated
 public class MockHttpResponse implements HTTPResponse {
+
+    InputStream stream;
 
     String contentType;
 
-    Map<String, String> headers;
+    Map<String, String> headers = new HashMap<>();
 
-    byte[] response;
+    Charset charset = StandardCharsets.UTF_8;
 
-    String responseCharset;
-
-    public MockHttpResponse(String response, String contentType, String... headers) {
-        this(response.getBytes(), contentType, headers);
-    }
-
-    public MockHttpResponse(byte[] response, String contentType, String... headers) {
-        this.response = response;
+    public MockHttpResponse(InputStream stream, String contentType, String... headers) {
+        this.stream = stream;
         this.contentType = contentType;
-        this.headers = new HashMap<>();
 
         if (headers != null) {
             if (headers.length % 2 != 0) {
@@ -62,8 +70,63 @@ public class MockHttpResponse implements HTTPResponse {
         }
     }
 
+    public MockHttpResponse(
+            InputStream stream, String contentType, Charset charset, String... headers) {
+        this(stream, contentType, headers);
+        this.charset = charset;
+    }
+
+    public MockHttpResponse(File responseFile, String contentType, String... headers)
+            throws FileNotFoundException {
+        this(new FileInputStream(responseFile), contentType, headers);
+    }
+
+    public MockHttpResponse(
+            File responseFile, String contentType, Charset charset, String... headers)
+            throws FileNotFoundException {
+        this(responseFile, contentType, headers);
+        this.charset = charset;
+    }
+
+    /**
+     * MockHttpResponse with a URL as the response.
+     *
+     * @param response Pointing at a file resource
+     * @param contentType
+     * @param headers
+     * @throws IOException
+     */
+    public MockHttpResponse(URL response, String contentType, String... headers)
+            throws IOException {
+        this(response.openStream(), contentType, headers);
+    }
+
+    public MockHttpResponse(URL response, String contentType, Charset charset, String... headers)
+            throws IOException {
+        this(response, contentType, headers);
+        this.charset = charset;
+    }
+
+    public MockHttpResponse(String response, String contentType, String... headers) {
+        this(response.getBytes(), contentType, headers);
+    }
+
+    public MockHttpResponse(
+            String response, String contentType, Charset charset, String... headers) {
+        this(response.getBytes(charset), contentType);
+        this.charset = charset;
+    }
+
+    public MockHttpResponse(byte[] response, String contentType, String... headers) {
+        this(new ByteArrayInputStream(response), contentType, headers);
+    }
+
     public void dispose() {
-        // nothing to do
+        try {
+            this.stream.close();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public String getContentType() {
@@ -75,7 +138,7 @@ public class MockHttpResponse implements HTTPResponse {
     }
 
     public InputStream getResponseStream() throws IOException {
-        return new ByteArrayInputStream(response);
+        return stream;
     }
 
     /**
@@ -84,21 +147,34 @@ public class MockHttpResponse implements HTTPResponse {
      */
     @Override
     public String getResponseCharset() {
-        return responseCharset;
+        return charset.name();
     }
 
     @Override
     public String toString() {
-        String contents = null;
-        if (responseCharset != null) {
-            contents = new String(response, Charset.forName(responseCharset));
-        } else {
-            contents = new String(response);
+
+        StringBuilder textBuilder = new StringBuilder();
+        try {
+            try (Reader reader = new BufferedReader(new InputStreamReader(stream, charset))) {
+                int c = 0;
+                while ((c = reader.read()) != -1) {
+                    textBuilder.append((char) c);
+                }
+            }
+            return contentType + " - " + textBuilder.toString();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            try {
+                stream.reset();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
-        return contentType + " - " + contents;
     }
 
+    @Deprecated
     public void setResponseCharset(String responseCharset) {
-        this.responseCharset = responseCharset;
+        this.charset = Charset.forName(responseCharset);
     }
 }

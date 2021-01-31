@@ -17,10 +17,10 @@ package org.geotools.data.wfs.internal;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.WFSConfig.PreferredHttpMethod;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
 import org.geotools.ows.ServiceException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -68,7 +68,7 @@ public class WFSRequestTest {
     private WFSClient newClient(String resource, WFSConfig config)
             throws IOException, ServiceException {
         URL capabilitiesURL = WFSTestData.url(resource);
-        HTTPClient httpClient = new SimpleHttpClient();
+        HTTPClient httpClient = HTTPClientFinder.createClient();
 
         WFSClient client = new WFSClient(capabilitiesURL, httpClient, config);
         return client;

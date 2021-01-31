@@ -204,17 +204,6 @@
         <module>arcgis-rest</module>
       </modules>
     </profile>
-    <profile>
-      <id>arcsde</id>
-      <activation>
-        <property>
-          <name>all</name>
-        </property>
-      </activation>
-      <modules>
-        <module>arcsde</module>
-      </modules>
-    </profile>
   </profiles>
   <!-- Modules included in a normal build -->
   <modules>

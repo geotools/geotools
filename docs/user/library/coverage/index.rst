@@ -51,7 +51,6 @@ Format plugins:
    :maxdepth: 1
    
    arcgrid
-   arcsde
    geotiff
    grassraster
    image

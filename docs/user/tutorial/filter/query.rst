@@ -31,7 +31,7 @@ have been working with shapefiles. The focus of this workbook is the ``Filter`` 
 out the big guns - a real spatial database.
 
 If you are working in an enterprise that has as spatial database (e.g. Oracle, DB2) or geospatial
-middle ware (e.g. ArcSDE) you can use GeoTools to connect to your existing infrastructure. Here we
+middle ware you can use GeoTools to connect to your existing infrastructure. Here we
 will use `PostGIS <http://postgis.refractions.net/>`_ which is a spatially-enabled extension of
 PostgreSQL supporting *Simple Features for SQL*. We will build an application that can connect
 to both a PostGIS database and shapefiles.

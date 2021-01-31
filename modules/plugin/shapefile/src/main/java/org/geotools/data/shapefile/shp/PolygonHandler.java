@@ -304,7 +304,8 @@ public class PolygonHandler implements ShapeHandler {
                 }
             }
 
-            boolean isArcZWithM = dbuffer.hasRemaining() && shapeType == ShapeType.POLYGONZ;
+            boolean isArcZWithM =
+                    (dbuffer.remaining() >= numPoints + 2) && shapeType == ShapeType.POLYGONZ;
             if (isArcZWithM || shapeType == ShapeType.POLYGONM) {
                 // Handle M
                 dbuffer.position(dbuffer.position() + 2);

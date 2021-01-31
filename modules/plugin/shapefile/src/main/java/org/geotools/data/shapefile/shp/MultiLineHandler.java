@@ -221,7 +221,8 @@ public class MultiLineHandler implements ShapeHandler {
                 }
             }
         }
-        boolean isArcZWithM = doubleBuffer.hasRemaining() && shapeType == ShapeType.ARCZ;
+        boolean isArcZWithM =
+                (doubleBuffer.remaining() >= numPoints + 2) && shapeType == ShapeType.ARCZ;
         if ((isArcZWithM || shapeType == ShapeType.ARCM) && !flatGeometry) {
             // M min, max
             // buffer.position(buffer.position() + 2 * 8);

@@ -59,7 +59,7 @@ The following optional downloads provide increased functionality or performance:
   
   * http://www-01.ibm.com/software/data/db2/express/download.html
 
-* ArcSDE (Optional):
-  
-  Not available for download - Included on CD
+
+
+
 

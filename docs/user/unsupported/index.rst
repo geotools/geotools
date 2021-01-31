@@ -31,7 +31,6 @@ Research and Development:
 
 Unsupported DataStore implementations:
 
-* :doc:`/library/data/arcsde` (Inactive) Support for using an ArcSDE gateway service, versions 10.2/10.3
 * :doc:`/library/data/elasticsearch` Support for search and analytics engine
 * :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
 * :doc:`/library/data/wfs-ng` (Active) Supports communication with a Web Feature Server using the standard GeoTools DataStore API
@@ -43,7 +42,6 @@ Unsupported Raster modules:
 * :doc:`/library/coverage/geotiff_new`
 * :doc:`/library/coverage/matlab`
 * :doc:`/library/coverage/multidim` - New plugins supporting NetCDF and Grib formats
-* :doc:`/library/coverage/arcsde` (Inactive) Support for consuming rasters from an ArcSDE gateway service, versions 10.2/10.3
 * :doc:`/unsupported/imagemosaic-jdbc/index` Support for rasters stored in relational databases
 * :doc:`/unsupported/imagemosaic-jdbc/pgraster` Support for rasters stored in PostGIS, based on the imagemosaic-jdbc plugin
 * :doc:`/unsupported/imagemosaic-jdbc/oracle` Support for rasters stored in Oracle, based on the imagemsaoic-jdbc plugin

@@ -17,15 +17,10 @@
 
 package org.geotools.ows.wmts.online;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,22 +40,27 @@ import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
+import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.Tile;
-import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-public class WMTSServerOnlineTest {
+public class LantmaterietWMTSServerOnlineTest extends OnlineTestCase {
 
     private URL server;
 
     private URL serverWithStyle;
 
-    @Before
-    public void setUpInternal() throws MalformedURLException {
+    @Override
+    protected String getFixtureId() {
+        return "wmts-lantmateriet";
+    }
+
+    @Override
+    public void setUpInternal() throws Exception {
         this.server =
                 new URL(
                         "https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/8d61b10d-e93b-3c04-b4ae-4f4bdd1afe1b/?request=getcapabilities&service=wmts");

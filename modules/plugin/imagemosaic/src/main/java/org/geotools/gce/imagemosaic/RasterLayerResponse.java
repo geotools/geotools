@@ -659,10 +659,13 @@ public class RasterLayerResponse {
             final Query query = queryBuilder.build();
 
             // === collect granules
-            final MosaicProducer visitor =
-                    new MosaicProducer(
-                            submosaicProducerFactory.createProducers(
-                                    this.getRequest(), this.getRasterManager(), this, false));
+            List<SubmosaicProducer> producers =
+                    submosaicProducerFactory.createProducers(
+                            this.getRequest(), this.getRasterManager(), this, false);
+            for (SubmosaicProducer producer : producers) {
+                producer.init(query);
+            }
+            final MosaicProducer visitor = new MosaicProducer(producers);
             rasterManager.getGranuleDescriptors(query, visitor);
 
             // get those granules and create the final mosaic

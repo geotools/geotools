@@ -23,27 +23,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.eclipse.xsd.XSDSchema;
 import org.opengis.feature.type.Schema;
 
 
 /**
  * Generates an instance of {@link org.opengis.feature.type.Schema } from an xml schema.
- * 
- * @goal generateSchema
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project
  * 
  */
+@Mojo(name = "generateSchema")
 public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 
 	/**

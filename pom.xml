@@ -222,10 +222,11 @@
           <plugin>
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
-            <version>5.3.0</version>
+            <version>6.1.0</version>
             <configuration>
               <failBuildOnCVSS>8</failBuildOnCVSS>
               <suppressionFile>${geotoolsBaseDir}/build/qa/dependency-check-suppression.xml</suppressionFile>
+              <format>ALL</format>
             </configuration>
             <executions>
               <execution>

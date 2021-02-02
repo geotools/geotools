@@ -24,31 +24,30 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xsd.AbstractComplexBinding;
-import org.geotools.xsd.XSD;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.Configuration;
+import org.geotools.xsd.XSD;
 
 /**
  * Generates the bindings and utility classes used to parse xml documents 
  * for a particular schema. 
  * 
- * @goal generate 
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project
  * 
  */
+@Mojo(name = "generate")
 public class BindingGeneratorMojo extends AbstractGeneratorMojo {
 
 	/**

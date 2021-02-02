@@ -486,6 +486,7 @@
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
     <mockito.core.version>3.8.0</mockito.core.version>
+    <maven.api.version>3.6.3</maven.api.version>
     <java.awt.headless>true</java.awt.headless>
     <sun.java2d.d3d>true</sun.java2d.d3d>
     <jvm.opts></jvm.opts>

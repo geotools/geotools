@@ -44,6 +44,8 @@ import java.util.Set;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.compiler.util.scan.InclusionScanException;
 import org.codehaus.plexus.compiler.util.scan.SourceInclusionScanner;
@@ -53,7 +55,6 @@ import org.codehaus.plexus.util.FileUtils;
 import org.javacc.jjtree.JJTree;
 import org.javacc.parser.Main;
 
-// Note: javadoc in class and fields descriptions must be XHTML.
 /**
  * Generates <code>.java</code> sources from <code>.jjt</code> files during Geotools build. This <A
  * HREF="http://maven.apache.org/maven2/">Maven 2</A> plugin executes <code>jjtree</code> first,
@@ -81,14 +82,12 @@ import org.javacc.parser.Main;
  * Note: The default directories in this plugin are Maven default, even if this plugin target
  * Geotools build (which use a different directory structure).
  *
- * @goal generate
- * @phase generate-sources
  * @description Parses a JJT file and transform it to Java Files.
- * @version $Id$
  * @author jruiz
  * @author Jesse McConnell
  * @author Martin Desruisseaux
  */
+@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class JJTreeJavaCC extends AbstractMojo {
     /**
      * The package to generate the node classes into.

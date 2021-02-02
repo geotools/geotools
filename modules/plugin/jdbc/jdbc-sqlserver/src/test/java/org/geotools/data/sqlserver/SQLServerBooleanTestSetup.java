@@ -30,6 +30,7 @@ public class SQLServerBooleanTestSetup extends JDBCBooleanTestSetup {
         run("CREATE TABLE b (id int IDENTITY(1,1) PRIMARY KEY, boolProperty BIT)");
         run("INSERT INTO b (boolProperty) VALUES (0)");
         run("INSERT INTO b (boolProperty) VALUES (1)");
+        run("INSERT INTO b (boolProperty) VALUES (true)");
     }
 
     @Override

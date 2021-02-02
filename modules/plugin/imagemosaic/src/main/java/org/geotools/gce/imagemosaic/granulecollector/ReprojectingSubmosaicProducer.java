@@ -39,6 +39,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.coverage.util.CoverageUtilities;
+import org.geotools.data.Query;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.MosaicElement;
@@ -47,6 +48,8 @@ import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
+import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -58,6 +61,7 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -84,6 +88,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
     private List<CRSBoundMosaicProducer> perMosaicProducers = new ArrayList<>();
 
     private CRSBoundMosaicProducer currentSubmosaicProducer;
+    private Map<CoordinateReferenceSystem, RasterLayerResponse> crsResponses;
 
     ReprojectingSubmosaicProducer(
             RasterLayerRequest request,
@@ -119,6 +124,26 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
         this.operations = new Operations(renderingHints);
     }
 
+    /**
+     * This method collects all CRS specific responses and raster manager, to avoid creating a
+     * deadlock caused by having a visit on granules (keeping one connection open) doing bounds
+     * query (grabbing another connection along the way, and setting the conditions for a connection
+     * pool deadlock). This is really a workaround for FeatureSource and GranuleCatalog not exposing
+     * a way to use Transactions on read-only operations (a shared transaction would make the code
+     * use the same connection in the two operations).
+     *
+     * @param query
+     * @throws IOException
+     */
+    @Override
+    public void init(Query query) throws Exception {
+        // go over the granules and collect reference ones for each CRS
+        GranuleCatalog catalog = rasterLayerResponse.getRasterManager().getGranuleCatalog();
+        ReprojectedResponseCollector collector = new ReprojectedResponseCollector();
+        catalog.getGranuleDescriptors(query, collector);
+        this.crsResponses = collector.getResponses();
+    }
+
     public boolean isReprojecting() {
         return true;
     }
@@ -144,15 +169,11 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             // moved on to the next
             CoordinateReferenceSystem targetCRS =
                     granuleDescriptor.getGranuleEnvelope().getCoordinateReferenceSystem();
+            RasterLayerResponse response = crsResponses.get(targetCRS);
+            if (response == null) return false;
             try {
-                RasterLayerResponse transformedResponse =
-                        rasterLayerResponse.reprojectTo(granuleDescriptor);
-                if (transformedResponse == null) {
-                    return false;
-                }
                 this.currentSubmosaicProducer =
-                        new CRSBoundMosaicProducer(
-                                transformedResponse, dryRun, targetCRS, granuleDescriptor);
+                        new CRSBoundMosaicProducer(response, dryRun, targetCRS, granuleDescriptor);
                 perMosaicProducers.add(currentSubmosaicProducer);
                 accepted = true;
             } catch (Exception e) {
@@ -408,6 +429,39 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
 
         public CoordinateReferenceSystem getCrs() {
             return crs;
+        }
+    }
+
+    /**
+     * Collects a granule for each unique CRS, and then, after the visit, allows to grab a
+     * reprojected {@link RasterLayerResponse} for each
+     */
+    private class ReprojectedResponseCollector implements GranuleCatalogVisitor {
+
+        Map<CoordinateReferenceSystem, GranuleDescriptor> granules = new HashMap<>();
+
+        @Override
+        public void visit(GranuleDescriptor granule, SimpleFeature feature) {
+            try {
+                // collecting descriptors, but cannot convert them to a response,
+                // that would trigger a getBounds request that uses a second database connection,
+                // causing a deadlock
+                granules.putIfAbsent(
+                        granule.getGranuleEnvelope().getCoordinateReferenceSystem(), granule);
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, "Failed to setup CRS specific sub-mosaic", e);
+            }
+        }
+
+        public Map<CoordinateReferenceSystem, RasterLayerResponse> getResponses() throws Exception {
+            // convert the reference granules to a response, now that the scan is complete and
+            // the associated connection is closed
+            Map<CoordinateReferenceSystem, RasterLayerResponse> result = new HashMap<>();
+            for (Map.Entry<CoordinateReferenceSystem, GranuleDescriptor> entry :
+                    granules.entrySet()) {
+                result.put(entry.getKey(), rasterLayerResponse.reprojectTo(entry.getValue()));
+            }
+            return result;
         }
     }
 }

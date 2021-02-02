@@ -314,9 +314,11 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      * @see org.geotools.feature.FeatureCollection#size()
      */
     public int size() {
-        // VT: The only way to count the size of the feature is by building it and that becomes very
-        // inefficient.
-        return 0;
+        try {
+            return store.getCount(query);
+        } catch (IOException e) {
+            return 0;
+        }
     }
 
     /*

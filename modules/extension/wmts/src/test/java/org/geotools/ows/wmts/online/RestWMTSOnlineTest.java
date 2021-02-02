@@ -198,7 +198,7 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
         int scales[] = {100 * million, 25 * million, 10 * million, million, 500000};
         for (int scale : scales) {
             Set<Tile> tiles = service.findTilesInExtent(env, scale, true, 100);
-            assertTrue(tiles.size() > 0);
+            assertFalse("findTilesInExtent shouldn't return empty sets.", tiles.isEmpty());
         }
     }
 

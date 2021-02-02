@@ -227,8 +227,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
         for (int scale : scales) {
             Set<Tile> tiles = service.findTilesInExtent(env, scale, true, 100);
-            // System.out.println(tiles.size());
-            assertFalse(tiles.isEmpty());
+            assertFalse("findTilesInExtent shouldn't return empty sets.", tiles.isEmpty());
         }
     }
 }

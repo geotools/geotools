@@ -46,6 +46,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -292,6 +296,50 @@ public class HeterogenousCRSTest {
         final String expectedResultLocation = "hetero_utm_results/full.png";
         assertExpectedMosaic(imReader, expectedResultLocation);
         imReader.dispose();
+    }
+
+    @Test
+    public void testConcurrentHeteroUTMH2() throws Exception {
+        String testLocation = "hetero_utm";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        // to similate the deadlock we need a connection pool with just one connection,
+        // a single request will cause the deadlock in this case (but we try with a pool
+        // nevertheless, to be extra sure)
+        File datastoreProperties = new File(testDirectory, "datastore.properties");
+        try (FileWriter out = new FileWriter(datastoreProperties)) {
+            out.write("database=hetero_concurrent\n");
+            out.write(
+                    "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
+                            + "dbtype=h2\n"
+                            + "user=gs\n"
+                            + "passwd=gs\n"
+                            + "Connection\\ timeout=3600\n"
+                            + "max \\connections=1"
+                            + "min \\connections=1");
+            out.flush();
+        }
+
+        final ExecutorService executors = Executors.newFixedThreadPool(4);
+        ImageMosaicReader reader = new ImageMosaicReader(testDirectory, null);
+        try {
+            List<Future> futures = new ArrayList<>();
+            for (int i = 0; i < 20; i++) {
+                Future<GridCoverage2D> future = executors.submit(() -> reader.read(null));
+                futures.add(future);
+            }
+            for (Future future : futures) {
+                // just to make sure it cannot get stuck forever, but allow execution on
+                // very slow runtimes
+                future.get(120, TimeUnit.SECONDS);
+            }
+        } finally {
+            reader.dispose();
+        }
     }
 
     @Test

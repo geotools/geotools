@@ -20,6 +20,8 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -28,6 +30,7 @@ import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
@@ -52,6 +55,8 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
     private final Query query;
 
     private Filter unrolledFilter = null;
+
+    private static final Logger LOGGER = Logging.getLogger(MappingFeatureCollection.class);
 
     public MappingFeatureCollection(
             AppSchemaDataAccess store, FeatureTypeMapping mapping, Query query) {
@@ -317,9 +322,15 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      * @see org.geotools.feature.FeatureCollection#size()
      */
     public int size() {
-        // VT: The only way to count the size of the feature is by building it and that becomes very
-        // inefficient.
-        return 0;
+        try {
+            return store.getCount(query);
+        } catch (IOException e) {
+            if (LOGGER.isLoggable(Level.WARNING))
+                LOGGER.log(
+                        Level.WARNING,
+                        "Exception while computing collection size: " + e.getMessage());
+            return 0;
+        }
     }
 
     /*

@@ -367,6 +367,16 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         return alias;
     }
 
+    /**
+     * Generates a 'SELECT p1, p2, ... FROM ... WHERE ...' prepared statement.
+     *
+     * @param featureType the feature type that the query must return (may contain less attributes
+     *     than the native one)
+     * @param query the query to be run. The type name and property will be ignored, as they are
+     *     supposed to have been already embedded into the provided feature type
+     * @param toSQLref atomic reference to a FilterToSQL able to works with PreparedStament
+     *     parameters
+     */
     public String selectSQL(
             SimpleFeatureType featureType,
             JoiningQuery query,
@@ -382,6 +392,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      *     than the native one)
      * @param query the query to be run. The type name and property will be ignored, as they are
      *     supposed to have been already embedded into the provided feature type
+     * @param toSQLref atomic reference to a FilterToSQL able to works with PreparedStament
+     *     parameters
+     * @param isCount avoid the encoding of unnecessary SQL pieces when a count query is needed
      */
     public String selectSQL(
             SimpleFeatureType featureType,
@@ -617,41 +630,19 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 // apply paging to the root feature if applicable
                 Collection<String> ids = new ArrayList<>();
 
-                if (isRootFeature && query.isDenormalised() && !isCount) {
-                    // apply inner join for paging to root feature
-                    // if not denormalised, it will apply the maxFeatures and offset in the query
-                    // directly later
+                if (!isCount)
                     pagingApplied =
                             applyPaging(
                                     query,
+                                    isRootFeature,
                                     sql,
+                                    featureType,
                                     pkColumnNames,
-                                    featureType.getTypeName(),
-                                    featureType.getTypeName(),
                                     tableNames,
                                     toSQL,
                                     filter,
-                                    ids);
-                }
-
-                if (!isRootFeature && !isCount) {
-                    // also we always need to apply paging for the last queryJoin since it is the
-                    // join to
-                    // the root feature type (where the original paging parameters come from)
-                    QueryJoin lastJoin =
-                            query.getQueryJoins().get(query.getQueryJoins().size() - 1);
-                    pagingApplied =
-                            applyPaging(
-                                    lastJoin,
-                                    sql,
-                                    pkColumnNames,
-                                    lastTableName,
-                                    lastTableAlias,
-                                    tableNames,
-                                    toSQL,
-                                    filter,
-                                    ids);
-                }
+                                    ids,
+                                    aliases);
 
                 if (lastSortBy != null
                         && (lastSortBy.length > 0 || !lastPkColumnNames.isEmpty())
@@ -677,42 +668,19 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             } catch (FilterToSQLException e) {
                 throw new RuntimeException(e);
             }
-        } else {
-            if (isRootFeature && query.isDenormalised() && !isCount) {
-                // apply inner join for paging to root feature
-                pagingApplied =
-                        applyPaging(
-                                query,
-                                sql,
-                                pkColumnNames,
-                                featureType.getTypeName(),
-                                featureType.getTypeName(),
-                                tableNames,
-                                null,
-                                null,
-                                null);
-            }
-            if (!isRootFeature && !isCount) {
-                // also we always need to apply paging for the last queryJoin since it is the join
-                // to
-                // the root feature type (where the original paging parameters come from)
-                QueryJoin lastJoin = query.getQueryJoins().get(query.getQueryJoins().size() - 1);
-                String lastTableAlias =
-                        aliases[query.getQueryJoins().size() - 1] == null
-                                ? lastJoin.getJoiningTypeName()
-                                : aliases[query.getQueryJoins().size() - 1];
-                pagingApplied =
-                        applyPaging(
-                                lastJoin,
-                                sql,
-                                pkColumnNames,
-                                lastJoin.getJoiningTypeName(),
-                                lastTableAlias,
-                                tableNames,
-                                null,
-                                null,
-                                null);
-            }
+        } else if (!isCount) {
+            pagingApplied =
+                    applyPaging(
+                            query,
+                            isRootFeature,
+                            sql,
+                            featureType,
+                            pkColumnNames,
+                            tableNames,
+                            null,
+                            null,
+                            null,
+                            aliases);
         }
 
         // sorting
@@ -728,6 +696,60 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
 
         return sql.toString();
+    }
+
+    private boolean applyPaging(
+            JoiningQuery query,
+            boolean isRootFeature,
+            StringBuffer sql,
+            SimpleFeatureType featureType,
+            Set<String> pkColumnNames,
+            Set<String> tableNames,
+            FilterToSQL toSQL,
+            Filter filter,
+            Collection<String> ids,
+            String[] aliases)
+            throws IOException, SQLException, FilterToSQLException {
+        boolean pagingApplied = false;
+
+        if (isRootFeature && query.isDenormalised()) {
+            // apply inner join for paging to root feature
+            // if not denormalised, it will apply the maxFeatures and offset in the query
+            // directly later
+            pagingApplied =
+                    applyPaging(
+                            query,
+                            sql,
+                            pkColumnNames,
+                            featureType.getTypeName(),
+                            featureType.getTypeName(),
+                            tableNames,
+                            toSQL,
+                            filter,
+                            ids);
+        } else if (!isRootFeature) {
+            // also we always need to apply paging for the last queryJoin since it is the
+            // join to
+            // the root feature type (where the original paging parameters come from)
+
+            int lastJoinIndex = query.getQueryJoins().size() - 1;
+            QueryJoin lastJoin = query.getQueryJoins().get(lastJoinIndex);
+            String lastTableName = query.getQueryJoins().get(lastJoinIndex).getJoiningTypeName();
+            String lastTableAlias =
+                    aliases[lastJoinIndex] == null ? lastTableName : aliases[lastJoinIndex];
+            pagingApplied =
+                    applyPaging(
+                            lastJoin,
+                            sql,
+                            pkColumnNames,
+                            lastTableName,
+                            lastTableAlias,
+                            tableNames,
+                            toSQL,
+                            filter,
+                            ids);
+        }
+        return pagingApplied;
     }
 
     private void buildFilter(

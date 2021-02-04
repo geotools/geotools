@@ -18,7 +18,6 @@ Extensions build additional functionality on top of the core services of the Geo
    transform/transform
    wms/index
    wmts/index
-   validation
    xsd/index
    ysld
 

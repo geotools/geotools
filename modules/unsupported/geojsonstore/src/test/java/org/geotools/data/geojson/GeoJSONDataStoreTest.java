@@ -128,4 +128,25 @@ public class GeoJSONDataStoreTest {
             assertEquals(9, count);
         }
     }
+
+    @Test
+    public void testVeryChangableSchema() throws IOException {
+        URL url = TestData.url(GeoJSONDataStore.class, "jagged.json");
+        GeoJSONDataStore fds = new GeoJSONDataStore(url);
+        fds.setQuickSchema(false);
+        assertNotNull(fds);
+        String name = fds.getTypeNames()[0];
+        assertNotNull(name);
+        SimpleFeatureType schema = fds.getSchema();
+        assertNotNull(schema);
+
+        assertEquals(4, schema.getAttributeCount());
+        int cnt = 0;
+        for (int i = 0; i < schema.getAttributeCount(); i++) {
+            if (schema.getDescriptor(i).getLocalName().equals(GeoJSONReader.GEOMETRY_NAME)) {
+                cnt++;
+            }
+        }
+        assertEquals(1, cnt);
+    }
 }

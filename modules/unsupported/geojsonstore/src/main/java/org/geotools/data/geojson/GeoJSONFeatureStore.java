@@ -32,24 +32,28 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
 public class GeoJSONFeatureStore extends ContentFeatureStore {
+    private GeoJSONFeatureSource delegate;
+    private boolean writeBounds = false;
 
     public GeoJSONFeatureStore(ContentEntry entry, Query query) {
         super(entry, query);
+        delegate =
+                new GeoJSONFeatureSource(entry, query) {
+                    @Override
+                    public void setTransaction(Transaction transaction) {
+                        super.setTransaction(transaction);
+                        GeoJSONFeatureStore.this.setTransaction(transaction);
+                    }
+                };
+        delegate.setQuick(((GeoJSONDataStore) entry.getDataStore()).isQuick());
     }
-
-    GeoJSONFeatureSource delegate =
-            new GeoJSONFeatureSource(entry, query) {
-                @Override
-                public void setTransaction(Transaction transaction) {
-                    super.setTransaction(transaction);
-                    GeoJSONFeatureStore.this.setTransaction(transaction);
-                }
-            };
 
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
             Query query, int flags) throws IOException {
-        return new GeoJSONFeatureWriter(entry, query);
+        GeoJSONFeatureWriter writer = new GeoJSONFeatureWriter(entry, query);
+        writer.setWriteBounds(writeBounds);
+        return writer;
     }
 
     @Override
@@ -121,5 +125,10 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
     @Override
     public QueryCapabilities getQueryCapabilities() {
         return delegate.getQueryCapabilities();
+    }
+
+    /** @param writeBounds */
+    public void setWriteBounds(boolean writeBounds) {
+        this.writeBounds = writeBounds;
     }
 }

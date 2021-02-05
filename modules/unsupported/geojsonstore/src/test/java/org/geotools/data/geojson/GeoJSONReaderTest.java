@@ -27,9 +27,11 @@ import java.util.HashMap;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.test.TestData;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -102,7 +104,108 @@ public class GeoJSONReaderTest {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @Test
+    public void testFeatureCollectionParser() throws Exception {
+        String geojson1 =
+                "{"
+                        + "'type': 'FeatureCollection',"
+                        + "'features': "
+                        + "[{"
+                        + "  'type': 'Feature',"
+                        + "  'id': 'feature.0',"
+                        + "  'properties': {"
+                        + "    'otherGeometry': {"
+                        + "      'type': 'LineString',"
+                        + "      'coordinates': [[1.1, 1.2], [1.3, 1.4]]"
+                        + "    }"
+                        + "  },"
+                        + "  'geometry': {"
+                        + "    'type': 'Point',"
+                        + "    'coordinates': [0.1, 0.1]"
+                        + "  }"
+                        + "}"
+                        + "]"
+                        + "}";
+        geojson1 = geojson1.replace('\'', '"');
+
+        SimpleFeature f = null;
+
+        SimpleFeatureCollection features = GeoJSONReader.parseFeatureCollection(geojson1);
+        assertNotNull(features);
+        assertFalse(features.isEmpty());
+        f = (SimpleFeature) DataUtilities.first(features);
+
+        assertNotNull(f);
+        assertEquals("features.0", f.getID());
+        WKTReader wkt = new WKTReader();
+        assertEquals(wkt.read("POINT (0.1 0.1)"), f.getDefaultGeometry());
+        assertEquals(wkt.read("LINESTRING (1.1 1.2, 1.3 1.4)"), f.getAttribute("otherGeometry"));
+    }
+
+    @Test
+    public void testParsePoint() throws ParseException {
+        String point =
+                "{\n"
+                        + "         \"type\": \"Point\",\n"
+                        + "         \"coordinates\": [100.0, 0.0]\n"
+                        + "     }";
+        String expected = "POINT (100 0)";
+        testGeometry(point, expected);
+    }
+
+    @Test
+    public void testParseLine() throws ParseException {
+        String line =
+                "{\n"
+                        + "         \"type\": \"LineString\",\n"
+                        + "         \"coordinates\": [\n"
+                        + "             [100.0, 0.0],\n"
+                        + "             [101.0, 1.0]\n"
+                        + "         ]\n"
+                        + "     }";
+        String expected = "LINESTRING(100 0, 101 1)";
+        testGeometry(line, expected);
+    }
+
+    @Test
+    public void testParsePolygon() throws ParseException {
+        String line =
+                "{\n"
+                        + "         \"type\": \"Polygon\",\n"
+                        + "         \"coordinates\": [\n"
+                        + "             [\n"
+                        + "                 [100.0, 0.0],\n"
+                        + "                 [101.0, 0.0],\n"
+                        + "                 [101.0, 1.0],\n"
+                        + "                 [100.0, 1.0],\n"
+                        + "                 [100.0, 0.0]\n"
+                        + "             ],\n"
+                        + "             [\n"
+                        + "                 [100.8, 0.8],\n"
+                        + "                 [100.8, 0.2],\n"
+                        + "                 [100.2, 0.2],\n"
+                        + "                 [100.2, 0.8],\n"
+                        + "                 [100.8, 0.8]\n"
+                        + "             ]\n"
+                        + "         ]\n"
+                        + "     }";
+        String expected =
+                "POLYGON ((100 0, 101 0, 101 1, 100 1, 100 0), (100.8 0.8, 100.8 0.2, 100.2 0.2, 100.2 0.8, 100.8 0.8))";
+        testGeometry(line, expected);
+    }
+    /**
+     * @param line
+     * @param expected
+     * @throws ParseException
+     */
+    private void testGeometry(String json, String wkt) throws ParseException {
+        Geometry p = GeoJSONReader.parseGeometry(json);
+
+        WKTReader2 reader = new WKTReader2();
+        Geometry e = reader.read(wkt);
+        assertEquals(e, p);
+    }
+
     @Test
     public void testFeatureCollectionWithRegularGeometryAttributeReadAndGeometryAfterProperties()
             throws Exception {
